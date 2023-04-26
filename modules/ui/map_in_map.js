@@ -20,7 +20,6 @@ export function uiMapInMap(context) {
 
     let wrap = d3_select(null);
     let canvas = d3_select(null);
-    let miniMapTileLayer = null;
 
     let _isHidden = true;          // start out hidden
     let _isTransformed = false;
@@ -31,9 +30,26 @@ export function uiMapInMap(context) {
     let _cMini;            // center pixel of minimap
     let _tStart;           // transform at start of gesture
     let _tCurr;            // transform at most recent event
-    let _miniPixi;         // Pixi application for the minimap
+
+    let _miniPixi = null;        // Pixi application for the minimap
+    let _miniTileLayer = null;   // Background Tile layer for the minimap
 
 
+    /**
+     * updateMinimap
+     * Call this whenever something about the minimap needs to change
+     */
+    function updateMinimap() {
+      if (_isHidden) return;
+      updateProjection();
+      updateBoundingBox();
+    }
+
+
+    /**
+     * zoomEnded
+     * d3-zoom callback for when a zoom/pan starts
+     */
     function zoomStarted() {
       if (_skipEvents) return;
       _tStart = _tCurr = projection.transform();
@@ -41,6 +57,11 @@ export function uiMapInMap(context) {
     }
 
 
+    /**
+     * zoomEnded
+     * d3-zoom callback that recieves zoom/pan events
+     * @param  d3_event   A d3-zoom event, transform contains details about what changed
+     */
     function zoomed(d3_event) {
       if (_skipEvents) return;
 
@@ -72,8 +93,8 @@ export function uiMapInMap(context) {
       }
 
       if (_gesture === 'pan') {
-        miniMapTileLayer.renderer.stage.x += tX;
-        miniMapTileLayer.renderer.stage.y += tY;
+        _miniPixi.stage.x += tX;
+        _miniPixi.stage.y += tY;
       } else {
         utilSetTransform(canvas, 0, 0, scale);
       }
@@ -85,10 +106,14 @@ export function uiMapInMap(context) {
 
       _zDiff = zMain - zMini;
 
-      redraw();
+      updateMinimap();
     }
 
 
+    /**
+     * zoomEnded
+     * d3-zoom callback for when the zoom/pan ends
+     */
     function zoomEnded() {
       if (_skipEvents) return;
       if (_gesture !== 'pan') return;
@@ -99,6 +124,10 @@ export function uiMapInMap(context) {
     }
 
 
+    /**
+     * updateProjection
+     * Update the minimap projection and d3-zoom transform
+     */
     function updateProjection() {
       const loc = context.map().center();
       const tMain = context.projection.transform();
@@ -118,10 +147,8 @@ export function uiMapInMap(context) {
       _tCurr = projection.transform();
 
       if (_isTransformed) {
-        const tileContainer = miniMapTileLayer.renderer.stage;
-        tileContainer.x = 0;
-        tileContainer.y = 0;
-
+        _miniPixi.stage.x = 0;
+        _miniPixi.stage.y = 0;
         utilSetTransform(canvas, 0, 0);
         _isTransformed = false;
       }
@@ -134,17 +161,11 @@ export function uiMapInMap(context) {
     }
 
 
-    function redraw() {
-      if (_isHidden) return;
-      updateProjection();
-      drawBoundingBox();
-    }
-
-
     /**
-     * drawBoundingBox
+     * updateBoundingBox
+     * Recalculates the position and size of the bounding box rectangle on the minimap
      */
-    function drawBoundingBox() {
+    function updateBoundingBox() {
       const bbox = context.map().extent().bbox();
       const topLeftPoint = projection.project([bbox.minX, bbox.maxY]);
       const bottomRightPoint = projection.project([bbox.maxX, bbox.minY]);
@@ -167,6 +188,11 @@ export function uiMapInMap(context) {
     }
 
 
+    /**
+     * toggle
+     * Toggles the minimap on/off
+     * @param  `d3_event`   d3 keypress event that triggered the toggle (if any)
+     */
     function toggle(d3_event) {
       if (d3_event) d3_event.preventDefault();
 
@@ -186,16 +212,51 @@ export function uiMapInMap(context) {
           .transition()
           .duration(200)
           .style('opacity', '0')
-          .on('end', () => selection.selectAll('.map-in-map').style('display', 'none'));
+          .on('end', () => {
+            selection.selectAll('.map-in-map').style('display', 'none');
+            clear();
+          });
       } else {
+        updateMinimap();
         wrap
           .style('display', 'block')
           .style('opacity', '0')
           .transition()
           .duration(200)
-          .style('opacity', '1')
-          .on('end', ()  => redraw());
+          .style('opacity', '1');
       }
+    }
+
+
+    /**
+     * clear
+     * Removes all resources used by the minimap when it goes invisible
+     */
+    function clear() {
+      const stage = _miniPixi.stage;
+      const bboxGraphic = stage.getChildByName('bbox');
+      if (bboxGraphic) {
+        stage.removeChild(bboxGraphic);
+      }
+
+      if (_miniTileLayer) {
+        _miniTileLayer.destroyAll();
+      }
+    }
+
+
+    /**
+     * tick
+     * Draw the minimap
+     */
+    function tick() {
+      if (_isHidden) return;
+      window.performance.mark('minimap-start');
+      const frame = 0;    // not used
+      _miniTileLayer.render(frame, projection);   // APP
+      _miniPixi.render();                         // DRAW
+      window.performance.mark('minimap-end');
+      window.performance.measure('minimap', 'minimap-start', 'minimap-end');
     }
 
 
@@ -217,7 +278,7 @@ export function uiMapInMap(context) {
       _miniPixi = new PIXI.Application({
         antialias: true,
         autoDensity: true,
-        autoStart: true,
+        autoStart: false,   // don't start the ticker yet
         events: {
           move: false,
           globalMove: false,
@@ -231,6 +292,16 @@ export function uiMapInMap(context) {
 
       const [width, height] = [200, 150];
       _miniPixi.renderer.resize(width, height);
+
+      // Setup the Ticker
+      // Replace the default Ticker listener (which just renders the scene each frame)
+      // with our own listener that gathers statistics and renders only as needed
+      const ticker = _miniPixi.ticker;
+      ticker.maxFPS = 10;      // minimap can be slowed down
+      const defaultListener = ticker._head.next;
+      ticker.remove(defaultListener.fn, defaultListener.context);
+      ticker.add(tick, this);
+      ticker.start();
 
       // Setup the stage..
       const stage = _miniPixi.stage;
@@ -263,26 +334,14 @@ export function uiMapInMap(context) {
       miniScene.groups.set('background', groupContainer);
 
       // Layer
-      miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 'minimap-background', true);  // isMinimap = true
-      miniScene.layers.set(miniMapTileLayer.id, miniMapTileLayer);
-
-      // Ticker
-      // Minimap can have a separate, slowed down ticker
-      _miniPixi.ticker.maxFPS = 10;
-      _miniPixi.ticker.add(() => {
-        if (_isHidden) return;
-        window.performance.mark('minimap-start');
-        const frame = 0;
-        miniMapTileLayer.render(frame, projection);
-        window.performance.mark('minimap-end');
-        window.performance.measure('minimap', 'minimap-start', 'minimap-end');
-      });
+      _miniTileLayer = new PixiLayerBackgroundTiles(miniScene, 'minimap-background', true);  // isMinimap = true
+      miniScene.layers.set(_miniTileLayer.id, _miniTileLayer);
 
       // Hardcode dimensions - currently can't resize it anyway..
       _dMini = [width, height];
       _cMini = vecScale(_dMini, 0.5);
 
-      context.map().on('draw', () => redraw());
+      context.map().on('draw', () => updateMinimap());
     }
 
     wrapEnter
@@ -296,7 +355,7 @@ export function uiMapInMap(context) {
     // canvas = wrap.selectAll('canvas');
     canvas = d3_select(_miniPixi.view);
 
-    redraw();
+    updateMinimap();
 
     context.keybinding().on(t('background.minimap.key'), toggle);
   }

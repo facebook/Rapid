@@ -131,8 +131,6 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       debugContainer.visible = showDebug;
     }
 
-//let transform = projection.transform();
-//console.log(`projection x: ${transform.x}, y: ${transform.y}, k: ${transform.k}`);
     const tileSize = source.tileSize || 256;
     const k = projection.scale();
     const z = geoScaleToZoom(k, tileSize);  // Use actual zoom for this, not effective zoom
@@ -190,9 +188,6 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       sourceContainer.addChild(sprite);
       tile.sprite = sprite;
       tileMap.set(tileID, tile);
-
-//const MINI = this.isMinimap ? ' FOR THE MINIMAP' : '';
-//console.log(`fetching ${tileName}  ${MINI}`);
 
       // Start loading the image
       const image = new Image();
@@ -325,11 +320,10 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   destroyTile(tile) {
     if (tile.sprite) {
+      tile.sprite.texture = null;
       if (tile.loaded) {
         this.renderer.textures.free('tile', tile.sprite.name);
       }
-      // note: dont destroy the texture - it may be used by both mainmap / minimap
-      // Above `free` call now has refcounting - we may move the texture destroying to there.
       tile.sprite.destroy({ children: true, texture: false, baseTexture: false });
     }
 

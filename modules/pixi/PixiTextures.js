@@ -31,7 +31,7 @@ export class PixiTextures {
     // All the named textures we know about.
     // Each mapping is a unique identifying key to a PIXI.Texture
     // The Texture is not necessarily packed in an Atlas (but ideally it should be)
-    // Important!  Make sure these textureIDs don't conflict
+    // Important!  Make sure these texture keys don't conflict
     this._textureData = new Map();   // Map(key -> PIXI.Texture)  (e.g. 'symbol-boldPin')
 
     // Load spritesheets
@@ -127,7 +127,6 @@ export class PixiTextures {
     // Increment the refcount and return it.
     if (tdata) {
       tdata.refcount++;
-// console.log(`no alloc:  refcount = ${tdata.refcount} for ${key}`);
       return tdata.texture;
     }
 
@@ -148,15 +147,13 @@ export class PixiTextures {
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
 
-// console.log(`alloc:  allocated ${key}`);
-
     return texture;
   }
 
 
   /**
    * free
-   * Unpacks a texture from the atlas
+   * Unpacks a texture from the atlas and frees its resources
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
    * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
    */
@@ -169,14 +166,13 @@ export class PixiTextures {
     if (!tdata) return;  // free without allocate
 
     tdata.refcount--;
+
     if (tdata.refcount === 0) {
-  // console.log(`free:  freed ${key}`);
       atlas.free(tdata.texture);
+      tdata.texture.destroy(false);   // false = don't destroy base texture
+      tdata.texture = null;
       this._textureData.delete(key);
     }
-else {
-  // console.log(`no free:  refcount = ${tdata.refcount} for ${key}`);
-}
   }
 
 

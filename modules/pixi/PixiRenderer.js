@@ -119,7 +119,6 @@ export class PixiRenderer extends EventEmitter {
     const ticker = this.pixi.ticker;
     const defaultListener = ticker._head.next;
     ticker.remove(defaultListener.fn, defaultListener.context);
-
     ticker.add(this._tick, this);
     ticker.start();
 
