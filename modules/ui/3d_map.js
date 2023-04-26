@@ -1,5 +1,7 @@
 import { select as d3_select } from 'd3-selection';
-import { Map as mapLibreMap } from 'maplibre-gl';
+
+import { Map } from '../3drenderer/Map';
+
 import { t } from '../core/localizer';
 import { uiCmd } from './cmd';
 
@@ -21,11 +23,45 @@ export function ui3DMap(context) {
       let bounds = [
         context.map().extent().min,
         context.map().extent().max
-    ];
-
-      _map.fitBounds(this.bounds = )
-
+      ];
+      _map.map.fitBounds(this.bounds = bounds);
     }
+
+    function featuresToGeoJSON() {
+      var mainmap = context.map();
+      const entities = context.history().intersects(mainmap.extent());
+      const buildingEnts = entities.filter(ent => {
+          const tags = Object.keys(ent.tags).filter(tagname => tagname.startsWith('building'));
+          return tags.length > 0;
+      });
+      var features = [];
+      for (var id in buildingEnts) {
+//            try {
+              var gj = buildingEnts[id].asGeoJSON(context.graph());
+              if (gj.type !== 'Polygon') continue;
+              features.push({
+                  type: 'Feature',
+                  properties: {
+                      extrude: true,
+                      min_height: buildingEnts[id].tags.min_height ? parseFloat(buildingEnts[id].tags.min_height) : 0,
+                      height: parseFloat(buildingEnts[id].tags.height || buildingEnts[id].tags['building:levels'] * 3 || 0)
+                  },
+                  geometry: gj
+              });
+//            } catch (e) {
+//                console.error(e);
+//            }
+      }
+
+      const buildingSource = _map.map.getSource('osmbuildings');
+
+      if (buildingSource) {
+        buildingSource.setData({
+          type: 'FeatureCollection',
+          features: features
+        });
+      }
+  }
 
     function toggle(d3_event) {
       if (d3_event) d3_event.preventDefault();
@@ -74,16 +110,15 @@ export function ui3DMap(context) {
     wrap = wrapEnter
       .merge(wrap);
 
-    _map = new mapLibreMap({
-        container: '3d-buildings', // container id
-        style: 'https://demotiles.maplibre.org/style.json', // style URL
-        center: [0, 0], // starting position [lng, lat]
-        zoom: 1 // starting zoom
-        });
-
+    _map = new Map('3d-buildings'); // container id
       context.map().on('draw', () => redraw());
 
-
+    context.on('enter.3dmap', (e) => {
+        featuresToGeoJSON();
+    });
+    context.history().on('change.3dmap', (e) => {
+        featuresToGeoJSON();
+    });
 
     redraw();
 
