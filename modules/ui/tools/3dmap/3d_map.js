@@ -19,6 +19,7 @@ export function ui3DMap(context) {
     function redraw() {
       if (_isHidden) return;
       updateProjection();
+      featuresToGeoJSON();
     }
 
     function updateProjection() {
@@ -136,6 +137,7 @@ export function ui3DMap(context) {
 
     _map = new Map('3d-buildings'); // container id
     context.map().on('draw', () => redraw());
+    context.map().on('move', () => redraw());
 
     context.on('enter.3dmap', (e) => {
       featuresToGeoJSON();
