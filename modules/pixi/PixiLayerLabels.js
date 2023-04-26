@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
@@ -79,11 +78,6 @@ export class PixiLayerLabels extends AbstractLayer {
 
     groupContainer.addChild(debugContainer, labelContainer);
 
-    this._atlasAllocator = new AtlasAllocator();
-
-    // Map of strings to Pixi textures
-    this._textures = new Map();   // Map (String -> Pixi Texture)
-
     // A RBush spatial index that stores all the placement boxes
     this._rbush = new RBush();
 
@@ -117,6 +111,9 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   resetAll() {
     for (const label of this._labels.values()) {
+//      if (textureManager.get('text', label.str)) {
+//        textureManager.free('text', label.str);
+//      }
       if (label.displayObject) {
         label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
         label.displayObject = null;
@@ -157,6 +154,9 @@ export class PixiLayerLabels extends AbstractLayer {
     for (const labelID of labelIDs.values()) {
       let label = this._labels.get(labelID);
       if (label && label.displayObject) {
+//      if (textureManager.get('text', label.str)) {
+//        textureManager.free('text', label.str);
+//      }
         label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
         label.displayObject = null;
       }
@@ -237,7 +237,9 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   getLabelSprite(str, style = 'normal') {
     const textureID = `${str}-${style}`;
-    let texture = this._textures.get(textureID);
+    const textureManager = this.renderer.textures;
+
+    let texture = textureManager.getTexture('text', textureID);
 
     if (!texture) {
       // Add some extra padding if we detect unicode combining marks in the text - see #653
@@ -267,8 +269,7 @@ export class PixiLayerLabels extends AbstractLayer {
       const [w, h] = [text.canvas.width - (pad * 4), text.canvas.height];
       const data = text.context.getImageData(x, y, w, h);
 
-      const ATLAS_PADDING = 0;
-      texture = this._atlasAllocator.allocate(w, h, ATLAS_PADDING, data);
+      texture = textureManager.allocate('text', str, w, h, data);
 
       // These textures are overscaled, but `orig` Rectangle stores the original width/height
       // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
@@ -277,7 +278,6 @@ export class PixiLayerLabels extends AbstractLayer {
       texture.orig.width = w / 2;
       texture.orig.height = h / 2;
 
-      this._textures.set(textureID, texture);
       text.destroy();  // safe to destroy, the texture is copied to the atlas
     }
 
@@ -581,6 +581,7 @@ this.placeRopeLabel(feature, labelObj, coords);
       if (!this._rbush.collides(box)) {
         // We can render the label in this box..
         const label = new Label(featureID, 'text', {
+          str: feature.label,
           labelObj: labelObj,
           x: x,
           y: y,
@@ -747,6 +748,7 @@ this.placeRopeLabel(feature, labelObj, coords);
       coords = coords.map(coord => vecAdd(coord, origin));       // back to scene coords
 
       const label = new Label(labelID, 'rope', {
+        str: feature.label,
         coords: coords,
         labelObj: labelObj,
         tint: feature.style.labelTint || 0xeeeeee

@@ -118,7 +118,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   renderSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
-    const textures = this.renderer.textures;
+    const textureManager = this.renderer.textures;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
@@ -203,7 +203,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
         const w = tile.image.naturalWidth;
         const h = tile.image.naturalHeight;
-        tile.sprite.texture = textures.allocate('tile', tile.sprite.name, w, h, tile.image);
+        tile.sprite.texture = textureManager.allocate('tile', tile.sprite.name, w, h, tile.image);
 
         tile.loaded = true;
         tile.image = null;  // image is copied to the atlas, we can free it
@@ -319,10 +319,12 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    * @param  tile  Tile object
    */
   destroyTile(tile) {
+    const textureManager = this.renderer.textures;
+
     if (tile.sprite) {
       tile.sprite.texture = null;
       if (tile.loaded) {
-        this.renderer.textures.free('tile', tile.sprite.name);
+        textureManager.free('tile', tile.sprite.name);
       }
       tile.sprite.destroy({ children: true, texture: false, baseTexture: false });
     }
