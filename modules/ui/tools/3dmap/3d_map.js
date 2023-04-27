@@ -23,7 +23,13 @@ export function ui3DMap(context) {
     }
 
     function updateProjection() {
-      let bounds = [context.map().extent().min, context.map().extent().max];
+      // Since the bounds are intended to wrap a box around a perfectly orthogonal view,
+      // for a pitched, isometric view we need to enlarge the box a bit to display more buildings.
+      let extent = context.map().extent();
+      extent.padByMeters(100);
+
+      let bounds = [extent.min, extent.max];
+
       _map.map.fitBounds((this.bounds = bounds));
     }
 
@@ -42,7 +48,7 @@ export function ui3DMap(context) {
       for (const buildingEnt of buildingEnts) {
 
         var gj = buildingEnt.asGeoJSON(context.graph());
-        if (gj.type !== 'Polygon') continue;
+        if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
 
         let newFeature = {
           type: 'Feature',
