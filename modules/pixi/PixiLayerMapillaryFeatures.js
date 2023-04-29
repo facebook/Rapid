@@ -69,9 +69,6 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
     const service = this.getService();
     if (!service) return;
 
-    const spritesheet = this.context._mapillarySheet;
-    if (!spritesheet) return;  // wait for spritesheet to load
-
     const parentContainer = this.scene.groups.get('points');
 
     let items = service.mapFeatures(this.context.projection);
@@ -82,9 +79,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
       let feature = this.features.get(featureID);
 
       if (!feature) {
-        const style = {
-          markerTexture: spritesheet.textures[d.value + '.svg']
-        };
+        const style = { markerName: d.value };
 
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(d.loc);

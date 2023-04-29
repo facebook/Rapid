@@ -118,7 +118,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     const context = this.context;
     const wireframeMode = context.map().wireframeMode;
-    const textures = this.renderer.textures;
+    const textureManager = this.renderer.textures;
     const style = this._style;
     const isPin = ['pin', 'boldPin', 'improveosm', 'osmose'].includes(style.markerName);
 
@@ -138,7 +138,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Show icon, if any..
     if (style.iconTexture || style.iconName) {
-      icon.texture = style.iconTexture || textures.get(style.iconName);
+      icon.texture = style.iconTexture || textureManager.get(style.iconName);
       icon.anchor.set(0.5, 0.5);   // middle, middle
       const ICONSIZE = 11;
       icon.width = ICONSIZE;
@@ -153,7 +153,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Update viewfields, if any..
     const vfAngles = style.viewfieldAngles || [];
     if (vfAngles.length > 0) {  // Should have viewfields
-      const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || PIXI.Texture.WHITE;
+      const vfTexture = style.viewfieldTexture || textureManager.get(style.viewfieldName) || PIXI.Texture.WHITE;
 
       // Sort markers with viewfields above markers without viewfields
       this.container.zIndex = -latitude + 1000;
@@ -214,7 +214,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       // Replace pinlike markers with circles at lower zoom
       const markerID = isPin ? 'largeCircle' : style.markerName;
       this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(markerID));
-      marker.texture = style.markerTexture || textures.get(markerID);
+      marker.texture = style.markerTexture || textureManager.get(markerID);
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
 
@@ -230,7 +230,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       // Replace pinlike markers with circles if viewfields are present
       const markerID = (isPin && vfAngles.length) ? 'largeCircle' : style.markerName;
       this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(markerID));
-      marker.texture = style.markerTexture || textures.get(markerID);
+      marker.texture = style.markerTexture || textureManager.get(markerID);
       if (isPin && !this._isCircular) {
         marker.anchor.set(0.5, 1);    // middle, bottom
         icon.position.set(0, -14);    // mathematically 0,-15 is center of pin, but looks nicer moved down slightly

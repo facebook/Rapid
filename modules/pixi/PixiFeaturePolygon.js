@@ -174,11 +174,11 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // STYLE
     //
     const style = this._style;
-    const textures = this.renderer.textures;
+    const textureManager = this.renderer.textures;
     const color = style.fill.color || 0xaaaaaa;
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;
-    let texture = pattern && textures.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
+    let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
     let shape;
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
@@ -230,7 +230,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
-      this.lowRes.texture = textures.get(textureName) || PIXI.Texture.WHITE;
+      this.lowRes.texture = textureManager.get(textureName) || PIXI.Texture.WHITE;
       this.lowRes.position.set(x, y);
       this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
       this.lowRes.rotation = rotation;

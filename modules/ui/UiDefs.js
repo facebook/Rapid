@@ -17,7 +17,7 @@ export class UiDefs {
     this.parent = d3_select(null);
 
     this.spritesheetIDs = [
-      'rapid', 'maki', 'temaki', 'fa', 'community', 'mapillary-features', 'mapillary-signs'
+      'rapid', 'maki', 'temaki', 'fa', 'community', 'mapillary-object', 'mapillary'
     ];
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -72,8 +72,8 @@ export class UiDefs {
     element.setAttribute('id', spritesheetID);
     group.appendChild(element);
 
-    // Allow icon fill colors to be overridden..
-    if (spritesheetID !== 'rapid' && spritesheetID !== 'mapillary-signs') {
+    // For some spritesheets, allow icon fill colors to be overridden..
+    if (['maki', 'temaki', 'fa', 'community'].includes(spritesheetID)) {
       selection.selectAll('path')
         .attr('fill', 'currentColor');
     }
@@ -92,7 +92,7 @@ export class UiDefs {
         const iconID = symbol.getAttribute('id');
         const viewBox = symbol.getAttribute('viewBox');
         const size = 32;
-        const color = '#fff';   // white, so we can tint them
+        const color = '#fff';   // white will apply to `currentColor`, so we can tint them
         const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" height="${size}" width="${size}" color="${color}" viewBox="${viewBox}">${symbol.innerHTML}</svg>`;
 
         textureManager.addSvgIcon(iconID, svgStr);

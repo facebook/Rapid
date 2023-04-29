@@ -80,7 +80,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
     const wireframeMode = this.context.map().wireframeMode;
     const context = this.context;
-    const textures = this.renderer.textures;
+    const textureManager = this.renderer.textures;
     const container = this.container;
     const style = this._style;
     //
@@ -151,8 +151,8 @@ export class PixiFeatureLine extends AbstractFeature {
           container.addChild(lineMarkers);
         }
 
-        const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || PIXI.Texture.WHITE;
-        const sidedMarkerTexture = style.sidedMarkerTexture || textures.get(style.sidedMarkerName) || PIXI.Texture.GREEN;
+        const lineMarkerTexture = style.lineMarkerTexture || textureManager.get(style.lineMarkerName) || PIXI.Texture.WHITE;
+        const sidedMarkerTexture = style.sidedMarkerTexture || textureManager.get(style.sidedMarkerName) || PIXI.Texture.WHITE;
         const sided = style.sidedMarkerName === 'sided';
         const oneway = style.lineMarkerName === 'oneway';
         lineMarkers.removeChildren();
