@@ -427,6 +427,34 @@ export class PixiRenderer extends EventEmitter {
 //
     this.scene.render(this._frame, pixiProjection, effectiveZoom);
 
+    // debugging the contents of the texture atlas
+    // let screen = stage.getChildByName('screen');
+    // if (!screen) {
+    //   screen = new PIXI.Graphics();
+    //   screen.name = 'screen';
+    //   screen.eventMode = 'none';
+    //   screen.sortableChildren = false;
+    //   screen.zIndex = 100;
+    //   screen.beginFill({ r: 255, g: 255, b: 255, a: 0.5 });
+    //   screen.drawRect(0, 0, 512, 512);
+    //   screen.endFill();
+    //   stage.addChild(screen);
+    // }
+    // let debug = stage.getChildByName('debug');
+    // if (!debug) {
+    //   debug = new PIXI.Sprite();
+    //   debug.name = 'debug';
+    //   debug.eventMode = 'none';
+    //   debug.sortableChildren = false;
+    //   debug.zIndex = 101;
+    //   debug.height = 512;
+    //   debug.width = 512;
+    //   stage.addChild(debug);
+    // }
+    // debug.texture = this.textures.getDebugTexture('symbol');
+    // debug.position.set(offset[0] + 50, offset[1] + 100);  // stay put
+    // screen.position.set(offset[0] + 50, offset[1] + 100);  // stay put
+
     this._appPending = false;
     this._drawPending = true;
   }

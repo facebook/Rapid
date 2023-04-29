@@ -16,12 +16,13 @@ export class UiDefs {
     this.context = context;
     this.parent = d3_select(null);
 
-    this.spritesheetIDs = new Set(['rapid', 'maki', 'temaki', 'fa' /*, 'community'*/]);
+    this.spritesheetIDs = [
+      'rapid', 'maki', 'temaki', 'fa', 'community', 'mapillary-features', 'mapillary-signs'
+    ];
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
-    this.loadSpritesheet = this.loadSpritesheet.bind(this);
     this._spritesheetLoaded = this._spritesheetLoaded.bind(this);
   }
 
@@ -43,7 +44,7 @@ export class UiDefs {
     // update
     defs.merge(enter)
       .selectAll('.spritesheet')
-      .data([...this.spritesheetIDs])
+      .data(this.spritesheetIDs, d => d)
       .enter()
       .append('g')
       .attr('class', d => `spritesheet spritesheet-${d}`)
@@ -59,69 +60,43 @@ export class UiDefs {
 
 
   /**
-   * loadSpritesheet
-   * @param  `spritesheetID`  String spritesheet id
-   */
-  loadSpritesheet(spritesheetID) {
-    this.spritesheetIDs.add(spritesheetID);
-    this.render(this.parent);
-  }
-
-
-  /**
    * _spritesheetLoaded
-   * @param  `selection`      A d3-selection to a `g` element that the icons should render themselves into
-   * @param  `spritesheetID`  String spritesheet id
-   * @param  `svg`            The fetched svg document
+   * @param  `selection`       A d3-selection to a `g` element that the icons should render themselves into
+   * @param  `spritesheetID`   String spritesheet id
+   * @param  `spritesheetSvg`  SVGDocument containting the fetched spritesheet
    */
-  _spritesheetLoaded(selection, spritesheetID, svg) {
+  _spritesheetLoaded(selection, spritesheetID, spritesheetSvg) {
     const group = selection.node();
-    const element = svg.documentElement;
+    const element = spritesheetSvg.documentElement;
 
     element.setAttribute('id', spritesheetID);
     group.appendChild(element);
 
     // Allow icon fill colors to be overridden..
-    if (spritesheetID !== 'rapid') {
+    if (spritesheetID !== 'rapid' && spritesheetID !== 'mapillary-signs') {
       selection.selectAll('path')
         .attr('fill', 'currentColor');
     }
 
-// WIP on #925
-//    // Pack icons into Pixi texture atlas
-//    selection.selectAll('symbol')
-//      .each((d, i, nodes) => {
-//        if (spritesheetID !== 'community-sprite') return;
-//
-//        const symbol = nodes[i];
-//        const iconID = symbol.getAttribute('id');
-//        const viewBox = symbol.getAttribute('viewBox');
-//
-//        // Make a new <svg> container
-//        let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-//        svg.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-//        svg.setAttribute('width', '32');
-//        svg.setAttribute('height', '32');
-//        svg.setAttribute('color', '#fff');   // white so we can tint them
-//        svg.setAttribute('viewBox', viewBox);
-//
-//        // Clone children (this is essentially what <use> does)
-//        for (const child of symbol.childNodes) {
-//          svg.appendChild(child.cloneNode(true));  // true = deep clone
-//        }
-//
-//        const svgStr = (new XMLSerializer()).serializeToString(svg);
-//        svg = null;
-//
-//        const image = new Image();
-//        image.src = `data:image/svg+xml,${encodeURIComponent(svgStr)}`;
-//        image.onload = () => {
-//          // something like this
-//          const PADDING = 0;
-//          const texture = this._atlasAllocator.allocate(w, h, PADDING, image);
-//          this._textures.set(iconID, texture);
-//        };
-//      });
+    // Notify Pixi about the icons so they can be used by WebGL - see Rapid#925
+    // Note: We believe that by the time `_spritesheetLoaded` is called,
+    // Pixi's textureManager should be set up, throw if we're wrong about this.
+    const textureManager = this.context.map().renderer?.textures;
+    if (!textureManager) {
+      throw new Error(`TextureManager not ready to pack icons for ${spritesheetID}`);
+    }
+
+    selection.selectAll('symbol')
+      .each((d, i, nodes) => {
+        const symbol = nodes[i];
+        const iconID = symbol.getAttribute('id');
+        const viewBox = symbol.getAttribute('viewBox');
+        const size = 32;
+        const color = '#fff';   // white, so we can tint them
+        const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" height="${size}" width="${size}" color="${color}" viewBox="${viewBox}">${symbol.innerHTML}</svg>`;
+
+        textureManager.addSvgIcon(iconID, svgStr);
+     });
   }
 
 }

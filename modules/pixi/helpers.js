@@ -3,57 +3,6 @@ import { vecAdd, vecAngle, vecEqual, vecLength } from '@rapid-sdk/math';
 
 
 /**
-* Generates a icon sprite for the given texture name
-* @returns {PIXI.Sprite}
-*/
-export function getIconTexture(context, iconName) {
-  const isMaki = /^maki-/.test(iconName);
-  const isTemaki = /^temaki-/.test(iconName);
-
-  let spritesheet;
-  let spriteName;
-  if (isMaki) {
-    spritesheet = context._makiSheet;
-    spriteName = 'maki/' + iconName.slice('maki-'.length);
-  } else if (isTemaki) {
-    spritesheet = context._temakiSheet;
-    spriteName = iconName.slice('temaki-'.length);
-  } else {
-    spritesheet = context._fontAwesomeSheet;
-    spriteName = iconName;
-  }
-
-  spriteName = spriteName + '.svg';
-
-  return spritesheet.textures[spriteName];
-}
-
-
-/**
-* Generates a pixi container with viewfield icons rotated appropriately
-* @param texture
-* @param {Array<number>} directions an array of directional angles in degrees, 'UP' is zero degrees
-* @returns {PIXI.Container} A container with the ViewfieldSprites rotated according to the supplied directions.
-*/
-export function getViewfieldContainer(texture, directions, tint) {
-  const vfContainer = new PIXI.Container();
-  vfContainer.name = 'viewfields';
-  vfContainer.eventMode = 'none';
-
-  directions.forEach(direction => {
-    const sprite = new PIXI.Sprite(texture);
-    sprite.eventMode = 'none';
-    sprite.tint = tint || 0x333333;
-    sprite.anchor.set(0.5, 1);  // middle, top
-    sprite.angle = direction;
-    vfContainer.addChild(sprite);
-  });
-
-  return vfContainer;
-}
-
-
-/**
 * Generates a polygon from a line. Intended for use to create custom hit areas for our ways.
 * @param width the width of the polygon in pixels (deviation from either side of the line))
 * @param {Array<points>} A list of point coord pairs that denote the line.

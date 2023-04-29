@@ -1,4 +1,4 @@
-import { Assets, Graphics, Rectangle, FORMATS, TYPES } from 'pixi.js';
+import { Assets, Graphics, Rectangle, SVGResource, Texture, FORMATS, TYPES } from 'pixi.js';
 import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 
 
@@ -34,13 +34,8 @@ export class PixiTextures {
     // Important!  Make sure these texture keys don't conflict
     this._textureData = new Map();   // Map(key -> { PIXI.Texture, refcount })  (e.g. 'symbol-boldPin')
 
-    // Load spritesheets
-    const SHEETS = ['maki', 'temaki', 'fontawesome', 'mapillary-features', 'mapillary-signs'];
-    let sheetBundle = {};
-    for (const k of SHEETS) {
-      sheetBundle[k] = context.asset(`img/icons/${k}-spritesheet.json`);
-    }
-    Assets.addBundle('spritesheets', sheetBundle);
+    // Because SVGs take some time to texturize, store the svg string and texturize only if needed
+    this._svgIcons = new Map();   // Map(key -> String)  (e.g. 'temaki-school')
 
     // Load patterns
     const PATTERNS = [
@@ -55,29 +50,18 @@ export class PixiTextures {
     }
     Assets.addBundle('patterns', patternBundle);
 
-    Assets.loadBundle(['spritesheets', 'patterns'])
+    Assets.loadBundle(['patterns'])
       .then(result => {
-        // spritesheets - store in context for now :(
-        context._makiSheet = result.spritesheets.maki;
-        context._temakiSheet = result.spritesheets.temaki;
-        context._fontAwesomeSheet = result.spritesheets.fontawesome;
-        context._mapillarySheet = result.spritesheets['mapillary-features'];
-        context._mapillarySignSheet = result.spritesheets['mapillary-signs'];
-
-        // patterns
-        // note that we can't pack patterns into an atlas yet
-        // see PixiFeaturePolygon.js too.
+        // note that we can't pack patterns into an atlas yet - see PixiFeaturePolygon.js.
         for (const [textureID, texture] of Object.entries(result.patterns)) {
           this._textureData.set(textureID, { texture: texture, refcount: 1 });
         }
-
         this.loaded = true;
       })
       .catch(e => console.error(e));  // eslint-disable-line no-console
 
     this._cacheGraphics();
   }
-
 
 
   /**
@@ -92,6 +76,7 @@ export class PixiTextures {
     return this.getTexture('symbol', textureID);
   }
 
+
   /**
    * getTexture
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
@@ -101,7 +86,33 @@ export class PixiTextures {
   getTexture(atlasID, textureID) {
     const key = `${atlasID}-${textureID}`;
     const tdata = this._textureData.get(key);
-    return tdata?.texture;
+
+    if (tdata) return tdata.texture;
+
+    // Is this an svg icon that we haven't converted to a texture yet?
+    if (this._svgIcons.has(textureID)) {
+      this.svgIconToTexture(textureID);
+      return Texture.EMPTY;   // return a placeholder
+    }
+
+    return null;
+  }
+
+
+  /**
+   * getDebugTexture
+   * @param   atlasID     One of 'symbol', 'text', or 'tile'
+   * @return  Array of PIXI.Textures for the specifiec atlas
+   */
+  getDebugTexture(atlasID) {
+    const atlas = this._atlas[atlasID];
+    if (!atlas) return null;
+
+    const frame = new Rectangle(0, 0, atlas.slabWidth, atlas.slabHeight);
+    const baseTexture = atlas.textureSlabs[0]?.slab;
+    if (!baseTexture) return null;
+
+    return new Texture(baseTexture, frame);
   }
 
 
@@ -177,7 +188,7 @@ export class PixiTextures {
 
 
   /**
-   * toSymbolTexture
+   * graphicToTexture
    * Convert frequently used graphics to textures/sprites for performance
    * https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
    *
@@ -188,12 +199,11 @@ export class PixiTextures {
    * BaseTexture.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
    * swapping between textures as it draws things.
    *
-   * @param  textureID   e.g. 'boldPin'
+   * @param  textureID   Texture identifier (e.g. 'boldPin')
    * @param  graphic     A PIXI.Graphic to convert to a texture
    * @param  options     Options passed to `renderer.generateTexture`
-   * @return A PIXI.Texture reference that has been packed into the symbol atlas
    */
-  toSymbolTexture(textureID, graphic, options) {
+  graphicToTexture(textureID, graphic, options) {
     const renderer = this.context.pixi.renderer;
     const renderTexture = renderer.generateTexture(graphic, options);
     const baseTexture = renderTexture.baseTexture;
@@ -228,8 +238,39 @@ export class PixiTextures {
     texture.orig = renderTexture.orig.clone();
 
     renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
+  }
 
-    return texture;
+
+  /**
+   * addSvgIcon
+   * Because SVGs take some time to rasterize, store a placeholder and only rasterize when needed
+   * @param   textureID   Icon identifier (e.g. 'temaki-school')
+   * @param   svgStr   Stringified svg
+   */
+  addSvgIcon(textureID, svgStr) {
+    this._svgIcons.set(textureID, svgStr);
+  }
+
+
+  /**
+   * svgIconToTexture
+   * @param  textureID  Icon identifier (e.g. 'temaki-school')
+   */
+  svgIconToTexture(textureID) {
+    const svgString = this._svgIcons.get(textureID);
+    if (!svgString) return;
+
+    // Remove it to ensure that we only do this once.
+    this._svgIcons.set(textureID, null);
+
+    const size = 32;
+    const options = { autoLoad: false, height: size, width: size };
+    const resource = new SVGResource(svgString, options);
+
+    resource.load().then(() => {
+      this.allocate('symbol', textureID, size, size, resource.source);
+      this._svgIcons.delete(textureID);
+    });
   }
 
 
@@ -282,9 +323,9 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
-    this.toSymbolTexture('viewfield', viewfield, viewfieldOptions);
-    this.toSymbolTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
-    this.toSymbolTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
+    this.graphicToTexture('viewfield', viewfield, viewfieldOptions);
+    this.graphicToTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
+    this.graphicToTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
 
 
     const pano = new Graphics()    // just a full circle - for panoramic / 360° images
@@ -305,9 +346,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 20)
       .endFill();
 
-    this.toSymbolTexture('pano', pano, options);
-    this.toSymbolTexture('panoDark', panoDark, options);
-    this.toSymbolTexture('panoOutline', panoOutline, options);
+    this.graphicToTexture('pano', pano, options);
+    this.graphicToTexture('panoDark', panoDark, options);
+    this.graphicToTexture('panoOutline', panoOutline, options);
 
 
     //
@@ -361,12 +402,12 @@ export class PixiTextures {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    this.toSymbolTexture('pin', pin, options);
-    this.toSymbolTexture('boldPin', boldPin, options);
-    this.toSymbolTexture('largeCircle', largeCircle, options);
-    this.toSymbolTexture('mediumCircle', mediumCircle, options);
-    this.toSymbolTexture('smallCircle', smallCircle, options);
-    this.toSymbolTexture('taggedCircle', taggedCircle, options);
+    this.graphicToTexture('pin', pin, options);
+    this.graphicToTexture('boldPin', boldPin, options);
+    this.graphicToTexture('largeCircle', largeCircle, options);
+    this.graphicToTexture('mediumCircle', mediumCircle, options);
+    this.graphicToTexture('smallCircle', smallCircle, options);
+    this.graphicToTexture('taggedCircle', taggedCircle, options);
 
 
     // KeepRight
@@ -424,10 +465,10 @@ export class PixiTextures {
       .endFill()
       .closePath();
 
-    this.toSymbolTexture('keepright', keepright, options);
-    this.toSymbolTexture('improveosm', improveosm, options);
-    this.toSymbolTexture('osmnote', osmnote, options);
-    this.toSymbolTexture('osmose', osmose, options);
+    this.graphicToTexture('keepright', keepright, options);
+    this.graphicToTexture('improveosm', improveosm, options);
+    this.graphicToTexture('osmnote', osmnote, options);
+    this.graphicToTexture('osmose', osmose, options);
 
 
     //
@@ -449,9 +490,9 @@ export class PixiTextures {
       .drawPolygon([0,5, 5,0, 0,-5])
       .endFill();
 
-    this.toSymbolTexture('midpoint', midpoint, options);
-    this.toSymbolTexture('oneway', oneway, options);
-    this.toSymbolTexture('sided', sided, options);
+    this.graphicToTexture('midpoint', midpoint, options);
+    this.graphicToTexture('oneway', oneway, options);
+    this.graphicToTexture('sided', sided, options);
 
 
     //
@@ -477,9 +518,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 5)
       .endFill();
 
-    this.toSymbolTexture('lowres-square', lowresSquare, options);
-    this.toSymbolTexture('lowres-ell', lowresEll, options);
-    this.toSymbolTexture('lowres-circle', lowresCircle, options);
+    this.graphicToTexture('lowres-square', lowresSquare, options);
+    this.graphicToTexture('lowres-ell', lowresEll, options);
+    this.graphicToTexture('lowres-circle', lowresCircle, options);
 
     //
     // Low-res unfilled areas
@@ -503,9 +544,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 5)
       .endFill();
 
-    this.toSymbolTexture('lowres-unfilled-square', lowresUnfilledSquare, options);
-    this.toSymbolTexture('lowres-unfilled-ell', lowresUnfilledEll, options);
-    this.toSymbolTexture('lowres-unfilled-circle', lowresUnfilledCircle, options);
+    this.graphicToTexture('lowres-unfilled-square', lowresUnfilledSquare, options);
+    this.graphicToTexture('lowres-unfilled-ell', lowresUnfilledEll, options);
+    this.graphicToTexture('lowres-unfilled-circle', lowresUnfilledCircle, options);
   }
 
 }

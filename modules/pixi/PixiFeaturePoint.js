@@ -3,7 +3,6 @@ import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature';
-import { getIconTexture } from './helpers';
 
 
 /**
@@ -127,16 +126,31 @@ export class PixiFeaturePoint extends AbstractFeature {
     const icon = this.icon;
     const latitude = this.geometry.origCoords[1];
 
-    //
-    // Update marker style
-    //
-    marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
-    marker.tint = style.markerTint;
+    // Show marker, if any..
+    if (style.markerTexture || style.markerName) {
+      // note - marker.texture gets set below in the effective zoom block
+      marker.alpha = style.markerAlpha ?? 1;
+      marker.tint = style.markerTint;
+      marker.visible = true;
+    } else {  // No marker
+      marker.visible = false;
+    }
 
+    // Show icon, if any..
+    if (style.iconTexture || style.iconName) {
+      icon.texture = style.iconTexture || textures.get(style.iconName);
+      icon.anchor.set(0.5, 0.5);   // middle, middle
+      const ICONSIZE = 11;
+      icon.width = ICONSIZE;
+      icon.height = ICONSIZE;
+      icon.alpha = style.iconAlpha ?? 1;
+      icon.tint = style.iconTint;
+      icon.visible = true;
+    } else {  // No icon
+      icon.visible = false;
+    }
 
-    //
     // Update viewfields, if any..
-    //
     const vfAngles = style.viewfieldAngles || [];
     if (vfAngles.length > 0) {  // Should have viewfields
       const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || PIXI.Texture.WHITE;
@@ -182,69 +196,52 @@ export class PixiFeaturePoint extends AbstractFeature {
 
 
     //
-    // Update icon, if any..
-    //
-    if (style.iconTexture || style.iconName) {
-      // Update texture and style, if necessary
-      icon.texture = style.iconTexture || getIconTexture(context, style.iconName) || PIXI.Texture.WHITE;
-      const ICONSIZE = 11;
-      icon.anchor.set(0.5, 0.5);   // middle, middle
-      icon.width = ICONSIZE;
-      icon.height = ICONSIZE;
-      icon.alpha = style.iconAlpha;
-      icon.visible = true;
-
-    } else {  // No icon
-      icon.visible = false;
-    }
-
-
-    //
     // Apply effectiveZoom style adjustments
+    // This is where we adjust the actual texture and anchor properties
     //
-    if (zoom < 16) {  // Hide marker and everything under it
+    if (zoom < 16) {  // Hide container and everything under it
       this.lod = 0;   // off
       this.visible = false;
 
     } else if (zoom < 17 || wireframeMode) {  // Markers drawn but smaller
       this.lod = 1;  // simplified
       this.visible = true;
+      this.container.scale.set(0.8, 0.8);
       if (this.viewfields) {
         this.viewfields.renderable = false;
       }
-      marker.renderable = true;
-      marker.scale.set(0.8, 0.8);
 
-      // Replace pins with circles at lower zoom
-      const textureName = isPin ? 'largeCircle' : style.markerName;
-      this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(textureName));
-      marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
+      // Replace pinlike markers with circles at lower zoom
+      const markerID = isPin ? 'largeCircle' : style.markerName;
+      this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(markerID));
+      marker.texture = style.markerTexture || textures.get(markerID);
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
+
 
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full
       this.visible = true;
+      this.container.scale.set(1, 1);
       if (this.viewfields) {
         this.viewfields.renderable = true;
       }
-      marker.renderable = true;
-      marker.scale.set(1, 1);
 
-      // Replace pins with circles if viewfields are present
-      const textureName = (isPin && vfAngles.length) ? 'largeCircle' : style.markerName;
-      this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(textureName));
-      marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
+      // Replace pinlike markers with circles if viewfields are present
+      const markerID = (isPin && vfAngles.length) ? 'largeCircle' : style.markerName;
+      this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(markerID));
+      marker.texture = style.markerTexture || textures.get(markerID);
       if (isPin && !this._isCircular) {
-        marker.anchor.set(0.5, 1);  // middle, bottom
-        icon.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
+        marker.anchor.set(0.5, 1);    // middle, bottom
+        icon.position.set(0, -14);    // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
       } else {
         marker.anchor.set(0.5, 0.5);  // middle, middle
         icon.position.set(0, 0);      // middle, middle
       }
     }
 
-    this._styleDirty = false;
+    // If we are waiting on a texure to load, stay dirty.
+    this._styleDirty = (marker.texture === PIXI.Texture.EMPTY || icon.texture === PIXI.Texture.EMPTY);
   }
 
 
@@ -361,12 +358,14 @@ export class PixiFeaturePoint extends AbstractFeature {
 
 
 const STYLE_DEFAULTS = {
+  iconAlpha: 1,
+  iconName: '',
+  iconTint: 0x111111,
+  labelTint: 0xeeeeee,
+  markerAlpha: 1,
   markerName: 'smallCircle',
   markerTint: 0xffffff,
   viewfieldAngles: [],
   viewfieldName: 'viewfield',
-  viewfieldTint: 0xffffff,
-  iconName: '',
-  iconAlpha: 1,
-  labelTint: 0xeeeeee
+  viewfieldTint: 0xffffff
 };

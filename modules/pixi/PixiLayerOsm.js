@@ -362,17 +362,17 @@ export class PixiLayerOsm extends AbstractLayer {
 
           if (poiFeature.dirty) {
             let markerStyle = {
-              markerName: 'pin',
-              markerTint: 0xffffff,
               iconName: feature.poiPreset.icon,
-              iconAlpha: 1
+              iconTint: 0x111111,
+              markerName: 'pin',
+              markerTint: 0xffffff
             };
 
             if (hasWikidata(entity)) {
+              markerStyle.iconTint = 0x444444;
+              markerStyle.labelTint = 0xdddddd;
               markerStyle.markerName = 'boldPin';
               markerStyle.markerTint = 0xdddddd;
-              markerStyle.labelTint = 0xdddddd;
-              markerStyle.iconAlpha = 0.6;
             }
             poiFeature.style = markerStyle;
             poiFeature.label = feature.label;
@@ -580,14 +580,14 @@ export class PixiLayerOsm extends AbstractLayer {
 
         // set marker style
         let markerStyle = {
+          iconName: iconName,
+          iconTint: 0x111111,
+          labelTint: 0xeeeeee,
           markerName: 'smallCircle',
           markerTint: 0xffffff,
-          labelTint: 0xeeeeee,
           viewfieldAngles: directions,
           viewfieldName: 'viewfieldDark',
-          viewfieldTint: 0xffffff,
-          iconName: iconName,
-          iconAlpha: 1
+          viewfieldTint: 0xffffff
         };
 
         if (iconName) {
@@ -598,13 +598,14 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         if (hasWikidata(node)) {
-          markerStyle.markerTint = 0xdddddd;
+          markerStyle.iconTint = 0x444444;
           markerStyle.labelTint = 0xdddddd;
-          markerStyle.iconAlpha = 0.6;
+          markerStyle.markerTint = 0xdddddd;
         }
         if (graph.isShared(node)) {     // shared nodes / junctions are more grey
-          markerStyle.markerTint = 0xbbbbbb;
+          markerStyle.iconTint = 0x111111;
           markerStyle.labelTint = 0xbbbbbb;
+          markerStyle.markerTint = 0xbbbbbb;
         }
 
         feature.style = markerStyle;
@@ -669,24 +670,24 @@ export class PixiLayerOsm extends AbstractLayer {
 
         // set marker style
         let markerStyle = {
+          iconName: iconName,
+          iconTint: 0x111111,
           markerName: 'pin',
           markerTint: 0xffffff,
           viewfieldAngles: directions,
           viewfieldName: 'viewfieldDark',
-          viewfieldTint: 0xffffff,
-          iconName: iconName,
-          iconAlpha: 1
+          viewfieldTint: 0xffffff
         };
 
         if (hasWikidata(node)) {
+          markerStyle.iconTint = 0x444444;
+          markerStyle.labelTint = 0xdddddd;
           markerStyle.markerName = 'boldPin';
           markerStyle.markerTint = 0xdddddd;
-          markerStyle.labelTint = 0xdddddd;
-          markerStyle.iconAlpha = 0.6;
         }
         if (preset.id === 'address') {
-          markerStyle.markerName = 'largeCircle';
           markerStyle.iconName = 'maki-circle-stroked';
+          markerStyle.markerName = 'largeCircle';
         }
 
         feature.style = markerStyle;
