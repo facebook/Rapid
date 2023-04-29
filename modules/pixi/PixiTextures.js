@@ -56,6 +56,14 @@ export class PixiTextures {
         for (const [textureID, texture] of Object.entries(result.patterns)) {
           this._textureData.set(textureID, { texture: texture, refcount: 1 });
         }
+//        // if we could...
+//        for (const [textureID, texture] of Object.entries(result.patterns)) {
+//          const w = texture.baseTexture.width;
+//          const h = texture.baseTexture.height;
+//          const source = texture.baseTexture.resource.source;
+//          this.allocate('symbol', textureID, w, h, source);
+//        }
+
         this.loaded = true;
       })
       .catch(e => console.error(e));  // eslint-disable-line no-console
@@ -96,6 +104,19 @@ export class PixiTextures {
     }
 
     return null;
+  }
+
+
+  /**
+   * getPatternTexture
+   * These are just like any other texture except that they can't live in an atlas.
+   * PixiFeaturePolygon.js as some comments on it, maybe a Pixi bug or limitation.
+   * @param   textureID   e.g. 'bushes'
+   * @return  A PIXI.Texture (or null if not found)
+   */
+  getPatternTexture(textureID) {
+    const tdata = this._textureData.get(textureID);
+    return tdata?.texture;
   }
 
 
