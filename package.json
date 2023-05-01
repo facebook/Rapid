@@ -63,7 +63,7 @@
     "@rapideditor/country-coder": "~5.2.0",
     "@rapideditor/location-conflation": "~1.2.0",
     "@rapideditor/pixi-dashed-line": "7.2.4",
-    "@rapideditor/pixi-texture-allocator": "7.2.4",
+    "@rapideditor/pixi-texture-allocator": "7.2.5-pre.0",
     "@tmcw/togeojson": "^5.6.0",
     "@turf/bbox-clip": "^6.5.0",
     "create-react-class": "^15.7.0",
