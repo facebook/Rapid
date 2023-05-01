@@ -36,6 +36,26 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
+#### 2023-May-01
+
+#### :sparkles: Usability & Accessibility
+* [#846] Support Röntgen icons found in id-tagging-schema presets
+
+#### :hammer: Development
+* [#925] Change how texture atlases are managed, avoid double fetching icons
+* Update Maxar imagery token, bundle latest imagery file
+
+### Bugfixes:
+* [#926] Fix issue when changing number of viewfields on a point
+* [#921] Fix issue when extracting nodes from lines
+
+[#846]: https://github.com/facebook/Rapid/issues/846
+[#921]: https://github.com/facebook/Rapid/issues/921
+[#925]: https://github.com/facebook/Rapid/issues/925
+[#926]: https://github.com/facebook/Rapid/issues/926
+
+
 # [2.0.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.2)
 #### 2023-Apr-13
 
