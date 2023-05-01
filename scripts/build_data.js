@@ -140,11 +140,8 @@ function writeIcons(icons) {
     const [prefix, ...rest] = icon.split('-');
     const name = rest.join('-');
 
-    if (['iD', 'rapid', 'maki', 'temaki'].includes(prefix)) {
+    if (['iD', 'rapid', 'maki', 'temaki', 'roentgen'].includes(prefix)) {
       continue;  // These are expected to live in an existing spritesheet..
-
-    } else if (prefix === 'roentgen') {
-      continue;  // These are too hard to generate, for now we'll just replace them in code..
 
     } else if (['fas', 'far', 'fab'].includes(prefix)) {   // FontAwesome, must be extracted
       const def = fontawesome.findIconDefinition({ prefix: prefix, iconName: name });

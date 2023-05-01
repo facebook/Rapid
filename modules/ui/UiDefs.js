@@ -17,7 +17,7 @@ export class UiDefs {
     this.parent = d3_select(null);
 
     this.spritesheetIDs = [
-      'rapid', 'maki', 'temaki', 'fa', 'community', 'mapillary-object', 'mapillary'
+      'rapid', 'maki', 'temaki', 'fa', 'roentgen', 'community', 'mapillary-object', 'mapillary'
     ];
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -73,7 +73,7 @@ export class UiDefs {
     group.appendChild(element);
 
     // For some spritesheets, allow icon fill colors to be overridden..
-    if (['maki', 'temaki', 'fa', 'community'].includes(spritesheetID)) {
+    if (['maki', 'temaki', 'fa', 'roentgen', 'community'].includes(spritesheetID)) {
       selection.selectAll('path')
         .attr('fill', 'currentColor');
     }

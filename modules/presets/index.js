@@ -22,20 +22,6 @@ export { _mainPresetIndex as presetManager };
 
 // warn about v6 preset featues we don't support currently
 const VERBOSE = true;
-// These are too hard to generate, for now we'll just replace them in code
-const ROENTGEN = {
-  'roentgen-buses':              'temaki-bus',
-  'roentgen-city_limit_sign':    'maki-information',
-  'roentgen-crane':              'temaki-crane',
-  'roentgen-crane_gantry':       'temaki-crane',
-  'roentgen-crane_portal':       'temaki-crane',
-  'roentgen-diving_1_platforms': 'temaki-diving',
-  'roentgen-pole_dancer':        'temaki-money_hand',
-  'roentgen-slide':              'temaki-slide',
-  'roentgen-slide_and_water':    'temaki-slide',
-  'roentgen-turning_loop':       'maki-circle'
-};
-
 
 //
 // `presetIndex` wraps a `presetCollection`
@@ -145,9 +131,6 @@ if (p.icon) p.icon = p.icon.replace(/^iD-/, 'rapid-');
 // A few overrides to use better icons than the ones provided by the id-tagging-schema project
 if (presetID === 'address') p.icon ='maki-circle-stroked';
 if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_crosswalk';
-
-// No support for Roentgen icons just yet
-if (ROENTGEN[p.icon]) p.icon = ROENTGEN[p.icon];
 
           p = presetPreset(presetID, p, isAddable, _fields, _presets);
           if (p.locationSet) newLocationSets.push(p);
