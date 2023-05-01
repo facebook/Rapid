@@ -33,10 +33,12 @@ export function langNamesInNativeLang() {
     }
   };
 
+  // Get nativeName if possible
   let langDirectoryPaths = fs.readdirSync(cldrMainDir);
   langDirectoryPaths.forEach(code => {
     let languagesPath = `${cldrMainDir}${code}/languages.json`;
-    //if (!fs.existsSync(languagesPath)) return;
+    if (!fs.existsSync(languagesPath)) return;
+
     let languageObj = JSON.parse(fs.readFileSync(languagesPath, 'utf8')).main[code];
     let identity = languageObj.identity;
 
