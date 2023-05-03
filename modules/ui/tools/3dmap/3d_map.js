@@ -42,42 +42,14 @@ export function ui3DMap(context) {
         );
         return tags.length > 0;
       });
-      var features = [];
-      var selectedFeatures = [];
-      var selectedIDs = context.selectedIDs();
-      for (const buildingEnt of buildingEnts) {
-
-        var gj = buildingEnt.asGeoJSON(context.graph());
-        if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
-
-        let newFeature = {
-          type: 'Feature',
-          properties: {
-            extrude: true,
-            selected: selectedIDs.includes(buildingEnt.id).toString(),
-            min_height: buildingEnt.tags.min_height
-              ? parseFloat(buildingEnt.tags.min_height)
-              : 0,
-            height: parseFloat(
-              buildingEnt.tags.height ||
-                buildingEnt.tags['building:levels'] * 3 ||
-                0
-            ),
-          },
-          geometry: gj,
-        }
-
-        features.push(newFeature);
-      }
-
-      const buildingSource = _map.map.getSource('osmbuildings');
-
-      if (buildingSource) {
-        buildingSource.setData({
-          type: 'FeatureCollection',
-          features: features,
-        });
-      }
+      const highwayEnts = entities.filter((ent) => {
+        const tags = Object.keys(ent.tags).filter((tagname) =>
+          tagname.startsWith('highway')
+        );
+        return tags.length > 0;
+      });
+      generateRoadLayer(context, highwayEnts, _map);
+      generateBuildingLayer(context, buildingEnts, _map);
     }
 
     function toggle(d3_event) {
@@ -144,4 +116,75 @@ export function ui3DMap(context) {
   }
 
   return threeDMap;
+}
+
+function generateBuildingLayer(context, buildingEnts, _map) {
+  var buildingFeatures = [];
+  var selectedIDs = context.selectedIDs();
+  for (const buildingEnt of buildingEnts) {
+
+    var gj = buildingEnt.asGeoJSON(context.graph());
+    if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon')
+      continue;
+
+    let newFeature = {
+      type: 'Feature',
+      properties: {
+        extrude: true,
+        selected: selectedIDs.includes(buildingEnt.id).toString(),
+        min_height: buildingEnt.tags.min_height
+          ? parseFloat(buildingEnt.tags.min_height)
+          : 0,
+        height: parseFloat(
+          buildingEnt.tags.height ||
+          buildingEnt.tags['building:levels'] * 3 ||
+          0
+        ),
+      },
+      geometry: gj,
+    };
+
+    buildingFeatures.push(newFeature);
+  }
+
+  const buildingSource = _map.map.getSource('osmbuildings');
+
+  if (buildingSource) {
+    buildingSource.setData({
+      type: 'FeatureCollection',
+      features: buildingFeatures,
+    });
+  }
+}
+
+
+function generateRoadLayer(context, roadEnts, _map) {
+  var roadFeatures = [];
+  var selectedIDs = context.selectedIDs();
+  for (const roadEnt of roadEnts) {
+
+    var gj = roadEnt.asGeoJSON(context.graph());
+    if (gj.type !== 'LineString')
+      continue;
+
+    let newFeature = {
+      type: 'Feature',
+      properties: {
+        selected: selectedIDs.includes(roadEnt.id).toString(),
+        class: 'motorway'
+      },
+      geometry: gj,
+    };
+
+    roadFeatures.push(newFeature);
+  }
+
+  const roadSource = _map.map.getSource('osmroads');
+
+  if (roadSource) {
+    roadSource.setData({
+      type: 'FeatureCollection',
+      features: roadFeatures,
+    });
+  }
 }
