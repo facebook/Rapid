@@ -236,7 +236,7 @@ export class RendererImagery extends EventEmitter {
     const available = this.sources(map.extent(), map.zoom());
     const first = available[0];
     const best = available.find(s => s.best);
-    const prefs = this.context.storageManager();
+    const prefs = this.context.storageSystem();
     const lastUsed = prefs.getItem('background-last-used') || '';
 
     return best ||
@@ -467,7 +467,7 @@ export class RendererImagery extends EventEmitter {
 
         // Add 'Custom' - seed it with whatever template the user has used previously
         const custom = new RendererImagerySourceCustom();
-        const prefs = this.context.storageManager();
+        const prefs = this.context.storageSystem();
         custom.template = prefs.getItem('background-custom-template') || '';
         this._imageryIndex.sources.set(custom.id, custom);
 

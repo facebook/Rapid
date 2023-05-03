@@ -211,8 +211,8 @@ export class ModeDragNode extends AbstractMode {
       loc = projection.invert(adjustedCoord);
     }
 
-    const locationManager = context.locationManager();
-    if (locationManager.blocksAt(loc).length) {  // editing is blocked here
+    const locationSystem = context.locationSystem();
+    if (locationSystem.blocksAt(loc).length) {  // editing is blocked here
       this._cancel();
       return;
     }

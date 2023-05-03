@@ -7,7 +7,7 @@ const _loco = new LocationConflation();    // instance of a location-conflation 
 
 
 /**
- * `LocationManager` maintains an internal index of all the boundaries/geofences.
+ * `LocationSystem` maintains an internal index of all the boundaries/geofences.
  * It's used by presets, community index, background imagery, to know where in the world these things are valid.
  * These geofences should be defined by `locationSet` objects:
  *
@@ -23,7 +23,7 @@ const _loco = new LocationConflation();    // instance of a location-conflation 
  * Events available:
  *   `locationchange`  Fires on any change in the location index
  */
-export class LocationManager extends EventEmitter {
+export class LocationSystem extends EventEmitter {
 
 /**
  * @typedef {Object} LocationSet

@@ -14,7 +14,7 @@ export function operationMerge(context, selectedIDs) {
   let action = chooseAction();
 
   function chooseAction() {
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     const tagnosticRoadCombine = prefs.getItem('rapid-internal-feature.tagnosticRoadCombine') === 'true';
     const options = { tagnosticRoadCombine: tagnosticRoadCombine };
 

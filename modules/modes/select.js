@@ -48,12 +48,12 @@ export function modeSelect(context, selectedIDs) {
 
     function checkSelectedIDs() {
         var ids = [];
-        var locationManager = context.locationManager();
+        var locationSystem = context.locationSystem();
         if (Array.isArray(selectedIDs)) {
             ids = selectedIDs.filter(function(id) {
                 var entity = context.hasEntity(id);
                 if (!entity) return false;
-                if (entity.type === 'node' && locationManager.blocksAt(entity.loc).length) return false;
+                if (entity.type === 'node' && locationSystem.blocksAt(entity.loc).length) return false;
                 return true;
             });
         }

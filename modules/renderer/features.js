@@ -94,7 +94,7 @@ export function rendererFeatures(context) {
       urlhash.setParam('disable_features', ruleIDs.length ? ruleIDs : null);
 
       // update localstorage
-      const prefs = context.storageManager();
+      const prefs = context.storageSystem();
       prefs.setItem('disabled-features', ruleIDs);
 
       _hidden = features.hidden();
@@ -597,7 +597,7 @@ export function rendererFeatures(context) {
 
 
     features.init = function() {
-        const prefs = context.storageManager();
+        const prefs = context.storageSystem();
         var disabledFeatures = prefs.getItem('disabled-features');
         if (disabledFeatures) {
             var toDisable = disabledFeatures.replace(/;/g, ',').split(',');

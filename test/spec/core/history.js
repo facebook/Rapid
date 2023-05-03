@@ -12,7 +12,7 @@ describe('coreHistory', function () {
         history = context.history();
         spy = sinon.spy();
         // clear lock
-        const prefs = context.storageManager();
+        const prefs = context.storageSystem();
         prefs.removeItem(history._getKey('lock'));
     });
 

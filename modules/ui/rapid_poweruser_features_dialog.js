@@ -5,7 +5,7 @@ import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
   const featureFlags = [
     'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits'
   ];

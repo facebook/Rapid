@@ -4,7 +4,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapInteractionOptions(context) {
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
   const section = uiSection('map-interaction', context)
     .label(t.html('preferences.map_interaction.title'))
     .disclosureContent(renderDisclosureContent)

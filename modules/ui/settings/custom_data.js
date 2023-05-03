@@ -6,7 +6,7 @@ import { utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSettingsCustomData(context) {
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     var dispatch = d3_dispatch('change');
 
     function render(selection) {

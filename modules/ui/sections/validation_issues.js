@@ -16,7 +16,7 @@ import { uiSection } from '../section';
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
   const section = uiSection(sectionID, context)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)

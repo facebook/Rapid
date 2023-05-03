@@ -235,7 +235,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     const status = selection.selectAll('.rapid-view-manage-datasets-status');
     const results = selection.selectAll('.rapid-view-manage-datasets');
 
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const service = services.esriData;
 

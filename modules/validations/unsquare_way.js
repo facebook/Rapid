@@ -55,7 +55,7 @@ export function validationUnsquareWay(context) {
 
 
         // user-configurable square threshold
-        const prefs = context.storageManager();
+        const prefs = context.storageSystem();
         var storedDegreeThreshold = prefs.getItem('validate-square-degrees');
         var degreeThreshold = isNaN(storedDegreeThreshold) ? DEFAULT_DEG_THRESHOLD : parseFloat(storedDegreeThreshold);
 

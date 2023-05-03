@@ -12,7 +12,7 @@ let isNewUser = false;
 export function uiVersion(context) {
   const currVersion = context.version;
   const matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
 
   if (sawVersion === null && matchedVersion !== null) {
     if (prefs.getItem('sawVersion')) {

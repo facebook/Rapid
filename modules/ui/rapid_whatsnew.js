@@ -11,7 +11,7 @@ export function uiRapidWhatsNew(context) {
   let _dontShowAgain = false;
 
   return function render(selection) {
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     const sawWhatsNewVersion = parseInt(prefs.getItem('sawWhatsNewVersion'), 10) || 0;
     if (sawWhatsNewVersion === currWhatsNewVersion) return;
 

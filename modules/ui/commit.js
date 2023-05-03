@@ -64,7 +64,7 @@ export function uiCommit(context) {
     // Creates an initial changeset
     //
     function initChangeset() {
-        const prefs = context.storageManager();
+        const prefs = context.storageSystem();
 
         // expire stored comment, hashtags, source after cutoff datetime - #3947 #4899
         var commentDate = +prefs.getItem('commentDate') || 0;
@@ -480,7 +480,7 @@ export function uiCommit(context) {
 
 
     function changeTags(_, changed, onInput) {
-        const prefs = context.storageManager();
+        const prefs = context.storageSystem();
         if (changed.hasOwnProperty('comment')) {
             if (changed.comment === undefined) {
                 changed.comment = '';
@@ -509,7 +509,7 @@ export function uiCommit(context) {
 
 
     function findHashtags(tags, commentOnly) {
-        const prefs = context.storageManager();
+        const prefs = context.storageSystem();
         var detectedHashtags = commentHashtags();
 
         if (detectedHashtags.length) {
@@ -564,7 +564,7 @@ export function uiCommit(context) {
 
 
     function updateChangeset(changed, onInput) {
-        const prefs = context.storageManager();
+        const prefs = context.storageSystem();
         var tags = Object.assign({}, context.changeset.tags);   // shallow copy
 
         Object.keys(changed).forEach(function(k) {

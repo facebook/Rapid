@@ -11,7 +11,7 @@ export function uiSectionValidationRules(context) {
   const MAXSQUARE = 20;
   const DEFAULTSQUARE = 5;  // see also unsquare_way.js
 
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
   const section = uiSection('issues-rules', context)
     .disclosureContent(renderDisclosureContent)
     .label(t.html('issues.rules.title'));

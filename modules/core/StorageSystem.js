@@ -1,9 +1,9 @@
 
 /**
- * `StorageManager` is a wrapper around `window.localStorage`
+ * `StorageSystem` is a wrapper around `window.localStorage`
  * (or whatever we replace it with)
  */
-export class StorageManager {
+export class StorageSystem {
 
   /**
    * @constructor

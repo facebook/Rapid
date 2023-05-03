@@ -7,7 +7,7 @@ describe('operationExtract', () => {
     extent() { return new sdk.Extent([-180, -90], [180, 90]); }
   }
 
-  class MockStorageManager {
+  class MockStorageSystem {
     constructor() { }
     getItem() { return ''; }
   }
@@ -15,10 +15,10 @@ describe('operationExtract', () => {
   class MockContext {
     constructor()           {
       this._map = new MockMap();
-      this._storageManager = new MockStorageManager();
+      this._storageSystem = new MockStorageSystem();
     }
     map()                   { return this._map; }
-    storageManager()        { return this._storageManager; }
+    storageSystem()        { return this._storageSystem; }
     graph()                 { return _graph; }
     entity(id)              { return _graph.entity(id); }
     hasEntity(id)           { return _graph.hasEntity(id); }

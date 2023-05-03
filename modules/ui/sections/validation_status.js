@@ -17,7 +17,7 @@ export function uiSectionValidationStatus(context) {
   }
 
   function getOptions() {
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     return {
       what: prefs.getItem('validate-what') || 'edited',
       where: prefs.getItem('validate-where') || 'all'
