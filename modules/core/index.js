@@ -8,6 +8,8 @@ export { coreValidator } from './validator';
 
 export { Difference } from './Difference';
 export { Graph } from './Graph';
-export { LocationManager } from './LocationManager';
-export { StorageManager } from './StorageManager';
 export { Tree } from './Tree';
+
+export { LocationSystem } from './LocationSystem';
+export { StorageSystem } from './StorageSystem';
+export { UrlHashSystem } from './UrlHashSystem';

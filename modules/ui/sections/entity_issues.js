@@ -10,7 +10,7 @@ import { uiSection } from '../section';
 export function uiSectionEntityIssues(context) {
     // Does the user prefer to expand the active issue?  Useful for viewing tag diff.
     // Expand by default so first timers see it - #6408, #8143
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     var preference = prefs.getItem('entity-issues.reference.expanded');
     var _expanded = preference === null ? true : (preference === 'true');
 

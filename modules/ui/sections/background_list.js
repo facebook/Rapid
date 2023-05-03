@@ -15,7 +15,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundList(context) {
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
   const section = uiSection('background-list', context)
     .label(t('background.backgrounds'))
     .disclosureContent(renderDisclosureContent);

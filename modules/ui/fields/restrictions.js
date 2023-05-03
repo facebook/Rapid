@@ -16,7 +16,7 @@
 //export function uiFieldRestrictions(field, context) {
 //    var dispatch = d3_dispatch('change');
 //
-//    const prefs = context.storageManager();
+//    const prefs = context.storageSystem();
 //    prefs.removeItem('turn-restriction-via-way');                    // remove old key
 //    var storedViaWay = prefs.getItem('turn-restriction-via-way0');   // use new key #6922
 //    var storedDistance = prefs.getItem('turn-restriction-distance');

@@ -11,9 +11,9 @@ import { localizer } from './localizer';
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
-import { LocationManager } from './LocationManager';
-import { StorageManager } from './StorageManager';
-import { UrlHash } from './UrlHash';
+import { LocationSystem } from './LocationSystem';
+import { StorageSystem } from './StorageSystem';
+import { UrlHashSystem } from './UrlHashSystem';
 
 import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { BehaviorDraw } from '../behaviors/BehaviorDraw';
@@ -56,16 +56,16 @@ export function coreContext() {
   // `context` and it's needed for pre-init calls like `preauth`
   let _connection = services.osm;
   let _history;
-  let _locationManager;
-  let _storageManager;
+  let _locationSystem;
+  let _storageSystem;
   let _uploader;
   let _urlhash;
   let _validator;
 
   context.connection = () => _connection;
   context.history = () => _history;
-  context.locationManager = () => _locationManager;
-  context.storageManager = () => _storageManager;
+  context.locationSystem = () => _locationSystem;
+  context.storageSystem = () => _storageSystem;
   context.uploader = () => _uploader;
   context.urlhash = () => _urlhash;
   context.validator = () => _validator;
@@ -647,8 +647,9 @@ export function coreContext() {
     // until this is complete since load statuses are indeterminate. The order
     // of instantiation shouldn't matter.
     function instantiateAll() {
-      _storageManager = new StorageManager(context);
-      _locationManager = new LocationManager(context);
+      _storageSystem = new StorageSystem(context);
+      _locationSystem = new LocationSystem(context);
+      _urlhash = new UrlHashSystem(context);
 
       _history = coreHistory(context);
       context.graph = _history.graph;
@@ -670,7 +671,6 @@ export function coreContext() {
       _map = new RendererMap(context);
       _photos = new RendererPhotos(context);
       _rapidContext = coreRapidContext(context);
-      _urlhash = new UrlHash(context);
       _ui = uiInit(context);
 
       // Instantiate Behaviors

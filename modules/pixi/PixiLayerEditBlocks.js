@@ -47,8 +47,8 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
     if (zoom >= MINZOOM) {
       const viewport = this.context.map().extent().rectangle();
-      const locationManager = this.context.locationManager();
-      blocks = locationManager.wpblocks().bbox(viewport);
+      const locationSystem = this.context.locationSystem();
+      blocks = locationSystem.wpblocks().bbox(viewport);
       this.renderEditBlocks(frame, projection, zoom, blocks);
 
     } else {
@@ -89,7 +89,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * @param  blocks       Array of block data visible in the view
    */
   renderEditBlocks(frame, projection, zoom, blocks) {
-    const locationManager = this.context.locationManager();
+    const locationSystem = this.context.locationSystem();
     const parentContainer = this.scene.groups.get('blocks');
     const BLOCK_STYLE = {
       requireFill: true,    // no partial fill option - must fill fully
@@ -97,7 +97,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     };
 
     for (const d of blocks) {
-      const geometry = locationManager.feature(d.locationSetID).geometry;  // get GeoJSON
+      const geometry = locationSystem.feature(d.locationSetID).geometry;  // get GeoJSON
       if (!geometry) continue;
 
       const parts = (geometry.type === 'Polygon') ? [geometry.coordinates]

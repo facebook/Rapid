@@ -12,7 +12,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSectionRawTagEditor(id, context) {
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     var section = uiSection(id, context)
         .classes('raw-tag-editor')
         .label(function() {

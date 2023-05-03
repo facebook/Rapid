@@ -6,7 +6,7 @@ import { uiTooltip } from './tooltip';
 
 
 export function uiIssuesInfo(context) {
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
 
     var warningsItem = {
         id: 'warnings',

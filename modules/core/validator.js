@@ -11,7 +11,7 @@ import * as Validations from '../validations/index';
 export function coreValidator(context) {
   let dispatch = d3_dispatch('validated', 'focusedIssue');
   let validator = utilRebind({}, dispatch, 'on');
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
 
   let _rules = {};
   let _disabledRules = {};

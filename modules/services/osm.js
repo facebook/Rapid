@@ -1144,7 +1144,7 @@ export default {
 
 //        // exit if this tile covers a blocked region (all corners are blocked)
 //        const corners = tile.wgs84Extent.polygon().slice(0, 4);
-//        const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
+//        const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
 //        if (tileBlocked) {
 //            _tileCache.loaded[tile.id] = true;   // don't try again
 //            return;
@@ -1239,7 +1239,7 @@ export default {
 
 //            // exit if this tile covers a blocked region (all corners are blocked)
 //            const corners = tile.wgs84Extent.polygon().slice(0, 4);
-//            const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
+//            const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
 //            if (tileBlocked) {
 //                _noteCache.loaded[tile.id] = true;   // don't try again
 //                return;

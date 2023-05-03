@@ -8,7 +8,7 @@ import { uiToggle } from './toggle';
 
 
 export function uiDisclosure(context, key, expandedDefault) {
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
   const dispatch = d3_dispatch('toggled');
   let _expanded;
   let _label = utilFunctor('');

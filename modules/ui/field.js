@@ -308,7 +308,7 @@ export function uiField(context, presetField, entityIDs, options) {
     // An allowed field can appear in the UI or in the 'Add field' dropdown.
     // A non-allowed field is hidden from the user altogether
     field.isAllowed = function() {
-        var locationManager = context.locationManager();
+        var locationSystem = context.locationSystem();
 
         if (entityIDs &&
             entityIDs.length > 1 &&
@@ -319,7 +319,7 @@ export function uiField(context, presetField, entityIDs, options) {
         })) return false;
 
         if (entityIDs && _entityExtent && field.locationSetID) {   // is field allowed in this location?
-            var validHere = locationManager.locationSetsAt(_entityExtent.center());
+            var validHere = locationSystem.locationSetsAt(_entityExtent.center());
             if (!validHere[field.locationSetID]) return false;
         }
 

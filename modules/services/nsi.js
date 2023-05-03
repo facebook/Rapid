@@ -107,7 +107,7 @@ function loadNsiData() {
 // *** BEGIN HACK ***
 
 // old - built in matcher will set up the locationindex by resolving all the locationSets one-by-one
-      // matcher.buildLocationIndex(_nsi.data, locationManager.loco());
+      // matcher.buildLocationIndex(_nsi.data, locationSystem.loco());
 
 // new - Use the location manager instead of redoing that work
 // It has already processed the presets at this point
@@ -120,7 +120,7 @@ matcher.itemLocation = new Map();
 // We definitely need this, but don't need full geojson, just { properties: { area: xxx }}
 matcher.locationSets = new Map();
 
-// restore locationManager for this to work
+// restore locationSystem for this to work
 //Object.keys(_nsi.data).forEach(tkv => {
 //  const items = _nsi.data[tkv].items;
 //  if (!Array.isArray(items) || !items.length) return;
@@ -128,7 +128,7 @@ matcher.locationSets = new Map();
 //  items.forEach(item => {
 //    if (matcher.itemLocation.has(item.id)) return;   // we've seen item id already - shouldn't be possible?
 //
-//    const locationSetID = locationManager.locationSetID(item.locationSet);
+//    const locationSetID = locationSystem.locationSetID(item.locationSet);
 //    matcher.itemLocation.set(item.id, locationSetID);
 //
 //    if (matcher.locationSets.has(locationSetID)) return;   // we've seen this locationSet before..
@@ -142,9 +142,9 @@ matcher.locationSets = new Map();
 // We only really need this to _look like_ which-polygon query `_wp.locationIndex(bbox, true);`
 // i.e. it needs to return the properties of the locationsets
 matcher.locationIndex = (bbox) => {
-// restore locationManager for this to work
+// restore locationSystem for this to work
 return [];
-//  const validHere = locationManager.locationSetsAt([bbox[0], bbox[1]]);
+//  const validHere = locationSystem.locationSetsAt([bbox[0], bbox[1]]);
 //  const results = [];
 //
 //  for (const [locationSetID, area] of Object.entries(validHere)) {

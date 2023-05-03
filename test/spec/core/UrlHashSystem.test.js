@@ -1,4 +1,4 @@
-describe.skip('UrlHash', () => {
+describe.skip('UrlHashSystem', () => {
   mocha.globals('__onhashchange.hash');
 
   let hash, context;

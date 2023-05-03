@@ -183,7 +183,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
 
-    const prefs = this.context.storageManager();
+    const prefs = this.context.storageSystem();
     const fillstyle = prefs.getItem('area-fill') ?? 'partial';
     let doPartialFill = !style.requireFill && (fillstyle === 'partial');
 

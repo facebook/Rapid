@@ -88,7 +88,7 @@ export function presetCollection(collection) {
 
     let pool = _this.collection;
 //    if (Array.isArray(loc)) {
-//      const validHere = locationManager.locationSetsAt(loc);
+//      const validHere = locationSystem.locationSetsAt(loc);
 //      pool = pool.filter(a => !a.locationSetID || validHere[a.locationSetID]);
 //    }
 

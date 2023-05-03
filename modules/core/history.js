@@ -14,7 +14,7 @@ import { utilRebind } from '../util';
 export function coreHistory(context) {
     var dispatch = d3_dispatch('reset', 'change', 'merge', 'restore', 'undone', 'redone', 'storage_error');
     var lock = utilSessionMutex('lock');
-    var prefs = context.storageManager();
+    var prefs = context.storageSystem();
 
     // restorable if Rapid is not open in another window/tab and a saved history exists in localStorage
     var _hasUnresolvedRestorableChanges = lock.lock() && !!prefs.getItem(getKey('saved_history'));

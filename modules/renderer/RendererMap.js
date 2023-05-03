@@ -59,7 +59,7 @@ export class RendererMap extends EventEmitter {
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
     this._highlightEdits = false;     // whether to style edited features differently
 
-    const prefs = this.context.storageManager();
+    const prefs = this.context.storageSystem();
     this._currFillMode = prefs.getItem('area-fill') || 'partial';           // the current fill mode
     this._toggleFillMode = prefs.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
 
@@ -636,7 +636,7 @@ export class RendererMap extends EventEmitter {
     return this._currFillMode;
   }
   set areaFillMode(val) {
-    const prefs = this.context.storageManager();
+    const prefs = this.context.storageSystem();
     const current = this._currFillMode;
     if (current === val) return;  // no change
 

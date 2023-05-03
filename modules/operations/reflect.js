@@ -54,7 +54,7 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.storageManager();
+      const prefs = context.storageSystem();
       const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
       return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
     }

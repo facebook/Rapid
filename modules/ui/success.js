@@ -32,15 +32,15 @@ export function uiSuccess(context) {
         if (_oci) return _oci;
 
         // Merge Custom Features
-        const locationManager = context.locationManager();
+        const locationSystem = context.locationSystem();
         if (vals[0] && Array.isArray(vals[0].features)) {
-          locationManager.mergeCustomGeoJSON(vals[0]);
+          locationSystem.mergeCustomGeoJSON(vals[0]);
         }
 
         let ociResources = Object.values(vals[1].resources);
         if (ociResources.length) {
           // Resolve all locationSet features.
-          return locationManager.mergeLocationSets(ociResources)
+          return locationSystem.mergeLocationSets(ociResources)
             .then(() => {
               _oci = {
                 resources: ociResources,
@@ -159,8 +159,8 @@ export function uiSuccess(context) {
     ensureOSMCommunityIndex()
       .then(oci => {
         const loc = context.map().center();
-        const locationManager = context.locationManager();
-        const validHere = locationManager.locationSetsAt(loc);
+        const locationSystem = context.locationSystem();
+        const validHere = locationSystem.locationSetsAt(loc);
 
         // Gather the communities
         let communities = [];

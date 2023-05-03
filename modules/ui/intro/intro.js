@@ -76,7 +76,7 @@ export function uiIntro(context, skipToRapid) {
     context.inIntro(true);
     context.enter('browse');
 
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     const osm = context.connection();
     const imagery = context.imagery();
     const history = context.history();

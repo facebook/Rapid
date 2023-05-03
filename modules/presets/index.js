@@ -199,12 +199,12 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
 
 //    // Merge Custom Features
 //    if (d.featureCollection && Array.isArray(d.featureCollection.features)) {
-//      locationManager.mergeCustomGeoJSON(d.featureCollection);
+//      locationSystem.mergeCustomGeoJSON(d.featureCollection);
 //    }
 //
 //    // Resolve all locationSet features.
 //    if (newLocationSets.length) {
-//      locationManager.mergeLocationSets(newLocationSets);
+//      locationSystem.mergeLocationSets(newLocationSets);
 //    }
 
     return _this;
@@ -260,7 +260,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
     }
 
 //    if (bestMatch && bestMatch.locationSetID && bestMatch.locationSetID !== '+[Q2]' && Array.isArray(loc)) {
-//      const validHere = locationManager.locationSetsAt(loc);
+//      const validHere = locationSystem.locationSetsAt(loc);
 //      if (!validHere[bestMatch.locationSetID]) {
 //        matchCandidates.sort((a, b) => (a.score < b.score) ? 1 : -1);
 //        for (let i = 0; i < matchCandidates.length; i++){
@@ -420,7 +420,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
     );
 
 //    if (Array.isArray(loc)) {
-//      const validHere = locationManager.locationSetsAt(loc);
+//      const validHere = locationSystem.locationSetsAt(loc);
 //      result.collection = result.collection.filter(a => !a.locationSetID || validHere[a.locationSetID]);
 //    }
 
@@ -500,7 +500,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
   function setRecents(items) {
     _recents = items;
     const minifiedItems = items.map(d => d.minified());
-//    const prefs = context.storageManager();
+//    const prefs = context.storageSystem();
 //    prefs.setItem('preset_recents', JSON.stringify(minifiedItems));
     dispatch.call('recentsChange');
   }
@@ -509,7 +509,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
   _this.getRecents = () => {
     if (!_recents) {
 _recents = [];
-//    const prefs = context.storageManager();
+//    const prefs = context.storageSystem();
 //      // fetch from local storage
 //      _recents = (JSON.parse(prefs.getItem('preset_recents')) || [])
 //        .reduce((acc, d) => {
@@ -600,7 +600,7 @@ _recents = [];
   function setFavorites(items) {
     _favorites = items;
     const minifiedItems = items.map(d => d.minified());
-//    const prefs = context.storageManager();
+//    const prefs = context.storageSystem();
 //    prefs.setItem('preset_favorites', JSON.stringify(minifiedItems));
 
     // call update
@@ -652,7 +652,7 @@ _recents = [];
 
 let rawFavorites = [];
       // fetch from local storage
-//    const prefs = context.storageManager();
+//    const prefs = context.storageSystem();
 //      let rawFavorites = JSON.parse(prefs.getItem('preset_favorites'));
 //      if (!rawFavorites) {
 //        rawFavorites = [];

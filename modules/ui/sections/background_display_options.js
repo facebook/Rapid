@@ -4,7 +4,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundDisplayOptions(context) {
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
   const section = uiSection('background-display-options', context)
     .label(t.html('background.display_options'))
     .disclosureContent(renderDisclosureContent);

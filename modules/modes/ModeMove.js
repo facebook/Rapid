@@ -130,8 +130,8 @@ export class ModeMove extends AbstractMode {
     }
 
     const currLoc = context.map().mouseLoc();
-    const locationManager = context.locationManager();
-    if (locationManager.blocksAt(currLoc).length) {  // editing is blocked here
+    const locationSystem = context.locationSystem();
+    if (locationSystem.blocksAt(currLoc).length) {  // editing is blocked here
       this._cancel();
       return;
     }

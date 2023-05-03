@@ -47,7 +47,7 @@ import { ui3DMap } from './tools/3dmap/3d_map';
 
 
 export function uiInit(context) {
-  const prefs = context.storageManager();
+  const prefs = context.storageSystem();
 
   let _initCounter = 0;
   let _needWidth = {};

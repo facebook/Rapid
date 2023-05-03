@@ -146,7 +146,7 @@ export class BehaviorLasso extends AbstractBehavior {
     const graph = this.context.graph();
     const context = this.context;
     const polygonLocs = this._coords;
-    const locationManager = context.locationManager();
+    const locationSystem = context.locationSystem();
 
     if (!this.context.editable()) return [];
 
@@ -157,7 +157,7 @@ export class BehaviorLasso extends AbstractBehavior {
           entity.type === 'node' &&
           geomPointInPolygon(entity.loc, polygonLocs) &&
           !context.features().isHidden(entity, graph, entity.geometry(graph)) &&
-          !locationManager.blocksAt(entity.loc).length
+          !locationSystem.blocksAt(entity.loc).length
         );
       });
 

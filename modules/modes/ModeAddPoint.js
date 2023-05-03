@@ -89,8 +89,8 @@ export class ModeAddPoint extends AbstractMode {
     const coord = eventData.coord;
     const loc = projection.invert(coord);
 
-    const locationManager = context.locationManager();
-    if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
+    const locationSystem = context.locationSystem();
+    if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;

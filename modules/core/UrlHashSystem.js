@@ -8,7 +8,7 @@ import { utilDisplayLabel } from '../util';
 
 
 /**
- * `UrlHash` is responsible for managing the url hash and query parameters.
+ * `UrlHashSystem` is responsible for managing the url hash and query parameters.
  * It updates the `window.location.hash` and document title
  * It also binds to the hashchange event and responds to changes made by the user directly to the url
  *
@@ -20,7 +20,7 @@ import { utilDisplayLabel } from '../util';
  * Events available:
  *   `hashchange`     Fires on hashchange and when enable is called, receives an Object with the current hash params
  */
-export class UrlHash extends EventEmitter {
+export class UrlHashSystem extends EventEmitter {
 
   /**
    * @constructor
@@ -120,8 +120,8 @@ export class UrlHash extends EventEmitter {
 
     this._prevHash = null;
 
-    this.context.history().on('change.UrlHash', this.deferredUpdateTitle);
-    this.context.on('enter.UrlHash', this.deferredUpdateAll);
+    this.context.history().on('change.UrlHashSystem', this.deferredUpdateTitle);
+    this.context.on('enter.UrlHashSystem', this.deferredUpdateAll);
     window.addEventListener('hashchange', this.parseHash);
 
     this.parseHash();
@@ -142,8 +142,8 @@ export class UrlHash extends EventEmitter {
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
 
-    this.context.history().on('change.UrlHash', null);
-    this.context.on('enter.UrlHash', null);
+    this.context.history().on('change.UrlHashSystem', null);
+    this.context.on('enter.UrlHashSystem', null);
     window.removeEventListener('hashchange', this.parseHash);
   }
 

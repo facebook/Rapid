@@ -206,7 +206,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderDatasets(selection) {
-    const prefs = context.storageManager();
+    const prefs = context.storageSystem();
     const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them

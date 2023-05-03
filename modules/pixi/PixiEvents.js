@@ -330,7 +330,7 @@ export class PixiEvents extends EventEmitter {
       speed = 3;
 
     } else {  // consider user mouse_wheel preference
-      const prefs = this.context.storageManager();
+      const prefs = this.context.storageSystem();
       const wheelPref = prefs.getItem('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
 
       // User wants to 'pan' by default OR

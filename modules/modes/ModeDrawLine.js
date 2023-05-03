@@ -285,8 +285,8 @@ export class ModeDrawLine extends AbstractMode {
     const coord = eventData.coord;
     const loc = projection.invert(coord);
 
-    const locationManager = context.locationManager();
-    if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
+    const locationSystem = context.locationSystem();
+    if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.
     context.behaviors.get('map-nudging').allow();
