@@ -3,7 +3,6 @@ import { descending as d3_descending, ascending as d3_ascending } from 'd3-array
 import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 
-import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { RendererImagerySource } from '../../renderer/RendererImagerySource';
@@ -16,6 +15,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundList(context) {
+  const prefs = context.storageManager();
   const section = uiSection('background-list', context)
     .label(t('background.backgrounds'))
     .disclosureContent(renderDisclosureContent);
@@ -27,11 +27,11 @@ export function uiSectionBackgroundList(context) {
     .on('change', customChanged);
 
 
-  const favoriteBackgroundsJSON = prefs('background-favorites');
+  const favoriteBackgroundsJSON = prefs.getItem('background-favorites');
   const _favoriteBackgrounds = favoriteBackgroundsJSON ? JSON.parse(favoriteBackgroundsJSON) : {};
 
   function previousBackgroundID() {
-    return prefs('background-last-used-toggle');
+    return prefs.getItem('background-last-used-toggle');
   }
 
   function renderDisclosureContent(selection) {
@@ -242,7 +242,7 @@ export function uiSectionBackgroundList(context) {
           d3_select(d3_event.currentTarget).classed('active', true);
           _favoriteBackgrounds[d.id] = true;
         }
-        prefs('background-favorites', JSON.stringify(_favoriteBackgrounds));
+        prefs.setItem('background-favorites', JSON.stringify(_favoriteBackgrounds));
 
         d3_select(d3_event.currentTarget.parentElement)
           .transition()
@@ -309,9 +309,9 @@ export function uiSectionBackgroundList(context) {
 
     const previousBackground = context.imagery().baseLayerSource();
     if (previousBackground instanceof RendererImagerySource) {
-      prefs('background-last-used-toggle', previousBackground.id);
+      prefs.setItem('background-last-used-toggle', previousBackground.id);
     }
-    prefs('background-last-used', d.id);
+    prefs.setItem('background-last-used', d.id);
     context.imagery().baseLayerSource(d);
   }
 

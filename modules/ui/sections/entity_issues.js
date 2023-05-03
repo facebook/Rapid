@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
-import { prefs } from '../../core/preferences';
 import { uiIcon } from '../icon';
 import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
@@ -11,7 +10,8 @@ import { uiSection } from '../section';
 export function uiSectionEntityIssues(context) {
     // Does the user prefer to expand the active issue?  Useful for viewing tag diff.
     // Expand by default so first timers see it - #6408, #8143
-    var preference = prefs('entity-issues.reference.expanded');
+    const prefs = context.storageManager();
+    var preference = prefs.getItem('entity-issues.reference.expanded');
     var _expanded = preference === null ? true : (preference === 'true');
 
     var _entityIDs = [];
@@ -130,7 +130,7 @@ export function uiSectionEntityIssues(context) {
                 var info = container.selectAll('.issue-info');
                 var isExpanded = info.classed('expanded');
                 _expanded = !isExpanded;
-                prefs('entity-issues.reference.expanded', _expanded);  // update preference
+                prefs.setItem('entity-issues.reference.expanded', _expanded);  // update preference
 
                 if (isExpanded) {
                     info

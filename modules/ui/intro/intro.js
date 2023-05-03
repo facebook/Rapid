@@ -2,7 +2,6 @@ import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
 import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
-import { prefs } from '../../core/preferences';
 import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
@@ -77,6 +76,7 @@ export function uiIntro(context, skipToRapid) {
     context.inIntro(true);
     context.enter('browse');
 
+    const prefs = context.storageManager();
     const osm = context.connection();
     const imagery = context.imagery();
     const history = context.history();
@@ -144,10 +144,10 @@ export function uiIntro(context, skipToRapid) {
     selection.call(curtain.enable);
 
     // Store that the user started the walkthrough..
-    prefs('walkthrough_started', 'yes');
+    prefs.setItem('walkthrough_started', 'yes');
 
     // Restore previous walkthrough progress..
-    const storedProgress = prefs('walkthrough_progress') || '';
+    const storedProgress = prefs.getItem('walkthrough_progress') || '';
     let progress = storedProgress.split(';').filter(Boolean);
 
     let chapters = chapterFlow.map((chapter, i) => {
@@ -165,7 +165,7 @@ export function uiIntro(context, skipToRapid) {
 
           // Store walkthrough progress..
           progress.push(chapter);
-          prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
+          prefs.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
         });
       return s;
     });
@@ -174,12 +174,12 @@ export function uiIntro(context, skipToRapid) {
     chapters[chapters.length - 1].on('startEditing', () => {
       // Store walkthrough progress..
       progress.push('startEditing');
-      prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
+      prefs.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
 
       // Store if walkthrough is completed..
       const incomplete = utilArrayDifference(chapterFlow, progress);
       if (!incomplete.length) {
-        prefs('walkthrough_completed', 'yes');
+        prefs.setItem('walkthrough_completed', 'yes');
       }
 
       // Restore Rapid datasets and service

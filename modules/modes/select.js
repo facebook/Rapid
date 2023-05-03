@@ -5,7 +5,6 @@ import {
 } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
-import { locationManager } from '../core/LocationManager';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
 //import { behaviorLasso } from '../behaviors/lasso';
@@ -49,6 +48,7 @@ export function modeSelect(context, selectedIDs) {
 
     function checkSelectedIDs() {
         var ids = [];
+        var locationManager = context.locationManager();
         if (Array.isArray(selectedIDs)) {
             ids = selectedIDs.filter(function(id) {
                 var entity = context.hasEntity(id);

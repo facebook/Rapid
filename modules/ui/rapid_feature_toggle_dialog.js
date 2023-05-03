@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 import { marked } from 'marked';
 
 import { t, localizer } from '../core/localizer';
-import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
 import { uiIcon } from './icon';
 import { uiModal } from './modal';
@@ -207,7 +206,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderDatasets(selection) {
-    const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
+    const prefs = context.storageManager();
+    const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
     const rapidLayer = context.scene().layers.get('rapid');

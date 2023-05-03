@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
 import { utilDetect } from '../util/detect';
@@ -48,6 +47,8 @@ import { ui3DMap } from './tools/3dmap/3d_map';
 
 
 export function uiInit(context) {
+  const prefs = context.storageManager();
+
   let _initCounter = 0;
   let _needWidth = {};
 
@@ -352,11 +353,11 @@ export function uiInit(context) {
           d3_event.stopImmediatePropagation();
           d3_event.preventDefault();
         }
-        const previousBackground = context.imagery().findSource(prefs('background-last-used-toggle'));
+        const previousBackground = context.imagery().findSource(prefs.getItem('background-last-used-toggle'));
         if (previousBackground) {
           const currentBackground = context.imagery().baseLayerSource();
-          prefs('background-last-used-toggle', currentBackground.id);
-          prefs('background-last-used', previousBackground.id);
+          prefs.setItem('background-last-used-toggle', currentBackground.id);
+          prefs.setItem('background-last-used', previousBackground.id);
           context.imagery().baseLayerSource(previousBackground);
         }
       })
@@ -401,7 +402,7 @@ export function uiInit(context) {
 
 //        // If users have already seen the 'welcome to Rapid' splash screen, don't also
 //        // show them the what's new screen
-//        } else if (prefs('sawRapidSplash')) {
+//        } else if (prefs.getItem('sawRapidSplash')) {
 //          context.container().call(uiRapidWhatsNew(context));
 //
 //        } else if (osm && osm.authenticated()) {

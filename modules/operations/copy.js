@@ -2,7 +2,6 @@ import { utilArrayGroupBy } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
 
@@ -98,7 +97,8 @@ export function operationCopy(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+      const prefs = context.storageManager();
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
       return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
     }
   };

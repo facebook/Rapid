@@ -1,12 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
-import { prefs } from '../core/preferences';
 import { uiIcon } from './icon';
 import { t } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 
 
 export function uiIssuesInfo(context) {
+    const prefs = context.storageManager();
 
     var warningsItem = {
         id: 'warnings',
@@ -23,19 +23,17 @@ export function uiIssuesInfo(context) {
     };
 
     function update(selection) {
-
         var shownItems = [];
-
         var liveIssues = context.validator().getIssues({
-            what: prefs('validate-what') || 'edited',
-            where: prefs('validate-where') || 'all'
+            what: prefs.getItem('validate-what') || 'edited',
+            where: prefs.getItem('validate-where') || 'all'
         });
         if (liveIssues.length) {
             warningsItem.count = liveIssues.length;
             shownItems.push(warningsItem);
         }
 
-        if (prefs('validate-what') === 'all') {
+        if (prefs.getItem('validate-what') === 'all') {
             var resolvedIssues = context.validator().getResolvedIssues();
             if (resolvedIssues.length) {
                 resolvedItem.count = resolvedIssues.length;

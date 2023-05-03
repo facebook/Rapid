@@ -1,4 +1,3 @@
-import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiIcon } from '../icon';
@@ -6,11 +5,12 @@ import { uiSection } from '../section';
 
 
 export function uiSectionPrivacy(context) {
+  const prefs = context.storageManager();
   const section = uiSection('preferences-third-party', context)
     .label(t.html('preferences.privacy.title'))
     .disclosureContent(renderDisclosureContent);
 
-  let _showThirdPartyIcons = prefs('preferences.privacy.thirdpartyicons') || 'true';
+  let _showThirdPartyIcons = prefs.getItem('preferences.privacy.thirdpartyicons') || 'true';
 
   function renderDisclosureContent(selection) {
     // enter
@@ -35,7 +35,7 @@ export function uiSectionPrivacy(context) {
       .on('change', d3_event => {
         d3_event.preventDefault();
         _showThirdPartyIcons = (_showThirdPartyIcons === 'true') ? 'false' : 'true';
-        prefs('preferences.privacy.thirdpartyicons', _showThirdPartyIcons);
+        prefs.setItem('preferences.privacy.thirdpartyicons', _showThirdPartyIcons);
         update();
       });
 

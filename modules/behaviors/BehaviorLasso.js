@@ -1,7 +1,6 @@
 import { Extent, geomPointInPolygon } from '@rapid-sdk/math';
 import { utilArrayIntersection } from '@rapid-sdk/util';
 
-import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { AbstractBehavior } from './AbstractBehavior';
 
@@ -147,6 +146,7 @@ export class BehaviorLasso extends AbstractBehavior {
     const graph = this.context.graph();
     const context = this.context;
     const polygonLocs = this._coords;
+    const locationManager = context.locationManager();
 
     if (!this.context.editable()) return [];
 

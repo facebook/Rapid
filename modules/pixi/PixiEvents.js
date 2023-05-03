@@ -1,7 +1,6 @@
 import { EventEmitter } from '@pixi/utils';
 
 import { utilDetect } from '../util/detect';
-import { prefs } from '../core/preferences';
 
 
 /**
@@ -331,7 +330,8 @@ export class PixiEvents extends EventEmitter {
       speed = 3;
 
     } else {  // consider user mouse_wheel preference
-      const wheelPref = prefs('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
+      const prefs = this.context.storageManager();
+      const wheelPref = prefs.getItem('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
 
       // User wants to 'pan' by default OR
       // We autodetect - either horizontal scroll present or vertical scroll is a round number...

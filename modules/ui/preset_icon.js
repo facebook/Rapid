@@ -1,11 +1,10 @@
 import * as PIXI from 'pixi.js';
 
-import { prefs } from '../core/preferences';
 import { styleMatch } from '../pixi/styles';
 import { uiIcon } from './icon';
 
 
-export function uiPresetIcon() {
+export function uiPresetIcon(context) {
   let _preset;
   let _geometry;
 
@@ -247,7 +246,8 @@ export function uiPresetIcon() {
       geom = 'route';
     }
 
-    const showThirdPartyIcons = (prefs('preferences.privacy.thirdpartyicons') ?? 'true') === 'true';
+    const prefs = context.storageManager();
+    const showThirdPartyIcons = (prefs.getItem('preferences.privacy.thirdpartyicons') ?? 'true') === 'true';
     const imageURL = showThirdPartyIcons && p.imageURL;
     const picon = getIcon(p, geom);
     // const showPoint = isPreset && (geom === 'point');     // not actually used

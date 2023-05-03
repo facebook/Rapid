@@ -6,7 +6,6 @@ import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, 
 import { Graph } from './Graph';
 import { Difference } from './Difference';
 import { osmEntity } from '../osm/entity';
-import { prefs } from './preferences';
 import { Tree } from './Tree';
 import { uiLoading } from '../ui/loading';
 import { utilRebind } from '../util';
@@ -15,9 +14,10 @@ import { utilRebind } from '../util';
 export function coreHistory(context) {
     var dispatch = d3_dispatch('reset', 'change', 'merge', 'restore', 'undone', 'redone', 'storage_error');
     var lock = utilSessionMutex('lock');
+    var prefs = context.storageManager();
 
     // restorable if Rapid is not open in another window/tab and a saved history exists in localStorage
-    var _hasUnresolvedRestorableChanges = lock.lock() && !!prefs(getKey('saved_history'));
+    var _hasUnresolvedRestorableChanges = lock.lock() && !!prefs.getItem(getKey('saved_history'));
 
     var duration = 150;
     var _imageryUsed = [];
@@ -736,7 +736,7 @@ export function coreHistory(context) {
             if (lock.locked() &&
                 // don't overwrite existing, unresolved changes
                 !_hasUnresolvedRestorableChanges) {
-                const success = prefs(getKey('saved_history'), history.toJSON() || null);
+                const success = prefs.setItem(getKey('saved_history'), history.toJSON() || null);
 
                 if (!success) dispatch.call('storage_error');
             }
@@ -749,19 +749,19 @@ export function coreHistory(context) {
             context.debouncedSave.cancel();
             if (lock.locked()) {
                 _hasUnresolvedRestorableChanges = false;
-                prefs(getKey('saved_history'), null);
+                prefs.removeItem(getKey('saved_history'));
 
                 // clear the changeset metadata associated with the saved history
-                prefs('comment', null);
-                prefs('hashtags', null);
-                prefs('source', null);
+                prefs.removeItem('comment');
+                prefs.removeItem('hashtags');
+                prefs.removeItem('source');
             }
             return history;
         },
 
 
         savedHistoryJSON: function() {
-            return prefs(getKey('saved_history'));
+            return prefs.getItem(getKey('saved_history'));
         },
 
 

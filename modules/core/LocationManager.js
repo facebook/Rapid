@@ -69,6 +69,15 @@ export class LocationManager extends EventEmitter {
 
 
   /**
+   * init
+   * Called one time after all core objects have been instantiated.
+   */
+  init() {
+    /* noop */
+  }
+
+
+  /**
    * _validateLocationSet
    * Pass an Object with a `locationSet` property.
    * Validates the `locationSet` and sets a `locationSetID` property on the object.
@@ -386,8 +395,3 @@ export class LocationManager extends EventEmitter {
     return this._wpblocks;
   }
 }
-
-
-const _sharedLocationManager = new LocationManager();
-export { _sharedLocationManager as locationManager };
-

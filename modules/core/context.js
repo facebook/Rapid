@@ -8,10 +8,11 @@ import { t } from '../core/localizer';
 import { coreRapidContext } from './rapid_context';
 import { fileFetcher } from './file_fetcher';
 import { localizer } from './localizer';
-import { prefs } from './preferences';
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
+import { LocationManager } from './LocationManager';
+import { StorageManager } from './StorageManager';
 import { UrlHash } from './UrlHash';
 
 import { BehaviorDrag } from '../behaviors/BehaviorDrag';
@@ -51,9 +52,27 @@ export function coreContext() {
   context.version = '2.0.3';
   context.privacyVersion = '20201202';
 
+  // Assign `connection` here because it doesn't require passing in
+  // `context` and it's needed for pre-init calls like `preauth`
+  let _connection = services.osm;
+  let _history;
+  let _locationManager;
+  let _storageManager;
+  let _uploader;
+  let _urlhash;
+  let _validator;
+
+  context.connection = () => _connection;
+  context.history = () => _history;
+  context.locationManager = () => _locationManager;
+  context.storageManager = () => _storageManager;
+  context.uploader = () => _uploader;
+  context.urlhash = () => _urlhash;
+  context.validator = () => _validator;
+
+
   // `context.initialHashParams` is older, try to use `context.urlhash()` instead
   context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
-  context.isFirstSession = !prefs('sawSplash') && !prefs('sawPrivacyVersion');
 
   /* Changeset */
   // An osmChangeset object. Not loaded until needed.
@@ -90,19 +109,6 @@ export function coreContext() {
   context.keybinding = () => _keybinding;
   d3_select(document).call(_keybinding);
 
-
-  // Assign `connection` here because it doesn't require passing in
-  // `context` and it's needed for pre-init calls like `preauth`
-  let _connection = services.osm;
-  let _history;
-  let _uploader;
-  let _urlhash;
-  let _validator;
-  context.connection = () => _connection;
-  context.history = () => _history;
-  context.uploader = () => _uploader;
-  context.urlhash = () => _urlhash;
-  context.validator = () => _validator;
 
   /* Connection */
   context.preauth = (options) => {
@@ -631,15 +637,19 @@ export function coreContext() {
 
   /* Init */
   context.init = () => {
-    instantiateInternal();
-    initializeDependents();
+    instantiateAll();
+    initializeAll();
     return context;
 
 
+    // Instantiate core classes
     // Load variables and properties. No property of `context` should be accessed
     // until this is complete since load statuses are indeterminate. The order
     // of instantiation shouldn't matter.
-    function instantiateInternal() {
+    function instantiateAll() {
+      _storageManager = new StorageManager(context);
+      _locationManager = new LocationManager(context);
+
       _history = coreHistory(context);
       context.graph = _history.graph;
       context.hasEntity = (id) => _history.graph().hasEntity(id);
@@ -653,7 +663,6 @@ export function coreContext() {
       context.undo = withDebouncedSave(_history.undo);
       context.redo = withDebouncedSave(_history.redo);
 
-      // Instantiate core classes
       _validator = coreValidator(context);
       _uploader = coreUploader(context);
       _imagery = new RendererImagery(context);
@@ -691,9 +700,10 @@ export function coreContext() {
       ].forEach(mode => context.modes.set(mode.id, mode));
     }
 
+
     // Set up objects that might need to access properties of `context`. The order
     // might matter if dependents make calls to each other. Be wary of async calls.
-    function initializeDependents() {
+    function initializeAll() {
       if (context.initialHashParams.presets) {
         presetManager.addablePresetIDs(new Set(context.initialHashParams.presets.split(',')));
       }

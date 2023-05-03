@@ -4,7 +4,6 @@
 //import { utilEntitySelector } from '@rapid-sdk/util';
 //
 //import { presetManager } from '../../presets';
-//import { prefs } from '../../core/preferences';
 //import { t, localizer } from '../../core/localizer';
 //import { actionRestrictTurn } from '../../actions/restrict_turn';
 //import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
@@ -17,9 +16,10 @@
 //export function uiFieldRestrictions(field, context) {
 //    var dispatch = d3_dispatch('change');
 //
-//    prefs('turn-restriction-via-way', null);                 // remove old key
-//    var storedViaWay = prefs('turn-restriction-via-way0');   // use new key #6922
-//    var storedDistance = prefs('turn-restriction-distance');
+//    const prefs = context.storageManager();
+//    prefs.removeItem('turn-restriction-via-way');                    // remove old key
+//    var storedViaWay = prefs.getItem('turn-restriction-via-way0');   // use new key #6922
+//    var storedDistance = prefs.getItem('turn-restriction-distance');
 //
 //    var _maxViaWay = storedViaWay !== null ? (+storedViaWay) : 0;
 //    var _maxDistance = storedDistance ? (+storedDistance) : 30;
@@ -145,7 +145,7 @@
 //                _maxDistance = +val;
 //                _intersection = null;
 //                _container.selectAll('.layer-osm .layer-turns *').remove();
-//                prefs('turn-restriction-distance', _maxDistance);
+//                prefs.setItem('turn-restriction-distance', _maxDistance);
 //                _parent.call(restrictions);
 //            });
 //
@@ -187,7 +187,7 @@
 //                var val = d3_select(this).property('value');
 //                _maxViaWay = +val;
 //                _container.selectAll('.layer-osm .layer-turns *').remove();
-//                prefs('turn-restriction-via-way0', _maxViaWay);
+//                prefs.setItem('turn-restriction-via-way0', _maxViaWay);
 //                _parent.call(restrictions);
 //            });
 //

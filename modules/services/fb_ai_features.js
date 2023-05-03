@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@rapid-sdk/math';
 
-import { locationManager } from '../core/LocationManager';
 import { Graph, Tree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind } from '../util';
@@ -319,13 +318,13 @@ export default {
         tiles.forEach(function(tile) {
             if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
-            // exit if this tile covers a blocked region (all corners are blocked)
-            const corners = tile.wgs84Extent.polygon().slice(0, 4);
-            const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
-            if (tileBlocked) {
-                cache.loaded[tile.id] = true;  // don't try again
-                return;
-            }
+//            // exit if this tile covers a blocked region (all corners are blocked)
+//            const corners = tile.wgs84Extent.polygon().slice(0, 4);
+//            const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
+//            if (tileBlocked) {
+//                cache.loaded[tile.id] = true;  // don't try again
+//                return;
+//            }
 
             var controller = new AbortController();
             d3_xml(tileURL(ds, tile.wgs84Extent, taskExtent), { signal: controller.signal })

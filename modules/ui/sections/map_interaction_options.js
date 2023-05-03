@@ -1,10 +1,10 @@
 import { t } from '../../core/localizer';
-import { prefs } from '../../core/preferences';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
 
 export function uiSectionMapInteractionOptions(context) {
+  const prefs = context.storageManager();
   const section = uiSection('map-interaction', context)
     .label(t.html('preferences.map_interaction.title'))
     .disclosureContent(renderDisclosureContent)
@@ -78,12 +78,12 @@ export function uiSectionMapInteractionOptions(context) {
 
 
   function isActiveWheelOption(d) {
-    const curr = prefs('prefs.mouse_wheel.interaction') ?? 'auto';
+    const curr = prefs.getItem('prefs.mouse_wheel.interaction') ?? 'auto';
     return curr === d;
   }
 
   function setWheelOption(d3_event, d) {
-    prefs('prefs.mouse_wheel.interaction', d);
+    prefs.setItem('prefs.mouse_wheel.interaction', d);
     section.reRender();
   }
 

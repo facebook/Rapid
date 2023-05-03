@@ -1,9 +1,9 @@
-import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { uiSection } from '../section';
 
 
 export function uiSectionValidationOptions(context) {
+  const prefs = context.storageManager();
   const section = uiSection('issues-options', context)
     .content(renderContent);
 
@@ -56,8 +56,8 @@ export function uiSectionValidationOptions(context) {
 
   function getOptions() {
     return {
-      what: prefs('validate-what') || 'edited',  // 'all', 'edited'
-      where: prefs('validate-where') || 'all'    // 'all', 'visible'
+      what: prefs.getItem('validate-what') || 'edited',  // 'all', 'edited'
+      where: prefs.getItem('validate-where') || 'all'    // 'all', 'visible'
     };
   }
 
@@ -66,7 +66,7 @@ export function uiSectionValidationOptions(context) {
       val = d3_event.target.value;
     }
 
-    prefs(`validate-${d}`, val);
+    prefs.setItem(`validate-${d}`, val);
     context.validator().validate();
   }
 

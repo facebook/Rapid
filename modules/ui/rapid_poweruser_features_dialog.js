@@ -1,11 +1,11 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-import { prefs } from '../core/preferences';
 import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
+  const prefs = context.storageManager();
   const featureFlags = [
     'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits'
   ];
@@ -17,31 +17,31 @@ export function uiRapidPowerUserFeaturesDialog(context) {
   // if we are not currently showing poweruser features, move all the feature flags to a different keyspace
   if (!showPowerUser) {
     featureFlags.forEach(featureFlag => {
-      const val = prefs(`rapid-internal-feature.${featureFlag}`);
+      const val = prefs.getItem(`rapid-internal-feature.${featureFlag}`);
       if (val) {
-        prefs(`rapid-internal-feature.was.${featureFlag}`, val);
-        prefs(`rapid-internal-feature.${featureFlag}`, null);
+        prefs.setItem(`rapid-internal-feature.was.${featureFlag}`, val);
+        prefs.removeItem(`rapid-internal-feature.${featureFlag}`);
       }
     });
   } else {
     featureFlags.forEach(featureFlag => {
-      const val = prefs(`rapid-internal-feature.was.${featureFlag}`);
+      const val = prefs.getItem(`rapid-internal-feature.was.${featureFlag}`);
       if (val) {
-        prefs(`rapid-internal-feature.${featureFlag}`, val);
-        prefs(`rapid-internal-feature.was.${featureFlag}`, null);
+        prefs.setItem(`rapid-internal-feature.${featureFlag}`, val);
+        prefs.removeItem(`rapid-internal-feature.was.${featureFlag}`);
       }
     });
   }
 
 
   function isEnabled(featureFlag) {
-    return prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
+    return prefs.getItem(`rapid-internal-feature.${featureFlag}`) === 'true';
   }
 
   function toggleFeature(_, featureFlag) {
-    let enabled = prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
+    let enabled = prefs.getItem(`rapid-internal-feature.${featureFlag}`) === 'true';
     enabled = !enabled;
-    prefs(`rapid-internal-feature.${featureFlag}`, enabled);
+    prefs.setItem(`rapid-internal-feature.${featureFlag}`, enabled);
 
     // custom on-toggle behaviors can go here
     if (featureFlag === 'previewDatasets' && !enabled) {   // user unchecked previewDatasets feature
