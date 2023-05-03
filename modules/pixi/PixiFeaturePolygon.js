@@ -5,7 +5,6 @@ import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@
 
 import { AbstractFeature } from './AbstractFeature';
 import { lineToPoly } from './helpers';
-import { prefs } from '../core/preferences';
 
 const PARTIALFILLWIDTH = 32;
 
@@ -184,7 +183,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
 
-    const fillstyle = prefs('area-fill') || 'partial';
+    const prefs = this.context.storageManager();
+    const fillstyle = prefs.getItem('area-fill') ?? 'partial';
     let doPartialFill = !style.requireFill && (fillstyle === 'partial');
 
     // If this shape is so small that partial filling makes no sense, fill fully (faster?)

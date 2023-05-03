@@ -1,9 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
-import { locationManager } from '../core/LocationManager';
 import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
 import { presetCategory } from './category';
 import { presetCollection } from './collection';
@@ -199,15 +197,15 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
       });
     });
 
-    // Merge Custom Features
-    if (d.featureCollection && Array.isArray(d.featureCollection.features)) {
-      locationManager.mergeCustomGeoJSON(d.featureCollection);
-    }
-
-    // Resolve all locationSet features.
-    if (newLocationSets.length) {
-      locationManager.mergeLocationSets(newLocationSets);
-    }
+//    // Merge Custom Features
+//    if (d.featureCollection && Array.isArray(d.featureCollection.features)) {
+//      locationManager.mergeCustomGeoJSON(d.featureCollection);
+//    }
+//
+//    // Resolve all locationSet features.
+//    if (newLocationSets.length) {
+//      locationManager.mergeLocationSets(newLocationSets);
+//    }
 
     return _this;
   };
@@ -261,20 +259,20 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
       }
     }
 
-    if (bestMatch && bestMatch.locationSetID && bestMatch.locationSetID !== '+[Q2]' && Array.isArray(loc)) {
-      const validHere = locationManager.locationSetsAt(loc);
-      if (!validHere[bestMatch.locationSetID]) {
-        matchCandidates.sort((a, b) => (a.score < b.score) ? 1 : -1);
-        for (let i = 0; i < matchCandidates.length; i++){
-          const candidateScore = matchCandidates[i];
-          if (!candidateScore.candidate.locationSetID || validHere[candidateScore.candidate.locationSetID]) {
-            bestMatch = candidateScore.candidate;
-            bestScore = candidateScore.score;
-            break;
-          }
-        }
-      }
-    }
+//    if (bestMatch && bestMatch.locationSetID && bestMatch.locationSetID !== '+[Q2]' && Array.isArray(loc)) {
+//      const validHere = locationManager.locationSetsAt(loc);
+//      if (!validHere[bestMatch.locationSetID]) {
+//        matchCandidates.sort((a, b) => (a.score < b.score) ? 1 : -1);
+//        for (let i = 0; i < matchCandidates.length; i++){
+//          const candidateScore = matchCandidates[i];
+//          if (!candidateScore.candidate.locationSetID || validHere[candidateScore.candidate.locationSetID]) {
+//            bestMatch = candidateScore.candidate;
+//            bestScore = candidateScore.score;
+//            break;
+//          }
+//        }
+//      }
+//    }
 
     // If any part of an address is present, allow fallback to "Address" preset - #4353
     if (!bestMatch || bestMatch.isFallback()) {
@@ -421,10 +419,10 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
       utilArrayUniq(recents.concat(defaults)).slice(0, n - 1)
     );
 
-    if (Array.isArray(loc)) {
-      const validHere = locationManager.locationSetsAt(loc);
-      result.collection = result.collection.filter(a => !a.locationSetID || validHere[a.locationSetID]);
-    }
+//    if (Array.isArray(loc)) {
+//      const validHere = locationManager.locationSetsAt(loc);
+//      result.collection = result.collection.filter(a => !a.locationSetID || validHere[a.locationSetID]);
+//    }
 
     return result;
   };
@@ -502,20 +500,23 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
   function setRecents(items) {
     _recents = items;
     const minifiedItems = items.map(d => d.minified());
-    prefs('preset_recents', JSON.stringify(minifiedItems));
+//    const prefs = context.storageManager();
+//    prefs.setItem('preset_recents', JSON.stringify(minifiedItems));
     dispatch.call('recentsChange');
   }
 
 
   _this.getRecents = () => {
     if (!_recents) {
-      // fetch from local storage
-      _recents = (JSON.parse(prefs('preset_recents')) || [])
-        .reduce((acc, d) => {
-          let item = ribbonItemForMinified(d, 'recent');
-          if (item && item.preset.addable()) acc.push(item);
-          return acc;
-        }, []);
+_recents = [];
+//    const prefs = context.storageManager();
+//      // fetch from local storage
+//      _recents = (JSON.parse(prefs.getItem('preset_recents')) || [])
+//        .reduce((acc, d) => {
+//          let item = ribbonItemForMinified(d, 'recent');
+//          if (item && item.preset.addable()) acc.push(item);
+//          return acc;
+//        }, []);
     }
     return _recents;
   };
@@ -599,7 +600,8 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
   function setFavorites(items) {
     _favorites = items;
     const minifiedItems = items.map(d => d.minified());
-    prefs('preset_favorites', JSON.stringify(minifiedItems));
+//    const prefs = context.storageManager();
+//    prefs.setItem('preset_favorites', JSON.stringify(minifiedItems));
 
     // call update
     dispatch.call('favoritePreset');
@@ -648,13 +650,14 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
   _this.getFavorites = () => {
     if (!_favorites) {
 
+let rawFavorites = [];
       // fetch from local storage
-      let rawFavorites = JSON.parse(prefs('preset_favorites'));
-
-      if (!rawFavorites) {
-        rawFavorites = [];
-        prefs('preset_favorites', JSON.stringify(rawFavorites));
-      }
+//    const prefs = context.storageManager();
+//      let rawFavorites = JSON.parse(prefs.getItem('preset_favorites'));
+//      if (!rawFavorites) {
+//        rawFavorites = [];
+//        prefs.setItem('preset_favorites', JSON.stringify(rawFavorites));
+//      }
 
       _favorites = rawFavorites.reduce((output, d) => {
         const item = ribbonItemForMinified(d, 'favorite');

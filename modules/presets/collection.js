@@ -1,6 +1,5 @@
 import { utilArrayUniq, utilEditDistance } from '@rapid-sdk/util';
 
-import { locationManager } from '../core/LocationManager';
 
 
 //
@@ -88,10 +87,10 @@ export function presetCollection(collection) {
     }
 
     let pool = _this.collection;
-    if (Array.isArray(loc)) {
-      const validHere = locationManager.locationSetsAt(loc);
-      pool = pool.filter(a => !a.locationSetID || validHere[a.locationSetID]);
-    }
+//    if (Array.isArray(loc)) {
+//      const validHere = locationManager.locationSetsAt(loc);
+//      pool = pool.filter(a => !a.locationSetID || validHere[a.locationSetID]);
+//    }
 
     const searchable = pool.filter(a => a.searchable !== false && a.suggestion !== true);
     const suggestions = pool.filter(a => a.suggestion === true);

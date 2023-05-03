@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayGroupBy, utilArrayUnion } from '@rapid-sdk/util';
 
-import { prefs } from '../core/preferences';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';
 import { utilRebind } from '../util/rebind';
 
@@ -95,7 +94,8 @@ export function rendererFeatures(context) {
       urlhash.setParam('disable_features', ruleIDs.length ? ruleIDs : null);
 
       // update localstorage
-      prefs('disabled-features', ruleIDs);
+      const prefs = context.storageManager();
+      prefs.setItem('disabled-features', ruleIDs);
 
       _hidden = features.hidden();
       dispatch.call('change');
@@ -597,10 +597,11 @@ export function rendererFeatures(context) {
 
 
     features.init = function() {
-        var storage = prefs('disabled-features');
-        if (storage) {
-            var storageDisabled = storage.replace(/;/g, ',').split(',');
-            storageDisabled.forEach(features.disable);
+        const prefs = context.storageManager();
+        var disabledFeatures = prefs.getItem('disabled-features');
+        if (disabledFeatures) {
+            var toDisable = disabledFeatures.replace(/;/g, ',').split(',');
+            toDisable.forEach(features.disable);
         }
 
         context.urlhash().on('hashchange', _hashchange);

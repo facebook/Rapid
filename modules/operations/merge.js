@@ -14,8 +14,12 @@ export function operationMerge(context, selectedIDs) {
   let action = chooseAction();
 
   function chooseAction() {
+    const prefs = context.storageManager();
+    const tagnosticRoadCombine = prefs.getItem('rapid-internal-feature.tagnosticRoadCombine') === 'true';
+    const options = { tagnosticRoadCombine: tagnosticRoadCombine };
+
     // prefer a non-disabled action first
-    const join = actionJoin(selectedIDs);
+    const join = actionJoin(selectedIDs, options);
     if (!join.disabled(context.graph())) return join;
 
     const merge = actionMerge(selectedIDs);

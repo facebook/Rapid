@@ -4,7 +4,6 @@ import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/index';
 
 
@@ -105,7 +104,8 @@ export function operationStraighten(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+      const prefs = context.storageManager();
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
       return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
     }
 

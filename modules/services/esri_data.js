@@ -4,7 +4,6 @@ import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 
-import { locationManager } from '../core/LocationManager';
 import { Graph, Tree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
@@ -312,13 +311,13 @@ export default {
     tiles.forEach(tile => {
       if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
-      // exit if this tile covers a blocked region (all corners are blocked)
-      const corners = tile.wgs84Extent.polygon().slice(0, 4);
-      const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
-      if (tileBlocked) {
-        cache.loaded[tile.id] = true;  // don't try again
-        return;
-      }
+//      // exit if this tile covers a blocked region (all corners are blocked)
+//      const corners = tile.wgs84Extent.polygon().slice(0, 4);
+//      const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
+//      if (tileBlocked) {
+//        cache.loaded[tile.id] = true;  // don't try again
+//        return;
+//      }
 
       loadTilePage(ds, tile, 0);
     });

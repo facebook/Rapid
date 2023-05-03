@@ -1,4 +1,3 @@
-import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
 import { t } from '../core/localizer';
 import { uiIntro } from './intro';
@@ -10,6 +9,7 @@ export function uiSplash(context) {
     // Exception - if there are restorable changes, skip this splash screen.
     // This is because we currently only support one `uiModal` at a time
     //  and we need to show them `uiRestore`` instead of this one.
+    const prefs = context.storageManager();
     if (context.history().hasRestorableChanges()) return;
 
     // If user has not seen this version of the privacy policy, show the splash again.
@@ -23,8 +23,8 @@ export function uiSplash(context) {
 
     if (!showSplash) return;
 
-    prefs('sawSplash', true);
-    prefs('sawPrivacyVersion', context.privacyVersion);
+    prefs.setItem('sawSplash', true);
+    prefs.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // fetch intro graph data now, while user is looking at the splash screen
     fileFetcher.get('intro_graph');

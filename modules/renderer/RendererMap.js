@@ -5,7 +5,6 @@ import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vec
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
 
-import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
 import { utilGetDimensions } from '../util/dimensions';
 
@@ -58,9 +57,11 @@ export class RendererMap extends EventEmitter {
 
     // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
-    this._highlightEdits = false;                                   // whether to style edited features differently
-    this._currFillMode = prefs('area-fill') || 'partial';           // the current fill mode
-    this._toggleFillMode = prefs('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
+    this._highlightEdits = false;     // whether to style edited features differently
+
+    const prefs = this.context.storageManager();
+    this._currFillMode = prefs.getItem('area-fill') || 'partial';           // the current fill mode
+    this._toggleFillMode = prefs.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
 
     this._renderer = null;
     this._dimensions = [1, 1];
@@ -635,16 +636,17 @@ export class RendererMap extends EventEmitter {
     return this._currFillMode;
   }
   set areaFillMode(val) {
+    const prefs = this.context.storageManager();
     const current = this._currFillMode;
     if (current === val) return;  // no change
 
     if (current !== 'wireframe') {
       this._toggleFillMode = current;
-      prefs('area-fill-toggle', current);  // remember the previous *non-wireframe* fill mode
+      prefs.setItem('area-fill-toggle', current);  // remember the previous *non-wireframe* fill mode
     }
 
     this._currFillMode = val;
-    prefs('area-fill', val);
+    prefs.setItem('area-fill', val);
 
     this._renderer.scene.dirtyScene();
     this.immediateRedraw();

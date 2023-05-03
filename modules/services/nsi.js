@@ -1,6 +1,6 @@
 import { Matcher } from 'name-suggestion-index';
 
-import { fileFetcher, locationManager } from '../core';
+import { fileFetcher } from '../core';
 import { presetManager } from '../presets';
 
 // This service contains all the code related to the **name-suggestion-index** (aka NSI)
@@ -120,38 +120,41 @@ matcher.itemLocation = new Map();
 // We definitely need this, but don't need full geojson, just { properties: { area: xxx }}
 matcher.locationSets = new Map();
 
-Object.keys(_nsi.data).forEach(tkv => {
-  const items = _nsi.data[tkv].items;
-  if (!Array.isArray(items) || !items.length) return;
-
-  items.forEach(item => {
-    if (matcher.itemLocation.has(item.id)) return;   // we've seen item id already - shouldn't be possible?
-
-    const locationSetID = locationManager.locationSetID(item.locationSet);
-    matcher.itemLocation.set(item.id, locationSetID);
-
-    if (matcher.locationSets.has(locationSetID)) return;   // we've seen this locationSet before..
-
-    const fakeFeature = { id: locationSetID, properties: { id: locationSetID, area: 1 } };
-    matcher.locationSets.set(locationSetID, fakeFeature);
-  });
-});
+// restore locationManager for this to work
+//Object.keys(_nsi.data).forEach(tkv => {
+//  const items = _nsi.data[tkv].items;
+//  if (!Array.isArray(items) || !items.length) return;
+//
+//  items.forEach(item => {
+//    if (matcher.itemLocation.has(item.id)) return;   // we've seen item id already - shouldn't be possible?
+//
+//    const locationSetID = locationManager.locationSetID(item.locationSet);
+//    matcher.itemLocation.set(item.id, locationSetID);
+//
+//    if (matcher.locationSets.has(locationSetID)) return;   // we've seen this locationSet before..
+//
+//    const fakeFeature = { id: locationSetID, properties: { id: locationSetID, area: 1 } };
+//    matcher.locationSets.set(locationSetID, fakeFeature);
+//  });
+//});
 
 // The `locationIndex` is an instance of which-polygon spatial index for the locationSets.
 // We only really need this to _look like_ which-polygon query `_wp.locationIndex(bbox, true);`
 // i.e. it needs to return the properties of the locationsets
 matcher.locationIndex = (bbox) => {
-  const validHere = locationManager.locationSetsAt([bbox[0], bbox[1]]);
-  const results = [];
-
-  for (const [locationSetID, area] of Object.entries(validHere)) {
-    const fakeFeature = matcher.locationSets.get(locationSetID);
-    if (fakeFeature) {
-      fakeFeature.properties.area = area;
-      results.push(fakeFeature);
-    }
-  }
-  return results;
+// restore locationManager for this to work
+return [];
+//  const validHere = locationManager.locationSetsAt([bbox[0], bbox[1]]);
+//  const results = [];
+//
+//  for (const [locationSetID, area] of Object.entries(validHere)) {
+//    const fakeFeature = matcher.locationSets.get(locationSetID);
+//    if (fakeFeature) {
+//      fakeFeature.properties.area = area;
+//      results.push(fakeFeature);
+//    }
+//  }
+//  return results;
 };
 
 // *** END HACK ***

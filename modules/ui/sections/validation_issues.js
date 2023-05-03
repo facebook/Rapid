@@ -4,7 +4,6 @@ import { geoSphericalDistance } from '@rapid-sdk/math';
 
 import { actionNoop } from '../../actions/noop';
 import { uiIcon } from '../icon';
-import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
@@ -17,6 +16,7 @@ import { uiSection } from '../section';
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
+  const prefs = context.storageManager();
   const section = uiSection(sectionID, context)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)
@@ -60,7 +60,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // Creates the issues list if needed and updates it with the current issues
   //
   function drawIssuesList(selection, issues) {
-    const showAutoFix = (prefs('rapid-internal-feature.showAutoFix') === 'true');
+    const showAutoFix = (prefs.getItem('rapid-internal-feature.showAutoFix') === 'true');
 
     let list = selection.selectAll('.issues-list')
       .data([0]);
@@ -192,8 +192,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // get the current display options for the issues lists
   function getOptions() {
     return {
-      what: prefs('validate-what') || 'edited',
-      where: prefs('validate-where') || 'all'
+      what: prefs.getItem('validate-what') || 'edited',
+      where: prefs.getItem('validate-where') || 'all'
     };
   }
 

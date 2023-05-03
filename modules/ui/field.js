@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { utilUniqueString } from '@rapid-sdk/util';
 
 import { t, localizer } from '../core/localizer';
-import { locationManager } from '../core/LocationManager';
 import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 // import { uiFieldHelp } from './field_help';
@@ -309,6 +308,7 @@ export function uiField(context, presetField, entityIDs, options) {
     // An allowed field can appear in the UI or in the 'Add field' dropdown.
     // A non-allowed field is hidden from the user altogether
     field.isAllowed = function() {
+        var locationManager = context.locationManager();
 
         if (entityIDs &&
             entityIDs.length > 1 &&

@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { localizer } from '../core/localizer';
-import { prefs } from '../core/preferences';
 import { uiIcon } from './icon';
 import { utilFunctor } from '../util';
 import { utilRebind } from '../util/rebind';
@@ -9,6 +8,7 @@ import { uiToggle } from './toggle';
 
 
 export function uiDisclosure(context, key, expandedDefault) {
+  const prefs = context.storageManager();
   const dispatch = d3_dispatch('toggled');
   let _expanded;
   let _label = utilFunctor('');
@@ -17,9 +17,10 @@ export function uiDisclosure(context, key, expandedDefault) {
 
 
   let disclosure = function(selection) {
+
     if (_expanded === undefined || _expanded === null) {
       // loading _expanded here allows it to be reset by calling `disclosure.expanded(null)`
-      const preference = prefs(`disclosure.${key}.expanded`);
+      const preference = prefs.getItem(`disclosure.${key}.expanded`);
       _expanded = preference === null ? !!expandedDefault : (preference === 'true');
     }
 
@@ -75,7 +76,7 @@ export function uiDisclosure(context, key, expandedDefault) {
       _expanded = !_expanded;
 
       if (_updatePreference) {
-        prefs(`disclosure.${key}.expanded`, _expanded);
+        prefs.setItem(`disclosure.${key}.expanded`, _expanded);
       }
 
       hideToggle

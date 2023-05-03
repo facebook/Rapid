@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayGroupBy, utilUniqueString } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { osmChangeset } from '../osm';
 import { uiIcon } from './icon';
@@ -65,33 +64,35 @@ export function uiCommit(context) {
     // Creates an initial changeset
     //
     function initChangeset() {
+        const prefs = context.storageManager();
+
         // expire stored comment, hashtags, source after cutoff datetime - #3947 #4899
-        var commentDate = +prefs('commentDate') || 0;
+        var commentDate = +prefs.getItem('commentDate') || 0;
         var currDate = Date.now();
         var cutoff = 2 * 86400 * 1000;   // 2 days
         if (commentDate > currDate || currDate - commentDate > cutoff) {
-            prefs('comment', null);
-            prefs('hashtags', null);
-            prefs('source', null);
+            prefs.removeItem('comment');
+            prefs.removeItem('hashtags');
+            prefs.removeItem('source');
         }
 
         // load in explicitly-set values, if any
         if (context.defaultChangesetComment()) {
-            prefs('comment', context.defaultChangesetComment());
-            prefs('commentDate', Date.now());
+            prefs.setItem('comment', context.defaultChangesetComment());
+            prefs.setItem('commentDate', Date.now());
         }
         if (context.defaultChangesetSource()) {
-            prefs('source', context.defaultChangesetSource());
-            prefs('commentDate', Date.now());
+            prefs.setItem('source', context.defaultChangesetSource());
+            prefs.setItem('commentDate', Date.now());
         }
         if (context.defaultChangesetHashtags()) {
-            prefs('hashtags', context.defaultChangesetHashtags());
-            prefs('commentDate', Date.now());
+            prefs.setItem('hashtags', context.defaultChangesetHashtags());
+            prefs.setItem('commentDate', Date.now());
         }
 
         var detected = utilDetect();
         var tags = {
-            comment: prefs('comment') || '',
+            comment: prefs.getItem('comment') || '',
             created_by: context.cleanTagValue('Rapid ' + context.version),
             host: context.cleanTagValue(detected.host),
             locale: context.cleanTagValue(localizer.localeCode())
@@ -101,12 +102,12 @@ export function uiCommit(context) {
         // hashtags if any hashtags are found in the comment - #4304
         findHashtags(tags, true);
 
-        var hashtags = prefs('hashtags');
+        var hashtags = prefs.getItem('hashtags');
         if (hashtags) {
             tags.hashtags = hashtags;
         }
 
-        var source = prefs('source');
+        var source = prefs.getItem('source');
         if (source) {
             tags.source = source;
         }
@@ -479,21 +480,22 @@ export function uiCommit(context) {
 
 
     function changeTags(_, changed, onInput) {
+        const prefs = context.storageManager();
         if (changed.hasOwnProperty('comment')) {
             if (changed.comment === undefined) {
                 changed.comment = '';
             }
             if (!onInput) {
-                prefs('comment', changed.comment);
-                prefs('commentDate', Date.now());
+                prefs.setItem('comment', changed.comment);
+                prefs.setItem('commentDate', Date.now());
             }
         }
         if (changed.hasOwnProperty('source')) {
             if (changed.source === undefined) {
-                prefs('source', null);
+                prefs.removeItem('source');
             } else if (!onInput) {
-                prefs('source', changed.source);
-                prefs('commentDate', Date.now());
+                prefs.setItem('source', changed.source);
+                prefs.setItem('commentDate', Date.now());
             }
         }
         // no need to update `prefs` for `hashtags` here since it's done in `updateChangeset`
@@ -507,11 +509,12 @@ export function uiCommit(context) {
 
 
     function findHashtags(tags, commentOnly) {
+        const prefs = context.storageManager();
         var detectedHashtags = commentHashtags();
 
         if (detectedHashtags.length) {
             // always remove stored hashtags if there are hashtags in the comment - #4304
-            prefs('hashtags', null);
+            prefs.removeItem('hashtags');
         }
         if (!detectedHashtags.length || !commentOnly) {
             detectedHashtags = detectedHashtags.concat(hashtagHashtags());
@@ -561,6 +564,7 @@ export function uiCommit(context) {
 
 
     function updateChangeset(changed, onInput) {
+        const prefs = context.storageManager();
         var tags = Object.assign({}, context.changeset.tags);   // shallow copy
 
         Object.keys(changed).forEach(function(k) {
@@ -583,10 +587,10 @@ export function uiCommit(context) {
             var arr = findHashtags(tags, commentOnly);
             if (arr.length) {
                 tags.hashtags = context.cleanTagValue(arr.join(';'));
-                prefs('hashtags', tags.hashtags);
+                prefs.setItem('hashtags', tags.hashtags);
             } else {
                 delete tags.hashtags;
-                prefs('hashtags', null);
+                prefs.removeItem('hashtags');
             }
         }
 
@@ -598,17 +602,17 @@ export function uiCommit(context) {
             // first 100 edits - new user
             if (changesetsCount <= 100) {
                 var s;
-                s = prefs('walkthrough_completed');
+                s = prefs.getItem('walkthrough_completed');
                 if (s) {
                     tags['ideditor:walkthrough_completed'] = s;
                 }
 
-                s = prefs('walkthrough_progress');
+                s = prefs.getItem('walkthrough_progress');
                 if (s) {
                     tags['ideditor:walkthrough_progress'] = s;
                 }
 
-                s = prefs('walkthrough_started');
+                s = prefs.getItem('walkthrough_started');
                 if (s) {
                     tags['ideditor:walkthrough_started'] = s;
                 }

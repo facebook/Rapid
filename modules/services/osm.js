@@ -7,7 +7,6 @@ import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
-import { locationManager } from '../core/LocationManager';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
@@ -1143,13 +1142,13 @@ export default {
         if (_off) return;
         if (_tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
 
-        // exit if this tile covers a blocked region (all corners are blocked)
-        const corners = tile.wgs84Extent.polygon().slice(0, 4);
-        const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
-        if (tileBlocked) {
-            _tileCache.loaded[tile.id] = true;   // don't try again
-            return;
-        }
+//        // exit if this tile covers a blocked region (all corners are blocked)
+//        const corners = tile.wgs84Extent.polygon().slice(0, 4);
+//        const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
+//        if (tileBlocked) {
+//            _tileCache.loaded[tile.id] = true;   // don't try again
+//            return;
+//        }
 
         if (!hasInflightRequests(_tileCache)) {
             dispatch.call('loading');   // start the spinner
@@ -1238,13 +1237,13 @@ export default {
         tiles.forEach(function(tile) {
             if (_noteCache.loaded[tile.id] || _noteCache.inflight[tile.id]) return;
 
-            // exit if this tile covers a blocked region (all corners are blocked)
-            const corners = tile.wgs84Extent.polygon().slice(0, 4);
-            const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
-            if (tileBlocked) {
-                _noteCache.loaded[tile.id] = true;   // don't try again
-                return;
-            }
+//            // exit if this tile covers a blocked region (all corners are blocked)
+//            const corners = tile.wgs84Extent.polygon().slice(0, 4);
+//            const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
+//            if (tileBlocked) {
+//                _noteCache.loaded[tile.id] = true;   // don't try again
+//                return;
+//            }
 
             var options = { skipSeen: false };
             _noteCache.inflight[tile.id] = that.loadFromAPI(

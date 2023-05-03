@@ -1,4 +1,3 @@
-import { prefs } from '../core/preferences';
 import { t } from '../core/localizer';
 //import { actionChangeTags } from '../actions/change_tags';
 import { actionOrthogonalize } from '../actions/orthogonalize';
@@ -6,6 +5,7 @@ import { geoOrthoCanOrthogonalize } from '../geo/ortho';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { services } from '../services';
+
 
 export function validationUnsquareWay(context) {
     var type = 'unsquare_way';
@@ -55,7 +55,8 @@ export function validationUnsquareWay(context) {
 
 
         // user-configurable square threshold
-        var storedDegreeThreshold = prefs('validate-square-degrees');
+        const prefs = context.storageManager();
+        var storedDegreeThreshold = prefs.getItem('validate-square-degrees');
         var degreeThreshold = isNaN(storedDegreeThreshold) ? DEFAULT_DEG_THRESHOLD : parseFloat(storedDegreeThreshold);
 
         var points = nodes.map(function(node) { return context.projection.project(node.loc); });

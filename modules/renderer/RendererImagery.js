@@ -2,7 +2,6 @@ import { EventEmitter } from '@pixi/utils';
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
-import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
 
 import {
@@ -237,9 +236,11 @@ export class RendererImagery extends EventEmitter {
     const available = this.sources(map.extent(), map.zoom());
     const first = available[0];
     const best = available.find(s => s.best);
+    const prefs = this.context.storageManager();
+    const lastUsed = prefs.getItem('background-last-used') || '';
 
     return best ||
-      this.findSource(prefs('background-last-used')) ||
+      this.findSource(lastUsed) ||
       this.findSource('Bing') ||
       this.findSource('Maxar-Premium') ||
       first ||    // maybe this is a custom Rapid that doesn't include Bing or Maxar?
@@ -466,7 +467,8 @@ export class RendererImagery extends EventEmitter {
 
         // Add 'Custom' - seed it with whatever template the user has used previously
         const custom = new RendererImagerySourceCustom();
-        custom.template = prefs('background-custom-template') || '';
+        const prefs = this.context.storageManager();
+        custom.template = prefs.getItem('background-custom-template') || '';
         this._imageryIndex.sources.set(custom.id, custom);
 
         // Default the locator overlay to "on"..

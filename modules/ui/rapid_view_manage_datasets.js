@@ -4,7 +4,6 @@ import { Extent } from '@rapid-sdk/math';
 import { marked } from 'marked';
 
 import { t } from '../core/localizer';
-import { prefs } from '../core/preferences';
 import { services } from '../services';
 import { uiIcon } from './icon';
 import { uiCombobox} from './combobox';
@@ -236,7 +235,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     const status = selection.selectAll('.rapid-view-manage-datasets-status');
     const results = selection.selectAll('.rapid-view-manage-datasets');
 
-    const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
+    const prefs = context.storageManager();
+    const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const service = services.esriData;
 
     if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {

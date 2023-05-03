@@ -4,7 +4,6 @@ import { select as d3_select } from 'd3-selection';
 import { resolveStrings } from 'osm-community-index';
 
 import { fileFetcher } from '../core/file_fetcher';
-import { locationManager } from '../core/LocationManager';
 import { t, localizer } from '../core/localizer';
 
 import { uiIcon } from './icon';
@@ -33,6 +32,7 @@ export function uiSuccess(context) {
         if (_oci) return _oci;
 
         // Merge Custom Features
+        const locationManager = context.locationManager();
         if (vals[0] && Array.isArray(vals[0].features)) {
           locationManager.mergeCustomGeoJSON(vals[0]);
         }
@@ -159,6 +159,7 @@ export function uiSuccess(context) {
     ensureOSMCommunityIndex()
       .then(oci => {
         const loc = context.map().center();
+        const locationManager = context.locationManager();
         const validHere = locationManager.locationSetsAt(loc);
 
         // Gather the communities

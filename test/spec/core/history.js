@@ -12,7 +12,8 @@ describe('coreHistory', function () {
         history = context.history();
         spy = sinon.spy();
         // clear lock
-        Rapid.prefs(history._getKey('lock'), null);
+        const prefs = context.storageManager();
+        prefs.removeItem(history._getKey('lock'));
     });
 
     describe('#graph', function () {

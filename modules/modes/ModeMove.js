@@ -3,7 +3,6 @@ import { vecSubtract } from '@rapid-sdk/math';
 import { AbstractMode } from './AbstractMode';
 import { actionMove } from '../actions/move';
 import { actionNoop } from '../actions/noop';
-import { locationManager } from '../core/LocationManager';
 import { modeSelect } from './select';
 import { t } from '../core/localizer';
 
@@ -131,6 +130,7 @@ export class ModeMove extends AbstractMode {
     }
 
     const currLoc = context.map().mouseLoc();
+    const locationManager = context.locationManager();
     if (locationManager.blocksAt(currLoc).length) {  // editing is blocked here
       this._cancel();
       return;

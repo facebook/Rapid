@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { Extent } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@rapid-sdk/util';
 
-import { prefs } from './preferences';
 import { Difference } from './Difference';
 import { modeSelect } from '../modes/select';
 import { utilRebind } from '../util';
@@ -12,6 +11,7 @@ import * as Validations from '../validations/index';
 export function coreValidator(context) {
   let dispatch = d3_dispatch('validated', 'focusedIssue');
   let validator = utilRebind({}, dispatch, 'on');
+  const prefs = context.storageManager();
 
   let _rules = {};
   let _disabledRules = {};
@@ -85,7 +85,7 @@ export function coreValidator(context) {
       _rules[key] = fn;
     });
 
-    const disabledRules = prefs('validate-disabledRules');
+    const disabledRules = prefs.getItem('validate-disabledRules');
     if (disabledRules) {
       disabledRules.split(',').forEach(k => _disabledRules[k] = true);
     }
@@ -431,7 +431,7 @@ export function coreValidator(context) {
       _disabledRules[key] = true;
     }
 
-    prefs('validate-disabledRules', Object.keys(_disabledRules).join(','));
+    prefs.setItem('validate-disabledRules', Object.keys(_disabledRules).join(','));
     validator.validate();
   };
 
@@ -447,7 +447,7 @@ export function coreValidator(context) {
     _disabledRules = {};
     keys.forEach(k => _disabledRules[k] = true);
 
-    prefs('validate-disabledRules', Object.keys(_disabledRules).join(','));
+    prefs.setItem('validate-disabledRules', Object.keys(_disabledRules).join(','));
     validator.validate();
   };
 

@@ -2,14 +2,14 @@ import { t } from '../core/localizer';
 import { uiIntro } from './intro';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { prefs } from '../core/preferences';
 
 
 export function uiRapidSplash(context) {
 
-  return function(selection) {
-    if (prefs('sawRapidSplash')) return;
-    prefs('sawRapidSplash', true);
+  return function render(selection) {
+    const prefs = context.storageManager();
+    if (prefs.getItem('sawRapidSplash')) return;
+    prefs.setItem('sawRapidSplash', true);
 
     const modalSelection = uiModal(selection);
 

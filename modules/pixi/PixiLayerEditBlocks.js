@@ -1,6 +1,5 @@
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { locationManager } from '../core/LocationManager';
 
 const MINZOOM = 4;
 
@@ -48,6 +47,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
     if (zoom >= MINZOOM) {
       const viewport = this.context.map().extent().rectangle();
+      const locationManager = this.context.locationManager();
       blocks = locationManager.wpblocks().bbox(viewport);
       this.renderEditBlocks(frame, projection, zoom, blocks);
 
@@ -89,6 +89,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * @param  blocks       Array of block data visible in the view
    */
   renderEditBlocks(frame, projection, zoom, blocks) {
+    const locationManager = this.context.locationManager();
     const parentContainer = this.scene.groups.get('blocks');
     const BLOCK_STYLE = {
       requireFill: true,    // no partial fill option - must fill fully

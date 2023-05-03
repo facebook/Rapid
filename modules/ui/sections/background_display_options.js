@@ -1,15 +1,15 @@
-import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundDisplayOptions(context) {
+  const prefs = context.storageManager();
   const section = uiSection('background-display-options', context)
     .label(t.html('background.display_options'))
     .disclosureContent(renderDisclosureContent);
 
-  let _storedOpacity = prefs('background-opacity');
+  let _storedOpacity = prefs.getItem('background-opacity');
   const MINVAL = 0;
   const MAXVAL = 3;
   const SETTINGS = ['brightness', 'contrast', 'saturation', 'sharpness'];
@@ -32,7 +32,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
     const imagery = context.imagery();
     _options[d] = val;
     if (d === 'brightness') {
-      prefs('background-opacity', val);
+      prefs.setItem('background-opacity', val);
       imagery.brightness = val;
     } else if (d === 'contrast') {
       imagery.contrast = val;

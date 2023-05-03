@@ -5,7 +5,6 @@ import { actionExtract } from '../actions/extract';
 import { actionMove } from '../actions/move';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { t } from '../core/localizer';
-import { prefs } from '../core/preferences';
 import { presetManager } from '../presets';
 import { utilTotalExtent } from '../util';
 
@@ -81,7 +80,8 @@ export function operationExtract(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+      const prefs = context.storageManager();
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
       return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
     }
   };

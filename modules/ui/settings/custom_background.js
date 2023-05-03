@@ -1,23 +1,19 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { marked } from 'marked';
 
-import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { uiConfirm } from '../confirm';
 import { utilNoAuto, utilRebind } from '../../util';
 
 
-export function uiSettingsCustomBackground() {
+export function uiSettingsCustomBackground(context) {
+    const prefs = context.storageManager();
     var dispatch = d3_dispatch('change');
 
     function render(selection) {
         // keep separate copies of original and current settings
-        var _origSettings = {
-            template: prefs('background-custom-template')
-        };
-        var _currSettings = {
-            template: prefs('background-custom-template')
-        };
+        var _origSettings = { template: prefs.getItem('background-custom-template') };
+        var _currSettings = Object.assign({}, _origSettings);
 
         var example = 'https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png';
         var modal = uiConfirm(selection).okButton();
@@ -89,7 +85,7 @@ export function uiSettingsCustomBackground() {
         // restore the original template
         function clickCancel() {
             textSection.select('.field-template').property('value', _origSettings.template);
-            prefs('background-custom-template', _origSettings.template);
+            prefs.setItem('background-custom-template', _origSettings.template);
             this.blur();
             modal.close();
         }
@@ -97,7 +93,7 @@ export function uiSettingsCustomBackground() {
         // accept the current template
         function clickSave() {
             _currSettings.template = textSection.select('.field-template').property('value');
-            prefs('background-custom-template', _currSettings.template);
+            prefs.setItem('background-custom-template', _currSettings.template);
             this.blur();
             modal.close();
             dispatch.call('change', this, _currSettings);

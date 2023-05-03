@@ -3,11 +3,11 @@ export { coreFileFetcher, fileFetcher } from './file_fetcher';
 export { coreHistory } from './history';
 export { coreRapidContext } from './rapid_context';
 export { coreLocalizer, t, localizer } from './localizer';
-export { prefs } from './preferences';
 export { coreUploader } from './uploader';
 export { coreValidator } from './validator';
 
 export { Difference } from './Difference';
 export { Graph } from './Graph';
-export { LocationManager, locationManager } from './LocationManager';
+export { LocationManager } from './LocationManager';
+export { StorageManager } from './StorageManager';
 export { Tree } from './Tree';

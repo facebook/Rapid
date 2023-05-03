@@ -1,19 +1,18 @@
 import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { prefs } from '../core/preferences';
 import { marked } from 'marked';
 
 
-export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-vars
+export function uiRapidWhatsNew(context) {
+  // If user has not seen this version of the what's new screen, show it again.
+  // Just bump the version to a higher number to get it to come back.
+  const currWhatsNewVersion = 20230323;
   let _dontShowAgain = false;
 
-
-  return function(selection) {
-    // If user has not seen this version of the what's new screen, show it again.
-    // Just bump the version to a higher number to get it to come back.
-    const currWhatsNewVersion = 20230323;
-    const sawWhatsNewVersion = parseInt(prefs('sawWhatsNewVersion'), 10) || 0;
+  return function render(selection) {
+    const prefs = context.storageManager();
+    const sawWhatsNewVersion = parseInt(prefs.getItem('sawWhatsNewVersion'), 10) || 0;
     if (sawWhatsNewVersion === currWhatsNewVersion) return;
 
     const modalSelection = uiModal(selection);
@@ -103,7 +102,7 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
       .text(t('rapid_whats_new.ok'))
       .on('click', () => {
         if (_dontShowAgain) {
-          prefs('sawWhatsNewVersion', currWhatsNewVersion);
+          prefs.setItem('sawWhatsNewVersion', currWhatsNewVersion);
         }
         modalSelection.close();
       });

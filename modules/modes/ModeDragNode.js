@@ -7,7 +7,6 @@ import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
-import { locationManager } from '../core/LocationManager';
 import { modeSelect } from './select';
 import { osmNode } from '../osm';
 import { presetManager } from '../presets';
@@ -212,6 +211,7 @@ export class ModeDragNode extends AbstractMode {
       loc = projection.invert(adjustedCoord);
     }
 
+    const locationManager = context.locationManager();
     if (locationManager.blocksAt(loc).length) {  // editing is blocked here
       this._cancel();
       return;

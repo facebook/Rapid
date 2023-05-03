@@ -7,7 +7,6 @@ import { actionAddVertex } from '../actions/add_vertex';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
-import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
 import { t } from '../core/localizer';
@@ -241,6 +240,7 @@ export class ModeDrawArea extends AbstractMode {
     const coord = eventData.coord;
     const loc = projection.invert(coord);
 
+    const locationManager = context.locationManager();
     if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.

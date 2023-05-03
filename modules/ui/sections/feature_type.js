@@ -11,7 +11,6 @@ import { uiTagReference } from '../tag_reference';
 
 
 export function uiSectionFeatureType(context) {
-
     var dispatch = d3_dispatch('choose');
 
     var _entityIDs = [];
@@ -87,7 +86,7 @@ export function uiSectionFeatureType(context) {
 
         var geometries = entityGeometries();
         selection.select('.preset-list-item button')
-            .call(uiPresetIcon()
+            .call(uiPresetIcon(context)
                 .geometry(_presets.length === 1 ? (geometries.length === 1 && geometries[0]) : null)
                 .preset(_presets.length === 1 ? _presets[0] : presetManager.item('point'))
             );

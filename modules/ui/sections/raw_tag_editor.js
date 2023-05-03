@@ -7,13 +7,12 @@ import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTagReference } from '../tag_reference';
-import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSectionRawTagEditor(id, context) {
-
+    const prefs = context.storageManager();
     var section = uiSection(id, context)
         .classes('raw-tag-editor')
         .label(function() {
@@ -30,7 +29,7 @@ export function uiSectionRawTagEditor(id, context) {
         { id: 'text', icon: '#fas-i-cursor' }
     ];
 
-    var _tagView = (prefs('raw-tag-editor-view') || 'list');   // 'list, 'text'
+    var _tagView = (prefs.getItem('raw-tag-editor-view') || 'list');   // 'list, 'text'
     var _readOnlyTags = [];
     // the keys in the order we want them to display
     var _orderedKeys = [];
@@ -98,7 +97,7 @@ export function uiSectionRawTagEditor(id, context) {
             .attr('title', function(d) { return t('icons.' + d.id); })
             .on('click', function(d3_event, d) {
                 _tagView = d.id;
-                prefs('raw-tag-editor-view', d.id);
+                prefs.setItem('raw-tag-editor-view', d.id);
 
                 wrap.selectAll('.raw-tag-option')
                     .classed('selected', function(datum) { return datum === d; });

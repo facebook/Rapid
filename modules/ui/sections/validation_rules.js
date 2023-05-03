@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto } from '../../util';
 import { uiTooltip } from '../tooltip';
@@ -12,6 +11,7 @@ export function uiSectionValidationRules(context) {
   const MAXSQUARE = 20;
   const DEFAULTSQUARE = 5;  // see also unsquare_way.js
 
+  const prefs = context.storageManager();
   const section = uiSection('issues-rules', context)
     .disclosureContent(renderDisclosureContent)
     .label(t.html('issues.rules.title'));
@@ -121,7 +121,7 @@ export function uiSectionValidationRules(context) {
 
 
     // user-configurable square threshold
-    let degStr = prefs('validate-square-degrees');
+    let degStr = prefs.getItem('validate-square-degrees');
     if (degStr === null) {
       degStr = DEFAULTSQUARE.toString();
     }
@@ -175,7 +175,7 @@ export function uiSectionValidationRules(context) {
     input
       .property('value', degStr);
 
-    prefs('validate-square-degrees', degStr);
+    prefs.setItem('validate-square-degrees', degStr);
     context.validator().revalidateUnsquare();
   }
 
