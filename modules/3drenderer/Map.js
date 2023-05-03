@@ -2,8 +2,7 @@ import { Map as mapLibreMap } from 'maplibre-gl';
 
 export class Map {
   constructor(id) {
-    this.building3dlayerSpec = this.get3DBuildingLayerSpec('3D Buildings', '#ff26db', 'osmbuildings');
-    this.building3dSelectedLayerSpec = this.get3DBuildingLayerSpec('Selected 3D Buildings','#01d4fa', 'osmselectedbuildings');
+    this.building3dlayerSpec = this.get3DBuildingLayerSpec('3D Buildings', 'osmbuildings');
 
     this.map = new mapLibreMap({
       container: id,
@@ -28,7 +27,6 @@ export class Map {
         data: { type: 'FeatureCollection', features: [] },
       });
       this.map.addLayer(this.building3dlayerSpec);
-      this.map.addLayer(this.building3dSelectedLayerSpec);
 
       //Turn off the existing 3d building data that ships with the vector tile- we don't want to
       // have that data competing with the custom data layer we want to render. Drawing both is bad!
@@ -42,14 +40,20 @@ export class Map {
    * @param {string} color a CSS hex color with leading '#', like '#ff26db'
    * @returns
    */
-  get3DBuildingLayerSpec(id, color, source) {
+  get3DBuildingLayerSpec(id, source) {
     return {
       id: id,
       type: 'fill-extrusion',
       source: source,
       layout: {},
       paint: {
-        'fill-extrusion-color': color,
+        'fill-extrusion-color': [
+          'match',
+          ['get', 'selected'],
+          'true',
+          '#01d4fa',
+          /* other */ '#ff26db',
+        ],
 
         // use an 'interpolate' expression to add a smooth transition effect to the
         // buildings as the user zooms in

@@ -54,6 +54,7 @@ export function ui3DMap(context) {
           type: 'Feature',
           properties: {
             extrude: true,
+            selected: selectedIDs.includes(buildingEnt.id).toString(),
             min_height: buildingEnt.tags.min_height
               ? parseFloat(buildingEnt.tags.min_height)
               : 0,
@@ -66,13 +67,7 @@ export function ui3DMap(context) {
           geometry: gj,
         }
 
-        // We need to divy the buildings into different layers depending on how we want them styled.
-        // unselected buildings look different from selected buildings, and must go into a separate layer.
-        if (selectedIDs.includes(buildingEnt.id)) {
-          selectedFeatures.push(newFeature);
-        } else {
         features.push(newFeature);
-        }
       }
 
       const buildingSource = _map.map.getSource('osmbuildings');
@@ -83,15 +78,6 @@ export function ui3DMap(context) {
           features: features,
         });
       }
-      const selectedBuildingSource = _map.map.getSource('osmselectedbuildings');
-
-      if (selectedBuildingSource) {
-        selectedBuildingSource.setData({
-          type: 'FeatureCollection',
-          features: selectedFeatures,
-        });
-      }
-
     }
 
     function toggle(d3_event) {
