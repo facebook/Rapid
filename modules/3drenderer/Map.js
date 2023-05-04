@@ -1,4 +1,6 @@
 import { Map as mapLibreMap } from 'maplibre-gl';
+import { STYLES } from '../pixi/styles';
+import * as PIXI from 'pixi.js';
 
 export class Map {
   constructor(id) {
@@ -25,7 +27,7 @@ export class Map {
         data: { type: 'FeatureCollection', features: [] },
       });
       this.map.addLayer(this.roadlayerSpec);
-      
+
       this.map.addSource('osmbuildings', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
@@ -112,12 +114,32 @@ export class Map {
        "paint": {
          "line-color": [
            "match",
-           ["get", "class"],
-           "motorway",
-           "hsl(35,100%,76%)",
-           ["trunk", "primary"],
-           "hsl(48,100%,83%)",
-           "hsl(0,0%,100%)"
+           ["get", "motorway"],
+             "trunk", PIXI.utils.hex2string(STYLES.trunk.stroke.color),
+             "primary", PIXI.utils.hex2string(STYLES.primary.stroke.color),
+             "unclassified", PIXI.utils.hex2string(STYLES.unclassified.stroke.color),
+             "footway", PIXI.utils.hex2string(STYLES.footway.stroke.color),
+             "pedestrian", PIXI.utils.hex2string(STYLES.pedestrian.stroke.color),
+          //  ["match", ["get", "highway"], ["motorway"], STYLES.motorway],
+          //  ["match", ["get", "highway"], ["primary"], STYLES.primary],
+          //  ["match", ["get", "highway"], ["secondary"], STYLES.secondary],
+          //  ["match", ["get", "highway"], ["tertiary"], STYLES.tertiary],
+          //  ["match", ["get", "highway"], ["unclassified"], STYLES.unclassified],
+          //  ["match", ["get", "highway"], ["residential"], STYLES.residential],
+          //  ["match", ["get", "highway"], ["living_street"], STYLES.living_street],
+          //  ["match", ["get", "highway"], ["service"], STYLES.service],
+          //  ["match", ["get", "highway"], ["special_service"], STYLES.special_service],
+          //  ["match", ["get", "highway"], ["track"], STYLES.track],
+          //  ["match", ["get", "highway"], ["pedestrian"], STYLES.pedestrian],
+          //  ["match", ["get", "highway"], ["path"], STYLES.path],
+          //  ["match", ["get", "highway"], ["footway"], STYLES.footway],
+          //  ["match", ["get", "highway"], ["crossing_marked"], STYLES.crossing_marked],
+          //  ["match", ["get", "highway"], ["crossing_unmarked"], STYLES.crossing_unmarked],
+          //  ["match", ["get", "highway"], ["cycleway"], STYLES.cycleway],
+          //  ["match", ["get", "highway"], ["bridleway"], STYLES.bridleway],
+          //  ["match", ["get", "highway"], ["corridor"], STYLES.corridor],
+          //  ["match", ["get", "highway"], ["steps"], STYLES.steps],
+            "hsl(100,70%,60%)"
          ],
          "line-width": [
            "interpolate",
