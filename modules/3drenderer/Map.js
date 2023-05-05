@@ -5,7 +5,8 @@ import * as PIXI from 'pixi.js';
 export class Map {
   constructor(id) {
     this.building3dlayerSpec = this.get3DBuildingLayerSpec('3D Buildings', 'osmbuildings');
-    this.roadlayerSpec = this.getRoadLayerSpec('Roads', 'osmroads');
+    this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
+    this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
 
     this.map = new mapLibreMap({
       container: id,
@@ -26,7 +27,8 @@ export class Map {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
-      this.map.addLayer(this.roadlayerSpec);
+      this.map.addLayer(this.roadCasinglayerSpec);
+      this.map.addLayer(this.roadStrokelayerSpec);
 
       this.map.addSource('osmbuildings', {
         type: 'geojson',
@@ -91,18 +93,101 @@ export class Map {
       },
     };
   }
+   /**
+   * getRoadCasingLayerSpec
+   * Returns a maplibre layer style specification that widens the road casing to be just above the stroke.
+   * @param {string} id the id of the layer that the source data shall be applied to
+   * @param {string} source the source geojson data that to be rendered
+   * @returns the specification object with mapbox styling rules for the 'highway' tag data.
+   */
+   getRoadCasingLayerSpec(id, source) {
+    return {
+      "id": id + "-casing",
+      "type": "line",
+      "source": source,
+      "minzoom": 4,
+      "layout": {
+        "line-cap": "butt",
+        "line-join": "round",
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": [
+          "match",
+          ["get", "highway"],
+           "trunk", PIXI.utils.hex2string(STYLES.trunk.casing.color),
+           "primary", PIXI.utils.hex2string(STYLES.primary.casing.color),
+           "unclassified", PIXI.utils.hex2string(STYLES.unclassified.casing.color),
+           "footway", PIXI.utils.hex2string(STYLES.footway.casing.color),
+           "pedestrian", PIXI.utils.hex2string(STYLES.pedestrian.casing.color),
+           "motorway", PIXI.utils.hex2string(STYLES.motorway.casing.color),
+           "secondary", PIXI.utils.hex2string(STYLES.secondary.casing.color),
+           "tertiary", PIXI.utils.hex2string(STYLES.tertiary.casing.color),
+           "residential", PIXI.utils.hex2string(STYLES.residential.casing.color),
+           "living_street", PIXI.utils.hex2string(STYLES.living_street.casing.color),
+           "service", PIXI.utils.hex2string(STYLES.service.casing.color),
+           "special_service", PIXI.utils.hex2string(STYLES.special_service.casing.color),
+           "track", PIXI.utils.hex2string(STYLES.track.casing.color),
+           "path", PIXI.utils.hex2string(STYLES.path.casing.color),
+           "crossing_marked", PIXI.utils.hex2string(STYLES.crossing_marked.casing.color),
+           "crossing_unmarked", PIXI.utils.hex2string(STYLES.crossing_unmarked.casing.color),
+           "cycleway", PIXI.utils.hex2string(STYLES.cycleway.casing.color),
+           "bridleway", PIXI.utils.hex2string(STYLES.bridleway.casing.color),
+           "corridor", PIXI.utils.hex2string(STYLES.corridor.casing.color),
+           "steps", PIXI.utils.hex2string(STYLES.steps.casing.color),
+           "hsl(100,70%,100%)"
+        ],
+        "line-width": [
+          "interpolate",
+          ["linear", 2],
+          ["zoom"],
+          6,
+          0,
+          7,
+          [
+            "match",
+            ["get", "highway"],
+            ["motorway", "trunk", "primary"],
+            10,
+            ["secondary", "unclassified"],
+            8,
+            ["tertiary"],
+            8,
+            ["minor", "service", "track", "footway", "pedestrian"],
+            4,
+            4
+          ],
+          20,
+          [
+            "match",
+            ["get", "highway"],
+            ["motorway", "trunk", "primary"],
+            13,
+            ["secondary","unclassified"],
+            13,
+            ["tertiary"],
+            13,
+            ["minor", "service", "track", "footway", "pedestrian"],
+            9,
+            9
+          ]
+        ],
+      },
+    };
+ }
 
    /**
-   * getRoadLayerSpec
-   * Returns a maplibre layer style specification that appropriately
+   * getRoadStrokeLayerSpec
+   * Returns a maplibre layer style specification that appropriately styles the road stroke to be just thinner than the casing.
+   * Also uses the same stroke color as the main OSM styling.
    * @param {string} id the id of the layer that the source data shall be applied to
    * @param {string} source the source geojson data that to be rendered
    * @returns
    * @returns
    */
-   getRoadLayerSpec(id, source) {
+   getRoadStrokeLayerSpec(id, source) {
      return {
-       "id": id,
+       "id": id + "-stroke",
        "type": "line",
        "source": source,
        "minzoom": 4,
@@ -114,32 +199,28 @@ export class Map {
        "paint": {
          "line-color": [
            "match",
-           ["get", "motorway"],
-             "trunk", PIXI.utils.hex2string(STYLES.trunk.stroke.color),
-             "primary", PIXI.utils.hex2string(STYLES.primary.stroke.color),
-             "unclassified", PIXI.utils.hex2string(STYLES.unclassified.stroke.color),
-             "footway", PIXI.utils.hex2string(STYLES.footway.stroke.color),
-             "pedestrian", PIXI.utils.hex2string(STYLES.pedestrian.stroke.color),
-          //  ["match", ["get", "highway"], ["motorway"], STYLES.motorway],
-          //  ["match", ["get", "highway"], ["primary"], STYLES.primary],
-          //  ["match", ["get", "highway"], ["secondary"], STYLES.secondary],
-          //  ["match", ["get", "highway"], ["tertiary"], STYLES.tertiary],
-          //  ["match", ["get", "highway"], ["unclassified"], STYLES.unclassified],
-          //  ["match", ["get", "highway"], ["residential"], STYLES.residential],
-          //  ["match", ["get", "highway"], ["living_street"], STYLES.living_street],
-          //  ["match", ["get", "highway"], ["service"], STYLES.service],
-          //  ["match", ["get", "highway"], ["special_service"], STYLES.special_service],
-          //  ["match", ["get", "highway"], ["track"], STYLES.track],
-          //  ["match", ["get", "highway"], ["pedestrian"], STYLES.pedestrian],
-          //  ["match", ["get", "highway"], ["path"], STYLES.path],
-          //  ["match", ["get", "highway"], ["footway"], STYLES.footway],
-          //  ["match", ["get", "highway"], ["crossing_marked"], STYLES.crossing_marked],
-          //  ["match", ["get", "highway"], ["crossing_unmarked"], STYLES.crossing_unmarked],
-          //  ["match", ["get", "highway"], ["cycleway"], STYLES.cycleway],
-          //  ["match", ["get", "highway"], ["bridleway"], STYLES.bridleway],
-          //  ["match", ["get", "highway"], ["corridor"], STYLES.corridor],
-          //  ["match", ["get", "highway"], ["steps"], STYLES.steps],
-            "hsl(100,70%,60%)"
+           ["get", "highway"],
+            "trunk", PIXI.utils.hex2string(STYLES.trunk.stroke.color),
+            "primary", PIXI.utils.hex2string(STYLES.primary.stroke.color),
+            "unclassified", PIXI.utils.hex2string(STYLES.unclassified.stroke.color),
+            "footway", PIXI.utils.hex2string(STYLES.footway.stroke.color),
+            "pedestrian", PIXI.utils.hex2string(STYLES.pedestrian.stroke.color),
+            "motorway", PIXI.utils.hex2string(STYLES.motorway.stroke.color),
+            "secondary", PIXI.utils.hex2string(STYLES.secondary.stroke.color),
+            "tertiary", PIXI.utils.hex2string(STYLES.tertiary.stroke.color),
+            "residential", PIXI.utils.hex2string(STYLES.residential.stroke.color),
+            "living_street", PIXI.utils.hex2string(STYLES.living_street.stroke.color),
+            "service", PIXI.utils.hex2string(STYLES.service.stroke.color),
+            "special_service", PIXI.utils.hex2string(STYLES.special_service.stroke.color),
+            "track", PIXI.utils.hex2string(STYLES.track.stroke.color),
+            "path", PIXI.utils.hex2string(STYLES.path.stroke.color),
+            "crossing_marked", PIXI.utils.hex2string(STYLES.crossing_marked.stroke.color),
+            "crossing_unmarked", PIXI.utils.hex2string(STYLES.crossing_unmarked.stroke.color),
+            "cycleway", PIXI.utils.hex2string(STYLES.cycleway.stroke.color),
+            "bridleway", PIXI.utils.hex2string(STYLES.bridleway.stroke.color),
+            "corridor", PIXI.utils.hex2string(STYLES.corridor.stroke.color),
+            "steps", PIXI.utils.hex2string(STYLES.steps.stroke.color),
+            "hsl(100,70%,50%)"
          ],
          "line-width": [
            "interpolate",
@@ -147,114 +228,36 @@ export class Map {
            ["zoom"],
            5,
            0.5,
-           6,
-           [
-             "match",
-             ["get", "class"],
-             ["motorway"],
-             ["match", ["get", "brunnel"], ["bridge"], 0, 1],
-             ["trunk", "primary"],
-             0,
-             0
-           ],
-           10,
-           [
-             "match",
-             ["get", "class"],
-             ["motorway"],
-             ["match", ["get", "ramp"], 1, 0, 2.5],
-             ["trunk", "primary"],
-             1.5,
-             1
-           ],
-           12,
-           [
-             "match",
-             ["get", "class"],
-             ["motorway"],
-             ["match", ["get", "ramp"], 1, 1, 4],
-             ["trunk"],
-             2.5,
-             ["primary"],
-             2.5,
-             ["secondary", "tertiary"],
-             1.5,
-             ["minor", "service", "track"],
-             1,
-             1
-           ],
-           14,
-           [
-             "match",
-             ["get", "class"],
-             ["motorway"],
-             ["match", ["get", "ramp"], 1, 5, 6],
-             ["trunk"],
-             3,
-             ["primary"],
-             5,
-             ["secondary"],
-             4,
-             ["tertiary"],
-             3,
-             ["minor", "service", "track"],
-             2,
-             2
-           ],
            16,
            [
              "match",
-             ["get", "class"],
+             ["get", "highway"],
              ["motorway", "trunk", "primary"],
              8,
-             ["secondary"],
+             ["secondary", "unclassified"],
              7,
              ["tertiary"],
              6,
-             ["minor", "service", "track"],
+             ["minor", "service", "track", "footway", "pedestrian"],
              4,
              4
            ],
            20,
            [
              "match",
-             ["get", "class"],
+             ["get", "highway"],
              ["motorway", "trunk", "primary"],
-             24,
-             ["secondary"],
-             24,
+             12,
+             ["secondary", "unclassified"],
+             12,
              ["tertiary"],
-             24,
-             ["minor", "service", "track"],
-             16,
-             16
+             12,
+             ["minor", "service", "track", "footway", "pedestrian"],
+             8,
+             8
            ]
-         ]
+         ],
        },
-       "metadata": {},
-       "filter": [
-         "all",
-         ["!=", "brunnel", "tunnel"],
-         [
-           "!in",
-           "class",
-           "ferry",
-           "rail",
-           "transit",
-           "pier",
-           "bridge",
-           "path",
-           "aerialway",
-           "motorway_construction",
-           "trunk_construction",
-           "primary_construction",
-           "secondary_construction",
-           "tertiary_construction",
-           "minor_construction",
-           "service_construction",
-           "track_construction"
-         ]
-       ]
      };
   }
 }

@@ -171,7 +171,7 @@ function generateRoadLayer(context, roadEnts, _map) {
       type: 'Feature',
       properties: {
         selected: selectedIDs.includes(roadEnt.id).toString(),
-        motorway: roadEnt.tags.highway,
+        highway: roadEnt.tags.highway,
       },
       geometry: gj,
     };
