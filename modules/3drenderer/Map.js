@@ -118,8 +118,8 @@ export class Map {
            "trunk", PIXI.utils.hex2string(STYLES.trunk.casing.color),
            "primary", PIXI.utils.hex2string(STYLES.primary.casing.color),
            "unclassified", PIXI.utils.hex2string(STYLES.unclassified.casing.color),
-           "footway", PIXI.utils.hex2string(STYLES.footway.casing.color),
-           "pedestrian", PIXI.utils.hex2string(STYLES.pedestrian.casing.color),
+           "footway", PIXI.utils.hex2string(STYLES.special_service.casing.color), //Intentional Override- white doesn't show up
+           "pedestrian", PIXI.utils.hex2string(STYLES.special_service.casing.color),
            "motorway", PIXI.utils.hex2string(STYLES.motorway.casing.color),
            "secondary", PIXI.utils.hex2string(STYLES.secondary.casing.color),
            "tertiary", PIXI.utils.hex2string(STYLES.tertiary.casing.color),
@@ -131,7 +131,7 @@ export class Map {
            "path", PIXI.utils.hex2string(STYLES.path.casing.color),
            "crossing_marked", PIXI.utils.hex2string(STYLES.crossing_marked.casing.color),
            "crossing_unmarked", PIXI.utils.hex2string(STYLES.crossing_unmarked.casing.color),
-           "cycleway", PIXI.utils.hex2string(STYLES.cycleway.casing.color),
+           "cycleway", PIXI.utils.hex2string(STYLES.river.stroke.color),
            "bridleway", PIXI.utils.hex2string(STYLES.bridleway.casing.color),
            "corridor", PIXI.utils.hex2string(STYLES.corridor.casing.color),
            "steps", PIXI.utils.hex2string(STYLES.steps.casing.color),
@@ -153,7 +153,7 @@ export class Map {
             8,
             ["tertiary"],
             8,
-            ["minor", "service", "track", "footway", "pedestrian"],
+            ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
             4,
             4
           ],
@@ -167,7 +167,7 @@ export class Map {
             13,
             ["tertiary"],
             13,
-            ["minor", "service", "track", "footway", "pedestrian"],
+            ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
             9,
             9
           ]
@@ -222,6 +222,32 @@ export class Map {
             "steps", PIXI.utils.hex2string(STYLES.steps.stroke.color),
             "hsl(100,70%,50%)"
          ],
+         "line-opacity": [
+          "match",
+          ["get", "highway"],
+           "trunk", 1,
+           "primary", 1,
+           "unclassified", 0.8,
+           "footway", 1,
+           "pedestrian", 1,
+           "motorway", 1,
+           "secondary", 1,
+           "tertiary", 1,
+           "residential", 1,
+           "living_street", 1,
+           "service", 0.2,
+           "special_service", 1,
+           "track", 1,
+           "path", 1,
+           "crossing_marked", 1,
+           "crossing_unmarked", 1,
+           "cycleway", 1,
+           "bridleway", 1,
+           "corridor", 1,
+           "steps", 1,
+           1
+        ],
+
          "line-width": [
            "interpolate",
            ["linear", 2],
@@ -238,7 +264,7 @@ export class Map {
              7,
              ["tertiary"],
              6,
-             ["minor", "service", "track", "footway", "pedestrian"],
+             ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
              4,
              4
            ],
@@ -252,7 +278,7 @@ export class Map {
              12,
              ["tertiary"],
              12,
-             ["minor", "service", "track", "footway", "pedestrian"],
+             ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
              8,
              8
            ]
