@@ -114,6 +114,9 @@ export class Map {
       "paint": {
         "line-color": [
           "match",
+          ["get", "selected"],
+           "true", PIXI.utils.hex2string(STYLES.trunk.casing.color),
+          "match",
           ["get", "highway"],
            "trunk", PIXI.utils.hex2string(STYLES.trunk.casing.color),
            "primary", PIXI.utils.hex2string(STYLES.primary.casing.color),
@@ -198,6 +201,9 @@ export class Map {
        },
        "paint": {
          "line-color": [
+           "match",
+           ["get", "selected"],
+           "true", "#01d4fa",
            "match",
            ["get", "highway"],
             "trunk", PIXI.utils.hex2string(STYLES.trunk.stroke.color),
