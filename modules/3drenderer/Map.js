@@ -3,7 +3,7 @@ import { STYLES } from '../pixi/styles';
 import * as PIXI from 'pixi.js';
 
 export class Map {
-  constructor(id) {
+  constructor(id, context) {
     this.building3dlayerSpec = this.get3DBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
@@ -22,6 +22,11 @@ export class Map {
         color: '#ff00ff',
         position: [1, 200, 30],
         intensity: 0.3,
+      });
+
+      this.map.jumpTo({
+        zoom: context.map().zoom() - 3,
+        center: context.map().extent().center()
       });
 
       this.map.addSource('osmroads', {

@@ -26,11 +26,13 @@ export function ui3DMap(context) {
       // Since the bounds are intended to wrap a box around a perfectly orthogonal view,
       // for a pitched, isometric view we need to enlarge the box a bit to display more buildings.
       let extent = context.map().extent();
+      let center = extent.center();
       extent.padByMeters(100);
-
       let bounds = [extent.min, extent.max];
 
-      _map.map.fitBounds((this.bounds = bounds));
+
+      _map.map.jumpTo({ center: center , zoom: context.map().zoom()-3});
+      // _map.map.fitBounds((this.bounds = bounds)), {duration: 0};
     }
 
     function featuresToGeoJSON() {
@@ -106,7 +108,7 @@ export function ui3DMap(context) {
 
     wrap = wrapEnter.merge(wrap);
 
-    _map = new Map('3d-buildings'); // container id
+    _map = new Map('3d-buildings', context); // container id
     context.map().on('draw', () => redraw());
     context.map().on('move', () => redraw());
 
