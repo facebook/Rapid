@@ -7,6 +7,7 @@ export class Map {
     this.building3dlayerSpec = this.get3DBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
+    this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec('Roads', 'osmroads');
 
     this.map = new mapLibreMap({
       container: id,
@@ -27,6 +28,7 @@ export class Map {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
+      this.map.addLayer(this.roadSelectedlayerSpec);
       this.map.addLayer(this.roadCasinglayerSpec);
       this.map.addLayer(this.roadStrokelayerSpec);
 
@@ -44,6 +46,8 @@ export class Map {
       this.map.getLayer('road_network').visibility = 'none';
     });
   }
+
+  SELECTION_COLOR = '#01d4fa';
 
   /**
    * get3DBuildingLayerSpec
@@ -65,7 +69,7 @@ export class Map {
           'match',
           ['get', 'selected'],
           'true',
-          '#01d4fa',
+          this.SELECTION_COLOR,
           /* other */ '#ff26db',
         ],
 
@@ -137,44 +141,38 @@ export class Map {
            "steps", PIXI.utils.hex2string(STYLES.steps.casing.color),
            "hsl(100,70%,100%)"
         ],
-        "line-width": [
-          "interpolate",
-          ["linear", 2],
-          ["zoom"],
-          6,
-          0,
-          7,
-          [
-            "match",
-            ["get", "highway"],
-            ["motorway", "trunk", "primary"],
-            10,
-            ["secondary", "unclassified"],
-            8,
-            ["tertiary"],
-            8,
-            ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
-            4,
-            4
-          ],
-          20,
-          [
-            "match",
-            ["get", "highway"],
-            ["motorway", "trunk", "primary"],
-            13,
-            ["secondary","unclassified"],
-            13,
-            ["tertiary"],
-            13,
-            ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
-            9,
-            9
-          ]
-        ],
+        "line-width": this.getLineWidthSpecification(6)
       },
     };
  }
+
+   /**
+   * getRoadSelectedLayerSpec
+   * Returns a maplibre layer style specification that appropriately styles a wide extra casing around any selected roads.
+   * Also uses the same 'selected' color as the building layer.
+   * @param {string} id the id of the layer that the source data shall be applied to
+   * @param {string} source the source geojson data that to be rendered
+   * @returns
+   */
+   getRoadSelectedLayerSpec(id, source) {
+    return {
+      id: id + '-selected',
+      type: 'line',
+      source: source,
+      minzoom: 4,
+      layout: {
+        'line-cap': 'butt',
+        'line-join': 'round',
+        visibility: 'visible',
+      },
+      paint: {
+        'line-color': this.SELECTION_COLOR,
+        'line-opacity': ['match', ['get', 'selected'], 'true', 0.5, 0],
+        'line-width': this.getLineWidthSpecification(10),
+      },
+    };
+ }
+
 
    /**
    * getRoadStrokeLayerSpec
@@ -248,42 +246,49 @@ export class Map {
            1
         ],
 
-         "line-width": [
-           "interpolate",
-           ["linear", 2],
-           ["zoom"],
-           5,
-           0.5,
-           16,
-           [
-             "match",
-             ["get", "highway"],
-             ["motorway", "trunk", "primary"],
-             8,
-             ["secondary", "unclassified"],
-             7,
-             ["tertiary"],
-             6,
-             ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
-             4,
-             4
-           ],
-           20,
-           [
-             "match",
-             ["get", "highway"],
-             ["motorway", "trunk", "primary"],
-             12,
-             ["secondary", "unclassified"],
-             12,
-             ["tertiary"],
-             12,
-             ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
-             8,
-             8
-           ]
-         ],
+         "line-width": this.getLineWidthSpecification(4)
        },
      };
   }
+
+
+  getLineWidthSpecification(baseWidth) {
+    return [
+      "interpolate",
+      ["linear", 2],
+      ["zoom"],
+      5,
+      0.5,
+      16,
+      [
+        "match",
+        ["get", "highway"],
+        ["motorway", "trunk", "primary"],
+        baseWidth*2,
+        ["secondary", "unclassified"],
+        Math.floor(.75*baseWidth*2),
+        ["tertiary"],
+        Math.floor(.75*baseWidth*2) - 1,
+        ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
+        baseWidth,
+        baseWidth
+      ],
+      20,
+      [
+        "match",
+        ["get", "highway"],
+        ["motorway", "trunk", "primary"],
+        baseWidth * 2.5,
+        ["secondary", "unclassified"],
+        baseWidth * 2.5,
+        ["tertiary"],
+        baseWidth * 2.5,
+        ["minor", "service", "track", "footway", "pedestrian", "cycleway"],
+        baseWidth*2,
+        baseWidth*2,
+      ]
+    ];
+  }
 }
+
+
