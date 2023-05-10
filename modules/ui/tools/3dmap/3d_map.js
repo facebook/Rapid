@@ -6,7 +6,7 @@ import { t } from '../../../core/localizer';
 import { uiCmd } from '../../cmd';
 
 /*
- * ui3DMap is a ui panel containing a maplibre 3D Map for visualizing buildings.
+ * ui3DMap is a ui panel containing a maplibre 3D Map for visualizing buildings, roads, and areas.
  * @param {*} context
  * @returns
  */
@@ -48,8 +48,15 @@ export function ui3DMap(context) {
         );
         return tags.length > 0;
       });
-      generateRoadLayer(context, highwayEnts, _map);
+      const areaEnts = entities.filter((ent) => {
+        const tags = Object.keys(ent.tags).filter((tagname) =>
+          tagname.startsWith('highway')
+        );
+        return tags.length > 0;
+      });
+      generateRoadLayer(context, areaEnts, _map);
       generateBuildingLayer(context, buildingEnts, _map);
+      // generateAreaLayer(context, highwayEnts, _map);
     }
 
     function toggle(d3_event) {
@@ -167,7 +174,7 @@ function generateRoadLayer(context, roadEnts, _map) {
     if (gj.type !== 'LineString')
       continue;
 
-    let newFeature = {
+      let newFeature = {
       type: 'Feature',
       properties: {
         selected: selectedIDs.includes(roadEnt.id).toString(),
