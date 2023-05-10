@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { presetManager } from '../presets';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
 import { utilDisplayName, utilHighlightEntities } from '../util';
@@ -97,7 +96,8 @@ export function uiKeepRightDetails(context) {
           let name = utilDisplayName(entity);  // try to use common name
 
           if (!name && !isObjectLink) {
-            const preset = presetManager.match(entity, context.graph());
+            const presetSystem = context.presetSystem();
+            const preset = presetSystem.match(entity, context.graph());
             name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
           }
 

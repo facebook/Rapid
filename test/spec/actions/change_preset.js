@@ -1,25 +1,30 @@
-describe('actionChangePreset', function() {
-    var oldPreset = Rapid.presetPreset('old', {tags: {old: 'true'}});
-    var newPreset = Rapid.presetPreset('new', {tags: {new: 'true'}});
+describe('actionChangePreset', () => {
+  class MockContext {
+    constructor()   { }
+  }
 
-    it('changes from one preset\'s tags to another\'s', function() {
-        var entity = Rapid.osmNode({tags: {old: 'true'}});
-        var graph = new Rapid.Graph([entity]);
-        var action = Rapid.actionChangePreset(entity.id, oldPreset, newPreset);
-        expect(action(graph).entity(entity.id).tags).to.eql({new: 'true'});
-    });
+  const context = new MockContext();
+  const oldPreset = new Rapid.Preset(context, 'old', {tags: {old: 'true'}});
+  const newPreset = new Rapid.Preset(context, 'new', {tags: {new: 'true'}});
 
-    it('adds the tags of a new preset to an entity without an old preset', function() {
-        var entity = Rapid.osmNode();
-        var graph = new Rapid.Graph([entity]);
-        var action = Rapid.actionChangePreset(entity.id, null, newPreset);
-        expect(action(graph).entity(entity.id).tags).to.eql({new: 'true'});
-    });
+  it('changes from one preset\'s tags to another\'s', () => {
+    const entity = Rapid.osmNode({tags: {old: 'true'}});
+    const graph = new Rapid.Graph([entity]);
+    const action = Rapid.actionChangePreset(entity.id, oldPreset, newPreset);
+    expect(action(graph).entity(entity.id).tags).to.eql({new: 'true'});
+  });
 
-    it('removes the tags of an old preset from an entity without a new preset', function() {
-        var entity = Rapid.osmNode({tags: {old: 'true'}});
-        var graph = new Rapid.Graph([entity]);
-        var action = Rapid.actionChangePreset(entity.id, oldPreset, null);
-        expect(action(graph).entity(entity.id).tags).to.eql({});
-    });
+  it('adds the tags of a new preset to an entity without an old preset', () => {
+    const entity = Rapid.osmNode();
+    const graph = new Rapid.Graph([entity]);
+    const action = Rapid.actionChangePreset(entity.id, null, newPreset);
+    expect(action(graph).entity(entity.id).tags).to.eql({new: 'true'});
+  });
+
+  it('removes the tags of an old preset from an entity without a new preset', () => {
+    const entity = Rapid.osmNode({tags: {old: 'true'}});
+    const graph = new Rapid.Graph([entity]);
+    const action = Rapid.actionChangePreset(entity.id, oldPreset, null);
+    expect(action(graph).entity(entity.id).tags).to.eql({});
+  });
 });

@@ -17,7 +17,7 @@ describe('uiFieldLocalized', function() {
     beforeEach(function() {
         context = Rapid.coreContext().assetPath('../dist/').init();
         selection = d3.select(document.createElement('div'));
-        field = Rapid.presetField('name', { key: 'name', type: 'localized' });
+        field = new Rapid.Field(context, 'name', { key: 'name', type: 'localized' });
         field.locked = function() { return false; };
     });
 

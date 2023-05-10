@@ -165,7 +165,7 @@ export function validationImpossibleOneway() {
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
                     return entity ? t.html('issues.impossible_oneway.' + messageID + '.message', {
-                        feature: utilDisplayLabel(entity, context.graph())
+                        feature: utilDisplayLabel(context, entity, context.graph())
                     }) : '';
                 },
                 reference: getReference(referenceID),

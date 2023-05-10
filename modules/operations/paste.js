@@ -80,7 +80,10 @@ export function operationPaste(context) {
     if (!ids.length) {
       return t('operations.paste.nothing_copied');
     }
-    return t('operations.paste.description', { feature: utilDisplayLabel(oldGraph.entity(ids[0]), oldGraph), n: ids.length });
+    return t('operations.paste.description', {
+      feature: utilDisplayLabel(context, oldGraph.entity(ids[0]), oldGraph),
+      n: ids.length
+    });
   };
 
 

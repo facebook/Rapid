@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilCleanTags } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { actionChangeTags } from '../actions/change_tags';
 import { uiIcon } from './icon';
@@ -383,6 +382,7 @@ export function uiEntityEditor(context) {
 
 
     function loadActivePresets(isForNewSelection) {
+        var presetSystem = context.presetSystem();
         var graph = context.graph();
 
         var counts = {};
@@ -391,7 +391,7 @@ export function uiEntityEditor(context) {
             var entity = graph.hasEntity(_entityIDs[i]);
             if (!entity) return;
 
-            var match = presetManager.match(entity, graph);
+            var match = presetSystem.match(entity, graph);
 
             if (!counts[match.id]) counts[match.id] = 0;
             counts[match.id] += 1;
@@ -400,7 +400,7 @@ export function uiEntityEditor(context) {
         var matches = Object.keys(counts).sort(function(p1, p2) {
             return counts[p2] - counts[p1];
         }).map(function(pID) {
-            return presetManager.item(pID);
+            return presetSystem.item(pID);
         });
 
         if (!isForNewSelection) {

@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
@@ -17,12 +16,13 @@ export function uiIntroBuilding(context, curtain) {
   const container = context.container();
   const history = context.history();
   const map = context.map();
+  const presetSystem = context.presetSystem();
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
   const tankExtent = new Extent([-85.62766, 41.95324], [-85.62695, 41.95372]);
-  const buildingCatetory = presetManager.item('category-building');
-  const housePreset = presetManager.item('building/house');
-  const tankPreset = presetManager.item('man_made/storage_tank');
+  const buildingCatetory = presetSystem.item('category-building');
+  const housePreset = presetSystem.item('building/house');
+  const tankPreset = presetSystem.item('man_made/storage_tank');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -249,7 +249,7 @@ export function uiIntroBuilding(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetManager.match(modified[0], context.graph()) === housePreset) {
+            if (presetSystem.match(modified[0], context.graph()) === housePreset) {
               resolve(hasHouseAsync);
             } else {
               resolve(chooseCategoryBuildingAsync);  // didn't pick house, retry
@@ -274,7 +274,7 @@ export function uiIntroBuilding(context, curtain) {
 
     // Make sure it's still a house, in case user somehow changed it..
     const entity = context.entity(_houseID);
-    const oldPreset = presetManager.match(entity, context.graph());
+    const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_houseID, oldPreset, housePreset));
 
     history.checkpoint('hasHouse');
@@ -544,7 +544,7 @@ export function uiIntroBuilding(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetManager.match(modified[0], context.graph()) === tankPreset) {
+            if (presetSystem.match(modified[0], context.graph()) === tankPreset) {
               resolve(hasTankAsync);
             } else {
               reject();  // didn't pick tank
@@ -569,7 +569,7 @@ export function uiIntroBuilding(context, curtain) {
 
     // Make sure it's still a tank, in case user somehow changed it..
     const entity = context.entity(_tankID);
-    const oldPreset = presetManager.match(entity, context.graph());
+    const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
 
     history.checkpoint('hasTank');

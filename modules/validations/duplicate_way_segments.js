@@ -85,7 +85,7 @@ export function validationDuplicateWaySegments() {
                 severity: 'warning',
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t.html('issues.duplicate_way_segments.message', { way: utilDisplayLabel(entity, context.graph()) }) : '';
+                    return entity ? t.html('issues.duplicate_way_segments.message', { way: utilDisplayLabel(context, entity, context.graph()) }) : '';
                 },
                 reference: showReference,
                 entityIds: [way.id, node1.id, node2.id],

@@ -9,7 +9,7 @@ import { uiCombobox } from '../combobox';
 import { t } from '../../core/localizer';
 
 
-export function uiFieldWikidata(field, context) {
+export function uiFieldWikidata(context, uifield) {
     var wikidata = services.wikidata;
     var dispatch = d3_dispatch('change');
 
@@ -20,12 +20,12 @@ export function uiFieldWikidata(field, context) {
     var _wikiURL = '';
     var _entityIDs = [];
 
-    var _wikipediaKey = field.keys && field.keys.find(function(key) {
+    var _wikipediaKey = uifield.keys && uifield.keys.find(function(key) {
         return key.includes('wikipedia');
     });
-    var _hintKey = field.key === 'wikidata' ? 'name' : field.key.split(':')[0];
+    var _hintKey = uifield.key === 'wikidata' ? 'name' : uifield.key.split(':')[0];
 
-    var combobox = uiCombobox(context, 'combo-' + field.safeid)
+    var combobox = uiCombobox(context, 'combo-' + uifield.safeid)
         .caseSensitive(true)
         .minItems(1);
 
@@ -38,7 +38,7 @@ export function uiFieldWikidata(field, context) {
 
         wrap = wrap.enter()
             .append('div')
-            .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
+            .attr('class', 'form-field-input-wrap form-field-input-' + uifield.type)
             .merge(wrap);
 
 
@@ -60,7 +60,7 @@ export function uiFieldWikidata(field, context) {
         searchRowEnter
             .append('input')
             .attr('type', 'text')
-            .attr('id', field.domId)
+            .attr('id', uifield.uid)
             .style('flex', '1')
             .call(utilNoAuto)
             .on('focus', function() {
@@ -163,8 +163,9 @@ export function uiFieldWikidata(field, context) {
 
 
     function change() {
+        let key = uifield.key;
         var syncTags = {};
-        syncTags[field.key] = _qid;
+        syncTags[key] = _qid;
         dispatch.call('change', this, syncTags);
 
         // attempt asynchronous update of wikidata tag..
@@ -280,14 +281,14 @@ export function uiFieldWikidata(field, context) {
 
 
     wiki.tags = function(tags) {
-
-        var isMixed = Array.isArray(tags[field.key]);
+        let key = uifield.key;
+        var isMixed = Array.isArray(tags[key]);
         _searchInput
-            .attr('title', isMixed ? tags[field.key].filter(Boolean).join('\n') : null)
+            .attr('title', isMixed ? tags[key].filter(Boolean).join('\n') : null)
             .attr('placeholder', isMixed ? t('inspector.multiple_values') : '')
             .classed('mixed', isMixed);
 
-        _qid = typeof tags[field.key] === 'string' && tags[field.key] || '';
+        _qid = typeof tags[key] === 'string' && tags[key] || '';
 
         if (!/^Q[0-9]*$/.test(_qid)) {   // not a proper QID
             unrecognized();

@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
-import { presetManager } from '../presets';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
 import { uiAccount } from './account';
@@ -450,10 +449,11 @@ export function uiInit(context) {
   ui.ensureLoaded = () => {
     if (_loadPromise) return _loadPromise;
 
+    const presetSystem = context.presetSystem();
     // Wait for strings and presets before rendering the UI
     return _loadPromise = Promise.all([
-      localizer.ensureLoaded(),
-      presetManager.ensureLoaded()
+      localizer.initAsync(),
+      presetSystem.initAsync()
     ])
     .then(() => {
       if (!context.container().empty()) {

@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { utilArrayGroupBy, utilArrayIntersection, utilUniqueString } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';
 import { actionAddEntity } from '../../actions/add_entity';
 import { actionAddMember } from '../../actions/add_member';
@@ -18,7 +17,7 @@ import { utilDisplayName, utilNoAuto, utilHighlightEntities } from '../../util';
 
 
 export function uiSectionRawMembershipEditor(context) {
-
+    var presetSystem = context.presetSystem();
     var section = uiSection('raw-membership-editor', context)
         .shouldDisplay(function() {
             return _entityIDs && _entityIDs.length;
@@ -101,7 +100,7 @@ export function uiSectionRawMembershipEditor(context) {
         }
 
         memberships.forEach(function(membership) {
-            membership.domId = utilUniqueString('membership-' + membership.relation.id);
+            membership.uid = utilUniqueString('membership-' + membership.relation.id);
             var roles = [];
             membership.members.forEach(function(member) {
                 if (roles.indexOf(member.role) === -1) roles.push(member.role);
@@ -236,7 +235,7 @@ export function uiSectionRawMembershipEditor(context) {
         var graph = context.graph();
 
         function baseDisplayLabel(entity) {
-            var matched = presetManager.match(entity, graph);
+            var matched = presetSystem.match(entity, graph);
             var presetName = (matched && matched.name()) || t('inspector.relation');
             var entityName = utilDisplayName(entity) || '';
 
@@ -324,7 +323,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('label')
             .attr('class', 'field-label')
             .attr('for', function(d) {
-                return d.domId;
+                return d.uid;
             });
 
         var labelLink = labelEnter
@@ -338,7 +337,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('span')
             .attr('class', 'member-entity-type')
             .html(function(d) {
-                var matched = presetManager.match(d.relation, context.graph());
+                var matched = presetSystem.match(d.relation, context.graph());
                 return (matched && matched.name()) || t('inspector.relation');
             });
 
@@ -346,7 +345,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('span')
             .attr('class', 'member-entity-name')
             .html(function(d) {
-                const matched = presetManager.match(d.relation, context.graph());
+                const matched = presetSystem.match(d.relation, context.graph());
                 // hide the network from the name if there is NSI match
                 return utilDisplayName(d.relation, matched.suggestion);
             });
@@ -372,7 +371,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('input')
             .attr('class', 'member-role')
             .attr('id', function(d) {
-                return d.domId;
+                return d.uid;
             })
             .property('type', 'text')
             .property('value', function(d) {

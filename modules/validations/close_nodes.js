@@ -30,7 +30,6 @@ export function validationCloseNodes(context) {
         }
 
         function wayTypeFor(way) {
-
             if (way.tags.boundary && way.tags.boundary !== 'no') return 'boundary';
             if (way.tags.indoor && way.tags.indoor !== 'no') return 'indoor';
             if ((way.tags.building && way.tags.building !== 'no') ||
@@ -54,7 +53,6 @@ export function validationCloseNodes(context) {
         }
 
         function shouldCheckWay(way) {
-
             // don't flag issues where merging would create degenerate ways
             if (way.nodes.length <= 2 ||
                 (way.isClosed() && way.nodes.length <= 4)) return false;
@@ -127,9 +125,7 @@ export function validationCloseNodes(context) {
         }
 
         function getIssuesForDetachedPoint(node) {
-
             var issues = [];
-
             var lon = node.loc[0];
             var lat = node.loc[1];
             var lon_range = geoMetersToLon(pointThresholdMeters, lat) / 2;
@@ -174,8 +170,8 @@ export function validationCloseNodes(context) {
                             var entity = context.hasEntity(this.entityIds[0]),
                                 entity2 = context.hasEntity(this.entityIds[1]);
                             return (entity && entity2) ? t.html('issues.close_nodes.detached.message', {
-                                feature: utilDisplayLabel(entity, context.graph()),
-                                feature2: utilDisplayLabel(entity2, context.graph())
+                                feature: utilDisplayLabel(context, entity, context.graph()),
+                                feature2: utilDisplayLabel(context, entity2, context.graph())
                             }) : '';
                         },
                         reference: showReference,
@@ -238,7 +234,7 @@ export function validationCloseNodes(context) {
                 severity: 'warning',
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t.html('issues.close_nodes.message', { way: utilDisplayLabel(entity, context.graph()) }) : '';
+                    return entity ? t.html('issues.close_nodes.message', { way: utilDisplayLabel(context, entity, context.graph()) }) : '';
                 },
                 reference: showReference,
                 entityIds: [way.id, node1.id, node2.id],

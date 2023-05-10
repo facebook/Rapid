@@ -4,14 +4,13 @@ import * as countryCoder from '@rapideditor/country-coder';
 
 import { uiCombobox } from '../combobox';
 import { t } from '../../core/localizer';
-import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
-export function uiFieldRoadspeed(field, context) {
+export function uiFieldRoadspeed(context, uifield) {
     var dispatch = d3_dispatch('change');
     var unitInput = d3_select(null);
     var input = d3_select(null);
-    var _entityIDs = [];
     var _tags;
     var _isImperial;
 
@@ -24,13 +23,12 @@ export function uiFieldRoadspeed(field, context) {
 
 
     function roadspeed(selection) {
-
         var wrap = selection.selectAll('.form-field-input-wrap')
             .data([0]);
 
         wrap = wrap.enter()
             .append('div')
-            .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
+            .attr('class', 'form-field-input-wrap form-field-input-' + uifield.type)
             .merge(wrap);
 
 
@@ -41,7 +39,7 @@ export function uiFieldRoadspeed(field, context) {
             .append('input')
             .attr('type', 'text')
             .attr('class', 'roadspeed-number')
-            .attr('id', field.domId)
+            .attr('id', uifield.uid)
             .call(utilNoAuto)
             .call(speedCombo)
             .merge(input);
@@ -50,7 +48,7 @@ export function uiFieldRoadspeed(field, context) {
             .on('change', change)
             .on('blur', change);
 
-        var loc = combinedEntityExtent().center();
+        var loc = uifield.entityExtent.center();
         _isImperial = countryCoder.roadSpeedUnit(loc) === 'mph';
 
         unitInput = wrap.selectAll('input.roadspeed-unit')
@@ -94,16 +92,17 @@ export function uiFieldRoadspeed(field, context) {
     function change() {
         var tag = {};
         var value = utilGetSetValue(input).trim();
+        let key = uifield.key;
 
         // don't override multiple values with blank string
-        if (!value && Array.isArray(_tags[field.key])) return;
+        if (!value && Array.isArray(_tags[key])) return;
 
         if (!value) {
-            tag[field.key] = undefined;
+            tag[key] = undefined;
         } else if (isNaN(value) || !_isImperial) {
-            tag[field.key] = context.cleanTagValue(value);
+            tag[key] = context.cleanTagValue(value);
         } else {
-            tag[field.key] = context.cleanTagValue(value + ' mph');
+            tag[key] = context.cleanTagValue(value + ' mph');
         }
 
         dispatch.call('change', this, tag);
@@ -112,8 +111,9 @@ export function uiFieldRoadspeed(field, context) {
 
     roadspeed.tags = function(tags) {
         _tags = tags;
+        let key = uifield.key;
 
-        var value = tags[field.key];
+        var value = tags[key];
         var isMixed = Array.isArray(value);
 
         if (!isMixed) {
@@ -129,7 +129,7 @@ export function uiFieldRoadspeed(field, context) {
 
         utilGetSetValue(input, typeof value === 'string' ? value : '')
             .attr('title', isMixed ? value.filter(Boolean).join('\n') : null)
-            .attr('placeholder', isMixed ? t('inspector.multiple_values') : field.placeholder())
+            .attr('placeholder', isMixed ? t('inspector.multiple_values') : uifield.placeholder)
             .classed('mixed', isMixed);
     };
 
@@ -137,17 +137,6 @@ export function uiFieldRoadspeed(field, context) {
     roadspeed.focus = function() {
         input.node().focus();
     };
-
-
-    roadspeed.entityIDs = function(val) {
-        _entityIDs = val;
-    };
-
-
-    function combinedEntityExtent() {
-        return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
-    }
-
 
     return utilRebind(roadspeed, dispatch, 'on');
 }

@@ -2,7 +2,6 @@ import { drag as d3_drag } from 'd3-drag';
 import { select as d3_select } from 'd3-selection';
 import { utilUniqueString } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { actionChangeMember } from '../../actions/change_member';
 import { actionDeleteMember } from '../../actions/delete_member';
@@ -17,7 +16,6 @@ import { utilDisplayName, utilDisplayType, utilHighlightEntities, utilNoAuto } f
 
 
 export function uiSectionRawMemberEditor(context) {
-
     var section = uiSection('raw-member-editor', context)
         .shouldDisplay(function() {
             if (!_entityIDs || _entityIDs.length !== 1) return false;
@@ -131,7 +129,7 @@ export function uiSectionRawMemberEditor(context) {
                 role: member.role,
                 relation: entity,
                 member: context.hasEntity(member.id),
-                domId: utilUniqueString(entityID + '-member-' + index)
+                uid: utilUniqueString(entityID + '-member-' + index)
             });
         });
 
@@ -166,7 +164,7 @@ export function uiSectionRawMemberEditor(context) {
                 var label = item
                     .append('label')
                     .attr('class', 'field-label')
-                    .attr('for', d.domId);
+                    .attr('for', d.uid);
 
                 if (d.member) {
                     // highlight the member feature in the map while hovering on the list item
@@ -189,7 +187,7 @@ export function uiSectionRawMemberEditor(context) {
                         .append('span')
                         .attr('class', 'member-entity-type')
                         .html(function(d) {
-                            var matched = presetManager.match(d.member, context.graph());
+                            var matched = context.presetSystem().match(d.member, context.graph());
                             return (matched && matched.name()) || utilDisplayType(d.member.id);
                         });
 
@@ -243,7 +241,7 @@ export function uiSectionRawMemberEditor(context) {
             .append('input')
             .attr('class', 'member-role')
             .attr('id', function(d) {
-                return d.domId;
+                return d.uid;
             })
             .property('type', 'text')
             .attr('placeholder', t('inspector.role'))

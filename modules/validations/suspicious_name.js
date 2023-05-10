@@ -1,5 +1,4 @@
 import { actionChangeTags } from '../actions/change_tags';
-import { presetManager } from '../presets';
 import { services } from '../services';
 import { t, localizer } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
@@ -56,10 +55,10 @@ export function validationSuspiciousName() {
       subtype: 'generic_name',
       severity: 'warning',
       message: function(context) {
-        let entity = context.hasEntity(this.entityIds[0]);
+        const entity = context.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        let preset = presetManager.match(entity, context.graph());
-        let langName = langCode && localizer.languageName(langCode);
+        const preset = context.presetSystem().match(entity, context.graph());
+        const langName = langCode && localizer.languageName(langCode);
         return t.html('issues.generic_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: genericName, language: langName }
         );
@@ -104,7 +103,7 @@ export function validationSuspiciousName() {
       message: function(context) {
         const entity = context.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        const preset = presetManager.match(entity, context.graph());
+        const preset = context.presetSystem().match(entity, context.graph());
         const langName = langCode && localizer.languageName(langCode);
         return t.html('issues.incorrect_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: incorrectName, language: langName }

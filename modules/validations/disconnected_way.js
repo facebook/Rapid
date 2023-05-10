@@ -27,7 +27,7 @@ export function validationDisconnectedWay() {
             severity: 'warning',
             message: function(context) {
                 var entity = this.entityIds.length && context.hasEntity(this.entityIds[0]);
-                var label = entity && utilDisplayLabel(entity, context.graph());
+                var label = entity && utilDisplayLabel(context, entity, context.graph());
                 return t.html('issues.disconnected_way.routable.message', { count: this.entityIds.length, highway: label });
             },
             reference: showReference,

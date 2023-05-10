@@ -381,7 +381,7 @@ export function validationCrossingWays(context) {
             var type1 = way1Info.featureType;
             var type2 = way2Info.featureType;
             if (type1 === type2) {
-                return utilDisplayLabel(way1Info.way, graph) > utilDisplayLabel(way2Info.way, graph);
+                return utilDisplayLabel(context, way1Info.way, graph) > utilDisplayLabel(context, way2Info.way, graph);
             } else if (type1 === 'waterway') {
                 return true;
             } else if (type2 === 'waterway') {
@@ -430,11 +430,11 @@ export function validationCrossingWays(context) {
             severity: 'warning',
             message: function(context) {
                 var graph = context.graph();
-                var entity1 = graph.hasEntity(this.entityIds[0]),
-                    entity2 = graph.hasEntity(this.entityIds[1]);
+                var entity1 = graph.hasEntity(this.entityIds[0]);
+                var entity2 = graph.hasEntity(this.entityIds[1]);
                 return (entity1 && entity2) ? t.html('issues.crossing_ways.message', {
-                    feature: utilDisplayLabel(entity1, graph),
-                    feature2: utilDisplayLabel(entity2, graph)
+                    feature: utilDisplayLabel(context, entity1, graph),
+                    feature2: utilDisplayLabel(context, entity2, graph)
                 }) : '';
             },
             reference: showReference,

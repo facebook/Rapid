@@ -1,7 +1,6 @@
 import { Extent } from '@rapid-sdk/math';
 import { utilEntityOrDeepMemberSelector } from '@rapid-sdk/util';
 
-import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 
 
@@ -123,12 +122,13 @@ export function utilDisplayType(id) {
 // If `verbose=true`, include both preset name and feature name.
 //   "Tertiary Road Main Street"
 //
-export function utilDisplayLabel(entity, graphOrGeometry, verbose) {
+export function utilDisplayLabel(context, entity, graphOrGeometry, verbose) {
     var result;
     var displayName = utilDisplayName(entity);
+    var presetSystem = context.presetSystem();
     var preset = typeof graphOrGeometry === 'string' ?
-        presetManager.matchTags(entity.tags, graphOrGeometry) :
-        presetManager.match(entity, graphOrGeometry);
+        presetSystem.matchTags(entity.tags, graphOrGeometry) :
+        presetSystem.match(entity, graphOrGeometry);
     var presetName = preset && (preset.suggestion ? preset.subtitle() : preset.name());
 
     if (verbose) {

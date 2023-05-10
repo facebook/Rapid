@@ -10,7 +10,7 @@ import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
-export function uiFieldWikipedia(field, context) {
+export function uiFieldWikipedia(context, uifield) {
   const dispatch = d3_dispatch('change');
   const wikipedia = services.wikipedia;
   const wikidata = services.wikidata;
@@ -67,7 +67,7 @@ export function uiFieldWikipedia(field, context) {
 
     wrap = wrap.enter()
       .append('div')
-      .attr('class', `form-field-input-wrap form-field-input-${field.type}`)
+      .attr('class', `form-field-input-wrap form-field-input-${uifield.type}`)
       .merge(wrap);
 
 
@@ -112,7 +112,7 @@ export function uiFieldWikipedia(field, context) {
       .append('input')
       .attr('type', 'text')
       .attr('class', 'wiki-title')
-      .attr('id', field.domId)
+      .attr('id', uifield.uid)
       .call(utilNoAuto)
       .call(titleCombo)
       .merge(_titleInput);
@@ -265,8 +265,8 @@ export function uiFieldWikipedia(field, context) {
   };
 
   function updateForTags(tags) {
-
-    const value = typeof tags[field.key] === 'string' ? tags[field.key] : '';
+    let key = uifield.key;
+    const value = typeof tags[key] === 'string' ? tags[key] : '';
     // Expect tag format of `tagLang:tagArticleTitle`, e.g. `fr:Paris`, with
     // optional suffix of `#anchor`
     const m = value.match(/([^:]+):([^#]+)(?:#(.+))?/);

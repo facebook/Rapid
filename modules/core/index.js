@@ -11,5 +11,11 @@ export { Graph } from './Graph';
 export { Tree } from './Tree';
 
 export { LocationSystem } from './LocationSystem';
+export { PresetSystem } from './PresetSystem';
 export { StorageSystem } from './StorageSystem';
 export { UrlHashSystem } from './UrlHashSystem';
+
+export { Category } from './preset/Category.js';
+export { Collection } from './preset/Collection.js';
+export { Field } from './preset/Field.js';
+export { Preset } from './preset/Preset.js';

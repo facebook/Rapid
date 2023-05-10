@@ -6,7 +6,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { t } from '../../core/localizer';
 
 
-export function uiFieldCycleway(field, context) {
+export function uiFieldCycleway(context, uifield) {
     var dispatch = d3_dispatch('change');
     var items = d3_select(null);
     var wrap = d3_select(null);
@@ -24,7 +24,7 @@ export function uiFieldCycleway(field, context) {
 
         wrap = wrap.enter()
             .append('div')
-            .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
+            .attr('class', 'form-field-input-wrap form-field-input-' + uifield.type)
             .merge(wrap);
 
 
@@ -49,7 +49,7 @@ export function uiFieldCycleway(field, context) {
             .append('span')
             .attr('class', 'label preset-label-cycleway')
             .attr('for', function(d) { return 'preset-input-cycleway-' + stripcolon(d); })
-            .html(function(d) { return field.t.html('types.' + d); });
+            .html(function(d) { return uifield.tHtml('types.' + d); });
 
         enter
             .append('div')
@@ -75,7 +75,6 @@ export function uiFieldCycleway(field, context) {
 
 
     function change(d3_event, key) {
-
         var newValue = context.cleanTagValue(utilGetSetValue(d3_select(this)));
 
         // don't override multiple values with blank string
@@ -115,9 +114,9 @@ export function uiFieldCycleway(field, context) {
 
 
     cycleway.options = function() {
-        return field.options.map(function(option) {
+        return uifield.presetField.options.map(function(option) {
             return {
-                title: field.t('options.' + option + '.description'),
+                title: uifield.t(`options.${option}.description`),
                 value: option
             };
         });
@@ -151,7 +150,7 @@ export function uiFieldCycleway(field, context) {
                 if (Array.isArray(tags.cycleway) || Array.isArray(tags[d])) {
                     return t('inspector.multiple_values');
                 }
-                return field.placeholder();
+                return uifield.placeholder;
             })
             .classed('mixed', function(d) {
                 return Array.isArray(tags.cycleway) || Array.isArray(tags[d]);

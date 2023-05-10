@@ -5,15 +5,15 @@ import { actionChangePreset } from '../actions/change_preset';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionUpgradeTags } from '../actions/upgrade_tags';
 import { fileFetcher } from '../core';
-import { presetManager } from '../presets';
 import { services } from '../services';
 import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
-export function validationOutdatedTags() {
+export function validationOutdatedTags(context) {
   const type = 'outdated_tags';
+  const presetSystem = context.presetSystem();
   let _waitingForDeprecated = true;
   let _dataDeprecated;
 
@@ -27,7 +27,7 @@ export function validationOutdatedTags() {
   function oldTagIssues(entity, graph) {
     if (!entity.hasInterestingTags()) return [];
 
-    let preset = presetManager.match(entity, graph);
+    let preset = presetSystem.match(entity, graph);
     if (!preset) return [];
 
     const oldTags = Object.assign({}, entity.tags);  // shallow copy
@@ -35,7 +35,7 @@ export function validationOutdatedTags() {
 
     // Upgrade preset, if a replacement is available..
     if (preset.replacement) {
-      const newPreset = presetManager.item(preset.replacement);
+      const newPreset = presetSystem.item(preset.replacement);
       graph = actionChangePreset(entity.id, preset, newPreset, true /* skip field defaults */)(graph);
       entity = graph.entity(entity.id);
       preset = newPreset;
@@ -188,7 +188,7 @@ export function validationOutdatedTags() {
         messageID += '_incomplete';
       }
       return t.html(messageID, {
-        feature: utilDisplayLabel(currEntity, context.graph(), true /* verbose */)
+        feature: utilDisplayLabel(context, currEntity, context.graph(), true /* verbose */)
       });
     }
 
@@ -277,7 +277,7 @@ export function validationOutdatedTags() {
       if (!currMultipolygon) return '';
 
       return t.html('issues.old_multipolygon.message',
-          { multipolygon: utilDisplayLabel(currMultipolygon, context.graph(), true /* verbose */) }
+          { multipolygon: utilDisplayLabel(context, currMultipolygon, context.graph(), true /* verbose */) }
       );
     }
 

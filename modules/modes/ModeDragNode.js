@@ -9,7 +9,6 @@ import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { modeSelect } from './select';
 import { osmNode } from '../osm';
-import { presetManager } from '../presets';
 import { t } from '../core/localizer';
 
 
@@ -333,8 +332,9 @@ export class ModeDragNode extends AbstractMode {
     if (!this.dragNode) return false;
 
     const graph = this.context.graph();
+    const presetSystem = this.context.presetSystem();
     return this.dragNode.geometry(graph) !== 'vertex' ||
-      (target.geometry(graph) === 'vertex' || presetManager.allowsVertex(target, graph));
+      (target.geometry(graph) === 'vertex' || presetSystem.allowsVertex(target, graph));
   }
 
 

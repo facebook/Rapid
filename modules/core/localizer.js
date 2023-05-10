@@ -85,7 +85,7 @@ export function coreLocalizer() {
   /**
    * preferredLocaleCodes
    * Allows the user to manually set the locale, overriding the locales specified by the browser
-   * If you're going to use this, you must call it before `ensureLoaded` starts fetching data.
+   * If you're going to use this, you must call it before `initAsync` starts fetching data.
    * @param   codes  Array or String of preferred locales
    */
   localizer.preferredLocaleCodes = function(codes) {
@@ -100,13 +100,13 @@ export function coreLocalizer() {
 
 
   /**
-   * ensureLoaded
+   * initAsync
    * Call this before doing anything with the localizer to ensure that necessary files have been loaded
    * @return {Promise}   A Promise resolved after the files have been loaded
    */
-  let _loadPromise;
-  localizer.ensureLoaded = () => {
-    if (_loadPromise) return _loadPromise;
+  let _initPromise;
+  localizer.initAsync = () => {
+    if (_initPromise) return _initPromise;
 
     let filesToFetch = ['languages', 'locales'];
 
@@ -124,7 +124,7 @@ export function coreLocalizer() {
       filesToFetch.push(key);
     }
 
-    return _loadPromise = Promise.all(filesToFetch.map(key => fileFetcher.get(key)))
+    return _initPromise = Promise.all(filesToFetch.map(key => fileFetcher.get(key)))
       .then(results => {
         _supportedLanguages = results[0];
         _supportedLocales = results[1];

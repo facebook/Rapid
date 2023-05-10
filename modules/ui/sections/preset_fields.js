@@ -1,16 +1,14 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilArrayUnion } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';
-import { uiField } from '../field';
+import { UiField } from '../UiField';
 import { uiFormFields } from '../form_fields';
 import { uiSection } from '../section';
 import { utilRebind } from '../../util';
 
 
 export function uiSectionPresetFields(context) {
-
     var section = uiSection('preset-fields', context)
         .label(t.html('inspector.fields'))
         .disclosureContent(renderDisclosureContent);
@@ -18,22 +16,20 @@ export function uiSectionPresetFields(context) {
     var dispatch = d3_dispatch('change', 'revert');
     var formFields = uiFormFields(context);
     var _state;
-    var _fieldsArr;
+    var _uifields;
     var _presets = [];
     var _tags;
     var _entityIDs;
 
     function renderDisclosureContent(selection) {
-        if (!_fieldsArr) {
-
+        if (!_uifields) {
             var graph = context.graph();
+            var presetSystem = context.presetSystem();
 
             var geometries = Object.keys(_entityIDs.reduce(function(geoms, entityID) {
                 geoms[graph.entity(entityID).geometry(graph)] = true;
                 return geoms;
             }, {}));
-
-            var presetsManager = presetManager;
 
             var allFields = [];
             var allMoreFields = [];
@@ -62,24 +58,24 @@ export function uiSectionPresetFields(context) {
                 return sharedTotalFields.indexOf(field) !== -1;
             });
 
-            _fieldsArr = [];
+            _uifields = [];
 
             sharedFields.forEach(function(field) {
                 if (field.matchAllGeometry(geometries)) {
-                    _fieldsArr.push(
-                        uiField(context, field, _entityIDs)
+                    _uifields.push(
+                        new UiField(context, field, _entityIDs)
                     );
                 }
             });
 
 //            var singularEntity = _entityIDs.length === 1 && graph.hasEntity(_entityIDs[0]);
-//            if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetsManager.field('restrictions')) {
-//                _fieldsArr.push(
-//                    uiField(context, presetsManager.field('restrictions'), _entityIDs)
+//            if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetSystem.field('restrictions')) {
+//                _uifields.push(
+//                    new UiField(context, presetSystem.field('restrictions'), _entityIDs)
 //                );
 //            }
 
-            var additionalFields = utilArrayUnion(sharedMoreFields, presetsManager.universal());
+            var additionalFields = utilArrayUnion(sharedMoreFields, presetSystem.universal());
             additionalFields.sort(function(field1, field2) {
                 return field1.label().localeCompare(field2.label(), localizer.localeCode());
             });
@@ -87,13 +83,13 @@ export function uiSectionPresetFields(context) {
             additionalFields.forEach(function(field) {
                 if (sharedFields.indexOf(field) === -1 &&
                     field.matchAllGeometry(geometries)) {
-                    _fieldsArr.push(
-                        uiField(context, field, _entityIDs, { show: false })
+                    _uifields.push(
+                        new UiField(context, field, _entityIDs, { show: false })
                     );
                 }
             });
 
-            _fieldsArr.forEach(function(field) {
+            _uifields.forEach(function(field) {
                 field
                     .on('change', function(t, onInput) {
                         dispatch.call('change', field, _entityIDs, t, onInput);
@@ -104,7 +100,7 @@ export function uiSectionPresetFields(context) {
             });
         }
 
-        _fieldsArr.forEach(function(field) {
+        _uifields.forEach(function(field) {
             field
                 .state(_state)
                 .tags(_tags);
@@ -113,7 +109,7 @@ export function uiSectionPresetFields(context) {
 
         selection
             .call(formFields
-                .fieldsArr(_fieldsArr)
+                .fieldsArr(_uifields)
                 .state(_state)
                 .klass('grouped-items-area')
             );
@@ -134,7 +130,7 @@ export function uiSectionPresetFields(context) {
         if (!arguments.length) return _presets;
         if (!_presets || !val || !utilArrayIdentical(_presets, val)) {
             _presets = val;
-            _fieldsArr = null;
+            _uifields = null;
         }
         return section;
     };
@@ -148,7 +144,7 @@ export function uiSectionPresetFields(context) {
     section.tags = function(val) {
         if (!arguments.length) return _tags;
         _tags = val;
-        // Don't reset _fieldsArr here.
+        // Don't reset _uifields here.
         return section;
     };
 
@@ -156,7 +152,7 @@ export function uiSectionPresetFields(context) {
         if (!arguments.length) return _entityIDs;
         if (!val || !_entityIDs || !utilArrayIdentical(_entityIDs, val)) {
             _entityIDs = val;
-            _fieldsArr = null;
+            _uifields = null;
         }
         return section;
     };

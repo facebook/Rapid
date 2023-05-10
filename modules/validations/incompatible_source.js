@@ -44,7 +44,7 @@ export function validationIncompatibleSource() {
           message: (context) => {
             const entity = context.hasEntity(entityID);
             return entity ? t.html('issues.incompatible_source.feature.message', {
-              feature: utilDisplayLabel(entity, context.graph(), true /* verbose */),
+              feature: utilDisplayLabel(context, entity, context.graph(), true /* verbose */),
               value: source
             }) : '';
           },

@@ -22,7 +22,6 @@ export function validationUnsquareWay(context) {
 
 
     var validation = function checkUnsquareWay(entity, graph) {
-
         if (!isBuilding(entity, graph)) return [];
 
         // don't flag ways marked as physically unsquare
@@ -78,7 +77,7 @@ export function validationUnsquareWay(context) {
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
                 return entity ? t.html('issues.unsquare_way.message', {
-                    feature: utilDisplayLabel(entity, context.graph())
+                    feature: utilDisplayLabel(context, entity, context.graph())
                 }) : '';
             },
             reference: showReference,

@@ -7,18 +7,15 @@ describe('operationExtract', () => {
     extent() { return new sdk.Extent([-180, -90], [180, 90]); }
   }
 
-  class MockStorageSystem {
-    constructor() { }
-    getItem() { return ''; }
-  }
-
   class MockContext {
     constructor()           {
       this._map = new MockMap();
-      this._storageSystem = new MockStorageSystem();
+      this._storageSystem = new Rapid.StorageSystem(this);
+      this._presetSystem = new Rapid.PresetSystem(this);
     }
     map()                   { return this._map; }
-    storageSystem()        { return this._storageSystem; }
+    storageSystem()         { return this._storageSystem; }
+    presetSystem()          { return this._presetSystem; }
     graph()                 { return _graph; }
     entity(id)              { return _graph.entity(id); }
     hasEntity(id)           { return _graph.hasEntity(id); }

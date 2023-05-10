@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import _debounce from 'lodash-es/debounce';
 
-import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
@@ -14,6 +13,7 @@ import { utilKeybinding, utilNoAuto, utilRebind, utilTotalExtent } from '../util
 
 
 export function uiPresetList(context) {
+    var presetSystem = context.presetSystem();
     var dispatch = d3_dispatch('cancel', 'choose');
     var _entityIDs;
     var _currLoc;
@@ -24,7 +24,7 @@ export function uiPresetList(context) {
     function presetList(selection) {
         if (!_entityIDs) return;
 
-        var presets = presetManager.matchAllGeometry(entityGeometries());
+        var presets = presetSystem.matchAllGeometry(entityGeometries());
 
         selection.html('');
 
@@ -41,6 +41,46 @@ export function uiPresetList(context) {
             .attr('class', 'preset-choose')
             .on('click', function() { dispatch.call('cancel', this); })
             .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'));
+
+
+        var searchWrap = selection
+            .append('div')
+            .attr('class', 'search-header');
+
+        searchWrap
+            .call(uiIcon('#rapid-icon-search', 'pre-text'));
+
+        var search = searchWrap
+            .append('input')
+            .attr('class', 'preset-search-input')
+            .attr('placeholder', t('inspector.search'))
+            .attr('type', 'search')
+            .call(utilNoAuto)
+            .on('keydown', initialKeydown)
+            .on('keypress', keypress)
+            .on('input', _debounce(inputevent));
+
+        if (_autofocus) {
+            search.node().focus();
+
+            // Safari 14 doesn't always like to focus immediately,
+            // so try again on the next pass
+            setTimeout(function() {
+                search.node().focus();
+            }, 0);
+        }
+
+        var listWrap = selection
+            .append('div')
+            .attr('class', 'inspector-body');
+
+        var list = listWrap
+            .append('div')
+            .attr('class', 'preset-list')
+            .call(drawList, presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc));
+
+        context.features().on('change.preset-list', updateForFeatureHiddenState);
+
 
         function initialKeydown(d3_event) {
             // hack to let delete shortcut work when search is autofocused
@@ -92,97 +132,57 @@ export function uiPresetList(context) {
             var value = search.property('value');
             list.classed('filtered', value.length);
 
-            var results, messageText;
+            var collection, messageText;
             if (value.length) {
-                results = presets.search(value, entityGeometries()[0], _currLoc);
+                collection = presets.search(value, entityGeometries()[0], _currLoc);
                 messageText = t('inspector.results', {
-                    n: results.collection.length,
+                    n: collection.array.length,
                     search: value
                 });
             } else {
-                results = presetManager.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc);
+                collection = presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc);
                 messageText = t('inspector.choose');
             }
-            list.call(drawList, results);
+            list.call(drawList, collection);
             message.html(messageText);
         }
+    }
 
-        var searchWrap = selection
-            .append('div')
-            .attr('class', 'search-header');
 
-        searchWrap
-            .call(uiIcon('#rapid-icon-search', 'pre-text'));
+    // Draws a collection of Presets/Categories
+    function drawList(selection, collection) {
+        collection = collection.matchAllGeometry(entityGeometries());  // not sure why we do this again
 
-        var search = searchWrap
-            .append('input')
-            .attr('class', 'preset-search-input')
-            .attr('placeholder', t('inspector.search'))
-            .attr('type', 'search')
-            .call(utilNoAuto)
-            .on('keydown', initialKeydown)
-            .on('keypress', keypress)
-            .on('input', _debounce(inputevent));
-
-        if (_autofocus) {
-            search.node().focus();
-
-            // Safari 14 doesn't always like to focus immediately,
-            // so try again on the next pass
-            setTimeout(function() {
-                search.node().focus();
-            }, 0);
+        let arr = [];
+        for (const item of collection.array) {
+          if (!item) continue;  // not sure how this would happen
+          if (item.members) {
+            arr.push(CategoryItem(item));
+          } else {
+            arr.push(PresetItem(item));
+          }
         }
 
-        var listWrap = selection
-            .append('div')
-            .attr('class', 'inspector-body');
+        let items = selection.selectAll('.preset-list-item')
+          .data(arr, d => d.preset.id);
 
-        var list = listWrap
-            .append('div')
-            .attr('class', 'preset-list')
-            .call(drawList, presetManager.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc));
-
-        context.features().on('change.preset-list', updateForFeatureHiddenState);
-    }
-
-
-    function drawList(list, presets) {
-        presets = presets.matchAllGeometry(entityGeometries());
-        var collection = presets.collection.reduce(function(collection, preset) {
-            if (!preset) return collection;
-
-            if (preset.members) {
-                if (preset.members.collection.filter(function(preset) {
-                    return preset.addable();
-                }).length > 1) {
-                    collection.push(CategoryItem(preset));
-                }
-            } else if (preset.addable()) {
-                collection.push(PresetItem(preset));
-            }
-            return collection;
-        }, []);
-
-        var items = list.selectAll('.preset-list-item')
-            .data(collection, function(d) { return d.preset.id; });
-
-        items.order();
+        items.order();  // make them match the order of `arr`
 
         items.exit()
-            .remove();
+          .remove();
 
         items.enter()
-            .append('div')
-            .attr('class', function(item) { return 'preset-list-item preset-' + item.preset.id.replace('/', '-'); })
-            .classed('current', function(item) { return _currentPresets.indexOf(item.preset) !== -1; })
-            .each(function(item) { d3_select(this).call(item); })
-            .style('opacity', 0)
-            .transition()
-            .style('opacity', 1);
+          .append('div')
+          .attr('class', function(item) { return 'preset-list-item preset-' + item.preset.id.replace('/', '-'); })
+          .classed('current', function(item) { return _currentPresets.indexOf(item.preset) !== -1; })
+          .each(function(item) { d3_select(this).call(item); })
+          .style('opacity', 0)
+          .transition()
+          .style('opacity', 1);
 
-        updateForFeatureHiddenState();
+      updateForFeatureHiddenState();
     }
+
 
     function itemKeydown(d3_event) {
         // the actively focused item
@@ -355,7 +355,7 @@ export function uiPresetList(context) {
                 box.transition()
                     .duration(200)
                     .style('opacity', '1')
-                    .style('max-height', 200 + members.collection.length * 190 + 'px')
+                    .style('max-height', 200 + members.array.length * 190 + 'px')
                     .style('padding-bottom', '10px');
             }
         };
@@ -405,13 +405,13 @@ export function uiPresetList(context) {
         item.choose = function() {
             if (d3_select(this).classed('disabled')) return;
             if (!context.inIntro()) {
-                presetManager.setMostRecent(preset, entityGeometries()[0]);
+                presetSystem.setMostRecent(preset);
             }
             context.perform(
                 function(graph) {
                     for (var i in _entityIDs) {
                         var entityID = _entityIDs[i];
-                        var oldPreset = presetManager.match(graph.entity(entityID), graph);
+                        var oldPreset = presetSystem.match(graph.entity(entityID), graph);
                         graph = actionChangePreset(entityID, oldPreset, preset)(graph);
                     }
                     return graph;
@@ -429,7 +429,7 @@ export function uiPresetList(context) {
         };
 
         item.preset = preset;
-        item.reference = uiTagReference(preset.reference(), context);
+        item.reference = uiTagReference(context, preset.reference());
 
         return item;
     }
@@ -487,7 +487,7 @@ export function uiPresetList(context) {
 
             // match presets
             var presets = _entityIDs.map(function(entityID) {
-                return presetManager.match(context.entity(entityID), context.graph());
+                return presetSystem.match(context.entity(entityID), context.graph());
             });
             presetList.presets(presets);
         }
@@ -502,7 +502,6 @@ export function uiPresetList(context) {
     };
 
     function entityGeometries() {
-
         var counts = {};
 
         for (var i in _entityIDs) {

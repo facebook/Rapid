@@ -7,7 +7,6 @@ import { actionMergePolygon } from '../actions/merge_polygon';
 
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
-import { presetManager } from '../presets';
 
 
 export function operationMerge(context, selectedIDs) {
@@ -77,12 +76,13 @@ export function operationMerge(context, selectedIDs) {
 
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
+    const presetSystem = context.presetSystem();
 
     if (disabledReason) {
       if (disabledReason === 'conflicting_relations') {
         return t('operations.merge.conflicting_relations');
       } else if (disabledReason === 'restriction' || disabledReason === 'connectivity') {
-        const preset = presetManager.item('type/' + disabledReason);
+        const preset = presetSystem.item('type/' + disabledReason);
         return t('operations.merge.damage_relation', { relation: preset.name() });
       } else {
         return t(`operations.merge.${disabledReason}`);

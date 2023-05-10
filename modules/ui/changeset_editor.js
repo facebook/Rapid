@@ -1,11 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniqBy } from '@rapid-sdk/util';
 
-import { presetManager } from '../presets';
 import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiCombobox} from './combobox';
-import { uiField } from './field';
+import { UiField } from './UiField';
 import { uiFormFields } from './form_fields';
 import { utilRebind, utilTriggerEvent } from '../util';
 
@@ -14,7 +13,7 @@ export function uiChangesetEditor(context) {
     var dispatch = d3_dispatch('change');
     var formFields = uiFormFields(context);
     var commentCombo = uiCombobox(context, 'comment').caseSensitive(true);
-    var _fieldsArr;
+    var _uifields;
     var _tags;
     var _changesetID;
 
@@ -27,17 +26,17 @@ export function uiChangesetEditor(context) {
     function render(selection) {
         var initial = false;
 
-        if (!_fieldsArr) {
+        if (!_uifields) {
             initial = true;
-            var presets = presetManager;
+            var presetSysetem = context.presetSystem();
 
-            _fieldsArr = [
-                uiField(context, presets.field('comment'), null, { show: true, revert: false }),
-                uiField(context, presets.field('source'), null, { show: false, revert: false }),
-                uiField(context, presets.field('hashtags'), null, { show: false, revert: false }),
+            _uifields = [
+                new UiField(context, presetSysetem.field('comment'), null, { show: true, revert: false }),
+                new UiField(context, presetSysetem.field('source'), null, { show: false, revert: false }),
+                new UiField(context, presetSysetem.field('hashtags'), null, { show: false, revert: false }),
             ];
 
-            _fieldsArr.forEach(function(field) {
+            _uifields.forEach(function(field) {
                 field
                     .on('change', function(t, onInput) {
                         dispatch.call('change', field, undefined, t, onInput);
@@ -45,14 +44,14 @@ export function uiChangesetEditor(context) {
             });
         }
 
-        _fieldsArr.forEach(function(field) {
+        _uifields.forEach(function(field) {
             field
                 .tags(_tags);
         });
 
 
         selection
-            .call(formFields.fieldsArr(_fieldsArr));
+            .call(formFields.fieldsArr(_uifields));
 
 
         if (initial) {
@@ -120,7 +119,7 @@ export function uiChangesetEditor(context) {
     changesetEditor.tags = function(_) {
         if (!arguments.length) return _tags;
         _tags = _;
-        // Don't reset _fieldsArr here.
+        // Don't reset _uifields here.
         return changesetEditor;
     };
 
@@ -129,7 +128,7 @@ export function uiChangesetEditor(context) {
         if (!arguments.length) return _changesetID;
         if (_changesetID === _) return changesetEditor;
         _changesetID = _;
-        _fieldsArr = null;
+        _uifields = null;
         return changesetEditor;
     };
 

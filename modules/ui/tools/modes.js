@@ -1,13 +1,13 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 
 
 export function uiToolDrawModes(context) {
+  const presetSystem = context.presetSystem();
 
   let tool = {
     id: 'draw_modes',
@@ -20,7 +20,7 @@ export function uiToolDrawModes(context) {
       title: t.html('modes.add_point.title'),
       button: 'point',
       description: t.html('modes.add_point.description'),
-      preset: presetManager.item('point'),
+      preset: presetSystem.item('point'),
       key: '1'
     },
     {
@@ -28,7 +28,7 @@ export function uiToolDrawModes(context) {
       title: t.html('modes.add_line.title'),
       button: 'line',
       description: t.html('modes.add_line.description'),
-      preset: presetManager.item('line'),
+      preset: presetSystem.item('line'),
       key: '2'
     },
     {
@@ -36,7 +36,7 @@ export function uiToolDrawModes(context) {
       title: t.html('modes.add_area.title'),
       button: 'area',
       description: t.html('modes.add_area.description'),
-      preset: presetManager.item('area'),
+      preset: presetSystem.item('area'),
       key: '3'
     }
   ];
