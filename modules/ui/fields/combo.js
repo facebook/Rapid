@@ -10,7 +10,7 @@ import { t } from '../../core/localizer';
 import { services } from '../../services';
 import { uiCombobox } from '../combobox';
 import { utilKeybinding } from '../../util/keybinding';
-import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 export {
     uiFieldCombo as uiFieldManyCombo,
@@ -21,17 +21,19 @@ export {
 };
 
 
-export function uiFieldCombo(field, context) {
-    var dispatch = d3_dispatch('change');
-    var _isMulti = (field.type === 'multiCombo' || field.type === 'manyCombo');
-    var _isNetwork = (field.type === 'networkCombo');
-    var _isSemi = (field.type === 'semiCombo');
-    var _optarray = field.options;
-    var _showTagInfoSuggestions = field.type !== 'manyCombo' && field.autoSuggestions !== false;
-    var _allowCustomValues = field.type !== 'manyCombo' && field.customValues !== false;
-    var _snake_case = (field.snake_case || (field.snake_case === undefined));
-    var _combobox = uiCombobox(context, 'combo-' + field.safeid)
-        .caseSensitive(field.caseSensitive)
+export function uiFieldCombo(context, uifield) {
+    const dispatch = d3_dispatch('change');
+    const presetField = uifield.presetField;
+
+    var _isMulti = (uifield.type === 'multiCombo' || uifield.type === 'manyCombo');
+    var _isNetwork = (uifield.type === 'networkCombo');
+    var _isSemi = (uifield.type === 'semiCombo');
+    var _optarray = presetField.options;
+    var _showTagInfoSuggestions = uifield.type !== 'manyCombo' && presetField.autoSuggestions !== false;
+    var _allowCustomValues = uifield.type !== 'manyCombo' && presetField.customValues !== false;
+    var _snake_case = (presetField.snake_case || (presetField.snake_case === undefined));
+    var _combobox = uiCombobox(context, 'combo-' + uifield.safeid)
+        .caseSensitive(presetField.caseSensitive)
         .minItems(_isMulti || _isSemi ? 1 : 2);
     var _container = d3_select(null);
     var _inputWrap = d3_select(null);
@@ -51,8 +53,8 @@ export function uiFieldCombo(field, context) {
 
 
     // ensure multiCombo field.key ends with a ':'
-    if (_isMulti && field.key && /[^:]$/.test(field.key)) {
-        field.key += ':';
+    if (_isMulti && uifield.key && /[^:]$/.test(uifield.key)) {
+        uifield.key += ':';
     }
 
 
@@ -77,7 +79,7 @@ export function uiFieldCombo(field, context) {
         });
         if (found) return found.key;
 
-        if (field.type === 'typeCombo' && !dval) {
+        if (uifield.type === 'typeCombo' && !dval) {
             return 'yes';
         }
 
@@ -90,11 +92,11 @@ export function uiFieldCombo(field, context) {
     function displayValue(tval) {
         tval = tval || '';
 
-        if (field.hasTextForStringId('options.' + tval)) {
-            return field.t('options.' + tval, { default: tval });
+        if (uifield.hasTextForStringId('options.' + tval)) {
+            return uifield.t('options.' + tval, { default: tval });
         }
 
-        if (field.type === 'typeCombo' && tval.toLowerCase() === 'yes') {
+        if (uifield.type === 'typeCombo' && tval.toLowerCase() === 'yes') {
             return '';
         }
 
@@ -138,10 +140,10 @@ export function uiFieldCombo(field, context) {
         _comboData = _optarray.map(function(v) {
             return {
                 key: v,
-                value: field.t('options.' + v, { default: v }),
+                value: uifield.t(`options.${v}`, { default: v }),
                 title: v,
-                display: field.t.html('options.' + v, { default: v }),
-                klass: field.hasTextForStringId('options.' + v) ? '' : 'raw-option'
+                display: uifield.tHtml(`options.${v}`, { default: v }),
+                klass: uifield.hasTextForStringId(`options.${v}`) ? '' : 'raw-option'
             };
         });
 
@@ -152,7 +154,7 @@ export function uiFieldCombo(field, context) {
 
     function setTaginfoValues(q, callback) {
         var fn = _isMulti ? 'multikeys' : 'values';
-        var query = (_isMulti ? field.key : '') + q;
+        var query = (_isMulti ? uifield.key : '') + q;
         var hasCountryPrefix = _isNetwork && _countryCode && _countryCode.indexOf(q.toLowerCase()) === 0;
         if (hasCountryPrefix) {
             query = _countryCode + ':';
@@ -160,7 +162,7 @@ export function uiFieldCombo(field, context) {
 
         var params = {
             debounce: (q !== ''),
-            key: field.key,
+            key: uifield.key,
             query: query
         };
 
@@ -172,8 +174,7 @@ export function uiFieldCombo(field, context) {
             if (err) return;
 
             data = data.filter(function(d) {
-
-                if (field.type === 'typeCombo' && d.value === 'yes') {
+                if (uifield.type === 'typeCombo' && d.value === 'yes') {
                     // don't show the fallback value
                     return false;
                 }
@@ -182,7 +183,7 @@ export function uiFieldCombo(field, context) {
                 return !d.count || d.count > 10;
             });
 
-            var deprecatedValues = osmEntity.deprecatedTagValuesByKey(_dataDeprecated)[field.key];
+            var deprecatedValues = osmEntity.deprecatedTagValuesByKey(_dataDeprecated)[uifield.key];
             if (deprecatedValues) {
                 // don't suggest deprecated tag values
                 data = data.filter(function(d) {
@@ -201,14 +202,14 @@ export function uiFieldCombo(field, context) {
 
             _comboData = data.map(function(d) {
                 var k = d.value;
-                if (_isMulti) k = k.replace(field.key, '');
-                var label = field.t('options.' + k, { default: k });
+                if (_isMulti) k = k.replace(uifield.key, '');
+                var label = uifield.t(`options.${k}`, { default: k });
                 return {
                     key: k,
                     value: label,
-                    display: field.t.html('options.' + k, { default: k }),
+                    display: uifield.tHtml(`options.${k}`, { default: k }),
                     title: d.title || label,
-                    klass: field.hasTextForStringId('options.' + k) ? '' : 'raw-option'
+                    klass: uifield.hasTextForStringId(`options.${k}`) ? '' : 'raw-option'
                 };
             });
 
@@ -221,14 +222,14 @@ export function uiFieldCombo(field, context) {
     function setPlaceholder(values) {
 
         if (_isMulti || _isSemi) {
-            _staticPlaceholder = field.placeholder() || t('inspector.add');
+            _staticPlaceholder = uifield.placeholder || t('inspector.add');
         } else {
             var vals = values
                 .map(function(d) { return d.value; })
                 .filter(function(s) { return s.length < 20; });
 
             var placeholders = vals.length > 1 ? vals : values.map(function(d) { return d.key; });
-            _staticPlaceholder = field.placeholder() || placeholders.slice(0, 3).join(', ');
+            _staticPlaceholder = uifield.placeholder || placeholders.slice(0, 3).join(', ');
         }
 
         if (!/(…|\.\.\.)$/.test(_staticPlaceholder)) {
@@ -236,7 +237,7 @@ export function uiFieldCombo(field, context) {
         }
 
         var ph;
-        if (!_isMulti && !_isSemi && _tags && Array.isArray(_tags[field.key])) {
+        if (!_isMulti && !_isSemi && _tags && Array.isArray(_tags[uifield.key])) {
             ph = t('inspector.multiple_values');
         } else {
             ph =  _staticPlaceholder;
@@ -261,7 +262,7 @@ export function uiFieldCombo(field, context) {
 
             if (_isMulti) {
                 utilArrayUniq(vals).forEach(function(v) {
-                    var key = (field.key || '') + v;
+                    var key = (uifield.key || '') + v;
                     if (_tags) {
                         // don't set a multicombo value to 'yes' if it already has a non-'no' value
                         // e.g. `language:de=main`
@@ -269,14 +270,14 @@ export function uiFieldCombo(field, context) {
                         if (typeof old === 'string' && old.toLowerCase() !== 'no') return;
                     }
                     key = context.cleanTagKey(key);
-                    field.keys.push(key);
+                    uifield.keys.push(key);
                     t[key] = 'yes';
                 });
 
             } else if (_isSemi) {
                 var arr = _multiData.map(function(d) { return d.key; });
                 arr = arr.concat(vals);
-                t[field.key] = context.cleanTagValue(utilArrayUniq(arr).filter(Boolean).join(';'));
+                t[uifield.key] = context.cleanTagValue(utilArrayUniq(arr).filter(Boolean).join(';'));
             }
 
             window.setTimeout(function() { _input.node().focus(); }, 10);
@@ -285,10 +286,10 @@ export function uiFieldCombo(field, context) {
             var rawValue = utilGetSetValue(_input);
 
             // don't override multiple values with blank string
-            if (!rawValue && Array.isArray(_tags[field.key])) return;
+            if (!rawValue && Array.isArray(_tags[uifield.key])) return;
 
             val = context.cleanTagValue(tagValue(rawValue));
-            t[field.key] = val || undefined;
+            t[uifield.key] = val || undefined;
         }
 
         dispatch.call('change', this, t);
@@ -308,9 +309,11 @@ export function uiFieldCombo(field, context) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
 
+        const key = uifield.key;
+
         // don't move source=digitalglobe or source=maxar on ML road
         // TODO: switch to check on __fbid__
-        if (field.key === 'source' && _entityIDs[0] && isFbRoadId(_entityIDs[0]) && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
+        if (key === 'source' && _entityIDs[0] && isFbRoadId(_entityIDs[0]) && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
         var t = {};
         if (_isMulti) {
             t[d.key] = undefined;
@@ -320,7 +323,7 @@ export function uiFieldCombo(field, context) {
             }).filter(Boolean);
 
             arr = utilArrayUniq(arr);
-            t[field.key] = arr.length ? arr.join(';') : undefined;
+            t[key] = arr.length ? arr.join(';') : undefined;
         }
         dispatch.call('change', this, t);
     }
@@ -344,7 +347,7 @@ export function uiFieldCombo(field, context) {
 
             // Use a separate line for each value in the Destinations and Via fields
             // to mimic highway exit signs
-            if (field.key === 'destination' || field.key === 'via') {
+            if (uifield.key === 'destination' || uifield.key === 'via') {
                 listClass += ' full-line-chips';
             }
 
@@ -375,13 +378,13 @@ export function uiFieldCombo(field, context) {
         _input = _input.enter()
             .append('input')
             .attr('type', 'text')
-            .attr('id', field.domId)
+            .attr('id', uifield.uid)
             .call(utilNoAuto)
             .call(initCombo, selection)
             .merge(_input);
 
         if (_isNetwork) {
-            var extent = combinedEntityExtent();
+            var extent = uifield.entityExtent;
             var countryCode = extent && countryCoder.iso1A2Code(extent.center());
             _countryCode = countryCode && countryCode.toLowerCase();
         }
@@ -415,6 +418,8 @@ export function uiFieldCombo(field, context) {
 
     combo.tags = function(tags) {
         _tags = tags;
+        let key = uifield.key;
+        let keys = uifield.keys;
 
         if (_isMulti || _isSemi) {
             _multiData = [];
@@ -424,13 +429,13 @@ export function uiFieldCombo(field, context) {
             if (_isMulti) {
                 // Build _multiData array containing keys already set..
                 for (var k in tags) {
-                    if (field.key && k.indexOf(field.key) !== 0) continue;
-                    if (!field.key && field.keys.indexOf(k) === -1) continue;
+                    if (key && k.indexOf(key) !== 0) continue;
+                    if (!key && keys.indexOf(k) === -1) continue;
 
                     var v = tags[k];
                     if (!v || (typeof v === 'string' && v.toLowerCase() === 'no')) continue;
 
-                    var suffix = field.key ? k.slice(field.key.length) : k;
+                    var suffix = key ? k.slice(key.length) : k;
                     _multiData.push({
                         key: k,
                         value: displayValue(suffix),
@@ -438,12 +443,12 @@ export function uiFieldCombo(field, context) {
                     });
                 }
 
-                if (field.key) {
+                if (key) {
                     // Set keys for form-field modified (needed for undo and reset buttons)..
-                    field.keys = _multiData.map(function(d) { return d.key; });
+                    keys = _multiData.map(function(d) { return d.key; });
 
                     // limit the input length so it fits after prepending the key prefix
-                    maxLength = context.maxCharsForTagKey() - utilUnicodeCharsCount(field.key);
+                    maxLength = context.maxCharsForTagKey() - utilUnicodeCharsCount(key);
                 } else {
                     maxLength = context.maxCharsForTagKey();
                 }
@@ -452,9 +457,9 @@ export function uiFieldCombo(field, context) {
 
                 var allValues = [];
                 var commonValues;
-                if (Array.isArray(tags[field.key])) {
+                if (Array.isArray(tags[key])) {
 
-                    tags[field.key].forEach(function(tagVal) {
+                    tags[key].forEach(function(tagVal) {
                         var thisVals = utilArrayUniq((tagVal || '').split(';')).filter(Boolean);
                         allValues = allValues.concat(thisVals);
                         if (!commonValues) {
@@ -466,7 +471,7 @@ export function uiFieldCombo(field, context) {
                     allValues = utilArrayUniq(allValues).filter(Boolean);
 
                 } else {
-                    allValues =  utilArrayUniq((tags[field.key] || '').split(';')).filter(Boolean);
+                    allValues =  utilArrayUniq((tags[key] || '').split(';')).filter(Boolean);
                     commonValues = allValues;
                 }
 
@@ -492,7 +497,7 @@ export function uiFieldCombo(field, context) {
             maxLength = Math.max(0, maxLength);
 
             var allowDragAndDrop = _isSemi // only semiCombo values are ordered
-                && !Array.isArray(tags[field.key]);
+                && !Array.isArray(tags[key]);
 
             // Exclude existing multikeys from combo options..
             var available = objectDifference(_comboData, _multiData);
@@ -524,8 +529,8 @@ export function uiFieldCombo(field, context) {
                 .order()
                 .classed('raw-value', function(d) {
                     var k = d.key;
-                    if (_isMulti) k = k.replace(field.key, '');
-                    return !field.hasTextForStringId('options.' + k);
+                    if (_isMulti) k = k.replace(key, '');
+                    return !uifield.hasTextForStringId('options.' + k);
                 })
                 .classed('draggable', allowDragAndDrop)
                 .classed('mixed', function(d) {
@@ -549,22 +554,22 @@ export function uiFieldCombo(field, context) {
                 .text(function(d) {
                     // don't show 'x' on the digitalglobe/maxar label on ML road
                     // TODO: switch to check on __fbid__
-                    return _entityIDs[0] && isFbRoadId(_entityIDs[0]) && field.key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
+                    return _entityIDs[0] && isFbRoadId(_entityIDs[0]) && key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
                 });
 
         } else {
-            var isMixed = Array.isArray(tags[field.key]);
+            var isMixed = Array.isArray(tags[key]);
 
-            var mixedValues = isMixed && tags[field.key].map(function(val) {
+            var mixedValues = isMixed && tags[key].map(function(val) {
                 return displayValue(val);
             }).filter(Boolean);
 
-            var showsValue = !isMixed && tags[field.key] && !(field.type === 'typeCombo' && tags[field.key] === 'yes');
-            var isRawValue = showsValue && !field.hasTextForStringId('options.' + tags[field.key]);
+            var showsValue = !isMixed && tags[key] && !(uifield.type === 'typeCombo' && tags[key] === 'yes');
+            var isRawValue = showsValue && !uifield.hasTextForStringId('options.' + tags[key]);
             var isKnownValue = showsValue && !isRawValue;
             var isReadOnly = !_allowCustomValues || isKnownValue;
 
-            utilGetSetValue(_input, !isMixed ? displayValue(tags[field.key]) : '')
+            utilGetSetValue(_input, !isMixed ? displayValue(tags[key]) : '')
                 .classed('raw-value', isRawValue)
                 .classed('known-value', isKnownValue)
                 .attr('readonly', isReadOnly ? 'readonly' : undefined)
@@ -581,15 +586,16 @@ export function uiFieldCombo(field, context) {
                         d3_event.stopPropagation();
 
                         var t = {};
-                        t[field.key] = undefined;
+                        t[key] = undefined;
                         dispatch.call('change', this, t);
                     }
                 });
         }
     };
 
-    function registerDragAndDrop(selection) {
 
+    function registerDragAndDrop(selection) {
+        let key = uifield.key;
         // allow drag and drop re-ordering of chips
         var dragOrigin, targetIndex;
         selection.call(d3_drag()
@@ -617,7 +623,7 @@ export function uiFieldCombo(field, context) {
                 var targetIndexOffsetTop = null;
                 var draggedTagWidth = d3_select(this).node().offsetWidth;
 
-                if (field.key === 'destination' || field.key === 'via') { // meaning tags are full width
+                if (key === 'destination' || key === 'via') { // meaning tags are full width
                     _container.selectAll('.chip')
                         .style('transform', function(d2, index2) {
                             var node = d3_select(this).node();
@@ -695,11 +701,11 @@ export function uiFieldCombo(field, context) {
                     var t = {};
 
                     if (_multiData.length) {
-                        t[field.key] = _multiData.map(function(element) {
+                        t[key] = _multiData.map(function(element) {
                             return element.key;
                         }).join(';');
                     } else {
-                        t[field.key] = undefined;
+                        t[key] = undefined;
                     }
 
                     dispatch.call('change', this, t);
@@ -721,11 +727,6 @@ export function uiFieldCombo(field, context) {
         _entityIDs = val;
         return combo;
     };
-
-
-    function combinedEntityExtent() {
-        return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
-    }
 
 
     return utilRebind(combo, dispatch, 'on');

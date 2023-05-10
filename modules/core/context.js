@@ -12,6 +12,7 @@ import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
 import { LocationSystem } from './LocationSystem';
+import { PresetSystem } from './PresetSystem';
 import { StorageSystem } from './StorageSystem';
 import { UrlHashSystem } from './UrlHashSystem';
 
@@ -36,7 +37,6 @@ import { ModeSave } from '../modes/ModeSave';
 import { ModeSelect } from '../modes/ModeSelect';  // new
 import { modeSelect } from '../modes/select';      // legacy
 
-import { presetManager } from '../presets';
 import { rendererFeatures, RendererImagery, RendererMap, RendererPhotos } from '../renderer';
 import { services } from '../services';
 import { uiInit } from '../ui/init';
@@ -57,6 +57,7 @@ export function coreContext() {
   let _connection = services.osm;
   let _history;
   let _locationSystem;
+  let _presetSystem;
   let _storageSystem;
   let _uploader;
   let _urlhash;
@@ -65,6 +66,7 @@ export function coreContext() {
   context.connection = () => _connection;
   context.history = () => _history;
   context.locationSystem = () => _locationSystem;
+  context.presetSystem = () => _presetSystem;
   context.storageSystem = () => _storageSystem;
   context.uploader = () => _uploader;
   context.urlhash = () => _urlhash;
@@ -647,8 +649,9 @@ export function coreContext() {
     // until this is complete since load statuses are indeterminate. The order
     // of instantiation shouldn't matter.
     function instantiateAll() {
-      _storageSystem = new StorageSystem(context);
       _locationSystem = new LocationSystem(context);
+      _presetSystem = new PresetSystem(context);
+      _storageSystem = new StorageSystem(context);
       _urlhash = new UrlHashSystem(context);
 
       _history = coreHistory(context);
@@ -705,15 +708,16 @@ export function coreContext() {
     // might matter if dependents make calls to each other. Be wary of async calls.
     function initializeAll() {
       if (context.initialHashParams.presets) {
-        presetManager.addablePresetIDs(new Set(context.initialHashParams.presets.split(',')));
+        const addable = new Set(context.initialHashParams.presets.split(','));
+        _presetSystem.addablePresetIDs = addable;
       }
       if (context.initialHashParams.locale) {
         localizer.preferredLocaleCodes(context.initialHashParams.locale);
       }
 
       // kick off some async work
-      localizer.ensureLoaded();
-      presetManager.ensureLoaded();
+      localizer.initAsync();
+      _presetSystem.initAsync();
 
       // Run initializers - this is where code should be that establishes event listeners
       Object.values(services).forEach(service => {

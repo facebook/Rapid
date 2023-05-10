@@ -1,7 +1,6 @@
 import { Matcher } from 'name-suggestion-index';
 
 import { fileFetcher } from '../core';
-import { presetManager } from '../presets';
 
 // This service contains all the code related to the **name-suggestion-index** (aka NSI)
 // NSI contains the most correct tagging for many commonly mapped features.
@@ -70,10 +69,11 @@ function loadNsiPresets() {
       // The preset json schema doesn't include it, but the Rapid code still uses it
       Object.values(vals[0].presets).forEach(preset => preset.suggestion = true);
 
-      presetManager.merge({
-        presets: vals[0].presets,
-        featureCollection: vals[1]
-      });
+// restore presetSystem for this to work
+//      presetSystem.merge({
+//        presets: vals[0].presets,
+//        featureCollection: vals[1]
+//      });
     })
   );
 }
@@ -242,14 +242,15 @@ function gatherKVs(tags) {
     }
   });
 
-  // Can we try a generic building fallback match? - See #6122, #7197
-  // Only try this if we do a preset match and find nothing else remarkable about that building.
-  // For example, a way with `building=yes` + `name=Westfield` may be a Westfield department store.
-  // But a way with `building=yes` + `name=Westfield` + `public_transport=station` is a train station for a town named "Westfield"
-  const preset = presetManager.matchTags(tags, 'area');
-  if (buildingPreset[preset.id]) {
-    alternate.add('building/yes');
-  }
+// restore presetSystem
+//  // Can we try a generic building fallback match? - See #6122, #7197
+//  // Only try this if we do a preset match and find nothing else remarkable about that building.
+//  // For example, a way with `building=yes` + `name=Westfield` may be a Westfield department store.
+//  // But a way with `building=yes` + `name=Westfield` + `public_transport=station` is a train station for a town named "Westfield"
+//  const preset = presetSystem.matchTags(tags, 'area');
+//  if (buildingPreset[preset.id]) {
+//    alternate.add('building/yes');
+//  }
 
   return { primary: primary, alternate: alternate };
 }
@@ -685,10 +686,13 @@ export default {
   // On init, start preparing the name-suggestion-index
   //
   init: () => {
-    // Note: service.init is called immediately after the presetManager has started loading its data.
+    // Note: service.init is called immediately after the presetsystem has started loading its data.
     // We expect to chain onto an unfulfilled promise here.
     setNsiSources();
-    presetManager.ensureLoaded()
+
+// restore presetSystem
+    Promise.resolve()
+    // presetSystem.initAsync()
       .then(() => loadNsiPresets())
       .then(() => loadNsiData())
       .then(() => _nsiStatus = 'ok')

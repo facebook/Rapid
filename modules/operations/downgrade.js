@@ -3,7 +3,6 @@ import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
-import { presetManager } from '../presets';
 
 
 export function operationDowngrade(context, selectedIDs) {
@@ -39,7 +38,8 @@ export function operationDowngrade(context, selectedIDs) {
   function downgradeTypeForEntityID(entityID) {
     const graph = context.graph();
     const entity = graph.entity(entityID);
-    const preset = presetManager.match(entity, graph);
+    const presetSystem = context.presetSystem();
+    const preset = presetSystem.match(entity, graph);
 
     if (!preset || preset.isFallback()) return null;
 

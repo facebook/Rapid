@@ -5,9 +5,6 @@ import { t } from '../core/localizer';
 import { services } from '../services';
 import { uiIcon } from './icon';
 
-// import { uiField } from './field';
-// import { uiFormFields } from './form_fields';
-
 import { uiNoteComments } from './note_comments';
 import { uiNoteHeader } from './note_header';
 import { uiNoteReport } from './note_report';
@@ -19,16 +16,11 @@ export function uiNoteEditor(context) {
     var dispatch = d3_dispatch('change');
     var noteComments = uiNoteComments(context);
     var noteHeader = uiNoteHeader();
-
-    // var formFields = uiFormFields(context);
-
     var _note;
     var _newNote;
-    // var _fieldsArr;
 
 
     function noteEditor(selection) {
-
         var header = selection.selectAll('.header')
             .data([0]);
 
@@ -102,40 +94,6 @@ export function uiNoteEditor(context) {
         var noteSaveEnter = noteSave.enter()
             .append('div')
             .attr('class', 'note-save save-section cf');
-
-        // // if new note, show categories to pick from
-        // if (_note.isNew()) {
-        //     var presets = presetManager;
-
-        //     // NOTE: this key isn't a age and therefore there is no documentation (yet)
-        //     _fieldsArr = [
-        //         uiField(context, presets.field('category'), null, { show: true, revert: false }),
-        //     ];
-
-        //     _fieldsArr.forEach(function(field) {
-        //         field
-        //             .on('change', changeCategory);
-        //     });
-
-        //     noteSaveEnter
-        //         .append('div')
-        //         .attr('class', 'note-category')
-        //         .call(formFields.fieldsArr(_fieldsArr));
-        // }
-
-        // function changeCategory() {
-        //     // NOTE: perhaps there is a better way to get value
-        //     var val = context.container().select('input[name=\'category\']:checked').property('__data__') || undefined;
-
-        //     // store the unsaved category with the note itself
-        //     _note = _note.update({ newCategory: val });
-        //     var osm = services.osm;
-        //     if (osm) {
-        //         osm.replaceNote(_note);  // update note cache
-        //     }
-        //     noteSave
-        //         .call(noteSaveButtons);
-        // }
 
         noteSaveEnter
             .append('h4')

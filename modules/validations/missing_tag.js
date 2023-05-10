@@ -86,7 +86,7 @@ export function validationMissingTag(context) {
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
                 return entity ? t.html('issues.' + messageID + '.message', {
-                    feature: utilDisplayLabel(entity, context.graph())
+                    feature: utilDisplayLabel(context, entity, context.graph())
                 }) : '';
             },
             reference: showReference,

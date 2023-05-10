@@ -5,7 +5,6 @@ import { actionChangePreset } from '../actions';
 import { actionNoop } from '../actions/noop';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
-import { presetManager } from '../presets';
 
 let _wasSelectedIDs = [];
 let _wasPresetIDs = [];
@@ -30,6 +29,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   // same selection as before?
   const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
   const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
+  const presetSystem = context.presetSystem();
 
   // Gather current entities allowed to be cycled
   const entities = selectedIDs
@@ -37,7 +37,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     .filter(entity => {
       if (entity?.type !== 'way') return false;
 
-      const preset = presetManager.match(entity, context.graph());
+      const preset = presetSystem.match(entity, context.graph());
       if (allowPresetRegex.some(regex => regex.test(preset.id))) {
         if (!presetIDs.has(preset.id)) presetIDs.add(preset.id);  // make sure we can cycle back to the original preset
         return true;
@@ -63,14 +63,14 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
     // Pick the next preset..
     const currPresetIDs = Array.from(presetIDs);
-    const currPreset = presetManager.match(entities[0], context.graph());
+    const currPreset = presetSystem.match(entities[0], context.graph());
     const index = currPreset ? currPresetIDs.indexOf(currPreset.id) : -1;
     const newPresetID = currPresetIDs[(index + 1) % currPresetIDs.length];
-    const newPreset = presetManager.item(newPresetID);
+    const newPreset = presetSystem.item(newPresetID);
 
     // Update all selected highways...
     for (const entity of entities) {
-      const oldPreset = presetManager.match(entity, context.graph());
+      const oldPreset = presetSystem.match(entity, context.graph());
       const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
       context.replace(action, annotation);
     }

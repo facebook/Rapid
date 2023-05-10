@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
@@ -17,9 +16,10 @@ export function uiIntroPoint(context, curtain) {
   const container = context.container();
   const history = context.history();
   const map = context.map();
+  const presetSystem = context.presetSystem();
 
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);
-  const cafePreset = presetManager.item('amenity/cafe');
+  const cafePreset = presetSystem.item('amenity/cafe');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -159,7 +159,7 @@ export function uiIntroPoint(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetManager.match(modified[0], context.graph()) === cafePreset) {
+            if (presetSystem.match(modified[0], context.graph()) === cafePreset) {
               resolve(aboutFeatureEditorAsync);
             } else {
               reject();  // didn't pick cafe
@@ -284,7 +284,7 @@ export function uiIntroPoint(context, curtain) {
 
     // Make sure it's still a cafe, in case user somehow changed it..
     const entity = context.entity(_pointID);
-    const oldPreset = presetManager.match(entity, context.graph());
+    const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
 
     history.checkpoint('hasPoint');

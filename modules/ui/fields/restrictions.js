@@ -3,7 +3,6 @@
 //import { Extent, Projection, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
 //import { utilEntitySelector } from '@rapid-sdk/util';
 //
-//import { presetManager } from '../../presets';
 //import { t, localizer } from '../../core/localizer';
 //import { actionRestrictTurn } from '../../actions/restrict_turn';
 //import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
@@ -13,7 +12,7 @@
 //import { utilGetDimensions, utilSetDimensions } from '../../util/dimensions';
 //
 //
-//export function uiFieldRestrictions(field, context) {
+//export function uiFieldRestrictions(context, uifield) {
 //    var dispatch = d3_dispatch('change');
 //
 //    const prefs = context.storageSystem();
@@ -75,7 +74,7 @@
 //
 //        wrap = wrap.enter()
 //            .append('div')
-//            .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
+//            .attr('class', 'form-field-input-wrap form-field-input-' + uifield.type)
 //            .merge(wrap);
 //
 //        var container = wrap.selectAll('.restriction-container')
@@ -607,7 +606,7 @@
 //    function displayName(entityID, graph) {
 //        var entity = graph.entity(entityID);
 //        var name = utilDisplayName(entity) || '';
-//        var matched = presetManager.match(entity, graph);
+//        var matched = context.presetSystem().match(entity, graph);
 //        var type = (matched && matched.name()) || utilDisplayType(entity.id);
 //        return name || type;
 //    }

@@ -109,7 +109,7 @@ export function coreRapidContext(context) {
   _rapidContext.init = () => {
     context.urlhash().on('hashchange', _hashchange);
 
-    localizer.ensureLoaded()
+    localizer.initAsync()
       .then(() => {
         _datasets = {
           // setup the built-in datasets

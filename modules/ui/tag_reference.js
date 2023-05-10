@@ -1,6 +1,4 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
 import { services } from '../services';
@@ -17,7 +15,7 @@ import { uiIcon } from './icon';
 //   qid: 'string'      // brand wikidata  (e.g. 'Q37158')
 // }
 //
-export function uiTagReference(what) {
+export function uiTagReference(context, what) {
     var wikibase = what.qid ? services.wikidata : services.osmWikibase;
     var tagReference = {};
 

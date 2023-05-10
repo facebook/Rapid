@@ -4,7 +4,7 @@ describe('uiFieldAccess', function() {
     beforeEach(function() {
         context = Rapid.coreContext().assetPath('../dist/').init();
         selection = d3.select(document.createElement('div'));
-        field = Rapid.presetField('access', {
+        field = new Rapid.Field(context, 'access', {
             keys: ['access', 'foot', 'motor_vehicle', 'bicycle', 'horse'],
             type: 'access'
         });

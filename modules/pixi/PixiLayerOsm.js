@@ -3,7 +3,6 @@ import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecAngle, vecLength, vecInterp } from '@rapid-sdk/math';
 
 import { services } from '../services';
-import { presetManager } from '../presets';
 
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
@@ -243,6 +242,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPolygons(frame, projection, zoom, data) {
     const entities = data.polygons;
     const graph = this.context.graph();
+    const presetSystem = this.context.presetSystem();
     const pointsContainer = this.scene.groups.get('points');
     const pointsHidden = this.context.features().hidden('points');
 
@@ -317,7 +317,7 @@ export class PixiLayerOsm extends AbstractLayer {
         this.syncFeatureClasses(feature);
 
         if (feature.dirty) {
-          const preset = presetManager.match(entity, graph);
+          const preset = presetSystem.match(entity, graph);
 
           const style = styleMatch(entity.tags);
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
@@ -522,6 +522,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.vertices;
     const context = this.context;
     const graph = context.graph();
+    const presetSystem = this.context.presetSystem();
 
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
@@ -574,7 +575,7 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.parentContainer = parentContainer;   // change layer stacking if necessary
 
       if (feature.dirty) {
-        const preset = presetManager.match(node, graph);
+        const preset = presetSystem.match(node, graph);
         const iconName = preset?.icon;
         const directions = node.directions(graph, context.projection);
 
@@ -628,6 +629,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPoints(frame, projection, zoom, data) {
     const entities = data.points;
     const graph = this.context.graph();
+    const presetSystem = this.context.presetSystem();
     const pointsContainer = this.scene.groups.get('points');
 
     for (const [nodeID, node] of entities) {
@@ -656,13 +658,13 @@ export class PixiLayerOsm extends AbstractLayer {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
-        let preset = presetManager.match(node, graph);
+        let preset = presetSystem.match(node, graph);
         let iconName = preset?.icon;
 
         // If we matched a generic preset without an icon, try matching it as a 'vertex'
         // This is just to choose a better icon for an otherwise empty-looking pin.
         if (!iconName) {
-          preset = presetManager.matchTags(node.tags, 'vertex');
+          preset = presetSystem.matchTags(node.tags, 'vertex');
           iconName = preset?.icon;
         }
 

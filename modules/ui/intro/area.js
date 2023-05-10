@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
@@ -15,11 +14,12 @@ export function uiIntroArea(context, curtain) {
   const container = context.container();
   const history = context.history();
   const map = context.map();
+  const presetSystem = context.presetSystem();
 
   const playgroundExtent = new Extent([-85.63575, 41.94137], [-85.63526, 41.94180]);
-  const playgroundPreset = presetManager.item('leisure/playground');
-  const nameField = presetManager.field('name');
-  const descriptionField = presetManager.field('description');
+  const playgroundPreset = presetSystem.item('leisure/playground');
+  const nameField = presetSystem.field('name');
+  const descriptionField = presetSystem.field('description');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -219,7 +219,7 @@ export function uiIntroArea(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetManager.match(modified[0], context.graph()) === playgroundPreset) {
+            if (presetSystem.match(modified[0], context.graph()) === playgroundPreset) {
               resolve(clickAddFieldAsync);
             } else {
               reject();  // didn't pick playground

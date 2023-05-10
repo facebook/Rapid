@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import * as sexagesimal from '@mapbox/sexagesimal';
 
-import { presetManager } from '../presets';
 import { t } from '../core/localizer';
 import { dmsCoordinatePair } from '../util/units';
 import { Graph } from '../core/Graph';
@@ -115,6 +114,7 @@ export function uiFeatureList(context) {
         function features() {
             var result = [];
             var graph = context.graph();
+            var presetSystem = context.presetSystem();
             var visibleCenter = context.map().extent().center();
             var q = search.property('value').toLowerCase();
 
@@ -163,7 +163,7 @@ export function uiFeatureList(context) {
                 var name = utilDisplayName(entity) || '';
                 if (name.toLowerCase().indexOf(q) < 0) continue;
 
-                var matched = presetManager.match(entity, graph);
+                var matched = presetSystem.match(entity, graph);
                 var type = (matched && matched.name()) || utilDisplayType(entity.id);
                 var extent = entity.extent(graph);
                 var distance = extent ? geoSphericalDistance(visibleCenter, extent.center()) : 0;
@@ -200,7 +200,7 @@ export function uiFeatureList(context) {
 
                     var tempEntity = osmEntity(attrs);
                     var tempGraph = new Graph([tempEntity]);
-                    var matched = presetManager.match(tempEntity, tempGraph);
+                    var matched = presetSystem.match(tempEntity, tempGraph);
                     var type = (matched && matched.name()) || utilDisplayType(id);
 
                     result.push({

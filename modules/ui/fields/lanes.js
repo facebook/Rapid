@@ -4,7 +4,7 @@ import { utilRebind } from '../../util/rebind';
 import { utilGetDimensions } from '../../util/dimensions';
 
 
-export function uiFieldLanes(field, context) {
+export function uiFieldLanes(context, uifield) {
     var dispatch = d3_dispatch('change');
     var LANE_WIDTH = 40;
     var LANE_HEIGHT = 200;
@@ -23,7 +23,7 @@ export function uiFieldLanes(field, context) {
 
         wrap = wrap.enter()
             .append('div')
-            .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
+            .attr('class', 'form-field-input-wrap form-field-input-' + uifield.type)
             .merge(wrap);
 
         var surface =  wrap.selectAll('.surface')

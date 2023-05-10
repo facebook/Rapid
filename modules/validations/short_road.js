@@ -95,7 +95,7 @@ export function validationShortRoad(context) {
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
                 if (!entity) return '';
-                var entityLabel = utilDisplayLabel(entity, context.graph());
+                var entityLabel = utilDisplayLabel(context, entity, context.graph());
                 return t('issues.short_road.message', { highway: entityLabel });
             },
             reference: function(selection) {

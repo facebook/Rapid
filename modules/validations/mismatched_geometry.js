@@ -9,15 +9,15 @@ import { actionExtract } from '../actions/extract';
 import { modeSelect } from '../modes/select';
 import { osmJoinWays } from '../osm/multipolygon';
 import { osmNodeGeometriesForTags, osmTagSuggestingArea } from '../osm/tags';
-import { presetManager } from '../presets';
 import { geoHasSelfIntersections } from '../geo';
 import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
-export function validationMismatchedGeometry() {
+export function validationMismatchedGeometry(context) {
     var type = 'mismatched_geometry';
+    var presetSystem = context.presetSystem();
 
     function tagSuggestingLineIsArea(entity) {
         if (entity.type !== 'way' || entity.isClosed()) return null;
@@ -27,8 +27,8 @@ export function validationMismatchedGeometry() {
             return null;
         }
 
-        var asLine = presetManager.matchTags(tagSuggestingArea, 'line');
-        var asArea = presetManager.matchTags(tagSuggestingArea, 'area');
+        var asLine = presetSystem.matchTags(tagSuggestingArea, 'line');
+        var asArea = presetSystem.matchTags(tagSuggestingArea, 'area');
         if (asLine && asArea && (asLine === asArea)) {
             // these tags also allow lines and making this an area wouldn't matter
             return null;
@@ -92,7 +92,7 @@ export function validationMismatchedGeometry() {
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
                 return entity ? t.html('issues.tag_suggests_area.message', {
-                    feature: utilDisplayLabel(entity, 'area', true /* verbose */),
+                    feature: utilDisplayLabel(context, entity, 'area', true /* verbose */),
                     tag: utilTagText({ tags: tagSuggestingArea })
                 }) : '';
             },
@@ -165,7 +165,7 @@ export function validationMismatchedGeometry() {
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
                     return entity ? t.html('issues.vertex_as_point.message', {
-                        feature: utilDisplayLabel(entity, 'vertex', true /* verbose */)
+                        feature: utilDisplayLabel(context, entity, 'vertex', true /* verbose */)
                     }) : '';
                 },
                 reference: function showReference(selection) {
@@ -188,7 +188,7 @@ export function validationMismatchedGeometry() {
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
                     return entity ? t.html('issues.point_as_vertex.message', {
-                        feature: utilDisplayLabel(entity, 'point', true /* verbose */)
+                        feature: utilDisplayLabel(context, entity, 'point', true /* verbose */)
                     }) : '';
                 },
                 reference: function showReference(selection) {
@@ -223,10 +223,10 @@ export function validationMismatchedGeometry() {
 
         if (sourceGeom === 'area') targetGeoms.unshift('line');
 
-        var asSource = presetManager.match(entity, graph);
+        var asSource = presetSystem.match(entity, graph);
 
         var targetGeom = targetGeoms.find(nodeGeom => {
-            var asTarget = presetManager.matchTags(entity.tags, nodeGeom);
+            var asTarget = presetSystem.matchTags(entity.tags, nodeGeom);
             if (!asSource || !asTarget ||
                 asSource === asTarget ||
                 // sometimes there are two presets with the same tags for different geometries
@@ -268,7 +268,7 @@ export function validationMismatchedGeometry() {
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
                 return entity ? t.html('issues.' + referenceId + '.message', {
-                    feature: utilDisplayLabel(entity, targetGeom, true /* verbose */)
+                    feature: utilDisplayLabel(context, entity, targetGeom, true /* verbose */)
                 }) : '';
             },
             reference: function showReference(selection) {
@@ -375,7 +375,7 @@ export function validationMismatchedGeometry() {
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
                     return entity ? t.html('issues.unclosed_multipolygon_part.message', {
-                        feature: utilDisplayLabel(entity, context.graph(), true /* verbose */)
+                        feature: utilDisplayLabel(context, entity, context.graph(), true /* verbose */)
                     }) : '';
                 },
                 reference: showReference,

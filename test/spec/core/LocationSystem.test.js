@@ -47,46 +47,34 @@ describe('LocationSystem', () => {
           expect(/^nothing to do/.test(err)).to.be.true;
           done();
         });
-
-      window.setTimeout(() => {}, 20);  // async - to let the promise settle in phantomjs
     });
 
-    it('resolves locationSets, assigning locationSetID', done => {
+    it('resolves locationSets, assigning locationSetID', () => {
       const data = [
         { id: 'world', locationSet: { include: ['001'] } },
         { id: 'usa',   locationSet: { include: ['usa'] } }
       ];
 
-      const prom = locationSystem.mergeLocationSets(data);
-      prom
+      return locationSystem.mergeLocationSets(data)
         .then(data => {
           expect(data).to.be.a('array');
           expect(data[0].locationSetID).to.eql('+[Q2]');
           expect(data[1].locationSetID).to.eql('+[Q30]');
-          done();
-        })
-        .catch(err => done(err));
-
-      window.setTimeout(() => {}, 20); // async - to let the promise settle in phantomjs
+        });
     });
 
-    it('resolves locationSets, falls back to world locationSetID on errror', done => {
+    it('resolves locationSets, falls back to world locationSetID on errror', () => {
       const data = [
         { id: 'bogus1', locationSet: { foo: 'bar' } },
         { id: 'bogus2', locationSet: { include: ['fake.geojson'] } }
       ];
 
-      const prom = locationSystem.mergeLocationSets(data);
-      prom
+      return locationSystem.mergeLocationSets(data)
         .then(data => {
           expect(data).to.be.a('array');
           expect(data[0].locationSetID).to.eql('+[Q2]');
           expect(data[1].locationSetID).to.eql('+[Q2]');
-          done();
-        })
-        .catch(err => done(err));
-
-      window.setTimeout(() => {}, 20); // async - to let the promise settle in phantomjs
+        });
     });
   });
 
@@ -126,14 +114,15 @@ describe('LocationSystem', () => {
       expect(result3).to.be.an('object').that.has.all.keys('+[Q2]');
     });
 
-    it('returns valid locationSets at a given lon,lat', done => {
+    it('returns valid locationSets at a given lon,lat', () => {
       // setup, load colorado.geojson and resolve some locationSets
       locationSystem.mergeCustomGeoJSON(fc);
-      locationSystem.mergeLocationSets([
+      const data = [
         { id: 'OSM-World', locationSet: { include: ['001'] } },
         { id: 'OSM-USA', locationSet: { include: ['us'] } },
         { id: 'OSM-Colorado', locationSet: { include: ['colorado.geojson'] } }
-      ])
+      ];
+      return locationSystem.mergeLocationSets(data)
         .then(() => {
           const result1 = locationSystem.locationSetsAt([-108.557, 39.065]);  // Grand Junction
           expect(result1).to.be.an('object').that.has.all.keys('+[Q2]', '+[Q30]', '+[colorado.geojson]');
@@ -141,11 +130,7 @@ describe('LocationSystem', () => {
           expect(result2).to.be.an('object').that.has.all.keys('+[Q2]', '+[Q30]');
           const result3 = locationSystem.locationSetsAt([13.575, 41.207,]);   // Gaeta
           expect(result3).to.be.an('object').that.has.all.keys('+[Q2]');
-          done();
-        })
-        .catch(err => done(err));
-
-      window.setTimeout(() => {}, 20);  // async - to let the promise settle in phantomjs
+        });
     });
   });
 

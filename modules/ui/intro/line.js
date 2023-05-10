@@ -1,7 +1,6 @@
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
@@ -15,13 +14,14 @@ export function uiIntroLine(context, curtain) {
   const container = context.container();
   const history = context.history();
   const map = context.map();
+  const presetSystem = context.presetSystem();
 
   const flowerStreetID = 'w646';
   const tulipRoadStartExtent = new Extent([-85.63016, 41.95749], [-85.62937, 41.95843]);
   const tulipRoadMidExtent = new Extent([-85.63044, 41.95686], [-85.62900, 41.95843]);
   const tulipRoadIntersection = [-85.629745, 41.95742];
-  const roadCategory = presetManager.item('category-road_minor');
-  const residentialPreset = presetManager.item('highway/residential');
+  const roadCategory = presetSystem.item('category-road_minor');
+  const residentialPreset = presetSystem.item('highway/residential');
 
   const woodStreetID = 'w525';
   const woodStreetEndID = 'n2862';
@@ -332,7 +332,7 @@ export function uiIntroLine(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
+            if (presetSystem.match(modified[0], context.graph()) === residentialPreset) {
               resolve(nameRoadAsync);
             } else {
               resolve(retryPresetResidentialAsync);  // didn't pick residential, retry
@@ -388,7 +388,7 @@ export function uiIntroLine(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
+            if (presetSystem.match(modified[0], context.graph()) === residentialPreset) {
               resolve(nameRoadAsync);
             } else {
               resolve(chooseCategoryRoadAsync);  // didn't pick residential, retry

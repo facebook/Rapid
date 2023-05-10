@@ -21,7 +21,7 @@ describe('uiFieldWikipedia', function() {
         context = Rapid.coreContext().assetPath('../dist/').init();
         context.history().merge([entity]);
         selection = d3.select(document.createElement('div'));
-        field = Rapid.presetField('wikipedia', {
+        field = new Rapid.Field(context, 'wikipedia', {
             key: 'wikipedia',
             keys: ['wikipedia', 'wikidata'],
             type: 'wikipedia'

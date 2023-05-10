@@ -101,7 +101,7 @@ export function validationPrivateData() {
             if (!currEntity) return '';
 
             return t.html('issues.private_data.contact.message',
-                { feature: utilDisplayLabel(currEntity, context.graph()) }
+                { feature: utilDisplayLabel(context, currEntity, context.graph()) }
             );
         }
 

@@ -5,7 +5,6 @@ export * from './geo/index';
 export * from './modes/index';
 export * from './operations/index';
 export * from './osm/index';
-export * from './presets/index';
 export * from './renderer/index';
 export * from './services/index';
 export * from './svg/index';

@@ -236,7 +236,7 @@ export function uiSectionRawTagEditor(id, context) {
                 if (typeof d.value === 'string') {
                     referenceOptions.value = d.value;
                 }
-                var reference = uiTagReference(referenceOptions, context);
+                var reference = uiTagReference(context, referenceOptions);
 
                 if (_state === 'hover') {
                     reference.showing(false);

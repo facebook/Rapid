@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { utilRebind } from '../../util';
@@ -88,7 +87,7 @@ export function uiSectionFeatureType(context) {
         selection.select('.preset-list-item button')
             .call(uiPresetIcon(context)
                 .geometry(_presets.length === 1 ? (geometries.length === 1 && geometries[0]) : null)
-                .preset(_presets.length === 1 ? _presets[0] : presetManager.item('point'))
+                .preset(_presets.length === 1 ? _presets[0] : context.presetSystem().item('point'))
             );
 
         var names = _presets.length === 1 ? [
@@ -124,7 +123,7 @@ export function uiSectionFeatureType(context) {
             _presets = val;
 
             if (_presets.length === 1) {
-                _tagReference = uiTagReference(_presets[0].reference(), context)
+                _tagReference = uiTagReference(context, _presets[0].reference())
                     .showing(false);
             }
         }

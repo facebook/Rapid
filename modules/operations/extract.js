@@ -5,11 +5,11 @@ import { actionExtract } from '../actions/extract';
 import { actionMove } from '../actions/move';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { t } from '../core/localizer';
-import { presetManager } from '../presets';
 import { utilTotalExtent } from '../util';
 
 
 export function operationExtract(context, selectedIDs) {
+  const presetSystem = context.presetSystem();
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -24,9 +24,9 @@ export function operationExtract(context, selectedIDs) {
     if (entity.type === 'node' && graph.parentWays(entity).length === 0) return null;
 
     if (entity.type !== 'node') {
-      const preset = presetManager.match(entity, graph);
+      const preset = presetSystem.match(entity, graph);
       // only allow extraction from ways/relations if the preset supports points
-      if (preset.geometry.indexOf('point') === -1) return null;
+      if (!preset.geometry.includes('point')) return null;
     }
 
     return actionExtract(entity.id, context.projection);

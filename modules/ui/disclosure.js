@@ -17,7 +17,6 @@ export function uiDisclosure(context, key, expandedDefault) {
 
 
   let disclosure = function(selection) {
-
     if (_expanded === undefined || _expanded === null) {
       // loading _expanded here allows it to be reset by calling `disclosure.expanded(null)`
       const preference = prefs.getItem(`disclosure.${key}.expanded`);
@@ -32,7 +31,7 @@ export function uiDisclosure(context, key, expandedDefault) {
       .append('a')
       .attr('href', '#')
       .attr('class', `hide-toggle hide-toggle-${key}`)
-      .call(uiIcon('', 'pre-text', 'hide-toggle-icon'));
+      .call(uiIcon('', 'pre-text hide-toggle-icon'));
 
     hideToggleEnter
       .append('span')
@@ -49,10 +48,10 @@ export function uiDisclosure(context, key, expandedDefault) {
     hideToggle.selectAll('.hide-toggle-text')
       .html(_label());
 
-    hideToggle.selectAll('.hide-toggle-icon')
-      .attr('xlink:href', _expanded ? '#rapid-icon-down'
-        : (localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'
-      );
+    const isRTL = localizer.textDirection() === 'rtl';
+    const icon = _expanded ? 'down' : isRTL ? 'backward' : 'forward';
+    hideToggle.selectAll('.hide-toggle-icon > use')
+      .attr('xlink:href', `#rapid-icon-${icon}`);
 
 
     let wrap = selection.selectAll('.disclosure-wrap')
@@ -82,10 +81,9 @@ export function uiDisclosure(context, key, expandedDefault) {
       hideToggle
         .classed('expanded', _expanded);
 
-      hideToggle.selectAll('.hide-toggle-icon')
-        .attr('xlink:href', _expanded ? '#rapid-icon-down'
-          : (localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'
-        );
+      const icon = _expanded ? 'down' : isRTL ? 'backward' : 'forward';
+      hideToggle.selectAll('.hide-toggle-icon > use')
+        .attr('xlink:href', `#rapid-icon-${icon}`);
 
       wrap
         .call(uiToggle(_expanded));

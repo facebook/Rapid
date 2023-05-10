@@ -2,22 +2,21 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUnion } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { uiField } from '../field';
+import { UiField } from '../UiField';
 import { utilRebind } from '../../util';
 
 
 export { uiFieldRadio as uiFieldStructureRadio };
 
 
-export function uiFieldRadio(field, context) {
+export function uiFieldRadio(context, uifield) {
     var dispatch = d3_dispatch('change');
     var placeholder = d3_select(null);
     var wrap = d3_select(null);
     var labels = d3_select(null);
     var radios = d3_select(null);
-    var radioData = (field.options || field.keys).slice();  // shallow copy
+    var radioData = (uifield.presetField.options || uifield.keys).slice();  // shallow copy
     var typeField;
     var layerField;
     var _oldType = {};
@@ -59,13 +58,13 @@ export function uiFieldRadio(field, context) {
         enter
             .append('input')
             .attr('type', 'radio')
-            .attr('name', field.id)
-            .attr('value', function(d) { return field.t('options.' + d, { 'default': d }); })
+            .attr('name', uifield.id)
+            .attr('value', function(d) { return uifield.t(`options.${d}`, { 'default': d }); })
             .attr('checked', false);
 
         enter
             .append('span')
-            .html(function(d) { return field.t.html('options.' + d, { 'default': d }); });
+            .html(function(d) { return uifield.tHtml(`options.${d}`, { 'default': d }); });
 
         labels = labels
             .merge(enter);
@@ -78,10 +77,10 @@ export function uiFieldRadio(field, context) {
 
     function structureExtras(selection, tags) {
         var selected = selectedKey() || tags.layer !== undefined;
-        var type = presetManager.field(selected);
-        var layer = presetManager.field('layer');
+        var presetSystem = context.presetSystem();
+        var type = presetSystem.field(selected);
+        var layer = presetSystem.field('layer');
         var showLayer = (selected === 'bridge' || selected === 'tunnel' || tags.layer !== undefined);
-
 
         var extrasWrap = selection.selectAll('.structure-extras-wrap')
             .data(selected ? [0] : []);
@@ -106,8 +105,8 @@ export function uiFieldRadio(field, context) {
         // Type
         if (type) {
             if (!typeField || typeField.id !== selected) {
-                typeField = uiField(context, type, _entityIDs, { wrap: false })
-                    .on('change', changeType);
+                typeField = new UiField(context, type, _entityIDs, { wrap: false })
+                  .on('change', changeType);
             }
             typeField.tags(tags);
         } else {
@@ -149,14 +148,14 @@ export function uiFieldRadio(field, context) {
         // Layer
         if (layer && showLayer) {
             if (!layerField) {
-                layerField = uiField(context, layer, _entityIDs, { wrap: false })
+                layerField = new UiField(context, layer, _entityIDs, { wrap: false })
                     .on('change', changeLayer);
             }
             layerField.tags(tags);
-            field.keys = utilArrayUnion(field.keys, ['layer']);
+            uifield.keys = utilArrayUnion(uifield.keys, ['layer']);
         } else {
             layerField = null;
-            field.keys = field.keys.filter(function(k) { return k !== 'layer'; });
+            uifield.keys = uifield.keys.filter(function(k) { return k !== 'layer'; });
         }
 
         var layerItem = list.selectAll('.structure-layer-item')
@@ -201,7 +200,7 @@ export function uiFieldRadio(field, context) {
             _oldType[key] = val;
         }
 
-        if (field.type === 'structureRadio') {
+        if (uifield.type === 'structureRadio') {
             // remove layer if it should not be set
             if (val === 'no' ||
                 (key !== 'bridge' && key !== 'tunnel') ||
@@ -235,23 +234,23 @@ export function uiFieldRadio(field, context) {
         var t = {};
         var activeKey;
 
-        if (field.key) {
-            t[field.key] = undefined;
+        if (uifield.key) {
+            t[uifield.key] = undefined;
         }
 
         radios.each(function(d) {
             var active = d3_select(this).property('checked');
             if (active) activeKey = d;
 
-            if (field.key) {
-                if (active) t[field.key] = d;
+            if (uifield.key) {
+                if (active) t[uifield.key] = d;
             } else {
                 var val = _oldType[activeKey] || 'yes';
                 t[d] = active ? val : undefined;
             }
         });
 
-        if (field.type === 'structureRadio') {
+        if (uifield.type === 'structureRadio') {
             if (activeKey === 'bridge') {
                 t.layer = '1';
             } else if (activeKey === 'tunnel' && t.tunnel !== 'building_passage') {
@@ -268,24 +267,24 @@ export function uiFieldRadio(field, context) {
     radio.tags = function(tags) {
 
         radios.property('checked', function(d) {
-            if (field.key) {
-                return tags[field.key] === d;
+            if (uifield.key) {
+                return tags[uifield.key] === d;
             }
             return !!(typeof tags[d] === 'string' && tags[d].toLowerCase() !== 'no');
         });
 
         function isMixed(d) {
-            if (field.key) {
-                return Array.isArray(tags[field.key]) && tags[field.key].includes(d);
+            if (uifield.key) {
+                return Array.isArray(tags[uifield.key]) && tags[uifield.key].includes(d);
             }
             return Array.isArray(tags[d]);
         }
 
         labels
             .classed('active', function(d) {
-                if (field.key) {
-                    return (Array.isArray(tags[field.key]) && tags[field.key].includes(d))
-                        || tags[field.key] === d;
+                if (uifield.key) {
+                    return (Array.isArray(tags[uifield.key]) && tags[uifield.key].includes(d))
+                        || tags[uifield.key] === d;
                 }
                 return Array.isArray(tags[d]) || !!(tags[d] && tags[d].toLowerCase() !== 'no');
             })
@@ -304,7 +303,7 @@ export function uiFieldRadio(field, context) {
             _oldType[selection.datum()] = tags[selection.datum()];
         }
 
-        if (field.type === 'structureRadio') {
+        if (uifield.type === 'structureRadio') {
             // For waterways without a tunnel tag, set 'culvert' as
             // the _oldType to default to if the user picks 'tunnel'
             if (!!tags.waterway && !_oldType.tunnel) {

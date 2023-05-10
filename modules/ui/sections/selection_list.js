@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { presetManager } from '../../presets';
 import { modeSelect } from '../../modes/select';
 import { osmEntity } from '../../osm';
 import { uiIcon } from '../icon';
@@ -111,7 +110,7 @@ export function uiSectionSelectionList(context) {
       });
 
     items.selectAll('.entity-type')
-      .html(entity => presetManager.match(entity, context.graph()).name());
+      .html(entity => context.presetSystem().match(entity, context.graph()).name());
 
     items.selectAll('.entity-name')
       .html(d => {

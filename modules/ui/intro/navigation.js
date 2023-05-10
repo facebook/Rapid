@@ -2,7 +2,6 @@ import { Extent, vecEqual } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, transitionTime } from './helper';
@@ -14,13 +13,14 @@ export function uiIntroNavigation(context, curtain) {
   const container = context.container();
   const history = context.history();
   const map = context.map();
+  const presetSystem = context.presetSystem();
 
   const townHallID = 'n2061';
   const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);
   const springStreetID = 'w397';
   const springStreetExtent = new Extent([-85.63588, 41.94155], [-85.63574, 41.94278]);
-  const onewayField = presetManager.field('oneway');
-  const maxspeedField = presetManager.field('maxspeed');
+  const onewayField = presetSystem.field('oneway');
+  const maxspeedField = presetSystem.field('maxspeed');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -279,7 +279,7 @@ export function uiIntroNavigation(context, curtain) {
 
       // preset match, in case the user happened to change it.
       const entity = context.entity(context.selectedIDs()[0]);
-      const preset = presetManager.match(entity, context.graph());
+      const preset = presetSystem.match(entity, context.graph());
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane .section-feature-type',

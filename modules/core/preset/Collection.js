@@ -1,53 +1,58 @@
 import { utilArrayUniq, utilEditDistance } from '@rapid-sdk/util';
 
+const MAXRESULTS = 50;
 
 
-//
-// `presetCollection` is a wrapper around an `Array` of presets `collection`,
-// and decorated with some extra methods for searching and matching geometry
-//
-export function presetCollection(collection) {
-  const MAXRESULTS = 50;
-  let _this = {};
-  let _memo = {};
+/**
+ * Collection
+ * Collection is a wrapper around an `Array` of presets
+ * and decorated with some extra methods for searching and matching geometry
+ */
+export class Collection {
 
-  _this.collection = collection;
+  /**
+   * @constructor
+   * @param  context   Global shared application context
+   * @param  arr       An Array
+   */
+  constructor(context, arr) {
+    this.context = context;
+    this.array = arr;
+    this._memo = new Map();  // Map(id -> item)
+  }
 
-  _this.item = (id) => {
-    if (_memo[id]) return _memo[id];
-    const found = _this.collection.find(d => d.id === id);
-    if (found) _memo[id] = found;
+
+  item(id) {
+    let found = this._memo.get(id);
+    if (found) return found;
+
+    found = this.array.find(d => d.id === id);
+    if (found) this._memo.set(id, found);
     return found;
-  };
+  }
 
-  _this.index = (id) => _this.collection.findIndex(d => d.id === id);
+  index(id) {
+    return this.array.findIndex(d => d.id === id);
+  }
 
-  _this.matchGeometry = (geometry) => {
-    return presetCollection(
-      _this.collection.filter(d => d.matchGeometry(geometry))
-    );
-  };
+  matchGeometry(geometry) {
+    const result = this.array.filter(d => d.matchGeometry(geometry));
+    return new Collection(this.context, result);
+  }
 
-  _this.matchAllGeometry = (geometries) => {
-    return presetCollection(
-      _this.collection.filter(d => d && d.matchAllGeometry(geometries))
-    );
-  };
+  matchAllGeometry(geometries) {
+    const result = this.array.filter(d => d && d.matchAllGeometry(geometries));
+    return new Collection(this.context, result);
+  }
 
-  _this.matchAnyGeometry = (geometries) => {
-    return presetCollection(
-      _this.collection.filter(d => geometries.some(geom => d.matchGeometry(geom)))
-    );
-  };
-
-  _this.fallback = (geometry) => {
+  fallback(geometry) {
     let id = geometry;
     if (id === 'vertex') id = 'point';
-    return _this.item(id);
-  };
+    return this.item(id);
+  }
 
-  _this.search = (value, geometry, loc) => {
-    if (!value) return _this;
+  search(value, geometry, loc) {
+    if (!value) return this;
 
     // don't remove diacritical characters since we're assuming the user is being intentional
     value = value.toLowerCase().trim();
@@ -74,7 +79,7 @@ export function presetCollection(collection) {
         if (value === bCompare) return 1;
 
         // priority for higher matchScore
-        let i = b.originalScore - a.originalScore;
+        let i = b.orig.matchScore - a.orig.matchScore;
         if (i !== 0) return i;
 
         // priority if search string appears earlier in preset name
@@ -86,11 +91,12 @@ export function presetCollection(collection) {
       };
     }
 
-    let pool = _this.collection;
-//    if (Array.isArray(loc)) {
-//      const validHere = locationSystem.locationSetsAt(loc);
-//      pool = pool.filter(a => !a.locationSetID || validHere[a.locationSetID]);
-//    }
+    let pool = this.array;
+    if (Array.isArray(loc)) {
+      const locationSystem = this.context.locationSystem();
+      const validHere = locationSystem.locationSetsAt(loc);
+      pool = pool.filter(a => !a.locationSetID || validHere[a.locationSetID]);
+    }
 
     const searchable = pool.filter(a => a.searchable !== false && a.suggestion !== true);
     const suggestions = pool.filter(a => a.suggestion === true);
@@ -160,15 +166,13 @@ export function presetCollection(collection) {
 
     if (geometry) {
       if (typeof geometry === 'string') {
-        results.push(_this.fallback(geometry));
+        results.push(this.fallback(geometry));
       } else {
-        geometry.forEach(geom => results.push(_this.fallback(geom)));
+        geometry.forEach(geom => results.push(this.fallback(geom)));
       }
     }
 
-    return presetCollection(utilArrayUniq(results));
-  };
+    return new Collection(this.context, utilArrayUniq(results));
+  }
 
-
-  return _this;
 }
