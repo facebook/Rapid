@@ -44,6 +44,7 @@ export class Map {
       // Drawing both is bad!
       this.map.getLayer('building-3d').visibility = 'none';
       this.map.getLayer('road_network').visibility = 'none';
+      this.map.getLayer('road_network-casing').visibility = 'none';
     });
   }
 
