@@ -8,6 +8,7 @@ export class Map {
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
     this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec('Roads', 'osmroads');
+    this.areaLayerSpec = this.getAreaLayerSpec('Areas', 'osmareas');
 
     this.map = new mapLibreMap({
       container: id,
@@ -29,10 +30,19 @@ export class Map {
         center: context.map().extent().center()
       });
 
+      this.map.addSource('osmareas', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      });
+
+      // Layers need to be added in 'painter's algorithm' order, so the stuff on the bottom goes first!
+      this.map.addLayer(this.areaLayerSpec);
+
       this.map.addSource('osmroads', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
+
       this.map.addLayer(this.roadSelectedlayerSpec);
       this.map.addLayer(this.roadCasinglayerSpec);
       this.map.addLayer(this.roadStrokelayerSpec);
@@ -103,7 +113,42 @@ export class Map {
       },
     };
   }
-   /**
+
+
+
+  /**
+   * get3DBuildingLayerSpec
+   * Returns a maplibre layer style specification that appropriately styles 3D buildings
+   * using data-driven styling for selected features. Features with no height data are drawn as flat
+   * polygons.
+   * @param {string} id the id of the layer that the source data shall be applied to
+   * @param {string} source the source geojson data that to be rendered
+   * @returns
+   */
+  getAreaLayerSpec(id, source) {
+    return {
+      id: id,
+      type: 'fill',
+      source: source,
+      layout: {},
+      paint: {
+        "fill-color": [
+          "match",
+          ["get", "leisure"],
+          ["garden", "golf_course", "nature_reserve", "park", "pitch"],
+          PIXI.utils.hex2string(STYLES.green.fill.color),
+            PIXI.utils.hex2string(STYLES.yellow.fill.color)
+        ]
+      },
+    };
+  }
+
+              //
+            // ["match", ["get", "leisure"], ["swimming_pool"]], PIXI.utils.hex2string(STYLES.blue.fill.color),
+            // ["match", ["get", "leisure"], ["track"]], PIXI.utils.hex2string(STYLES.yellow.fill.color)
+
+
+  /**
    * getRoadCasingLayerSpec
    * Returns a maplibre layer style specification that widens the road casing to be just above the stroke.
    * @param {string} id the id of the layer that the source data shall be applied to

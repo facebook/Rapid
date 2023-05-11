@@ -52,13 +52,13 @@ export function ui3DMap(context) {
       });
       const areaEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
-          tagname.startsWith('highway')
+          tagname.startsWith('area')
         );
         return tags.length > 0;
       });
       generateRoadLayer(context, areaEnts, _map);
       generateBuildingLayer(context, buildingEnts, _map);
-      // generateAreaLayer(context, highwayEnts, _map);
+      generateAreaLayer(context, highwayEnts, _map);
     }
 
     function toggle(d3_event) {
@@ -165,6 +165,39 @@ function generateBuildingLayer(context, buildingEnts, _map) {
     });
   }
 }
+
+
+function generateAreaLayer(context, areaEnts, _map) {
+  let areaFeatures = [];
+  let selectedIDs = context.selectedIDs();
+  for (const areaEnt of areaEnts) {
+
+    let gj = areaEnt.asGeoJSON(context.graph());
+    if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon')
+      continue;
+
+    let newFeature = {
+      type: 'Feature',
+      properties: {
+        selected: selectedIDs.includes(areaEnt.id).toString(),
+      },
+      geometry: gj,
+    };
+
+    areaFeatures.push(newFeature);
+  }
+
+  const areaSource = _map.map.getSource('osmareas');
+
+  if (areaSource) {
+    areaSource.setData({
+      type: 'FeatureCollection',
+      features: areaFeatures,
+    });
+  }
+}
+
+
 
 
 function generateRoadLayer(context, roadEnts, _map) {
