@@ -33,7 +33,7 @@ export function ui3DMap(context) {
       let bounds = [extent.min, extent.max];
 
 
-      _map.map.jumpTo({ center: center , zoom: context.map().zoom()-3});
+      _map.map.jumpTo({ center: center , bearing: 0, zoom: context.map().zoom()-3});
       // _map.map.fitBounds((this.bounds = bounds)), {duration: 0};
     }
 
