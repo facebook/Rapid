@@ -132,14 +132,11 @@ export class Map {
       source: source,
       layout: {},
       paint: {
-        "fill-color": [
-          "match",
-          ["get", "leisure"],
-          ["garden", "golf_course", "nature_reserve", "park", "pitch"],
-          PIXI.utils.hex2string(STYLES.green.fill.color),
-            PIXI.utils.hex2string(STYLES.yellow.fill.color)
-        ]
-      },
+        "fill-color":
+          ["get", "fillcolor"],
+        "fill-outline-color":
+          ["get", "strokecolor"]
+      }
     };
   }
 

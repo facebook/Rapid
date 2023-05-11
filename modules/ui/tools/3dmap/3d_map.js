@@ -1,4 +1,6 @@
 import { select as d3_select } from 'd3-selection';
+import { styleMatch } from '../../../pixi/styles';
+import * as PIXI from 'pixi.js';
 
 import { Map } from '../../../3drenderer/Map';
 
@@ -52,13 +54,16 @@ export function ui3DMap(context) {
       });
       const areaEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
+          tagname.startsWith('landuse') ||
+          tagname.startsWith('leisure') ||
+          tagname.startsWith('natural') ||
           tagname.startsWith('area')
         );
         return tags.length > 0;
       });
-      generateRoadLayer(context, areaEnts, _map);
+      generateRoadLayer(context, highwayEnts, _map);
       generateBuildingLayer(context, buildingEnts, _map);
-      generateAreaLayer(context, highwayEnts, _map);
+      generateAreaLayer(context, areaEnts, _map);
     }
 
     function toggle(d3_event) {
@@ -175,11 +180,16 @@ function generateAreaLayer(context, areaEnts, _map) {
     let gj = areaEnt.asGeoJSON(context.graph());
     if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon')
       continue;
+    const style = styleMatch(areaEnt.tags);
+    const fillColor = PIXI.utils.hex2string(style.fill.color);
+    const strokeColor = PIXI.utils.hex2string(style.stroke.color);
 
     let newFeature = {
       type: 'Feature',
       properties: {
         selected: selectedIDs.includes(areaEnt.id).toString(),
+        fillcolor: fillColor,
+        strokecolor: strokeColor
       },
       geometry: gj,
     };
