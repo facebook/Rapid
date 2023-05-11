@@ -36,7 +36,7 @@ export function ui3DMap(context) {
     }
 
     function featuresToGeoJSON() {
-      var mainmap = context.map();
+      let mainmap = context.map();
       const entities = context.history().intersects(mainmap.extent());
       const buildingEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
@@ -128,11 +128,11 @@ export function ui3DMap(context) {
 }
 
 function generateBuildingLayer(context, buildingEnts, _map) {
-  var buildingFeatures = [];
-  var selectedIDs = context.selectedIDs();
+  let buildingFeatures = [];
+  let selectedIDs = context.selectedIDs();
   for (const buildingEnt of buildingEnts) {
 
-    var gj = buildingEnt.asGeoJSON(context.graph());
+    let gj = buildingEnt.asGeoJSON(context.graph());
     if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon')
       continue;
 
@@ -168,11 +168,11 @@ function generateBuildingLayer(context, buildingEnts, _map) {
 
 
 function generateRoadLayer(context, roadEnts, _map) {
-  var roadFeatures = [];
-  var selectedIDs = context.selectedIDs();
+  let roadFeatures = [];
+  let selectedIDs = context.selectedIDs();
   for (const roadEnt of roadEnts) {
 
-    var gj = roadEnt.asGeoJSON(context.graph());
+    let gj = roadEnt.asGeoJSON(context.graph());
     if (gj.type !== 'LineString')
       continue;
 

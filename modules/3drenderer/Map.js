@@ -173,8 +173,8 @@ export class Map {
       },
       paint: {
         'line-color': this.SELECTION_COLOR,
-        'line-opacity': ['match', ['get', 'selected'], 'true', 0.5, 0],
-        'line-width': this.getLineWidthSpecification(10),
+        'line-opacity': ['match', ['get', 'selected'], 'true', 0.75, 0],
+        'line-width': this.getLineWidthSpecification(12),
       },
     };
  }
