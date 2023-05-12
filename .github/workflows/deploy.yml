@@ -66,8 +66,6 @@ jobs:
     - name: Setup vars 📋
       id: vars
       run: |
-#        echo ::set-output name=identifier-old::$(git rev-parse --short ${{ github.sha }})-16.x
-#        echo ::set-output name=distdir-old::$(git rev-parse --short ${{ github.sha }})-16.x-dist
         echo "{identifier}=$(git rev-parse --short ${{ github.sha }})-16.x" >> "$GITHUB_ENV"
         echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-" >> "$GITHUB_ENV"
 
