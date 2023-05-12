@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -29,10 +28,11 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.keepRight && !this._service) {
-      this._service = services.keepRight;
-      this._service.on('loaded', () => this.context.map().deferredRedraw());
-    } else if (!services.keepRight && this._service) {
+    const keepright = this.context.services.get('keepright');
+    if (keepright && !this._service) {
+      keepright.on('loaded', () => this.context.map().deferredRedraw());
+      this._service = keepright;
+    } else if (!keepright && this._service) {
       this._service = null;
     }
 

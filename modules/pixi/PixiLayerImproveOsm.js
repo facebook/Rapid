@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -29,10 +28,11 @@ export class PixiLayerImproveOsm extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.improveOSM && !this._service) {
-      this._service = services.improveOSM;
-      this._service.on('loaded', () => this.context.map().deferredRedraw());
-    } else if (!services.improveOSM && this._service) {
+    const improveosm = this.context.services.get('improveosm');
+    if (improveosm && !this._service) {
+      improveosm.on('loaded', () => this.context.map().deferredRedraw());
+      this._service = improveosm;
+    } else if (!improveosm && this._service) {
       this._service = null;
     }
 

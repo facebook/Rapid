@@ -1,15 +1,17 @@
 import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
 import { QAItem } from '../osm';
 
-export function uiViewOnKeepRight() {
+
+export function uiViewOnKeepRight(context) {
   let _qaItem;
 
   function viewOnKeepRight(selection) {
     let url;
-    if (services.keepRight && (_qaItem instanceof QAItem)) {
-      url = services.keepRight.issueURL(_qaItem);
+
+    const keepright = context.services.get('keepright');
+    if (keepright && (_qaItem instanceof QAItem)) {
+      url = keepright.issueURL(_qaItem);
     }
 
     const link = selection.selectAll('.view-on-keepRight')
@@ -32,6 +34,7 @@ export function uiViewOnKeepRight() {
       .append('span')
         .html(t.html('inspector.view_on_keepRight'));
   }
+
 
   viewOnKeepRight.what = function(val) {
     if (!arguments.length) return _qaItem;

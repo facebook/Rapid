@@ -6,7 +6,6 @@ import deepEqual from 'fast-deep-equal';
 import { t, localizer } from '../core/localizer';
 import { osmChangeset } from '../osm';
 import { uiIcon } from './icon';
-import { services } from '../services';
 import { uiTooltip } from './tooltip';
 import { uiChangesetEditor } from './changeset_editor';
 import { uiSectionChanges } from './sections/changes';
@@ -162,23 +161,25 @@ export function uiCommit(context) {
         if (osmClosed.length) {
             tags['closed:note'] = context.cleanTagValue(osmClosed.join(';'));
         }
-        if (services.keepRight) {
-            var krClosed = services.keepRight.getClosedIDs();
+        const keepright = context.services.get('keepright');
+        if (keepright) {
+            var krClosed = keepright.getClosedIDs();
             if (krClosed.length) {
                 tags['closed:keepright'] = context.cleanTagValue(krClosed.join(';'));
             }
         }
-        if (services.improveOSM) {
-            var iOsmClosed = services.improveOSM.getClosedCounts();
+        const improveosm = context.services.get('improveosm');
+        if (improveosm) {
+            var iOsmClosed = improveosm.getClosedCounts();
             for (itemType in iOsmClosed) {
-                tags['closed:improveosm:' + itemType] = context.cleanTagValue(iOsmClosed[itemType].toString());
+                tags[`closed:improveosm:${itemType}`] = context.cleanTagValue(iOsmClosed[itemType].toString());
             }
         }
         const osmose = context.services.get('osmose');
         if (osmose) {
             var osmoseClosed = osmose.getClosedCounts();
             for (itemType in osmoseClosed) {
-                tags['closed:osmose:' + itemType] = context.cleanTagValue(osmoseClosed[itemType].toString());
+                tags[`closed:osmose:${itemType}`] = context.cleanTagValue(osmoseClosed[itemType].toString());
             }
         }
 
