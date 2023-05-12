@@ -32,9 +32,11 @@ export function ui3DMap(context) {
       extent.padByMeters(100);
       let bounds = [extent.min, extent.max];
 
-
-      _map.map.jumpTo({ center: center , bearing: 0, zoom: context.map().zoom()-3});
-      // _map.map.fitBounds((this.bounds = bounds)), {duration: 0};
+      _map.map.jumpTo({
+        center: center,
+        bearing: 0,
+        zoom: context.map().zoom() - 3,
+      });
     }
 
     function featuresToGeoJSON() {
@@ -53,11 +55,12 @@ export function ui3DMap(context) {
         return tags.length > 0;
       });
       const areaEnts = entities.filter((ent) => {
-        const tags = Object.keys(ent.tags).filter((tagname) =>
-          tagname.startsWith('landuse') ||
-          tagname.startsWith('leisure') ||
-          tagname.startsWith('natural') ||
-          tagname.startsWith('area')
+        const tags = Object.keys(ent.tags).filter(
+          (tagname) =>
+            tagname.startsWith('landuse') ||
+            tagname.startsWith('leisure') ||
+            tagname.startsWith('natural') ||
+            tagname.startsWith('area')
         );
         return tags.length > 0;
       });
@@ -136,10 +139,8 @@ function generateBuildingLayer(context, buildingEnts, _map) {
   let buildingFeatures = [];
   let selectedIDs = context.selectedIDs();
   for (const buildingEnt of buildingEnts) {
-
     let gj = buildingEnt.asGeoJSON(context.graph());
-    if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon')
-      continue;
+    if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
 
     let newFeature = {
       type: 'Feature',
@@ -151,8 +152,8 @@ function generateBuildingLayer(context, buildingEnts, _map) {
           : 0,
         height: parseFloat(
           buildingEnt.tags.height ||
-          buildingEnt.tags['building:levels'] * 3 ||
-          0
+            buildingEnt.tags['building:levels'] * 3 ||
+            0
         ),
       },
       geometry: gj,
@@ -171,15 +172,13 @@ function generateBuildingLayer(context, buildingEnts, _map) {
   }
 }
 
-
 function generateAreaLayer(context, areaEnts, _map) {
   let areaFeatures = [];
   let selectedIDs = context.selectedIDs();
   for (const areaEnt of areaEnts) {
-
     let gj = areaEnt.asGeoJSON(context.graph());
-    if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon')
-      continue;
+    if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
+
     const style = styleMatch(areaEnt.tags);
     const fillColor = PIXI.utils.hex2string(style.fill.color);
     const strokeColor = PIXI.utils.hex2string(style.stroke.color);
@@ -189,7 +188,7 @@ function generateAreaLayer(context, areaEnts, _map) {
       properties: {
         selected: selectedIDs.includes(areaEnt.id).toString(),
         fillcolor: fillColor,
-        strokecolor: strokeColor
+        strokecolor: strokeColor,
       },
       geometry: gj,
     };
@@ -207,23 +206,24 @@ function generateAreaLayer(context, areaEnts, _map) {
   }
 }
 
-
-
-
 function generateRoadLayer(context, roadEnts, _map) {
   let roadFeatures = [];
   let selectedIDs = context.selectedIDs();
   for (const roadEnt of roadEnts) {
-
     let gj = roadEnt.asGeoJSON(context.graph());
-    if (gj.type !== 'LineString')
-      continue;
+    if (gj.type !== 'LineString') continue;
 
-      let newFeature = {
+    const style = styleMatch(roadEnt.tags);
+    const casingColor = PIXI.utils.hex2string(style.casing.color);
+    const strokeColor = PIXI.utils.hex2string(style.stroke.color);
+
+    let newFeature = {
       type: 'Feature',
       properties: {
         selected: selectedIDs.includes(roadEnt.id).toString(),
         highway: roadEnt.tags.highway,
+        casingColor: casingColor,
+        strokeColor: strokeColor,
       },
       geometry: gj,
     };
