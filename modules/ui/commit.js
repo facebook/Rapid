@@ -161,14 +161,14 @@ export function uiCommit(context) {
         if (osmClosed.length) {
             tags['closed:note'] = context.cleanTagValue(osmClosed.join(';'));
         }
-        const keepright = context.services.get('keepright');
+        const keepright = context.services.get('keepRight');
         if (keepright) {
             var krClosed = keepright.getClosedIDs();
             if (krClosed.length) {
                 tags['closed:keepright'] = context.cleanTagValue(krClosed.join(';'));
             }
         }
-        const improveosm = context.services.get('improveosm');
+        const improveosm = context.services.get('improveOSM');
         if (improveosm) {
             var iOsmClosed = improveosm.getClosedCounts();
             for (itemType in iOsmClosed) {

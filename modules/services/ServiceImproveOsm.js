@@ -38,8 +38,7 @@ export class ServiceImproveOsm {
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    this.id = 'improveosm';
-    this.title = 'improveOSM';  // legacy, use `id` instead
+    this.id = 'improveOSM';
     this.context = context;
 
     // persistent data - loaded at init

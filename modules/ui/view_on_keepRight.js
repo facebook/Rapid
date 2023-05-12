@@ -9,7 +9,7 @@ export function uiViewOnKeepRight(context) {
   function viewOnKeepRight(selection) {
     let url;
 
-    const keepright = context.services.get('keepright');
+    const keepright = context.services.get('keepRight');
     if (keepright && (_qaItem instanceof QAItem)) {
       url = keepright.issueURL(_qaItem);
     }

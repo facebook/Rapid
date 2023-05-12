@@ -28,7 +28,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    const improveosm = this.context.services.get('improveosm');
+    const improveosm = this.context.services.get('improveOSM');
     if (improveosm && !this._service) {
       improveosm.on('loaded', () => this.context.map().deferredRedraw());
       this._service = improveosm;

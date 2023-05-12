@@ -9,7 +9,7 @@ export function uiImproveOsmComments(context) {
 
 
   function issueComments(selection) {
-    const improveosm = context.services.get('improveosm');
+    const improveosm = context.services.get('improveOSM');
     if (!improveosm) return;
 
     // make the div immediately so it appears above the buttons
