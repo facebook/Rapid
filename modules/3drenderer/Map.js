@@ -1,6 +1,4 @@
 import { Map as mapLibreMap } from 'maplibre-gl';
-import { STYLES } from '../pixi/styles';
-import * as PIXI from 'pixi.js';
 
 export class Map {
   constructor(id, context) {
