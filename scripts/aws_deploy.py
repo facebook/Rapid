@@ -28,12 +28,12 @@ def deploy():
     print("\ngithash: " + hash)
 
     #print all env vars
-    print( '\n'.join([f'{k}: {v}' for k, v in sorted(os.environ.items())]) )
-    
+    #print( '\n'.join([f'{k}: {v}' for k, v in sorted(os.environ.items())]) )
+
     identifier = os.environ["IDENTIFIER"]
     distdir = os.environ["DISTDIR"]
-    print("\nIDENTIFIER: " + identifier)
-    print("\nDISTDIR: " + distdir)
+    #print("\nIDENTIFIER: " + identifier)
+    #print("\nDISTDIR: " + distdir)
 
     # Blow away the previous dir, if any.
     if os.path.exists(distdir):
