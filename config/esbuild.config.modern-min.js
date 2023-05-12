@@ -8,6 +8,6 @@ esbuild
     entryPoints: ['./modules/main.js'],
     legalComments: 'none',
     logLevel: 'info',
-    outfile: 'dist/rapid.min.js'
+    outfile: 'dist/rapid.min.js',
   })
   .catch(() => process.exit(1));

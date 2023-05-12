@@ -6,7 +6,6 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
     ],
     "globals": {
         "d3": false

@@ -11,6 +11,7 @@ import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
 import { uiMapInMap } from '../map_in_map';
+import { ui3DMap } from '../tools/3dmap/3d_map';
 import { uiSection } from '../section';
 
 
@@ -74,6 +75,30 @@ export function uiSectionBackgroundList(context) {
     minimapLabelEnter
       .append('span')
       .text(t('background.minimap.description'));
+
+
+      const threeDmapLabelEnter = bgExtrasListEnter
+      .append('li')
+      .attr('class', 'three-d-map-toggle-item')
+      .append('label')
+      .call(uiTooltip()
+        .title(t('background.3dmap.tooltip'))
+        .keys([uiCmd('⌘' + t('background.3dmap.key'))])
+        .placement('top')
+      );
+
+      threeDmapLabelEnter
+      .append('input')
+      .attr('type', 'checkbox')
+      .on('change', (d3_event) => {
+        d3_event.preventDefault();
+        ui3DMap.toggle();
+      });
+
+      threeDmapLabelEnter
+      .append('span')
+      .text(t('background.3dmap.description'));
+
 
 
     const panelLabelEnter = bgExtrasListEnter
