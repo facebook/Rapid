@@ -1,27 +1,26 @@
 import * as PIXI from 'pixi.js';
 
-import { services } from '../services';
 import { t } from '../core/localizer';
 
 
-export function uiOsmoseHeader() {
+export function uiOsmoseHeader(context) {
+  const osmose = context.services.get('osmose');
   let _qaItem;
 
   function issueTitle(d) {
     const unknown = t('inspector.unknown');
-    if (!d) return unknown;
+    if (!osmose || !d) return unknown;
 
     // Issue titles supplied by Osmose
-    const s = services.osmose.getStrings(d.itemType);
+    const s = osmose.getStrings(d.itemType);
     return ('title' in s) ? s.title : unknown;
   }
 
 
   function osmoseHeader(selection) {
     let iconFill = 0xffffff;
-    const service = services.osmose;
-    if (service) {
-      iconFill = service.getColor(_qaItem?.item);
+    if (osmose) {
+      iconFill = osmose.getColor(_qaItem?.item);
     }
 
     const header = selection.selectAll('.qa-header')

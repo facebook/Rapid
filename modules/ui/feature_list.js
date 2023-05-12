@@ -7,7 +7,6 @@ import { dmsCoordinatePair } from '../util/units';
 import { Graph } from '../core/Graph';
 import { modeSelect } from '../modes/select';
 import { osmEntity } from '../osm/entity';
-import { services } from '../services';
 import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 
@@ -21,6 +20,7 @@ import {
 
 export function uiFeatureList(context) {
     var _geocodeResults;
+    const nominatim = context.services.get('nominatim');
 
 
     function featureList(selection) {
@@ -262,13 +262,13 @@ export function uiFeatureList(context) {
             list.selectAll('.no-results-item .entity-name')
                 .html(t.html('geocoder.no_results_worldwide'));
 
-            if (services.geocoder) {
+            if (nominatim) {
               list.selectAll('.geocode-item')
                   .data([0])
                   .enter()
                   .append('button')
                   .attr('class', 'geocode-item secondary-action')
-                  .on('click', geocoderSearch)
+                  .on('click', nominatimSearch)
                   .append('div')
                   .attr('class', 'label')
                   .append('span')
@@ -360,11 +360,11 @@ export function uiFeatureList(context) {
         }
 
 
-        function geocoderSearch() {
-            services.geocoder.search(search.property('value'), function (err, resp) {
-                _geocodeResults = resp || [];
-                drawList();
-            });
+        function nominatimSearch() {
+          nominatim.search(search.property('value'), (err, results) => {
+            _geocodeResults = results || [];
+            drawList();
+          });
         }
     }
 

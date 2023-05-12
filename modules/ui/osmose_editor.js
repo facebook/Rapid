@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
 
 import { uiOsmoseDetails } from './osmose_details';
@@ -11,14 +10,14 @@ import { utilRebind } from '../util';
 
 
 export function uiOsmoseEditor(context) {
+  const osmose = context.services.get('osmose');
   const dispatch = d3_dispatch('change');
   const qaDetails = uiOsmoseDetails(context);
   const qaHeader = uiOsmoseHeader(context);
-
   let _qaItem;
 
-  function osmoseEditor(selection) {
 
+  function osmoseEditor(selection) {
     const header = selection.selectAll('.header')
       .data([0]);
 
@@ -121,10 +120,9 @@ export function uiOsmoseEditor(context) {
       .html(t.html('QA.keepRight.close'))
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.osmose;
-        if (qaService) {
+        if (osmose) {
           d.newStatus = 'done';
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          osmose.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
@@ -132,10 +130,9 @@ export function uiOsmoseEditor(context) {
       .html(t.html('QA.keepRight.ignore'))
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.osmose;
-        if (qaService) {
+        if (osmose) {
           d.newStatus = 'false';
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          osmose.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
   }

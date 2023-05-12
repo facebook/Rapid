@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -29,10 +28,11 @@ export class PixiLayerOsmose extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.osmose && !this._service) {
-      this._service = services.osmose;
-      this._service.on('loaded', () => this.context.map().deferredRedraw());
-    } else if (!services.osmose && this._service) {
+    const osmose = this.context.services.get('osmose');
+    if (osmose && !this._service) {
+      osmose.on('loaded', () => this.context.map().deferredRedraw());
+      this._service = osmose;
+    } else if (!osmose && this._service) {
       this._service = null;
     }
 

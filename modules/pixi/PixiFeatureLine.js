@@ -79,7 +79,6 @@ export class PixiFeatureLine extends AbstractFeature {
     if (!this.dirty) return;  // nothing to do
 
     const wireframeMode = this.context.map().wireframeMode;
-    const context = this.context;
     const textureManager = this.renderer.textures;
     const container = this.container;
     const style = this._style;
