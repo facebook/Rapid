@@ -4,7 +4,6 @@ import { select as d3_select } from 'd3-selection';
 import { AbstractUiPanel } from './AbstractUiPanel';
 import { decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
 import { t } from '../../core/localizer';
-import { services } from '../../services';
 
 
 /**
@@ -29,7 +28,6 @@ export class UiPanelLocation extends AbstractUiPanel {
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.updateLocation = this.updateLocation.bind(this);
-
     this._deferredUpdateLocation = _debounce(this.updateLocation, 1000);  // no more than 1/sec
   }
 
@@ -115,13 +113,14 @@ export class UiPanelLocation extends AbstractUiPanel {
     if (!this._enabled) return;
 
     const selection = this._selection;
+    const nominatim = this.context.services.get('nominatim');
 
-    if (!services.geocoder) {
+    if (!nominatim) {
       this._currLocation = t('info_panels.location.unknown_location');
       selection.selectAll('.location-info')
         .text(this._currLocation);
     } else {
-      services.geocoder.reverse(loc, (err, result) => {
+      nominatim.reverse(loc, (err, result) => {
         this._currLocation = result ? result.display_name : t('info_panels.location.unknown_location');
         selection.selectAll('.location-info')
           .text(this._currLocation);

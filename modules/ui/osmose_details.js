@@ -2,18 +2,18 @@ import { select as d3_select } from 'd3-selection';
 
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
-import { services } from '../services';
 import { utilDisplayName, utilHighlightEntities } from '../util';
 
 
 export function uiOsmoseDetails(context) {
+  const osmose = context.services.get('osmose');
   let _qaItem;
 
   function issueString(d, type) {
-    if (!d) return '';
+    if (!osmose || !d) return '';
 
     // Issue strings are cached from Osmose API
-    const s = services.osmose.getStrings(d.itemType);
+    const s = osmose.getStrings(d.itemType);
     return (type in s) ? s[type] : '';
   }
 
@@ -98,7 +98,8 @@ export function uiOsmoseDetails(context) {
     }
 
     // Save current item to check if UI changed by time request resolves
-    services.osmose.loadIssueDetailAsync(_qaItem)
+    if (!osmose) return;
+    osmose.loadIssueDetailAsync(_qaItem)
       .then(d => {
         // Do nothing if _qaItem has changed by the time Promise resolves
         if (_qaItem.id !== d.id) return;

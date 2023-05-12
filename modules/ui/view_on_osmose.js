@@ -1,15 +1,16 @@
 import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
 import { QAItem } from '../osm';
 
-export function uiViewOnOsmose() {
+
+export function uiViewOnOsmose(context) {
+  const osmose = context.services.get('osmose');
   let _qaItem;
 
   function viewOnOsmose(selection) {
     let url;
-    if (services.osmose && (_qaItem instanceof QAItem)) {
-      url = services.osmose.itemURL(_qaItem);
+    if (osmose && (_qaItem instanceof QAItem)) {
+      url = osmose.itemURL(_qaItem);
     }
 
     const link = selection.selectAll('.view-on-osmose')

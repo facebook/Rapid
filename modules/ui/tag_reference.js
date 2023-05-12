@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
 
 
@@ -16,7 +15,7 @@ import { uiIcon } from './icon';
 // }
 //
 export function uiTagReference(context, what) {
-    var wikibase = what.qid ? context.services.get('wikidata') : services.osmWikibase;
+    var wikibase = context.services.get(what.qid ? 'wikidata' : 'osmwikibase');
     var tagReference = {};
 
     var _button = d3_select(null);

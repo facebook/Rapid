@@ -18,7 +18,6 @@ export function uiSectionValidationRules(context) {
 
 
   let _ruleKeys = context.validator().getRuleKeys()
-    .filter(key => key !== 'maprules')
     .sort((key1, key2) => {
       // alphabetize by localized title
       return t(`issues.${key1}.title`) < t(`issues.${key2}.title`) ? -1 : 1;

@@ -133,8 +133,8 @@ export class ModeSelect extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          if (!services.osmose) return;
-          const error = services.osmose.getError(datumID);
+          const osmose = context.services.get('osmose');
+          const error = osmose?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?

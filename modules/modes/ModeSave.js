@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { AbstractMode } from './AbstractMode';
 import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiConflicts } from '../ui/conflicts';
 import { uiConfirm } from '../ui/confirm';
 import { uiCommit } from '../ui/commit';
@@ -289,14 +288,16 @@ export class ModeSave extends AbstractMode {
   _prepareForSuccess() {
     this._successUI = uiSuccess(this.context);
     this._location = null;
-    if (!services.geocoder) return;
 
-    services.geocoder.reverse(this.context.map().center(), (err, result) => {
+    const loc = this.context.map().center();
+    const nominatim = this.context.services.get('nominatim');
+
+    nominatim?.reverse(loc, (err, result) => {
       if (err || !result || !result.address) return;
 
       const addr = result.address;
-      const place = (addr && (addr.town || addr.city || addr.county)) || '';
-      const region = (addr && (addr.state || addr.country)) || '';
+      const place = addr?.town ?? addr?.city ?? addr?.county ?? '';
+      const region = addr?.state ?? addr?.country ?? '';
       const separator = (place && region) ? t('success.thank_you_where.separator') : '';
 
       this._location = t('success.thank_you_where.format',

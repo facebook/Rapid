@@ -174,8 +174,9 @@ export function uiCommit(context) {
                 tags['closed:improveosm:' + itemType] = context.cleanTagValue(iOsmClosed[itemType].toString());
             }
         }
-        if (services.osmose) {
-            var osmoseClosed = services.osmose.getClosedCounts();
+        const osmose = context.services.get('osmose');
+        if (osmose) {
+            var osmoseClosed = osmose.getClosedCounts();
             for (itemType in osmoseClosed) {
                 tags['closed:osmose:' + itemType] = context.cleanTagValue(osmoseClosed[itemType].toString());
             }
