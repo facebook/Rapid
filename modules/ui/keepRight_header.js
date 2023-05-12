@@ -23,7 +23,7 @@ export function uiKeepRightHeader(context) {
 
   function keepRightHeader(selection) {
     let iconFill = 0xffffff;
-    const keepright = context.services.get('keepright');
+    const keepright = context.services.get('keepRight');
     if (keepright) {
       iconFill = keepright.getColor(_qaItem?.parentIssueType);
     }

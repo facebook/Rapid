@@ -54,8 +54,7 @@ export class ServiceKeepRight {
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    this.id = 'keepright';
-    this.title = 'keepRight';  // legacy, use `id` instead
+    this.id = 'keepRight';
     this.context = context;
 
     // persistent data - loaded at init

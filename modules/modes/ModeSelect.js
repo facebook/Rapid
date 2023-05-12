@@ -109,7 +109,7 @@ export class ModeSelect extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          const improveosm = context.services.get('improveosm');
+          const improveosm = context.services.get('improveOSM');
           const error = improveosm?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
@@ -121,7 +121,7 @@ export class ModeSelect extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          const keepright = context.services.get('keepright');
+          const keepright = context.services.get('keepRight');
           const error = keepright?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));

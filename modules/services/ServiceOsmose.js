@@ -27,7 +27,6 @@ export class ServiceOsmose {
    */
   constructor(context) {
     this.id = 'osmose';
-    this.title = 'osmose';  // legacy - use `id` instead
     this.context = context;
 
     // persistent data - loaded at init

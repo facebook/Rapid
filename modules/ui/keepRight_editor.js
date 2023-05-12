@@ -10,7 +10,7 @@ import { utilNoAuto, utilRebind } from '../util';
 
 
 export function uiKeepRightEditor(context) {
-  const keepright = context.services.get('keepright');
+  const keepright = context.services.get('keepRight');
   const dispatch = d3_dispatch('change');
   const qaDetails = uiKeepRightDetails(context);
   const qaHeader = uiKeepRightHeader(context);
