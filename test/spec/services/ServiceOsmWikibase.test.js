@@ -1,20 +1,16 @@
-describe('serviceOsmWikibase', function () {
-  var wikibase;
+describe('ServiceOsmWikibase', () => {
+  let wikibase;
 
-  before(function () {
-    Rapid.services.osmWikibase = Rapid.serviceOsmWikibase;
+  before(() => {
+    fetchMock.reset();
   });
 
-  after(function () {
-    delete Rapid.services.osmWikibase;
-  });
-
-  beforeEach(function () {
-    wikibase = Rapid.services.osmWikibase;
+  beforeEach(() => {
+    wikibase = new Rapid.ServiceOsmWikibase();
     wikibase.init();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     fetchMock.reset();
   });
 
@@ -256,14 +252,14 @@ describe('serviceOsmWikibase', function () {
   }
 
 
-  var localeData = {
+  const localeData = {
     id: 'Q7792',
     sitelinks: {wiki: {site: 'wiki', title: 'Locale:fr'}}
   };
 
-  describe('#getEntity', function () {
-    it('calls the given callback with the results of the getEntity data item query', function (done) {
-      var callback = sinon.spy();
+  describe('#getEntity', () => {
+    it('calls the given callback with the results of the getEntity data item query', done => {
+      const callback = sinon.spy();
       fetchMock.mock(/action=wbgetentities/, {
         body: JSON.stringify({
           entities: {
@@ -279,7 +275,7 @@ describe('serviceOsmWikibase', function () {
 
       wikibase.getEntity({ key: 'amenity', value: 'parking', langCodes: ['fr'] }, callback);
 
-      window.setTimeout(function () {
+      window.setTimeout(() => {
         expect(parseQueryString(fetchMock.calls()[0][0])).to.eql(
           {
             action: 'wbgetentities',
@@ -301,7 +297,7 @@ describe('serviceOsmWikibase', function () {
   });
 
 
-  it('creates correct sitelinks', function () {
+  it('creates correct sitelinks', () => {
     expect(wikibase.toSitelink('amenity')).to.eql('Key:amenity');
     expect(wikibase.toSitelink('amenity_')).to.eql('Key:amenity');
     expect(wikibase.toSitelink('_amenity_')).to.eql('Key: amenity');
@@ -311,7 +307,7 @@ describe('serviceOsmWikibase', function () {
     expect(wikibase.toSitelink('amenity or_not', '_park ing_')).to.eql('Tag:amenity or not= park ing');
   });
 
-  it('gets correct value from entity', function () {
+  it('gets correct value from entity', () => {
     wikibase.addLocale('de', 'Q6994');
     wikibase.addLocale('fr', 'Q7792');
     expect(wikibase.claimToValue(tagData(), 'P4', 'en')).to.eql('Primary image.jpg');
@@ -320,7 +316,7 @@ describe('serviceOsmWikibase', function () {
     expect(wikibase.claimToValue(keyData(), 'P6', 'de')).to.eql('Q14');
   });
 
-  it('gets monolingual value from entity as an object', function () {
+  it('gets monolingual value from entity as an object', () => {
     expect(wikibase.monolingualClaimToValueObj(tagData(), 'P31')).to.eql({
       cs: 'Cs:Key:bridge:movable',
       de: 'DE:Key:bridge:movable',

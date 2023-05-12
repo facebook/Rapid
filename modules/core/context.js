@@ -682,10 +682,12 @@ export function coreContext() {
       }
 
       // Instantiate Services
-      for (const [name, Service] of Object.entries(Services)) {
-        if (name === 'services') continue;   // this is not a constructor
-        const service = new Service(context);
-        context.services.set(service.id, service);
+      if (!window.mocha) {
+        for (const [name, Service] of Object.entries(Services)) {
+          if (name === 'services') continue;   // this is not a constructor
+          const service = new Service(context);
+          context.services.set(service.id, service);
+        }
       }
 
     }
