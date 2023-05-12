@@ -137,5 +137,5 @@ const capabilities = `<?xml version="1.0" encoding="UTF-8"?>
 fetchMock.sticky('https://www.openstreetmap.org/api/capabilities', capabilities, {sticky: true});
 fetchMock.sticky('http://www.openstreetmap.org/api/capabilities', capabilities, {sticky: true});
 
-fetchMock.config.fallbackToNetwork = true;
+fetchMock.config.fallbackToNetwork = false;
 fetchMock.config.overwriteRoutes = false;
