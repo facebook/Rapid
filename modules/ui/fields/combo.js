@@ -7,7 +7,6 @@ import * as countryCoder from '@rapideditor/country-coder';
 import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
 import { t } from '../../core/localizer';
-import { services } from '../../services';
 import { uiCombobox } from '../combobox';
 import { utilKeybinding } from '../../util/keybinding';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
@@ -123,13 +122,13 @@ export function uiFieldCombo(context, uifield) {
             selection.attr('readonly', 'readonly');
         }
 
-        if (_showTagInfoSuggestions && services.taginfo) {
-            selection.call(_combobox.fetcher(setTaginfoValues), attachTo);
-            setTaginfoValues('', setPlaceholder);
-
+        const taginfo = context.services.get('taginfo');
+        if (taginfo && _showTagInfoSuggestions) {
+          selection.call(_combobox.fetcher(setTaginfoValues), attachTo);
+          setTaginfoValues('', setPlaceholder);
         } else {
-            selection.call(_combobox, attachTo);
-            setStaticValues(setPlaceholder);
+          selection.call(_combobox, attachTo);
+          setStaticValues(setPlaceholder);
         }
     }
 
@@ -153,7 +152,14 @@ export function uiFieldCombo(context, uifield) {
 
 
     function setTaginfoValues(q, callback) {
-        var fn = _isMulti ? 'multikeys' : 'values';
+        const taginfo = context.services.get('taginfo');
+        if (!taginfo) {
+          _comboData = [];
+          if (callback) callback(_comboData);
+          return;
+        }
+
+        var fn = _isMulti ? taginfo.multikeys : taginfo.values;
         var query = (_isMulti ? uifield.key : '') + q;
         var hasCountryPrefix = _isNetwork && _countryCode && _countryCode.indexOf(q.toLowerCase()) === 0;
         if (hasCountryPrefix) {
@@ -170,7 +176,7 @@ export function uiFieldCombo(context, uifield) {
             params.geometry = context.graph().geometry(_entityIDs[0]);
         }
 
-        services.taginfo[fn](params, function(err, data) {
+        fn(params, function(err, data) {
             if (err) return;
 
             data = data.filter(function(d) {
@@ -220,7 +226,6 @@ export function uiFieldCombo(context, uifield) {
 
 
     function setPlaceholder(values) {
-
         if (_isMulti || _isSemi) {
             _staticPlaceholder = uifield.placeholder || t('inspector.add');
         } else {

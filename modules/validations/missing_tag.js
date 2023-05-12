@@ -92,11 +92,8 @@ export function validationMissingTag(context) {
             reference: showReference,
             entityIds: [entity.id],
             dynamicFixes: function(context) {
-
                 var fixes = [];
-
                 var selectFixType = subtype === 'highway_classification' ? 'select_road_type' : 'select_preset';
-
                 fixes.push(new validationIssueFix({
                     icon: 'rapid-icon-search',
                     title: t.html('issues.fix.' + selectFixType + '.title'),
@@ -106,7 +103,6 @@ export function validationMissingTag(context) {
                 }));
 
                 var deleteOnClick;
-
                 var id = this.entityIds[0];
                 var operation = operationDelete(context, [id]);
                 var disabledReasonID = operation.disabled();

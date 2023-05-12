@@ -16,7 +16,7 @@ import { uiIcon } from './icon';
 // }
 //
 export function uiTagReference(context, what) {
-    var wikibase = what.qid ? services.wikidata : services.osmWikibase;
+    var wikibase = what.qid ? context.services.get('wikidata') : services.osmWikibase;
     var tagReference = {};
 
     var _button = d3_select(null);

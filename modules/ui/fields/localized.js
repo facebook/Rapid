@@ -5,7 +5,6 @@ import * as countryCoder from '@rapideditor/country-coder';
 
 import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
-import { services } from '../../services';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 import { uiCombobox } from '../combobox';
@@ -16,7 +15,7 @@ var _languagesArray = [];
 
 export function uiFieldLocalized(context, uifield) {
     var dispatch = d3_dispatch('change', 'input');
-    var wikipedia = services.wikipedia;
+    var wikipedia = context.services.get('wikipedia');
     var input = d3_select(null);
     var localizedInputs = d3_select(null);
     var _countryCode;

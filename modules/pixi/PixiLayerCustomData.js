@@ -6,7 +6,6 @@ import stringify from 'fast-json-stable-stringify';
 import { gpx, kml } from '@tmcw/togeojson';
 import { Extent, geomPolygonIntersectsPolygon } from '@rapid-sdk/math';
 import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '@rapid-sdk/util';
-import { services } from '../services';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 
 import { AbstractLayer } from './AbstractLayer';
@@ -72,9 +71,10 @@ export class PixiLayerCustomData extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.vectorTile && !this._vtService) {
-      this._vtService = services.vectorTile;
-    } else if (!services.vectorTile && this._vtService) {
+    const vt = this.context.services.get('vectortile');
+    if (vt && !this._vtService) {
+      this._vtService = vt;
+    } else if (!vt && this._vtService) {
       this._vtService = null;
     }
 

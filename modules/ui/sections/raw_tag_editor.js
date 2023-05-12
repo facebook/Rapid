@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayIdentical, utilTagDiff } from '@rapid-sdk/util';
 
-import { services } from '../../services';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
@@ -22,7 +21,7 @@ export function uiSectionRawTagEditor(id, context) {
         .expandedByDefault(false)
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = services.taginfo;
+    var taginfo = context.services.get('taginfo');
     var dispatch = d3_dispatch('change');
     var availableViews = [
         { id: 'list', icon: '#fas-th-list' },

@@ -6,14 +6,10 @@ describe('uiFieldWikipedia', function() {
           ['German','Deutsch','de'],
           ['English','English','en']
         ];
-        Rapid.services.wikipedia = Rapid.serviceWikipedia;
-        Rapid.services.wikidata = Rapid.serviceWikidata;
     });
 
     after(function() {
         delete Rapid.fileFetcher.cache().wmf_sitematrix;
-        delete Rapid.services.wikipedia;
-        delete Rapid.services.wikidata;
     });
 
     beforeEach(function() {
