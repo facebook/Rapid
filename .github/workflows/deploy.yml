@@ -66,27 +66,29 @@ jobs:
     - name: Setup vars 📋
       id: vars
       run: |
-        echo ::set-output name=identifier::$(git rev-parse --short ${{ github.sha }})-16.x
-        echo ::set-output name=distdir::$(git rev-parse --short ${{ github.sha }})-16.x-dist
+        echo ::set-output name=identifier-old::$(git rev-parse --short ${{ github.sha }})-16.x
+        echo ::set-output name=distdir-old::$(git rev-parse --short ${{ github.sha }})-16.x-dist
+        echo "{identifier}=$(git rev-parse --short ${{ github.sha }})-16.x" >> $GITHUB_ENV
+        echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-" >> $GITHUB_ENV
 
     - name: Prep files 🔨
       run: npm run aws_deploy
       env:
-        IDENTIFIER: ${{ steps.vars.outputs.identifier }}
-        DISTDIR: ${{ steps.vars.outputs.distdir }}
+        IDENTIFIER: ${{ env.identifier }}
+        DISTDIR: ${{ env.distdir }}
 
     - name: Copy new index file to S3 📤
       run: aws s3 cp $DISTDIR/index.html s3://world.ai.rapid/rapid/$IDENTIFIER-rapid.html --no-progress
       env:
-        IDENTIFIER: ${{ steps.vars.outputs.identifier }}
-        DISTDIR: ${{ steps.vars.outputs.distdir }}
+        IDENTIFIER: ${{ env.identifier }}
+        DISTDIR: ${{ env.distdir }}
 
     - name: Copy new dist dir to S3 📤
       run: aws s3 cp $DISTDIR s3://world.ai.rapid/rapid/$DISTDIR --recursive --no-progress
       env:
-        IDENTIFIER: ${{ steps.vars.outputs.identifier }}
-        DISTDIR: ${{ steps.vars.outputs.distdir }}
+        IDENTIFIER: ${{ env.identifier }}
+        DISTDIR: ${{ env.distdir }}
 
     - name: Deployment complete! 🚀
       run: |
-        echo "Your build is here: https://mapwith.ai/rapid/${{ steps.vars.outputs.distdir }}/index.html"
+        echo "Your build is here: https://mapwith.ai/rapid/${{ env.distdir }}/index.html"
