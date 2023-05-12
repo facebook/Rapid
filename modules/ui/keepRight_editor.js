@@ -2,16 +2,15 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
-
 import { uiKeepRightDetails } from './keepRight_details';
 import { uiKeepRightHeader } from './keepRight_header';
 import { uiViewOnKeepRight } from './view_on_keepRight';
-
 import { utilNoAuto, utilRebind } from '../util';
 
+
 export function uiKeepRightEditor(context) {
+  const keepright = context.services.get('keepright');
   const dispatch = d3_dispatch('change');
   const qaDetails = uiKeepRightDetails(context);
   const qaHeader = uiKeepRightHeader(context);
@@ -19,7 +18,6 @@ export function uiKeepRightEditor(context) {
   let _qaItem;
 
   function keepRightEditor(selection) {
-
     const headerEnter = selection.selectAll('.header')
       .data([0])
       .enter()
@@ -118,9 +116,8 @@ export function uiKeepRightEditor(context) {
       // store the unsaved comment with the issue itself
       _qaItem = _qaItem.update({ newComment: val });
 
-      const qaService = services.keepRight;
-      if (qaService) {
-        qaService.replaceItem(_qaItem);  // update keepright cache
+      if (keepright) {
+        keepright.replaceItem(_qaItem);  // update keepright cache
       }
 
       saveSection
@@ -165,9 +162,8 @@ export function uiKeepRightEditor(context) {
       .attr('disabled', d => d.newComment ? null : true)
       .on('click.comment', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.keepRight;
-        if (qaService) {
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+        if (keepright) {
+          keepright.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
@@ -178,10 +174,9 @@ export function uiKeepRightEditor(context) {
       })
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.keepRight;
-        if (qaService) {
+        if (keepright) {
           d.newStatus = 'ignore_t';   // ignore temporarily (item fixed)
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          keepright.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
@@ -192,10 +187,9 @@ export function uiKeepRightEditor(context) {
       })
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.keepRight;
-        if (qaService) {
+        if (keepright) {
           d.newStatus = 'ignore';   // ignore permanently (false positive)
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          keepright.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
   }

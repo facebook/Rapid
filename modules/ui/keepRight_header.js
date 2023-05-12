@@ -1,11 +1,10 @@
 import * as PIXI from 'pixi.js';
 
-import { services } from '../services';
 import { uiIcon } from './icon';
 import { t } from '../core/localizer';
 
 
-export function uiKeepRightHeader() {
+export function uiKeepRightHeader(context) {
   let _qaItem;
 
 
@@ -24,9 +23,9 @@ export function uiKeepRightHeader() {
 
   function keepRightHeader(selection) {
     let iconFill = 0xffffff;
-    const service = services.keepRight;
-    if (service) {
-      iconFill = service.getColor(_qaItem?.parentIssueType);
+    const keepright = context.services.get('keepright');
+    if (keepright) {
+      iconFill = keepright.getColor(_qaItem?.parentIssueType);
     }
 
     const header = selection.selectAll('.qa-header')

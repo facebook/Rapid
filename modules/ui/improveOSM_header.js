@@ -1,10 +1,9 @@
 import * as PIXI from 'pixi.js';
 
-import { services } from '../services';
 import { t } from '../core/localizer';
 
 
-export function uiImproveOsmHeader() {
+export function uiImproveOsmHeader(context) {
   let _qaItem;
 
 
@@ -18,9 +17,9 @@ export function uiImproveOsmHeader() {
 
   function improveOsmHeader(selection) {
     let iconFill = 0xffffff;
-    const service = services.improveOSM;
-    if (service) {
-      iconFill = service.getColor(_qaItem?.itemType);
+    const improveosm = context.services.get('improveosm');
+    if (improveosm) {
+      iconFill = improveosm.getColor(_qaItem?.itemType);
     }
 
     const header = selection.selectAll('.qa-header')

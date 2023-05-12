@@ -210,7 +210,7 @@ export function uiSidebar(context) {
             } else if (datum instanceof QAItem) {
                 _wasQaItem = true;
 
-                var errService = services[datum.service];
+                var errService = context.services.get(datum.service);
                 if (errService) {
                     // marker may contain stale data - get latest
                     datum = errService.getError(datum.id);

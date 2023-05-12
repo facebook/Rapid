@@ -109,8 +109,8 @@ export class ModeSelect extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          if (!services.improveOSM) return;
-          const error = services.improveOSM.getError(datumID);
+          const improveosm = context.services.get('improveosm');
+          const error = improveosm?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
@@ -121,8 +121,8 @@ export class ModeSelect extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          if (!services.keepRight) return;
-          const error = services.keepRight.getError(datumID);
+          const keepright = context.services.get('keepright');
+          const error = keepright?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?

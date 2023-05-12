@@ -35,9 +35,7 @@ export class ServiceOsmose {
     this._osmoseStrings = new Map();   // Map (locale -> Object containing strings)
     this._osmoseData = { icons: {}, types: [] };
 
-    // cache gets replaced on init/reset
-    this._osmoseCache = null;
-
+    this._cache = null;   // cache gets replaced on init/reset
     this._tiler = new Tiler().zoomRange(TILEZOOM);
     this._dispatch = d3_dispatch('loaded');
     utilRebind(this, this._dispatch, 'on');
@@ -67,10 +65,10 @@ export class ServiceOsmose {
    * Called after completing an edit session to reset any internal state
    */
   reset() {
-    if (this._osmoseCache) {
-      Object.values(this._osmoseCache.inflightTile).forEach(this._abortRequest);
+    if (this._cache) {
+      Object.values(this._cache.inflightTile).forEach(controller => this._abortRequest(controller));
     }
-    this._osmoseCache = {
+    this._cache = {
       issues: new Map(),    // Map (itemID -> QAItem)
       loadedTile: {},
       inflightTile: {},
@@ -90,23 +88,23 @@ export class ServiceOsmose {
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
-    this._abortUnwantedRequests(this._osmoseCache, tiles);
+    this._abortUnwantedRequests(this._cache, tiles);
 
     // issue new requests..
     for (const tile of tiles) {
-      if (this._osmoseCache.loadedTile[tile.id] || this._osmoseCache.inflightTile[tile.id]) continue;
+      if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
 
       const [x, y, z] = tile.xyz;
       const params = { item: this._osmoseData.types };   // Only request the types that we support
       const url = `${OSMOSE_API}/issues/${z}/${x}/${y}.json?` + utilQsString(params);
 
       const controller = new AbortController();
-      this._osmoseCache.inflightTile[tile.id] = controller;
+      this._cache.inflightTile[tile.id] = controller;
 
       d3_json(url, { signal: controller.signal })
         .then(data => {
-          delete this._osmoseCache.inflightTile[tile.id];
-          this._osmoseCache.loadedTile[tile.id] = true;
+          delete this._cache.inflightTile[tile.id];
+          this._cache.loadedTile[tile.id] = true;
 
           for (const issue of (data.features ?? [])) {
             // Osmose issues are uniquely identified by a unique
@@ -126,16 +124,16 @@ export class ServiceOsmose {
                 d.elems = [];
               }
 
-              this._osmoseCache.issues.set(d.id, d);
-              this._osmoseCache.rtree.insert(this._encodeIssueRtree(d));
+              this._cache.issues.set(d.id, d);
+              this._cache.rtree.insert(this._encodeIssueRtree(d));
             }
           }
 
           this._dispatch.call('loaded');
         })
         .catch(() => {
-          delete this._osmoseCache.inflightTile[tile.id];
-          this._osmoseCache.loadedTile[tile.id] = true;
+          delete this._cache.inflightTile[tile.id];
+          this._cache.loadedTile[tile.id] = true;
         });
     }
   }
@@ -244,6 +242,7 @@ export class ServiceOsmose {
 
   /**
    * getColor
+   * Get the color associated with this issue type
    * @param   itemInt
    * @return  hex color
    */
@@ -253,12 +252,23 @@ export class ServiceOsmose {
 
 
   /**
+   * getIcon
+   * Get the icon to use for the given itemType
+   * @param   itemType
+   * @return  icon name
+   */
+  getIcon(itemType) {
+    return this._osmoseData.icons[itemType];
+  }
+
+
+  /**
    * postUpdate
    * @param   issue
    * @param   callback
    */
   postUpdate(issue, callback) {
-    if (this._osmoseCache.inflightPost[issue.id]) {
+    if (this._cache.inflightPost[issue.id]) {
       return callback({ message: 'Issue update already inflight', status: -2 }, issue);
     }
 
@@ -266,25 +276,25 @@ export class ServiceOsmose {
     const url = `${OSMOSE_API}/issue/${issue.id}/${issue.newStatus}`;
     const controller = new AbortController();
     const after = () => {
-      delete this._osmoseCache.inflightPost[issue.id];
+      delete this._cache.inflightPost[issue.id];
 
       this.removeItem(issue);
       if (issue.newStatus === 'done') {
         // Keep track of the number of issues closed per `item` to tag the changeset
-        if (!(issue.item in this._osmoseCache.closed)) {
-          this._osmoseCache.closed[issue.item] = 0;
+        if (!(issue.item in this._cache.closed)) {
+          this._cache.closed[issue.item] = 0;
         }
-        this._osmoseCache.closed[issue.item] += 1;
+        this._cache.closed[issue.item] += 1;
       }
       if (callback) callback(null, issue);
     };
 
-    this._osmoseCache.inflightPost[issue.id] = controller;
+    this._cache.inflightPost[issue.id] = controller;
 
     fetch(url, { signal: controller.signal })
       .then(after)
       .catch(err => {
-        delete this._osmoseCache.inflightPost[issue.id];
+        delete this._cache.inflightPost[issue.id];
         if (callback) callback(err.message);
       });
   }
@@ -302,7 +312,7 @@ export class ServiceOsmose {
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
 
-    return this._osmoseCache.rtree.search(bbox).map(d => d.data);
+    return this._cache.rtree.search(bbox).map(d => d.data);
   }
 
 
@@ -313,18 +323,7 @@ export class ServiceOsmose {
    * @return  QAItem
    */
   getError(issueID) {
-    return this._osmoseCache.issues.get(issueID);
-  }
-
-
-  /**
-   * getIcon
-   * Get the icon to use for the given itemType
-   * @param   itemType
-   * @return  icon name
-   */
-  getIcon(itemType) {
-    return this._osmoseData.icons[itemType];
+    return this._cache.issues.get(issueID);
   }
 
 
@@ -337,7 +336,7 @@ export class ServiceOsmose {
   replaceItem(item) {
     if (!(item instanceof QAItem) || !item.id) return;
 
-    this._osmoseCache.issues.set(item.id, item);
+    this._cache.issues.set(item.id, item);
     this._updateRtree(this._encodeIssueRtree(item), true); // true = replace
     return item;
   }
@@ -351,7 +350,7 @@ export class ServiceOsmose {
   removeItem(item) {
     if (!(item instanceof QAItem) || !item.id) return;
 
-    this._osmoseCache.isseus.delete(item.id);
+    this._cache.isseus.delete(item.id);
     this._updateRtree(this._encodeIssueRtree(item), false); // false = remove
   }
 
@@ -359,10 +358,10 @@ export class ServiceOsmose {
   /**
    * getClosedCounts
    * Used to populate `closed:osmose:*` changeset tags
-   * @param   the closed cache
+   * @return   the closed cache
    */
   getClosedCounts() {
-    return this._osmoseCache.closed;
+    return this._cache.closed;
   }
 
 
@@ -370,6 +369,7 @@ export class ServiceOsmose {
    * itemURL
    * Returns the url to link to details about an item
    * @param   item
+   * @return  the url
    */
   itemURL(item) {
     return `https://osmose.openstreetmap.fr/en/error/${item.id}`;
@@ -384,7 +384,7 @@ export class ServiceOsmose {
 
   _abortUnwantedRequests(cache, tiles) {
     Object.keys(cache.inflightTile).forEach(k => {
-      let wanted = tiles.find(tile => k === tile.id);
+      const wanted = tiles.find(tile => k === tile.id);
       if (!wanted) {
         this._abortRequest(cache.inflightTile[k]);
         delete cache.inflightTile[k];
@@ -398,9 +398,9 @@ export class ServiceOsmose {
 
   // Replace or remove QAItem from rtree
   _updateRtree(item, replace) {
-    this._osmoseCache.rtree.remove(item, (a, b) => a.data.id === b.data.id);
+    this._cache.rtree.remove(item, (a, b) => a.data.id === b.data.id);
     if (replace) {
-      this._osmoseCache.rtree.insert(item);
+      this._cache.rtree.insert(item);
     }
   }
 
@@ -411,8 +411,8 @@ export class ServiceOsmose {
       // first time, move marker up. after that, move marker right.
       let delta = coincident ? [0.00001, 0] : [0, 0.00001];
       loc = vecAdd(loc, delta);
-      let bbox = new Extent(loc).bbox();
-      coincident = this._osmoseCache.rtree.search(bbox).length;
+      const bbox = new Extent(loc).bbox();
+      coincident = this._cache.rtree.search(bbox).length;
     } while (coincident);
 
     return loc;
