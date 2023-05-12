@@ -9,7 +9,6 @@ import { actionMoveMember } from '../../actions/move_member';
 import { modeSelect } from '../../modes/select';
 import { osmEntity } from '../../osm';
 import { uiIcon } from '../icon';
-import { services } from '../../services';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { utilDisplayName, utilDisplayType, utilHighlightEntities, utilNoAuto } from '../../util';
@@ -33,7 +32,7 @@ export function uiSectionRawMemberEditor(context) {
         })
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = services.taginfo;
+    var taginfo = context.services.get('taginfo');
     var _entityIDs;
     var _maxMembers = 1000;
 

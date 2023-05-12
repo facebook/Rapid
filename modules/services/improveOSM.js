@@ -6,7 +6,7 @@ import RBush from 'rbush';
 
 import { fileFetcher } from '../core/file_fetcher';
 import { QAItem } from '../osm';
-import { serviceOsm } from './index';
+// import { serviceOsm } from './index';
 import { t } from '../core/localizer';
 import { utilRebind } from '../util';
 
@@ -366,15 +366,16 @@ export default {
   },
 
   postUpdate(d, callback) {
-    if (!serviceOsm.authenticated()) { // Username required in payload
+// todo: fix once services are working or we have context
+//    if (!serviceOsm.authenticated()) { // Username required in payload
       return callback({ message: 'Not Authenticated', status: -3}, d);
-    }
-    if (_cache.inflightPost[d.id]) {
-      return callback({ message: 'Error update already inflight', status: -2 }, d);
-    }
+//    }
+//    if (_cache.inflightPost[d.id]) {
+//      return callback({ message: 'Error update already inflight', status: -2 }, d);
+//    }
 
     // Payload can only be sent once username is established
-    serviceOsm.userDetails(sendPayload.bind(this));
+//    serviceOsm.userDetails(sendPayload.bind(this));
 
     function sendPayload(err, user) {
       if (err) { return callback(err, d); }

@@ -171,7 +171,6 @@ export function validationImpossibleOneway() {
                 reference: getReference(referenceID),
                 entityIds: [way.id, node.id],
                 dynamicFixes: function() {
-
                     var fixes = [];
 
                     if (attachedOneways.length) {

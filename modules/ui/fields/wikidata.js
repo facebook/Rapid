@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { actionChangeTags } from '../../actions/change_tags';
-import { services } from '../../services/index';
 import { uiIcon } from '../icon';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { uiCombobox } from '../combobox';
@@ -10,7 +9,7 @@ import { t } from '../../core/localizer';
 
 
 export function uiFieldWikidata(context, uifield) {
-    var wikidata = services.wikidata;
+    var wikidata = context.services.get('wikidata');
     var dispatch = d3_dispatch('change');
 
     var _selection = d3_select(null);

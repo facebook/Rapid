@@ -16,29 +16,13 @@ import { PresetSystem } from './PresetSystem';
 import { StorageSystem } from './StorageSystem';
 import { UrlHashSystem } from './UrlHashSystem';
 
-import { BehaviorDrag } from '../behaviors/BehaviorDrag';
-import { BehaviorDraw } from '../behaviors/BehaviorDraw';
-import { BehaviorHover } from '../behaviors/BehaviorHover';
-import { BehaviorLasso } from '../behaviors/BehaviorLasso';
-import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
-import { BehaviorMapNudging } from '../behaviors/BehaviorMapNudging';
-import { BehaviorPaste } from '../behaviors/BehaviorPaste';
-import { BehaviorSelect } from '../behaviors/BehaviorSelect';
-
-import { ModeAddNote } from '../modes/ModeAddNote';
-import { ModeAddPoint } from '../modes/ModeAddPoint';
-import { ModeBrowse } from '../modes/ModeBrowse';
-import { ModeDragNode } from '../modes/ModeDragNode';
-import { ModeDrawArea } from '../modes/ModeDrawArea';
-import { ModeDrawLine } from '../modes/ModeDrawLine';
-import { ModeMove } from '../modes/ModeMove';
-import { ModeRotate } from '../modes/ModeRotate';
-import { ModeSave } from '../modes/ModeSave';
-import { ModeSelect } from '../modes/ModeSelect';  // new
-import { modeSelect } from '../modes/select';      // legacy
+import * as Behaviors from '../behaviors';
+import * as Modes from '../modes';
+import * as Services from '../services';
+import { modeSelect } from '../modes/select';   // legacy
+import { services } from '../services';     // legacy
 
 import { rendererFeatures, RendererImagery, RendererMap, RendererPhotos } from '../renderer';
-import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
 
@@ -324,11 +308,15 @@ export function coreContext() {
     };
   }
 
+  /* Services */
+  // "Services" are components that get data from other places
+  context.services = new Map();  // Map (service.id -> Service)
+
 
   /* Modes */
   // "Modes" are editing tasks that the user are allowed to perform.
   // Each mode is exclusive, i.e only one mode can be active at a time.
-  context.modes = new Map();  // Map (mode.id -> mode)
+  context.modes = new Map();  // Map (mode.id -> Mode)
 
   // The current mode (`null` until ui.render initializes the map and enters browse mode)
   context._currMode = null;
@@ -609,11 +597,14 @@ export function coreContext() {
       _deferred.delete(handle);
     });
 
-    Object.values(services).forEach(service => {
+    for (const service of Object.values(services)) {         // legacy
       if (service && typeof service.reset === 'function') {
-        service.reset(context);
+        service.reset();
       }
-    });
+    }
+    for (const service of context.services.values()) {       // modern
+      service.reset();
+    }
 
     context.changeset = null;
 
@@ -677,30 +668,26 @@ export function coreContext() {
       _ui = uiInit(context);
 
       // Instantiate Behaviors
-      [
-        new BehaviorDrag(context),
-        new BehaviorDraw(context),
-        new BehaviorHover(context),
-        new BehaviorLasso(context),
-        new BehaviorMapInteraction(context),
-        new BehaviorMapNudging(context),
-        new BehaviorPaste(context),
-        new BehaviorSelect(context)
-      ].forEach(behavior => context.behaviors.set(behavior.id, behavior));
+      for (const [name, Behavior] of Object.entries(Behaviors)) {
+        if (name === 'BehaviorKeyOperation') continue;   // this one won't work
+        const behavior = new Behavior(context);
+        context.behaviors.set(behavior.id, behavior);
+      }
 
       // Instantiate Modes
-      [
-        new ModeAddNote(context),
-        new ModeAddPoint(context),
-        new ModeBrowse(context),
-        new ModeDragNode(context),
-        new ModeDrawArea(context),
-        new ModeDrawLine(context),
-        new ModeMove(context),
-        new ModeRotate(context),
-        new ModeSave(context),
-        new ModeSelect(context)
-      ].forEach(mode => context.modes.set(mode.id, mode));
+      for (const [name, Mode] of Object.entries(Modes)) {
+        if (name === 'modeSelect') continue;   // this one won't work
+        const mode = new Mode(context);
+        context.modes.set(mode.id, mode);
+      }
+
+      // Instantiate Services
+      for (const [name, Service] of Object.entries(Services)) {
+        if (name === 'services') continue;   // this is not a constructor
+        const service = new Service(context);
+        context.services.set(service.id, service);
+      }
+
     }
 
 
@@ -719,12 +706,14 @@ export function coreContext() {
       localizer.initAsync();
       _presetSystem.initAsync();
 
-      // Run initializers - this is where code should be that establishes event listeners
-      Object.values(services).forEach(service => {
+      for (const service of Object.values(services)) {         // legacy
         if (service && typeof service.init === 'function') {
           service.init();
         }
-      });
+      }
+      for (const service of context.services.values()) {       // modern
+        service.init();
+      }
 
       _validator.init();
       _imagery.init();

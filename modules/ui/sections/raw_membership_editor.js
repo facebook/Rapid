@@ -8,7 +8,6 @@ import { actionChangeMember } from '../../actions/change_member';
 import { actionDeleteMembers } from '../../actions/delete_members';
 import { modeSelect } from '../../modes/select';
 import { osmEntity, osmRelation } from '../../osm';
-import { services } from '../../services';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
@@ -30,7 +29,7 @@ export function uiSectionRawMembershipEditor(context) {
         })
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = services.taginfo;
+    var taginfo = context.services.get('taginfo');
     var nearbyCombo = uiCombobox(context, 'parent-relation')
         .minItems(1)
         .fetcher(fetchNearbyRelations)

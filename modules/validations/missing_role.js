@@ -41,7 +41,7 @@ export function validationMissingRole() {
     return new validationIssue({
       type: type,
       severity: 'warning',
-      message: (context) => {
+      message: function(context) {
         const member = context.hasEntity(this.entityIds[1]);
         const relation = context.hasEntity(this.entityIds[0]);
         return (member && relation) ? t.html('issues.missing_role.message', {
@@ -53,7 +53,7 @@ export function validationMissingRole() {
       entityIds: [relation.id, way.id],
       data:  { member: member },
       hash: member.index.toString(),
-      dynamicFixes: () => {
+      dynamicFixes: function() {
         return [
           makeAddRoleFix('inner'),
           makeAddRoleFix('outer'),

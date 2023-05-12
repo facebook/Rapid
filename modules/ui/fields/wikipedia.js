@@ -4,7 +4,6 @@ import { select as d3_select } from 'd3-selection';
 import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
 import { actionChangeTags } from '../../actions/change_tags';
-import { services } from '../../services/index';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
@@ -12,8 +11,8 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 export function uiFieldWikipedia(context, uifield) {
   const dispatch = d3_dispatch('change');
-  const wikipedia = services.wikipedia;
-  const wikidata = services.wikidata;
+  const wikipedia = context.services.get('wikipedia');
+  const wikidata = context.services.get('wikidata');
   let _langInput = d3_select(null);
   let _titleInput = d3_select(null);
   let _wikiURL = '';

@@ -4,5 +4,6 @@ export { BehaviorHover } from './BehaviorHover';
 export { BehaviorKeyOperation } from './BehaviorKeyOperation';
 export { BehaviorLasso } from './BehaviorLasso';
 export { BehaviorMapInteraction } from './BehaviorMapInteraction';
+export { BehaviorMapNudging } from './BehaviorMapNudging';
 export { BehaviorPaste } from './BehaviorPaste';
 export { BehaviorSelect } from './BehaviorSelect';

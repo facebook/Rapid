@@ -22,13 +22,13 @@ export function validationHelpRequest(context) {
       type: type,
       subtype: 'fixme_tag',
       severity: 'warning',
-      message: (context) => {
+      message: function(context) {
         const entity = context.hasEntity(this.entityIds[0]);
         return entity ? t.html('issues.fixme_tag.message', {
           feature: utilDisplayLabel(context, entity, context.graph(), true /* verbose */)
         }) : '';
       },
-      dynamicFixes: () => {
+      dynamicFixes: function() {
         return [
           new validationIssueFix({ title: t.html('issues.fix.address_the_concern.title') })
         ];

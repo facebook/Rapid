@@ -11,13 +11,14 @@ import serviceKartaview from './kartaview';
 import serviceOsm from './osm';
 import serviceOsmWikibase from './osm_wikibase';
 import serviceStreetside from './streetside';
-import serviceTaginfo from './taginfo';
-import serviceVectorTile from './vector_tile';
-import serviceWikidata from './wikidata';
-import serviceWikipedia from './wikipedia';
+import { ServiceTaginfo } from './ServiceTaginfo';
+import { ServiceVectorTile } from './ServiceVectorTile';
+import { ServiceWikidata } from './ServiceWikidata';
+import { ServiceWikipedia } from './ServiceWikipedia';
 
 
-export let services = {
+// legacy
+export const services = {
   esriData: serviceEsriData,
   fbMLRoads: serviceFbAIFeatures,
   geocoder: serviceNominatim,
@@ -30,29 +31,26 @@ export let services = {
   osm: serviceOsm,
   osmWikibase: serviceOsmWikibase,
   maprules: serviceMapRules,
-  streetside: serviceStreetside,
-  taginfo: serviceTaginfo,
-  vectorTile: serviceVectorTile,
-  wikidata: serviceWikidata,
-  wikipedia: serviceWikipedia,
+  streetside: serviceStreetside
 };
 
+// modern
 export {
-  serviceEsriData,
-  serviceFbAIFeatures,
-  serviceKeepRight,
-  serviceImproveOSM,
-  serviceOsmose,
-  serviceMapillary,
-  serviceMapRules,
-  serviceNominatim,
-  serviceNsi,
-  serviceKartaview,
-  serviceOsm,
-  serviceOsmWikibase,
-  serviceStreetside,
-  serviceTaginfo,
-  serviceVectorTile,
-  serviceWikidata,
-  serviceWikipedia,
+//  serviceEsriData,
+//  serviceFbAIFeatures,
+//  serviceKeepRight,
+//  serviceImproveOSM,
+//  serviceOsmose,
+//  serviceMapillary,
+//  serviceMapRules,
+//  serviceNominatim,
+//  serviceNsi,
+//  serviceKartaview,
+//  serviceOsm,
+//  serviceOsmWikibase,
+//  serviceStreetside,
+  ServiceTaginfo,
+  ServiceVectorTile,
+  ServiceWikidata,
+  ServiceWikipedia
 };
