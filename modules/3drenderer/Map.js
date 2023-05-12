@@ -142,10 +142,6 @@ export class Map {
     };
   }
 
-  //
-  // ["match", ["get", "leisure"], ["swimming_pool"]], PIXI.utils.hex2string(STYLES.blue.fill.color),
-  // ["match", ["get", "leisure"], ["track"]], PIXI.utils.hex2string(STYLES.yellow.fill.color)
-
   /**
    * getRoadCasingLayerSpec
    * Returns a maplibre layer style specification that widens the road casing to be just above the stroke.
