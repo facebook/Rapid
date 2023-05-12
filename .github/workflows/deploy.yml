@@ -66,8 +66,8 @@ jobs:
     - name: Setup vars 📋
       id: vars
       run: |
-        echo "{identifier}=$(git rev-parse --short ${{ github.sha }})-16.x" >> "$GITHUB_ENV"
-        echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-" >> "$GITHUB_ENV"
+        echo "identifier=$(git rev-parse --short ${{ github.sha }})-16.x" >> "$GITHUB_ENV"
+        echo "distdir=$(git rev-parse --short ${{ github.sha }})-16.x-" >> "$GITHUB_ENV"
 
     - name: Prep files 🔨
       run: npm run aws_deploy
