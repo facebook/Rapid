@@ -30,7 +30,6 @@ export function ui3DMap(context) {
       let extent = context.map().extent();
       let center = extent.center();
       extent.padByMeters(100);
-      let bounds = [extent.min, extent.max];
 
       _map.map.jumpTo({
         center: center,
@@ -120,10 +119,10 @@ export function ui3DMap(context) {
     context.map().on('draw', () => redraw());
     context.map().on('move', () => redraw());
 
-    context.on('enter.3dmap', (e) => {
+    context.on('enter.3dmap', () => {
       featuresToGeoJSON();
     });
-    context.history().on('change.3dmap', (e) => {
+    context.history().on('change.3dmap', () => {
       featuresToGeoJSON();
     });
 

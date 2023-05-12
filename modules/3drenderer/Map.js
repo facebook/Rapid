@@ -1,11 +1,14 @@
 import { Map as mapLibreMap } from 'maplibre-gl';
 
+const SELECTION_COLOR = '#01d4fa';
+
 export class Map {
   constructor(id, context) {
     this.building3dlayerSpec = this.get3DBuildingLayerSpec(
       '3D Buildings',
       'osmbuildings'
     );
+
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
     this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec(
@@ -66,8 +69,6 @@ export class Map {
     });
   }
 
-  SELECTION_COLOR = '#01d4fa';
-
   /**
    * get3DBuildingLayerSpec
    * Returns a maplibre layer style specification that appropriately styles 3D buildings
@@ -88,7 +89,7 @@ export class Map {
           'match',
           ['get', 'selected'],
           'true',
-          this.SELECTION_COLOR,
+          SELECTION_COLOR,
           /* other */ '#ff26db',
         ],
 
@@ -185,7 +186,7 @@ export class Map {
         visibility: 'visible',
       },
       paint: {
-        'line-color': this.SELECTION_COLOR,
+        'line-color': SELECTION_COLOR,
         'line-opacity': ['match', ['get', 'selected'], 'true', 0.75, 0],
         'line-width': this.getLineWidthSpecification(12),
       },
