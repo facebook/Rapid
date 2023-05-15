@@ -3,7 +3,6 @@ import { gpx } from '@tmcw/togeojson';
 import { Extent } from '@rapid-sdk/math';
 
 import { localizer, t } from '../core/localizer';
-import { services } from '../services';
 import { utilRebind } from '../util';
 
 
@@ -119,7 +118,7 @@ export function coreRapidContext(context) {
             added: true,         // whether it should appear in the list
             enabled: false,      // whether the user has checked it on
             conflated: true,
-            service: 'fbml',
+            service: 'mapwithai',
             color: RAPID_MAGENTA,
             label: t('rapid_feature_toggle.fbRoads.label'),
             license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
@@ -130,7 +129,7 @@ export function coreRapidContext(context) {
             added: true,         // whether it should appear in the list
             enabled: false,      // whether the user has checked it on
             conflated: true,
-            service: 'fbml',
+            service: 'mapwithai',
             color: RAPID_MAGENTA,
             label: t('rapid_feature_toggle.msBuildings.label'),
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
@@ -170,17 +169,17 @@ export function coreRapidContext(context) {
     }
 
     // If there are remaining datasets to enable, try to load them from Esri.
-    const service = services.esriData;
+    const service = context.services.get('esri');
     if (!service || !toEnable.size) return;
 
-    service.loadDatasets()
+    service.loadDatasetsAsync()
       .then(results => {
         toEnable.forEach(datasetID => {
           const d = results[datasetID];
           if (!d) return;  // dataset with requested id not found, fail silently
 
           // *** Code here is copied from `rapid_view_manage_datasets.js` `toggleDataset()` ***
-          service.loadLayer(d.id);   // start fetching layer info (the mapping between attributes and tags)
+          service.loadLayerAsync(d.id);   // start fetching layer info (the mapping between attributes and tags)
 
           const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
           const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
@@ -202,10 +201,10 @@ export function coreRapidContext(context) {
             dataset.extent = new Extent(d.extent[0], d.extent[1]);
           }
 
-          // Test running building layers through FBML conflation service
+          // Test running building layers through MapWithAI conflation service
           if (isBuildings) {
             dataset.conflated = true;
-            dataset.service = 'fbml';
+            dataset.service = 'mapwithai';
           }
 
           _datasets[d.id] = dataset;  // add it
