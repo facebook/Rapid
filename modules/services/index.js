@@ -3,6 +3,7 @@ export { ServiceImproveOsm } from './ServiceImproveOsm';
 export { ServiceKeepRight } from './ServiceKeepRight';
 export { ServiceMapWithAI } from './ServiceMapWithAI';
 export { ServiceNominatim } from './ServiceNominatim';
+export { ServiceNsi } from './ServiceNsi';
 export { ServiceOsmose } from './ServiceOsmose';
 export { ServiceOsmWikibase } from './ServiceOsmWikibase';
 export { ServiceTaginfo } from './ServiceTaginfo';
@@ -12,7 +13,6 @@ export { ServiceWikipedia } from './ServiceWikipedia';
 
 import serviceKartaview from './kartaview';
 import serviceMapillary from './mapillary';
-import serviceNsi from './nsi';
 import serviceOsm from './osm';
 import serviceStreetside from './streetside';
 
@@ -20,7 +20,6 @@ import serviceStreetside from './streetside';
 export const services = {
   kartaview: serviceKartaview,
   mapillary: serviceMapillary,
-  nsi: serviceNsi,
   osm: serviceOsm,
   streetside: serviceStreetside
 };

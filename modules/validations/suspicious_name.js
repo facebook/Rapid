@@ -1,10 +1,9 @@
 import { actionChangeTags } from '../actions/change_tags';
-import { services } from '../services';
 import { t, localizer } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
-export function validationSuspiciousName() {
+export function validationSuspiciousName(context) {
   const type = 'suspicious_name';
   const keysToTestForGenericValues = [
     'aerialway', 'aeroway', 'amenity', 'building', 'craft', 'highway',
@@ -15,9 +14,9 @@ export function validationSuspiciousName() {
 
   // Attempt to match a generic record in the name-suggestion-index.
   function isGenericMatchInNsi(tags) {
-    const nsi = services.nsi;
+    const nsi = context.services.get('nsi');
     if (nsi) {
-      _waitingForNsi = (nsi.status() === 'loading');
+      _waitingForNsi = (nsi.status === 'loading');
       if (!_waitingForNsi) {
         return nsi.isGenericName(tags);
       }
@@ -28,8 +27,7 @@ export function validationSuspiciousName() {
 
   // Test if the name is just the key or tag value (e.g. "park")
   function nameMatchesRawTag(lowercaseName, tags) {
-    for (let i = 0; i < keysToTestForGenericValues.length; i++) {
-      let key = keysToTestForGenericValues[i];
+    for (const key of keysToTestForGenericValues) {
       let val = tags[key];
       if (val) {
         val = val.toLowerCase();

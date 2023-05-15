@@ -5,7 +5,6 @@ import { actionChangePreset } from '../actions/change_preset';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionUpgradeTags } from '../actions/upgrade_tags';
 import { fileFetcher } from '../core';
-import { services } from '../services';
 import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
@@ -67,11 +66,11 @@ export function validationOutdatedTags(context) {
     }
 
     // Attempt to match a canonical record in the name-suggestion-index.
-    const nsi = services.nsi;
+    const nsi = context.services.get('nsi');
     let waitingForNsi = false;
     let nsiResult;
     if (nsi) {
-      waitingForNsi = (nsi.status() === 'loading');
+      waitingForNsi = (nsi.status === 'loading');
       if (!waitingForNsi) {
         const loc = entity.extent(graph).center();
         nsiResult = nsi.upgradeTags(newTags, loc);
@@ -121,7 +120,7 @@ export function validationOutdatedTags(context) {
           })
         ];
 
-        const item = nsiResult && nsiResult.matched;
+        const item = nsiResult?.matched;
         if (item) {
           fixes.push(
             new validationIssueFix({
@@ -160,7 +159,7 @@ export function validationOutdatedTags(context) {
       const currEntity = graph.hasEntity(entity.id);
       if (!currEntity) return graph;
 
-      const item = nsiResult && nsiResult.matched;
+      const item = nsiResult?.matched;
       if (!item) return graph;
 
       let newTags = Object.assign({}, currEntity.tags);  // shallow copy
