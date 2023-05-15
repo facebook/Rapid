@@ -4,7 +4,6 @@ import { Extent } from '@rapid-sdk/math';
 import { marked } from 'marked';
 
 import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
 import { uiCombobox} from './combobox';
 import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
@@ -237,7 +236,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     const prefs = context.storageSystem();
     const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
-    const service = services.esriData;
+    const service = context.services.get('esri');
 
     if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
       results.classed('hide', true);
@@ -258,7 +257,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         .attr('class', 'rapid-view-manage-datasets-spinner')
         .attr('src', context.asset('img/loader-black.gif'));
 
-      service.loadDatasets()
+      service.loadDatasetsAsync()
         .then(results => {
           // Build set of available categories
           let categories = new Set();
@@ -433,9 +432,9 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       ds.added = !ds.added;
 
     } else {  // hasn't been added yet
-      const service = services.esriData;
+      const service = context.services.get('esri');
       if (service) {   // start fetching layer info (the mapping between attributes and tags)
-        service.loadLayer(d.id);
+        service.loadLayerAsync(d.id);
       }
 
       const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
@@ -461,10 +460,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         dataset.extent = new Extent(d.extent[0], d.extent[1]);
       }
 
-      // Test running building layers through FBML conflation service
+      // Test running building layers through MapWithAI conflation service
       if (isBuildings) {
        dataset.conflated = true;
-       dataset.service = 'fbml';
+       dataset.service = 'mapwithai';
 
         // and disable the Microsoft buildings to avoid clutter
         if (datasets.msBuildings) {

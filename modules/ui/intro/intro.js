@@ -4,7 +4,6 @@ import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
 import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
-import { services } from '../../services';
 import { uiIcon } from '../icon';
 
 import { UiCurtain } from './UiCurtain';
@@ -78,6 +77,7 @@ export function uiIntro(context, skipToRapid) {
 
     const prefs = context.storageSystem();
     const osm = context.connection();
+    const mapwithai = context.services.get('mapwithai');
     const imagery = context.imagery();
     const history = context.history();
 
@@ -130,14 +130,14 @@ export function uiIntro(context, skipToRapid) {
       added: true,
       enabled: true,
       conflated: false,
-      service: 'fbml',
+      service: 'mapwithai',
       color: '#da26d3',
       label: 'Rapid Walkthrough'
     };
 
-    if (services.fbMLRoads) {
-      services.fbMLRoads.toggle(false);    // disable network
-      services.fbMLRoads.merge('rapid_intro_graph', Object.values(_rapidGraph));
+    if (mapwithai) {
+      mapwithai.toggle(false);    // disable network
+      mapwithai.merge('rapid_intro_graph', Object.values(_rapidGraph));
     }
 
     const curtain = new UiCurtain(context);
@@ -187,8 +187,8 @@ export function uiIntro(context, skipToRapid) {
       delete rapidDatasets.rapid_intro_graph;
       Object.keys(rapidDatasetsCopy).forEach(id => rapidDatasets[id].enabled = rapidDatasetsCopy[id].enabled);
       Object.assign(rapidDatasets, rapidDatasetsCopy);
-      if (services.fbMLRoads) {
-        services.fbMLRoads.toggle(true);
+      if (mapwithai) {
+        mapwithai.toggle(true);
       }
 
       curtain.disable();

@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
@@ -26,11 +25,11 @@ export class PixiLayerRapid extends AbstractLayer {
     super(scene, layerID);
 
     this._enabled = true;     // Rapid features should be enabled by default
-    this._serviceFB = null;
+    this._serviceMapWithAI = null;
     this._serviceEsri = null;
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
 
-    this.getServiceFB();
+    this.getServiceMapWithAI();
     this.getServiceEsri();
 
 //// shader experiment:
@@ -172,21 +171,25 @@ export class PixiLayerRapid extends AbstractLayer {
    * Services are loosely coupled, so we use these functions
    * to gain access to them, and bind any event handlers a single time.
    */
-  getServiceFB() {
-    if (services.fbMLRoads && !this._serviceFB) {
-      this._serviceFB = services.fbMLRoads;
-      this._serviceFB.on('loadedData', () => this.context.map().deferredRedraw());
-    } else if (!services.fbMLRoads && this._serviceFB) {
-      this._serviceFB = null;
+  getServiceMapWithAI() {
+    const context = this.context;
+    const mapwithai = context.services.get('mapwithai');
+    if (mapwithai && !this._serviceMapWithAI) {
+      mapwithai.on('loadedData', () => context.map().deferredRedraw());
+      this._serviceMapWithAI = mapwithai;
+    } else if (!mapwithai && this._serviceMapWithAI) {
+      this._serviceMapWithAI = null;
     }
-    return this._serviceFB;
+    return this._serviceMapWithAI;
   }
 
   getServiceEsri() {
-    if (services.esriData && !this._serviceEsri) {
-      this._serviceEsri = services.esriData;
-      this._serviceEsri.on('loadedData', () => this.context.map().deferredRedraw());
-    } else if (!services.esriData && this._serviceEsri) {
+    const context = this.context;
+    const esri = context.services.get('esri');
+    if (esri && !this._serviceEsri) {
+      esri.on('loadedData', () => context.map().deferredRedraw());
+      this._serviceEsri = esri;
+    } else if (!esri && this._serviceEsri) {
       this._serviceEsri = null;
     }
     return this._serviceEsri;
@@ -232,7 +235,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const dsEnabled = (dataset.added && dataset.enabled);
     if (!dsEnabled) return;
 
-    const service = dataset.service === 'fbml' ? this.getServiceFB(): this.getServiceEsri();
+    const service = dataset.service === 'mapwithai' ? this.getServiceMapWithAI(): this.getServiceEsri();
     if (!service) return;
 
     // Adjust the dataset id for whether we want the data conflated or not.
@@ -249,7 +252,7 @@ export class PixiLayerRapid extends AbstractLayer {
     // let data = { polygons: [], lines: [], points: [], vertices: new Set() };
 
     /* Facebook AI/ML */
-    if (dataset.service === 'fbml') {
+    if (dataset.service === 'mapwithai') {
       if (zoom >= 15) { // avoid firing off too many API requests
         service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
       }

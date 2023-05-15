@@ -3,7 +3,6 @@ import { t } from '../core/localizer';
 
 import { actionNoop, actionRapidAcceptFeature } from '../actions';
 import { modeSelect } from '../modes';
-import { services } from '../services';
 import { uiIcon } from './icon';
 import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
@@ -53,7 +52,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       origid: _datum.__origid__
     };
 
-    const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+    const service = context.services.get(_datum.__service__);
     const graph = service.graph(_datum.__datasetid__);
     const sourceTag = _datum.tags && _datum.tags.source;
     if (sourceTag) annotation.source = sourceTag;
