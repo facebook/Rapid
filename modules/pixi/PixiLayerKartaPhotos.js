@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
@@ -43,10 +42,11 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.kartaview && !this._service) {
-      this._service = services.kartaview;
-      this._service.on('loadedImages', () => this.context.map().deferredRedraw());
-    } else if (!services.kartaview && this._service) {
+    const kartaview = this.context.services.get('kartaview');
+    if (kartaview && !this._service) {
+      kartaview.on('loadedImages', () => this.context.map().deferredRedraw());
+      this._service = kartaview;
+    } else if (!kartaview && this._service) {
       this._service = null;
     }
 

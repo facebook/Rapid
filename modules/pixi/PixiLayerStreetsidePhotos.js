@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
@@ -43,10 +42,11 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.streetside && !this._service) {
-      this._service = services.streetside;
-      this._service.on('loadedImages', () => this.context.map().deferredRedraw());
-    } else if (!services.streetside && this._service) {
+    const streetside = this.context.services.get('streetside');
+    if (streetside && !this._service) {
+      streetside.on('loadedImages', () => this.context.map().deferredRedraw());
+      this._service = streetside;
+    } else if (!streetside && this._service) {
       this._service = null;
     }
 

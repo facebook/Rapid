@@ -3,7 +3,6 @@ import { vecLength } from '@rapid-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';
 import { osmEntity, osmNote, QAItem } from '../osm';
-import { services } from '../services';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { osmNode } from '../osm/node';
 import { osmWay } from '../osm/way';
@@ -382,12 +381,8 @@ export class BehaviorSelect extends AbstractBehavior {
     if (datum.captured_at) {
       // Determine the layer that was clicked on, obtain its service.
       const layerID = target.layer.id;
-      const service = services[layerID];
-      if (!service) return;
-
       context.map().centerEase(datum.loc);
       context.photos().selectPhoto(layerID, datum.id);
-//
 //      // No mode change event here, just manually tell the renderer to select it, for now
 //      const scene = context.scene();
 //      scene.clearClass('selected');
@@ -397,29 +392,29 @@ export class BehaviorSelect extends AbstractBehavior {
     // Clicked on a mapillary object detection or traffic sign, so open a streetview
     // image showing that object/sign
     if (datum.first_seen_at) {
-      const service = services.mapillary;
+      const service = context.services.get('mapillary');
       if (!service) return;
-      this.context.map().centerEase(event.loc);
 
-      const selectedImageId = service.getActiveImage() && service.getActiveImage().id;
+      context.map().centerEase(event.loc);
+      const selectedImageID = service.getActiveImage() && service.getActiveImage().id;
 
       service.getDetections(datum.id).then(detections => {
-          if (detections.length) {
-              const imageId = detections[0].image.id;
-              if (imageId === selectedImageId) {
-                  service
-                      .highlightDetection(detections[0])
-                      .selectImage(context, imageId);
-              } else {
-                  service.loadViewerAsync(context)
-                      .then(function() {
-                          service
-                              .highlightDetection(detections[0])
-                              .selectImage(context, imageId)
-                              .showViewer(context);
-                      });
-              }
+        if (detections.length) {
+          const imageID = detections[0].image.id;
+          if (imageID === selectedImageID) {
+            service
+              .highlightDetection(detections[0])
+              .selectImage(context, imageID);
+          } else {
+            service.loadViewerAsync(context)
+              .then(() => {
+                service
+                  .highlightDetection(detections[0])
+                  .selectImage(context, imageID)
+                  .showViewer(context);
+              });
           }
+        }
       });
     }
   }
