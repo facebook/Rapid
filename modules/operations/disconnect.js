@@ -189,7 +189,7 @@ export function operationDisconnect(context, selectedIDs) {
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
       if (context.inIntro()) return false;
-      const osm = context.connection();
+      const osm = context.services.get('osm');
       if (osm) {
         const missing = _coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {

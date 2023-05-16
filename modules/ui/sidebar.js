@@ -6,7 +6,6 @@ import _throttle from 'lodash-es/throttle';
 
 import { utilFastMouse } from '../util';
 import { osmEntity, osmNote, QAItem } from '../osm';
-import { services } from '../services';
 import { uiDataEditor } from './data_editor';
 import { uiFeatureList } from './feature_list';
 import { uiInspector } from './inspector';
@@ -14,9 +13,9 @@ import { uiImproveOsmEditor } from './improveOSM_editor';
 import { uiKeepRightEditor } from './keepRight_editor';
 import { uiOsmoseEditor } from './osmose_editor';
 import { uiNoteEditor } from './note_editor';
+import { uiRapidFeatureInspector } from './rapid_feature_inspector';
 import { localizer } from '../core/localizer';
 
-import { uiRapidFeatureInspector } from './rapid_feature_inspector';
 
 
 export function uiSidebar(context) {
@@ -196,7 +195,7 @@ export function uiSidebar(context) {
                 if (context.mode().id === 'drag-note') return;
                 _wasNote = true;
 
-                var osm = services.osm;
+                var osm = context.services.get('osm');
                 if (osm) {
                     datum = osm.getNote(datum.id); // marker may contain stale data - get latest
                 }

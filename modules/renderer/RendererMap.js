@@ -188,7 +188,7 @@ export class RendererMap extends EventEmitter {
     context.urlhash().on('hashchange', this._hashchange);
 
 
-    const osm = context.connection();
+    const osm = context.services.get('osm');
     if (osm) {
       osm.on('change', this.immediateRedraw);
     }

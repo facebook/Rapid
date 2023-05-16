@@ -2,8 +2,6 @@ import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecAngle, vecLength, vecInterp } from '@rapid-sdk/math';
 
-import { services } from '../services';
-
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
@@ -31,10 +29,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const basemapContainer = this.scene.groups.get('basemap');
 
     this._enabled = true;  // OSM layers should be enabled by default
-    this._service = null;
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
-
-    this.getService();
 
 // experiment for benchmarking
 //    this._alreadyDownloaded = false;
@@ -55,26 +50,11 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
-   */
-  getService() {
-    if (services.osm && !this._service) {
-      this._service = services.osm;
-    } else if (!services.osm && this._service) {
-      this._service = null;
-    }
-
-    return this._service;
-  }
-
-
-  /**
    * supported
    * Whether the Layer's service exists
    */
   get supported() {
-    return !!this.getService();
+    return this.context.services.has('osm');
   }
 
 
@@ -113,8 +93,7 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
-    if (!this._enabled || !service || zoom < MINZOOM) return;
+    if (!this._enabled || !this.supported || zoom < MINZOOM) return;
 
     const context = this.context;
     const graph = context.graph();

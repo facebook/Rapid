@@ -1,6 +1,5 @@
 import { AbstractMode } from './AbstractMode';
 import { osmNote } from '../osm/note';
-import { services } from '../services';
 
 const DEBUG = false;
 
@@ -78,7 +77,7 @@ export class ModeAddNote extends AbstractMode {
    */
   _click(eventData) {
     const context = this.context;
-    const osm = services.osm;
+    const osm = context.services.get('osm');
     const projection = context.projection;
     const coord = eventData.coord;
     const loc = projection.invert(coord);

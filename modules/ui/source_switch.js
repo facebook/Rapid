@@ -8,7 +8,7 @@ export function uiSourceSwitch(context) {
     function click(d3_event) {
         d3_event.preventDefault();
 
-        var osm = context.connection();
+        var osm = context.services.get('osm');
         if (!osm) return;
 
         if (context.inIntro()) return;

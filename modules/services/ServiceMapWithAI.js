@@ -230,14 +230,14 @@ export class ServiceMapWithAI {
   }
 
 
-  _getNodes(obj) {
-    const elems = Array.from(obj.getElementsByTagName('nd'));
+  _getNodes(xml) {
+    const elems = Array.from(xml.getElementsByTagName('nd'));
     return elems.map(elem => 'n' + elem.attributes.ref.value);
   }
 
 
-  _getTags(obj) {
-    const elems = Array.from(obj.getElementsByTagName('tag'));
+  _getTags(xml) {
+    const elems = Array.from(xml.getElementsByTagName('tag'));
     let tags = {};
     for (const elem of elems) {
       const attrs = elem.attributes;

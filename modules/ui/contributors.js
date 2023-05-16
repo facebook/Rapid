@@ -6,7 +6,7 @@ import { uiIcon } from './icon';
 
 
 export function uiContributors(context) {
-    var osm = context.connection();
+    var osm = context.services.get('osm');
     var debouncedUpdate = _debounce(function() { update(); }, 1000);
     var limit = 4;
     var hidden = false;

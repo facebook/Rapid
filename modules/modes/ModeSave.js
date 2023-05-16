@@ -72,7 +72,7 @@ export class ModeSave extends AbstractMode {
       context.ui().sidebar.show(thiz._commitUI);
     }
 
-    const osm = context.connection();
+    const osm = context.services.get('osm');
     if (!osm) return false;  // can't enter save mode
 
     if (osm.authenticated()) {

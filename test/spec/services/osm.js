@@ -26,7 +26,7 @@ describe('serviceOsm', function () {
     beforeEach(function () {
         serverXHR = sinon.fakeServer.create();      // authenticated calls use XHR via osm-auth
         context = Rapid.coreContext().assetPath('../dist/').init();
-        connection = context.connection();
+        connection = context.services.get('osm');
         connection.switch({ url: 'https://www.openstreetmap.org' });
         connection.reset();
         spy = sinon.spy();

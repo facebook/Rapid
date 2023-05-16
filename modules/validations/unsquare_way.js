@@ -4,7 +4,6 @@ import { actionOrthogonalize } from '../actions/orthogonalize';
 import { geoOrthoCanOrthogonalize } from '../geo/ortho';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
-import { services } from '../services';
 
 
 export function validationUnsquareWay(context) {
@@ -35,7 +34,7 @@ export function validationUnsquareWay(context) {
         if (nodes.length > nodeThreshold + 1) return [];   // +1 because closing node appears twice
 
         // ignore if not all nodes are fully downloaded
-        var osm = services.osm;
+        var osm = context.services.get('osm');
         if (!osm || nodes.some(function(node) { return !osm.isDataLoaded(node.loc); })) return [];
 
         // don't flag connected ways to avoid unresolvable unsquare loops

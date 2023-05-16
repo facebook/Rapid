@@ -46,7 +46,7 @@ export function validationMissingTag(context) {
 
         var subtype;
 
-        var osm = context.connection();
+        var osm = context.services.get('osm');
         var isUnloadedNode = entity.type === 'node' && osm && !osm.isDataLoaded(entity.loc);
 
         // we can't know if the node is a vertex if the tile is undownloaded

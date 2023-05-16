@@ -621,7 +621,7 @@ export function coreHistory(context) {
             // When we restore a modified way, we also need to fetch any missing
             // childnodes that would normally have been downloaded with it.. #2142
             if (loadChildNodes) {
-              const osm = context.connection();
+              const osm = context.services.get('osm');
               const baseWays = baseEntities.filter(entity => entity.type === 'way');
               const nodeIDs = baseWays.reduce(function(acc, way) { return utilArrayUnion(acc, way.nodes); }, []);
               let missing = nodeIDs.filter(nodeID => !baseGraph.hasEntity(nodeID));

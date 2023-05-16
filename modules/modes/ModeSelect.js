@@ -3,7 +3,6 @@ import { geoBounds as d3_geoBounds } from 'd3-geo';
 import { Extent } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode';
-import { services } from '../services';
 import { osmNote, QAItem } from '../osm';
 import { uiDataEditor } from '../ui/data_editor';
 import { uiImproveOsmEditor } from '../ui/improveOSM_editor';
@@ -97,8 +96,8 @@ export class ModeSelect extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          if (!services.osm) return;
-          const note = services.osm.getNote(datumID);
+          const osm = context.services.get('osm');
+          const note = osm?.getNote(datumID);
           if (!(note instanceof osmNote)) return;   // or - go to browse mode
           context.ui().sidebar.show(sidebarContent.note(note));
           this._selectedData.set(datumID, note);  // update selectedData after a change happens?

@@ -51,7 +51,7 @@ export function coreUploader(context) {
             return;
         }
 
-        var osm = context.connection();
+        var osm = context.services.get('osm');
         if (!osm) return;
 
         // If user somehow got logged out mid-save, try to reauthenticate..
@@ -98,7 +98,7 @@ export function coreUploader(context) {
 
 
     function performFullConflictCheck(changeset) {
-        var osm = context.connection();
+        var osm = context.services.get('osm');
         if (!osm) return;
 
         var history = context.history();
@@ -272,7 +272,7 @@ export function coreUploader(context) {
 
 
     function upload(changeset) {
-        var osm = context.connection();
+        var osm = context.services.get('osm');
         if (!osm) {
             _errors.push({ msg: 'No OSM Service' });
         }

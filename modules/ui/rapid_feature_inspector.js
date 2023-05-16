@@ -71,7 +71,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
     window.sessionStorage.setItem('acknowledgedLogin', 'true');
 
-    const osm = context.connection();
+    const osm = context.services.get('osm');
     if (!osm.authenticated()) {
       context.container()
         .call(uiRapidFirstEditDialog(context));

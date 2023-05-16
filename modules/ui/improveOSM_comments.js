@@ -49,7 +49,7 @@ export function uiImproveOsmComments(context) {
           .append('div')
             .attr('class', 'comment-author')
             .each(function(d) {
-              const osm = context.connection();
+              const osm = context.services.get('osm');
               let selection = d3_select(this);
               if (osm && d.username) {
                 selection = selection

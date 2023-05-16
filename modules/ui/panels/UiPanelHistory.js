@@ -72,7 +72,7 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-//    const osm = context.connection();
+//    const osm = context.services.get('osm');
 
     // Empty out the DOM content and rebuild from scratch..
     selection.html('');
@@ -145,7 +145,7 @@ export class UiPanelHistory extends AbstractUiPanel {
         .call(this.renderUser, note.comments[0].user);
     }
 
-    const osm = this.context.connection();
+    const osm = this.context.services.get('osm');
     if (osm) {
       selection
         .append('a')
@@ -176,7 +176,7 @@ export class UiPanelHistory extends AbstractUiPanel {
       .append('div')
       .attr('class', 'links');
 
-    const osm = this.context.connection();
+    const osm = this.context.services.get('osm');
     if (osm) {
       links
         .append('a')
@@ -263,7 +263,7 @@ export class UiPanelHistory extends AbstractUiPanel {
       .append('div')
       .attr('class', 'links');
 
-    const osm = this.context.connection();
+    const osm = this.context.services.get('osm');
     if (osm) {
       links
         .append('a')
@@ -305,7 +305,7 @@ export class UiPanelHistory extends AbstractUiPanel {
       .append('div')
       .attr('class', 'links');
 
-    const osm = this.context.connection();
+    const osm = this.context.services.get('osm');
     if (osm) {
       links
         .append('a')

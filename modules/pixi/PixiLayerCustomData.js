@@ -419,15 +419,14 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (!arguments.length) return this._template;
 
     // test source against OSM imagery blocklists..
-    const osm = this.context.connection();
+    const osm = this.context.services.get('osm');
     if (osm) {
-      const blocklists = osm.imageryBlocklists();
+      const blocklists = osm.imageryBlocklists ?? [];
       let fail = false;
       let tested = 0;
       let regex;
 
-      for (let i = 0; i < blocklists.length; i++) {
-        regex = blocklists[i];
+      for (regex of blocklists) {
         fail = regex.test(val);
         tested++;
         if (fail) break;

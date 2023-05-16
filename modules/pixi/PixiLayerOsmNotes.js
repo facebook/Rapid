@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -44,10 +43,11 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.osm && !this._service) {
-      this._service = services.osm;
-      this._service.on('loadedNotes', () => this.context.map().deferredRedraw());
-    } else if (!services.osm && this._service) {
+    const osm = this.context.services.get('osm');
+    if (osm && !this._service) {
+      osm.on('loadedNotes', () => this.context.map().deferredRedraw());
+      this._service = osm;
+    } else if (!osm && this._service) {
       this._service = null;
     }
 
@@ -62,11 +62,11 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.getService();
-    if (!service) return;
+    const osm = this.getService();
+    if (!osm) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.notes(this.context.projection);
+    const items = osm.notes(this.context.projection);
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -112,10 +112,10 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
-    if (!this.enabled || !service || zoom < MINZOOM) return;
+    const osm = this.getService();
+    if (!this.enabled || !osm || zoom < MINZOOM) return;
 
-    service.loadNotes(this.context.projection);  // note: context.projection !== pixi projection
+    osm.loadNotes(this.context.projection);  // note: context.projection !== pixi projection
     this.renderMarkers(frame, projection, zoom);
   }
 

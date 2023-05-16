@@ -170,8 +170,8 @@ export class RendererImagery extends EventEmitter {
     const sources = [...this._imageryIndex.sources.values()];
 
     // Recheck blocked sources only if we detect new blocklists pulled from the OSM API.
-    const osm = this.context.connection();
-    const blocklists = (osm && osm.imageryBlocklists()) || [];
+    const osm = this.context.services.get('osm');
+    const blocklists = osm?.imageryBlocklists ?? [];
     const blocklistChanged = (blocklists.length !== this._checkedBlocklists.length) ||
       blocklists.some((regex, index) => String(regex) !== this._checkedBlocklists[index]);
 
@@ -199,10 +199,10 @@ export class RendererImagery extends EventEmitter {
     if (!arguments.length) return this._baseLayer;
 
     // test source against OSM imagery blocklists..
-    const osm = this.context.connection();
+    const osm = this.context.services.get('osm');
     if (!osm) return this;
 
-    const blocklists = osm.imageryBlocklists();
+    const blocklists = osm?.imageryBlocklists ?? [];
     const template = d.template;
     let fail = false;
     let tested = 0;

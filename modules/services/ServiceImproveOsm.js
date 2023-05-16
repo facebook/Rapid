@@ -309,7 +309,7 @@ export class ServiceImproveOsm {
    * @param   callback
    */
   postUpdate(d, callback) {
-    const osm = this.context.connection();
+    const osm = this.context.services.get('osm');
     if (!osm || !osm.authenticated()) { // Username required in payload
       return callback({ message: 'Not Authenticated', status: -3}, d);
     }

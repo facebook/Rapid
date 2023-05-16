@@ -5,7 +5,7 @@ import { uiIcon } from './icon';
 
 
 export function uiStatus(context) {
-    var osm = context.connection();
+    var osm = context.services.get('osm');
 
 
     return function(selection) {

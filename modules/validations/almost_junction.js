@@ -11,7 +11,6 @@ import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
-import { services } from '../services';
 
 
 /**
@@ -163,8 +162,8 @@ export function validationAlmostJunction(context) {
     }
 
     function isExtendableCandidate(node, way) {
-      // can not accurately test vertices on tiles not downloaded from osm - #5938
-      const osm = services.osm;
+      // can not accurately test vertices on tiles not downloaded from osm - iD#5938
+      const osm = context.services.get('osm');
       if (osm && !osm.isDataLoaded(node.loc)) {
         return false;
       }
