@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -29,10 +28,11 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.mapillary && !this._service) {
-      this._service = services.mapillary;
-      this._service.on('loadedMapFeatures', () => this.context.map().deferredRedraw());
-    } else if (!services.mapillary && this._service) {
+    const mapillary = this.context.services.get('mapillary');
+    if (mapillary && !this._service) {
+      mapillary.on('loadedMapFeatures', () => this.context.map().deferredRedraw());
+      this._service = mapillary;
+    } else if (!mapillary && this._service) {
       this._service = null;
     }
 
