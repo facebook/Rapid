@@ -5,10 +5,9 @@ import { operationDelete } from '../operations/delete';
 import { utilDisplayLabel } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
-import { services } from '../services';
 
 
-export function validationDisconnectedWay() {
+export function validationDisconnectedWay(context) {
     var type = 'disconnected_way';
 
     function isTaggedAsHighway(entity) {
@@ -146,12 +145,11 @@ export function validationDisconnectedWay() {
 
         function isConnectedVertex(vertex) {
             // assume ways overlapping unloaded tiles are connected to the wider road network  - #5938
-            var osm = services.osm;
+            var osm = context.services.get('osm');
             if (osm && !osm.isDataLoaded(vertex.loc)) return true;
 
             // entrances are considered connected
-            if (vertex.tags.entrance &&
-                vertex.tags.entrance !== 'no') return true;
+            if (vertex.tags.entrance && vertex.tags.entrance !== 'no') return true;
             if (vertex.tags.amenity === 'parking_entrance') return true;
 
             return false;

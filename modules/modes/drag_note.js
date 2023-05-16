@@ -1,6 +1,5 @@
 import { geomViewportNudge, vecSubtract } from '@rapid-sdk/math';
 
-import { services } from '../services';
 import { actionNoop } from '../actions/noop';
 
 
@@ -44,7 +43,7 @@ export function modeDragNote(context) {
 
     function start(d3_event, note) {
         _note = note;
-        var osm = services.osm;
+        var osm = context.services.get('osm');
         if (osm) {
             // Get latest note from cache.. The marker may have a stale datum bound to it
             // and dragging it around can sometimes delete the users note comment.
@@ -84,7 +83,7 @@ export function modeDragNote(context) {
 
         _note = _note.move(loc);
 
-        var osm = services.osm;
+        var osm = context.services.get('osm');
         if (osm) {
             osm.replaceNote(_note);  // update note cache
         }

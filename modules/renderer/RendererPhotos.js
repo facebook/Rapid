@@ -1,7 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
 
-import { services } from '../services';
-
 
 /**
  * `RendererPhotos` maintains the state of the photo viewer
@@ -214,8 +212,8 @@ export class RendererPhotos extends EventEmitter {
 scene.clearClass('selected');
 
     if (layerID && photoID) {
-      const service = services[layerID];
-      if (!service || !service.loadViewerAsync) return null;
+      const service = context.services.get[layerID];
+      if (!service) return null;
 
       // If we're selecting a photo then make sure its layer is enabled too.
       scene.enableLayers(layerID);

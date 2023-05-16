@@ -46,7 +46,7 @@ export function uiRapidFirstEditDialog(context) {
       .attr('class', 'rapid-login-to-osm')
       .on('click', () => {
         modalSelection.close();
-        const osm = context.connection();
+        const osm = context.services.get('osm');
         if (!osm) return;
         osm.authenticate(() => context.container().call(uiRapidSplash(context)) );
       });

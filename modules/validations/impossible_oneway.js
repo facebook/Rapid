@@ -5,20 +5,15 @@ import { actionReverse } from '../actions/reverse';
 import { utilDisplayLabel } from '../util';
 import { osmFlowingWaterwayTagValues, osmOneWayTags, osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
-import { services } from '../services';
 
 
-export function validationImpossibleOneway() {
+export function validationImpossibleOneway(context) {
     var type = 'impossible_oneway';
 
     var validation = function checkImpossibleOneway(entity, graph) {
-
         if (entity.type !== 'way' || entity.geometry(graph) !== 'line') return [];
-
         if (entity.isClosed()) return [];
-
         if (!typeForWay(entity)) return [];
-
         if (!isOneway(entity)) return [];
 
         var firstIssues = issuesForNode(entity, entity.first());
@@ -104,15 +99,13 @@ export function validationImpossibleOneway() {
         }
 
         function issuesForNode(way, nodeID) {
-
             var isFirst = nodeID === way.first();
-
             var wayType = typeForWay(way);
 
             // ignore if this way is self-connected at this node
             if (nodeOccursMoreThanOnce(way, nodeID)) return [];
 
-            var osm = services.osm;
+            var osm = context.services.get('osm');
             if (!osm) return [];
 
             var node = graph.hasEntity(nodeID);

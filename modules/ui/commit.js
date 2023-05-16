@@ -119,7 +119,7 @@ export function uiCommit(context) {
     // Calculates tags based on the user's editing session
     //
     function updateSessionChangesetTags() {
-        var osm = context.connection();
+        var osm = context.services.get('osm');
         if (!osm) return;
 
         var tags = Object.assign({}, context.changeset.tags);   // shallow copy
@@ -225,7 +225,7 @@ export function uiCommit(context) {
     //
     //
     function render(selection) {
-        var osm = context.connection();
+        var osm = context.services.get('osm');
         if (!osm) return;
 
         var header = selection.selectAll('.header')

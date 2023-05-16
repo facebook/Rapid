@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
 import { uiIcon } from './icon';
-import { services } from '../services';
 
 
 export function uiNoteComments(context) {
@@ -44,7 +43,7 @@ export function uiNoteComments(context) {
             .attr('class', 'comment-author')
             .each(function(d) {
                 var selection = d3_select(this);
-                var osm = services.osm;
+                var osm = context.services.get('osm');
                 if (osm && d.user) {
                     selection = selection
                         .append('a')
@@ -79,7 +78,7 @@ export function uiNoteComments(context) {
     function replaceAvatars(selection) {
         const prefs = context.storageSystem();
         var showThirdPartyIcons = prefs.getItem('preferences.privacy.thirdpartyicons') || 'true';
-        var osm = services.osm;
+        var osm = context.services.get('osm');
         if (showThirdPartyIcons !== 'true' || !osm) return;
 
         var uids = {};  // gather uids in the comment thread

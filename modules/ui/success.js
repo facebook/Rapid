@@ -113,7 +113,7 @@ export function uiSuccess(context) {
       .append('span')
       .html(t.html('success.help_link_text'));
 
-    let osm = context.connection();
+    let osm = context.services.get('osm');
     if (!osm) return;
 
     let changesetURL = osm.changesetURL(_changeset.id);

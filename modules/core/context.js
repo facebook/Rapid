@@ -20,7 +20,6 @@ import * as Behaviors from '../behaviors';
 import * as Modes from '../modes';
 import * as Services from '../services';
 import { modeSelect } from '../modes/select';   // legacy
-import { services } from '../services';     // legacy
 
 import { rendererFeatures, RendererImagery, RendererMap, RendererPhotos } from '../renderer';
 import { uiInit } from '../ui/init';
@@ -36,9 +35,18 @@ export function coreContext() {
   context.version = '2.0.3';
   context.privacyVersion = '20201202';
 
-  // Assign `connection` here because it doesn't require passing in
-  // `context` and it's needed for pre-init calls like `preauth`
-  let _connection = services.osm;
+  // "Services" are components that get data from other places
+  context.services = new Map();  // Map (service.id -> Service)
+
+  // "Modes" are editing tasks that the user are allowed to perform.
+  // Each mode is exclusive, i.e only one mode can be active at a time.
+  context.modes = new Map();  // Map (mode.id -> Mode)
+
+  // "Behaviors" are bundles of event handlers that we can
+  // enable and disable depending on what the user is doing.
+  context.behaviors = new Map();  // Map (behavior.id -> behavior)
+
+
   let _history;
   let _locationSystem;
   let _presetSystem;
@@ -47,7 +55,7 @@ export function coreContext() {
   let _urlhash;
   let _validator;
 
-  context.connection = () => _connection;
+  context.connection = () => context.services.get('osm');  // legacy name, avoid
   context.history = () => _history;
   context.locationSystem = () => _locationSystem;
   context.presetSystem = () => _presetSystem;
@@ -97,10 +105,9 @@ export function coreContext() {
 
 
   /* Connection */
+  let _preauth;
   context.preauth = (options) => {
-    if (_connection) {
-      _connection.switch(options);
-    }
+    _preauth = Object.assign({}, options);  // copy and remember for init time
     return context;
   };
 
@@ -123,19 +130,18 @@ export function coreContext() {
 
   function afterLoad(cid, callback) {
     return (err, result) => {
+      const osm = context.services.get('osm');
       if (err) {
         // 400 Bad Request, 401 Unauthorized, 403 Forbidden..
         if (err.status === 400 || err.status === 401 || err.status === 403) {
-          if (_connection) {
-            _connection.logout();
-          }
+          osm?.logout();
         }
         if (typeof callback === 'function') {
           callback(err);
         }
         return;
 
-      } else if (_connection && _connection.getConnectionId() !== cid) {
+      } else if (osm?.connectionID !== cid) {
         if (typeof callback === 'function') {
           callback({ message: 'Connection Switched', status: -1 });
         }
@@ -156,6 +162,9 @@ export function coreContext() {
     const MINZOOM = 15;
     const TILESIZE = 256;
 
+    const osm = context.services.get('osm');
+    if (!osm) return;
+
     const z = geoScaleToZoom(projection.scale(), TILESIZE);
     if (z < MINZOOM) return;  // this would fire off too many API requests
 
@@ -167,34 +176,42 @@ export function coreContext() {
       const z = geoScaleToZoom(projection.scale(), TILESIZE);
       if (z < MINZOOM) return;  // this would fire off too many API requests
 
-      if (_connection && context.editable()) {
-        const cid = _connection.getConnectionId();
-        _connection.loadTiles(projection, afterLoad(cid, callback));
+      if (context.editable()) {
+        const cid = osm.connectionID;
+        osm.loadTiles(projection, afterLoad(cid, callback));
       }
     });
+
     _deferred.add(handle);
   };
 
+
   context.loadTileAtLoc = (loc, callback) => {
+    const osm = context.services.get('osm');
+    if (!osm) return;
+
     const handle = window.requestIdleCallback(() => {
       _deferred.delete(handle);
-      if (_connection && context.editable()) {
-        const cid = _connection.getConnectionId();
-        _connection.loadTileAtLoc(loc, afterLoad(cid, callback));
+      if (context.editable()) {
+        const cid = osm.connectionID;
+        osm.loadTileAtLoc(loc, afterLoad(cid, callback));
       }
     });
+
     _deferred.add(handle);
   };
+
 
   // Download the full entity and its parent relations. The callback may be called multiple times.
   context.loadEntity = (entityID, callback) => {
-    if (_connection) {
-      const cid = _connection.getConnectionId();
-      _connection.loadEntity(entityID, afterLoad(cid, callback));
-      // We need to fetch the parent relations separately.
-      _connection.loadEntityRelations(entityID, afterLoad(cid, callback));
-    }
+    const osm = context.services.get('osm');
+    if (!osm) return;
+
+    const cid = osm.connectionID;
+    osm.loadEntity(entityID, afterLoad(cid, callback));
+    osm.loadEntityRelations(entityID, afterLoad(cid, callback));
   };
+
 
   context.zoomToEntity = (entityID, zoomTo) => {
     let entity = context.hasEntity(entityID);
@@ -272,11 +289,12 @@ export function coreContext() {
     if (_inIntro || context.container().select('.modal').size()) return;
 
     let canSave;
-    if (context._currMode && context._currMode.id === 'save') {
+    if (context._currMode?.id === 'save') {
       canSave = false;
 
-      // Attempt to prevent user from creating duplicate changes - see #5200
-      if (services.osm && services.osm.isChangesetInflight()) {
+      // Attempt to prevent user from creating duplicate changes - see iD#5200
+      const osm = context.services.get('osm');
+      if (osm && osm.isChangesetInflight()) {
         _history.clearSaved();
         return;
       }
@@ -308,15 +326,6 @@ export function coreContext() {
     };
   }
 
-  /* Services */
-  // "Services" are components that get data from other places
-  context.services = new Map();  // Map (service.id -> Service)
-
-
-  /* Modes */
-  // "Modes" are editing tasks that the user are allowed to perform.
-  // Each mode is exclusive, i.e only one mode can be active at a time.
-  context.modes = new Map();  // Map (mode.id -> Mode)
 
   // The current mode (`null` until ui.render initializes the map and enters browse mode)
   context._currMode = null;
@@ -413,11 +422,6 @@ export function coreContext() {
   };
 
 
-  /* Behaviors */
-  // "Behaviors" are bundles of event handlers that we can
-  // enable and disable depending on what the user is doing.
-  context.behaviors = new Map();  // Map (behavior.id -> behavior)
-
   /**
    * `enableBehaviors`
    * The given behaviorIDs will be enabled, all others will be disabled
@@ -487,15 +491,15 @@ export function coreContext() {
   /* Imagery */
   let _imagery;
   context.imagery = () => _imagery;
-  context.background = () => _imagery;   // legacy name
+  context.background = () => _imagery;   // legacy name, avoid
 
 
   /* Features */
   let _features;
   context.features = () => _features;
-  context.hasHiddenConnections = (id) => {
+  context.hasHiddenConnections = (entityID) => {
     const graph = _history.graph();
-    const entity = graph.entity(id);
+    const entity = graph.entity(entityID);
     return _features.hasHiddenConnections(entity, graph);
   };
 
@@ -592,17 +596,12 @@ export function coreContext() {
   context.reset = context.flush = () => {
     context.debouncedSave.cancel();
 
-    Array.from(_deferred).forEach(handle => {
+    for (const handle of _deferred) {
       window.cancelIdleCallback(handle);
       _deferred.delete(handle);
-    });
-
-    for (const service of Object.values(services)) {         // legacy
-      if (service && typeof service.reset === 'function') {
-        service.reset();
-      }
     }
-    for (const service of context.services.values()) {       // modern
+
+    for (const service of context.services.values()) {
       service.reset();
     }
 
@@ -683,13 +682,11 @@ export function coreContext() {
 
       // Instantiate Services
       if (!window.mocha) {
-        for (const [name, Service] of Object.entries(Services)) {
-          if (name === 'services') continue;   // this is not a constructor
+        for (const Service of Object.values(Services)) {
           const service = new Service(context);
           context.services.set(service.id, service);
         }
       }
-
     }
 
 
@@ -708,13 +705,14 @@ export function coreContext() {
       localizer.initAsync();
       _presetSystem.initAsync();
 
-      for (const service of Object.values(services)) {         // legacy
-        if (service && typeof service.init === 'function') {
-          service.init();
-        }
-      }
-      for (const service of context.services.values()) {       // modern
+      for (const service of context.services.values()) {
         service.init();
+      }
+
+      // Setup the connection if we have preauth credentials to use
+      const osm = context.services.get('osm');
+      if (osm && _preauth) {
+        osm.switch(_preauth);
       }
 
       _validator.init();

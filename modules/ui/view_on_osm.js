@@ -10,9 +10,9 @@ export function uiViewOnOSM(context) {
     function viewOnOSM(selection) {
         var url;
         if (_what instanceof osmEntity) {
-            url = context.connection().entityURL(_what);
+            url = context.services.get('osm').entityURL(_what);
         } else if (_what instanceof osmNote) {
-            url = context.connection().noteURL(_what);
+            url = context.services.get('osm').noteURL(_what);
         }
 
         var data = ((!_what || _what.isNew()) ? [] : [_what]);

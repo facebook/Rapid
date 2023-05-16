@@ -3,7 +3,7 @@ import { uiIcon } from './icon';
 
 
 export function uiAccount(context) {
-  const osm = context.connection();
+  const osm = context.services.get('osm');
 
 
   function updateUserDetails(selection) {
@@ -81,7 +81,7 @@ export function uiAccount(context) {
   function tryLogout()  {
     if (!osm) return;
 
-    const url = osm.getUrlRoot() + '/logout?referer=%2Flogin';
+    const url = osm.urlroot + '/logout?referer=%2Flogin';
     // Create a 600x550 popup window in the center of the screen
     const w = 600;
     const h = 550;

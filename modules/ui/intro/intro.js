@@ -76,7 +76,7 @@ export function uiIntro(context, skipToRapid) {
     context.enter('browse');
 
     const prefs = context.storageSystem();
-    const osm = context.connection();
+    const osm = context.services.get('osm');
     const mapwithai = context.services.get('mapwithai');
     const imagery = context.imagery();
     const history = context.history();
