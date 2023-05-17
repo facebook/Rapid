@@ -113,7 +113,7 @@ export class UiField {
 
 
   isModified() {
-    if (!this.entityIDs.length) return false;
+    if (!this.entityIDs?.length) return false;
 
     return this.entityIDs.some(entityID => {
       const graph = this.context.graph();
@@ -145,7 +145,7 @@ export class UiField {
   revert(d3_event) {
     d3_event.stopPropagation();
     d3_event.preventDefault();
-    if (!this.entityIDs.length || this._locked) return;
+    if (!this.entityIDs?.length || this._locked) return;
 
     this.dispatch.call('revert', this, this.keys);
   }
@@ -368,7 +368,7 @@ export class UiField {
 
     // Most of the time we have entityIDs to consider, but if not, just return `true`.
     // For example: the fields on the upload dialog that set the changeset tags.
-    if (!this.entityIDs.length) return true;
+    if (!this.entityIDs?.length) return true;
 
     // Does this field support multiselection?
     if (this.entityIDs.length > 1 && uiFields[this.type].supportsMultiselection === false) {
