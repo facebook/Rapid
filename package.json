@@ -73,7 +73,7 @@
     "maplibre-gl": "^2.4.0",
     "marked": "~4.3.0",
     "node-diff3": "~3.1.2",
-    "osm-auth": "2.0.1",
+    "osm-auth": "2.1.0",
     "pannellum": "2.5.6",
     "pbf": "^3.2.1",
     "pixi-filters": "5.2.1",

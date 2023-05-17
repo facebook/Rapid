@@ -147,7 +147,7 @@ export class RendererMap extends EventEmitter {
       if (targetTransform) {
         this.transformEase(targetTransform);
       }
-    }
+    };
 
     context.history()
       .on('merge', entityIDs => {
