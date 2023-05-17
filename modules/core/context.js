@@ -675,7 +675,7 @@ export function coreContext() {
 
       // Instantiate Modes
       for (const [name, Mode] of Object.entries(Modes)) {
-        if (name === 'modeSelect') continue;   // this one won't work
+        if (name === 'modeSelect' || name === 'modeDragNote') continue;  // legacy
         const mode = new Mode(context);
         context.modes.set(mode.id, mode);
       }
