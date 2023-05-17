@@ -67,22 +67,17 @@ export class ModeSave extends AbstractMode {
     const context = this.context;
     context.ui().sidebar.expand();
 
-    const thiz = this;
-    function showSidebar() {
-      context.ui().sidebar.show(thiz._commitUI);
-    }
-
     const osm = context.services.get('osm');
     if (!osm) return false;  // can't enter save mode
 
     if (osm.authenticated()) {
-        showSidebar();
+      context.ui().sidebar.show(this._commitUI);
     } else {
       osm.authenticate(err => {
         if (err) {
-          thiz._cancel();
+          this._cancel();
         } else {
-          showSidebar();
+          context.ui().sidebar.show(this._commitUI);
         }
       });
     }

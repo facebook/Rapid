@@ -100,10 +100,9 @@ export class UiField {
   _createField() {
     if (this._internal) return;
 
-    const thiz = this;
     this._internal = uiFields[this.type](this.context, this)
       .on('change', (tagChange, onInput) => {
-        thiz.dispatch.call('change', thiz, tagChange, onInput);
+        this.dispatch.call('change', this, tagChange, onInput);
       });
 
     // If this field cares about the entities, pass them along

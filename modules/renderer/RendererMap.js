@@ -139,15 +139,13 @@ export class RendererMap extends EventEmitter {
     this.dimensions = utilGetDimensions(selection);
 
     const scene = this._renderer.scene;
-    const thiz = this;
 
     // Setup events that cause the map to redraw...
-
-    function _didUndoOrRedo(targetTransform) {
+    const _didUndoOrRedo = (targetTransform) => {
       const mode = context.mode().id;
       if (mode !== 'browse' && mode !== 'select') return;
       if (targetTransform) {
-        thiz.transformEase(targetTransform);
+        this.transformEase(targetTransform);
       }
     }
 
