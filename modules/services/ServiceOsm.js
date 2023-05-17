@@ -25,8 +25,39 @@ export class ServiceOsm {
     this.id = 'osm';
     this.context = context;
 
+    // Some defaults that we will replace with whatever we fetch from the OSM API capabilities result.
+    this._maxWayNodes = 2000;
+    this._imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
     this._urlroot = 'https://www.openstreetmap.org';
 
+    this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
+    this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
+    this._userCache = { toLoad: {}, user: {} };
+    this._changeset = {};
+
+    this._deferred = new Set();
+    this._connectionID = 0;
+    this._tileZoom = 16;
+    this._noteZoom = 12;
+    this._rateLimitError = undefined;
+    this._userChangesets = undefined;
+    this._userDetails = undefined;
+    this._cachedApiStatus = undefined;
+    this._off = false;
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    this._authLoading = this._authLoading.bind(this);
+    this._authDone = this._authDone.bind(this);
+    this._parseNodeJSON = this._parseNodeJSON.bind(this);
+    this._parseWayJSON = this._parseWayJSON.bind(this);
+    this._parseRelationJSON = this._parseRelationJSON.bind(this);
+    this._parseNodeXML = this._parseNodeXML.bind(this);
+    this._parseWayXML = this._parseWayXML.bind(this);
+    this._parseRelationXML = this._parseRelationXML.bind(this);
+    this._parseNoteXML = this._parseNoteXML.bind(this);
+    this._parseUserXML = this._parseUserXML.bind(this);
+
+    // Auth
     const q = utilStringQs(window.location.hash);
     this._credentialsMode = 'omit';
     if (q.hasOwnProperty('osm_api_url')) {
@@ -41,6 +72,7 @@ export class ServiceOsm {
     if (origin === 'https://mapwith.ai' || origin === 'https://rapideditor.org') {
       pathname = '/rapid/';
     }
+
     this._oauth = osmAuth({
       url: this._urlroot,
       client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
@@ -51,34 +83,6 @@ export class ServiceOsm {
       done: this._authDone
     });
 
-    // Some defaults that we will replace with whatever we fetch from the OSM API capabilities result.
-    this._maxWayNodes = 2000;
-    this._imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
-
-    this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
-    this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
-    this._userCache = { toLoad: {}, user: {} };
-    this._cachedApiStatus = undefined;
-    this._changeset = {};
-
-    this._deferred = new Set();
-    this._connectionID = 0;
-    this._tileZoom = 16;
-    this._noteZoom = 12;
-    this._rateLimitError = undefined;
-    this._userChangesets = undefined;
-    this._userDetails = undefined;
-    this._off = false;
-
-    // Ensure methods used as callbacks always have `this` bound correctly.
-    this._parseNodeJSON = this._parseNodeJSON.bind(this);
-    this._parseWayJSON = this._parseWayJSON.bind(this);
-    this._parseRelationJSON = this._parseRelationJSON.bind(this);
-    this._parseNodeXML = this._parseNodeXML.bind(this);
-    this._parseWayXML = this._parseWayXML.bind(this);
-    this._parseRelationXML = this._parseRelationXML.bind(this);
-    this._parseNoteXML = this._parseNoteXML.bind(this);
-    this._parseUserXML = this._parseUserXML.bind(this);
 
     this._tiler = new Tiler();
     this._dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
@@ -109,6 +113,7 @@ export class ServiceOsm {
     this._userChangesets = undefined;
     this._userDetails = undefined;
     this._rateLimitError = undefined;
+    this._cachedApiStatus = undefined;
 
     Object.values(this._tileCache.inflight).forEach(this._abortRequest);
     Object.values(this._noteCache.inflight).forEach(this._abortRequest);
@@ -118,7 +123,6 @@ export class ServiceOsm {
     this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
     this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
     this._userCache = { toLoad: {}, user: {} };
-    this._cachedApiStatus = undefined;
     this._changeset = {};
   }
 
@@ -507,7 +511,7 @@ export class ServiceOsm {
 
 
     function gotDetails(err, user) {
-      if (err) { return callback(err); }
+      if (err) return callback(err);
 
       this._oauth.xhr(
         { method: 'GET', path: `/api/0.6/changesets?user=${user.id}` },
@@ -516,15 +520,15 @@ export class ServiceOsm {
     }
 
     function done(err, xml) {
-      if (err) { return callback(err); }
+      if (err) return callback(err);
 
-      this._userChangesets = Array.prototype.map.call(
-        xml.getElementsByTagName('changeset'),
-        function (changeset) { return { tags: this._getTags(changeset) }; }
-      ).filter(function (changeset) {
-        const comment = changeset.tags.comment;
-        return comment && comment !== '';
-      });
+      this._userChangesets = [];
+      for (const changeset of xml.getElementsByTagName('changeset')) {
+        const obj = { tags: this._getTags(changeset) };
+        if (obj.tags.comment) {   // only include changesets with comment
+          this._userChangesets.push(obj);
+        }
+      }
 
       return callback(undefined, this._userChangesets);
     }
