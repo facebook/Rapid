@@ -170,8 +170,6 @@ export class ServiceMapillary {
       .attr('class', 'photo-wrapper mly-wrapper')
       .classed('hide', true);
 
-    const that = this;
-
     this._loadViewerPromise = new Promise((resolve, reject) => {
       let loadedCount = 0;
 
@@ -206,7 +204,7 @@ export class ServiceMapillary {
         .on('load.serviceMapillary', loaded)
         .on('error.serviceMapillary', reject);
     })
-    .then(() => that.initViewer())
+    .then(() => this.initViewer())
     .catch(err => {
       if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
       this._loadViewerPromise = null;
@@ -332,7 +330,6 @@ export class ServiceMapillary {
     const mapillary = window.mapillary;
     if (!mapillary) return;
 
-    const that = this;
     const context = this.context;
 
     const opts = {
@@ -361,6 +358,27 @@ export class ServiceMapillary {
       };
     }
 
+    // imageChanged: called after the viewer has changed images and is ready.
+    const imageChanged = (node) => {
+      this.resetTags();
+      const image = node.image;
+      this.setActiveImage(image);
+      this.setStyles(context, null);
+      const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
+      context.map().centerEase(loc);
+      context.photos().selectPhoto('mapillary', image.id);
+
+      if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
+        this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
+      }
+      this._dispatch.call('imageChanged');
+    }
+
+    // bearingChanged: called when the bearing changes in the image viewer.
+    const bearingChanged = (e) => {
+      this._dispatch.call('bearingChanged', undefined, e);
+    }
+
     this._mlyViewer = new mapillary.Viewer(opts);
     this._mlyViewer.on('image', imageChanged);
     this._mlyViewer.on('bearing', bearingChanged);
@@ -373,28 +391,6 @@ export class ServiceMapillary {
     context.ui().photoviewer.on('resize.mapillary', () => {
       if (this._mlyViewer) this._mlyViewer.resize();
     });
-
-    // imageChanged: called after the viewer has changed images and is ready.
-    function imageChanged(node) {
-      that.resetTags();
-      const image = node.image;
-      that.setActiveImage(image);
-      that.setStyles(context, null);
-      const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
-      context.map().centerEase(loc);
-      context.photos().selectPhoto('mapillary', image.id);
-
-      if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
-        that.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
-      }
-      this._dispatch.call('imageChanged');
-    }
-
-
-    // bearingChanged: called when the bearing changes in the image viewer.
-    function bearingChanged(e) {
-      this._dispatch.call('bearingChanged', undefined, e);
-    }
   }
 
 

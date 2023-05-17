@@ -47,8 +47,11 @@ export class ServiceStreetside {
       cubeMap: []
     };
 
-    this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this._setupCanvas = this._setupCanvas.bind(this);
 
+    this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
     this._dispatch = d3_dispatch('loadedImages', 'viewerChanged');
     utilRebind(this, this._dispatch, 'on');
   }
@@ -202,12 +205,12 @@ export class ServiceStreetside {
 
     controlsEnter
       .append('button')
-      .on('click.back', () => step(-1))
+      .on('click.back', () => this._step(-1))
       .html('◄');
 
     controlsEnter
       .append('button')
-      .on('click.forward', () => step(1))
+      .on('click.forward', () => this._step(1))
       .html('►');
 
 
@@ -260,77 +263,84 @@ export class ServiceStreetside {
     });
 
     return this._pannellumViewerPromise;
+  }
 
-    function step(stepBy) {
-      const viewer = context.container().select('.photoviewer');
-      const selected = viewer.empty() ? undefined : viewer.datum();
-      if (!selected) return;
 
-      let nextID = (stepBy === 1 ? selected.ne : selected.pr);
-      const yaw = this._pannellumViewer.getYaw();
-      this._sceneOptions.yaw = yaw;
+  /**
+   * _step
+   * Step to the next bubble in the sequence
+   * @param  stepBy  1 to step forward, -1 to step backward
+   */
+  _step(stepBy) {
+    const context = this.context;
+    const viewer = context.container().select('.photoviewer');
+    const selected = viewer.empty() ? undefined : viewer.datum();
+    if (!selected) return;
 
-      const ca = selected.ca + yaw;
-      const origin = selected.loc;
+    let nextID = (stepBy === 1 ? selected.ne : selected.pr);
+    const yaw = this._pannellumViewer.getYaw();
+    this._sceneOptions.yaw = yaw;
 
-      // construct a search trapezoid pointing out from current bubble
-      const meters = 35;
-      const p1 = [
-        origin[0] + geoMetersToLon(meters / 5, origin[1]),
-        origin[1]
-      ];
-      const p2 = [
-        origin[0] + geoMetersToLon(meters / 2, origin[1]),
-        origin[1] + geoMetersToLat(meters)
-      ];
-      const p3 = [
-        origin[0] - geoMetersToLon(meters / 2, origin[1]),
-        origin[1] + geoMetersToLat(meters)
-      ];
-      const p4 = [
-        origin[0] - geoMetersToLon(meters / 5, origin[1]),
-        origin[1]
-      ];
+    const ca = selected.ca + yaw;
+    const origin = selected.loc;
 
-      let poly = [p1, p2, p3, p4, p1];
+    // construct a search trapezoid pointing out from current bubble
+    const meters = 35;
+    const p1 = [
+      origin[0] + geoMetersToLon(meters / 5, origin[1]),
+      origin[1]
+    ];
+    const p2 = [
+      origin[0] + geoMetersToLon(meters / 2, origin[1]),
+      origin[1] + geoMetersToLat(meters)
+    ];
+    const p3 = [
+      origin[0] - geoMetersToLon(meters / 2, origin[1]),
+      origin[1] + geoMetersToLat(meters)
+    ];
+    const p4 = [
+      origin[0] - geoMetersToLon(meters / 5, origin[1]),
+      origin[1]
+    ];
 
-      // rotate it to face forward/backward
-      const angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
-      poly = geomRotatePoints(poly, -angle, origin);
+    let poly = [p1, p2, p3, p4, p1];
 
-      let extent = poly.reduce((extent, point) => {
-        // update extent in place
-        extent.min = [ Math.min(extent.min[0], point[0]), Math.min(extent.min[1], point[1]) ];
-        extent.max = [ Math.max(extent.max[0], point[0]), Math.max(extent.max[1], point[1]) ];
-        return extent;
-      }, new Extent());
+    // rotate it to face forward/backward
+    const angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
+    poly = geomRotatePoints(poly, -angle, origin);
 
-      // find nearest other bubble in the search polygon
-      let minDist = Infinity;
-      this._cache.rtree.search(extent.bbox())
-        .forEach(d => {
-          if (d.data.id === selected.id) return;
-          if (!geomPointInPolygon(d.data.loc, poly)) return;
+    let extent = poly.reduce((extent, point) => {
+      // update extent in place
+      extent.min = [ Math.min(extent.min[0], point[0]), Math.min(extent.min[1], point[1]) ];
+      extent.max = [ Math.max(extent.max[0], point[0]), Math.max(extent.max[1], point[1]) ];
+      return extent;
+    }, new Extent());
 
-          let dist = vecLength(d.data.loc, selected.loc);
-          const theta = selected.ca - d.data.ca;
-          const minTheta = Math.min(Math.abs(theta), 360 - Math.abs(theta));
-          if (minTheta > 20) {
-            dist += 5;  // penalize distance if camera angles don't match
-          }
+    // find nearest other bubble in the search polygon
+    let minDist = Infinity;
+    this._cache.rtree.search(extent.bbox())
+      .forEach(d => {
+        if (d.data.id === selected.id) return;
+        if (!geomPointInPolygon(d.data.loc, poly)) return;
 
-          if (dist < minDist) {
-            nextID = d.data.id;
-            minDist = dist;
-          }
-        });
+        let dist = vecLength(d.data.loc, selected.loc);
+        const theta = selected.ca - d.data.ca;
+        const minTheta = Math.min(Math.abs(theta), 360 - Math.abs(theta));
+        if (minTheta > 20) {
+          dist += 5;  // penalize distance if camera angles don't match
+        }
 
-      const nextBubble = nextID && that.cachedImage(nextID);
-      if (!nextBubble) return;
+        if (dist < minDist) {
+          nextID = d.data.id;
+          minDist = dist;
+        }
+      });
 
-      context.map().centerEase(nextBubble.loc);
-      context.photos().selectPhoto('streetside', nextBubble.id);
-    }
+    const nextBubble = nextID && this.cachedImage(nextID);
+    if (!nextBubble) return;
+
+    context.map().centerEase(nextBubble.loc);
+    context.photos().selectPhoto('streetside', nextBubble.id);
   }
 
 
@@ -338,8 +348,7 @@ export class ServiceStreetside {
    * showViewer
    */
   showViewer() {
-    const context = this.context;
-    let wrap = context.container().select('.photoviewer').classed('hide', false);
+    let wrap = this.context.container().select('.photoviewer').classed('hide', false);
     const isHidden = wrap.selectAll('.photo-wrapper.ms-wrapper.hide').size();
 
     if (isHidden) {
@@ -384,11 +393,12 @@ export class ServiceStreetside {
    * That will deal with the URL and call this function
    */
   selectImage(context, bubbleID) {
-    let that = this;
     let d = this.cachedImage(bubbleID);
 
     let viewer = context.container().select('.photoviewer');
-    if (!viewer.empty()) viewer.datum(d);
+    if (!viewer.empty()) {
+      viewer.datum(d);
+    }
 
     this.setStyles(context, null, true);
 
@@ -523,7 +533,7 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     this._loadFacesAsync(faces)
       .then(() => {
         if (!this._pannellumViewer) {
-          that.initViewer();
+          this.initViewer();
         } else {
           // make a new scene
           this._currScene++;
@@ -836,7 +846,7 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
    * _loadFaceAsync
    */
   _loadFaceAsync(imageGroup) {
-    return Promise.all(imageGroup.map(this._loadImageAsync))
+    return Promise.all(imageGroup.map(d => this._loadImageAsync(d)))
       .then(data => {
         const face = data[0].imgInfo.face;
         const canvas = document.getElementById(`ideditor-canvas${face}`);
@@ -851,7 +861,7 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
    * _loadFacesAsync
    */
   _loadFacesAsync(faceGroup) {
-    return Promise.all(faceGroup.map(this._loadFaceAsync))
+    return Promise.all(faceGroup.map(d => this._loadFaceAsync(d)))
       .then(() => { return { status: 'this._loadFacesAsync done' }; });
   }
 

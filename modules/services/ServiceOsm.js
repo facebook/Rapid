@@ -186,36 +186,34 @@ export class ServiceOsm {
   // Can handle either auth or unauth calls.
   loadFromAPI(path, callback, options) {
     options = Object.assign({ skipSeen: true }, options);
-    const that = this;
     const cid = this._connectionID;
 
-    function done(err, payload) {
-      if (that.connectionID !== cid) {
+    const done = (err, results) => {
+      if (this.connectionID !== cid) {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
 
-      const isAuthenticated = that.authenticated();
-
       // 400 Bad Request, 401 Unauthorized, 403 Forbidden
       // Logout and retry the request..
+      const isAuthenticated = this.authenticated();
       if (isAuthenticated && (err?.status === 400 || err?.status === 401 || err?.status === 403)) {
-        that.logout();
-        that.loadFromAPI(path, callback, options);
+        this.logout();
+        this.loadFromAPI(path, callback, options);
 
       // else, no retry..
       } else {
         // 509 Bandwidth Limit Exceeded, 429 Too Many Requests
         // Set the rateLimitError flag and trigger a warning..
-        if (!isAuthenticated && !that._rateLimitError && (err?.status === 509 || err?.status === 429)) {
-          that._rateLimitError = err;
-          that._dispatch.call('change');
-          that.reloadApiStatus();
+        if (!isAuthenticated && !this._rateLimitError && (err?.status === 509 || err?.status === 429)) {
+          this._rateLimitError = err;
+          this._dispatch.call('change');
+          this.reloadApiStatus();
 
-        } else if ((err && this._cachedApiStatus === 'online') || (!err && that._cachedApiStatus !== 'online')) {
+        } else if ((err && this._cachedApiStatus === 'online') || (!err && this._cachedApiStatus !== 'online')) {
           // If the response's error state doesn't match the status,
           // it's likely we lost or gained the connection so reload the status
-          that.reloadApiStatus();
+          this.reloadApiStatus();
         }
 
         if (callback) {
@@ -223,9 +221,9 @@ export class ServiceOsm {
             return callback(err);
           } else {
             if (path.indexOf('.json') !== -1) {
-              return that._parseJSON(payload, callback, options);
+              return this._parseJSON(results, callback, options);
             } else {
-              return that._parseXML(payload, callback, options);
+              return this._parseXML(results, callback, options);
             }
           }
         }
@@ -647,32 +645,31 @@ export class ServiceOsm {
       this._dispatch.call('loading');   // start the spinner
     }
 
-    const path = '/api/0.6/map.json?bbox=';
-    const options = { skipSeen: true };
-    const that = this;
-
-    this._tileCache.inflight[tile.id] = this.loadFromAPI(
-      path + tile.wgs84Extent.toParam(),
-      tileCallback,
-      options
-    );
-
-    function tileCallback(err, result) {
-      delete that._tileCache.inflight[tile.id];
+    const tileLoaded = (err, result) => {
+      delete this._tileCache.inflight[tile.id];
       if (!err) {
-        delete that._tileCache.toLoad[tile.id];
-        that._tileCache.loaded[tile.id] = true;
+        delete this._tileCache.toLoad[tile.id];
+        this._tileCache.loaded[tile.id] = true;
         var bbox = tile.wgs84Extent.bbox();
         bbox.id = tile.id;
-        that._tileCache.rtree.insert(bbox);
+        this._tileCache.rtree.insert(bbox);
       }
       if (callback) {
         callback(err, Object.assign({}, result, { tile: tile }));
       }
-      if (!that._hasInflightRequests(that._tileCache)) {
-        that._dispatch.call('loaded');     // stop the spinner
+      if (!this._hasInflightRequests(this._tileCache)) {
+        this._dispatch.call('loaded');     // stop the spinner
       }
     }
+
+    const path = '/api/0.6/map.json?bbox=';
+    const options = { skipSeen: true };
+
+    this._tileCache.inflight[tile.id] = this.loadFromAPI(
+      path + tile.wgs84Extent.toParam(),
+      tileLoaded,
+      options
+    );
   }
 
 
@@ -955,24 +952,23 @@ export class ServiceOsm {
 
 
   authenticate(callback) {
-    const that = this;
     const cid = this._connectionID;
     this._userChangesets = undefined;
     this._userDetails = undefined;
 
-    function done(err, res) {
+    const done = (err, res) => {
       if (err) {
         if (callback) callback(err);
         return;
       }
-      if (that.connectionID !== cid) {
+      if (this.connectionID !== cid) {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
-      that._rateLimitError = undefined;
-      that._dispatch.call('change');
+      this._rateLimitError = undefined;
+      this._dispatch.call('change');
       if (callback) callback(err, res);
-      that.userChangesets(function() {});  // eagerly load user details/changesets
+      this.userChangesets(function() {});  // eagerly load user details/changesets
     }
 
     this._oauth.authenticate(done);
@@ -1523,20 +1519,19 @@ export class ServiceOsm {
 
 
   _wrapcb(callback, cid) {
-    const that = this;
     return (err, result) => {
       if (err) {
         // 400 Bad Request, 401 Unauthorized, 403 Forbidden..
         if (err.status === 400 || err.status === 401 || err.status === 403) {
-          that.logout();
+          this.logout();
         }
-        return callback.call(that, err);
+        return callback.call(this, err);
 
-      } else if (that.connectionID !== cid) {
-        return callback.call(that, { message: 'Connection Switched', status: -1 });
+      } else if (this.connectionID !== cid) {
+        return callback.call(this, { message: 'Connection Switched', status: -1 });
 
       } else {
-        return callback.call(that, err, result);
+        return callback.call(this, err, result);
       }
     };
   }

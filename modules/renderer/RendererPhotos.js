@@ -212,7 +212,7 @@ export class RendererPhotos extends EventEmitter {
 scene.clearClass('selected');
 
     if (layerID && photoID) {
-      const service = context.services.get[layerID];
+      const service = context.services.get(layerID);
       if (!service) return null;
 
       // If we're selecting a photo then make sure its layer is enabled too.
