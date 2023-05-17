@@ -372,12 +372,12 @@ export class ServiceMapillary {
         this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
       }
       this._dispatch.call('imageChanged');
-    }
+    };
 
     // bearingChanged: called when the bearing changes in the image viewer.
     const bearingChanged = (e) => {
       this._dispatch.call('bearingChanged', undefined, e);
-    }
+    };
 
     this._mlyViewer = new mapillary.Viewer(opts);
     this._mlyViewer.on('image', imageChanged);

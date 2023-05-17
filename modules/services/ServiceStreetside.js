@@ -170,8 +170,6 @@ export class ServiceStreetside {
       .attr('class', 'photo-wrapper ms-wrapper')
       .classed('hide', true);
 
-    const that = this;
-
     // inject div to support streetside viewer (pannellum) and attribution line
     wrapEnter
       .append('div')

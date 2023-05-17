@@ -232,7 +232,7 @@ export class ServiceOsm {
           }
         }
       }
-    }
+    };
 
     if (this.authenticated()) {
       return this._oauth.xhr({ method: 'GET', path: path }, done);
@@ -664,7 +664,7 @@ export class ServiceOsm {
       if (!this._hasInflightRequests(this._tileCache)) {
         this._dispatch.call('loaded');     // stop the spinner
       }
-    }
+    };
 
     const path = '/api/0.6/map.json?bbox=';
     const options = { skipSeen: true };
@@ -973,7 +973,7 @@ export class ServiceOsm {
       this._dispatch.call('change');
       if (callback) callback(err, res);
       this.userChangesets(function() {});  // eagerly load user details/changesets
-    }
+    };
 
     this._oauth.authenticate(done);
   }
