@@ -55,11 +55,12 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
 
   filterImages(images) {
-    const fromDate = this.context.photos().fromDate;
-    const toDate = this.context.photos().toDate;
-    const usernames = this.context.photos().usernames;
-    const showFlatPhotos = this.context.photos().showsPhotoType('flat');
-    const showPanoramicPhotos = this.context.photos().showsPhotoType('panoramic');
+    const photoSystem = this.context.photoSystem();
+    const fromDate = photoSystem.fromDate;
+    const toDate = photoSystem.toDate;
+    const usernames = photoSystem.usernames;
+    const showFlatPhotos = photoSystem.showsPhotoType('flat');
+    const showPanoramicPhotos = photoSystem.showsPhotoType('panoramic');
 
     if (!showFlatPhotos && !showPanoramicPhotos) {
       return [];
@@ -85,9 +86,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
 
   filterSequences(sequences) {
-    const fromDate = this.context.photos().fromDate;
-    const toDate = this.context.photos().toDate;
-    const usernames = this.context.photos().usernames;
+    const photoSystem = this.context.photoSystem();
+    const fromDate = photoSystem.fromDate;
+    const toDate = photoSystem.toDate;
+    const usernames = photoSystem.usernames;
 
     // note - Sequences now contains an Array of Linestrings, post #776
     // This is because we can get multiple linestrings for sequences that cross a tile boundary.

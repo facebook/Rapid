@@ -7,6 +7,7 @@ import { utilGetSetValue, utilNoAuto } from '../../util';
 
 
 export function uiSectionPhotoOverlays(context) {
+  const photoSystem = context.photoSystem();
   const section = uiSection('photo-overlays', context)
     .label(t.html('photo_overlays.title'))
     .disclosureContent(renderDisclosureContent)
@@ -55,7 +56,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawPhotoItems(selection) {
-    const photoKeys = context.photos().overlayLayerIDs;
+    const photoKeys = photoSystem.overlayLayerIDs;
     const photoLayers = photoKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
     const data = photoLayers.filter(layer => layer.supported);
 
@@ -129,10 +130,10 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawPhotoTypeItems(selection) {
-    const photoTypes = context.photos().allPhotoTypes;
+    const photoTypes = photoSystem.allPhotoTypes;
 
     function typeEnabled(d) {
-      return context.photos().showsPhotoType(d);
+      return photoSystem.showsPhotoType(d);
     }
 
     let ul = selection
@@ -148,7 +149,7 @@ export function uiSectionPhotoOverlays(context) {
       .merge(ul);
 
     let li = ul.selectAll('.list-item-photo-types')
-      .data(context.photos().shouldFilterByPhotoType() ? photoTypes : []);
+      .data(photoSystem.shouldFilterByPhotoType() ? photoTypes : []);
 
     li.exit()
       .remove();
@@ -170,7 +171,7 @@ export function uiSectionPhotoOverlays(context) {
     labelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', (d3_event, d) => context.photos().togglePhotoType(d));
+      .on('change', (d3_event, d) => photoSystem.togglePhotoType(d));
 
     labelEnter
       .append('span')
@@ -186,10 +187,10 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawDateFilter(selection) {
-    const dateFilterTypes = context.photos().dateFilters;
+    const dateFilterTypes = photoSystem.dateFilters;
 
     function filterEnabled(d) {
-      return context.photos().dateFilterValue(d);
+      return photoSystem.dateFilterValue(d);
     }
 
     let ul = selection
@@ -205,7 +206,7 @@ export function uiSectionPhotoOverlays(context) {
       .merge(ul);
 
     let li = ul.selectAll('.list-item-date-filter')
-      .data(context.photos().shouldFilterByDate() ? dateFilterTypes : []);
+      .data(photoSystem.shouldFilterByDate() ? dateFilterTypes : []);
 
     li.exit()
       .remove();
@@ -235,15 +236,15 @@ export function uiSectionPhotoOverlays(context) {
       .attr('placeholder', t('units.year_month_day'))
       .call(utilNoAuto)
       .each((d, i, nodes) => {
-        utilGetSetValue(d3_select(nodes[i]), context.photos().dateFilterValue(d) || '');
+        utilGetSetValue(d3_select(nodes[i]), photoSystem.dateFilterValue(d) || '');
       })
       .on('change', function(d3_event, d) {
         let value = utilGetSetValue(d3_select(this)).trim();
-        context.photos().setDateFilter(d, value, true);
+        photoSystem.setDateFilter(d, value, true);
         // reload the displayed dates
         li.selectAll('input')
           .each(function(d) {
-            utilGetSetValue(d3_select(this), context.photos().dateFilterValue(d) || '');
+            utilGetSetValue(d3_select(this), photoSystem.dateFilterValue(d) || '');
           });
       });
 
@@ -255,7 +256,7 @@ export function uiSectionPhotoOverlays(context) {
 
   function drawUsernameFilter(selection) {
     function filterEnabled() {
-      return context.photos().usernames;
+      return photoSystem.usernames;
     }
 
     let ul = selection
@@ -271,7 +272,7 @@ export function uiSectionPhotoOverlays(context) {
       .merge(ul);
 
     let li = ul.selectAll('.list-item-username-filter')
-      .data(context.photos().shouldFilterByUsername() ? ['username-filter'] : []);
+      .data(photoSystem.shouldFilterByUsername() ? ['username-filter'] : []);
 
     li.exit()
       .remove();
@@ -302,7 +303,7 @@ export function uiSectionPhotoOverlays(context) {
       .property('value', usernameValue)
       .on('change', function() {
         let value = d3_select(this).property('value');
-        context.photos().setUsernameFilter(value, true);
+        photoSystem.setUsernameFilter(value, true);
         d3_select(this).property('value', usernameValue);
       });
 
@@ -311,7 +312,7 @@ export function uiSectionPhotoOverlays(context) {
       .classed('active', filterEnabled);
 
     function usernameValue() {
-      let usernames = context.photos().usernames;
+      let usernames = photoSystem.usernames;
       if (usernames) return usernames.join('; ');
       return usernames;
     }
@@ -319,7 +320,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   context.scene().on('layerchange', section.reRender);
-  context.photos().on('photochange', section.reRender);
+  photoSystem.on('photochange', section.reRender);
 
   return section;
 }

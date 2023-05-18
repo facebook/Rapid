@@ -10,6 +10,7 @@ export { Graph } from './Graph';
 export { Tree } from './Tree';
 
 export { LocationSystem } from './LocationSystem';
+export { PhotoSystem } from './PhotoSystem';
 export { PresetSystem } from './PresetSystem';
 export { StorageSystem } from './StorageSystem';
 export { UrlHashSystem } from './UrlHashSystem';

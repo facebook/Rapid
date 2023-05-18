@@ -247,7 +247,7 @@ export class ServiceKartaview {
       if (!nextImage) return;
 
       context.map().centerEase(nextImage.loc);
-      context.photos().selectPhoto('kartaview', nextImage.id);
+      context.photoSystem().selectPhoto('kartaview', nextImage.id);
     }
 
     // don't need any async loading so resolve immediately
@@ -278,7 +278,7 @@ export class ServiceKartaview {
   hideViewer() {
     this._selectedImage = null;
     const context = this.context;
-    context.photos().selectPhoto(null);
+    context.photoSystem().selectPhoto(null);
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
@@ -295,7 +295,7 @@ export class ServiceKartaview {
   }
 
 
-  // note: call `context.photos().selectPhoto(layerID, photoID)` instead
+  // note: call `context.photoSystem().selectPhoto(layerID, photoID)` instead
   // That will deal with the URL and call this function
   selectImage(context, imageKey) {
     let d = this.cachedImage(imageKey);

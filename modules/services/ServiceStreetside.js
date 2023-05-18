@@ -338,7 +338,7 @@ export class ServiceStreetside {
     if (!nextBubble) return;
 
     context.map().centerEase(nextBubble.loc);
-    context.photos().selectPhoto('streetside', nextBubble.id);
+    context.photoSystem().selectPhoto('streetside', nextBubble.id);
   }
 
 
@@ -368,7 +368,7 @@ export class ServiceStreetside {
    */
   hideViewer() {
     const context = this.context;
-    context.photos().selectPhoto(null);
+    context.photoSystem().selectPhoto(null);
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
@@ -387,7 +387,7 @@ export class ServiceStreetside {
 
   /**
    * selectImage
-   * note: call `context.photos().selectPhoto(layerID, photoID)` instead
+   * note: call `photoSystem.selectPhoto(layerID, photoID)` instead
    * That will deal with the URL and call this function
    */
   selectImage(context, bubbleID) {
@@ -442,7 +442,7 @@ export class ServiceStreetside {
         };
 
         this._sceneOptions = Object.assign(this._sceneOptions, viewstate);
-        context.photos().selectPhoto('streetside', d.id);
+        context.photoSystem().selectPhoto('streetside', d.id);
       });
 
     label
