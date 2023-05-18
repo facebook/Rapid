@@ -6,13 +6,15 @@ import { uiSection } from '../section';
 
 
 export function uiSectionValidationStatus(context) {
+  const validator = context.validationSystem();
+
   const section = uiSection('issues-status', context)
     .shouldDisplay(sectionShouldDisplay)
     .content(renderContent);
 
 
   function sectionShouldDisplay() {
-    let issues = context.validator().getIssues(getOptions());
+    let issues = validator.getIssues(getOptions());
     return issues.length === 0;
   }
 
@@ -57,7 +59,7 @@ export function uiSectionValidationStatus(context) {
 
 
   function renderIgnoredIssuesReset(selection) {
-    let ignoredIssues = context.validator()
+    let ignoredIssues = validator
       .getIssues({ what: 'all', where: 'all', includeDisabledRules: true, includeIgnored: 'only' });
 
     let resetIgnored = selection.selectAll('.reset-ignored')
@@ -85,7 +87,7 @@ export function uiSectionValidationStatus(context) {
 
     resetIgnored.on('click', d3_event => {
       d3_event.preventDefault();
-      context.validator().resetIgnoredIssues();
+      validator.resetIgnoredIssues();
     });
   }
 
@@ -97,7 +99,7 @@ export function uiSectionValidationStatus(context) {
     function checkForHiddenIssues(cases) {
       for (let type in cases) {
         let hiddenOpts = cases[type];
-        let hiddenIssues = context.validator().getIssues(hiddenOpts);
+        let hiddenIssues = validator.getIssues(hiddenOpts);
         if (hiddenIssues.length) {
           selection.select('.box .details')
             .html(t.html('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
@@ -161,7 +163,7 @@ export function uiSectionValidationStatus(context) {
   }
 
 
-  context.validator().on('validated.uiSectionValidationStatus', () => {
+  validator.on('validated', () => {
     window.requestIdleCallback(section.reRender);
   });
 

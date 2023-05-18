@@ -8,7 +8,7 @@ import { uiTooltip } from './tooltip';
 export function uiCommitWarnings(context) {
 
     function commitWarnings(selection) {
-        var issuesBySeverity = context.validator()
+        var issuesBySeverity = context.validationSystem()
             .getIssuesBySeverity({ what: 'edited', where: 'all', includeDisabledRules: true });
 
         for (var severity in issuesBySeverity) {
@@ -70,7 +70,7 @@ export function uiCommitWarnings(context) {
                         .classed('hover', false);
                 })
                 .on('click', function(d3_event, d) {
-                    context.validator().focusIssue(d);
+                    context.validationSystem().focusIssue(d);
                 });
 
             buttons

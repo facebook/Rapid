@@ -35,7 +35,7 @@ export function operationCircularize(context, selectedIDs) {
     combinedAction.transitionable = true;
 
     context.perform(combinedAction, operation.annotation());
-    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+    window.setTimeout(() => context.validationSystem().validate(), 300);  // after any transition
   };
 
 

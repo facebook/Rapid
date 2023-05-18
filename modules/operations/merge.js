@@ -43,7 +43,7 @@ export function operationMerge(context, selectedIDs) {
     if (operation.disabled()) return;
 
     context.perform(action, operation.annotation());
-    context.validator().validate();
+    context.validationSystem().validate();
 
     let successorIDs = selectedIDs.filter(entityID => context.hasEntity(entityID));
     if (successorIDs.length > 1) {

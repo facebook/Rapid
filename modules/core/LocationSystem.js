@@ -32,9 +32,11 @@ export class LocationSystem extends EventEmitter {
 
   /**
    * @constructor
+   * @param  context  Global shared application context
    */
-  constructor() {
+  constructor(context) {
     super();
+    this.context = context;
 
     this._wp = null;                        // A which-polygon index
     this._resolved = new Map();             // Map (id -> GeoJSON feature)

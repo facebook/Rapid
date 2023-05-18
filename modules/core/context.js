@@ -9,12 +9,12 @@ import { coreRapidContext } from './rapid_context';
 import { fileFetcher } from './file_fetcher';
 import { localizer } from './localizer';
 import { coreHistory } from './history';
-import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
 import { LocationSystem } from './LocationSystem';
 import { PresetSystem } from './PresetSystem';
 import { StorageSystem } from './StorageSystem';
 import { UrlHashSystem } from './UrlHashSystem';
+import { ValidationSystem } from './ValidationSystem';
 
 import * as Behaviors from '../behaviors';
 import * as Modes from '../modes';
@@ -53,7 +53,7 @@ export function coreContext() {
   let _storageSystem;
   let _uploader;
   let _urlhash;
-  let _validator;
+  let _validationSystem;
 
   context.connection = () => context.services.get('osm');  // legacy name, avoid
   context.history = () => _history;
@@ -62,7 +62,7 @@ export function coreContext() {
   context.storageSystem = () => _storageSystem;
   context.uploader = () => _uploader;
   context.urlhash = () => _urlhash;
-  context.validator = () => _validator;
+  context.validationSystem = () => _validationSystem;
 
 
   // `context.initialHashParams` is older, try to use `context.urlhash()` instead
@@ -608,7 +608,7 @@ export function coreContext() {
     context.changeset = null;
 
     _rapidContext.reset();
-    _validator.reset();
+    _validationSystem.reset();
     _features.reset();
     _history.reset();
     _uploader.reset();
@@ -643,6 +643,7 @@ export function coreContext() {
       _presetSystem = new PresetSystem(context);
       _storageSystem = new StorageSystem(context);
       _urlhash = new UrlHashSystem(context);
+      _validationSystem = new ValidationSystem(context);
 
       _history = coreHistory(context);
       context.graph = _history.graph;
@@ -657,7 +658,6 @@ export function coreContext() {
       context.undo = withDebouncedSave(_history.undo);
       context.redo = withDebouncedSave(_history.redo);
 
-      _validator = coreValidator(context);
       _uploader = coreUploader(context);
       _imagery = new RendererImagery(context);
       _features = rendererFeatures(context);
@@ -694,8 +694,8 @@ export function coreContext() {
     // might matter if dependents make calls to each other. Be wary of async calls.
     function initializeAll() {
       if (context.initialHashParams.presets) {
-        const addable = new Set(context.initialHashParams.presets.split(','));
-        _presetSystem.addablePresetIDs = addable;
+        const presetIDs = context.initialHashParams.presets.split(',').map(s => s.trim()).filter(Boolean);
+        _presetSystem.addablePresetIDs = new Set(presetIDs);
       }
       if (context.initialHashParams.locale) {
         localizer.preferredLocaleCodes(context.initialHashParams.locale);
@@ -715,7 +715,7 @@ export function coreContext() {
         osm.switch(_preauth);
       }
 
-      _validator.init();
+      _validationSystem.init();
       _imagery.init();
       _features.init();
       _map.init();         // watch out - init doesn't actually create the renderer :(

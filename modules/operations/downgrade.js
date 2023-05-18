@@ -85,7 +85,7 @@ export function operationDowngrade(context, selectedIDs) {
       return graph;
     }, operation.annotation());
 
-    context.validator().validate();
+    context.validationSystem().validate();
 
     // refresh the select mode to enable the delete operation
     context.enter(modeSelect(context, selectedIDs));

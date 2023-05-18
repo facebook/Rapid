@@ -86,7 +86,7 @@ export function uiSectionRawMemberEditor(context) {
                     n: 1
                 })
             );
-            context.validator().validate();
+            context.validationSystem().validate();
         }
     }
 
@@ -110,7 +110,7 @@ export function uiSectionRawMemberEditor(context) {
         } else {
             // Changing the mode also runs `validate`, but otherwise we need to
             // rerun it manually
-            context.validator().validate();
+            context.validationSystem().validate();
         }
     }
 
@@ -325,7 +325,7 @@ export function uiSectionRawMemberEditor(context) {
                         actionMoveMember(d.relation.id, index, targetIndex),
                         t('operations.reorder_members.annotation')
                     );
-                    context.validator().validate();
+                    context.validationSystem().validate();
                 }
             })
         );

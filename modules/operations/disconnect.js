@@ -135,7 +135,7 @@ export function operationDisconnect(context, selectedIDs) {
       return graph;
     };
     context.perform(combinedAction, operation.annotation());
-    context.validator().validate();
+    context.validationSystem().validate();
   };
 
 

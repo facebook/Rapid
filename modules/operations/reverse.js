@@ -46,7 +46,7 @@ export function operationReverse(context, selectedIDs) {
     };
 
     context.perform(combinedAction, operation.annotation());
-    context.validator().validate();
+    context.validationSystem().validate();
   };
 
 

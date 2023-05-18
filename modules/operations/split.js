@@ -47,7 +47,7 @@ export function operationSplit(context, selectedIDs) {
 
   let operation = function() {
     const difference = context.perform(action, operation.annotation());
-    context.validator().validate();
+    context.validationSystem().validate();
 
     let idsToSelect = vertexIDs.slice();  // copy
 
