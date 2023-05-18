@@ -56,7 +56,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    * @param  projection   Pixi projection to use for rendering
    */
   render(frame, projection) {
-    const imagery = this.context.imagery();
+    const imagery = this.context.imagerySystem();
     const groupContainer = this.scene.groups.get('background');
 
     // Collect tile sources - baselayer and overlays

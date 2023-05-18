@@ -85,7 +85,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const imagery = context.imagery();
+    const imagery = context.imagerySystem();
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -145,7 +145,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const imagery = context.imagery();
+    const imagery = context.imagerySystem();
 
     const source = imagery.baseLayerSource();
     if (!source) return;

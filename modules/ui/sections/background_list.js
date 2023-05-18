@@ -5,7 +5,7 @@ import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
-import { RendererImagerySource } from '../../renderer/RendererImagerySource';
+import { ImagerySource } from '../../core/ImagerySource';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
@@ -15,6 +15,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundList(context) {
+  const imagerySystem = context.imagerySystem();
   const prefs = context.storageSystem();
   const section = uiSection('background-list', context)
     .label(t('background.backgrounds'))
@@ -22,20 +23,20 @@ export function uiSectionBackgroundList(context) {
 
   let _backgroundList = d3_select(null);
 
-  const customSource = context.imagery().findSource('custom');
+  const customSource = imagerySystem.findSource('custom');
   const settingsCustomBackground = uiSettingsCustomBackground(context)
     .on('change', customChanged);
 
-
   const favoriteBackgroundsJSON = prefs.getItem('background-favorites');
   const _favoriteBackgrounds = favoriteBackgroundsJSON ? JSON.parse(favoriteBackgroundsJSON) : {};
+
 
   function previousBackgroundID() {
     return prefs.getItem('background-last-used-toggle');
   }
 
-  function renderDisclosureContent(selection) {
 
+  function renderDisclosureContent(selection) {
     // the background list
     const container = selection.selectAll('.layer-background-list')
       .data([0]);
@@ -199,7 +200,7 @@ export function uiSectionBackgroundList(context) {
 
 
   function drawListItems(layerList, type, change, filter) {
-    const sources = context.imagery()
+    const sources = imagerySystem
       .sources(context.map().extent(), context.map().zoom())
       .filter(filter);
 
@@ -290,7 +291,7 @@ export function uiSectionBackgroundList(context) {
 
   function updateLayerSelections(selection) {
     function active(d) {
-      return context.imagery().showsLayer(d);
+      return imagerySystem.showsLayer(d);
     }
 
     selection.selectAll('li')
@@ -307,12 +308,12 @@ export function uiSectionBackgroundList(context) {
       return editCustom();
     }
 
-    const previousBackground = context.imagery().baseLayerSource();
-    if (previousBackground instanceof RendererImagerySource) {
+    const previousBackground = imagerySystem.baseLayerSource();
+    if (previousBackground instanceof ImagerySource) {
       prefs.setItem('background-last-used-toggle', previousBackground.id);
     }
     prefs.setItem('background-last-used', d.id);
-    context.imagery().baseLayerSource(d);
+    imagerySystem.baseLayerSource(d);
   }
 
 
@@ -322,7 +323,7 @@ export function uiSectionBackgroundList(context) {
       chooseBackground(undefined, customSource);
     } else {
       customSource.template = '';
-      chooseBackground(undefined, context.imagery().findSource('none'));
+      chooseBackground(undefined, imagerySystem.findSource('none'));
     }
   }
 
@@ -334,7 +335,7 @@ export function uiSectionBackgroundList(context) {
   }
 
   function getBackgrounds(filter) {
-    return context.imagery()
+    return imagerySystem
       .sources(context.map().extent(), context.map().zoom())
       .filter(filter);
   }
@@ -342,7 +343,7 @@ export function uiSectionBackgroundList(context) {
   function chooseBackgroundAtOffset(offset) {
     const backgrounds = getBackgrounds((d) => { return !d.isHidden() && !d.overlay; });
     backgrounds.sort(sortSources);
-    const currentBackground = context.imagery().baseLayerSource();
+    const currentBackground = imagerySystem.baseLayerSource();
     const foundIndex = backgrounds.indexOf(currentBackground);
     if (foundIndex === -1) {
       // Can't find the current background, so just do nothing
@@ -367,7 +368,7 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  context.imagery()
+  imagerySystem
     .on('imagerychange', () => _backgroundList.call(updateLayerSelections));
 
   context.map()

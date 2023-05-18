@@ -14,11 +14,11 @@ export function uiSectionReactContainer(context) {
     .disclosureContent(content);
 
   const chooseBackground = (source) => {
-    context.imagery().baseLayerSource(source);
+    context.imagerySystem().baseLayerSource(source);
   };
 
   const content = (selection) => {
-    const sources = context.imagery()
+    const sources = context.imagerySystem()
       .sources(context.map().extent(), context.map().zoom())
       .filter(d => !d.isHidden() && !d.overlay);
 

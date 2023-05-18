@@ -10,6 +10,7 @@ import { fileFetcher } from './file_fetcher';
 import { localizer } from './localizer';
 import { coreHistory } from './history';
 import { coreUploader } from './uploader';
+import { ImagerySystem } from './ImagerySystem';
 import { LocationSystem } from './LocationSystem';
 import { PhotoSystem } from './PhotoSystem';
 import { PresetSystem } from './PresetSystem';
@@ -22,7 +23,7 @@ import * as Modes from '../modes';
 import * as Services from '../services';
 import { modeSelect } from '../modes/select';   // legacy
 
-import { rendererFeatures, RendererImagery, RendererMap } from '../renderer';
+import { rendererFeatures, RendererMap } from '../renderer';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
 
@@ -49,6 +50,7 @@ export function coreContext() {
 
 
   let _history;
+  let _imagerySystem;
   let _locationSystem;
   let _photoSystem;
   let _presetSystem;
@@ -59,6 +61,7 @@ export function coreContext() {
 
   context.connection = () => context.services.get('osm');  // legacy name, avoid
   context.history = () => _history;
+  context.imagerySystem = () => _imagerySystem;
   context.locationSystem = () => _locationSystem;
   context.photoSystem = () => _photoSystem;
   context.presetSystem = () => _presetSystem;
@@ -491,12 +494,6 @@ export function coreContext() {
   };
 
 
-  /* Imagery */
-  let _imagery;
-  context.imagery = () => _imagery;
-  context.background = () => _imagery;   // legacy name, avoid
-
-
   /* Features */
   let _features;
   context.features = () => _features;
@@ -637,6 +634,7 @@ export function coreContext() {
     // until this is complete since load statuses are indeterminate. The order
     // of instantiation shouldn't matter.
     function instantiateAll() {
+      _imagerySystem = new ImagerySystem(context);
       _locationSystem = new LocationSystem(context);
       _photoSystem = new PhotoSystem(context);
       _presetSystem = new PresetSystem(context);
@@ -658,7 +656,6 @@ export function coreContext() {
       context.redo = withDebouncedSave(_history.redo);
 
       _uploader = coreUploader(context);
-      _imagery = new RendererImagery(context);
       _features = rendererFeatures(context);
       _map = new RendererMap(context);
       _rapidContext = coreRapidContext(context);
@@ -714,7 +711,7 @@ export function coreContext() {
       }
 
       _validationSystem.init();
-      _imagery.init();
+      _imagerySystem.init();
       _features.init();
       _map.init();         // watch out - init doesn't actually create the renderer :(
       _rapidContext.init();

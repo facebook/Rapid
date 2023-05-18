@@ -181,7 +181,7 @@ export class RendererMap extends EventEmitter {
       this.immediateRedraw();
     });
 
-    context.imagery().on('imagerychange', this.immediateRedraw);
+    context.imagerySystem().on('imagerychange', this.immediateRedraw);
     context.photoSystem().on('photochange', this.immediateRedraw);
     context.urlHashSystem().on('hashchange', this._hashchange);
 
@@ -193,7 +193,7 @@ export class RendererMap extends EventEmitter {
 
     scene
       .on('layerchange', () => {
-        context.imagery().updateImagery();
+        context.imagerySystem().updateImagery();
         this.immediateRedraw();
     });
   }

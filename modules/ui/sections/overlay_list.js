@@ -8,6 +8,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionOverlayList(context) {
+  const imagerySystem = context.imagerySystem();
   const section = uiSection('overlay-list', context)
     .label(t.html('background.overlays'))
     .disclosureContent(renderDisclosureContent);
@@ -35,7 +36,7 @@ export function uiSectionOverlayList(context) {
 
   function updateLayerSelections(selection) {
     function isActive(d) {
-      return context.imagery().showsLayer(d);
+      return imagerySystem.showsLayer(d);
     }
 
     selection.selectAll('li')
@@ -47,7 +48,7 @@ export function uiSectionOverlayList(context) {
 
 
   function drawListItems(layerList, type, change, filter) {
-    let sources = context.imagery()
+    let sources = imagerySystem
       .sources(context.map().extent(), context.map().zoom())
       .filter(filter);
 
@@ -91,7 +92,7 @@ export function uiSectionOverlayList(context) {
 
   function chooseOverlay(d3_event, d) {
     d3_event.preventDefault();
-    context.imagery().toggleOverlayLayer(d);
+    imagerySystem.toggleOverlayLayer(d);
     _overlayList.call(updateLayerSelections);
   }
 
@@ -114,7 +115,7 @@ export function uiSectionOverlayList(context) {
   }
 
 
-  context.imagery()
+  imagerySystem
     .on('imagerychange', () => section.reRender);
 
   context.map()

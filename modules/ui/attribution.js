@@ -4,6 +4,7 @@ import { t } from '../core/localizer';
 
 
 export function uiAttribution(context) {
+  const imagerySystem = context.imagerySystem();
   let _selection = d3_select(null);
 
 
@@ -78,12 +79,12 @@ export function uiAttribution(context) {
 
 
   function update() {
-    let baselayer = context.imagery().baseLayerSource();
+    let baselayer = imagerySystem.baseLayerSource();
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
     const z = context.map().zoom();
-    let overlays = context.imagery().overlayLayerSources() || [];
+    let overlays = imagerySystem.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');
   }
@@ -92,9 +93,7 @@ export function uiAttribution(context) {
   return function(selection) {
     _selection = selection;
 
-    context.imagery()
-      .on('change.attribution', update);
-
+    imagerySystem.on('imagerychange', update);
     context.map().on('draw', _throttle(update, 400, { leading: false }));
 
     update();
