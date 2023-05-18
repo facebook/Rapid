@@ -242,11 +242,11 @@ export class ServiceMapillary {
 
   // Apply filter to image viewer
   filterViewer() {
-    const photos = this.context.photos();
-    const showsPano = photos.showsPanoramic;
-    const showsFlat = photos.showsFlat;
-    const fromDate = photos.fromDate;
-    const toDate = photos.toDate;
+    const photoSystem = this.context.photoSystem();
+    const showsPano = photoSystem.showsPanoramic;
+    const showsFlat = photoSystem.showsFlat;
+    const fromDate = photoSystem.fromDate;
+    const toDate = photoSystem.toDate;
     const filter = ['all'];
 
     if (!showsPano) filter.push([ '!=', 'cameraType', 'spherical' ]);
@@ -294,7 +294,7 @@ export class ServiceMapillary {
   hideViewer() {
     this._mlyActiveImage = null;
     const context = this.context;
-    context.photos().selectPhoto(null);
+    context.photoSystem().selectPhoto(null);
 
     if (!this._mlyFallback && this._mlyViewer) {
       this._mlyViewer.getComponent('sequence').stop();
@@ -366,7 +366,7 @@ export class ServiceMapillary {
       this.setStyles(context, null);
       const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
       context.map().centerEase(loc);
-      context.photos().selectPhoto('mapillary', image.id);
+      context.photoSystem().selectPhoto('mapillary', image.id);
 
       if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
         this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
@@ -395,7 +395,7 @@ export class ServiceMapillary {
 
 
   // Move to an image
-  // note: call `context.photos().selectPhoto(layerID, photoID)` instead
+  // note: call `photoSystem.selectPhoto(layerID, photoID)` instead
   // That will deal with the URL and call this function
   selectImage(context, imageID) {
     if (this._mlyViewer && imageID) {
@@ -459,88 +459,87 @@ export class ServiceMapillary {
     if (!imageID) return;
 
     const cache = this._mlyCache.image_detections;
+    let detections = cache.forImageID[imageID];
 
-    if (cache.forImageID[imageID]) {
-      showDetections(this._mlyCache.image_detections.forImageID[imageID]);
+    if (detections) {
+      this._showDetections(detections);
     } else {
       this._loadDataAsync(url)
-        .then(detections => {
-          for (const detection of detections) {
+        .then(results => {
+          for (const result of results) {
             if (!cache.forImageID[imageID]) {
               cache.forImageID[imageID] = [];
             }
             cache.forImageID[imageID].push({
-              geometry: detection.geometry,
-              id: detection.id,
+              id: result.id,
+              geometry: result.geometry,
               image_id: imageID,
-              value:detection.value
+              value: result.value
             });
           }
 
-          showDetections(this._mlyCache.image_detections.forImageID[imageID] || []);
+          this._showDetections(cache.forImageID[imageID] || []);
         });
-    }
-
-
-    // Create a tag for each detection and shows it in the image viewer
-    function showDetections(detections) {
-      const tagComponent = this._mlyViewer.getComponent('tag');
-      for (const data of detections) {
-        const tag = makeTag(data);
-        if (tag) {
-          tagComponent.add([tag]);
-        }
-      }
-    }
-
-    // Create a Mapillary JS tag object
-    function makeTag(data) {
-      const valueParts = data.value.split('--');
-      if (!valueParts.length) return;
-
-      let tag;
-      let text;
-      let color = 0xffffff;
-
-      if (this._mlyHighlightedDetection === data.id) {
-        color = 0xffff00;
-        text = valueParts[1];
-        if (text === 'flat' || text === 'discrete' || text === 'sign') {
-          text = valueParts[2];
-        }
-        text = text.replace(/-/g, ' ');
-        text = text.charAt(0).toUpperCase() + text.slice(1);
-        this._mlyHighlightedDetection = null;
-      }
-
-      const decodedGeometry = window.atob(data.geometry);
-      let uintArray = new Uint8Array(decodedGeometry.length);
-      for (let i = 0; i < decodedGeometry.length; i++) {
-        uintArray[i] = decodedGeometry.charCodeAt(i);
-      }
-      const tile = new VectorTile(new Protobuf(uintArray.buffer));
-      const layer = tile.layers['mpy-or'];
-      const geometries = layer.feature(0).loadGeometry();
-      const polygon = geometries
-        .map(ring => ring.map(point => [point.x / layer.extent, point.y / layer.extent]));
-
-      const mapillary = window.mapillary;
-      tag = new mapillary.OutlineTag(
-        data.id,
-        new mapillary.PolygonGeometry(polygon[0]), {
-          text: text,
-          textColor: color,
-          lineColor: color,
-          lineWidth: 2,
-          fillColor: color,
-          fillOpacity: 0.3,
-        }
-      );
-
-      return tag;
     }
   }
 
+  // Create a tag for each detection and shows it in the image viewer
+  _showDetections(detections) {
+    const tagComponent = this._mlyViewer.getComponent('tag');
+    for (const data of detections) {
+      const tag = this._makeTag(data);
+      if (tag) {
+        tagComponent.add([tag]);
+      }
+    }
+  }
+
+    // Create a Mapillary JS tag object
+  _makeTag(data) {
+    const valueParts = data.value.split('--');
+    if (!valueParts.length) return;
+
+    let tag;
+    let text;
+    let color = 0xffffff;
+
+    if (this._mlyHighlightedDetection === data.id) {
+      color = 0xffff00;
+      text = valueParts[1];
+      if (text === 'flat' || text === 'discrete' || text === 'sign') {
+        text = valueParts[2];
+      }
+      text = text.replace(/-/g, ' ');
+      text = text.charAt(0).toUpperCase() + text.slice(1);
+      this._mlyHighlightedDetection = null;
+    }
+
+    const decodedGeometry = window.atob(data.geometry);
+    let uintArray = new Uint8Array(decodedGeometry.length);
+    for (let i = 0; i < decodedGeometry.length; i++) {
+      uintArray[i] = decodedGeometry.charCodeAt(i);
+    }
+    const tile = new VectorTile(new Protobuf(uintArray.buffer));
+    const layer = tile.layers['mpy-or'];
+    const geometries = layer.feature(0).loadGeometry();
+    const polygon = geometries
+      .map(ring => ring.map(point => [point.x / layer.extent, point.y / layer.extent]));
+
+    const mapillary = window.mapillary;
+    tag = new mapillary.OutlineTag(
+      data.id,
+      new mapillary.PolygonGeometry(polygon[0]), {
+        text: text,
+        textColor: color,
+        lineColor: color,
+        lineWidth: 2,
+        fillColor: color,
+        fillOpacity: 0.3,
+      }
+    );
+
+    return tag;
+  }
 
 
   // Load all data for the specified type from Mapillary vector tiles

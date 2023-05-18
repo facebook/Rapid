@@ -324,7 +324,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked on nothing
     if (!datum) {
-      context.photos().selectPhoto(null);
+      context.photoSystem().selectPhoto(null);
 
       const mode = context.mode();
       if (mode.id !== 'browse' && !this._multiSelection.size) {
@@ -382,7 +382,7 @@ export class BehaviorSelect extends AbstractBehavior {
       // Determine the layer that was clicked on, obtain its service.
       const layerID = target.layer.id;
       context.map().centerEase(datum.loc);
-      context.photos().selectPhoto(layerID, datum.id);
+      context.photoSystem().selectPhoto(layerID, datum.id);
 //      // No mode change event here, just manually tell the renderer to select it, for now
 //      const scene = context.scene();
 //      scene.clearClass('selected');

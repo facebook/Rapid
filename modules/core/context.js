@@ -11,6 +11,7 @@ import { localizer } from './localizer';
 import { coreHistory } from './history';
 import { coreUploader } from './uploader';
 import { LocationSystem } from './LocationSystem';
+import { PhotoSystem } from './PhotoSystem';
 import { PresetSystem } from './PresetSystem';
 import { StorageSystem } from './StorageSystem';
 import { UrlHashSystem } from './UrlHashSystem';
@@ -21,7 +22,7 @@ import * as Modes from '../modes';
 import * as Services from '../services';
 import { modeSelect } from '../modes/select';   // legacy
 
-import { rendererFeatures, RendererImagery, RendererMap, RendererPhotos } from '../renderer';
+import { rendererFeatures, RendererImagery, RendererMap } from '../renderer';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
 
@@ -49,6 +50,7 @@ export function coreContext() {
 
   let _history;
   let _locationSystem;
+  let _photoSystem;
   let _presetSystem;
   let _storageSystem;
   let _uploader;
@@ -58,6 +60,7 @@ export function coreContext() {
   context.connection = () => context.services.get('osm');  // legacy name, avoid
   context.history = () => _history;
   context.locationSystem = () => _locationSystem;
+  context.photoSystem = () => _photoSystem;
   context.presetSystem = () => _presetSystem;
   context.storageSystem = () => _storageSystem;
   context.uploader = () => _uploader;
@@ -504,11 +507,6 @@ export function coreContext() {
   };
 
 
-  /* Photos */
-  let _photos;
-  context.photos = () => _photos;
-
-
   /* Map */
   let _map;
   context.map = () => _map;
@@ -640,6 +638,7 @@ export function coreContext() {
     // of instantiation shouldn't matter.
     function instantiateAll() {
       _locationSystem = new LocationSystem(context);
+      _photoSystem = new PhotoSystem(context);
       _presetSystem = new PresetSystem(context);
       _storageSystem = new StorageSystem(context);
       _urlHashSystem = new UrlHashSystem(context);
@@ -662,7 +661,6 @@ export function coreContext() {
       _imagery = new RendererImagery(context);
       _features = rendererFeatures(context);
       _map = new RendererMap(context);
-      _photos = new RendererPhotos(context);
       _rapidContext = coreRapidContext(context);
       _ui = uiInit(context);
 
@@ -725,7 +723,7 @@ export function coreContext() {
       if (!context.container().empty()) {
         _ui.ensureLoaded()
           .then(() => {
-            _photos.init();
+            _photoSystem.init();
             _urlHashSystem.init();  // tries to adjust map transform
           });
       }

@@ -2,7 +2,7 @@ import { EventEmitter } from '@pixi/utils';
 
 
 /**
- * `RendererPhotos` maintains the state of the photo viewer
+ * `PhotoSystem` maintains the state of the photo viewer
  *
  * Properties available:
  *   `allPhotoTypes`     List of all available photo types ('flat', 'panoramic')
@@ -13,7 +13,7 @@ import { EventEmitter } from '@pixi/utils';
  * Events available:
  *   `photochange`       Fires on any change in photo display or filtering options
  */
-export class RendererPhotos extends EventEmitter {
+export class PhotoSystem extends EventEmitter {
 
   /**
    * @constructor
