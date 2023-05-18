@@ -386,7 +386,7 @@ export function uiInit(context) {
     context.enter('browse');
 
     const osm = context.services.get('osm');
-    const startWalkthrough = context.urlhash().initialHashParams.get('walkthrough') === 'true';
+    const startWalkthrough = context.urlHashSystem().initialHashParams.get('walkthrough') === 'true';
 
     if (!_initCounter++) {  // first time only
 

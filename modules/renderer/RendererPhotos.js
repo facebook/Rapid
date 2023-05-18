@@ -49,7 +49,7 @@ export class RendererPhotos extends EventEmitter {
 // for now this init() gets delayed until after ui/init, see context.js
     const context = this.context;
     context.scene().on('layerchange', this._updateHash);
-    context.urlhash().on('hashchange', this._hashchange);
+    context.urlHashSystem().on('hashchange', this._hashchange);
   }
 
 
@@ -107,7 +107,7 @@ export class RendererPhotos extends EventEmitter {
    * Push changes in photo viewer state to the urlhash
    */
   _updateHash() {
-    const urlhash = this.context.urlhash();
+    const urlhash = this.context.urlHashSystem();
     const scene = this.context.scene();
 
     // photo_overlay

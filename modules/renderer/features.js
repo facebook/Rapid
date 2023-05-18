@@ -90,7 +90,7 @@ export function rendererFeatures(context) {
       const ruleIDs = features.disabled().join(',');
 
       // update url hash
-      const urlhash = context.urlhash();
+      const urlhash = context.urlHashSystem();
       urlhash.setParam('disable_features', ruleIDs.length ? ruleIDs : null);
 
       // update localstorage
@@ -604,7 +604,7 @@ export function rendererFeatures(context) {
             toDisable.forEach(features.disable);
         }
 
-        context.urlhash().on('hashchange', _hashchange);
+        context.urlHashSystem().on('hashchange', _hashchange);
     };
 
 

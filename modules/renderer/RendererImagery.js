@@ -61,7 +61,7 @@ export class RendererImagery extends EventEmitter {
    */
   init() {
     this._setupPromise = this._setupImageryAsync();
-    this.context.urlhash().on('hashchange', this._hashchange);
+    this.context.urlHashSystem().on('hashchange', this._hashchange);
   }
 
 
@@ -140,7 +140,7 @@ export class RendererImagery extends EventEmitter {
     this.context.history().imageryUsed(imageryUsed);
 
     // Update hash params: 'background', 'overlays', 'offset'
-    const urlhash = this.context.urlhash();
+    const urlhash = this.context.urlHashSystem();
     urlhash.setParam('background', baseID);
     urlhash.setParam('overlays', overlayIDs.length ? overlayIDs.join(',') : null);
 

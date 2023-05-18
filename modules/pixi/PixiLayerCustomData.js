@@ -61,7 +61,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       });
 
     // hashchange - pick out the 'gpx' param
-    this.context.urlhash()
+    this.context.urlHashSystem()
       .on('hashchange', q => this.url(q.gpx || '', '.gpx'));
   }
 
