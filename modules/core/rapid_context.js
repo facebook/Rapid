@@ -106,7 +106,7 @@ export function coreRapidContext(context) {
    * Called one time after all objects have been instantiated.
    */
   _rapidContext.init = () => {
-    context.urlhash().on('hashchange', _hashchange);
+    context.urlHashSystem().on('hashchange', _hashchange);
 
     localizer.initAsync()
       .then(() => {

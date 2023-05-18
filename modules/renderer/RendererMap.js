@@ -183,7 +183,7 @@ export class RendererMap extends EventEmitter {
 
     context.imagery().on('imagerychange', this.immediateRedraw);
     context.photos().on('photochange', this.immediateRedraw);
-    context.urlhash().on('hashchange', this._hashchange);
+    context.urlHashSystem().on('hashchange', this._hashchange);
 
 
     const osm = context.services.get('osm');
@@ -248,7 +248,7 @@ export class RendererMap extends EventEmitter {
     if (Math.abs(rot) > EPSILON) {
       v += `/${rotStr}`;
     }
-    this.context.urlhash().setParam('map', v);
+    this.context.urlHashSystem().setParam('map', v);
   }
 
 

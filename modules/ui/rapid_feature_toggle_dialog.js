@@ -29,7 +29,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.enabled = !dataset.enabled;
 
       // update url hash
-      const urlhash = context.urlhash();
+      const urlhash = context.urlHashSystem();
       const datasetIDs = Object.values(datasets)
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)

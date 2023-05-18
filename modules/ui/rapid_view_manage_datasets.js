@@ -475,7 +475,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     }
 
     // update url hash
-    const urlhash = context.urlhash();
+    const urlhash = context.urlHashSystem();
     const datasetIDs = Object.values(datasets)
       .filter(ds => ds.added && ds.enabled)
       .map(ds => ds.id)

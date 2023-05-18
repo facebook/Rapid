@@ -52,7 +52,7 @@ export function coreContext() {
   let _presetSystem;
   let _storageSystem;
   let _uploader;
-  let _urlhash;
+  let _urlHashSystem;
   let _validationSystem;
 
   context.connection = () => context.services.get('osm');  // legacy name, avoid
@@ -61,11 +61,11 @@ export function coreContext() {
   context.presetSystem = () => _presetSystem;
   context.storageSystem = () => _storageSystem;
   context.uploader = () => _uploader;
-  context.urlhash = () => _urlhash;
+  context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
 
 
-  // `context.initialHashParams` is older, try to use `context.urlhash()` instead
+  // `context.initialHashParams` is older, try to use `context.urlHashSystem()` instead
   context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
 
   /* Changeset */
@@ -271,11 +271,11 @@ export function coreContext() {
 
     _inIntro = val;
 
-    if (_urlhash) {
+    if (_urlHashSystem) {
       if (val) {
-        _urlhash.disable();
+        _urlHashSystem.disable();
       } else {
-        _urlhash.enable();
+        _urlHashSystem.enable();
       }
     }
     return context;
@@ -642,7 +642,7 @@ export function coreContext() {
       _locationSystem = new LocationSystem(context);
       _presetSystem = new PresetSystem(context);
       _storageSystem = new StorageSystem(context);
-      _urlhash = new UrlHashSystem(context);
+      _urlHashSystem = new UrlHashSystem(context);
       _validationSystem = new ValidationSystem(context);
 
       _history = coreHistory(context);
@@ -726,7 +726,7 @@ export function coreContext() {
         _ui.ensureLoaded()
           .then(() => {
             _photos.init();
-            _urlhash.init();  // tries to adjust map transform
+            _urlHashSystem.init();  // tries to adjust map transform
           });
       }
     }
