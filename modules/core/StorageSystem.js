@@ -7,8 +7,10 @@ export class StorageSystem {
 
   /**
    * @constructor
+   * @param  context  Global shared application context
    */
-  constructor() {
+  constructor(context) {
+    this.context = context;
     this._storage = null;
 
     // Note that accessing localStorage may throw a `SecurityError`, so wrap in a try/catch.

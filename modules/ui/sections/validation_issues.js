@@ -16,6 +16,7 @@ import { uiSection } from '../section';
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
+  const validator = context.validationSystem();
   const prefs = context.storageSystem();
   const section = uiSection(sectionID, context)
     .label(sectionLabel)
@@ -85,7 +86,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     let labelsEnter = itemsEnter
       .append('button')
       .attr('class', 'issue-label')
-      .on('click',     (d3_event, d) => context.validator().focusIssue(d))
+      .on('click',     (d3_event, d) => validator.focusIssue(d))
       .on('mouseover', (d3_event, d) => utilHighlightEntities(d.entityIds, true, context))
       .on('mouseout',  (d3_event, d) => utilHighlightEntities(d.entityIds, false, context));
 
@@ -97,9 +98,9 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .append('span')
       .attr('class', 'issue-icon')
       .each((d, i, nodes) => {
-        const iconName = '#rapid-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
+        const which = (d.severity === 'warning') ? 'alert' : 'error';
         d3_select(nodes[i])
-          .call(uiIcon(iconName));
+          .call(uiIcon(`#rapid-icon-${which}`));
       });
 
     textEnter
@@ -124,7 +125,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
               utilHighlightEntities(d.entityIds, false, context);  // unhighlight
               context.perform.apply(context, d.autoArgs);
-              context.validator().validate();
+              validator.validate();
             })
             .call(uiIcon('#rapid-icon-wrench'));
         });
@@ -184,7 +185,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
           context.replace.apply(context, args);  // this does the fix
         });
         context.resumeChangeDispatch();
-        context.validator().validate();
+        validator.validate();
       });
   }
 
@@ -200,7 +201,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // get and cache the issues to display, unordered
   function reloadIssues() {
     const options = getOptions();
-    _issues = context.validator().getIssuesBySeverity(options)[severity];
+    _issues = validator.getIssuesBySeverity(options)[severity];
   }
 
   // only update the contents if the issues pane is actually open
@@ -211,7 +212,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // event handlers to refresh the lists
 
-  context.validator().on(`validated.uiSectionValidationIssues-${sectionID}`, () => {
+  validator.on('validated', () => {
     window.requestIdleCallback(() => {
       if (!isVisible()) return;
       reloadIssues();

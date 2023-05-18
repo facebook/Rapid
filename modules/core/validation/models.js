@@ -69,7 +69,7 @@ export function validationIssue(attrs) {
                 title: t.html('issues.fix.ignore_issue.title'),
                 icon: 'rapid-icon-close',
                 onClick: function() {
-                    context.validator().ignoreIssue(this.issue.id);
+                    context.validationSystem().ignoreIssue(this.issue.id);
                 }
             }));
         }

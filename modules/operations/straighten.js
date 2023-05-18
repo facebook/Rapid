@@ -78,7 +78,7 @@ export function operationStraighten(context, selectedIDs) {
     if (!action) return;
 
     context.perform(action, operation.annotation());
-    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+    window.setTimeout(() => context.validationSystem().validate(), 300);  // after any transition
   };
 
 

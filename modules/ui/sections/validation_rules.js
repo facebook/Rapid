@@ -11,13 +11,14 @@ export function uiSectionValidationRules(context) {
   const MAXSQUARE = 20;
   const DEFAULTSQUARE = 5;  // see also unsquare_way.js
 
+  const validator = context.validationSystem();
   const prefs = context.storageSystem();
   const section = uiSection('issues-rules', context)
     .disclosureContent(renderDisclosureContent)
     .label(t.html('issues.rules.title'));
 
 
-  let _ruleKeys = context.validator().getRuleKeys()
+  let _ruleKeys = validator.getRuleKeys()
     .sort((key1, key2) => {
       // alphabetize by localized title
       return t(`issues.${key1}.title`) < t(`issues.${key2}.title`) ? -1 : 1;
@@ -47,7 +48,7 @@ export function uiSectionValidationRules(context) {
       .html(t.html('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        context.validator().disableRules(_ruleKeys);
+        validator.disableRules(_ruleKeys);
       });
 
     ruleLinks
@@ -57,7 +58,7 @@ export function uiSectionValidationRules(context) {
       .html(t.html('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        context.validator().disableRules([]);
+        validator.disableRules([]);
       });
 
     // Update
@@ -175,19 +176,19 @@ export function uiSectionValidationRules(context) {
       .property('value', degStr);
 
     prefs.setItem('validate-square-degrees', degStr);
-    context.validator().revalidateUnsquare();
+    validator.revalidateUnsquare();
   }
 
   function isRuleEnabled(d) {
-    return context.validator().isRuleEnabled(d);
+    return validator.isRuleEnabled(d);
   }
 
   function toggleRule(d3_event, d) {
-    context.validator().toggleRule(d);
+    validator.toggleRule(d);
   }
 
 
-  context.validator().on(`validated.uiSectionValidationRules`, () => {
+  validator.on('validated', () => {
     window.requestIdleCallback(section.reRender);
   });
 

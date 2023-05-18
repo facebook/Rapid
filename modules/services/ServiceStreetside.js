@@ -631,7 +631,7 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
 
     // Abort inflight requests that are no longer needed
-    for (const [tileID, inflight] of this._cache.inflight.entries()) {
+    for (const [tileID, inflight] of this._cache.inflight) {
       const needed = needTiles.find(tile => tile.id === tileID);
       if (!needed) {
         inflight.controller.abort();

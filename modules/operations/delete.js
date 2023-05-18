@@ -51,7 +51,7 @@ export function operationDelete(context, selectedIDs) {
     }
 
     context.perform(action, operation.annotation());
-    context.validator().validate();
+    context.validationSystem().validate();
 
     if (nextSelectedID && nextSelectedLoc) {
       if (context.hasEntity(nextSelectedID)) {

@@ -272,14 +272,14 @@ export function modeSelect(context, selectedIDs) {
 //                    actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
 //                    t('operations.add.annotation.vertex')
 //                );
-//                context.validator().validate();
+//                context.validationSystem().validate();
 //
 //            } else if (entity.type === 'midpoint') {
 //                context.perform(
 //                    actionAddMidpoint({ loc: entity.loc, edge: entity.edge }, osmNode()),
 //                    t('operations.add.annotation.vertex')
 //                );
-//                context.validator().validate();
+//                context.validationSystem().validate();
 //            }
 //        }
 
@@ -537,7 +537,7 @@ export function modeSelect(context, selectedIDs) {
             // the user added this relation but didn't edit it at all, so just delete it
             var deleteAction = actionDeleteRelation(entity.id, true /* don't delete untagged members */);
             context.perform(deleteAction, t('operations.delete.annotation.relation'));
-            context.validator().validate();
+            context.validationSystem().validate();
         }
     };
 

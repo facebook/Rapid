@@ -129,7 +129,7 @@ export class ServiceKartaview {
     const needTiles = this._tiler.zoomRange(TILEZOOM).getTiles(projection).tiles;
 
     // Abort inflight requests that are no longer needed
-    for (const [k, inflight] of this._cache.inflight.entries()) {
+    for (const [k, inflight] of this._cache.inflight) {
       const needed = needTiles.find(tile => k.indexOf(tile.id) === 0);
       if (!needed) {
         inflight.controller.abort();

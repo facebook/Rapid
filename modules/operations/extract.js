@@ -44,7 +44,7 @@ export function operationExtract(context, selectedIDs) {
     };
 
     context.perform(combinedAction, operation.annotation());
-    context.validator().validate();
+    context.validationSystem().validate();
 
     // Move the extracted nodes to the mouse cursor location
     const projection = context.projection;

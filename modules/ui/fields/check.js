@@ -166,7 +166,7 @@ export function uiFieldCheck(context, uifield) {
           );
 
           // must manually revalidate since no 'change' event was dispatched
-          context.validator().validate();
+          context.validationSystem().validate();
 
           d3_select(this)
             .call(reverserSetText);

@@ -283,7 +283,7 @@ export function uiEntityEditor(context) {
 
         // if leaving field (blur event), rerun validation
         if (!onInput) {
-            context.validator().validate();
+            context.validationSystem().validate();
         }
     }
 
@@ -337,7 +337,7 @@ export function uiEntityEditor(context) {
             }
         }
 
-        context.validator().validate();
+        context.validationSystem().validate();
     }
 
 

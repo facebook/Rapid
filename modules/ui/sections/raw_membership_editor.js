@@ -157,7 +157,7 @@ export function uiSectionRawMembershipEditor(context) {
                     n: membersToUpdate.length
                 })
             );
-            context.validator().validate();
+            context.validationSystem().validate();
         }
         _inChange = false;
     }
@@ -184,7 +184,7 @@ export function uiSectionRawMembershipEditor(context) {
                     n: _entityIDs.length
                 })
             );
-            context.validator().validate();
+            context.validationSystem().validate();
 
         } else {
             var relation = osmRelation();
@@ -216,7 +216,7 @@ export function uiSectionRawMembershipEditor(context) {
                 n: _entityIDs.length
             })
         );
-        context.validator().validate();
+        context.validationSystem().validate();
     }
 
 

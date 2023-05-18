@@ -30,7 +30,7 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
       .useLongAxis(Boolean(axis === 'long'));
 
     context.perform(action, operation.annotation());
-    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+    window.setTimeout(() => context.validationSystem().validate(), 300);  // after any transition
   };
 
 

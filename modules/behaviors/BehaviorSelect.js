@@ -476,7 +476,7 @@ export class BehaviorSelect extends AbstractBehavior {
         actionAddMidpoint({ loc: loc, edge: edge }, osmNode()),
         t('operations.add.annotation.vertex')
       );
-      context.validator().validate();
+      context.validationSystem().validate();
 
     } else if (isMidpoint) {
       const edge = [data.a.id, data.b.id];
@@ -484,7 +484,7 @@ export class BehaviorSelect extends AbstractBehavior {
         actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
         t('operations.add.annotation.vertex')
       );
-      context.validator().validate();
+      context.validationSystem().validate();
     }
   }
 

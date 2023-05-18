@@ -67,7 +67,7 @@ export function uiSectionValidationOptions(context) {
     }
 
     prefs.setItem(`validate-${d}`, val);
-    context.validator().validate();
+    context.validationSystem().validate();
   }
 
   return section;
