@@ -232,7 +232,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @returns a list of linestrings to draw as gridlines.
   */
   createGridLines (lines) {
-    const numSplits = this.context.imagery().numGridSplits;
+    const numSplits = this.context.imagerySystem().numGridSplits;
     let gridLines = [];
 
     //'isTaskRectangular' implies one and only one rectangular linestring.

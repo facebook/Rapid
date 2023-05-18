@@ -7,9 +7,9 @@ import { t, localizer } from '../core/localizer';
 
 
 /**
- * `RendererImagerySource` maintains the state of a single tiled imagery source.
+ * `ImagerySource` maintains the state of a single tiled imagery source.
  */
-export class RendererImagerySource {
+export class ImagerySource {
 
   /**
    * @constructor
@@ -249,10 +249,10 @@ export class RendererImagerySource {
 
 
 /**
- * `RendererImagerySourceNone`
+ * `ImagerySourceNone`
  * A special imagery source for when the user has imagery disabled.
  */
-export class RendererImagerySourceNone extends RendererImagerySource {
+export class ImagerySourceNone extends ImagerySource {
   constructor() {
     super({ id: 'none', template: '' });
   }
@@ -272,13 +272,13 @@ export class RendererImagerySourceNone extends RendererImagerySource {
 
 
 /**
- * `RendererImagerySourceCustom`
+ * `ImagerySourceCustom`
  * A special imagery source for when the user has custom imagery.
  * Overrides the imageryUsed method, also allows the url template to be changed.
  */
-export class RendererImagerySourceCustom extends RendererImagerySource {
-  constructor() {
-    super({ id: 'custom', template: '' });
+export class ImagerySourceCustom extends ImagerySource {
+  constructor(template = '') {
+    super({ id: 'custom', template: template });
   }
   get name() {
     return t('background.custom');
@@ -323,14 +323,14 @@ export class RendererImagerySourceCustom extends RendererImagerySource {
 
 
 /**
- * `RendererImagerySourceBing`
+ * `ImagerySourceBing`
  * A special imagery source for the Bing imagery source.
  * There should be more overrides in here, but they aren't currently working.
  *   https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
  *   https://docs.microsoft.com/en-us/bingmaps/rest-services/directly-accessing-the-bing-maps-tiles
  *   See also https://github.com/openstreetmap/iD/pull/9133
  */
-export class RendererImagerySourceBing extends RendererImagerySource {
+export class ImagerySourceBing extends ImagerySource {
   constructor(src) {
     super(src);
 
@@ -345,11 +345,11 @@ export class RendererImagerySourceBing extends RendererImagerySource {
 
 
 /**
- * `RendererImagerySourceEsri`
+ * `ImagerySourceEsri`
  * A special imagery source for the Esri imagery sources
  * Overrides the getMetadata function to get more imagery metadata.
  */
-export class RendererImagerySourceEsri extends RendererImagerySource {
+export class ImagerySourceEsri extends ImagerySource {
   constructor(src) {
     super(src);
 

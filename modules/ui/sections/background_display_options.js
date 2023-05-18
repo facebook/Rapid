@@ -5,6 +5,8 @@ import { uiSection } from '../section';
 
 export function uiSectionBackgroundDisplayOptions(context) {
   const prefs = context.storageSystem();
+  const imagerySystem = context.imagerySystem();
+
   const section = uiSection('background-display-options', context)
     .label(t.html('background.display_options'))
     .disclosureContent(renderDisclosureContent);
@@ -29,17 +31,16 @@ export function uiSectionBackgroundDisplayOptions(context) {
   function updateValue(d, val) {
     val = clamp(val, MINVAL, MAXVAL);
 
-    const imagery = context.imagery();
     _options[d] = val;
     if (d === 'brightness') {
       prefs.setItem('background-opacity', val);
-      imagery.brightness = val;
+      imagerySystem.brightness = val;
     } else if (d === 'contrast') {
-      imagery.contrast = val;
+      imagerySystem.contrast = val;
     } else if (d === 'saturation') {
-      imagery.saturation = val;
+      imagerySystem.saturation = val;
     } else if (d === 'sharpness') {
-      imagery.sharpness = val;
+      imagerySystem.sharpness = val;
     }
     section.reRender();
   }
@@ -119,7 +120,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
 
     // first time only, set brightness if needed
     if (containerEnter.size() && _options.brightness !== 1) {
-      context.imagery().brightness = _options.brightness;
+      imagerySystem.brightness = _options.brightness;
     }
   }
 

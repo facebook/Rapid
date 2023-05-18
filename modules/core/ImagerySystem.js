@@ -5,16 +5,16 @@ import whichPolygon from 'which-polygon';
 import { fileFetcher } from '../core/file_fetcher';
 
 import {
-  RendererImagerySource,
-  RendererImagerySourceBing,
-  RendererImagerySourceCustom,
-  RendererImagerySourceEsri,
-  RendererImagerySourceNone
-} from './RendererImagerySource';
+  ImagerySource,
+  ImagerySourceBing,
+  ImagerySourceCustom,
+  ImagerySourceEsri,
+  ImagerySourceNone
+} from './ImagerySource';
 
 
 /**
- * `RendererImagery` maintains the state of the tiled background and overlay imagery.
+ * `ImagerySystem` maintains the state of the tiled background and overlay imagery.
  *
  * Properties available:
  *   `offset`
@@ -27,7 +27,7 @@ import {
  * Events available:
  *   `imagerychange`     Fires on any change in imagery or display options
  */
-export class RendererImagery extends EventEmitter {
+export class ImagerySystem extends EventEmitter {
 
   /**
    * @constructor
@@ -37,7 +37,7 @@ export class RendererImagery extends EventEmitter {
     super();
     this.context = context;
 
-    this._setupPromise = null;
+    this._initPromise = null;
     this._imageryIndex = null;
     this._baseLayer = null;
     this._overlayLayers = [];
@@ -60,7 +60,7 @@ export class RendererImagery extends EventEmitter {
    * Called one time after all objects have been instantiated.
    */
   init() {
-    this._setupPromise = this._setupImageryAsync();
+    this._initPromise = this._setupImageryAsync();
     this.context.urlHashSystem().on('hashchange', this._hashchange);
   }
 
@@ -71,9 +71,9 @@ export class RendererImagery extends EventEmitter {
    * @param  q   Object containing key/value pairs of the current query parameters
    */
   _hashchange(q) {
-    if (!this._setupPromise) return;  // called too early
+    if (!this._initPromise) return;  // called too early
 
-    this._setupPromise  // after imagery loaded
+    this._initPromise  // after imagery loaded
       .then(() => {
         // background
         let baseLayer;
@@ -414,7 +414,7 @@ export class RendererImagery extends EventEmitter {
    * @return  Promise that resolves with the imagery index once everything has been loaded and is ready
    */
   _setupImageryAsync() {
-    if (this._setupPromise) return this._setupPromise;
+    if (this._initPromise) return this._initPromise;
 
     return fileFetcher.get('imagery')
       .then(data => {
@@ -448,25 +448,25 @@ export class RendererImagery extends EventEmitter {
         // Create a which-polygon index to support efficient spatial querying.
         this._imageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
 
-        // Instantiate `RendererImagerySource` objects for each imagery item.
+        // Instantiate `ImagerySource` objects for each imagery item.
         for (const d of data) {
           let source;
           if (d.type === 'bing') {
-            source = new RendererImagerySourceBing(d);
+            source = new ImagerySourceBing(d);
           } else if (/^EsriWorldImagery/.test(d.id)) {
-            source = new RendererImagerySourceEsri(d);
+            source = new ImagerySourceEsri(d);
           } else {
-            source = new RendererImagerySource(d);
+            source = new ImagerySource(d);
           }
           this._imageryIndex.sources.set(d.id, source);
         }
 
         // Add 'None'
-        const none = new RendererImagerySourceNone();
+        const none = new ImagerySourceNone();
         this._imageryIndex.sources.set(none.id, none);
 
         // Add 'Custom' - seed it with whatever template the user has used previously
-        const custom = new RendererImagerySourceCustom();
+        const custom = new ImagerySourceCustom();
         const prefs = this.context.storageSystem();
         custom.template = prefs.getItem('background-custom-template') || '';
         this._imageryIndex.sources.set(custom.id, custom);
