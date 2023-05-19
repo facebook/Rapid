@@ -211,7 +211,7 @@ export function modeSelect(context, selectedIDs) {
     mode.enter = function() {
         if (!checkSelectedIDs()) return false;
 
-        context.features().forceVisible(selectedIDs);
+        context.filterSystem().forceVisible(selectedIDs);
         loadOperations();
 
         context.enableBehaviors(['hover', 'select', 'drag', 'lasso', 'map-interaction', 'paste']);
@@ -523,7 +523,7 @@ export function modeSelect(context, selectedIDs) {
 
 //        context.map().on('drawn.select', null);
         context.ui().sidebar.hide();
-        context.features().forceVisible([]);
+        context.filterSystem().forceVisible([]);
 
         var entity = singular();
         if (_newFeature && entity && entity.type === 'relation' &&

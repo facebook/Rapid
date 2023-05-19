@@ -160,11 +160,10 @@ export class RendererMap extends EventEmitter {
         if (difference) {
           // todo - maybe only do this if difference.didChange.geometry?
           const complete = difference.complete();
-          const features = context.features();
           for (const entity of complete.values()) {
             if (entity) {      // may be undefined if entity was deleted
               entity.touch();  // bump version in place
-              features.clearEntity(entity);  // clear feature filter cache
+              context.filterSystem().clearEntity(entity);  // clear feature filter cache
             }
           }
           // touching entity will bump .v and the renderer should pick it up as dirty?
@@ -176,7 +175,7 @@ export class RendererMap extends EventEmitter {
       .on('undone.map', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
       .on('redone.map', (stack) => _didUndoOrRedo(stack.transform));
 
-    context.features().on('change', () => {
+    context.filterSystem().on('filterchange', () => {
       scene.dirtyLayers('osm');
       this.immediateRedraw();
     });
