@@ -5,6 +5,7 @@ export { coreRapidContext } from './rapid_context';
 export { coreLocalizer, t, localizer } from './localizer';
 export { coreUploader } from './uploader';
 
+export { FilterSystem } from './FilterSystem';
 export { ImagerySystem } from './ImagerySystem';
 export { LocationSystem } from './LocationSystem';
 export { PhotoSystem } from './PhotoSystem';
@@ -25,7 +26,7 @@ export {
   ImagerySourceNone
 } from './ImagerySource';
 
-export { Category } from './preset/Category.js';
-export { Collection } from './preset/Collection.js';
-export { Field } from './preset/Field.js';
-export { Preset } from './preset/Preset.js';
+export { Category } from './preset/Category';
+export { Collection } from './preset/Collection';
+export { Field } from './preset/Field';
+export { Preset } from './preset/Preset';

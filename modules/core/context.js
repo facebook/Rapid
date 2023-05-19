@@ -10,6 +10,9 @@ import { fileFetcher } from './file_fetcher';
 import { localizer } from './localizer';
 import { coreHistory } from './history';
 import { coreUploader } from './uploader';
+import { RendererMap } from '../renderer';
+
+import { FilterSystem } from './FilterSystem';
 import { ImagerySystem } from './ImagerySystem';
 import { LocationSystem } from './LocationSystem';
 import { PhotoSystem } from './PhotoSystem';
@@ -23,7 +26,6 @@ import * as Modes from '../modes';
 import * as Services from '../services';
 import { modeSelect } from '../modes/select';   // legacy
 
-import { rendererFeatures, RendererMap } from '../renderer';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
 
@@ -49,6 +51,7 @@ export function coreContext() {
   context.behaviors = new Map();  // Map (behavior.id -> behavior)
 
 
+  let _filterSystem;
   let _history;
   let _imagerySystem;
   let _locationSystem;
@@ -59,7 +62,7 @@ export function coreContext() {
   let _urlHashSystem;
   let _validationSystem;
 
-  context.connection = () => context.services.get('osm');  // legacy name, avoid
+  context.filterSystem = () => _filterSystem;
   context.history = () => _history;
   context.imagerySystem = () => _imagerySystem;
   context.locationSystem = () => _locationSystem;
@@ -495,12 +498,10 @@ export function coreContext() {
 
 
   /* Features */
-  let _features;
-  context.features = () => _features;
   context.hasHiddenConnections = (entityID) => {
     const graph = _history.graph();
     const entity = graph.entity(entityID);
-    return _features.hasHiddenConnections(entity, graph);
+    return _filterSystem.hasHiddenConnections(entity, graph);
   };
 
 
@@ -604,7 +605,7 @@ export function coreContext() {
 
     _rapidContext.reset();
     _validationSystem.reset();
-    _features.reset();
+    _filterSystem.reset();
     _history.reset();
     _uploader.reset();
 
@@ -634,6 +635,7 @@ export function coreContext() {
     // until this is complete since load statuses are indeterminate. The order
     // of instantiation shouldn't matter.
     function instantiateAll() {
+      _filterSystem = new FilterSystem(context);
       _imagerySystem = new ImagerySystem(context);
       _locationSystem = new LocationSystem(context);
       _photoSystem = new PhotoSystem(context);
@@ -656,7 +658,6 @@ export function coreContext() {
       context.redo = withDebouncedSave(_history.redo);
 
       _uploader = coreUploader(context);
-      _features = rendererFeatures(context);
       _map = new RendererMap(context);
       _rapidContext = coreRapidContext(context);
       _ui = uiInit(context);
@@ -712,7 +713,7 @@ export function coreContext() {
 
       _validationSystem.init();
       _imagerySystem.init();
-      _features.init();
+      _filterSystem.init();
       _map.init();         // watch out - init doesn't actually create the renderer :(
       _rapidContext.init();
 

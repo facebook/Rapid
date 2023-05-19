@@ -67,7 +67,7 @@ export class ModeDragNode extends AbstractMode {
 
     if (!this._wasMidpoint) {
       // Bail out if the node is connected to something hidden.
-      const hasHidden = context.features().hasHiddenConnections(entity, context.graph());
+      const hasHidden = context.filterSystem().hasHiddenConnections(entity, context.graph());
       if (hasHidden) {
         context.ui().flash
           .duration(4000)

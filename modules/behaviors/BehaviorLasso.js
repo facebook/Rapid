@@ -156,7 +156,7 @@ export class BehaviorLasso extends AbstractBehavior {
         return (
           entity.type === 'node' &&
           geomPointInPolygon(entity.loc, polygonLocs) &&
-          !context.features().isHidden(entity, graph, entity.geometry(graph)) &&
+          !context.filterSystem().isHidden(entity, graph, entity.geometry(graph)) &&
           !locationSystem.blocksAt(entity.loc).length
         );
       });

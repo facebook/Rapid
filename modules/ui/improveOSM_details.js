@@ -103,8 +103,8 @@ export function uiImproveOsmDetails(context) {
         }
       });
 
-    // Don't hide entities related to this error - #5880
-    context.features().forceVisible(relatedEntities);
+    // Don't hide entities related to this error - iD#5880
+    context.filterSystem().forceVisible(relatedEntities);
     context.map().immediateRedraw();
   }
 

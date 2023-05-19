@@ -14,6 +14,8 @@ import { utilKeybinding, utilNoAuto, utilRebind, utilTotalExtent } from '../util
 
 export function uiPresetList(context) {
     var presetSystem = context.presetSystem();
+    var filterSystem = context.filterSystem();
+
     var dispatch = d3_dispatch('cancel', 'choose');
     var _entityIDs;
     var _currLoc;
@@ -79,7 +81,7 @@ export function uiPresetList(context) {
             .attr('class', 'preset-list')
             .call(drawList, presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc));
 
-        context.features().on('change.preset-list', updateForFeatureHiddenState);
+        filterSystem.on('filterchange', updateForFeatureHiddenState);
 
 
         function initialKeydown(d3_event) {
@@ -445,9 +447,9 @@ export function uiPresetList(context) {
         button.call(uiTooltip().destroyAny);
 
         button.each(function(item, index) {
-            var hiddenPresetFeaturesId;
+            let hiddenPresetFeaturesId;
             for (var i in geometries) {
-                hiddenPresetFeaturesId = context.features().isHiddenPreset(item.preset, geometries[i]);
+                hiddenPresetFeaturesId = filterSystem.isHiddenPreset(item.preset, geometries[i]);
                 if (hiddenPresetFeaturesId) break;
             }
             var isHiddenPreset = !context.inIntro() &&
@@ -458,9 +460,8 @@ export function uiPresetList(context) {
                 .classed('disabled', isHiddenPreset);
 
             if (isHiddenPreset) {
-                var isAutoHidden = context.features().autoHidden(hiddenPresetFeaturesId);
                 d3_select(this).call(uiTooltip()
-                    .title(t.html('inspector.hidden_preset.' + (isAutoHidden ? 'zoom' : 'manual'), {
+                    .title(t.html('inspector.hidden_preset.manual', {
                         features: t.html('feature.' + hiddenPresetFeaturesId + '.description')
                     }))
                     .placement(index < 2 ? 'bottom' : 'top')

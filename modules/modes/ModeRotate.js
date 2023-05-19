@@ -51,7 +51,7 @@ export class ModeRotate extends AbstractMode {
     this._active = true;
 
     const context = this.context;
-    context.features().forceVisible(this._entityIDs);
+    context.filterSystem().forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction']);
 
     this._prevGraph = null;
@@ -82,7 +82,7 @@ export class ModeRotate extends AbstractMode {
     this._pivotLoc = null;
 
     const context = this.context;
-    context.features().forceVisible([]);
+    context.filterSystem().forceVisible([]);
 
     const eventManager = this.context.map().renderer.events;
     eventManager.off('click', this._finish);

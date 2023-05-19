@@ -102,7 +102,7 @@ export class PixiLayerOsm extends AbstractLayer {
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
     let entities = context.history().intersects(map.extent());             // Gather data in view
-    entities = context.features().filter(entities, this.context.graph());  // Apply feature filters
+    entities = context.filterSystem().filter(entities, this.context.graph());  // Apply feature filters
 
     const data = {
       polygons: new Map(),
@@ -223,7 +223,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const graph = this.context.graph();
     const presetSystem = this.context.presetSystem();
     const pointsContainer = this.scene.groups.get('points');
-    const pointsHidden = this.context.features().hidden('points');
+    const showPoints = this.context.filterSystem().isEnabled('points');
 
     // For deciding if an unlabeled polygon feature is interesting enough to show a virtual pin.
     // Note that labeled polygon features will always get a virtual pin.
@@ -308,7 +308,7 @@ export class PixiLayerOsm extends AbstractLayer {
           // POI = "Point of Interest" -and- "Pole of Inaccessability"
           // For POIs mapped as polygons, we can create a virtual point feature at the pole of inaccessability.
           // Try to show a virtual pin if there is a label or if the preset is interesting enough..
-          if (!pointsHidden && (label || isInterestingPreset(preset))) {
+          if (showPoints && (label || isInterestingPreset(preset))) {
             feature.poiFeatureID = `${this.layerID}-${entityID}-poi-${i}`;
             feature.poiPreset = preset;
           } else {

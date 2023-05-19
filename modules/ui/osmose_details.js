@@ -184,8 +184,8 @@ export function uiOsmoseDetails(context) {
               }
             });
 
-        // Don't hide entities related to this issue - #5880
-        context.features().forceVisible(d.elems);
+        // Don't hide entities related to this issue - iD#5880
+        context.filterSystem().forceVisible(d.elems);
         context.map().immediateRedraw();
       })
       .catch(e => console.error(e));  // eslint-disable-line
