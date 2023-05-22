@@ -4,7 +4,6 @@ import { Extent, Tiler, vecAdd} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { fileFetcher } from '../core/file_fetcher';
 import { QAItem } from '../osm';
 import { t } from '../core/localizer';
 import { utilRebind } from '../util';
@@ -74,7 +73,8 @@ export class ServiceKeepRight {
   init() {
     this.reset();
 
-    fileFetcher.get('keepRight')
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    dataLoaderSystem.get('keepRight')
       .then(d => this._krData = d);
   }
 

@@ -4,7 +4,6 @@ import { drag as d3_drag } from 'd3-drag';
 import { utilArrayUniq, utilUnicodeCharsCount } from '@rapid-sdk/util';
 import * as countryCoder from '@rapideditor/country-coder';
 
-import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
 import { t } from '../../core/localizer';
 import { uiCombobox } from '../combobox';
@@ -46,9 +45,10 @@ export function uiFieldCombo(context, uifield) {
 
     // initialize deprecated tags array
     var _dataDeprecated = [];
-    fileFetcher.get('deprecated')
-        .then(function(d) { _dataDeprecated = d; })
-        .catch(e => console.error(e));  // eslint-disable-line
+    const dataLoaderSystem = context.dataLoaderSystem();
+    dataLoaderSystem.get('deprecated')
+      .then(function(d) { _dataDeprecated = d; })
+      .catch(e => console.error(e));  // eslint-disable-line
 
 
     // ensure multiCombo field.key ends with a ':'

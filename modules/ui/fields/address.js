@@ -4,7 +4,6 @@ import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { utilArrayUniqBy } from '@rapid-sdk/util';
 import * as countryCoder from '@rapideditor/country-coder';
 
-import { fileFetcher } from '../../core/file_fetcher';
 import { geoChooseEdge } from '../../geo';
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
@@ -26,7 +25,8 @@ export function uiFieldAddress(context, uifield) {
     ]
   }];
 
-  fileFetcher.get('address_formats')
+  const dataLoaderSystem = context.dataLoaderSystem();
+  dataLoaderSystem.get('address_formats')
     .then(d => {
       _addressFormats = d;
       if (!_selection.empty()) {

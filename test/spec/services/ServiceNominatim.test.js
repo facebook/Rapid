@@ -2,7 +2,7 @@ describe('ServiceNominatim', () => {
   let nominatim;
 
   before(() => {
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('ServiceNominatim', () => {
   });
 
   afterEach(() => {
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
   function parseQueryString(url) {
@@ -58,7 +58,7 @@ describe('ServiceNominatim', () => {
         );
         expect(callback).to.have.been.calledWithExactly(null, { address: { country_code:'at' }});
 
-        fetchMock.reset();
+        fetchMock.resetHistory();
         fetchMock.mock(new RegExp('https://nominatim.openstreetmap.org/reverse'), {
           body: '{"address":{"country_code":"cz"}}',
           status: 200,

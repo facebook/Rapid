@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq, utilUniqueString } from '@rapid-sdk/util';
 import * as countryCoder from '@rapideditor/country-coder';
 
-import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
@@ -25,12 +24,14 @@ export function uiFieldLocalized(context, uifield) {
     // A concern here in switching to async data means that _languagesArray will not
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
-    fileFetcher.get('languages')
+    const dataLoaderSystem = context.dataLoaderSystem();
+
+    dataLoaderSystem.get('languages')
         .then(loadLanguagesArray)
         .catch(e => console.error(e));  // eslint-disable-line
 
     var _territoryLanguages = {};
-    fileFetcher.get('territory_languages')
+    dataLoaderSystem.get('territory_languages')
         .then(function(d) { _territoryLanguages = d; })
         .catch(e => console.error(e));  // eslint-disable-line
 

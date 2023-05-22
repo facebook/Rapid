@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
-import { fileFetcher } from '../../core/file_fetcher';
 import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { actionDiscardTags } from '../../actions/discard_tags';
@@ -15,7 +14,8 @@ export function uiSectionChanges(context) {
     var detected = utilDetect();
 
     var _discardTags = {};
-    fileFetcher.get('discarded')
+    const dataLoaderSystem = context.dataLoaderSystem();
+    dataLoaderSystem.get('discarded')
         .then(function(d) { _discardTags = d; })
         .catch(function() { /* ignore */ });
 

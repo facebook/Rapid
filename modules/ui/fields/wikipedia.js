@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
 import { actionChangeTags } from '../../actions/change_tags';
 import { uiIcon } from '../icon';
@@ -20,7 +19,8 @@ export function uiFieldWikipedia(context, uifield) {
   let _tags;
 
   let _dataWikipedia = [];
-  fileFetcher.get('wmf_sitematrix')
+  const dataLoaderSystem = context.dataLoaderSystem();
+  dataLoaderSystem.get('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);

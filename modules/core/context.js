@@ -6,12 +6,12 @@ import _debounce from 'lodash-es/debounce';
 
 import { t } from '../core/localizer';
 import { coreRapidContext } from './rapid_context';
-import { fileFetcher } from './file_fetcher';
 import { localizer } from './localizer';
 import { coreHistory } from './history';
 import { coreUploader } from './uploader';
 import { RendererMap } from '../renderer';
 
+import { DataLoaderSystem } from './DataLoaderSystem';
 import { FilterSystem } from './FilterSystem';
 import { ImagerySystem } from './ImagerySystem';
 import { LocationSystem } from './LocationSystem';
@@ -51,25 +51,29 @@ export function coreContext() {
   context.behaviors = new Map();  // Map (behavior.id -> behavior)
 
 
-  let _filterSystem;
   let _history;
-  let _imagerySystem;
-  let _locationSystem;
-  let _photoSystem;
-  let _presetSystem;
-  let _storageSystem;
   let _uploader;
-  let _urlHashSystem;
-  let _validationSystem;
 
-  context.filterSystem = () => _filterSystem;
   context.history = () => _history;
+  context.uploader = () => _uploader;
+
+  const _dataLoaderSystem = new DataLoaderSystem(context);
+  const _filterSystem = new FilterSystem(context);
+  const _imagerySystem = new ImagerySystem(context);
+  const _locationSystem = new LocationSystem(context);
+  const _photoSystem = new PhotoSystem(context);
+  const _presetSystem = new PresetSystem(context);
+  const _storageSystem = new StorageSystem(context);
+  const _urlHashSystem = new UrlHashSystem(context);
+  const _validationSystem = new ValidationSystem(context);
+
+  context.dataLoaderSystem = () => _dataLoaderSystem;
+  context.filterSystem = () => _filterSystem;
   context.imagerySystem = () => _imagerySystem;
   context.locationSystem = () => _locationSystem;
   context.photoSystem = () => _photoSystem;
   context.presetSystem = () => _presetSystem;
   context.storageSystem = () => _storageSystem;
-  context.uploader = () => _uploader;
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
 
@@ -564,7 +568,6 @@ export function coreContext() {
   context.assetPath = function(val) {
     if (!arguments.length) return _assetPath;
     _assetPath = val;
-    fileFetcher.assetPath(val);
     return context;
   };
 
@@ -572,7 +575,6 @@ export function coreContext() {
   context.assetMap = function(val) {
     if (!arguments.length) return _assetMap;
     _assetMap = val;
-    fileFetcher.assetMap(val);
     return context;
   };
 
@@ -631,19 +633,9 @@ export function coreContext() {
 
 
     // Instantiate core classes
-    // Load variables and properties. No property of `context` should be accessed
-    // until this is complete since load statuses are indeterminate. The order
-    // of instantiation shouldn't matter.
+    // At this step the objects may not access context or each other.
+    // The order of instantiation shouldn't matter.
     function instantiateAll() {
-      _filterSystem = new FilterSystem(context);
-      _imagerySystem = new ImagerySystem(context);
-      _locationSystem = new LocationSystem(context);
-      _photoSystem = new PhotoSystem(context);
-      _presetSystem = new PresetSystem(context);
-      _storageSystem = new StorageSystem(context);
-      _urlHashSystem = new UrlHashSystem(context);
-      _validationSystem = new ValidationSystem(context);
-
       _history = coreHistory(context);
       context.graph = _history.graph;
       context.hasEntity = (id) => _history.graph().hasEntity(id);
@@ -686,9 +678,15 @@ export function coreContext() {
     }
 
 
-    // Set up objects that might need to access properties of `context`. The order
-    // might matter if dependents make calls to each other. Be wary of async calls.
+    // Initialize core classes
+    // Call .init() functions to start setting thigns up.
+    // At this step all core object are instantiated and they may access context.
+    // They may start listening to events, but they should not call each other.
+    // The order of .init() may matter here if dependents make calls to each other.
+    // The UI is the final thing that gets initialized.
     function initializeAll() {
+      _dataLoaderSystem.init();
+
       if (context.initialHashParams.presets) {
         const presetIDs = context.initialHashParams.presets.split(',').map(s => s.trim()).filter(Boolean);
         _presetSystem.addablePresetIDs = new Set(presetIDs);

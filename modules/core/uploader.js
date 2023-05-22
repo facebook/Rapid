@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUnion, utilArrayUniq } from '@rapid-sdk/util';
 
-import { fileFetcher } from './file_fetcher';
 import { actionDiscardTags } from '../actions/discard_tags';
 import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
 import { actionNoop } from '../actions/noop';
@@ -35,7 +34,9 @@ export function coreUploader(context) {
     var _origChanges;
 
     var _discardTags = {};
-    fileFetcher.get('discarded')
+
+    const dataLoaderSystem = context.dataLoaderSystem();
+    dataLoaderSystem.get('discarded')
         .then(function(d) { _discardTags = d; })
         .catch(function() { /* ignore */ });
 

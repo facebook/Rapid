@@ -1,6 +1,5 @@
 import { utilStringQs } from '@rapid-sdk/util';
 
-import { fileFetcher } from './file_fetcher';
 import { utilDetect } from '../util/detect';
 
 
@@ -115,16 +114,21 @@ export function coreLocalizer() {
       tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/translations'
     };
 
-    let fileMap = fileFetcher.fileMap();
+// todo - this should not work but it does!
+// `this` is Window here, and
+//   our dev index.html just happened to add context to the window for debugging
+//   this init happens to get called after the dataLoader is set up.
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    let fileMap = dataLoaderSystem.fileMap;
     for (let scope in scopes) {
       const key = `locales_index_${scope}`;
-      if (!fileMap[key]) {
-        fileMap[key] = scopes[scope] + '/index.min.json';
+      if (!fileMap.has(key)) {
+        fileMap.set(key, scopes[scope] + '/index.min.json');
       }
       filesToFetch.push(key);
     }
 
-    return _initPromise = Promise.all(filesToFetch.map(key => fileFetcher.get(key)))
+    return _initPromise = Promise.all(filesToFetch.map(key => dataLoaderSystem.get(key)))
       .then(results => {
         _supportedLanguages = results[0];
         _supportedLocales = results[1];
@@ -238,13 +242,14 @@ export function coreLocalizer() {
       return Promise.resolve(locale);
     }
 
-    let fileMap = fileFetcher.fileMap();
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    let fileMap = dataLoaderSystem.fileMap;
     const key = `locale_${scope}_${locale}`;
-    if (!fileMap[key]) {
-      fileMap[key] = `${directory}/${locale}.min.json`;
+    if (!fileMap.has(key)) {
+      fileMap.set(key, `${directory}/${locale}.min.json`);
     }
 
-    return fileFetcher.get(key)
+    return dataLoaderSystem.get(key)
       .then(d => {
         if (!_cache[scope]) {
           _cache[scope] = {};

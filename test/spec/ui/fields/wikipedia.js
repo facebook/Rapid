@@ -22,7 +22,7 @@ describe('uiFieldWikipedia', function() {
             keys: ['wikipedia', 'wikidata'],
             type: 'wikipedia'
         });
-        fetchMock.reset();
+        fetchMock.resetHistory();
         fetchMock.mock(new RegExp('\/w\/api\.php.*action=wbgetentities'), {
             body: '{"entities":{"Q216353":{"id":"Q216353"}}}',
             status: 200,
@@ -31,7 +31,7 @@ describe('uiFieldWikipedia', function() {
     });
 
     afterEach(function() {
-        fetchMock.reset();
+        fetchMock.resetHistory();
     });
 
 
@@ -135,7 +135,7 @@ describe('uiFieldWikipedia', function() {
         wikipedia.on('change.spy', spy);
 
         // Create an XHR server that will respond after 60ms
-        fetchMock.reset();
+        fetchMock.resetHistory();
         fetchMock.mock(new RegExp('\/w\/api\.php.*action=wbgetentities'), {
             body: '{"entities":{"Q216353":{"id":"Q216353"}}}',
             status: 200,
@@ -155,7 +155,7 @@ describe('uiFieldWikipedia', function() {
 
         // Create a new XHR server that will respond after 60ms to
         // separate requests after this point from those before
-        fetchMock.reset();
+        fetchMock.resetHistory();
         fetchMock.mock(new RegExp('\/w\/api\.php.*action=wbgetentities'), {
             body: '{"entities":{"Q216353":{"id":"Q216353"}}}',
             status: 200,

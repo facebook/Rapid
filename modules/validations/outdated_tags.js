@@ -4,7 +4,6 @@ import { t } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionUpgradeTags } from '../actions/upgrade_tags';
-import { fileFetcher } from '../core';
 import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
@@ -17,7 +16,8 @@ export function validationOutdatedTags(context) {
   let _dataDeprecated;
 
   // fetch deprecated tags
-  fileFetcher.get('deprecated')
+  const dataLoaderSystem = context.dataLoaderSystem();
+  dataLoaderSystem.get('deprecated')
     .then(d => _dataDeprecated = d)
     .catch(() => { /* ignore */ })
     .finally(() => _waitingForDeprecated = false);
