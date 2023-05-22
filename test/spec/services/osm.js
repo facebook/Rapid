@@ -33,7 +33,7 @@ describe('serviceOsm', function () {
     });
 
     afterEach(function() {
-        fetchMock.reset();
+        fetchMock.resetHistory();
         serverXHR.restore();
     });
 

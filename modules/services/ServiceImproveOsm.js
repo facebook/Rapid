@@ -4,7 +4,6 @@ import { Extent, Tiler, vecAdd, vecScale} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { fileFetcher } from '../core/file_fetcher';
 import { QAItem } from '../osm';
 // import { serviceOsm } from './index';
 import { t } from '../core/localizer';
@@ -58,7 +57,8 @@ export class ServiceImproveOsm {
   init() {
     this.reset();
 
-    fileFetcher.get('qa_data')
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    dataLoaderSystem.get('qa_data')
       .then(d => this._impOsmData = d.improveOSM);
   }
 

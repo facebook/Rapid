@@ -6,7 +6,6 @@ import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
 
-import { fileFetcher } from '../core/file_fetcher';
 import { localizer } from '../core/localizer';
 import { QAItem } from '../osm';
 import { utilRebind } from '../util';
@@ -48,7 +47,8 @@ export class ServiceOsmose {
   init() {
     this.reset();
 
-    fileFetcher.get('qa_data')
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    dataLoaderSystem.get('qa_data')
       .then(d => {
         this._osmoseData.icons = d.osmose.icons;
         this._osmoseData.types = Object.keys(d.osmose.icons)

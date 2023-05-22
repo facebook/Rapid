@@ -1,6 +1,5 @@
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { fileFetcher } from '../core/file_fetcher';
 import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
 import { Category } from './preset/Category.js';
 import { Collection } from './preset/Collection.js';
@@ -67,11 +66,12 @@ export class PresetSystem {
   initAsync() {
     if (this._initPromise) return this._initPromise;
 
+    const dataLoaderSystem = this.context.dataLoaderSystem();
     return this._initPromise = Promise.all([
-        fileFetcher.get('preset_categories'),
-        fileFetcher.get('preset_defaults'),
-        fileFetcher.get('preset_presets'),
-        fileFetcher.get('preset_fields')
+        dataLoaderSystem.get('preset_categories'),
+        dataLoaderSystem.get('preset_defaults'),
+        dataLoaderSystem.get('preset_presets'),
+        dataLoaderSystem.get('preset_fields')
       ])
       .then(vals => {
         this.merge({

@@ -7,28 +7,30 @@ describe('PresetSystem', () => {
     getItem() { return ''; }
   }
 
-  class MockLocationSystem {
-    constructor() { }
-  }
-
   class MockContext {
     constructor()   {
+      this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
+      let cache = this._dataLoaderSystem._cachedData;  // cache empty data so we dont try loading anything
+      cache.preset_categories = {};
+      cache.preset_defaults = {};
+      cache.preset_fields = {};
+      cache.preset_presets = {};
+
+      this._locationSystem = new Rapid.LocationSystem(this);
       this._storageSystem = new MockStorageSystem();
-      this._locationSystem = new MockLocationSystem();
      }
-    storageSystem()  { return this._storageSystem; }
-    locationSystem() { return this._locationSystem; }
+    dataLoaderSystem() { return this._dataLoaderSystem; }
+    locationSystem()   { return this._locationSystem; }
+    storageSystem()    { return this._storageSystem; }
   }
 
 
   beforeEach(() => {
     _context = new MockContext();
-    Rapid.fileFetcher.cache().preset_presets = {};
     _savedAreaKeys = Rapid.osmAreaKeys;
   });
 
   afterEach(() => {
-    Rapid.fileFetcher.cache().preset_presets = {};
     Rapid.osmSetAreaKeys(_savedAreaKeys);
   });
 
@@ -67,15 +69,16 @@ describe('PresetSystem', () => {
 
 
   describe('#match', () => {
-    const testPresets = {
-      residential: { tags: { highway: 'residential' }, geometry: ['line'] },
-      park: { tags: { leisure: 'park' }, geometry: ['point', 'area'] }
-    };
+    beforeEach(() => {
+      const testPresets = {
+        residential: { tags: { highway: 'residential' }, geometry: ['line'] },
+        park: { tags: { leisure: 'park' }, geometry: ['point', 'area'] }
+      };
+      _context.dataLoaderSystem()._cachedData.preset_presets = testPresets;
+    });
 
     it('returns a collection containing presets matching a geometry and tags', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
-
       return presets.initAsync().then(() => {
         const way = Rapid.osmWay({ tags: { highway: 'residential' } });
         const graph = new Rapid.Graph([way]);
@@ -84,7 +87,6 @@ describe('PresetSystem', () => {
     });
 
     it('returns the appropriate fallback preset when no tags match', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       const point = Rapid.osmNode();
       const line = Rapid.osmWay({ tags: { foo: 'bar' } });
@@ -97,7 +99,6 @@ describe('PresetSystem', () => {
     });
 
     it('matches vertices on a line as points', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       const point = Rapid.osmNode({ tags: { leisure: 'park' } });
       const line = Rapid.osmWay({ nodes: [point.id], tags: { 'highway': 'residential' } });
@@ -109,7 +110,6 @@ describe('PresetSystem', () => {
     });
 
     it('matches vertices on an addr:interpolation line as points', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       const point = Rapid.osmNode({ tags: { leisure: 'park' } });
       const line = Rapid.osmWay({ nodes: [point.id], tags: { 'addr:interpolation': 'even' } });
@@ -123,18 +123,20 @@ describe('PresetSystem', () => {
 
 
   describe('#areaKeys', () => {
-    const testPresets = {
-      'amenity/fuel/shell': { tags: { 'amenity': 'fuel' }, geometry: ['point', 'area'], suggestion: true },
-      'highway/foo': { tags: { 'highway': 'foo' }, geometry: ['area'] },
-      'leisure/track': { tags: { 'leisure': 'track' }, geometry: ['line', 'area'] },
-      'natural': { tags: { 'natural': '*' }, geometry: ['point', 'vertex', 'area'] },
-      'natural/peak': { tags: { 'natural': 'peak' }, geometry: ['point', 'vertex'] },
-      'natural/tree_row': { tags: { 'natural': 'tree_row' }, geometry: ['line'] },
-      'natural/wood': { tags: { 'natural': 'wood' }, geometry: ['point', 'area'] }
-    };
+    beforeEach(() => {
+      const testPresets = {
+        'amenity/fuel/shell': { tags: { 'amenity': 'fuel' }, geometry: ['point', 'area'], suggestion: true },
+        'highway/foo': { tags: { 'highway': 'foo' }, geometry: ['area'] },
+        'leisure/track': { tags: { 'leisure': 'track' }, geometry: ['line', 'area'] },
+        'natural': { tags: { 'natural': '*' }, geometry: ['point', 'vertex', 'area'] },
+        'natural/peak': { tags: { 'natural': 'peak' }, geometry: ['point', 'vertex'] },
+        'natural/tree_row': { tags: { 'natural': 'tree_row' }, geometry: ['line'] },
+        'natural/wood': { tags: { 'natural': 'wood' }, geometry: ['point', 'area'] }
+      };
+      _context.dataLoaderSystem()._cachedData.preset_presets = testPresets;
+    });
 
     it('includes keys for presets with area geometry', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       return presets.initAsync().then(() => {
         expect(presets.areaKeys()).to.include.keys('natural');
@@ -142,7 +144,6 @@ describe('PresetSystem', () => {
     });
 
     it('discards key-values for presets with a line geometry', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       return presets.initAsync().then(() => {
         expect(presets.areaKeys().natural).to.include.keys('tree_row');
@@ -151,7 +152,6 @@ describe('PresetSystem', () => {
     });
 
     it('discards key-values for presets with both area and line geometry', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       return presets.initAsync().then(() => {
         expect(presets.areaKeys().leisure).to.include.keys('track');
@@ -159,7 +159,6 @@ describe('PresetSystem', () => {
     });
 
     it('does not discard key-values for presets with neither area nor line geometry', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       return presets.initAsync().then(() => {
         expect(presets.areaKeys().natural).not.to.include.keys('peak');
@@ -167,7 +166,6 @@ describe('PresetSystem', () => {
     });
 
     it('does not discard generic \'*\' key-values', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       return presets.initAsync().then(() => {
         expect(presets.areaKeys().natural).not.to.include.keys('natural');
@@ -175,7 +173,6 @@ describe('PresetSystem', () => {
     });
 
     it('ignores keys like \'highway\' that are assumed to be lines', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       return presets.initAsync().then(() => {
         expect(presets.areaKeys()).not.to.include.keys('highway');
@@ -183,7 +180,6 @@ describe('PresetSystem', () => {
     });
 
     it('ignores suggestion presets', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       return presets.initAsync().then(() => {
         expect(presets.areaKeys()).not.to.include.keys('amenity');
@@ -216,34 +212,38 @@ describe('PresetSystem', () => {
 
 
   describe('#match', () => {
-    const testPresets = {
-      building: {
-        name: 'Building',
-        tags: { building: 'yes' },
-        geometry: ['area']
-      },
-      'type/multipolygon': {
-        name: 'Multipolygon',
-        geometry: ['area', 'relation'],
-        tags: { 'type': 'multipolygon' },
-        searchable: false,
-        matchScore: 0.1
-      },
-      address: {
-        name: 'Address',
-        geometry: ['point', 'vertex', 'area'],
-        tags: { 'addr:*': '*' },
-        matchScore: 0.15
-      },
-      'highway/pedestrian_area': {
-        name: 'Pedestrian Area',
-        geometry: ['area'],
-        tags: { highway: 'pedestrian', area: 'yes' }
-      }
-    };
+
+    beforeEach(() => {
+      const testPresets = {
+        building: {
+          name: 'Building',
+          tags: { building: 'yes' },
+          geometry: ['area']
+        },
+        'type/multipolygon': {
+          name: 'Multipolygon',
+          geometry: ['area', 'relation'],
+          tags: { 'type': 'multipolygon' },
+          searchable: false,
+          matchScore: 0.1
+        },
+        address: {
+          name: 'Address',
+          geometry: ['point', 'vertex', 'area'],
+          tags: { 'addr:*': '*' },
+          matchScore: 0.15
+        },
+        'highway/pedestrian_area': {
+          name: 'Pedestrian Area',
+          geometry: ['area'],
+          tags: { highway: 'pedestrian', area: 'yes' }
+        }
+      };
+      _context.dataLoaderSystem()._cachedData.preset_presets = testPresets;
+    });
+
 
     it('prefers building to multipolygon', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       const relation = Rapid.osmRelation({ tags: { type: 'multipolygon', building: 'yes' } });
       const graph = new Rapid.Graph([relation]);
@@ -254,7 +254,6 @@ describe('PresetSystem', () => {
     });
 
     it('prefers building to address', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       const way = Rapid.osmWay({ tags: { area: 'yes', building: 'yes', 'addr:housenumber': '1234' } });
       const graph = new Rapid.Graph([way]);
@@ -265,7 +264,6 @@ describe('PresetSystem', () => {
     });
 
     it('prefers pedestrian to area', () => {
-      Rapid.fileFetcher.cache().preset_presets = testPresets;
       const presets = new Rapid.PresetSystem(_context);
       const way = Rapid.osmWay({ tags: { area: 'yes', highway: 'pedestrian' } });
       const graph = new Rapid.Graph([way]);

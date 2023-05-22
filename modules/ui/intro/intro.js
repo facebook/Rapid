@@ -2,7 +2,6 @@ import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
 import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
-import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
 import { uiIcon } from '../icon';
 
@@ -47,22 +46,23 @@ export function uiIntro(context, skipToRapid) {
 
 
   function intro(selection) {
+    const dataLoaderSystem = context.dataLoaderSystem();
     Promise.all([
-      fileFetcher.get('intro_rapid_graph'),
-      fileFetcher.get('intro_graph')
+      dataLoaderSystem.get('intro_rapid_graph'),
+      dataLoaderSystem.get('intro_graph')
     ])
     .then(values => {
       const rapidData = values[0];
       const introData = values[1];
 
-      for (const id in rapidData) {
+      for (const [id, data] of Object.entries(rapidData)) {
         if (!_rapidGraph[id]) {
-          _rapidGraph[id] = osmEntity(localize(rapidData[id]));
+          _rapidGraph[id] = osmEntity(localize(data));
         }
       }
-      for (const id in introData) {
+      for (const [id, data] of Object.entries(introData)) {
         if (!_introGraph[id]) {
-          _introGraph[id] = osmEntity(localize(introData[id]));
+          _introGraph[id] = osmEntity(localize(data));
         }
       }
 

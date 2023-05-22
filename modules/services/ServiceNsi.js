@@ -1,6 +1,5 @@
 import { Matcher } from 'name-suggestion-index';
 
-import { fileFetcher } from '../core';
 
 
 // This service contains all the code related to the **name-suggestion-index** (aka NSI)
@@ -51,7 +50,7 @@ export class ServiceNsi {
    * Called one time after all core objects have been instantiated.
    */
   init() {
-    // Add the sources to the fileSystem's filemap so we can start downloading data.
+    // Add the sources to the dataloader so we can start downloading data.
     const sources = {
       'nsi_data': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/nsi.min.json',
       'nsi_dissolved': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/dissolved.min.json',
@@ -62,9 +61,12 @@ export class ServiceNsi {
       'nsi_trees': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json'
     };
 
-    let fileMap = fileFetcher.fileMap();
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const fileMap = dataLoaderSystem.fileMap;
     for (const [k, url] of Object.entries(sources)) {
-      if (!fileMap[k]) fileMap[k] = url;
+      if (!fileMap.has(k)) {
+        fileMap.set(k, url);
+      }
     }
 
     // Note: `init` is called immediately after the presetsystem has started loading its data.
@@ -327,10 +329,12 @@ export class ServiceNsi {
   // _loadNsiPresetsAsync()
   //  Returns a Promise fulfilled when the presets have been downloaded and merged into Rapid.
   _loadNsiPresetsAsync() {
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+
     return (
       Promise.all([
-        fileFetcher.get('nsi_presets'),
-        fileFetcher.get('nsi_features')
+        dataLoaderSystem.get('nsi_presets'),
+        dataLoaderSystem.get('nsi_features')
       ])
       .then(vals => {
         // Add `suggestion=true` to all the nsi presets
@@ -348,12 +352,14 @@ export class ServiceNsi {
   //  Returns a Promise fulfilled when the other data have been downloaded and processed
   //
   _loadNsiDataAsync() {
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+
     return (
       Promise.all([
-        fileFetcher.get('nsi_data'),
-        fileFetcher.get('nsi_dissolved'),
-        fileFetcher.get('nsi_replacements'),
-        fileFetcher.get('nsi_trees')
+        dataLoaderSystem.get('nsi_data'),
+        dataLoaderSystem.get('nsi_dissolved'),
+        dataLoaderSystem.get('nsi_replacements'),
+        dataLoaderSystem.get('nsi_trees')
       ])
       .then(vals => {
         this._nsi = {

@@ -2,7 +2,7 @@ describe('ServiceTaginfo', () => {
   let taginfo;
 
   before(() => {
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
   beforeEach(() => {
@@ -13,11 +13,11 @@ describe('ServiceTaginfo', () => {
     });
     taginfo = new Rapid.ServiceTaginfo();
     taginfo.init();
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
   afterEach(() => {
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
 

@@ -4,7 +4,7 @@ describe('serviceKartaview', () => {
 
   before(() => {
     Rapid.services.kartaview = Rapid.serviceKartaview;
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
   after(() => {
@@ -22,11 +22,11 @@ describe('serviceKartaview', () => {
 
     kartaview = Rapid.services.kartaview;
     kartaview.reset();
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
   afterEach(() => {
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
 

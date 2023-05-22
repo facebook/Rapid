@@ -1,10 +1,10 @@
 export { coreContext } from './context';
-export { coreFileFetcher, fileFetcher } from './file_fetcher';
 export { coreHistory } from './history';
 export { coreRapidContext } from './rapid_context';
 export { coreLocalizer, t, localizer } from './localizer';
 export { coreUploader } from './uploader';
 
+export { DataLoaderSystem } from './DataLoaderSystem';
 export { FilterSystem } from './FilterSystem';
 export { ImagerySystem } from './ImagerySystem';
 export { LocationSystem } from './LocationSystem';

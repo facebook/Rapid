@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import * as countryCoder from '@rapideditor/country-coder';
 
-import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { uiIcon } from '../icon';
@@ -25,7 +24,8 @@ export function uiFieldText(context, uifield) {
   let _phoneFormats = {};
 
   if (uifield.type === 'tel') {
-    fileFetcher.get('phone_formats')
+    const dataLoaderSystem = context.dataLoaderSystem();
+    dataLoaderSystem.get('phone_formats')
       .then(d => {
         _phoneFormats = d;
         updatePhonePlaceholder();

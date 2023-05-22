@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { resolveStrings } from 'osm-community-index';
 
-import { fileFetcher } from '../core/file_fetcher';
 import { t, localizer } from '../core/localizer';
 
 import { uiIcon } from './icon';
@@ -18,15 +17,15 @@ export function uiSuccess(context) {
   const dispatch = d3_dispatch('cancel');
   let _changeset;
   let _location;
-  ensureOSMCommunityIndex();   // start fetching the data
+  getCommunityIndexAsync();   // start fetching the data
 
 
-  function ensureOSMCommunityIndex() {
-    const data = fileFetcher;
+  function getCommunityIndexAsync() {
+    const dataLoaderSystem = context.dataLoaderSystem();
     return Promise.all([
-        data.get('oci_features'),
-        data.get('oci_resources'),
-        data.get('oci_defaults')
+        dataLoaderSystem.get('oci_features'),
+        dataLoaderSystem.get('oci_resources'),
+        dataLoaderSystem.get('oci_defaults')
       ])
       .then(vals => {
         if (_oci) return _oci;
@@ -156,7 +155,7 @@ export function uiSuccess(context) {
 
 
     // Get OSM community index features intersecting the map..
-    ensureOSMCommunityIndex()
+    getCommunityIndexAsync()
       .then(oci => {
         const loc = context.map().center();
         const locationSystem = context.locationSystem();

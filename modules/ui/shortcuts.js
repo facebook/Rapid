@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { fileFetcher } from '../core/file_fetcher';
 import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
@@ -29,12 +28,13 @@ export function uiShortcuts(context) {
             .append('h3')
             .html(t.html('shortcuts.title'));
 
-        fileFetcher.get('shortcuts')
-            .then(function(data) {
-                _dataShortcuts = data;
-                content.call(render);
-            })
-            .catch(e => console.error(e));  // eslint-disable-line
+        const dataLoaderSystem = context.dataLoaderSystem();
+        dataLoaderSystem.get('shortcuts')
+          .then(data => {
+            _dataShortcuts = data;
+            content.call(render);
+          })
+          .catch(e => console.error(e));  // eslint-disable-line
     }
 
 

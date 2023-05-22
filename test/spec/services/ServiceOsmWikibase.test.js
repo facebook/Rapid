@@ -2,7 +2,7 @@ describe('ServiceOsmWikibase', () => {
   let wikibase;
 
   before(() => {
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('ServiceOsmWikibase', () => {
   });
 
   afterEach(() => {
-    fetchMock.reset();
+    fetchMock.resetHistory();
   });
 
 

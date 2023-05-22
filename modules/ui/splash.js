@@ -1,4 +1,3 @@
-import { fileFetcher } from '../core/file_fetcher';
 import { t } from '../core/localizer';
 import { uiIntro } from './intro';
 import { uiModal } from './modal';
@@ -27,7 +26,8 @@ export function uiSplash(context) {
     prefs.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // fetch intro graph data now, while user is looking at the splash screen
-    fileFetcher.get('intro_graph');
+    const dataLoaderSystem = context.dataLoaderSystem();
+    dataLoaderSystem.get('intro_graph');
 
     let modalSelection = uiModal(selection);
 

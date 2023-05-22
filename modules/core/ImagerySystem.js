@@ -2,8 +2,6 @@ import { EventEmitter } from '@pixi/utils';
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
-import { fileFetcher } from '../core/file_fetcher';
-
 import {
   ImagerySource,
   ImagerySourceBing,
@@ -416,7 +414,8 @@ export class ImagerySystem extends EventEmitter {
   _setupImageryAsync() {
     if (this._initPromise) return this._initPromise;
 
-    return fileFetcher.get('imagery')
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    return dataLoaderSystem.get('imagery')
       .then(data => {
         this._imageryIndex = {
           features: new Map(),   // Map(id -> GeoJSON feature)
