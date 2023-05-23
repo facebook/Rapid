@@ -21,6 +21,56 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
 
     this._service = null;
     this.getService();
+
+    // Watch history to keep track of which features have been accepted by the user
+    // These features will be filtered out when drawing
+    this._actioned = new Set();
+
+    this.context
+      .history()
+      .on('undone.mapillaryFeatures', onHistoryUndone.bind(this))
+      .on('change.mapillaryFeatures', onHistoryChange.bind(this))
+      .on('restore.mapillaryFeatures', onHistoryRestore.bind(this));
+
+    function wasRapidEdit(annotation) {
+      return (
+        annotation && annotation.type && /^mapillary/.test(annotation.type)
+      );
+    }
+
+    function onHistoryUndone(currentStack, previousStack) {
+      const annotation = previousStack.annotation;
+      if (!wasRapidEdit(annotation)) return;
+
+      _actioned.delete(annotation.id);
+      if (svgRapidMapillaryFeatures.enabled) {
+        dispatch.call('change');
+      } // redraw
+    }
+
+    function onHistoryChange(/* difference */) {
+      const annotation = context.history().peekAnnotation();
+      if (!wasRapidEdit(annotation)) return;
+      _actioned.add(annotation.id);
+    }
+
+    function onHistoryRestore() {
+      _actioned = new Set();
+      context
+        .history()
+        .peekAllAnnotations()
+        .forEach((annotation) => {
+          if (wasRapidEdit(annotation)) {
+            _actioned.add(annotation.id);
+            if (annotation.origid) {
+              _actioned.add(annotation.origid);
+            }
+          }
+        });
+      if (_actioned.size && svgRapidMapillaryFeatures.enabled) {
+        dispatch.call('change'); // redraw
+      }
+    }
   }
 
 
