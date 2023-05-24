@@ -77,7 +77,16 @@ export class ModeSelect extends AbstractMode {
         other = new Extent(bounds[0], bounds[1]);
 
       } else if (datum.__fbid__) {  // Rapid feature
-        const service = datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+        let service;
+        if (_datum.__service__ === 'esri') {
+          service = services.esriData;
+        } else if (_datum.__service__ === 'mapillary') {
+          annotation.type = 'mapillary_accept_feature';
+          service = services.mapillary;
+        } else {
+          service = services.fbMLRoads;
+        }
+
         if (!service) continue;
         const graph = service.graph(datum.__datasetid__);
         if (!graph) continue;

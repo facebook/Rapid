@@ -59,19 +59,29 @@ function rapidData(datum) {
   let d = {};
   Object.assign(d, datum);
   d.mapillaryId = d.id;
-  d.id = 'n' + d.id;
+  d.id = 'n-' + d.id;
   const meta = {
       __fbid__: '-' + d.id,
       __origid__: d.id,
       __service__: 'mapillary',
       __datasetid__: 'rapidMapFeatures',
-      tags: setTags(d)
+      tags: setTags(d, d.id)
   };
+
   return Object.assign(osmNode(d), meta);
 }
 
-function setTags(node) {
-  return Object.assign(rapidTypes[node.value], {'mapillary': node.mapillaryId});
+function setTags(node, mapillaryId) {
+
+  let mlyTags = rapidTypes[node.value];
+  let retObj = {};
+
+  for (key in mlyTags) {
+    retObj[key] = mlyTags[key];
+  }
+
+  retObj.mapillary = mapillaryId.toString();
+  return retObj;
 }
 
 // Load all data for the specified type from Mapillary vector tiles
@@ -187,7 +197,7 @@ function loadTileDataToCache(data, tile) {
       if (!feature) continue;
 
       const loc = feature.geometry.coordinates;
-      const d = {
+      let d = {
         id: feature.properties.id,
         loc: loc,
         first_seen_at: feature.properties.first_seen_at,
@@ -200,6 +210,7 @@ function loadTileDataToCache(data, tile) {
         // Ensure that we record it to the list of new graph nodes.
         let graphNode = rapidData(d);
         rapidCandidateFeatures.push(graphNode);
+        d = graphNode;
       }
       boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d });
     }
@@ -207,7 +218,7 @@ function loadTileDataToCache(data, tile) {
     if (rapidCandidateFeatures.length > 0) {
       _dataset.graph.rebase(rapidCandidateFeatures, [_dataset.graph], true);
       _dataset.tree.rebase(rapidCandidateFeatures, true);
-  }
+    }
   }
 
   if (vectorTile.layers.hasOwnProperty('traffic_sign')) {

@@ -42,35 +42,32 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
       const annotation = previousStack.annotation;
       if (!wasRapidEdit(annotation)) return;
 
-      _actioned.delete(annotation.id);
-      if (svgRapidMapillaryFeatures.enabled) {
-        dispatch.call('change');
-      } // redraw
+      this._actioned.delete(annotation.id);
+      this.context.map().immediateRedraw();
     }
 
     function onHistoryChange(/* difference */) {
       const annotation = context.history().peekAnnotation();
       if (!wasRapidEdit(annotation)) return;
-      _actioned.add(annotation.id);
+      this._actioned.add(annotation.id);
+      this.context.map().immediateRedraw();
     }
 
     function onHistoryRestore() {
-      _actioned = new Set();
+      this._actioned = new Set();
       context
         .history()
         .peekAllAnnotations()
         .forEach((annotation) => {
           if (wasRapidEdit(annotation)) {
-            _actioned.add(annotation.id);
+            this._actioned.add(annotation.id);
             if (annotation.origid) {
-              _actioned.add(annotation.origid);
+              this._actioned.add(annotation.origid);
             }
           }
         });
-      if (_actioned.size && svgRapidMapillaryFeatures.enabled) {
-        dispatch.call('change'); // redraw
+        this.context.map().immediateRedraw();
       }
-    }
   }
 
 
@@ -104,6 +101,9 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
       detections = detections
         .filter(detection => new Date(detection.first_seen_at).getTime() >= toTimestamp);
     }
+
+    //Finally, filter out any detections that have been added to the map.
+    detections = detections.filter(detection => !this._actioned.has(detection.id));
 
     return detections;
   }

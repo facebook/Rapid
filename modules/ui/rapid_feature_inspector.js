@@ -53,7 +53,15 @@ export function uiRapidFeatureInspector(context, keybinding) {
       origid: _datum.__origid__
     };
 
-    const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+    let service;
+    if (_datum.__service__ === 'esri') {
+      service = services.esriData;
+    } else if (_datum.__service__ === 'mapillary') {
+      annotation.type = 'mapillary_accept_feature';
+      service = services.mapillary;
+    } else {
+      service = services.fbMLRoads;
+    }
     const graph = service.graph(_datum.__datasetid__);
     const sourceTag = _datum.tags && _datum.tags.source;
     if (sourceTag) annotation.source = sourceTag;
@@ -89,6 +97,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
       id: _datum.id,
       origid: _datum.__origid__
     };
+    if (_datum.__service__ === 'mapillary') {
+      annotation.type = 'mapillary_ignore_feature';
+    }
     context.perform(actionNoop(), annotation);
     context.enter('browse');
   }
