@@ -1,7 +1,6 @@
 import { actionChangeTags } from '../actions/change_tags';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
-import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
 
 
@@ -113,8 +112,8 @@ export function operationDowngrade(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.downgrade.${disabledReason}.${multi}`) :
-      t(`operations.downgrade.description.${_downgradeType}`);
+      context.t(`operations.downgrade.${disabledReason}.${multi}`) :
+      context.t(`operations.downgrade.description.${_downgradeType}`);
   };
 
 
@@ -125,13 +124,13 @@ export function operationDowngrade(context, selectedIDs) {
     } else {
       suffix = _downgradeType;
     }
-    return t(`operations.downgrade.annotation.${suffix}`, { n: _affectedFeatureCount});
+    return context.t(`operations.downgrade.annotation.${suffix}`, { n: _affectedFeatureCount});
   };
 
 
   operation.id = 'downgrade';
   operation.keys = [ uiCmd('⌫') ];
-  operation.title = t('operations.downgrade.title');
+  operation.title = context.t('operations.downgrade.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

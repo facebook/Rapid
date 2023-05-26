@@ -1,11 +1,11 @@
 import { select as d3_select } from 'd3-selection';
 
 import { modeSelect } from '../modes/select';
-import { t } from '../core/localizer';
-import { utilDisplayName, utilHighlightEntities } from '../util';
+import { utilHighlightEntities } from '../util';
 
 
 export function uiImproveOsmDetails(context) {
+  const l10n = context.localizationSystem();
   let _qaItem;
 
 
@@ -13,8 +13,8 @@ export function uiImproveOsmDetails(context) {
     if (d.desc) return d.desc;
     const issueKey = d.issueKey;
     d.replacements = d.replacements || {};
-    d.replacements.default = t.html('inspector.unknown');  // special key `default` works as a fallback string
-    return t.html(`QA.improveOSM.error_types.${issueKey}.description`, d.replacements);
+    d.replacements.default = l10n.tHtml('inspector.unknown');  // special key `default` works as a fallback string
+    return l10n.tHtml(`QA.improveOSM.error_types.${issueKey}.description`, d.replacements);
   }
 
 
@@ -40,7 +40,7 @@ export function uiImproveOsmDetails(context) {
 
     descriptionEnter
       .append('h4')
-        .html(t.html('QA.keepRight.detail_description'));
+        .html(l10n.tHtml('QA.keepRight.detail_description'));
 
     descriptionEnter
       .append('div')
@@ -51,10 +51,11 @@ export function uiImproveOsmDetails(context) {
     let relatedEntities = [];
     descriptionEnter.selectAll('.error_entity_link, .error_object_link')
       .attr('href', '#')
-      .each(function() {
-        const link = d3_select(this);
+      .each((d, i, nodes) => {
+        const node = nodes[i];
+        const link = d3_select(node);
         const isObjectLink = link.classed('error_object_link');
-        const entityID = isObjectLink ? (_qaItem.objectType.charAt(0) + _qaItem.objectId) : this.textContent;
+        const entityID = isObjectLink ? (_qaItem.objectType.charAt(0) + _qaItem.objectId) : node.textContent;
         const entity = context.hasEntity(entityID);
 
         relatedEntities.push(entityID);
@@ -89,8 +90,7 @@ export function uiImproveOsmDetails(context) {
         // Replace with friendly name if possible
         // (The entity may not yet be loaded into the graph)
         if (entity) {
-          let name = utilDisplayName(entity);  // try to use common name
-
+          let name = l10n.displayName(entity);  // try to use common name
           if (!name && !isObjectLink) {
             const presetSystem = context.presetSystem();
             const preset = presetSystem.match(entity, context.graph());
@@ -98,7 +98,7 @@ export function uiImproveOsmDetails(context) {
           }
 
           if (name) {
-            this.innerText = name;
+            node.innerText = name;
           }
         }
       });

@@ -1,15 +1,16 @@
 import { select as d3_select } from 'd3-selection';
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 
-import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundOffset(context) {
+  const l10n = context.localizationSystem();
   const imagerySystem = context.imagerySystem();
+
   const section = uiSection('background-offset', context)
-    .label(t.html('background.fix_misalignment'))
+    .label(l10n.tHtml('background.fix_misalignment'))
     .disclosureContent(renderDisclosureContent)
     .expandedByDefault(false);
 
@@ -54,7 +55,7 @@ export function uiSectionBackgroundOffset(context) {
 
     if (val === '') return resetOffset();
 
-    val = val.replace(/;/g, ',').split(',').map(function(n) {
+    val = val.replace(/;/g, ',').split(',').map(n => {
       // if n is NaN, it will always get mapped to false.
       return !isNaN(n) && n;
     });
@@ -122,7 +123,7 @@ export function uiSectionBackgroundOffset(context) {
     containerEnter
       .append('div')
       .attr('class', 'nudge-instructions')
-      .html(t.html('background.offset'));
+      .html(l10n.tHtml('background.offset'));
 
     let nudgeWrapEnter = containerEnter
       .append('div')
@@ -151,13 +152,13 @@ export function uiSectionBackgroundOffset(context) {
 
     nudgeWrapEnter
       .append('button')
-      .attr('title', t('background.reset'))
+      .attr('title', l10n.t('background.reset'))
       .attr('class', 'nudge-reset disabled')
       .on('click', d3_event => {
         d3_event.preventDefault();
         resetOffset();
       })
-      .call(uiIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
+      .call(uiIcon('#rapid-icon-' + (l10n.isRTL() ? 'redo' : 'undo')));
 
     updateValue();
   }

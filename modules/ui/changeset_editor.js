@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniqBy } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiCombobox} from './combobox';
 import { UiField } from './UiField';
@@ -105,9 +104,9 @@ export function uiChangesetEditor(context) {
             .append('a')
             .attr('target', '_blank')
             .call(uiIcon('#rapid-icon-alert', 'inline'))
-            .attr('href', t('commit.google_warning_link'))
+            .attr('href', context.t('commit.google_warning_link'))
             .append('span')
-            .html(t.html('commit.google_warning'));
+            .text(context.t('commit.google_warning'));
 
         commentEnter
             .transition()

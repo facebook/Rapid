@@ -1,6 +1,5 @@
 import { utilArrayUniq, utilObjectOmit, utilSafeString } from '@rapid-sdk/util';
 
-import { t } from '../localizer';
 import { osmAreaKeys } from '../../osm/tags';
 
 
@@ -121,22 +120,22 @@ export class Preset {
 
 
   t(scope, options) {
-    return t(`_tagging.presets.presets.${this.id}.${scope}`, options);
+    return this.context.t(`_tagging.presets.presets.${this.id}.${scope}`, options);
   }
 
   tHtml(scope, options) {
-    return t.html(`_tagging.presets.presets.${this.id}.${scope}`, options);
+    return this.context.tHtml(`_tagging.presets.presets.${this.id}.${scope}`, options);
   }
 
   tAppend (scope, options) {
-    return t.append(`_tagging.presets.presets.${this.id}.${scope}`, options);
+    return this.context.tAppend(`_tagging.presets.presets.${this.id}.${scope}`, options);
   }
 
   subtitle() {
     if (this.suggestion) {
       let path = this.id.split('/');
       path.pop();  // remove brand name
-      return t('_tagging.presets.presets.' + path.join('/') + '.name');
+      return this.context.t('_tagging.presets.presets.' + path.join('/') + '.name');
     }
     return null;
   }
@@ -145,7 +144,7 @@ export class Preset {
     if (this.suggestion) {
       let path = this.id.split('/');
       path.pop();  // remove brand name
-      return t.html('_tagging.presets.presets.' + path.join('/') + '.name');
+      return this.context.tHtml('_tagging.presets.presets.' + path.join('/') + '.name');
     }
     return null;
   }

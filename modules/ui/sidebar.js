@@ -14,8 +14,6 @@ import { uiKeepRightEditor } from './keepRight_editor';
 import { uiOsmoseEditor } from './osmose_editor';
 import { uiNoteEditor } from './note_editor';
 import { uiRapidFeatureInspector } from './rapid_feature_inspector';
-import { localizer } from '../core/localizer';
-
 
 
 export function uiSidebar(context) {
@@ -86,7 +84,6 @@ export function uiSidebar(context) {
         }
 
         function pointermove(d3_event) {
-
             if (downPointerId !== (d3_event.pointerId || 'mouse')) return;
 
             d3_event.preventDefault();
@@ -95,7 +92,7 @@ export function uiSidebar(context) {
 
             lastClientX = d3_event.clientX;
 
-            var isRTL = (localizer.textDirection() === 'rtl');
+            var isRTL = context.localizationSystem().isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -365,13 +362,12 @@ export function uiSidebar(context) {
 
 
         sidebar.toggle = function(moveMap) {
-
             // Don't allow sidebar to toggle when the user is in the walkthrough.
             if (context.inIntro()) return;
 
             var isCollapsed = selection.classed('collapsed');
             var isCollapsing = !isCollapsed;
-            var isRTL = (localizer.textDirection() === 'rtl');
+            var isRTL = context.localizationSystem().isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 

@@ -1,10 +1,10 @@
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
 export function validationHelpRequest(context) {
   const type = 'help_request';
+  const l10n = context.localizationSystem();
+
 
   let validation = function checkFixmeTag(entity) {
     if (!entity.tags.fixme) return [];
@@ -22,15 +22,15 @@ export function validationHelpRequest(context) {
       type: type,
       subtype: 'fixme_tag',
       severity: 'warning',
-      message: function(context) {
+      message: function() {
         const entity = context.hasEntity(this.entityIds[0]);
-        return entity ? t.html('issues.fixme_tag.message', {
-          feature: utilDisplayLabel(context, entity, context.graph(), true /* verbose */)
+        return entity ? l10n.tHtml('issues.fixme_tag.message', {
+          feature: l10n.displayLabel(entity, context.graph(), true /* verbose */)
         }) : '';
       },
       dynamicFixes: function() {
         return [
-          new validationIssueFix({ title: t.html('issues.fix.address_the_concern.title') })
+          new validationIssueFix({ title: l10n.tHtml('issues.fix.address_the_concern.title') })
         ];
       },
       reference: showReference,
@@ -43,7 +43,7 @@ export function validationHelpRequest(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(t.html('issues.fixme_tag.reference'));
+        .html(l10n.tHtml('issues.fixme_tag.reference'));
     }
   };
 

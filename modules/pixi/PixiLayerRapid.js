@@ -5,7 +5,6 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { utilDisplayName } from '../util';
 
 const MINZOOM = 12;
 
@@ -330,6 +329,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = PIXI.utils.string2hex(dataset.color);
+    const l10n = this.context.localizationSystem();
 
     for (const entity of data.polygons) {
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
@@ -376,7 +376,7 @@ export class PixiLayerRapid extends AbstractLayer {
             // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
           };
           feature.style = style;
-          feature.label = utilDisplayName(entity);
+          feature.label = l10n.displayName(entity);
           feature.update(projection, zoom);
         }
 
@@ -391,6 +391,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = PIXI.utils.string2hex(dataset.color);
+    const l10n = this.context.localizationSystem();
 
     for (const entity of data.lines) {
       const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
@@ -420,7 +421,7 @@ export class PixiLayerRapid extends AbstractLayer {
         };
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
-        feature.label = utilDisplayName(entity);
+        feature.label = l10n.displayName(entity);
         feature.update(projection, zoom);
       }
 
@@ -434,6 +435,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderPoints(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = PIXI.utils.string2hex(dataset.color);
+    const l10n = this.context.localizationSystem();
 
     const pointStyle = {
       markerName: 'largeCircle',
@@ -463,7 +465,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = pointStyle;
-        feature.label = utilDisplayName(entity);
+        feature.label = l10n.displayName(entity);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
         if (!feature.label && housenumber) {
@@ -493,7 +495,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = vertexStyle;
-        feature.label = utilDisplayName(entity);
+        feature.label = l10n.displayName(entity);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
         if (!feature.label && housenumber) {

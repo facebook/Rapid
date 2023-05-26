@@ -1,6 +1,5 @@
 import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
-import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
 import { osmEntity } from '../../osm/entity';
 import { uiIcon } from '../icon';
@@ -14,6 +13,7 @@ import { uiIntroLine } from './line';
 import { uiIntroBuilding } from './building';
 import { uiIntroStartEditing } from './start_editing';
 import { uiIntroRapid } from './rapid';
+
 
 const chapterUi = {
   welcome: uiIntroWelcome,
@@ -57,12 +57,12 @@ export function uiIntro(context, skipToRapid) {
 
       for (const [id, data] of Object.entries(rapidData)) {
         if (!_rapidGraph[id]) {
-          _rapidGraph[id] = osmEntity(localize(data));
+          _rapidGraph[id] = osmEntity(localize(context, data));
         }
       }
       for (const [id, data] of Object.entries(introData)) {
         if (!_introGraph[id]) {
-          _introGraph[id] = osmEntity(localize(data));
+          _introGraph[id] = osmEntity(localize(context, data));
         }
       }
 
@@ -75,6 +75,7 @@ export function uiIntro(context, skipToRapid) {
     context.inIntro(true);
     context.enter('browse');
 
+    const l10n = context.localizationSystem();
     const prefs = context.storageSystem();
     const osm = context.services.get('osm');
     const mapwithai = context.services.get('mapwithai');
@@ -244,12 +245,12 @@ export function uiIntro(context, skipToRapid) {
 
     buttons
       .append('span')
-      .html(d => t.html(d.title));
+      .html(d => l10n.tHtml(d.title));
 
     buttons
       .append('span')
       .attr('class', 'status')
-      .call(uiIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
+      .call(uiIcon(l10n.isRTL() ? '#rapid-icon-backward' : '#rapid-icon-forward', 'inline'));
 
     _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 

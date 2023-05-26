@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 
 import { uiNoteComments } from './note_comments';
@@ -14,7 +13,7 @@ import { utilNoAuto, utilRebind } from '../util';
 export function uiNoteEditor(context) {
     var dispatch = d3_dispatch('change');
     var noteComments = uiNoteComments(context);
-    var noteHeader = uiNoteHeader();
+    var noteHeader = uiNoteHeader(context);
     var _note;
     var _newNote;
 
@@ -37,7 +36,7 @@ export function uiNoteEditor(context) {
 
         headerEnter
             .append('h3')
-            .html(t.html('note.title'));
+            .html(context.tHtml('note.title'));
 
 
         var body = selection.selectAll('.body')
@@ -98,13 +97,13 @@ export function uiNoteEditor(context) {
             .append('h4')
             .attr('class', '.note-save-header')
             .html(function() {
-                return _note.isNew() ? t('note.newDescription') : t('note.newComment');
+                return _note.isNew() ? context.t('note.newDescription') : context.t('note.newComment');
             });
 
         var commentTextarea = noteSaveEnter
             .append('textarea')
             .attr('class', 'new-comment-input')
-            .attr('placeholder', t('note.inputPlaceholder'))
+            .attr('placeholder', context.t('note.inputPlaceholder'))
             .attr('maxlength', 1000)
             .property('value', function(d) { return d.newComment; })
             .call(utilNoAuto)
@@ -206,14 +205,14 @@ export function uiNoteEditor(context) {
 
         authEnter
             .append('span')
-            .html(t.html('note.login'));
+            .html(context.tHtml('note.login'));
 
         authEnter
             .append('a')
             .attr('target', '_blank')
             .call(uiIcon('#rapid-icon-out-link', 'inline'))
             .append('span')
-            .html(t.html('login'))
+            .html(context.tHtml('login'))
             .on('click.note-login', function(d3_event) {
                 d3_event.preventDefault();
                 osm.authenticate();
@@ -234,7 +233,7 @@ export function uiNoteEditor(context) {
         prose = prose.enter()
             .append('p')
             .attr('class', 'note-save-prose')
-            .html(t.html('note.upload_explanation'))
+            .html(context.tHtml('note.upload_explanation'))
             .merge(prose);
 
         osm.userDetails(function(err, user) {
@@ -257,7 +256,7 @@ export function uiNoteEditor(context) {
                 .attr('target', '_blank');
 
             prose
-                .html(t.html('note.upload_explanation_with_user', { user: userLink.html() }));
+                .html(context.tHtml('note.upload_explanation_with_user', { user: userLink.html() }));
         });
     }
 
@@ -283,12 +282,12 @@ export function uiNoteEditor(context) {
             buttonEnter
                 .append('button')
                 .attr('class', 'button cancel-button secondary-action')
-                .html(t.html('confirm.cancel'));
+                .html(context.tHtml('confirm.cancel'));
 
             buttonEnter
                 .append('button')
                 .attr('class', 'button save-button action')
-                .html(t.html('note.save'));
+                .html(context.tHtml('note.save'));
 
         } else {
             buttonEnter
@@ -298,7 +297,7 @@ export function uiNoteEditor(context) {
             buttonEnter
                 .append('button')
                 .attr('class', 'button comment-button action')
-                .html(t.html('note.comment'));
+                .html(context.tHtml('note.comment'));
         }
 
 
@@ -318,7 +317,7 @@ export function uiNoteEditor(context) {
             .html(function(d) {
                 var action = (d.status === 'open' ? 'close' : 'open');
                 var andComment = (d.newComment ? '_comment' : '');
-                return t('note.' + action + andComment);
+                return context.t('note.' + action + andComment);
             })
             .on('click.status', clickStatus);
 

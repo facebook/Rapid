@@ -1,13 +1,13 @@
-import { t } from '../../core/localizer';
 import { uiPane } from '../pane';
 import { uiSectionPrivacy } from '../sections/privacy';
 import { uiSectionMapInteractionOptions } from '../sections/map_interaction_options';
 
+
 export function uiPanePreferences(context) {
-  return uiPane('preferences', context)
-    .key(t('preferences.key'))
-    .label(t.html('preferences.title'))
-    .description(t.html('preferences.description'))
+  return uiPane(context, 'preferences')
+    .key(context.t('preferences.key'))
+    .label(context.tHtml('preferences.title'))
+    .description(context.tHtml('preferences.description'))
     .iconName('fas-user-cog')
     .sections([
       uiSectionPrivacy(context),

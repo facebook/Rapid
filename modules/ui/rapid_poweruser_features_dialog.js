@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
 import { uiModal } from './modal';
 
 
@@ -88,12 +87,12 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     headerEnter
       .append('h3')
       .attr('class', 'modal-heading')
-      .html(t('rapid_poweruser_features.heading.label'));
+      .html(context.t('rapid_poweruser_features.heading.label'));
 
     headerEnter
       .append('div')
       .attr('class', 'modal-heading-desc')
-      .text(t('rapid_poweruser_features.heading.description'))
+      .text(context.t('rapid_poweruser_features.heading.description'))
       .append('span')
       .attr('class', 'smile')
       .text('😎');
@@ -123,7 +122,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
       .append('button')
       .attr('class', 'button ok-button action')
       .on('click', () => _modalSelection.remove())
-      .text(t('confirm.okay'));
+      .text(context.t('confirm.okay'));
   }
 
 
@@ -146,13 +145,13 @@ export function uiRapidPowerUserFeaturesDialog(context) {
         selection
           .append('div')
           .attr('class', 'rapid-feature-label')
-          .text(d => t(`rapid_poweruser_features.${d}.label`));
+          .text(d => context.t(`rapid_poweruser_features.${d}.label`));
 
         // line2: description
         selection
           .append('div')
           .attr('class', 'rapid-feature-description')
-          .text(d => t(`rapid_poweruser_features.${d}.description`));
+          .text(d => context.t(`rapid_poweruser_features.${d}.description`));
       });
 
     let inputsEnter = rowsEnter

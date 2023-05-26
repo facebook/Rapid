@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t, localizer } from '../../core/localizer';
 import { actionChangeTags } from '../../actions/change_tags';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
@@ -86,7 +85,7 @@ export function uiFieldWikipedia(context, uifield) {
       .append('input')
       .attr('type', 'text')
       .attr('class', 'wiki-lang')
-      .attr('placeholder', t('translate.localized_translation_language'))
+      .attr('placeholder', context.t('translate.localized_translation_language'))
       .call(utilNoAuto)
       .call(langCombo)
       .merge(_langInput);
@@ -131,7 +130,7 @@ export function uiFieldWikipedia(context, uifield) {
     link = link.enter()
       .append('button')
       .attr('class', 'form-field-button wiki-link')
-      .attr('title', t('icons.view_on', { domain: 'wikipedia.org' }))
+      .attr('title', context.t('icons.view_on', { domain: 'wikipedia.org' }))
       .call(uiIcon('#rapid-icon-out-link'))
       .merge(link);
 
@@ -144,7 +143,7 @@ export function uiFieldWikipedia(context, uifield) {
 
 
   function defaultLanguageInfo(skipEnglishFallback) {
-    const langCode = localizer.languageCode().toLowerCase();
+    const langCode = context.localizationSystem().languageCode().toLowerCase();
 
     for (let i in _dataWikipedia) {
       let d = _dataWikipedia[i];

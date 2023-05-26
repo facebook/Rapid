@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t, localizer } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 import { uiTooltip } from './tooltip';
@@ -8,21 +7,23 @@ import { utilKeybinding } from '../util/keybinding';
 
 
 export function uiZoom(context) {
-  let zooms = [{
+  const l10n = context.localizationSystem();
+
+  const zooms = [{
     id: 'zoom-in',
     icon: 'rapid-icon-plus',
-    title: t('zoom.in'),
+    title: l10n.t('zoom.in'),
     action: zoomIn,
     isDisabled: () => !context.map().canZoomIn(),
-    disabledTitle: t('zoom.disabled.in'),
+    disabledTitle: l10n.t('zoom.disabled.in'),
     key: '+'
   }, {
     id: 'zoom-out',
     icon: 'rapid-icon-minus',
-    title: t('zoom.out'),
+    title: l10n.t('zoom.out'),
     action: zoomOut,
     isDisabled: () => !context.map().canZoomOut(),
-    disabledTitle: t('zoom.disabled.out'),
+    disabledTitle: l10n.t('zoom.disabled.out'),
     key: '-'
   }];
 
@@ -50,9 +51,9 @@ export function uiZoom(context) {
     context.map().zoomOutFurther();
   }
 
-  return function(selection) {
-    let tooltipBehavior = uiTooltip()
-      .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+  return function render(selection) {
+    let tooltipBehavior = uiTooltip(context)
+      .placement(l10n.isRTL() ? 'right' : 'left')
       .title(d => d.isDisabled() ? d.disabledTitle : d.title)
       .keys(d => [d.key]);
 

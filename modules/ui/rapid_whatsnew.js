@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
 import { marked } from 'marked';
@@ -25,12 +24,12 @@ export function uiRapidWhatsNew(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h2')
-      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
+      .html(context.t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
 
     let body = whatsNewModal
       .append('div')
       .attr('class', 'modal-section body')
-      .html(marked.parse(t('rapid_whats_new.text', {
+      .html(marked.parse(context.t('rapid_whats_new.text', {
         rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
         bugicon: icon('#rapid-icon-bug', 'bugnub')
       })));
@@ -65,7 +64,7 @@ export function uiRapidWhatsNew(context) {
     checkbox
       .append('span')
       .attr('class', 'rapid-checkbox-text')
-      .text(t('rapid_whats_new.dontshowagain'));
+      .text(context.t('rapid_whats_new.dontshowagain'));
 
     checkbox
       .append('input')
@@ -91,7 +90,7 @@ export function uiRapidWhatsNew(context) {
 
     // nothanks
     //   .append('div')
-    //   .text(t('rapid_whats_new.nope'));
+    //   .text(context.t('rapid_whats_new.nope'));
 
     let okayButton = buttonWrap
       .append('button')
@@ -99,7 +98,7 @@ export function uiRapidWhatsNew(context) {
 
     okayButton
       .append('div')
-      .text(t('rapid_whats_new.ok'))
+      .text(context.t('rapid_whats_new.ok'))
       .on('click', () => {
         if (_dontShowAgain) {
           prefs.setItem('sawWhatsNewVersion', currWhatsNewVersion);

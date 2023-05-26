@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { uiIntro } from './intro';
 import { uiModal } from './modal';
 
@@ -16,7 +15,7 @@ export function uiSplash(context) {
     const sawPrivacyVersion = prefs('sawPrivacyVersion');
     let showSplash = !prefs('sawSplash');
     if (sawPrivacyVersion !== context.privacyVersion) {
-      updateMessage = t('splash.privacy_update');
+      updateMessage = context.t('splash.privacy_update');
       showSplash = true;
     }
 
@@ -42,7 +41,7 @@ export function uiSplash(context) {
       .append('div')
       .attr('class','modal-section')
       .append('h3')
-      .html(t.html('splash.welcome'));
+      .text(context.t('splash.welcome'));
 
     let modalSection = introModal
       .append('div')
@@ -50,7 +49,7 @@ export function uiSplash(context) {
 
     modalSection
       .append('p')
-      .html(t.html('splash.text', {
+      .html(context.tHtml('splash.text', {
         version: context.version,
         website: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#whats-new">changelog</a>',
         github: '<a target="_blank" href="https://github.com/openstreetmap/iD/issues">github.com</a>'
@@ -58,10 +57,10 @@ export function uiSplash(context) {
 
     modalSection
       .append('p')
-      .html(t.html('splash.privacy', {
+      .html(context.tHtml('splash.privacy', {
         updateMessage: updateMessage,
         privacyLink: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/release/PRIVACY.md">' +
-          t('splash.privacy_policy') + '</a>'
+          context.t('splash.privacy_policy') + '</a>'
       }));
 
     let buttonWrap = introModal
@@ -84,7 +83,7 @@ export function uiSplash(context) {
 
     walkthrough
       .append('div')
-      .html(t.html('splash.walkthrough'));
+      .html(context.tHtml('splash.walkthrough'));
 
     let startEditing = buttonWrap
       .append('button')
@@ -99,7 +98,7 @@ export function uiSplash(context) {
 
     startEditing
       .append('div')
-      .html(t.html('splash.start'));
+      .html(context.tHtml('splash.start'));
 
     modalSelection.select('button.close')
       .attr('class','hide');

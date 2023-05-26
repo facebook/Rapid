@@ -5,7 +5,6 @@ import { Extent, Tiler, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { localizer } from '../core/localizer';
 import { utilRebind, utilSetTransform } from '../util';
 
 
@@ -374,7 +373,9 @@ export class ServiceKartaview {
       const options = { day: 'numeric', month: 'short', year: 'numeric' };
       const d = new Date(s);
       if (isNaN(d.getTime())) return null;
-      return d.toLocaleDateString(localizer.localeCode(), options);
+
+      const localeCode = this.context.localizationSystem().localeCode();
+      return d.toLocaleDateString(localeCode, options);
     }
   }
 

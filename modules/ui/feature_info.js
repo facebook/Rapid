@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 
 
@@ -13,7 +12,7 @@ export function uiFeatureInfo(context) {
     const hiddenList = Array.from(hidden).map(k => {
       if (stats[k]) {
         count += stats[k];
-        return t('inspector.title_count', { title: t.html(`feature.${k}.description`), count: stats[k] });
+        return context.t('inspector.title_count', { title: context.tHtml(`feature.${k}.description`), count: stats[k] });
       } else {
         return null;
       }
@@ -22,14 +21,14 @@ export function uiFeatureInfo(context) {
     selection.html('');
 
     if (hiddenList.length) {
-      const tooltipBehavior = uiTooltip()
+      const tooltipBehavior = uiTooltip(context)
         .placement('top')
         .title(() => hiddenList.join('<br/>'));
 
       selection.append('a')
         .attr('class', 'chip')
         .attr('href', '#')
-        .html(t.html('feature_info.hidden_warning', { count: count }))
+        .html(context.tHtml('feature_info.hidden_warning', { count: count }))
         .call(tooltipBehavior)
         .on('click', (d3_event) => {
           tooltipBehavior.hide();

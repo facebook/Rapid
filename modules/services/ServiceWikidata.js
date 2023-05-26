@@ -1,8 +1,6 @@
 import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 
-import { localizer } from '../core/localizer';
-
 const WIKIDATA_API = 'https://www.wikidata.org/w/api.php?';
 
 
@@ -118,7 +116,8 @@ export class ServiceWikidata {
    * languagesToQuery
    */
   languagesToQuery() {
-    return localizer.localeCodes()
+    const localeCodes = this.context.localizationSystem().localeCodes();
+    return localeCodes
       .map(code => code.toLowerCase())
       .filter(code => code !== 'en-us');
 
@@ -236,7 +235,8 @@ export class ServiceWikidata {
 
       // add wiki sitelink
       if (entity.sitelinks) {
-        const isEn = localizer.languageCode().toLowerCase() === 'en';
+        const languageCode = this.context.localizationSystem().languageCode();
+        const isEn = languageCode.toLowerCase() === 'en';
 
         // must be one of these that we requested..
         for (const code of langs) {    // check each, in order of preference

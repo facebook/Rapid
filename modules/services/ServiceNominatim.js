@@ -3,8 +3,6 @@ import { Extent } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { localizer } from '../core';
-
 
 /**
  * `ServiceNominatim`
@@ -89,9 +87,10 @@ export class ServiceNominatim {
     const controller = new AbortController();
     this._inflight[url] = controller;
 
+    const l10n = this.context.localizationSystem();
     const opts = {
       signal: controller.signal,
-      headers: { 'Accept-Language': localizer.localeCodes().join(',') }
+      headers: { 'Accept-Language': l10n.localeCodes().join(',') }
     };
 
     d3_json(url, opts)
@@ -125,9 +124,10 @@ export class ServiceNominatim {
     const controller = new AbortController();
     this._inflight[url] = controller;
 
+    const l10n = this.context.localizationSystem();
     const opts = {
       signal: controller.signal,
-      headers: { 'Accept-Language': localizer.localeCodes().join(',') }
+      headers: { 'Accept-Language': l10n.localeCodes().join(',') }
     };
 
     d3_json(url, opts)

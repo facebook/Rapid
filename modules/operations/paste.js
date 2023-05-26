@@ -4,9 +4,7 @@ import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
 import { modeSelect } from '../modes/select';
 
-import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
-import { utilDisplayLabel } from '../util/util';
 
 
 // see also `BehaviorPaste`
@@ -75,13 +73,14 @@ export function operationPaste(context) {
 
 
   operation.tooltip = function() {
+    const l10n = context.localizationSystem();
     const oldGraph = context.copyGraph();
     const ids = context.copyIDs();
     if (!ids.length) {
-      return t('operations.paste.nothing_copied');
+      return l10n.t('operations.paste.nothing_copied');
     }
-    return t('operations.paste.description', {
-      feature: utilDisplayLabel(context, oldGraph.entity(ids[0]), oldGraph),
+    return l10n.t('operations.paste.description', {
+      feature: l10n.displayLabel(oldGraph.entity(ids[0]), oldGraph),
       n: ids.length
     });
   };
@@ -89,13 +88,13 @@ export function operationPaste(context) {
 
   operation.annotation = function() {
     const ids = context.copyIDs();
-    return t('operations.paste.annotation', { n: ids.length });
+    return context.t('operations.paste.annotation', { n: ids.length });
   };
 
 
   operation.id = 'paste';
   operation.keys = [ uiCmd('⌘V') ];
-  operation.title = t('operations.paste.title');
+  operation.title = context.t('operations.paste.title');
 
   return operation;
 }

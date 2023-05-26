@@ -6,7 +6,6 @@ import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
 
-import { localizer } from '../core/localizer';
 import { QAItem } from '../osm';
 import { utilRebind } from '../util';
 
@@ -147,7 +146,8 @@ export class ServiceOsmose {
     // Issue details only need to be fetched once
     if (issue.elems !== undefined) return Promise.resolve(issue);
 
-    const url = `${OSMOSE_API}/issue/${issue.id}?langs=${localizer.localeCode()}`;
+    const localeCode = this.context.localizationSystem().localeCode();
+    const url = `${OSMOSE_API}/issue/${issue.id}?langs=${localeCode}`;
     const handleResponse = (data) => {
       // Associated elements used for highlighting
       // Assign directly for immediate use in the callback
@@ -175,8 +175,8 @@ export class ServiceOsmose {
     // For now, we only do this one time at init.
     // Todo: support switching locales
     let stringData = {};
-    const locale = localizer.localeCode();
-    this._osmoseStrings.set(locale, stringData);
+    const localeCode = this.context.localizationSystem().localeCode();
+    this._osmoseStrings.set(localeCode, stringData);
 
     // Using multiple individual item + class requests to reduce fetched data size
     const allRequests = itemTypes.map(itemType => {
@@ -217,7 +217,7 @@ export class ServiceOsmose {
 
       // Osmose API falls back to English strings where untranslated or if locale doesn't exist
       const [item, cl] = itemType.split('-');
-      const url = `${OSMOSE_API}/items/${item}/class/${cl}?langs=${locale}`;
+      const url = `${OSMOSE_API}/items/${item}/class/${cl}?langs=${localeCode}`;
 
       return d3_json(url).then(handleResponse);
     }).filter(Boolean);
@@ -233,7 +233,8 @@ export class ServiceOsmose {
    * @return  stringdata
    */
   getStrings(itemType, locale) {
-    locale = locale || localizer.localeCode();
+    locale = locale || this.context.localizationSystem().localeCode();
+
     const stringData = this._osmoseStrings.get(locale) ?? {};
     return stringData[itemType] ?? {};
   }

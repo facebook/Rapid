@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilCleanTags } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { t, localizer } from '../core/localizer';
 import { actionChangeTags } from '../actions/change_tags';
 import { uiIcon } from './icon';
 import { utilRebind } from '../util';
@@ -117,6 +116,7 @@ export function uiEntityEditor(context) {
 
     function entityEditor(selection) {
         var combinedTags = getCombinedTags(_entityIDs, context.graph());
+        const isRTL = context.localizationSystem().isRTL();
 
         // Header
         var header = selection.selectAll('.header')
@@ -130,7 +130,7 @@ export function uiEntityEditor(context) {
         headerEnter
             .append('button')
             .attr('class', 'preset-reset preset-choose')
-            .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-forward' : '#rapid-icon-backward'));
+            .call(uiIcon(isRTL ? '#rapid-icon-forward' : '#rapid-icon-backward'));
 
         headerEnter
             .append('button')
@@ -146,7 +146,7 @@ export function uiEntityEditor(context) {
             .merge(headerEnter);
 
         header.selectAll('h3')
-            .html(_entityIDs.length === 1 ? t.html('inspector.edit') : t.html('rapid_multiselect'));
+            .html(_entityIDs.length === 1 ? context.tHtml('inspector.edit') : context.tHtml('rapid_multiselect'));
 
         header.selectAll('.preset-reset')
             .on('click', function() {
@@ -271,7 +271,7 @@ export function uiEntityEditor(context) {
                 return graph;
             };
 
-            var annotation = t('operations.change_tags.annotation');
+            var annotation = context.t('operations.change_tags.annotation');
 
             if (_coalesceChanges) {
                 context.overwrite(combinedAction, annotation);
@@ -327,7 +327,7 @@ export function uiEntityEditor(context) {
                 return graph;
             };
 
-            var annotation = t('operations.change_tags.annotation');
+            var annotation = context.t('operations.change_tags.annotation');
 
             if (_coalesceChanges) {
                 context.overwrite(combinedAction, annotation);

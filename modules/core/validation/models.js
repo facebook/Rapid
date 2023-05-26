@@ -1,6 +1,6 @@
 import { Extent } from '@rapid-sdk/math';
 import { utilTotalExtent } from '../../util';
-import { t } from '../../core/localizer';
+
 
 export function validationIssue(attrs) {
     this.type = attrs.type;                // required - name of rule that created the issue (e.g. 'missing_tag')
@@ -66,7 +66,7 @@ export function validationIssue(attrs) {
         if (issue.severity === 'warning') {
             // allow ignoring any issue that's not an error
             fixes.push(new validationIssueFix({
-                title: t.html('issues.fix.ignore_issue.title'),
+                title: context.tHtml('issues.fix.ignore_issue.title'),
                 icon: 'rapid-icon-close',
                 onClick: function() {
                     context.validationSystem().ignoreIssue(this.issue.id);

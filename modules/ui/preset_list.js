@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import _debounce from 'lodash-es/debounce';
 
-import { t, localizer } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
 import { uiIcon } from './icon';
@@ -13,8 +12,9 @@ import { utilKeybinding, utilNoAuto, utilRebind, utilTotalExtent } from '../util
 
 
 export function uiPresetList(context) {
-    var presetSystem = context.presetSystem();
+    var l10n = context.localizationSystem();
     var filterSystem = context.filterSystem();
+    var presetSystem = context.presetSystem();
 
     var dispatch = d3_dispatch('cancel', 'choose');
     var _entityIDs;
@@ -27,6 +27,7 @@ export function uiPresetList(context) {
         if (!_entityIDs) return;
 
         var presets = presetSystem.matchAllGeometry(entityGeometries());
+        const isRTL = l10n.isRTL();
 
         selection.html('');
 
@@ -36,13 +37,13 @@ export function uiPresetList(context) {
 
         var message = messagewrap
             .append('h3')
-            .html(t.html('inspector.choose'));
+            .html(l10n.tHtml('inspector.choose'));
 
         messagewrap
             .append('button')
             .attr('class', 'preset-choose')
             .on('click', function() { dispatch.call('cancel', this); })
-            .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'));
+            .call(uiIcon(isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'));
 
 
         var searchWrap = selection
@@ -55,7 +56,7 @@ export function uiPresetList(context) {
         var search = searchWrap
             .append('input')
             .attr('class', 'preset-search-input')
-            .attr('placeholder', t('inspector.search'))
+            .attr('placeholder', l10n.t('inspector.search'))
             .attr('type', 'search')
             .call(utilNoAuto)
             .on('keydown', initialKeydown)
@@ -137,13 +138,13 @@ export function uiPresetList(context) {
             var collection, messageText;
             if (value.length) {
                 collection = presets.search(value, entityGeometries()[0], _currLoc);
-                messageText = t('inspector.results', {
+                messageText = l10n.t('inspector.results', {
                     n: collection.array.length,
                     search: value
                 });
             } else {
                 collection = presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc);
-                messageText = t('inspector.choose');
+                messageText = l10n.t('inspector.choose');
             }
             list.call(drawList, collection);
             message.html(messageText);
@@ -190,6 +191,7 @@ export function uiPresetList(context) {
         // the actively focused item
         var item = d3_select(this.closest('.preset-list-item'));
         var parentItem = d3_select(item.node().parentNode.closest('.preset-list-item'));
+        const isRTL = l10n.isRTL();
 
         // arrow down, move focus to the next, lower item
         if (d3_event.keyCode === utilKeybinding.keyCodes['↓']) {
@@ -245,7 +247,7 @@ export function uiPresetList(context) {
             }
 
         // arrow left, move focus to the parent item if there is one
-        } else if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '→' : '←']) {
+        } else if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '→' : '←']) {
             d3_event.preventDefault();
             d3_event.stopPropagation();
             // if there is a parent item, focus on the parent item
@@ -254,7 +256,7 @@ export function uiPresetList(context) {
             }
 
         // arrow right, choose this item
-        } else if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '←' : '→']) {
+        } else if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '←' : '→']) {
             d3_event.preventDefault();
             d3_event.stopPropagation();
             item.datum().choose.call(d3_select(this).node());
@@ -266,13 +268,14 @@ export function uiPresetList(context) {
         var box, sublist, shown = false;
 
         function item(selection) {
+            const isRTL = l10n.isRTL();
+
             var wrap = selection.append('div')
                 .attr('class', 'preset-list-button-wrap category');
 
             function click() {
                 var isExpanded = d3_select(this).classed('expanded');
-                var iconName = isExpanded ?
-                    (localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward') : '#rapid-icon-down';
+                var iconName = isExpanded ? (isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward') : '#rapid-icon-down';
                 d3_select(this)
                     .classed('expanded', !isExpanded);
                 d3_select(this).selectAll('div.label-inner svg.icon use')
@@ -292,7 +295,7 @@ export function uiPresetList(context) {
                 .on('click', click)
                 .on('keydown', function(d3_event) {
                     // right arrow, expand the focused item
-                    if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '←' : '→']) {
+                    if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '←' : '→']) {
                         d3_event.preventDefault();
                         d3_event.stopPropagation();
                         // if the item isn't expanded
@@ -301,7 +304,7 @@ export function uiPresetList(context) {
                             click.call(this, d3_event);
                         }
                     // left arrow, collapse the focused item
-                    } else if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '→' : '←']) {
+                    } else if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '→' : '←']) {
                         d3_event.preventDefault();
                         d3_event.stopPropagation();
                         // if the item is expanded
@@ -323,7 +326,7 @@ export function uiPresetList(context) {
             label
                 .append('div')
                 .attr('class', 'namepart')
-                .call(uiIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
+                .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
                 .append('span')
                 .html(function() { return preset.nameLabel() + '&hellip;'; });
 
@@ -418,7 +421,7 @@ export function uiPresetList(context) {
                     }
                     return graph;
                 },
-                t('operations.change_tags.annotation')
+                l10n.t('operations.change_tags.annotation')
             );
 
             context.validationSystem().validate();  // rerun validation
@@ -444,7 +447,7 @@ export function uiPresetList(context) {
         var button = context.container().selectAll('.preset-list .preset-list-button');
 
         // remove existing tooltips
-        button.call(uiTooltip().destroyAny);
+        button.call(uiTooltip(context).destroyAny);
 
         button.each(function(item, index) {
             let hiddenPresetFeaturesId;
@@ -460,9 +463,9 @@ export function uiPresetList(context) {
                 .classed('disabled', isHiddenPreset);
 
             if (isHiddenPreset) {
-                d3_select(this).call(uiTooltip()
-                    .title(t.html('inspector.hidden_preset.manual', {
-                        features: t.html('feature.' + hiddenPresetFeaturesId + '.description')
+                d3_select(this).call(uiTooltip(context)
+                    .title(l10n.tHtml('inspector.hidden_preset.manual', {
+                        features: l10n.tHtml('feature.' + hiddenPresetFeaturesId + '.description')
                     }))
                     .placement(index < 2 ? 'bottom' : 'top')
                 );

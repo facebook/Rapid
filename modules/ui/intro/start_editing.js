@@ -1,6 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { t } from '../../core/localizer';
 import { helpHtml } from './helper';
 import { uiModal } from '../modal';
 import { utilRebind } from '../../util/rebind';
@@ -36,8 +35,8 @@ export function uiIntroStartEditing(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.map-control.help-control',
-        tipHtml: helpHtml('intro.startediting.help'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.startediting.help'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(shortcutsAsync)
       });
     });
@@ -51,8 +50,8 @@ export function uiIntroStartEditing(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.map-control.help-control',
-        tipHtml: helpHtml('intro.startediting.shortcuts'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.startediting.shortcuts'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(showSaveAsync)
       });
     });
@@ -68,8 +67,8 @@ export function uiIntroStartEditing(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.top-toolbar button.save',
-        tipHtml: helpHtml('intro.startediting.save'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.startediting.save'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(showStartMappingAsync)
       });
     });
@@ -103,7 +102,7 @@ export function uiIntroStartEditing(context, curtain) {
 
       startbutton
         .append('h2')
-        .html(t.html('intro.startediting.start'));
+        .html(context.tHtml('intro.startediting.start'));
     })
     .finally(() => {
       modalSelection.remove();

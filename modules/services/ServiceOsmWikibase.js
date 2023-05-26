@@ -2,8 +2,6 @@ import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
-import { localizer } from '../core/localizer';
-
 
 /**
  * `ServiceOsmWikibase`
@@ -255,7 +253,7 @@ export class ServiceOsmWikibase {
    * @param   callback
    */
   getDocs(params, callback) {
-    const langCodes = localizer.localeCodes().map(code => code.toLowerCase());
+    const langCodes = this.context.localizationSystem().localeCodes().map(code => code.toLowerCase());
     params.langCodes = langCodes;
 
     this.getEntity(params, (err, data) => {

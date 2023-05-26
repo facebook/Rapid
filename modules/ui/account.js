@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 
 
@@ -50,7 +49,7 @@ export function uiAccount(context) {
       loginLogout
         .classed('hide', false)
         .select('a')
-        .text(t('logout'))
+        .text(context.t('logout'))
         .on('click', e => {
           e.preventDefault();
           osm.logout();
@@ -66,7 +65,7 @@ export function uiAccount(context) {
       loginLogout
         .classed('hide', false)
         .select('a')
-        .text(t('login'))
+        .text(context.t('login'))
         .on('click', e => {
           e.preventDefault();
           osm.authenticate();

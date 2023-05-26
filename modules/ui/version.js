@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 
@@ -43,8 +42,8 @@ export function uiVersion(context) {
         .attr('tabindex', -1)
         .attr('href', 'https://github.com/facebook/Rapid/blob/main/CHANGELOG.md')
         .call(uiIcon('#maki-gift'))
-        .call(uiTooltip()
-          .title(t.html('version.whats_new', { version: currVersion }))
+        .call(uiTooltip(context)
+          .title(context.tHtml('version.whats_new', { version: currVersion }))
           .placement('top')
           .scrollContainer(context.container().select('.main-footer-wrap'))
         );

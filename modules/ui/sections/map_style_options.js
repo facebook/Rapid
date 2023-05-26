@@ -1,11 +1,10 @@
-import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
 
 export function uiSectionMapStyleOptions(context) {
   const section = uiSection('fill-area', context)
-      .label(t.html('map_data.style_options'))
+      .label(context.tHtml('map_data.style_options'))
       .disclosureContent(renderDisclosureContent)
       .expandedByDefault(false);
 
@@ -42,12 +41,12 @@ export function uiSectionMapStyleOptions(context) {
     // Enter
     let enter = items.enter()
       .append('li')
-      .call(uiTooltip()
-        .title(d => t.html(`${name}.${d}.tooltip`))
+      .call(uiTooltip(context)
+        .title(d => context.tHtml(`${name}.${d}.tooltip`))
         .keys(d => {
-          let key = (d === 'wireframe' ? t('area_fill.wireframe.key') : null);
+          let key = (d === 'wireframe' ? context.t('area_fill.wireframe.key') : null);
           if (d === 'highlight_edits') {
-            key = t('map_data.highlight_edits.key');
+            key = context.t('map_data.highlight_edits.key');
           }
           return key ? [key] : null;
         })
@@ -65,7 +64,7 @@ export function uiSectionMapStyleOptions(context) {
 
     label
       .append('span')
-      .html(d => t.html(`${name}.${d}.description`));
+      .html(d => context.tHtml(`${name}.${d}.description`));
 
     // Update
     items = items

@@ -1,4 +1,3 @@
-import { t } from '../../core/localizer';
 import { uiSection } from '../section';
 
 
@@ -32,7 +31,7 @@ export function uiSectionValidationOptions(context) {
     optionsEnter
       .append('div')
       .attr('class', 'issues-option-title')
-      .html(d => t.html(`issues.options.${d.key}.title`));
+      .html(d => context.tHtml(`issues.options.${d.key}.title`));
 
     let valuesEnter = optionsEnter.selectAll('label')
       .data(d => {
@@ -51,7 +50,7 @@ export function uiSectionValidationOptions(context) {
 
     valuesEnter
       .append('span')
-      .html(d => t.html(`issues.options.${d.key}.${d.value}`));
+      .html(d => context.tHtml(`issues.options.${d.key}.${d.value}`));
   }
 
   function getOptions() {

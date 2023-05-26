@@ -9,7 +9,6 @@ import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
-import { t } from '../core/localizer';
 
 const DEBUG = false;
 
@@ -186,7 +185,7 @@ export class ModeDrawArea extends AbstractMode {
     if (length < 4) return undefined;
 
     const which = length > 4 ? 'continue' : 'start';
-    return t(`operations.${which}.annotation.area`);
+    return this.context.t(`operations.${which}.annotation.area`);
   }
 
 

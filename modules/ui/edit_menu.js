@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { vecAdd } from '@rapid-sdk/math';
-import { localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { utilRebind } from '../util/rebind';
 import { utilHighlightEntities } from '../util/util';
@@ -95,7 +94,7 @@ export function uiEditMenu(context) {
       });
 
     buttonsEnter.each((d, i, nodes) => {
-      let tooltip = uiTooltip()
+      let tooltip = uiTooltip(context)
         .heading(d.title)
         .title(d.tooltip())
         .keys([d.keys[0]]);
@@ -219,25 +218,36 @@ export function uiEditMenu(context) {
 
 
     function displayOnLeft(viewport) {
-      if (localizer.textDirection() === 'ltr') {
-        if ((anchor[0] + MENU_SIDE_MARGIN + _menuWidth) > (viewport.width - VIEW_SIDE_MARGIN)) {
-          return true;   // right menu would be too close to the right viewport edge, go left
-        } else {
-          return false;  // prefer right menu
-        }
-
-      } else { // rtl
+      const isRTL = context.localizationSystem().isRTL();
+      if (isRTL) {  // right to left
         if ((anchor[0] - MENU_SIDE_MARGIN - _menuWidth) < VIEW_SIDE_MARGIN) {
           return false;  // left menu would be too close to the left viewport edge, go right
         } else {
           return true;   // prefer left menu
+        }
+      } else {  // left to right
+        if ((anchor[0] + MENU_SIDE_MARGIN + _menuWidth) > (viewport.width - VIEW_SIDE_MARGIN)) {
+          return true;   // right menu would be too close to the right viewport edge, go left
+        } else {
+          return false;  // prefer right menu
         }
       }
     }
 
 
     function tooltipPosition(viewport, menuLeft) {
-      if (localizer.textDirection() === 'ltr') {
+      const isRTL = context.localizationSystem().isRTL();
+      if (isRTL) {  // right to left
+        if (!menuLeft) {
+          return 'right';
+        }
+        if ((anchor[0] - MENU_SIDE_MARGIN - _menuWidth - TOOLTIP_WIDTH) < VIEW_SIDE_MARGIN) {
+          // left tooltips would be too close to the left viewport edge, go right
+          return 'right';
+        }
+        return 'left';
+
+      } else {  // left to right
         if (menuLeft) {
           // if there's not room for a right-side menu then there definitely
           // isn't room for right-side tooltips
@@ -248,16 +258,6 @@ export function uiEditMenu(context) {
           return 'left';
         }
         return 'right';
-
-      } else { // rtl
-        if (!menuLeft) {
-          return 'right';
-        }
-        if ((anchor[0] - MENU_SIDE_MARGIN - _menuWidth - TOOLTIP_WIDTH) < VIEW_SIDE_MARGIN) {
-          // left tooltips would be too close to the left viewport edge, go right
-          return 'right';
-        }
-        return 'left';
       }
     }
 

@@ -1,4 +1,3 @@
-import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
@@ -7,7 +6,7 @@ import { uiSection } from '../section';
 export function uiSectionPrivacy(context) {
   const prefs = context.storageSystem();
   const section = uiSection('preferences-third-party', context)
-    .label(t.html('preferences.privacy.title'))
+    .label(context.tHtml('preferences.privacy.title'))
     .disclosureContent(renderDisclosureContent);
 
   let _showThirdPartyIcons = prefs.getItem('preferences.privacy.thirdpartyicons') || 'true';
@@ -24,8 +23,8 @@ export function uiSectionPrivacy(context) {
       .append('li')
       .attr('class', 'privacy-third-party-icons-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t.html('preferences.privacy.third_party_icons.tooltip'))
+      .call(uiTooltip(context)
+        .title(context.tHtml('preferences.privacy.third_party_icons.tooltip'))
         .placement('bottom')
       );
 
@@ -41,7 +40,7 @@ export function uiSectionPrivacy(context) {
 
     thirdPartyIconsEnter
       .append('span')
-      .html(t.html('preferences.privacy.third_party_icons.description'));
+      .html(context.tHtml('preferences.privacy.third_party_icons.description'));
 
 
     // Privacy Policy link
@@ -55,7 +54,7 @@ export function uiSectionPrivacy(context) {
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://mapwith.ai/doc/license/MapWithAIPrivacyPolicy.pdf')
       .append('span')
-      .html(t.html('preferences.privacy.privacy_link'));
+      .html(context.tHtml('preferences.privacy.privacy_link'));
 
     update();
 

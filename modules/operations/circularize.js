@@ -1,6 +1,5 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionCircularize } from '../actions/circularize';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { utilTotalExtent } from '../util';
@@ -90,19 +89,19 @@ export function operationCircularize(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.circularize.${disabledReason}.${multi}`) :
-      t(`operations.circularize.description.${multi}`);
+      context.t(`operations.circularize.${disabledReason}.${multi}`) :
+      context.t(`operations.circularize.description.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return t('operations.circularize.annotation.feature', { n: actions.length });
+    return context.t('operations.circularize.annotation.feature', { n: actions.length });
   };
 
 
   operation.id = 'circularize';
-  operation.keys = [ t('operations.circularize.key') ];
-  operation.title = t('operations.circularize.title');
+  operation.keys = [ context.t('operations.circularize.key') ];
+  operation.title = context.t('operations.circularize.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

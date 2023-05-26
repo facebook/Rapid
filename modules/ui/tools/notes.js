@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 
@@ -9,15 +8,15 @@ import { uiTooltip } from '../tooltip';
 export function uiToolNotes(context) {
   let tool = {
     id: 'notes',
-    label: t.html('modes.add_note.label')
+    label: context.tHtml('modes.add_note.label')
   };
 
   const mode = {
     id: 'add-note',
-    title: t.html('modes.add_note.title'),
+    title: context.tHtml('modes.add_note.title'),
     button: 'note',
-    description: t.html('modes.add_note.description'),
-    key: t('modes.add_note.key')
+    description: context.tHtml('modes.add_note.description'),
+    key: context.t('modes.add_note.key')
   };
 
 
@@ -80,7 +79,7 @@ export function uiToolNotes(context) {
             context.enter(d.id);
           }
         })
-        .call(uiTooltip()
+        .call(uiTooltip(context)
           .placement('bottom')
           .title(d => d.description)
           .keys(d => [d.key])

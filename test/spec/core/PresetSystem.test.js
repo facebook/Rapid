@@ -10,12 +10,6 @@ describe('PresetSystem', () => {
   class MockContext {
     constructor()   {
       this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
-      let cache = this._dataLoaderSystem._cachedData;  // cache empty data so we dont try loading anything
-      cache.preset_categories = {};
-      cache.preset_defaults = {};
-      cache.preset_fields = {};
-      cache.preset_presets = {};
-
       this._locationSystem = new Rapid.LocationSystem(this);
       this._storageSystem = new MockStorageSystem();
      }

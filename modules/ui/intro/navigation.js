@@ -2,7 +2,6 @@ import { Extent, vecEqual } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, transitionTime } from './helper';
 
@@ -93,7 +92,7 @@ export function uiIntroNavigation(context, curtain) {
         _rejectStep = reject;
         const centerStart = map.center();
         const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
-        const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
+        const dragString = helpHtml(context, 'intro.navigation.map_info') + '{br}' + helpHtml(context, `intro.navigation.${textID}`);
 
         onMove = () => {
           if (!vecEqual(centerStart, map.center())) {  // map moved
@@ -123,7 +122,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       const zoomStart = map.zoom();
       const textID = context.lastPointerType() === 'mouse' ? 'zoom' : 'zoom_touch';
-      const zoomString = helpHtml(`intro.navigation.${textID}`);
+      const zoomString = helpHtml(context, `intro.navigation.${textID}`);
 
       onMove = () => {
         if (zoomStart !== map.zoom()) {  // map zoomed
@@ -152,8 +151,8 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: helpHtml('intro.navigation.features'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.features'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(pointsLinesAreasAsync)
       });
     });
@@ -167,8 +166,8 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: helpHtml('intro.navigation.points_lines_areas'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.points_lines_areas'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(nodesWaysAsync)
       });
     });
@@ -182,8 +181,8 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: helpHtml('intro.navigation.nodes_ways'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.nodes_ways'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(clickTownHallAsync)
       });
     });
@@ -207,7 +206,7 @@ export function uiIntroNavigation(context, curtain) {
         const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
         curtain.reveal({
           revealExtent: townHallExtent,
-          tipHtml: helpHtml(`intro.navigation.${textID}`)
+          tipHtml: helpHtml(context, `intro.navigation.${textID}`)
         });
 
         context.on('enter.intro', () => resolve(selectedTownHallAsync));
@@ -228,8 +227,8 @@ export function uiIntroNavigation(context, curtain) {
 
       curtain.reveal({
         revealExtent: townHallExtent,
-        tipHtml: helpHtml('intro.navigation.selected_townhall'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.selected_townhall'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(editorTownHallAsync)
       });
 
@@ -253,8 +252,8 @@ export function uiIntroNavigation(context, curtain) {
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.navigation.editor_townhall'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.editor_townhall'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(presetTownHallAsync)
       });
 
@@ -284,8 +283,8 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane .section-feature-type',
         revealPadding: 5,
-        tipHtml: helpHtml('intro.navigation.preset_townhall', { preset: preset.name() }),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.preset_townhall', { preset: preset.name() }),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(fieldsTownHallAsync)
       });
 
@@ -311,8 +310,8 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane .section-preset-fields',
         revealPadding: 5,
-        tipHtml: helpHtml('intro.navigation.fields_townhall'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.fields_townhall'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(closeTownHallAsync)
       });
 
@@ -338,7 +337,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipSelector: '.entity-editor-pane button.close',
-        tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
+        tipHtml: helpHtml(context, 'intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
       });
 
       context.on('enter.intro', () => resolve(searchStreetAsync));
@@ -366,7 +365,7 @@ export function uiIntroNavigation(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.search-header input',
-          tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
+          tipHtml: helpHtml(context, 'intro.navigation.search_street', { name: context.t('intro.graph.name.spring-street') })
         });
 
         container.select('.search-header input').on('keyup.intro', () => resolve(checkSearchResultAsync));
@@ -390,13 +389,13 @@ export function uiIntroNavigation(context, curtain) {
       container.select('.search-header input').on('keyup.intro', () => {
         const first = container.select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
         const firstName = first.select('.entity-name');
-        const name = t('intro.graph.name.spring-street');
+        const name = context.t('intro.graph.name.spring-street');
 
         if (!firstName.empty() && firstName.html() === name) {
           curtain.reveal({
             revealNode: first.node(),
             revealPadding: 5,
-            tipHtml: helpHtml('intro.navigation.choose_street', { name: name })
+            tipHtml: helpHtml(context, 'intro.navigation.choose_street', { name: name })
           });
           // no more typing
           container.select('.search-header input')
@@ -432,8 +431,8 @@ export function uiIntroNavigation(context, curtain) {
         curtain.reveal({
           revealExtent: springStreetExtent,
           revealPadding: 40,
-          tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
-          buttonText: t.html('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.navigation.selected_street', { name: context.t('intro.graph.name.spring-street') }),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(editorStreetAsync)
         });
 
@@ -455,8 +454,8 @@ export function uiIntroNavigation(context, curtain) {
       showEntityEditor(container);
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
-      const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
-        helpHtml('intro.navigation.editor_street', {
+      const tipHtml = helpHtml(context, 'intro.navigation.street_different_fields') + '{br}' +
+        helpHtml(context, 'intro.navigation.editor_street', {
           button: icon(iconName, 'inline'),
           field1: onewayField.label(),
           field2: maxspeedField.label()
@@ -482,8 +481,8 @@ export function uiIntroNavigation(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-point',
-      tipHtml: helpHtml('intro.navigation.play', { next: t('intro.points.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.navigation.play', { next: context.t('intro.points.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

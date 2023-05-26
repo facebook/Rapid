@@ -1,9 +1,21 @@
 describe('ServiceTaginfo', () => {
   let taginfo;
 
+  class MockLocalizationSystem {
+    constructor() {}
+    languageCode() { return 'en'; }
+  }
+
+  class MockContext {
+    constructor()        { this._localizationSystem = new MockLocalizationSystem(this); }
+    localizationSystem() { return this._localizationSystem; }
+  }
+
+
   before(() => {
     fetchMock.resetHistory();
   });
+
 
   beforeEach(() => {
     fetchMock.mock(new RegExp('\/keys\/all.*sortname=values_all'), {
@@ -11,10 +23,12 @@ describe('ServiceTaginfo', () => {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
-    taginfo = new Rapid.ServiceTaginfo();
-    taginfo.init();
+
+    taginfo = new Rapid.ServiceTaginfo(new MockContext());
+    taginfo.init();   // init will try to fetch the common values
     fetchMock.resetHistory();
   });
+
 
   afterEach(() => {
     fetchMock.resetHistory();
@@ -38,7 +52,7 @@ describe('ServiceTaginfo', () => {
       taginfo.keys({ query: 'amen' }, callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.calls()[0][0])).to.eql(
+        expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           {query: 'amen', page: '1', rp: '10', sortname: 'count_all', sortorder: 'desc', lang: 'en'}
         );
         expect(callback).to.have.been.calledWith(null, [{'title':'amenity', 'value':'amenity'}] );
@@ -132,7 +146,7 @@ describe('ServiceTaginfo', () => {
       taginfo.multikeys({ query: 'recycling:' }, callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.calls()[0][0])).to.eql(
+        expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           {query: 'recycling:', page: '1', rp: '25', sortname: 'count_all', sortorder: 'desc', lang: 'en'}
         );
         expect(callback).to.have.been.calledWith(
@@ -193,7 +207,7 @@ describe('ServiceTaginfo', () => {
       taginfo.values({ key: 'amenity', query: 'par' }, callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.calls()[0][0])).to.eql(
+        expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           {key: 'amenity', query: 'par', page: '1', rp: '25', sortname: 'count_all', sortorder: 'desc', lang: 'en'}
         );
         expect(callback).to.have.been.calledWith(
@@ -349,7 +363,7 @@ describe('ServiceTaginfo', () => {
       taginfo.roles({ rtype: 'route', query: 's', geometry: 'relation' }, callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.calls()[0][0])).to.eql(
+        expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           {rtype: 'route', query: 's', page: '1', rp: '25', sortname: 'count_relation_members', sortorder: 'desc', lang: 'en'}
         );
         expect(callback).to.have.been.calledWith(null, [
@@ -373,7 +387,7 @@ describe('ServiceTaginfo', () => {
       taginfo.docs({ key: 'amenity', value: 'parking' }, callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.calls()[0][0])).to.eql(
+        expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           {key: 'amenity', value: 'parking'}
         );
         expect(callback).to.have.been.calledWith(

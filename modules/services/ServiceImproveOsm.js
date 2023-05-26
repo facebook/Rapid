@@ -5,8 +5,6 @@ import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { QAItem } from '../osm';
-// import { serviceOsm } from './index';
-import { t } from '../core/localizer';
 import { utilRebind } from '../util';
 
 
@@ -97,6 +95,7 @@ export class ServiceImproveOsm {
     };
 
     // determine the needed tiles to cover the view
+    const context = this.context;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -167,7 +166,7 @@ export class ServiceImproveOsm {
                 d.replacements = {
                   percentage: feature.percentOfTrips,
                   num_trips: feature.numberOfTrips,
-                  highway: this._linkErrorObject(t('QA.keepRight.error_parts.highway')),
+                  highway: this._linkErrorObject(context.t('QA.keepRight.error_parts.highway')),
                   from_node: this._linkEntity('n' + feature.fromNodeId),
                   to_node: this._linkEntity('n' + feature.toNodeId)
                 };
@@ -196,12 +195,12 @@ export class ServiceImproveOsm {
 
                 d.replacements = {
                   num_trips: numberOfTrips,
-                  geometry_type: t(`QA.improveOSM.geometry_types.${geoType}`)
+                  geometry_type: context.t(`QA.improveOSM.geometry_types.${geoType}`)
                 };
 
                 // -1 trips indicates data came from a 3rd party
                 if (numberOfTrips === -1) {
-                  d.desc = t('QA.improveOSM.error_types.mr.description_alt', d.replacements);
+                  d.desc = context.t('QA.improveOSM.error_types.mr.description_alt', d.replacements);
                 }
 
                 this._cache.data[d.id] = d;
@@ -244,7 +243,7 @@ export class ServiceImproveOsm {
                   from_way: this._linkEntity('w' + from_way),
                   to_way: this._linkEntity('w' + to_way),
                   travel_direction: dir_of_travel,
-                  junction: this._linkErrorObject(t('QA.keepRight.error_parts.this_node'))
+                  junction: this._linkErrorObject(context.t('QA.keepRight.error_parts.this_node'))
                 };
 
                 this._cache.data[d.id] = d;
@@ -550,7 +549,7 @@ export class ServiceImproveOsm {
       360: 'north'
     };
 
-    return t(`QA.improveOSM.directions.${compass[dir]}`);
+    return this.context.t(`QA.improveOSM.directions.${compass[dir]}`);
   }
 
 

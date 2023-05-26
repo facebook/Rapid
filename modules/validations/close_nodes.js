@@ -1,14 +1,13 @@
 import { Extent, geoMetersToLat, geoMetersToLon, geoSphericalDistance } from '@rapid-sdk/math';
 
 import { actionMergeNodes } from '../actions/merge_nodes';
-import { utilDisplayLabel } from '../util';
-import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { osmPathHighwayTagValues } from '../osm/tags';
 
 
 export function validationCloseNodes(context) {
-    var type = 'close_nodes';
+    const type = 'close_nodes';
+    const l10n = context.localizationSystem();
 
     var pointThresholdMeters = 0.2;
 
@@ -166,12 +165,12 @@ export function validationCloseNodes(context) {
                         type: type,
                         subtype: 'detached',
                         severity: 'warning',
-                        message: function(context) {
+                        message: function() {
                             var entity = context.hasEntity(this.entityIds[0]),
                                 entity2 = context.hasEntity(this.entityIds[1]);
-                            return (entity && entity2) ? t.html('issues.close_nodes.detached.message', {
-                                feature: utilDisplayLabel(context, entity, context.graph()),
-                                feature2: utilDisplayLabel(context, entity2, context.graph())
+                            return (entity && entity2) ? l10n.tHtml('issues.close_nodes.detached.message', {
+                                feature: l10n.displayLabel(entity, context.graph()),
+                                feature2: l10n.displayLabel(entity2, context.graph())
                             }) : '';
                         },
                         reference: showReference,
@@ -180,11 +179,11 @@ export function validationCloseNodes(context) {
                             return [
                                 new validationIssueFix({
                                     icon: 'rapid-operation-disconnect',
-                                    title: t.html('issues.fix.move_points_apart.title')
+                                    title: l10n.tHtml('issues.fix.move_points_apart.title')
                                 }),
                                 new validationIssueFix({
                                     icon: 'rapid-icon-layers',
-                                    title: t.html('issues.fix.use_different_layers_or_levels.title')
+                                    title: l10n.tHtml('issues.fix.use_different_layers_or_levels.title')
                                 })
                             ];
                         }
@@ -195,7 +194,7 @@ export function validationCloseNodes(context) {
             return issues;
 
             function showReference(selection) {
-                var referenceText = t('issues.close_nodes.detached.reference');
+                var referenceText = l10n.t('issues.close_nodes.detached.reference');
                 selection.selectAll('.issue-reference')
                     .data([0])
                     .enter()
@@ -232,9 +231,9 @@ export function validationCloseNodes(context) {
                 type: type,
                 subtype: 'vertices',
                 severity: 'warning',
-                message: function(context) {
+                message: function() {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t.html('issues.close_nodes.message', { way: utilDisplayLabel(context, entity, context.graph()) }) : '';
+                    return entity ? l10n.tHtml('issues.close_nodes.message', { way: l10n.displayLabel(entity, context.graph()) }) : '';
                 },
                 reference: showReference,
                 entityIds: [way.id, node1.id, node2.id],
@@ -243,23 +242,23 @@ export function validationCloseNodes(context) {
                     return [
                         new validationIssueFix({
                             icon: 'rapid-icon-plus',
-                            title: t.html('issues.fix.merge_points.title'),
-                            onClick: function(context) {
+                            title: l10n.tHtml('issues.fix.merge_points.title'),
+                            onClick: function() {
                                 var entityIds = this.issue.entityIds;
                                 var action = actionMergeNodes([entityIds[1], entityIds[2]]);
-                                context.perform(action, t('issues.fix.merge_close_vertices.annotation'));
+                                context.perform(action, l10n.t('issues.fix.merge_close_vertices.annotation'));
                             }
                         }),
                         new validationIssueFix({
                             icon: 'rapid-operation-disconnect',
-                            title: t.html('issues.fix.move_points_apart.title')
+                            title: l10n.tHtml('issues.fix.move_points_apart.title')
                         })
                     ];
                 }
             });
 
             function showReference(selection) {
-                var referenceText = t('issues.close_nodes.reference');
+                var referenceText = l10n.t('issues.close_nodes.reference');
                 selection.selectAll('.issue-reference')
                     .data([0])
                     .enter()

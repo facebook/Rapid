@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
 import { uiIcon } from '../icon';
-import { t, localizer } from '../../core/localizer';
 
 
 /**
@@ -17,8 +16,8 @@ export class UiPanelHistory extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'history';
-    this.label = t.html('info_panels.history.title');
-    this.key = t('info_panels.history.key');
+    this.label = context.tHtml('info_panels.history.title');
+    this.key = context.t('info_panels.history.key');
 
     this._selection = d3_select(null);
 
@@ -82,7 +81,7 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     let selected, note, entity;
 //     if (selectedNoteID && osm) {       // selected 1 note
-//       selected = [ t('note.note') + ' ' + selectedNoteID ];
+//       selected = [ context.t('note.note') + ' ' + selectedNoteID ];
 //       note = osm.getNote(selectedNoteID);
 //     } else {                           // selected 1..n entities
 
@@ -98,7 +97,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     selection
       .append('h4')
       .attr('class', 'history-heading')
-      .html(singular || t.html('info_panels.selected', { n: selected.length }));
+      .html(singular || context.tHtml('info_panels.selected', { n: selected.length }));
 
     if (!singular) return;
 
@@ -116,10 +115,13 @@ export class UiPanelHistory extends AbstractUiPanel {
    * @param  `entity`     The OSM note to display details for
    */
   renderNote(selection, note) {
+    const context = this.context;
+    const osm = context.services.get('osm');
+
     if (!note || note.isNew()) {
       selection
         .append('div')
-        .html(t.html('info_panels.history.note_no_history'));
+        .html(context.tHtml('info_panels.history.note_no_history'));
       return;
     }
 
@@ -128,24 +130,23 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     list
       .append('li')
-      .html(t.html('info_panels.history.note_comments') + ':')
+      .html(context.tHtml('info_panels.history.note_comments') + ':')
       .append('span')
       .html(note.comments.length);
 
     if (note.comments.length) {
       list
         .append('li')
-        .html(t.html('info_panels.history.note_created_date') + ':')
+        .html(context.tHtml('info_panels.history.note_created_date') + ':')
         .append('span')
         .text(this.displayTimestamp(note.comments[0].date));
 
       list
         .append('li')
-        .html(t.html('info_panels.history.note_created_user') + ':')
+        .html(context.tHtml('info_panels.history.note_created_user') + ':')
         .call(this.renderUser, note.comments[0].user);
     }
 
-    const osm = this.context.services.get('osm');
     if (osm) {
       selection
         .append('a')
@@ -154,7 +155,7 @@ export class UiPanelHistory extends AbstractUiPanel {
         .attr('href', osm.noteURL(note))
         .call(uiIcon('#rapid-icon-out-link', 'inline'))
         .append('span')
-        .html(t.html('info_panels.history.note_link_text'));
+        .html(context.tHtml('info_panels.history.note_link_text'));
     }
   }
 
@@ -165,10 +166,13 @@ export class UiPanelHistory extends AbstractUiPanel {
    * @param  `entity`     The OSM entity (node, way, relation) to display details for
    */
   renderEntity(selection, entity) {
+    const context = this.context;
+    const osm = context.services.get('osm');
+
     if (!entity || entity.isNew()) {
       selection
         .append('div')
-        .html(t.html('info_panels.history.no_history'));
+        .html(context.tHtml('info_panels.history.no_history'));
       return;
     }
 
@@ -176,14 +180,13 @@ export class UiPanelHistory extends AbstractUiPanel {
       .append('div')
       .attr('class', 'links');
 
-    const osm = this.context.services.get('osm');
     if (osm) {
       links
         .append('a')
         .attr('class', 'view-history-on-osm')
         .attr('href', osm.historyURL(entity))
         .attr('target', '_blank')
-        .attr('title', t('info_panels.history.link_text'))
+        .attr('title', context.t('info_panels.history.link_text'))
         .text('OSM');
     }
 
@@ -200,24 +203,24 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     list
       .append('li')
-      .html(t.html('info_panels.history.version') + ':')
+      .html(context.tHtml('info_panels.history.version') + ':')
       .append('span')
       .text(entity.version);
 
     list
       .append('li')
-      .html(t.html('info_panels.history.last_edit') + ':')
+      .html(context.tHtml('info_panels.history.last_edit') + ':')
       .append('span')
       .text(this.displayTimestamp(entity.timestamp));
 
     list
       .append('li')
-      .html(t.html('info_panels.history.edited_by') + ':')
+      .html(context.tHtml('info_panels.history.edited_by') + ':')
       .call(this.renderUser, entity.user);
 
     list
       .append('li')
-      .html(t.html('info_panels.history.changeset') + ':')
+      .html(context.tHtml('info_panels.history.changeset') + ':')
       .call(this.renderChangeset, entity.changeset);
   }
 
@@ -227,7 +230,8 @@ export class UiPanelHistory extends AbstractUiPanel {
    * @returns   localized `String` for the given timestamp (or localized 'unknown' string)
    */
   displayTimestamp(timestamp) {
-    if (!timestamp) return t('info_panels.history.unknown');
+    const context = this.context;
+    if (!timestamp) return context.t('info_panels.history.unknown');
 
     const options = {
       day: 'numeric', month: 'short', year: 'numeric',
@@ -235,9 +239,10 @@ export class UiPanelHistory extends AbstractUiPanel {
     };
 
     const d = new Date(timestamp);
-    if (isNaN(d.getTime())) return t('info_panels.history.unknown');
+    if (isNaN(d.getTime())) return context.t('info_panels.history.unknown');
 
-    return d.toLocaleString(localizer.localeCode(), options);
+    const localeCode = context.localizationSystem().localeCode();
+    return d.toLocaleString(localeCode, options);
   }
 
 
@@ -247,10 +252,13 @@ export class UiPanelHistory extends AbstractUiPanel {
    * @param  `userName`   The OSM username to display links for
    */
   renderUser(selection, userName) {
+    const context = this.context;
+    const osm = context.services.get('osm');
+
     if (!userName) {
       selection
         .append('span')
-        .html(t.html('info_panels.history.unknown'));
+        .html(context.tHtml('info_panels.history.unknown'));
       return;
     }
 
@@ -263,7 +271,6 @@ export class UiPanelHistory extends AbstractUiPanel {
       .append('div')
       .attr('class', 'links');
 
-    const osm = this.context.services.get('osm');
     if (osm) {
       links
         .append('a')
@@ -276,7 +283,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     links
       .append('a')
       .attr('class', 'user-hdyc-link')
-      .attr('href', 'https://hdyc.neis-one.org/?' + userName)
+      .attr('href', `https://hdyc.neis-one.org/?${userName}`)
       .attr('target', '_blank')
       .attr('tabindex', -1)
       .text('HDYC');
@@ -289,23 +296,25 @@ export class UiPanelHistory extends AbstractUiPanel {
    * @param  `changeset`  the OSM changeset to display the links for
    */
   renderChangeset(selection, changeset) {
+    const context = this.context;
+    const osm = context.services.get('osm');
+
     if (!changeset) {
       selection
         .append('span')
-        .html(t.html('info_panels.history.unknown'));
+        .html(context.tHtml('info_panels.history.unknown'));
       return;
     }
 
     selection
       .append('span')
       .attr('class', 'changeset-id')
-      .html(changeset);
+      .text(changeset);
 
     let links = selection
       .append('div')
       .attr('class', 'links');
 
-    const osm = this.context.services.get('osm');
     if (osm) {
       links
         .append('a')

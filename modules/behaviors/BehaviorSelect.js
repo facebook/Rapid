@@ -6,7 +6,6 @@ import { osmEntity, osmNote, QAItem } from '../osm';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { osmNode } from '../osm/node';
 import { osmWay } from '../osm/way';
-import { t } from '../core/localizer';
 import { geoChooseEdge } from '../geo';
 
 const NEAR_TOLERANCE = 4;
@@ -474,7 +473,7 @@ export class BehaviorSelect extends AbstractBehavior {
       const edge = [data.nodes[choice.index - 1], data.nodes[choice.index]];
       context.perform(
         actionAddMidpoint({ loc: loc, edge: edge }, osmNode()),
-        t('operations.add.annotation.vertex')
+        context.t('operations.add.annotation.vertex')
       );
       context.validationSystem().validate();
 
@@ -482,7 +481,7 @@ export class BehaviorSelect extends AbstractBehavior {
       const edge = [data.a.id, data.b.id];
       context.perform(
         actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
-        t('operations.add.annotation.vertex')
+        context.t('operations.add.annotation.vertex')
       );
       context.validationSystem().validate();
     }

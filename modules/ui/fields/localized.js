@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq, utilUniqueString } from '@rapid-sdk/util';
 import * as countryCoder from '@rapideditor/country-coder';
 
-import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 import { uiCombobox } from '../combobox';
@@ -13,6 +12,9 @@ var _languagesArray = [];
 
 
 export function uiFieldLocalized(context, uifield) {
+    const dataLoaderSystem = context.dataLoaderSystem();
+    const l10n = context.localizationSystem();
+
     var dispatch = d3_dispatch('change', 'input');
     var wikipedia = context.services.get('wikipedia');
     var input = d3_select(null);
@@ -24,7 +26,6 @@ export function uiFieldLocalized(context, uifield) {
     // A concern here in switching to async data means that _languagesArray will not
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
-    const dataLoaderSystem = context.dataLoaderSystem();
 
     dataLoaderSystem.get('languages')
         .then(loadLanguagesArray)
@@ -42,8 +43,8 @@ export function uiFieldLocalized(context, uifield) {
 
     var _selection = d3_select(null);
     var _multilingual = [];
-    var _buttonTip = uiTooltip()
-        .title(t.html('translate.translate'))
+    var _buttonTip = uiTooltip(context)
+        .title(l10n.tHtml('translate.translate'))
         .placement('left');
     var _wikiTitles;
     var _entityIDs = [];
@@ -64,10 +65,10 @@ export function uiFieldLocalized(context, uifield) {
             if (replacements[code]) metaCode = replacements[code];
 
             _languagesArray.push({
-                localName: localizer.languageName(metaCode, { localOnly: true }),
+                localName: l10n.languageName(metaCode, { localOnly: true }),
                 nativeName: dataLanguages[metaCode].nativeName,
                 code: code,
-                label: localizer.languageName(metaCode)
+                label: l10n.languageName(metaCode)
             });
         }
     }
@@ -223,7 +224,7 @@ export function uiFieldLocalized(context, uifield) {
             d3_event.preventDefault();
             if (uifield.locked()) return;
 
-            var defaultLang = localizer.languageCode().toLowerCase();
+            var defaultLang = l10n.languageCode().toLowerCase();
             var langExists = _multilingual.find(function(datum) { return datum.lang === defaultLang; });
             var isLangEn = defaultLang.indexOf('en') > -1;
             if (isLangEn || langExists) {
@@ -318,7 +319,7 @@ export function uiFieldLocalized(context, uifield) {
         var v = value.toLowerCase();
 
         // show the user's language first
-        var langCodes = [localizer.localeCode(), localizer.languageCode()];
+        var langCodes = [l10n.localeCode(), l10n.languageCode()];
 
         if (_countryCode && _territoryLanguages[_countryCode]) {
             langCodes = langCodes.concat(_territoryLanguages[_countryCode]);
@@ -376,7 +377,7 @@ export function uiFieldLocalized(context, uifield) {
                 text
                     .append('span')
                     .attr('class', 'label-textvalue')
-                    .html(t.html('translate.localized_translation_label'));
+                    .html(l10n.tHtml('translate.localized_translation_label'));
 
                 text
                     .append('span')
@@ -411,7 +412,7 @@ export function uiFieldLocalized(context, uifield) {
                     .attr('class', 'localized-lang')
                     .attr('id', uid)
                     .attr('type', 'text')
-                    .attr('placeholder', t('translate.localized_translation_language'))
+                    .attr('placeholder', l10n.t('translate.localized_translation_language'))
                     .on('blur', changeLang)
                     .on('change', changeLang)
                     .call(langCombo);
@@ -461,7 +462,7 @@ export function uiFieldLocalized(context, uifield) {
                 return Array.isArray(d.value) ? d.value.filter(Boolean).join('\n') : null;
             })
             .attr('placeholder', function(d) {
-                return Array.isArray(d.value) ? t('inspector.multiple_values') : t('translate.localized_translation_name');
+                return Array.isArray(d.value) ? l10n.t('inspector.multiple_values') : l10n.t('translate.localized_translation_name');
             })
             .classed('mixed', function(d) {
                 return Array.isArray(d.value);
@@ -488,7 +489,7 @@ export function uiFieldLocalized(context, uifield) {
 
         utilGetSetValue(input, typeof tags[uifield.key] === 'string' ? tags[uifield.key] : '')
             .attr('title', isMixed ? tags[uifield.key].filter(Boolean).join('\n') : undefined)
-            .attr('placeholder', isMixed ? t('inspector.multiple_values') : uifield.placeholder)
+            .attr('placeholder', isMixed ? l10n.t('inspector.multiple_values') : uifield.placeholder)
             .classed('mixed', isMixed);
 
         calcMultilingual(tags);

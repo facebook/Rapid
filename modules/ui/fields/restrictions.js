@@ -3,19 +3,19 @@
 //import { Extent, Projection, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
 //import { utilEntitySelector } from '@rapid-sdk/util';
 //
-//import { t, localizer } from '../../core/localizer';
 //import { actionRestrictTurn } from '../../actions/restrict_turn';
 //import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 //import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 //import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
-//import { utilDisplayName, utilDisplayType, utilFunctor, utilRebind } from '../../util';
+//import { utilFunctor, utilRebind } from '../../util';
 //import { utilGetDimensions, utilSetDimensions } from '../../util/dimensions';
 //
 //
 //export function uiFieldRestrictions(context, uifield) {
-//    var dispatch = d3_dispatch('change');
-//
+//    const dispatch = d3_dispatch('change');
+//    const l10n = context.localizationSystem();
 //    const prefs = context.storageSystem();
+//
 //    prefs.removeItem('turn-restriction-via-way');                    // remove old key
 //    var storedViaWay = prefs.getItem('turn-restriction-via-way0');   // use new key #6922
 //    var storedDistance = prefs.getItem('turn-restriction-distance');
@@ -122,7 +122,7 @@
 //        distControlEnter
 //            .append('span')
 //            .attr('class', 'restriction-control-label restriction-distance-label')
-//            .html(t.html('restriction.controls.distance') + ':');
+//            .html(l10n.tHtml('restriction.controls.distance') + ':');
 //
 //        distControlEnter
 //            .append('input')
@@ -165,7 +165,7 @@
 //        viaControlEnter
 //            .append('span')
 //            .attr('class', 'restriction-control-label restriction-via-way-label')
-//            .html(t.html('restriction.controls.via') + ':');
+//            .html(l10n.tHtml('restriction.controls.via') + ':');
 //
 //        viaControlEnter
 //            .append('input')
@@ -347,7 +347,7 @@
 //
 //                    actions = _intersection.actions.concat(extraActions, [
 //                        actionRestrictTurn(datumOnly, restrictionType),
-//                        t('operations.restriction.annotation.create')
+//                        l10n.t('operations.restriction.annotation.create')
 //                    ]);
 //
 //                } else if (datum.restrictionID) {   // ONLY -> Allowed
@@ -365,13 +365,13 @@
 //
 //                    actions = _intersection.actions.concat(extraActions, [
 //                        actionUnrestrictTurn(datum),
-//                        t('operations.restriction.annotation.delete')
+//                        l10n.t('operations.restriction.annotation.delete')
 //                    ]);
 //
 //                } else {    // Allowed -> NO
 //                    actions = _intersection.actions.concat([
 //                        actionRestrictTurn(datum, restrictionType),
-//                        t('operations.restriction.annotation.create')
+//                        l10n.t('operations.restriction.annotation.create')
 //                    ]);
 //                }
 //
@@ -454,7 +454,7 @@
 //
 //            var placeholders = {};
 //            ['from', 'via', 'to'].forEach(function(k) {
-//                placeholders[k] = '<span class="qualifier">' + t('restriction.help.' + k) + '</span>';
+//                placeholders[k] = '<span class="qualifier">' + l10n.t('restriction.help.' + k) + '</span>';
 //            });
 //
 //            var entity = datum && datum.properties && datum.properties.entity;
@@ -481,7 +481,7 @@
 //                var clickSelect = (!_fromWayID || _fromWayID !== way.id);
 //                help
 //                    .append('div')      // "Click to select FROM {fromName}." / "FROM {fromName}"
-//                    .html(t.html('restriction.help.' + (clickSelect ? 'select_from_name' : 'from_name'), {
+//                    .html(l10n.tHtml('restriction.help.' + (clickSelect ? 'select_from_name' : 'from_name'), {
 //                        from: placeholders.from,
 //                        fromName: displayName(way.id, vgraph)
 //                    }));
@@ -491,21 +491,21 @@
 //            } else if (datum instanceof osmTurn) {
 //                var restrictionType = osmInferRestriction(vgraph, datum, projection);
 //                var turnType = restrictionType.replace(/^(only|no)\_/, '');
-//                var indirect = (datum.direct === false ? t.html('restriction.help.indirect') : '');
+//                var indirect = (datum.direct === false ? l10n.tHtml('restriction.help.indirect') : '');
 //                var klass, turnText, nextText;
 //
 //                if (datum.no) {
 //                    klass = 'restrict';
-//                    turnText = t.html('restriction.help.turn.no_' + turnType, { indirect: indirect });
-//                    nextText = t.html('restriction.help.turn.only_' + turnType, { indirect: '' });
+//                    turnText = l10n.tHtml('restriction.help.turn.no_' + turnType, { indirect: indirect });
+//                    nextText = l10n.tHtml('restriction.help.turn.only_' + turnType, { indirect: '' });
 //                } else if (datum.only) {
 //                    klass = 'only';
-//                    turnText = t.html('restriction.help.turn.only_' + turnType, { indirect: indirect });
-//                    nextText = t.html('restriction.help.turn.allowed_' + turnType, { indirect: '' });
+//                    turnText = l10n.tHtml('restriction.help.turn.only_' + turnType, { indirect: indirect });
+//                    nextText = l10n.tHtml('restriction.help.turn.allowed_' + turnType, { indirect: '' });
 //                } else {
 //                    klass = 'allow';
-//                    turnText = t.html('restriction.help.turn.allowed_' + turnType, { indirect: indirect });
-//                    nextText = t.html('restriction.help.turn.no_' + turnType, { indirect: '' });
+//                    turnText = l10n.tHtml('restriction.help.turn.allowed_' + turnType, { indirect: indirect });
+//                    nextText = l10n.tHtml('restriction.help.turn.no_' + turnType, { indirect: '' });
 //                }
 //
 //                help
@@ -515,7 +515,7 @@
 //
 //                help
 //                    .append('div')      // "FROM {fromName} TO {toName}"
-//                    .html(t.html('restriction.help.from_name_to_name', {
+//                    .html(l10n.tHtml('restriction.help.from_name_to_name', {
 //                        from: placeholders.from,
 //                        fromName: displayName(datum.from.way, vgraph),
 //                        to: placeholders.to,
@@ -535,7 +535,7 @@
 //
 //                    help
 //                        .append('div')      // "VIA {viaNames}"
-//                        .html(t.html('restriction.help.via_names', {
+//                        .html(l10n.tHtml('restriction.help.via_names', {
 //                            via: placeholders.via,
 //                            viaNames: names.join(', ')
 //                        }));
@@ -544,7 +544,7 @@
 //                if (!indirect) {
 //                    help
 //                        .append('div')      // Click for "No Right Turn"
-//                        .html(t.html('restriction.help.toggle', { turn: nextText.trim() }));
+//                        .html(l10n.tHtml('restriction.help.toggle', { turn: nextText.trim() }));
 //                }
 //
 //                highlightPathsFrom(null);
@@ -562,7 +562,7 @@
 //                if (_fromWayID) {
 //                    help
 //                        .append('div')      // "FROM {fromName}"
-//                        .html(t.html('restriction.help.from_name', {
+//                        .html(l10n.tHtml('restriction.help.from_name', {
 //                            from: placeholders.from,
 //                            fromName: displayName(_fromWayID, vgraph)
 //                        }));
@@ -570,7 +570,7 @@
 //                } else {
 //                    help
 //                        .append('div')      // "Click to select a FROM segment."
-//                        .html(t.html('restriction.help.select_from', {
+//                        .html(l10n.tHtml('restriction.help.select_from', {
 //                            from: placeholders.from
 //                        }));
 //                }
@@ -580,34 +580,34 @@
 //
 //
 //    function displayMaxDistance(maxDist) {
-//        var isImperial = !localizer.usesMetric();
+//        var isImperial = !context.localizationSystem().usesMetric();
 //        var opts;
 //
 //        if (isImperial) {
 //            var distToFeet = {   // imprecise conversion for prettier display
 //                20: 70, 25: 85, 30: 100, 35: 115, 40: 130, 45: 145, 50: 160
 //            }[maxDist];
-//            opts = { distance: t('units.feet', { quantity: distToFeet }) };
+//            opts = { distance: l10n.t('units.feet', { quantity: distToFeet }) };
 //        } else {
-//            opts = { distance: t('units.meters', { quantity: maxDist }) };
+//            opts = { distance: l10n.t('units.meters', { quantity: maxDist }) };
 //        }
 //
-//        return t.html('restriction.controls.distance_up_to', opts);
+//        return l10n.tHtml('restriction.controls.distance_up_to', opts);
 //    }
 //
 //
 //    function displayMaxVia(maxVia) {
-//        return maxVia === 0 ? t.html('restriction.controls.via_node_only')
-//            : maxVia === 1 ? t.html('restriction.controls.via_up_to_one')
-//            : t.html('restriction.controls.via_up_to_two');
+//        return maxVia === 0 ? l10n.tHtml('restriction.controls.via_node_only')
+//            : maxVia === 1 ? l10n.tHtml('restriction.controls.via_up_to_one')
+//            : l10n.tHtml('restriction.controls.via_up_to_two');
 //    }
 //
 //
 //    function displayName(entityID, graph) {
 //        var entity = graph.entity(entityID);
-//        var name = utilDisplayName(entity) || '';
+//        var name = l10n.displayName(entity) || '';
 //        var matched = context.presetSystem().match(entity, graph);
-//        var type = (matched && matched.name()) || utilDisplayType(entity.id);
+//        var type = (matched && matched.name()) || l10n.displayType(entity.id);
 //        return name || type;
 //    }
 //

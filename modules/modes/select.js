@@ -4,7 +4,6 @@ import {
     utilEntityOrDeepMemberSelector, utilEntitySelector
 } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
 //import { behaviorLasso } from '../behaviors/lasso';
@@ -270,14 +269,14 @@ export function modeSelect(context, selectedIDs) {
 //
 //                context.perform(
 //                    actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
-//                    t('operations.add.annotation.vertex')
+//                    context.t('operations.add.annotation.vertex')
 //                );
 //                context.validationSystem().validate();
 //
 //            } else if (entity.type === 'midpoint') {
 //                context.perform(
 //                    actionAddMidpoint({ loc: entity.loc, edge: entity.edge }, osmNode()),
-//                    t('operations.add.annotation.vertex')
+//                    context.t('operations.add.annotation.vertex')
 //                );
 //                context.validationSystem().validate();
 //            }
@@ -536,7 +535,7 @@ export function modeSelect(context, selectedIDs) {
         ) {
             // the user added this relation but didn't edit it at all, so just delete it
             var deleteAction = actionDeleteRelation(entity.id, true /* don't delete untagged members */);
-            context.perform(deleteAction, t('operations.delete.annotation.relation'));
+            context.perform(deleteAction, context.t('operations.delete.annotation.relation'));
             context.validationSystem().validate();
         }
     };

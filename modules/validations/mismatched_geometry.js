@@ -10,14 +10,13 @@ import { modeSelect } from '../modes/select';
 import { osmJoinWays } from '../osm/multipolygon';
 import { osmNodeGeometriesForTags, osmTagSuggestingArea } from '../osm/tags';
 import { geoHasSelfIntersections } from '../geo';
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
 export function validationMismatchedGeometry(context) {
-    var type = 'mismatched_geometry';
-    var presetSystem = context.presetSystem();
+    const type = 'mismatched_geometry';
+    const l10n = context.localizationSystem();
+    const presetSystem = context.presetSystem();
 
     function tagSuggestingLineIsArea(entity) {
         if (entity.type !== 'way' || entity.isClosed()) return null;
@@ -52,11 +51,11 @@ export function validationMismatchedGeometry(context) {
             testNodes.push(testNodes[0]);
             // make sure this will not create a self-intersection
             if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
-                return function(context) {
+                return function() {
                     var way = context.entity(this.issue.entityIds[0]);
                     context.perform(
                         actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc),
-                        t('issues.fix.connect_endpoints.annotation')
+                        l10n.t('issues.fix.connect_endpoints.annotation')
                     );
                 };
             }
@@ -67,14 +66,14 @@ export function validationMismatchedGeometry(context) {
         testNodes.push(testNodes[0]);
         // make sure this will not create a self-intersection
         if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
-            return function(context) {
+            return function() {
                 var wayId = this.issue.entityIds[0];
                 var way = context.entity(wayId);
                 var nodeId = way.nodes[0];
                 var index = way.nodes.length;
                 context.perform(
                     actionAddVertex(wayId, nodeId, index),
-                    t('issues.fix.connect_endpoints.annotation')
+                    l10n.t('issues.fix.connect_endpoints.annotation')
                 );
             };
         }
@@ -89,32 +88,30 @@ export function validationMismatchedGeometry(context) {
             type: type,
             subtype: 'area_as_line',
             severity: 'warning',
-            message: function(context) {
+            message: function() {
                 var entity = context.hasEntity(this.entityIds[0]);
-                return entity ? t.html('issues.tag_suggests_area.message', {
-                    feature: utilDisplayLabel(context, entity, 'area', true /* verbose */),
+                return entity ? l10n.tHtml('issues.tag_suggests_area.message', {
+                    feature: l10n.displayLabel(entity, 'area', true /* verbose */),
                     tag: utilTagText({ tags: tagSuggestingArea })
                 }) : '';
             },
             reference: showReference,
             entityIds: [entity.id],
             hash: JSON.stringify(tagSuggestingArea),
-            dynamicFixes: function(context) {
-
+            dynamicFixes: function() {
                 var fixes = [];
-
                 var entity = context.entity(this.entityIds[0]);
                 var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, context.graph());
 
                 fixes.push(new validationIssueFix({
-                    title: t.html('issues.fix.connect_endpoints.title'),
+                    title: l10n.tHtml('issues.fix.connect_endpoints.title'),
                     onClick: connectEndsOnClick
                 }));
 
                 fixes.push(new validationIssueFix({
                     icon: 'rapid-operation-delete',
-                    title: t.html('issues.fix.remove_tag.title'),
-                    onClick: function(context) {
+                    title: l10n.tHtml('issues.fix.remove_tag.title'),
+                    onClick: function() {
                         var entityId = this.issue.entityIds[0];
                         var entity = context.entity(entityId);
                         var tags = Object.assign({}, entity.tags);  // shallow copy
@@ -123,7 +120,7 @@ export function validationMismatchedGeometry(context) {
                         }
                         context.perform(
                             actionChangeTags(entityId, tags),
-                            t('issues.fix.remove_tag.annotation')
+                            l10n.t('issues.fix.remove_tag.annotation')
                         );
                     }
                 }));
@@ -139,7 +136,7 @@ export function validationMismatchedGeometry(context) {
                 .enter()
                 .append('div')
                 .attr('class', 'issue-reference')
-                .html(t.html('issues.tag_suggests_area.reference'));
+                .html(l10n.tHtml('issues.tag_suggests_area.reference'));
         }
     }
 
@@ -162,10 +159,10 @@ export function validationMismatchedGeometry(context) {
                 type: type,
                 subtype: 'vertex_as_point',
                 severity: 'warning',
-                message: function(context) {
+                message: function() {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t.html('issues.vertex_as_point.message', {
-                        feature: utilDisplayLabel(context, entity, 'vertex', true /* verbose */)
+                    return entity ? l10n.tHtml('issues.vertex_as_point.message', {
+                        feature: l10n.displayLabel(entity, 'vertex', true /* verbose */)
                     }) : '';
                 },
                 reference: function showReference(selection) {
@@ -174,7 +171,7 @@ export function validationMismatchedGeometry(context) {
                         .enter()
                         .append('div')
                         .attr('class', 'issue-reference')
-                        .html(t.html('issues.vertex_as_point.reference'));
+                        .html(l10n.tHtml('issues.vertex_as_point.reference'));
                 },
                 entityIds: [entity.id]
             });
@@ -185,10 +182,10 @@ export function validationMismatchedGeometry(context) {
                 type: type,
                 subtype: 'point_as_vertex',
                 severity: 'warning',
-                message: function(context) {
+                message: function() {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t.html('issues.point_as_vertex.message', {
-                        feature: utilDisplayLabel(context, entity, 'point', true /* verbose */)
+                    return entity ? l10n.tHtml('issues.point_as_vertex.message', {
+                        feature: l10n.displayLabel(entity, 'point', true /* verbose */)
                     }) : '';
                 },
                 reference: function showReference(selection) {
@@ -197,7 +194,7 @@ export function validationMismatchedGeometry(context) {
                         .enter()
                         .append('div')
                         .attr('class', 'issue-reference')
-                        .html(t.html('issues.point_as_vertex.reference'));
+                        .html(l10n.tHtml('issues.point_as_vertex.reference'));
                 },
                 entityIds: [entity.id],
                 dynamicFixes: extractPointDynamicFixes
@@ -265,10 +262,10 @@ export function validationMismatchedGeometry(context) {
             type: type,
             subtype: subtype,
             severity: 'warning',
-            message: function(context) {
+            message: function() {
                 var entity = context.hasEntity(this.entityIds[0]);
-                return entity ? t.html('issues.' + referenceId + '.message', {
-                    feature: utilDisplayLabel(context, entity, targetGeom, true /* verbose */)
+                return entity ? l10n.tHtml('issues.' + referenceId + '.message', {
+                    feature: l10n.displayLabel(entity, targetGeom, true /* verbose */)
                 }) : '';
             },
             reference: function showReference(selection) {
@@ -277,14 +274,14 @@ export function validationMismatchedGeometry(context) {
                     .enter()
                     .append('div')
                     .attr('class', 'issue-reference')
-                    .html(t.html('issues.mismatched_geometry.reference'));
+                    .html(l10n.tHtml('issues.mismatched_geometry.reference'));
             },
             entityIds: [entity.id],
             dynamicFixes: dynamicFixes
         });
     }
 
-    function lineToAreaDynamicFixes(context) {
+    function lineToAreaDynamicFixes() {
 
         var convertOnClick;
 
@@ -294,7 +291,7 @@ export function validationMismatchedGeometry(context) {
         delete tags.area;
         if (!osmTagSuggestingArea(tags)) {
             // if removing the area tag would make this a line, offer that as a quick fix
-            convertOnClick = function(context) {
+            convertOnClick = function() {
                 var entityId = this.issue.entityIds[0];
                 var entity = context.entity(entityId);
                 var tags = Object.assign({}, entity.tags);  // shallow copy
@@ -303,7 +300,7 @@ export function validationMismatchedGeometry(context) {
                 }
                 context.perform(
                     actionChangeTags(entityId, tags),
-                    t('issues.fix.convert_to_line.annotation')
+                    l10n.t('issues.fix.convert_to_line.annotation')
                 );
             };
         }
@@ -311,25 +308,25 @@ export function validationMismatchedGeometry(context) {
         return [
             new validationIssueFix({
                 icon: 'rapid-icon-line',
-                title: t.html('issues.fix.convert_to_line.title'),
+                title: l10n.tHtml('issues.fix.convert_to_line.title'),
                 onClick: convertOnClick
             })
         ];
     }
 
-    function extractPointDynamicFixes(context) {
+    function extractPointDynamicFixes() {
 
         var entityId = this.entityIds[0];
 
         var extractOnClick = null;
         if (!context.hasHiddenConnections(entityId)) {
 
-            extractOnClick = function(context) {
+            extractOnClick = function() {
                 var entityId = this.issue.entityIds[0];
                 var action = actionExtract(entityId, context.projection);
                 context.perform(
                     action,
-                    t('operations.extract.annotation', { n: 1 })
+                    l10n.t('operations.extract.annotation', { n: 1 })
                 );
                 // re-enter mode to trigger updates
                 context.enter(modeSelect(context, [action.getExtractedNodeID()]));
@@ -339,7 +336,7 @@ export function validationMismatchedGeometry(context) {
         return [
             new validationIssueFix({
                 icon: 'rapid-operation-extract',
-                title: t.html('issues.fix.extract_point.title'),
+                title: l10n.tHtml('issues.fix.extract_point.title'),
                 onClick: extractOnClick
             })
         ];
@@ -372,10 +369,10 @@ export function validationMismatchedGeometry(context) {
                 type: type,
                 subtype: 'unclosed_multipolygon_part',
                 severity: 'warning',
-                message: function(context) {
+                message: function() {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t.html('issues.unclosed_multipolygon_part.message', {
-                        feature: utilDisplayLabel(context, entity, context.graph(), true /* verbose */)
+                    return entity ? l10n.tHtml('issues.unclosed_multipolygon_part.message', {
+                        feature: l10n.displayLabel(entity, context.graph(), true /* verbose */)
                     }) : '';
                 },
                 reference: showReference,
@@ -396,7 +393,7 @@ export function validationMismatchedGeometry(context) {
                 .enter()
                 .append('div')
                 .attr('class', 'issue-reference')
-                .html(t.html('issues.unclosed_multipolygon_part.reference'));
+                .html(l10n.tHtml('issues.unclosed_multipolygon_part.reference'));
         }
     }
 

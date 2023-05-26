@@ -1,22 +1,22 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { uiSection } from '../section';
 
 
 export function uiSectionGridDisplayOptions(context) {
   const imagerySystem = context.imagerySystem();
+
   let section = uiSection('grid-display-options', context)
-    .label(t('background.grid.grids'))
+    .label(context.t('background.grid.grids'))
     .disclosureContent(gridDisplayOptions);
 
   const gridData = [
-    { numSplit: 0, name: t('background.grid.no_grid')},
-    { numSplit: 2, name: t('background.grid.n_by_n', { num: 2 }) },
-    { numSplit: 3, name: t('background.grid.n_by_n', { num: 3 }) },
-    { numSplit: 4, name: t('background.grid.n_by_n', { num: 4 }) },
-    { numSplit: 5, name: t('background.grid.n_by_n', { num: 5 }) },
-    { numSplit: 6, name: t('background.grid.n_by_n', { num: 6 }) }
+    { numSplit: 0, name: context.t('background.grid.no_grid')},
+    { numSplit: 2, name: context.t('background.grid.n_by_n', { num: 2 }) },
+    { numSplit: 3, name: context.t('background.grid.n_by_n', { num: 3 }) },
+    { numSplit: 4, name: context.t('background.grid.n_by_n', { num: 4 }) },
+    { numSplit: 5, name: context.t('background.grid.n_by_n', { num: 5 }) },
+    { numSplit: 6, name: context.t('background.grid.n_by_n', { num: 6 }) }
   ];
 
   function chooseGrid(d3_event, d) {

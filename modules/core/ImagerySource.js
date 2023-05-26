@@ -3,8 +3,6 @@ import { json as d3_json } from 'd3-fetch';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import { geoSphericalDistance } from '@rapid-sdk/math';
 
-import { t, localizer } from '../core/localizer';
-
 
 /**
  * `ImagerySource` maintains the state of a single tiled imagery source.
@@ -13,11 +11,14 @@ export class ImagerySource {
 
   /**
    * @constructor
-   * @param  `src`   source Object describing the imagery source
+   * @param  `context`  Global shared application context
+   * @param  `src`      source Object describing the imagery source
    */
-  constructor(src) {
+  constructor(context, src) {
+    this.context = context;
+
     this._id = src.id;
-    this._idtx = src.id.replace(/\./g, '<TX_DOT>');  // replace '.' in ids, so localizer can handle them
+    this._idtx = src.id.replace(/\./g, '<TX_DOT>');  // replace '.' in ids, so localization system can handle them
     this._name = src.name;
     this._description = src.description;
     this._template = src.encrypted ? utilAesDecrypt(src.template) : src.template;
@@ -51,15 +52,15 @@ export class ImagerySource {
   }
 
   get name() {
-    return t(`imagery.${this._idtx}.name`, { default: this._name });
+    return this.context.t(`imagery.${this._idtx}.name`, { default: this._name });
   }
 
   get label() {
-    return t.html(`imagery.${this._idtx}.name`, { default: this._name });
+    return this.context.tHtml(`imagery.${this._idtx}.name`, { default: this._name });
   }
 
   get description() {
-    return t.html(`imagery.${this._idtx}.description`, { default: this._description });
+    return this.context.tHtml(`imagery.${this._idtx}.description`, { default: this._description });
   }
 
   get imageryUsed() {
@@ -230,7 +231,9 @@ export class ImagerySource {
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
     const d = new Date(s);
     if (isNaN(d.getTime())) return null;
-    return d.toLocaleDateString(localizer.localeCode(), options);
+
+    const localeCode = this.context.localizationSystem.localeCode();
+    return d.toLocaleDateString(localeCode, options);
   }
 
 
@@ -253,14 +256,14 @@ export class ImagerySource {
  * A special imagery source for when the user has imagery disabled.
  */
 export class ImagerySourceNone extends ImagerySource {
-  constructor() {
-    super({ id: 'none', template: '' });
+  constructor(context) {
+    super(context, { id: 'none', template: '' });
   }
   get name() {
-    return t('background.none');
+    return this.context.t('background.none');
   }
   get label() {
-    return t.html('background.none');
+    return this.context.tHtml('background.none');
   }
   get area() {
     return -1;  // sources in background pane are sorted by area
@@ -277,14 +280,14 @@ export class ImagerySourceNone extends ImagerySource {
  * Overrides the imageryUsed method, also allows the url template to be changed.
  */
 export class ImagerySourceCustom extends ImagerySource {
-  constructor(template = '') {
-    super({ id: 'custom', template: template });
+  constructor(context, template = '') {
+    super(context, { id: 'custom', template: template });
   }
   get name() {
-    return t('background.custom');
+    return this.context.t('background.custom');
   }
   get label() {
-    return t.html('background.custom');
+    return this.context.tHtml('background.custom');
   }
   get area() {
     return -2;  // sources in background pane are sorted by area
@@ -331,8 +334,8 @@ export class ImagerySourceCustom extends ImagerySource {
  *   See also https://github.com/openstreetmap/iD/pull/9133
  */
 export class ImagerySourceBing extends ImagerySource {
-  constructor(src) {
-    super(src);
+  constructor(context, src) {
+    super(context, src);
 
     // missing tile image strictness param (n=)
     // * n=f -> (Fail) returns a 404
@@ -350,8 +353,8 @@ export class ImagerySourceBing extends ImagerySource {
  * Overrides the getMetadata function to get more imagery metadata.
  */
 export class ImagerySourceEsri extends ImagerySource {
-  constructor(src) {
-    super(src);
+  constructor(context, src) {
+    super(context, src);
 
     // In addition to using the tilemap at zoom level 20, overzoom real tiles
     //  #4327 (deprecated technique, but it works)
@@ -409,7 +412,7 @@ export class ImagerySourceEsri extends ImagerySource {
     const tileID = tileCoord.slice(0, 3).join('/');
     const zoom = Math.min(tileCoord[2], this.zoomExtent[1]);
     const centerPoint = center[0] + ',' + center[1];  // long, lat (as it should be)
-    const unknown = t('info_panels.background.unknown');
+    const unknown = this.context.t('info_panels.background.unknown');
 
     if (this._inflight[tileID]) return;
 
@@ -484,7 +487,7 @@ export class ImagerySourceEsri extends ImagerySource {
           }
 
           // pass through the discrete capture date from metadata
-          var captureDate = this._localeDateString(result.features[0].attributes.SRC_DATE2);
+          const captureDate = this._localeDateString(result.features[0].attributes.SRC_DATE2);
           vintage = {
             start: captureDate,
             end: captureDate,

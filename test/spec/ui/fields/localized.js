@@ -1,19 +1,6 @@
 describe('uiFieldLocalized', function() {
     var context, selection, field;
 
-    before(function() {
-        Rapid.fileFetcher.cache().languages = {
-          de: { nativeName: 'Deutsch' },
-          en: { nativeName: 'English' }
-        };
-        Rapid.fileFetcher.cache().territory_languages = {};
-    });
-
-    after(function() {
-        delete Rapid.fileFetcher.cache().languages;
-        delete Rapid.fileFetcher.cache().territory_languages;
-    });
-
     beforeEach(function() {
         context = Rapid.coreContext().assetPath('../dist/').init();
         selection = d3.select(document.createElement('div'));
@@ -23,7 +10,7 @@ describe('uiFieldLocalized', function() {
 
 
     it('adds a blank set of fields when the + button is clicked', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             happen.click(selection.selectAll('.localized-add').node());
@@ -34,7 +21,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('doesn\'t create a tag when the value is empty', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             happen.click(selection.selectAll('.localized-add').node());
@@ -51,7 +38,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('doesn\'t create a tag when the name is empty', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             happen.click(selection.selectAll('.localized-add').node());
@@ -68,7 +55,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('creates a tag after setting language then value', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             happen.click(selection.selectAll('.localized-add').node());
@@ -87,7 +74,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('creates a tag after setting value then language', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             happen.click(selection.selectAll('.localized-add').node());
@@ -106,7 +93,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('changes an existing language', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             localized.tags({'name:de': 'Value'});
@@ -124,7 +111,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('ignores similar keys like `old_name`', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             localized.tags({'old_name:de': 'Value'});
@@ -136,7 +123,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('removes the tag when the language is emptied', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             localized.tags({'name:de': 'Value'});
@@ -152,7 +139,7 @@ describe('uiFieldLocalized', function() {
     });
 
     it('removes the tag when the value is emptied', function(done) {
-        var localized = Rapid.uiFieldLocalized(field, context);
+        var localized = Rapid.uiFieldLocalized(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(localized);
             localized.tags({'name:de': 'Value'});

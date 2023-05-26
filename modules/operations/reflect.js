@@ -1,6 +1,5 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionReflect } from '../actions/reflect';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { utilTotalExtent } from '../util/util';
@@ -82,18 +81,18 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.reflect.${disabledReason}.${multi}`) :
-      t(`operations.reflect.description.${axis}.${multi}`);
+      context.t(`operations.reflect.${disabledReason}.${multi}`) :
+      context.t(`operations.reflect.description.${axis}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
+    return context.t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
   };
 
   operation.id = `reflect-${axis}`;
-  operation.keys = [ t(`operations.reflect.key.${axis}`) ];
-  operation.title = t(`operations.reflect.title.${axis}`);
+  operation.keys = [ context.t(`operations.reflect.key.${axis}`) ];
+  operation.title = context.t(`operations.reflect.title.${axis}`);
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

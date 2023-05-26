@@ -1,6 +1,5 @@
 import { utilArrayUniq, utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionDisconnect } from '../actions/disconnect';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { utilTotalExtent } from '../util/util';
@@ -205,19 +204,19 @@ export function operationDisconnect(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.disconnect.${disabledReason}`) :
-      t(`operations.disconnect.description.${_descriptionID}`);
+      context.t(`operations.disconnect.${disabledReason}`) :
+      context.t(`operations.disconnect.description.${_descriptionID}`);
   };
 
 
   operation.annotation = function() {
-    return t(`operations.disconnect.annotation.${_annotationID}`);
+    return context.t(`operations.disconnect.annotation.${_annotationID}`);
   };
 
 
   operation.id = 'disconnect';
-  operation.keys = [ t('operations.disconnect.key') ];
-  operation.title = t('operations.disconnect.title');
+  operation.keys = [ context.t('operations.disconnect.key') ];
+  operation.title = context.t('operations.disconnect.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

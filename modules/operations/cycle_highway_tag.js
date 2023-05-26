@@ -1,6 +1,5 @@
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionChangePreset } from '../actions';
 import { actionNoop } from '../actions/noop';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
@@ -92,19 +91,19 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.cycle_highway_tag.${disabledReason}`) :
-      t('operations.cycle_highway_tag.description');
+      context.t(`operations.cycle_highway_tag.${disabledReason}`) :
+      context.t('operations.cycle_highway_tag.description');
   };
 
 
   operation.annotation = function() {
-    return t('operations.cycle_highway_tag.annotation');
+    return context.t('operations.cycle_highway_tag.annotation');
   };
 
 
   operation.id = 'cycle_highway_tag';
-  operation.keys = [ '⇧' + t('operations.cycle_highway_tag.key') ];
-  operation.title = t('operations.cycle_highway_tag.title');
+  operation.keys = [ '⇧' + context.t('operations.cycle_highway_tag.key') ];
+  operation.title = context.t('operations.cycle_highway_tag.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

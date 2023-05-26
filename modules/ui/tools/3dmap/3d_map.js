@@ -4,7 +4,6 @@ import * as PIXI from 'pixi.js';
 
 import { Map } from '../../../3drenderer/Map';
 
-import { t } from '../../../core/localizer';
 import { uiCmd } from '../../cmd';
 
 /*
@@ -41,18 +40,21 @@ export function ui3DMap(context) {
     function featuresToGeoJSON() {
       let mainmap = context.map();
       const entities = context.history().intersects(mainmap.extent());
+
       const buildingEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
           tagname.startsWith('building')
         );
         return tags.length > 0;
       });
+
       const highwayEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
           tagname.startsWith('highway')
         );
         return tags.length > 0;
       });
+
       const areaEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter(
           (tagname) =>
@@ -63,10 +65,12 @@ export function ui3DMap(context) {
         );
         return tags.length > 0;
       });
+
       generateRoadLayer(context, highwayEnts, _map);
       generateBuildingLayer(context, buildingEnts, _map);
       generateAreaLayer(context, areaEnts, _map);
     }
+
 
     function toggle(d3_event) {
       if (d3_event) d3_event.preventDefault();
@@ -116,23 +120,19 @@ export function ui3DMap(context) {
     wrap = wrapEnter.merge(wrap);
 
     _map = new Map('3d-buildings', context); // container id
+
     context.map().on('draw', () => redraw());
     context.map().on('move', () => redraw());
-
-    context.on('enter.3dmap', () => {
-      featuresToGeoJSON();
-    });
-    context.history().on('change.3dmap', () => {
-      featuresToGeoJSON();
-    });
+    context.on('enter.3dmap', () => featuresToGeoJSON());
+    context.history().on('change.3dmap', () => featuresToGeoJSON());
+    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
 
     redraw();
-
-    context.keybinding().on([uiCmd('⌘' + t('background.3dmap.key'))], toggle);
   }
 
   return threeDMap;
 }
+
 
 function generateBuildingLayer(context, buildingEnts, _map) {
   let buildingFeatures = [];
@@ -171,6 +171,7 @@ function generateBuildingLayer(context, buildingEnts, _map) {
   }
 }
 
+
 function generateAreaLayer(context, areaEnts, _map) {
   let areaFeatures = [];
   let selectedIDs = context.selectedIDs();
@@ -204,6 +205,7 @@ function generateAreaLayer(context, areaEnts, _map) {
     });
   }
 }
+
 
 function generateRoadLayer(context, roadEnts, _map) {
   let roadFeatures = [];

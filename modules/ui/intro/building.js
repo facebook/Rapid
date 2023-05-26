@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
@@ -82,7 +81,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-area',
-          tipHtml: helpHtml('intro.buildings.add_building')
+          tipHtml: helpHtml(context, 'intro.buildings.add_building')
         });
 
         tooltip.selectAll('.popover-inner')
@@ -111,8 +110,8 @@ export function uiIntroBuilding(context, curtain) {
         if (context.mode().id !== 'draw-area') { resolve(addHouseAsync); return; }
 
         const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
-        const startString = helpHtml('intro.buildings.start_building') +
-          helpHtml(`intro.buildings.building_corner_${textID}`);
+        const startString = helpHtml(context, 'intro.buildings.start_building') +
+          helpHtml(context, `intro.buildings.building_corner_${textID}`);
 
         curtain.reveal({
           revealExtent: houseExtent,
@@ -147,8 +146,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
 
       const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
-      const continueString = helpHtml('intro.buildings.continue_building') + '{br}' +
-        helpHtml(`intro.areas.finish_area_${textID}`) + helpHtml('intro.buildings.finish_building');
+      const continueString = helpHtml(context, 'intro.buildings.continue_building') + '{br}' +
+        helpHtml(context, `intro.areas.finish_area_${textID}`) + helpHtml(context, 'intro.buildings.finish_building');
 
       curtain.reveal({
         revealExtent: houseExtent,
@@ -187,8 +186,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: houseExtent,
-        tipHtml: helpHtml('intro.buildings.retry_building'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.buildings.retry_building'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(addHouseAsync)
       });
     });
@@ -211,7 +210,7 @@ export function uiIntroBuilding(context, curtain) {
         curtain.reveal({
           revealNode: button.node(),
           revealPadding: 5,
-          tipHtml: helpHtml('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
+          tipHtml: helpHtml(context, 'intro.buildings.choose_category_building', { category: buildingCatetory.name() })
         });
 
         button.on('click.intro', () => resolve(choosePresetHouse));
@@ -242,7 +241,7 @@ export function uiIntroBuilding(context, curtain) {
         curtain.reveal({
           revealNode: button.node(),
           revealPadding: 5,
-          tipHtml: helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() })
+          tipHtml: helpHtml(context, 'intro.buildings.choose_preset_house', { preset: housePreset.name() })
         });
 
         history.on('change.intro', difference => {
@@ -299,7 +298,7 @@ export function uiIntroBuilding(context, curtain) {
         const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
           revealExtent: houseExtent,
-          tipHtml: helpHtml(`intro.buildings.${textID}`)
+          tipHtml: helpHtml(context, `intro.buildings.${textID}`)
         });
 
         editMenu.on('toggled.intro', open => {
@@ -336,7 +335,7 @@ export function uiIntroBuilding(context, curtain) {
               duration: duration,
               revealNode: menuNode,
               revealPadding: 50,
-              tipHtml: helpHtml('intro.buildings.square_building')
+              tipHtml: helpHtml(context, 'intro.buildings.square_building')
             });
           } else {
             reject();   // menu has gone away - user scrolled it offscreen?
@@ -357,7 +356,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for orthogonalize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (history.undoAnnotation() === t('operations.orthogonalize.annotation.feature', { n: 1 })) {
+        if (history.undoAnnotation() === context.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
           return doneSquareAsync;
         } else {
           return retryClickSquareAsync;
@@ -380,8 +379,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: houseExtent,
-        tipHtml: helpHtml('intro.buildings.retry_square'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.buildings.retry_square'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(rightClickHouseAsync)
       });
     });
@@ -397,8 +396,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: houseExtent,
-        tipHtml: helpHtml('intro.buildings.done_square'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.buildings.done_square'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(addTankAsync)
       });
     });
@@ -422,7 +421,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: 'button.draw-area',
-          tipHtml: helpHtml('intro.buildings.add_tank')
+          tipHtml: helpHtml(context, 'intro.buildings.add_tank')
         });
         context.on('enter.intro', () => resolve(startTankAsync));
       }))
@@ -442,8 +441,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
 
       const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
-      const startString = helpHtml('intro.buildings.start_tank') +
-        helpHtml(`intro.buildings.tank_edge_${textID}`);
+      const startString = helpHtml(context, 'intro.buildings.start_tank') +
+        helpHtml(context, `intro.buildings.tank_edge_${textID}`);
 
       curtain.reveal({
         revealExtent: tankExtent,
@@ -478,8 +477,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
 
       const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
-      const continueString = helpHtml('intro.buildings.continue_tank') + '{br}' +
-        helpHtml(`intro.areas.finish_area_${textID}`) + helpHtml('intro.buildings.finish_tank');
+      const continueString = helpHtml(context, 'intro.buildings.continue_tank') + '{br}' +
+        helpHtml(context, `intro.areas.finish_area_${textID}`) + helpHtml(context, 'intro.buildings.finish_tank');
 
       curtain.reveal({
         revealExtent: tankExtent,
@@ -516,7 +515,7 @@ export function uiIntroBuilding(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
-          tipHtml: helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
+          tipHtml: helpHtml(context, 'intro.buildings.search_tank', { preset: tankPreset.name() })
         });
 
         container.select('.preset-search-input')
@@ -532,7 +531,7 @@ export function uiIntroBuilding(context, curtain) {
           curtain.reveal({
             revealNode: first.select('.preset-list-button').node(),
             revealPadding: 5,
-            tipHtml: helpHtml('intro.buildings.choose_tank', { preset: tankPreset.name() })
+            tipHtml: helpHtml(context, 'intro.buildings.choose_tank', { preset: tankPreset.name() })
           });
 
           container.select('.preset-search-input')
@@ -589,7 +588,7 @@ export function uiIntroBuilding(context, curtain) {
       const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
       curtain.reveal({
         revealExtent: tankExtent,
-        tipHtml: helpHtml(`intro.buildings.${textID}`)
+        tipHtml: helpHtml(context, `intro.buildings.${textID}`)
       });
 
       editMenu.on('toggled.intro', open => {
@@ -625,7 +624,7 @@ export function uiIntroBuilding(context, curtain) {
               duration: duration,
               revealNode: menuNode,
               revealPadding: 50,
-              tipHtml: helpHtml('intro.buildings.circle_tank')
+              tipHtml: helpHtml(context, 'intro.buildings.circle_tank')
             });
           } else {
             reject();   // menu has gone away - user scrolled it offscreen?
@@ -646,7 +645,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for circularize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (history.undoAnnotation() === t('operations.circularize.annotation.feature', { n: 1 })) {
+        if (history.undoAnnotation() === context.t('operations.circularize.annotation.feature', { n: 1 })) {
           return playAsync;
         } else {
           return retryClickCircleAsync;
@@ -669,8 +668,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: tankExtent,
-        tipHtml: helpHtml('intro.buildings.retry_circle'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.buildings.retry_circle'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(rightClickTankAsync)
       });
     });
@@ -684,8 +683,8 @@ export function uiIntroBuilding(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-rapid',
-      tipHtml: helpHtml('intro.buildings.play', { next: t('intro.rapid.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.buildings.play', { next: context.t('intro.rapid.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

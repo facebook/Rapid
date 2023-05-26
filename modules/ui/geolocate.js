@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 
-import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { uiIcon } from './icon';
 import { uiLoading } from './loading';
@@ -15,7 +14,7 @@ const GEOLOCATE_OPTIONS = {
 
 
 export function uiGeolocate(context) {
-  let _uiModal = uiLoading(context).message(t.html('geolocate.locating')).blocking(true);
+  let _uiModal = uiLoading(context).message(context.tHtml('geolocate.locating')).blocking(true);
   let _layer = context.scene().layers.get('map-ui');
   let _enabled = false;
   let _timeoutID;
@@ -76,7 +75,7 @@ export function uiGeolocate(context) {
   function error() {
     if (_enabled) {    // user may have disabled it before the callback fires
       context.ui().flash
-        .label(t.html('geolocate.location_unavailable'))
+        .label(context.tHtml('geolocate.location_unavailable'))
         .iconName('#rapid-icon-geolocate')();
     }
 
@@ -101,13 +100,15 @@ export function uiGeolocate(context) {
   return function(selection) {
     if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) return;
 
+    const isRTL = context.localizationSystem().isRTL();
+
     _button = selection
       .append('button')
       .on('click', click)
       .call(uiIcon('#rapid-icon-geolocate', 'light'))
-      .call(uiTooltip()
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
-        .title(t.html('geolocate.title'))
+      .call(uiTooltip(context)
+        .placement(isRTL ? 'right' : 'left')
+        .title(context.tHtml('geolocate.title'))
       );
   };
 }

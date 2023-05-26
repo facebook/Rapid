@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 import { uiModal } from './modal';
@@ -26,7 +25,7 @@ export function uiShortcuts(context) {
             .append('div')
             .attr('class', 'modal-section')
             .append('h3')
-            .html(t.html('shortcuts.title'));
+            .html(context.tHtml('shortcuts.title'));
 
         const dataLoaderSystem = context.dataLoaderSystem();
         dataLoaderSystem.get('shortcuts')
@@ -78,7 +77,7 @@ export function uiShortcuts(context) {
 
         tabsEnter
             .append('span')
-            .html(function (d) { return t.html(d.text); });
+            .html(function (d) { return context.tHtml(d.text); });
 
         // Update
         wrapper.selectAll('.tab')
@@ -121,7 +120,7 @@ export function uiShortcuts(context) {
             .append('td')
             .attr('class', 'shortcut-section')
             .append('h3')
-            .html(function (d) { return t.html(d.text); });
+            .html(function (d) { return context.tHtml(d.text); });
 
 
         var shortcutRows = rowsEnter
@@ -152,7 +151,7 @@ export function uiShortcuts(context) {
                 selection
                     .append('kbd')
                     .attr('class', 'modifier')
-                    .html(function (d) { return uiCmd.display(d); });
+                    .html(function (d) { return uiCmd.display(context, d); });
 
                 selection
                     .append('span')
@@ -171,8 +170,8 @@ export function uiShortcuts(context) {
                 }
 
                 // replace translations
-                arr = arr.map(function(s) {
-                    return uiCmd.display(s.indexOf('.') !== -1 ? t(s) : s);
+                arr = arr.map(s => {
+                    return uiCmd.display(context, s.indexOf('.') !== -1 ? context.t(s) : s);
                 });
 
                 return utilArrayUniq(arr).map(function(s) {
@@ -208,7 +207,7 @@ export function uiShortcuts(context) {
                 if (i < nodes.length - 1) {
                     selection
                         .append('span')
-                        .html(d.separator || '\u00a0' + t.html('shortcuts.or') + '\u00a0');
+                        .html(d.separator || '\u00a0' + context.tHtml('shortcuts.or') + '\u00a0');
                 } else if (i === nodes.length - 1 && d.suffix) {
                     selection
                         .append('span')
@@ -239,14 +238,14 @@ export function uiShortcuts(context) {
                 selection
                     .append('span')
                     .attr('class', 'gesture')
-                    .html(function (d) { return t.html(d.gesture); });
+                    .html(function (d) { return context.tHtml(d.gesture); });
             });
 
 
         shortcutRows
             .append('td')
             .attr('class', 'shortcut-desc')
-            .html(function (d) { return d.text ? t.html(d.text) : '\u00a0'; });
+            .html(function (d) { return d.text ? context.tHtml(d.text) : '\u00a0'; });
 
 
         // Update
@@ -264,7 +263,7 @@ export function uiShortcuts(context) {
             _modalSelection.call(shortcutsModal);
         } else {
             context.keybinding()
-                .on([t('shortcuts.toggle.key'), '?'], function () {
+                .on([context.t('shortcuts.toggle.key'), '?'], function () {
                     if (context.container().selectAll('.modal-shortcuts').size()) {  // already showing
                         if (_modalSelection) {
                             _modalSelection.close();

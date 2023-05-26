@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 
@@ -11,31 +10,31 @@ export function uiToolDrawModes(context) {
 
   let tool = {
     id: 'draw_modes',
-    label: t.html('toolbar.add_feature')
+    label: context.tHtml('toolbar.add_feature')
   };
 
   const modes = [
     {
       id: 'add-point',
-      title: t.html('modes.add_point.title'),
+      title: context.tHtml('modes.add_point.title'),
       button: 'point',
-      description: t.html('modes.add_point.description'),
+      description: context.tHtml('modes.add_point.description'),
       preset: presetSystem.item('point'),
       key: '1'
     },
     {
       id: 'draw-line',
-      title: t.html('modes.add_line.title'),
+      title: context.tHtml('modes.add_line.title'),
       button: 'line',
-      description: t.html('modes.add_line.description'),
+      description: context.tHtml('modes.add_line.description'),
       preset: presetSystem.item('line'),
       key: '2'
     },
     {
       id: 'draw-area',
-      title: t.html('modes.add_area.title'),
+      title: context.tHtml('modes.add_area.title'),
       button: 'area',
-      description: t.html('modes.add_area.description'),
+      description: context.tHtml('modes.add_area.description'),
       preset: presetSystem.item('area'),
       key: '3'
     }
@@ -99,7 +98,7 @@ export function uiToolDrawModes(context) {
             context.enter(d.id);
           }
         })
-        .call(uiTooltip()
+        .call(uiTooltip(context)
           .placement('bottom')
           .title(d => d.description)
           .keys(d => [d.key])

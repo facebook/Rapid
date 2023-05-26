@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
 import { uiIcon } from './icon';
-import { t } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 
 
@@ -55,9 +54,9 @@ export function uiIssuesInfo(context) {
       .each((d, i, nodes) => {
         let chipSelection = d3_select(nodes[i]);
 
-        let tooltip = uiTooltip()
+        let tooltip = uiTooltip(context)
           .placement('top')
-          .title(t.html(d.descriptionID));
+          .title(context.tHtml(d.descriptionID));
 
         chipSelection
           .call(tooltip)

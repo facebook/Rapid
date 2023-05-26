@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
@@ -63,8 +62,8 @@ export function uiIntroRapid(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
-          tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-          buttonText: t.html('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(showHideRoadsAsync)
         });
       }));
@@ -78,8 +77,8 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: 'button.rapid-features',
-        tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(selectRoadAsync)
       });
     });
@@ -101,7 +100,7 @@ export function uiIntroRapid(context, curtain) {
 
       curtain.reveal({
         revealExtent: tulipLaneExtent,
-        tipHtml: helpHtml('intro.rapid.select_road')
+        tipHtml: helpHtml(context, 'intro.rapid.select_road')
       });
 
       context.on('enter.intro', () => resolve(acceptRoadAsync));
@@ -123,7 +122,7 @@ export function uiIntroRapid(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.rapid-inspector-choice-accept',
-          tipHtml: helpHtml('intro.rapid.add_road')
+          tipHtml: helpHtml(context, 'intro.rapid.add_road')
         });
 
         context.on('enter.intro', resolve);
@@ -152,8 +151,8 @@ export function uiIntroRapid(context, curtain) {
 
         curtain.reveal({
           revealExtent: tulipLaneExtent,
-          tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-          buttonText: t('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+          buttonText: context.t('intro.ok'),
           buttonCallback: () => resolve(showIssuesButtonAsync)
         });
 
@@ -177,7 +176,7 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealNode: issuesButton.node(),
-        tipHtml: helpHtml('intro.rapid.open_issues')
+        tipHtml: helpHtml(context, 'intro.rapid.open_issues')
       });
       context.on('enter.intro', reject);   // disallow mode change
       issuesButton.on('click.intro', () => resolve(showLintAsync));
@@ -202,8 +201,8 @@ export function uiIntroRapid(context, curtain) {
         curtain.reveal({
           revealNode: label.node(),   // "connect these features" is expected to be the first child
           revealPadding: 5,
-          tipHtml: helpHtml('intro.rapid.new_lints'),
-          buttonText: t('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.rapid.new_lints'),
+          buttonText: context.t('intro.ok'),
           buttonCallback: () => resolve(undoRoadAddAsync)
         });
       }));
@@ -222,7 +221,7 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealNode: undoButton.node(),
-        tipHtml: helpHtml('intro.rapid.undo_road_add', { button: icon('#rapid-icon-undo', 'pre-text') })
+        tipHtml: helpHtml(context, 'intro.rapid.undo_road_add', { button: icon('#rapid-icon-undo', 'pre-text') })
       });
       undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
     })
@@ -243,8 +242,8 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: tulipLaneExtent,
-        tipHtml: helpHtml('intro.rapid.undo_road_add_aftermath'),
-        buttonText: t('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.rapid.undo_road_add_aftermath'),
+        buttonText: context.t('intro.ok'),
         buttonCallback: () => resolve(selectRoadAgainAsync)
       });
     });
@@ -267,7 +266,7 @@ export function uiIntroRapid(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealExtent: tulipLaneExtent,
-          tipHtml: helpHtml('intro.rapid.select_road_again')
+          tipHtml: helpHtml(context, 'intro.rapid.select_road_again')
         });
 
         context.on('enter.intro', () => {
@@ -291,7 +290,7 @@ export function uiIntroRapid(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.rapid-inspector-choice-ignore',
-          tipHtml: helpHtml('intro.rapid.ignore_road')
+          tipHtml: helpHtml(context, 'intro.rapid.ignore_road')
         });
 
         context.on('enter.intro', resolve);
@@ -316,12 +315,12 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.map-control.help-control',
-        tipHtml: helpHtml('intro.rapid.help', {
+        tipHtml: helpHtml(context, 'intro.rapid.help', {
           rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
           button: icon('#rapid-icon-help', 'pre-text'),
-          key: t('help.key')
+          key: context.t('help.key')
         }),
-        buttonText: t('intro.ok'),
+        buttonText: context.t('intro.ok'),
         buttonCallback: () => resolve(playAsync)
       });
     });
@@ -335,8 +334,8 @@ export function uiIntroRapid(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-startEditing',
-      tipHtml: helpHtml('intro.rapid.done', { next: t('intro.startediting.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.rapid.done', { next: context.t('intro.startediting.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

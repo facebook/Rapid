@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
-import { t } from '../../core/localizer';
 
 
 export function uiFieldCycleway(context, uifield) {
@@ -148,7 +147,7 @@ export function uiFieldCycleway(context, uifield) {
             })
             .attr('placeholder', function(d) {
                 if (Array.isArray(tags.cycleway) || Array.isArray(tags[d])) {
-                    return t('inspector.multiple_values');
+                    return context.t('inspector.multiple_values');
                 }
                 return uifield.placeholder;
             })

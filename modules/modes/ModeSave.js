@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
 import { AbstractMode } from './AbstractMode';
-import { t } from '../core/localizer';
 import { uiConflicts } from '../ui/conflicts';
 import { uiConfirm } from '../ui/confirm';
 import { uiCommit } from '../ui/commit';
@@ -135,7 +134,7 @@ export class ModeSave extends AbstractMode {
       .append('div')
       .attr('class', 'progress')
       .merge(progress)
-      .text(t('save.conflict_progress', { num: num, total: total }));
+      .text(this.context.t('save.conflict_progress', { num: num, total: total }));
   }
 
 
@@ -182,11 +181,11 @@ export class ModeSave extends AbstractMode {
   _showErrors(errors) {
     this._keybindingOn();
 
-    const selection = uiConfirm(this.context.container());
+    const selection = uiConfirm(this.context, this.context.container());
     selection
       .select('.modal-section.header')
       .append('h3')
-      .text(t('save.error'));
+      .text(this.context.t('save.error'));
 
     this._addErrors(selection, errors);
     selection.okButton();
@@ -213,7 +212,7 @@ export class ModeSave extends AbstractMode {
       .attr('class', 'error-description')
       .attr('href', '#')
       .classed('hide-toggle', true)
-      .text(d => d.msg || t('save.unknown_error_details'))
+      .text(d => d.msg || this.context.t('save.unknown_error_details'))
       .on('click', function(d3_event) {
         d3_event.preventDefault();
 
@@ -293,9 +292,9 @@ export class ModeSave extends AbstractMode {
       const addr = result.address;
       const place = addr?.town ?? addr?.city ?? addr?.county ?? '';
       const region = addr?.state ?? addr?.country ?? '';
-      const separator = (place && region) ? t('success.thank_you_where.separator') : '';
+      const separator = (place && region) ? this.context.t('success.thank_you_where.separator') : '';
 
-      this._location = t('success.thank_you_where.format',
+      this._location = this.context.t('success.thank_you_where.format',
         { place: place, separator: separator, region: region }
       );
     });

@@ -2,9 +2,7 @@ import { EventEmitter } from '@pixi/utils';
 import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import throttle from 'lodash-es/throttle';
 
-import { t } from '../core/localizer';
 import { modeSelect } from '../modes/select';
-import { utilDisplayLabel } from '../util';
 
 
 /**
@@ -234,15 +232,16 @@ export class UrlHashSystem extends EventEmitter {
     if (!this.doUpdateTitle) return;
 
     const context = this.context;
+    const l10n = context.localizationSystem();
     const changeCount = context.history().difference().summary().size;
 
     // Currently only support OSM ids
     let selected;
     const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
     if (selectedIDs.length) {
-      const firstLabel = utilDisplayLabel(context, context.entity(selectedIDs[0]), context.graph());
+      const firstLabel = l10n.displayLabel(context.entity(selectedIDs[0]), context.graph());
       if (selectedIDs.length > 1) {
-        selected = t('title.labeled_and_more', { labeled: firstLabel, count: selectedIDs.length - 1 });
+        selected = l10n.t('title.labeled_and_more', { labeled: firstLabel, count: selectedIDs.length - 1 });
       } else {
         selected = firstLabel;
       }
@@ -259,7 +258,7 @@ export class UrlHashSystem extends EventEmitter {
 
     let title;
     if (format) {
-      title = t(format, { changes: changeCount, base: this.titleBase, context: selected });
+      title = context.t(format, { changes: changeCount, base: this.titleBase, context: selected });
     } else {
       title = this.titleBase;
     }

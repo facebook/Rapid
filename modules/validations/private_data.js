@@ -1,144 +1,126 @@
 import { utilTagDiff } from '@rapid-sdk/util';
 
 import { actionChangeTags } from '../actions/change_tags';
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
-export function validationPrivateData() {
-    var type = 'private_data';
+export function validationPrivateData(context) {
+  const type = 'private_data';
+  const l10n = context.localizationSystem();
 
-    // assume that some buildings are private
-    var privateBuildingValues = {
-        detached: true,
-        farm: true,
-        house: true,
-        houseboat: true,
-        residential: true,
-        semidetached_house: true,
-        static_caravan: true
-    };
+  // assume that some buildings are private
+  const privateBuildingValues = new Set([
+    'detached', 'farm', 'house', 'houseboat', 'residential', 'semidetached_house', 'static_caravan'
+  ]);
 
-    // but they might be public if they have one of these other tags
-    var publicKeys = {
-        amenity: true,
-        craft: true,
-        historic: true,
-        leisure: true,
-        office: true,
-        shop: true,
-        tourism: true
-    };
+  // but they might be public if they have one of these other tags
+  const publicKeys = new Set([
+    'amenity', 'craft', 'historic', 'leisure', 'office', 'shop', 'tourism'
+  ]);
 
-    // these tags may contain personally identifying info
-    var personalTags = {
-        'contact:email': true,
-        'contact:fax': true,
-        'contact:phone': true,
-        email: true,
-        fax: true,
-        phone: true
-    };
+  // these tags may contain personally identifying info
+  const personalKeys = new Set([
+    'contact:email', 'contact:fax', 'contact:phone', 'email', 'fax', 'phone'
+  ]);
 
 
-    var validation = function checkPrivateData(entity) {
-        var tags = entity.tags;
-        if (!tags.building || !privateBuildingValues[tags.building]) return [];
+  let validation = function checkPrivateData(entity) {
+    const tags = entity.tags;
+    if (!tags.building || !privateBuildingValues.has(tags.building)) return [];  // not a private building
 
-        var keepTags = {};
-        for (var k in tags) {
-            if (publicKeys[k]) return [];  // probably a public feature
-            if (!personalTags[k]) {
-                keepTags[k] = tags[k];
+    let keepTags = {};
+    for (const [k, v] of Object.entries(tags)) {
+      if (publicKeys.has(k)) return [];  // ignore, probably a public feature
+      if (!personalKeys.has(k)) {
+        keepTags[k] = v;
+      }
+    }
+
+    const tagDiff = utilTagDiff(tags, keepTags);
+    if (!tagDiff.length) return [];
+
+    const fixID = tagDiff.length === 1 ? 'remove_tag' : 'remove_tags';
+
+    return [new validationIssue({
+      type: type,
+      severity: 'warning',
+      message: showMessage,
+      reference: showReference,
+      entityIds: [entity.id],
+      dynamicFixes: () => {
+        return [
+          new validationIssueFix({
+            icon: 'rapid-operation-delete',
+            title: l10n.tHtml(`issues.fix.${fixID}.title`),
+            onClick: function() {
+              context.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
             }
+          })
+        ];
+      }
+    })];
+
+
+    function doUpgrade(graph) {
+      const currEntity = graph.hasEntity(entity.id);
+      if (!currEntity) return graph;
+
+      let newTags = Object.assign({}, currEntity.tags);  // shallow copy
+      for (const diff of tagDiff) {
+        if (diff.type === '-') {
+          delete newTags[diff.key];
+        } else if (diff.type === '+') {
+          newTags[diff.key] = diff.newVal;
         }
+      }
 
-        var tagDiff = utilTagDiff(tags, keepTags);
-        if (!tagDiff.length) return [];
-
-        var fixID = tagDiff.length === 1 ? 'remove_tag' : 'remove_tags';
-
-        return [new validationIssue({
-            type: type,
-            severity: 'warning',
-            message: showMessage,
-            reference: showReference,
-            entityIds: [entity.id],
-            dynamicFixes: function() {
-                return [
-                    new validationIssueFix({
-                        icon: 'rapid-operation-delete',
-                        title: t.html('issues.fix.' + fixID + '.title'),
-                        onClick: function(context) {
-                            context.perform(doUpgrade, t('issues.fix.upgrade_tags.annotation'));
-                        }
-                    })
-                ];
-            }
-        })];
+      return actionChangeTags(currEntity.id, newTags)(graph);
+    }
 
 
-        function doUpgrade(graph) {
-            var currEntity = graph.hasEntity(entity.id);
-            if (!currEntity) return graph;
+    function showMessage() {
+      const currEntity = context.hasEntity(this.entityIds[0]);
+      if (!currEntity) return '';
 
-            var newTags = Object.assign({}, currEntity.tags);  // shallow copy
-            tagDiff.forEach(function(diff) {
-                if (diff.type === '-') {
-                    delete newTags[diff.key];
-                } else if (diff.type === '+') {
-                    newTags[diff.key] = diff.newVal;
-                }
-            });
-
-            return actionChangeTags(currEntity.id, newTags)(graph);
-        }
+      return l10n.tHtml('issues.private_data.contact.message',
+        { feature: l10n.displayLabel(currEntity, context.graph()) }
+      );
+    }
 
 
-        function showMessage(context) {
-            var currEntity = context.hasEntity(this.entityIds[0]);
-            if (!currEntity) return '';
+    function showReference(selection) {
+      let enter = selection.selectAll('.issue-reference')
+        .data([0])
+        .enter();
 
-            return t.html('issues.private_data.contact.message',
-                { feature: utilDisplayLabel(context, currEntity, context.graph()) }
-            );
-        }
+      enter
+        .append('div')
+        .attr('class', 'issue-reference')
+        .html(l10n.tHtml('issues.private_data.reference'));
 
+      enter
+        .append('strong')
+        .html(l10n.tHtml('issues.suggested'));
 
-        function showReference(selection) {
-            var enter = selection.selectAll('.issue-reference')
-                .data([0])
-                .enter();
-
-            enter
-                .append('div')
-                .attr('class', 'issue-reference')
-                .html(t.html('issues.private_data.reference'));
-
-            enter
-                .append('strong')
-                .html(t.html('issues.suggested'));
-
-            enter
-                .append('table')
-                .attr('class', 'tagDiff-table')
-                .selectAll('.tagDiff-row')
-                .data(tagDiff)
-                .enter()
-                .append('tr')
-                .attr('class', 'tagDiff-row')
-                .append('td')
-                .attr('class', function(d) {
-                    var klass = d.type === '+' ? 'add' : 'remove';
-                    return 'tagDiff-cell tagDiff-cell-' + klass;
-                })
-                .html(function(d) { return d.display; });
-        }
-    };
+      enter
+        .append('table')
+        .attr('class', 'tagDiff-table')
+        .selectAll('.tagDiff-row')
+        .data(tagDiff)
+        .enter()
+        .append('tr')
+        .attr('class', 'tagDiff-row')
+        .append('td')
+        .attr('class', d => {
+          const klass = d.type === '+' ? 'add' : 'remove';
+          return `tagDiff-cell tagDiff-cell-${klass}`;
+        })
+        .html(d => d.display);
+    }
+  };
 
 
-    validation.type = type;
+  validation.type = type;
 
-    return validation;
+  return validation;
 }

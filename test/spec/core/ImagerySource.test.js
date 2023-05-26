@@ -1,11 +1,20 @@
 describe('ImagerySource', () => {
+
+  class MockContext {
+    constructor() {}
+    t() {}
+    tHtml() {}
+  }
+  const context = new MockContext();
+
+
   it('does not error with blank template', () => {
-    const source = new Rapid.ImagerySource({ template: '', id:'anyid' });
+    const source = new Rapid.ImagerySource(context, { template: '', id:'anyid' });
     expect(source.url([0,1,2])).to.equal('');
   });
 
   it('supports tms replacement tokens', () => {
-    const source = new Rapid.ImagerySource({
+    const source = new Rapid.ImagerySource(context, {
       id: 'anyid',
       type: 'tms',
       template: '{z}/{x}/{y}'
@@ -14,7 +23,7 @@ describe('ImagerySource', () => {
   });
 
   it('supports wms replacement tokens', () => {
-    const source = new Rapid.ImagerySource({
+    const source = new Rapid.ImagerySource(context, {
       id:'anyid',
       type: 'wms',
       projection: 'EPSG:3857',
@@ -37,39 +46,39 @@ describe('ImagerySource', () => {
   });
 
   it('supports subdomains', () => {
-    const source = new Rapid.ImagerySource({ id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}'});
+    const source = new Rapid.ImagerySource(context, { id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}'});
     expect(source.url([0,1,2])).to.equal('b/2/0/1');
   });
 
   it('distributes requests between subdomains', () => {
-    const source = new Rapid.ImagerySource({ id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}' });
+    const source = new Rapid.ImagerySource(context, { id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}' });
     expect(source.url([0,1,1])).to.equal('b/1/0/1');
     expect(source.url([0,2,1])).to.equal('a/1/0/2');
   });
 
   it('correctly displays an overlay with no overzoom specified', () => {
-    const source = new Rapid.ImagerySource({ id:'anyid', zoomExtent: [6,16] });
+    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16] });
     expect(source.validZoom(10)).to.be.true;
     expect(source.validZoom(3)).to.be.false;
     expect(source.validZoom(17)).to.be.true;
   });
 
   it('correctly displays an overlay with an invalid overzoom', () => {
-    const source = new Rapid.ImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: 'gibberish'});
+    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16], overzoom: 'gibberish'});
     expect(source.validZoom(10)).to.be.true;
     expect(source.validZoom(3)).to.be.false;
     expect(source.validZoom(17)).to.be.true;
   });
 
   it('correctly displays an overlay with overzoom:true', () => {
-    const source = new Rapid.ImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: true});
+    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16], overzoom: true});
     expect(source.validZoom(10)).to.be.true;
     expect(source.validZoom(3)).to.be.false;
     expect(source.validZoom(17)).to.be.true;
   });
 
   it('correctly displays an overlay with overzoom:false', () => {
-    const source = new Rapid.ImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: false});
+    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16], overzoom: false});
     expect(source.validZoom(10)).to.be.true;
     expect(source.validZoom(3)).to.be.false;
     expect(source.validZoom(17)).to.be.false;
@@ -79,23 +88,23 @@ describe('ImagerySource', () => {
 describe('ImagerySourceCustom', () => {
   describe('imageryUsed', () => {
     it('returns an imagery_used string', () => {
-      const source = new Rapid.ImagerySourceCustom('http://example.com');
+      const source = new Rapid.ImagerySourceCustom(context, 'http://example.com');
       expect(source.imageryUsed).to.eql('Custom (http://example.com )');  // note ' )' space
     });
     it('sanitizes `access_token`', () => {
-      const source = new Rapid.ImagerySourceCustom('http://example.com?access_token=MYTOKEN');
+      const source = new Rapid.ImagerySourceCustom(context, 'http://example.com?access_token=MYTOKEN');
       expect(source.imageryUsed).to.eql('Custom (http://example.com?access_token={apikey} )');
     });
     it('sanitizes `connectId`', () => {
-      const source = new Rapid.ImagerySourceCustom('http://example.com?connectId=MYTOKEN');
+      const source = new Rapid.ImagerySourceCustom(context, 'http://example.com?connectId=MYTOKEN');
       expect(source.imageryUsed).to.eql('Custom (http://example.com?connectId={apikey} )');
     });
     it('sanitizes `token`', () => {
-      const source = new Rapid.ImagerySourceCustom('http://example.com?token=MYTOKEN');
+      const source = new Rapid.ImagerySourceCustom(context, 'http://example.com?token=MYTOKEN');
       expect(source.imageryUsed).to.eql('Custom (http://example.com?token={apikey} )');
     });
     it('sanitizes wms path `token`', () => {
-      const source = new Rapid.ImagerySourceCustom('http://example.com/wms/v1/token/MYTOKEN/1.0.0/layer');
+      const source = new Rapid.ImagerySourceCustom(context, 'http://example.com/wms/v1/token/MYTOKEN/1.0.0/layer');
       expect(source.imageryUsed).to.eql('Custom (http://example.com/wms/v1/token/{apikey}/1.0.0/layer )');
     });
   });

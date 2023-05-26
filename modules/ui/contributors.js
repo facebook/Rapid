@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 
 
@@ -16,15 +15,15 @@ export function uiContributors(context) {
     function update() {
         if (!osm) return;
 
-        var users = {},
-            entities = context.history().intersects(context.map().extent());
+        let users = {};
+        let entities = context.history().intersects(context.map().extent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;
         });
 
-        var u = Object.keys(users),
-            subset = u.slice(0, u.length > limit ? limit - 1 : limit);
+        let u = Object.keys(users);
+        let subset = u.slice(0, u.length > limit ? limit - 1 : limit);
 
         wrap.html('')
             .call(uiIcon('#rapid-icon-nearby', 'pre-text light'));
@@ -53,11 +52,11 @@ export function uiContributors(context) {
                 .html(othersNum);
 
             wrap.append('span')
-                .html(t.html('contributors.truncated_list', { n: othersNum, users: userList.html(), count: count.html() }));
+                .html(context.tHtml('contributors.truncated_list', { n: othersNum, users: userList.html(), count: count.html() }));
 
         } else {
             wrap.append('span')
-                .html(t.html('contributors.list', { users: userList.html() }));
+                .html(context.tHtml('contributors.list', { users: userList.html() }));
         }
 
         if (!u.length) {

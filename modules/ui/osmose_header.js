@@ -1,14 +1,12 @@
 import * as PIXI from 'pixi.js';
 
-import { t } from '../core/localizer';
-
 
 export function uiOsmoseHeader(context) {
   const osmose = context.services.get('osmose');
   let _qaItem;
 
   function issueTitle(d) {
-    const unknown = t('inspector.unknown');
+    const unknown = context.t('inspector.unknown');
     if (!osmose || !d) return unknown;
 
     // Issue titles supplied by Osmose

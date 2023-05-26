@@ -7,8 +7,6 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { geoHasSelfIntersections } from '../geo';
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
@@ -18,6 +16,8 @@ import { validationIssue, validationIssueFix } from '../core/validation';
  */
 export function validationAlmostJunction(context) {
   const type = 'almost_junction';
+  const l10n = context.localizationSystem();
+
   const EXTEND_TH_METERS = 5;
   const WELD_TH_METERS = 0.75;
   // Comes from considering bounding case of parallel ways
@@ -51,17 +51,17 @@ export function validationAlmostJunction(context) {
         type,
         subtype: 'highway-highway',
         severity: 'warning',
-        message: function(context) {
+        message: function() {
           const entity1 = context.hasEntity(this.entityIds[0]);
           if (this.entityIds[0] === this.entityIds[2]) {
-            return entity1 ? t.html('issues.almost_junction.self.message', {
-              feature: utilDisplayLabel(context, entity1, context.graph())
+            return entity1 ? l10n.tHtml('issues.almost_junction.self.message', {
+              feature: l10n.displayLabel(entity1, context.graph())
             }) : '';
           } else {
             const entity2 = context.hasEntity(this.entityIds[2]);
-            return (entity1 && entity2) ? t.html('issues.almost_junction.message', {
-              feature: utilDisplayLabel(context, entity1, context.graph()),
-              feature2: utilDisplayLabel(context, entity2, context.graph())
+            return (entity1 && entity2) ? l10n.tHtml('issues.almost_junction.message', {
+              feature: l10n.displayLabel(entity1, context.graph()),
+              feature2: l10n.displayLabel(entity2, context.graph())
             }) : '';
           }
         },
@@ -84,12 +84,12 @@ export function validationAlmostJunction(context) {
 
     return issues;
 
-    function makeFixes(context) {
+    function makeFixes() {
       let fixes = [new validationIssueFix({
         icon: 'rapid-icon-abutment',
-        title: t.html('issues.fix.connect_features.title'),
-        onClick: function(context) {
-          const annotation = t('issues.fix.connect_almost_junction.annotation');
+        title: l10n.tHtml('issues.fix.connect_features.title'),
+        onClick: function() {
+          const annotation = l10n.t('issues.fix.connect_almost_junction.annotation');
           const [, endNodeId, crossWayId] = this.issue.entityIds;
           const midNode = context.entity(this.issue.data.midId);
           const endNode = context.entity(endNodeId);
@@ -136,14 +136,14 @@ export function validationAlmostJunction(context) {
         // node has no descriptive tags, suggest noexit fix
         fixes.push(new validationIssueFix({
           icon: 'maki-barrier',
-          title: t.html('issues.fix.tag_as_disconnected.title'),
-          onClick: function(context) {
+          title: l10n.tHtml('issues.fix.tag_as_disconnected.title'),
+          onClick: function() {
             const nodeID = this.issue.entityIds[1];
             const tags = Object.assign({}, context.entity(nodeID).tags);
             tags.noexit = 'yes';
             context.perform(
               actionChangeTags(nodeID, tags),
-              t('issues.fix.tag_as_disconnected.annotation')
+              l10n.t('issues.fix.tag_as_disconnected.annotation')
             );
           }
         }));
@@ -158,7 +158,7 @@ export function validationAlmostJunction(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(t.html('issues.almost_junction.highway-highway.reference'));
+        .html(l10n.tHtml('issues.almost_junction.highway-highway.reference'));
     }
 
     function isExtendableCandidate(node, way) {

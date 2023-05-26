@@ -1,7 +1,6 @@
 import { geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
@@ -140,21 +139,21 @@ export function operationDelete(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.delete.${disabledReason}.${multi}`) :
-      t(`operations.delete.description.${multi}`);
+      context.t(`operations.delete.${disabledReason}.${multi}`) :
+      context.t(`operations.delete.description.${multi}`);
   };
 
 
   operation.annotation = function() {
     return selectedIDs.length === 1 ?
-      t('operations.delete.annotation.' + context.graph().geometry(selectedIDs[0])) :
-      t('operations.delete.annotation.feature', { n: selectedIDs.length });
+      context.t('operations.delete.annotation.' + context.graph().geometry(selectedIDs[0])) :
+      context.t('operations.delete.annotation.feature', { n: selectedIDs.length });
   };
 
 
   operation.id = 'delete';
   operation.keys = [ uiCmd('⌘⌫'), uiCmd('⌘⌦'), uiCmd('⌦') ];
-  operation.title = t('operations.delete.title');
+  operation.title = context.t('operations.delete.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

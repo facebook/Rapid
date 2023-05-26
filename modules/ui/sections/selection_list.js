@@ -4,11 +4,13 @@ import { modeSelect } from '../../modes/select';
 import { osmEntity } from '../../osm';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
-import { t } from '../../core/localizer';
-import { utilDisplayName, utilHighlightEntities } from '../../util';
+import { utilHighlightEntities } from '../../util';
 
 
 export function uiSectionSelectionList(context) {
+  const l10n = context.localizationSystem();
+  let _selectedIDs = [];
+
   const section = uiSection('selected-features', context)
     .shouldDisplay(sectionShouldDisplay)
     .label(sectionLabel)
@@ -20,15 +22,13 @@ export function uiSectionSelectionList(context) {
     return section;
   };
 
-  let _selectedIDs = [];
-
 
   function sectionShouldDisplay() {
     return _selectedIDs.length > 1;
   }
 
   function sectionLabel() {
-    return t('inspector.title_count', { title: t.html('inspector.features'), count: _selectedIDs.length });
+    return l10n.t('inspector.title_count', { title: l10n.tHtml('inspector.features'), count: _selectedIDs.length });
   }
 
   function selectEntity(d3_event, entity) {
@@ -37,7 +37,7 @@ export function uiSectionSelectionList(context) {
 
   function deselectEntity(d3_event, entity) {
     let selectedIDs = _selectedIDs.slice();
-    let index = selectedIDs.indexOf(entity.id);
+    const index = selectedIDs.indexOf(entity.id);
     if (index > -1) {
       selectedIDs.splice(index, 1);
       context.enter(modeSelect(context, selectedIDs));
@@ -95,7 +95,7 @@ export function uiSectionSelectionList(context) {
     enter
       .append('button')
       .attr('class', 'close')
-      .attr('title', t('icons.deselect'))
+      .attr('title', l10n.t('icons.deselect'))
       .on('click', deselectEntity)
       .call(uiIcon('#rapid-icon-close'));
 
@@ -114,15 +114,14 @@ export function uiSectionSelectionList(context) {
 
     items.selectAll('.entity-name')
       .html(d => {
-        // fetch latest entity
-        const entity = context.entity(d.id);
-        return utilDisplayName(entity);
+        const entity = context.entity(d.id);  // current version of the entity
+        return l10n.displayName(entity);
       });
   }
 
 
   context.history()
-    .on('change.selectionList', (difference) => {
+    .on('change.selectionList', difference => {
       if (difference) {
         section.reRender();
       }

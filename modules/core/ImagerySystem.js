@@ -414,7 +414,10 @@ export class ImagerySystem extends EventEmitter {
   _setupImageryAsync() {
     if (this._initPromise) return this._initPromise;
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const context = this.context;
+    const dataLoaderSystem = context.dataLoaderSystem();
+    const storageSystem = this.context.storageSystem();
+
     return dataLoaderSystem.get('imagery')
       .then(data => {
         this._imageryIndex = {
@@ -451,23 +454,22 @@ export class ImagerySystem extends EventEmitter {
         for (const d of data) {
           let source;
           if (d.type === 'bing') {
-            source = new ImagerySourceBing(d);
+            source = new ImagerySourceBing(context, d);
           } else if (/^EsriWorldImagery/.test(d.id)) {
-            source = new ImagerySourceEsri(d);
+            source = new ImagerySourceEsri(context, d);
           } else {
-            source = new ImagerySource(d);
+            source = new ImagerySource(context, d);
           }
           this._imageryIndex.sources.set(d.id, source);
         }
 
         // Add 'None'
-        const none = new ImagerySourceNone();
+        const none = new ImagerySourceNone(context);
         this._imageryIndex.sources.set(none.id, none);
 
         // Add 'Custom' - seed it with whatever template the user has used previously
-        const custom = new ImagerySourceCustom();
-        const prefs = this.context.storageSystem();
-        custom.template = prefs.getItem('background-custom-template') || '';
+        const custom = new ImagerySourceCustom(context);
+        custom.template = storageSystem.getItem('background-custom-template') || '';
         this._imageryIndex.sources.set(custom.id, custom);
 
         // Default the locator overlay to "on"..

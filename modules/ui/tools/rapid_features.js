@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiCmd } from '../cmd';
 import { uiRapidFeatureToggleDialog } from '../rapid_feature_toggle_dialog';
@@ -10,14 +9,14 @@ import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dial
 
 export function uiToolRapidFeatures(context) {
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
-  const rapidFeaturesToggleKey = '⇧' + t('map_data.layers.ai-features.key');
+  const rapidFeaturesToggleKey = '⇧' + context.t('map_data.layers.ai-features.key');
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
   const showPowerUser = context.rapidContext().showPowerUser;
 
   let tool = {
     id: 'rapid_features',
-    label: t('toolbar.rapid_features')
+    label: context.t('toolbar.rapid_features')
   };
 
   function layerEnabled() {
@@ -77,9 +76,9 @@ export function uiToolRapidFeatures(context) {
         .attr('class', 'bar-button rapid-features')
         .attr('tabindex', -1)
         .on('click', showFeatureToggleDialog)
-        .call(uiTooltip()
+        .call(uiTooltip(context)
           .placement('bottom')
-          .title(t('shortcuts.browsing.display_options.rapid_features_data'))
+          .title(context.t('shortcuts.browsing.display_options.rapid_features_data'))
           .keys(rapidFeaturesToggleKey)
         );
 
@@ -102,9 +101,9 @@ export function uiToolRapidFeatures(context) {
         .attr('class', 'bar-button rapid-poweruser-features')
         .attr('tabindex', -1)
         .on('click', showPowerUserFeaturesDialog)
-        .call(uiTooltip()
+        .call(uiTooltip(context)
           .placement('bottom')
-          .title(t('rapid_poweruser_features.heading.label'))
+          .title(context.t('rapid_poweruser_features.heading.label'))
         )
         .append('div')
         .attr('class', 'beta');

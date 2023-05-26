@@ -5,7 +5,6 @@ import { utilArrayUniq, utilUnicodeCharsCount } from '@rapid-sdk/util';
 import * as countryCoder from '@rapideditor/country-coder';
 
 import { osmEntity } from '../../osm/entity';
-import { t } from '../../core/localizer';
 import { uiCombobox } from '../combobox';
 import { utilKeybinding } from '../../util/keybinding';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
@@ -62,9 +61,7 @@ export function uiFieldCombo(context, uifield) {
     }
 
     function clean(s) {
-        return s.split(';')
-            .map(function(s) { return s.trim(); })
-            .join(';');
+        return s.split(';').map(s => s.trim()).join(';');
     }
 
 
@@ -91,8 +88,8 @@ export function uiFieldCombo(context, uifield) {
     function displayValue(tval) {
         tval = tval || '';
 
-        if (uifield.hasTextForStringId('options.' + tval)) {
-            return uifield.t('options.' + tval, { default: tval });
+        if (uifield.hasTextForStringID('options.' + tval)) {
+            return uifield.t(`options.${tval}`, { default: tval });
         }
 
         if (uifield.type === 'typeCombo' && tval.toLowerCase() === 'yes') {
@@ -142,7 +139,7 @@ export function uiFieldCombo(context, uifield) {
                 value: uifield.t(`options.${v}`, { default: v }),
                 title: v,
                 display: uifield.tHtml(`options.${v}`, { default: v }),
-                klass: uifield.hasTextForStringId(`options.${v}`) ? '' : 'raw-option'
+                klass: uifield.hasTextForStringID(`options.${v}`) ? '' : 'raw-option'
             };
         });
 
@@ -215,7 +212,7 @@ export function uiFieldCombo(context, uifield) {
                     value: label,
                     display: uifield.tHtml(`options.${k}`, { default: k }),
                     title: d.title || label,
-                    klass: uifield.hasTextForStringId(`options.${k}`) ? '' : 'raw-option'
+                    klass: uifield.hasTextForStringID(`options.${k}`) ? '' : 'raw-option'
                 };
             });
 
@@ -227,7 +224,7 @@ export function uiFieldCombo(context, uifield) {
 
     function setPlaceholder(values) {
         if (_isMulti || _isSemi) {
-            _staticPlaceholder = uifield.placeholder || t('inspector.add');
+            _staticPlaceholder = uifield.placeholder || context.t('inspector.add');
         } else {
             var vals = values
                 .map(function(d) { return d.value; })
@@ -243,7 +240,7 @@ export function uiFieldCombo(context, uifield) {
 
         var ph;
         if (!_isMulti && !_isSemi && _tags && Array.isArray(_tags[uifield.key])) {
-            ph = t('inspector.multiple_values');
+            ph = context.t('inspector.multiple_values');
         } else {
             ph =  _staticPlaceholder;
         }
@@ -535,14 +532,14 @@ export function uiFieldCombo(context, uifield) {
                 .classed('raw-value', function(d) {
                     var k = d.key;
                     if (_isMulti) k = k.replace(key, '');
-                    return !uifield.hasTextForStringId('options.' + k);
+                    return !uifield.hasTextForStringID('options.' + k);
                 })
                 .classed('draggable', allowDragAndDrop)
                 .classed('mixed', function(d) {
                     return d.isMixed;
                 })
                 .attr('title', function(d) {
-                    return d.isMixed ? t('inspector.unshared_value_tooltip') : null;
+                    return d.isMixed ? context.t('inspector.unshared_value_tooltip') : null;
                 });
 
             if (allowDragAndDrop) {
@@ -570,7 +567,7 @@ export function uiFieldCombo(context, uifield) {
             }).filter(Boolean);
 
             var showsValue = !isMixed && tags[key] && !(uifield.type === 'typeCombo' && tags[key] === 'yes');
-            var isRawValue = showsValue && !uifield.hasTextForStringId('options.' + tags[key]);
+            var isRawValue = showsValue && !uifield.hasTextForStringID('options.' + tags[key]);
             var isKnownValue = showsValue && !isRawValue;
             var isReadOnly = !_allowCustomValues || isKnownValue;
 
@@ -579,7 +576,7 @@ export function uiFieldCombo(context, uifield) {
                 .classed('known-value', isKnownValue)
                 .attr('readonly', isReadOnly ? 'readonly' : undefined)
                 .attr('title', isMixed ? mixedValues.join('\n') : undefined)
-                .attr('placeholder', isMixed ? t('inspector.multiple_values') : _staticPlaceholder || '')
+                .attr('placeholder', isMixed ? context.t('inspector.multiple_values') : _staticPlaceholder || '')
                 .classed('mixed', isMixed)
                 .on('keydown.deleteCapture', function(d3_event) {
                     if (isReadOnly &&

@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { actionSplit } from '../actions/split';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
@@ -86,19 +85,19 @@ export function operationSplit(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.split.${disabledReason}`) :
-      t(`operations.split.description.${_geometry}.${_waysMulti}.${vertexMulti}_node`);
+      context.t(`operations.split.${disabledReason}`) :
+      context.t(`operations.split.description.${_geometry}.${_waysMulti}.${vertexMulti}_node`);
   };
 
 
   operation.annotation = function() {
-    return t(`operations.split.annotation.${_geometry}`, { n: _splittable.length });
+    return context.t(`operations.split.annotation.${_geometry}`, { n: _splittable.length });
   };
 
 
   operation.id = 'split';
-  operation.keys = [ t('operations.split.key') ];
-  operation.title = t('operations.split.title');
+  operation.keys = [ context.t('operations.split.key') ];
+  operation.title = context.t('operations.split.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

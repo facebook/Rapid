@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { osmChangeset } from '../../osm';
 import { actionDiscardTags } from '../../actions';
@@ -11,7 +10,7 @@ import { uiTooltip } from '../tooltip';
 export function uiToolDownloadOsc(context) {
   let tool = {
     id: 'download_osc',
-    label: t('download_osc.title')
+    label: context.t('download_osc.title')
   };
 
   let button = d3_select(null);
@@ -41,7 +40,7 @@ export function uiToolDownloadOsc(context) {
     button.classed('disabled', isDisabled());
     if (tooltip) {
       tooltip
-        .title(t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
+        .title(context.t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
     }
 
   }
@@ -67,9 +66,9 @@ export function uiToolDownloadOsc(context) {
 
 
   tool.install = function(selection) {
-    tooltip = uiTooltip()
+    tooltip = uiTooltip(context)
       .placement('bottom')
-      .title(t('download_osc.no_changes'));
+      .title(context.t('download_osc.no_changes'));
 
     button = selection
       .append('button')

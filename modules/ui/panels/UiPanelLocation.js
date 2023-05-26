@@ -2,8 +2,6 @@ import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
-import { decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
-import { t } from '../../core/localizer';
 
 
 /**
@@ -18,8 +16,8 @@ export class UiPanelLocation extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'location';
-    this.label = t.html('info_panels.location.title');
-    this.key = t('info_panels.location.key');
+    this.label = context.tHtml('info_panels.location.title');
+    this.key = context.t('info_panels.location.key');
 
     this._selection = d3_select(null);
     this._currLocation = null;
@@ -73,6 +71,7 @@ export class UiPanelLocation extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
+    const l10n = context.localizationSystem();
 
     // Empty out the DOM content and rebuild from scratch..
     selection.html('');
@@ -89,9 +88,9 @@ export class UiPanelLocation extends AbstractUiPanel {
     // Append coordinates of mouse
     list
       .append('li')
-      .text(dmsCoordinatePair(loc))
+      .text(l10n.dmsCoordinatePair(loc))
       .append('li')
-      .text(decimalCoordinatePair(loc));
+      .text(l10n.decimalCoordinatePair(loc));
 
     // Append reverse geolocated placename
     selection
@@ -113,18 +112,19 @@ export class UiPanelLocation extends AbstractUiPanel {
     if (!this._enabled) return;
 
     const selection = this._selection;
-    const nominatim = this.context.services.get('nominatim');
+    const context = this.context;
+    const nominatim = context.services.get('nominatim');
 
-    if (!nominatim) {
-      this._currLocation = t('info_panels.location.unknown_location');
-      selection.selectAll('.location-info')
-        .text(this._currLocation);
-    } else {
+    if (nominatim) {
       nominatim.reverse(loc, (err, result) => {
-        this._currLocation = result ? result.display_name : t('info_panels.location.unknown_location');
+        this._currLocation = result ? result.display_name : context.t('info_panels.location.unknown_location');
         selection.selectAll('.location-info')
           .text(this._currLocation);
       });
+    } else {
+      this._currLocation = context.t('info_panels.location.unknown_location');
+      selection.selectAll('.location-info')
+        .text(this._currLocation);
     }
   }
 

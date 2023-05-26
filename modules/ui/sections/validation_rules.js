@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto } from '../../util';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
@@ -15,13 +14,13 @@ export function uiSectionValidationRules(context) {
   const prefs = context.storageSystem();
   const section = uiSection('issues-rules', context)
     .disclosureContent(renderDisclosureContent)
-    .label(t.html('issues.rules.title'));
+    .label(context.tHtml('issues.rules.title'));
 
 
   let _ruleKeys = validator.getRuleKeys()
     .sort((key1, key2) => {
       // alphabetize by localized title
-      return t(`issues.${key1}.title`) < t(`issues.${key2}.title`) ? -1 : 1;
+      return context.t(`issues.${key1}.title`) < context.t(`issues.${key2}.title`) ? -1 : 1;
     });
 
 
@@ -45,7 +44,7 @@ export function uiSectionValidationRules(context) {
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(t.html('issues.disable_all'))
+      .html(context.tHtml('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         validator.disableRules(_ruleKeys);
@@ -55,7 +54,7 @@ export function uiSectionValidationRules(context) {
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(t.html('issues.enable_all'))
+      .html(context.tHtml('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         validator.disableRules([]);
@@ -84,8 +83,8 @@ export function uiSectionValidationRules(context) {
 
     if (name === 'rule') {
       enter
-        .call(uiTooltip()
-          .title(d => t.html(`issues.${d}.tip`))
+        .call(uiTooltip(context)
+          .title(d => context.tHtml(`issues.${d}.tip`))
           .placement('top')
         );
     }
@@ -106,7 +105,7 @@ export function uiSectionValidationRules(context) {
         if (d === 'unsquare_way') {
           params.val = '<span class="square-degrees"></span>';
         }
-        return t.html(`issues.${d}.title`, params);
+        return context.tHtml(`issues.${d}.title`, params);
       });
 
     // Update
