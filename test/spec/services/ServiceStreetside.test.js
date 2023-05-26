@@ -1,27 +1,22 @@
-describe('serviceStreetside', () => {
-  const dimensions = [64, 64];
-  let context, streetside;
+describe('ServiceStreetside', () => {
+  let _streetside, _projection;
 
-  before(() => {
-    Rapid.services.streetside = Rapid.serviceStreetside;
-  });
-
-  after(() => {
-    delete Rapid.services.streetside;
-  });
+  class MockContext {
+    constructor() { }
+  }
 
   beforeEach(() => {
-    context = Rapid.coreContext()
-      .assetPath('../dist/')
-      .init();
-    context.projection
+    fetchMock.reset();
+
+    _projection = new sdk.Projection()
       .scale(sdk.geoZoomToScale(14))
       .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], dimensions]);
+      .dimensions([[0,0], [64, 64]]);
 
-    streetside = Rapid.services.streetside;
-    streetside.reset();
+    _streetside = new Rapid.ServiceStreetside(new MockContext());
+    _streetside.init();
   });
+
 
   afterEach(() => {
     window.JSONP_FIX = undefined;
@@ -29,36 +24,36 @@ describe('serviceStreetside', () => {
 
 
   describe('#init', () => {
-    it('Initializes cache one time', () => {
-      const cache = streetside.cache();
+    it('initializes cache', () => {
+      const cache = _streetside._cache;
       expect(cache).to.have.property('bubbles');
       expect(cache).to.have.property('sequences');
-
-      streetside.init();
-      const cache2 = streetside.cache();
-      expect(cache).to.equal(cache2);
+      expect(cache.bubbles).to.be.an.instanceof(Map);
+      expect(cache.sequences).to.be.an.instanceof(Map);
     });
   });
 
   describe('#reset', () => {
     it('resets cache', () => {
-      streetside.cache().foo = 'bar';
-      streetside.reset();
-      expect(streetside.cache()).to.not.have.property('foo');
+      _streetside._cache.bubbles.set('foo', { id: 'foo' });
+
+      _streetside.reset();
+      expect(_streetside._cache.bubbles.has('foo')).to.be.false;
     });
   });
+
 
   describe('#loadBubbles', () => {
     it('fires loadedImages when bubbles are loaded', done => {
       // adjust projection so that only one tile is fetched
       // (JSONP hack will return the same data for every fetch)
-      context.projection
+      _projection
         .scale(sdk.geoZoomToScale(18))
         .translate([-1863988.9381333336, 762.8270222954452])  // 10.002,0.002
-        .dimensions([[0,0], dimensions]);
+        .dimensions([[0,0], [64,64]]);
 
       const spy = sinon.spy();
-      streetside.on('loadedImages', spy);
+      _streetside.on('loadedImages', spy);
 
       window.JSONP_DELAY = 0;
       window.JSONP_FIX = [{
@@ -78,22 +73,22 @@ describe('serviceStreetside', () => {
         }
       ];
 
-      streetside.loadBubbles(context.projection, 0);  // 0 = don't fetch margin tiles
+      _streetside.loadBubbles(_projection, 0);  // 0 = don't fetch margin tiles
 
       window.setTimeout(() => {
         expect(spy).to.have.been.calledOnce;
         done();
-      }, 200);
+      }, 50);
     });
 
     it('does not load bubbles around null island', done => {
-      context.projection
+      _projection
         .scale(sdk.geoZoomToScale(18))
         .translate([0, 0])
-        .dimensions([[0,0], dimensions]);
+        .dimensions([[0,0], [64,64]]);
 
       const spy = sinon.spy();
-      streetside.on('loadedImages', spy);
+      _streetside.on('loadedImages', spy);
 
       window.JSONP_DELAY = 0;
       window.JSONP_FIX = [{
@@ -113,12 +108,12 @@ describe('serviceStreetside', () => {
         }
       ];
 
-      streetside.loadBubbles(context.projection, 0);  // 0 = don't fetch margin tiles
+      _streetside.loadBubbles(_projection, 0);  // 0 = don't fetch margin tiles
 
       window.setTimeout(() => {
         expect(spy).to.have.been.not.called;
         done();
-      }, 200);
+      }, 50);
     });
   });
 
@@ -131,9 +126,9 @@ describe('serviceStreetside', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: 3, loc: [10, 1], ca: 90, pr: 2, ne: undefined, isPano: true, sequenceID: 1 } }
       ];
 
-      streetside.cache().rtree.load(data);
+      _streetside._cache.rtree.load(data);
 
-      const result = streetside.bubbles(context.projection);
+      const result = _streetside.bubbles(_projection);
       expect(result).to.deep.eql([
         { id: 1, loc: [10, 0], ca: 90, pr: undefined, ne: 2, isPano: true, sequenceID: 1 },
         { id: 2, loc: [10, 0], ca: 90, pr: 1, ne: 3, isPano: true, sequenceID: 1 }
@@ -160,10 +155,10 @@ describe('serviceStreetside', () => {
         }
       };
 
-      streetside.cache().rtree.load(data);
-      streetside.cache().sequences.set(1, sequence);
+      _streetside._cache.rtree.load(data);
+      _streetside._cache.sequences.set(1, sequence);
 
-      const result = streetside.sequences(context.projection);
+      const result = _streetside.sequences(_projection);
       expect(result).to.deep.eql([sequence.geojson]);
     });
   });

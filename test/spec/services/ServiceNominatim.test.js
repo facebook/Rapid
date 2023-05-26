@@ -12,15 +12,8 @@ describe('ServiceNominatim', () => {
   }
 
 
-  before(() => {
-    fetchMock.resetHistory();
-  });
-
-
   beforeEach(() => {
-    nominatim = new Rapid.ServiceNominatim(new MockContext());
-    nominatim.init();
-
+    fetchMock.reset();
     fetchMock.mock(/reverse\?.*lat=48&lon=16/, {
       body: '{"address":{"country_code":"at"}}',
       status: 200,
@@ -39,11 +32,8 @@ describe('ServiceNominatim', () => {
       headers: { 'Content-Type': 'application/json' }
     });
 
-  });
-
-
-  afterEach(() => {
-    fetchMock.resetHistory();
+    nominatim = new Rapid.ServiceNominatim(new MockContext());
+    nominatim.init();
   });
 
 

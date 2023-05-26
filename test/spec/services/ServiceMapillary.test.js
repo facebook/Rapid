@@ -1,61 +1,43 @@
-describe('serviceMapillary', () => {
-  const dimensions = [64, 64];
-  let context, mapillary;
+describe('ServiceMapillary', () => {
+  let _mapillary, _projection;
 
-
-  before(() => {
-    Rapid.services.mapillary = Rapid.serviceMapillary;
-  });
-
-  after(() => {
-    delete Rapid.services.mapillary;
-  });
+  class MockContext {
+    constructor() { }
+  }
 
   beforeEach(() => {
-    context = Rapid.coreContext()
-      .assetPath('../dist/')
-      .init();
-    context.projection
+    fetchMock.reset();
+
+    _projection = new sdk.Projection()
       .scale(sdk.geoZoomToScale(14))
       .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], dimensions]);
+      .dimensions([[0,0], [64, 64]]);
 
-    // // Just for the image filtering tests, hard code these methods
-    // // So we don't bring the pixi layers' existence into the mix.
-    // context.photos().showsPanoramic = () => true;
-    // context.photos().showsFlat = () => true;
-
-    mapillary = Rapid.services.mapillary;
-    mapillary.reset();
+    _mapillary = new Rapid.ServiceMapillary(new MockContext());
+    _mapillary.init();
   });
-
-  afterEach(() => {});
 
 
   describe('#init', () => {
-    it('Initializes cache one time', () => {
-      const cache = mapillary.cache();
+    it('initializes cache', () => {
+      const cache = _mapillary._mlyCache;
       expect(cache).to.have.property('images');
       expect(cache).to.have.property('image_detections');
       expect(cache).to.have.property('points');
       expect(cache).to.have.property('signs');
       expect(cache).to.have.property('sequences');
-
-      mapillary.init();
-      const cache2 = mapillary.cache();
-      expect(cache).to.equal(cache2);
     });
   });
 
 
   describe('#reset', () => {
-    it('resets cache and image', () => {
-      mapillary.cache().foo = 'bar';
-      mapillary.selectImage(context, { id: 'baz', loc: [10,0] });
+    it('resets cache and selected image', () => {
+      _mapillary._mlyCache.images.forImageID.foo = { id: 'foo' };
+      _mapillary._mlyActiveImage = 'foo';
 
-      mapillary.reset();
-      expect(mapillary.cache()).to.not.have.property('foo');
-      expect(mapillary.getActiveImage()).to.be.null;
+      _mapillary.reset();
+      expect(_mapillary._mlyCache.images.forImageID).to.not.have.property('foo');
+      expect(_mapillary._mlyActiveImage).to.be.null;
     });
   });
 
@@ -68,8 +50,8 @@ describe('serviceMapillary', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1], ca: 90 } }
       ];
 
-      mapillary.cache().images.rtree.load(data);
-      const result = mapillary.images(context.projection);
+      _mapillary._mlyCache.images.rtree.load(data);
+      const result = _mapillary.images(_projection);
 
       expect(result).to.deep.eql([
         { id: '0', loc: [10,0], ca: 90 },
@@ -87,8 +69,8 @@ describe('serviceMapillary', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1] } }
       ];
 
-      mapillary.cache().signs.rtree.load(data);
-      const result = mapillary.signs(context.projection);
+      _mapillary._mlyCache.signs.rtree.load(data);
+      const result = _mapillary.signs(_projection);
 
       expect(result).to.deep.eql([
         { id: '0', loc: [10,0] },
@@ -106,8 +88,8 @@ describe('serviceMapillary', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1] } }
       ];
 
-      mapillary.cache().points.rtree.load(data);
-      const result = mapillary.mapFeatures(context.projection);
+      _mapillary._mlyCache.points.rtree.load(data);
+      const result = _mapillary.mapFeatures(_projection);
 
       expect(result).to.deep.eql([
         { id: '0', loc: [10,0] },
@@ -125,7 +107,7 @@ describe('serviceMapillary', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1], ca: 90, sequenceID: '-' } }
       ];
 
-      mapillary.cache().images.rtree.load(data);
+      _mapillary._mlyCache.images.rtree.load(data);
 
       const gj = {
         type: 'Feature',
@@ -143,9 +125,9 @@ describe('serviceMapillary', () => {
         }
       };
 
-      mapillary.cache().sequences = new Map().set('-', [gj]);
+      _mapillary._mlyCache.sequences = new Map().set('-', [gj]);
 
-      const res = mapillary.sequences(context.projection);
+      const res = _mapillary.sequences(_projection);
       expect(res).to.deep.eql([[gj]]);
     });
   });
@@ -154,8 +136,8 @@ describe('serviceMapillary', () => {
   describe('#setActiveImage', () => {
     it('gets and sets the selected image', () => {
       const image = { id: 'baz', originalLngLat: { lng: 10, lat: 0 }};
-      mapillary.setActiveImage(image);
-      expect(mapillary.getActiveImage().id).to.eql(image.id);
+      _mapillary.setActiveImage(image);
+      expect(_mapillary.getActiveImage().id).to.eql(image.id);
     });
   });
 

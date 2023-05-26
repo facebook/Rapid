@@ -389,9 +389,10 @@ export class ServiceStreetside {
    * note: call `photoSystem.selectPhoto(layerID, photoID)` instead
    * That will deal with the URL and call this function
    */
-  selectImage(context, bubbleID) {
+  selectImage(bubbleID) {
     let d = this.cachedImage(bubbleID);
 
+    const context = this.context;
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) {
       viewer.datum(d);

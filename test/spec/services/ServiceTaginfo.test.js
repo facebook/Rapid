@@ -12,12 +12,8 @@ describe('ServiceTaginfo', () => {
   }
 
 
-  before(() => {
-    fetchMock.resetHistory();
-  });
-
-
   beforeEach(() => {
+    fetchMock.reset();
     fetchMock.mock(new RegExp('\/keys\/all.*sortname=values_all'), {
       body: '{"data":[{"count_all":56136034,"key":"name","count_all_fraction":0.0132}]}',
       status: 200,
@@ -26,12 +22,7 @@ describe('ServiceTaginfo', () => {
 
     taginfo = new Rapid.ServiceTaginfo(new MockContext());
     taginfo.init();   // init will try to fetch the common values
-    fetchMock.resetHistory();
-  });
-
-
-  afterEach(() => {
-    fetchMock.resetHistory();
+    fetchMock.reset();
   });
 
 

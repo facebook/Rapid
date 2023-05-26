@@ -296,9 +296,12 @@ export class ServiceKartaview {
 
   // note: call `context.photoSystem().selectPhoto(layerID, photoID)` instead
   // That will deal with the URL and call this function
-  selectImage(context, imageKey) {
-    let d = this.cachedImage(imageKey);
+  selectImage(imageID) {
+    let d = this.cachedImage(imageID);
     this._selectedImage = d;
+
+    const context = this.context;
+    if (!context.container()) return;
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(d);

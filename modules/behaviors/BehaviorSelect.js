@@ -403,14 +403,14 @@ export class BehaviorSelect extends AbstractBehavior {
           if (imageID === selectedImageID) {
             service
               .highlightDetection(detections[0])
-              .selectImage(context, imageID);
+              .selectImage(imageID);
           } else {
-            service.loadViewerAsync(context)
+            service.loadViewerAsync()
               .then(() => {
                 service
                   .highlightDetection(detections[0])
-                  .selectImage(context, imageID)
-                  .showViewer(context);
+                  .selectImage(imageID)
+                  .showViewer();
               });
           }
         }
