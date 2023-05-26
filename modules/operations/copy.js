@@ -1,6 +1,5 @@
 import { utilArrayGroupBy } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
@@ -114,13 +113,13 @@ export function operationCopy(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.copy.${disabledReason}`, { n: selectedIDs.length }) :
-      t('operations.copy.description', { n: selectedIDs.length });
+      context.t(`operations.copy.${disabledReason}`, { n: selectedIDs.length }) :
+      context.t('operations.copy.description', { n: selectedIDs.length });
   };
 
 
   operation.annotation = function() {
-    return t('operations.copy.annotation', { n: selectedIDs.length });
+    return context.t('operations.copy.annotation', { n: selectedIDs.length });
   };
 
 
@@ -132,7 +131,7 @@ export function operationCopy(context, selectedIDs) {
 
   operation.id = 'copy';
   operation.keys = [ uiCmd('⌘C') ];
-  operation.title = t('operations.copy.title');
+  operation.title = context.t('operations.copy.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

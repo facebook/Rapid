@@ -22,6 +22,8 @@ describe('operationExtract', () => {
     hasHiddenConnections()  { return false; }
     inIntro()               { return false; }
     keyBinding()            { return false; }
+    t(id)                   { return id; }
+    tHtml(id)               { return id; }
   }
 
 

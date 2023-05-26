@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { gpx } from '@tmcw/togeojson';
 import { Extent } from '@rapid-sdk/math';
 
-import { localizer, t } from '../core/localizer';
 import { utilRebind } from '../util';
 
 
@@ -108,7 +107,8 @@ export function coreRapidContext(context) {
   _rapidContext.init = () => {
     context.urlHashSystem().on('hashchange', _hashchange);
 
-    localizer.initAsync()
+    const l10n = context.localizationSystem();
+    l10n.initAsync()
       .then(() => {
         _datasets = {
           // setup the built-in datasets
@@ -120,8 +120,8 @@ export function coreRapidContext(context) {
             conflated: true,
             service: 'mapwithai',
             color: RAPID_MAGENTA,
-            label: t('rapid_feature_toggle.fbRoads.label'),
-            license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
+            label: l10n.t('rapid_feature_toggle.fbRoads.label'),
+            license_markdown: l10n.t('rapid_feature_toggle.fbRoads.license_markdown')
           },
           'msBuildings': {
             id: 'msBuildings',
@@ -131,8 +131,8 @@ export function coreRapidContext(context) {
             conflated: true,
             service: 'mapwithai',
             color: RAPID_MAGENTA,
-            label: t('rapid_feature_toggle.msBuildings.label'),
-            license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
+            label: l10n.t('rapid_feature_toggle.msBuildings.label'),
+            license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown')
           }
         };
       });
@@ -194,7 +194,7 @@ export function coreRapidContext(context) {
             service: 'esri',
             color: COLORS[nextColor],
             label: d.title,
-            license_markdown: t('rapid_feature_toggle.esri.license_markdown')
+            license_markdown: context.t('rapid_feature_toggle.esri.license_markdown')
           };
 
           if (d.extent) {

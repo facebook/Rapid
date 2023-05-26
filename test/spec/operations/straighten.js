@@ -16,6 +16,8 @@ describe('operationStraighten', () => {
     inIntro()               { return false; }
     keyBinding()            { return false; }
     map()                   { return this.map; }
+    t(id)                   { return id; }
+    tHtml(id)               { return id; }
   }
 
 

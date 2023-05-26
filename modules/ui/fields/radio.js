@@ -2,10 +2,8 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUnion } from '@rapid-sdk/util';
 
-import { t } from '../../core/localizer';
 import { UiField } from '../UiField';
 import { utilRebind } from '../../util';
-
 
 export { uiFieldRadio as uiFieldStructureRadio };
 
@@ -129,7 +127,7 @@ export function uiFieldRadio(context, uifield) {
             .append('span')
             .attr('class', 'label structure-label-type')
             .attr('for', 'preset-input-' + selected)
-            .html(t.html('inspector.radio.structure.type'));
+            .html(context.tHtml('inspector.radio.structure.type'));
 
         typeEnter
             .append('div')
@@ -174,7 +172,7 @@ export function uiFieldRadio(context, uifield) {
             .append('span')
             .attr('class', 'label structure-label-layer')
             .attr('for', 'preset-input-layer')
-            .html(t.html('inspector.radio.structure.layer'));
+            .html(context.tHtml('inspector.radio.structure.layer'));
 
         layerEnter
             .append('div')
@@ -290,14 +288,14 @@ export function uiFieldRadio(context, uifield) {
             })
             .classed('mixed', isMixed)
             .attr('title', function(d) {
-                return isMixed(d) ? t('inspector.unshared_value_tooltip') : null;
+                return isMixed(d) ? context.t('inspector.unshared_value_tooltip') : null;
             });
 
 
         var selection = radios.filter(function() { return this.checked; });
 
         if (selection.empty()) {
-            placeholder.html(t.html('inspector.none'));
+            placeholder.html(context.tHtml('inspector.none'));
         } else {
             placeholder.html(selection.attr('value'));
             _oldType[selection.datum()] = tags[selection.datum()];

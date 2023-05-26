@@ -6,8 +6,7 @@ import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
 import { actionNoop } from '../actions/noop';
 import { actionRevert } from '../actions/revert';
 import { Graph } from '../core/Graph';
-import { t } from '../core/localizer';
-import { utilDisplayName, utilDisplayType, utilRebind } from '../util';
+import { utilRebind } from '../util';
 
 
 export function coreUploader(context) {
@@ -28,12 +27,12 @@ export function coreUploader(context) {
     );
 
     var _isSaving = false;
-
     var _conflicts = [];
     var _errors = [];
     var _origChanges;
-
     var _discardTags = {};
+
+    const l10n = context.localizationSystem();
 
     const dataLoaderSystem = context.dataLoaderSystem();
     dataLoaderSystem.get('discarded')
@@ -154,7 +153,7 @@ export function coreUploader(context) {
             if (err) {
                 _errors.push({
                     msg: err.message || err.responseText,
-                    details: [ t('save.status_code', { code: err.status }) ]
+                    details: [ l10n.t('save.status_code', { code: err.status }) ]
                 });
                 didResultInErrors();
 
@@ -209,19 +208,20 @@ export function coreUploader(context) {
 
         function detectConflicts() {
             function choice(id, text, action) {
-                return {
-                    id: id,
-                    text: text,
-                    action: function() {
-                        history.replace(action);
-                    }
-                };
+              return {
+                id: id,
+                text: text,
+                action: function() {
+                  history.replace(action);
+                }
+              };
             }
             function formatUser(d) {
-                return '<a href="' + osm.userURL(d) + '" target="_blank">' + d + '</a>';
+              return '<a href="' + osm.userURL(d) + '" target="_blank">' + d + '</a>';
             }
+
             function entityName(entity) {
-                return utilDisplayName(entity) || (utilDisplayType(entity.id) + ' ' + entity.id);
+              return l10n.displayName(entity) || (l10n.displayType(entity.id) + ' ' + entity.id);
             }
 
             function sameVersions(local, remote) {
@@ -239,33 +239,58 @@ export function coreUploader(context) {
                 return true;
             }
 
-            _toCheck.forEach(function(id) {
-                var local = localGraph.entity(id);
-                var remote = remoteGraph.entity(id);
+            _toCheck.forEach(function(entityID) {
+                const local = localGraph.entity(entityID);
+                const remote = remoteGraph.entity(entityID);
 
                 if (sameVersions(local, remote)) return;
 
-                var merge = actionMergeRemoteChanges(id, localGraph, remoteGraph, _discardTags, formatUser);
+                // Try a safe merge first
+                const actionSafe = actionMergeRemoteChanges(entityID, {
+                  localGraph: localGraph,
+                  remoteGraph: remoteGraph,
+                  discardTags: _discardTags,
+                  formatUser: formatUser,
+                  localize: l10n.t,
+                  strategy: 'safe'
+                });
 
-                history.replace(merge);
+                history.replace(actionSafe);
 
-                var mergeConflicts = merge.conflicts();
+                const mergeConflicts = actionSafe.conflicts();
                 if (!mergeConflicts.length) return;  // merged safely
 
-                var forceLocal = actionMergeRemoteChanges(id, localGraph, remoteGraph, _discardTags).withOption('force_local');
-                var forceRemote = actionMergeRemoteChanges(id, localGraph, remoteGraph, _discardTags).withOption('force_remote');
-                var keepMine = t('save.conflict.' + (remote.visible ? 'keep_local' : 'restore'));
-                var keepTheirs = t('save.conflict.' + (remote.visible ? 'keep_remote' : 'delete'));
+                // present options for destructive merging
+                const actionForceLocal = actionMergeRemoteChanges(entityID, {
+                  localGraph: localGraph,
+                  remoteGraph: remoteGraph,
+                  discardTags: _discardTags,
+                  formatUser: formatUser,
+                  localize: l10n.t,
+                  strategy: 'force_local'
+                });
+
+                const actionForceRemote = actionMergeRemoteChanges(entityID, {
+                  localGraph: localGraph,
+                  remoteGraph: remoteGraph,
+                  discardTags: _discardTags,
+                  formatUser: formatUser,
+                  localize: l10n.t,
+                  strategy: 'force_remote'
+                });
+
+                const keepMine = l10n.t('save.conflict.' + (remote.visible ? 'keep_local' : 'restore'));
+                const keepTheirs = l10n.t('save.conflict.' + (remote.visible ? 'keep_remote' : 'delete'));
 
                 _conflicts.push({
-                    id: id,
-                    name: entityName(local),
-                    details: mergeConflicts,
-                    chosen: 1,
-                    choices: [
-                        choice(id, keepMine, forceLocal),
-                        choice(id, keepTheirs, forceRemote)
-                    ]
+                  id: entityID,
+                  name: entityName(local),
+                  details: mergeConflicts,
+                  chosen: 1,
+                  choices: [
+                    choice(entityID, keepMine, actionForceLocal),
+                    choice(entityID, keepTheirs, actionForceRemote)
+                  ]
                 });
             });
         }
@@ -308,7 +333,7 @@ export function coreUploader(context) {
             } else {
                 _errors.push({
                     msg: err.message || err.responseText,
-                    details: [ t('save.status_code', { code: err.status }) ]
+                    details: [ l10n.t('save.status_code', { code: err.status }) ]
                 });
                 didResultInErrors();
             }

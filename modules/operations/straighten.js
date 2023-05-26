@@ -1,6 +1,5 @@
 import { utilArrayDifference, utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
@@ -128,19 +127,19 @@ export function operationStraighten(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.straighten.${disabledReason}.${multi}`) :
-      t(`operations.straighten.description.${geometry}` + (ways.length === 1 ? '' : 's'));
+      context.t(`operations.straighten.${disabledReason}.${multi}`) :
+      context.t(`operations.straighten.description.${geometry}` + (ways.length === 1 ? '' : 's'));
   };
 
 
   operation.annotation = function() {
-    return t(`operations.straighten.annotation.${geometry}`, { n: ways.length ? ways.length : nodes.length });
+    return context.t(`operations.straighten.annotation.${geometry}`, { n: ways.length ? ways.length : nodes.length });
   };
 
 
   operation.id = 'straighten';
-  operation.keys = [ t('operations.straighten.key') ];
-  operation.title = t('operations.straighten.title');
+  operation.keys = [ context.t('operations.straighten.key') ];
+  operation.title = context.t('operations.straighten.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

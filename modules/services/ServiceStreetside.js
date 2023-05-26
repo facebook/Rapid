@@ -6,7 +6,6 @@ import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPo
 import { utilArrayUnion, utilQsString, utilUniqueString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 import { utilRebind } from '../util';
 
@@ -447,7 +446,7 @@ export class ServiceStreetside {
 
     label
       .append('span')
-      .html(t.html('streetside.hires'));
+      .text(this.context.t('streetside.hires'));
 
 
     let captureInfo = line1
@@ -488,7 +487,7 @@ export class ServiceStreetside {
       .attr('target', '_blank')
       .attr('href', 'https://www.bing.com/maps?cp=' + d.loc[1] + '~' + d.loc[0] +
         '&lvl=17&dir=' + d.ca + '&style=x&v=2&sV=1')
-      .html(t.html('streetside.view_on_bing'));
+      .text(this.context.t('streetside.view_on_bing'));
 
     line2
       .append('a')
@@ -496,7 +495,7 @@ export class ServiceStreetside {
       .attr('target', '_blank')
       .attr('href', 'https://www.bing.com/maps/privacyreport/streetsideprivacyreport?bubbleid=' +
         encodeURIComponent(d.id) + '&focus=photo&lat=' + d.loc[1] + '&lng=' + d.loc[0] + '&z=17')
-      .html(t.html('streetside.report'));
+      .text(this.context.t('streetside.report'));
 
 
 // const streetsideImagesApi = 'https://t.ssl.ak.tiles.virtualearth.net/tiles/';
@@ -618,7 +617,9 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
     const d = new Date(s);
     if (isNaN(d.getTime())) return null;
-    return d.toLocaleString(localizer.localeCode(), options);
+
+    const localeCode = this.context.localizationSystem().localeCode();
+    return d.toLocaleString(localeCode, options);
   }
 
 

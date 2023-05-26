@@ -1,20 +1,18 @@
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
-export function validationIncompatibleSource() {
+export function validationIncompatibleSource(context) {
   const type = 'incompatible_source';
+  const l10n = context.localizationSystem();
+
   const incompatibleRules = [
     {
       id: 'amap',
       regex: /(amap|autonavi|mapabc|高德)/i
-    },
-    {
+    }, {
       id: 'baidu',
       regex: /(baidu|mapbar|百度)/i
-    },
-    {
+    }, {
       id: 'google',
       regex: /google/i,
       exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_Africa_Buildings)/i
@@ -41,10 +39,10 @@ export function validationIncompatibleSource() {
         return new validationIssue({
           type: type,
           severity: 'warning',
-          message: function(context) {
+          message: function() {
             const entity = context.hasEntity(entityID);
-            return entity ? t.html('issues.incompatible_source.feature.message', {
-              feature: utilDisplayLabel(context, entity, context.graph(), true /* verbose */),
+            return entity ? l10n.tHtml('issues.incompatible_source.feature.message', {
+              feature: l10n.displayLabel(entity, context.graph(), true /* verbose */),
               value: source
             }) : '';
           },
@@ -53,7 +51,7 @@ export function validationIncompatibleSource() {
           hash: source,
           dynamicFixes: () => {
             return [
-              new validationIssueFix({ title: t.html('issues.fix.remove_proprietary_data.title') })
+              new validationIssueFix({ title: l10n.tHtml('issues.fix.remove_proprietary_data.title') })
             ];
           }
         });
@@ -68,7 +66,7 @@ export function validationIncompatibleSource() {
             .enter()
             .append('div')
             .attr('class', 'issue-reference')
-            .html(t.html(`issues.incompatible_source.reference.${id}`));
+            .html(l10n.tHtml(`issues.incompatible_source.reference.${id}`));
         };
       }
     };

@@ -4,7 +4,6 @@ import { utilArrayUniq } from '@rapid-sdk/util';
 import { actionExtract } from '../actions/extract';
 import { actionMove } from '../actions/move';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { t } from '../core/localizer';
 import { utilTotalExtent } from '../util';
 
 
@@ -90,19 +89,19 @@ export function operationExtract(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.extract.${disabledReason}.${multi}`) :
-      t(`operations.extract.description.${geometryType}.${multi}`);
+      context.t(`operations.extract.${disabledReason}.${multi}`) :
+      context.t(`operations.extract.description.${geometryType}.${multi}`);
   };
 
 
   operation.annotation = function () {
-    return t('operations.extract.annotation', { n: selectedIDs.length });
+    return context.t('operations.extract.annotation', { n: selectedIDs.length });
   };
 
 
   operation.id = 'extract';
-  operation.keys = [ t('operations.extract.key') ];
-  operation.title = t('operations.extract.title');
+  operation.keys = [ context.t('operations.extract.key') ];
+  operation.title = context.t('operations.extract.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

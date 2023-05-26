@@ -1,6 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { t } from '../../core/localizer';
 import { uiConfirm } from '../confirm';
 import { utilNoAuto, utilRebind } from '../../util';
 
@@ -20,14 +19,14 @@ export function uiSettingsCustomData(context) {
         var _currSettings = Object.assign({}, _origSettings);
 
         // var example = 'https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png';
-        var modal = uiConfirm(selection).okButton();
+        var modal = uiConfirm(context, selection).okButton();
 
         modal
             .classed('settings-modal settings-custom-data', true);
 
         modal.select('.modal-section.header')
             .append('h3')
-            .html(t.html('settings.custom_data.header'));
+            .html(context.tHtml('settings.custom_data.header'));
 
 
         var textSection = modal.select('.modal-section.message-text');
@@ -35,7 +34,7 @@ export function uiSettingsCustomData(context) {
         textSection
             .append('pre')
             .attr('class', 'instructions-file')
-            .html(t.html('settings.custom_data.file.instructions'));
+            .html(context.tHtml('settings.custom_data.file.instructions'));
 
         textSection
             .append('input')
@@ -55,17 +54,17 @@ export function uiSettingsCustomData(context) {
 
         textSection
             .append('h4')
-            .html(t.html('settings.custom_data.or'));
+            .html(context.tHtml('settings.custom_data.or'));
 
         textSection
             .append('pre')
             .attr('class', 'instructions-url')
-            .html(t.html('settings.custom_data.url.instructions'));
+            .html(context.tHtml('settings.custom_data.url.instructions'));
 
         textSection
             .append('textarea')
             .attr('class', 'field-url')
-            .attr('placeholder', t('settings.custom_data.url.placeholder'))
+            .attr('placeholder', context.t('settings.custom_data.url.placeholder'))
             .call(utilNoAuto)
             .property('value', _currSettings.url);
 
@@ -76,7 +75,7 @@ export function uiSettingsCustomData(context) {
         buttonSection
             .insert('button', '.ok-button')
             .attr('class', 'button cancel-button secondary-action')
-            .html(t.html('confirm.cancel'));
+            .html(context.tHtml('confirm.cancel'));
 
 
         buttonSection.select('.cancel-button')

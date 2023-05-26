@@ -1,18 +1,19 @@
-import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { uiIcon } from './icon';
 
 
 export function uiZoomToSelection(context) {
-  const KEY = t('inspector.zoom_to.key');
+  const l10n = context.localizationSystem();
+  const shortcutKey = l10n.t('inspector.zoom_to.key');
   let _lastPointerUpType;
   let _lastTransform;
 
-  return function(selection) {
-    let tooltip = uiTooltip()
-      .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
-      .title(() => isDisabled() ? t('inspector.zoom_to.no_selection') : t('inspector.zoom_to.title'))
-      .keys([KEY]);
+
+  return function render(selection) {
+    let tooltip = uiTooltip(context)
+      .placement(l10n.isRTL() ? 'right' : 'left')
+      .title(() => isDisabled() ? l10n.t('inspector.zoom_to.no_selection') : l10n.t('inspector.zoom_to.title'))
+      .keys([shortcutKey]);
 
     let button = selection
       .append('button')
@@ -21,7 +22,7 @@ export function uiZoomToSelection(context) {
       .call(uiIcon('#rapid-icon-framed-dot', 'light'))
       .call(tooltip);
 
-    context.keybinding().on(KEY, onClick);
+    context.keybinding().on(shortcutKey, onClick);
     context.on('enter.uiZoomToSelection', onModeChange);
 
     onModeChange();
@@ -56,7 +57,7 @@ export function uiZoomToSelection(context) {
             .duration(2000)
             .iconName('#rapid-icon-framed-dot')
             .iconClass('disabled')
-            .label(t('inspector.zoom_to.no_selection'))();
+            .label(l10n.t('inspector.zoom_to.no_selection'))();
         }
       }
 

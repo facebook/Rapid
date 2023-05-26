@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { actionReverse } from '../actions/reverse';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
@@ -61,18 +60,18 @@ export function operationReverse(context, selectedIDs) {
 
 
   operation.tooltip = function() {
-    return t(`operations.reverse.description.${reverseType}`);
+    return context.t(`operations.reverse.description.${reverseType}`);
   };
 
 
   operation.annotation = function() {
-    return t(`operations.reverse.annotation.${reverseType}`, { n: actions.length });
+    return context.t(`operations.reverse.annotation.${reverseType}`, { n: actions.length });
   };
 
 
   operation.id = 'reverse';
-  operation.keys = [ t('operations.reverse.key') ];
-  operation.title = t('operations.reverse.title');
+  operation.keys = [ context.t('operations.reverse.key') ];
+  operation.title = context.t('operations.reverse.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

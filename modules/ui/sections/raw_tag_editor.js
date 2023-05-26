@@ -6,7 +6,6 @@ import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTagReference } from '../tag_reference';
-import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
@@ -16,7 +15,7 @@ export function uiSectionRawTagEditor(id, context) {
         .classes('raw-tag-editor')
         .label(function() {
             var count = Object.keys(_tags).filter(function(d) { return d; }).length;
-            return t('inspector.title_count', { title: t.html('inspector.tags'), count: count });
+            return context.t('inspector.title_count', { title: context.tHtml('inspector.tags'), count: count });
         })
         .expandedByDefault(false)
         .disclosureContent(renderDisclosureContent);
@@ -93,7 +92,7 @@ export function uiSectionRawTagEditor(id, context) {
             .attr('class', function(d) {
                 return 'raw-tag-option raw-tag-option-' + d.id + (_tagView === d.id ? ' selected' : '');
             })
-            .attr('title', function(d) { return t('icons.' + d.id); })
+            .attr('title', function(d) { return context.t('icons.' + d.id); })
             .on('click', function(d3_event, d) {
                 _tagView = d.id;
                 prefs.setItem('raw-tag-editor-view', d.id);
@@ -123,7 +122,7 @@ export function uiSectionRawTagEditor(id, context) {
             .append('textarea')
             .attr('class', 'tag-text' + (_tagView !== 'text' ? ' hide' : ''))
             .call(utilNoAuto)
-            .attr('placeholder', t('inspector.key_value'))
+            .attr('placeholder', context.t('inspector.key_value'))
             .attr('spellcheck', 'false')
             .merge(textarea);
 
@@ -212,7 +211,7 @@ export function uiSectionRawTagEditor(id, context) {
         innerWrap
             .append('button')
             .attr('class', 'form-field-button remove')
-            .attr('title', t('icons.remove'))
+            .attr('title', context.t('icons.remove'))
             .call(uiIcon('#rapid-operation-delete'));
 
 
@@ -264,7 +263,7 @@ export function uiSectionRawTagEditor(id, context) {
                 return Array.isArray(d.value);
             })
             .attr('placeholder', function(d) {
-                return typeof d.value === 'string' ? null : t('inspector.multiple_values');
+                return typeof d.value === 'string' ? null : context.t('inspector.multiple_values');
             })
             .call(utilGetSetValue, function(d) {
                 return typeof d.value === 'string' ? d.value : '';

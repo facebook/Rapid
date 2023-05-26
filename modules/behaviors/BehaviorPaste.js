@@ -4,7 +4,6 @@ import { AbstractBehavior } from './AbstractBehavior';
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
 import { utilDetect } from '../util/detect';
-import { t } from '../core/localizer';
 
 const MACOS = (utilDetect().os === 'mac');
 
@@ -119,7 +118,7 @@ export class BehaviorPaste extends AbstractBehavior {
     const mousePoint = eventManager.coord || context.map().centerPoint();
     const delta = vecSubtract(mousePoint, copyPoint);
 
-    const annotation = t('operations.paste.annotation', { n: pasteIDs.size });
+    const annotation = context.t('operations.paste.annotation', { n: pasteIDs.size });
     context.perform(actionMove(Array.from(pasteIDs), delta, projection), annotation);
 
     // Put the user in move mode so they can place the pasted features

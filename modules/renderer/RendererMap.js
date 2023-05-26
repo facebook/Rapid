@@ -298,6 +298,16 @@ export class RendererMap extends EventEmitter {
 
 
   /**
+   * centerLoc
+   * Returns the current [lon,lat] location at the center of the viewport
+   * @return  Array [lon,lat] location at the center of the viewport
+   */
+  centerLoc() {
+    return this.context.projection.invert(this.centerPoint());
+  }
+
+
+  /**
    * mouse
    * Gets the current [x,y] pixel location of the pointer
    * @return  Array [x,y] pixel location

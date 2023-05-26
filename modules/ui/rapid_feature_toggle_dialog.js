@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { marked } from 'marked';
 
-import { t, localizer } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiIcon } from './icon';
 import { uiModal } from './modal';
@@ -10,6 +9,7 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
+  const l10n = context.localizationSystem();
   const rapidContext = context.rapidContext();
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
@@ -23,7 +23,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleDataset(event, d) {
-    let datasets = rapidContext.datasets();
+    const datasets = rapidContext.datasets();
     let dataset = datasets[d.id];
     if (dataset) {
       dataset.enabled = !dataset.enabled;
@@ -42,7 +42,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function changeColor(datasetID, color) {
-    let datasets = rapidContext.datasets();
+    const datasets = rapidContext.datasets();
     let dataset = datasets[datasetID];
     if (dataset) {
       dataset.color = color;
@@ -67,7 +67,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function keyPressHandler(d3_event) {
-    if (d3_event.shiftKey && d3_event.key === t('map_data.layers.ai-features.key')) {
+    if (d3_event.shiftKey && d3_event.key === l10n.t('map_data.layers.ai-features.key')) {
       toggleRapid();
     }
   }
@@ -123,7 +123,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     toggleAllTextEnter
       .append('div')
       .attr('class', 'rapid-feature-label')
-      .html(t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
+      .html(l10n.t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
 
     toggleAllTextEnter
       .append('span')
@@ -180,14 +180,14 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .attr('class', 'rapid-feature-label-container')
       .append('div')
       .attr('class', 'rapid-feature-label')
-      .text(t('rapid_feature_toggle.view_manage_datasets'));
+      .text(l10n.t('rapid_feature_toggle.view_manage_datasets'));
 
     manageDatasetsEnter
       .append('div')
       .attr('class', 'rapid-checkbox-inputs')
       .append('div')
       .attr('class', 'rapid-checkbox-label')
-      .call(uiIcon(localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward', 'icon-30'));
+      .call(uiIcon(l10n.isRTL() ? '#rapid-icon-backward' : '#rapid-icon-forward', 'icon-30'));
 
 
     /* OK Button */
@@ -201,7 +201,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('button')
       .attr('class', 'button ok-button action')
       .on('click', () => _modalSelection.remove())
-      .text(t('confirm.okay'));
+      .text(l10n.t('confirm.okay'));
   }
 
 
@@ -245,7 +245,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
           labelEnter
             .append('div')
             .attr('class', 'rapid-feature-label-beta beta')
-            .attr('title', t('rapid_poweruser_features.beta'));
+            .attr('title', l10n.t('rapid_poweruser_features.beta'));
         }
 
         if (d.description) {
@@ -285,14 +285,14 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
               selection
                 .append('a')
                 .attr('href', '#')
-                .text(t('rapid_feature_toggle.center_map'))
+                .text(l10n.t('rapid_feature_toggle.center_map'))
                 .on('click', (d3_event) => {
                   d3_event.preventDefault();
                   context.map().extent(d.extent);
                 });
             } else {
               selection
-                .text(t('rapid_feature_toggle.worldwide'));
+                .text(l10n.t('rapid_feature_toggle.worldwide'));
             }
           });
       });

@@ -4,9 +4,10 @@ import { geoSphericalDistance } from '@rapid-sdk/math';
 
 import { actionNoop } from '../../actions/noop';
 import { uiIcon } from '../icon';
-import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
+
+const MAX_ISSUES = 1000;
 
 
 /**
@@ -26,9 +27,9 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   let _issues = [];
 
   function sectionLabel() {
-    const countText = _issues.length > 1000 ? '1000+' : String(_issues.length);
-    const titleText = t(`issues.${severity}s.list_title`);
-    return t('inspector.title_count', { title: titleText, count: countText });
+    const countText = _issues.length > MAX_ISSUES ? `${MAX_ISSUES}+` : String(_issues.length);
+    const titleText = context.t(`issues.${severity}s.list_title`);
+    return context.t('inspector.title_count', { title: titleText, count: countText });
   }
 
   function sectionShouldDisplay() {
@@ -49,8 +50,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       })
       .sort((a, b) => a.dist - b.dist);   // nearest to farthest
 
-    // cut off at 1000
-    toDisplay = toDisplay.slice(0, 1000);
+    toDisplay = toDisplay.slice(0, MAX_ISSUES);
 
     selection
       .call(drawIssuesList, toDisplay);
@@ -116,7 +116,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
           d3_select(nodes[i])
             .append('button')
-            .attr('title', t('issues.fix_one.title'))
+            .attr('title', context.t('issues.fix_one.title'))
             .datum(d)  // set button datum to the issue
             .attr('class', 'autofix action')
             .on('click', (d3_event, d) => {
@@ -160,7 +160,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     linkEnter
       .append('span')
       .attr('class', 'autofix-all-link-text')
-      .html(t.html('issues.fix_all.title'));
+      .html(context.tHtml('issues.fix_all.title'));
 
     linkEnter
       .append('span')
@@ -181,7 +181,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
           if (typeof args[args.length - 1] !== 'function') {
             args.pop();
           }
-          args.push(t('issues.fix_all.annotation'));
+          args.push(context.t('issues.fix_all.annotation'));
           context.replace.apply(context, args);  // this does the fix
         });
         context.resumeChangeDispatch();

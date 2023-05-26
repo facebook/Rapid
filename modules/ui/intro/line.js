@@ -1,7 +1,6 @@
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
@@ -123,7 +122,7 @@ export function uiIntroLine(context, curtain) {
         _rejectStep = reject;
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-line',
-          tipHtml: helpHtml('intro.lines.add_line')
+          tipHtml: helpHtml(context, 'intro.lines.add_line')
         });
 
         tooltip.selectAll('.popover-inner')
@@ -150,8 +149,8 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
 
       const textID = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
-      const startLineString = helpHtml('intro.lines.missing_road') + '{br}' +
-        helpHtml('intro.lines.line_draw_info') + helpHtml(`intro.lines.${textID}`);
+      const startLineString = helpHtml(context, 'intro.lines.missing_road') + '{br}' +
+        helpHtml(context, 'intro.lines.line_draw_info') + helpHtml(context, `intro.lines.${textID}`);
 
       curtain.reveal({
         revealExtent: tulipRoadStartExtent,
@@ -191,7 +190,7 @@ export function uiIntroLine(context, curtain) {
 
         curtain.reveal({
           revealExtent: tulipRoadMidExtent,
-          tipHtml: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
+          tipHtml: helpHtml(context, 'intro.lines.intersect', { name: context.t('intro.graph.name.flower-street') })
         });
 
         history.on('change.intro', () => {
@@ -214,8 +213,8 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: new Extent(tulipRoadIntersection).padByMeters(15),
-        tipHtml: helpHtml('intro.lines.retry_intersect', { name: t('intro.graph.name.flower-street') }),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.lines.retry_intersect', { name: context.t('intro.graph.name.flower-street') }),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(addLineAsync)
       });
     });
@@ -236,8 +235,8 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist() || context.mode().id !== 'draw-line') { resolve(addLineAsync); return; }
 
         const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
-        const continueLineText = helpHtml('intro.lines.continue_line') + '{br}' +
-          helpHtml(`intro.lines.finish_line_${textID}`) + helpHtml('intro.lines.finish_road');
+        const continueLineText = helpHtml(context, 'intro.lines.continue_line') + '{br}' +
+          helpHtml(context, `intro.lines.finish_line_${textID}`) + helpHtml(context, 'intro.lines.finish_road');
 
         curtain.reveal({
           revealSelector: '.main-map',
@@ -279,7 +278,7 @@ export function uiIntroLine(context, curtain) {
         curtain.reveal({
           revealNode: categoryButton.node(),
           revealPadding: 5,
-          tipHtml: helpHtml('intro.lines.choose_category_road', { category: roadCategory.name() })
+          tipHtml: helpHtml(context, 'intro.lines.choose_category_road', { category: roadCategory.name() })
         });
 
         categoryButton.on('click.intro', () => resolve(choosePresetResidentialAsync));
@@ -325,7 +324,7 @@ export function uiIntroLine(context, curtain) {
           revealNode: subgrid.node(),
           revealPadding: 5,
           tipSelector: '.preset-highway-residential .preset-list-button',
-          tipHtml: helpHtml('intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
+          tipHtml: helpHtml(context, 'intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
         });
 
         history.on('change.intro', difference => {
@@ -381,7 +380,7 @@ export function uiIntroLine(context, curtain) {
         curtain.reveal({
           revealNode: presetButton.node(),
           revealPadding: 5,
-          tipHtml: helpHtml('intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
+          tipHtml: helpHtml(context, 'intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
         });
 
         history.on('change.intro', difference => {
@@ -419,7 +418,7 @@ export function uiIntroLine(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
-          tipHtml: helpHtml('intro.lines.name_road', { button: icon('#rapid-icon-close', 'inline') }),
+          tipHtml: helpHtml(context, 'intro.lines.name_road', { button: icon('#rapid-icon-close', 'inline') }),
           tooltipClass: 'intro-lines-name_road'
         });
 
@@ -441,8 +440,8 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: helpHtml('intro.lines.did_name_road'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.lines.did_name_road'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(updateLineAsync)
       });
     });
@@ -471,8 +470,8 @@ export function uiIntroLine(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealExtent: woodStreetExtent,
-          tipHtml: helpHtml('intro.lines.update_line'),
-          buttonText: t.html('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.lines.update_line'),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(addNodeAsync)
         });
       }));
@@ -492,7 +491,7 @@ export function uiIntroLine(context, curtain) {
       const textID = (context.lastPointerType() === 'mouse') ? '' : '_touch';
       curtain.reveal({
         revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
-        tipHtml: helpHtml(`intro.lines.add_node${textID}`)
+        tipHtml: helpHtml(context, `intro.lines.add_node${textID}`)
       });
 
       history.on('change.intro', difference => {
@@ -525,8 +524,8 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
 
       const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
-      const startDragString = helpHtml(`intro.lines.start_drag_endpoint${textID}`) +
-        helpHtml('intro.lines.drag_to_intersection');
+      const startDragString = helpHtml(context, `intro.lines.start_drag_endpoint${textID}`) +
+        helpHtml(context, 'intro.lines.drag_to_intersection');
 
       curtain.reveal({
         revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
@@ -562,8 +561,8 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
 
       const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
-      const finishDragString = helpHtml('intro.lines.spot_looks_good') +
-        helpHtml(`intro.lines.finish_drag_endpoint${textID}`);
+      const finishDragString = helpHtml(context, 'intro.lines.spot_looks_good') +
+        helpHtml(context, `intro.lines.finish_drag_endpoint${textID}`);
 
       curtain.reveal({
         revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
@@ -603,7 +602,7 @@ export function uiIntroLine(context, curtain) {
 
       curtain.reveal({
         revealExtent: new Extent(woodStreetDragMidpoint).padByMeters(20),
-        tipHtml: helpHtml('intro.lines.start_drag_midpoint')
+        tipHtml: helpHtml(context, 'intro.lines.start_drag_midpoint')
       });
 
       history.on('change.intro', difference => {
@@ -632,8 +631,8 @@ export function uiIntroLine(context, curtain) {
 
       curtain.reveal({
         revealExtent: woodStreetExtent,
-        tipHtml: helpHtml('intro.lines.continue_drag_midpoint'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.lines.continue_drag_midpoint'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => {
           history.checkpoint('doneUpdateLine');
           resolve(deleteLinesAsync);
@@ -665,8 +664,8 @@ export function uiIntroLine(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealExtent: deleteLinesExtent,
-          tipHtml: helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
-          buttonText: t.html('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.lines.delete_lines', { street: context.t('intro.graph.name.12th-avenue') }),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(rightClickIntersectionAsync)
         });
       }));
@@ -689,10 +688,10 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
 
       const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
-      const rightClickString = helpHtml('intro.lines.split_street', {
-        street1: t('intro.graph.name.11th-avenue'),
-        street2: t('intro.graph.name.washington-street')
-      }) + helpHtml(`intro.lines.${textID}`);
+      const rightClickString = helpHtml(context, 'intro.lines.split_street', {
+        street1: context.t('intro.graph.name.11th-avenue'),
+        street2: context.t('intro.graph.name.washington-street')
+      }) + helpHtml(context, `intro.lines.${textID}`);
 
       curtain.reveal({
         revealExtent: new Extent(eleventhAvenueEnd).padByMeters(10),
@@ -734,7 +733,7 @@ export function uiIntroLine(context, curtain) {
               duration: duration,
               revealNode: menuNode,
               revealPadding: 50,
-              tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
+              tipHtml: helpHtml(context, 'intro.lines.split_intersection', { street: context.t('intro.graph.name.washington-street') })
             });
           } else {
             reject();   // menu has gone away - user scrolled it offscreen?
@@ -759,7 +758,7 @@ export function uiIntroLine(context, curtain) {
       }))
       .then(delayAsync)   // wait for any transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (history.undoAnnotation() === t('operations.split.annotation.line', { n: 1 })) {
+        if (history.undoAnnotation() === context.t('operations.split.annotation.line', { n: 1 })) {
           return didSplitAsync;
         } else {
           return retrySplitAsync;
@@ -782,8 +781,8 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: deleteLinesExtent,
-        tipHtml: helpHtml('intro.lines.retry_split'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.lines.retry_split'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(rightClickIntersectionAsync)
       });
     });
@@ -803,11 +802,11 @@ export function uiIntroLine(context, curtain) {
 
       const ids = context.selectedIDs();
       const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
-      const street = t('intro.graph.name.washington-street');
+      const street = context.t('intro.graph.name.washington-street');
 
       curtain.reveal({
         revealExtent: deleteLinesExtent,
-        tipHtml: helpHtml(string, { street1: street, street2: street })
+        tipHtml: helpHtml(context, string, { street1: street, street2: street })
       });
 
       context.on('enter.intro', () => resolve(multiSelectAsync));
@@ -841,17 +840,17 @@ export function uiIntroLine(context, curtain) {
 
     let selected, other;
     if (hasWashington) {
-      selected = t('intro.graph.name.washington-street');
-      other = t('intro.graph.name.12th-avenue');
+      selected = context.t('intro.graph.name.washington-street');
+      other = context.t('intro.graph.name.12th-avenue');
     } else {
-      selected = t('intro.graph.name.12th-avenue');
-      other = t('intro.graph.name.washington-street');
+      selected = context.t('intro.graph.name.12th-avenue');
+      other = context.t('intro.graph.name.washington-street');
     }
 
     const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'touch';
     const string =
-      helpHtml('intro.lines.multi_select', { selected: selected, other1: other }) + ' ' +
-      helpHtml(`intro.lines.add_to_selection_${textID}`, { selected: selected, other2: other });
+      helpHtml(context, 'intro.lines.multi_select', { selected: selected, other1: other }) + ' ' +
+      helpHtml(context, `intro.lines.add_to_selection_${textID}`, { selected: selected, other2: other });
 
     curtain.reveal({
       revealExtent: deleteLinesExtent,
@@ -888,7 +887,7 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
 
       const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
-      const rightClickString = helpHtml('intro.lines.multi_select_success') + helpHtml(`intro.lines.multi_${textID}`);
+      const rightClickString = helpHtml(context, 'intro.lines.multi_select_success') + helpHtml(context, `intro.lines.multi_${textID}`);
 
       curtain.reveal({
         revealExtent: deleteLinesExtent,
@@ -939,7 +938,7 @@ export function uiIntroLine(context, curtain) {
               duration: duration,
               revealNode: menuNode,
               revealPadding: 50,
-              tipHtml: helpHtml('intro.lines.multi_delete')
+              tipHtml: helpHtml(context, 'intro.lines.multi_delete')
             });
           } else {
             reject();   // menu has gone away - user scrolled it offscreen?
@@ -988,8 +987,8 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: deleteLinesExtent,
-        tipHtml: helpHtml('intro.lines.retry_delete'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.lines.retry_delete'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(multiSelectAsync)
       });
     });
@@ -1003,8 +1002,8 @@ export function uiIntroLine(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-building',
-      tipHtml: helpHtml('intro.lines.play', { next: t('intro.buildings.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.lines.play', { next: context.t('intro.buildings.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

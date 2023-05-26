@@ -1,6 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { localizer } from '../core/localizer';
 import { uiIcon } from './icon';
 import { utilFunctor } from '../util';
 import { utilRebind } from '../util/rebind';
@@ -48,7 +47,7 @@ export function uiDisclosure(context, key, expandedDefault) {
     hideToggle.selectAll('.hide-toggle-text')
       .html(_label());
 
-    const isRTL = localizer.textDirection() === 'rtl';
+    const isRTL = context.localizationSystem().isRTL();
     const icon = _expanded ? 'down' : isRTL ? 'backward' : 'forward';
     hideToggle.selectAll('.hide-toggle-icon > use')
       .attr('xlink:href', `#rapid-icon-${icon}`);

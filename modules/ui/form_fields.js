@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
 import { uiCombobox } from './combobox';
 import { utilGetSetValue, utilNoAuto } from '../util';
 
@@ -83,7 +82,7 @@ export function uiFormFields(context) {
 
     moreEnter
       .append('span')
-      .html(t.html('inspector.add_fields'));
+      .text(context.t('inspector.add_fields'));
 
     more = moreEnter
       .merge(more);

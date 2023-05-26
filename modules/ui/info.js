@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 
@@ -138,7 +137,7 @@ export function uiInfo(context) {
 
     // bind ⌘I to show/hide all panels
     context.keybinding()
-      .on(uiCmd('⌘' + t('info_panels.key')), e => {
+      .on(uiCmd('⌘' + context.t('info_panels.key')), e => {
         e.stopImmediatePropagation();
         e.preventDefault();
         info.toggle();
@@ -146,7 +145,7 @@ export function uiInfo(context) {
 
     // bind keys to show/hide individual panels
     panelIDs.forEach(k => {
-      const key = t(`info_panels.${k}.key`, { default: null });
+      const key = context.t(`info_panels.${k}.key`, { default: null });
       if (!key) return;
 
       context.keybinding()

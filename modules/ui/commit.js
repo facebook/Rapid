@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayGroupBy, utilUniqueString } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { t, localizer } from '../core/localizer';
 import { osmChangeset } from '../osm';
 import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
@@ -64,6 +63,7 @@ export function uiCommit(context) {
     //
     function initChangeset() {
         const prefs = context.storageSystem();
+        const localeCode = context.localizationSystem().localeCode();
 
         // expire stored comment, hashtags, source after cutoff datetime - #3947 #4899
         var commentDate = +prefs.getItem('commentDate') || 0;
@@ -94,7 +94,7 @@ export function uiCommit(context) {
             comment: prefs.getItem('comment') || '',
             created_by: context.cleanTagValue('Rapid ' + context.version),
             host: context.cleanTagValue(detected.host),
-            locale: context.cleanTagValue(localizer.localeCode())
+            locale: context.cleanTagValue(localeCode)
         };
 
         // call findHashtags initially - this will remove stored
@@ -238,7 +238,7 @@ export function uiCommit(context) {
         headerTitle
             .append('div')
             .append('h3')
-            .html(t.html('commit.title'));
+            .html(context.tHtml('commit.title'));
 
         headerTitle
             .append('button')
@@ -296,7 +296,7 @@ export function uiCommit(context) {
         prose = prose.enter()
             .append('p')
             .attr('class', 'commit-info')
-            .html(t.html('commit.upload_explanation'))
+            .html(context.tHtml('commit.upload_explanation'))
             .merge(prose);
 
         // always check if this has changed, but only update prose.html()
@@ -324,7 +324,7 @@ export function uiCommit(context) {
                 .attr('target', '_blank');
 
             prose
-                .html(t.html('commit.upload_explanation_with_user', { user: userLink.html() }));
+                .html(context.tHtml('commit.upload_explanation_with_user', { user: userLink.html() }));
         });
 
 
@@ -345,7 +345,7 @@ export function uiCommit(context) {
 
         if (!labelEnter.empty()) {
             labelEnter
-                .call(uiTooltip().title(t.html('commit.request_review_info')).placement('top'));
+                .call(uiTooltip(context).title(context.tHtml('commit.request_review_info')).placement('top'));
         }
 
         labelEnter
@@ -355,7 +355,7 @@ export function uiCommit(context) {
 
         labelEnter
             .append('span')
-            .html(t.html('commit.request_review'));
+            .html(context.tHtml('commit.request_review'));
 
         // Update
         requestReview = requestReview
@@ -380,7 +380,7 @@ export function uiCommit(context) {
             .attr('class', 'secondary-action button cancel-button')
             .append('span')
             .attr('class', 'label')
-            .html(t.html('commit.cancel'));
+            .html(context.tHtml('commit.cancel'));
 
         var uploadButton = buttonEnter
             .append('button')
@@ -388,7 +388,7 @@ export function uiCommit(context) {
 
         uploadButton.append('span')
             .attr('class', 'label')
-            .html(t.html('commit.save'));
+            .html(context.tHtml('commit.save'));
 
         var uploadBlockerTooltipText = getUploadBlockerMessage();
 
@@ -417,11 +417,11 @@ export function uiCommit(context) {
             });
 
         // remove any existing tooltip
-        uiTooltip().destroyAny(buttonSection.selectAll('.save-button'));
+        uiTooltip(context).destroyAny(buttonSection.selectAll('.save-button'));
 
         if (uploadBlockerTooltipText) {
             buttonSection.selectAll('.save-button')
-                .call(uiTooltip().title(uploadBlockerTooltipText).placement('top'));
+                .call(uiTooltip(context).title(uploadBlockerTooltipText).placement('top'));
         }
 
         // Raw Tag Editor
@@ -469,12 +469,12 @@ export function uiCommit(context) {
             .getIssuesBySeverity({ what: 'edited', where: 'all' }).error;
 
         if (errors.length) {
-            return t('commit.outstanding_errors_message', { count: errors.length });
+            return context.t('commit.outstanding_errors_message', { count: errors.length });
 
         } else {
             var hasChangesetComment = context.changeset && context.changeset.tags.comment && context.changeset.tags.comment.trim().length;
             if (!hasChangesetComment) {
-                return t('commit.comment_needed_message');
+                return context.t('commit.comment_needed_message');
             }
         }
         return null;

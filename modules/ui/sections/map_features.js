@@ -1,4 +1,3 @@
-import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
@@ -6,7 +5,7 @@ import { uiSection } from '../section';
 export function uiSectionMapFeatures(context) {
   const filterSystem = context.filterSystem();
   const section = uiSection('map-features', context)
-    .label(t.html('map_data.map_features'))
+    .label(context.tHtml('map_data.map_features'))
     .disclosureContent(renderDisclosureContent)
     .expandedByDefault(false);
 
@@ -31,7 +30,7 @@ export function uiSectionMapFeatures(context) {
       .append('a')
       .attr('class', 'feature-list-link')
       .attr('href', '#')
-      .html(t.html('issues.disable_all'))
+      .html(context.tHtml('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         filterSystem.disableAll();
@@ -41,7 +40,7 @@ export function uiSectionMapFeatures(context) {
       .append('a')
       .attr('class', 'feature-list-link')
       .attr('href', '#')
-      .html(t.html('issues.enable_all'))
+      .html(context.tHtml('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         filterSystem.enableAll();
@@ -67,8 +66,8 @@ export function uiSectionMapFeatures(context) {
     // Enter
     let enter = items.enter()
       .append('li')
-      .call(uiTooltip()
-        .title(d => t.html(`${name}.${d}.tooltip`))
+      .call(uiTooltip(context)
+        .title(d => context.tHtml(`${name}.${d}.tooltip`))
         .placement('top')
       );
 
@@ -83,7 +82,7 @@ export function uiSectionMapFeatures(context) {
 
     label
       .append('span')
-      .html(d => t.html(`${name}.${d}.description`));
+      .html(d => context.tHtml(`${name}.${d}.description`));
 
     // Update
     items = items

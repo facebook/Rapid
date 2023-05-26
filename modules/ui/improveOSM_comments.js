@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t, localizer } from '../core/localizer';
 import { uiIcon } from './icon';
 
 
@@ -65,7 +64,7 @@ export function uiImproveOsmComments(context) {
         metadataEnter
           .append('div')
             .attr('class', 'comment-date')
-            .html(d => t.html('note.status.commented', { when: localeDateString(d.timestamp) }));
+            .html(d => context.tHtml('note.status.commented', { when: localeDateString(d.timestamp) }));
 
         mainEnter
           .append('div')
@@ -82,7 +81,9 @@ export function uiImproveOsmComments(context) {
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
     const d = new Date(s * 1000); // timestamp is served in seconds, date takes ms
     if (isNaN(d.getTime())) return null;
-    return d.toLocaleDateString(localizer.localeCode(), options);
+
+    const localeCode = context.localizationSystem().localeCode();
+    return d.toLocaleDateString(localeCode, options);
   }
 
 

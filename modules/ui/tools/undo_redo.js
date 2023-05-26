@@ -1,19 +1,20 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
 
 
 export function uiToolUndoRedo(context) {
+  const l10n = context.localizationSystem();
+  const isRTL = l10n.isRTL();
+
   let tool = {
     id: 'undo_redo',
-    label: t.html('toolbar.undo_redo')
+    label: l10n.tHtml('toolbar.undo_redo')
   };
 
-  const isRTL = localizer.textDirection() === 'rtl';
   const commands = [{
     id: 'undo',
     key: uiCmd('⌘Z'),
@@ -32,7 +33,7 @@ export function uiToolUndoRedo(context) {
   let debouncedUpdate;
 
   tool.install = function(selection) {
-    let tooltipBehavior = uiTooltip()
+    let tooltipBehavior = uiTooltip(context)
       .placement('bottom')
       .title(d => {
         // Handle string- or object-style annotations. Object-style
@@ -43,7 +44,7 @@ export function uiToolUndoRedo(context) {
         if (str && str.description) {
           str = str.description;
         }
-        return str ? t(`${d.id}.tooltip`, { action: str }) : t(`${d.id}.nothing`);
+        return str ? l10n.t(`${d.id}.tooltip`, { action: str }) : l10n.t(`${d.id}.nothing`);
       })
       .keys(d => [d.key])
       .scrollContainer(context.container().select('.top-toolbar'));

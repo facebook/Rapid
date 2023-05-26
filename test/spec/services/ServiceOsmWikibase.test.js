@@ -276,7 +276,7 @@ describe('ServiceOsmWikibase', () => {
       wikibase.getEntity({ key: 'amenity', value: 'parking', langCodes: ['fr'] }, callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.calls()[0][0])).to.eql(
+        expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           {
             action: 'wbgetentities',
             sites: 'wiki',

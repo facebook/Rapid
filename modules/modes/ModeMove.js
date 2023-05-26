@@ -4,7 +4,6 @@ import { AbstractMode } from './AbstractMode';
 import { actionMove } from '../actions/move';
 import { actionNoop } from '../actions/noop';
 import { modeSelect } from './select';
-import { t } from '../core/localizer';
 
 
 /**
@@ -159,8 +158,8 @@ export class ModeMove extends AbstractMode {
     const context = this.context;
     if (this._prevGraph) {
       const annotation = (this._entityIDs.length === 1) ?
-        t('operations.move.annotation.' + context.graph().geometry(this._entityIDs[0])) :
-        t('operations.move.annotation.feature', { n: this._entityIDs.length });
+        context.t('operations.move.annotation.' + context.graph().geometry(this._entityIDs[0])) :
+        context.t('operations.move.annotation.feature', { n: this._entityIDs.length });
 
       context.replace(actionNoop(), annotation);   // annotate the move
     }

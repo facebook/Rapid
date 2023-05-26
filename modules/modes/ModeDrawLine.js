@@ -9,7 +9,6 @@ import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
-import { t } from '../core/localizer';
 
 const DEBUG = false;
 
@@ -231,7 +230,7 @@ export class ModeDrawLine extends AbstractMode {
     if (length < 2) return undefined;
 
     const which = length > 2 ? 'continue' : 'start';
-    return t(`operations.${which}.annotation.line`);
+    return this.context.t(`operations.${which}.annotation.line`);
   }
 
 

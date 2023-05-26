@@ -1,7 +1,6 @@
 import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
@@ -10,7 +9,7 @@ import { uiTooltip } from '../tooltip';
 export function uiToolSave(context) {
   let tool = {
     id: 'save',
-    label: t.html('save.title')
+    label: context.tHtml('save.title')
   };
 
   let button = d3_select(null);
@@ -55,7 +54,7 @@ export function uiToolSave(context) {
 
     if (tooltip) {
       tooltip
-        .title(t.html(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
+        .title(context.tHtml(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
         .keys([key]);
     }
 
@@ -69,9 +68,9 @@ export function uiToolSave(context) {
 
 
   tool.install = function(selection) {
-    tooltip = uiTooltip()
+    tooltip = uiTooltip(context)
       .placement('bottom')
-      .title(t.html('save.no_changes'))
+      .title(context.tHtml('save.no_changes'))
       .keys([key])
       .scrollContainer(context.container().select('.top-toolbar'));
 
@@ -93,7 +92,7 @@ export function uiToolSave(context) {
         //         .duration(2000)
         //         .iconName('#rapid-icon-save')
         //         .iconClass('disabled')
-        //         .label(t.html('save.no_changes'))();
+        //         .label(context.tHtml('save.no_changes'))();
         // }
         // lastPointerUpType = null;
       })

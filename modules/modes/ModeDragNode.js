@@ -9,7 +9,6 @@ import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { modeSelect } from './select';
 import { osmNode } from '../osm';
-import { t } from '../core/localizer';
 
 
 
@@ -72,7 +71,7 @@ export class ModeDragNode extends AbstractMode {
         context.ui().flash
           .duration(4000)
           .iconName('#rapid-icon-no')
-          .label(t('modes.drag_node.connected_to_hidden'))();
+          .label(context.t('modes.drag_node.connected_to_hidden'))();
         return false;
       }
     }
@@ -268,7 +267,7 @@ export class ModeDragNode extends AbstractMode {
       }
 
     } else if (this._wasMidpoint) {
-      context.replace(actionNoop(), t('operations.add.annotation.vertex'));
+      context.replace(actionNoop(), context.t('operations.add.annotation.vertex'));
 
     } else {
       context.replace(actionNoop(), this._moveAnnotation());
@@ -291,8 +290,9 @@ export class ModeDragNode extends AbstractMode {
   _moveAnnotation() {
     if (!this.dragNode) return undefined;
 
-    const geometry = this.dragNode.geometry(this.context.graph());
-    return t(`operations.move.annotation.${geometry}`);
+    const context = this.context;
+    const geometry = this.dragNode.geometry(context.graph());
+    return context.t(`operations.move.annotation.${geometry}`);
   }
 
 
@@ -303,7 +303,8 @@ export class ModeDragNode extends AbstractMode {
   _connectAnnotation(target) {
     if (!this.dragNode || !target) return undefined;
 
-    const graph = this.context.graph();
+    const context = this.context;
+    const graph = context.graph();
     const nodeGeometry = this.dragNode.geometry(graph);
     const targetGeometry = target.geometry(graph);
 
@@ -315,12 +316,12 @@ export class ModeDragNode extends AbstractMode {
       if (sharedParentWays.length !== 0) {
         // if the nodes are next to each other, they are merged
         if (sharedParentWays[0].areAdjacent(this.dragNode.id, target.id)) {
-          return t('operations.connect.annotation.from_vertex.to_adjacent_vertex');
+          return context.t('operations.connect.annotation.from_vertex.to_adjacent_vertex');
         }
-        return t('operations.connect.annotation.from_vertex.to_sibling_vertex');
+        return context.t('operations.connect.annotation.from_vertex.to_sibling_vertex');
       }
     }
-    return t(`operations.connect.annotation.from_${nodeGeometry}.to_${targetGeometry}`);
+    return context.t(`operations.connect.annotation.from_${nodeGeometry}.to_${targetGeometry}`);
   }
 
 

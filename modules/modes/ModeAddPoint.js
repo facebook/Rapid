@@ -6,7 +6,6 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { geoChooseEdge } from '../geo';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
-import { t } from '../core/localizer';
 
 const DEBUG = false;
 
@@ -130,7 +129,7 @@ export class ModeAddPoint extends AbstractMode {
   _clickNothing(loc) {
     const context = this.context;
     const node = osmNode({ loc: loc, tags: this.defaultTags });
-    const annotation = t('operations.add.annotation.point');
+    const annotation = context.t('operations.add.annotation.point');
     context.perform(actionAddEntity(node), annotation);
     context.enter(modeSelect(context, [node.id]).newFeature(true));
   }
@@ -143,7 +142,7 @@ export class ModeAddPoint extends AbstractMode {
   _clickWay(loc, edge) {
     const context = this.context;
     const node = osmNode({ tags: this.defaultTags });
-    const annotation = t('operations.add.annotation.vertex');
+    const annotation = context.t('operations.add.annotation.vertex');
     context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
     context.enter(modeSelect(context, [node.id]).newFeature(true));
   }
@@ -166,7 +165,7 @@ export class ModeAddPoint extends AbstractMode {
       tags[k] = this.defaultTags[k];
     }
 
-    const annotation = t('operations.add.annotation.point');
+    const annotation = context.t('operations.add.annotation.point');
     context.perform(actionChangeTags(node.id, tags), annotation);
     context.enter(modeSelect(context, [node.id]).newFeature(true));
   }

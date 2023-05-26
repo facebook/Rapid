@@ -7,7 +7,6 @@ import * as countryCoder from '@rapideditor/country-coder';
 import { geoChooseEdge } from '../../geo';
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
-import { t } from '../../core/localizer';
 
 
 export function uiFieldAddress(context, uifield) {
@@ -219,7 +218,7 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     let countryCode;
     if (context.inIntro()) {  // localize the address format for the walkthrough
-      countryCode = t('intro.graph.countrycode');
+      countryCode = context.t('intro.graph.countrycode');
     } else {
       countryCode = countryCoder.iso1A2Code(center);
     }
@@ -254,12 +253,12 @@ export function uiFieldAddress(context, uifield) {
     return inputSelection.attr('placeholder', function(subfield) {
       const key = uifield.key + ':' + subfield.id;
       if (_tags && Array.isArray(_tags[key])) {
-        return t('inspector.multiple_values');
+        return context.t('inspector.multiple_values');
       }
       if (_countryCode) {
         const localkey = subfield.id + '!' + _countryCode;
-        const tkey = uifield.hasTextForStringId('placeholders.' + localkey) ? localkey : subfield.id;
-        return uifield.presetField.t('placeholders.' + tkey);
+        const tkey = uifield.hasTextForStringID('placeholders.' + localkey) ? localkey : subfield.id;
+        return uifield.presetField.t(`placeholders.${tkey}`);
       }
     });
   }

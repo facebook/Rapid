@@ -24,11 +24,11 @@ export class DataLoaderSystem {
     fileMap.set('oci_defaults', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.5/dist/defaults.min.json');
     fileMap.set('oci_features', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.5/dist/featureCollection.min.json');
     fileMap.set('oci_resources', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.5/dist/resources.min.json');
+    fileMap.set('phone_formats', 'data/phone_formats.min.json');
     fileMap.set('preset_categories', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/preset_categories.min.json');
     fileMap.set('preset_defaults', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/preset_defaults.min.json');
     fileMap.set('preset_fields', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/fields.min.json');
     fileMap.set('preset_presets', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/presets.min.json');
-    fileMap.set('phone_formats', 'data/phone_formats.min.json');
     fileMap.set('qa_data', 'data/qa_data.min.json');
     fileMap.set('shortcuts', 'data/shortcuts.min.json');
     fileMap.set('territory_languages', 'data/territory_languages.min.json');
@@ -37,6 +37,32 @@ export class DataLoaderSystem {
     this.fileMap = fileMap;
     this._cachedData = {};
     this._inflight = {};
+
+    // Mock data for testing, prevents the data from being fetched.
+    // Not sure how I feel about this :-/
+    if (window.mocha) {
+      const c = this._cachedData;
+      c.address_formats = [{ format: [['housenumber', 'street'], ['city', 'postcode']] }];
+      c.deprecated = [{ old: { highway: 'no' } }, { old: { highway: 'ford' }, replace: { ford: '*' } } ];
+      c.discarded = {};
+      c.imagery = [];
+      c.keepRight = {};
+      c.languages = { de: { nativeName: 'Deutsch' }, en: { nativeName: 'English' } };
+      c.locales = { en: { rtl: false, pct: 1 } };
+      c.locale_general_en = { en: {} };
+      c.locale_tagging_en = { en: {} };
+      c.locales_index_general = { en: { rtl: false, pct: 1 } };
+      c.locales_index_tagging = { en: { rtl: false, pct: 1 } };
+      c.phone_formats = {};
+      c.preset_categories = {};
+      c.preset_defaults = {};
+      c.preset_fields = {};
+      c.preset_presets = {};
+      c.qa_data = { improveOSM: {}, osmose: {} };
+      c.shortcuts = [];
+      c.territory_languages = {};
+      c.wmf_sitematrix = [ ['English','English','en'], ['German', 'Deutsch', 'de'] ];
+    }
   }
 
 

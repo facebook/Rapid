@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { JXON } from '../util/jxon';
 import { osmChangeset } from '../osm';
 import { uiIcon } from './icon';
@@ -56,7 +55,7 @@ export function uiConflicts(context) {
 
         headerEnter
             .append('h3')
-            .html(t.html('save.conflict.header'));
+            .html(context.tHtml('save.conflict.header'));
 
         var bodyEnter = selection.selectAll('.body')
             .data([0])
@@ -67,7 +66,7 @@ export function uiConflicts(context) {
         var conflictsHelpEnter = bodyEnter
             .append('div')
             .attr('class', 'conflicts-help')
-            .html(t.html('save.conflict.help'));
+            .html(context.tHtml('save.conflict.help'));
 
 
         // Download changes link
@@ -100,7 +99,7 @@ export function uiConflicts(context) {
         linkEnter
             .call(uiIcon('#rapid-icon-load', 'inline'))
             .append('span')
-            .html(t.html('save.conflict.download_changes'));
+            .html(context.tHtml('save.conflict.download_changes'));
 
 
         bodyEnter
@@ -113,7 +112,7 @@ export function uiConflicts(context) {
             .attr('class', 'conflicts-done')
             .attr('opacity', 0)
             .style('display', 'none')
-            .html(t.html('save.conflict.done'));
+            .html(context.tHtml('save.conflict.done'));
 
         var buttonsEnter = bodyEnter
             .append('div')
@@ -123,13 +122,13 @@ export function uiConflicts(context) {
             .append('button')
             .attr('disabled', _conflictList.length > 1)
             .attr('class', 'action conflicts-button col6')
-            .html(t.html('save.title'))
+            .html(context.tHtml('save.title'))
             .on('click.try_again', tryAgain);
 
         buttonsEnter
             .append('button')
             .attr('class', 'secondary-action conflicts-button col6')
-            .html(t.html('confirm.cancel'))
+            .html(context.tHtml('confirm.cancel'))
             .on('click.cancel', cancel);
     }
 
@@ -167,7 +166,7 @@ export function uiConflicts(context) {
         conflictEnter
             .append('h4')
             .attr('class', 'conflict-count')
-            .html(t.html('save.conflict.count', { num: index + 1, total: _conflictList.length }));
+            .html(context.tHtml('save.conflict.count', { num: index + 1, total: _conflictList.length }));
 
         conflictEnter
             .append('a')
@@ -205,7 +204,7 @@ export function uiConflicts(context) {
             .data(['previous', 'next'])
             .enter()
             .append('button')
-            .html(function(d) { return t.html('save.conflict.' + d); })
+            .html(function(d) { return context.tHtml('save.conflict.' + d); })
             .attr('class', 'conflict-nav-button action col6')
             .attr('disabled', function(d, i) {
                 return (i === 0 && index === 0) ||

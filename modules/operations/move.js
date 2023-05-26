@@ -1,6 +1,5 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { utilTotalExtent } from '../util/util';
 
@@ -71,21 +70,21 @@ export function operationMove(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.move.${disabledReason}.${multi}`) :
-      t(`operations.move.description.${multi}`);
+      context.t(`operations.move.${disabledReason}.${multi}`) :
+      context.t(`operations.move.description.${multi}`);
   };
 
 
   operation.annotation = function() {
     return selectedIDs.length === 1 ?
-      t('operations.move.annotation.' + context.graph().geometry(selectedIDs[0])) :
-      t('operations.move.annotation.feature', { n: selectedIDs.length });
+      context.t('operations.move.annotation.' + context.graph().geometry(selectedIDs[0])) :
+      context.t('operations.move.annotation.feature', { n: selectedIDs.length });
   };
 
 
   operation.id = 'move';
-  operation.keys = [ t('operations.move.key') ];
-  operation.title = t('operations.move.title');
+  operation.keys = [ context.t('operations.move.key') ];
+  operation.title = context.t('operations.move.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   operation.mouseOnly = true;

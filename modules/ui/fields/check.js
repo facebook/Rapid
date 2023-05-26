@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { utilRebind } from '../../util/rebind';
-import { t } from '../../core/localizer';
 import { actionReverse } from '../../actions/reverse';
 import { osmOneWayTags } from '../../osm';
 import { uiIcon } from '../icon';
@@ -36,10 +35,10 @@ export function uiFieldCheck(context, uifield) {
     }
   } else {
     values = [undefined, 'yes'];
-    texts = [t.html('inspector.unknown'), t.html('inspector.check.yes')];
+    texts = [context.tHtml('inspector.unknown'), context.tHtml('inspector.check.yes')];
     if (uifield.type !== 'defaultCheck') {
       values.push('no');
-      texts.push(t.html('inspector.check.no'));
+      texts.push(context.tHtml('inspector.check.no'));
     }
   }
 
@@ -55,7 +54,7 @@ export function uiFieldCheck(context, uifield) {
       for (let key in entity.tags) {
         if (key in osmOneWayTags && (entity.tags[key] in osmOneWayTags[key])) {
           _impliedYes = true;
-          texts[0] = t.html('_tagging.presets.fields.oneway_yes.options.undefined');
+          texts[0] = context.tHtml('_tagging.presets.fields.oneway_yes.options.undefined');
           break;
         }
       }
@@ -79,7 +78,7 @@ export function uiFieldCheck(context, uifield) {
     const icon = pseudoDirection ? '#rapid-icon-forward' : '#rapid-icon-backward';
 
     selection.selectAll('.reverser-span')
-      .html(t.html('inspector.check.reverser'))
+      .html(context.tHtml('inspector.check.reverser'))
       .call(uiIcon(icon, 'inline'));
 
     return selection;
@@ -135,9 +134,9 @@ export function uiFieldCheck(context, uifield) {
           tagChange[key] = values[(values.indexOf(_value) + 1) % values.length];
         }
 
-        // Don't cycle through `alternating` or `reversible` states - #4970
+        // Don't cycle through `alternating` or `reversible` states - iD#4970
         // (They are supported as translated strings, but should not toggle with clicks)
-        if (tagChange[key] === 'reversible' || t[key] === 'alternating') {
+        if (tagChange[key] === 'reversible' || tagChange[key] === 'alternating') {
           tagChange[key] = values[0];
         }
 
@@ -162,7 +161,7 @@ export function uiFieldCheck(context, uifield) {
               }
               return graph;
             },
-            t('operations.reverse.annotation.line', { n: 1 })
+            context.t('operations.reverse.annotation.line', { n: 1 })
           );
 
           // must manually revalidate since no 'change' event was dispatched
@@ -209,7 +208,7 @@ export function uiFieldCheck(context, uifield) {
       .property('checked', isChecked(_value));
 
     text
-      .html(isMixed ? t.html('inspector.multiple_values') : textFor(_value))
+      .html(isMixed ? context.tHtml('inspector.multiple_values') : textFor(_value))
       .classed('mixed', isMixed);
 
     label

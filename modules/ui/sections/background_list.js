@@ -3,7 +3,6 @@ import { descending as d3_descending, ascending as d3_ascending } from 'd3-array
 import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 
-import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { ImagerySource } from '../../core/ImagerySource';
 import { uiIcon } from '../icon';
@@ -15,10 +14,12 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundList(context) {
+  const l10n = context.localizationSystem();
   const imagerySystem = context.imagerySystem();
-  const prefs = context.storageSystem();
+  const storageSystem = context.storageSystem();
+
   const section = uiSection('background-list', context)
-    .label(t('background.backgrounds'))
+    .label(l10n.t('background.backgrounds'))
     .disclosureContent(renderDisclosureContent);
 
   let _backgroundList = d3_select(null);
@@ -27,12 +28,12 @@ export function uiSectionBackgroundList(context) {
   const settingsCustomBackground = uiSettingsCustomBackground(context)
     .on('change', customChanged);
 
-  const favoriteBackgroundsJSON = prefs.getItem('background-favorites');
+  const favoriteBackgroundsJSON = storageSystem.getItem('background-favorites');
   const _favoriteBackgrounds = favoriteBackgroundsJSON ? JSON.parse(favoriteBackgroundsJSON) : {};
 
 
   function previousBackgroundID() {
-    return prefs.getItem('background-last-used-toggle');
+    return storageSystem.getItem('background-last-used-toggle');
   }
 
 
@@ -59,9 +60,9 @@ export function uiSectionBackgroundList(context) {
       .append('li')
       .attr('class', 'minimap-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.minimap.tooltip'))
-        .keys([t('background.minimap.key')])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.minimap.tooltip'))
+        .keys([l10n.t('background.minimap.key')])
         .placement('top')
       );
 
@@ -75,20 +76,20 @@ export function uiSectionBackgroundList(context) {
 
     minimapLabelEnter
       .append('span')
-      .text(t('background.minimap.description'));
+      .text(l10n.t('background.minimap.description'));
 
 
-      const threeDmapLabelEnter = bgExtrasListEnter
+    const threeDmapLabelEnter = bgExtrasListEnter
       .append('li')
       .attr('class', 'three-d-map-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.3dmap.tooltip'))
-        .keys([uiCmd('⌘' + t('background.3dmap.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.3dmap.tooltip'))
+        .keys([uiCmd('⌘' + l10n.t('background.3dmap.key'))])
         .placement('top')
       );
 
-      threeDmapLabelEnter
+    threeDmapLabelEnter
       .append('input')
       .attr('type', 'checkbox')
       .on('change', (d3_event) => {
@@ -96,19 +97,18 @@ export function uiSectionBackgroundList(context) {
         ui3DMap.toggle();
       });
 
-      threeDmapLabelEnter
+    threeDmapLabelEnter
       .append('span')
-      .text(t('background.3dmap.description'));
-
+      .text(l10n.t('background.3dmap.description'));
 
 
     const panelLabelEnter = bgExtrasListEnter
       .append('li')
       .attr('class', 'background-panel-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.panel.tooltip'))
-        .keys([uiCmd('⌘⇧' + t('info_panels.background.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.panel.tooltip'))
+        .keys([uiCmd('⌘⇧' + l10n.t('info_panels.background.key'))])
         .placement('top')
       );
 
@@ -122,15 +122,15 @@ export function uiSectionBackgroundList(context) {
 
     panelLabelEnter
       .append('span')
-      .text(t('background.panel.description'));
+      .text(l10n.t('background.panel.description'));
 
     const locPanelLabelEnter = bgExtrasListEnter
       .append('li')
       .attr('class', 'location-panel-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.location_panel.tooltip'))
-        .keys([uiCmd('⌘⇧' + t('info_panels.location.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.location_panel.tooltip'))
+        .keys([uiCmd('⌘⇧' + l10n.t('info_panels.location.key'))])
         .placement('top')
       );
 
@@ -144,7 +144,7 @@ export function uiSectionBackgroundList(context) {
 
     locPanelLabelEnter
       .append('span')
-      .text(t('background.location_panel.description'));
+      .text(l10n.t('background.location_panel.description'));
 
 
     // "Info / Report a Problem" link
@@ -158,7 +158,7 @@ export function uiSectionBackgroundList(context) {
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/FAQ.md#how-can-i-report-an-issue-with-background-imagery')
       .append('span')
-      .text(t('background.imagery_problem_faq'));
+      .text(l10n.t('background.imagery_problem_faq'));
 
     _backgroundList
       .call(drawListItems, 'radio', chooseBackground, (d) => { return !d.isHidden() && !d.overlay; });
@@ -172,16 +172,16 @@ export function uiSectionBackgroundList(context) {
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
       const isOverflowing = (span.property('clientWidth') !== span.property('scrollWidth'));
 
-      item.call(uiTooltip().destroyAny);
+      item.call(uiTooltip(context).destroyAny);
 
       if (d.id === previousBackgroundID()) {
-        item.call(uiTooltip()
+        item.call(uiTooltip(context)
           .placement(placement)
-          .title('<div>' + t('background.switch') + '</div>')
-          .keys([uiCmd('⌘' + t('background.key'))])
+          .title('<div>' + l10n.t('background.switch') + '</div>')
+          .keys([uiCmd('⌘' + l10n.t('background.key'))])
         );
       } else if (d.description || isOverflowing) {
-        item.call(uiTooltip()
+        item.call(uiTooltip(context)
           .placement(placement)
           .title(d.description || d.name)
         );
@@ -243,7 +243,7 @@ export function uiSectionBackgroundList(context) {
           d3_select(d3_event.currentTarget).classed('active', true);
           _favoriteBackgrounds[d.id] = true;
         }
-        prefs.setItem('background-favorites', JSON.stringify(_favoriteBackgrounds));
+        storageSystem.setItem('background-favorites', JSON.stringify(_favoriteBackgrounds));
 
         d3_select(d3_event.currentTarget.parentElement)
           .transition()
@@ -264,9 +264,9 @@ export function uiSectionBackgroundList(context) {
     layerLinksEnter.filter(d => d.id === 'custom')
       .append('button')
       .attr('class', 'layer-browse')
-      .call(uiTooltip()
-        .title(t('settings.custom_background.tooltip'))
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+      .call(uiTooltip(context)
+        .title(l10n.t('settings.custom_background.tooltip'))
+        .placement(l10n.isRTL() ? 'right' : 'left')
       )
       .on('click', editCustom)
       .call(uiIcon('#rapid-icon-more'));
@@ -275,8 +275,8 @@ export function uiSectionBackgroundList(context) {
       .selectAll('label')
       .append('span')
       .attr('class', 'best')
-      .call(uiTooltip()
-        .title(t('background.best_imagery'))
+      .call(uiTooltip(context)
+        .title(l10n.t('background.best_imagery'))
         .placement('bottom')
       )
       .call(uiIcon('#rapid-icon-best-background'));
@@ -310,9 +310,9 @@ export function uiSectionBackgroundList(context) {
 
     const previousBackground = imagerySystem.baseLayerSource();
     if (previousBackground instanceof ImagerySource) {
-      prefs.setItem('background-last-used-toggle', previousBackground.id);
+      storageSystem.setItem('background-last-used-toggle', previousBackground.id);
     }
-    prefs.setItem('background-last-used', d.id);
+    storageSystem.setItem('background-last-used', d.id);
     imagerySystem.baseLayerSource(d);
   }
 
@@ -379,8 +379,8 @@ export function uiSectionBackgroundList(context) {
     );
 
   context.keybinding()
-    .on(t('background.next_background.key'), nextBackground)
-    .on(t('background.previous_background.key'), previousBackground);
+    .on(l10n.t('background.next_background.key'), nextBackground)
+    .on(l10n.t('background.previous_background.key'), previousBackground);
 
   return section;
 }

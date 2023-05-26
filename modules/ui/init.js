@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t, localizer } from '../core/localizer';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
 import { uiAccount } from './account';
@@ -46,7 +45,9 @@ import { ui3DMap } from './tools/3dmap/3d_map';
 
 
 export function uiInit(context) {
-  const prefs = context.storageSystem();
+  const l10n = context.localizationSystem();
+  const presetSystem = context.presetSystem();
+  const storageSystem = context.storageSystem();
 
   let _initCounter = 0;
   let _needWidth = {};
@@ -102,10 +103,9 @@ export function uiInit(context) {
 //      });
 //    }
 
-
     container
-      .attr('lang', localizer.localeCode())
-      .attr('dir', localizer.textDirection());
+      .attr('lang', l10n.localeCode())
+      .attr('dir', l10n.textDirection());
 
     // setup fullscreen keybindings (no button shown at this time)
     container
@@ -277,7 +277,7 @@ export function uiInit(context) {
       .append('li')
       .attr('class', 'fb-road-license')
       .attr('tabindex', -1)
-      .call(uiRapidServiceLicense());
+      .call(uiRapidServiceLicense(context));
 
     const apiConnections = context.apiConnections();
     if (apiConnections && apiConnections.length > 1) {
@@ -306,14 +306,14 @@ export function uiInit(context) {
       .attr('tabindex', -1)
       .on('click', generateBugLink)
       .call(uiIcon('#rapid-icon-bug', 'bugnub'))
-      .call(uiTooltip().title(t.html('report_a_bug')).placement('top'));
+      .call(uiTooltip(context).title(l10n.tHtml('report_a_bug')).placement('top'));
 
     issueLinks
       .append('a')
       .attr('target', '_blank')
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating')
       .call(uiIcon('#rapid-icon-translate', 'light'))
-      .call(uiTooltip().title(t.html('help_translate')).placement('top'));
+      .call(uiTooltip(context).title(l10n.tHtml('help_translate')).placement('top'));
 
     aboutList
       .append('li')
@@ -346,28 +346,28 @@ export function uiInit(context) {
 
     context.keybinding()
       .on('⌫', function(d3_event) { d3_event.preventDefault(); })
-      .on([t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
-      .on(uiCmd('⌘' + t('background.key')), function quickSwitch(d3_event) {
+      .on([l10n.t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
+      .on(uiCmd('⌘' + l10n.t('background.key')), function quickSwitch(d3_event) {
         if (d3_event) {
           d3_event.stopImmediatePropagation();
           d3_event.preventDefault();
         }
         const imagerySystem = context.imagerySystem();
-        const previousBackground = imagerySystem.findSource(prefs.getItem('background-last-used-toggle'));
+        const previousBackground = imagerySystem.findSource(storageSystem.getItem('background-last-used-toggle'));
         if (previousBackground) {
           const currentBackground = imagerySystem.baseLayerSource();
-          prefs.setItem('background-last-used-toggle', currentBackground.id);
-          prefs.setItem('background-last-used', previousBackground.id);
+          storageSystem.setItem('background-last-used-toggle', currentBackground.id);
+          storageSystem.setItem('background-last-used', previousBackground.id);
           imagerySystem.baseLayerSource(previousBackground);
         }
       })
-      .on(t('area_fill.wireframe.key'), function toggleWireframe(d3_event) {
+      .on(l10n.t('area_fill.wireframe.key'), function toggleWireframe(d3_event) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
         const map = context.map();
         map.wireframeMode = !map.wireframeMode;
       })
-      .on(uiCmd('⌥' + t('area_fill.wireframe.key')), function toggleOsmData(d3_event) {
+      .on(uiCmd('⌥' + l10n.t('area_fill.wireframe.key')), function toggleOsmData(d3_event) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
 
@@ -378,7 +378,7 @@ export function uiInit(context) {
         context.scene().toggleLayers('osm');
         context.enter('browse');
       })
-      .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
+      .on(l10n.t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
         d3_event.preventDefault();
         map.highlightEdits = !map.highlightEdits;
       });
@@ -402,7 +402,7 @@ export function uiInit(context) {
 
 //        // If users have already seen the 'welcome to Rapid' splash screen, don't also
 //        // show them the what's new screen
-//        } else if (prefs.getItem('sawRapidSplash')) {
+//        } else if (storageSystem.getItem('sawRapidSplash')) {
 //          context.container().call(uiRapidWhatsNew(context));
 //
 //        } else if (osm && osm.authenticated()) {
@@ -416,7 +416,7 @@ export function uiInit(context) {
         .call(ui.shortcuts);
     }
 
-    const authModal = uiLoading(context).message(t.html('loading_auth')).blocking(true);
+    const authModal = uiLoading(context).message(l10n.tHtml('loading_auth')).blocking(true);
     if (osm && authModal) {
       osm
         .on('authLoading.ui', () => context.container().call(authModal))
@@ -450,10 +450,9 @@ export function uiInit(context) {
   ui.ensureLoaded = () => {
     if (_loadPromise) return _loadPromise;
 
-    const presetSystem = context.presetSystem();
     // Wait for strings and presets before rendering the UI
     return _loadPromise = Promise.all([
-      localizer.initAsync(),
+      l10n.initAsync(),
       presetSystem.initAsync()
     ])
     .then(() => {
@@ -534,7 +533,7 @@ export function uiInit(context) {
 
   ui.togglePanes = function(showPane) {
     let hidePanes = context.container().selectAll('.map-pane.shown');
-    let side = localizer.textDirection() === 'ltr' ? 'right' : 'left';
+    const side = l10n.isRTL() ? 'left' : 'right';
 
     hidePanes
       .classed('shown', false)
@@ -631,7 +630,7 @@ export function uiInit(context) {
   context.uploader()
     .on('saveStarted.ui', () => {
       _saveLoading = uiLoading(context)
-        .message(t.html('save.uploading'))
+        .message(l10n.tHtml('save.uploading'))
         .blocking(true);
       context.container().call(_saveLoading);  // block input during upload
     })

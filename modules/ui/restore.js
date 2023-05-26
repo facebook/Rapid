@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { uiModal } from './modal';
 
 
@@ -17,13 +16,13 @@ export function uiRestore(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h3')
-      .html(t.html('restore.heading'));
+      .text(context.t('restore.heading'));
 
     introModal
       .append('div')
       .attr('class','modal-section')
       .append('p')
-      .html(t.html('restore.description'));
+      .text(context.t('restore.description'));
 
     let buttonWrap = introModal
       .append('div')
@@ -45,7 +44,7 @@ export function uiRestore(context) {
 
     restore
       .append('div')
-      .html(t.html('restore.restore'));
+      .text(context.t('restore.restore'));
 
     let reset = buttonWrap
       .append('button')
@@ -63,7 +62,7 @@ export function uiRestore(context) {
 
     reset
       .append('div')
-      .html(t.html('restore.reset'));
+      .text(context.t('restore.reset'));
 
     restore.node().focus();
   };

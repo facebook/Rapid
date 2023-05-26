@@ -1,7 +1,5 @@
 import * as PIXI from 'pixi.js';
 
-import { t } from '../core/localizer';
-
 
 export function uiImproveOsmHeader(context) {
   let _qaItem;
@@ -10,8 +8,8 @@ export function uiImproveOsmHeader(context) {
   function issueTitle(d) {
     const issueKey = d.issueKey;
     d.replacements = d.replacements || {};
-    d.replacements.default = t.html('inspector.unknown');  // special key `default` works as a fallback string
-    return t.html(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
+    d.replacements.default = context.tHtml('inspector.unknown');  // special key `default` works as a fallback string
+    return context.tHtml(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
   }
 
 

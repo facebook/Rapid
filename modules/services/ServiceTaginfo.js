@@ -2,8 +2,6 @@ import { json as d3_json } from 'd3-fetch';
 import { utilObjectOmit, utilQsString } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
-import { localizer } from '../core/localizer';
-
 
 const TAGINFO_API = 'https://taginfo.openstreetmap.org/api/4/';
 
@@ -73,7 +71,15 @@ export class ServiceTaginfo {
     this.docs = this.docs.bind(this);
     this._request = this._request.bind(this);
     this._debouncedRequest = _debounce(this._request, 300, { leading: false });
+  }
 
+
+  /**
+   * init
+   * Called one time after all core objects have been instantiated.
+   */
+  init() {
+    const langCode = this.context.localizationSystem().languageCode();
 
     // Fetch popular keys.  We'll exclude these from `values`
     // lookups because they stress taginfo, and they aren't likely
@@ -84,7 +90,7 @@ export class ServiceTaginfo {
       sortorder: 'desc',
       page: 1,
       debounce: false,
-      lang: localizer.languageCode()
+      lang: langCode
     };
     this.keys(params, (err, vals) => {
       if (err) return;
@@ -93,14 +99,6 @@ export class ServiceTaginfo {
         this._popularKeys[d.value] = true;
       });
     });
-  }
-
-
-  /**
-   * init
-   * Called one time after all core objects have been instantiated.
-   */
-  init() {
   }
 
 
@@ -121,6 +119,7 @@ export class ServiceTaginfo {
    * @param  callback
    */
   keys(params, callback) {
+    const langCode = this.context.localizationSystem().languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     params = this._clean(this._setSort(params));
     params = Object.assign({
@@ -128,7 +127,7 @@ export class ServiceTaginfo {
       sortname: 'count_all',
       sortorder: 'desc',
       page: 1,
-      lang: localizer.languageCode()
+      lang: langCode
     }, params);
 
     const url = TAGINFO_API + 'keys/all?' + utilQsString(params);
@@ -151,6 +150,7 @@ export class ServiceTaginfo {
    * @param  callback
    */
   multikeys(params, callback) {
+    const langCode = this.context.localizationSystem().languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     params = this._clean(this._setSort(params));
     params = Object.assign({
@@ -158,7 +158,7 @@ export class ServiceTaginfo {
       sortname: 'count_all',
       sortorder: 'desc',
       page: 1,
-      lang: localizer.languageCode()
+      lang: langCode
     }, params);
 
     const prefix = params.query;
@@ -189,6 +189,7 @@ export class ServiceTaginfo {
       return;
     }
 
+    const langCode = this.context.localizationSystem().languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     params = this._clean(this._setSort(this._setFilter(params)));
     params = Object.assign({
@@ -196,7 +197,7 @@ export class ServiceTaginfo {
       sortname: 'count_all',
       sortorder: 'desc',
       page: 1,
-      lang: localizer.languageCode()
+      lang: langCode
     }, params);
 
     const url = TAGINFO_API + 'key/values?' + utilQsString(params);
@@ -226,6 +227,7 @@ export class ServiceTaginfo {
    * @param  callback
    */
   roles(params, callback) {
+    const langCode = this.context.localizationSystem().languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     const geometry = params.geometry;
     params = this._clean(this._setSortMembers(params));
@@ -234,7 +236,7 @@ export class ServiceTaginfo {
       sortname: 'count_all_members',
       sortorder: 'desc',
       page: 1,
-      lang: localizer.languageCode()
+      lang: langCode
     }, params);
 
     const url = TAGINFO_API + 'relation/roles?' + utilQsString(params);

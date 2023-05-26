@@ -1,5 +1,4 @@
 import { select as d3_select } from 'd3-selection';
-import { t } from '../core/localizer';
 
 
 export function uiSourceSwitch(context) {
@@ -14,7 +13,7 @@ export function uiSourceSwitch(context) {
         if (context.inIntro()) return;
 
         if (context.history().hasChanges() &&
-            !window.confirm(t('source_switch.lose_changes'))) return;
+            !window.confirm(context.t('source_switch.lose_changes'))) return;
 
         var isLive = d3_select(this)
             .classed('live');
@@ -25,7 +24,7 @@ export function uiSourceSwitch(context) {
         context.flush();                         // remove stored data
 
         d3_select(this)
-            .html(isLive ? t.html('source_switch.live') : t.html('source_switch.dev'))
+            .html(isLive ? context.tHtml('source_switch.live') : context.tHtml('source_switch.dev'))
             .classed('live', isLive)
             .classed('chip', isLive);
 
@@ -36,7 +35,7 @@ export function uiSourceSwitch(context) {
         selection
             .append('a')
             .attr('href', '#')
-            .html(t.html('source_switch.live'))
+            .html(context.tHtml('source_switch.live'))
             .attr('class', 'live chip')
             .on('click', click);
     };

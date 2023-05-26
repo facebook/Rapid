@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
-import { t } from '../../core/localizer';
 
 const METADATA_KEYS = ['zoom', 'vintage', 'source', 'description', 'resolution', 'accuracy'];
 
@@ -20,8 +19,8 @@ export class UiPanelBackground extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'background';
-    this.label = t.html('info_panels.background.title');
-    this.key = t('info_panels.background.key');
+    this.label = context.tHtml('info_panels.background.title');
+    this.key = context.t('info_panels.background.key');
 
     this._selection = d3_select(null);
     this._currSourceID = null;
@@ -113,7 +112,7 @@ export class UiPanelBackground extends AbstractUiPanel {
         .append('li')
         .attr('class', `background-info-list-${k}`)
         .classed('hide', !this._metadata[k])
-        .html(t.html(`info_panels.background.${k}`) + ':')
+        .html(context.tHtml(`info_panels.background.${k}`) + ':')
         .append('span')
         .attr('class', `background-info-span-${k}`)
         .text(this._metadata[k]);
@@ -126,7 +125,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     selection
       .append('a')
-      .html(t.html(`info_panels.background.${toggleTiles}`))
+      .html(context.tHtml(`info_panels.background.${toggleTiles}`))
       .attr('href', '#')
       .attr('class', 'button button-toggle-tiles')
       .on('click', e => {
@@ -190,7 +189,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
       // update vintage
       const vintage = result.vintage;
-      this._metadata.vintage = (vintage && vintage.range) || t('info_panels.background.unknown');
+      this._metadata.vintage = (vintage && vintage.range) || context.t('info_panels.background.unknown');
       selection.selectAll('.background-info-list-vintage')
         .classed('hide', false)
         .selectAll('.background-info-span-vintage')

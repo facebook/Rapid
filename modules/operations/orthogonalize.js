@@ -1,6 +1,5 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionOrthogonalize } from '../actions/orthogonalize';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { utilTotalExtent } from '../util';
@@ -112,19 +111,19 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.orthogonalize.${disabledReason}.${multi}`) :
-      t(`operations.orthogonalize.description.${_type}.${multi}`);
+      context.t(`operations.orthogonalize.${disabledReason}.${multi}`) :
+      context.t(`operations.orthogonalize.description.${_type}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
+    return context.t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
   };
 
 
   operation.id = 'orthogonalize';
-  operation.keys = [ t('operations.orthogonalize.key') ];
-  operation.title = t('operations.orthogonalize.title');
+  operation.keys = [ context.t('operations.orthogonalize.key') ];
+  operation.title = context.t('operations.orthogonalize.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;

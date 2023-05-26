@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 
 import { uiIcon } from '../icon';
-import { t } from '../../core/localizer';
 import { uiSection } from '../section';
 
 
@@ -83,7 +82,7 @@ export function uiSectionValidationStatus(context) {
       .merge(resetIgnoredEnter);
 
     resetIgnored.select('a')
-      .html(t('inspector.title_count', { title: t.html('issues.reset_ignored'), count: ignoredIssues.length }));
+      .html(context.t('inspector.title_count', { title: context.tHtml('issues.reset_ignored'), count: ignoredIssues.length }));
 
     resetIgnored.on('click', d3_event => {
       d3_event.preventDefault();
@@ -102,12 +101,12 @@ export function uiSectionValidationStatus(context) {
         let hiddenIssues = validator.getIssues(hiddenOpts);
         if (hiddenIssues.length) {
           selection.select('.box .details')
-            .html(t.html('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
+            .html(context.tHtml('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
           return;
         }
       }
       selection.select('.box .details')
-        .html(t.html('issues.no_issues.hidden_issues.none'));
+        .html(context.tHtml('issues.no_issues.hidden_issues.none'));
     }
 
     let messageType;
@@ -159,7 +158,7 @@ export function uiSectionValidationStatus(context) {
     }
 
     selection.select('.box .message')
-      .html(t.html(`issues.no_issues.message.${messageType}`));
+      .html(context.tHtml(`issues.no_issues.message.${messageType}`));
   }
 
 

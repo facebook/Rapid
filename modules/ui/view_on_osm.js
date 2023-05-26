@@ -1,47 +1,46 @@
-import { t } from '../core/localizer';
 import { osmEntity, osmNote } from '../osm';
 import { uiIcon } from './icon';
 
 
 export function uiViewOnOSM(context) {
-    var _what;   // an osmEntity or osmNote
+  const osm = context.services.get('osm');
+  let _what;   // an osmEntity or osmNote
 
 
-    function viewOnOSM(selection) {
-        var url;
-        if (_what instanceof osmEntity) {
-            url = context.services.get('osm').entityURL(_what);
-        } else if (_what instanceof osmNote) {
-            url = context.services.get('osm').noteURL(_what);
-        }
-
-        var data = ((!_what || _what.isNew()) ? [] : [_what]);
-        var link = selection.selectAll('.view-on-osm')
-            .data(data, function(d) { return d.id; });
-
-        // exit
-        link.exit()
-            .remove();
-
-        // enter
-        var linkEnter = link.enter()
-            .append('a')
-            .attr('class', 'view-on-osm')
-            .attr('target', '_blank')
-            .attr('href', url)
-            .call(uiIcon('#rapid-icon-out-link', 'inline'));
-
-        linkEnter
-            .append('span')
-            .html(t.html('inspector.view_on_osm'));
+  function viewOnOSM(selection) {
+    let url;
+    if (osm && _what instanceof osmEntity && !_what.isNew()) {
+      url = osm.entityURL(_what);
+    } else if (osm && _what instanceof osmNote && !_what.isNew()) {
+      url = osm.noteURL(_what);
     }
 
+    const link = selection.selectAll('.view-on-osm')
+      .data(url ? [url] : [], d => d);
 
-    viewOnOSM.what = function(_) {
-        if (!arguments.length) return _what;
-        _what = _;
-        return viewOnOSM;
-    };
+    // exit
+    link.exit()
+      .remove();
 
+    // enter
+    const linkEnter = link.enter()
+      .append('a')
+      .attr('class', 'view-on-osm')
+      .attr('target', '_blank')
+      .attr('href', d => d)
+      .call(uiIcon('#rapid-icon-out-link', 'inline'));
+
+    linkEnter
+      .append('span')
+      .text(context.t('inspector.view_on_osm'));
+  }
+
+
+  viewOnOSM.what = function(val) {
+    if (!arguments.length) return _what;
+    _what = val;
     return viewOnOSM;
+  };
+
+  return viewOnOSM;
 }

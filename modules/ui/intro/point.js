@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
@@ -68,7 +67,7 @@ export function uiIntroPoint(context, curtain) {
         _rejectStep = reject;
         const tooltip = curtain.reveal({
           revealSelector: 'button.add-point',
-          tipHtml: helpHtml('intro.points.points_info') + '{br}' + helpHtml('intro.points.add_point')
+          tipHtml: helpHtml(context, 'intro.points.points_info') + '{br}' + helpHtml(context, 'intro.points.add_point')
         });
 
         tooltip.selectAll('.popover-inner')
@@ -96,7 +95,7 @@ export function uiIntroPoint(context, curtain) {
       const textID = (context.lastPointerType() === 'mouse') ? 'place_point' : 'place_point_touch';
       curtain.reveal({
         revealExtent: buildingExtent,
-        tipHtml: helpHtml(`intro.points.${textID}`)
+        tipHtml: helpHtml(context, `intro.points.${textID}`)
       });
 
       history.on('change.intro', difference => {
@@ -131,7 +130,7 @@ export function uiIntroPoint(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
-          tipHtml: helpHtml('intro.points.search_cafe', { preset: cafePreset.name() })
+          tipHtml: helpHtml(context, 'intro.points.search_cafe', { preset: cafePreset.name() })
         });
 
         container.select('.preset-search-input')
@@ -147,7 +146,7 @@ export function uiIntroPoint(context, curtain) {
           curtain.reveal({
             revealNode: first.select('.preset-list-button').node(),
             revealPadding: 5,
-            tipHtml: helpHtml('intro.points.choose_cafe', { preset: cafePreset.name() })
+            tipHtml: helpHtml(context, 'intro.points.choose_cafe', { preset: cafePreset.name() })
           });
 
           container.select('.preset-search-input')
@@ -191,9 +190,9 @@ export function uiIntroPoint(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
-          tipHtml: helpHtml('intro.points.feature_editor'),
+          tipHtml: helpHtml(context, 'intro.points.feature_editor'),
           tipClass: 'intro-points-describe',
-          buttonText: t.html('intro.ok'),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(addNameAsync)
         });
 
@@ -224,8 +223,8 @@ export function uiIntroPoint(context, curtain) {
         if (entity.tags.name) {
           const tooltip = curtain.reveal({
             revealSelector: '.entity-editor-pane',
-            tipHtml: helpHtml('intro.points.fields_info'),
-            buttonText: t.html('intro.ok'),
+            tipHtml: helpHtml(context, 'intro.points.fields_info'),
+            buttonText: context.tHtml('intro.ok'),
             buttonCallback: () => resolve(addCloseEditorAsync)
           });
 
@@ -234,7 +233,7 @@ export function uiIntroPoint(context, curtain) {
         } else {
           curtain.reveal({
             revealSelector: '.entity-editor-pane',
-            tipHtml: helpHtml('intro.points.fields_info') + '{br}' + helpHtml('intro.points.add_name'),
+            tipHtml: helpHtml(context, 'intro.points.fields_info') + '{br}' + helpHtml(context, 'intro.points.add_name'),
             tipClass: 'intro-points-describe'
           });
         }
@@ -265,7 +264,7 @@ export function uiIntroPoint(context, curtain) {
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.points.add_close', { button: icon(iconName, 'inline') })
+        tipHtml: helpHtml(context, 'intro.points.add_close', { button: icon(iconName, 'inline') })
       });
 
       context.on('enter.intro', () => resolve(hasPointAsync));
@@ -309,7 +308,7 @@ export function uiIntroPoint(context, curtain) {
 
         curtain.reveal({
           revealExtent: buildingExtent,
-          tipHtml: helpHtml('intro.points.reselect')
+          tipHtml: helpHtml(context, 'intro.points.reselect')
         });
 
         context.on('enter.intro', () => resolve(updatePointAsync));
@@ -332,7 +331,7 @@ export function uiIntroPoint(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
-          tipHtml: helpHtml('intro.points.update'),
+          tipHtml: helpHtml(context, 'intro.points.update'),
           tipClass: 'intro-points-describe'
         });
 
@@ -357,7 +356,7 @@ export function uiIntroPoint(context, curtain) {
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.points.update_close', { button: icon('#rapid-icon-close', 'inline') })
+        tipHtml: helpHtml(context, 'intro.points.update_close', { button: icon('#rapid-icon-close', 'inline') })
       });
 
       context.on('enter.intro', () => resolve(rightClickPointAsync));
@@ -380,7 +379,7 @@ export function uiIntroPoint(context, curtain) {
       const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       curtain.reveal({
         revealExtent: buildingExtent,
-        tipHtml: helpHtml(`intro.points.${textID}`)
+        tipHtml: helpHtml(context, `intro.points.${textID}`)
       });
 
       editMenu.on('toggled.intro', open => {
@@ -410,7 +409,7 @@ export function uiIntroPoint(context, curtain) {
         curtain.reveal({
           revealSelector: '.edit-menu',
           revealPadding: 50,
-          tipHtml: helpHtml('intro.points.delete')
+          tipHtml: helpHtml(context, 'intro.points.delete')
         });
 
         history.on('change.intro', difference => {
@@ -439,7 +438,7 @@ export function uiIntroPoint(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.top-toolbar button.undo-button',
-        tipHtml: helpHtml('intro.points.undo')
+        tipHtml: helpHtml(context, 'intro.points.undo')
       });
       history.on('change.intro', () => resolve(playAsync));
     })
@@ -456,8 +455,8 @@ export function uiIntroPoint(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-area',
-      tipHtml: helpHtml('intro.points.play', { next: t('intro.areas.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.points.play', { next: context.t('intro.areas.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

@@ -1,7 +1,6 @@
 //import { select as d3_select } from 'd3-selection';
 //
 //import { marked } from 'marked';
-//import { t, localizer } from '../core/localizer';
 //import { uiIcon } from './icon';
 //import { icon } from './intro/helper';
 //
@@ -52,8 +51,8 @@
 //    var fieldHelpHeadings = {};
 //
 //    var replacements = {
-//        distField: t.html('restriction.controls.distance'),
-//        viaField: t.html('restriction.controls.via'),
+//        distField: context.tHtml('restriction.controls.distance'),
+//        viaField: context.tHtml('restriction.controls.via'),
 //        fromShadow: icon('#rapid-turn-shadow', 'inline shadow from'),
 //        allowShadow: icon('#rapid-turn-shadow', 'inline shadow allow'),
 //        restrictShadow: icon('#rapid-turn-shadow', 'inline shadow restrict'),
@@ -71,12 +70,12 @@
 //            var subkey = helpkey + '.' + part;
 //            var depth = fieldHelpHeadings[subkey];                     // is this subkey a heading?
 //            var hhh = depth ? Array(depth + 1).join('#') + ' ' : '';   // if so, prepend with some ##'s
-//            return all + hhh + t.html(subkey, replacements) + '\n\n';
+//            return all + hhh + context.tHtml(subkey, replacements) + '\n\n';
 //        }, '');
 //
 //        return {
 //            key: helpkey,
-//            title: t.html(helpkey + '.title'),
+//            title: context.tHtml(helpkey + '.title'),
 //            html: marked.parse(text.trim())
 //        };
 //    });
@@ -176,6 +175,7 @@
 //        _wrap = selection.selectAll('.form-field-input-wrap');
 //        if (_wrap.empty()) return;
 //
+//        const isRTL = context.localizationSystem().isRTL();
 //        // absolute position relative to the inspector, so it "floats" above the fields
 //        _inspector = context.container().select('.sidebar .entity-editor-pane .inspector-body');
 //        if (_inspector.empty()) return;
@@ -193,8 +193,8 @@
 //
 //        titleEnter
 //            .append('h2')
-//            .attr('class', ((localizer.textDirection() === 'rtl') ? 'fr' : 'fl'))
-//            .html(t.html('help.field.' + fieldName + '.title'));
+//            .attr('class', isRTL ? 'fr' : 'fl')
+//            .html(context.tHtml('help.field.' + fieldName + '.title'));
 //
 //        titleEnter
 //            .append('button')

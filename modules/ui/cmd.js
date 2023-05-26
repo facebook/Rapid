@@ -1,10 +1,9 @@
-import { t } from '../core/localizer';
 import { utilDetect } from '../util/detect';
 
 
 // Translate a MacOS key command into the appropriate Windows/Linux equivalent.
 // For example, ⌘Z -> Ctrl+Z
-export let uiCmd = function (code) {
+export let uiCmd = function(code) {
   const detected = utilDetect();
 
   if (detected.os === 'mac') {
@@ -37,9 +36,10 @@ export let uiCmd = function (code) {
 
 
 // return a display-focused string for a given keyboard code
-uiCmd.display = function(code) {
+uiCmd.display = function(context, code) {
   if (code.length !== 1) return code;
 
+  const t = context.t;
   const detected = utilDetect();
   const mac = (detected.os === 'mac');
   const replacements = {

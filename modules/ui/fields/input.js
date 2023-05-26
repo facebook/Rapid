@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import * as countryCoder from '@rapideditor/country-coder';
 
-import { t, localizer } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { uiIcon } from '../icon';
 
@@ -16,7 +15,9 @@ export {
 
 
 export function uiFieldText(context, uifield) {
+  const l10n = context.localizationSystem();
   const dispatch = d3_dispatch('change');
+
   let input = d3_select(null);
   let outlinkButton = d3_select(null);
   let _entityIDs = [];
@@ -93,18 +94,17 @@ export function uiFieldText(context, uifield) {
       updatePhonePlaceholder();
 
     } else if (uifield.type === 'number') {
-      const isRTL = (localizer.textDirection() === 'rtl');
       input.attr('type', 'text');
 
       const inc = presetField.increment ?? 1;
       let buttons = wrap.selectAll('.increment, .decrement')
-        .data(isRTL ? [inc, -inc] : [-inc, inc]);
+        .data(l10n.isRTL() ? [inc, -inc] : [-inc, inc]);
 
       buttons.enter()
         .append('button')
         .attr('class', function(d) {
-          let which = (d > 0 ? 'increment' : 'decrement');
-          return 'form-field-button ' + which;
+          const which = (d > 0) ? 'increment' : 'decrement';
+          return `form-field-button ${which}`;
         })
         .merge(buttons)
         .on('click', function(d3_event, d) {
@@ -133,7 +133,7 @@ export function uiFieldText(context, uifield) {
           const domainResults = /^https?:\/\/(.{1,}?)\//.exec(presetField.urlFormat);
           if (domainResults.length >= 2 && domainResults[1]) {
             const domain = domainResults[1];
-            return t('icons.view_on', { domain: domain });
+            return l10n.t('icons.view_on', { domain: domain });
           }
           return '';
         })
@@ -157,7 +157,7 @@ export function uiFieldText(context, uifield) {
         .append('button')
         .call(uiIcon('#rapid-icon-out-link'))
         .attr('class', 'form-field-button foreign-id-permalink')
-        .attr('title', () => t('icons.visit_website'))
+        .attr('title', () => l10n.t('icons.visit_website'))
         .on('click', function(d3_event) {
           d3_event.preventDefault();
           const value = validIdentifierValueForLink();
@@ -244,7 +244,7 @@ export function uiFieldText(context, uifield) {
 
     utilGetSetValue(input, !isMixed && tags[key] ? tags[key] : '')
       .attr('title', isMixed ? tags[key].filter(Boolean).join('\n') : undefined)
-      .attr('placeholder', isMixed ? t('inspector.multiple_values') : (uifield.placeholder || t('inspector.unknown')))
+      .attr('placeholder', isMixed ? l10n.t('inspector.multiple_values') : (uifield.placeholder || l10n.t('inspector.unknown')))
       .classed('mixed', isMixed);
 
     if (outlinkButton && !outlinkButton.empty()) {

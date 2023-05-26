@@ -164,11 +164,10 @@ export class Collection {
       similarTerms
     ).slice(0, MAXRESULTS - 1);
 
-    if (geometry) {
-      if (typeof geometry === 'string') {
-        results.push(this.fallback(geometry));
-      } else {
-        geometry.forEach(geom => results.push(this.fallback(geom)));
+    if (typeof geometry === 'string') {
+      const fallback = this.fallback(geometry);
+      if (fallback) {
+        results.push(fallback);
       }
     }
 

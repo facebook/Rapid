@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { uiIcon } from '../icon';
-import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
 
@@ -23,7 +22,7 @@ export function uiSectionEntityIssues(context) {
   let section = uiSection('entity-issues', context)
     .shouldDisplay(() => _issues.length)
     .label(() => {
-      return t('inspector.title_count', { title: t.html('issues.list_title'), count: _issues.length });
+      return context.t('inspector.title_count', { title: context.tHtml('issues.list_title'), count: _issues.length });
     })
     .disclosureContent(renderDisclosureContent);
 
@@ -101,7 +100,7 @@ export function uiSectionEntityIssues(context) {
     let infoButton = labelsEnter
       .append('button')
       .attr('class', 'issue-info-button')
-      .attr('title', t('icons.information'))
+      .attr('title', context.t('icons.information'))
       .call(uiIcon('#rapid-icon-inspect'));
 
     infoButton
@@ -148,7 +147,7 @@ export function uiSectionEntityIssues(context) {
         if (typeof d.reference === 'function') {
           selection.call(d.reference);
         } else {
-          selection.html(t.html('inspector.no_documentation_key'));
+          selection.html(context.tHtml('inspector.no_documentation_key'));
         }
       });
 

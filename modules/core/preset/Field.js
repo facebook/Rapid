@@ -1,7 +1,5 @@
 import { utilObjectOmit, utilSafeString } from '@rapid-sdk/util';
 
-import { localizer, t } from '../localizer';
-
 
 /**
  *  Field
@@ -86,19 +84,20 @@ export class Field {
   }
 
   t(scope, options) {
-    return t(`_tagging.presets.fields.${this.id}.${scope}`, options);
+    return this.context.t(`_tagging.presets.fields.${this.id}.${scope}`, options);
   }
 
   tHtml(scope, options) {
-    return t.html(`_tagging.presets.fields.${this.id}.${scope}`, options);
+    return this.context.tHtml(`_tagging.presets.fields.${this.id}.${scope}`, options);
   }
 
   tAppend(scope, options) {
-    return t.append(`_tagging.presets.fields.${this.id}.${scope}`, options);
+    return this.context.tAppend(`_tagging.presets.fields.${this.id}.${scope}`, options);
   }
 
-  hasTextForStringId(scope) {
-    return localizer.hasTextForStringId(`_tagging.presets.fields.${this.id}.${scope}`);
+  hasTextForStringID(scope) {
+    const l10n = this.context.localizationSystem();
+    return l10n.hasTextForStringID(`_tagging.presets.fields.${this.id}.${scope}`);
   }
 
   _resolveReference(prop) {

@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 
 import { uiIcon } from './icon';
-import { t } from '../core/localizer';
 
 
 export function uiKeepRightHeader(context) {
@@ -9,13 +8,13 @@ export function uiKeepRightHeader(context) {
 
 
   function issueTitle(d) {
-    const unknown = t.html('inspector.unknown');
+    const unknown = context.tHtml('inspector.unknown');
     let replacements = d.replacements || {};
     replacements.default = unknown;  // special key `default` works as a fallback string
 
-    let title = t.html(`QA.keepRight.errorTypes.${d.itemType}.title`, replacements);
+    let title = context.tHtml(`QA.keepRight.errorTypes.${d.itemType}.title`, replacements);
     if (title === unknown) {
-      title = t.html(`QA.keepRight.errorTypes.${d.parentIssueType}.title`, replacements);
+      title = context.tHtml(`QA.keepRight.errorTypes.${d.parentIssueType}.title`, replacements);
     }
     return title;
   }

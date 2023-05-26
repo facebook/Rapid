@@ -1,6 +1,5 @@
 import _throttle from 'lodash-es/throttle';
 import { select as d3_select } from 'd3-selection';
-import { t } from '../core/localizer';
 
 
 export function uiAttribution(context) {
@@ -42,7 +41,7 @@ export function uiAttribution(context) {
             .attr('target', '_blank');
         }
 
-        const terms_text = t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
+        const terms_text = context.t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
 
         if (d.icon && !d.overlay) {
           attribution

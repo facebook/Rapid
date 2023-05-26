@@ -1,4 +1,3 @@
-import { t } from '../../core/localizer';
 import { uiPane } from '../pane';
 
 import { uiSectionValidationIssues } from '../sections/validation_issues';
@@ -6,11 +5,12 @@ import { uiSectionValidationOptions } from '../sections/validation_options';
 import { uiSectionValidationRules } from '../sections/validation_rules';
 import { uiSectionValidationStatus } from '../sections/validation_status';
 
+
 export function uiPaneIssues(context) {
-  return uiPane('issues', context)
-    .key(t('issues.key'))
-    .label(t.html('issues.title'))
-    .description(t.html('issues.title'))
+  return uiPane(context, 'issues')
+    .key(context.t('issues.key'))
+    .label(context.tHtml('issues.title'))
+    .description(context.tHtml('issues.title'))
     .iconName('rapid-icon-alert')
     .sections([
       uiSectionValidationOptions(context),

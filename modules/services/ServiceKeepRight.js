@@ -5,7 +5,6 @@ import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { QAItem } from '../osm';
-import { t } from '../core/localizer';
 import { utilRebind } from '../util';
 
 
@@ -440,7 +439,7 @@ export class ServiceKeepRight {
       } else {
         const compare = capture.toLowerCase();
         if (this._krData.localizeStrings[compare]) {   // some replacement strings can be localized
-          capture = t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
+          capture = this.context.t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
         }
       }
 
@@ -454,7 +453,7 @@ export class ServiceKeepRight {
   _parseError(capture, idType) {
     const compare = capture.toLowerCase();
     if (this._krData.localizeStrings[compare]) {   // some replacement strings can be localized
-      capture = t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
+      capture = this.context.t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
     }
 
     switch (idType) {
@@ -530,7 +529,7 @@ export class ServiceKeepRight {
         const match = item.match(/\#(\d+)\((.+)\)?/);
         if (match !== null && match.length > 2) {
           newList.push(linkEntity('w' + match[1]) + ' ' +
-            t('QA.keepRight.errorTypes.231.layer', { layer: match[2] })
+            this.context.t('QA.keepRight.errorTypes.231.layer', { layer: match[2] })
           );
         }
       }
@@ -563,7 +562,7 @@ export class ServiceKeepRight {
 
       const match = capture.match(/\(including the name (\'.+\')\)/);
       if (match?.length) {
-        return t('QA.keepRight.errorTypes.370.including_the_name', { name: match[1] });
+        return this.context.t('QA.keepRight.errorTypes.370.including_the_name', { name: match[1] });
       }
       return '';
     }

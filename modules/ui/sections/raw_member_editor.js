@@ -2,7 +2,6 @@ import { drag as d3_drag } from 'd3-drag';
 import { select as d3_select } from 'd3-selection';
 import { utilUniqueString } from '@rapid-sdk/util';
 
-import { t } from '../../core/localizer';
 import { actionChangeMember } from '../../actions/change_member';
 import { actionDeleteMember } from '../../actions/delete_member';
 import { actionMoveMember } from '../../actions/move_member';
@@ -11,10 +10,14 @@ import { osmEntity } from '../../osm';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
-import { utilDisplayName, utilDisplayType, utilHighlightEntities, utilNoAuto } from '../../util';
+import { utilHighlightEntities, utilNoAuto } from '../../util';
+
+const MAX_MEMBERS = 1000;
 
 
 export function uiSectionRawMemberEditor(context) {
+    const l10n = context.localizationSystem();
+
     var section = uiSection('raw-member-editor', context)
         .shouldDisplay(function() {
             if (!_entityIDs || _entityIDs.length !== 1) return false;
@@ -26,15 +29,14 @@ export function uiSectionRawMemberEditor(context) {
             var entity = context.hasEntity(_entityIDs[0]);
             if (!entity) return '';
 
-            var gt = entity.members.length > _maxMembers ? '>' : '';
-            var count = gt + entity.members.slice(0, _maxMembers).length;
-            return t('inspector.title_count', { title: t.html('inspector.members'), count: count });
+            var gt = entity.members.length > MAX_MEMBERS ? '>' : '';
+            var count = gt + entity.members.slice(0, MAX_MEMBERS).length;
+            return l10n.t('inspector.title_count', { title: l10n.tHtml('inspector.members'), count: count });
         })
         .disclosureContent(renderDisclosureContent);
 
     var taginfo = context.services.get('taginfo');
     var _entityIDs;
-    var _maxMembers = 1000;
 
     function downloadMember(d3_event, d) {
         d3_event.preventDefault();
@@ -82,9 +84,7 @@ export function uiSectionRawMemberEditor(context) {
             var member = { id: d.id, type: d.type, role: newRole };
             context.perform(
                 actionChangeMember(d.relation.id, member, d.index),
-                t('operations.change_role.annotation', {
-                    n: 1
-                })
+                l10n.t('operations.change_role.annotation', { n: 1 })
             );
             context.validationSystem().validate();
         }
@@ -92,15 +92,11 @@ export function uiSectionRawMemberEditor(context) {
 
 
     function deleteMember(d3_event, d) {
-
-        // remove the hover-highlight styling
-        utilHighlightEntities([d.id], false, context);
+        utilHighlightEntities([d.id], false, context);  // remove the hover-highlight styling
 
         context.perform(
             actionDeleteMember(d.relation.id, d.index),
-            t('operations.delete_member.annotation', {
-                n: 1
-            })
+            l10n.t('operations.delete_member.annotation', { n: 1 })
         );
 
         if (!context.hasEntity(d.relation.id)) {
@@ -115,12 +111,10 @@ export function uiSectionRawMemberEditor(context) {
     }
 
     function renderDisclosureContent(selection) {
-
         var entityID = _entityIDs[0];
-
         var memberships = [];
         var entity = context.entity(entityID);
-        entity.members.slice(0, _maxMembers).forEach(function(member, index) {
+        entity.members.slice(0, MAX_MEMBERS).forEach(function(member, index) {
             memberships.push({
                 index: index,
                 id: member.id,
@@ -187,24 +181,24 @@ export function uiSectionRawMemberEditor(context) {
                         .attr('class', 'member-entity-type')
                         .html(function(d) {
                             var matched = context.presetSystem().match(d.member, context.graph());
-                            return (matched && matched.name()) || utilDisplayType(d.member.id);
+                            return (matched && matched.name()) || l10n.displayType(d.member.id);
                         });
 
                     labelLink
                         .append('span')
                         .attr('class', 'member-entity-name')
-                        .html(function(d) { return utilDisplayName(d.member); });
+                        .html(function(d) { return l10n.displayName(d.member); });
 
                     label
                         .append('button')
-                        .attr('title', t('icons.remove'))
+                        .attr('title', l10n.t('icons.remove'))
                         .attr('class', 'remove member-delete')
                         .call(uiIcon('#rapid-operation-delete'));
 
                     label
                         .append('button')
                         .attr('class', 'member-zoom')
-                        .attr('title', t('icons.zoom_to'))
+                        .attr('title', l10n.t('icons.zoom_to'))
                         .call(uiIcon('#rapid-icon-framed-dot', 'monochrome'))
                         .on('click', zoomToMember);
 
@@ -216,17 +210,17 @@ export function uiSectionRawMemberEditor(context) {
                     labelText
                         .append('span')
                         .attr('class', 'member-entity-type')
-                        .html(t.html('inspector.' + d.type, { id: d.id }));
+                        .html(l10n.tHtml('inspector.' + d.type, { id: d.id }));
 
                     labelText
                         .append('span')
                         .attr('class', 'member-entity-name')
-                        .html(t.html('inspector.incomplete', { id: d.id }));
+                        .html(l10n.tHtml('inspector.incomplete', { id: d.id }));
 
                     label
                         .append('button')
                         .attr('class', 'member-download')
-                        .attr('title', t('icons.download'))
+                        .attr('title', l10n.t('icons.download'))
                         .call(uiIcon('#rapid-icon-load'))
                         .on('click', downloadMember);
                 }
@@ -239,11 +233,9 @@ export function uiSectionRawMemberEditor(context) {
         wrapEnter
             .append('input')
             .attr('class', 'member-role')
-            .attr('id', function(d) {
-                return d.uid;
-            })
+            .attr('id', d => d.uid)
             .property('type', 'text')
-            .attr('placeholder', t('inspector.role'))
+            .attr('placeholder', l10n.t('inspector.role'))
             .call(utilNoAuto);
 
         if (taginfo) {
@@ -256,7 +248,7 @@ export function uiSectionRawMemberEditor(context) {
             .order();
 
         items.select('input.member-role')
-            .property('value', function(d) { return d.role; })
+            .property('value', d => d.role)
             .on('blur', changeRole)
             .on('change', changeRole);
 
@@ -323,7 +315,7 @@ export function uiSectionRawMemberEditor(context) {
                     // dragged to a new position, reorder
                     context.perform(
                         actionMoveMember(d.relation.id, index, targetIndex),
-                        t('operations.reorder_members.annotation')
+                        l10n.t('operations.reorder_members.annotation')
                     );
                     context.validationSystem().validate();
                 }

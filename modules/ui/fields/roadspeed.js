@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import * as countryCoder from '@rapideditor/country-coder';
 
 import { uiCombobox } from '../combobox';
-import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
@@ -129,7 +128,7 @@ export function uiFieldRoadspeed(context, uifield) {
 
         utilGetSetValue(input, typeof value === 'string' ? value : '')
             .attr('title', isMixed ? value.filter(Boolean).join('\n') : null)
-            .attr('placeholder', isMixed ? t('inspector.multiple_values') : uifield.placeholder)
+            .attr('placeholder', isMixed ? context.t('inspector.multiple_values') : uifield.placeholder)
             .classed('mixed', isMixed);
     };
 

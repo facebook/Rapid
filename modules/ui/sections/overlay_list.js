@@ -2,7 +2,6 @@ import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
@@ -10,7 +9,7 @@ import { uiSection } from '../section';
 export function uiSectionOverlayList(context) {
   const imagerySystem = context.imagerySystem();
   const section = uiSection('overlay-list', context)
-    .label(t.html('background.overlays'))
+    .label(context.tHtml('background.overlays'))
     .disclosureContent(renderDisclosureContent);
 
   let _overlayList = d3_select(null);
@@ -22,10 +21,10 @@ export function uiSectionOverlayList(context) {
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
       const isOverflowing = (span.property('clientWidth') !== span.property('scrollWidth'));
 
-      item.call(uiTooltip().destroyAny);
+      item.call(uiTooltip(context).destroyAny);
 
       if (d.description || isOverflowing) {
-        item.call(uiTooltip()
+        item.call(uiTooltip(context)
           .placement(placement)
           .title(d.description || d.name)
         );

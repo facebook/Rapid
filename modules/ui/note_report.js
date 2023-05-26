@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { osmNote } from '../osm';
 import { uiIcon } from './icon';
 
@@ -30,7 +29,7 @@ export function uiNoteReport(context) {
 
     linkEnter
       .append('span')
-      .html(t.html('note.report'));
+      .text(context.t('note.report'));
   }
 
 

@@ -1,7 +1,7 @@
 import { utilObjectOmit, utilSafeString } from '@rapid-sdk/util';
 
 import { Collection } from './Collection';
-import { t } from '../localizer';
+
 
 /**
  *  Category
@@ -65,11 +65,11 @@ export class Category {
   }
 
   name() {
-    return t(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
+    return this.context.t(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
   }
 
   nameLabel() {
-    return t.html(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
+    return this.context.tHtml(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
   }
 
   terms() {

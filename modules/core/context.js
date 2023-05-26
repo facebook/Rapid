@@ -4,9 +4,7 @@ import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
-import { t } from '../core/localizer';
 import { coreRapidContext } from './rapid_context';
-import { localizer } from './localizer';
 import { coreHistory } from './history';
 import { coreUploader } from './uploader';
 import { RendererMap } from '../renderer';
@@ -14,6 +12,7 @@ import { RendererMap } from '../renderer';
 import { DataLoaderSystem } from './DataLoaderSystem';
 import { FilterSystem } from './FilterSystem';
 import { ImagerySystem } from './ImagerySystem';
+import { LocalizationSystem } from './LocalizationSystem';
 import { LocationSystem } from './LocationSystem';
 import { PhotoSystem } from './PhotoSystem';
 import { PresetSystem } from './PresetSystem';
@@ -60,6 +59,7 @@ export function coreContext() {
   const _dataLoaderSystem = new DataLoaderSystem(context);
   const _filterSystem = new FilterSystem(context);
   const _imagerySystem = new ImagerySystem(context);
+  const _localizationSystem = new LocalizationSystem(context);
   const _locationSystem = new LocationSystem(context);
   const _photoSystem = new PhotoSystem(context);
   const _presetSystem = new PresetSystem(context);
@@ -70,12 +70,17 @@ export function coreContext() {
   context.dataLoaderSystem = () => _dataLoaderSystem;
   context.filterSystem = () => _filterSystem;
   context.imagerySystem = () => _imagerySystem;
+  context.localizationSystem = () => _localizationSystem;
   context.locationSystem = () => _locationSystem;
   context.photoSystem = () => _photoSystem;
   context.presetSystem = () => _presetSystem;
   context.storageSystem = () => _storageSystem;
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
+
+  context.t = _localizationSystem.t;
+  context.tHtml = _localizationSystem.tHtml;
+  context.tAppend = _localizationSystem.tAppend;
 
 
   // `context.initialHashParams` is older, try to use `context.urlHashSystem()` instead
@@ -132,11 +137,10 @@ export function coreContext() {
     return context;
   };
 
-
   // A String or Array of locale codes to prefer over the browser's settings
+  let _prelocale;
   context.locale = function(locale) {
-    if (!arguments.length) return localizer.localeCode();
-    localizer.preferredLocaleCodes(locale);
+    _prelocale = locale;  // copy and remember for init time
     return context;
   };
 
@@ -323,7 +327,7 @@ export function coreContext() {
       _history.save();
     }
     if (_history.hasChanges()) {
-      return t('save.unsaved_changes');
+      return _localizationSystem.t('save.unsaved_changes');
     }
   };
 
@@ -691,12 +695,13 @@ export function coreContext() {
         const presetIDs = context.initialHashParams.presets.split(',').map(s => s.trim()).filter(Boolean);
         _presetSystem.addablePresetIDs = new Set(presetIDs);
       }
-      if (context.initialHashParams.locale) {
-        localizer.preferredLocaleCodes(context.initialHashParams.locale);
+      let overrideLocale =  context.initialHashParams.locale ?? _prelocale;
+      if (overrideLocale) {
+        _localizationSystem.preferredLocaleCodes = overrideLocale;
       }
 
       // kick off some async work
-      localizer.initAsync();
+      _localizationSystem.initAsync();
       _presetSystem.initAsync();
 
       for (const service of context.services.values()) {

@@ -14,13 +14,12 @@ import {
   osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
   osmRoutableAerowayTags, osmRoutableHighwayTagValues
 } from '../osm/tags';
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
 export function validationCrossingWays(context) {
-    var type = 'crossing_ways';
+    const type = 'crossing_ways';
+    const l10n = context.localizationSystem();
 
     // returns the way or its parent relation, whichever has a useful feature type
     function getFeatureWithFeatureTypeTagsForWay(way, graph) {
@@ -62,7 +61,6 @@ export function validationCrossingWays(context) {
 
 
     function getFeatureType(entity, graph) {
-
         var geometry = entity.geometry(graph);
         if (geometry !== 'line' && geometry !== 'area') return null;
 
@@ -83,7 +81,6 @@ export function validationCrossingWays(context) {
 
 
     function isLegitCrossing(tags1, featureType1, tags2, featureType2) {
-
         // assume 0 by default
         var level1 = tags1.level || '0';
         var level2 = tags2.level || '0';
@@ -381,7 +378,7 @@ export function validationCrossingWays(context) {
             var type1 = way1Info.featureType;
             var type2 = way2Info.featureType;
             if (type1 === type2) {
-                return utilDisplayLabel(context, way1Info.way, graph) > utilDisplayLabel(context, way2Info.way, graph);
+                return l10n.displayLabel(way1Info.way, graph) > l10n.displayLabel(way2Info.way, graph);
             } else if (type1 === 'waterway') {
                 return true;
             } else if (type2 === 'waterway') {
@@ -428,13 +425,13 @@ export function validationCrossingWays(context) {
             type: type,
             subtype: subtype,
             severity: 'warning',
-            message: function(context) {
+            message: function() {
                 var graph = context.graph();
                 var entity1 = graph.hasEntity(this.entityIds[0]);
                 var entity2 = graph.hasEntity(this.entityIds[1]);
-                return (entity1 && entity2) ? t.html('issues.crossing_ways.message', {
-                    feature: utilDisplayLabel(context, entity1, graph),
-                    feature2: utilDisplayLabel(context, entity2, graph)
+                return (entity1 && entity2) ? l10n.tHtml('issues.crossing_ways.message', {
+                    feature: l10n.displayLabel(entity1, graph),
+                    feature2: l10n.displayLabel(entity2, graph)
                 }) : '';
             },
             reference: showReference,
@@ -449,7 +446,7 @@ export function validationCrossingWays(context) {
             hash: uniqueID,
             loc: crossing.crossPoint,
             autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
-            dynamicFixes: function(context) {
+            dynamicFixes: function() {
                 var mode = context.mode();
                 var selectedIDs = context.selectedIDs();
                 if (!mode || mode.id !== 'select' || selectedIDs.length !== 1) return [];
@@ -467,7 +464,7 @@ export function validationCrossingWays(context) {
                 if (isCrossingIndoors) {
                     fixes.push(new validationIssueFix({
                         icon: 'rapid-icon-layers',
-                        title: t.html('issues.fix.use_different_levels.title')
+                        title: l10n.tHtml('issues.fix.use_different_levels.title')
                     }));
                 } else if (isCrossingTunnels || isCrossingBridges || featureType1 === 'building' || featureType2 === 'building')  {
                     fixes.push(makeChangeLayerFix('higher'));
@@ -492,7 +489,7 @@ export function validationCrossingWays(context) {
                 // repositioning the features is always an option
                 fixes.push(new validationIssueFix({
                     icon: 'rapid-operation-move',
-                    title: t.html('issues.fix.reposition_features.title')
+                    title: l10n.tHtml('issues.fix.reposition_features.title')
                 }));
 
                 return fixes;
@@ -505,15 +502,15 @@ export function validationCrossingWays(context) {
                 .enter()
                 .append('div')
                 .attr('class', 'issue-reference')
-                .html(t.html('issues.crossing_ways.' + crossingTypeID + '.reference'));
+                .html(l10n.tHtml('issues.crossing_ways.' + crossingTypeID + '.reference'));
         }
     }
 
     function makeAddBridgeOrTunnelFix(fixTitleID, iconName, bridgeOrTunnel){
         return new validationIssueFix({
             icon: iconName,
-            title: t.html('issues.fix.' + fixTitleID + '.title'),
-            onClick: function(context) {
+            title: l10n.tHtml('issues.fix.' + fixTitleID + '.title'),
+            onClick: function() {
                 var mode = context.mode();
                 if (!mode || mode.id !== 'select') return;
 
@@ -706,7 +703,7 @@ export function validationCrossingWays(context) {
                     return graph;
                 };
 
-                context.perform(action, t('issues.fix.' + fixTitleID + '.annotation'));
+                context.perform(action, l10n.t(`issues.fix.${fixTitleID}.annotation`));
                 context.enter(modeSelect(context, resultWayIDs));
             }
         });
@@ -755,7 +752,7 @@ export function validationCrossingWays(context) {
             return didSomething ? newGraph : graph;
         };
 
-        return [fn, t('issues.fix.connect_crossing_features.annotation')];
+        return [fn, l10n.t('issues.fix.connect_crossing_features.annotation')];
     }
 
 
@@ -766,8 +763,8 @@ export function validationCrossingWays(context) {
         }
         return new validationIssueFix({
             icon: 'rapid-icon-crossing',
-            title: t.html('issues.fix.' + fixTitleID + '.title'),
-            onClick: function(context) {
+            title: l10n.tHtml(`issues.fix.${fixTitleID}.title`),
+            onClick: function() {
                 var loc = this.issue.loc;
                 var edges = this.issue.data.edges;
                 var connectionTags = this.issue.data.connectionTags;
@@ -781,9 +778,8 @@ export function validationCrossingWays(context) {
     function makeChangeLayerFix(higherOrLower) {
         return new validationIssueFix({
             icon: 'rapid-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
-            title: t.html('issues.fix.tag_this_as_' + higherOrLower + '.title'),
-            onClick: function(context) {
-
+            title: l10n.tHtml(`issues.fix.tag_this_as_${higherOrLower}.title`),
+            onClick: function() {
                 var mode = context.mode();
                 if (!mode || mode.id !== 'select') return;
 
@@ -816,7 +812,7 @@ export function validationCrossingWays(context) {
                 tags.layer = layer.toString();
                 context.perform(
                     actionChangeTags(entity.id, tags),
-                    t('operations.change_tags.annotation')
+                    l10n.t('operations.change_tags.annotation')
                 );
             }
         });

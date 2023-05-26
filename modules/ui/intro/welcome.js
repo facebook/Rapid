@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { helpHtml } from './helper';
-import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
 
 
@@ -37,8 +36,8 @@ export function uiIntroWelcome(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-welcome',
-          tipHtml: helpHtml('intro.welcome.welcome'),
-          buttonText: t.html('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.welcome.welcome'),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(practiceAsync)
         });
       }));
@@ -51,8 +50,8 @@ export function uiIntroWelcome(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.intro-nav-wrap .chapter-welcome',
-        tipHtml: helpHtml('intro.welcome.practice'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.welcome.practice'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(wordsAsync)
       });
     });
@@ -65,8 +64,8 @@ export function uiIntroWelcome(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.intro-nav-wrap .chapter-welcome',
-        tipHtml: helpHtml('intro.welcome.words'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.welcome.words'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(chaptersAsync)
       });
     });
@@ -78,7 +77,7 @@ export function uiIntroWelcome(context, curtain) {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.intro-nav-wrap .chapter-navigation',
-      tipHtml: helpHtml('intro.welcome.chapters', { next: t('intro.navigation.title') })
+      tipHtml: helpHtml(context, 'intro.welcome.chapters', { next: context.t('intro.navigation.title') })
     });
     return Promise.resolve();
   }

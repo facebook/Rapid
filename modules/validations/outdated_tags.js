@@ -1,16 +1,15 @@
 import { utilHashcode, utilTagDiff } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionUpgradeTags } from '../actions/upgrade_tags';
 import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
-import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
 export function validationOutdatedTags(context) {
   const type = 'outdated_tags';
+  const l10n = context.localizationSystem();
   const presetSystem = context.presetSystem();
   let _waitingForDeprecated = true;
   let _dataDeprecated;
@@ -98,7 +97,7 @@ export function validationOutdatedTags(context) {
       prefix = 'incomplete.';
     }
 
-    let autoArgs = [doUpgrade, t('issues.fix.upgrade_tags.annotation')];
+    let autoArgs = [doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')];
 
     issues.push(new validationIssue({
       type: type,
@@ -113,9 +112,9 @@ export function validationOutdatedTags(context) {
         let fixes = [
           new validationIssueFix({
             autoArgs: autoArgs,
-            title: t.html('issues.fix.upgrade_tags.title'),
-            onClick: (context) => {
-              context.perform(doUpgrade, t('issues.fix.upgrade_tags.annotation'));
+            title: l10n.tHtml('issues.fix.upgrade_tags.title'),
+            onClick: () => {
+              context.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
             }
           })
         ];
@@ -124,9 +123,9 @@ export function validationOutdatedTags(context) {
         if (item) {
           fixes.push(
             new validationIssueFix({
-              title: t.html('issues.fix.tag_as_not.title', { name: item.displayName }),
-              onClick: (context) => {
-                context.perform(addNotTag, t('issues.fix.tag_as_not.annotation'));
+              title: l10n.tHtml('issues.fix.tag_as_not.title', { name: item.displayName }),
+              onClick: () => {
+                context.perform(addNotTag, l10n.t('issues.fix.tag_as_not.annotation'));
               }
             })
           );
@@ -178,7 +177,7 @@ export function validationOutdatedTags(context) {
     }
 
 
-    function showMessage(context) {
+    function showMessage() {
       const currEntity = context.hasEntity(entity.id);
       if (!currEntity) return '';
 
@@ -186,8 +185,8 @@ export function validationOutdatedTags(context) {
       if (subtype === 'noncanonical_brand' && isOnlyAddingTags) {
         messageID += '_incomplete';
       }
-      return t.html(messageID, {
-        feature: utilDisplayLabel(context, currEntity, context.graph(), true /* verbose */)
+      return l10n.tHtml(messageID, {
+        feature: l10n.displayLabel(currEntity, context.graph(), true /* verbose */)
       });
     }
 
@@ -200,11 +199,11 @@ export function validationOutdatedTags(context) {
       enter
         .append('div')
         .attr('class', 'issue-reference')
-        .html(t.html(`issues.outdated_tags.${prefix}reference`));
+        .html(l10n.tHtml(`issues.outdated_tags.${prefix}reference`));
 
       enter
         .append('strong')
-        .html(t.html('issues.suggested'));
+        .html(l10n.tHtml('issues.suggested'));
 
       enter
         .append('table')
@@ -245,14 +244,14 @@ export function validationOutdatedTags(context) {
       message: showMessage,
       reference: showReference,
       entityIds: [outerWay.id, multipolygon.id],
-      autoArgs: [doUpgrade, t('issues.fix.move_tags.annotation')],
+      autoArgs: [doUpgrade, l10n.t('issues.fix.move_tags.annotation')],
       dynamicFixes: () => {
         return [
           new validationIssueFix({
-            // autoArgs: [doUpgrade, t('issues.fix.move_tags.annotation')],
-            title: t('issues.fix.move_tags.title'),
-            onClick: (context) => {
-              context.perform(doUpgrade, t('issues.fix.move_tags.annotation'));
+            // autoArgs: [doUpgrade, l10n.t('issues.fix.move_tags.annotation')],
+            title: l10n.t('issues.fix.move_tags.title'),
+            onClick: () => {
+              context.perform(doUpgrade, l10n.t('issues.fix.move_tags.annotation'));
             }
           })
         ];
@@ -271,12 +270,12 @@ export function validationOutdatedTags(context) {
     }
 
 
-    function showMessage(context) {
+    function showMessage() {
       let currMultipolygon = context.hasEntity(multipolygon.id);
       if (!currMultipolygon) return '';
 
-      return t.html('issues.old_multipolygon.message',
-          { multipolygon: utilDisplayLabel(context, currMultipolygon, context.graph(), true /* verbose */) }
+      return l10n.tHtml('issues.old_multipolygon.message',
+          { multipolygon: l10n.displayLabel(currMultipolygon, context.graph(), true /* verbose */) }
       );
     }
 
@@ -287,7 +286,7 @@ export function validationOutdatedTags(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(t.html('issues.old_multipolygon.reference'));
+        .html(l10n.tHtml('issues.old_multipolygon.reference'));
     }
   }
 

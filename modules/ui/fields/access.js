@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
-import { t } from '../../core/localizer';
 
 
 export function uiFieldAccess(context, uifield) {
@@ -218,7 +217,7 @@ export function uiFieldAccess(context, uifield) {
       })
       .attr('placeholder', d => {
         if (tags[d] && Array.isArray(tags[d])) {
-          return t('inspector.multiple_values');
+          return context.t('inspector.multiple_values');
         }
         if (d === 'access') {
           return 'yes';

@@ -6,7 +6,6 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { utilDisplayName, utilDisplayPOIName } from '../util';
 import { styleMatch } from './styles';
 
 const MINZOOM = 12;
@@ -101,8 +100,8 @@ export class PixiLayerOsm extends AbstractLayer {
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-    let entities = context.history().intersects(map.extent());             // Gather data in view
-    entities = context.filterSystem().filter(entities, this.context.graph());  // Apply feature filters
+    let entities = context.history().intersects(map.extent());   // Gather data in view
+    entities = context.filterSystem().filter(entities, graph);   // Apply feature filters
 
     const data = {
       polygons: new Map(),
@@ -220,10 +219,12 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderPolygons(frame, projection, zoom, data) {
     const entities = data.polygons;
-    const graph = this.context.graph();
-    const presetSystem = this.context.presetSystem();
+    const context = this.context;
+    const graph = context.graph();
+    const l10n = context.localizationSystem();
+    const presetSystem = context.presetSystem();
     const pointsContainer = this.scene.groups.get('points');
-    const showPoints = this.context.filterSystem().isEnabled('points');
+    const showPoints = context.filterSystem().isEnabled('points');
 
     // For deciding if an unlabeled polygon feature is interesting enough to show a virtual pin.
     // Note that labeled polygon features will always get a virtual pin.
@@ -302,7 +303,7 @@ export class PixiLayerOsm extends AbstractLayer {
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
           feature.style = style;
 
-          const label = utilDisplayPOIName(entity);
+          const label = l10n.displayPOIName(entity);
           feature.label = label;
 
           // POI = "Point of Interest" -and- "Pole of Inaccessability"
@@ -375,7 +376,9 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderLines(frame, projection, zoom, data) {
     const entities = data.lines;
-    const graph = this.context.graph();
+    const context = this.context;
+    const graph = context.graph();
+    const l10n = context.localizationSystem();
     const lineContainer = this.lineContainer;
 
     for (const [entityID, entity] of entities) {
@@ -464,7 +467,7 @@ export class PixiLayerOsm extends AbstractLayer {
             }
             feature.style = style;
 
-            feature.label = utilDisplayName(entity);
+            feature.label = l10n.displayName(entity);
           }
 
           feature.update(projection, zoom);
@@ -501,7 +504,8 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.vertices;
     const context = this.context;
     const graph = context.graph();
-    const presetSystem = this.context.presetSystem();
+    const l10n = context.localizationSystem();
+    const presetSystem = context.presetSystem();
 
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
@@ -589,7 +593,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = utilDisplayName(node);
+        feature.label = l10n.displayName(node);
       }
 
       feature.update(projection, zoom);
@@ -607,8 +611,10 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderPoints(frame, projection, zoom, data) {
     const entities = data.points;
-    const graph = this.context.graph();
-    const presetSystem = this.context.presetSystem();
+    const context = this.context;
+    const graph = context.graph();
+    const l10n = context.localizationSystem();
+    const presetSystem = context.presetSystem();
     const pointsContainer = this.scene.groups.get('points');
 
     for (const [nodeID, node] of entities) {
@@ -647,7 +653,7 @@ export class PixiLayerOsm extends AbstractLayer {
           iconName = preset?.icon;
         }
 
-        const directions = node.directions(graph, this.context.projection);
+        const directions = node.directions(graph, context.projection);
 
         // set marker style
         let markerStyle = {
@@ -672,7 +678,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = utilDisplayName(node);
+        feature.label = l10n.displayName(node);
       }
 
       feature.update(projection, zoom);

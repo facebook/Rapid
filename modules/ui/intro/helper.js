@@ -1,14 +1,12 @@
-import { t, localizer } from '../../core/localizer';
 import { geoSphericalDistance, vecNormalizedDot } from '@rapid-sdk/math';
 import { uiCmd } from '../cmd';
 
 /**
  * insert an icon
  */
-export function icon(name, svgklass, useklass) {
-  return '<svg class="icon ' + (svgklass || '') + '">' +
-    '<use xlink:href="' + name + '"' +
-    (useklass ? ' class="' + useklass + '"' : '') + '></use></svg>';
+export function icon(name, klass) {
+  const svgklass = 'icon' + (klass ? ` ${klass}` : '');
+  return `<svg class="${svgklass}"><use xlink:href="${name}"></use></svg>`;
 }
 
 
@@ -25,7 +23,10 @@ export function eventCancel(d3_event) {
 // label replacements suitable for tutorials and documentation. Optionally supplemented
 // with custom `replacements`
 let helpStringReplacements;
-export function helpHtml(id, replacements) {
+export function helpHtml(context, id, replacements) {
+  const l10n = context.localizationSystem();
+  const isRTL = l10n.isRTL();
+
   // only load these the first time
   if (!helpStringReplacements) {
     helpStringReplacements = {
@@ -40,8 +41,8 @@ export function helpHtml(id, replacements) {
       data_icon: icon('#rapid-icon-data', 'inline'),
       inspect: icon('#rapid-icon-inspect', 'inline'),
       help_icon: icon('#rapid-icon-help', 'inline'),
-      undo_icon: icon(localizer.textDirection() === 'rtl' ? '#rapid-icon-redo' : '#rapid-icon-undo', 'inline'),
-      redo_icon: icon(localizer.textDirection() === 'rtl' ? '#rapid-icon-undo' : '#rapid-icon-redo', 'inline'),
+      undo_icon: icon(isRTL ? '#rapid-icon-redo' : '#rapid-icon-undo', 'inline'),
+      redo_icon: icon(isRTL ? '#rapid-icon-undo' : '#rapid-icon-redo', 'inline'),
       save_icon: icon('#rapid-icon-save', 'inline'),
 
       // operation icons
@@ -74,66 +75,66 @@ export function helpHtml(id, replacements) {
       pinch_icon: icon('#rapid-walkthrough-pinch-apart', 'inline operation'),
 
       // insert keys; may be localized and platform-dependent
-      shift: uiCmd.display('⇧'),
-      alt: uiCmd.display('⌥'),
-      return: uiCmd.display('↵'),
-      esc: t.html('shortcuts.key.esc'),
-      space: t.html('shortcuts.key.space'),
-      add_note_key: t.html('modes.add_note.key'),
-      help_key: t.html('help.key'),
-      shortcuts_key: t.html('shortcuts.toggle.key'),
+      shift: uiCmd.display(context, '⇧'),
+      alt: uiCmd.display(context, '⌥'),
+      return: uiCmd.display(context, '↵'),
+      esc: l10n.tHtml('shortcuts.key.esc'),
+      space: l10n.tHtml('shortcuts.key.space'),
+      add_note_key: l10n.tHtml('modes.add_note.key'),
+      help_key: l10n.tHtml('help.key'),
+      shortcuts_key: l10n.tHtml('shortcuts.toggle.key'),
 
       // reference localized UI labels directly so that they'll always match
-      save: t.html('save.title'),
-      undo: t.html('undo.title'),
-      redo: t.html('redo.title'),
-      upload: t.html('commit.save'),
-      point: t.html('modes.add_point.title'),
-      line: t.html('modes.add_line.title'),
-      area: t.html('modes.add_area.title'),
-      note: t.html('modes.add_note.label'),
+      save: l10n.tHtml('save.title'),
+      undo: l10n.tHtml('undo.title'),
+      redo: l10n.tHtml('redo.title'),
+      upload: l10n.tHtml('commit.save'),
+      point: l10n.tHtml('modes.add_point.title'),
+      line: l10n.tHtml('modes.add_line.title'),
+      area: l10n.tHtml('modes.add_area.title'),
+      note: l10n.tHtml('modes.add_note.label'),
 
-      circularize: t.html('operations.circularize.title'),
-      continue: t.html('operations.continue.title'),
-      copy: t.html('operations.copy.title'),
-      delete: t.html('operations.delete.title'),
-      disconnect: t.html('operations.disconnect.title'),
-      downgrade: t.html('operations.downgrade.title'),
-      extract: t.html('operations.extract.title'),
-      merge: t.html('operations.merge.title'),
-      move: t.html('operations.move.title'),
-      orthogonalize: t.html('operations.orthogonalize.title'),
-      paste: t.html('operations.paste.title'),
-      reflect_long: t.html('operations.reflect.title.long'),
-      reflect_short: t.html('operations.reflect.title.short'),
-      reverse: t.html('operations.reverse.title'),
-      rotate: t.html('operations.rotate.title'),
-      split: t.html('operations.split.title'),
-      straighten: t.html('operations.straighten.title'),
+      circularize: l10n.tHtml('operations.circularize.title'),
+      continue: l10n.tHtml('operations.continue.title'),
+      copy: l10n.tHtml('operations.copy.title'),
+      delete: l10n.tHtml('operations.delete.title'),
+      disconnect: l10n.tHtml('operations.disconnect.title'),
+      downgrade: l10n.tHtml('operations.downgrade.title'),
+      extract: l10n.tHtml('operations.extract.title'),
+      merge: l10n.tHtml('operations.merge.title'),
+      move: l10n.tHtml('operations.move.title'),
+      orthogonalize: l10n.tHtml('operations.orthogonalize.title'),
+      paste: l10n.tHtml('operations.paste.title'),
+      reflect_long: l10n.tHtml('operations.reflect.title.long'),
+      reflect_short: l10n.tHtml('operations.reflect.title.short'),
+      reverse: l10n.tHtml('operations.reverse.title'),
+      rotate: l10n.tHtml('operations.rotate.title'),
+      split: l10n.tHtml('operations.split.title'),
+      straighten: l10n.tHtml('operations.straighten.title'),
 
-      map_data: t.html('map_data.title'),
-      osm_notes: t.html('map_data.layers.notes.title'),
-      fields: t.html('inspector.fields'),
-      tags: t.html('inspector.tags'),
-      relations: t.html('inspector.relations'),
-      new_relation: t.html('inspector.new_relation'),
-      turn_restrictions: t.html('_tagging.presets.fields.restrictions.label'),
-      background_settings: t.html('background.description'),
-      imagery_offset: t.html('background.fix_misalignment'),
-      start_the_walkthrough: t.html('splash.walkthrough'),
-      help: t.html('help.title'),
-      ok: t.html('intro.ok')
+      map_data: l10n.tHtml('map_data.title'),
+      osm_notes: l10n.tHtml('map_data.layers.notes.title'),
+      fields: l10n.tHtml('inspector.fields'),
+      tags: l10n.tHtml('inspector.tags'),
+      relations: l10n.tHtml('inspector.relations'),
+      new_relation: l10n.tHtml('inspector.new_relation'),
+      turn_restrictions: l10n.tHtml('_tagging.presets.fields.restrictions.label'),
+      background_settings: l10n.tHtml('background.description'),
+      imagery_offset: l10n.tHtml('background.fix_misalignment'),
+      start_the_walkthrough: l10n.tHtml('splash.walkthrough'),
+      help: l10n.tHtml('help.title'),
+      ok: l10n.tHtml('intro.ok')
     };
   }
 
-  var reps;
+  let reps;
   if (replacements) {
     reps = Object.assign(replacements, helpStringReplacements);
   } else {
     reps = helpStringReplacements;
   }
 
-  return t.html(id, reps).replace(/\`(.*?)\`/g, '<kbd>$1</kbd>');   // use keyboard key styling for shortcuts
+  return l10n.tHtml(id, reps).replace(/\`(.*?)\`/g, '<kbd>$1</kbd>');   // use keyboard key styling for shortcuts
 }
 
 
@@ -159,8 +160,9 @@ export let missingStrings = {};
  * @param  key
  * @param  text
  */
-function _checkKey(key, text) {
-  if (t(key, { default: undefined }) === undefined) {
+function _checkKey(context, key, text) {
+  const l10n = context.localizationSystem();
+  if (l10n.t(key, { default: undefined }) === undefined) {
     if (missingStrings.hasOwnProperty(key)) return;  // warn once
     missingStrings[key] = text;
     const missing = `${key}: ${text}`;
@@ -173,34 +175,36 @@ function _checkKey(key, text) {
  * Localize the given walkthrough entity
  * @param  obj
  */
-export function localize(obj) {
+export function localize(context, obj) {
+  const l10n = context.localizationSystem();
   let key;
 
   // Assign name if entity has one..
   let name = obj.tags && obj.tags.name;
   if (name) {
     key = 'intro.graph.name.' + slugify(name);
-    obj.tags.name = t(key, { default: name });
-    _checkKey(key, name);
+    obj.tags.name = l10n.t(key, { default: name });
+    _checkKey(context, key, name);
   }
 
   // Assign street name if entity has one..
   let street = obj.tags && obj.tags['addr:street'];
   if (street) {
     key = 'intro.graph.name.' + slugify(street);
-    obj.tags['addr:street'] = t(key, { default: street });
-    _checkKey(key, street);
+    obj.tags['addr:street'] = l10n.t(key, { default: street });
+    _checkKey(context, key, street);
 
     // Add address details common across walkthrough..
-    const ADDR_TAGS = [
+    const addrTags = [
       'block_number', 'city', 'county', 'district', 'hamlet', 'neighbourhood',
       'postcode', 'province', 'quarter', 'state', 'subdistrict', 'suburb'
     ];
-    ADDR_TAGS.forEach(k => {
+
+    for (const k of addrTags) {
       const key = `intro.graph.${k}`;
       const tag = `addr:${k}`;
       const val = obj.tags && obj.tags[tag];
-      const str = t(key, { default: val });
+      const str = l10n.t(key, { default: val });
 
       if (str) {
         if (str.match(/^<.*>$/) !== null) {
@@ -209,7 +213,7 @@ export function localize(obj) {
           obj.tags[tag] = str;
         }
       }
-    });
+    }
   }
 
   return obj;

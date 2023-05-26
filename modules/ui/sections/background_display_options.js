@@ -1,20 +1,20 @@
-import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundDisplayOptions(context) {
-  const prefs = context.storageSystem();
+  const l10n = context.localizationSystem();
+  const storageSystem = context.storageSystem();
   const imagerySystem = context.imagerySystem();
 
   const section = uiSection('background-display-options', context)
-    .label(t.html('background.display_options'))
+    .label(l10n.tHtml('background.display_options'))
     .disclosureContent(renderDisclosureContent);
 
-  let _storedOpacity = prefs.getItem('background-opacity');
+  let _storedOpacity = storageSystem.getItem('background-opacity');
   const MINVAL = 0;
   const MAXVAL = 3;
-  const SETTINGS = ['brightness', 'contrast', 'saturation', 'sharpness'];
+  const settings = ['brightness', 'contrast', 'saturation', 'sharpness'];
 
   let _options = {
     brightness: (_storedOpacity !== null ? (+_storedOpacity) : 1),
@@ -33,7 +33,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
 
     _options[d] = val;
     if (d === 'brightness') {
-      prefs.setItem('background-opacity', val);
+      storageSystem.setItem('background-opacity', val);
       imagerySystem.brightness = val;
     } else if (d === 'contrast') {
       imagerySystem.contrast = val;
@@ -56,14 +56,14 @@ export function uiSectionBackgroundDisplayOptions(context) {
 
     // add slider controls
     let slidersEnter = containerEnter.selectAll('.display-control')
-      .data(SETTINGS)
+      .data(settings)
       .enter()
       .append('div')
       .attr('class', d => `display-control display-control-${d}`);
 
     slidersEnter
       .append('h5')
-      .html(d => t.html(`background.${d}`))
+      .html(d => l10n.tHtml(`background.${d}`))
       .append('span')
       .attr('class', d => `display-option-value display-option-value-${d}`);
 
@@ -84,24 +84,24 @@ export function uiSectionBackgroundDisplayOptions(context) {
 
     sildersControlEnter
       .append('button')
-      .attr('title', t('background.reset'))
+      .attr('title', l10n.t('background.reset'))
       .attr('class', d => `display-option-reset display-option-reset-${d}`)
       .on('click', (d3_event, d) => {
         if (d3_event.button !== 0) return;  // left click only
         updateValue(d, 1);
       })
-      .call(uiIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
+      .call(uiIcon('#rapid-icon-' + (l10n.isRTL() ? 'redo' : 'undo')));
 
     // reset all button
     containerEnter
       .append('a')
       .attr('class', 'display-option-resetlink')
       .attr('href', '#')
-      .html(t.html('background.reset_all'))
+      .html(l10n.tHtml('background.reset_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        for (let i = 0; i < SETTINGS.length; i++) {
-          updateValue(SETTINGS[i], 1);
+        for (const s of settings) {
+          updateValue(s, 1);
         }
       });
 

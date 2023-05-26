@@ -9,20 +9,6 @@ describe.skip('UrlHashSystem', () => {
 
     context = Rapid.coreContext();
     window.context = context;  // lol
-    let cache = context.dataLoaderSystem()._cachedData;  // cache empty data so we dont try loading anything
-    cache.imagery = [];
-    cache.languages = { en: { nativeName: 'English'} };
-    cache.locales = { en: { rtl: false, pct: 1 } };
-    cache.locales_index_general = { en: { rtl: false, pct: 1 } };
-    cache.locales_index_tagging = { en: { rtl: false, pct: 1 } };
-    cache.locale_general_en = { en: {} };
-    cache.locale_tagging_en = { en: {} };
-    cache.preset_categories = {};
-    cache.preset_defaults = {};
-    cache.preset_fields = {};
-    cache.preset_presets = {};
-    cache.deprecated = [];
-    cache.discarded = {};
     context.init();
     context.container(container);
     container.call(context.map().render);

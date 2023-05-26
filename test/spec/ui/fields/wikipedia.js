@@ -1,17 +1,6 @@
 describe('uiFieldWikipedia', function() {
     var entity, context, selection, field;
 
-    before(function() {
-        Rapid.fileFetcher.cache().wmf_sitematrix = [
-          ['German','Deutsch','de'],
-          ['English','English','en']
-        ];
-    });
-
-    after(function() {
-        delete Rapid.fileFetcher.cache().wmf_sitematrix;
-    });
-
     beforeEach(function() {
         entity = Rapid.osmNode({id: 'n12345'});
         context = Rapid.coreContext().assetPath('../dist/').init();
@@ -57,7 +46,7 @@ describe('uiFieldWikipedia', function() {
     }
 
     it('recognizes lang:title format', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context);
+        var wikipedia = Rapid.uiFieldWikipedia(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(wikipedia);
             wikipedia.tags({wikipedia: 'en:Title'});
@@ -69,7 +58,7 @@ describe('uiFieldWikipedia', function() {
     });
 
     it('sets language, value', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
+        var wikipedia = Rapid.uiFieldWikipedia(context, field).entityIDs([entity.id]);
         window.setTimeout(function() {   // async, so data will be available
             wikipedia.on('change', changeTags);
             selection.call(wikipedia);
@@ -95,7 +84,7 @@ describe('uiFieldWikipedia', function() {
     });
 
     it('recognizes pasted URLs', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
+        var wikipedia = Rapid.uiFieldWikipedia(context, field).entityIDs([entity.id]);
         window.setTimeout(function() {   // async, so data will be available
             wikipedia.on('change', changeTags);
             selection.call(wikipedia);
@@ -111,12 +100,12 @@ describe('uiFieldWikipedia', function() {
 
     // note - currently skipping the tests that use `options` to delay responses
     it('preserves existing language', function(done) {
-        var wikipedia1 = Rapid.uiFieldWikipedia(field, context);
+        var wikipedia1 = Rapid.uiFieldWikipedia(context, field);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(wikipedia1);
             Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
 
-            var wikipedia2 = Rapid.uiFieldWikipedia(field, context);
+            var wikipedia2 = Rapid.uiFieldWikipedia(context, field);
             window.setTimeout(function() {   // async, so data will be available
                 selection.call(wikipedia2);
                 wikipedia2.tags({});
@@ -127,7 +116,7 @@ describe('uiFieldWikipedia', function() {
     });
 
     it.skip('does not set delayed wikidata tag if graph has changed', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
+        var wikipedia = Rapid.uiFieldWikipedia(context, field).entityIDs([entity.id]);
         wikipedia.on('change', changeTags);
         selection.call(wikipedia);
 

@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 
-import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
@@ -68,7 +67,7 @@ export function uiIntroArea(context, curtain) {
         _rejectStep = reject;
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-area',
-          tipHtml: helpHtml('intro.areas.add_playground')
+          tipHtml: helpHtml(context, 'intro.areas.add_playground')
         });
 
         tooltip.selectAll('.popover-inner')
@@ -95,8 +94,8 @@ export function uiIntroArea(context, curtain) {
       _rejectStep = reject;
 
       const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
-      const startDrawString = helpHtml('intro.areas.start_playground') +
-        helpHtml(`intro.areas.starting_node_${textID}`);
+      const startDrawString = helpHtml(context, 'intro.areas.start_playground') +
+        helpHtml(context, `intro.areas.starting_node_${textID}`);
 
       curtain.reveal({
         revealExtent: playgroundExtent,
@@ -132,7 +131,7 @@ export function uiIntroArea(context, curtain) {
 
       curtain.reveal({
         revealExtent: playgroundExtent,
-        tipHtml: helpHtml('intro.areas.continue_playground')
+        tipHtml: helpHtml(context, 'intro.areas.continue_playground')
       });
 
       history.on('change.intro', difference => {
@@ -162,8 +161,8 @@ export function uiIntroArea(context, curtain) {
       _rejectStep = reject;
 
       const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
-      const finishString = helpHtml(`intro.areas.finish_area_${textID}`) +
-        helpHtml('intro.areas.finish_playground');
+      const finishString = helpHtml(context, `intro.areas.finish_area_${textID}`) +
+        helpHtml(context, 'intro.areas.finish_playground');
 
       curtain.reveal({
         revealExtent: playgroundExtent,
@@ -191,7 +190,7 @@ export function uiIntroArea(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
-          tipHtml: helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
+          tipHtml: helpHtml(context, 'intro.areas.search_playground', { preset: playgroundPreset.name() })
         });
 
         container.select('.preset-search-input')
@@ -207,7 +206,7 @@ export function uiIntroArea(context, curtain) {
           curtain.reveal({
             revealNode: first.select('.preset-list-button').node(),
             revealPadding: 5,
-            tipHtml: helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
+            tipHtml: helpHtml(context, 'intro.areas.search_playground', { preset: playgroundPreset.name() })
           });
 
           container.select('.preset-search-input')
@@ -287,7 +286,7 @@ export function uiIntroArea(context, curtain) {
           curtain.reveal({
             revealSelector: '.more-fields .combobox-input',
             revealPadding: 5,
-            tipHtml: helpHtml('intro.areas.add_field', {
+            tipHtml: helpHtml(context, 'intro.areas.add_field', {
               name: nameField.label(),
               description: descriptionField.label()
             })
@@ -353,7 +352,7 @@ export function uiIntroArea(context, curtain) {
       curtain.reveal({
         revealSelector: 'div.combobox',
         revealPadding: 5,
-        tipHtml: helpHtml('intro.areas.choose_field', { field: descriptionField.label() })
+        tipHtml: helpHtml(context, 'intro.areas.choose_field', { field: descriptionField.label() })
       });
 
       context.on('enter.intro', reject);   // disallow mode change
@@ -381,7 +380,7 @@ export function uiIntroArea(context, curtain) {
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.areas.describe_playground', { button: icon('#rapid-icon-close', 'inline') })
+        tipHtml: helpHtml(context, 'intro.areas.describe_playground', { button: icon('#rapid-icon-close', 'inline') })
       });
 
       context.on('enter.intro', () => resolve(playAsync));
@@ -404,8 +403,8 @@ export function uiIntroArea(context, curtain) {
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.areas.retry_add_field', { field: descriptionField.label() }),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.areas.retry_add_field', { field: descriptionField.label() }),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(clickAddFieldAsync)
       });
 
@@ -424,8 +423,8 @@ export function uiIntroArea(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-line',
-      tipHtml: helpHtml('intro.areas.play', { next: t('intro.lines.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.areas.play', { next: context.t('intro.lines.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

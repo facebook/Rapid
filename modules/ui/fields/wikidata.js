@@ -5,7 +5,6 @@ import { actionChangeTags } from '../../actions/change_tags';
 import { uiIcon } from '../icon';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { uiCombobox } from '../combobox';
-import { t } from '../../core/localizer';
 
 
 export function uiFieldWikidata(context, uifield) {
@@ -83,7 +82,7 @@ export function uiFieldWikidata(context, uifield) {
         searchRowEnter
             .append('button')
             .attr('class', 'form-field-button wiki-link')
-            .attr('title', t('icons.view_on', { domain: 'wikidata.org' }))
+            .attr('title', context.t('icons.view_on', { domain: 'wikidata.org' }))
             .call(uiIcon('#rapid-icon-out-link'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
@@ -107,7 +106,7 @@ export function uiFieldWikidata(context, uifield) {
         enter
             .append('span')
             .attr('class', 'label')
-            .html(function(d) { return t.html('wikidata.' + d); });
+            .html(function(d) { return context.tHtml('wikidata.' + d); });
 
         enter
             .append('input')
@@ -119,7 +118,7 @@ export function uiFieldWikidata(context, uifield) {
         enter
             .append('button')
             .attr('class', 'form-field-button')
-            .attr('title', t('icons.copy'))
+            .attr('title', context.t('icons.copy'))
             .call(uiIcon('#rapid-operation-copy'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
@@ -284,7 +283,7 @@ export function uiFieldWikidata(context, uifield) {
         var isMixed = Array.isArray(tags[key]);
         _searchInput
             .attr('title', isMixed ? tags[key].filter(Boolean).join('\n') : null)
-            .attr('placeholder', isMixed ? t('inspector.multiple_values') : '')
+            .attr('placeholder', isMixed ? context.t('inspector.multiple_values') : '')
             .classed('mixed', isMixed);
 
         _qid = typeof tags[key] === 'string' && tags[key] || '';

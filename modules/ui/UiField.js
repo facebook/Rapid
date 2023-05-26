@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilUniqueString } from '@rapid-sdk/util';
 
-import { t, localizer } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 // import { uiFieldHelp } from './field_help';
@@ -56,7 +55,7 @@ export class UiField {
     this.keys = presetField.keys;
     this.t = presetField.t;
     this.tHtml = presetField.tHtml;
-    this.hasTextForStringId = presetField.hasTextForStringId;
+    this.hasTextForStringID = presetField.hasTextForStringID;
     this.uid = utilUniqueString(`form-field-${presetField.safeid}`);
 
     this._show = this.options.show;
@@ -70,8 +69,8 @@ export class UiField {
     }
 
     this._locked = false;
-    this._lockedTip = uiTooltip()
-      .title(t.html('inspector.lock.suggestion', { label: this.label }))
+    this._lockedTip = uiTooltip(context)
+      .title(context.tHtml('inspector.lock.suggestion', { label: this.label }))
       .placement('bottom');
 
 
@@ -168,6 +167,8 @@ export class UiField {
    * @param  `selection`  A d3-selection to a parent element that the field should render itself into
    */
   render(selection) {
+    const l10n = this.context.localizationSystem();
+
     let container = selection.selectAll('.form-field')
       .data([this]);
 
@@ -200,7 +201,7 @@ export class UiField {
         labelEnter
           .append('button')
           .attr('class', 'remove-icon')
-          .attr('title', t('icons.remove'))
+          .attr('title', l10n.t('icons.remove'))
           .call(uiIcon('#rapid-operation-delete'));
       }
 
@@ -208,8 +209,8 @@ export class UiField {
         labelEnter
           .append('button')
           .attr('class', 'modified-icon')
-          .attr('title', t('icons.undo'))
-          .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-redo' : '#rapid-icon-undo'));
+          .attr('title', l10n.t('icons.undo'))
+          .call(uiIcon(l10n.isRTL() ? '#rapid-icon-redo' : '#rapid-icon-undo'));
       }
     }
 

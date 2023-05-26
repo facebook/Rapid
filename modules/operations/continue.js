@@ -1,6 +1,5 @@
 import { utilArrayGroupBy } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
@@ -58,19 +57,19 @@ export function operationContinue(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.continue.${disabledReason}`) :
-      t('operations.continue.description');
+      context.t(`operations.continue.${disabledReason}`) :
+      context.t('operations.continue.description');
   };
 
 
   operation.annotation = function() {
-    return t('operations.continue.annotation.line');
+    return context.t('operations.continue.annotation.line');
   };
 
 
   operation.id = 'continue';
-  operation.keys = [ t('operations.continue.key') ];
-  operation.title = t('operations.continue.title');
+  operation.keys = [ context.t('operations.continue.key') ];
+  operation.title = context.t('operations.continue.title');
   operation.behavior = new BehaviorKeyOperation(context, operation);
 
   return operation;
