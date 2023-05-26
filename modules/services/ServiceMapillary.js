@@ -397,7 +397,7 @@ export class ServiceMapillary {
   // Move to an image
   // note: call `photoSystem.selectPhoto(layerID, photoID)` instead
   // That will deal with the URL and call this function
-  selectImage(context, imageID) {
+  selectImage(imageID) {
     if (this._mlyViewer && imageID) {
       this._mlyViewer
         .moveTo(imageID)

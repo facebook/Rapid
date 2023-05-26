@@ -222,10 +222,10 @@ scene.clearClass('selected');
 scene.classData(layerID, photoID, 'selected');
 
       // Try to show the viewer with the image selected..
-      service.loadViewerAsync(context)
+      service.loadViewerAsync()
         .then(() => {
-          service.selectImage(context, photoID);
-          service.showViewer(context);
+          service.selectImage(photoID);
+          service.showViewer();
         });
     }
 

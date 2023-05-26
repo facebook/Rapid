@@ -1,17 +1,11 @@
 describe('ServiceOsmWikibase', () => {
   let wikibase;
 
-  before(() => {
-    fetchMock.resetHistory();
-  });
 
   beforeEach(() => {
+    fetchMock.reset();
     wikibase = new Rapid.ServiceOsmWikibase();
     wikibase.init();
-  });
-
-  afterEach(() => {
-    fetchMock.resetHistory();
   });
 
 

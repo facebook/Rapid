@@ -1,125 +1,99 @@
-describe('validations.missing_tag', function () {
-    var context;
+describe('validations.missing_tag', () => {
 
-    beforeEach(function() {
-        context = Rapid.coreContext().assetPath('../dist/').init();
-    });
+  class MockLocalizationSystem {
+    constructor() {}
+  }
 
-    function createWay(tags) {
-        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
-        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags});
-
-        context.perform(
-            Rapid.actionAddEntity(n1),
-            Rapid.actionAddEntity(n2),
-            Rapid.actionAddEntity(w)
-        );
+  class MockContext {
+    constructor() {
+      this._l10n = new MockLocalizationSystem(this);
+      this.services = new Map();
     }
+    localizationSystem() { return this._l10n; }
+  }
 
-    function createRelation(tags) {
-        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
-        var n3 = Rapid.osmNode({id: 'n-3', loc: [5,5]});
-        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2', 'n-3', 'n-1']});
-        var r = Rapid.osmRelation({id: 'r-1', members: [{id: 'w-1'}], tags: tags});
+  const validator = Rapid.validationMissingTag(new MockContext());
 
-        context.perform(
-            Rapid.actionAddEntity(n1),
-            Rapid.actionAddEntity(n2),
-            Rapid.actionAddEntity(n3),
-            Rapid.actionAddEntity(w),
-            Rapid.actionAddEntity(r)
-        );
-    }
 
-    function validate() {
-        var validator = Rapid.validationMissingTag(context);
-        var changes = context.history().changes();
-        var entities = changes.modified.concat(changes.created);
-        var issues = [];
-        entities.forEach(function(entity) {
-            issues = issues.concat(validator(entity, context.graph()));
-        });
-        return issues;
-    }
+  it('ignores way with descriptive tags', () => {
+    const w = Rapid.osmWay({ tags: { leisure: 'park' }});
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(0);
+  });
 
-    it('has no errors on init', function() {
-        var issues = validate();
-        expect(issues).to.have.lengthOf(0);
-    });
+  it('ignores multipolygon with descriptive tags', () => {
+    const r = Rapid.osmRelation({ tags: { type: 'multipolygon', leisure: 'park' }, members: [] });
+    const g = new Rapid.Graph([r]);
+    const issues = validator(r, g);
+    expect(issues).to.have.lengthOf(0);
+  });
 
-    it('ignores way with descriptive tags', function() {
-        createWay({ leisure: 'park' });
-        var issues = validate();
-        expect(issues).to.have.lengthOf(0);
-    });
+  it('flags no tags', () => {
+    const w = Rapid.osmWay({ tags: {} });
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(1);
+    const issue = issues[0];
+    expect(issue.type).to.eql('missing_tag');
+    expect(issue.subtype).to.eql('any');
+    expect(issue.entityIds).to.have.lengthOf(1);
+    expect(issue.entityIds[0]).to.eql(w.id);
+  });
 
-    it('ignores multipolygon with descriptive tags', function() {
-        createRelation({ leisure: 'park', type: 'multipolygon' });
-        var issues = validate();
-        expect(issues).to.have.lengthOf(0);
-    });
+  it('flags no descriptive tags on a way', () => {
+    const w = Rapid.osmWay({ tags: { name: 'Main Street', source: 'Bing' } });
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(1);
+    const issue = issues[0];
+    expect(issue.type).to.eql('missing_tag');
+    expect(issue.subtype).to.eql('descriptive');
+    expect(issue.entityIds).to.have.lengthOf(1);
+    expect(issue.entityIds[0]).to.eql(w.id);
+  });
 
-    it('flags no tags', function() {
-        createWay({});
-        var issues = validate();
-        expect(issues).to.have.lengthOf(1);
-        var issue = issues[0];
-        expect(issue.type).to.eql('missing_tag');
-        expect(issue.subtype).to.eql('any');
-        expect(issue.entityIds).to.have.lengthOf(1);
-        expect(issue.entityIds[0]).to.eql('w-1');
-    });
+  it('flags no descriptive tags on multipolygon', () => {
+    const r = Rapid.osmRelation({ tags: { name: 'City Park', source: 'Bing', type: 'multipolygon' }, members: [] });
+    const g = new Rapid.Graph([r]);
+    const issues = validator(r, g);
+    expect(issues).to.have.lengthOf(1);
+    const issue = issues[0];
+    expect(issue.type).to.eql('missing_tag');
+    expect(issue.subtype).to.eql('descriptive');
+    expect(issue.entityIds).to.have.lengthOf(1);
+    expect(issue.entityIds[0]).to.eql(r.id);
+  });
 
-    it('flags no descriptive tags', function() {
-        createWay({ name: 'Main Street', source: 'Bing' });
-        var issues = validate();
-        expect(issues).to.have.lengthOf(1);
-        var issue = issues[0];
-        expect(issue.type).to.eql('missing_tag');
-        expect(issue.subtype).to.eql('descriptive');
-        expect(issue.entityIds).to.have.lengthOf(1);
-        expect(issue.entityIds[0]).to.eql('w-1');
-    });
+  it('flags no type tag on relation', () => {
+    const r = Rapid.osmRelation({ tags: { name: 'City Park', source: 'Bing', leisure: 'park' }, members: [] });
+    const g = new Rapid.Graph([r]);
+    const issues = validator(r, g);
+    expect(issues).to.have.lengthOf(1);
+    const issue = issues[0];
+    expect(issue.type).to.eql('missing_tag');
+    expect(issue.subtype).to.eql('relation_type');
+    expect(issue.entityIds).to.have.lengthOf(1);
+    expect(issue.entityIds[0]).to.eql(r.id);
+  });
 
-    it('flags no descriptive tags on multipolygon', function() {
-        createRelation({ name: 'City Park', source: 'Bing', type: 'multipolygon' });
-        var issues = validate();
-        expect(issues).to.have.lengthOf(1);
-        var issue = issues[0];
-        expect(issue.type).to.eql('missing_tag');
-        expect(issue.subtype).to.eql('descriptive');
-        expect(issue.entityIds).to.have.lengthOf(1);
-        expect(issue.entityIds[0]).to.eql('r-1');
-    });
+  it('ignores highway with classification', () => {
+    const w = Rapid.osmWay({ tags: { highway: 'primary' }});
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(0);
+  });
 
-    it('flags no type tag on relation', function() {
-        createRelation({ name: 'City Park', source: 'Bing', leisure: 'park' });
-        var issues = validate();
-        expect(issues).to.have.lengthOf(1);
-        var issue = issues[0];
-        expect(issue.type).to.eql('missing_tag');
-        expect(issue.subtype).to.eql('relation_type');
-        expect(issue.entityIds).to.have.lengthOf(1);
-        expect(issue.entityIds[0]).to.eql('r-1');
-    });
-
-    it('ignores highway with classification', function() {
-        createWay({ highway: 'primary' });
-        var issues = validate();
-        expect(issues).to.have.lengthOf(0);
-    });
-
-    it('flags highway=road', function() {
-        createWay({ highway: 'road' });
-        var issues = validate();
-        expect(issues).to.have.lengthOf(1);
-        var issue = issues[0];
-        expect(issue.type).to.eql('missing_tag');
-        expect(issue.subtype).to.eql('highway_classification');
-        expect(issue.entityIds).to.have.lengthOf(1);
-        expect(issue.entityIds[0]).to.eql('w-1');
-    });
+  it('flags highway=road', () => {
+    const w = Rapid.osmWay({ tags: { highway: 'road' }});
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(1);
+    const issue = issues[0];
+    expect(issue.type).to.eql('missing_tag');
+    expect(issue.subtype).to.eql('highway_classification');
+    expect(issue.entityIds).to.have.lengthOf(1);
+    expect(issue.entityIds[0]).to.eql(w.id);
+  });
 
 });

@@ -1,55 +1,43 @@
-describe('serviceKartaview', () => {
-  const dimensions = [64, 64];
-  let context, kartaview;
+describe('ServiceKartaview', () => {
+  let _kartaview, _projection;
 
-  before(() => {
-    Rapid.services.kartaview = Rapid.serviceKartaview;
-    fetchMock.resetHistory();
-  });
+  class MockContext {
+    constructor() { }
+    container() { return null; }
+  }
 
-  after(() => {
-    delete Rapid.services.kartaview;
-  });
 
   beforeEach(() => {
-    context = Rapid.coreContext()
-      .assetPath('../dist/')
-      .init();
-    context.projection
+    fetchMock.reset();
+
+    _projection = new sdk.Projection()
       .scale(sdk.geoZoomToScale(14))
       .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], dimensions]);
+      .dimensions([[0,0], [64, 64]]);
 
-    kartaview = Rapid.services.kartaview;
-    kartaview.reset();
-    fetchMock.resetHistory();
-  });
-
-  afterEach(() => {
-    fetchMock.resetHistory();
+    _kartaview = new Rapid.ServiceKartaview(new MockContext());
+    _kartaview.init();
   });
 
 
   describe('#init', () => {
-    it('Initializes cache one time', () => {
-      const cache = kartaview.cache();
+    it('initializes cache', () => {
+      const cache = _kartaview._cache;
       expect(cache).to.have.property('images');
       expect(cache).to.have.property('sequences');
-
-      kartaview.init();
-      const cache2 = kartaview.cache();
-      expect(cache).to.equal(cache2);
+      expect(cache.images).to.be.an.instanceof(Map);
+      expect(cache.sequences).to.be.an.instanceof(Map);
     });
   });
 
   describe('#reset', () => {
-    it('resets cache and image', () => {
-      kartaview.cache().foo = 'bar';
-      kartaview.selectImage(context, {id: 'baz'});
+    it('resets cache and selected image', () => {
+      _kartaview._cache.images.set('foo', { id: 'foo' });
+      _kartaview._selectedImage = 'foo';
 
-      kartaview.reset();
-      expect(kartaview.cache()).to.not.have.property('foo');
-      expect(kartaview.getSelectedImage()).to.be.null;
+      _kartaview.reset();
+      expect(_kartaview._cache.images.has('foo')).to.be.false;
+      expect(_kartaview._selectedImage).to.be.null;
     });
   });
 
@@ -103,12 +91,12 @@ describe('serviceKartaview', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      kartaview.on('loadedImages', () => {
+      _kartaview.on('loadedImages', () => {
         expect(fetchMock.calls().length).to.eql(1);  // 1 nearby-photos
         done();
       });
 
-      kartaview.loadImages(context.projection);
+      _kartaview.loadImages(_projection);
     });
 
 
@@ -162,15 +150,15 @@ describe('serviceKartaview', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      context.projection.translate([0, 0]);
-      kartaview.on('loadedImages', spy);
-      kartaview.loadImages(context.projection);
+      _projection.translate([0, 0]);
+      _kartaview.on('loadedImages', spy);
+      _kartaview.loadImages(_projection);
 
       window.setTimeout(() => {
         expect(spy).to.have.been.not.called;
         expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
         done();
-      }, 200);
+      }, 50);
     });
   });
 
@@ -183,8 +171,8 @@ describe('serviceKartaview', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1], ca: 90, sequenceID: '100', sequenceIndex: 2 } }
       ];
 
-      kartaview.cache().rtree.load(data);
-      const result = kartaview.images(context.projection);
+      _kartaview._cache.rtree.load(data);
+      const result = _kartaview.images(_projection);
 
       expect(result).to.deep.eql([
         { id: '0', loc: [10,0], ca: 90, sequenceID: '100', sequenceIndex: 0 },
@@ -202,14 +190,14 @@ describe('serviceKartaview', () => {
         { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1], ca: 90, sequenceID: '100', sequenceIndex: 2 } }
       ];
 
-      kartaview.cache().rtree.load(data);
-      kartaview.cache().sequences = new Map().set('100', {
+      _kartaview._cache.rtree.load(data);
+      _kartaview._cache.sequences = new Map().set('100', {
         rotation: 0,
         images: [ data[0].data, data[1].data, data[2].data ],
         v: 1
       });
 
-      const result = kartaview.sequences(context.projection);
+      const result = _kartaview.sequences(_projection);
       expect(result).to.deep.eql([{
         type: 'LineString',
         coordinates: [[10,0], [10,0], [10,1]],
@@ -226,9 +214,9 @@ describe('serviceKartaview', () => {
   describe('#selectedImage', () => {
     it('sets and gets selected image', () => {
       const imagedata = { id: 'foo' };
-      kartaview.cache().images = new Map().set('foo', imagedata);
-      kartaview.selectImage(context, 'foo');
-      expect(kartaview.getSelectedImage()).to.eql(imagedata);
+      _kartaview._cache.images.set('foo', imagedata);
+      _kartaview.selectImage('foo');
+      expect(_kartaview.getSelectedImage()).to.eql(imagedata);
     });
   });
 
