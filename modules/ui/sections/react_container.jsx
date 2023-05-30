@@ -19,7 +19,7 @@ export function uiSectionReactContainer(context) {
 
   const content = (selection) => {
     const sources = context.imagerySystem()
-      .sources(context.map().extent(), context.map().zoom())
+      .sources(context.mapSystem().extent(), context.mapSystem().zoom())
       .filter(d => !d.isHidden() && !d.overlay);
 
     selection
@@ -33,7 +33,7 @@ export function uiSectionReactContainer(context) {
   };
 
 
-  context.map()
+  context.mapSystem()
     .on('draw', _debounce(() => {
         reRenderCount++;
         window.requestIdleCallback(section.reRender);

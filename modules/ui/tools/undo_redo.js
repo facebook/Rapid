@@ -101,7 +101,7 @@ export function uiToolUndoRedo(context) {
       });
     });
 
-    context.map()
+    context.mapSystem()
       .on('draw', debouncedUpdate);
 
     context.history()
@@ -131,7 +131,7 @@ export function uiToolUndoRedo(context) {
       context.keybinding().off(command.key);
     });
 
-    context.map()
+    context.mapSystem()
       .off('draw', debouncedUpdate);
 
     context.history()

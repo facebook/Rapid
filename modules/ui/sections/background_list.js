@@ -9,7 +9,7 @@ import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
 import { uiMapInMap } from '../map_in_map';
-import { ui3DMap } from '../tools/3dmap/3d_map';
+import { uiMap3dViewer } from '../map3d_viewer';
 import { uiSection } from '../section';
 
 
@@ -94,7 +94,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', (d3_event) => {
         d3_event.preventDefault();
-        ui3DMap.toggle();
+        uiMap3dViewer.toggle();
       });
 
     threeDmapLabelEnter
@@ -201,7 +201,7 @@ export function uiSectionBackgroundList(context) {
 
   function drawListItems(layerList, type, change, filter) {
     const sources = imagerySystem
-      .sources(context.map().extent(), context.map().zoom())
+      .sources(context.mapSystem().extent(), context.mapSystem().zoom())
       .filter(filter);
 
     const layerLinks = layerList.selectAll('li')
@@ -336,7 +336,7 @@ export function uiSectionBackgroundList(context) {
 
   function getBackgrounds(filter) {
     return imagerySystem
-      .sources(context.map().extent(), context.map().zoom())
+      .sources(context.mapSystem().extent(), context.mapSystem().zoom())
       .filter(filter);
   }
 
@@ -371,7 +371,7 @@ export function uiSectionBackgroundList(context) {
   imagerySystem
     .on('imagerychange', () => _backgroundList.call(updateLayerSelections));
 
-  context.map()
+  context.mapSystem()
     .on('draw', _debounce(() => {
         // layers in-view may have changed due to map move
         window.requestIdleCallback(section.reRender);

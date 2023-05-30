@@ -53,7 +53,7 @@ export function uiFeatureList(context) {
 
     context
       .on('exit.feature-list', clearSearch);
-//    context.map()
+//    context.mapSystem()
 //     .on('drawn.feature-list', mapDrawn);
 
     context.keybinding()
@@ -106,7 +106,7 @@ export function uiFeatureList(context) {
 
     function features() {
       const graph = context.graph();
-      const centerLoc = context.map().centerLoc();
+      const centerLoc = context.mapSystem().centerLoc();
       const q = search.property('value').toLowerCase();
       let result = [];
 
@@ -333,11 +333,11 @@ export function uiFeatureList(context) {
       d3_event.preventDefault();
 
       if (d.location) {
-        context.map().centerZoomEase([d.location[1], d.location[0]], 19);
+        context.mapSystem().centerZoomEase([d.location[1], d.location[0]], 19);
 
       } else if (d.entity) {
         utilHighlightEntities([d.id], false, context);
-        context.map().zoomToEase(d.entity);
+        context.mapSystem().zoomToEase(d.entity);
         context.enter(modeSelect(context, [d.entity.id]));
 
       } else {

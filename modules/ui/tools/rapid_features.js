@@ -52,7 +52,7 @@ export function uiToolRapidFeatures(context) {
         toggleFeatures();
       });
 
-    context.map()
+    context.mapSystem()
       .on('draw', debouncedUpdate);
 
     context
@@ -112,7 +112,7 @@ export function uiToolRapidFeatures(context) {
 
 
   tool.uninstall = function () {
-    context.map().off('draw', debouncedUpdate);
+    context.mapSystem().off('draw', debouncedUpdate);
     context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
   };
 

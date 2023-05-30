@@ -117,7 +117,7 @@ export class ModeDrawLine extends AbstractMode {
       this.drawWay = continueWay;
 
       // Create draw node where we think the poitner is, and extend continue way to it
-      this.drawNode = osmNode({ loc: context.map().mouseLoc() });
+      this.drawNode = osmNode({ loc: context.mapSystem().mouseLoc() });
       context.perform(
         actionAddEntity(this.drawNode),                                          // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex)    // Add draw node to draw way

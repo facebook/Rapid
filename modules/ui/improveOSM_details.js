@@ -74,7 +74,7 @@ export function uiImproveOsmDetails(context) {
             utilHighlightEntities([entityID], false, context);
 
             context.scene().enableLayers('osm');  // make sure osm layer is even on
-            context.map().centerZoom(_qaItem.loc, 20);
+            context.mapSystem().centerZoom(_qaItem.loc, 20);
 
             if (entity) {
               context.enter(modeSelect(context, [entityID]));
@@ -105,7 +105,7 @@ export function uiImproveOsmDetails(context) {
 
     // Don't hide entities related to this error - iD#5880
     context.filterSystem().forceVisible(relatedEntities);
-    context.map().immediateRedraw();
+    context.mapSystem().immediateRedraw();
   }
 
   improveOsmDetails.issue = function(val) {

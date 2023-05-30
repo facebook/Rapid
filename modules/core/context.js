@@ -7,13 +7,14 @@ import _debounce from 'lodash-es/debounce';
 import { coreRapidContext } from './rapid_context';
 import { coreHistory } from './history';
 import { coreUploader } from './uploader';
-import { RendererMap } from '../renderer';
 
 import { DataLoaderSystem } from './DataLoaderSystem';
 import { FilterSystem } from './FilterSystem';
 import { ImagerySystem } from './ImagerySystem';
 import { LocalizationSystem } from './LocalizationSystem';
 import { LocationSystem } from './LocationSystem';
+import { MapSystem } from './MapSystem';
+import { Map3dSystem } from './Map3dSystem';
 import { PhotoSystem } from './PhotoSystem';
 import { PresetSystem } from './PresetSystem';
 import { StorageSystem } from './StorageSystem';
@@ -49,6 +50,9 @@ export function coreContext() {
   // enable and disable depending on what the user is doing.
   context.behaviors = new Map();  // Map (behavior.id -> behavior)
 
+  // `context.initialHashParams` is older, try to use `context.urlHashSystem()` instead
+  context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
+
 
   let _history;
   let _uploader;
@@ -61,6 +65,8 @@ export function coreContext() {
   const _imagerySystem = new ImagerySystem(context);
   const _localizationSystem = new LocalizationSystem(context);
   const _locationSystem = new LocationSystem(context);
+  const _mapSystem = new MapSystem(context);
+  const _map3dSystem = new Map3dSystem(context, '3d-buildings');   // todo: domid looks weird here
   const _photoSystem = new PhotoSystem(context);
   const _presetSystem = new PresetSystem(context);
   const _storageSystem = new StorageSystem(context);
@@ -72,19 +78,37 @@ export function coreContext() {
   context.imagerySystem = () => _imagerySystem;
   context.localizationSystem = () => _localizationSystem;
   context.locationSystem = () => _locationSystem;
+  context.mapSystem = () => _mapSystem;
+  context.map3dSystem = () => _map3dSystem;
   context.photoSystem = () => _photoSystem;
   context.presetSystem = () => _presetSystem;
   context.storageSystem = () => _storageSystem;
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
 
+
+  /* LocalizationSystem */
   context.t = _localizationSystem.t;
   context.tHtml = _localizationSystem.tHtml;
   context.tAppend = _localizationSystem.tAppend;
 
+  /* FilterSystem */
+  context.hasHiddenConnections = (entityID) => {
+    const graph = _history.graph();
+    const entity = graph.entity(entityID);
+    return _filterSystem.hasHiddenConnections(entity, graph);
+  };
 
-  // `context.initialHashParams` is older, try to use `context.urlHashSystem()` instead
-  context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
+  /* MapSystem */
+  context.scene = () => _mapSystem.scene;
+  context.surface = () => _mapSystem.surface;
+  context.surfaceRect = () => _mapSystem.surface.node().getBoundingClientRect();
+  context.editable = () => {
+    const mode = context._currMode;
+    if (!mode || mode.id === 'save') return false;   // don't allow editing during save
+    return true;  // _mapSystem.editableDataEnabled();     // todo: disallow editing if OSM layer is off
+  };
+
 
   /* Changeset */
   // An osmChangeset object. Not loaded until needed.
@@ -236,7 +260,7 @@ export function coreContext() {
     if (entity) {   // have it already
       context.enter(modeSelect(context, [entityID]));
       if (zoomTo !== false) {
-        _map.zoomTo(entity);
+        _mapSystem.zoomTo(entity);
       }
 
     } else {   // need to load it first
@@ -247,7 +271,7 @@ export function coreContext() {
 
         context.enter(modeSelect(context, [entityID]));
         if (zoomTo !== false) {
-          _map.zoomTo(entity);
+          _mapSystem.zoomTo(entity);
         }
       });
     }
@@ -505,26 +529,6 @@ export function coreContext() {
   };
 
 
-  /* Features */
-  context.hasHiddenConnections = (entityID) => {
-    const graph = _history.graph();
-    const entity = graph.entity(entityID);
-    return _filterSystem.hasHiddenConnections(entity, graph);
-  };
-
-
-  /* Map */
-  let _map;
-  context.map = () => _map;
-  context.scene = () => _map.scene;
-  context.surface = () => _map.surface;
-  context.surfaceRect = () => _map.surface.node().getBoundingClientRect();
-  context.editable = () => {
-    const mode = context.mode();
-    if (!mode || mode.id === 'save') return false;   // don't allow editing during save
-    return true;  // _map.editableDataEnabled();     // todo: disallow editing if OSM layer is off
-  };
-
 
   /* Debug */
   let _debugFlags = {
@@ -538,8 +542,8 @@ export function coreContext() {
   context.getDebug = (flag) => flag && _debugFlags[flag];
   context.setDebug = function(flag, val = true) {
     _debugFlags[flag] = val;
-    if (_map) {
-      _map.immediateRedraw();
+    if (_mapSystem?.renderer) {
+      _mapSystem.immediateRedraw();
     }
     return context;
   };
@@ -654,7 +658,6 @@ export function coreContext() {
       context.redo = withDebouncedSave(_history.redo);
 
       _uploader = coreUploader(context);
-      _map = new RendererMap(context);
       _rapidContext = coreRapidContext(context);
       _ui = uiInit(context);
 
@@ -717,13 +720,14 @@ export function coreContext() {
       _validationSystem.init();
       _imagerySystem.init();
       _filterSystem.init();
-      _map.init();         // watch out - init doesn't actually create the renderer :(
+      _mapSystem.init();         // watch out - init doesn't actually create the renderer :(
       _rapidContext.init();
 
       // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {
         _ui.ensureLoaded()
           .then(() => {
+            _map3dSystem.init();
             _photoSystem.init();
             _urlHashSystem.init();  // tries to adjust map transform
           });

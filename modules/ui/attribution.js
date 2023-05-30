@@ -60,7 +60,7 @@ export function uiAttribution(context) {
 
     let copyright = attributions.selectAll('.copyright-notice')
       .data(d => {
-        let notice = d.copyrightNotices(context.map().zoom(), context.map().extent());
+        let notice = d.copyrightNotices(context.mapSystem().zoom(), context.mapSystem().extent());
         return notice ? [notice] : [];
       });
 
@@ -82,7 +82,7 @@ export function uiAttribution(context) {
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
-    const z = context.map().zoom();
+    const z = context.mapSystem().zoom();
     let overlays = imagerySystem.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');
@@ -93,7 +93,7 @@ export function uiAttribution(context) {
     _selection = selection;
 
     imagerySystem.on('imagerychange', update);
-    context.map().on('draw', _throttle(update, 400, { leading: false }));
+    context.mapSystem().on('draw', _throttle(update, 400, { leading: false }));
 
     update();
   };

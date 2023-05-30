@@ -30,7 +30,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
   getService() {
     const improveosm = this.context.services.get('improveOSM');
     if (improveosm && !this._service) {
-      improveosm.on('loaded', () => this.context.map().deferredRedraw());
+      improveosm.on('loaded', () => this.context.mapSystem().deferredRedraw());
       this._service = improveosm;
     } else if (!improveosm && this._service) {
       this._service = null;

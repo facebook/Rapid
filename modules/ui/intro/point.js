@@ -14,7 +14,7 @@ export function uiIntroPoint(context, curtain) {
   const editMenu = context.ui().editMenu();
   const container = context.container();
   const history = context.history();
-  const map = context.map();
+  const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);

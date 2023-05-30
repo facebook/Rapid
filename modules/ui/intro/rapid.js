@@ -11,7 +11,7 @@ export function uiIntroRapid(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.rapid.title' };
   const history = context.history();
-  const map = context.map();
+  const map = context.mapSystem();
 
   const tulipLaneID = 'w-516';
   const tulipLaneExtent = new Extent([-85.62991, 41.95568], [-85.62700, 41.95638]);

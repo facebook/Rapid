@@ -43,7 +43,7 @@ export function uiScale(context) {
 
   function update(selection) {
     // choose loc1, loc2 along bottom of viewport (near where the scale will be drawn)
-    const dims = context.map().dimensions;
+    const dims = context.mapSystem().dimensions;
     const loc1 = projection.invert([0, dims[1]]);
     const loc2 = projection.invert([MAXLENGTH, dims[1]]);
     const scale = scaleDefs(loc1, loc2);
@@ -78,7 +78,7 @@ export function uiScale(context) {
       .append('div')
       .attr('class', 'scale-text');
 
-    context.map().on('draw', () => {
+    context.mapSystem().on('draw', () => {
       window.requestIdleCallback(() => update(selection));
     });
   };

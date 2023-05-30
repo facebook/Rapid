@@ -6,7 +6,7 @@ import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util';
 
 
-export function uiPhotoviewer(context) {
+export function uiPhotoViewer(context) {
   let dispatch = d3_dispatch('resize');
 
 
@@ -63,7 +63,7 @@ export function uiPhotoviewer(context) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
 
-        const dims = context.map().dimensions;
+        const dims = context.mapSystem().dimensions;
         if (resizeOnX) {
           const maxWidth = dims[0];
           const newWidth = clamp((startWidth + d3_event.clientX - startX), minWidth, maxWidth);

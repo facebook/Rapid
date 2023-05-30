@@ -68,7 +68,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
     this._spaceClickDisabled = false;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.on('keydown', this._keydown);
     eventManager.on('keyup', this._keyup);
     eventManager.on('modifierchanged', this._doMove);
@@ -96,7 +96,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
     this._spaceClickDisabled = false;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.off('keydown', this._keydown);
     eventManager.off('keyup', this._keyup);
     eventManager.off('modifierchanged', this._doMove);
@@ -257,7 +257,7 @@ export class BehaviorDraw extends AbstractBehavior {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this.context;
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
     if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
@@ -317,7 +317,7 @@ export class BehaviorDraw extends AbstractBehavior {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this.context;
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
     // if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;

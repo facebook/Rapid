@@ -46,7 +46,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     let blocks;
 
     if (zoom >= MINZOOM) {
-      const viewport = this.context.map().extent().rectangle();
+      const viewport = this.context.mapSystem().extent().rectangle();
       const locationSystem = this.context.locationSystem();
       blocks = locationSystem.wpblocks().bbox(viewport);
       this.renderEditBlocks(frame, projection, zoom, blocks);

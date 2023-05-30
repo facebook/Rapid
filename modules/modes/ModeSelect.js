@@ -95,7 +95,7 @@ export class ModeSelect extends AbstractMode {
       sidebarContent = uiNoteEditor(context).note(datum);
       sidebarContent
         .on('change', () => {
-          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const osm = context.services.get('osm');
           const note = osm?.getNote(datumID);
           if (!(note instanceof osmNote)) return;   // or - go to browse mode
@@ -107,7 +107,7 @@ export class ModeSelect extends AbstractMode {
       sidebarContent = uiImproveOsmEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const improveosm = context.services.get('improveOSM');
           const error = improveosm?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
@@ -119,7 +119,7 @@ export class ModeSelect extends AbstractMode {
       sidebarContent = uiKeepRightEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const keepright = context.services.get('keepRight');
           const error = keepright?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
@@ -131,7 +131,7 @@ export class ModeSelect extends AbstractMode {
       sidebarContent = uiOsmoseEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const osmose = context.services.get('osmose');
           const error = osmose?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?

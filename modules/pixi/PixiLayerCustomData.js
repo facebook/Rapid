@@ -554,7 +554,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     const features = this.getFeatures(this._geojson);
     if (!features.length) return;
 
-    const map = this.context.map();
+    const map = this.context.mapSystem();
     const viewport = map.trimmedExtent().polygon();
 
     const coords = features.reduce((coords, feature) => {

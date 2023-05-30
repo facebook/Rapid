@@ -29,7 +29,7 @@ export function validationShortRoad(context) {
     if (!context.editable()) return;
 
     // make sure the vertex is actually visible and editable
-    const map = context.map();
+    const map = context.mapSystem();
     if (!map.trimmedExtent().contains(new Extent(vertex.loc))) {
       map.zoomToEase(vertex);
     }

@@ -37,7 +37,7 @@ export class BehaviorLasso extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -55,7 +55,7 @@ export class BehaviorLasso extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
@@ -70,7 +70,7 @@ export class BehaviorLasso extends AbstractBehavior {
    _pointerdown() {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-     const eventManager = this.context.map().renderer.events;
+     const eventManager = this.context.mapSystem().renderer.events;
      if (!eventManager.pointerOverRenderer) return;
 
      const modifiers = eventManager.modifierKeys;
@@ -78,7 +78,7 @@ export class BehaviorLasso extends AbstractBehavior {
 
      if (drawLasso) {
        this._lassoing = true;
-       const coord = this.context.map().mouseLoc();
+       const coord = this.context.mapSystem().mouseLoc();
        this._extent = new Extent(coord);
        this._coords.push(coord);
      }
@@ -93,10 +93,10 @@ export class BehaviorLasso extends AbstractBehavior {
   _pointermove() {
     if (!this._lassoing) return;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     if (!eventManager.pointerOverRenderer) return;
 
-    const coord = this.context.map().mouseLoc();
+    const coord = this.context.mapSystem().mouseLoc();
 
     // Update geometry and extent
     this._extent = this._extent.extend(new Extent(coord));
@@ -105,7 +105,7 @@ export class BehaviorLasso extends AbstractBehavior {
     // Push the polygon data to the map UI for rendering.
     const mapUILayer = this.context.scene().layers.get('map-ui');
     mapUILayer.lassoPolygonData = this._coords;
-    this.context.map().immediateRedraw();
+    this.context.mapSystem().immediateRedraw();
   }
 
 

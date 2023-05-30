@@ -39,7 +39,7 @@ export function uiZoomToSelection(context) {
 
       const mode = context.mode();
       const extent = mode?.extent;
-      const map = context.map();
+      const map = context.mapSystem();
 
       if (_lastTransform) {   // pop back out
         map.transformEase(_lastTransform);

@@ -96,7 +96,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     const context = this.context;
     const graph = context.graph();
-    const map = context.map();
+    const map = context.mapSystem();
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
@@ -129,7 +129,7 @@ export class PixiLayerOsm extends AbstractLayer {
 //    // continuing will fire off the download of the data into a file called 'canned_data.json'.
 //    // move the data into the test/spec/renderer directory.
 //    if (this._saveCannedData && !this._alreadyDownloaded) {
-//      const map = context.map();
+//      const map = context.mapSystem();
 //      const [lng, lat] = map.center();
 //
 //      let viewData = {

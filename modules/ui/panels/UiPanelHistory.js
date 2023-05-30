@@ -42,7 +42,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     this._enabled = true;
     this._selection = selection;
 
-    this.context.map().on('draw', this.render);
+    this.context.mapSystem().on('draw', this.render);
     this.context.on('enter.info-history', this.render);
   }
 
@@ -58,7 +58,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     this._enabled = false;
     this._selection = d3_select(null);
 
-    this.context.map().off('draw', this.render);
+    this.context.mapSystem().off('draw', this.render);
     this.context.on('enter.info-history', null);
   }
 

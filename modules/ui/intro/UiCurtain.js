@@ -81,7 +81,7 @@ export class UiCurtain {
 
     // register event handlers
     d3_select(window).on('resize.curtain', this.resize);
-    this.context.map().on('move', this.redraw);
+    this.context.mapSystem().on('move', this.redraw);
 
     this.resize();   // get the width/height
   }
@@ -108,7 +108,7 @@ export class UiCurtain {
 
     // unregister event handlers
     d3_select(window).on('resize.curtain', null);
-    this.context.map().off('move', this.redraw);
+    this.context.mapSystem().off('move', this.redraw);
   }
 
 

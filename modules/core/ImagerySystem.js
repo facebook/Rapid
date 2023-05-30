@@ -230,7 +230,7 @@ export class ImagerySystem extends EventEmitter {
    *
    */
   chooseDefaultSource() {
-    const map = this.context.map();
+    const map = this.context.mapSystem();
     const available = this.sources(map.extent(), map.zoom());
     const first = available[0];
     const best = available.find(s => s.best);

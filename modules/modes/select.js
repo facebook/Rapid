@@ -239,7 +239,7 @@ export function modeSelect(context, selectedIDs) {
             .on('undone.select', checkSelectedIDs)
             .on('redone.select', checkSelectedIDs);
 
-//        context.map()
+//        context.mapSystem()
 //            .on('drawn.select', selectElements);
 
 //        selectElements();
@@ -248,7 +248,7 @@ export function modeSelect(context, selectedIDs) {
 
         if (_follow) {
             var loc = mode.extent.center();
-            context.map().centerEase(loc);
+            context.mapSystem().centerEase(loc);
             // we could enter the mode multiple times, so reset follow for next time
             _follow = false;
         }
@@ -304,7 +304,7 @@ export function modeSelect(context, selectedIDs) {
                     .classed('related', true);
             }
 
-            // if (context.map().withinEditableZoom()) {
+            // if (context.mapSystem().withinEditableZoom()) {
                 // Apply selection styling if not in wide selection
 
                 surface
@@ -520,7 +520,7 @@ export function modeSelect(context, selectedIDs) {
             .selectAll('.related')
             .classed('related', false);
 
-//        context.map().on('drawn.select', null);
+//        context.mapSystem().on('drawn.select', null);
         context.ui().sidebar.hide();
         context.filterSystem().forceVisible([]);
 

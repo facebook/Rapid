@@ -57,7 +57,7 @@ export class ModeRotate extends AbstractMode {
     this._lastPoint = null;
     this._pivotLoc = null;
 
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
     eventManager.on('click', this._finish);
     eventManager.on('keydown', this._keydown);
     eventManager.on('pointercancel', this._cancel);
@@ -83,7 +83,7 @@ export class ModeRotate extends AbstractMode {
     const context = this.context;
     context.filterSystem().forceVisible([]);
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.off('click', this._finish);
     eventManager.off('keydown', this._keydown);
     eventManager.off('pointercancel', this._cancel);
@@ -117,7 +117,7 @@ export class ModeRotate extends AbstractMode {
    */
   _pointermove() {
     const context = this.context;
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
     const currPoint = eventManager.coord;
 
     let fn;

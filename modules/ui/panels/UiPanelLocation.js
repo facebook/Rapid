@@ -80,9 +80,9 @@ export class UiPanelLocation extends AbstractUiPanel {
       .append('ul');
 
     // Mouse coordinates as [lon,lat]
-    let loc = context.map().mouseLoc();
+    let loc = context.mapSystem().mouseLoc();
     if (loc.some(isNaN)) {
-      loc = context.map().center();
+      loc = context.mapSystem().center();
     }
 
     // Append coordinates of mouse

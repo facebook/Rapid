@@ -44,7 +44,7 @@ export function uiSectionBackgroundOffset(context) {
 
 
   function nudge(d) {
-    imagerySystem.nudge(d, context.map().zoom());
+    imagerySystem.nudge(d, context.mapSystem().zoom());
     updateValue();
   }
 

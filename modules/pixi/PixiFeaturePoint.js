@@ -117,7 +117,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (!this._styleDirty) return;
 
     const context = this.context;
-    const wireframeMode = context.map().wireframeMode;
+    const wireframeMode = context.mapSystem().wireframeMode;
     const textureManager = this.renderer.textures;
     const style = this._style;
     const isPin = ['pin', 'boldPin', 'improveosm', 'osmose'].includes(style.markerName);

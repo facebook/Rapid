@@ -63,7 +63,7 @@ export function uiToolDrawModes(context) {
       });
     });
 
-    context.map()
+    context.mapSystem()
       .on('draw', debouncedUpdate);
 
     context
@@ -135,7 +135,7 @@ export function uiToolDrawModes(context) {
       context.keybinding().off(d.key);
     });
 
-    context.map()
+    context.mapSystem()
       .off('draw', debouncedUpdate);
 
     context

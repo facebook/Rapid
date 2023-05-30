@@ -44,7 +44,7 @@ export function uiToolNotes(context) {
       }
     });
 
-    context.map()
+    context.mapSystem()
       .on('draw', debouncedUpdate);
 
     context
@@ -112,7 +112,7 @@ export function uiToolNotes(context) {
     context
       .on('enter.notes', null);
 
-    context.map()
+    context.mapSystem()
       .off('draw', debouncedUpdate);
   };
 

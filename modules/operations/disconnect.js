@@ -182,7 +182,7 @@ export function operationDisconnect(context, selectedIDs) {
     function tooLarge() {
       const prefs = context.storageSystem();
       const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(context.mapSystem().extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet

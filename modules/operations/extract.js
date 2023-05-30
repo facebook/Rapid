@@ -49,7 +49,7 @@ export function operationExtract(context, selectedIDs) {
     const projection = context.projection;
     const extractedNodeIDs = actions.map(action => action.getExtractedNodeID());
     const extractPoint = projection.project(extent.center());
-    const delta = vecSubtract(context.map().mouse(), extractPoint);
+    const delta = vecSubtract(context.mapSystem().mouse(), extractPoint);
     context.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
 
     // Put the user in move mode so they can place the extracted nodes where they want.
@@ -81,7 +81,7 @@ export function operationExtract(context, selectedIDs) {
     function tooLarge() {
       const prefs = context.storageSystem();
       const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(context.mapSystem().extent()) < 0.8;
     }
   };
 

@@ -120,7 +120,7 @@ export function uiEditMenu(context) {
       .classed('disabled', d => d.disabled());
 
     _updatePosition();
-    context.map().on('move', _updatePosition);
+    context.mapSystem().on('move', _updatePosition);
 
 
     // `pointerup` is always called before `click`
@@ -269,7 +269,7 @@ export function uiEditMenu(context) {
    * This removes the menu and unbinds the event handlers
    */
   editMenu.close = function () {
-     context.map().off('move', _updatePosition);
+     context.mapSystem().off('move', _updatePosition);
 
     _menu.remove();
     _tooltips = [];

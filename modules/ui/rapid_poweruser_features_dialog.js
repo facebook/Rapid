@@ -52,7 +52,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
         }
       });
       context.enter('browse');   // return to browse mode (in case something was selected)
-      context.map().immediateRedraw();
+      context.mapSystem().immediateRedraw();
     }
   }
 

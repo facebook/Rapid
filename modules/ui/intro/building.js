@@ -14,7 +14,7 @@ export function uiIntroBuilding(context, curtain) {
   const editMenu = context.ui().editMenu();
   const container = context.container();
   const history = context.history();
-  const map = context.map();
+  const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
