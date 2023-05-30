@@ -2,7 +2,7 @@ import { EventEmitter } from '@pixi/utils';
 import { Extent } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@rapid-sdk/util';
 
-import { Difference } from './Difference';
+import { Difference } from './lib/Difference';
 import { modeSelect } from '../modes/select';
 import * as Validations from '../validations/index';
 
@@ -31,8 +31,8 @@ export class ValidationSystem extends EventEmitter {
     this._resolvedIssueIDs = new Set();
     this._completeDiff = new Map();    // complete diff base -> head of what the user changed
     this._headIsCurrent = false;
-    this._deferredRIC = new Map();   // Map(handle -> Promise.reject)
-    this._deferredST = new Set();    // Set(handles)
+    this._deferredRIC = new Map();   // Deferred `requestIdleCallback` - Map(handle -> Promise.reject)
+    this._deferredST = new Set();    // Deferred `setTimeout` - Set(handles)
     this._headPromise = null;        // Promise fulfilled when validation is performed up to headGraph snapshot
     this._errorOverrides = [];
     this._warningOverrides = [];

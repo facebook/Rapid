@@ -6,8 +6,10 @@ describe('DataLoaderSystem', () => {
     asset(d) { return d; }
   }
 
+  const context = new MockContext();
+
+
   beforeEach(() => {
-    const context = new MockContext();
     _dataLoader = new Rapid.DataLoaderSystem(context);
   });
 

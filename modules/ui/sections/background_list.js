@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 
 import { uiTooltip } from '../tooltip';
-import { ImagerySource } from '../../core/ImagerySource';
+import { ImagerySource } from '../../core/lib';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';

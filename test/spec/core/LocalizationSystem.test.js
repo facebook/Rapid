@@ -5,8 +5,10 @@ describe('LocalizationSystem', () => {
     constructor() {}
   }
 
+  const context = new MockContext();
+
+
   beforeEach(() => {
-    const context = new MockContext();
     _l10n = new Rapid.LocalizationSystem(context);
     _l10n._cache = {
       general: {

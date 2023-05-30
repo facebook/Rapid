@@ -261,8 +261,8 @@ describe('validations.almost_junction', function () {
         expect(issue.data.cross_loc[0]).to.eql(22.42356);
         expect(issue.data.cross_loc[1]).to.eql(0);
 
-        expect(issue.fixes(context)).to.have.lengthOf(3);
-        issue.fixes(context)[0].onClick(context);
+        expect(issue.fixes()).to.have.lengthOf(3);
+        issue.fixes()[0].onClick(context);
         issues = validate();
         expect(issues).to.have.lengthOf(0);
     });
@@ -291,8 +291,8 @@ describe('validations.almost_junction', function () {
         expect(issue.data.cross_loc[0]).to.eql(22.42356);
         expect(issue.data.cross_loc[1]).to.eql(0);
 
-        expect(issue.fixes(context)).to.have.lengthOf(3);
-        issue.fixes(context)[1].onClick(context);
+        expect(issue.fixes()).to.have.lengthOf(3);
+        issue.fixes()[1].onClick(context);
         issues = validate();
         expect(issues).to.have.lengthOf(0);
     });
@@ -327,7 +327,7 @@ describe('validations.almost_junction', function () {
         expect(issue.entityIds[1]).to.eql('n-3');
         expect(issue.entityIds[2]).to.eql('w-1');
 
-        issue.fixes(context)[0].onClick(context);
+        issue.fixes()[0].onClick(context);
         var w1 = context.entity('w-1');
         var w2 = context.entity('w-2');
         var joined = w2.nodes[0] === w1.nodes[0];
@@ -346,7 +346,7 @@ describe('validations.almost_junction', function () {
         expect(issue.entityIds[1]).to.eql('n-3');
         expect(issue.entityIds[2]).to.eql('w-1');
 
-        issue.fixes(context)[0].onClick(context);
+        issue.fixes()[0].onClick(context);
         var w1 = context.entity('w-1');
         var w2 = context.entity('w-2');
         var joined = w2.nodes[0] === w1.nodes[0];
@@ -365,7 +365,7 @@ describe('validations.almost_junction', function () {
         expect(issue.entityIds[1]).to.eql('n-5');
         expect(issue.entityIds[2]).to.eql('w-1');
 
-        issue.fixes(context)[0].onClick(context);
+        issue.fixes()[0].onClick(context);
         var w = context.entity('w-1');
         var joined = w.nodes[0] === w.nodes[w.nodes.length - 1];
         expect(joined).to.be.true;
@@ -384,7 +384,7 @@ describe('validations.almost_junction', function () {
         expect(issue.entityIds[1]).to.eql('n-5');
         expect(issue.entityIds[2]).to.eql('w-1');
 
-        issue.fixes(context)[0].onClick(context);
+        issue.fixes()[0].onClick(context);
         var w1 = context.entity('w-1');
         var w2 = context.entity('w-2');
         var joined = w2.nodes[0] === w1.nodes[0];

@@ -1,6 +1,6 @@
 import { actionChangeMember } from '../actions/change_member';
 import { actionDeleteMember } from '../actions/delete_member';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationMissingRole(context) {
@@ -40,7 +40,7 @@ export function validationMissingRole(context) {
 
 
   function makeIssue(way, relation, member) {
-    return new validationIssue({
+    return new ValidationIssue(context, {
       type: type,
       severity: 'warning',
       message: function() {
@@ -59,7 +59,7 @@ export function validationMissingRole(context) {
         return [
           makeAddRoleFix('inner'),
           makeAddRoleFix('outer'),
-          new validationIssueFix({
+          new ValidationFix({
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_from_relation.title'),
             onClick: () => {
@@ -86,7 +86,7 @@ export function validationMissingRole(context) {
 
 
   function makeAddRoleFix(role) {
-    return new validationIssueFix({
+    return new ValidationFix({
       title: l10n.tHtml(`issues.fix.set_as_${role}.title`),
       onClick: () => {
         const oldMember = this.issue.data.member;

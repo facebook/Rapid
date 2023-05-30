@@ -1,10 +1,7 @@
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
-import { Category } from './preset/Category.js';
-import { Collection } from './preset/Collection.js';
-import { Field } from './preset/Field.js';
-import { Preset } from './preset/Preset.js';
+import { Category, Collection, Field, Preset } from './lib';
 import { uiFields } from '../ui/fields';
 
 const VERBOSE = true;        // warn about v6 preset featues we don't support currently

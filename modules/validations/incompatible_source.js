@@ -1,4 +1,4 @@
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationIncompatibleSource(context) {
@@ -36,10 +36,10 @@ export function validationIncompatibleSource(context) {
 
         if (!matchRule) return null;
 
-        return new validationIssue({
+        return new ValidationIssue(context, {
           type: type,
           severity: 'warning',
-          message: function() {
+          message: () => {
             const entity = context.hasEntity(entityID);
             return entity ? l10n.tHtml('issues.incompatible_source.feature.message', {
               feature: l10n.displayLabel(entity, context.graph(), true /* verbose */),
@@ -51,7 +51,7 @@ export function validationIncompatibleSource(context) {
           hash: source,
           dynamicFixes: () => {
             return [
-              new validationIssueFix({ title: l10n.tHtml('issues.fix.remove_proprietary_data.title') })
+              new ValidationFix({ title: l10n.tHtml('issues.fix.remove_proprietary_data.title') })
             ];
           }
         });

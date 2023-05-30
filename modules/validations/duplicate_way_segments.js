@@ -1,4 +1,4 @@
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 // This validation determines whether way segments are duplicated atop one another,
@@ -72,7 +72,7 @@ export function validationDuplicateWaySegments(context) {
         if (waysWithContiguousNodes.length <= 1) return null;
       }
 
-      return new validationIssue({
+      return new ValidationIssue(context, {
         type: type,
         subtype: 'vertices',
         severity: 'warning',
@@ -87,15 +87,15 @@ export function validationDuplicateWaySegments(context) {
         loc: node1.loc,
         dynamicFixes: function() {
           return [
-            new validationIssueFix({
+            new ValidationFix({
               icon: 'rapid-icon-plus',
               title: l10n.tHtml('issues.fix.merge_points.title'),
             }),
-            new validationIssueFix({
+            new ValidationFix({
               icon: 'rapid-operation-delete',
               title: l10n.tHtml('issues.fix.remove_way_segments.title')
             }),
-            new validationIssueFix({
+            new ValidationFix({
               icon: 'rapid-operation-disconnect',
               title: l10n.tHtml('issues.fix.move_way_segments_apart.title')
             })

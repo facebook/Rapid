@@ -1,4 +1,5 @@
 describe('Tree', () => {
+
   describe('#rebase', () => {
     it('adds entities to the tree', () => {
       const graph = new Rapid.Graph();

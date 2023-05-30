@@ -1,4 +1,4 @@
-import { validationIssue } from '../core/validation';
+import { ValidationIssue } from '../core/lib';
 
 
 export function validationFormatting(context) {
@@ -51,7 +51,7 @@ export function validationFormatting(context) {
         .filter(s => !isSchemePresent(s));
 
       if (websites.length) {
-        issues.push(new validationIssue({
+        issues.push(new ValidationIssue(context, {
           type: type,
           subtype: 'website',
           severity: 'warning',
@@ -77,7 +77,7 @@ export function validationFormatting(context) {
         .filter(s => !isValidEmail(s));
 
       if (emails.length) {
-        issues.push(new validationIssue({
+        issues.push(new ValidationIssue(context, {
           type: type,
           subtype: 'email',
           severity: 'warning',

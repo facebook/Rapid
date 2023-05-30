@@ -8,7 +8,7 @@ import {
   ImagerySourceCustom,
   ImagerySourceEsri,
   ImagerySourceNone
-} from './ImagerySource';
+} from './lib/ImagerySource';
 
 
 /**

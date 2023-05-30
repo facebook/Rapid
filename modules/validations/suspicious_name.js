@@ -1,5 +1,5 @@
 import { actionChangeTags } from '../actions/change_tags';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationSuspiciousName(context) {
@@ -48,7 +48,7 @@ export function validationSuspiciousName(context) {
   }
 
   function makeGenericNameIssue(entityID, nameKey, genericName, langCode) {
-    return new validationIssue({
+    return new ValidationIssue(context, {
       type: type,
       subtype: 'generic_name',
       severity: 'warning',
@@ -66,7 +66,7 @@ export function validationSuspiciousName(context) {
       hash: `${nameKey}=${genericName}`,
       dynamicFixes: function() {
         return [
-          new validationIssueFix({
+          new ValidationFix({
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_the_name.title'),
             onClick: function() {
@@ -94,7 +94,7 @@ export function validationSuspiciousName(context) {
   }
 
   function makeIncorrectNameIssue(entityID, nameKey, incorrectName, langCode) {
-    return new validationIssue({
+    return new ValidationIssue(context, {
       type: type,
       subtype: 'not_name',
       severity: 'warning',
@@ -112,7 +112,7 @@ export function validationSuspiciousName(context) {
       hash: `${nameKey}=${incorrectName}`,
       dynamicFixes: function() {
         return [
-          new validationIssueFix({
+          new ValidationFix({
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_the_name.title'),
             onClick: function() {

@@ -4,7 +4,7 @@ import { actionChangePreset } from '../actions/change_preset';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionUpgradeTags } from '../actions/upgrade_tags';
 import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationOutdatedTags(context) {
@@ -99,7 +99,7 @@ export function validationOutdatedTags(context) {
 
     let autoArgs = [doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')];
 
-    issues.push(new validationIssue({
+    issues.push(new ValidationIssue(context, {
       type: type,
       subtype: subtype,
       severity: 'warning',
@@ -110,7 +110,7 @@ export function validationOutdatedTags(context) {
       autoArgs: autoArgs,
       dynamicFixes: () => {
         let fixes = [
-          new validationIssueFix({
+          new ValidationFix({
             autoArgs: autoArgs,
             title: l10n.tHtml('issues.fix.upgrade_tags.title'),
             onClick: () => {
@@ -122,7 +122,7 @@ export function validationOutdatedTags(context) {
         const item = nsiResult?.matched;
         if (item) {
           fixes.push(
-            new validationIssueFix({
+            new ValidationFix({
               title: l10n.tHtml('issues.fix.tag_as_not.title', { name: item.displayName }),
               onClick: () => {
                 context.perform(addNotTag, l10n.t('issues.fix.tag_as_not.annotation'));
@@ -237,7 +237,7 @@ export function validationOutdatedTags(context) {
 
     if (!multipolygon || !outerWay) return [];
 
-    return [new validationIssue({
+    return [new ValidationIssue(context, {
       type: type,
       subtype: 'old_multipolygon',
       severity: 'warning',
@@ -247,7 +247,7 @@ export function validationOutdatedTags(context) {
       autoArgs: [doUpgrade, l10n.t('issues.fix.move_tags.annotation')],
       dynamicFixes: () => {
         return [
-          new validationIssueFix({
+          new ValidationFix({
             // autoArgs: [doUpgrade, l10n.t('issues.fix.move_tags.annotation')],
             title: l10n.t('issues.fix.move_tags.title'),
             onClick: () => {

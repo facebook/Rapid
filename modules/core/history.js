@@ -3,10 +3,8 @@ import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
 
-import { Graph } from './Graph';
-import { Difference } from './Difference';
+import { Difference, Graph, Tree } from './lib';
 import { osmEntity } from '../osm/entity';
-import { Tree } from './Tree';
 import { uiLoading } from '../ui/loading';
 import { utilRebind } from '../util';
 

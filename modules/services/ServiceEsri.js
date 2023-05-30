@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 
-import { Graph, Tree } from '../core';
+import { Graph, Tree } from '../core/lib';
 import { osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
 

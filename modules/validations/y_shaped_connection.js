@@ -1,7 +1,7 @@
 import { geoSphericalDistance, vecAngle } from '@rapid-sdk/math';
 
 import { operationDelete } from '../operations/index';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationYShapedConnection(context) {
@@ -47,7 +47,7 @@ export function validationYShapedConnection(context) {
     const deletable = !operationDelete(context, [node.id]).disabled();
     let fix;
     if (deletable) {
-      fix = new validationIssueFix({
+      fix = new ValidationFix({
         icon: 'rapid-operation-delete',
         title: l10n.t('issues.fix.delete_node_around_conn.title'),
         entityIds: [node.id],
@@ -60,14 +60,14 @@ export function validationYShapedConnection(context) {
         }
       });
     } else {
-      fix = new validationIssueFix({
+      fix = new ValidationFix({
         icon: 'rapid-operation-move',
         title: l10n.t('issues.fix.move_node_around_conn.title'),
         entityIds: [node.id]
       });
     }
 
-    return new validationIssue({
+    return new ValidationIssue(context, {
       type: type,
       severity: 'warning',
       message: () => {

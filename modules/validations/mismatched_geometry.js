@@ -10,7 +10,7 @@ import { modeSelect } from '../modes/select';
 import { osmJoinWays } from '../osm/multipolygon';
 import { osmNodeGeometriesForTags, osmTagSuggestingArea } from '../osm/tags';
 import { geoHasSelfIntersections } from '../geo';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationMismatchedGeometry(context) {
@@ -84,7 +84,7 @@ export function validationMismatchedGeometry(context) {
         var tagSuggestingArea = tagSuggestingLineIsArea(entity);
         if (!tagSuggestingArea) return null;
 
-        return new validationIssue({
+        return new ValidationIssue(context, {
             type: type,
             subtype: 'area_as_line',
             severity: 'warning',
@@ -103,12 +103,12 @@ export function validationMismatchedGeometry(context) {
                 var entity = context.entity(this.entityIds[0]);
                 var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, context.graph());
 
-                fixes.push(new validationIssueFix({
+                fixes.push(new ValidationFix({
                     title: l10n.tHtml('issues.fix.connect_endpoints.title'),
                     onClick: connectEndsOnClick
                 }));
 
-                fixes.push(new validationIssueFix({
+                fixes.push(new ValidationFix({
                     icon: 'rapid-operation-delete',
                     title: l10n.tHtml('issues.fix.remove_tag.title'),
                     onClick: function() {
@@ -155,7 +155,7 @@ export function validationMismatchedGeometry(context) {
 
         if (geometry === 'point' && !allowedGeometries.point && allowedGeometries.vertex) {
 
-            return new validationIssue({
+            return new ValidationIssue(context, {
                 type: type,
                 subtype: 'vertex_as_point',
                 severity: 'warning',
@@ -178,7 +178,7 @@ export function validationMismatchedGeometry(context) {
 
         } else if (geometry === 'vertex' && !allowedGeometries.vertex && allowedGeometries.point) {
 
-            return new validationIssue({
+            return new ValidationIssue(context, {
                 type: type,
                 subtype: 'point_as_vertex',
                 severity: 'warning',
@@ -258,7 +258,7 @@ export function validationMismatchedGeometry(context) {
             dynamicFixes = lineToAreaDynamicFixes;
         }
 
-        return new validationIssue({
+        return new ValidationIssue(context, {
             type: type,
             subtype: subtype,
             severity: 'warning',
@@ -306,7 +306,7 @@ export function validationMismatchedGeometry(context) {
         }
 
         return [
-            new validationIssueFix({
+            new ValidationFix({
                 icon: 'rapid-icon-line',
                 title: l10n.tHtml('issues.fix.convert_to_line.title'),
                 onClick: convertOnClick
@@ -334,7 +334,7 @@ export function validationMismatchedGeometry(context) {
         }
 
         return [
-            new validationIssueFix({
+            new ValidationFix({
                 icon: 'rapid-operation-extract',
                 title: l10n.tHtml('issues.fix.extract_point.title'),
                 onClick: extractOnClick
@@ -365,7 +365,7 @@ export function validationMismatchedGeometry(context) {
             // part is closed if the first and last nodes are the same
             if (firstNode === lastNode) continue;
 
-            var issue = new validationIssue({
+            var issue = new ValidationIssue(context, {
                 type: type,
                 subtype: 'unclosed_multipolygon_part',
                 severity: 'warning',

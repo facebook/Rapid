@@ -8,7 +8,7 @@ import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { geoHasSelfIntersections } from '../geo';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 /**
@@ -47,7 +47,7 @@ export function validationAlmostJunction(context) {
     let issues = [];
 
     extendableNodeInfos.forEach(extendableNodeInfo => {
-      issues.push(new validationIssue({
+      issues.push(new ValidationIssue(context, {
         type,
         subtype: 'highway-highway',
         severity: 'warning',
@@ -85,7 +85,7 @@ export function validationAlmostJunction(context) {
     return issues;
 
     function makeFixes() {
-      let fixes = [new validationIssueFix({
+      let fixes = [new ValidationFix({
         icon: 'rapid-icon-abutment',
         title: l10n.tHtml('issues.fix.connect_features.title'),
         onClick: function() {
@@ -134,7 +134,7 @@ export function validationAlmostJunction(context) {
       const node = context.hasEntity(this.entityIds[1]);
       if (node && !node.hasInterestingTags()) {
         // node has no descriptive tags, suggest noexit fix
-        fixes.push(new validationIssueFix({
+        fixes.push(new ValidationFix({
           icon: 'maki-barrier',
           title: l10n.tHtml('issues.fix.tag_as_disconnected.title'),
           onClick: function() {

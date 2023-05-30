@@ -1,7 +1,7 @@
 import { operationDelete } from '../operations/delete';
 import { osmIsInterestingTag } from '../osm/tags';
 import { osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationMissingTag(context) {
@@ -73,7 +73,7 @@ export function validationMissingTag(context) {
     let canDelete = (entity.version === undefined || entity.v !== undefined);
     let severity = (canDelete && subtype !== 'highway_classification') ? 'error' : 'warning';
 
-    return [new validationIssue({
+    return [new ValidationIssue(context, {
         type: type,
         subtype: subtype,
         severity: severity,
@@ -88,7 +88,7 @@ export function validationMissingTag(context) {
         dynamicFixes: function() {
           let fixes = [];
           const selectFixType = subtype === 'highway_classification' ? 'select_road_type' : 'select_preset';
-          fixes.push(new validationIssueFix({
+          fixes.push(new ValidationFix({
             icon: 'rapid-icon-search',
             title: l10n.tHtml(`issues.fix.${selectFixType}.title`),
             onClick: function() {
@@ -111,7 +111,7 @@ export function validationMissingTag(context) {
           }
 
           fixes.push(
-            new validationIssueFix({
+            new ValidationFix({
               icon: 'rapid-operation-delete',
               title: l10n.tHtml('issues.fix.delete_feature.title'),
               disabledReason: disabledReasonID ? l10n.t(`operations.delete.${disabledReasonID}.single`) : undefined,

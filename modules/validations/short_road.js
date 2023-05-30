@@ -1,7 +1,7 @@
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 
 import { operationDelete } from '../operations/index';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationShortRoad(context) {
@@ -54,7 +54,7 @@ export function validationShortRoad(context) {
 
     let fixes = [];
     if (!firstNodeOK) {
-      fixes.push(new validationIssueFix({
+      fixes.push(new ValidationFix({
         icon: 'rapid-operation-continue-left',
         title: l10n.t('issues.fix.continue_from_start.title'),
         entityIds: [entity.first()],
@@ -66,7 +66,7 @@ export function validationShortRoad(context) {
     }
 
     if (!lastNodeOK) {
-      fixes.push(new validationIssueFix({
+      fixes.push(new ValidationFix({
         icon: 'rapid-operation-continue',
         title: l10n.t('issues.fix.continue_from_end.title'),
         entityIds: [entity.last()],
@@ -78,7 +78,7 @@ export function validationShortRoad(context) {
     }
 
     if (!operationDelete(context, [entity.id]).disabled()) {
-      fixes.push(new validationIssueFix({
+      fixes.push(new ValidationFix({
         icon: 'rapid-operation-delete',
         title: l10n.t('issues.fix.delete_feature.title'),
         entityIds: [entity.id],
@@ -92,7 +92,7 @@ export function validationShortRoad(context) {
       }));
     }
 
-    return [new validationIssue({
+    return [new ValidationIssue(context, {
       type: type,
       severity: 'warning',
       message: function() {
