@@ -1,4 +1,4 @@
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationHelpRequest(context) {
@@ -18,7 +18,7 @@ export function validationHelpRequest(context) {
       if (!baseEntity || !baseEntity.tags.fixme) return [];
     }
 
-    return [new validationIssue({
+    return [new ValidationIssue(context, {
       type: type,
       subtype: 'fixme_tag',
       severity: 'warning',
@@ -28,9 +28,9 @@ export function validationHelpRequest(context) {
           feature: l10n.displayLabel(entity, context.graph(), true /* verbose */)
         }) : '';
       },
-      dynamicFixes: function() {
+      dynamicFixes: () => {
         return [
-          new validationIssueFix({ title: l10n.tHtml('issues.fix.address_the_concern.title') })
+          new ValidationFix({ title: l10n.tHtml('issues.fix.address_the_concern.title') })
         ];
       },
       reference: showReference,

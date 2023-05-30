@@ -1,7 +1,7 @@
 import { Extent, geoMetersToLat, geoMetersToLon, geoSphericalDistance } from '@rapid-sdk/math';
 
 import { actionMergeNodes } from '../actions/merge_nodes';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 import { osmPathHighwayTagValues } from '../osm/tags';
 
 
@@ -161,7 +161,7 @@ export function validationCloseNodes(context) {
                     }
                     if (zAxisDifferentiates) continue;
 
-                    issues.push(new validationIssue({
+                    issues.push(new ValidationIssue(context, {
                         type: type,
                         subtype: 'detached',
                         severity: 'warning',
@@ -177,11 +177,11 @@ export function validationCloseNodes(context) {
                         entityIds: [node.id, nearby.id],
                         dynamicFixes: function() {
                             return [
-                                new validationIssueFix({
+                                new ValidationFix({
                                     icon: 'rapid-operation-disconnect',
                                     title: l10n.tHtml('issues.fix.move_points_apart.title')
                                 }),
-                                new validationIssueFix({
+                                new ValidationFix({
                                     icon: 'rapid-icon-layers',
                                     title: l10n.tHtml('issues.fix.use_different_layers_or_levels.title')
                                 })
@@ -227,7 +227,7 @@ export function validationCloseNodes(context) {
                 if (distance > threshold) return null;
             }
 
-            return new validationIssue({
+            return new ValidationIssue(context, {
                 type: type,
                 subtype: 'vertices',
                 severity: 'warning',
@@ -240,7 +240,7 @@ export function validationCloseNodes(context) {
                 loc: node1.loc,
                 dynamicFixes: function() {
                     return [
-                        new validationIssueFix({
+                        new ValidationFix({
                             icon: 'rapid-icon-plus',
                             title: l10n.tHtml('issues.fix.merge_points.title'),
                             onClick: function() {
@@ -249,7 +249,7 @@ export function validationCloseNodes(context) {
                                 context.perform(action, l10n.t('issues.fix.merge_close_vertices.annotation'));
                             }
                         }),
-                        new validationIssueFix({
+                        new ValidationFix({
                             icon: 'rapid-operation-disconnect',
                             title: l10n.tHtml('issues.fix.move_points_apart.title')
                         })

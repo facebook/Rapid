@@ -164,7 +164,7 @@ export function uiSectionEntityIssues(context) {
     let fixLists = containers.selectAll('.issue-fix-list');
 
     let fixes = fixLists.selectAll('.issue-fix-item')
-      .data(d => (d.fixes ? d.fixes(context) : []), d => d.id);
+      .data(d => (d.fixes ? d.fixes() : []), d => d.id);
 
     fixes.exit()
       .remove();

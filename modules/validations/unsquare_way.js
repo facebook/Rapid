@@ -1,7 +1,7 @@
 //import { actionChangeTags } from '../actions/change_tags';
 import { actionOrthogonalize } from '../actions/orthogonalize';
 import { geoOrthoCanOrthogonalize } from '../geo/ortho';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationUnsquareWay(context) {
@@ -69,7 +69,7 @@ export function validationUnsquareWay(context) {
       autoArgs = [autoAction, l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })];
     }
 
-    return [new validationIssue({
+    return [new ValidationIssue(context, {
       type: type,
       subtype: 'building',
       severity: 'warning',
@@ -85,7 +85,7 @@ export function validationUnsquareWay(context) {
       autoArgs: autoArgs,
       dynamicFixes: function() {
         return [
-          new validationIssueFix({
+          new ValidationFix({
             icon: 'rapid-operation-orthogonalize',
             title: l10n.t('issues.fix.square_feature.title'),
 //          autoArgs: autoArgs,
@@ -101,7 +101,7 @@ export function validationUnsquareWay(context) {
             }
           }),
 /*
-          new validationIssueFix({     // Tag as unnsquare
+          new ValidationFix({     // Tag as unnsquare
             title: l10n.tHtml('issues.fix.tag_as_unsquare.title'),
             onClick: function() {
               const entityID = this.issue.entityIds[0];

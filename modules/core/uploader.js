@@ -5,7 +5,7 @@ import { actionDiscardTags } from '../actions/discard_tags';
 import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
 import { actionNoop } from '../actions/noop';
 import { actionRevert } from '../actions/revert';
-import { Graph } from '../core/Graph';
+import { Graph } from './lib';
 import { utilRebind } from '../util';
 
 

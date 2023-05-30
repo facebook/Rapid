@@ -14,7 +14,7 @@ import {
   osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
   osmRoutableAerowayTags, osmRoutableHighwayTagValues
 } from '../osm/tags';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationCrossingWays(context) {
@@ -421,7 +421,7 @@ export function validationCrossingWays(context) {
         // Differentiate based on the loc rounded to 4 digits, since two ways can cross multiple times.
         var uniqueID = '' + crossing.crossPoint[0].toFixed(4) + ',' + crossing.crossPoint[1].toFixed(4);
 
-        return new validationIssue({
+        return new ValidationIssue(context, {
             type: type,
             subtype: subtype,
             severity: 'warning',
@@ -462,7 +462,7 @@ export function validationCrossingWays(context) {
                 }
 
                 if (isCrossingIndoors) {
-                    fixes.push(new validationIssueFix({
+                    fixes.push(new ValidationFix({
                         icon: 'rapid-icon-layers',
                         title: l10n.tHtml('issues.fix.use_different_levels.title')
                     }));
@@ -487,7 +487,7 @@ export function validationCrossingWays(context) {
                 }
 
                 // repositioning the features is always an option
-                fixes.push(new validationIssueFix({
+                fixes.push(new ValidationFix({
                     icon: 'rapid-operation-move',
                     title: l10n.tHtml('issues.fix.reposition_features.title')
                 }));
@@ -507,7 +507,7 @@ export function validationCrossingWays(context) {
     }
 
     function makeAddBridgeOrTunnelFix(fixTitleID, iconName, bridgeOrTunnel){
-        return new validationIssueFix({
+        return new ValidationFix({
             icon: iconName,
             title: l10n.tHtml('issues.fix.' + fixTitleID + '.title'),
             onClick: function() {
@@ -761,7 +761,7 @@ export function validationCrossingWays(context) {
         if (connectionTags.ford) {
             fixTitleID = 'connect_using_ford';
         }
-        return new validationIssueFix({
+        return new ValidationFix({
             icon: 'rapid-icon-crossing',
             title: l10n.tHtml(`issues.fix.${fixTitleID}.title`),
             onClick: function() {
@@ -776,7 +776,7 @@ export function validationCrossingWays(context) {
     }
 
     function makeChangeLayerFix(higherOrLower) {
-        return new validationIssueFix({
+        return new ValidationFix({
             icon: 'rapid-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
             title: l10n.tHtml(`issues.fix.tag_this_as_${higherOrLower}.title`),
             onClick: function() {

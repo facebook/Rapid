@@ -2,7 +2,7 @@ import { Extent } from '@rapid-sdk/math';
 
 import { actionReverse } from '../actions/reverse';
 import { osmFlowingWaterwayTagValues, osmRoutableHighwayTagValues } from '../osm/tags';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationImpossibleOneway(context) {
@@ -122,7 +122,7 @@ export function validationImpossibleOneway(context) {
         referenceID = `${wayType}.${placement}`;
       }
 
-      return [new validationIssue({
+      return [new ValidationIssue(context, {
         type: type,
         subtype: wayType,
         severity: 'warning',
@@ -137,7 +137,7 @@ export function validationImpossibleOneway(context) {
         dynamicFixes: function() {
           let fixes = [];
           if (attachedOneways.length) {
-            fixes.push(new validationIssueFix({
+            fixes.push(new ValidationFix({
               icon: 'rapid-operation-reverse',
               title: l10n.tHtml('issues.fix.reverse_feature.title'),
               entityIds: [way.id],
@@ -150,7 +150,7 @@ export function validationImpossibleOneway(context) {
           if (node.tags.noexit !== 'yes') {
             const isRTL = l10n.isRTL();
             const useLeftContinue = (isFirst && !isRTL) || (!isFirst && isRTL);
-            fixes.push(new validationIssueFix({
+            fixes.push(new ValidationFix({
               icon: 'rapid-operation-continue' + (useLeftContinue ? '-left' : ''),
               title: l10n.tHtml('issues.fix.continue_from_' + (isFirst ? 'start' : 'end') + '.title'),
               onClick: function() {

@@ -2,7 +2,7 @@ import { Extent } from '@rapid-sdk/math';
 
 import { operationDelete } from '../operations/delete';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationDisconnectedWay(context) {
@@ -18,7 +18,7 @@ export function validationDisconnectedWay(context) {
     const routingIslandWays = routingIslandForEntity(entity);
     if (!routingIslandWays) return [];
 
-    return [new validationIssue({
+    return [new ValidationIssue(context, {
       type: type,
       subtype: 'highway',
       severity: 'warning',
@@ -46,12 +46,12 @@ export function validationDisconnectedWay(context) {
           if (endFix) fixes.push(endFix);
         }
         if (!fixes.length) {
-          fixes.push(new validationIssueFix({
+          fixes.push(new ValidationFix({
             title: l10n.tHtml('issues.fix.connect_feature.title')
           }));
         }
 
-        fixes.push(new validationIssueFix({
+        fixes.push(new ValidationFix({
           icon: 'rapid-operation-delete',
           title: l10n.tHtml('issues.fix.delete_feature.title'),
           entityIds: [singleEntity.id],
@@ -64,7 +64,7 @@ export function validationDisconnectedWay(context) {
           }
         }));
       } else {
-        fixes.push(new validationIssueFix({
+        fixes.push(new ValidationFix({
           title: l10n.tHtml('issues.fix.connect_features.title')
         }));
       }
@@ -172,7 +172,7 @@ export function validationDisconnectedWay(context) {
       const isRTL = l10n.isRTL();
       const useLeftContinue = (whichEnd === 'start' && !isRTL) || (whichEnd === 'end' && isRTL);
 
-      return new validationIssueFix({
+      return new ValidationFix({
         icon: 'rapid-operation-continue' + (useLeftContinue ? '-left' : ''),
         title: l10n.tHtml(`issues.fix.continue_from_${whichEnd}.title`),
         entityIds: [vertexID],

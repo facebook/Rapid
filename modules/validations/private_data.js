@@ -1,7 +1,7 @@
 import { utilTagDiff } from '@rapid-sdk/util';
 
 import { actionChangeTags } from '../actions/change_tags';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
 export function validationPrivateData(context) {
@@ -41,7 +41,7 @@ export function validationPrivateData(context) {
 
     const fixID = tagDiff.length === 1 ? 'remove_tag' : 'remove_tags';
 
-    return [new validationIssue({
+    return [new ValidationIssue(context, {
       type: type,
       severity: 'warning',
       message: showMessage,
@@ -49,7 +49,7 @@ export function validationPrivateData(context) {
       entityIds: [entity.id],
       dynamicFixes: () => {
         return [
-          new validationIssueFix({
+          new ValidationFix({
             icon: 'rapid-operation-delete',
             title: l10n.tHtml(`issues.fix.${fixID}.title`),
             onClick: function() {

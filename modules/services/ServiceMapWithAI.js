@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@rapid-sdk/math';
 
-import { Graph, Tree } from '../core';
+import { Graph, Tree } from '../core/lib';
 import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind } from '../util';
 

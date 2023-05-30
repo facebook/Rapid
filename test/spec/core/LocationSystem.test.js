@@ -1,5 +1,5 @@
 describe('LocationSystem', () => {
-  let locationSystem;
+  let _locationSystem;
 
   const colorado = {
     type: 'Feature',
@@ -24,21 +24,22 @@ describe('LocationSystem', () => {
 
 
   beforeEach(() => {
-    locationSystem = new Rapid.LocationSystem();
+    _locationSystem = new Rapid.LocationSystem();
   });
 
 
   describe('#mergeCustomGeoJSON', () => {
     it('merges geojson into lococation-conflation cache', () => {
-      locationSystem.mergeCustomGeoJSON(fc);
-      expect(locationSystem.loco()._cache['colorado.geojson']).to.be.eql(colorado);
+      _locationSystem.mergeCustomGeoJSON(fc);
+      expect(_locationSystem.loco()._cache['colorado.geojson']).to.be.eql(colorado);
     });
   });
 
 
   describe('#mergeLocationSets', () => {
     it('returns a promise rejected if not passed an array', done => {
-      const prom = locationSystem.mergeLocationSets({});
+      const prom = _locationSystem.mergeLocationSets({});
+      expect(prom).to.be.an.instanceof(Promise);
       prom
         .then(() => {
           done(new Error('This was supposed to fail, but somehow succeeded.'));
@@ -55,7 +56,7 @@ describe('LocationSystem', () => {
         { id: 'usa',   locationSet: { include: ['usa'] } }
       ];
 
-      return locationSystem.mergeLocationSets(data)
+      return _locationSystem.mergeLocationSets(data)
         .then(data => {
           expect(data).to.be.a('array');
           expect(data[0].locationSetID).to.eql('+[Q2]');
@@ -69,7 +70,7 @@ describe('LocationSystem', () => {
         { id: 'bogus2', locationSet: { include: ['fake.geojson'] } }
       ];
 
-      return locationSystem.mergeLocationSets(data)
+      return _locationSystem.mergeLocationSets(data)
         .then(data => {
           expect(data).to.be.a('array');
           expect(data[0].locationSetID).to.eql('+[Q2]');
@@ -81,24 +82,24 @@ describe('LocationSystem', () => {
 
   describe('#locationSetID', () => {
     it('calculates a locationSetID for a locationSet', () => {
-      expect(locationSystem.locationSetID({ include: ['usa'] })).to.be.eql('+[Q30]');
+      expect(_locationSystem.locationSetID({ include: ['usa'] })).to.be.eql('+[Q30]');
     });
 
     it('falls back to the world locationSetID in case of errors', () => {
-      expect(locationSystem.locationSetID({ foo: 'bar' })).to.be.eql('+[Q2]');
-      expect(locationSystem.locationSetID({ include: ['fake.geojson'] })).to.be.eql('+[Q2]');
+      expect(_locationSystem.locationSetID({ foo: 'bar' })).to.be.eql('+[Q2]');
+      expect(_locationSystem.locationSetID({ include: ['fake.geojson'] })).to.be.eql('+[Q2]');
     });
   });
 
 
   describe('#feature', () => {
     it('has the world locationSet pre-resolved', () => {
-      const result = locationSystem.feature('+[Q2]');
+      const result = _locationSystem.feature('+[Q2]');
       expect(result).to.include({ type: 'Feature', id: '+[Q2]' });
     });
 
     it('falls back to the world locationSetID in case of errors', () => {
-      const result = locationSystem.feature('fake');
+      const result = _locationSystem.feature('fake');
       expect(result).to.include({ type: 'Feature', id: '+[Q2]' });
     });
   });
@@ -106,29 +107,29 @@ describe('LocationSystem', () => {
 
   describe('#locationSetsAt', () => {
     it('has the world locationSet pre-resolved', () => {
-      const result1 = locationSystem.locationSetsAt([-108.557, 39.065]);  // Grand Junction
+      const result1 = _locationSystem.locationSetsAt([-108.557, 39.065]);  // Grand Junction
       expect(result1).to.be.an('object').that.has.all.keys('+[Q2]');
-      const result2 = locationSystem.locationSetsAt([-74.481, 40.797]);   // Morristown
+      const result2 = _locationSystem.locationSetsAt([-74.481, 40.797]);   // Morristown
       expect(result2).to.be.an('object').that.has.all.keys('+[Q2]');
-      const result3 = locationSystem.locationSetsAt([13.575, 41.207,]);   // Gaeta
+      const result3 = _locationSystem.locationSetsAt([13.575, 41.207,]);   // Gaeta
       expect(result3).to.be.an('object').that.has.all.keys('+[Q2]');
     });
 
     it('returns valid locationSets at a given lon,lat', () => {
       // setup, load colorado.geojson and resolve some locationSets
-      locationSystem.mergeCustomGeoJSON(fc);
+      _locationSystem.mergeCustomGeoJSON(fc);
       const data = [
         { id: 'OSM-World', locationSet: { include: ['001'] } },
         { id: 'OSM-USA', locationSet: { include: ['us'] } },
         { id: 'OSM-Colorado', locationSet: { include: ['colorado.geojson'] } }
       ];
-      return locationSystem.mergeLocationSets(data)
+      return _locationSystem.mergeLocationSets(data)
         .then(() => {
-          const result1 = locationSystem.locationSetsAt([-108.557, 39.065]);  // Grand Junction
+          const result1 = _locationSystem.locationSetsAt([-108.557, 39.065]);  // Grand Junction
           expect(result1).to.be.an('object').that.has.all.keys('+[Q2]', '+[Q30]', '+[colorado.geojson]');
-          const result2 = locationSystem.locationSetsAt([-74.481, 40.797]);   // Morristown
+          const result2 = _locationSystem.locationSetsAt([-74.481, 40.797]);   // Morristown
           expect(result2).to.be.an('object').that.has.all.keys('+[Q2]', '+[Q30]');
-          const result3 = locationSystem.locationSetsAt([13.575, 41.207,]);   // Gaeta
+          const result3 = _locationSystem.locationSetsAt([13.575, 41.207,]);   // Gaeta
           expect(result3).to.be.an('object').that.has.all.keys('+[Q2]');
         });
     });
