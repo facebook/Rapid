@@ -17,7 +17,8 @@ import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
 import { uiLoading } from './loading';
 import { uiMapInMap } from './map_in_map';
-import { uiPhotoviewer } from './photoviewer';
+import { uiMap3dViewer } from './map3d_viewer';
+import { uiPhotoViewer } from './photo_viewer';
 import { uiRestore } from './restore';
 import { uiScale } from './scale';
 import { uiShortcuts } from './shortcuts';
@@ -41,7 +42,6 @@ import { uiPanePreferences } from './panes/preferences';
 import { uiRapidServiceLicense } from './rapid_service_license';
 import { uiRapidWhatsNew } from './rapid_whatsnew';
 import { uiRapidSplash } from './rapid_splash';
-import { ui3DMap } from './tools/3dmap/3d_map';
 
 
 export function uiInit(context) {
@@ -111,7 +111,7 @@ export function uiInit(context) {
     container
       .call(uiFullScreen(context));
 
-    const map = context.map();
+    const map = context.mapSystem();
     map.redrawEnabled = false;  // don't draw until we've set zoom/lat/long
 
     container
@@ -163,7 +163,7 @@ export function uiInit(context) {
       .call(uiMapInMap(context));
 
     overMap
-      .call(ui3DMap(context));
+      .call(uiMap3dViewer(context));
 
     overMap
       .append('div')
@@ -364,7 +364,7 @@ export function uiInit(context) {
       .on(l10n.t('area_fill.wireframe.key'), function toggleWireframe(d3_event) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
-        const map = context.map();
+        const map = context.mapSystem();
         map.wireframeMode = !map.wireframeMode;
       })
       .on(uiCmd('⌥' + l10n.t('area_fill.wireframe.key')), function toggleOsmData(d3_event) {
@@ -441,7 +441,7 @@ export function uiInit(context) {
 
   ui.sidebar = uiSidebar(context);
 
-  ui.photoviewer = uiPhotoviewer(context);
+  ui.photoviewer = uiPhotoViewer(context);
 
   ui.shortcuts = uiShortcuts(context);
 
@@ -476,7 +476,7 @@ export function uiInit(context) {
 
 
   ui.onResize = function(offset) {
-    const map = context.map();
+    const map = context.mapSystem();
 
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
@@ -616,7 +616,7 @@ export function uiInit(context) {
       .operations(operations);
 
     // render the menu
-    context.map().overlay.call(_editMenu);
+    context.mapSystem().overlay.call(_editMenu);
   };
 
 

@@ -30,7 +30,7 @@ export class PixiLayerOsmose extends AbstractLayer {
   getService() {
     const osmose = this.context.services.get('osmose');
     if (osmose && !this._service) {
-      osmose.on('loaded', () => this.context.map().deferredRedraw());
+      osmose.on('loaded', () => this.context.mapSystem().deferredRedraw());
       this._service = osmose;
     } else if (!osmose && this._service) {
       this._service = null;

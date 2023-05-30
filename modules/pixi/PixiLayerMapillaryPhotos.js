@@ -44,7 +44,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
   getService() {
     const mapillary = this.context.services.get('mapillary');
     if (mapillary && !this._service) {
-      mapillary.on('loadedImages', () => this.context.map().deferredRedraw());
+      mapillary.on('loadedImages', () => this.context.mapSystem().deferredRedraw());
       this._service = mapillary;
     } else if (!mapillary && this._service) {
       this._service = null;

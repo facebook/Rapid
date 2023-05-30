@@ -48,7 +48,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.color = color;
 
       context.scene().dirtyLayers('rapid');
-      context.map().immediateRedraw();
+      context.mapSystem().immediateRedraw();
       _content.call(renderModalContent);
 
       // If a Rapid feature is already selected, reselect it to update sidebar too
@@ -288,7 +288,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
                 .text(l10n.t('rapid_feature_toggle.center_map'))
                 .on('click', (d3_event) => {
                   d3_event.preventDefault();
-                  context.map().extent(d.extent);
+                  context.mapSystem().extent(d.extent);
                 });
             } else {
               selection

@@ -626,7 +626,7 @@ export function coreHistory(context) {
 
               if (missing.length && osm) {
                 loadComplete = false;
-                context.map().redrawEnabled = false;
+                context.mapSystem().redrawEnabled = false;
 
                 const loading = uiLoading(context).blocking(true);
                 context.container().call(loading);
@@ -653,7 +653,7 @@ export function coreHistory(context) {
 
                   if (err || !missing.length) {
                     loading.close();
-                    context.map().redrawEnabled = true;
+                    context.mapSystem().redrawEnabled = true;
                     dispatch.call('change');
                     dispatch.call('restore', this);
                   }
@@ -708,7 +708,7 @@ export function coreHistory(context) {
 
           const transform = _stack[_index].transform;
           if (transform) {
-            context.map().transform(transform);
+            context.mapSystem().transform(transform);
           }
 
           if (loadComplete) {

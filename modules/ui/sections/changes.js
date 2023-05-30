@@ -145,7 +145,7 @@ export function uiSectionChanges(context) {
     function click(d3_event, change) {
       if (change.changeType !== 'deleted') {
         let entity = change.entity;
-        context.map().zoomToEase(entity);
+        context.mapSystem().zoomToEase(entity);
         context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
           .classed('hover', true);
       }

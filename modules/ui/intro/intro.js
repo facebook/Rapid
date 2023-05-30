@@ -85,7 +85,7 @@ export function uiIntro(context, skipToRapid) {
     // Save current state
     const original = {
       hash: window.location.hash,
-      transform: context.map().transform(),
+      transform: context.mapSystem().transform(),
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
@@ -203,7 +203,7 @@ export function uiIntro(context, skipToRapid) {
       imagery.baseLayerSource(original.baseLayer);
       original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
       imagery.brightness = original.brightness;
-      context.map().transform(original.transform);
+      context.mapSystem().transform(original.transform);
       window.location.replace(original.hash);
 
       // Restore History and Edits

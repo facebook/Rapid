@@ -38,7 +38,7 @@ export function uiGeolocate(context) {
     } else {   // stop geolocating
       _enabled = false;
       _layer.geolocationData = null;
-      context.map().deferredRedraw();
+      context.mapSystem().deferredRedraw();
       finish();
     }
   }
@@ -51,7 +51,7 @@ export function uiGeolocate(context) {
       const coords = result.coords;
       const extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
       _layer.geolocationData = result;
-      context.map().deferredRedraw();
+      context.mapSystem().deferredRedraw();
 
       // If `_timeoutID` has a value, this is the first successful result we've received.
       // Recenter the map and clear the timeout.
@@ -59,7 +59,7 @@ export function uiGeolocate(context) {
         window.clearTimeout(_timeoutID);
         _timeoutID = undefined;
 
-        const map = context.map();
+        const map = context.mapSystem();
         map.centerZoomEase(extent.center(), Math.min(20, map.extentZoom(extent)));
       }
 
@@ -81,7 +81,7 @@ export function uiGeolocate(context) {
 
     _enabled = false;
     _layer.geolocationData = null;
-    context.map().deferredRedraw();
+    context.mapSystem().deferredRedraw();
     finish();
   }
 

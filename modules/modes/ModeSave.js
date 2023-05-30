@@ -283,7 +283,7 @@ export class ModeSave extends AbstractMode {
     this._successUI = uiSuccess(this.context);
     this._location = null;
 
-    const loc = this.context.map().center();
+    const loc = this.context.mapSystem().center();
     const nominatim = this.context.services.get('nominatim');
 
     nominatim?.reverse(loc, (err, result) => {

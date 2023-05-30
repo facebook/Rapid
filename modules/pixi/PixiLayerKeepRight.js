@@ -30,7 +30,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
   getService() {
     const keepright = this.context.services.get('keepRight');
     if (keepright && !this._service) {
-      keepright.on('loaded', () => this.context.map().deferredRedraw());
+      keepright.on('loaded', () => this.context.mapSystem().deferredRedraw());
       this._service = keepright;
     } else if (!keepright && this._service) {
       this._service = null;

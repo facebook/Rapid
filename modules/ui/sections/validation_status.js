@@ -166,7 +166,7 @@ export function uiSectionValidationStatus(context) {
     window.requestIdleCallback(section.reRender);
   });
 
-  context.map().on('draw', _debounce(() => {
+  context.mapSystem().on('draw', _debounce(() => {
     window.requestIdleCallback(section.reRender);
   }, 1000));
 

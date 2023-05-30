@@ -45,7 +45,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
   getService() {
     const osm = this.context.services.get('osm');
     if (osm && !this._service) {
-      osm.on('loadedNotes', () => this.context.map().deferredRedraw());
+      osm.on('loadedNotes', () => this.context.mapSystem().deferredRedraw());
       this._service = osm;
     } else if (!osm && this._service) {
       this._service = null;

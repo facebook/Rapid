@@ -16,7 +16,7 @@ export function uiContributors(context) {
         if (!osm) return;
 
         let users = {};
-        let entities = context.history().intersects(context.map().extent());
+        let entities = context.history().intersects(context.mapSystem().extent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;
@@ -47,7 +47,7 @@ export function uiContributors(context) {
             count.append('a')
                 .attr('target', '_blank')
                 .attr('href', function() {
-                    return osm.changesetsURL(context.map().center(), context.map().zoom());
+                    return osm.changesetsURL(context.mapSystem().center(), context.mapSystem().zoom());
                 })
                 .html(othersNum);
 
@@ -79,6 +79,6 @@ export function uiContributors(context) {
         update();
 
         osm.on('loaded.contributors', debouncedUpdate);
-        context.map().on('draw', debouncedUpdate);
+        context.mapSystem().on('draw', debouncedUpdate);
     };
 }

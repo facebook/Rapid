@@ -80,8 +80,8 @@ export function uiSectionEntityIssues(context) {
         makeActiveIssue(d.id);    // expand only the clicked item
         const extent = d.extent(context.graph());
         if (extent) {
-          const setZoom = Math.max(context.map().zoom(), 19);
-          context.map().centerZoomEase(extent.center(), setZoom);
+          const setZoom = Math.max(context.mapSystem().zoom(), 19);
+          context.mapSystem().centerZoomEase(extent.center(), setZoom);
         }
       });
 

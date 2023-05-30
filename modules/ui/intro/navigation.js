@@ -11,7 +11,7 @@ export function uiIntroNavigation(context, curtain) {
   const chapter = { title: 'intro.navigation.title' };
   const container = context.container();
   const history = context.history();
-  const map = context.map();
+  const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const townHallID = 'n2061';

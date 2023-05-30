@@ -125,7 +125,7 @@ export function uiSectionRawMembershipEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.relation.id);
-        context.map().zoomToEase(entity);
+        context.mapSystem().zoomToEase(entity);
 
         // highlight the relation in case it wasn't previously on-screen
         utilHighlightEntities([d.relation.id], true, context);
@@ -244,7 +244,7 @@ export function uiSectionRawMembershipEditor(context) {
             });
 
         } else {
-            context.history().intersects(context.map().extent()).forEach(function(entity) {
+            context.history().intersects(context.mapSystem().extent()).forEach(function(entity) {
                 if (entity.type !== 'relation' || entity.id === entityID) return;
 
                 var value = baseDisplayLabel(entity);

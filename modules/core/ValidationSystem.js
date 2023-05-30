@@ -242,7 +242,7 @@ export class ValidationSystem extends EventEmitter {
   getIssues(options) {
     const opts = Object.assign({ what: 'all', where: 'all', includeIgnored: false, includeDisabledRules: false }, options);
     const context = this.context;
-    const view = context.map().extent();
+    const view = context.mapSystem().extent();
     let seen = new Set();
     let results = [];
 
@@ -361,8 +361,8 @@ export class ValidationSystem extends EventEmitter {
     }
 
     if (focusCenter) {  // Adjust the view
-      const setZoom = Math.max(context.map().zoom(), 19);
-      context.map().centerZoomEase(focusCenter, setZoom);
+      const setZoom = Math.max(context.mapSystem().zoom(), 19);
+      context.mapSystem().centerZoomEase(focusCenter, setZoom);
     }
 
     if (selectID) {  // Enter select mode

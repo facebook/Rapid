@@ -119,7 +119,7 @@ export function uiMapInMap(context) {
 
       updateProjection();
       _gesture = null;
-      context.map().center(projection.invert(_cMini)); // recenter main map..
+      context.mapSystem().center(projection.invert(_cMini)); // recenter main map..
     }
 
 
@@ -128,7 +128,7 @@ export function uiMapInMap(context) {
      * Update the minimap projection and d3-zoom transform
      */
     function updateProjection() {
-      const loc = context.map().center();
+      const loc = context.mapSystem().center();
       const tMain = context.projection.transform();
       const zMain = geoScaleToZoom(tMain.k);
       const zMini = Math.max(zMain - _zDiff, 0.5);
@@ -165,7 +165,7 @@ export function uiMapInMap(context) {
      * Recalculates the position and size of the bounding box rectangle on the minimap
      */
     function updateBoundingBox() {
-      const bbox = context.map().extent().bbox();
+      const bbox = context.mapSystem().extent().bbox();
       const topLeftPoint = projection.project([bbox.minX, bbox.maxY]);
       const bottomRightPoint = projection.project([bbox.maxX, bbox.minY]);
       const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
@@ -308,7 +308,7 @@ export function uiMapInMap(context) {
       stage.eventMode = 'none';
       stage.sortableChildren = false;
 
-      const mainRenderer = context.map().renderer;
+      const mainRenderer = context.mapSystem().renderer;
 
       // Construct the scene..
       const miniRenderer = {    // Mock Renderer
@@ -340,7 +340,7 @@ export function uiMapInMap(context) {
       _dMini = [width, height];
       _cMini = vecScale(_dMini, 0.5);
 
-      context.map().on('draw', () => updateMinimap());
+      context.mapSystem().on('draw', () => updateMinimap());
     }
 
     wrapEnter

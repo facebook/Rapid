@@ -102,7 +102,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
   update(projection, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    const wireframeMode = this.context.map().wireframeMode;
+    const wireframeMode = this.context.mapSystem().wireframeMode;
 
     //
     // GEOMETRY

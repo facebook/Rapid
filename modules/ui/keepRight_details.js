@@ -78,7 +78,7 @@ export function uiKeepRightDetails(context) {
             utilHighlightEntities([entityID], false, context);
 
             context.scene().enableLayers('osm');  // make sure osm layer is even on
-            context.map().centerZoomEase(_qaItem.loc, 20);
+            context.mapSystem().centerZoomEase(_qaItem.loc, 20);
 
             if (entity) {
               context.enter(modeSelect(context, [entityID]));
@@ -109,7 +109,7 @@ export function uiKeepRightDetails(context) {
 
     // Don't hide entities related to this issue - iD#5880
     context.filterSystem().forceVisible(relatedEntities);
-    context.map().immediateRedraw();
+    context.mapSystem().immediateRedraw();
   }
 
 

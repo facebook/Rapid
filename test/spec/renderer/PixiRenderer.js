@@ -59,7 +59,7 @@ describe('PixiRenderer', () => {
 
     const graph = context.graph();
     graph.rebase(graphEntities, [graph], false);
-    map = context.map();
+    map = context.mapSystem();
     content.call(map);
   });
 

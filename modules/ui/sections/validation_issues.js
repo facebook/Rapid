@@ -38,7 +38,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
-    const center = context.map().center();
+    const center = context.mapSystem().center();
     const graph = context.graph();
 
     // sort issues by distance away from the center of the map
@@ -220,7 +220,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     });
   });
 
-  context.map().on('draw',
+  context.mapSystem().on('draw',
     _debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;

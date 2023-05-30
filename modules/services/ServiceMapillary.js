@@ -365,7 +365,7 @@ export class ServiceMapillary {
       this.setActiveImage(image);
       this.setStyles(context, null);
       const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
-      context.map().centerEase(loc);
+      context.mapSystem().centerEase(loc);
       context.photoSystem().selectPhoto('mapillary', image.id);
 
       if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {

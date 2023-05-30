@@ -155,7 +155,7 @@ export function uiSuccess(context) {
     // Get OSM community index features intersecting the map..
     getCommunityIndexAsync()
       .then(oci => {
-        const loc = context.map().center();
+        const loc = context.mapSystem().center();
         const locationSystem = context.locationSystem();
         const validHere = locationSystem.locationSetsAt(loc);
 

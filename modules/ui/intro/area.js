@@ -12,7 +12,7 @@ export function uiIntroArea(context, curtain) {
   const chapter = { title: 'intro.areas.title' };
   const container = context.container();
   const history = context.history();
-  const map = context.map();
+  const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const playgroundExtent = new Extent([-85.63575, 41.94137], [-85.63526, 41.94180]);

@@ -44,7 +44,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
   getService() {
     const streetside = this.context.services.get('streetside');
     if (streetside && !this._service) {
-      streetside.on('loadedImages', () => this.context.map().deferredRedraw());
+      streetside.on('loadedImages', () => this.context.mapSystem().deferredRedraw());
       this._service = streetside;
     } else if (!streetside && this._service) {
       this._service = null;

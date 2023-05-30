@@ -21,7 +21,7 @@ function clamp(num, min, max) {
 
 
 /**
- * `RendererMap` maintains the map state
+ * `MapSystem` maintains the map state
  * and provides an interface for manipulating the map view.
  *
  * Properties available:
@@ -40,7 +40,7 @@ function clamp(num, min, max) {
  *                 ('move' is mostly for when you want to update some content that floats over the map)
  *   `mapchange`  Fires on any change in map display options (wireframe/areafill, highlightedits)
  */
-export class RendererMap extends EventEmitter {
+export class MapSystem extends EventEmitter {
 
   /**
    * @constructor
@@ -57,11 +57,9 @@ export class RendererMap extends EventEmitter {
 
     // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
-    this._highlightEdits = false;     // whether to style edited features differently
-
-    const prefs = this.context.storageSystem();
-    this._currFillMode = prefs.getItem('area-fill') || 'partial';           // the current fill mode
-    this._toggleFillMode = prefs.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
+    this._highlightEdits = false;      // whether to style edited features differently
+    this._currFillMode = 'partial';    // the current fill mode
+    this._toggleFillMode = 'partial';  // the previous *non-wireframe* fill mode
 
     this._renderer = null;
     this._dimensions = [1, 1];
@@ -81,7 +79,9 @@ export class RendererMap extends EventEmitter {
    * Called one time after all objects have been instantiated.
    */
   init() {
-    /* noop */
+    const prefs = this.context.storageSystem();
+    this._currFillMode = prefs.getItem('area-fill') || 'partial';           // the current fill mode
+    this._toggleFillMode = prefs.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
   }
 
 
@@ -126,15 +126,17 @@ export class RendererMap extends EventEmitter {
       .append('div')
       .attr('class', 'overlay');
 
-    this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
+    if (!this._renderer) {
+      this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
 
-    // Forward the 'move' and 'draw' events from PixiRenderer
-    this._renderer
-      .on('move', () => this.emit('move'))
-      .on('draw', () => {
-        this._updateHash();
-        this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
-      });
+      // Forward the 'move' and 'draw' events from PixiRenderer
+      this._renderer
+        .on('move', () => this.emit('move'))
+        .on('draw', () => {
+          this._updateHash();
+          this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
+        });
+    }
 
     this.dimensions = utilGetDimensions(selection);
 

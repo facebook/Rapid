@@ -127,7 +127,7 @@ export class PixiLayerRapid extends AbstractLayer {
       if (!wasRapidEdit(annotation)) return;
 
       this._acceptedIDs.delete(annotation.id);
-      this.context.map().immediateRedraw();
+      this.context.mapSystem().immediateRedraw();
     }
 
 
@@ -136,7 +136,7 @@ export class PixiLayerRapid extends AbstractLayer {
       if (!wasRapidEdit(annotation)) return;
 
       this._acceptedIDs.add(annotation.id);
-      this.context.map().immediateRedraw();
+      this.context.mapSystem().immediateRedraw();
     }
 
 
@@ -161,7 +161,7 @@ export class PixiLayerRapid extends AbstractLayer {
         }
       });
 
-      this.context.map().immediateRedraw();
+      this.context.mapSystem().immediateRedraw();
     }
   }
 
@@ -174,7 +174,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const context = this.context;
     const mapwithai = context.services.get('mapwithai');
     if (mapwithai && !this._serviceMapWithAI) {
-      mapwithai.on('loadedData', () => context.map().deferredRedraw());
+      mapwithai.on('loadedData', () => context.mapSystem().deferredRedraw());
       this._serviceMapWithAI = mapwithai;
     } else if (!mapwithai && this._serviceMapWithAI) {
       this._serviceMapWithAI = null;
@@ -186,7 +186,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const context = this.context;
     const esri = context.services.get('esri');
     if (esri && !this._serviceEsri) {
-      esri.on('loadedData', () => context.map().deferredRedraw());
+      esri.on('loadedData', () => context.mapSystem().deferredRedraw());
       this._serviceEsri = esri;
     } else if (!esri && this._serviceEsri) {
       this._serviceEsri = null;
@@ -256,7 +256,7 @@ export class PixiLayerRapid extends AbstractLayer {
         service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.map().extent())
+      const entities = service.intersects(datasetID, context.mapSystem().extent())
         .filter(d => d.type === 'way' && !isAccepted(d));  // see onHistoryRestore()
 
       // fb_ai service gives us roads and buildings together,
@@ -282,7 +282,7 @@ export class PixiLayerRapid extends AbstractLayer {
         service.loadTiles(datasetID, context.projection);  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.map().extent());
+      const entities = service.intersects(datasetID, context.mapSystem().extent());
 
       for (const entity of entities) {
         if (isAccepted(entity)) continue;   // skip features already accepted, see onHistoryRestore()

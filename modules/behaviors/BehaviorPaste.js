@@ -34,7 +34,7 @@ export class BehaviorPaste extends AbstractBehavior {
     if (this._enabled) return;
     this._enabled = true;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.on('keydown', this._keydown);
   }
 
@@ -47,7 +47,7 @@ export class BehaviorPaste extends AbstractBehavior {
     if (!this._enabled) return;
     this._enabled = false;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.off('keydown', this._keydown);
   }
 
@@ -79,7 +79,7 @@ export class BehaviorPaste extends AbstractBehavior {
 
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
     if (!eventManager.pointerOverRenderer) return;
 
     e.preventDefault();
@@ -115,7 +115,7 @@ export class BehaviorPaste extends AbstractBehavior {
     // Default to map center if we can't determine the mouse pointer
     const copyLoc = context.copyLoc();
     const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
-    const mousePoint = eventManager.coord || context.map().centerPoint();
+    const mousePoint = eventManager.coord || context.mapSystem().centerPoint();
     const delta = vecSubtract(mousePoint, copyPoint);
 
     const annotation = context.t('operations.paste.annotation', { n: pasteIDs.size });

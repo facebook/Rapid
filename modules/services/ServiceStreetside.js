@@ -336,7 +336,7 @@ export class ServiceStreetside {
     const nextBubble = nextID && this.cachedImage(nextID);
     if (!nextBubble) return;
 
-    context.map().centerEase(nextBubble.loc);
+    context.mapSystem().centerEase(nextBubble.loc);
     context.photoSystem().selectPhoto('streetside', nextBubble.id);
   }
 

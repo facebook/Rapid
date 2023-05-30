@@ -14,7 +14,7 @@ export function uiZoom(context) {
     icon: 'rapid-icon-plus',
     title: l10n.t('zoom.in'),
     action: zoomIn,
-    isDisabled: () => !context.map().canZoomIn(),
+    isDisabled: () => !context.mapSystem().canZoomIn(),
     disabledTitle: l10n.t('zoom.disabled.in'),
     key: '+'
   }, {
@@ -22,7 +22,7 @@ export function uiZoom(context) {
     icon: 'rapid-icon-minus',
     title: l10n.t('zoom.out'),
     action: zoomOut,
-    isDisabled: () => !context.map().canZoomOut(),
+    isDisabled: () => !context.mapSystem().canZoomOut(),
     disabledTitle: l10n.t('zoom.disabled.out'),
     key: '-'
   }];
@@ -30,25 +30,25 @@ export function uiZoom(context) {
   function zoomIn(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.map().zoomIn();
+    context.mapSystem().zoomIn();
   }
 
   function zoomOut(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.map().zoomOut();
+    context.mapSystem().zoomOut();
   }
 
   function zoomInFurther(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.map().zoomInFurther();
+    context.mapSystem().zoomInFurther();
   }
 
   function zoomOutFurther(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.map().zoomOutFurther();
+    context.mapSystem().zoomOutFurther();
   }
 
   return function render(selection) {
@@ -107,6 +107,6 @@ export function uiZoom(context) {
 
     updateButtonStates();
 
-    context.map().on('draw', updateButtonStates);
+    context.mapSystem().on('draw', updateButtonStates);
   };
 }

@@ -410,7 +410,7 @@ export class PixiRenderer extends EventEmitter {
     const pixiProjection = this.pixiProjection;
     const currTransform = context.projection.transform();
     const pixiTransform = pixiProjection.transform();
-    const effectiveZoom = context.map().effectiveZoom();
+    const effectiveZoom = context.mapSystem().effectiveZoom();
 
     let offset;
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset

@@ -44,7 +44,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
   getService() {
     const kartaview = this.context.services.get('kartaview');
     if (kartaview && !this._service) {
-      kartaview.on('loadedImages', () => this.context.map().deferredRedraw());
+      kartaview.on('loadedImages', () => this.context.mapSystem().deferredRedraw());
       this._service = kartaview;
     } else if (!kartaview && this._service) {
       this._service = null;

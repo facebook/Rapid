@@ -185,7 +185,7 @@ export function validationDisconnectedWay(context) {
           if (!way || !vertex) return;
 
           // make sure the vertex is actually visible and editable
-          const map = context.map();
+          const map = context.mapSystem();
           if (!context.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
             map.zoomToEase(vertex);
           }

@@ -11,7 +11,7 @@ describe('FilterSystem', () => {
     constructor() { }
     getParam() { return ''; }
     setParam() { }
-    on() {}
+    on() { return this; }
   }
 
   class MockContext {

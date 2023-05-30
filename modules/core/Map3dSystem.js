@@ -1,76 +1,91 @@
-import { Map as mapLibreMap } from 'maplibre-gl';
+import { Map as MapLibre } from 'maplibre-gl';
 
 const SELECTION_COLOR = '#01d4fa';
 
-export class Map {
-  constructor(id, context) {
-    this.building3dlayerSpec = this.get3DBuildingLayerSpec(
-      '3D Buildings',
-      'osmbuildings'
-    );
 
+/**
+ * `Map3dSystem` wraps an instance of MapLibre viewer
+ * and maintains the map state and style specification.
+ */
+export class Map3dSystem {
+
+  /**
+   * @constructor
+   * @param  `context`      Global shared application context
+   * @param  `containerID`  DOM id of the container to add maplibre to
+   */
+  constructor(context, containerID) {
+    this.context = context;
+    this.containerID = containerID;
+
+    this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
-    this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec(
-      'Roads',
-      'osmroads'
-    );
+    this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec('Roads', 'osmroads');
     this.areaLayerSpec = this.getAreaLayerSpec('Areas', 'osmareas');
+    this.maplibre = null;
+  }
 
-    this.map = new mapLibreMap({
-      container: id,
+
+  /**
+   * init
+   * Called one time after all objects have been instantiated.
+   */
+  init() {
+    this.maplibre = new MapLibre({
+      container: this.containerID,
       pitch: 30,
-      style:
-        'https://api.maptiler.com/maps/streets-v2/style.json?key=5pbVUaiVhKNAxkLf1kts',
+      style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=5pbVUaiVhKNAxkLf1kts'
     });
 
-    this.map.on('load', () => {
-      this.map.setLight({
+    this.maplibre.on('load', () => {
+      this.maplibre.setLight({
         anchor: 'viewport',
         color: '#ff00ff',
         position: [1, 200, 30],
         intensity: 0.3,
       });
 
-      this.map.jumpTo({
-        zoom: context.map().zoom() - 3,
-        center: context.map().extent().center(),
+      this.maplibre.jumpTo({
+        zoom: this.context.mapSystem().zoom() - 3,
+        center: this.context.mapSystem().extent().center(),
       });
 
-      this.map.addSource('osmareas', {
+      this.maplibre.addSource('osmareas', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
 
       // Layers need to be added in 'painter's algorithm' order, so the stuff on the bottom goes first!
-      this.map.addLayer(this.areaLayerSpec);
+      this.maplibre.addLayer(this.areaLayerSpec);
 
-      this.map.addSource('osmroads', {
+      this.maplibre.addSource('osmroads', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
 
-      this.map.addLayer(this.roadSelectedlayerSpec);
-      this.map.addLayer(this.roadCasinglayerSpec);
-      this.map.addLayer(this.roadStrokelayerSpec);
+      this.maplibre.addLayer(this.roadSelectedlayerSpec);
+      this.maplibre.addLayer(this.roadCasinglayerSpec);
+      this.maplibre.addLayer(this.roadStrokelayerSpec);
 
-      this.map.addSource('osmbuildings', {
+      this.maplibre.addSource('osmbuildings', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
-      this.map.addLayer(this.building3dlayerSpec);
+      this.maplibre.addLayer(this.building3dlayerSpec);
 
       //Turn off the existing 3d building data and road data that ships with the vector tile-
       // we don't want to have that data competing with the custom data layer we want to render.
       // Drawing both is bad!
-      this.map.getLayer('building-3d').visibility = 'none';
-      this.map.getLayer('road_network').visibility = 'none';
-      this.map.getLayer('road_network-casing').visibility = 'none';
+      this.maplibre.getLayer('building-3d').visibility = 'none';
+      this.maplibre.getLayer('road_network').visibility = 'none';
+      this.maplibre.getLayer('road_network-casing').visibility = 'none';
     });
   }
 
+
   /**
-   * get3DBuildingLayerSpec
+   * get3dBuildingLayerSpec
    * Returns a maplibre layer style specification that appropriately styles 3D buildings
    * using data-driven styling for selected features. Features with no height data are drawn as flat
    * polygons.
@@ -78,7 +93,7 @@ export class Map {
    * @param {string} source the source geojson data that to be rendered
    * @returns
    */
-  get3DBuildingLayerSpec(id, source) {
+  get3dBuildingLayerSpec(id, source) {
     return {
       id: id,
       type: 'fill-extrusion',
@@ -119,7 +134,7 @@ export class Map {
   }
 
   /**
-   * get3DBuildingLayerSpec
+   * get3dBuildingLayerSpec
    * Returns a maplibre layer style specification that appropriately styles 3D buildings
    * using data-driven styling for selected features. Features with no height data are drawn as flat
    * polygons.

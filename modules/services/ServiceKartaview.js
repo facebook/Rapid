@@ -245,7 +245,7 @@ export class ServiceKartaview {
       const nextImage = sequence.images[nextIndex];
       if (!nextImage) return;
 
-      context.map().centerEase(nextImage.loc);
+      context.mapSystem().centerEase(nextImage.loc);
       context.photoSystem().selectPhoto('kartaview', nextImage.id);
     }
 

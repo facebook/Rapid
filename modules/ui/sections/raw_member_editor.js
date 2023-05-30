@@ -52,7 +52,7 @@ export function uiSectionRawMemberEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.id);
-        context.map().zoomToEase(entity);
+        context.mapSystem().zoomToEase(entity);
 
         // highlight the feature in case it wasn't previously on-screen
         utilHighlightEntities([d.id], true, context);
@@ -66,10 +66,10 @@ export function uiSectionRawMemberEditor(context) {
         utilHighlightEntities([d.id], false, context);
 
         var entity = context.entity(d.id);
-        var mapExtent = context.map().extent();
+        var mapExtent = context.mapSystem().extent();
         if (!entity.intersects(mapExtent, context.graph())) {
             // zoom to the entity if its extent is not visible now
-            context.map().zoomToEase(entity);
+            context.mapSystem().zoomToEase(entity);
         }
 
         context.enter(modeSelect(context, [d.id]));

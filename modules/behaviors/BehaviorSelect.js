@@ -75,7 +75,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this.lastSpace = null;
     this.lastClick = null;
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.on('keydown', this._keydown);
     eventManager.on('keyup', this._keyup);
     eventManager.on('pointerdown', this._pointerdown);
@@ -106,7 +106,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     this._cancelLongPress();
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.off('keydown', this._keydown);
     eventManager.off('keyup', this._keyup);
     eventManager.off('pointerdown', this._pointerdown);
@@ -292,7 +292,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._cancelLongPress();
 
     const context = this.context;
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
@@ -380,7 +380,7 @@ export class BehaviorSelect extends AbstractBehavior {
     if (datum.captured_at) {
       // Determine the layer that was clicked on, obtain its service.
       const layerID = target.layer.id;
-      context.map().centerEase(datum.loc);
+      context.mapSystem().centerEase(datum.loc);
       context.photoSystem().selectPhoto(layerID, datum.id);
 //      // No mode change event here, just manually tell the renderer to select it, for now
 //      const scene = context.scene();
@@ -394,7 +394,7 @@ export class BehaviorSelect extends AbstractBehavior {
       const service = context.services.get('mapillary');
       if (!service) return;
 
-      context.map().centerEase(event.loc);
+      context.mapSystem().centerEase(event.loc);
       const selectedImageID = service.getActiveImage() && service.getActiveImage().id;
 
       service.getDetections(datum.id).then(detections => {
@@ -497,7 +497,7 @@ export class BehaviorSelect extends AbstractBehavior {
     if (!this._enabled || !this.lastClick) return;  // nothing to do
 
     const context = this.context;
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');

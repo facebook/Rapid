@@ -184,7 +184,7 @@ export function validationImpossibleOneway(context) {
 
   function continueDrawing(way, vertex, context) {
     // make sure the vertex is actually visible and editable
-    let map = context.map();
+    let map = context.mapSystem();
     if (!context.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
       map.zoomToEase(vertex);
     }

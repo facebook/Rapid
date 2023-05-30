@@ -207,13 +207,13 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
         tile.loaded = true;
         tile.image = null;  // image is copied to the atlas, we can free it
-        context.map().deferredRedraw();
+        context.mapSystem().deferredRedraw();
       };
 
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        context.map().deferredRedraw();
+        context.mapSystem().deferredRedraw();
       };
     }
 

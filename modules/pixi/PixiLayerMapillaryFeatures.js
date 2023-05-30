@@ -30,7 +30,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
   getService() {
     const mapillary = this.context.services.get('mapillary');
     if (mapillary && !this._service) {
-      mapillary.on('loadedMapFeatures', () => this.context.map().deferredRedraw());
+      mapillary.on('loadedMapFeatures', () => this.context.mapSystem().deferredRedraw());
       this._service = mapillary;
     } else if (!mapillary && this._service) {
       this._service = null;

@@ -56,7 +56,7 @@ export class ModeMove extends AbstractMode {
     this._startLoc = null;
     this._movementCache = null;
 
-    const eventManager = context.map().renderer.events;
+    const eventManager = context.mapSystem().renderer.events;
     eventManager.on('click', this._finish);
     eventManager.on('keydown', this._keydown);
     eventManager.on('pointercancel', this._cancel);
@@ -82,7 +82,7 @@ export class ModeMove extends AbstractMode {
     const context = this.context;
     context.filterSystem().forceVisible([]);
 
-    const eventManager = this.context.map().renderer.events;
+    const eventManager = this.context.mapSystem().renderer.events;
     eventManager.off('click', this._finish);
     eventManager.off('keydown', this._keydown);
     eventManager.off('pointercancel', this._cancel);
@@ -121,14 +121,14 @@ export class ModeMove extends AbstractMode {
     // If prevGraph doesn't match, either we haven't started moving, or something has
     // occurred during the move that interrupted it, so reset vars and start a new move
     if (this._prevGraph !== context.graph()) {
-      this._startLoc = context.map().mouseLoc();
+      this._startLoc = context.mapSystem().mouseLoc();
       this._movementCache = {};
       fn = context.perform;     // start moving
     } else {
       fn = context.overwrite;   // continue moving
     }
 
-    const currLoc = context.map().mouseLoc();
+    const currLoc = context.mapSystem().mouseLoc();
     const locationSystem = context.locationSystem();
     if (locationSystem.blocksAt(currLoc).length) {  // editing is blocked here
       this._cancel();
