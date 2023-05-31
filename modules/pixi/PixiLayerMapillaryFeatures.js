@@ -17,26 +17,15 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-
-    this._service = null;
-    this.getService();
   }
 
 
   /**
-   * Services are loosely coupled, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
+   * supported
+   * Whether the Layer's service exists
    */
-  getService() {
-    const mapillary = this.context.services.get('mapillary');
-    if (mapillary && !this._service) {
-      mapillary.on('loadedMapFeatures', () => this.context.mapSystem().deferredRedraw());
-      this._service = mapillary;
-    } else if (!mapillary && this._service) {
-      this._service = null;
-    }
-
-    return this._service;
+  get supported() {
+    return this.context.services.has('mapillary');
   }
 
 
@@ -67,7 +56,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.getService();
+    const service = this.context.services.get('mapillary');
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('points');
@@ -108,7 +97,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
+    const service = this.context.services.get('mapillary');
 
     if (this._enabled && service && zoom >= MINZOOM) {
       service.loadMapFeatures(this.context.projection);  // note: context.projection !== pixi projection
@@ -118,15 +107,6 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
     } else {
       service?.showFeatureDetections(false);
     }
-  }
-
-
-  /**
-   * supported
-   * Whether the Layer's service exists
-   */
-  get supported() {
-    return !!this.getService();
   }
 
 }

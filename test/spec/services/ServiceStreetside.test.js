@@ -3,6 +3,7 @@ describe('ServiceStreetside', () => {
 
   class MockContext {
     constructor() { }
+    deferredRedraw() { }
   }
 
   beforeEach(() => {
@@ -44,7 +45,7 @@ describe('ServiceStreetside', () => {
 
 
   describe('#loadBubbles', () => {
-    it('fires loadedImages when bubbles are loaded', done => {
+    it('fires loadedData when bubbles are loaded', done => {
       // adjust projection so that only one tile is fetched
       // (JSONP hack will return the same data for every fetch)
       _projection
@@ -53,7 +54,7 @@ describe('ServiceStreetside', () => {
         .dimensions([[0,0], [64,64]]);
 
       const spy = sinon.spy();
-      _streetside.on('loadedImages', spy);
+      _streetside.on('loadedData', spy);
 
       window.JSONP_DELAY = 0;
       window.JSONP_FIX = [{
@@ -88,7 +89,7 @@ describe('ServiceStreetside', () => {
         .dimensions([[0,0], [64,64]]);
 
       const spy = sinon.spy();
-      _streetside.on('loadedImages', spy);
+      _streetside.on('loadedData', spy);
 
       window.JSONP_DELAY = 0;
       window.JSONP_FIX = [{

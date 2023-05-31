@@ -1,4 +1,4 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { Tiler } from '@rapid-sdk/math';
 import { utilHashcode } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
@@ -8,27 +8,26 @@ import polygonClipping from 'polygon-clipping';
 import Protobuf from 'pbf';
 import vt from '@mapbox/vector-tile';
 
-import { utilRebind } from '../util';
-
 
 /**
  * `ServiceVectorTile`
+ *
+ * Events available:
+ *   'loadedData'
  */
-export class ServiceVectorTile {
+export class ServiceVectorTile extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'vectortile';
     this.context = context;
 
-    this._vtCache = new Map();   // Map(sourceID -> source)
+    this._cache = new Map();   // Map(sourceID -> source)
     this._tiler = new Tiler().tileSize(512).margin(1);
-
-    this.dispatch = d3_dispatch('loadedData');
-    utilRebind(this, this.dispatch, 'on');
   }
 
 
@@ -45,13 +44,13 @@ export class ServiceVectorTile {
    * Called after completing an edit session to reset any internal state
    */
   reset() {
-    for (const source of this._vtCache.values()) {
+    for (const source of this._cache.values()) {
       for (const controller of Object.values(source.inflight)) {
         this._abortRequest(controller);
       }
     }
 
-    this._vtCache = new Map();   // Map(sourceID -> source)
+    this._cache = new Map();   // Map(sourceID -> source)
   }
 
 
@@ -64,7 +63,7 @@ export class ServiceVectorTile {
    */
   addSource(sourceID, template) {
     const source = { template: template, inflight: {}, loaded: {}, canMerge: {} };
-    this._vtCache.set(sourceID, source);
+    this._cache.set(sourceID, source);
     return source;
   }
 
@@ -75,7 +74,7 @@ export class ServiceVectorTile {
    * @param  projection
    */
   data(sourceID, projection) {
-    const source = this._vtCache.get(sourceID);
+    const source = this._cache.get(sourceID);
     if (!source) return [];
 
     const tiles = this._tiler.getTiles(projection).tiles;
@@ -106,7 +105,7 @@ export class ServiceVectorTile {
    * @param  projection
    */
   loadTiles(sourceID, template, projection) {
-    let source = this._vtCache.get(sourceID);
+    let source = this._cache.get(sourceID);
     if (!source) {
       source = this.addSource(sourceID, template);
     }
@@ -181,7 +180,8 @@ export class ServiceVectorTile {
         }
 
         source.loaded[tile.id] = this._vtToGeoJSON(data, tile, source.canMerge[z]);
-        this.dispatch.call('loadedData');
+        this.context.deferredRedraw();
+        this.emit('loadedData');
       })
       .catch(() => {
         source.loaded[tile.id] = [];

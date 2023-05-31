@@ -5,6 +5,7 @@ describe('ServiceOsm', () => {
   class MockContext {
     constructor()     { this._locationSystem = new Rapid.LocationSystem(this); }
     locationSystem()  { return this._locationSystem; }
+    deferredRedraw()  { }
   }
 
   beforeEach(() => {
@@ -156,7 +157,7 @@ describe('ServiceOsm', () => {
     });
 
     it('emits a change event', () => {
-      _osm.on('change', spy);
+      _osm.on('authchange', spy);
       _osm.switch({ url: 'https://example.com' });
       expect(spy).to.have.been.calledOnce;
     });
@@ -257,7 +258,7 @@ describe('ServiceOsm', () => {
     });
 
 
-    it('dispatches change event if 509 Bandwidth Limit Exceeded', done => {
+    it('emits authchange event if 509 Bandwidth Limit Exceeded', done => {
       fetchMock.mock(`https://www.openstreetmap.org${path}`, {
         body: 'Bandwidth Limit Exceeded',
         status: 509,
@@ -265,7 +266,7 @@ describe('ServiceOsm', () => {
       });
 
       logout();
-      _osm.on('change', spy);
+      _osm.on('authchange', spy);
       _osm.loadFromAPI(path, err => {
         expect(err).to.have.property('status', 509);
         expect(spy).to.have.been.calledOnce;
@@ -273,7 +274,7 @@ describe('ServiceOsm', () => {
       });
     });
 
-    it('dispatches change event if 429 Too Many Requests', done => {
+    it('emits authchange event if 429 Too Many Requests', done => {
       fetchMock.mock(`https://www.openstreetmap.org${path}`, {
         body: '429 Too Many Requests',
         status: 429,
@@ -281,7 +282,7 @@ describe('ServiceOsm', () => {
       });
 
       logout();
-      _osm.on('change', spy);
+      _osm.on('authchange', spy);
       _osm.loadFromAPI(path, err => {
         expect(err).to.have.property('status', 429);
         expect(spy).to.have.been.calledOnce;

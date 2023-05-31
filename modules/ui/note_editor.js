@@ -72,7 +72,7 @@ export function uiNoteEditor(context) {
         // rerender the note editor on any auth change
         var osm = context.services.get('osm');
         if (osm) {
-            osm.on('change.note-save', function() {
+            osm.on('authchange', function() {
                 selection.call(noteEditor);
             });
         }

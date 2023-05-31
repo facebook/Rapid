@@ -1,11 +1,9 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
 import { Extent, Tiler } from '@rapid-sdk/math';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
-
-import { utilRebind } from '../util';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -21,14 +19,21 @@ const minZoom = 14;
 
 /**
  * `ServiceMapillary`
+ * Events available:
+ *   `imageChanged`
+ *   `bearingChanged`
+ *   `loadedImages`
+ *   `loadedSigns`
+ *   `loadedMapFeatures`
  */
-export class ServiceMapillary {
+export class ServiceMapillary extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'mapillary';
     this.context = context;
 
@@ -43,9 +48,6 @@ export class ServiceMapillary {
     this._mlyViewer = null;
     this._mlyViewerFilter = ['all'];
     this._tiler = new Tiler().skipNullIsland(true);
-
-    this._dispatch = d3_dispatch('change', 'loadedImages', 'loadedSigns', 'loadedMapFeatures', 'bearingChanged', 'imageChanged');
-    utilRebind(this, this._dispatch, 'on');
   }
 
 
@@ -308,9 +310,7 @@ export class ServiceMapillary {
       .selectAll('.photo-wrapper')
       .classed('hide', true);
 
-    this._dispatch.call('imageChanged');
-    this._dispatch.call('loadedMapFeatures');
-    this._dispatch.call('loadedSigns');
+    this.emit.call('imageChanged');
 
     return this.setStyles(context, null);
   }
@@ -371,12 +371,12 @@ export class ServiceMapillary {
       if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
         this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
       }
-      this._dispatch.call('imageChanged');
+      this.emit.call('imageChanged');
     };
 
     // bearingChanged: called when the bearing changes in the image viewer.
     const bearingChanged = (e) => {
-      this._dispatch.call('bearingChanged', undefined, e);
+      this.emit.call('bearingChanged', undefined, e);
     };
 
     this._mlyViewer = new mapillary.Viewer(opts);
@@ -580,12 +580,13 @@ export class ServiceMapillary {
 
         this._loadTileDataToCache(data, tile);
 
+        this.context.deferredRedraw();
         if (which === 'images') {
-          this._dispatch.call('loadedImages');
+          this.emit.call('loadedImages');
         } else if (which === 'signs') {
-          this._dispatch.call('loadedSigns');
+          this.emit.call('loadedSigns');
         } else if (which === 'points') {
-          this._dispatch.call('loadedMapFeatures');
+          this.emit.call('loadedMapFeatures');
         }
       })
       .catch(err => {
@@ -709,6 +710,5 @@ export class ServiceMapillary {
         if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
       });
   }
-
 
 }

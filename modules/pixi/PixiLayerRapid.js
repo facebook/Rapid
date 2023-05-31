@@ -24,12 +24,7 @@ export class PixiLayerRapid extends AbstractLayer {
     super(scene, layerID);
 
     this._enabled = true;     // Rapid features should be enabled by default
-    this._serviceMapWithAI = null;
-    this._serviceEsri = null;
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
-
-    this.getServiceMapWithAI();
-    this.getServiceEsri();
 
 //// shader experiment:
 //this._uniforms = {
@@ -167,31 +162,11 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled, so we use these functions
-   * to gain access to them, and bind any event handlers a single time.
+   * supported
+   * Whether the Layer's service exists
    */
-  getServiceMapWithAI() {
-    const context = this.context;
-    const mapwithai = context.services.get('mapwithai');
-    if (mapwithai && !this._serviceMapWithAI) {
-      mapwithai.on('loadedData', () => context.mapSystem().deferredRedraw());
-      this._serviceMapWithAI = mapwithai;
-    } else if (!mapwithai && this._serviceMapWithAI) {
-      this._serviceMapWithAI = null;
-    }
-    return this._serviceMapWithAI;
-  }
-
-  getServiceEsri() {
-    const context = this.context;
-    const esri = context.services.get('esri');
-    if (esri && !this._serviceEsri) {
-      esri.on('loadedData', () => context.mapSystem().deferredRedraw());
-      this._serviceEsri = esri;
-    } else if (!esri && this._serviceEsri) {
-      this._serviceEsri = null;
-    }
-    return this._serviceEsri;
+  get supported() {
+    return this.context.services.has('mapwithai') || this.context.services.has('esri');
   }
 
 
@@ -234,7 +209,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const dsEnabled = (dataset.added && dataset.enabled);
     if (!dsEnabled) return;
 
-    const service = dataset.service === 'mapwithai' ? this.getServiceMapWithAI(): this.getServiceEsri();
+    const service = context.services.get(dataset.service);  // 'mapwithai' or 'esri'
     if (!service) return;
 
     // Adjust the dataset id for whether we want the data conflated or not.

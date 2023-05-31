@@ -1,11 +1,10 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd, vecScale} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { QAItem } from '../osm';
-import { utilRebind } from '../util';
 
 
 const TILEZOOM = 14;
@@ -27,14 +26,18 @@ IMPOSM_COLORS.set('mr-both', 0xffa500);    // missing road + parking
 
 /**
  * `ServiceImproveOsm`
+ *
+ * Events available:
+ *   `loadedData`
  */
-export class ServiceImproveOsm {
+export class ServiceImproveOsm extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'improveOSM';
     this.context = context;
 
@@ -42,9 +45,7 @@ export class ServiceImproveOsm {
     this._impOsmData = { icons: {} };
 
     this._cache = null;   // cache gets replaced on init/reset
-    this._tiler = new Tiler().zoomRange(TILEZOOM);
-    this._dispatch = d3_dispatch('loaded');
-    utilRebind(this, this._dispatch, 'on');
+    this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
 
@@ -248,7 +249,9 @@ export class ServiceImproveOsm {
 
                 this._cache.data[d.id] = d;
                 this._cache.rtree.insert(this._encodeIssueRtree(d));
-                this._dispatch.call('loaded');
+
+                this.context.deferredRedraw();
+                this.emit('loadedData');
               });
             }
           })

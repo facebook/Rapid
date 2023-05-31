@@ -17,7 +17,7 @@ export class ServiceWikidata {
     this.id = 'wikidata';
     this.context = context;
 
-    this._wikidataCache = new Map();  // Map(qid -> entitydata)
+    this._cache = new Map();  // Map(qid -> entitydata)
   }
 
   /**
@@ -32,7 +32,7 @@ export class ServiceWikidata {
    * Called after completing an edit session to reset any internal state
    */
   reset() {
-    this._wikidataCache.clear();
+    this._cache.clear();
   }
 
 
@@ -136,8 +136,8 @@ export class ServiceWikidata {
       callback('No qid', {});
       return;
     }
-    if (this._wikidataCache.has(qid)) {
-      if (callback) callback(null, this._wikidataCache.get(qid));
+    if (this._cache.has(qid)) {
+      if (callback) callback(null, this._cache.get(qid));
       return;
     }
 
@@ -159,7 +159,7 @@ export class ServiceWikidata {
         if (result && result.error) {
           throw new Error(result.error);
         }
-        this._wikidataCache.set(qid, result.entities[qid]);
+        this._cache.set(qid, result.entities[qid]);
         if (callback) callback(null, result.entities[qid] || {});
       })
       .catch(err => {

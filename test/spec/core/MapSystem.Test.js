@@ -42,8 +42,6 @@ describe('MapSystem', () => {
     storageSystem()  { return this._storageSystem; }
     history()        { return this._mockEmitter; }
     filterSystem()   { return this._mockEmitter; }
-    imagerySystem()  { return this._mockEmitter; }
-    photoSystem()    { return this._mockEmitter; }
     urlHashSystem()  { return this._mockEmitter; }
   }
 

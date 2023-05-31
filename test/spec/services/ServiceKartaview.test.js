@@ -2,8 +2,9 @@ describe('ServiceKartaview', () => {
   let _kartaview, _projection;
 
   class MockContext {
-    constructor() { }
-    container() { return null; }
+    constructor()    { }
+    container()      { return null; }
+    deferredRedraw() { }
   }
 
 
@@ -42,7 +43,7 @@ describe('ServiceKartaview', () => {
   });
 
   describe('#loadImages', () => {
-    it('fires loadedImages when images are loaded', done => {
+    it('fires loadedData when images are loaded', done => {
       const response = {
         status: { apiCode: '600', httpCode: 200, httpMessage: 'Success' },
         currentPageItems:[{
@@ -91,7 +92,7 @@ describe('ServiceKartaview', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      _kartaview.on('loadedImages', () => {
+      _kartaview.on('loadedData', () => {
         expect(fetchMock.calls().length).to.eql(1);  // 1 nearby-photos
         done();
       });
@@ -151,7 +152,7 @@ describe('ServiceKartaview', () => {
       });
 
       _projection.translate([0, 0]);
-      _kartaview.on('loadedImages', spy);
+      _kartaview.on('loadedData', spy);
       _kartaview.loadImages(_projection);
 
       window.setTimeout(() => {

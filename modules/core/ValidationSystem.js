@@ -513,7 +513,7 @@ export class ValidationSystem extends EventEmitter {
    * validateAsync
    * Validates anything that has changed in the head graph since the last time it was run.
    * (head graph contains user's edits)
-   * Returns a Promise fulfilled when the validation has completed and then dispatches a `validated` event.
+   * Returns a Promise fulfilled when the validation has completed and then emits a `validated` event.
    * This may take time but happen in the background during browser idle time.
    * @return  Promise fulfilled when validation is completed.
    */

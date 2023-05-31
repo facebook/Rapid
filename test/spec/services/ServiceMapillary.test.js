@@ -3,6 +3,7 @@ describe('ServiceMapillary', () => {
 
   class MockContext {
     constructor() { }
+    deferredRedraw() { }
   }
 
   beforeEach(() => {

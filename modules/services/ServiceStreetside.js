@@ -1,4 +1,4 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
@@ -7,7 +7,6 @@ import { utilArrayUnion, utilQsString, utilUniqueString } from '@rapid-sdk/util'
 import RBush from 'rbush';
 
 import { jsonpRequest } from '../util/jsonp_request';
-import { utilRebind } from '../util';
 
 const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
@@ -16,14 +15,19 @@ const TILEZOOM = 16.5;
 
 /**
  * `ServiceStreetside`
+ *
+ * Events available:
+ *   'loadedData'
+ *   'viewerChanged'
  */
-export class ServiceStreetside {
+export class ServiceStreetside extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'streetside';
     this.context = context;
 
@@ -51,8 +55,6 @@ export class ServiceStreetside {
     this._setupCanvas = this._setupCanvas.bind(this);
 
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
-    this._dispatch = d3_dispatch('loadedImages', 'viewerChanged');
-    utilRebind(this, this._dispatch, 'on');
   }
 
 
@@ -176,16 +178,16 @@ export class ServiceStreetside {
       .on('pointerdown.streetside', () => {
         d3_select(window)
           .on('pointermove.streetside', () => {
-            this._dispatch.call('viewerChanged');
+            this.emit('viewerChanged');
           }, true);
       })
       .on('pointerup.streetside pointercancel.streetside', () => {
         d3_select(window)
           .on('pointermove.streetside', null);
 
-        // continue dispatching events for a few seconds, in case viewer has inertia.
-        let t = d3_timer(elapsed => {
-          this._dispatch.call('viewerChanged');
+        // continue emitting events for a few seconds, in case viewer has inertia.
+        const t = d3_timer(elapsed => {
+          this.emit('viewerChanged');
           if (elapsed > 2000) {
             t.stop();
           }
@@ -698,9 +700,9 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     }).filter(Boolean);
 
     this._cache.rtree.load(boxes);
-
     this._connectSequences();
-    this._dispatch.call('loadedImages');
+    this.context.deferredRedraw();
+    this.emit('loadedData');
   }
 
 
