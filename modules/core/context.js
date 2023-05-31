@@ -100,6 +100,8 @@ export function coreContext() {
   };
 
   /* MapSystem */
+  context.deferredRedraw = _mapSystem.deferredRedraw;
+  context.immediateRedraw = _mapSystem.immediateRedraw;
   context.scene = () => _mapSystem.scene;
   context.surface = () => _mapSystem.surface;
   context.surfaceRect = () => _mapSystem.surface.node().getBoundingClientRect();

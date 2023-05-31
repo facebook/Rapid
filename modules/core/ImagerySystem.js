@@ -221,6 +221,7 @@ export class ImagerySystem extends EventEmitter {
     this._baseLayer = (!fail ? d : this.findSource('none'));
 
     this.updateImagery();
+    this.context.immediateRedraw();
     this.emit('imagerychange');
     return this;
   }
@@ -283,6 +284,7 @@ export class ImagerySystem extends EventEmitter {
       if (layer === d) {
         this._overlayLayers.splice(i, 1);
         this.updateImagery();
+        this.context.immediateRedraw();
         this.emit('imagerychange');
         return;
       }
@@ -292,6 +294,7 @@ export class ImagerySystem extends EventEmitter {
 
     this._overlayLayers.push(layer);
     this.updateImagery();
+    this.context.immediateRedraw();
     this.emit('imagerychange');
   }
 
@@ -306,6 +309,7 @@ export class ImagerySystem extends EventEmitter {
     if (this._baseLayer) {
       this._baseLayer.nudge(delta, zoom);
       this.updateImagery();
+      this.context.immediateRedraw();
       this.emit('imagerychange');
     }
   }
@@ -325,6 +329,7 @@ export class ImagerySystem extends EventEmitter {
     if (this._baseLayer) {
       this._baseLayer.offset = [setX, setY];
       this.updateImagery();
+      this.context.immediateRedraw();
       this.emit('imagerychange');
     }
   }
@@ -340,6 +345,7 @@ export class ImagerySystem extends EventEmitter {
     if (val === this._brightness) return;  // no change
     this._brightness = val;
     this.context.scene().layers.get('background')?.setBrightness(val);
+    this.context.immediateRedraw();
     this.emit('imagerychange');
   }
 
@@ -368,6 +374,7 @@ export class ImagerySystem extends EventEmitter {
     if (val === this._saturation) return;  // no change
     this._saturation = val;
     this.context.scene().layers.get('background')?.setSaturation(val);
+    this.context.immediateRedraw();
     this.emit('imagerychange');
   }
 
@@ -382,6 +389,7 @@ export class ImagerySystem extends EventEmitter {
     if (val === this._sharpness) return;  // no change
     this._sharpness = val;
     this.context.scene().layers.get('background')?.setSharpness(val);
+    this.context.immediateRedraw();
     this.emit('imagerychange');
   }
 
@@ -395,6 +403,7 @@ export class ImagerySystem extends EventEmitter {
   set numGridSplits(val = 0) {
     if (val === this._numGridSplits) return;  // no change
     this._numGridSplits = val;
+    this.context.immediateRedraw();
     this.emit('imagerychange');
   }
 

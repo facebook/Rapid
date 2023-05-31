@@ -1,11 +1,11 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { Extent, Tiler, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { utilRebind, utilSetTransform } from '../util';
+import { utilSetTransform } from '../util';
 
 
 const KARTAVIEW_API = 'https://kartaview.org';
@@ -15,14 +15,18 @@ const TILEZOOM = 14;
 
 /**
  * `ServiceKartaview`
+ *
+ * Events available:
+ *   `loadedData`
  */
-export class ServiceKartaview {
+export class ServiceKartaview extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'kartaview';
     this.context = context;
 
@@ -34,10 +38,7 @@ export class ServiceKartaview {
     this._cache = {};
     this._selectedImage = null;
     this._loadViewerPromise = null;
-    this._tiler = new Tiler().skipNullIsland(true);
-
-    this._dispatch = d3_dispatch('loadedImages');
-    utilRebind(this, this._dispatch, 'on');
+    this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
 
@@ -125,7 +126,7 @@ export class ServiceKartaview {
   loadImages(projection) {
     const currZoom = Math.floor(geoScaleToZoom(projection.scale()));
     // Determine the needed tiles to cover the view
-    const needTiles = this._tiler.zoomRange(TILEZOOM).getTiles(projection).tiles;
+    const needTiles = this._tiler.getTiles(projection).tiles;
 
     // Abort inflight requests that are no longer needed
     for (const [k, inflight] of this._cache.inflight) {
@@ -529,7 +530,8 @@ export class ServiceKartaview {
           this._cache.nextPage.set(tile.id, Infinity);   // no more pages to load
         }
 
-        this._dispatch.call('loadedImages');
+        this.context.deferredRedraw();
+        this.emit('loadedData');
       })
       .catch(err => {
         if (err.name === 'AbortError') return;          // ok

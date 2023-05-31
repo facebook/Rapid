@@ -1,10 +1,8 @@
 import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
-
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
-
 import { utilTotalExtent } from '../util/util';
 import { utilGetDimensions } from '../util/dimensions';
 
@@ -182,14 +180,11 @@ export class MapSystem extends EventEmitter {
       this.immediateRedraw();
     });
 
-    context.imagerySystem().on('imagerychange', this.immediateRedraw);
-    context.photoSystem().on('photochange', this.immediateRedraw);
     context.urlHashSystem().on('hashchange', this._hashchange);
-
 
     const osm = context.services.get('osm');
     if (osm) {
-      osm.on('change', this.immediateRedraw);
+      osm.on('authchange', this.immediateRedraw);
     }
 
     scene
@@ -256,19 +251,23 @@ export class MapSystem extends EventEmitter {
   /**
    * deferredRedraw
    * Tell the renderer to redraw soon
+   * This is ideal for most situations where data is streaming in, and we can
+   * allow the changes to batch up over several animation frames.
    */
   deferredRedraw() {
-    if (!this.redrawEnabled) return;
+    if (!this._renderer || !this.redrawEnabled) return;
     this._renderer.deferredRender();
   }
 
 
   /**
-   * deferredRedraw
-   * Tell the renderer to redraw as soon as possible
+   * immediateRedraw
+   * Tell the renderer to redraw as soon as possible.
+   * This is ideal for interactive situations where the user did a thing and we want
+   * the map to update on one of the next few animation frames to show their change.
    */
   immediateRedraw() {
-    if (!this.redrawEnabled) return;
+    if (!this._renderer || !this.redrawEnabled) return;
     this._renderer.render();
   }
 

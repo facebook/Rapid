@@ -18,7 +18,7 @@ export class ServiceOsmWikibase {
     this.apibase = 'https://wiki.openstreetmap.org/w/api.php';
 
     this._inflight = {};
-    this._wikibaseCache = {};
+    this._cache = {};
     this._localeIDs = { en: false };   // cache false to prevent repeated failed requests
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -148,24 +148,24 @@ export class ServiceOsmWikibase {
     }
 
     if (rtypeSitelink) {
-      if (this._wikibaseCache[rtypeSitelink]) {
-        result.rtype = this._wikibaseCache[rtypeSitelink];
+      if (this._cache[rtypeSitelink]) {
+        result.rtype = this._cache[rtypeSitelink];
       } else {
         titles.push(rtypeSitelink);
       }
     }
 
     if (keySitelink) {
-      if (this._wikibaseCache[keySitelink]) {
-        result.key = this._wikibaseCache[keySitelink];
+      if (this._cache[keySitelink]) {
+        result.key = this._cache[keySitelink];
       } else {
         titles.push(keySitelink);
       }
     }
 
     if (tagSitelink) {
-      if (this._wikibaseCache[tagSitelink]) {
-        result.tag = this._wikibaseCache[tagSitelink];
+      if (this._cache[tagSitelink]) {
+        result.tag = this._cache[tagSitelink];
       } else {
         titles.push(tagSitelink);
       }
@@ -206,13 +206,13 @@ export class ServiceOsmWikibase {
           if (res.missing !== '') {
             const title = res.sitelinks.wiki.title;
             if (title === rtypeSitelink) {
-              this._wikibaseCache[rtypeSitelink] = res;
+              this._cache[rtypeSitelink] = res;
               result.rtype = res;
             } else if (title === keySitelink) {
-              this._wikibaseCache[keySitelink] = res;
+              this._cache[keySitelink] = res;
               result.key = res;
             } else if (title === tagSitelink) {
-              this._wikibaseCache[tagSitelink] = res;
+              this._cache[tagSitelink] = res;
               result.tag = res;
             } else if (title === localeSitelink) {
               localeID = res.id;

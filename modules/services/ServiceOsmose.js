@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
@@ -7,7 +7,6 @@ import { marked } from 'marked';
 import RBush from 'rbush';
 
 import { QAItem } from '../osm';
-import { utilRebind } from '../util';
 
 
 const TILEZOOM = 14;
@@ -16,14 +15,18 @@ const OSMOSE_API = 'https://osmose.openstreetmap.fr/api/0.3';
 
 /**
  * `ServiceOsmose`
+
+ * Events available:
+ *   'loadedData'
  */
-export class ServiceOsmose {
+export class ServiceOsmose extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'osmose';
     this.context = context;
 
@@ -33,9 +36,7 @@ export class ServiceOsmose {
     this._osmoseData = { icons: {}, types: [] };
 
     this._cache = null;   // cache gets replaced on init/reset
-    this._tiler = new Tiler().zoomRange(TILEZOOM);
-    this._dispatch = d3_dispatch('loaded');
-    utilRebind(this, this._dispatch, 'on');
+    this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
 
@@ -127,7 +128,8 @@ export class ServiceOsmose {
             }
           }
 
-          this._dispatch.call('loaded');
+          this.context.deferredRedraw();
+          this.emit('loadedData');
         })
         .catch(() => {
           delete this._cache.inflightTile[tile.id];

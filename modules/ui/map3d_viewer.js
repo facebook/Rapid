@@ -102,7 +102,7 @@ export function uiMap3dViewer(context) {
       }
 
       const maplibre = context.map3dSystem().maplibre;
-      const buildingSource = maplibre.getSource('osmbuildings');
+      const buildingSource = maplibre?.getSource('osmbuildings');
 
       if (buildingSource) {
         buildingSource.setData({
@@ -139,7 +139,7 @@ export function uiMap3dViewer(context) {
       }
 
       const maplibre = context.map3dSystem().maplibre;
-      const areaSource = maplibre.getSource('osmareas');
+      const areaSource = maplibre?.getSource('osmareas');
 
       if (areaSource) {
         areaSource.setData({
@@ -177,7 +177,7 @@ export function uiMap3dViewer(context) {
       }
 
       const maplibre = context.map3dSystem().maplibre;
-      const roadSource = maplibre.getSource('osmroads');
+      const roadSource = maplibre?.getSource('osmroads');
 
       if (roadSource) {
         roadSource.setData({

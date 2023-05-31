@@ -110,7 +110,7 @@ export function uiAccount(context) {
       .append('a')
       .attr('href', '#');
 
-    osm.on('change.account', () => updateUserDetails(selection));
+    osm.on('authchange', () => updateUserDetails(selection));
     updateUserDetails(selection);
   };
 

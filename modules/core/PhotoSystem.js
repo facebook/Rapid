@@ -230,6 +230,7 @@ scene.classData(layerID, photoID, 'selected');
     }
 
     this._updateHash();
+    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
@@ -280,6 +281,7 @@ scene.classData(layerID, photoID, 'selected');
 
     if (didChange) {
       this._updateHash();
+      this.context.immediateRedraw();
       this.emit('photochange');
     }
   }
@@ -302,6 +304,7 @@ scene.classData(layerID, photoID, 'selected');
     }
     this._usernames = val;
     this._updateHash();
+    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
@@ -320,6 +323,7 @@ scene.classData(layerID, photoID, 'selected');
       this._shownPhotoTypes.add(which);
     }
 
+    this.context.immediateRedraw();
     this.emit('photochange');
   }
 

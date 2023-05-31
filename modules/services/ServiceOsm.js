@@ -1,4 +1,4 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { json as d3_json, xml as d3_xml } from 'd3-fetch';
 import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
@@ -8,20 +8,28 @@ import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
-import { utilRebind } from '../util';
-
 
 
 /**
  * `ServiceOsm`
+ *
+ * Events available:
+ *   'apiStatusChange'
+ *   'authLoading'
+ *   'authDone'
+ *   'authchange'
+ *   'loading'
+ *   'loaded'
+ *   'loadedNotes'
  */
-export class ServiceOsm {
+export class ServiceOsm extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'osm';
     this.context = context;
 
@@ -85,8 +93,6 @@ export class ServiceOsm {
 
 
     this._tiler = new Tiler();
-    this._dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
-    utilRebind(this, this._dispatch, 'on');
   }
 
 
@@ -211,7 +217,7 @@ export class ServiceOsm {
         // Set the rateLimitError flag and trigger a warning..
         if (!isAuthenticated && !this._rateLimitError && (err?.status === 509 || err?.status === 429)) {
           this._rateLimitError = err;
-          this._dispatch.call('change');
+          this.emit('authchange');
           this.reloadApiStatus();
 
         } else if ((err && this._cachedApiStatus === 'online') || (!err && this._cachedApiStatus !== 'online')) {
@@ -585,7 +591,7 @@ export class ServiceOsm {
   }
 
 
-  // Calls `status` and dispatches an `apiStatusChange` event if the returned
+  // Calls `status` and emits an `apiStatusChange` event if the returned
   // status differs from the cached status.
   reloadApiStatus() {
     // throttle to avoid unnecessary API calls
@@ -595,7 +601,7 @@ export class ServiceOsm {
         that.status((err, status) => {
           if (status !== that._cachedApiStatus) {
             that._cachedApiStatus = status;
-            that._dispatch.call('apiStatusChange', that, err, status);
+            that.emit('apiStatusChange', err, status);
           }
         });
       }, 500);
@@ -620,7 +626,7 @@ export class ServiceOsm {
     const hadRequests = this._hasInflightRequests(this._tileCache);
     this._abortUnwantedRequests(this._tileCache, tiles);
     if (hadRequests && !this._hasInflightRequests(this._tileCache)) {
-      this._dispatch.call('loaded');    // stop the spinner
+      this.emit('loaded');    // stop the spinner
     }
 
     // issue new requests..
@@ -646,7 +652,7 @@ export class ServiceOsm {
     }
 
     if (!this._hasInflightRequests(this._tileCache)) {
-      this._dispatch.call('loading');   // start the spinner
+      this.emit('loading');   // start the spinner
     }
 
     const tileLoaded = (err, result) => {
@@ -662,7 +668,7 @@ export class ServiceOsm {
         callback(err, Object.assign({}, result, { tile: tile }));
       }
       if (!this._hasInflightRequests(this._tileCache)) {
-        this._dispatch.call('loaded');     // stop the spinner
+        this.emit('loaded');     // stop the spinner
       }
     };
 
@@ -750,7 +756,7 @@ export class ServiceOsm {
             that._noteCache.loaded[tile.id] = true;
           }
           deferLoadUsers();
-          that._dispatch.call('loadedNotes');
+          that.emit('loadedNotes');
         },
         options
       );
@@ -870,7 +876,7 @@ export class ServiceOsm {
 
     this.reset();
     this.userChangesets(function() {});  // eagerly load user details/changesets
-    this._dispatch.call('change');
+    this.emit('authchange');
     return this;
   }
 
@@ -945,7 +951,7 @@ export class ServiceOsm {
     this._userChangesets = undefined;
     this._userDetails = undefined;
     this._oauth.logout();
-    this._dispatch.call('change');
+    this.emit('authchange');
     return this;
   }
 
@@ -970,7 +976,7 @@ export class ServiceOsm {
         return;
       }
       this._rateLimitError = undefined;
-      this._dispatch.call('change');
+      this.emit('authchange');
       if (callback) callback(err, res);
       this.userChangesets(function() {});  // eagerly load user details/changesets
     };
@@ -1022,12 +1028,12 @@ export class ServiceOsm {
 
 
   _authLoading() {
-    this._dispatch.call('authLoading');
+    this.emit('authLoading');
   }
 
 
   _authDone() {
-    this._dispatch.call('authDone');
+    this.emit('authDone');
   }
 
 
@@ -1514,7 +1520,7 @@ export class ServiceOsm {
 
   // replace or remove note from rtree
   _updateRtree(item, replace) {
-    this._noteCache.rtree.remove(item, function isEql(a, b) { return a.data.id === b.data.id; });
+    this._noteCache.rtree.remove(item, (a, b) => a.data.id === b.data.id);
 
     if (replace) {
       this._noteCache.rtree.insert(item);

@@ -1,11 +1,10 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { QAItem } from '../osm';
-import { utilRebind } from '../util';
 
 
 const KEEPRIGHT_API = 'https://www.keepright.at';
@@ -44,14 +43,18 @@ KR_COLORS.set('400', 0xcc3355);
 
 /**
  * `ServiceKeepRight`
+ *
+ * Events available:
+ *   `loadedData`
  */
-export class ServiceKeepRight {
+export class ServiceKeepRight extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'keepRight';
     this.context = context;
 
@@ -59,9 +62,7 @@ export class ServiceKeepRight {
     this._krData = { errorTypes: {}, localizeStrings: {} };
 
     this._cache = null;   // cache gets replaced on init/reset
-    this._tiler = new Tiler().zoomRange(TILEZOOM);
-    this._dispatch = d3_dispatch('loaded');
-    utilRebind(this, this._dispatch, 'on');
+    this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
 
@@ -217,7 +218,8 @@ export class ServiceKeepRight {
             this._cache.rtree.insert(this._encodeIssueRtree(d));
           }
 
-          this._dispatch.call('loaded');
+          this.context.deferredRedraw();
+          this.emit('loadedData');
         })
         .catch(() => {
           delete this._cache.inflightTile[tile.id];

@@ -48,7 +48,7 @@ export class ServiceTaginfo {
     this.context = context;
 
     this._inflight = {};
-    this._taginfoCache = {};
+    this._cache = {};
     this._popularKeys = {
       // manually exclude some keys – iD#5377, iD#7485
       postal_code: true,
@@ -137,7 +137,7 @@ export class ServiceTaginfo {
       } else {
         const f = this._filterKeys(params.filter);
         const vals = result.data.filter(f).sort(this._sortKeys).map(this._valKey);
-        this._taginfoCache[url] = vals;
+        this._cache[url] = vals;
         callback(null, vals);
       }
     });
@@ -169,7 +169,7 @@ export class ServiceTaginfo {
       } else {
         const f = this._filterMultikeys(prefix);
         const vals = result.data.filter(f).map(this._valKey);
-        this._taginfoCache[url] = vals;
+        this._cache[url] = vals;
         callback(null, vals);
       }
     });
@@ -214,7 +214,7 @@ export class ServiceTaginfo {
         const f = this._filterValues(allowUpperCase);
 
         const vals = result.data.filter(f).map(this._valKeyDescription);
-        this._taginfoCache[url] = vals;
+        this._cache[url] = vals;
         callback(null, vals);
       }
     });
@@ -246,7 +246,7 @@ export class ServiceTaginfo {
       } else {
         const f = this._filterRoles(geometry);
         const vals = result.data.filter(f).map(this._roleKey);
-        this._taginfoCache[url] = vals;
+        this._cache[url] = vals;
         callback(null, vals);
       }
     });
@@ -269,7 +269,7 @@ export class ServiceTaginfo {
       if (err) {
         callback(err);
       } else {
-        this._taginfoCache[url] = result.data;
+        this._cache[url] = result.data;
         callback(null, result.data);
       }
     });
@@ -393,7 +393,7 @@ export class ServiceTaginfo {
     let testUrl = url;
 
     do {
-      const hit = this._taginfoCache[testUrl];
+      const hit = this._cache[testUrl];
 
       // exact match, or shorter match yielding fewer than max results (rp)
       if (hit && (url === testUrl || hit.length < rp)) {

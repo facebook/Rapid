@@ -34,7 +34,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     // setup the child containers
     // these only go visible if they have something to show
 
-    this._vtService = null;
     this._geojson = {};
     this._template = null;
     this._fileList = null;
@@ -63,22 +62,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     // hashchange - pick out the 'gpx' param
     this.context.urlHashSystem()
       .on('hashchange', q => this.url(q.gpx || '', '.gpx'));
-  }
-
-
-  /**
-   * Services are loosely coupled in Rapid, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
-   */
-  getService() {
-    const vt = this.context.services.get('vectortile');
-    if (vt && !this._vtService) {
-      this._vtService = vt;
-    } else if (!vt && this._vtService) {
-      this._vtService = null;
-    }
-
-    return this._vtService;
   }
 
 
@@ -201,8 +184,9 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderCustomData(frame, projection, zoom) {
-    let vtService = this.getService();
+    const vtService = this.context.services.get('vectortile');
     let geoData, polygons, lines, points;
+
     if (this._template && vtService) {   // fetch data from vector tile service
       const sourceID = this._template;
       vtService.loadTiles(sourceID, this._template, this.context.projection);

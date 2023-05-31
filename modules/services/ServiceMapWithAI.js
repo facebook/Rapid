@@ -1,27 +1,29 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@rapid-sdk/math';
 
 import { Graph, Tree } from '../core/lib';
 import { osmEntity, osmNode, osmWay } from '../osm';
-import { utilRebind } from '../util';
 
 
-// constants
 const APIROOT = 'https://mapwith.ai/maps/ml_roads';
 const TILEZOOM = 16;
 
 
 /**
  * `ServiceMapWithAI`
+ *
+ * Events available:
+ *   `loadedData`
  */
-export class ServiceMapWithAI {
+export class ServiceMapWithAI extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'mapwithai';
     this.context = context;
 
@@ -33,9 +35,6 @@ export class ServiceMapWithAI {
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._parseNode = this._parseNode.bind(this);
     this._parseWay = this._parseWay.bind(this);
-
-    this._dispatch = d3_dispatch('loadedData');
-    utilRebind(this, this._dispatch, 'on');
   }
 
 
@@ -154,7 +153,9 @@ export class ServiceMapWithAI {
             graph.rebase(result, [graph], true);
             tree.rebase(result, true);
             cache.loaded[tile.id] = true;
-            this._dispatch.call('loadedData');
+
+            this.context.deferredRedraw();
+            this.emit('loadedData');
           });
         })
         .catch(e => {

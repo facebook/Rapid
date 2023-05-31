@@ -1,4 +1,4 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
@@ -6,7 +6,6 @@ import { utilQsString } from '@rapid-sdk/util';
 
 import { Graph, Tree } from '../core/lib';
 import { osmNode, osmRelation, osmWay } from '../osm';
-import { utilRebind } from '../util';
 
 
 const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
@@ -17,14 +16,18 @@ const TILEZOOM = 14;
 
 /**
  * `ServiceEsri`
+ *
+ * Events available:
+ *   `loadedData`
  */
-export class ServiceEsri {
+export class ServiceEsri extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super();
     this.id = 'esri';
     this.context = context;
 
@@ -35,9 +38,6 @@ export class ServiceEsri {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._parseDataset = this._parseDataset.bind(this);
-
-    this._dispatch = d3_dispatch('loadedData');
-    utilRebind(this, this._dispatch, 'on');
   }
 
 
@@ -287,15 +287,17 @@ export class ServiceEsri {
           ds.graph.rebase(results, [ds.graph], true);
           ds.tree.rebase(results, true);
         });
-        return (geojson.properties && geojson.properties.exceededTransferLimit);
+        return geojson.properties?.exceededTransferLimit;
       })
-      .then(morePages => {
-        if (morePages) {
+      .then(hasMorePages => {
+        if (hasMorePages) {
           this._loadTilePage(ds, tile, ++page);
         } else {
           cache.loaded[tile.id] = true;
-          this._dispatch.call('loadedData');
           delete cache.inflight[tile.id];
+
+          this.context.deferredRedraw();
+          this.emit('loadedData');
         }
       })
       .catch(e => {
