@@ -47,7 +47,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
     }
 
     function onHistoryChange(/* difference */) {
-      const annotation = context.history().peekAnnotation();
+      const annotation = this.context.history().peekAnnotation();
       if (!wasRapidEdit(annotation)) return;
       this._actioned.add(annotation.id);
       this.context.map().immediateRedraw();
@@ -55,7 +55,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
 
     function onHistoryRestore() {
       this._actioned = new Set();
-      context
+      this.context
         .history()
         .peekAllAnnotations()
         .forEach((annotation) => {
@@ -143,6 +143,12 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
       }
 
       this.syncFeatureClasses(feature);
+
+    // If the feature has an FBID, that means it's part of a dataset with a color, so use it!
+    if (feature.data.__fbid__) {
+      const dataset = this.context.rapidContext().datasets().rapidMapFeatures;
+      feature.style.markerTint = dataset.color;
+    }
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     }

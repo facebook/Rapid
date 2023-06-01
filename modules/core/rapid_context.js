@@ -6,7 +6,6 @@ import { localizer, t } from '../core/localizer';
 import { services } from '../services';
 import { utilRebind } from '../util';
 
-
 export function coreRapidContext(context) {
   const dispatch = d3_dispatch('task_extent_set');
   let _rapidContext = {};
@@ -20,17 +19,19 @@ export function coreRapidContext(context) {
   let _taskExtent;
   let _isTaskBoundsRect;
 
-  _rapidContext.setTaskExtentByGpxData = function(gpxData) {
-    const dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
+  _rapidContext.setTaskExtentByGpxData = function (gpxData) {
+    const dom = new DOMParser().parseFromString(gpxData, 'text/xml');
     const gj = gpx(dom);
-    const lineStringCount = gj.features.reduce((accumulator, currentValue) =>  {
-      return accumulator + (currentValue.geometry.type === 'LineString' ? 1 : 0);
+    const lineStringCount = gj.features.reduce((accumulator, currentValue) => {
+      return (
+        accumulator + (currentValue.geometry.type === 'LineString' ? 1 : 0)
+      );
     }, 0);
 
     if (gj.type === 'FeatureCollection') {
       let minlat, minlon, maxlat, maxlon;
 
-      gj.features.forEach(f => {
+      gj.features.forEach((f) => {
         if (f.geometry.type === 'Point') {
           const lon = f.geometry.coordinates[0];
           const lat = f.geometry.coordinates[1];
@@ -38,19 +39,18 @@ export function coreRapidContext(context) {
           if (minlon === undefined || lon < minlon) minlon = lon;
           if (maxlat === undefined || lat > maxlat) maxlat = lat;
           if (maxlon === undefined || lon > maxlon) maxlon = lon;
-
         } else if (f.geometry.type === 'LineString' && lineStringCount === 1) {
-          const lats = f.geometry.coordinates.map(f => f[0]);
-          const lngs = f.geometry.coordinates.map(f => f[1]);
+          const lats = f.geometry.coordinates.map((f) => f[0]);
+          const lngs = f.geometry.coordinates.map((f) => f[1]);
           const uniqueLats = lats.filter(distinct);
           const uniqueLngs = lngs.filter(distinct);
           let eachLatHas2Lngs = true;
 
-          uniqueLats.forEach(lat => {
+          uniqueLats.forEach((lat) => {
             const lngsForThisLat = f.geometry.coordinates
-              .filter(coord => coord[0] === lat)   // Filter the coords to the ones with this lat
-              .map(coord => coord[1])              // Make an array of lngs that associate with that lat
-              .filter(distinct);                   // Finally, filter for uniqueness
+              .filter((coord) => coord[0] === lat) // Filter the coords to the ones with this lat
+              .map((coord) => coord[1]) // Make an array of lngs that associate with that lat
+              .filter(distinct); // Finally, filter for uniqueness
 
             if (lngsForThisLat.length !== 2) {
               eachLatHas2Lngs = false;
@@ -58,7 +58,11 @@ export function coreRapidContext(context) {
           });
           // Check for exactly two unique latitudes, two unique longitudes,
           // and that each latitude was associated with exactly 2 longitudes,
-          if (uniqueLats.length === 2 && uniqueLngs.length === 2 && eachLatHas2Lngs) {
+          if (
+            uniqueLats.length === 2 &&
+            uniqueLngs.length === 2 &&
+            eachLatHas2Lngs
+          ) {
             _isTaskBoundsRect = true;
           } else {
             _isTaskBoundsRect = false;
@@ -73,34 +77,30 @@ export function coreRapidContext(context) {
 
   _rapidContext.getTaskExtent = () => _taskExtent;
 
-  _rapidContext.isTaskRectangular = () => (!!_taskExtent && _isTaskBoundsRect);
-
+  _rapidContext.isTaskRectangular = () => !!_taskExtent && _isTaskBoundsRect;
 
   /* Sources */
   _rapidContext.sources = new Set();
 
-
   /* Colors */
   const RAPID_MAGENTA = '#da26d3';
   const COLORS = [
-    '#ff0000',  // red
-    '#ffa500',  // orange
-    '#ffd700',  // gold
-    '#00ff00',  // lime
-    '#00ffff',  // cyan
-    '#1e90ff',  // dodgerblue
-    '#da26d3',  // rapid magenta
-    '#ffc0cb',  // pink
-    '#d3d3d3',  // lightgray
-    '#faf0e6'   // linen
+    '#ff0000', // red
+    '#ffa500', // orange
+    '#ffd700', // gold
+    '#00ff00', // lime
+    '#00ffff', // cyan
+    '#1e90ff', // dodgerblue
+    '#da26d3', // rapid magenta
+    '#ffc0cb', // pink
+    '#d3d3d3', // lightgray
+    '#faf0e6', // linen
   ];
   _rapidContext.colors = () => COLORS;
-
 
   /* Available datasets */
   let _datasets = {};
   _rapidContext.datasets = () => _datasets;
-
 
   /**
    * init
@@ -109,53 +109,54 @@ export function coreRapidContext(context) {
   _rapidContext.init = () => {
     context.urlhash().on('hashchange', _hashchange);
 
-    localizer.ensureLoaded()
-      .then(() => {
-        _datasets = {
-          // setup the built-in datasets
-          'fbRoads': {
-            id: 'fbRoads',
-            beta: false,
-            added: true,         // whether it should appear in the list
-            enabled: false,      // whether the user has checked it on
-            conflated: true,
-            service: 'fbml',
-            color: RAPID_MAGENTA,
-            label: t('rapid_feature_toggle.fbRoads.label'),
-            license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
-          },
-          'msBuildings': {
-            id: 'msBuildings',
-            beta: false,
-            added: true,         // whether it should appear in the list
-            enabled: false,      // whether the user has checked it on
-            conflated: true,
-            service: 'fbml',
-            color: RAPID_MAGENTA,
-            label: t('rapid_feature_toggle.msBuildings.label'),
-            license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
-          },
-          'rapidMapFeatures': {
-            id: 'rapidMapFeatures',
-            beta: false,
-            added: false,         // whether it should appear in the list
-            enabled: true,      // whether the user has checked it on
-            conflated: true,
-            service: 'fbml',
-            color: RAPID_MAGENTA,
-            label: t('rapid_feature_toggle.rapidMapillaryFeatures.label'),
-            license_markdown: t('rapid_feature_toggle.rapidMapillaryFeatures.license_markdown')
-          }
-        };
-      });
+    localizer.ensureLoaded().then(() => {
+      _datasets = {
+        // setup the built-in datasets
+        fbRoads: {
+          id: 'fbRoads',
+          beta: false,
+          added: true, // whether it should appear in the list
+          enabled: false, // whether the user has checked it on
+          conflated: true,
+          service: 'fbml',
+          color: RAPID_MAGENTA,
+          label: t('rapid_feature_toggle.fbRoads.label'),
+          license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown'),
+        },
+        msBuildings: {
+          id: 'msBuildings',
+          beta: false,
+          added: true, // whether it should appear in the list
+          enabled: false, // whether the user has checked it on
+          conflated: true,
+          service: 'fbml',
+          color: RAPID_MAGENTA,
+          label: t('rapid_feature_toggle.msBuildings.label'),
+          license_markdown: t(
+            'rapid_feature_toggle.msBuildings.license_markdown'
+          ),
+        },
+        rapidMapFeatures: {
+          id: 'rapidMapFeatures',
+          beta: false,
+          added: true, // whether it should appear in the list
+          enabled: true, // whether the user has checked it on
+          conflated: true,
+          service: 'fbml',
+          color: RAPID_MAGENTA,
+          label: t('rapid_feature_toggle.rapidMapillaryFeatures.label'),
+          license_markdown: t(
+            'rapid_feature_toggle.rapidMapillaryFeatures.license_markdown'
+          ),
+        },
+      };
+    });
   };
-
 
   /* reset any state here */
   _rapidContext.reset = () => {
     _rapidContext.sources = new Set();
   };
-
 
   /**
    * _hashchange
@@ -174,7 +175,7 @@ export function coreRapidContext(context) {
       const dataset = _datasets[datasetID];
       if (toEnable.has(datasetID)) {
         dataset.enabled = true;
-        toEnable.delete(datasetID);  // delete marks it as done
+        toEnable.delete(datasetID); // delete marks it as done
       } else {
         dataset.enabled = false;
       }
@@ -184,47 +185,48 @@ export function coreRapidContext(context) {
     const service = services.esriData;
     if (!service || !toEnable.size) return;
 
-    service.loadDatasets()
-      .then(results => {
-        toEnable.forEach(datasetID => {
-          const d = results[datasetID];
-          if (!d) return;  // dataset with requested id not found, fail silently
+    service.loadDatasets().then((results) => {
+      toEnable.forEach((datasetID) => {
+        const d = results[datasetID];
+        if (!d) return; // dataset with requested id not found, fail silently
 
-          // *** Code here is copied from `rapid_view_manage_datasets.js` `toggleDataset()` ***
-          service.loadLayer(d.id);   // start fetching layer info (the mapping between attributes and tags)
+        // *** Code here is copied from `rapid_view_manage_datasets.js` `toggleDataset()` ***
+        service.loadLayer(d.id); // start fetching layer info (the mapping between attributes and tags)
 
-          const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
-          const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
-          const nextColor = Object.keys(_datasets).length % COLORS.length;
+        const isBeta = d.groupCategories.some(
+          (cat) => cat.toLowerCase() === '/categories/preview'
+        );
+        const isBuildings = d.groupCategories.some(
+          (cat) => cat.toLowerCase() === '/categories/buildings'
+        );
+        const nextColor = Object.keys(_datasets).length % COLORS.length;
 
-          let dataset = {
-            id: d.id,
-            beta: isBeta,
-            added: true,       // whether it should appear in the list
-            enabled: true,     // whether the user has checked it on
-            conflated: false,
-            service: 'esri',
-            color: COLORS[nextColor],
-            label: d.title,
-            license_markdown: t('rapid_feature_toggle.esri.license_markdown')
-          };
+        let dataset = {
+          id: d.id,
+          beta: isBeta,
+          added: true, // whether it should appear in the list
+          enabled: true, // whether the user has checked it on
+          conflated: false,
+          service: 'esri',
+          color: COLORS[nextColor],
+          label: d.title,
+          license_markdown: t('rapid_feature_toggle.esri.license_markdown'),
+        };
 
-          if (d.extent) {
-            dataset.extent = new Extent(d.extent[0], d.extent[1]);
-          }
+        if (d.extent) {
+          dataset.extent = new Extent(d.extent[0], d.extent[1]);
+        }
 
-          // Test running building layers through FBML conflation service
-          if (isBuildings) {
-            dataset.conflated = true;
-            dataset.service = 'fbml';
-          }
+        // Test running building layers through FBML conflation service
+        if (isBuildings) {
+          dataset.conflated = true;
+          dataset.service = 'fbml';
+        }
 
-          _datasets[d.id] = dataset;  // add it
-        });
+        _datasets[d.id] = dataset; // add it
       });
+    });
   }
-
-
 
   return utilRebind(_rapidContext, dispatch, 'on');
 }
