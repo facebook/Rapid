@@ -5,7 +5,6 @@ import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
 import { coreHistory } from './history';
-import { coreUploader } from './uploader';
 
 import { DataLoaderSystem } from './DataLoaderSystem';
 import { FilterSystem } from './FilterSystem';
@@ -18,6 +17,7 @@ import { PhotoSystem } from './PhotoSystem';
 import { PresetSystem } from './PresetSystem';
 import { RapidSystem } from './RapidSystem';
 import { StorageSystem } from './StorageSystem';
+import { UploaderSystem } from './UploaderSystem';
 import { UrlHashSystem } from './UrlHashSystem';
 import { ValidationSystem } from './ValidationSystem';
 
@@ -55,10 +55,7 @@ export function coreContext() {
 
 
   let _history;
-  let _uploader;
-
   context.history = () => _history;
-  context.uploader = () => _uploader;
 
   const _dataLoaderSystem = new DataLoaderSystem(context);
   const _filterSystem = new FilterSystem(context);
@@ -71,6 +68,7 @@ export function coreContext() {
   const _presetSystem = new PresetSystem(context);
   const _rapidSystem = new RapidSystem(context);
   const _storageSystem = new StorageSystem(context);
+  const _uploaderSystem = new UploaderSystem(context);
   const _urlHashSystem = new UrlHashSystem(context);
   const _validationSystem = new ValidationSystem(context);
 
@@ -85,6 +83,7 @@ export function coreContext() {
   context.presetSystem = () => _presetSystem;
   context.rapidSystem = () => _rapidSystem;
   context.storageSystem = () => _storageSystem;
+  context.uploaderSystem = () => _uploaderSystem;
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
 
@@ -113,10 +112,6 @@ export function coreContext() {
     return true;  // _mapSystem.editableDataEnabled();     // todo: disallow editing if OSM layer is off
   };
 
-
-  /* Changeset */
-  // An osmChangeset object. Not loaded until needed.
-  context.changeset = null;
 
   let _defaultChangesetComment = context.initialHashParams.comment;
   let _defaultChangesetSource = context.initialHashParams.source;
@@ -615,13 +610,11 @@ export function coreContext() {
       service.reset();
     }
 
-    context.changeset = null;
-
-    _rapidSystem.reset();
-    _validationSystem.reset();
     _filterSystem.reset();
     _history.reset();
-    _uploader.reset();
+    _rapidSystem.reset();
+    _uploaderSystem.reset();
+    _validationSystem.reset();
 
     // don't leave stale state in the inspector
     context.container().select('.inspector-wrap *').remove();
@@ -658,7 +651,6 @@ export function coreContext() {
       context.undo = withDebouncedSave(_history.undo);
       context.redo = withDebouncedSave(_history.redo);
 
-      _uploader = coreUploader(context);
       _ui = uiInit(context);
 
       // Instantiate Behaviors

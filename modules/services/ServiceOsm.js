@@ -395,14 +395,14 @@ export class ServiceOsm extends EventEmitter {
       if (err) return callback(err, changeset);
 
       // Upload was successful, safe to call the callback.
-      // Add delay to allow for postgres replication #1646 #2678
+      // Add delay to allow for postgres replication iD#1646 iD#2678
       window.setTimeout(function() { callback(null, changeset); }, 2500);
       this._changeset.open = null;
 
       // At this point, we don't really care if the connection was switched..
       // Only try to close the changeset if we're still talking to the same server.
       if (this.connectionID === cid) {
-        // Still attempt to close changeset, but ignore response because #2667
+        // Still attempt to close changeset, but ignore response because iD#2667
         this._oauth.xhr({
           method: 'PUT',
           path: '/api/0.6/changeset/' + changeset.id + '/close',
@@ -623,9 +623,10 @@ export class ServiceOsm extends EventEmitter {
       .tiles;
 
     // Abort inflight requests that are no longer needed
-    const hadRequests = this._hasInflightRequests(this._tileCache);
-    this._abortUnwantedRequests(this._tileCache, tiles);
-    if (hadRequests && !this._hasInflightRequests(this._tileCache)) {
+    const cache = this._tileCache;
+    const hadRequests = this._hasInflightRequests(cache);
+    this._abortUnwantedRequests(cache, tiles);
+    if (hadRequests && !this._hasInflightRequests(cache)) {
       this.emit('loaded');    // stop the spinner
     }
 
@@ -640,34 +641,36 @@ export class ServiceOsm extends EventEmitter {
   // GET /api/0.6/map?bbox=
   loadTile(tile, callback) {
     if (this._off) return;
-    if (this._tileCache.loaded[tile.id] || this._tileCache.inflight[tile.id]) return;
+
+    const cache = this._tileCache;
+    if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
     // exit if this tile covers a blocked region (all corners are blocked)
     const locationSystem = this.context.locationSystem();
     const corners = tile.wgs84Extent.polygon().slice(0, 4);
     const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
     if (tileBlocked) {
-      this._tileCache.loaded[tile.id] = true;   // don't try again
+      cache.loaded[tile.id] = true;   // don't try again
       return;
     }
 
-    if (!this._hasInflightRequests(this._tileCache)) {
+    if (!this._hasInflightRequests(cache)) {
       this.emit('loading');   // start the spinner
     }
 
     const tileLoaded = (err, result) => {
-      delete this._tileCache.inflight[tile.id];
+      delete cache.inflight[tile.id];
       if (!err) {
-        delete this._tileCache.toLoad[tile.id];
-        this._tileCache.loaded[tile.id] = true;
+        delete cache.toLoad[tile.id];
+        cache.loaded[tile.id] = true;
         var bbox = tile.wgs84Extent.bbox();
         bbox.id = tile.id;
-        this._tileCache.rtree.insert(bbox);
+        cache.rtree.insert(bbox);
       }
       if (callback) {
         callback(err, Object.assign({}, result, { tile: tile }));
       }
-      if (!this._hasInflightRequests(this._tileCache)) {
+      if (!this._hasInflightRequests(cache)) {
         this.emit('loaded');     // stop the spinner
       }
     };
@@ -675,7 +678,7 @@ export class ServiceOsm extends EventEmitter {
     const path = '/api/0.6/map.json?bbox=';
     const options = { skipSeen: true };
 
-    this._tileCache.inflight[tile.id] = this.loadFromAPI(
+    cache.inflight[tile.id] = this.loadFromAPI(
       path + tile.wgs84Extent.toParam(),
       tileLoaded,
       options
@@ -691,10 +694,12 @@ export class ServiceOsm extends EventEmitter {
 
   // load the tile that covers the given `loc`
   loadTileAtLoc(loc, callback) {
-    // Back off if the toLoad queue is filling up.. re #6417
+    const cache = this._tileCache;
+
+    // Back off if the toLoad queue is filling up.. re iD#6417
     // (Currently `loadTileAtLoc` requests are considered low priority - used by operations to
     // let users safely edit geometries which extend to unloaded tiles.  We can drop some.)
-    if (Object.keys(this._tileCache.toLoad).length > 50) return;
+    if (Object.keys(cache.toLoad).length > 50) return;
 
     const k = geoZoomToScale(this._tileZoom + 1);
     const offset = new Projection().scale(k).project(loc);
@@ -702,9 +707,9 @@ export class ServiceOsm extends EventEmitter {
     const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(proj).tiles;
 
     for (const tile of tiles) {
-      if (this._tileCache.toLoad[tile.id] || this._tileCache.loaded[tile.id] || this._tileCache.inflight[tile.id]) continue;
+      if (cache.toLoad[tile.id] || cache.loaded[tile.id] || cache.inflight[tile.id]) continue;
 
-      this._tileCache.toLoad[tile.id] = true;
+      cache.toLoad[tile.id] = true;
       this.loadTile(tile, callback);
     }
   }
@@ -716,6 +721,7 @@ export class ServiceOsm extends EventEmitter {
     noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
     if (this._off) return;
 
+    const cache = this._noteCache;
     const that = this;
     const path = '/api/0.6/notes?limit=' + noteOptions.limit + '&closed=' + noteOptions.closed + '&bbox=';
     const deferLoadUsers = _throttle(() => {
@@ -732,23 +738,23 @@ export class ServiceOsm extends EventEmitter {
       .tiles;
 
     // abort inflight requests that are no longer needed
-    this._abortUnwantedRequests(this._noteCache, tiles);
+    this._abortUnwantedRequests(cache, tiles);
 
     // issue new requests..
     for (const tile of tiles) {
-      if (this._noteCache.loaded[tile.id] || this._noteCache.inflight[tile.id]) continue;
+      if (cache.loaded[tile.id] || cache.inflight[tile.id]) continue;
 
       // Skip if this tile covers a blocked region (all corners are blocked)
       const locationSystem = this.context.locationSystem();
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
       const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
       if (tileBlocked) {
-        this._noteCache.loaded[tile.id] = true;   // don't try again
+        cache.loaded[tile.id] = true;   // don't try again
         continue;
       }
 
       const options = { skipSeen: false };
-      this._noteCache.inflight[tile.id] = that.loadFromAPI(
+      cache.inflight[tile.id] = that.loadFromAPI(
         path + tile.wgs84Extent.toParam(),
         function(err) {
           delete that._noteCache.inflight[tile.id];

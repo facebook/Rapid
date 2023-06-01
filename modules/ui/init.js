@@ -58,10 +58,9 @@ export function uiInit(context) {
     // From the template we set up at https://github.com/facebook/Rapid/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
     link.searchParams.append('template', 'bug_report.yml');
     const detected = utilDetect();
-
-    let browser = `${detected.browser} v${detected.version}`;
-    let os = `${detected.os}`;
-    let userAgent = navigator.userAgent;
+    const browser = `${detected.browser} v${detected.version}`;
+    const os = `${detected.os}`;
+    const userAgent = navigator.userAgent;
 
     link.searchParams.append('browser', browser);
     link.searchParams.append('os', os);
@@ -390,7 +389,6 @@ export function uiInit(context) {
     const startWalkthrough = context.urlHashSystem().initialHashParams.get('walkthrough') === 'true';
 
     if (!_initCounter++) {  // first time only
-
       if (!startWalkthrough) {
         if (context.history().lock() && context.history().hasRestorableChanges()) {
           context.container().call(uiRestore(context));
@@ -624,20 +622,6 @@ export function uiInit(context) {
   ui.closeEditMenu = function() {
     _editMenu.close();
   };
-
-
-  let _saveLoading = d3_select(null);
-  context.uploader()
-    .on('saveStarted.ui', () => {
-      _saveLoading = uiLoading(context)
-        .message(l10n.tHtml('save.uploading'))
-        .blocking(true);
-      context.container().call(_saveLoading);  // block input during upload
-    })
-    .on('saveEnded.ui', () => {
-      _saveLoading.close();
-      _saveLoading = d3_select(null);
-    });
 
 
   return ui;
