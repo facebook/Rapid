@@ -220,7 +220,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     let gridLines = [];
 
     //'isTaskRectangular' implies one and only one rectangular linestring.
-    if (this.context.rapidContext().isTaskRectangular && numSplits > 0) {
+    if (this.context.rapidSystem().isTaskRectangular && numSplits > 0) {
       const box = lines[0];
 
       const lats = box.geometry.coordinates.map((f) => f[0]);
@@ -511,7 +511,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           setFile(extension, data);
           const isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
           if (isTaskBoundsUrl) {
-            this.context.rapidContext().setTaskExtentByGpxData(data);
+            this.context.rapidSystem().setTaskExtentByGpxData(data);
           }
         })
         .catch(e => console.error(e));  // eslint-disable-line

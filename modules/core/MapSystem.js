@@ -84,6 +84,14 @@ export class MapSystem extends EventEmitter {
 
 
   /**
+   * reset
+   * Called after completing an edit session to reset any internal state
+   */
+  reset() {
+  }
+
+
+  /**
    * render
    * @param  `selection`  A d3-selection to a `div` that the panel should render itself into
    */

@@ -687,11 +687,11 @@ export function coreHistory(context) {
 
             // restore Rapid sources
             if (s.annotation && s.annotation.type === 'rapid_accept_feature') {
-              const rapidContext = context.rapidContext();
+              const rapidSystem = context.rapidSystem();
               const sourceTag = s.annotation.source;
-              rapidContext.sources.add('mapwithai');      // always add 'mapwithai'
+              rapidSystem.sources.add('mapwithai');      // always add 'mapwithai'
               if (sourceTag && /^esri/.test(sourceTag)) {
-                rapidContext.sources.add('esri');       // add 'esri' for esri sources
+                rapidSystem.sources.add('esri');       // add 'esri' for esri sources
               }
             }
 

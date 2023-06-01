@@ -6,7 +6,6 @@ import { utilKeybinding, utilRebind } from '../util';
 
 
 export function uiRapidColorpicker(context, parentModal) {
-  const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('change', 'done');
 
   let _close = () => {};
@@ -134,7 +133,7 @@ export function uiRapidColorpicker(context, parentModal) {
       .merge(colorlist);
 
     let colorItems = colorlist.selectAll('.colorpicker-option')
-      .data(rapidContext.colors());
+      .data(context.rapidSystem().colors);
 
     // enter
     let colorItemsEnter = colorItems.enter()

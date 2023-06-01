@@ -12,7 +12,7 @@ export function uiToolRapidFeatures(context) {
   const rapidFeaturesToggleKey = '⇧' + context.t('map_data.layers.ai-features.key');
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
-  const showPowerUser = context.rapidContext().showPowerUser;
+  const showPowerUser = context.rapidSystem().showPowerUser;
 
   let tool = {
     id: 'rapid_features',

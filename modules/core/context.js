@@ -4,7 +4,6 @@ import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
-import { coreRapidContext } from './rapid_context';
 import { coreHistory } from './history';
 import { coreUploader } from './uploader';
 
@@ -17,6 +16,7 @@ import { MapSystem } from './MapSystem';
 import { Map3dSystem } from './Map3dSystem';
 import { PhotoSystem } from './PhotoSystem';
 import { PresetSystem } from './PresetSystem';
+import { RapidSystem } from './RapidSystem';
 import { StorageSystem } from './StorageSystem';
 import { UrlHashSystem } from './UrlHashSystem';
 import { ValidationSystem } from './ValidationSystem';
@@ -69,6 +69,7 @@ export function coreContext() {
   const _map3dSystem = new Map3dSystem(context, '3d-buildings');   // todo: domid looks weird here
   const _photoSystem = new PhotoSystem(context);
   const _presetSystem = new PresetSystem(context);
+  const _rapidSystem = new RapidSystem(context);
   const _storageSystem = new StorageSystem(context);
   const _urlHashSystem = new UrlHashSystem(context);
   const _validationSystem = new ValidationSystem(context);
@@ -82,6 +83,7 @@ export function coreContext() {
   context.map3dSystem = () => _map3dSystem;
   context.photoSystem = () => _photoSystem;
   context.presetSystem = () => _presetSystem;
+  context.rapidSystem = () => _rapidSystem;
   context.storageSystem = () => _storageSystem;
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
@@ -615,7 +617,7 @@ export function coreContext() {
 
     context.changeset = null;
 
-    _rapidContext.reset();
+    _rapidSystem.reset();
     _validationSystem.reset();
     _filterSystem.reset();
     _history.reset();
@@ -631,9 +633,6 @@ export function coreContext() {
   /* Projection */
   context.projection = new Projection();
 
-  /* Rapid */
-  let _rapidContext;
-  context.rapidContext = () => _rapidContext;
 
   /* Init */
   context.init = () => {
@@ -660,7 +659,6 @@ export function coreContext() {
       context.redo = withDebouncedSave(_history.redo);
 
       _uploader = coreUploader(context);
-      _rapidContext = coreRapidContext(context);
       _ui = uiInit(context);
 
       // Instantiate Behaviors
@@ -723,7 +721,7 @@ export function coreContext() {
       _imagerySystem.init();
       _filterSystem.init();
       _mapSystem.init();         // watch out - init doesn't actually create the renderer :(
-      _rapidContext.init();
+      _rapidSystem.init();
 
       // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {

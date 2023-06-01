@@ -137,7 +137,7 @@ export function uiCommit(context) {
         }
 
         // Sync up the used Rapid sources with `sources`
-        var usedRapid = context.rapidContext().sources;
+        var usedRapid = context.rapidSystem().sources;
         var allRapid = ['mapwithai', 'esri'];
         allRapid.forEach(function(val) { sources.delete(val); });   // reset all
         usedRapid.forEach(function(val) { sources.add(val); });

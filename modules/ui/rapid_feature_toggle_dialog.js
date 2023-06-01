@@ -10,7 +10,7 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const l10n = context.localizationSystem();
-  const rapidContext = context.rapidContext();
+  const rapid = context.rapidSystem();
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
   let _viewManageModal;
@@ -18,19 +18,18 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function datasetEnabled(d) {
-    const dataset = rapidContext.datasets()[d.id];
-    return dataset && dataset.enabled;
+    const dataset = rapid.datasets.get(d.id);
+    return dataset?.enabled;
   }
 
   function toggleDataset(event, d) {
-    const datasets = rapidContext.datasets();
-    let dataset = datasets[d.id];
+    const dataset = rapid.datasets.get(d.id);
     if (dataset) {
       dataset.enabled = !dataset.enabled;
 
       // update url hash
       const urlhash = context.urlHashSystem();
-      const datasetIDs = Object.values(datasets)
+      const datasetIDs = [...rapid.datasets.values()]
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)
         .join(',');
@@ -42,8 +41,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function changeColor(datasetID, color) {
-    const datasets = rapidContext.datasets();
-    let dataset = datasets[datasetID];
+    const dataset = rapid.datasets.get(datasetID);
     if (dataset) {
       dataset.color = color;
 
@@ -208,7 +206,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   function renderDatasets(selection) {
     const prefs = context.storageSystem();
     const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
-    const datasets = Object.values(rapidContext.datasets())
+    const datasets = [...rapid.datasets.values()]
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
     const rapidLayer = context.scene().layers.get('rapid');
     if (!rapidLayer) return;
