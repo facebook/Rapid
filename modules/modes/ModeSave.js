@@ -1,9 +1,10 @@
 import { select as d3_select } from 'd3-selection';
 
 import { AbstractMode } from './AbstractMode';
-import { uiConflicts } from '../ui/conflicts';
-import { uiConfirm } from '../ui/confirm';
 import { uiCommit } from '../ui/commit';
+import { uiConfirm } from '../ui/confirm';
+import { uiConflicts } from '../ui/conflicts';
+import { uiLoading } from '../ui/loading';
 import { uiSuccess } from '../ui/success';
 import { utilKeybinding } from '../util';
 
@@ -28,29 +29,20 @@ export class ModeSave extends AbstractMode {
 
     // Make sure the event handlers have `this` bound correctly
     this._cancel = this._cancel.bind(this);
+    this._hideLoading = this._hideLoading.bind(this);
     this._keybindingOff = this._keybindingOff.bind(this);
-    this._keybindingOn= this._keybindingOn.bind(this);
+    this._keybindingOn = this._keybindingOn.bind(this);
     this._prepareForSuccess = this._prepareForSuccess.bind(this);
     this._showConflicts = this._showConflicts.bind(this);
     this._showErrors = this._showErrors.bind(this);
+    this._showLoading = this._showLoading.bind(this);
     this._showProgress = this._showProgress.bind(this);
     this._showSuccess = this._showSuccess.bind(this);
 
     this._location = null;
-    this._successUI = null;
-    this._conflictsUI = null;
-
-    this._commitUI = uiCommit(context)
-      .on('cancel', this._cancel);
-
-    this.uploader = context.uploader()
-      .on('saveStarted.modeSave', this._keybindingOff)
-      .on('willAttemptUpload.modeSave', this._prepareForSuccess)
-      .on('progressChanged.modeSave', this._showProgress)
-      .on('resultNoChanges.modeSave', this._cancel)
-      .on('resultErrors.modeSave', this._showErrors)
-      .on('resultConflicts.modeSave', this._showConflicts)
-      .on('resultSuccess.modeSave', this._showSuccess);
+    this._uiConflicts = null;
+    this._uiLoading = null;
+    this._uiSuccess = null;
   }
 
 
@@ -69,25 +61,41 @@ export class ModeSave extends AbstractMode {
     const osm = context.services.get('osm');
     if (!osm) return false;  // can't enter save mode
 
+    this._active = true;
+
+    this._uiCommit = uiCommit(context)
+      .on('cancel', this._cancel);
+
     if (osm.authenticated()) {
-      context.ui().sidebar.show(this._commitUI);
+      context.ui().sidebar.show(this._uiCommit);
     } else {
       osm.authenticate(err => {
         if (err) {
           this._cancel();
         } else {
-          context.ui().sidebar.show(this._commitUI);
+          context.ui().sidebar.show(this._uiCommit);
         }
       });
     }
 
-    this._active = true;
     context.container().selectAll('.main-content')
       .classed('active', false)
       .classed('inactive', true);
 
     this._keybindingOn();
-    this.context.enableBehaviors(['map-interaction']);
+    context.enableBehaviors(['map-interaction']);
+
+    context.uploaderSystem()
+      .on('progressChanged', this._showProgress)
+      .on('resultConflicts', this._showConflicts)
+      .on('resultErrors', this._showErrors)
+      .on('resultNoChanges', this._cancel)
+      .on('resultSuccess', this._showSuccess)
+      .on('saveEnded', this._hideLoading)
+      .on('saveStarted', this._keybindingOff)
+      .on('saveStarted', this._showLoading)
+      .on('willAttemptUpload', this._prepareForSuccess);
+
     return true;
   }
 
@@ -102,6 +110,20 @@ export class ModeSave extends AbstractMode {
     if (DEBUG) {
       console.log('ModeSave: exiting');  // eslint-disable-line no-console
     }
+
+    this._uiCommit.on('cancel', null);
+    this._uiCommit = null;
+
+    this.context.uploaderSystem()
+      .off('progressChanged', this._showProgress)
+      .off('resultConflicts', this._showConflicts)
+      .off('resultErrors', this._showErrors)
+      .off('resultNoChanges', this._cancel)
+      .off('resultSuccess', this._showSuccess)
+      .off('saveEnded', this._hideLoading)
+      .off('saveStarted', this._keybindingOff)
+      .off('saveStarted', this._showLoading)
+      .off('willAttemptUpload', this._prepareForSuccess);
 
     this._keybindingOff();
 
@@ -141,18 +163,21 @@ export class ModeSave extends AbstractMode {
   /**
    * showConflicts handler
    */
-  _showConflicts(changeset, conflicts, origChanges) {
-    const selection = this.context.container().select('.sidebar')
+  _showConflicts(conflicts, origChanges) {
+    const context = this.context;
+    const uploader = context.uploaderSystem();
+
+    const selection = context.container().select('.sidebar')
       .append('div')
       .attr('class','sidebar-component');
 
-    const mainContent = this.context.container().selectAll('.main-content');
+    const mainContent = context.container().selectAll('.main-content');
 
     mainContent
       .classed('active', true)
       .classed('inactive', false);
 
-    this._conflictsUI = uiConflicts(this.context)
+    this._uiConflicts = uiConflicts(context)
       .conflictList(conflicts)
       .origChanges(origChanges)
       .on('cancel', () => {
@@ -161,17 +186,17 @@ export class ModeSave extends AbstractMode {
           .classed('inactive', true);
         selection.remove();
         this._keybindingOn();
-        this.uploader.cancelConflictResolution();
+        uploader.cancelConflictResolution();
       })
       .on('save', () => {
         mainContent
           .classed('active', false)
           .classed('inactive', true);
         selection.remove();
-        this.uploader.processResolvedConflicts(changeset);
+        uploader.processResolvedConflicts();
       });
 
-    selection.call(this._conflictsUI);
+    selection.call(this._uiConflicts);
   }
 
 
@@ -216,9 +241,9 @@ export class ModeSave extends AbstractMode {
       .on('click', function(d3_event) {
         d3_event.preventDefault();
 
-        var error = d3_select(this);
-        var detail = d3_select(this.nextElementSibling);
-        var exp = error.classed('expanded');
+        const error = d3_select(this);
+        const detail = d3_select(this.nextElementSibling);
+        const exp = error.classed('expanded');
 
         detail.style('display', exp ? 'none' : 'block');
         error.classed('expanded', !exp);
@@ -248,17 +273,35 @@ export class ModeSave extends AbstractMode {
    * _showSuccess handler
    */
   _showSuccess(changeset) {
-    this._commitUI.reset();
-
-    const successContent = this._successUI
+    const context = this.context;
+    const successContent = this._uiSuccess
       .changeset(changeset)
       .location(this._location)
-      .on('cancel', () => {
-        this.context.ui().sidebar.hide();
-      });
+      .on('cancel', () => context.ui().sidebar.hide());
 
-    this.context.enter('browse');
-    this.context.ui().sidebar.show(successContent);
+    context.enter('browse');
+    context.ui().sidebar.show(successContent);
+  }
+
+
+  /**
+   * _showLoading
+   */
+  _showLoading() {
+    const context = this.context;
+    this._saveLoading = uiLoading(context)
+      .message(context.tHtml('save.uploading'))
+      .blocking(true);
+    context.container().call(this._saveLoading);  // block input during upload
+  }
+
+
+  /**
+   * _hideLoading
+   */
+  _hideLoading() {
+    this._saveLoading.close();
+    this._saveLoading = null;
   }
 
 
@@ -268,6 +311,7 @@ export class ModeSave extends AbstractMode {
   _keybindingOn() {
     d3_select(document).call(this._keybinding.on('⎋', this._cancel, true));
   }
+
 
   /**
    * _keybindingOff
@@ -280,7 +324,7 @@ export class ModeSave extends AbstractMode {
   // Reverse geocode current map location so we can display a message on
   // the success screen like "Thank you for editing around place, region."
   _prepareForSuccess() {
-    this._successUI = uiSuccess(this.context);
+    this._uiSuccess = uiSuccess(this.context);
     this._location = null;
 
     const loc = this.context.mapSystem().center();
@@ -300,9 +344,4 @@ export class ModeSave extends AbstractMode {
     });
   }
 
-// mode.selectedIDs = function() {
-//     return _conflictsUI ? _conflictsUI.shownEntityIds() : [];
-// };
-
 }
-

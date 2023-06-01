@@ -2,7 +2,6 @@ export * from './lib/index';
 
 export { coreContext } from './context';
 export { coreHistory } from './history';
-export { coreUploader } from './uploader';
 
 export { DataLoaderSystem } from './DataLoaderSystem';
 export { FilterSystem } from './FilterSystem';
@@ -15,5 +14,6 @@ export { PhotoSystem } from './PhotoSystem';
 export { PresetSystem } from './PresetSystem';
 export { RapidSystem } from './RapidSystem';
 export { StorageSystem } from './StorageSystem';
+export { UploaderSystem } from './UploaderSystem';
 export { UrlHashSystem } from './UrlHashSystem';
 export { ValidationSystem } from './ValidationSystem';
