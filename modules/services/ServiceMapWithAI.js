@@ -102,7 +102,7 @@ export class ServiceMapWithAI extends EventEmitter {
   }
 
 
-  loadTiles(datasetID, projection, taskExtent) {
+  loadTiles(datasetID, projection) {
     if (this._off) return;
 
     let ds = this._datasets[datasetID];
@@ -144,7 +144,7 @@ export class ServiceMapWithAI extends EventEmitter {
       }
 
       const controller = new AbortController();
-      d3_xml(this._tileURL(ds, tile.wgs84Extent, taskExtent), { signal: controller.signal })
+      d3_xml(this._tileURL(ds, tile.wgs84Extent), { signal: controller.signal })
         .then(xml => {
           delete cache.inflight[tile.id];
           if (!xml) return;
@@ -173,7 +173,7 @@ export class ServiceMapWithAI extends EventEmitter {
   }
 
 
-  _tileURL(dataset, extent, taskExtent) {
+  _tileURL(dataset, extent) {
     // Conflated datasets have a different ID, so they get stored in their own graph/tree
     const isConflated = /-conflated$/.test(dataset.id);
     const datasetID = dataset.id.replace('-conflated', '');
@@ -200,6 +200,7 @@ export class ServiceMapWithAI extends EventEmitter {
 
     qs.bbox = extent.toParam();
 
+    const taskExtent = this.context.rapidSystem().taskExtent;
     if (taskExtent) {
       qs.crop_bbox = taskExtent.toParam();
     }

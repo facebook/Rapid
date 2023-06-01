@@ -80,6 +80,7 @@ export function uiIntro(context, skipToRapid) {
     const osm = context.services.get('osm');
     const mapwithai = context.services.get('mapwithai');
     const imagery = context.imagerySystem();
+    const rapid = context.rapidSystem();
     const history = context.history();
 
     // Save current state
@@ -89,13 +90,16 @@ export function uiIntro(context, skipToRapid) {
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
-      layerEnabled: new Map(),  // Map(layerID -> Boolean)
+      layersEnabled: new Set(),     // Set(layerID)
+      datasetsEnabled: new Set(),   // Set(datasetID)
       historyJSON: history.toJSON()
     };
 
     // Remember which layers were enabled before, enable only certain ones in the walkthrough.
     for (const [layerID, layer] of context.scene().layers) {
-      original.layerEnabled.set(layerID, layer.enabled);
+      if (layer.enabled) {
+        original.layersEnabled.add(layerID);
+      }
     }
     context.scene().onlyLayers(['background','osm','labels']);
 
@@ -121,11 +125,14 @@ export function uiIntro(context, skipToRapid) {
     imagery.brightness = 1;
 
     // Setup Rapid Walkthrough dataset and disable service
-    let rapidDatasets = context.rapidContext().datasets();
-    const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
-    Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
+    for (const [datasetID, dataset] of rapid.datasets) {
+      if (dataset.enabled) {
+        original.datasetsEnabled.add(datasetID);
+        dataset.enabled = false;
+      }
+    }
 
-    rapidDatasets.rapid_intro_graph = {
+    rapid.datasets.set('rapid_intro_graph', {
       id: 'rapid_intro_graph',
       beta: false,
       added: true,
@@ -134,7 +141,7 @@ export function uiIntro(context, skipToRapid) {
       service: 'mapwithai',
       color: '#da26d3',
       label: 'Rapid Walkthrough'
-    };
+    });
 
     if (mapwithai) {
       mapwithai.toggle(false);    // disable network
@@ -184,10 +191,11 @@ export function uiIntro(context, skipToRapid) {
       }
 
       // Restore Rapid datasets and service
-      let rapidDatasets = context.rapidContext().datasets();
-      delete rapidDatasets.rapid_intro_graph;
-      Object.keys(rapidDatasetsCopy).forEach(id => rapidDatasets[id].enabled = rapidDatasetsCopy[id].enabled);
-      Object.assign(rapidDatasets, rapidDatasetsCopy);
+      for (const [datasetID, dataset] of rapid.datasets) {
+        dataset.enabled = original.datasetsEnabled.has(datasetID);
+      }
+      rapid.datasets.delete('rapid_intro_graph');
+
       if (mapwithai) {
         mapwithai.toggle(true);
       }
@@ -198,7 +206,7 @@ export function uiIntro(context, skipToRapid) {
 
       // Restore Map State
       for (const [layerID, layer] of context.scene().layers) {
-        layer.enabled = original.layerEnabled.get(layerID);
+        layer.enabled = original.layersEnabled.has(layerID);
       }
       imagery.baseLayerSource(original.baseLayer);
       original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));

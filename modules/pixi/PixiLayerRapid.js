@@ -178,9 +178,8 @@ export class PixiLayerRapid extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const rapidContext = this.context.rapidContext();
-    const datasets = Object.values(rapidContext.datasets());
-    if (!this.enabled || !datasets.length || zoom < MINZOOM) return;
+    const rapid = this.context.rapidSystem();
+    if (!this.enabled || !rapid.datasets.size || zoom < MINZOOM) return;
 
 // shader experiment
 //const offset = this.context.pixi.stage.position;
@@ -188,7 +187,7 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.translationMatrix = transform.clone().translate(-offset.x, -offset.y);
 //this._uniforms.u_time = frame/10;
 
-    for (const dataset of datasets) {
+    for (const dataset of rapid.datasets.values()) {
       this.renderDataset(dataset, frame, projection, zoom);
     }
   }
@@ -198,14 +197,13 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderDataset
    * Render any data we have, and schedule fetching more of it to cover the view
    *
-   * @param  dataset
+   * @param  dataset      Object
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    */
   renderDataset(dataset, frame, projection, zoom) {
     const context = this.context;
-    const rapidContext = context.rapidContext();
     const dsEnabled = (dataset.added && dataset.enabled);
     if (!dsEnabled) return;
 
@@ -228,7 +226,7 @@ export class PixiLayerRapid extends AbstractLayer {
     /* Facebook AI/ML */
     if (dataset.service === 'mapwithai') {
       if (zoom >= 15) { // avoid firing off too many API requests
-        service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
+        service.loadTiles(datasetID, context.projection);  // fetch more
       }
 
       const entities = service.intersects(datasetID, context.mapSystem().extent())

@@ -8,8 +8,8 @@ export function uiRapidPowerUserFeaturesDialog(context) {
   const featureFlags = [
     'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits'
   ];
-  const rapidContext = context.rapidContext();
-  const showPowerUser = rapidContext.showPowerUser;
+  const rapid = context.rapidSystem();
+  const showPowerUser = rapid.showPowerUser;
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
 
@@ -43,14 +43,13 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     prefs.setItem(`rapid-internal-feature.${featureFlag}`, enabled);
 
     // custom on-toggle behaviors can go here
-    if (featureFlag === 'previewDatasets' && !enabled) {   // user unchecked previewDatasets feature
-      const datasets = rapidContext.datasets();
-      Object.values(datasets).forEach(ds => {
-        if (ds.beta) {
-          ds.added = false;
-          ds.enabled = false;
+    if (featureFlag === 'previewDatasets' && !enabled) {   // if user unchecked previewDatasets feature
+      for (const dataset of rapid.datasets.values()) {
+        if (dataset.beta) {
+          dataset.added = false;
+          dataset.enabled = false;
         }
-      });
+      }
       context.enter('browse');   // return to browse mode (in case something was selected)
       context.mapSystem().immediateRedraw();
     }

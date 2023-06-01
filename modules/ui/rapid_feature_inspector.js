@@ -9,8 +9,8 @@ import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
 
 
 export function uiRapidFeatureInspector(context, keybinding) {
-  const rapidContext = context.rapidContext();
-  const showPowerUser = rapidContext.showPowerUser;
+  const rapid = context.rapidSystem();
+  const showPowerUser = rapid.showPowerUser;
   const ACCEPT_FEATURES_LIMIT = showPowerUser ? Infinity : 50;
   let _datum;
 
@@ -62,9 +62,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (context.inIntro()) return;
 
     // remember sources for later when we prepare the changeset
-    rapidContext.sources.add('mapwithai');    // always add 'mapwithai'
+    rapid.sources.add('mapwithai');    // always add 'mapwithai'
     if (sourceTag && /^esri/.test(sourceTag)) {
-      rapidContext.sources.add('esri');       // add 'esri' for esri sources
+      rapid.sources.add('esri');       // add 'esri' for esri sources
     }
 
     if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
@@ -108,7 +108,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (!_datum) return;
 
     const datasetID = _datum.__datasetid__.replace('-conflated', '');
-    const dataset = rapidContext.datasets()[datasetID];
+    const dataset = rapid.datasets.get(datasetID);
     const color = dataset.color;
 
     let featureInfo = selection.selectAll('.feature-info')

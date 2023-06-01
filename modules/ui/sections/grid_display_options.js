@@ -5,6 +5,7 @@ import { uiSection } from '../section';
 
 export function uiSectionGridDisplayOptions(context) {
   const imagerySystem = context.imagerySystem();
+  const rapid = context.rapidSystem();
 
   let section = uiSection('grid-display-options', context)
     .label(context.t('background.grid.grids'))
@@ -61,14 +62,14 @@ export function uiSectionGridDisplayOptions(context) {
   function gridDisplayOptions(selection) {
     let gridOptionsSection = d3_select('.section-grid-display-options');
 
-    context.rapidContext().on('task_extent_set.grid_display_options', () => {
-      if (context.rapidContext().isTaskRectangular()) {
+    rapid.on('taskchanged', () => {
+      if (rapid.isTaskRectangular()) {
         gridOptionsSection.classed('hide', false);
         selection.call(render);
       }
     });
 
-    if (!context.rapidContext().isTaskRectangular()) {
+    if (!rapid.isTaskRectangular()) {
       gridOptionsSection.classed('hide', true);
       return;
     }

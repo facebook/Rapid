@@ -9,7 +9,7 @@ import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
-  const rapidContext = context.rapidContext();
+  const rapid = context.rapidSystem();
   const dispatch = d3_dispatch('done');
   const categoryCombo = uiCombobox(context, 'dataset-categories');
   const MAXRESULTS = 100;
@@ -424,24 +424,24 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function toggleDataset(d3_event, d) {
-    const datasets = rapidContext.datasets();
-    const ds = datasets[d.id];
+    const datasets = rapid.datasets;
+    const ds = datasets.get(d.id);
 
     if (ds) {
       ds.added = !ds.added;
 
     } else {  // hasn't been added yet
-      const service = context.services.get('esri');
-      if (service) {   // start fetching layer info (the mapping between attributes and tags)
-        service.loadLayerAsync(d.id);
+      const esri = context.services.get('esri');
+      if (esri) {   // start fetching layer info (the mapping between attributes and tags)
+        esri.loadLayerAsync(d.id);
       }
 
       const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
       const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
 
       // pick a new color
-      const colors = rapidContext.colors();
-      const colorIndex = Object.keys(datasets).length % colors.length;
+      const colors = rapid.colors;
+      const colorIndex = datasets.size % colors.length;
 
       let dataset = {
         id: d.id,
@@ -461,26 +461,26 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
       // Test running building layers through MapWithAI conflation service
       if (isBuildings) {
-       dataset.conflated = true;
-       dataset.service = 'mapwithai';
+        dataset.conflated = true;
+        dataset.service = 'mapwithai';
 
         // and disable the Microsoft buildings to avoid clutter
-        if (datasets.msBuildings) {
-          datasets.msBuildings.enabled = false;
+        const msBuildings = datasets.get('msBuildings');
+        if (msBuildings) {
+          msBuildings.enabled = false;
         }
       }
 
-      datasets[d.id] = dataset;
+      datasets.set(d.id, dataset);
     }
 
     // update url hash
     const urlhash = context.urlHashSystem();
-    const datasetIDs = Object.values(datasets)
+    const datasetIDs = [...rapid.datasets.values()]
       .filter(ds => ds.added && ds.enabled)
       .map(ds => ds.id)
       .join(',');
     urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
-
 
     _content.call(renderModalContent);
 
@@ -490,8 +490,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function datasetAdded(d) {
-    const datasets = rapidContext.datasets();
-    return datasets[d.id] && datasets[d.id].added;
+    const ds = rapid.datasets.get(d.id);
+    return ds?.added;
   }
 
 
