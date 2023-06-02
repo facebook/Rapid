@@ -354,7 +354,7 @@ export function validationCrossingWays(context) {
 
     var validation = function checkCrossingWays(entity, graph) {
 
-        var tree = context.history().tree();
+        var tree = context.editSystem().tree();
 
         var ways = waysToCheck(entity, graph);
 

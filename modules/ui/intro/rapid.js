@@ -10,7 +10,7 @@ import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helpe
 export function uiIntroRapid(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.rapid.title' };
-  const history = context.history();
+  const history = context.editSystem();
   const map = context.mapSystem();
 
   const tulipLaneID = 'w-516';
@@ -50,7 +50,7 @@ export function uiIntroRapid(context, curtain) {
   // Click Ok to advance
   function welcomeAsync() {
     context.enter('browse');
-    history.reset('initial');
+    history.resetToCheckpoint('initial');
 
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -89,7 +89,7 @@ export function uiIntroRapid(context, curtain) {
   // Select Tulip Lane to advance
   function selectRoadAsync() {
     context.enter('browse');
-    history.reset('initial');
+    history.resetToCheckpoint('initial');
     context.scene().enableLayers('rapid');
     context.ui().togglePanes();   // close issue pane
 
@@ -254,7 +254,7 @@ export function uiIntroRapid(context, curtain) {
   // Select Tulip Lane to advance
   function selectRoadAgainAsync() {
     context.enter('browse');
-    history.reset('initial');
+    history.resetToCheckpoint('initial');
 
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());

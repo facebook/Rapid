@@ -11,7 +11,7 @@ export function uiIntroLine(context, curtain) {
   const chapter = { title: 'intro.lines.title' };
   const editMenu = context.ui().editMenu();
   const container = context.container();
-  const history = context.history();
+  const history = context.editSystem();
   const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
@@ -109,7 +109,7 @@ export function uiIntroLine(context, curtain) {
   // Click "Add Line" button to advance
   function addLineAsync() {
     context.enter('browse');
-    history.reset('initial');
+    history.resetToCheckpoint('initial');
     _lineID = null;
 
     const loc = tulipRoadStartExtent.center();
@@ -434,7 +434,7 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function didNameRoadAsync() {
     if (!_doesLineExist()) return Promise.resolve(addLineAsync);
-    history.checkpoint('doneAddLine');
+    history.setCheckpoint('doneAddLine');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -454,11 +454,11 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function updateLineAsync() {
     context.enter('browse');
-    history.reset('doneAddLine');
+    history.resetToCheckpoint('doneAddLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_hasWoodStreetParts()) history.reset('initial');
+    if (!_hasWoodStreetParts()) history.resetToCheckpoint('initial');
 
     const loc = woodStreetExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -634,7 +634,7 @@ export function uiIntroLine(context, curtain) {
         tipHtml: helpHtml(context, 'intro.lines.continue_drag_midpoint'),
         buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => {
-          history.checkpoint('doneUpdateLine');
+          history.setCheckpoint('doneUpdateLine');
           resolve(deleteLinesAsync);
         }
       });
@@ -648,11 +648,11 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function deleteLinesAsync() {
     context.enter('browse');
-    history.reset('doneUpdateLine');
+    history.resetToCheckpoint('doneUpdateLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_has12thAvenueParts()) history.reset('initial');
+    if (!_has12thAvenueParts()) history.resetToCheckpoint('initial');
 
     const loc = deleteLinesExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -676,11 +676,11 @@ export function uiIntroLine(context, curtain) {
   // Select point with edit menu open to advance
   function rightClickIntersectionAsync() {
     context.enter('browse');
-    history.reset('doneUpdateLine');
+    history.resetToCheckpoint('doneUpdateLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_has12thAvenueParts()) history.reset('initial');
+    if (!_has12thAvenueParts()) history.resetToCheckpoint('initial');
 
     _washingtonSegmentID = null;
 

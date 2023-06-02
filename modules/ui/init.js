@@ -334,7 +334,7 @@ export function uiInit(context) {
       return context.save();
     };
     window.onunload = function() {
-      context.history().unlock();
+      context.editSystem().unlock();
     };
 
     d3_select(window)
@@ -390,7 +390,7 @@ export function uiInit(context) {
 
     if (!_initCounter++) {  // first time only
       if (!startWalkthrough) {
-        if (context.history().lock() && context.history().hasRestorableChanges()) {
+        if (context.editSystem().lock() && context.editSystem().hasRestorableChanges()) {
           context.container().call(uiRestore(context));
 
 // uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew

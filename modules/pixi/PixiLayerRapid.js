@@ -106,58 +106,64 @@ export class PixiLayerRapid extends AbstractLayer {
     // These features will be filtered out when drawing
     this._acceptedIDs = new Set();
 
-    this.context.history()
-      .on('undone.rapid', onHistoryUndone.bind(this))
-      .on('change.rapid', onHistoryChange.bind(this))
-      .on('restore.rapid', onHistoryRestore.bind(this));
+    // Make sure the event handlers have `this` bound correctly
+    this._onUndone = this._onUndone.bind(this);
+    this._onChange = this._onChange.bind(this);
+    this._onRestore = this._onRestore.bind(this);
+
+    this.context.editSystem()
+      .on('undone.rapid', this._onUndone)
+      .on('change.rapid', this._onChange)
+      .on('restore.rapid', this._onRestore);
+  }
 
 
-    function wasRapidEdit(annotation) {
-      return annotation && annotation.type && /^rapid/.test(annotation.type);
-    }
+
+  _wasRapidEdit(annotation) {
+    return annotation && annotation.type && /^rapid/.test(annotation.type);
+  }
 
 
-    function onHistoryUndone(currentStack, previousStack) {
-      const annotation = previousStack.annotation;
-      if (!wasRapidEdit(annotation)) return;
+  _onUndone(currentStack, previousStack) {
+    const annotation = previousStack.annotation;
+    if (!this._wasRapidEdit(annotation)) return;
 
-      this._acceptedIDs.delete(annotation.id);
-      this.context.mapSystem().immediateRedraw();
-    }
+    this._acceptedIDs.delete(annotation.id);
+    this.context.mapSystem().immediateRedraw();
+  }
 
 
-    function onHistoryChange() {
-      const annotation = this.context.history().peekAnnotation();
-      if (!wasRapidEdit(annotation)) return;
+  _onChange() {
+    const annotation = this.context.editSystem().peekAnnotation();
+    if (!this._wasRapidEdit(annotation)) return;
+
+    this._acceptedIDs.add(annotation.id);
+    this.context.mapSystem().immediateRedraw();
+  }
+
+
+  _onRestore() {
+    this._acceptedIDs = new Set();
+
+    this.context.editSystem().peekAllAnnotations().forEach(annotation => {
+      if (!this._wasRapidEdit(annotation)) return;
 
       this._acceptedIDs.add(annotation.id);
-      this.context.mapSystem().immediateRedraw();
-    }
 
+      // `origid` (the original entity ID), a.k.a. datum.__origid__,
+      // is a hack used to deal with non-deterministic way-splitting
+      // in the roads service. Each way "split" will have an origid
+      // attribute for the original way it was derived from. In this
+      // particular case, restoring from history on page reload, we
+      // prevent new splits (possibly different from before the page
+      // reload) from being displayed by storing the origid and
+      // checking against it in render().
+      if (annotation.origid) {
+        this._acceptedIDs.add(annotation.origid);
+      }
+    });
 
-    function onHistoryRestore() {
-      this._acceptedIDs = new Set();
-
-      this.context.history().peekAllAnnotations().forEach(annotation => {
-        if (!wasRapidEdit(annotation)) return;
-
-        this._acceptedIDs.add(annotation.id);
-
-        // `origid` (the original entity ID), a.k.a. datum.__origid__,
-        // is a hack used to deal with non-deterministic way-splitting
-        // in the roads service. Each way "split" will have an origid
-        // attribute for the original way it was derived from. In this
-        // particular case, restoring from history on page reload, we
-        // prevent new splits (possibly different from before the page
-        // reload) from being displayed by storing the origid and
-        // checking against it in render().
-        if (annotation.origid) {
-          this._acceptedIDs.add(annotation.origid);
-        }
-      });
-
-      this.context.mapSystem().immediateRedraw();
-    }
+    this.context.mapSystem().immediateRedraw();
   }
 
 
@@ -230,7 +236,7 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
       const entities = service.intersects(datasetID, context.mapSystem().extent())
-        .filter(d => d.type === 'way' && !isAccepted(d));  // see onHistoryRestore()
+        .filter(d => d.type === 'way' && !isAccepted(d));  // see this._onRestore()
 
       // fb_ai service gives us roads and buildings together,
       // so filter further according to which dataset we're drawing
@@ -258,7 +264,7 @@ export class PixiLayerRapid extends AbstractLayer {
       const entities = service.intersects(datasetID, context.mapSystem().extent());
 
       for (const entity of entities) {
-        if (isAccepted(entity)) continue;   // skip features already accepted, see onHistoryRestore()
+        if (isAccepted(entity)) continue;   // skip features already accepted, see this._onRestore()
         const geom = entity.geometry(dsGraph);
         if (geom === 'point' && !!entity.__fbid__) {  // standalone points only (not vertices/childnodes)
           data.points.push(entity);

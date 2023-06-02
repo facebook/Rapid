@@ -55,7 +55,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     // If this is the same selection as before, and the previous edit was also a cycle-tags,
     // skip this `perform`, then all tag updates will be coalesced into the previous edit.
     const annotation = operation.annotation();
-    if (!isSameSelection || context.history().undoAnnotation() !== annotation) {
+    if (!isSameSelection || context.editSystem().undoAnnotation() !== annotation) {
       // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
       context.perform(actionNoop(), annotation);
     }

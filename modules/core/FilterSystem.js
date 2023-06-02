@@ -114,7 +114,7 @@ export class FilterSystem extends EventEmitter {
     urlHashSystem.on('hashchange', this._hashchange);
 
 //    // warm up the feature matching cache upon merging fetched data
-//    this.context.history().on('merge.features', function(newEntities) {
+//    this.context.editSystem().on('merge.features', function(newEntities) {
 //        if (!newEntities) return;
 //        var handle = window.requestIdleCallback(function() {
 //            var graph = this.context.graph();

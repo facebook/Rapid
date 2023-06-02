@@ -17,12 +17,13 @@ export class StorageSystem {
     try {
       this._storage = window.localStorage;
     } catch (e) {
-      this._mock = {};
+      this._mock = new Map();
       this._storage = {
-        getItem: (k) => this._mock[k],
-        setItem: (k, v) => this._mock[k] = v,
-        removeItem: (k) => delete this._mock[k],
-        clear: () => this._mock = {}
+        hasItem: (k) => this._mock.has(k),
+        getItem: (k) => this._mock.get(k),
+        setItem: (k, v) => this._mock.set(k, v),
+        removeItem: (k) => this._mock.delete(k),
+        clear: () => this._mock.clear()
       };
     }
   }
@@ -34,6 +35,16 @@ export class StorageSystem {
    */
   init() {
     /* noop */
+  }
+
+
+  /**
+   * hasItem
+   * @param   k  String key to check for existance
+   * @return  `true` if the key is set, `false` if not
+   */
+  hasItem(k) {
+    return !!this._storage.getItem(k);
   }
 
 

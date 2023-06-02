@@ -196,10 +196,10 @@ export function uiEntityEditor(context) {
             body.call(section.render);
         });
 
-        context.history()
-            .on('change.entity-editor', historyChanged);
+        context.editSystem()
+            .on('change', _onChange);
 
-        function historyChanged(difference) {
+        function _onChange(difference) {
             if (selection.selectAll('.entity-editor').empty()) return;
             if (_state === 'hide') return;
             var significant = !difference ||
@@ -232,7 +232,7 @@ export function uiEntityEditor(context) {
 
 
     // Tag changes that fire on input can all get coalesced into a single
-    // history operation when the user leaves the field.  #2342
+    // history operation when the user leaves the field.  iD#2342
     // Use explicit entityIDs in case the selection changes before the event is fired.
     function changeTags(entityIDs, changed, onInput) {
 

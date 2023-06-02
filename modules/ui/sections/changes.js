@@ -21,16 +21,16 @@ export function uiSectionChanges(context) {
 
   let section = uiSection('changes-list', context)
     .label(() => {
-      const history = context.history();
-      const summary = history.difference().summary();
+      const editSystem = context.editSystem();
+      const summary = editSystem.difference().summary();
       return l10n.t('inspector.title_count', { title: l10n.tHtml('commit.changes'), count: summary.size });
     })
     .disclosureContent(renderDisclosureContent);
 
 
   function renderDisclosureContent(selection) {
-    let history = context.history();
-    let summary = [...history.difference().summary().values()];
+    const editSystem = context.editSystem();
+    const summary = [...editSystem.difference().summary().values()];
 
     let container = selection.selectAll('.commit-section')
       .data([0]);
@@ -98,7 +98,7 @@ export function uiSectionChanges(context) {
 
     // Download changeset link
     let changeset = new osmChangeset().update({ id: undefined });
-    const changes = history.changes(actionDiscardTags(history.difference(), _discardTags));
+    const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), _discardTags));
 
     delete changeset.id;  // Export without chnageset_id
 

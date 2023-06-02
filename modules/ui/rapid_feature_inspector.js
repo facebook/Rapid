@@ -20,7 +20,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
     if (gpxInUrl) return false;
 
-    const annotations = context.history().peekAllAnnotations();
+    const annotations = context.editSystem().peekAllAnnotations();
     const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');
     return aiFeatureAccepts.length >= ACCEPT_FEATURES_LIMIT;
   }
@@ -43,7 +43,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     // In place of a string annotation, this introduces an "object-style"
     // annotation, where "type" and "description" are standard keys,
     // and there may be additional properties. Note that this will be
-    // serialized to JSON while saving undo/redo state in history.save().
+    // serialized to JSON while saving undo/redo state in editSystem.save().
     let annotation = {
       type: 'rapid_accept_feature',
       description: context.t('rapid_feature_inspector.option_accept.annotation'),

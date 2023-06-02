@@ -1,9 +1,9 @@
 export * from './lib/index';
 
 export { coreContext } from './context';
-export { coreHistory } from './history';
 
 export { DataLoaderSystem } from './DataLoaderSystem';
+export { EditSystem } from './EditSystem';
 export { FilterSystem } from './FilterSystem';
 export { ImagerySystem } from './ImagerySystem';
 export { LocalizationSystem } from './LocalizationSystem';

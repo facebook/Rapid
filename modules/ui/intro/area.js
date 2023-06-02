@@ -11,7 +11,7 @@ export function uiIntroArea(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.areas.title' };
   const container = context.container();
-  const history = context.history();
+  const history = context.editSystem();
   const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
@@ -54,7 +54,7 @@ export function uiIntroArea(context, curtain) {
   // Click "Add Area" button to advance
   function addAreaAsync() {
     context.enter('browse');
-    history.reset('initial');
+    history.resetToCheckpoint('initial');
     _areaID = null;
 
     const loc = playgroundExtent.center();

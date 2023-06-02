@@ -71,6 +71,33 @@ export function modeSelect(context, selectedIDs) {
     }
 
 
+    function selectElements() {
+        if (!checkSelectedIDs()) return;
+
+        var surface = context.surface();
+        surface.selectAll('.selected-member').classed('selected-member', false);
+        surface.selectAll('.selected').classed('selected', false);
+        surface.selectAll('.related').classed('related', false);
+
+        // reload `_focusedParentWayId` based on the current selection
+        checkFocusedParent();
+        if (_focusedParentWayId) {
+            surface.selectAll(utilEntitySelector([_focusedParentWayId]))
+                .classed('related', true);
+        }
+
+        // if (context.mapSystem().withinEditableZoom()) {
+            // Apply selection styling if not in wide selection
+            surface
+                .selectAll(utilDeepMemberSelector(selectedIDs, context.graph(), true /* skipMultipolgonMembers */))
+                .classed('selected-member', true);
+            surface
+                .selectAll(utilEntityOrDeepMemberSelector(selectedIDs, context.graph()))
+                .classed('selected', true);
+        // }
+    }
+
+
     // find the parent ways for nextVertex, previousVertex, and selectParent
     function parentWaysIdsOfSelection(onlyCommonParents) {
         var graph = context.graph();
@@ -231,13 +258,10 @@ export function modeSelect(context, selectedIDs) {
         context.ui().sidebar
             .select(selectedIDs, _newFeature);
 
-        context.history()
-            .on('change.select', function() {
-                // reselect after change in case relation members were removed or added
-                selectElements();
-            })
-            .on('undone.select', checkSelectedIDs)
-            .on('redone.select', checkSelectedIDs);
+        context.editSystem()
+            .on('change', selectElements)    // reselect, in case relation members were removed or added
+            .on('undone', checkSelectedIDs)
+            .on('redone', checkSelectedIDs);
 
 //        context.mapSystem()
 //            .on('drawn.select', selectElements);
@@ -281,41 +305,6 @@ export function modeSelect(context, selectedIDs) {
 //                context.validationSystem().validate();
 //            }
 //        }
-
-
-        function selectElements() {
-            if (!checkSelectedIDs()) return;
-
-            var surface = context.surface();
-
-            surface.selectAll('.selected-member')
-                .classed('selected-member', false);
-
-            surface.selectAll('.selected')
-                .classed('selected', false);
-
-            surface.selectAll('.related')
-                .classed('related', false);
-
-            // reload `_focusedParentWayId` based on the current selection
-            checkFocusedParent();
-            if (_focusedParentWayId) {
-                surface.selectAll(utilEntitySelector([_focusedParentWayId]))
-                    .classed('related', true);
-            }
-
-            // if (context.mapSystem().withinEditableZoom()) {
-                // Apply selection styling if not in wide selection
-
-                surface
-                    .selectAll(utilDeepMemberSelector(selectedIDs, context.graph(), true /* skipMultipolgonMembers */))
-                    .classed('selected-member', true);
-                surface
-                    .selectAll(utilEntityOrDeepMemberSelector(selectedIDs, context.graph()))
-                    .classed('selected', true);
-            // }
-
-        }
 
 
         function esc() {
@@ -474,12 +463,10 @@ export function modeSelect(context, selectedIDs) {
 
 
     mode.exit = function() {
-
         mode.extent = null;
 
         // we could enter the mode multiple times but it's only new the first time
         _newFeature = false;
-
         _focusedVertexIds = null;
 
         _operations.forEach(o => {
@@ -497,10 +484,10 @@ export function modeSelect(context, selectedIDs) {
 
         context.ui().closeEditMenu();
 
-        context.history()
-            .on('change.select', null)
-            .on('undone.select', null)
-            .on('redone.select', null);
+        context.editSystem()
+            .off('change', selectElements)
+            .off('undone', checkSelectedIDs)
+            .off('redone', checkSelectedIDs);
 
         var surface = context.surface();
 

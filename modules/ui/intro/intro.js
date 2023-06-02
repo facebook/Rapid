@@ -81,7 +81,7 @@ export function uiIntro(context, skipToRapid) {
     const mapwithai = context.services.get('mapwithai');
     const imagery = context.imagerySystem();
     const rapid = context.rapidSystem();
-    const history = context.history();
+    const edits = context.editSystem();
 
     // Save current state
     const original = {
@@ -92,7 +92,7 @@ export function uiIntro(context, skipToRapid) {
       overlayLayers: imagery.overlayLayerSources(),
       layersEnabled: new Set(),     // Set(layerID)
       datasetsEnabled: new Set(),   // Set(datasetID)
-      historyJSON: history.toJSON()
+      edits: edits.toJSON()
     };
 
     // Remember which layers were enabled before, enable only certain ones in the walkthrough.
@@ -114,9 +114,9 @@ export function uiIntro(context, skipToRapid) {
     }
 
     // Load walkthrough data
-    history.reset();
-    history.merge(Object.values(_introGraph));
-    history.checkpoint('initial');
+    edits.reset();
+    edits.merge(Object.values(_introGraph));
+    edits.setCheckpoint('initial');
 
     // Setup imagery
     const introSource = imagery.findSource(INTRO_IMAGERY) || imagery.findSource('Bing');
@@ -214,10 +214,10 @@ export function uiIntro(context, skipToRapid) {
       context.mapSystem().transform(original.transform);
       window.location.replace(original.hash);
 
-      // Restore History and Edits
-      history.reset();
-      if (original.historyJSON) {
-        history.fromJSON(original.historyJSON, true);
+      // Restore Edits
+      edits.reset();
+      if (original.edits) {
+        edits.fromJSON(original.edits, true);
       }
 
       // Enable OSM

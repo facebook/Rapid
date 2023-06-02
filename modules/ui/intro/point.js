@@ -13,7 +13,7 @@ export function uiIntroPoint(context, curtain) {
   const chapter = { title: 'intro.points.title' };
   const editMenu = context.ui().editMenu();
   const container = context.container();
-  const history = context.history();
+  const editSystem = context.editSystem();
   const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
@@ -22,6 +22,8 @@ export function uiIntroPoint(context, curtain) {
 
   let _chapterCancelled = false;
   let _rejectStep = null;
+  let _onModeChange = null;
+  let _onEditChange = null;
   let _pointID = null;
 
 
@@ -54,7 +56,7 @@ export function uiIntroPoint(context, curtain) {
   // Click "Add Point" button to advance
   function addPointAsync() {
     context.enter('browse');
-    history.reset('initial');
+    editSystem.resetToCheckpoint('initial');
     _pointID = null;
 
     const loc = buildingExtent.center();
@@ -65,6 +67,9 @@ export function uiIntroPoint(context, curtain) {
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = () => resolve(placePointAsync);
+        _onEditChange = null;
+
         const tooltip = curtain.reveal({
           revealSelector: 'button.add-point',
           tipHtml: helpHtml(context, 'intro.points.points_info') + '{br}' + helpHtml(context, 'intro.points.add_point')
@@ -75,11 +80,10 @@ export function uiIntroPoint(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#rapid-graphic-points');
-
-        context.on('enter.intro', () => resolve(placePointAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -91,26 +95,24 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(searchPresetAsync);
+      _onEditChange = (difference) => {
+        if (!difference) return;
+        const created = difference.created();
+        if (created.length === 1) {
+          _pointID = created[0].id;
+        }
+      };
 
       const textID = (context.lastPointerType() === 'mouse') ? 'place_point' : 'place_point_touch';
       curtain.reveal({
         revealExtent: buildingExtent,
         tipHtml: helpHtml(context, `intro.points.${textID}`)
       });
-
-      history.on('change.intro', difference => {
-        if (!difference) return;
-        const created = difference.created();
-        if (created.length === 1) {
-          _pointID = created[0].id;
-        }
-      });
-
-      context.on('enter.intro', () => resolve(searchPresetAsync));
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -121,6 +123,19 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = reject;  // disallow mode change
+        _onEditChange = (difference) => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetSystem.match(modified[0], context.graph()) === cafePreset) {
+              resolve(aboutFeatureEditorAsync);
+            } else {
+              reject();  // didn't pick cafe
+            }
+          }
+        };
+
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
         if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
@@ -153,24 +168,10 @@ export function uiIntroPoint(context, curtain) {
             .on('keydown.intro', eventCancel, true)   // no more typing
             .on('keyup.intro', null);
         }
-
-        history.on('change.intro', difference => {
-          if (!difference) return;
-          const modified = difference.modified();
-          if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === cafePreset) {
-              resolve(aboutFeatureEditorAsync);
-            } else {
-              reject();  // didn't pick cafe
-            }
-          }
-        });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -183,6 +184,10 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        // If user leaves select mode here, just continue with the tutorial.
+        _onModeChange = () => resolve(addNameAsync);
+        _onEditChange = null;
+
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
         if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
@@ -195,12 +200,10 @@ export function uiIntroPoint(context, curtain) {
           buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(addNameAsync)
         });
-
-        // If user leaves select mode here, just continue with the tutorial.
-        context.on('enter.intro', () => resolve(addNameAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -211,6 +214,10 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        // If user leaves select mode here, just continue with the tutorial.
+        _onModeChange = () => resolve(hasPointAsync);
+        _onEditChange = () => resolve(addCloseEditorAsync);
+
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
         if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
@@ -237,15 +244,10 @@ export function uiIntroPoint(context, curtain) {
             tipClass: 'intro-points-describe'
           });
         }
-
-        history.on('change.intro', () => resolve(addCloseEditorAsync));
-
-        // If user leaves select mode here, just continue with the tutorial.
-        context.on('enter.intro', () => resolve(hasPointAsync));
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -258,6 +260,8 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(hasPointAsync);
+      _onEditChange = null;
       showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
@@ -266,17 +270,15 @@ export function uiIntroPoint(context, curtain) {
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml(context, 'intro.points.add_close', { button: icon(iconName, 'inline') })
       });
-
-      context.on('enter.intro', () => resolve(hasPointAsync));
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
 
-  // Set a history checkpoint here, so we can return back to it if needed
+  // Set a checkpoint here, so we can return back to it if needed
   // The point exists and it is a cafe and it probably has a name.
   function hasPointAsync() {
     if (!_doesPointExist()) return Promise.resolve(addPointAsync);
@@ -286,7 +288,7 @@ export function uiIntroPoint(context, curtain) {
     const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
 
-    history.checkpoint('hasPoint');
+    editSystem.setCheckpoint('hasPoint');
     return Promise.resolve(reselectPointAsync);  // advance
   }
 
@@ -295,7 +297,7 @@ export function uiIntroPoint(context, curtain) {
   // Reselect the point to advance
   function reselectPointAsync() {
     context.enter('browse');
-    history.reset('hasPoint');
+    editSystem.resetToCheckpoint('hasPoint');
 
     const loc = buildingExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -305,16 +307,17 @@ export function uiIntroPoint(context, curtain) {
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = () => resolve(updatePointAsync);
+        _onEditChange = null;
 
         curtain.reveal({
           revealExtent: buildingExtent,
           tipHtml: helpHtml(context, 'intro.points.reselect')
         });
-
-        context.on('enter.intro', () => resolve(updatePointAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -325,6 +328,8 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = reject;   // disallow mode change
+        _onEditChange = () => resolve(updateCloseEditorAsync);
         if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
 
         showEntityEditor(container);
@@ -334,13 +339,10 @@ export function uiIntroPoint(context, curtain) {
           tipHtml: helpHtml(context, 'intro.points.update'),
           tipClass: 'intro-points-describe'
         });
-
-        history.on('change.intro', () => resolve(updateCloseEditorAsync));
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
  }
 
@@ -352,17 +354,18 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(rightClickPointAsync);
+      _onEditChange = null;
       showEntityEditor(container);
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml(context, 'intro.points.update_close', { button: icon('#rapid-icon-close', 'inline') })
       });
-
-      context.on('enter.intro', () => resolve(rightClickPointAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -375,6 +378,8 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = null;
+      _onEditChange = reject;  // disallow doing anything else
 
       const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       curtain.reveal({
@@ -385,12 +390,11 @@ export function uiIntroPoint(context, curtain) {
       editMenu.on('toggled.intro', open => {
         if (open) resolve(enterDeleteAsync);
       });
-
-      history.on('change.intro', reject);  // disallow doing anything else
     })
     .finally(() => {
+      _onModeChange = null;
+      _onEditChange = null;
       editMenu.on('toggled.intro', null);
-      history.on('change.intro', null);
     });
   }
 
@@ -404,6 +408,17 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = () => {
+          if (_doesPointExist()) reject();  // point still exists, try again
+        };
+        _onEditChange = (difference) => {
+          if (!difference) return;
+          const deleted = difference.deleted();
+          if (deleted.length === 1 && deleted[0].id === _pointID) {
+            resolve(undoAsync);
+          }
+        };
+
         if (!_doesPointExist() || !_isPointSelected()) { resolve(rightClickPointAsync); return; }
 
         curtain.reveal({
@@ -411,22 +426,10 @@ export function uiIntroPoint(context, curtain) {
           revealPadding: 50,
           tipHtml: helpHtml(context, 'intro.points.delete')
         });
-
-        history.on('change.intro', difference => {
-          if (!difference) return;
-          const deleted = difference.deleted();
-          if (deleted.length === 1 && deleted[0].id === _pointID) {
-            resolve(undoAsync);
-          }
-        });
-
-        context.on('enter.intro', () => {
-          if (_doesPointExist()) reject();  // point still exists, try again
-        });
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -436,14 +439,16 @@ export function uiIntroPoint(context, curtain) {
   function undoAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = null;
+      _onEditChange = () => resolve(playAsync);
       curtain.reveal({
         revealSelector: '.top-toolbar button.undo-button',
         tipHtml: helpHtml(context, 'intro.points.undo')
       });
-      history.on('change.intro', () => resolve(playAsync));
     })
     .finally(() => {
-      history.on('change.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -466,9 +471,27 @@ export function uiIntroPoint(context, curtain) {
   chapter.enter = () => {
     _chapterCancelled = false;
     _rejectStep = null;
+    _onModeChange = null;
+    _onEditChange = null;
+
+    context.on('enter.intro', _modeChangeListener);  // d3-dispatch
+    editSystem.on('change', _editChangeListener);       // event-emitter
 
     runAsync(addPointAsync)
-      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
+      .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
+      .finally(() => {
+        context.on('enter.intro', null);             // d3-dispatch
+        editSystem.off('change', _editChangeListener);  // event-emitter
+      });
+
+
+    function _modeChangeListener() {
+      if (typeof _onModeChange === 'function') _onModeChange();
+    }
+
+    function _editChangeListener() {
+      if (typeof _onEditChange === 'function') _onEditChange();
+    }
   };
 
 

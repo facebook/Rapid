@@ -4,7 +4,7 @@ describe('uiFieldWikipedia', function() {
     beforeEach(function() {
         entity = Rapid.osmNode({id: 'n12345'});
         context = Rapid.coreContext().assetPath('../dist/').init();
-        context.history().merge([entity]);
+        context.editSystem().merge([entity]);
         selection = d3.select(document.createElement('div'));
         field = new Rapid.Field(context, 'wikipedia', {
             key: 'wikipedia',

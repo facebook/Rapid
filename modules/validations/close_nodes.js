@@ -134,7 +134,7 @@ export function validationCloseNodes(context) {
                 [lon + lon_range, lat + lat_range]
             );
 
-            var intersected = context.history().tree().intersects(queryExtent, graph);
+            var intersected = context.editSystem().tree().intersects(queryExtent, graph);
             for (var j = 0; j < intersected.length; j++) {
                 var nearby = intersected[j];
 
