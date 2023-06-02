@@ -55,7 +55,7 @@ describe('validations.crossing_ways', function () {
 
     function validate() {
         var validator = Rapid.validationCrossingWays(context);
-        var changes = context.history().changes();
+        var changes = context.editSystem().changes();
         var entities = changes.modified.concat(changes.created);
         var issues = [];
         entities.forEach(function(entity) {

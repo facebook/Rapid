@@ -100,7 +100,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-    let entities = context.history().intersects(map.extent());   // Gather data in view
+    let entities = context.editSystem().intersects(map.extent());   // Gather data in view
     entities = context.filterSystem().filter(entities, graph);   // Apply feature filters
 
     const data = {

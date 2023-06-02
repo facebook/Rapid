@@ -102,7 +102,9 @@ export class ModeDrawLine extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
-    context.history().on('undone.ModeDrawLine redone.ModeDrawLine', this._undoOrRedo);
+    context.editSystem()
+      .on('undone', this._undoOrRedo)
+      .on('redone', this._undoOrRedo);
 
     context.behaviors.get('map-interaction').doubleClickEnabled = false;
 
@@ -180,7 +182,9 @@ export class ModeDrawLine extends AbstractMode {
       .off('finish', this._finish)
       .off('cancel', this._cancel);
 
-    context.history().on('undone.ModeDrawLine redone.ModeDrawLine', null);
+    context.editSystem()
+      .off('undone', this._undoOrRedo)
+      .off('redone', this._undoOrRedo);
 
     context.resumeChangeDispatch();
   }

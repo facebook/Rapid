@@ -157,7 +157,7 @@ export class MapSystem extends EventEmitter {
       }
     };
 
-    context.history()
+    context.editSystem()
       .on('merge', entityIDs => {
         if (entityIDs) {
           scene.dirtyData('osm', entityIDs);
@@ -180,13 +180,14 @@ export class MapSystem extends EventEmitter {
         }
         this.immediateRedraw();
       })
-      .on('undone.map', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
-      .on('redone.map', (stack) => _didUndoOrRedo(stack.transform));
+      .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
+      .on('redone', (stack) => _didUndoOrRedo(stack.transform));
 
-    context.filterSystem().on('filterchange', () => {
-      scene.dirtyLayers('osm');
-      this.immediateRedraw();
-    });
+    context.filterSystem()
+      .on('filterchange', () => {
+        scene.dirtyLayers('osm');
+        this.immediateRedraw();
+      });
 
     context.urlHashSystem().on('hashchange', this._hashchange);
 

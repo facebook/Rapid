@@ -8,7 +8,7 @@ export function uiSplash(context) {
     // This is because we currently only support one `uiModal` at a time
     //  and we need to show them `uiRestore`` instead of this one.
     const prefs = context.storageSystem();
-    if (context.history().hasRestorableChanges()) return;
+    if (context.editSystem().hasRestorableChanges()) return;
 
     // If user has not seen this version of the privacy policy, show the splash again.
     let updateMessage = '';

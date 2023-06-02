@@ -17,7 +17,7 @@ describe('uiSectionRawTagEditor', function() {
     beforeEach(function () {
         entity = Rapid.osmNode({id: 'n12345'});
         context = Rapid.coreContext().assetPath('../dist/').init();
-        context.history().merge([entity]);
+        context.editSystem().merge([entity]);
         render({highway: 'residential'});
     });
 

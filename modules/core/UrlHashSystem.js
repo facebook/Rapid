@@ -118,7 +118,7 @@ export class UrlHashSystem extends EventEmitter {
 
     this._prevHash = null;
 
-    this.context.history().on('change.UrlHashSystem', this.deferredUpdateTitle);
+    this.context.editSystem().on('change', this.deferredUpdateTitle);
     this.context.on('enter.UrlHashSystem', this.deferredUpdateAll);
     window.addEventListener('hashchange', this.parseHash);
 
@@ -140,7 +140,7 @@ export class UrlHashSystem extends EventEmitter {
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
 
-    this.context.history().on('change.UrlHashSystem', null);
+    this.context.editSystem().off('change', this.deferredUpdateTitle);
     this.context.on('enter.UrlHashSystem', null);
     window.removeEventListener('hashchange', this.parseHash);
   }
@@ -233,7 +233,8 @@ export class UrlHashSystem extends EventEmitter {
 
     const context = this.context;
     const l10n = context.localizationSystem();
-    const changeCount = context.history().difference().summary().size;
+    const editSystem = context.editSystem();
+    const changeCount = editSystem.difference().summary().size;
 
     // Currently only support OSM ids
     let selected;

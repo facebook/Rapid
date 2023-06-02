@@ -135,7 +135,7 @@ export class ImagerySystem extends EventEmitter {
     }
 
     // Update history "imagery used" property
-    this.context.history().imageryUsed(imageryUsed);
+    this.context.editSystem().imageryUsed(imageryUsed);
 
     // Update hash params: 'background', 'overlays', 'offset'
     const urlhash = this.context.urlHashSystem();

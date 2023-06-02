@@ -13,7 +13,7 @@ export function uiIntroBuilding(context, curtain) {
   const chapter = { title: 'intro.buildings.title' };
   const editMenu = context.ui().editMenu();
   const container = context.container();
-  const history = context.history();
+  const history = context.editSystem();
   const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
@@ -68,7 +68,7 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addHouseAsync() {
     context.enter('browse');
-    history.reset('initial');
+    history.resetToCheckpoint('initial');
     _houseID = null;
 
     const loc = houseExtent.center();
@@ -276,7 +276,7 @@ export function uiIntroBuilding(context, curtain) {
     const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_houseID, oldPreset, housePreset));
 
-    history.checkpoint('hasHouse');
+    history.setCheckpoint('hasHouse');
     return Promise.resolve(rightClickHouseAsync);  // advance
   }
 
@@ -285,7 +285,7 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickHouseAsync() {
     if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
-    history.reset('hasHouse');
+    history.resetToCheckpoint('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
     const setZoom = Math.max(map.zoom(), 20);
@@ -390,7 +390,7 @@ export function uiIntroBuilding(context, curtain) {
   // "See how the corners of the building moved into place? Let's learn another useful trick."
   // Click Ok to advance
   function doneSquareAsync() {
-    history.checkpoint('doneSquare');
+    history.setCheckpoint('doneSquare');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -408,7 +408,7 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addTankAsync() {
     context.enter('browse');
-    history.reset('doneSquare');
+    history.resetToCheckpoint('doneSquare');
     _tankID = null;
 
     const loc = tankExtent.center();
@@ -571,7 +571,7 @@ export function uiIntroBuilding(context, curtain) {
     const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
 
-    history.checkpoint('hasTank');
+    history.setCheckpoint('hasTank');
     return Promise.resolve(rightClickTankAsync);  // advance
   }
 
@@ -580,7 +580,7 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickTankAsync() {
     if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
-    history.reset('hasTank');
+    history.resetToCheckpoint('hasTank');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;

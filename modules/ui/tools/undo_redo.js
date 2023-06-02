@@ -19,13 +19,13 @@ export function uiToolUndoRedo(context) {
     id: 'undo',
     key: uiCmd('⌘Z'),
     action: () => context.undo(),
-    annotation: () => context.history().undoAnnotation(),
+    annotation: () => context.editSystem().undoAnnotation(),
     icon: (isRTL ? 'redo' : 'undo')
   }, {
     id: 'redo',
     key: uiCmd('⌘⇧Z'),
     action: () => context.redo(),
-    annotation: () => context.history().redoAnnotation(),
+    annotation: () => context.editSystem().redoAnnotation(),
     icon: (isRTL ? 'undo' : 'redo')
   }];
 
@@ -104,7 +104,7 @@ export function uiToolUndoRedo(context) {
     context.mapSystem()
       .on('draw', debouncedUpdate);
 
-    context.history()
+    context.editSystem()
       .on('change.undo_redo', difference => {
         if (difference) update();
       });
@@ -134,7 +134,7 @@ export function uiToolUndoRedo(context) {
     context.mapSystem()
       .off('draw', debouncedUpdate);
 
-    context.history()
+    context.editSystem()
       .on('change.undo_redo', null);
 
     context

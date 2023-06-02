@@ -28,7 +28,7 @@ export function uiToolSave(context) {
 
   function save(d3_event) {
     d3_event.preventDefault();
-    if (!context.inIntro() && !isSaving() && context.history().hasChanges()) {
+    if (!context.inIntro() && !isSaving() && context.editSystem().hasChanges()) {
       context.enter('save');
     }
   }
@@ -47,7 +47,7 @@ export function uiToolSave(context) {
   }
 
   function updateCount() {
-    const val = context.history().difference().summary().size;
+    const val = context.editSystem().difference().summary().size;
     if (val === _numChanges) return;  // no change
 
     _numChanges = val;
@@ -113,7 +113,7 @@ export function uiToolSave(context) {
     context.keybinding()
       .on(key, save, true /* capture */);
 
-    context.history()
+    context.editSystem()
       .on('change.save', updateCount);
 
     context
@@ -130,7 +130,7 @@ export function uiToolSave(context) {
     context.keybinding()
       .off(key, true /* capture */);
 
-    context.history()
+    context.editSystem()
       .on('change.save', null);
 
     context

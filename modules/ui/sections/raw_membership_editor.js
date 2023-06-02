@@ -244,7 +244,7 @@ export function uiSectionRawMembershipEditor(context) {
             });
 
         } else {
-            context.history().intersects(context.mapSystem().extent()).forEach(function(entity) {
+            context.editSystem().intersects(context.mapSystem().extent()).forEach(function(entity) {
                 if (entity.type !== 'relation' || entity.id === entityID) return;
 
                 var value = baseDisplayLabel(entity);

@@ -120,7 +120,7 @@ export function uiSectionSelectionList(context) {
   }
 
 
-  context.history()
+  context.editSystem()
     .on('change.selectionList', difference => {
       if (difference) {
         section.reRender();

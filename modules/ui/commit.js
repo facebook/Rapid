@@ -127,7 +127,7 @@ export function uiCommit(context) {
     let sources = new Set((tags.source || '').split(';'));
 
     // Sync up the the used photo sources with `sources`
-    let usedPhotos = new Set(context.history().photoOverlaysUsed());
+    let usedPhotos = new Set(context.editSystem().photosUsed());
     let allPhotos = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
     allPhotos.forEach(function(val) { sources.delete(val); });   // reset all
     if (usedPhotos.size) {
@@ -152,7 +152,7 @@ export function uiCommit(context) {
     }
 
     // Update `imagery_used` tag
-    let imageries = new Set(context.history().imageryUsed());
+    let imageries = new Set(context.editSystem().imageryUsed());
     let setImagery = context.cleanTagValue(Array.from(imageries).filter(Boolean).join(';'));
     tags.imagery_used = setImagery || 'None';
 

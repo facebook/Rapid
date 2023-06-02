@@ -13,7 +13,7 @@ export function validationHelpRequest(context) {
     if (entity.version === undefined) return [];
 
     if (entity.v !== undefined) {
-      const baseEntity = context.history().base().hasEntity(entity.id);
+      const baseEntity = context.editSystem().base().hasEntity(entity.id);
       // don't flag fixmes added by the user on existing features
       if (!baseEntity || !baseEntity.tags.fixme) return [];
     }

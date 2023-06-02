@@ -150,7 +150,7 @@ export class BehaviorLasso extends AbstractBehavior {
 
     if (!this.context.editable()) return [];
 
-    let intersects = this.context.history()
+    let intersects = this.context.editSystem()
       .intersects(this._extent)
       .filter(entity => {
         return (

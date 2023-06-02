@@ -49,7 +49,9 @@ export class ModeAddPoint extends AbstractMode {
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
 
-    context.history().on('undone.ModeAddPoint redone.ModeAddPoint', this._cancel);
+    context.editSystem()
+      .on('undone', this._cancel)
+      .on('redone', this._cancel);
 
     return true;
   }
@@ -73,7 +75,9 @@ export class ModeAddPoint extends AbstractMode {
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
 
-    context.history().on('undone.ModeAddPoint redone.ModeAddPoint', null);
+    context.editSystem()
+      .off('undone', this._cancel)
+      .off('redone', this._cancel);
   }
 
 

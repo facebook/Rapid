@@ -58,12 +58,15 @@ export class ModeRotate extends AbstractMode {
     this._pivotLoc = null;
 
     const eventManager = context.mapSystem().renderer.events;
-    eventManager.on('click', this._finish);
-    eventManager.on('keydown', this._keydown);
-    eventManager.on('pointercancel', this._cancel);
-    eventManager.on('pointermove', this._pointermove);
+    eventManager
+      .on('click', this._finish)
+      .on('keydown', this._keydown)
+      .on('pointercancel', this._cancel)
+      .on('pointermove', this._pointermove);
 
-    context.history().on('undone.ModeRotate redone.ModeRotate', this._undoOrRedo);
+    context.editSystem()
+      .on('undone', this._undoOrRedo)
+      .on('redone', this._undoOrRedo);
 
     return true;
   }
@@ -84,12 +87,15 @@ export class ModeRotate extends AbstractMode {
     context.filterSystem().forceVisible([]);
 
     const eventManager = this.context.mapSystem().renderer.events;
-    eventManager.off('click', this._finish);
-    eventManager.off('keydown', this._keydown);
-    eventManager.off('pointercancel', this._cancel);
-    eventManager.off('pointermove', this._pointermove);
+    eventManager
+      .off('click', this._finish)
+      .off('keydown', this._keydown)
+      .off('pointercancel', this._cancel)
+      .off('pointermove', this._pointermove);
 
-    context.history().on('undone.ModeRotate redone.ModeRotate', null);
+    context.editSystem()
+      .off('undone', this._undoOrRedo)
+      .off('redone', this._undoOrRedo);
   }
 
 

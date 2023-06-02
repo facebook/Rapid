@@ -23,17 +23,17 @@ export function uiToolDownloadOsc(context) {
 
   function downloadOsc(d3_event) {
     d3_event.preventDefault();
-    let history = context.history();
-    if (!context.inIntro() && history.hasChanges()) {
-      const changes = history.changes(actionDiscardTags(history.difference()));
-      let changeset = new osmChangeset();
-      let osc = JXON.stringify(changeset.osmChangeJXON(changes));
-      downloadFile(osc,'change.osc');
+    const editSystem = context.editSystem();
+    if (!context.inIntro() && editSystem.hasChanges()) {
+      const changes = editSystem.changes(actionDiscardTags(editSystem.difference()));
+      const changeset = new osmChangeset();
+      const osc = JXON.stringify(changeset.osmChangeJXON(changes));
+      downloadFile(osc, 'change.osc');
     }
   }
 
   function updateCount() {
-    const val = context.history().difference().summary().size;
+    const val = context.editSystem().difference().summary().size;
     if (val === _numChanges) return;   // no change
     _numChanges = val;
 
@@ -82,7 +82,7 @@ export function uiToolDownloadOsc(context) {
     updateCount();
 
 
-    context.history()
+    context.editSystem()
       .on('change.download_osc', updateCount);
 
     context
@@ -93,7 +93,7 @@ export function uiToolDownloadOsc(context) {
 
 
   tool.uninstall = function() {
-    context.history()
+    context.editSystem()
       .on('change.download_osc', null);
 
     context

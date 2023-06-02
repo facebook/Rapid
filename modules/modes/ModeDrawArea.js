@@ -79,7 +79,9 @@ export class ModeDrawArea extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
-    context.history().on('undone.ModeDrawArea redone.ModeDrawArea', this._undoOrRedo);
+    context.editSystem()
+      .on('undone', this._undoOrRedo)
+      .on('redone', this._undoOrRedo);
 
     context.behaviors.get('map-interaction').doubleClickEnabled = false;
 
@@ -137,7 +139,9 @@ export class ModeDrawArea extends AbstractMode {
       .off('finish', this._finish)
       .off('cancel', this._cancel);
 
-    context.history().on('undone.ModeDrawArea redone.ModeDrawArea', null);
+    context.editSystem()
+      .off('undone', this._undoOrRedo)
+      .off('redone', this._undoOrRedo);
 
     context.resumeChangeDispatch();
   }
@@ -489,7 +493,7 @@ export class ModeDrawArea extends AbstractMode {
 
   /**
    * _cancel
-   * Rollback to the initial checkpoint then return to browse mode
+   * Return to browse mode
    * Note that `exit()` will be called immediately after this to perform cleanup.
    */
   _cancel() {

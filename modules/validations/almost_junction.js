@@ -41,7 +41,7 @@ export function validationAlmostJunction(context) {
     if (!isHighway(entity)) return [];
     if (entity.isDegenerate()) return [];
 
-    const tree = context.history().tree();
+    const tree = context.editSystem().tree();
     const extendableNodeInfos = findConnectableEndNodesByExtension(entity);
 
     let issues = [];

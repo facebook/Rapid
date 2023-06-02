@@ -40,7 +40,7 @@ export function uiMap3dViewer(context) {
 
     function featuresToGeoJSON() {
       let mainmap = context.mapSystem();
-      const entities = context.history().intersects(mainmap.extent());
+      const entities = context.editSystem().intersects(mainmap.extent());
 
       const buildingEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
@@ -235,11 +235,11 @@ export function uiMap3dViewer(context) {
 
     wrap = wrapEnter.merge(wrap);
 
-    context.mapSystem().on('draw', () => redraw());
-    context.mapSystem().on('move', () => redraw());
-    context.on('enter.3dmap', () => featuresToGeoJSON());
-    context.history().on('change.3dmap', () => featuresToGeoJSON());
-    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
+//    context.mapSystem().on('draw', () => redraw());
+//    context.mapSystem().on('move', () => redraw());
+//    context.editSystem().on('change', () => featuresToGeoJSON());
+//    context.on('enter.3dmap', () => featuresToGeoJSON());
+//    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
 
     redraw();
   }

@@ -4,9 +4,8 @@ import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
-import { coreHistory } from './history';
-
 import { DataLoaderSystem } from './DataLoaderSystem';
+import { EditSystem } from './EditSystem';
 import { FilterSystem } from './FilterSystem';
 import { ImagerySystem } from './ImagerySystem';
 import { LocalizationSystem } from './LocalizationSystem';
@@ -54,10 +53,8 @@ export function coreContext() {
   context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
 
 
-  let _history;
-  context.history = () => _history;
-
   const _dataLoaderSystem = new DataLoaderSystem(context);
+  const _editSystem = new EditSystem(context);
   const _filterSystem = new FilterSystem(context);
   const _imagerySystem = new ImagerySystem(context);
   const _localizationSystem = new LocalizationSystem(context);
@@ -73,6 +70,8 @@ export function coreContext() {
   const _validationSystem = new ValidationSystem(context);
 
   context.dataLoaderSystem = () => _dataLoaderSystem;
+  context.editSystem = () => _editSystem;
+  context.history = () => _editSystem;           // legacy name
   context.filterSystem = () => _filterSystem;
   context.imagerySystem = () => _imagerySystem;
   context.localizationSystem = () => _localizationSystem;
@@ -87,6 +86,18 @@ export function coreContext() {
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
 
+  /* EditSystem */
+  context.graph = _editSystem.graph;
+  context.hasEntity = (id) => _editSystem.graph().hasEntity(id);
+  context.entity = (id) => _editSystem.graph().entity(id);
+  context.pauseChangeDispatch = _editSystem.pauseChangeDispatch;
+  context.resumeChangeDispatch = _editSystem.resumeChangeDispatch;
+  context.perform = withDebouncedSave(_editSystem.perform);
+  context.replace = withDebouncedSave(_editSystem.replace);
+  context.pop = withDebouncedSave(_editSystem.pop);
+  context.overwrite = withDebouncedSave(_editSystem.overwrite);
+  context.undo = withDebouncedSave(_editSystem.undo);
+  context.redo = withDebouncedSave(_editSystem.redo);
 
   /* LocalizationSystem */
   context.t = _localizationSystem.t;
@@ -95,7 +106,7 @@ export function coreContext() {
 
   /* FilterSystem */
   context.hasHiddenConnections = (entityID) => {
-    const graph = _history.graph();
+    const graph = _editSystem.graph();
     const entity = graph.entity(entityID);
     return _filterSystem.hasHiddenConnections(entity, graph);
   };
@@ -188,7 +199,7 @@ export function coreContext() {
         return;
 
       } else {
-        _history.merge(result.data, result.seenIDs);
+        _editSystem.merge(result.data, result.seenIDs);
         if (typeof callback === 'function') {
           callback(err, result);
         }
@@ -335,7 +346,7 @@ export function coreContext() {
       // Attempt to prevent user from creating duplicate changes - see iD#5200
       const osm = context.services.get('osm');
       if (osm && osm.isChangesetInflight()) {
-        _history.clearSaved();
+        _editSystem.clearSaved();
         return;
       }
 
@@ -347,9 +358,9 @@ export function coreContext() {
     }
 
     if (canSave) {
-      _history.save();
+      _editSystem.save();
     }
-    if (_history.hasChanges()) {
+    if (_editSystem.hasChanges()) {
       return _localizationSystem.t('save.unsaved_changes');
     }
   };
@@ -360,7 +371,7 @@ export function coreContext() {
 
   function withDebouncedSave(fn) {
     return function() {
-      const result = fn.apply(_history, arguments);
+      const result = fn.apply(_editSystem, arguments);
       context.debouncedSave();
       return result;
     };
@@ -516,7 +527,7 @@ export function coreContext() {
   context.copyIDs = function(val) {
     if (!arguments.length) return _copyIDs;
     _copyIDs = val;
-    _copyGraph = _history.graph();
+    _copyGraph = _editSystem.graph();
     return context;
   };
 
@@ -610,8 +621,8 @@ export function coreContext() {
       service.reset();
     }
 
+    _editSystem.reset();
     _filterSystem.reset();
-    _history.reset();
     _rapidSystem.reset();
     _uploaderSystem.reset();
     _validationSystem.reset();
@@ -638,18 +649,6 @@ export function coreContext() {
     // At this step the objects may not access context or each other.
     // The order of instantiation shouldn't matter.
     function instantiateAll() {
-      _history = coreHistory(context);
-      context.graph = _history.graph;
-      context.hasEntity = (id) => _history.graph().hasEntity(id);
-      context.entity = (id) => _history.graph().entity(id);
-      context.pauseChangeDispatch = _history.pauseChangeDispatch;
-      context.resumeChangeDispatch = _history.resumeChangeDispatch;
-      context.perform = withDebouncedSave(_history.perform);
-      context.replace = withDebouncedSave(_history.replace);
-      context.pop = withDebouncedSave(_history.pop);
-      context.overwrite = withDebouncedSave(_history.overwrite);
-      context.undo = withDebouncedSave(_history.undo);
-      context.redo = withDebouncedSave(_history.redo);
 
       _ui = uiInit(context);
 
@@ -684,6 +683,7 @@ export function coreContext() {
     // The order of .init() may matter here if dependents make calls to each other.
     // The UI is the final thing that gets initialized.
     function initializeAll() {
+      _storageSystem.init();
       _dataLoaderSystem.init();
 
       if (context.initialHashParams.presets) {
@@ -709,11 +709,14 @@ export function coreContext() {
         osm.switch(_preauth);
       }
 
-      _validationSystem.init();
-      _imagerySystem.init();
+      _editSystem.init();
       _filterSystem.init();
+      _imagerySystem.init();
+      _locationSystem.init();
       _mapSystem.init();         // watch out - init doesn't actually create the renderer :(
       _rapidSystem.init();
+      _uploaderSystem.init();
+      _validationSystem.init();
 
       // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {

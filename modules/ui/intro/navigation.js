@@ -10,7 +10,7 @@ export function uiIntroNavigation(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.navigation.title' };
   const container = context.container();
-  const history = context.history();
+  const editSystem = context.editSystem();
   const map = context.mapSystem();
   const presetSystem = context.presetSystem();
 
@@ -79,7 +79,7 @@ export function uiIntroNavigation(context, curtain) {
   // Drag the map to advance
   function dragMapAsync() {
     context.enter('browse');
-    history.reset('initial');
+    editSystem.resetToCheckpoint('initial');
     let onMove;
 
     const loc = townHallExtent.center();
@@ -192,7 +192,7 @@ export function uiIntroNavigation(context, curtain) {
   // Select the town hall to advance
   function clickTownHallAsync() {
     context.enter('browse');
-    history.reset('initial');
+    editSystem.resetToCheckpoint('initial');
 
     const loc = townHallExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -353,7 +353,7 @@ export function uiIntroNavigation(context, curtain) {
   // Type in the search box to advance
   function searchStreetAsync() {
     context.enter('browse');
-    history.reset('initial');  // ensure spring street exists
+    editSystem.resetToCheckpoint('initial');  // ensure spring street exists
 
     const loc = springStreetExtent.center();
     const msec = transitionTime(loc, map.center());

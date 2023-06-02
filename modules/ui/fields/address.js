@@ -39,7 +39,7 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const streets = context.history().intersects(box)
+    const streets = context.editSystem().intersects(box)
       .filter(isAddressableStreet)
       .map(d => {
         const loc = context.projection.project(center);
@@ -64,7 +64,7 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const cities = context.history().intersects(box)
+    const cities = context.editSystem().intersects(box)
       .filter(isAddressableCity)
       .map(d => {
         return {
@@ -96,7 +96,7 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const results = context.history().intersects(box)
+    const results = context.editSystem().intersects(box)
       .filter(entityHasAddressTag)
       .map(d => {
         return {

@@ -121,14 +121,14 @@ export class UploaderSystem extends EventEmitter {
     this._errors = [];
 
     // Store original changes, in case user wants to download them as an .osc file
-    const history = context.history();
-    this._origChanges = history.changes(actionDiscardTags(history.difference(), this._discardTags));
+    const editSystem = context.editSystem();
+    this._origChanges = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
 
-    // First time, `history.perform` a no-op action.
-    // Any conflict resolutions will be done as `history.replace`
+    // First time, `perform` a no-op action.
+    // Any conflict resolutions will be done as `replace`
     // Remember to pop this later if needed
     if (!tryAgain) {
-      history.perform(actionNoop());
+      editSystem.perform(actionNoop());
     }
 
     // Attempt a fast upload first.. If there are conflicts, re-enter with `checkConflicts = true`
@@ -146,12 +146,12 @@ export class UploaderSystem extends EventEmitter {
   _startConflictCheck() {
     const context = this.context;
     const osm = context.services.get('osm');
-    const history = context.history();
-    const summary = history.difference().summary();
+    const editSystem = context.editSystem();
+    const summary = editSystem.difference().summary();
     const graph = context.graph();
 
     this._localGraph = graph;
-    this._remoteGraph = new Graph(history.base(), true);
+    this._remoteGraph = new Graph(editSystem.base(), true);
 
     // Gather entityIDs to check
     // We will load these from the OSM API into the `remoteGraph`
@@ -242,7 +242,8 @@ export class UploaderSystem extends EventEmitter {
 
   // Test everything in `_toCheckIDs` for conflicts
   _detectConflicts() {
-    const l10n = this.context.localizationManager();
+    const l10n = this.context.localizationSystem();
+    const editSystem = this.context.editSystem();
     const osm = this.context.services.get('osm');
     if (!osm) return;
 
@@ -265,7 +266,7 @@ export class UploaderSystem extends EventEmitter {
         strategy: 'safe'
       });
 
-      history.replace(actionSafe);
+      editSystem.replace(actionSafe);
 
       const mergeConflicts = actionSafe.conflicts();
       if (!mergeConflicts.length) continue;  // merged safely
@@ -298,8 +299,8 @@ export class UploaderSystem extends EventEmitter {
         details: mergeConflicts,
         chosen: 1,
         choices: [
-          { id: entityID, text: keepMine, action: () => history.replace(actionForceLocal) },
-          { id: entityID, text: keepTheirs, action: () => history.replace(actionForceRemote) }
+          { id: entityID, text: keepMine, action: () => editSystem.replace(actionForceLocal) },
+          { id: entityID, text: keepTheirs, action: () => editSystem.replace(actionForceRemote) }
         ]
       });
     }
@@ -347,8 +348,8 @@ export class UploaderSystem extends EventEmitter {
       this._didResultInErrors();
 
     } else {
-      const history = context.history();
-      const changes = history.changes(actionDiscardTags(history.difference(), this._discardTags));
+      const editSystem = context.editSystem();
+      const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
       if (changes.modified.length || changes.created.length || changes.deleted.length) {
         this.emit('willAttemptUpload');
         osm.putChangeset(this.changeset, changes, this._uploadCallback);
@@ -390,7 +391,7 @@ export class UploaderSystem extends EventEmitter {
 
 
   _didResultInErrors() {
-    this.context.history().pop();
+    this.context.editSystem().pop();
     this.emit('resultErrors', this._errors);
     this._endSave();
   }
@@ -405,7 +406,7 @@ export class UploaderSystem extends EventEmitter {
 
   _didResultInSuccess() {
     // delete the edit stack cached to local storage
-    this.context.history().clearSaved();
+    this.context.editSystem().clearSaved();
     this.emit('resultSuccess', this.changeset);
 
     // Add delay to allow for postgres replication iD#1646 iD#2678
@@ -423,22 +424,22 @@ export class UploaderSystem extends EventEmitter {
 
 
   cancelConflictResolution() {
-    this.context.history().pop();
+    this.context.editSystem().pop();
   }
 
 
   processResolvedConflicts() {
-    const history = this.context.history();
+    const editSystem = this.context.editSystem();
 
     for (const conflict of this._conflicts) {
       if (conflict.chosen === 1) {   // user chose "use theirs"
         const entity = this.context.hasEntity(conflict.id);
         if (entity?.type === 'way') {
           for (const child of utilArrayUniq(entity.nodes)) {
-            history.replace(actionRevert(child));
+            editSystem.replace(actionRevert(child));
           }
         }
-        history.replace(actionRevert(conflict.id));
+        editSystem.replace(actionRevert(conflict.id));
       }
     }
 
