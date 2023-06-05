@@ -13,8 +13,8 @@ export function uiIntroBuilding(context, curtain) {
   const chapter = { title: 'intro.buildings.title' };
   const editMenu = context.ui().editMenu();
   const container = context.container();
-  const history = context.editSystem();
-  const map = context.mapSystem();
+  const editSystem = context.editSystem();
+  const mapSystem = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
@@ -25,6 +25,9 @@ export function uiIntroBuilding(context, curtain) {
 
   let _chapterCancelled = false;
   let _rejectStep = null;
+  let _onMapMove = null;
+  let _onModeChange = null;
+  let _onEditChange = null;
   let _houseID = null;
   let _tankID = null;
 
@@ -68,17 +71,19 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addHouseAsync() {
     context.enter('browse');
-    history.resetToCheckpoint('initial');
+    editSystem.resetToCheckpoint('initial');
     _houseID = null;
 
     const loc = houseExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = () => resolve(startHouseAsync);
+
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-area',
           tipHtml: helpHtml(context, 'intro.buildings.add_building')
@@ -89,11 +94,9 @@ export function uiIntroBuilding(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#rapid-graphic-buildings');
-
-        context.on('enter.intro', () => resolve(startHouseAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -103,11 +106,22 @@ export function uiIntroBuilding(context, curtain) {
   function startHouseAsync() {
     _houseID = null;
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(houseExtent.center(), 20, 200)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (context.mode().id !== 'draw-area') { resolve(addHouseAsync); return; }
+
+        _onModeChange = reject;   // disallow mode change
+        _onEditChange = (difference) => {
+          if (!difference) return;
+          for (const entity of difference.created()) {  // created a node and a way
+            if (entity.type === 'way') {
+              _houseID = entity.id;
+              resolve(continueHouseAsync);
+            }
+          }
+        };
 
         const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
         const startString = helpHtml(context, 'intro.buildings.start_building') +
@@ -118,21 +132,10 @@ export function uiIntroBuilding(context, curtain) {
           tipHtml: startString
         });
 
-        history.on('change.intro', difference => {
-          if (!difference) return;
-          for (const entity of difference.created()) {  // created a node and a way
-            if (entity.type === 'way') {
-              _houseID = entity.id;
-              resolve(continueHouseAsync);
-            }
-          }
-        });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -144,17 +147,7 @@ export function uiIntroBuilding(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-
-      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
-      const continueString = helpHtml(context, 'intro.buildings.continue_building') + '{br}' +
-        helpHtml(context, `intro.areas.finish_area_${textID}`) + helpHtml(context, 'intro.buildings.finish_building');
-
-      curtain.reveal({
-        revealExtent: houseExtent,
-        tipHtml: continueString
-      });
-
-      context.on('enter.intro', () => {
+      _onModeChange = () => {
         if (_doesHouseExist() && _isHouseSelected()) {
           const graph = context.graph();
           const way = context.entity(_houseID);
@@ -170,10 +163,20 @@ export function uiIntroBuilding(context, curtain) {
         } else {
           reject();  // disallow mode change
         }
+      };
+
+      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+      const continueString = helpHtml(context, 'intro.buildings.continue_building') + '{br}' +
+        helpHtml(context, `intro.areas.finish_area_${textID}`) + helpHtml(context, 'intro.buildings.finish_building');
+
+      curtain.reveal({
+        revealExtent: houseExtent,
+        tipHtml: continueString
       });
+
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -200,8 +203,11 @@ export function uiIntroBuilding(context, curtain) {
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
         if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
+
+        _onModeChange = reject;   // disallow mode change
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -214,13 +220,11 @@ export function uiIntroBuilding(context, curtain) {
         });
 
         button.on('click.intro', () => resolve(choosePresetHouse));
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
+        _onModeChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-list-button').on('click.intro', null);
-        context.on('enter.intro', null);
       });
   }
 
@@ -231,8 +235,22 @@ export function uiIntroBuilding(context, curtain) {
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
         if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
+
+        _onModeChange = reject;   // disallow mode change
+        _onEditChange = (difference) => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetSystem.match(modified[0], context.graph()) === housePreset) {
+              resolve(hasHouseAsync);
+            } else {
+              resolve(chooseCategoryBuildingAsync);  // didn't pick house, retry
+            }
+          }
+        };
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -244,25 +262,12 @@ export function uiIntroBuilding(context, curtain) {
           tipHtml: helpHtml(context, 'intro.buildings.choose_preset_house', { preset: housePreset.name() })
         });
 
-        history.on('change.intro', difference => {
-          if (!difference) return;
-          const modified = difference.modified();
-          if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === housePreset) {
-              resolve(hasHouseAsync);
-            } else {
-              resolve(chooseCategoryBuildingAsync);  // didn't pick house, retry
-            }
-          }
-        });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
+        _onModeChange = null;
+        _onEditChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-list-button').on('click.intro', null);
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
       });
   }
 
@@ -276,7 +281,7 @@ export function uiIntroBuilding(context, curtain) {
     const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_houseID, oldPreset, housePreset));
 
-    history.setCheckpoint('hasHouse');
+    editSystem.setCheckpoint('hasHouse');
     return Promise.resolve(rightClickHouseAsync);  // advance
   }
 
@@ -285,15 +290,16 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickHouseAsync() {
     if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
-    history.resetToCheckpoint('hasHouse');
+    editSystem.resetToCheckpoint('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
-    const setZoom = Math.max(map.zoom(), 20);
+    const setZoom = Math.max(mapSystem.zoom(), 20);
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(houseExtent.center(), setZoom, 100)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onEditChange = reject;  // disallow doing anything else
 
         const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
@@ -304,12 +310,10 @@ export function uiIntroBuilding(context, curtain) {
         editMenu.on('toggled.intro', open => {
           if (open) resolve(clickSquareAsync);
         });
-
-        history.on('change.intro', reject);  // disallow doing anything else
       }))
       .finally(() => {
+        _onEditChange = null;
         editMenu.on('toggled.intro', null);
-        history.on('change.intro', null);
       });
   }
 
@@ -321,14 +325,12 @@ export function uiIntroBuilding(context, curtain) {
     const buttonNode = container.select('.edit-menu-item-orthogonalize').node();
     if (!buttonNode) return Promise.resolve(rightClickHouseAsync);   // no Square button, try again
 
-    let revealEditMenu;
-
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesHouseExist() || !_isHouseSelected()) { resolve(rightClickHouseAsync); return; }
 
-        revealEditMenu = (duration = 0) => {
+        const revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
           if (menuNode) {
             curtain.reveal({
@@ -342,30 +344,30 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
-        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
-
-        history.on('change.intro', () => {
-          map.off('move', revealEditMenu);
-          history.on('change.intro', null);
+        _onModeChange = reject;   // disallow mode change
+        _onEditChange = () => {
+          _onEditChange = null;
+          _onMapMove = null;
           curtain.reveal({ revealExtent: houseExtent });  // watch it change
           resolve();
-        });
+        };
+        _onMapMove = revealEditMenu;     // on map moves, have the curtain follow the menu immediately
 
-        context.on('enter.intro', reject);   // disallow mode change
+        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
+
       }))
       .then(delayAsync)   // wait for orthogonalize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (history.undoAnnotation() === context.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
+        if (editSystem.undoAnnotation() === context.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
           return doneSquareAsync;
         } else {
           return retryClickSquareAsync;
         }
       })
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
-        if (revealEditMenu) map.off('move', revealEditMenu);
+        _onMapMove = null;
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -390,7 +392,7 @@ export function uiIntroBuilding(context, curtain) {
   // "See how the corners of the building moved into place? Let's learn another useful trick."
   // Click Ok to advance
   function doneSquareAsync() {
-    history.setCheckpoint('doneSquare');
+    editSystem.setCheckpoint('doneSquare');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -408,25 +410,26 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addTankAsync() {
     context.enter('browse');
-    history.resetToCheckpoint('doneSquare');
+    editSystem.resetToCheckpoint('doneSquare');
     _tankID = null;
 
     const loc = tankExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = () => resolve(startTankAsync);
+
         curtain.reveal({
           revealSelector: 'button.draw-area',
           tipHtml: helpHtml(context, 'intro.buildings.add_tank')
         });
-        context.on('enter.intro', () => resolve(startTankAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -439,6 +442,16 @@ export function uiIntroBuilding(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+      _onEditChange = (difference) => {
+        if (!difference) return;
+        for (const entity of difference.created()) {  // created a node and a way
+          if (entity.type === 'way') {
+            _tankID = entity.id;
+            resolve(continueTankAsync);
+          }
+        }
+      };
 
       const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
       const startString = helpHtml(context, 'intro.buildings.start_tank') +
@@ -448,22 +461,10 @@ export function uiIntroBuilding(context, curtain) {
         revealExtent: tankExtent,
         tipHtml: startString
       });
-
-      history.on('change.intro', difference => {
-        if (!difference) return;
-        for (const entity of difference.created()) {  // created a node and a way
-          if (entity.type === 'way') {
-            _tankID = entity.id;
-            resolve(continueTankAsync);
-          }
-        }
-      });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -475,6 +476,13 @@ export function uiIntroBuilding(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => {
+        if (_doesTankExist() && _isTankSelected()) {
+          resolve(searchPresetTankAsync);
+        } else {
+          reject();
+        }
+      };
 
       const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
       const continueString = helpHtml(context, 'intro.buildings.continue_tank') + '{br}' +
@@ -484,17 +492,9 @@ export function uiIntroBuilding(context, curtain) {
         revealExtent: tankExtent,
         tipHtml: continueString
       });
-
-      context.on('enter.intro', () => {
-        if (_doesTankExist() && _isTankSelected()) {
-          resolve(searchPresetTankAsync);
-        } else {
-          reject();
-        }
-      });
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -508,6 +508,19 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
         if (!_doesTankExist()) { resolve(addTankAsync); return; }
         if (!_isTankSelected()) context.enter(modeSelect(context, [_tankID]));
+
+        _onModeChange = reject;   // disallow mode change
+        _onEditChange = (difference) => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetSystem.match(modified[0], context.graph()) === tankPreset) {
+              resolve(hasTankAsync);
+            } else {
+              reject();  // didn't pick tank
+            }
+          }
+        };
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
@@ -538,24 +551,10 @@ export function uiIntroBuilding(context, curtain) {
             .on('keydown.intro', eventCancel, true)   // no more typing
             .on('keyup.intro', null);
         }
-
-        history.on('change.intro', difference => {
-          if (!difference) return;
-          const modified = difference.modified();
-          if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === tankPreset) {
-              resolve(hasTankAsync);
-            } else {
-              reject();  // didn't pick tank
-            }
-          }
-        });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -571,7 +570,7 @@ export function uiIntroBuilding(context, curtain) {
     const oldPreset = presetSystem.match(entity, context.graph());
     context.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
 
-    history.setCheckpoint('hasTank');
+    editSystem.setCheckpoint('hasTank');
     return Promise.resolve(rightClickTankAsync);  // advance
   }
 
@@ -580,10 +579,11 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickTankAsync() {
     if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
-    history.resetToCheckpoint('hasTank');
+    editSystem.resetToCheckpoint('hasTank');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onEditChange = reject;  // disallow doing anything else
 
       const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
       curtain.reveal({
@@ -594,12 +594,10 @@ export function uiIntroBuilding(context, curtain) {
       editMenu.on('toggled.intro', open => {
         if (open) resolve(clickCircleAsync);
       });
-
-      history.on('change.intro', reject);  // disallow doing anything else
     })
     .finally(() => {
+      _onEditChange = null;
       editMenu.on('toggled.intro', null);
-      history.on('change.intro', null);
     });
   }
 
@@ -610,14 +608,14 @@ export function uiIntroBuilding(context, curtain) {
     const buttonNode = container.select('.edit-menu-item-circularize').node();
     if (!buttonNode) return Promise.resolve(rightClickTankAsync);   // no Circularize button, try again
 
-    let revealEditMenu;
-
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesTankExist() || !_isTankSelected()) { resolve(rightClickTankAsync); return; }
 
-        revealEditMenu = (duration = 0) => {
+        _onModeChange = reject;   // disallow mode change
+
+        const revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
           if (menuNode) {
             curtain.reveal({
@@ -631,30 +629,29 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
-        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
-
-        history.on('change.intro', () => {
-          map.off('move', revealEditMenu);
-          history.on('change.intro', null);
+        _onEditChange = () => {
+          _onMapMove = null;
+          _onEditChange = null;
           curtain.reveal({ revealExtent: tankExtent });  // watch it change
           resolve();
-        });
+        };
 
-        context.on('enter.intro', reject);   // disallow mode change
+        _onMapMove = revealEditMenu;     // on map moves, have the curtain follow the menu immediately
+        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
+
       }))
       .then(delayAsync)   // wait for circularize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (history.undoAnnotation() === context.t('operations.circularize.annotation.feature', { n: 1 })) {
+        if (editSystem.undoAnnotation() === context.t('operations.circularize.annotation.feature', { n: 1 })) {
           return playAsync;
         } else {
           return retryClickCircleAsync;
         }
       })
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
-        if (revealEditMenu) map.off('move', revealEditMenu);
+        _onMapMove = null;
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -694,9 +691,31 @@ export function uiIntroBuilding(context, curtain) {
   chapter.enter = () => {
     _chapterCancelled = false;
     _rejectStep = null;
+    _onMapMove = null;
+    _onModeChange = null;
+    _onEditChange = null;
+
+    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
+    mapSystem.on('move', _mapMoveListener);             // event-emitter
+    editSystem.on('change', _editChangeListener);       // event-emitter
 
     runAsync(addHouseAsync)
-      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
+      .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
+      .finally(() => {
+        context.on('enter.intro', null);                // d3-dispatch
+        mapSystem.off('move', _mapMoveListener);        // event-emitter
+        editSystem.off('change', _editChangeListener);  // event-emitter
+      });
+
+    function _mapMoveListener() {
+      if (typeof _onMapMove === 'function') _onMapMove();
+    }
+    function _modeChangeListener(mode) {
+      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    }
+    function _editChangeListener(difference) {
+      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    }
   };
 
 

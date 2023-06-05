@@ -10,6 +10,9 @@ export function uiToolUndoRedo(context) {
   const l10n = context.localizationSystem();
   const isRTL = l10n.isRTL();
 
+  let _buttons = null;
+  let _tooltip = null;
+
   let tool = {
     id: 'undo_redo',
     label: l10n.tHtml('toolbar.undo_redo')
@@ -30,10 +33,30 @@ export function uiToolUndoRedo(context) {
   }];
 
 
+  function changed(difference) {
+    if (difference) update();
+  }
+
+  function update() {
+    if (!_buttons || !_tooltip) return;
+    _buttons
+      .classed('disabled', d => !context.editable() || !d.annotation())
+      .each((d, i, nodes) => {
+        const selection = d3_select(nodes[i]);
+        if (!selection.select('.tooltip.in').empty()) {
+          selection.call(_tooltip.updateContent);
+        }
+      });
+  }
+
+
   let debouncedUpdate;
 
+
   tool.install = function(selection) {
-    let tooltipBehavior = uiTooltip(context)
+    if (_buttons && _tooltip) return;  // already installed
+
+    _tooltip = uiTooltip(context)
       .placement('bottom')
       .title(d => {
         // Handle string- or object-style annotations. Object-style
@@ -51,7 +74,7 @@ export function uiToolUndoRedo(context) {
 
     // var lastPointerUpType;
 
-    let buttons = selection.selectAll('button')
+    _buttons = selection.selectAll('button')
       .data(commands)
       .enter()
       .append('button')
@@ -85,60 +108,41 @@ export function uiToolUndoRedo(context) {
         // }
         // lastPointerUpType = null;
       })
-      .call(tooltipBehavior);
+      .call(_tooltip);
 
-    buttons.each((d, i, nodes) => {
+    _buttons.each((d, i, nodes) => {
       d3_select(nodes[i])
         .call(uiIcon(`#rapid-icon-${d.icon}`));
     });
 
+
     debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
 
-    commands.forEach(command => {
+    for (const command of commands) {
       context.keybinding().on(command.key, d3_event => {
         d3_event.preventDefault();
         if (context.editable()) command.action();
       });
-    });
-
-    context.mapSystem()
-      .on('draw', debouncedUpdate);
-
-    context.editSystem()
-      .on('change.undo_redo', difference => {
-        if (difference) update();
-      });
-
-    context
-      .on('enter.undo_redo', update);
-
-
-    function update() {
-      buttons
-        .classed('disabled', d => !context.editable() || !d.annotation())
-        .each((d, i, nodes) => {
-          const selection = d3_select(nodes[i]);
-          if (!selection.select('.tooltip.in').empty()) {
-            selection.call(tooltipBehavior.updateContent);
-          }
-        });
     }
+
+    context.mapSystem().on('draw', debouncedUpdate);
+    context.editSystem().on('change', changed);
+    context.on('enter.undo_redo', update);
   };
 
 
   tool.uninstall = function() {
-    commands.forEach(command => {
+    if (!_buttons && !_tooltip) return;  // already uninstalled
+
+    for (const command of commands) {
       context.keybinding().off(command.key);
-    });
+    }
 
-    context.mapSystem()
-      .off('draw', debouncedUpdate);
-
-    context.editSystem()
-      .on('change.undo_redo', null);
-
-    context
-      .on('enter.undo_redo', null);
+    context.mapSystem().off('draw', debouncedUpdate);
+    context.editSystem().off('change', changed);
+    context.on('enter.undo_redo', null);
+    _tooltip = null;
+    _buttons = null;
   };
 
   return tool;

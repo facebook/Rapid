@@ -155,21 +155,20 @@ export class EditSystem extends EventEmitter {
   }
 
 
-//todo : use rest params
-  perform() {
+  perform(...args) {
     // complete any transition already in progress
     d3_select(document).interrupt('editTransition');
 
-    var transitionable = false;
-    var action0 = arguments[0];
-
-    if (arguments.length === 1 ||
-      (arguments.length === 2 && (typeof arguments[1] !== 'function'))) {
+    // We can perform a eased edit in a transition if we have:
+    // - a single action (or single action + annotation)
+    // - and that action is 'transitionable' (i.e. accepts eased time parameter)
+    const action0 = args[0];
+    let transitionable = false;
+    if (args.length === 1 || (args.length === 2 && typeof args[1] !== 'function')) {
       transitionable = !!action0.transitionable;
     }
 
     if (transitionable) {
-      var origArguments = arguments;
       d3_select(document)
         .transition('editTransition')
         .duration(DURATION)
@@ -183,25 +182,25 @@ export class EditSystem extends EventEmitter {
           this._perform([action0], 0);
         })
         .on('end interrupt', () => {
-          this._overwrite(origArguments, 1);
+          this._overwrite(args, 1);
         });
 
     } else {
-      return this._perform(arguments);
+      return this._perform(args);
     }
   }
 
 
-  replace() {
+  replace(...args) {
     d3_select(document).interrupt('editTransition');
-    return this._replace(arguments, 1);
+    return this._replace(args, 1);
   }
 
 
   // Same as calling pop and then perform
-  overwrite() {
+  overwrite(...args) {
     d3_select(document).interrupt('editTransition');
-    return this._overwrite(arguments, 1);
+    return this._overwrite(args, 1);
   }
 
 
@@ -749,19 +748,18 @@ export class EditSystem extends EventEmitter {
   }
 
 
-
-  // internal _act, accepts list of actions and eased time
-  _act(actions, t) {
-    actions = Array.prototype.slice.call(actions);
+  // internal _act, accepts Array of actions and eased time
+  _act(args, t) {
+    let actions = args.slice();  // copy
 
     let annotation;
-    if (typeof actions[actions.length - 1] !== 'function') {
+    if (typeof actions.at(-1) !== 'function') {
       annotation = actions.pop();
     }
 
     let graph = this._stack[this._index].graph;
-    for (let i = 0; i < actions.length; i++) {
-      graph = actions[i](graph, t);
+    for (const fn of actions) {
+      graph = fn(graph, t);
     }
 
     return {
@@ -779,8 +777,8 @@ export class EditSystem extends EventEmitter {
   _perform(args, t) {
     const previous = this._stack[this._index].graph;
     this._stack = this._stack.slice(0, this._index + 1);
-    const actionResult = this._act(args, t);
-    this._stack.push(actionResult);
+    const edit = this._act(args, t);
+    this._stack.push(edit);
     this._index++;
     return this._change(previous);
   }
@@ -789,8 +787,8 @@ export class EditSystem extends EventEmitter {
   // internal _replace with eased time
   _replace(args, t) {
     const previous = this._stack[this._index].graph;
-    const actionResult = this._act(args, t);
-    this._stack[this._index] = actionResult;
+    const edit = this._act(args, t);
+    this._stack[this._index] = edit;
     return this._change(previous);
   }
 
@@ -803,8 +801,8 @@ export class EditSystem extends EventEmitter {
       this._stack.pop();
     }
     this._stack = this._stack.slice(0, this._index + 1);
-    const actionResult = this._act(args, t);
-    this._stack.push(actionResult);
+    const edit = this._act(args, t);
+    this._stack.push(edit);
     this._index++;
     return this._change(previous);
   }

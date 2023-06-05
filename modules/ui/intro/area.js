@@ -11,8 +11,8 @@ export function uiIntroArea(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.areas.title' };
   const container = context.container();
-  const history = context.editSystem();
-  const map = context.mapSystem();
+  const editSystem = context.editSystem();
+  const mapSystem = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const playgroundExtent = new Extent([-85.63575, 41.94137], [-85.63526, 41.94180]);
@@ -22,6 +22,8 @@ export function uiIntroArea(context, curtain) {
 
   let _chapterCancelled = false;
   let _rejectStep = null;
+  let _onModeChange = null;
+  let _onEditChange = null;
   let _areaID = null;
 
 
@@ -54,17 +56,19 @@ export function uiIntroArea(context, curtain) {
   // Click "Add Area" button to advance
   function addAreaAsync() {
     context.enter('browse');
-    history.resetToCheckpoint('initial');
+    editSystem.resetToCheckpoint('initial');
     _areaID = null;
 
     const loc = playgroundExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = () => resolve(startPlaygroundAsync);
+
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-area',
           tipHtml: helpHtml(context, 'intro.areas.add_playground')
@@ -75,11 +79,9 @@ export function uiIntroArea(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#rapid-graphic-areas');
-
-        context.on('enter.intro', () => resolve(startPlaygroundAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -92,6 +94,16 @@ export function uiIntroArea(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;  // disallow mode change
+      _onEditChange = (difference) => {
+        if (!difference) return;
+        for (const entity of difference.created()) {  // created a node and a way
+          if (entity.type === 'way') {
+            _areaID = entity.id;
+            resolve(continuePlaygroundAsync);
+          }
+        }
+      };
 
       const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
       const startDrawString = helpHtml(context, 'intro.areas.start_playground') +
@@ -101,22 +113,10 @@ export function uiIntroArea(context, curtain) {
         revealExtent: playgroundExtent,
         tipHtml: startDrawString
       });
-
-      history.on('change.intro', difference => {
-        if (!difference) return;
-        for (const entity of difference.created()) {  // created a node and a way
-          if (entity.type === 'way') {
-            _areaID = entity.id;
-            resolve(continuePlaygroundAsync);
-          }
-        }
-      });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -128,26 +128,24 @@ export function uiIntroArea(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-
-      curtain.reveal({
-        revealExtent: playgroundExtent,
-        tipHtml: helpHtml(context, 'intro.areas.continue_playground')
-      });
-
-      history.on('change.intro', difference => {
+      _onModeChange = reject;  // disallow mode change
+      _onEditChange = (difference) => {
         if (!difference) return;
         for (const entity of difference.modified()) {  // modified the way
           if (entity.id === _areaID && entity.nodes.length > 5) {
             resolve(finishPlaygroundAsync);
           }
         }
-      });
+      };
 
-      context.on('enter.intro', reject);   // disallow mode change
+      curtain.reveal({
+        revealExtent: playgroundExtent,
+        tipHtml: helpHtml(context, 'intro.areas.continue_playground')
+      });
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -159,6 +157,7 @@ export function uiIntroArea(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(searchPresetAsync);
 
       const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
       const finishString = helpHtml(context, `intro.areas.finish_area_${textID}`) +
@@ -168,11 +167,9 @@ export function uiIntroArea(context, curtain) {
         revealExtent: playgroundExtent,
         tipHtml: finishString
       });
-
-      context.on('enter.intro', () => resolve(searchPresetAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -184,6 +181,19 @@ export function uiIntroArea(context, curtain) {
         _rejectStep = reject;
         if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
         if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
+
+        _onModeChange = reject;   // disallow mode change;
+        _onEditChange = (difference) => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetSystem.match(modified[0], context.graph()) === playgroundPreset) {
+              resolve(clickAddFieldAsync);
+            } else {
+              reject();  // didn't pick playground
+            }
+          }
+        };
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -213,24 +223,10 @@ export function uiIntroArea(context, curtain) {
             .on('keydown.intro', eventCancel, true)   // no more typing
             .on('keyup.intro', null);
         }
-
-        history.on('change.intro', difference => {
-          if (!difference) return;
-          const modified = difference.modified();
-          if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === playgroundPreset) {
-              resolve(clickAddFieldAsync);
-            } else {
-              reject();  // didn't pick playground
-            }
-          }
-        });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -252,9 +248,6 @@ export function uiIntroArea(context, curtain) {
           return;
         }
 
-        showEntityEditor(container);
-        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
-
         // It's possible for the user to add a description in a previous step..
         // If they did this already, just complete this chapter
         const entity = context.entity(_areaID);
@@ -262,6 +255,11 @@ export function uiIntroArea(context, curtain) {
           resolve(playAsync);
           return;
         }
+
+        _onModeChange = reject;   // disallow mode change;
+
+        showEntityEditor(container);
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         // scroll "Add field" into view
         const box = container.select('.more-fields').node().getBoundingClientRect();
@@ -304,10 +302,9 @@ export function uiIntroArea(context, curtain) {
             });
         }, 300);  // after "Add Field" visible
 
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.more-fields .combobox-input').on('click.intro', null);
       });
@@ -332,6 +329,7 @@ export function uiIntroArea(context, curtain) {
     let watcher;
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change;
 
       // Watch for the combobox to close..
       watcher = window.setInterval(() => {
@@ -355,11 +353,10 @@ export function uiIntroArea(context, curtain) {
         tipHtml: helpHtml(context, 'intro.areas.choose_field', { field: descriptionField.label() })
       });
 
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
+      _onModeChange = null;
       if (watcher) window.clearInterval(watcher);
-      context.on('enter.intro', null);
     });
   }
 
@@ -376,17 +373,17 @@ export function uiIntroArea(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(playAsync);
+
       showEntityEditor(container);
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml(context, 'intro.areas.describe_playground', { button: icon('#rapid-icon-close', 'inline') })
       });
-
-      context.on('enter.intro', () => resolve(playAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -399,6 +396,7 @@ export function uiIntroArea(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change;
       showEntityEditor(container);
 
       curtain.reveal({
@@ -407,11 +405,9 @@ export function uiIntroArea(context, curtain) {
         buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(clickAddFieldAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -434,9 +430,25 @@ export function uiIntroArea(context, curtain) {
   chapter.enter = () => {
     _chapterCancelled = false;
     _rejectStep = null;
+    _onModeChange = null;
+    _onEditChange = null;
+
+    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
+    editSystem.on('change', _editChangeListener);       // event-emitter
 
     runAsync(addAreaAsync)
-      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
+      .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
+      .finally(() => {
+        context.on('enter.intro', null);                // d3-dispatch
+        editSystem.off('change', _editChangeListener);  // event-emitter
+      });
+
+    function _modeChangeListener(mode) {
+      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    }
+    function _editChangeListener(difference) {
+      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    }
   };
 
 
