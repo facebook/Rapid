@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Color } from 'pixi.js';
 
 
 export function uiImproveOsmHeader(context) {
@@ -44,7 +44,7 @@ export function uiImproveOsmHeader(context) {
 
     svgEnter
       .append('polygon')
-      .attr('fill', PIXI.utils.hex2string(iconFill))
+      .attr('fill', new Color(iconFill).toHex())
       .attr('stroke', '#333')
       .attr('points', '16,3 4,3 1,6 1,17 4,20 7,20 10,27 13,20 16,20 19,17.033 19,6');
 

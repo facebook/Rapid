@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Color } from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
@@ -197,11 +197,9 @@ export class ServiceOsmose extends EventEmitter {
           return;
         }
 
-        // Cache served item colors to automatically style issue markers later
-        const { item: itemInt, color } = item;
-        if (/^#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}/.test(color)) {
-          this._osmoseColors.set(itemInt, PIXI.utils.string2hex(color));
-        }
+        // Save item colors to automatically style issue markers later
+        const itemInt = item.item;
+        this._osmoseColors.set(itemInt, new Color(item.color).toNumber());
 
         // Value of root key will be null if no string exists
         // If string exists, value is an object with key 'auto' for string
