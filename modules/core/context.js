@@ -33,26 +33,14 @@ import { utilKeybinding, utilRebind } from '../util';
 export function coreContext() {
   const dispatch = d3_dispatch('enter', 'exit');
   let context = utilRebind({}, dispatch, 'on');
-  let _deferred = new Set();
 
   context.version = '2.0.3';
   context.privacyVersion = '20201202';
 
-  // "Services" are components that get data from other places
-  context.services = new Map();  // Map (service.id -> Service)
-
-  // "Modes" are editing tasks that the user are allowed to perform.
-  // Each mode is exclusive, i.e only one mode can be active at a time.
-  context.modes = new Map();  // Map (mode.id -> Mode)
-
-  // "Behaviors" are bundles of event handlers that we can
-  // enable and disable depending on what the user is doing.
-  context.behaviors = new Map();  // Map (behavior.id -> behavior)
-
   // `context.initialHashParams` is older, try to use `context.urlHashSystem()` instead
   context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
 
-
+  // Instantiate core systems
   const _dataLoaderSystem = new DataLoaderSystem(context);
   const _editSystem = new EditSystem(context);
   const _filterSystem = new FilterSystem(context);
@@ -119,9 +107,38 @@ export function coreContext() {
   context.surfaceRect = () => _mapSystem.surface.node().getBoundingClientRect();
   context.editable = () => {
     const mode = context._currMode;
-    if (!mode || mode.id === 'save') return false;   // don't allow editing during save
-    return true;  // _mapSystem.editableDataEnabled();     // todo: disallow editing if OSM layer is off
+    if (!mode || mode.id === 'save') return false;      // don't allow editing during save
+    return true;  // _mapSystem.editableDataEnabled();  // todo: disallow editing if OSM layer is off
   };
+
+  // "Modes" are editing tasks that the user are allowed to perform.
+  // Each mode is exclusive, i.e only one mode can be active at a time.
+  context.modes = new Map();  // Map (mode.id -> Mode)
+  for (const [name, Mode] of Object.entries(Modes)) {
+    if (name === 'modeSelect' || name === 'modeDragNote') continue;  // legacy
+    const mode = new Mode(context);
+    context.modes.set(mode.id, mode);
+  }
+
+  // "Behaviors" are bundles of event handlers that we can
+  // enable and disable depending on what the user is doing.
+  context.behaviors = new Map();  // Map (behavior.id -> behavior)
+  for (const [name, Behavior] of Object.entries(Behaviors)) {
+    if (name === 'BehaviorKeyOperation') continue;   // this one won't work
+    const behavior = new Behavior(context);
+    context.behaviors.set(behavior.id, behavior);
+  }
+
+
+  // "Services" are components that get data from other places
+  context.services = new Map();  // Map (service.id -> Service)
+  if (!window.mocha) {
+    for (const Service of Object.values(Services)) {
+      const service = new Service(context);
+      context.services.set(service.id, service);
+    }
+  }
+
 
 
   let _defaultChangesetComment = context.initialHashParams.comment;
@@ -219,21 +236,10 @@ export function coreContext() {
     const z = geoScaleToZoom(projection.scale(), TILESIZE);
     if (z < MINZOOM) return;  // this would fire off too many API requests
 
-    const handle = window.requestIdleCallback(() => {
-      _deferred.delete(handle);
-
-      // `projection` may have changed in the time it took to requestIdleCallback!
-      // Double-check that user hasn't zoomed out more in that time.
-      const z = geoScaleToZoom(projection.scale(), TILESIZE);
-      if (z < MINZOOM) return;  // this would fire off too many API requests
-
-      if (context.editable()) {
-        const cid = osm.connectionID;
-        osm.loadTiles(projection, afterLoad(cid, callback));
-      }
-    });
-
-    _deferred.add(handle);
+    if (context.editable()) {
+      const cid = osm.connectionID;
+      osm.loadTiles(projection, afterLoad(cid, callback));
+    }
   };
 
 
@@ -241,15 +247,10 @@ export function coreContext() {
     const osm = context.services.get('osm');
     if (!osm) return;
 
-    const handle = window.requestIdleCallback(() => {
-      _deferred.delete(handle);
-      if (context.editable()) {
-        const cid = osm.connectionID;
-        osm.loadTileAtLoc(loc, afterLoad(cid, callback));
-      }
-    });
-
-    _deferred.add(handle);
+    if (context.editable()) {
+      const cid = osm.connectionID;
+      osm.loadTileAtLoc(loc, afterLoad(cid, callback));
+    }
   };
 
 
@@ -265,7 +266,7 @@ export function coreContext() {
 
 
   context.zoomToEntity = (entityID, zoomTo) => {
-    let entity = context.hasEntity(entityID);
+    const entity = context.hasEntity(entityID);
 
     if (entity) {   // have it already
       context.enter(modeSelect(context, [entityID]));
@@ -276,12 +277,12 @@ export function coreContext() {
     } else {   // need to load it first
       context.loadEntity(entityID, (err, result) => {
         if (err) return;
-        const entity = result.data.find(e => e.id === entityID);
-        if (!entity) return;
+        const loadedEntity = result.data.find(e => e.id === entityID);
+        if (!loadedEntity) return;
 
         context.enter(modeSelect(context, [entityID]));
         if (zoomTo !== false) {
-          _mapSystem.zoomTo(entity);
+          _mapSystem.zoomTo(loadedEntity);
         }
       });
     }
@@ -315,7 +316,7 @@ export function coreContext() {
   context.cleanRelationRole = (val) => cleanOsmString(val, context.maxCharsForRelationRole());
 
 
-  /* History */
+  /* Intro */
   let _inIntro = false;
   context.inIntro = function(val) {
     if (!arguments.length) return _inIntro;
@@ -608,76 +609,19 @@ export function coreContext() {
   };
 
 
-  /* reset (aka flush) */
-  context.reset = context.flush = () => {
-    context.debouncedSave.cancel();
-
-    for (const handle of _deferred) {
-      window.cancelIdleCallback(handle);
-      _deferred.delete(handle);
-    }
-
-    for (const service of context.services.values()) {
-      service.reset();
-    }
-
-    _editSystem.reset();
-    _filterSystem.reset();
-    _rapidSystem.reset();
-    _uploaderSystem.reset();
-    _validationSystem.reset();
-
-    // don't leave stale state in the inspector
-    context.container().select('.inspector-wrap *').remove();
-
-    return context;
-  };
-
-
   /* Projection */
   context.projection = new Projection();
 
 
   /* Init */
   context.init = () => {
-    instantiateAll();
+    _ui = uiInit(context);
     initializeAll();
     return context;
 
 
-    // Instantiate core classes
-    // At this step the objects may not access context or each other.
-    // The order of instantiation shouldn't matter.
-    function instantiateAll() {
-
-      _ui = uiInit(context);
-
-      // Instantiate Behaviors
-      for (const [name, Behavior] of Object.entries(Behaviors)) {
-        if (name === 'BehaviorKeyOperation') continue;   // this one won't work
-        const behavior = new Behavior(context);
-        context.behaviors.set(behavior.id, behavior);
-      }
-
-      // Instantiate Modes
-      for (const [name, Mode] of Object.entries(Modes)) {
-        if (name === 'modeSelect' || name === 'modeDragNote') continue;  // legacy
-        const mode = new Mode(context);
-        context.modes.set(mode.id, mode);
-      }
-
-      // Instantiate Services
-      if (!window.mocha) {
-        for (const Service of Object.values(Services)) {
-          const service = new Service(context);
-          context.services.set(service.id, service);
-        }
-      }
-    }
-
-
-    // Initialize core classes
-    // Call .init() functions to start setting thigns up.
+    // Initialize core systems
+    // Call .init() functions to start setting everything up.
     // At this step all core object are instantiated and they may access context.
     // They may start listening to events, but they should not call each other.
     // The order of .init() may matter here if dependents make calls to each other.
@@ -713,7 +657,7 @@ export function coreContext() {
       _filterSystem.init();
       _imagerySystem.init();
       _locationSystem.init();
-      _mapSystem.init();         // watch out - init doesn't actually create the renderer :(
+      _mapSystem.init();       // watch out - init doesn't actually create the renderer :(
       _rapidSystem.init();
       _uploaderSystem.init();
       _validationSystem.init();
@@ -729,6 +673,26 @@ export function coreContext() {
       }
     }
   };
+
+
+  /* Reset (aka flush) */
+  context.reset = context.flush = () => {
+    context.debouncedSave.cancel();
+
+    for (const service of context.services.values()) {
+      service.reset();
+    }
+
+    _editSystem.reset();
+    _filterSystem.reset();
+    _rapidSystem.reset();
+    _uploaderSystem.reset();
+    _validationSystem.reset();
+
+    // don't leave stale state in the inspector
+    context.container().select('.inspector-wrap *').remove();
+  };
+
 
   return context;
 }
