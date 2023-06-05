@@ -11,7 +11,7 @@ export function uiIntroNavigation(context, curtain) {
   const chapter = { title: 'intro.navigation.title' };
   const container = context.container();
   const editSystem = context.editSystem();
-  const map = context.mapSystem();
+  const mapSystem = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const townHallID = 'n2061';
@@ -23,6 +23,8 @@ export function uiIntroNavigation(context, curtain) {
 
   let _chapterCancelled = false;
   let _rejectStep = null;
+  let _onMapMove = null;
+  let _onModeChange = null;
 
 
   // Helper functions
@@ -80,22 +82,21 @@ export function uiIntroNavigation(context, curtain) {
   function dragMapAsync() {
     context.enter('browse');
     editSystem.resetToCheckpoint('initial');
-    let onMove;
 
     const loc = townHallExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        const centerStart = map.center();
+        const centerStart = mapSystem.center();
         const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
         const dragString = helpHtml(context, 'intro.navigation.map_info') + '{br}' + helpHtml(context, `intro.navigation.${textID}`);
 
-        onMove = () => {
-          if (!vecEqual(centerStart, map.center())) {  // map moved
+        _onMapMove = () => {
+          if (!vecEqual(centerStart, mapSystem.center())) {  // map moved
             resolve(zoomMapAsync);
           }
         };
@@ -104,11 +105,9 @@ export function uiIntroNavigation(context, curtain) {
           revealSelector: '.main-map',
           tipHtml: dragString
         });
-
-        map.on('move', onMove);
       }))
       .finally(() => {
-        if (onMove) map.off('move', onMove);
+        _onMapMove = null;
       })
       .then(nextStep => delayAsync(2000).then(nextStep));
   }
@@ -116,16 +115,14 @@ export function uiIntroNavigation(context, curtain) {
 
   // Zoom the map to advance
   function zoomMapAsync() {
-    let onMove;
-
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      const zoomStart = map.zoom();
+      const zoomStart = mapSystem.zoom();
       const textID = context.lastPointerType() === 'mouse' ? 'zoom' : 'zoom_touch';
       const zoomString = helpHtml(context, `intro.navigation.${textID}`);
 
-      onMove = () => {
-        if (zoomStart !== map.zoom()) {  // map zoomed
+      _onMapMove = () => {
+        if (zoomStart !== mapSystem.zoom()) {  // map zoomed
           resolve(featuresAsync);
         }
       };
@@ -134,11 +131,9 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.main-map',
         tipHtml: zoomString
       });
-
-      map.on('move', onMove);
     })
     .finally(() => {
-      if (onMove) map.off('move', onMove);
+      _onMapMove = null;
     })
     .then(nextStep => delayAsync(2000).then(nextStep));
   }
@@ -195,13 +190,15 @@ export function uiIntroNavigation(context, curtain) {
     editSystem.resetToCheckpoint('initial');
 
     const loc = townHallExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+
+        _onModeChange = () => resolve(selectedTownHallAsync);
 
         const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
         curtain.reveal({
@@ -209,10 +206,9 @@ export function uiIntroNavigation(context, curtain) {
           tipHtml: helpHtml(context, `intro.navigation.${textID}`)
         });
 
-        context.on('enter.intro', () => resolve(selectedTownHallAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -224,6 +220,7 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
 
       curtain.reveal({
         revealExtent: townHallExtent,
@@ -231,11 +228,9 @@ export function uiIntroNavigation(context, curtain) {
         buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(editorTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -247,6 +242,8 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+
       showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
@@ -256,11 +253,9 @@ export function uiIntroNavigation(context, curtain) {
         buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(presetTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.inspector-wrap').on('wheel.intro', null);
     });
   }
@@ -273,6 +268,8 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+
       showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
@@ -287,11 +284,9 @@ export function uiIntroNavigation(context, curtain) {
         buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(fieldsTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.inspector-wrap').on('wheel.intro', null);
     });
   }
@@ -304,6 +299,8 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+
       showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
@@ -314,11 +311,9 @@ export function uiIntroNavigation(context, curtain) {
         buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(closeTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.inspector-wrap').on('wheel.intro', null);
     });
   }
@@ -330,6 +325,8 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(searchStreetAsync);
+
       showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
@@ -339,11 +336,9 @@ export function uiIntroNavigation(context, curtain) {
         tipSelector: '.entity-editor-pane button.close',
         tipHtml: helpHtml(context, 'intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
       });
-
-      context.on('enter.intro', () => resolve(searchStreetAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -356,10 +351,10 @@ export function uiIntroNavigation(context, curtain) {
     editSystem.resetToCheckpoint('initial');  // ensure spring street exists
 
     const loc = springStreetExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -383,8 +378,7 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-
-      context.on('enter.intro', () => resolve(selectedStreetAsync));
+      _onModeChange = () => resolve(selectedStreetAsync);
 
       container.select('.search-header input').on('keyup.intro', () => {
         const first = container.select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
@@ -405,7 +399,7 @@ export function uiIntroNavigation(context, curtain) {
       });
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.search-header input')
         .on('keydown.intro', null)
         .on('keyup.intro', null);
@@ -422,10 +416,12 @@ export function uiIntroNavigation(context, curtain) {
     // to show only the `springStreetExtent` instead.
     const loc = springStreetExtent.center();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, 0 /* asap */)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = reject;   // disallow mode change
+
         if (!_isSpringStreetSelected()) { resolve(searchStreetAsync); return; }
 
         curtain.reveal({
@@ -435,11 +431,9 @@ export function uiIntroNavigation(context, curtain) {
           buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(editorStreetAsync)
         });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -451,6 +445,8 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(playAsync);
+
       showEntityEditor(container);
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
@@ -465,11 +461,9 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.entity-editor-pane',
         tipHtml: tipHtml
       });
-
-      context.on('enter.intro', () => resolve(playAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -492,9 +486,25 @@ export function uiIntroNavigation(context, curtain) {
   chapter.enter = () => {
     _chapterCancelled = false;
     _rejectStep = null;
+    _onMapMove = null;
+    _onModeChange = null;
+
+    context.on('enter.intro', _modeChangeListener);   // d3-dispatch
+    mapSystem.on('move', _mapMoveListener);           // event-emitter
 
     runAsync(dragMapAsync)
-      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
+      .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
+      .finally(() => {
+        context.on('enter.intro', null);              // d3-dispatch
+        mapSystem.off('move', _mapMoveListener);      // event-emitter
+      });
+
+    function _mapMoveListener() {
+      if (typeof _onMapMove === 'function') _onMapMove();
+    }
+    function _modeChangeListener(mode) {
+      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    }
   };
 
 

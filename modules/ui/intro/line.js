@@ -11,8 +11,9 @@ export function uiIntroLine(context, curtain) {
   const chapter = { title: 'intro.lines.title' };
   const editMenu = context.ui().editMenu();
   const container = context.container();
-  const history = context.editSystem();
-  const map = context.mapSystem();
+  const dragBehavior = context.behaviors.get('drag');
+  const editSystem = context.editSystem();
+  const mapSystem = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const flowerStreetID = 'w646';
@@ -37,6 +38,9 @@ export function uiIntroLine(context, curtain) {
 
   let _chapterCancelled = false;
   let _rejectStep = null;
+  let _onMapMove = null;
+  let _onModeChange = null;
+  let _onEditChange = null;
   let _washingtonSegmentID = null;
   let _lineID = null;
 
@@ -109,17 +113,19 @@ export function uiIntroLine(context, curtain) {
   // Click "Add Line" button to advance
   function addLineAsync() {
     context.enter('browse');
-    history.resetToCheckpoint('initial');
+    editSystem.resetToCheckpoint('initial');
     _lineID = null;
 
     const loc = tulipRoadStartExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = () => resolve(startLineAsync);
+
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-line',
           tipHtml: helpHtml(context, 'intro.lines.add_line')
@@ -130,11 +136,9 @@ export function uiIntroLine(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#rapid-graphic-lines');
-
-        context.on('enter.intro', () => resolve(startLineAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -147,6 +151,16 @@ export function uiIntroLine(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+      _onEditChange = (difference) => {
+        if (!difference) return;
+        for (const entity of difference.created()) {  // created a node and a way
+          if (entity.type === 'way') {
+            _lineID = entity.id;
+            resolve(drawLineAsync);
+          }
+        }
+      };
 
       const textID = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
       const startLineString = helpHtml(context, 'intro.lines.missing_road') + '{br}' +
@@ -156,22 +170,10 @@ export function uiIntroLine(context, curtain) {
         revealExtent: tulipRoadStartExtent,
         tipHtml: startLineString
       });
-
-      history.on('change.intro', difference => {
-        if (!difference) return;
-        for (const entity of difference.created()) {  // created a node and a way
-          if (entity.type === 'way') {
-            _lineID = entity.id;
-            resolve(drawLineAsync);
-          }
-        }
-      });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -180,28 +182,27 @@ export function uiIntroLine(context, curtain) {
   // "Place an intersection node on {name} to connect the two lines."
   function drawLineAsync() {
     const loc = tulipRoadMidExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist() || context.mode().id !== 'draw-line') { resolve(addLineAsync); return; }
 
+        _onModeChange = () => resolve(retryIntersectAsync);
+        _onEditChange = () => {
+          if (_isLineConnected()) resolve(finishLineAsync);
+        };
+
         curtain.reveal({
           revealExtent: tulipRoadMidExtent,
           tipHtml: helpHtml(context, 'intro.lines.intersect', { name: context.t('intro.graph.name.flower-street') })
         });
-
-        history.on('change.intro', () => {
-          if (_isLineConnected()) resolve(finishLineAsync);
-        });
-
-        context.on('enter.intro', () => resolve(retryIntersectAsync));
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
       });
   }
 
@@ -226,13 +227,15 @@ export function uiIntroLine(context, curtain) {
   // Finish the road to advance
   function finishLineAsync() {
     const loc = tulipRoadMidExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist() || context.mode().id !== 'draw-line') { resolve(addLineAsync); return; }
+
+        _onModeChange = () => resolve(chooseCategoryRoadAsync);
 
         const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
         const continueLineText = helpHtml(context, 'intro.lines.continue_line') + '{br}' +
@@ -242,11 +245,9 @@ export function uiIntroLine(context, curtain) {
           revealSelector: '.main-map',
           tipHtml: continueLineText
         });
-
-        context.on('enter.intro', () => resolve(chooseCategoryRoadAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -261,6 +262,8 @@ export function uiIntroLine(context, curtain) {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
+
+        _onModeChange = reject;   // disallow mode change
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -282,12 +285,11 @@ export function uiIntroLine(context, curtain) {
         });
 
         categoryButton.on('click.intro', () => resolve(choosePresetResidentialAsync));
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
+        _onModeChange = null;
         if (categoryButton) categoryButton.on('click.intro', null);
         container.select('.inspector-wrap').on('wheel.intro', null);
-        context.on('enter.intro', null);
       });
   }
 
@@ -320,14 +322,9 @@ export function uiIntroLine(context, curtain) {
           return;
         }
 
-        curtain.reveal({
-          revealNode: subgrid.node(),
-          revealPadding: 5,
-          tipSelector: '.preset-highway-residential .preset-list-button',
-          tipHtml: helpHtml(context, 'intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
-        });
+        _onModeChange = reject;   // disallow mode change
 
-        history.on('change.intro', difference => {
+        _onEditChange = (difference) => {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
@@ -337,13 +334,18 @@ export function uiIntroLine(context, curtain) {
               resolve(retryPresetResidentialAsync);  // didn't pick residential, retry
             }
           }
-        });
+        };
 
-        context.on('enter.intro', reject);   // disallow mode change
+        curtain.reveal({
+          revealNode: subgrid.node(),
+          revealPadding: 5,
+          tipSelector: '.preset-highway-residential .preset-list-button',
+          tipHtml: helpHtml(context, 'intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
+        });
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
       });
   }
@@ -377,13 +379,8 @@ export function uiIntroLine(context, curtain) {
           return;
         }
 
-        curtain.reveal({
-          revealNode: presetButton.node(),
-          revealPadding: 5,
-          tipHtml: helpHtml(context, 'intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
-        });
-
-        history.on('change.intro', difference => {
+        _onModeChange = reject;   // disallow mode change
+        _onEditChange = (difference) => {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
@@ -393,13 +390,17 @@ export function uiIntroLine(context, curtain) {
               resolve(chooseCategoryRoadAsync);  // didn't pick residential, retry
             }
           }
-        });
+        };
 
-        context.on('enter.intro', reject);   // disallow mode change
+        curtain.reveal({
+          revealNode: presetButton.node(),
+          revealPadding: 5,
+          tipHtml: helpHtml(context, 'intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
+        });
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
+        _onModeChange = null;
+        _onEditChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
       });
   }
@@ -414,6 +415,8 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
+        _onModeChange = () => resolve(didNameRoadAsync);
+
         showEntityEditor(container);
 
         curtain.reveal({
@@ -421,11 +424,9 @@ export function uiIntroLine(context, curtain) {
           tipHtml: helpHtml(context, 'intro.lines.name_road', { button: icon('#rapid-icon-close', 'inline') }),
           tooltipClass: 'intro-lines-name_road'
         });
-
-        context.on('enter.intro', () => resolve(didNameRoadAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -434,7 +435,7 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function didNameRoadAsync() {
     if (!_doesLineExist()) return Promise.resolve(addLineAsync);
-    history.setCheckpoint('doneAddLine');
+    editSystem.setCheckpoint('doneAddLine');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -454,17 +455,17 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function updateLineAsync() {
     context.enter('browse');
-    history.resetToCheckpoint('doneAddLine');
+    editSystem.resetToCheckpoint('doneAddLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_hasWoodStreetParts()) history.resetToCheckpoint('initial');
+    if (!_hasWoodStreetParts()) editSystem.resetToCheckpoint('initial');
 
     const loc = woodStreetExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -488,27 +489,26 @@ export function uiIntroLine(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
 
-      const textID = (context.lastPointerType() === 'mouse') ? '' : '_touch';
-      curtain.reveal({
-        revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
-        tipHtml: helpHtml(context, `intro.lines.add_node${textID}`)
-      });
-
-      history.on('change.intro', difference => {
+      _onModeChange = (mode) => {
+        if (mode.id !== 'browse' && mode.id !== 'select') reject();
+      };
+      _onEditChange = (difference) => {
         if (difference && difference.created().length === 1) {   // expect to create 1 node
           resolve(startDragEndpointAsync);
         } else {
           reject();
         }
-      });
+      };
 
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'browse' && mode.id !== 'select') reject();
+      const textID = (context.lastPointerType() === 'mouse') ? '' : '_touch';
+      curtain.reveal({
+        revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
+        tipHtml: helpHtml(context, `intro.lines.add_node${textID}`)
       });
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -542,10 +542,10 @@ export function uiIntroLine(context, curtain) {
           }
         }
       };
-      context.behaviors.get('drag').on('move', checkDrag);
+      dragBehavior.on('move', checkDrag);
     })
     .finally(() => {
-      if (checkDrag) context.behaviors.get('drag').off('move', checkDrag);
+      if (checkDrag) dragBehavior.off('move', checkDrag);
     });
   }
 
@@ -559,6 +559,7 @@ export function uiIntroLine(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(startDragMidpointAsync);
 
       const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
       const finishDragString = helpHtml(context, 'intro.lines.spot_looks_good') +
@@ -568,8 +569,6 @@ export function uiIntroLine(context, curtain) {
         revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
         tipHtml: finishDragString
       });
-
-      context.on('enter.intro', () => resolve(startDragMidpointAsync));
 
       checkDrag = () => {
         if (!_hasWoodStreetParts()) {
@@ -581,11 +580,11 @@ export function uiIntroLine(context, curtain) {
           }
         }
       };
-      context.behaviors.get('drag').on('move', checkDrag);
+      dragBehavior.on('move', checkDrag);
     })
     .finally(() => {
-      context.on('enter.intro', null);
-      if (checkDrag) context.behaviors.get('drag').off('move', checkDrag);
+      _onModeChange = null;
+      if (checkDrag) dragBehavior.off('move', checkDrag);
     });
   }
 
@@ -599,23 +598,21 @@ export function uiIntroLine(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+      _onEditChange = (difference) => {
+        if (difference && difference.created().length === 1) {
+          resolve(continueDragMidpointAsync);
+        }
+      };
 
       curtain.reveal({
         revealExtent: new Extent(woodStreetDragMidpoint).padByMeters(20),
         tipHtml: helpHtml(context, 'intro.lines.start_drag_midpoint')
       });
-
-      history.on('change.intro', difference => {
-        if (difference && difference.created().length === 1) {
-          resolve(continueDragMidpointAsync);
-        }
-      });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -634,7 +631,7 @@ export function uiIntroLine(context, curtain) {
         tipHtml: helpHtml(context, 'intro.lines.continue_drag_midpoint'),
         buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => {
-          history.setCheckpoint('doneUpdateLine');
+          editSystem.setCheckpoint('doneUpdateLine');
           resolve(deleteLinesAsync);
         }
       });
@@ -648,17 +645,17 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function deleteLinesAsync() {
     context.enter('browse');
-    history.resetToCheckpoint('doneUpdateLine');
+    editSystem.resetToCheckpoint('doneUpdateLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_has12thAvenueParts()) history.resetToCheckpoint('initial');
+    if (!_has12thAvenueParts()) editSystem.resetToCheckpoint('initial');
 
     const loc = deleteLinesExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 18, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -676,16 +673,17 @@ export function uiIntroLine(context, curtain) {
   // Select point with edit menu open to advance
   function rightClickIntersectionAsync() {
     context.enter('browse');
-    history.resetToCheckpoint('doneUpdateLine');
+    editSystem.resetToCheckpoint('doneUpdateLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_has12thAvenueParts()) history.resetToCheckpoint('initial');
+    if (!_has12thAvenueParts()) editSystem.resetToCheckpoint('initial');
 
     _washingtonSegmentID = null;
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onEditChange = reject;  // disallow doing anything else
 
       const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
       const rightClickString = helpHtml(context, 'intro.lines.split_street', {
@@ -701,12 +699,10 @@ export function uiIntroLine(context, curtain) {
       editMenu.on('toggled.intro', open => {
         if (open) resolve(splitIntersectionAsync);
       });
-
-      history.on('change.intro', reject);  // disallow doing anything else
     })
     .finally(() => {
+      _onEditChange = null;
       editMenu.on('toggled.intro', null);
-      history.on('change.intro', null);
     });
   }
 
@@ -717,7 +713,6 @@ export function uiIntroLine(context, curtain) {
     const buttonNode = container.select('.edit-menu-item-split').node();
     if (!buttonNode) return Promise.resolve(rightClickIntersectionAsync);   // no Split button, try again
 
-    let revealEditMenu;
     _washingtonSegmentID = null;
 
     return delayAsync()  // after edit menu fully visible
@@ -726,7 +721,7 @@ export function uiIntroLine(context, curtain) {
         if (!_has12thAvenueParts()) { resolve(deleteLinesAsync); return; }
         if (!_is11thAveEndSelected()) context.enter(modeSelect(context, [eleventhAvenueEndID]));
 
-        revealEditMenu = (duration = 0) => {
+        const revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
           if (menuNode) {
             curtain.reveal({
@@ -740,34 +735,34 @@ export function uiIntroLine(context, curtain) {
           }
         };
 
-        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
-        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
+        _onModeChange = reject;   // disallow mode change
 
-        history.on('change.intro', difference => {
-          map.off('move', revealEditMenu);
-          history.on('change.intro', null);
+        _onEditChange = (difference) => {
+          _onMapMove = null;
+          _onEditChange = null;
           if (difference && difference.created()) {
             _washingtonSegmentID = difference.created()[0].id;
             resolve();
           } else {
             reject();
           }
-        });
+        };
 
-        context.on('enter.intro', reject);   // disallow mode change
+        _onMapMove = revealEditMenu;  // on map moves, have the curtain follow the menu immediately
+        revealEditMenu(250);          // first time revealing menu, transition curtain to the menu
       }))
       .then(delayAsync)   // wait for any transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (history.undoAnnotation() === context.t('operations.split.annotation.line', { n: 1 })) {
+        if (editSystem.undoAnnotation() === context.t('operations.split.annotation.line', { n: 1 })) {
           return didSplitAsync;
         } else {
           return retrySplitAsync;
         }
       })
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
-        if (revealEditMenu) map.off('move', revealEditMenu);
+        _onModeChange = null;
+        _onEditChange = null;
+        _onMapMove = null;
       });
   }
 
@@ -799,6 +794,8 @@ export function uiIntroLine(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(multiSelectAsync);
+      _onEditChange = reject;  // disallow doing anything else
 
       const ids = context.selectedIDs();
       const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
@@ -808,13 +805,10 @@ export function uiIntroLine(context, curtain) {
         revealExtent: deleteLinesExtent,
         tipHtml: helpHtml(context, string, { street1: street, street2: street })
       });
-
-      context.on('enter.intro', () => resolve(multiSelectAsync));
-      history.on('change.intro', reject);  // disallow doing anything else
-    })
+   })
     .finally(() => {
-      context.on('enter.intro', null);
-      history.on('change.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -859,12 +853,12 @@ export function uiIntroLine(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      context.on('enter.intro', reject);   // reject will retry this step, which is what we want
-      history.on('change.intro', reject);  // disallow doing anything else
+      _onModeChange = reject;  // reject will retry this step, which is what we want
+      _onEditChange = reject;  // disallow doing anything else
     })
     .finally(() => {
-      context.on('enter.intro', null);
-      history.on('change.intro', null);
+      _onModeChange = null;
+      _onEditChange = null;
     });
   }
 
@@ -885,6 +879,8 @@ export function uiIntroLine(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+      _onEditChange = reject;   // disallow doing anything else
 
       const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       const rightClickString = helpHtml(context, 'intro.lines.multi_select_success') + helpHtml(context, `intro.lines.multi_${textID}`);
@@ -897,14 +893,11 @@ export function uiIntroLine(context, curtain) {
       editMenu.on('toggled.intro', open => {
         if (open) resolve(multiDeleteAsync);
       });
-
-      history.on('change.intro', reject);  // disallow doing anything else
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
+      _onModeChange = null;
+      _onEditChange = null;
       editMenu.on('toggled.intro', null);
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
     });
   }
 
@@ -914,8 +907,6 @@ export function uiIntroLine(context, curtain) {
   function multiDeleteAsync() {
     const buttonNode = container.select('.edit-menu-item-delete').node();
     if (!buttonNode) return Promise.resolve(multiSelectAsync);   // no Delete button, try again
-
-    let revealEditMenu;
 
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
@@ -931,7 +922,7 @@ export function uiIntroLine(context, curtain) {
           return;
         }
 
-        revealEditMenu = (duration = 0) => {
+        const revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
           if (menuNode) {
             curtain.reveal({
@@ -945,35 +936,37 @@ export function uiIntroLine(context, curtain) {
           }
         };
 
-        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
-        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
-
-        // In most cases we receive the history change event before the mode change event..
+        // In most cases we receive the edit change event before the mode change event..
         // In this case, we might get them the other way around, because the legacy modeSelect listens for
-        // history change and will switch to browse mode if the previously selected features go away.
+        // edit change and will switch to browse mode if the previously selected features go away.
         // To fix this, we'll listen to both events to see whether the road segments have been deleted.
-        history.on('change.intro', () => {
-          history.on('change.intro', null);
-          context.on('enter.intro', null);
-          if (!context.hasEntity(_washingtonSegmentID) && !context.hasEntity(twelfthAvenueID)) {
-            resolve(playAsync);
-          } else {
-            resolve(retryDeleteAsync);   // changed something but roads still exist - go back
-          }
-        });
 
-        context.on('enter.intro', mode => {
+        _onModeChange = (mode) => {
           if (mode.id === 'browse' && !context.hasEntity(_washingtonSegmentID) && !context.hasEntity(twelfthAvenueID)) {
             resolve(playAsync);
           } else {
             resolve(multiSelectAsync);   // lost select mode - go back
           }
-        });
+        };
+
+        _onEditChange = () => {
+          _onEditChange = null;
+          _onModeChange = null;
+          if (!context.hasEntity(_washingtonSegmentID) && !context.hasEntity(twelfthAvenueID)) {
+            resolve(playAsync);
+          } else {
+            resolve(retryDeleteAsync);   // changed something but roads still exist - go back
+          }
+        };
+
+        _onMapMove = revealEditMenu;   // on map moves, have the curtain follow the menu immediately
+        revealEditMenu(250);           // first time revealing menu, transition curtain to the menu
+
       }))
       .finally(() => {
-        history.on('change.intro', null);
-        context.on('enter.intro', null);
-        if (revealEditMenu) map.off('move', revealEditMenu);
+        _onModeChange = null;
+        _onEditChange = null;
+        _onMapMove = null;
       });
   }
 
@@ -1013,9 +1006,31 @@ export function uiIntroLine(context, curtain) {
   chapter.enter = () => {
     _chapterCancelled = false;
     _rejectStep = null;
+    _onMapMove = null;
+    _onModeChange = null;
+    _onEditChange = null;
+
+    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
+    mapSystem.on('move', _mapMoveListener);             // event-emitter
+    editSystem.on('change', _editChangeListener);       // event-emitter
 
     runAsync(addLineAsync)
-      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
+      .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
+      .finally(() => {
+        context.on('enter.intro', null);                // d3-dispatch
+        mapSystem.off('move', _mapMoveListener);        // event-emitter
+        editSystem.off('change', _editChangeListener);  // event-emitter
+      });
+
+    function _mapMoveListener() {
+      if (typeof _onMapMove === 'function') _onMapMove();
+    }
+    function _modeChangeListener(mode) {
+      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    }
+    function _editChangeListener(difference) {
+      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    }
   };
 
 

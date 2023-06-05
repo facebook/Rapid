@@ -1,5 +1,4 @@
 import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
-import { select as d3_select } from 'd3-selection';
 
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
@@ -12,10 +11,10 @@ export function uiToolSave(context) {
     label: context.tHtml('save.title')
   };
 
-  let button = d3_select(null);
-  let tooltip = null;
   let key = uiCmd('⌘S');
   let _numChanges = 0;
+  let _button = null;
+  let _tooltip = null;
 
   function isSaving() {
     const mode = context.mode();
@@ -23,7 +22,7 @@ export function uiToolSave(context) {
   }
 
   function isDisabled() {
-    return _numChanges === 0 || isSaving();
+    return _numChanges === 0 || context.inIntro() || isSaving();
   }
 
   function save(d3_event) {
@@ -47,35 +46,49 @@ export function uiToolSave(context) {
   }
 
   function updateCount() {
+    if (!_button || !_tooltip) return;
+
     const val = context.editSystem().difference().summary().size;
     if (val === _numChanges) return;  // no change
 
     _numChanges = val;
 
-    if (tooltip) {
-      tooltip
+    if (_tooltip) {
+      _tooltip
         .title(context.tHtml(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
         .keys([key]);
     }
 
-    button
+    _button
       .classed('disabled', isDisabled())
       .style('background', bgColor(_numChanges));
 
-    button.select('span.count')
+    _button.select('span.count')
       .html(_numChanges);
   }
 
 
+  function updateDisabled() {
+    if (!_button || !_tooltip) return;
+
+    _button.classed('disabled', isDisabled());
+    if (isSaving()) {
+      _button.call(_tooltip.hide);
+    }
+  }
+
+
   tool.install = function(selection) {
-    tooltip = uiTooltip(context)
+    if (_button && _tooltip) return;  // already installed
+
+    _tooltip = uiTooltip(context)
       .placement('bottom')
       .title(context.tHtml('save.no_changes'))
       .keys([key])
       .scrollContainer(context.container().select('.top-toolbar'));
 
     // var lastPointerUpType;
-    button = selection
+    _button = selection
       .append('button')
       .attr('class', 'save disabled bar-button')
       // .on('pointerup', function(d3_event) {
@@ -96,12 +109,12 @@ export function uiToolSave(context) {
         // }
         // lastPointerUpType = null;
       })
-      .call(tooltip);
+      .call(_tooltip);
 
-    button
+    _button
       .call(uiIcon('#rapid-icon-save'));
 
-    button
+    _button
       .append('span')
       .attr('class', 'count')
       .attr('aria-hidden', 'true')
@@ -109,35 +122,20 @@ export function uiToolSave(context) {
 
     updateCount();
 
-
-    context.keybinding()
-      .on(key, save, true /* capture */);
-
-    context.editSystem()
-      .on('change.save', updateCount);
-
-    context
-      .on('enter.save', () => {
-        button.classed('disabled', isDisabled());
-        if (isSaving()) {
-          button.call(tooltip.hide);
-        }
-      });
+    context.keybinding().on(key, save, true /* capture */);
+    context.editSystem().on('change', updateCount);
+    context.on('enter.save', updateDisabled);
   };
 
 
   tool.uninstall = function() {
-    context.keybinding()
-      .off(key, true /* capture */);
+    if (!_button && !_tooltip) return;  // already uninstalled
 
-    context.editSystem()
-      .on('change.save', null);
-
-    context
-      .on('enter.save', null);
-
-    button = d3_select(null);
-    tooltip = null;
+    context.keybinding().off(key, true /* capture */);
+    context.editSystem().off('change', updateCount);
+    context.on('enter.save', null);
+    _button = null;
+    _tooltip = null;
   };
 
   return tool;

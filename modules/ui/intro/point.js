@@ -14,7 +14,7 @@ export function uiIntroPoint(context, curtain) {
   const editMenu = context.ui().editMenu();
   const container = context.container();
   const editSystem = context.editSystem();
-  const map = context.mapSystem();
+  const mapSystem = context.mapSystem();
   const presetSystem = context.presetSystem();
 
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);
@@ -60,15 +60,14 @@ export function uiIntroPoint(context, curtain) {
     _pointID = null;
 
     const loc = buildingExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(placePointAsync);
-        _onEditChange = null;
 
         const tooltip = curtain.reveal({
           revealSelector: 'button.add-point',
@@ -83,7 +82,6 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
       });
   }
 
@@ -123,6 +121,9 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist()) { resolve(addPointAsync); return; }
+        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+
         _onModeChange = reject;  // disallow mode change
         _onEditChange = (difference) => {
           if (!difference) return;
@@ -135,9 +136,6 @@ export function uiIntroPoint(context, curtain) {
             }
           }
         };
-
-        if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
@@ -184,12 +182,11 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        // If user leaves select mode here, just continue with the tutorial.
-        _onModeChange = () => resolve(addNameAsync);
-        _onEditChange = null;
-
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
         if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+
+        // If user leaves select mode here, just continue with the tutorial.
+        _onModeChange = () => resolve(addNameAsync);
 
         showEntityEditor(container);
 
@@ -203,7 +200,6 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
       });
   }
 
@@ -214,12 +210,12 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist()) { resolve(addPointAsync); return; }
+        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(hasPointAsync);
         _onEditChange = () => resolve(addCloseEditorAsync);
-
-        if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
         showEntityEditor(container);
 
@@ -261,7 +257,7 @@ export function uiIntroPoint(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = () => resolve(hasPointAsync);
-      _onEditChange = null;
+
       showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
@@ -273,7 +269,6 @@ export function uiIntroPoint(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
     });
   }
 
@@ -300,15 +295,14 @@ export function uiIntroPoint(context, curtain) {
     editSystem.resetToCheckpoint('hasPoint');
 
     const loc = buildingExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(updatePointAsync);
-        _onEditChange = null;
 
         curtain.reveal({
           revealExtent: buildingExtent,
@@ -317,7 +311,6 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
       });
   }
 
@@ -328,9 +321,10 @@ export function uiIntroPoint(context, curtain) {
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
+
         _onModeChange = reject;   // disallow mode change
         _onEditChange = () => resolve(updateCloseEditorAsync);
-        if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
 
         showEntityEditor(container);
 
@@ -355,7 +349,7 @@ export function uiIntroPoint(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = () => resolve(rightClickPointAsync);
-      _onEditChange = null;
+
       showEntityEditor(container);
 
       curtain.reveal({
@@ -365,7 +359,6 @@ export function uiIntroPoint(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
     });
   }
 
@@ -378,7 +371,6 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onModeChange = null;
       _onEditChange = reject;  // disallow doing anything else
 
       const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
@@ -392,7 +384,6 @@ export function uiIntroPoint(context, curtain) {
       });
     })
     .finally(() => {
-      _onModeChange = null;
       _onEditChange = null;
       editMenu.on('toggled.intro', null);
     });
@@ -439,7 +430,6 @@ export function uiIntroPoint(context, curtain) {
   function undoAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onModeChange = null;
       _onEditChange = () => resolve(playAsync);
       curtain.reveal({
         revealSelector: '.top-toolbar button.undo-button',
@@ -447,7 +437,6 @@ export function uiIntroPoint(context, curtain) {
       });
     })
     .finally(() => {
-      _onModeChange = null;
       _onEditChange = null;
     });
   }
@@ -474,23 +463,21 @@ export function uiIntroPoint(context, curtain) {
     _onModeChange = null;
     _onEditChange = null;
 
-    context.on('enter.intro', _modeChangeListener);  // d3-dispatch
+    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
     editSystem.on('change', _editChangeListener);       // event-emitter
 
     runAsync(addPointAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
-        context.on('enter.intro', null);             // d3-dispatch
+        context.on('enter.intro', null);                // d3-dispatch
         editSystem.off('change', _editChangeListener);  // event-emitter
       });
 
-
-    function _modeChangeListener() {
-      if (typeof _onModeChange === 'function') _onModeChange();
+    function _modeChangeListener(mode) {
+      if (typeof _onModeChange === 'function') _onModeChange(mode);
     }
-
-    function _editChangeListener() {
-      if (typeof _onEditChange === 'function') _onEditChange();
+    function _editChangeListener(difference) {
+      if (typeof _onEditChange === 'function') _onEditChange(difference);
     }
   };
 

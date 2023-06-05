@@ -112,15 +112,15 @@ export class PixiLayerRapid extends AbstractLayer {
     this._onRestore = this._onRestore.bind(this);
 
     this.context.editSystem()
-      .on('undone.rapid', this._onUndone)
-      .on('change.rapid', this._onChange)
-      .on('restore.rapid', this._onRestore);
+      .on('undone', this._onUndone)
+      .on('change', this._onChange)
+      .on('restore', this._onRestore);
   }
 
 
 
   _wasRapidEdit(annotation) {
-    return annotation && annotation.type && /^rapid/.test(annotation.type);
+    return annotation?.type && /^rapid/.test(annotation.type);
   }
 
 
