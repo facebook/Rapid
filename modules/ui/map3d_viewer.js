@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Color } from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
 
 import { styleMatch } from '../pixi/styles';
@@ -122,8 +122,8 @@ export function uiMap3dViewer(context) {
         if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
 
         const style = styleMatch(areaEnt.tags);
-        const fillColor = PIXI.utils.hex2string(style.fill.color);
-        const strokeColor = PIXI.utils.hex2string(style.stroke.color);
+        const fillColor = new Color(style.fill.color).toHex();
+        const strokeColor = new Color(style.stroke.color).toHex();
 
         const newFeature = {
           type: 'Feature',
@@ -159,8 +159,8 @@ export function uiMap3dViewer(context) {
         if (gj.type !== 'LineString') continue;
 
         const style = styleMatch(roadEnt.tags);
-        const casingColor = PIXI.utils.hex2string(style.casing.color);
-        const strokeColor = PIXI.utils.hex2string(style.stroke.color);
+        const casingColor = new Color(style.casing.color).toHex();
+        const strokeColor = new Color(style.stroke.color).toHex();
 
         const newFeature = {
           type: 'Feature',
