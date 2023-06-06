@@ -1,4 +1,4 @@
-import { uiIntro } from './intro';
+import { uiIntro } from './intro/intro';
 import { uiModal } from './modal';
 
 

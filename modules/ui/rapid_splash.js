@@ -1,4 +1,4 @@
-import { uiIntro } from './intro';
+import { uiIntro } from './intro/intro';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
 

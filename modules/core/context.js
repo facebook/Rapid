@@ -16,6 +16,7 @@ import { PhotoSystem } from './PhotoSystem';
 import { PresetSystem } from './PresetSystem';
 import { RapidSystem } from './RapidSystem';
 import { StorageSystem } from './StorageSystem';
+import { UiSystem } from './UiSystem';
 import { UploaderSystem } from './UploaderSystem';
 import { UrlHashSystem } from './UrlHashSystem';
 import { ValidationSystem } from './ValidationSystem';
@@ -25,7 +26,6 @@ import * as Modes from '../modes';
 import * as Services from '../services';
 import { modeSelect } from '../modes/select';   // legacy
 
-import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
 
 
@@ -48,11 +48,12 @@ export function coreContext() {
   const _localizationSystem = new LocalizationSystem(context);
   const _locationSystem = new LocationSystem(context);
   const _mapSystem = new MapSystem(context);
-  const _map3dSystem = new Map3dSystem(context, '3d-buildings');   // todo: domid looks weird here
+  const _map3dSystem = new Map3dSystem(context);
   const _photoSystem = new PhotoSystem(context);
   const _presetSystem = new PresetSystem(context);
   const _rapidSystem = new RapidSystem(context);
   const _storageSystem = new StorageSystem(context);
+  const _uiSystem = new UiSystem(context);
   const _uploaderSystem = new UploaderSystem(context);
   const _urlHashSystem = new UrlHashSystem(context);
   const _validationSystem = new ValidationSystem(context);
@@ -70,6 +71,8 @@ export function coreContext() {
   context.presetSystem = () => _presetSystem;
   context.rapidSystem = () => _rapidSystem;
   context.storageSystem = () => _storageSystem;
+  context.uiSystem = () => _uiSystem;
+  context.ui = () => _uiSystem;           // legacy name
   context.uploaderSystem = () => _uploaderSystem;
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
@@ -162,10 +165,8 @@ export function coreContext() {
 
 
   /* User interface and keybinding */
-  let _ui;
-  context.ui = () => _ui;
   // AFAICT `lastPointerType` is just used to localize the intro? for now - instead get this from pixi?
-  // context.lastPointerType = () => _ui.lastPointerType();
+  // context.lastPointerType = () => _uiSystem.lastPointerType();
   context.lastPointerType = () => 'mouse';
 
   let _keybinding = utilKeybinding('context');
@@ -615,7 +616,6 @@ export function coreContext() {
 
   /* Init */
   context.init = () => {
-    _ui = uiInit(context);
     initializeAll();
     return context;
 
@@ -653,6 +653,7 @@ export function coreContext() {
         osm.switch(_preauth);
       }
 
+      _uiSystem.init();
       _editSystem.init();
       _filterSystem.init();
       _imagerySystem.init();
@@ -664,7 +665,7 @@ export function coreContext() {
 
       // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {
-        _ui.ensureLoaded()
+        _uiSystem.ensureLoaded()
           .then(() => {
             _map3dSystem.init();
             _photoSystem.init();

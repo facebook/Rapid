@@ -2,77 +2,109 @@ import { select as d3_select } from 'd3-selection';
 
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
-import { uiAccount } from './account';
-import { uiAttribution } from './attribution';
-import { uiContributors } from './contributors';
-import { UiDefs } from './UiDefs';
-import { uiEditMenu } from './edit_menu';
-import { uiFeatureInfo } from './feature_info';
-import { uiFlash } from './flash';
-import { uiFullScreen } from './full_screen';
-import { uiGeolocate } from './geolocate';
-import { uiIcon } from './icon';
-import { uiInfo } from './info';
-import { uiIntro } from './intro';
-import { uiIssuesInfo } from './issues_info';
-import { uiLoading } from './loading';
-import { uiMapInMap } from './map_in_map';
-import { uiMap3dViewer } from './map3d_viewer';
-import { uiPhotoViewer } from './photo_viewer';
-import { uiRestore } from './restore';
-import { uiScale } from './scale';
-import { uiShortcuts } from './shortcuts';
-import { uiSidebar } from './sidebar';
-import { uiSourceSwitch } from './source_switch';
-import { uiSpinner } from './spinner';
-import { uiStatus } from './status';
-import { uiTooltip } from './tooltip';
-import { uiTopToolbar } from './top_toolbar';
-import { uiVersion } from './version';
-import { uiZoom } from './zoom';
-import { uiZoomToSelection } from './zoom_to_selection';
-import { uiCmd } from './cmd';
 
-import { uiPaneBackground } from './panes/background';
-import { uiPaneHelp } from './panes/help';
-import { uiPaneIssues } from './panes/issues';
-import { uiPaneMapData } from './panes/map_data';
-import { uiPanePreferences } from './panes/preferences';
+import {
+  uiAccount, uiAttribution, uiContributors, UiDefs, uiEditMenu,
+  uiFeatureInfo, uiFlash, uiFullScreen, uiGeolocate, uiIcon,
+  uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
+  uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
+  uiRapidWhatsNew, uiRapidSplash, uiRestore, uiScale, uiShortcuts,
+  uiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
+  uiTopToolbar, uiVersion, uiZoom, uiZoomToSelection, uiCmd,
+} from '../ui';
 
-import { uiRapidServiceLicense } from './rapid_service_license';
-import { uiRapidWhatsNew } from './rapid_whatsnew';
-import { uiRapidSplash } from './rapid_splash';
+import {
+  uiPaneBackground, uiPaneHelp, uiPaneIssues, uiPaneMapData, uiPanePreferences
+} from '../ui/panes';
 
 
-export function uiInit(context) {
-  const l10n = context.localizationSystem();
-  const presetSystem = context.presetSystem();
-  const storageSystem = context.storageSystem();
+/**
+ * `UiSystem` maintains the user interface
+ */
+export class UiSystem {
 
-  let _initCounter = 0;
-  let _needWidth = {};
+  /**
+   * @constructor
+   * @param  `context`   Global shared application context
+   */
+  constructor(context) {
+    this.context = context;
 
-  let generateBugLink = () => {
-    let link = new URL('https://github.com/facebook/Rapid/issues/new');
+    this.authModal = null;
+    this.defs = null;
+    this.flash = null;
+    this.editMenu = null;
+    this.info = null;
+    this.sidebar = null;
+    this.photoviewer = null;
+    this.shortcuts = null;
 
-    // From the template we set up at https://github.com/facebook/Rapid/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
-    link.searchParams.append('template', 'bug_report.yml');
-    const detected = utilDetect();
-    const browser = `${detected.browser} v${detected.version}`;
-    const os = `${detected.os}`;
-    const userAgent = navigator.userAgent;
+    this._didRender = false;
+    this._needWidth = {};
+    this._loadPromise = null;
 
-    link.searchParams.append('browser', browser);
-    link.searchParams.append('os', os);
-    link.searchParams.append('useragent', userAgent);
-    link.searchParams.append('URL', window.location.href);
-    link.searchParams.append('version', context.version);
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this.render = this.render.bind(this);
+    this.resize = this.resize.bind(this);
+    this._clickBugLink = this._clickBugLink.bind(this);
+  }
 
-    window.open(link.toString(), '_blank');
-  };
 
-  let controls;
-  function render(container) {
+  /**
+   * init
+   * Called one time after all objects have been instantiated.
+   */
+  init() {
+    const context = this.context;
+
+    this.authModal = uiLoading(context).blocking(true);
+    this.defs = new UiDefs(context);
+    this.flash = uiFlash(context);
+    this.editMenu = uiEditMenu(context);
+    // this.info = uiInfo(context);
+    this.sidebar = uiSidebar(context);
+    this.photoviewer = uiPhotoViewer(context);
+    this.shortcuts = uiShortcuts(context);
+
+    // Setup event handlers
+    window.addEventListener('beforeunload', () => context.save());
+    window.addEventListener('unload', () => context.editSystem().unlock());
+    window.addEventListener('resize', this.resize);
+
+    const l10n = this.context.localizationSystem();
+    l10n.initAsync()
+      .then(() => {
+        this.authModal.message(l10n.tHtml('loading_auth'));
+
+        const osm = context.services.get('osm');
+        if (osm) {
+          osm
+            .on('authLoading', () => context.container()?.call(this.authModal))
+            .on('authDone', () => this.authModal.close());
+        }
+
+        context.keybinding()
+          .on('⌫', e => e.preventDefault())
+          .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle)   // iD#5663, iD#6864 - common QWERTY, AZERTY
+          .on(uiCmd('⌘' + l10n.t('background.key')), e => {
+            if (e) {
+              e.stopImmediatePropagation();
+              e.preventDefault();
+            }
+            const imagerySystem = context.imagerySystem();
+            const storageSystem = context.storageSystem();
+            const previousBackground = imagerySystem.findSource(storageSystem.getItem('background-last-used-toggle'));
+            if (previousBackground) {
+              const currentBackground = imagerySystem.baseLayerSource();
+              storageSystem.setItem('background-last-used-toggle', currentBackground.id);
+              storageSystem.setItem('background-last-used', previousBackground.id);
+              imagerySystem.baseLayerSource(previousBackground);
+            }
+          });
+      });
+
+// not sure what these were for
 //    container.on('click.ui', d3_event => {
 //      if (d3_event.button !== 0) return;  // we're only concerned with the primary mouse button
 //      if (!d3_event.composedPath) return;
@@ -102,6 +134,26 @@ export function uiInit(context) {
 //      });
 //    }
 
+  }
+
+
+  /**
+   * reset
+   * Called after completing an edit session to reset any internal state
+   */
+  reset() {
+  }
+
+
+  render(container) {
+// this is a bit non-standard for how our ui components usually render, but for now
+// we'll guard so that this code can only happen one time to set everything up..
+if (this._didRender) return;  // one time only
+this.didRender = true;
+
+    const context = this.context;
+    const l10n = context.localizationSystem();
+
     container
       .attr('lang', l10n.localeCode())
       .attr('dir', l10n.textDirection());
@@ -116,13 +168,13 @@ export function uiInit(context) {
     container
       .append('svg')
       .attr('id', 'rapid-defs')
-      .call(ui.defs.render);
+      .call(this.defs.render);
 
     // Sidebar
     container
       .append('div')
       .attr('class', 'sidebar')
-      .call(ui.sidebar);
+      .call(this.sidebar);
 
     const content = container
       .append('div')
@@ -171,7 +223,7 @@ export function uiInit(context) {
 
 
     // Map controls
-    controls = overMap
+    const controls = overMap
       .append('div')
       .attr('class', 'map-controls');
 
@@ -205,28 +257,28 @@ export function uiInit(context) {
       uiPaneHelp(context)
     ];
 
-    uiPanes.forEach(pane => {
+    for (const component of uiPanes) {
       controls
         .append('div')
-        .attr('class', `map-control map-pane-control ${pane.id}-control`)
-        .call(pane.renderToggleButton);
+        .attr('class', `map-control map-pane-control ${component.id}-control`)
+        .call(component.renderToggleButton);
 
       panes
-        .call(pane.renderPane);
-    });
+        .call(component.renderPane);
+    }
 
-    ui.info = uiInfo(context);
 
     // Info Panels
+    this.info = uiInfo(context);
     overMap
-      .call(ui.info);
+      .call(this.info);
 
     overMap
       .append('div')
       .attr('class', 'photoviewer')
       .classed('al', true)       // 'al'=left,  'ar'=right
       .classed('hide', true)
-      .call(ui.photoviewer);
+      .call(this.photoviewer);
 
     overMap
       .append('div')
@@ -257,9 +309,9 @@ export function uiInit(context) {
       .attr('class', 'main-footer-wrap footer-show');
 
     footerWrap
-        .append('div')
-        .attr('class', 'scale-block')
-        .call(uiScale(context));
+      .append('div')
+      .attr('class', 'scale-block')
+      .call(uiScale(context));
 
     let aboutList = footerWrap
       .append('div')
@@ -303,7 +355,7 @@ export function uiInit(context) {
       .append('button')
       .attr('class', 'bugnub')
       .attr('tabindex', -1)
-      .on('click', generateBugLink)
+      .on('click', this._clickBugLink)
       .call(uiIcon('#rapid-icon-bug', 'bugnub'))
       .call(uiTooltip(context).title(l10n.tHtml('report_a_bug')).placement('top'));
 
@@ -324,163 +376,87 @@ export function uiInit(context) {
         .call(uiAccount(context));
     }
 
+    container
+      .call(this.shortcuts);
+
+
     // Setup map dimensions, and allow rendering..
     // This should happen after .main-content and toolbars exist.
-    ui.onResize();
+    this.resize();
     map.redrawEnabled = true;
-
-    // Bind events
-    window.onbeforeunload = function() {
-      return context.save();
-    };
-    window.onunload = function() {
-      context.editSystem().unlock();
-    };
-
-    d3_select(window)
-      .on('resize.editor', function() {
-        ui.onResize();
-      });
-
-
-    context.keybinding()
-      .on('⌫', function(d3_event) { d3_event.preventDefault(); })
-      .on([l10n.t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
-      .on(uiCmd('⌘' + l10n.t('background.key')), function quickSwitch(d3_event) {
-        if (d3_event) {
-          d3_event.stopImmediatePropagation();
-          d3_event.preventDefault();
-        }
-        const imagerySystem = context.imagerySystem();
-        const previousBackground = imagerySystem.findSource(storageSystem.getItem('background-last-used-toggle'));
-        if (previousBackground) {
-          const currentBackground = imagerySystem.baseLayerSource();
-          storageSystem.setItem('background-last-used-toggle', currentBackground.id);
-          storageSystem.setItem('background-last-used', previousBackground.id);
-          imagerySystem.baseLayerSource(previousBackground);
-        }
-      })
-      .on(l10n.t('area_fill.wireframe.key'), function toggleWireframe(d3_event) {
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
-        const map = context.mapSystem();
-        map.wireframeMode = !map.wireframeMode;
-      })
-      .on(uiCmd('⌥' + l10n.t('area_fill.wireframe.key')), function toggleOsmData(d3_event) {
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
-
-        // Don't allow layer changes while drawing - #6584
-        const mode = context.mode();
-        if (mode && /^draw/.test(mode.id)) return;
-
-        context.scene().toggleLayers('osm');
-        context.enter('browse');
-      })
-      .on(l10n.t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
-        d3_event.preventDefault();
-        map.highlightEdits = !map.highlightEdits;
-      });
-
 
     context.enter('browse');
 
-    const osm = context.services.get('osm');
-    const startWalkthrough = context.urlHashSystem().initialHashParams.get('walkthrough') === 'true';
 
-    if (!_initCounter++) {  // first time only
-      if (!startWalkthrough) {
-        if (context.editSystem().lock() && context.editSystem().hasRestorableChanges()) {
-          context.container().call(uiRestore(context));
-
-// uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew
-        } else {
-          context.container().call(uiRapidWhatsNew(context));
-        }
-
-//        // If users have already seen the 'welcome to Rapid' splash screen, don't also
-//        // show them the what's new screen
-//        } else if (storageSystem.getItem('sawRapidSplash')) {
-//          context.container().call(uiRapidWhatsNew(context));
-//
-//        } else if (osm && osm.authenticated()) {
-//          context.container().call(uiRapidSplash(context));
-//        }
-      }
-
-// this seems wrong for it to be in !_initCounter++ block
-// if the UI is getting rebuild after a localization, the shortcuts should too?
-      context.container()
-        .call(ui.shortcuts);
-    }
-
-    const authModal = uiLoading(context).message(l10n.tHtml('loading_auth')).blocking(true);
-    if (osm && authModal) {
-      osm
-        .on('authLoading.ui', () => context.container().call(authModal))
-        .on('authDone.ui', () => authModal.close());
-    }
+    // What to show first?
+    const editSystem = context.editSystem();
+    const urlHash = context.urlHashSystem();
+    const startWalkthrough = urlHash.initialHashParams.get('walkthrough') === 'true';
 
     if (startWalkthrough) {
-      context.container().call(uiIntro(context));
-    }
+      container.call(uiIntro(context));   // Jump right into walkthrough..
 
+    } else if (editSystem.lock() && editSystem.hasRestorableChanges()) {
+      container.call(uiRestore(context));   // Offer to restore previous edits..
+
+    } else {
+// uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew
+//      if (context.storageSystem().getItem('sawRapidSplash')) {
+       container.call(uiRapidWhatsNew(context));    // Show "Whats New"
+//      } else {
+//        container.call(uiRapidSplash(context));      // Show "Welcome to Rapid"
+//      }
+    }
   }
 
 
-  // ---------------------------------
-  // UI module and bootstrap code
-
-  let ui = {};
-
-  ui.defs = new UiDefs(context);
-
-  ui.flash = uiFlash(context);
-
-  ui.sidebar = uiSidebar(context);
-
-  ui.photoviewer = uiPhotoViewer(context);
-
-  ui.shortcuts = uiShortcuts(context);
-
   // renders the Rapid interface into the container node
-  let _loadPromise;
-  ui.ensureLoaded = () => {
-    if (_loadPromise) return _loadPromise;
+  ensureLoaded() {
+    if (this._loadPromise) return this._loadPromise;
 
-    // Wait for strings and presets before rendering the UI
-    return _loadPromise = Promise.all([
+    // Wait for strings and presets to be ready before rendering the UI
+    const context = this.context;
+    const l10n = context.localizationSystem();
+    const presetSystem = context.presetSystem();
+
+    return this._loadPromise = Promise.all([
       l10n.initAsync(),
       presetSystem.initAsync()
     ])
     .then(() => {
-      if (!context.container().empty()) {
-        render(context.container());
+      const container = context.container();
+      if (!container.empty()) {
+        this.render(container);
       }
     })
     .catch(err => console.error(err));  // eslint-disable-line
-  };
+  }
 
 
-  // `ui.restart()` will destroy and rebuild the entire Rapid interface,
-  // for example to switch the locale while Rapid is running.
-  ui.restart = function() {
-    context.keybinding().clear();
-    _loadPromise = null;
-    context.container().selectAll('*').remove();
-    ui.ensureLoaded();
-  };
+// Removing for now, this will not work as written (it is a good idea though)
+// For it to work, it has to live in context, and all the core systems will need to have
+// their own restart method.  They would need to do things like reload the localizations
+// and then re-init all the things, including setting up the key bindings and strings
+//  // `restart()` will destroy and rebuild the entire Rapid interface,
+//  // for example to switch the locale while Rapid is running.
+//  restart() {
+//    context.keybinding().clear();
+//    this._loadPromise = null;
+//    context.container().selectAll('*').remove();
+//    this.ensureLoaded();
+//  }
 
 
-
-  ui.onResize = function(offset) {
+  resize(offset) {
+    const context = this.context;
+    const container = context.container();
     const map = context.mapSystem();
 
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
     //  but the values will be cached for later use.
-    const dims = utilGetDimensions(context.container().select('.main-content'), true);
-    utilGetDimensions(context.container().select('.sidebar'), true);
+    const dims = utilGetDimensions(container.select('.main-content'), true);
+    utilGetDimensions(container.select('.sidebar'), true);
 
     // When adjusting the sidebar width, pan the map so it stays centered on the same location.
     if (offset !== undefined) {
@@ -488,56 +464,61 @@ export function uiInit(context) {
     }
 
     map.dimensions = dims;
-    ui.photoviewer.onMapResize();
+    this.photoviewer.onMapResize();
 
     // check if header or footer have overflowed
-    ui.checkOverflow('.top-toolbar');
-    ui.checkOverflow('.map-footer-bar');
+    this.checkOverflow('.top-toolbar');
+    this.checkOverflow('.map-footer-bar');
 
 // this was for the restrictions editor?
+// or any other component that needs to know when resizing is happening
 //    // Use outdated code so it works on Explorer
 //    const resizeWindowEvent = document.createEvent('Event');
 //    resizeWindowEvent.initEvent('resizeWindow', true, true);
 //    document.dispatchEvent(resizeWindowEvent);
-  };
+  }
 
 
   // Call checkOverflow when resizing or whenever the contents change.
   // I think this was to make button labels in the top bar disappear
   // when more buttons are added than the screen has available width
-  ui.checkOverflow = function(selector, reset) {
+  checkOverflow(selector, reset) {
     if (reset) {
-      delete _needWidth[selector];
+      delete this._needWidth[selector];
     }
 
-    let selection = context.container().select(selector);
+    const selection = this.context.container().select(selector);
     if (selection.empty()) return;
 
-    let scrollWidth = selection.property('scrollWidth');
-    let clientWidth = selection.property('clientWidth');
-    let needed = _needWidth[selector] || scrollWidth;
+    const scrollWidth = selection.property('scrollWidth');
+    const clientWidth = selection.property('clientWidth');
+    let needed = this._needWidth[selector] || scrollWidth;
 
     if (scrollWidth > clientWidth) {    // overflow happening
       selection.classed('narrow', true);
-      if (!_needWidth[selector]) {
-        _needWidth[selector] = scrollWidth;
+      if (!this._needWidth[selector]) {
+        this._needWidth[selector] = scrollWidth;
       }
 
     } else if (scrollWidth >= needed) {
       selection.classed('narrow', false);
     }
-  };
+  }
 
 
-  ui.togglePanes = function(showPane) {
-    let hidePanes = context.container().selectAll('.map-pane.shown');
+  togglePanes(showPane) {
+    const context = this.context;
+    const l10n = context.localizationSystem();
+    const container = context.container();
+
+    let hidePanes = container.selectAll('.map-pane.shown');
     const side = l10n.isRTL() ? 'left' : 'right';
 
     hidePanes
       .classed('shown', false)
       .classed('hide', true);
 
-    context.container().selectAll('.map-pane-control button')
+    container.selectAll('.map-pane-control button')
       .classed('active', false);
 
     if (showPane) {
@@ -546,7 +527,7 @@ export function uiInit(context) {
         .classed('hide', true)
         .style(side, '-500px');
 
-      context.container().selectAll('.' + showPane.attr('pane') + '-control button')
+      container.selectAll('.' + showPane.attr('pane') + '-control button')
         .classed('active', true);
 
       showPane
@@ -576,13 +557,8 @@ export function uiInit(context) {
             .classed('hide', true);
         });
     }
-  };
+  }
 
-
-  let _editMenu = uiEditMenu(context);
-  ui.editMenu = function() {
-    return _editMenu;
-  };
 
 
   /* showEditMenu
@@ -590,11 +566,13 @@ export function uiInit(context) {
    * @param  triggerType  String  'touch', 'pen', or 'rightclick' that triggered the menu
    * @param  operations   seems not passed in - code below figures it out.
    */
-  ui.showEditMenu = function(anchorPoint, triggerType, operations) {
-    _editMenu.close();   // remove any displayed menu
+  showEditMenu(anchorPoint, triggerType, operations) {
+    this.editMenu.close();   // remove any displayed menu
 
-    //TODO: Remove this after the behaviors rewrite has completed
-    if (!operations && context.mode().operations) operations = typeof context.mode().operations === 'function' ? context.mode().operations() : context.mode().operations;
+    const context = this.context;
+    const mode = context.mode();
+    //TODO: Remove this after the mode rewrite has completed
+    if (!operations && mode.operations) operations = typeof mode.operations === 'function' ? mode.operations() : mode.operations;
     if (!operations || !operations.length) return;
     if (!context.editable()) return;
 
@@ -604,25 +582,45 @@ export function uiInit(context) {
       surfaceNode.focus();
     }
 
-    operations.forEach(operation => {
-      if (operation.point) operation.point(anchorPoint);
-    });
+    for (const operation of operations) {
+      if (typeof operation.point === 'function') {
+        operation.point(anchorPoint);  // let the operation know where the menu is
+      }
+    }
 
-    _editMenu
+    this.editMenu
       .anchorLoc(context.projection.invert(anchorPoint))
       .triggerType(triggerType)
       .operations(operations);
 
     // render the menu
-    context.mapSystem().overlay.call(_editMenu);
-  };
+    context.mapSystem().overlay.call(this.editMenu);
+  }
 
 
   // remove any existing menu no matter how it was added
-  ui.closeEditMenu = function() {
-    _editMenu.close();
-  };
+  closeEditMenu() {
+    this.editMenu.close();
+  }
 
 
-  return ui;
+  _clickBugLink() {
+    let link = new URL('https://github.com/facebook/Rapid/issues/new');
+
+    // From the template we set up at https://github.com/facebook/Rapid/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
+    link.searchParams.append('template', 'bug_report.yml');
+    const detected = utilDetect();
+    const browser = `${detected.browser} v${detected.version}`;
+    const os = `${detected.os}`;
+    const userAgent = navigator.userAgent;
+
+    link.searchParams.append('browser', browser);
+    link.searchParams.append('os', os);
+    link.searchParams.append('useragent', userAgent);
+    link.searchParams.append('URL', window.location.href);
+    link.searchParams.append('version', this.context.version);
+
+    window.open(link.toString(), '_blank');
+  }
+
 }

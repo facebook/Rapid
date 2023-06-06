@@ -3,6 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
+import { uiCmd } from '../ui/cmd.js';
 import { utilTotalExtent } from '../util/util';
 import { utilGetDimensions } from '../util/dimensions';
 
@@ -77,9 +78,39 @@ export class MapSystem extends EventEmitter {
    * Called one time after all objects have been instantiated.
    */
   init() {
-    const prefs = this.context.storageSystem();
+    const context = this.context;
+    const prefs = context.storageSystem();
     this._currFillMode = prefs.getItem('area-fill') || 'partial';           // the current fill mode
     this._toggleFillMode = prefs.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
+
+    const l10n = context.localizationSystem();
+    l10n.initAsync()
+      .then(() => {
+        const wireframeKey = l10n.t('area_fill.wireframe.key');
+        const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
+
+        context.keybinding()
+          .on(wireframeKey, e => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.wireframeMode = !this.wireframeMode;
+          })
+          .on(uiCmd('⌥' + wireframeKey), e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Don't allow layer changes while drawing - iD#6584
+            const mode = context.mode();
+            if (mode && /^draw/.test(mode.id)) return;
+
+            this.scene.toggleLayers('osm');
+            context.enter('browse');
+          })
+          .on(highlightEditsKey, e => {
+            e.preventDefault();
+            this.highlightEdits = !this.highlightEdits;
+          });
+      });
   }
 
 

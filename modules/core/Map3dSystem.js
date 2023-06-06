@@ -11,12 +11,11 @@ export class Map3dSystem {
 
   /**
    * @constructor
-   * @param  `context`      Global shared application context
-   * @param  `containerID`  DOM id of the container to add maplibre to
+   * @param  `context`   Global shared application context
    */
-  constructor(context, containerID) {
+  constructor(context) {
     this.context = context;
-    this.containerID = containerID;
+    this.containerID = '3d-buildings';
 
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
