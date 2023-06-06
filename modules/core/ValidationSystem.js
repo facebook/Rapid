@@ -721,7 +721,7 @@ export class ValidationSystem extends EventEmitter {
     // Perform the work in chunks.
     // Because this will happen during idle callbacks, we want to choose a chunk size
     // that won't make the browser stutter too badly.
-    cache.queue = cache.queue.concat(utilArrayChunk(jobs, 100));
+    cache.queue = cache.queue.concat(utilArrayChunk(jobs, 50));
 
     // Perform the work
     if (cache.queuePromise) return cache.queuePromise;
@@ -781,7 +781,7 @@ export class ValidationSystem extends EventEmitter {
         this._deferredRIC.set(handle, reject);
       })
       .then(() => { // dispatch an event sometimes to redraw various UI things
-        if (cache.queue.length % 25 === 0) {
+        if (cache.queue.length % 100 === 0) {
           this.emit('validated');
         }
       })
