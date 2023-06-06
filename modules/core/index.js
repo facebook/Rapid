@@ -14,6 +14,7 @@ export { PhotoSystem } from './PhotoSystem';
 export { PresetSystem } from './PresetSystem';
 export { RapidSystem } from './RapidSystem';
 export { StorageSystem } from './StorageSystem';
+export { UiSystem } from './UiSystem';
 export { UploaderSystem } from './UploaderSystem';
 export { UrlHashSystem } from './UrlHashSystem';
 export { ValidationSystem } from './ValidationSystem';

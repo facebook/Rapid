@@ -1,7 +1,7 @@
 describe('MapSystem', () => {
   let _container, _mapSystem;
 
-  class MockEmitter {   // an event emitter, mocks .on()
+  class MockOn {   // an event emitter, mocks .on()
     constructor() { }
     on() { return this; }
   }
@@ -9,6 +9,13 @@ describe('MapSystem', () => {
   class MockStorageSystem {
     constructor() { }
     getItem() { return ''; }
+  }
+
+  class MockLocalizationSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    t()           { return ''; }
+    tHtml()       { return ''; }
   }
 
   class MockScene {
@@ -35,14 +42,17 @@ describe('MapSystem', () => {
     constructor()   {
       this.services = new Map();
       this.projection = new sdk.Projection();
+      this._localizationSystem = new MockLocalizationSystem();
       this._storageSystem = new MockStorageSystem();
-      this._mockEmitter = new MockEmitter();
+      this._mockOn = new MockOn();
     }
-    container()      { return _container; }
-    storageSystem()  { return this._storageSystem; }
-    history()        { return this._mockEmitter; }
-    filterSystem()   { return this._mockEmitter; }
-    urlHashSystem()  { return this._mockEmitter; }
+    container()           { return _container; }
+    localizationSystem()  { return this._localizationSystem; }
+    storageSystem()       { return this._storageSystem; }
+    keybinding()          { return this._mockOn; }
+    editSystem()          { return this._mockOn; }
+    filterSystem()        { return this._mockOn; }
+    urlHashSystem()       { return this._mockOn; }
   }
 
 

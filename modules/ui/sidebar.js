@@ -110,7 +110,7 @@ export function uiSidebar(context) {
                         .style(xMarginProperty, '-400px')
                         .style('width', '400px');
 
-                    context.ui().onResize([(sidebarWidth - dx) * scaleX, 0]);
+                    context.ui().resize([(sidebarWidth - dx) * scaleX, 0]);
                 }
 
             } else {
@@ -120,9 +120,9 @@ export function uiSidebar(context) {
                     .style('width', widthPct + '%');
 
                 if (isCollapsed) {
-                    context.ui().onResize([-sidebarWidth * scaleX, 0]);
+                    context.ui().resize([-sidebarWidth * scaleX, 0]);
                 } else {
-                    context.ui().onResize([-dx * scaleX, 0]);
+                    context.ui().resize([-dx * scaleX, 0]);
                 }
             }
         }
@@ -398,7 +398,7 @@ export function uiSidebar(context) {
                     return function(t) {
                         var dx = lastMargin - Math.round(i(t));
                         lastMargin = lastMargin - dx;
-                        context.ui().onResize(moveMap ? undefined : [dx * scaleX, 0]);
+                        context.ui().resize(moveMap ? undefined : [dx * scaleX, 0]);
                     };
                 })
                 .on('end', function() {
