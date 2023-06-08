@@ -78,10 +78,9 @@ export class ModeSelect extends AbstractMode {
 
       } else if (datum.__fbid__) {  // Rapid feature
         let service;
-        if (_datum.__service__ === 'esri') {
+        if (datum.__service__ === 'esri') {
           service = services.esriData;
-        } else if (_datum.__service__ === 'mapillary') {
-          annotation.type = 'mapillary_accept_feature';
+        } else if (datum.__service__ === 'mapillary') {
           service = services.mapillary;
         } else {
           service = services.fbMLRoads;

@@ -76,7 +76,7 @@ function setTags(node, mapillaryId) {
   let mlyTags = rapidTypes[node.value];
   let retObj = {};
 
-  for (key in mlyTags) {
+  for (let key in mlyTags) {
     retObj[key] = mlyTags[key];
   }
 
@@ -297,8 +297,8 @@ export default {
     _mlyActiveImage = null;
 
     if (_dataset) {
-        _dataset.graph = coreGraph();
-        _dataset.tree = coreTree(_dataset.graph);
+        _dataset.graph = new Graph();
+        _dataset.tree = new Tree(_dataset.graph);
         _dataset.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
     }
   },
