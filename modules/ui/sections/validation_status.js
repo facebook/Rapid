@@ -1,4 +1,4 @@
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
@@ -166,7 +166,7 @@ export function uiSectionValidationStatus(context) {
     window.requestIdleCallback(section.reRender);
   });
 
-  context.mapSystem().on('draw', _debounce(() => {
+  context.mapSystem().on('draw', debounce(() => {
     window.requestIdleCallback(section.reRender);
   }, 1000));
 

@@ -82,7 +82,7 @@ export function uiIntro(context, skipToRapid) {
     const urlhash = context.urlHashSystem();
 
     urlhash.disable();
-    context.inIntro(true);
+    context.inIntro = true;
     context.enter('browse');
 
     // Save current state
@@ -226,7 +226,7 @@ export function uiIntro(context, skipToRapid) {
         osm.toggle(true).reset();
       }
 
-      context.inIntro(false);
+      context.inIntro = false;
       urlhash.enable();
     });
 

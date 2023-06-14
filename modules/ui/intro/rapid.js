@@ -349,12 +349,12 @@ export function uiIntroRapid(context, curtain) {
     _rejectStep = null;
     _onModeChange = null;
 
-    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
+    context.on('modechange', _modeChangeListener);
 
     runAsync(welcomeAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })  // eslint-disable-line no-console
       .finally(() => {
-        context.on('enter.intro', null);                // d3-dispatch
+        context.off('modechange', _modeChangeListener);
       });
 
     function _modeChangeListener(mode) {

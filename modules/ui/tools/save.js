@@ -22,12 +22,12 @@ export function uiToolSave(context) {
   }
 
   function isDisabled() {
-    return _numChanges === 0 || context.inIntro() || isSaving();
+    return _numChanges === 0 || context.inIntro || isSaving();
   }
 
   function save(d3_event) {
     d3_event.preventDefault();
-    if (!context.inIntro() && !isSaving() && context.editSystem().hasChanges()) {
+    if (!context.inIntro && !isSaving() && context.editSystem().hasChanges()) {
       context.enter('save');
     }
   }
@@ -124,7 +124,7 @@ export function uiToolSave(context) {
 
     context.keybinding().on(key, save, true /* capture */);
     context.editSystem().on('change', updateCount);
-    context.on('enter.save', updateDisabled);
+    context.on('modechange', updateDisabled);
   };
 
 
@@ -133,7 +133,7 @@ export function uiToolSave(context) {
 
     context.keybinding().off(key, true /* capture */);
     context.editSystem().off('change', updateCount);
-    context.on('enter.save', null);
+    context.off('modechange', updateDisabled);
     _button = null;
     _tooltip = null;
   };

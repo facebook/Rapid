@@ -123,7 +123,7 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+        const textID = (context.lastPointerType === 'mouse') ? 'click' : 'tap';
         const startString = helpHtml(context, 'intro.buildings.start_building') +
           helpHtml(context, `intro.buildings.building_corner_${textID}`);
 
@@ -165,7 +165,7 @@ export function uiIntroBuilding(context, curtain) {
         }
       };
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+      const textID = (context.lastPointerType === 'mouse') ? 'click' : 'tap';
       const continueString = helpHtml(context, 'intro.buildings.continue_building') + '{br}' +
         helpHtml(context, `intro.areas.finish_area_${textID}`) + helpHtml(context, 'intro.buildings.finish_building');
 
@@ -301,7 +301,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
         _onEditChange = reject;  // disallow doing anything else
 
-        const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
+        const textID = (context.lastPointerType === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
           revealExtent: houseExtent,
           tipHtml: helpHtml(context, `intro.buildings.${textID}`)
@@ -453,7 +453,7 @@ export function uiIntroBuilding(context, curtain) {
         }
       };
 
-      const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
+      const textID = context.lastPointerType === 'mouse' ? 'click' : 'tap';
       const startString = helpHtml(context, 'intro.buildings.start_tank') +
         helpHtml(context, `intro.buildings.tank_edge_${textID}`);
 
@@ -484,7 +484,7 @@ export function uiIntroBuilding(context, curtain) {
         }
       };
 
-      const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
+      const textID = context.lastPointerType === 'mouse' ? 'click' : 'tap';
       const continueString = helpHtml(context, 'intro.buildings.continue_tank') + '{br}' +
         helpHtml(context, `intro.areas.finish_area_${textID}`) + helpHtml(context, 'intro.buildings.finish_tank');
 
@@ -585,7 +585,7 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       _onEditChange = reject;  // disallow doing anything else
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
+      const textID = (context.lastPointerType === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
       curtain.reveal({
         revealExtent: tankExtent,
         tipHtml: helpHtml(context, `intro.buildings.${textID}`)
@@ -695,16 +695,16 @@ export function uiIntroBuilding(context, curtain) {
     _onModeChange = null;
     _onEditChange = null;
 
-    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
-    mapSystem.on('move', _mapMoveListener);             // event-emitter
-    editSystem.on('change', _editChangeListener);       // event-emitter
+    context.on('modechange', _modeChangeListener);
+    mapSystem.on('move', _mapMoveListener);
+    editSystem.on('change', _editChangeListener);
 
     runAsync(addHouseAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
-        context.on('enter.intro', null);                // d3-dispatch
-        mapSystem.off('move', _mapMoveListener);        // event-emitter
-        editSystem.off('change', _editChangeListener);  // event-emitter
+        context.off('modechange', _modeChangeListener);
+        mapSystem.off('move', _mapMoveListener);
+        editSystem.off('change', _editChangeListener);
       });
 
     function _mapMoveListener() {

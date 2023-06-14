@@ -1,6 +1,6 @@
-import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
@@ -118,7 +118,7 @@ export function uiSectionOverlayList(context) {
     .on('imagerychange', () => section.reRender);
 
   context.mapSystem()
-    .on('draw', _debounce(() => {
+    .on('draw', debounce(() => {
       // layers in-view may have changed due to map move
       window.requestIdleCallback(section.reRender);
     }, 1000)

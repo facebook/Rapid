@@ -105,7 +105,7 @@ export function uiIntroArea(context, curtain) {
         }
       };
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+      const textID = (context.lastPointerType === 'mouse') ? 'click' : 'tap';
       const startDrawString = helpHtml(context, 'intro.areas.start_playground') +
         helpHtml(context, `intro.areas.starting_node_${textID}`);
 
@@ -159,7 +159,7 @@ export function uiIntroArea(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(searchPresetAsync);
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+      const textID = (context.lastPointerType === 'mouse') ? 'click' : 'tap';
       const finishString = helpHtml(context, `intro.areas.finish_area_${textID}`) +
         helpHtml(context, 'intro.areas.finish_playground');
 
@@ -433,14 +433,14 @@ export function uiIntroArea(context, curtain) {
     _onModeChange = null;
     _onEditChange = null;
 
-    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
-    editSystem.on('change', _editChangeListener);       // event-emitter
+    context.on('modechange', _modeChangeListener);
+    editSystem.on('change', _editChangeListener);
 
     runAsync(addAreaAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
-        context.on('enter.intro', null);                // d3-dispatch
-        editSystem.off('change', _editChangeListener);  // event-emitter
+        context.off('modechange', _modeChangeListener);
+        editSystem.off('change', _editChangeListener);
       });
 
     function _modeChangeListener(mode) {

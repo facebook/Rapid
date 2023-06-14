@@ -1,7 +1,5 @@
 export * from './lib/index';
 
-export { coreContext } from './context';
-
 import { AbstractSystem } from './AbstractSystem';
 import { DataLoaderSystem } from './DataLoaderSystem';
 import { EditSystem } from './EditSystem';

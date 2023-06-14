@@ -1,12 +1,12 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
 import { uiIcon } from './icon';
 
 
 export function uiContributors(context) {
     var osm = context.services.get('osm');
-    var debouncedUpdate = _debounce(function() { update(); }, 1000);
+    var debouncedUpdate = debounce(function() { update(); }, 1000);
     var limit = 4;
     var hidden = false;
     var wrap = d3_select(null);

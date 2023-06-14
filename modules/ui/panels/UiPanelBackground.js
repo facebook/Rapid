@@ -1,6 +1,6 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
+import debounce from 'lodash-es/debounce';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
 
@@ -30,9 +30,8 @@ export class UiPanelBackground extends AbstractUiPanel {
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.updateMetadata = this.updateMetadata.bind(this);
-
-    this._deferredRender = _debounce(this.render, 250);
-    this._deferredUpdateMetadata = _debounce(this.updateMetadata, 250);
+    this._deferredRender = debounce(this.render, 250);
+    this._deferredUpdateMetadata = debounce(this.updateMetadata, 250);
   }
 
 

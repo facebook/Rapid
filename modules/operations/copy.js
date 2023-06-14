@@ -48,12 +48,13 @@ export function operationCopy(context, selectedIDs) {
       }
     }
 
-    context.copyIDs(canCopy);
+    context.copyIDs = canCopy;
+
     if (_point && (canCopy.length !== 1 || graph.entity(canCopy[0]).type !== 'node')) {
       // store the anchor coordinates if copying more than a single node
-      context.copyLoc(context.projection.invert(_point));
+      context.copyLoc = context.projection.invert(_point);
     } else {
-      context.copyLoc(null);
+      context.copyLoc = null;
     }
   };
 

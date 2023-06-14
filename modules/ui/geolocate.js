@@ -22,7 +22,7 @@ export function uiGeolocate(context) {
 
 
   function click() {
-    if (context.inIntro()) return;
+    if (context.inIntro) return;
 
     if (!_enabled) {   // start geolocating
       _enabled = true;

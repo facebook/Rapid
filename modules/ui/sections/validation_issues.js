@@ -1,4 +1,4 @@
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 import { geoSphericalDistance } from '@rapid-sdk/math';
 
@@ -221,7 +221,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   });
 
   context.mapSystem().on('draw',
-    _debounce(() => {
+    debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;
         if (getOptions().where === 'visible') {  // must refetch issues if they are viewport-dependent

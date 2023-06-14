@@ -324,7 +324,7 @@ this.didRender = true;
       .attr('tabindex', -1)
       .call(uiRapidServiceLicense(context));
 
-    const apiConnections = context.apiConnections();
+    const apiConnections = context.apiConnections;
     if (apiConnections && apiConnections.length > 1) {
       aboutList
         .append('li')

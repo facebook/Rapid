@@ -94,7 +94,7 @@ export function operationOrthogonalize(context, selectedIDs) {
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
+      if (context.inIntro) return false;
       const osm = context.services.get('osm');
       if (osm) {
         const missing = coords.filter(loc => !osm.isDataLoaded(loc));

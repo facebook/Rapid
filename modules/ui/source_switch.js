@@ -10,7 +10,7 @@ export function uiSourceSwitch(context) {
     const osm = context.services.get('osm');
     if (!osm) return;
 
-    if (context.inIntro()) return;
+    if (context.inIntro) return;
     if (context.editSystem().hasChanges() && !window.confirm(context.t('source_switch.lose_changes'))) return;
 
     let isLive = d3_select(this)

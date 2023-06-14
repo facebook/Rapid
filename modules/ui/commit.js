@@ -77,16 +77,16 @@ export function uiCommit(context) {
     }
 
     // load in explicitly-set values, if any
-    if (context.defaultChangesetComment()) {
-      prefs.setItem('comment', context.defaultChangesetComment());
+    if (context.defaultChangesetComment) {
+      prefs.setItem('comment', context.defaultChangesetComment);
       prefs.setItem('commentDate', Date.now());
     }
-    if (context.defaultChangesetSource()) {
-      prefs.setItem('source', context.defaultChangesetSource());
+    if (context.defaultChangesetSource) {
+      prefs.setItem('source', context.defaultChangesetSource);
       prefs.setItem('commentDate', Date.now());
     }
-    if (context.defaultChangesetHashtags()) {
-      prefs.setItem('hashtags', context.defaultChangesetHashtags());
+    if (context.defaultChangesetHashtags) {
+      prefs.setItem('hashtags', context.defaultChangesetHashtags);
       prefs.setItem('commentDate', Date.now());
     }
 

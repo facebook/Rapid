@@ -1,5 +1,5 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
 
@@ -26,7 +26,7 @@ export class UiPanelLocation extends AbstractUiPanel {
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.updateLocation = this.updateLocation.bind(this);
-    this._deferredUpdateLocation = _debounce(this.updateLocation, 1000);  // no more than 1/sec
+    this._deferredUpdateLocation = debounce(this.updateLocation, 1000);  // no more than 1/sec
   }
 
 
