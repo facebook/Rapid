@@ -2,7 +2,7 @@ import { utilArrayDifference, utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/index';
 
 
@@ -140,7 +140,7 @@ export function operationStraighten(context, selectedIDs) {
   operation.id = 'straighten';
   operation.keys = [ context.t('operations.straighten.key') ];
   operation.title = context.t('operations.straighten.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

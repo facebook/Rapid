@@ -1,7 +1,7 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionReflect } from '../actions/reflect';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/util';
 
 
@@ -93,7 +93,7 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   operation.id = `reflect-${axis}`;
   operation.keys = [ context.t(`operations.reflect.key.${axis}`) ];
   operation.title = context.t(`operations.reflect.title.${axis}`);
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

@@ -2,7 +2,7 @@ import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { actionChangePreset } from '../actions';
 import { actionNoop } from '../actions/noop';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { modeSelect } from '../modes/select';
 
 let _wasSelectedIDs = [];
@@ -104,7 +104,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   operation.id = 'cycle_highway_tag';
   operation.keys = [ '⇧' + context.t('operations.cycle_highway_tag.key') ];
   operation.title = context.t('operations.cycle_highway_tag.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

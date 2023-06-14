@@ -1,5 +1,5 @@
 import { actionSplit } from '../actions/split';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { modeSelect } from '../modes/select';
 
 
@@ -98,7 +98,7 @@ export function operationSplit(context, selectedIDs) {
   operation.id = 'split';
   operation.keys = [ context.t('operations.split.key') ];
   operation.title = context.t('operations.split.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

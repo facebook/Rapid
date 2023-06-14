@@ -1,5 +1,5 @@
 import { actionChangeTags } from '../actions/change_tags';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { modeSelect } from '../modes/select';
 import { uiCmd } from '../ui/cmd';
 
@@ -131,7 +131,7 @@ export function operationDowngrade(context, selectedIDs) {
   operation.id = 'downgrade';
   operation.keys = [ uiCmd('⌫') ];
   operation.title = context.t('operations.downgrade.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

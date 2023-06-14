@@ -1,7 +1,7 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionOrthogonalize } from '../actions/orthogonalize';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
 
@@ -124,7 +124,7 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.id = 'orthogonalize';
   operation.keys = [ context.t('operations.orthogonalize.key') ];
   operation.title = context.t('operations.orthogonalize.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

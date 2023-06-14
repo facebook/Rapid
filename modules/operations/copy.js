@@ -1,6 +1,6 @@
 import { utilArrayGroupBy } from '@rapid-sdk/util';
 
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
 
@@ -132,7 +132,7 @@ export function operationCopy(context, selectedIDs) {
   operation.id = 'copy';
   operation.keys = [ uiCmd('⌘C') ];
   operation.title = context.t('operations.copy.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

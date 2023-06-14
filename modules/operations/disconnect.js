@@ -1,7 +1,7 @@
 import { utilArrayUniq, utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionDisconnect } from '../actions/disconnect';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/util';
 
 
@@ -217,7 +217,7 @@ export function operationDisconnect(context, selectedIDs) {
   operation.id = 'disconnect';
   operation.keys = [ context.t('operations.disconnect.key') ];
   operation.title = context.t('operations.disconnect.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

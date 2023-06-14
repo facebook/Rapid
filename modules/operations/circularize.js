@@ -1,7 +1,7 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionCircularize } from '../actions/circularize';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
 
@@ -102,7 +102,7 @@ export function operationCircularize(context, selectedIDs) {
   operation.id = 'circularize';
   operation.keys = [ context.t('operations.circularize.key') ];
   operation.title = context.t('operations.circularize.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

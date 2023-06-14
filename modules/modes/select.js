@@ -6,10 +6,6 @@ import {
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
-//import { behaviorLasso } from '../behaviors/lasso';
-//import { BehaviorHover } from '../behaviors/BehaviorHover';
-//import { BehaviorPaste } from '../behaviors/BehaviorPaste';
-//import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 import { geoChooseEdge } from '../geo';
 import { osmNode, osmWay } from '../osm';
 import * as Operations from '../operations/index';
