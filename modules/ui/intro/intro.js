@@ -72,16 +72,18 @@ export function uiIntro(context, skipToRapid) {
 
 
   function startIntro(selection) {
+    const edits = context.editSystem();
+    const imagery = context.imagerySystem();
+    const l10n = context.localizationSystem();
+    const mapwithai = context.services.get('mapwithai');
+    const osm = context.services.get('osm');
+    const prefs = context.storageSystem();
+    const rapid = context.rapidSystem();
+    const urlhash = context.urlHashSystem();
+
+    urlhash.disable();
     context.inIntro(true);
     context.enter('browse');
-
-    const l10n = context.localizationSystem();
-    const prefs = context.storageSystem();
-    const osm = context.services.get('osm');
-    const mapwithai = context.services.get('mapwithai');
-    const imagery = context.imagerySystem();
-    const rapid = context.rapidSystem();
-    const edits = context.editSystem();
 
     // Save current state
     const original = {
@@ -101,10 +103,9 @@ export function uiIntro(context, skipToRapid) {
         original.layersEnabled.add(layerID);
       }
     }
-    context.scene().onlyLayers(['background','osm','labels']);
+    context.scene().onlyLayers(['background', 'osm', 'labels']);
 
     // Show sidebar and disable the sidebar resizing button
-    // (this needs to be before `context.inIntro(true)`)
     context.ui().sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
@@ -226,6 +227,7 @@ export function uiIntro(context, skipToRapid) {
       }
 
       context.inIntro(false);
+      urlhash.enable();
     });
 
 

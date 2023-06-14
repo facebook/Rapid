@@ -4,30 +4,16 @@ import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
-import { DataLoaderSystem } from './DataLoaderSystem';
-import { EditSystem } from './EditSystem';
-import { FilterSystem } from './FilterSystem';
-import { ImagerySystem } from './ImagerySystem';
-import { LocalizationSystem } from './LocalizationSystem';
-import { LocationSystem } from './LocationSystem';
-import { MapSystem } from './MapSystem';
-import { Map3dSystem } from './Map3dSystem';
-import { PhotoSystem } from './PhotoSystem';
-import { PresetSystem } from './PresetSystem';
-import { RapidSystem } from './RapidSystem';
-import { StorageSystem } from './StorageSystem';
-import { UiSystem } from './UiSystem';
-import { UploaderSystem } from './UploaderSystem';
-import { UrlHashSystem } from './UrlHashSystem';
-import { ValidationSystem } from './ValidationSystem';
-
-import * as Behaviors from '../behaviors';
-import * as Modes from '../modes';
-import * as Services from '../services';
+import { behaviors } from '../behaviors';
+import { modes } from '../modes';
 import { modeSelect } from '../modes/select';   // legacy
+import { services } from '../services';
+import { systems } from './index';
 
 import { utilKeybinding, utilRebind } from '../util';
 
+const MINZOOM = 15;
+const TILESIZE = 256;
 
 
 export function coreContext() {
@@ -40,23 +26,37 @@ export function coreContext() {
   // `context.initialHashParams` is older, try to use `context.urlHashSystem()` instead
   context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
 
-  // Instantiate core systems
-  const _dataLoaderSystem = new DataLoaderSystem(context);
-  const _editSystem = new EditSystem(context);
-  const _filterSystem = new FilterSystem(context);
-  const _imagerySystem = new ImagerySystem(context);
-  const _localizationSystem = new LocalizationSystem(context);
-  const _locationSystem = new LocationSystem(context);
-  const _mapSystem = new MapSystem(context);
-  const _map3dSystem = new Map3dSystem(context);
-  const _photoSystem = new PhotoSystem(context);
-  const _presetSystem = new PresetSystem(context);
-  const _rapidSystem = new RapidSystem(context);
-  const _storageSystem = new StorageSystem(context);
-  const _uiSystem = new UiSystem(context);
-  const _uploaderSystem = new UploaderSystem(context);
-  const _urlHashSystem = new UrlHashSystem(context);
-  const _validationSystem = new ValidationSystem(context);
+  // "Systems" are the core components of Rapid.
+  context.systems = systems.instantiated;  // Map (systemID -> System)
+
+  // "Modes" are editing tasks that the user are allowed to perform.
+  // Each mode is exclusive, i.e only one mode can be active at a time.
+  context.modes = modes.instantiated;  // Map (modeID -> Mode)
+
+  // "Behaviors" are bundles of event handlers that we can
+  // enable and disable depending on what the user is doing.
+  context.behaviors = behaviors.instantiated;  // Map (behaviorID -> Behavior)
+
+  // "Services" are components that get data from other places
+  context.services = services.instantiated;  // Map (serviceID -> Service)
+
+
+  let _dataLoaderSystem;
+  let _editSystem;
+  let _filterSystem;
+  let _imagerySystem;
+  let _localizationSystem;
+  let _locationSystem;
+  let _mapSystem;
+  let _map3dSystem;
+  let _photoSystem;
+  let _presetSystem;
+  let _rapidSystem;
+  let _storageSystem;
+  let _uiSystem;
+  let _uploaderSystem;
+  let _urlHashSystem;
+  let _validationSystem;
 
   context.dataLoaderSystem = () => _dataLoaderSystem;
   context.editSystem = () => _editSystem;
@@ -76,72 +76,6 @@ export function coreContext() {
   context.uploaderSystem = () => _uploaderSystem;
   context.urlHashSystem = () => _urlHashSystem;
   context.validationSystem = () => _validationSystem;
-
-  /* EditSystem */
-  context.graph = _editSystem.graph;
-  context.hasEntity = (id) => _editSystem.graph().hasEntity(id);
-  context.entity = (id) => _editSystem.graph().entity(id);
-  context.pauseChangeDispatch = _editSystem.pauseChangeDispatch;
-  context.resumeChangeDispatch = _editSystem.resumeChangeDispatch;
-  context.perform = withDebouncedSave(_editSystem.perform);
-  context.replace = withDebouncedSave(_editSystem.replace);
-  context.pop = withDebouncedSave(_editSystem.pop);
-  context.overwrite = withDebouncedSave(_editSystem.overwrite);
-  context.undo = withDebouncedSave(_editSystem.undo);
-  context.redo = withDebouncedSave(_editSystem.redo);
-
-  /* LocalizationSystem */
-  context.t = _localizationSystem.t;
-  context.tHtml = _localizationSystem.tHtml;
-  context.tAppend = _localizationSystem.tAppend;
-
-  /* FilterSystem */
-  context.hasHiddenConnections = (entityID) => {
-    const graph = _editSystem.graph();
-    const entity = graph.entity(entityID);
-    return _filterSystem.hasHiddenConnections(entity, graph);
-  };
-
-  /* MapSystem */
-  context.deferredRedraw = _mapSystem.deferredRedraw;
-  context.immediateRedraw = _mapSystem.immediateRedraw;
-  context.scene = () => _mapSystem.scene;
-  context.surface = () => _mapSystem.surface;
-  context.surfaceRect = () => _mapSystem.surface.node().getBoundingClientRect();
-  context.editable = () => {
-    const mode = context._currMode;
-    if (!mode || mode.id === 'save') return false;      // don't allow editing during save
-    return true;  // _mapSystem.editableDataEnabled();  // todo: disallow editing if OSM layer is off
-  };
-
-  // "Modes" are editing tasks that the user are allowed to perform.
-  // Each mode is exclusive, i.e only one mode can be active at a time.
-  context.modes = new Map();  // Map (mode.id -> Mode)
-  for (const [name, Mode] of Object.entries(Modes)) {
-    if (name === 'modeSelect' || name === 'modeDragNote') continue;  // legacy
-    const mode = new Mode(context);
-    context.modes.set(mode.id, mode);
-  }
-
-  // "Behaviors" are bundles of event handlers that we can
-  // enable and disable depending on what the user is doing.
-  context.behaviors = new Map();  // Map (behavior.id -> behavior)
-  for (const [name, Behavior] of Object.entries(Behaviors)) {
-    if (name === 'KeyOperationBehavior') continue;   // this one won't work
-    const behavior = new Behavior(context);
-    context.behaviors.set(behavior.id, behavior);
-  }
-
-
-  // "Services" are components that get data from other places
-  context.services = new Map();  // Map (service.id -> Service)
-  if (!window.mocha) {
-    for (const Service of Object.values(Services)) {
-      const service = new Service(context);
-      context.services.set(service.id, service);
-    }
-  }
-
 
 
   let _defaultChangesetComment = context.initialHashParams.comment;
@@ -228,9 +162,6 @@ export function coreContext() {
 
 
   context.loadTiles = (projection, callback) => {
-    const MINZOOM = 15;
-    const TILESIZE = 256;
-
     const osm = context.services.get('osm');
     if (!osm) return;
 
@@ -321,17 +252,7 @@ export function coreContext() {
   let _inIntro = false;
   context.inIntro = function(val) {
     if (!arguments.length) return _inIntro;
-
     _inIntro = val;
-
-    if (_urlHashSystem) {
-      if (val) {
-        _urlHashSystem.disable();
-      } else {
-        _urlHashSystem.enable();
-      }
-    }
-    return context;
   };
 
 
@@ -485,7 +406,7 @@ export function coreContext() {
       enableIDs = new Set([].concat(enableIDs));  // coax ids into a Set
     }
 
-    context.behaviors.forEach((behavior, behaviorID) => {
+    for (const [behaviorID, behavior] of context.behaviors) {
       if (enableIDs.has(behaviorID)) {  // should be enabled
         if (!behavior.enabled) {
           behavior.enable();
@@ -495,30 +416,8 @@ export function coreContext() {
           behavior.disable();
         }
       }
-    });
+    }
   };
-
-  context.install = () => {
-    console.error('deprecated: do not call context.install anymore');   // eslint-disable-line no-console
-  };
-  context.uninstall = () => {
-    console.error('deprecated: do not call context.uninstall anymore');   // eslint-disable-line no-console
-  };
-//old redo on every mode change
-//  context.install = (behavior) => {
-//    if (typeof behavior.enable === 'function') {
-//      behavior.enable();
-//    }
-//  };
-//  context.uninstall = (behavior) => {
-//    if (typeof behavior.disable === 'function') {
-//      behavior.disable();
-//    }
-//  };
-//  // context.install = (behavior) =>  { return; };
-//  // context.uninstall = (behavior) => { return; };
-//  // context.install = (behavior) => context.surface().call(behavior);
-//  // context.uninstall = (behavior) => context.surface().call(behavior.off);
 
 
   /* Copy/Paste */
@@ -539,7 +438,6 @@ export function coreContext() {
     _copyLoc = val;
     return context;
   };
-
 
 
   /* Debug */
@@ -616,8 +514,92 @@ export function coreContext() {
 
   /* Init */
   context.init = () => {
+    instantiateAll();
     initializeAll();
     return context;
+
+
+    // Instantiate all the core classes
+    // These are dynamic and should be safe to instantiate in any order.
+    function instantiateAll() {
+
+      for (const [systemID, System] of systems.available) {
+        const mode = new System(context);
+        systems.instantiated.set(systemID, mode);
+      }
+
+      // Connect the wires
+      _dataLoaderSystem = context.systems.get('data');
+      _editSystem = context.systems.get('edits');
+      _filterSystem = context.systems.get('filters');
+      _imagerySystem = context.systems.get('imagery');
+      _localizationSystem = context.systems.get('l10n');
+      _locationSystem = context.systems.get('locations');
+      _mapSystem = context.systems.get('map');
+      _map3dSystem = context.systems.get('map3d');
+      _photoSystem = context.systems.get('photos');
+      _presetSystem = context.systems.get('presets');
+      _rapidSystem = context.systems.get('rapid');
+      _storageSystem = context.systems.get('storage');
+      _uiSystem = context.systems.get('ui');
+      _uploaderSystem = context.systems.get('uploader');
+      _urlHashSystem = context.systems.get('urlhash');
+      _validationSystem = context.systems.get('validator');
+
+      /* EditSystem */
+      context.graph = _editSystem.graph;
+      context.hasEntity = (id) => _editSystem.graph().hasEntity(id);
+      context.entity = (id) => _editSystem.graph().entity(id);
+      context.pauseChangeDispatch = _editSystem.pauseChangeDispatch;
+      context.resumeChangeDispatch = _editSystem.resumeChangeDispatch;
+      context.perform = withDebouncedSave(_editSystem.perform);
+      context.replace = withDebouncedSave(_editSystem.replace);
+      context.pop = withDebouncedSave(_editSystem.pop);
+      context.overwrite = withDebouncedSave(_editSystem.overwrite);
+      context.undo = withDebouncedSave(_editSystem.undo);
+      context.redo = withDebouncedSave(_editSystem.redo);
+
+      /* LocalizationSystem */
+      context.t = _localizationSystem.t;
+      context.tHtml = _localizationSystem.tHtml;
+      context.tAppend = _localizationSystem.tAppend;
+
+      /* FilterSystem */
+      context.hasHiddenConnections = (entityID) => {
+        const graph = _editSystem.graph();
+        const entity = graph.entity(entityID);
+        return _filterSystem.hasHiddenConnections(entity, graph);
+      };
+
+      /* MapSystem */
+      context.deferredRedraw = _mapSystem.deferredRedraw;
+      context.immediateRedraw = _mapSystem.immediateRedraw;
+      context.scene = () => _mapSystem.scene;
+      context.surface = () => _mapSystem.surface;
+      context.surfaceRect = () => _mapSystem.surface.node().getBoundingClientRect();
+      context.editable = () => {
+        const mode = context._currMode;
+        if (!mode || mode.id === 'save') return false;      // don't allow editing during save
+        return true;  // _mapSystem.editableDataEnabled();  // todo: disallow editing if OSM layer is off
+      };
+
+      for (const [modeID, Mode] of modes.available) {
+        const mode = new Mode(context);
+        modes.instantiated.set(modeID, mode);
+      }
+
+      for (const [behaviorID, Behavior] of behaviors.available) {
+        const behavior = new Behavior(context);
+        behaviors.instantiated.set(behaviorID, behavior);
+      }
+
+      if (!window.mocha) {
+        for (const [serviceID, Service] of services.available) {
+          const service = new Service(context);
+          services.instantiated.set(serviceID, service);
+        }
+      }
+    }
 
 
     // Initialize core systems
@@ -676,19 +658,17 @@ export function coreContext() {
   };
 
 
-  /* Reset (aka flush) */
-  context.reset = context.flush = () => {
+  /* Reset */
+  context.reset = () => {
     context.debouncedSave.cancel();
 
     for (const service of context.services.values()) {
       service.reset();
     }
 
-    _editSystem.reset();
-    _filterSystem.reset();
-    _rapidSystem.reset();
-    _uploaderSystem.reset();
-    _validationSystem.reset();
+    for (const system of context.systems.values()) {
+      system.reset();
+    }
 
     // don't leave stale state in the inspector
     context.container().select('.inspector-wrap *').remove();

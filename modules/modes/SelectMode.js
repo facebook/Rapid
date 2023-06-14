@@ -31,8 +31,8 @@ export class SelectMode extends AbstractMode {
   constructor(context) {
     super(context);
     this.id = 'select';
-    this.keybinding = null;
 
+    this.keybinding = null;
     this.extent = null;
   }
 
