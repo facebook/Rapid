@@ -1,9 +1,9 @@
-import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 
+import { AbstractService } from './AbstractService';
 import { Graph, Tree } from '../core/lib';
 import { osmNode, osmRelation, osmWay } from '../osm';
 
@@ -20,14 +20,14 @@ const TILEZOOM = 14;
  * Events available:
  *   `loadedData`
  */
-export class EsriService extends EventEmitter {
+export class EsriService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'esri';
     this.context = context;
 

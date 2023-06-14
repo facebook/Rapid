@@ -1,4 +1,3 @@
-import { EventEmitter } from '@pixi/utils';
 import { json as d3_json, xml as d3_xml } from 'd3-fetch';
 import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
@@ -6,6 +5,7 @@ import _throttle from 'lodash-es/throttle';
 import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';
 
+import { AbstractService } from './AbstractService';
 import { JXON } from '../util/jxon';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
 
@@ -22,16 +22,15 @@ import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
  *   'loaded'
  *   'loadedNotes'
  */
-export class OsmService extends EventEmitter {
+export class OsmService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'osm';
-    this.context = context;
 
     // Some defaults that we will replace with whatever we fetch from the OSM API capabilities result.
     this._maxWayNodes = 2000;

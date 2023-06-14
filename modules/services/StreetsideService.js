@@ -1,4 +1,3 @@
-import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
@@ -6,6 +5,7 @@ import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPo
 import { utilArrayUnion, utilQsString, utilUniqueString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
+import { AbstractService } from './AbstractService';
 import { jsonpRequest } from '../util/jsonp_request';
 
 const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
@@ -20,16 +20,15 @@ const TILEZOOM = 16.5;
  *   'loadedData'
  *   'viewerChanged'
  */
-export class StreetsideService extends EventEmitter {
+export class StreetsideService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'streetside';
-    this.context = context;
 
     this._hires = false;
     this._resolution = 512;    // higher numbers are slower - 512, 1024, 2048, 4096

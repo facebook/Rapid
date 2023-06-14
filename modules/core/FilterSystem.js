@@ -1,6 +1,6 @@
-import { EventEmitter } from '@pixi/utils';
 import { utilArrayGroupBy, utilArrayUnion } from '@rapid-sdk/util';
 
+import { AbstractSystem } from './AbstractSystem';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';
 
 
@@ -53,15 +53,14 @@ class FilterRule {
  * Events available:
  *   `filterchange`
  */
-export class FilterSystem extends EventEmitter {
+export class FilterSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  context  Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this._rules = new Map();          // Map(rulekey -> rule)
     this._hidden = new Set();         // Set(rulekey) to hide

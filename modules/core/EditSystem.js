@@ -1,8 +1,8 @@
-import { EventEmitter } from '@pixi/utils';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
 
+import { AbstractSystem } from './AbstractSystem';
 import { Difference, Graph, Tree } from './lib';
 import { osmEntity } from '../osm/entity';
 import { uiLoading } from '../ui/loading';
@@ -23,15 +23,14 @@ const DURATION = 150;
  *   'redone'
  *   'storage_error'
  */
-export class EditSystem extends EventEmitter {
+export class EditSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this._mutex = utilSessionMutex('lock');
     this._hasRestorableChanges = false;

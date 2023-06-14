@@ -1,14 +1,8 @@
-import { EventEmitter } from '@pixi/utils';
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
-import {
-  ImagerySource,
-  ImagerySourceBing,
-  ImagerySourceCustom,
-  ImagerySourceEsri,
-  ImagerySourceNone
-} from './lib/ImagerySource';
+import { AbstractSystem } from './AbstractSystem';
+import { ImagerySource, ImagerySourceBing, ImagerySourceCustom, ImagerySourceEsri, ImagerySourceNone } from './lib/ImagerySource';
 
 
 /**
@@ -25,15 +19,14 @@ import {
  * Events available:
  *   `imagerychange`     Fires on any change in imagery or display options
  */
-export class ImagerySystem extends EventEmitter {
+export class ImagerySystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this._initPromise = null;
     this._imageryIndex = null;

@@ -1,16 +1,17 @@
+import { AbstractSystem } from './AbstractSystem';
 
 /**
  * `StorageSystem` is a wrapper around `window.localStorage`
  * (or whatever we replace it with)
  */
-export class StorageSystem {
+export class StorageSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  context  Global shared application context
    */
   constructor(context) {
-    this.context = context;
+    super(context);
     this._storage = null;
 
     // Note that accessing localStorage may throw a `SecurityError`, so wrap in a try/catch.
@@ -26,15 +27,6 @@ export class StorageSystem {
         clear: () => this._mock.clear()
       };
     }
-  }
-
-
-  /**
-   * init
-   * Called one time after all core objects have been instantiated.
-   */
-  init() {
-    /* noop */
   }
 
 

@@ -2,19 +2,21 @@ import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
+import { AbstractService } from './AbstractService';
+
 
 /**
  * `OsmWikibaseService`
  */
-export class OsmWikibaseService {
+export class OsmWikibaseService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super(context);
     this.id = 'osmwikibase';
-    this.context = context;
     this.apibase = 'https://wiki.openstreetmap.org/w/api.php';
 
     this._inflight = {};

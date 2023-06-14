@@ -1,9 +1,10 @@
-import { EventEmitter } from '@pixi/utils';
 import LocationConflation from '@rapideditor/location-conflation';
 import whichPolygon from 'which-polygon';
 import calcArea from '@mapbox/geojson-area';
 
-const _loco = new LocationConflation();    // instance of a location-conflation resolver
+import { AbstractSystem } from './AbstractSystem';
+
+const LOCO = new LocationConflation();    // shared instance of a location-conflation resolver
 
 
 /**
@@ -23,7 +24,7 @@ const _loco = new LocationConflation();    // instance of a location-conflation 
  * Events available:
  *   `locationchange`  Fires on any change in the location index
  */
-export class LocationSystem extends EventEmitter {
+export class LocationSystem extends AbstractSystem {
 
 /**
  * @typedef {Object} LocationSet
@@ -35,8 +36,7 @@ export class LocationSystem extends EventEmitter {
    * @param  context  Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this._wp = null;                        // A which-polygon index
     this._resolved = new Map();             // Map (id -> GeoJSON feature)
@@ -71,15 +71,6 @@ export class LocationSystem extends EventEmitter {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
-   */
-  init() {
-    /* noop */
-  }
-
-
-  /**
    * _validateLocationSet
    * Pass an Object with a `locationSet` property.
    * Validates the `locationSet` and sets a `locationSetID` property on the object.
@@ -104,7 +95,7 @@ export class LocationSystem extends EventEmitter {
 
       // Validate the locationSet only
       // Resolve the include/excludes
-      const locationSetID = _loco.validateLocationSet(locationSet).id;
+      const locationSetID = LOCO.validateLocationSet(locationSet).id;
       obj.locationSetID = locationSetID;
       if (this._knownLocationSets.has(locationSetID)) return;   // seen one like this before
 
@@ -112,11 +103,11 @@ export class LocationSystem extends EventEmitter {
 
       // Resolve and index the 'includes'
       (locationSet.include || []).forEach(location => {
-        const locationID = _loco.validateLocation(location).id;
+        const locationID = LOCO.validateLocation(location).id;
         let geojson = this._resolved.get(locationID);
 
         if (!geojson) {    // first time seeing a location like this
-          geojson = _loco.resolveLocation(location).feature;     // resolve to GeoJSON
+          geojson = LOCO.resolveLocation(location).feature;     // resolve to GeoJSON
           this._resolved.set(locationID, geojson);
         }
         area += geojson.properties.area;
@@ -131,11 +122,11 @@ export class LocationSystem extends EventEmitter {
 
       // Resolve and index the 'excludes'
       (locationSet.exclude || []).forEach(location => {
-        const locationID = _loco.validateLocation(location).id;
+        const locationID = LOCO.validateLocation(location).id;
         let geojson = this._resolved.get(locationID);
 
         if (!geojson) {    // first time seeing a location like this
-          geojson = _loco.resolveLocation(location).feature;     // resolve to GeoJSON
+          geojson = LOCO.resolveLocation(location).feature;     // resolve to GeoJSON
           this._resolved.set(locationID, geojson);
         }
         area -= geojson.properties.area;
@@ -172,7 +163,7 @@ export class LocationSystem extends EventEmitter {
     if (this._resolved.has(obj.locationSetID)) return;  // work was done already
 
     try {
-      const result = _loco.resolveLocationSet(obj.locationSet);
+      const result = LOCO.resolveLocationSet(obj.locationSet);
       const locationSetID = result.id;
       obj.locationSetID = locationSetID;
 
@@ -242,7 +233,7 @@ export class LocationSystem extends EventEmitter {
         props.area = Number(area.toFixed(2));
       }
 
-      _loco._cache[id] = feature;   // insert directly into LocationConflations internal cache
+      LOCO._cache[id] = feature;   // insert directly into LocationConflations internal cache
     });
   }
 
@@ -285,7 +276,7 @@ export class LocationSystem extends EventEmitter {
   locationSetID(locationSet) {
     let locationSetID;
     try {
-      locationSetID = _loco.validateLocationSet(locationSet).id;
+      locationSetID = LOCO.validateLocationSet(locationSet).id;
     } catch (err) {
       locationSetID = '+[Q2]';  // the world
     }
@@ -389,7 +380,7 @@ export class LocationSystem extends EventEmitter {
 
   // Direct access to the location-conflation resolver
   loco() {
-    return _loco;
+    return LOCO;
   }
 
   // Direct access to the "blocks" which-polygon index

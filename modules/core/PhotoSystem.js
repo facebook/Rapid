@@ -1,4 +1,4 @@
-import { EventEmitter } from '@pixi/utils';
+import { AbstractSystem } from './AbstractSystem';
 
 
 /**
@@ -13,15 +13,14 @@ import { EventEmitter } from '@pixi/utils';
  * Events available:
  *   `photochange`       Fires on any change in photo display or filtering options
  */
-export class PhotoSystem extends EventEmitter {
+export class PhotoSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this._LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
     this._PHOTOTYPES = ['flat', 'panoramic'];

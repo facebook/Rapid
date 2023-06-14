@@ -1,6 +1,6 @@
-import { EventEmitter } from '@pixi/utils';
 import { utilArrayUnion, utilArrayUniq } from '@rapid-sdk/util';
 
+import { AbstractSystem } from './AbstractSystem';
 import { actionDiscardTags } from '../actions/discard_tags';
 import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
 import { actionNoop } from '../actions/noop';
@@ -26,15 +26,14 @@ import { Graph } from './lib';
  *   'resultConflicts'   // upload failed due to data conflicts
  *   'resultSuccess'     // upload completed without errors
  */
-export class UploaderSystem extends EventEmitter {
+export class UploaderSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
     this.changeset = null;    // uiCommit will create it
 
     this._origChanges = null;

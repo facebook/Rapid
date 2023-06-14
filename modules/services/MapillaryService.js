@@ -1,9 +1,10 @@
-import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
 import { Extent, Tiler } from '@rapid-sdk/math';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
+
+import { AbstractService } from './AbstractService';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -26,16 +27,15 @@ const minZoom = 14;
  *   `loadedSigns`
  *   `loadedMapFeatures`
  */
-export class MapillaryService extends EventEmitter {
+export class MapillaryService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'mapillary';
-    this.context = context;
 
     this._loadViewerPromise = null;
     this._mlyActiveImage = null;

@@ -1,5 +1,6 @@
 import { utilArrayUniq } from '@rapid-sdk/util';
 
+import { AbstractSystem } from './AbstractSystem';
 import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
 import { Category, Collection, Field, Preset } from './lib';
 import { uiFields } from '../ui/fields';
@@ -12,14 +13,14 @@ const MAXRECENTS_SHOW = 6;   // how many recents to show on the preset list
 /**
  * `PresetSystem` maintains an internal index of all the presets, fields, and categories.
  */
-export class PresetSystem {
+export class PresetSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  context  Global shared application context
    */
   constructor(context) {
-    this.context = context;
+    super(context);
     this.geometries = ['point', 'vertex', 'line', 'area', 'relation'];
 
     // Create geometry fallbacks

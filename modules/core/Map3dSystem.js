@@ -1,5 +1,7 @@
 import { Map as MapLibre } from 'maplibre-gl';
 
+import { AbstractSystem } from './AbstractSystem';
+
 const SELECTION_COLOR = '#01d4fa';
 
 
@@ -7,14 +9,14 @@ const SELECTION_COLOR = '#01d4fa';
  * `Map3dSystem` wraps an instance of MapLibre viewer
  * and maintains the map state and style specification.
  */
-export class Map3dSystem {
+export class Map3dSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    this.context = context;
+    super(context);
     this.containerID = '3d-buildings';
 
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');

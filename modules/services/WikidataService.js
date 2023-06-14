@@ -1,31 +1,27 @@
 import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 
+import { AbstractService } from './AbstractService';
+
 const WIKIDATA_API = 'https://www.wikidata.org/w/api.php?';
 
 
 /**
  * `WikidataService`
  */
-export class WikidataService {
+export class WikidataService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super(context);
     this.id = 'wikidata';
-    this.context = context;
 
     this._cache = new Map();  // Map(qid -> entitydata)
   }
 
-  /**
-   * init
-   * Called one time after all core objects have been instantiated.
-   */
-  init() {
-  }
 
   /**
    * reset

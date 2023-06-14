@@ -8,7 +8,8 @@ import { AbstractBehavior } from './AbstractBehavior';
 const nudgeFactor = 0.1;
 
 /**
- * `MapNudgingBehavior` listens to pointer events and converts those into small map panning 'nudges' when the pointer nears the edge of the screen
+ * `MapNudgingBehavior` listens to pointer events and converts those into small
+ *  map panning 'nudges' when the pointer nears the edge of the screen
  *  useful during drawing modes
  *
  * Properties available:

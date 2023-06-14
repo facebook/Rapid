@@ -1,7 +1,7 @@
-import { EventEmitter } from '@pixi/utils';
 import { Extent } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@rapid-sdk/util';
 
+import { AbstractSystem } from './AbstractSystem';
 import { Difference } from './lib/Difference';
 import { modeSelect } from '../modes/select';
 import * as Validations from '../validations/index';
@@ -11,16 +11,18 @@ const RETRY = 5000;             // wait 5sec before revalidating provisional ent
 
 /**
  * `ValidationSystem`
+ *
+ * Events available:
+ *   `validated`     Fires after some validation has occurred
  */
-export class ValidationSystem extends EventEmitter {
+export class ValidationSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  context  Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this._rules = new Map();    // Map(ruleID -> validator)
     this._base = new ValidationCache('base');   // issues before any user edits
