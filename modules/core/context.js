@@ -127,7 +127,7 @@ export function coreContext() {
   // enable and disable depending on what the user is doing.
   context.behaviors = new Map();  // Map (behavior.id -> behavior)
   for (const [name, Behavior] of Object.entries(Behaviors)) {
-    if (name === 'BehaviorKeyOperation') continue;   // this one won't work
+    if (name === 'KeyOperationBehavior') continue;   // this one won't work
     const behavior = new Behavior(context);
     context.behaviors.set(behavior.id, behavior);
   }

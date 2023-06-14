@@ -7,7 +7,7 @@ import { modeSelect } from '../modes/select';
 import { uiCmd } from '../ui/cmd';
 
 
-// see also `BehaviorPaste`
+// see also `PasteBehavior`
 export function operationPaste(context) {
   let _pastePoint;
 

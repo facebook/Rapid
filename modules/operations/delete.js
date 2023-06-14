@@ -2,7 +2,7 @@ import { geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionDeleteMultiple } from '../actions/delete_multiple';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { modeSelect } from '../modes/select';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
@@ -154,7 +154,7 @@ export function operationDelete(context, selectedIDs) {
   operation.id = 'delete';
   operation.keys = [ uiCmd('⌘⌫'), uiCmd('⌘⌦'), uiCmd('⌦') ];
   operation.title = context.t('operations.delete.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

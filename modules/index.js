@@ -16,10 +16,9 @@ export * from './ui/index';
 export * from './util/index';
 export * from './validations/index';
 
-// Reexport just what our tests use, see #4379
+// Reexport only what our tests use, see iD#4379
 import * as D3 from 'd3';
 export const d3 = {
-  dispatch:  D3.dispatch,
   polygonArea: D3.polygonArea,
   polygonCentroid: D3.polygonCentroid,
   select: D3.select,

@@ -3,7 +3,7 @@ import { actionMerge } from '../actions/merge';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionMergePolygon } from '../actions/merge_polygon';
 
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { modeSelect } from '../modes/select';
 
 
@@ -99,7 +99,7 @@ export function operationMerge(context, selectedIDs) {
   operation.id = 'merge';
   operation.keys = [ context.t('operations.merge.key') ];
   operation.title = context.t('operations.merge.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

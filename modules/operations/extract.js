@@ -3,7 +3,7 @@ import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionExtract } from '../actions/extract';
 import { actionMove } from '../actions/move';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
 
@@ -102,7 +102,7 @@ export function operationExtract(context, selectedIDs) {
   operation.id = 'extract';
   operation.keys = [ context.t('operations.extract.key') ];
   operation.title = context.t('operations.extract.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

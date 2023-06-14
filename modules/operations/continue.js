@@ -1,6 +1,6 @@
 import { utilArrayGroupBy } from '@rapid-sdk/util';
 
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationContinue(context, selectedIDs) {
@@ -70,7 +70,7 @@ export function operationContinue(context, selectedIDs) {
   operation.id = 'continue';
   operation.keys = [ context.t('operations.continue.key') ];
   operation.title = context.t('operations.continue.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

@@ -1,5 +1,5 @@
 import { actionReverse } from '../actions/reverse';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationReverse(context, selectedIDs) {
@@ -72,7 +72,7 @@ export function operationReverse(context, selectedIDs) {
   operation.id = 'reverse';
   operation.keys = [ context.t('operations.reverse.key') ];
   operation.title = context.t('operations.reverse.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

@@ -1,6 +1,6 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/util';
 
 
@@ -86,7 +86,7 @@ export function operationRotate(context, selectedIDs) {
   operation.id = 'rotate';
   operation.keys = [ context.t('operations.rotate.key') ];
   operation.title = context.t('operations.rotate.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   operation.mouseOnly = true;
 
