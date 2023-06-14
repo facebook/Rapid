@@ -105,7 +105,7 @@ export class ImagerySystem extends AbstractSystem {
    */
   updateImagery() {
     const baseLayer = this._baseLayer;
-    if (this.context.inIntro() || !baseLayer) return;
+    if (this.context.inIntro || !baseLayer) return;
 
     let imageryUsed = [];
     let overlayIDs = [];

@@ -144,7 +144,7 @@ export class PixiRenderer extends EventEmitter {
     this.textures = _sharedTextures;
 
     // Event listeners to respond to any changes in selection or hover
-    context.on('enter.PixiRenderer', this._onSelectChange);
+    context.on('modechange', this._onSelectChange);
     context.behaviors.get('hover').on('hoverchanged', this._onHoverChange);
   }
 

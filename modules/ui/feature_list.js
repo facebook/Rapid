@@ -52,7 +52,7 @@ export function uiFeatureList(context) {
       .attr('class', 'feature-list');
 
     context
-      .on('exit.feature-list', clearSearch);
+      .on('modechange', clearSearch);
 //    context.mapSystem()
 //     .on('drawn.feature-list', mapDrawn);
 

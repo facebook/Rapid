@@ -1,5 +1,5 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
@@ -12,6 +12,7 @@ export function uiToolUndoRedo(context) {
 
   let _buttons = null;
   let _tooltip = null;
+  let debouncedUpdate;
 
   let tool = {
     id: 'undo_redo',
@@ -48,9 +49,6 @@ export function uiToolUndoRedo(context) {
         }
       });
   }
-
-
-  let debouncedUpdate;
 
 
   tool.install = function(selection) {
@@ -116,7 +114,7 @@ export function uiToolUndoRedo(context) {
     });
 
 
-    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+    debouncedUpdate = debounce(update, 500, { leading: true, trailing: true });
 
     for (const command of commands) {
       context.keybinding().on(command.key, d3_event => {
@@ -127,7 +125,7 @@ export function uiToolUndoRedo(context) {
 
     context.mapSystem().on('draw', debouncedUpdate);
     context.editSystem().on('change', changed);
-    context.on('enter.undo_redo', update);
+    context.on('modechange', update);
   };
 
 
@@ -138,9 +136,10 @@ export function uiToolUndoRedo(context) {
       context.keybinding().off(command.key);
     }
 
+    debouncedUpdate.cancel();
     context.mapSystem().off('draw', debouncedUpdate);
     context.editSystem().off('change', changed);
-    context.on('enter.undo_redo', null);
+    context.off('modechange', update);
     _tooltip = null;
     _buttons = null;
   };

@@ -1,4 +1,4 @@
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -34,7 +34,7 @@ export function uiSectionReactContainer(context) {
 
 
   context.mapSystem()
-    .on('draw', _debounce(() => {
+    .on('draw', debounce(() => {
         reRenderCount++;
         window.requestIdleCallback(section.reRender);
       }, 1000)

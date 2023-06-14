@@ -92,7 +92,7 @@ export function uiIntroNavigation(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         const centerStart = mapSystem.center();
-        const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
+        const textID = context.lastPointerType === 'mouse' ? 'drag' : 'drag_touch';
         const dragString = helpHtml(context, 'intro.navigation.map_info') + '{br}' + helpHtml(context, `intro.navigation.${textID}`);
 
         _onMapMove = () => {
@@ -118,7 +118,7 @@ export function uiIntroNavigation(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       const zoomStart = mapSystem.zoom();
-      const textID = context.lastPointerType() === 'mouse' ? 'zoom' : 'zoom_touch';
+      const textID = context.lastPointerType === 'mouse' ? 'zoom' : 'zoom_touch';
       const zoomString = helpHtml(context, `intro.navigation.${textID}`);
 
       _onMapMove = () => {
@@ -200,7 +200,7 @@ export function uiIntroNavigation(context, curtain) {
 
         _onModeChange = () => resolve(selectedTownHallAsync);
 
-        const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
+        const textID = context.lastPointerType === 'mouse' ? 'click_townhall' : 'tap_townhall';
         curtain.reveal({
           revealExtent: townHallExtent,
           tipHtml: helpHtml(context, `intro.navigation.${textID}`)
@@ -489,14 +489,14 @@ export function uiIntroNavigation(context, curtain) {
     _onMapMove = null;
     _onModeChange = null;
 
-    context.on('enter.intro', _modeChangeListener);   // d3-dispatch
-    mapSystem.on('move', _mapMoveListener);           // event-emitter
+    context.on('modechange', _modeChangeListener);
+    mapSystem.on('move', _mapMoveListener);
 
     runAsync(dragMapAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
-        context.on('enter.intro', null);              // d3-dispatch
-        mapSystem.off('move', _mapMoveListener);      // event-emitter
+        context.off('modechange', _modeChangeListener);
+        mapSystem.off('move', _mapMoveListener);
       });
 
     function _mapMoveListener() {

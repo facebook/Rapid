@@ -238,7 +238,7 @@ export function uiMap3dViewer(context) {
 //    context.mapSystem().on('draw', () => redraw());
 //    context.mapSystem().on('move', () => redraw());
 //    context.editSystem().on('change', () => featuresToGeoJSON());
-//    context.on('enter.3dmap', () => featuresToGeoJSON());
+//    context.on('modechange', () => featuresToGeoJSON());
 //    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
 
     redraw();

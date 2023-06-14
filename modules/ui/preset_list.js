@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 
 import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
@@ -61,7 +61,7 @@ export function uiPresetList(context) {
             .call(utilNoAuto)
             .on('keydown', initialKeydown)
             .on('keypress', keypress)
-            .on('input', _debounce(inputevent));
+            .on('input', debounce(inputevent));
 
         if (_autofocus) {
             search.node().focus();
@@ -80,7 +80,7 @@ export function uiPresetList(context) {
         var list = listWrap
             .append('div')
             .attr('class', 'preset-list')
-            .call(drawList, presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc));
+            .call(drawList, presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro, _currLoc));
 
         filterSystem.on('filterchange', updateForFeatureHiddenState);
 
@@ -143,7 +143,7 @@ export function uiPresetList(context) {
                     search: value
                 });
             } else {
-                collection = presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc);
+                collection = presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro, _currLoc);
                 messageText = l10n.t('inspector.choose');
             }
             list.call(drawList, collection);
@@ -409,7 +409,7 @@ export function uiPresetList(context) {
 
         item.choose = function() {
             if (d3_select(this).classed('disabled')) return;
-            if (!context.inIntro()) {
+            if (!context.inIntro) {
                 presetSystem.setMostRecent(preset);
             }
             context.perform(
@@ -455,7 +455,7 @@ export function uiPresetList(context) {
                 hiddenPresetFeaturesId = filterSystem.isHiddenPreset(item.preset, geometries[i]);
                 if (hiddenPresetFeaturesId) break;
             }
-            var isHiddenPreset = !context.inIntro() &&
+            var isHiddenPreset = !context.inIntro &&
                 !!hiddenPresetFeaturesId &&
                 (_currentPresets.length !== 1 || item.preset !== _currentPresets[0]);
 

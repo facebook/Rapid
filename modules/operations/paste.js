@@ -14,11 +14,11 @@ export function operationPaste(context) {
   let operation = function() {
     if (!_pastePoint) return;
 
-    const oldIDs = context.copyIDs();
+    const oldIDs = context.copyIDs;
     if (!oldIDs.length) return;
 
     const projection = context.projection;
-    const oldGraph = context.copyGraph();
+    const oldGraph = context.copyGraph;
     let extent = new Extent();
     let newIDs = [];
 
@@ -46,7 +46,7 @@ export function operationPaste(context) {
 
     // Use the location of the copy operation to offset the paste location,
     // or else use the center of the pasted extent
-    const copyLoc = context.copyLoc();
+    const copyLoc = context.copyLoc;
     const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
     const delta = vecSubtract(_pastePoint, copyPoint);
 
@@ -68,14 +68,14 @@ export function operationPaste(context) {
 
 
   operation.disabled = function() {
-    return !context.copyIDs().length;
+    return !context.copyIDs.length;
   };
 
 
   operation.tooltip = function() {
     const l10n = context.localizationSystem();
-    const oldGraph = context.copyGraph();
-    const ids = context.copyIDs();
+    const oldGraph = context.copyGraph;
+    const ids = context.copyIDs;
     if (!ids.length) {
       return l10n.t('operations.paste.nothing_copied');
     }
@@ -87,7 +87,7 @@ export function operationPaste(context) {
 
 
   operation.annotation = function() {
-    const ids = context.copyIDs();
+    const ids = context.copyIDs;
     return context.t('operations.paste.annotation', { n: ids.length });
   };
 

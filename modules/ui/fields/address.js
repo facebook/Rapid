@@ -217,7 +217,7 @@ export function uiFieldAddress(context, uifield) {
 
     const center = uifield.entityExtent.center();
     let countryCode;
-    if (context.inIntro()) {  // localize the address format for the walkthrough
+    if (context.inIntro) {  // localize the address format for the walkthrough
       countryCode = context.t('intro.graph.countrycode');
     } else {
       countryCode = countryCoder.iso1A2Code(center);

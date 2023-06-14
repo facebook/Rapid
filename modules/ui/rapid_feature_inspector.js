@@ -59,7 +59,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     context.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
     context.enter(modeSelect(context, [_datum.id]));
 
-    if (context.inIntro()) return;
+    if (context.inIntro) return;
 
     // remember sources for later when we prepare the changeset
     rapid.sources.add('mapwithai');    // always add 'mapwithai'

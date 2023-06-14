@@ -1,6 +1,6 @@
 import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 
 import { AbstractService } from './AbstractService';
 
@@ -30,7 +30,7 @@ export class OsmWikibaseService extends AbstractService {
     this.getEntity = this.getEntity.bind(this);
     this.getDocs = this.getDocs.bind(this);
     this._request = this._request.bind(this);
-    this._debouncedRequest = _debounce(this._request, 500, { leading: false });
+    this._debouncedRequest = debounce(this._request, 500, { leading: false });
   }
 
 

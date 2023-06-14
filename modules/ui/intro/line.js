@@ -162,7 +162,7 @@ export function uiIntroLine(context, curtain) {
         }
       };
 
-      const textID = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
+      const textID = context.lastPointerType === 'mouse' ? 'start_line' : 'start_line_tap';
       const startLineString = helpHtml(context, 'intro.lines.missing_road') + '{br}' +
         helpHtml(context, 'intro.lines.line_draw_info') + helpHtml(context, `intro.lines.${textID}`);
 
@@ -237,7 +237,7 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = () => resolve(chooseCategoryRoadAsync);
 
-        const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+        const textID = (context.lastPointerType === 'mouse') ? 'click' : 'tap';
         const continueLineText = helpHtml(context, 'intro.lines.continue_line') + '{br}' +
           helpHtml(context, `intro.lines.finish_line_${textID}`) + helpHtml(context, 'intro.lines.finish_road');
 
@@ -500,7 +500,7 @@ export function uiIntroLine(context, curtain) {
         }
       };
 
-      const textID = (context.lastPointerType() === 'mouse') ? '' : '_touch';
+      const textID = (context.lastPointerType === 'mouse') ? '' : '_touch';
       curtain.reveal({
         revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
         tipHtml: helpHtml(context, `intro.lines.add_node${textID}`)
@@ -523,7 +523,7 @@ export function uiIntroLine(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
 
-      const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
+      const textID = context.lastPointerType === 'mouse' ? '' : '_touch';
       const startDragString = helpHtml(context, `intro.lines.start_drag_endpoint${textID}`) +
         helpHtml(context, 'intro.lines.drag_to_intersection');
 
@@ -561,7 +561,7 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(startDragMidpointAsync);
 
-      const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
+      const textID = context.lastPointerType === 'mouse' ? '' : '_touch';
       const finishDragString = helpHtml(context, 'intro.lines.spot_looks_good') +
         helpHtml(context, `intro.lines.finish_drag_endpoint${textID}`);
 
@@ -685,7 +685,7 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
       _onEditChange = reject;  // disallow doing anything else
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
+      const textID = (context.lastPointerType === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
       const rightClickString = helpHtml(context, 'intro.lines.split_street', {
         street1: context.t('intro.graph.name.11th-avenue'),
         street2: context.t('intro.graph.name.washington-street')
@@ -841,7 +841,7 @@ export function uiIntroLine(context, curtain) {
       other = context.t('intro.graph.name.washington-street');
     }
 
-    const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'touch';
+    const textID = (context.lastPointerType === 'mouse') ? 'click' : 'touch';
     const string =
       helpHtml(context, 'intro.lines.multi_select', { selected: selected, other1: other }) + ' ' +
       helpHtml(context, `intro.lines.add_to_selection_${textID}`, { selected: selected, other2: other });
@@ -882,7 +882,7 @@ export function uiIntroLine(context, curtain) {
       _onModeChange = reject;   // disallow mode change
       _onEditChange = reject;   // disallow doing anything else
 
-      const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
+      const textID = context.lastPointerType === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       const rightClickString = helpHtml(context, 'intro.lines.multi_select_success') + helpHtml(context, `intro.lines.multi_${textID}`);
 
       curtain.reveal({
@@ -1010,16 +1010,16 @@ export function uiIntroLine(context, curtain) {
     _onModeChange = null;
     _onEditChange = null;
 
-    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
-    mapSystem.on('move', _mapMoveListener);             // event-emitter
-    editSystem.on('change', _editChangeListener);       // event-emitter
+    context.on('modechange', _modeChangeListener);
+    mapSystem.on('move', _mapMoveListener);
+    editSystem.on('change', _editChangeListener);
 
     runAsync(addLineAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
-        context.on('enter.intro', null);                // d3-dispatch
-        mapSystem.off('move', _mapMoveListener);        // event-emitter
-        editSystem.off('change', _editChangeListener);  // event-emitter
+        context.off('modechange', _modeChangeListener);
+        mapSystem.off('move', _mapMoveListener);
+        editSystem.off('change', _editChangeListener);
       });
 
     function _mapMoveListener() {

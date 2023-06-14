@@ -23,7 +23,7 @@ export function uiZoomToSelection(context) {
       .call(tooltip);
 
     context.keybinding().on(shortcutKey, onClick);
-    context.on('enter.uiZoomToSelection', onModeChange);
+    context.on('modechange', onModeChange);
 
     onModeChange();
 

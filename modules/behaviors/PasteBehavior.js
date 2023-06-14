@@ -74,7 +74,7 @@ export class PasteBehavior extends AbstractBehavior {
     const context = this.context;
 
     // Nothing to copy..
-    const copyIDs = context.copyIDs();
+    const copyIDs = context.copyIDs;
     if (!copyIDs.length) return;
 
     // Ignore it if we are not over the canvas
@@ -85,7 +85,7 @@ export class PasteBehavior extends AbstractBehavior {
     e.preventDefault();
     e.stopPropagation();
 
-    const copyGraph = context.copyGraph();
+    const copyGraph = context.copyGraph;
     const projection = context.projection;
 
     const action = actionCopyEntities(copyIDs, copyGraph);
@@ -113,7 +113,7 @@ export class PasteBehavior extends AbstractBehavior {
 
     // Move pasted features to where mouse pointer is..
     // Default to map center if we can't determine the mouse pointer
-    const copyLoc = context.copyLoc();
+    const copyLoc = context.copyLoc;
     const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
     const mousePoint = eventManager.coord || context.mapSystem().centerPoint();
     const delta = vecSubtract(mousePoint, copyPoint);

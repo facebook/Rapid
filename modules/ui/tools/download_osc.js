@@ -22,7 +22,7 @@ export function uiToolDownloadOsc(context) {
   function downloadOsc(d3_event) {
     d3_event.preventDefault();
     const editSystem = context.editSystem();
-    if (!context.inIntro() && editSystem.hasChanges()) {
+    if (!context.inIntro && editSystem.hasChanges()) {
       const changes = editSystem.changes(actionDiscardTags(editSystem.difference()));
       const changeset = new osmChangeset();
       const osc = JXON.stringify(changeset.osmChangeJXON(changes));
@@ -90,7 +90,7 @@ export function uiToolDownloadOsc(context) {
     updateCount();
 
     context.editSystem().on('change', updateCount);
-    context.on('enter.download_osc', updateStyle);
+    context.on('modechange', updateStyle);
   };
 
 
@@ -98,7 +98,7 @@ export function uiToolDownloadOsc(context) {
     if (!_button && !_tooltip) return;  // already uninstalled
 
     context.editSystem().off('change', updateCount);
-    context.on('enter.download_osc', null);
+    context.off('modechange', updateStyle);
 
     _button = null;
     _tooltip = null;

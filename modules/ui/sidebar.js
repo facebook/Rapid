@@ -363,7 +363,7 @@ export function uiSidebar(context) {
 
         sidebar.toggle = function(moveMap) {
             // Don't allow sidebar to toggle when the user is in the walkthrough.
-            if (context.inIntro()) return;
+            if (context.inIntro) return;
 
             var isCollapsed = selection.classed('collapsed');
             var isCollapsing = !isCollapsed;

@@ -102,7 +102,7 @@ export function uiIntroPoint(context, curtain) {
         }
       };
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'place_point' : 'place_point_touch';
+      const textID = (context.lastPointerType === 'mouse') ? 'place_point' : 'place_point_touch';
       curtain.reveal({
         revealExtent: buildingExtent,
         tipHtml: helpHtml(context, `intro.points.${textID}`)
@@ -373,7 +373,7 @@ export function uiIntroPoint(context, curtain) {
       _rejectStep = reject;
       _onEditChange = reject;  // disallow doing anything else
 
-      const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
+      const textID = context.lastPointerType === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       curtain.reveal({
         revealExtent: buildingExtent,
         tipHtml: helpHtml(context, `intro.points.${textID}`)
@@ -463,14 +463,14 @@ export function uiIntroPoint(context, curtain) {
     _onModeChange = null;
     _onEditChange = null;
 
-    context.on('enter.intro', _modeChangeListener);     // d3-dispatch
-    editSystem.on('change', _editChangeListener);       // event-emitter
+    context.on('modechange', _modeChangeListener);
+    editSystem.on('change', _editChangeListener);
 
     runAsync(addPointAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
-        context.on('enter.intro', null);                // d3-dispatch
-        editSystem.off('change', _editChangeListener);  // event-emitter
+        context.off('modechange', _modeChangeListener);
+        editSystem.off('change', _editChangeListener);
       });
 
     function _modeChangeListener(mode) {

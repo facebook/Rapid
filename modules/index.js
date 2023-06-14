@@ -16,6 +16,8 @@ export * from './ui/index';
 export * from './util/index';
 export * from './validations/index';
 
+export { Context } from './Context';
+
 // Reexport only what our tests use, see iD#4379
 import * as D3 from 'd3';
 export const d3 = {

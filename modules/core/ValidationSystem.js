@@ -98,7 +98,7 @@ export class ValidationSystem extends AbstractSystem {
 
     // When user changes editing modes (to catch recent changes e.g. drawing)
     context
-      .on('exit.validator', this.validate);
+      .on('modechange', this.validate);
 
     // When merging fetched data, validate base graph:
     context.editSystem()

@@ -345,7 +345,7 @@ export function uiPaneHelp(context) {
 
     function clickWalkthrough(d3_event) {
       d3_event.preventDefault();
-      if (context.inIntro()) return;
+      if (context.inIntro) return;
       context.container().call(uiIntro(context));
       context.ui().togglePanes();
     }

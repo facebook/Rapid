@@ -1,4 +1,4 @@
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { uiTooltip } from '../tooltip';
@@ -13,6 +13,8 @@ export function uiToolRapidFeatures(context) {
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
   const showPowerUser = context.rapidSystem().showPowerUser;
+  let debouncedUpdate;
+  let _wrap;
 
   let tool = {
     id: 'rapid_features',
@@ -40,10 +42,54 @@ export function uiToolRapidFeatures(context) {
     context.container().call(powerUserDialog);
   }
 
-  let debouncedUpdate;
+  function update() {
+    if (!_wrap) return;
+    let rapidButton = _wrap.selectAll('.rapid-features')
+      .data([0]);
+
+    // enter
+    let rapidButtonEnter = rapidButton.enter()
+      .append('button')
+      .attr('class', 'bar-button rapid-features')
+      .attr('tabindex', -1)
+      .on('click', showFeatureToggleDialog)
+      .call(uiTooltip(context)
+        .placement('bottom')
+        .title(context.t('shortcuts.browsing.display_options.rapid_features_data'))
+        .keys(rapidFeaturesToggleKey)
+      );
+
+    rapidButtonEnter
+      .append('svg')
+      .attr('class', 'logo-rapid')
+      .append('use')
+      .attr('xlink:href', '#rapid-logo-rapid-wordmark');
+
+    // update
+    rapidButton.merge(rapidButtonEnter)
+      .classed('layer-off', !layerEnabled());
+
+
+    let powerUserButton = _wrap.selectAll('.rapid-poweruser-features')
+      .data(showPowerUser ? [0] : []);
+
+    powerUserButton.enter()
+      .append('button')
+      .attr('class', 'bar-button rapid-poweruser-features')
+      .attr('tabindex', -1)
+      .on('click', showPowerUserFeaturesDialog)
+      .call(uiTooltip(context)
+        .placement('bottom')
+        .title(context.t('rapid_poweruser_features.heading.label'))
+      )
+      .append('div')
+      .attr('class', 'beta');
+  }
+
+
 
   tool.install = (selection) => {
-    debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
+    debouncedUpdate = debounce(update, 100, { leading: true, trailing: true });
 
     context.keybinding()
       .on(uiCmd(rapidFeaturesToggleKey), d3_event => {
@@ -52,68 +98,24 @@ export function uiToolRapidFeatures(context) {
         toggleFeatures();
       });
 
-    context.mapSystem()
-      .on('draw', debouncedUpdate);
+    context.mapSystem().on('draw', debouncedUpdate);
+    context.on('modechange', update);
 
-    context
-      .on('enter.rapid_features', update);
-
-    let wrap = selection
+    _wrap = selection
       .append('div')
       .attr('class', showPowerUser ? 'joined' : null)
       .style('display', 'flex');
 
     update();
-
-
-    function update() {
-      let rapidButton = wrap.selectAll('.rapid-features')
-        .data([0]);
-
-      // enter
-      let rapidButtonEnter = rapidButton.enter()
-        .append('button')
-        .attr('class', 'bar-button rapid-features')
-        .attr('tabindex', -1)
-        .on('click', showFeatureToggleDialog)
-        .call(uiTooltip(context)
-          .placement('bottom')
-          .title(context.t('shortcuts.browsing.display_options.rapid_features_data'))
-          .keys(rapidFeaturesToggleKey)
-        );
-
-      rapidButtonEnter
-        .append('svg')
-        .attr('class', 'logo-rapid')
-        .append('use')
-        .attr('xlink:href', '#rapid-logo-rapid-wordmark');
-
-      // update
-      rapidButton.merge(rapidButtonEnter)
-        .classed('layer-off', !layerEnabled());
-
-
-      let powerUserButton = wrap.selectAll('.rapid-poweruser-features')
-        .data(showPowerUser ? [0] : []);
-
-      powerUserButton.enter()
-        .append('button')
-        .attr('class', 'bar-button rapid-poweruser-features')
-        .attr('tabindex', -1)
-        .on('click', showPowerUserFeaturesDialog)
-        .call(uiTooltip(context)
-          .placement('bottom')
-          .title(context.t('rapid_poweruser_features.heading.label'))
-        )
-        .append('div')
-        .attr('class', 'beta');
-    }
   };
 
 
   tool.uninstall = function () {
-    context.mapSystem().off('draw', debouncedUpdate);
+    debouncedUpdate.cancel();
     context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
+    context.mapSystem().off('draw', debouncedUpdate);
+    context.off('modechange', update);
+    _wrap = null;
   };
 
   return tool;
