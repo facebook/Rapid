@@ -385,7 +385,7 @@ export class UploaderSystem extends AbstractSystem {
   _didResultInNoChanges() {
     this.emit('resultNoChanges');
     this._endSave();
-    this.context.flush();
+    this.context.reset();
   }
 
 
@@ -411,7 +411,7 @@ export class UploaderSystem extends AbstractSystem {
     // Add delay to allow for postgres replication iD#1646 iD#2678
     window.setTimeout(() => {
       this._endSave();
-      this.context.flush();   // will call this.reset() and delete `this.changeset`
+      this.context.reset();   // will call this.reset() and delete `this.changeset`
     }, 2500);
   }
 

@@ -23,6 +23,7 @@ export class AddPointMode extends AbstractMode {
   constructor(context) {
     super(context);
     this.id = 'add-point';
+
     this.defaultTags = {};
 
     // Make sure the event handlers have `this` bound correctly

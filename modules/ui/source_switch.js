@@ -19,7 +19,7 @@ export function uiSourceSwitch(context) {
     isLive = !isLive;
     context.enter('browse');
     context.editSystem().clearSaved();   // remove saved history
-    context.flush();                     // remove stored data
+    context.reset();                     // remove stored data
 
     d3_select(this)
       .html(isLive ? context.tHtml('source_switch.live') : context.tHtml('source_switch.dev'))

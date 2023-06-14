@@ -18,8 +18,8 @@ export class MoveMode extends AbstractMode {
    */
   constructor(context) {
     super(context);
-
     this.id = 'move';
+
     this._entityIDs = [];
     this._prevGraph = null;
     this._startLoc = null;

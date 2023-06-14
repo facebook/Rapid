@@ -20,8 +20,8 @@ export class RotateMode extends AbstractMode {
    */
   constructor(context) {
     super(context);
-
     this.id = 'rotate';
+
     this._entityIDs = [];
     this._prevGraph = null;
     this._lastPoint = null;

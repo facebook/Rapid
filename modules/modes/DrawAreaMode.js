@@ -25,10 +25,9 @@ export class DrawAreaMode extends AbstractMode {
    */
   constructor(context) {
     super(context);
-
     this.id = 'draw-area';
-    this.defaultTags = {};
 
+    this.defaultTags = {};
     this.drawWay = null;    // The draw way just contains the way that we are drawing
     this.drawNode = null;   // The draw node is temporary and just follows the pointer
     this.firstNode = null;  // The first real node in the draw way (this is also the last node that closes the area)
