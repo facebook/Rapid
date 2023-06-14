@@ -1,5 +1,6 @@
 import { utilStringQs } from '@rapid-sdk/util';
 
+import { AbstractSystem } from './AbstractSystem';
 import { utilDetect } from '../util/detect';
 
 
@@ -16,14 +17,14 @@ function clamp(x, min, max) {
 /**
  * `LocalizationSystem` manages language and locale parameters including translated strings
  */
-export class LocalizationSystem {
+export class LocalizationSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    this.context = context;
+    super(context);
 
     // `_supportedLanguages`
     // All known language codes and their local name. This is used for the language pickers.

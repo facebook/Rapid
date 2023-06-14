@@ -3,19 +3,21 @@ import { Extent } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
+import { AbstractService } from './AbstractService';
+
 
 /**
  * `NominatimService`
  */
-export class NominatimService {
+export class NominatimService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super(context);
     this.id = 'nominatim';
-    this.context = context;
 
     this.apibase = 'https://nominatim.openstreetmap.org/';
     this._inflight = {};

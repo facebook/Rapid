@@ -1,15 +1,16 @@
+import { AbstractSystem } from './AbstractSystem';
 
 /**
  * `DataLoaderSystem` fetches data in JSON files
  */
-export class DataLoaderSystem {
+export class DataLoaderSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    this.context = context;
+    super(context);
 
     const fileMap  = new Map();
     fileMap.set('address_formats', 'data/address_formats.min.json');
@@ -63,22 +64,6 @@ export class DataLoaderSystem {
       c.territory_languages = {};
       c.wmf_sitematrix = [ ['English','English','en'], ['German', 'Deutsch', 'de'] ];
     }
-  }
-
-
-  /**
-   * init
-   * Called one time after all objects have been instantiated.
-   */
-  init() {
-  }
-
-
-  /**
-   * reset
-   * Called after completing an edit session to reset any internal state
-   */
-  reset() {
   }
 
 

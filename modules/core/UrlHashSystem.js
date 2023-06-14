@@ -1,7 +1,7 @@
-import { EventEmitter } from '@pixi/utils';
 import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import throttle from 'lodash-es/throttle';
 
+import { AbstractSystem } from './AbstractSystem';
 import { modeSelect } from '../modes/select';
 
 
@@ -18,15 +18,14 @@ import { modeSelect } from '../modes/select';
  * Events available:
  *   `hashchange`     Fires on hashchange and when enable is called, receives an Object with the current hash params
  */
-export class UrlHashSystem extends EventEmitter {
+export class UrlHashSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this.doUpdateTitle = true;
     this.titleBase = 'Rapid';

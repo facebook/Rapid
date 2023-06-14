@@ -1,35 +1,23 @@
 import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 
+import { AbstractService } from './AbstractService';
+
 const WIKIPEDIA_API = 'https://en.wikipedia.org/w/api.php?';
 
 
 /**
  * `WikipediaService`
  */
-export class WikipediaService {
+export class WikipediaService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super(context);
     this.id = 'wikipedia';
-    this.context = context;
-  }
-
-  /**
-   * init
-   * Called one time after all core objects have been instantiated.
-   */
-  init() {
-  }
-
-  /**
-   * reset
-   * Called after completing an edit session to reset any internal state
-   */
-  reset() {
   }
 
 

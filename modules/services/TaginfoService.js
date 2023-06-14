@@ -2,6 +2,8 @@ import { json as d3_json } from 'd3-fetch';
 import { utilObjectOmit, utilQsString } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
+import { AbstractService } from './AbstractService';
+
 
 const TAGINFO_API = 'https://taginfo.openstreetmap.org/api/4/';
 
@@ -37,15 +39,15 @@ const tag_members_fractions = {
 /**
  * `TaginfoService`
  */
-export class TaginfoService {
+export class TaginfoService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super(context);
     this.id = 'taginfo';
-    this.context = context;
 
     this._inflight = {};
     this._cache = {};

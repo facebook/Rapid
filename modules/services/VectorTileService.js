@@ -1,4 +1,3 @@
-import { EventEmitter } from '@pixi/utils';
 import { Tiler } from '@rapid-sdk/math';
 import { utilHashcode } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
@@ -8,6 +7,8 @@ import polygonClipping from 'polygon-clipping';
 import Protobuf from 'pbf';
 import vt from '@mapbox/vector-tile';
 
+import { AbstractService } from './AbstractService';
+
 
 /**
  * `VectorTileService`
@@ -15,27 +16,18 @@ import vt from '@mapbox/vector-tile';
  * Events available:
  *   'loadedData'
  */
-export class VectorTileService extends EventEmitter {
+export class VectorTileService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'vectortile';
-    this.context = context;
 
     this._cache = new Map();   // Map(sourceID -> source)
     this._tiler = new Tiler().tileSize(512).margin(1);
-  }
-
-
-  /**
-   * init
-   * Called one time after all core objects have been instantiated.
-   */
-  init() {
   }
 
 
@@ -50,7 +42,7 @@ export class VectorTileService extends EventEmitter {
       }
     }
 
-    this._cache = new Map();   // Map(sourceID -> source)
+    this._cache.clear();
   }
 
 

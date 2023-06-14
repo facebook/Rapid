@@ -1,7 +1,7 @@
-import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
 
+import { AbstractSystem } from './AbstractSystem';
 import { PixiRenderer } from '../pixi/PixiRenderer';
 import { uiCmd } from '../ui/cmd.js';
 import { utilTotalExtent } from '../util/util';
@@ -39,15 +39,14 @@ function clamp(num, min, max) {
  *                 ('move' is mostly for when you want to update some content that floats over the map)
  *   `mapchange`  Fires on any change in map display options (wireframe/areafill, highlightedits)
  */
-export class MapSystem extends EventEmitter {
+export class MapSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -114,17 +113,10 @@ export class MapSystem extends EventEmitter {
   }
 
 
-  /**
-   * reset
-   * Called after completing an edit session to reset any internal state
-   */
-  reset() {
-  }
-
 
   /**
    * render
-   * @param  `selection`  A d3-selection to a `div` that the panel should render itself into
+   * @param  `selection`  A d3-selection to a `div` that the map should render itself into
    */
   render(selection) {
     const context = this.context;

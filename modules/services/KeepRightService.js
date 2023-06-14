@@ -1,9 +1,9 @@
-import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
+import { AbstractService } from './AbstractService';
 import { QAItem } from '../osm';
 
 
@@ -47,16 +47,15 @@ KR_COLORS.set('400', 0xcc3355);
  * Events available:
  *   `loadedData`
  */
-export class KeepRightService extends EventEmitter {
+export class KeepRightService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'keepRight';
-    this.context = context;
 
     // persistent data - loaded at init
     this._krData = { errorTypes: {}, localizeStrings: {} };

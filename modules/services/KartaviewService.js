@@ -1,10 +1,10 @@
-import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { Extent, Tiler, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
+import { AbstractService } from './AbstractService';
 import { utilSetTransform } from '../util';
 
 
@@ -19,16 +19,15 @@ const TILEZOOM = 14;
  * Events available:
  *   `loadedData`
  */
-export class KartaviewService extends EventEmitter {
+export class KartaviewService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'kartaview';
-    this.context = context;
 
     this._imgZoom = d3_zoom()
       .extent([[0, 0], [320, 240]])

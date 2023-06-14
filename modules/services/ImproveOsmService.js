@@ -1,9 +1,9 @@
-import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd, vecScale} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
+import { AbstractService } from './AbstractService';
 import { QAItem } from '../osm';
 
 
@@ -30,16 +30,15 @@ IMPOSM_COLORS.set('mr-both', 0xffa500);    // missing road + parking
  * Events available:
  *   `loadedData`
  */
-export class ImproveOsmService extends EventEmitter {
+export class ImproveOsmService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'improveOSM';
-    this.context = context;
 
     // persistent data - loaded at init
     this._impOsmData = { icons: {} };

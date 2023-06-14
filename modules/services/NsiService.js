@@ -1,5 +1,7 @@
 import { Matcher } from 'name-suggestion-index';
 
+import { AbstractService } from './AbstractService';
+
 
 
 // This service contains all the code related to the **name-suggestion-index** (aka NSI)
@@ -30,15 +32,15 @@ const notBranches = /(coop|express|wireless|factory|outlet)/i;
 /**
  * `NsiService`
  */
-export class NsiService {
+export class NsiService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
+    super(context);
     this.id = 'nsi';
-    this.context = context;
     this.status = 'loading';  // 'loading', 'ok', 'failed'
 
     this._nsi = {};

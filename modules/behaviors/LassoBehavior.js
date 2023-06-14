@@ -5,6 +5,13 @@ import { modeSelect } from '../modes/select';
 import { AbstractBehavior } from './AbstractBehavior';
 
 
+/**
+ * `LassoBehavior` listens to pointer events and tries to
+ *  create a lasso for selecting OSM features.
+ *
+ * If it's able to do this, it sends the lasso polygon data to the map ui layer
+ * and on completeion enters select mode with the OSM features selected.
+ */
 export class LassoBehavior extends AbstractBehavior {
 
   /**
@@ -14,7 +21,6 @@ export class LassoBehavior extends AbstractBehavior {
   constructor(context) {
     super(context);
     this.id = 'lasso';
-    this.lasso = null;
 
     this._lassoing = false;
     this._extent = null;

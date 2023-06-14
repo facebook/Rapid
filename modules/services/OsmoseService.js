@@ -1,11 +1,11 @@
 import { Color } from 'pixi.js';
-import { EventEmitter } from '@pixi/utils';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
 
+import { AbstractService } from './AbstractService';
 import { QAItem } from '../osm';
 
 
@@ -19,16 +19,15 @@ const OSMOSE_API = 'https://osmose.openstreetmap.fr/api/0.3';
  * Events available:
  *   'loadedData'
  */
-export class OsmoseService extends EventEmitter {
+export class OsmoseService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'osmose';
-    this.context = context;
 
     // persistent data - loaded at init
     this._osmoseColors = new Map();    // Map (itemType -> hex color)

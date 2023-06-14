@@ -16,7 +16,6 @@ export class AddNoteMode extends AbstractMode {
    */
   constructor(context) {
     super(context);
-
     this.id = 'add-note';
 
     // Make sure the event handlers have `this` bound correctly

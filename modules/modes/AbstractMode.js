@@ -1,21 +1,30 @@
+import { EventEmitter } from '@pixi/utils';
+
+
 /**
  * "Modes" are editing tasks that the user are allowed to perform.
  * Each mode is exclusive, i.e only one mode should be active at a time.
+ *
  * `AbstractMode` is the base class from which all modes inherit.
+ * All modes are event emitters.
  *
  * Properties you can access:
+ *   `id`           `String` identifier for the mode (e.g. 'browse')
  *   `active`       `true` if the mode is active, `false` if not.
  *   `operations`   `Array` of operations allowed on the right-click edit menu
  *   `selectedData` `Map(dataID -> data)` containing selected data
  */
-export class AbstractMode {
+export class AbstractMode extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
+    super();
     this.context = context;
+    this.id = '';
+
     this._active = false;
     this._selectedData = new Map();
     this.operations = [];

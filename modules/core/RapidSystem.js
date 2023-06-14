@@ -1,6 +1,7 @@
-import { EventEmitter } from '@pixi/utils';
 import { gpx } from '@tmcw/togeojson';
 import { Extent } from '@rapid-sdk/math';
+
+import { AbstractSystem } from './AbstractSystem';
 
 const RAPID_MAGENTA = '#da26d3';
 const RAPID_COLORS = [
@@ -23,15 +24,14 @@ const RAPID_COLORS = [
  * Events available:
  *  `taskchanged`
  */
-export class RapidSystem extends EventEmitter {
+export class RapidSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    super();
-    this.context = context;
+    super(context);
 
     this.showPowerUser = context.initialHashParams.poweruser === 'true';
     this.sources = new Set();

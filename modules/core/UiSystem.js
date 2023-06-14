@@ -1,5 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
+import { AbstractSystem } from './AbstractSystem';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
 
@@ -21,14 +22,14 @@ import {
 /**
  * `UiSystem` maintains the user interface
  */
-export class UiSystem {
+export class UiSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
-    this.context = context;
+    super(context);
 
     this.authModal = null;
     this.defs = null;
@@ -136,13 +137,6 @@ export class UiSystem {
 
   }
 
-
-  /**
-   * reset
-   * Called after completing an edit session to reset any internal state
-   */
-  reset() {
-  }
 
 
   render(container) {

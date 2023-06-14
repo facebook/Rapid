@@ -1,7 +1,7 @@
-import { EventEmitter } from '@pixi/utils';
 import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@rapid-sdk/math';
 
+import { AbstractService } from './AbstractService';
 import { Graph, Tree } from '../core/lib';
 import { osmEntity, osmNode, osmWay } from '../osm';
 
@@ -16,16 +16,15 @@ const TILEZOOM = 16;
  * Events available:
  *   `loadedData`
  */
-export class MapWithAIService extends EventEmitter {
+export class MapWithAIService extends AbstractService {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super();
+    super(context);
     this.id = 'mapwithai';
-    this.context = context;
 
     this._tiler = new Tiler().zoomRange(TILEZOOM);
     this._datasets = {};
