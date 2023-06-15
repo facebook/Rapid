@@ -27,6 +27,7 @@ export class ImagerySystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'imagery';
 
     this._initPromise = null;
     this._imageryIndex = null;

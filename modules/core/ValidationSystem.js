@@ -6,11 +6,22 @@ import { Difference } from './lib/Difference';
 import { modeSelect } from '../modes/select';
 import * as Validations from '../validations/index';
 
-const RETRY = 5000;             // wait 5sec before revalidating provisional entities
+const RETRY = 5000;    // wait 5 sec before revalidating provisional entities
 
 
 /**
- * `ValidationSystem`
+ * `ValidationSystem` manages all the validation rules and maintains two caches
+ * containing the validation results:
+ *   `base` is the results of validating the base graph (before user edits)
+ *   `head` is the results of validating the head graph (with user edits applied)
+ *
+ * We do both because that's the only way to know whether to credit a user with
+ * fixing something (or breaking it).  This means that every feaature downloaded
+ * from OSM gets validated.  This system maintains a work queue so that validation
+ * is performed in the backkground during browser idle times.
+ *
+ * It would be even better to do this in a worker process, but workers don't
+ * have easy access to things like the Graph or Edits/History.
  *
  * Events available:
  *   `validated`     Fires after some validation has occurred
@@ -23,6 +34,7 @@ export class ValidationSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'validator';
 
     this._rules = new Map();    // Map(ruleID -> validator)
     this._base = new ValidationCache('base');   // issues before any user edits

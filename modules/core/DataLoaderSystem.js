@@ -1,7 +1,13 @@
 import { AbstractSystem } from './AbstractSystem';
 
+
 /**
- * `DataLoaderSystem` fetches data in JSON files
+ * `DataLoaderSystem` fetches data in JSON files.
+ * This allows us to deploy Rapid in a way that the data it needs can be fetched at runtime.
+ * It provides a method `get` that returns a Promise that resolves when the data is available.
+ *
+ * Properties available:
+ *   `fileMap`   `Map` of resourceID to url
  */
 export class DataLoaderSystem extends AbstractSystem {
 
@@ -11,6 +17,7 @@ export class DataLoaderSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'data';
 
     const fileMap  = new Map();
     fileMap.set('address_formats', 'data/address_formats.min.json');

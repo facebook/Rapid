@@ -30,6 +30,7 @@ export class UiSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'ui';
 
     this.authModal = null;
     this.defs = null;

@@ -25,6 +25,7 @@ export class LocalizationSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'l10n';
 
     // `_supportedLanguages`
     // All known language codes and their local name. This is used for the language pickers.

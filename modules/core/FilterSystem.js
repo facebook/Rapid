@@ -48,10 +48,12 @@ class FilterRule {
 
 
 /**
- * `FilterSystem` maintains matching and filtering rules
+ * `FilterSystem` maintains matching and filtering rules.
+ * Each rule is basically a filter function that returns true if an entity matches the rule.
+ * The code in here is relatively "hot", as it gets run against every entity.
  *
  * Events available:
- *   `filterchange`
+ *   `filterchange`   Fires whenever user changes the enabled/disabled rules
  */
 export class FilterSystem extends AbstractSystem {
 
@@ -61,6 +63,7 @@ export class FilterSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'filters';
 
     this._rules = new Map();          // Map(rulekey -> rule)
     this._hidden = new Set();         // Set(rulekey) to hide

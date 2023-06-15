@@ -21,6 +21,7 @@ export class PresetSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'presets';
     this.geometries = ['point', 'vertex', 'line', 'area', 'relation'];
 
     // Create geometry fallbacks

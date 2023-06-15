@@ -21,6 +21,7 @@ export class PhotoSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'photos';
 
     this._LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
     this._PHOTOTYPES = ['flat', 'panoramic'];

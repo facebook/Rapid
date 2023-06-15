@@ -26,6 +26,7 @@ export class UrlHashSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'urlhash';
 
     this.doUpdateTitle = true;
     this.titleBase = 'Rapid';

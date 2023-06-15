@@ -2,7 +2,14 @@ import { AbstractSystem } from './AbstractSystem';
 
 /**
  * `StorageSystem` is a wrapper around `window.localStorage`
- * (or whatever we replace it with)
+ * It is used to store user preferences (good)
+ * and the user's edit history (not good)
+ *
+ * n.b.:  `localStorage` is a _synchronous_ API.
+ * We should add another system for wrapping `indexedDB`,
+ * which is an _asynchronous_ API, but would allow us to store
+ * a whole lot more data, and share it with worker processes.
+ * (The user's edit history should go there instead.)
  */
 export class StorageSystem extends AbstractSystem {
 
@@ -12,6 +19,7 @@ export class StorageSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'storage';   // was: 'prefs'
     this._storage = null;
 
     // Note that accessing localStorage may throw a `SecurityError`, so wrap in a try/catch.
