@@ -34,6 +34,8 @@ export class UploaderSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'uploader';
+
     this.changeset = null;    // uiCommit will create it
 
     this._origChanges = null;

@@ -17,6 +17,7 @@ export class Map3dSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'map3d';
     this.containerID = '3d-buildings';
 
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');

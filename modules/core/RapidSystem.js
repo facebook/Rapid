@@ -32,6 +32,7 @@ export class RapidSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'rapid';
 
     this.showPowerUser = context.initialHashParams.poweruser === 'true';
     this.sources = new Set();

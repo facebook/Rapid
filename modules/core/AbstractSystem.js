@@ -8,6 +8,9 @@ import { EventEmitter } from '@pixi/utils';
  * `AbstractSystem` is the base class from which all systems inherit.
  *  It provides common methods `init` and `reset` to be overridden in derived classes.
  *  All systems are event emitters.
+ *
+ * Properties you can access:
+ *   `id`   `String` identifier for the system (e.g. 'l10n')
  */
 export class AbstractSystem extends EventEmitter {
 
@@ -18,6 +21,7 @@ export class AbstractSystem extends EventEmitter {
   constructor(context) {
     super();
     this.context = context;
+    this.id = '';
   }
 
 

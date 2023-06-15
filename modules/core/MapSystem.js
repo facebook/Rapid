@@ -47,6 +47,7 @@ export class MapSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'map';
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`

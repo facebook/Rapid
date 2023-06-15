@@ -31,6 +31,7 @@ export class EditSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'edits';   // was: 'history'
 
     this._mutex = utilSessionMutex('lock');
     this._hasRestorableChanges = false;

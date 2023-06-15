@@ -37,6 +37,7 @@ export class LocationSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
+    this.id = 'locations';
 
     this._wp = null;                        // A which-polygon index
     this._resolved = new Map();             // Map (id -> GeoJSON feature)
