@@ -3,7 +3,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionChangePreset } from '../../actions/change_preset';
-import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
 import { delayAsync, eventCancel, helpHtml, isMostlySquare, showPresetList, transitionTime } from './helper';
 
@@ -38,7 +37,7 @@ export function uiIntroBuilding(context, curtain) {
   }
 
   function _isHouseSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (context.mode().id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _houseID;
   }
@@ -48,7 +47,7 @@ export function uiIntroBuilding(context, curtain) {
   }
 
   function _isTankSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (context.mode().id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _tankID;
   }
@@ -205,7 +204,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
 
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
-        if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
+        if (!_isHouseSelected()) context.enter('select-osm', { selectedIDs: [_houseID] });
 
         _onModeChange = reject;   // disallow mode change
 
@@ -237,7 +236,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
 
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
-        if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
+        if (!_isHouseSelected()) context.enter('select-osm', { selectedIDs: [_houseID] });
 
         _onModeChange = reject;   // disallow mode change
         _onEditChange = (difference) => {
@@ -289,7 +288,7 @@ export function uiIntroBuilding(context, curtain) {
   // "Right-click to select the building you created and show the edit menu."
   // Open the edit menu to advance
   function rightClickHouseAsync() {
-    if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
+    if (!['browse', 'select-osm'].includes(context.mode().id)) context.enter('browse');
     editSystem.resetToCheckpoint('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
@@ -507,7 +506,7 @@ export function uiIntroBuilding(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesTankExist()) { resolve(addTankAsync); return; }
-        if (!_isTankSelected()) context.enter(modeSelect(context, [_tankID]));
+        if (!_isTankSelected()) context.enter('select-osm', { selectedIDs: [_tankID] });
 
         _onModeChange = reject;   // disallow mode change
         _onEditChange = (difference) => {
@@ -578,7 +577,7 @@ export function uiIntroBuilding(context, curtain) {
   // "Right-click to select the storage tank you created and show the edit menu."
   // Open the edit menu to advance
   function rightClickTankAsync() {
-    if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
+    if (!['browse', 'select-osm'].includes(context.mode().id)) context.enter('browse');
     editSystem.resetToCheckpoint('hasTank');
 
     return new Promise((resolve, reject) => {

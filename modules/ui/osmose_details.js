@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { modeSelect } from '../modes/select';
 import { utilHighlightEntities } from '../util';
 
 
@@ -155,12 +154,14 @@ export function uiOsmoseDetails(context) {
                 context.mapSystem().centerZoom(d.loc, 20);
 
                 if (entity) {
-                  context.enter(modeSelect(context, [entityID]));
+                  context.enter('select-osm', { selectedIDs: [entityID] });
                 } else {
                   context.loadEntity(entityID, (err, result) => {
                     if (err) return;
                     const entity = result.data.find(e => e.id === entityID);
-                    if (entity) context.enter(modeSelect(context, [entityID]));
+                    if (entity) {
+                      context.enter('select-osm', { selectedIDs: [entityID] });
+                    }
                   });
                 }
               });

@@ -57,9 +57,6 @@ export class BrowseMode extends AbstractMode {
   }
 
 
-  selectBehavior() {
-    console.error('error: do not call BrowseMode.selectBehavior anymore');  // eslint-disable-line no-console
-  }
   sidebar() {
     console.error('error: do not call BrowseMode.sidebar anymore');   // eslint-disable-line no-console
   }

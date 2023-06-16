@@ -3,7 +3,6 @@ import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { actionDeleteMultiple } from '../actions/delete_multiple';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { modeSelect } from '../modes/select';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
 
@@ -19,8 +18,8 @@ export function operationDelete(context, selectedIDs) {
 
 
   let operation = function() {
-    let nextSelectedID;
-    let nextSelectedLoc;
+    let nextNode;
+    let nextLoc;
 
     // If we are deleting a vertex, try to select the next nearest vertex along the way.
     if (entities.length === 1) {
@@ -44,21 +43,19 @@ export function operationDelete(context, selectedIDs) {
           i = a < b ? i - 1 : i + 1;
         }
 
-        nextSelectedID = nodes[i];
-        nextSelectedLoc = context.entity(nextSelectedID).loc;
+        nextNode = context.entity(nodes[i]);
+        nextLoc = nextNode.loc;
       }
     }
 
     context.perform(action, operation.annotation());
     context.validationSystem().validate();
 
-    if (nextSelectedID && nextSelectedLoc) {
-      if (context.hasEntity(nextSelectedID)) {
-        context.enter(modeSelect(context, [nextSelectedID]).follow(true));
-      } else {
-        context.mapSystem().centerEase(nextSelectedLoc);
-        context.enter('browse');
-      }
+    if (nextNode && nextLoc) {
+      context.mapSystem().centerEase(nextLoc);
+      // Try to select the next node.
+      // It may be deleted and that's ok, we'll fallback to browse mode automatically
+      context.enter('select-osm', { selectedIDs: [nextNode.id] });
     } else {
       context.enter('browse');
     }

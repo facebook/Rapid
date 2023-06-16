@@ -2,7 +2,6 @@ import { Extent, vecSubtract } from '@rapid-sdk/math';
 
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
-import { modeSelect } from '../modes/select';
 
 import { uiCmd } from '../ui/cmd';
 
@@ -52,7 +51,7 @@ export function operationPaste(context) {
 
     // Move the pasted objects to be anchored at the paste location
     context.replace(actionMove(newIDs, delta, projection), operation.annotation());
-    context.enter(modeSelect(context, newIDs));
+    context.enter('select-osm', { selectedIDs: newIDs });
   };
 
 

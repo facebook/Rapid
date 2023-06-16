@@ -4,7 +4,6 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { geoChooseEdge } from '../geo';
-import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
 
 const DEBUG = false;
@@ -135,7 +134,7 @@ export class AddPointMode extends AbstractMode {
     const node = osmNode({ loc: loc, tags: this.defaultTags });
     const annotation = context.t('operations.add.annotation.point');
     context.perform(actionAddEntity(node), annotation);
-    context.enter(modeSelect(context, [node.id]).newFeature(true));
+    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
 
@@ -148,7 +147,7 @@ export class AddPointMode extends AbstractMode {
     const node = osmNode({ tags: this.defaultTags });
     const annotation = context.t('operations.add.annotation.vertex');
     context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
-    context.enter(modeSelect(context, [node.id]).newFeature(true));
+    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
 
@@ -160,7 +159,7 @@ export class AddPointMode extends AbstractMode {
     const context = this.context;
 
     if (Object.keys(this.defaultTags).length === 0) {
-      context.enter(modeSelect(context, [node.id]));
+      context.enter('select-osm', { selectedIDs: [node.id] });
       return;
     }
 
@@ -171,7 +170,7 @@ export class AddPointMode extends AbstractMode {
 
     const annotation = context.t('operations.add.annotation.point');
     context.perform(actionChangeTags(node.id, tags), annotation);
-    context.enter(modeSelect(context, [node.id]).newFeature(true));
+    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
 

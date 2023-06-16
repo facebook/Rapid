@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
@@ -24,7 +23,7 @@ export function uiIntroRapid(context, curtain) {
   // Helper functions
   // (Note that this returns true whether the way lives in the Rapid graph or OSM graph)
   function _isTulipLaneSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (['select', 'select-osm'].includes(context.mode().id))  return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === tulipLaneID;
   }
@@ -146,7 +145,7 @@ export function uiIntroRapid(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
-        if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+        if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
 
         _onModeChange = reject;   // disallow mode change
 
@@ -167,7 +166,7 @@ export function uiIntroRapid(context, curtain) {
   // Open Issues panel to advance
   function showIssuesButtonAsync() {
     if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+    if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
 
     const issuesButton = d3_select('div.map-control.issues-control > button');
 
@@ -195,7 +194,7 @@ export function uiIntroRapid(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
-        if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+        if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
 
         const label = d3_select('li.issue.severity-warning');
         curtain.reveal({
@@ -213,7 +212,7 @@ export function uiIntroRapid(context, curtain) {
   // Click Undo to advance
   function undoRoadAddAsync() {
     if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+    if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
 
     const undoButton = d3_select('.top-toolbar button.undo-button');
 

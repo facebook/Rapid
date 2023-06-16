@@ -9,6 +9,7 @@ import { MoveMode } from './MoveMode';
 import { RotateMode } from './RotateMode';
 import { SaveMode } from './SaveMode';
 import { SelectMode } from './SelectMode';
+import { SelectOsmMode } from './SelectOsmMode';
 
 export {
   AbstractMode,
@@ -21,12 +22,12 @@ export {
   MoveMode,
   RotateMode,
   SaveMode,
-  SelectMode
+  SelectMode,
+  SelectOsmMode   // someday, single select mode?
 };
 
 // legacy
 export { modeDragNote } from './drag_note';
-export { modeSelect } from './select';
 
 // At init time, we will instantiate any that are in the 'available' collection.
 export const modes = {
@@ -44,3 +45,4 @@ modes.available.set('move', MoveMode);
 modes.available.set('rotate', RotateMode);
 modes.available.set('save', SaveMode);
 modes.available.set('select', SelectMode);
+modes.available.set('select-osm', SelectOsmMode);

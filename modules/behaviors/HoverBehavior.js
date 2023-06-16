@@ -3,7 +3,7 @@ import { AbstractBehavior } from './AbstractBehavior';
 
 
 /**
- * `HoverBehavior` listens to pointer events emits `hoverchanged` events as the user hovers over stuff
+ * `HoverBehavior` listens to pointer events emits `hoverchange` events as the user hovers over stuff
  *
  * Properties available:
  *   `enabled`      `true` if the event handlers are enabled, `false` if not.
@@ -11,7 +11,7 @@ import { AbstractBehavior } from './AbstractBehavior';
  *   `hoverTarget`  `Object` that contains details about the feature being hovered, or `null`
  *
  * Events available:
- *   `hoverchanged`  Fires whenever the hover target has changed, receives `eventData` Object
+ *   `hoverchange`  Fires whenever the hover target has changed, receives `eventData` Object
  */
 export class HoverBehavior extends AbstractBehavior {
 
@@ -44,7 +44,7 @@ export class HoverBehavior extends AbstractBehavior {
     this.hoverTarget = null;
 
     const eventManager = this.context.mapSystem().renderer.events;
-    eventManager.on('modifierchanged', this._doHover);
+    eventManager.on('modifierchange', this._doHover);
     eventManager.on('pointerover', this._doHover);
     eventManager.on('pointerout', this._doHover);
     eventManager.on('pointermove', this._pointermove);
@@ -70,7 +70,7 @@ export class HoverBehavior extends AbstractBehavior {
     this.hoverTarget = null;
 
     const eventManager = this.context.mapSystem().renderer.events;
-    eventManager.off('modifierchanged', this._doHover);
+    eventManager.off('modifierchange', this._doHover);
     eventManager.off('pointerover', this._doHover);
     eventManager.off('pointerout', this._doHover);
     eventManager.off('pointermove', this._pointermove);
@@ -92,7 +92,7 @@ export class HoverBehavior extends AbstractBehavior {
 
   /**
    * _doHover
-   * Emits a 'hoverchanged' event if needed
+   * Emits a 'hoverchange' event if needed
    * This may also be fired if we detect a change in the modifier keys.
    */
   _doHover() {
@@ -152,7 +152,7 @@ export class HoverBehavior extends AbstractBehavior {
     const currID = eventData?.target?.featureID || null;
     if (prevID !== currID) {
       this.hoverTarget = Object.assign({}, eventData.target);  // shallow copy
-      this.emit('hoverchanged', eventData);
+      this.emit('hoverchange', eventData);
     }
   }
 }

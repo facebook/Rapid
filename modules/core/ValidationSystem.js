@@ -3,7 +3,6 @@ import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@r
 
 import { AbstractSystem } from './AbstractSystem';
 import { Difference } from './lib/Difference';
-import { modeSelect } from '../modes/select';
 import * as Validations from '../validations/index';
 
 const RETRY = 5000;    // wait 5 sec before revalidating provisional entities
@@ -383,7 +382,7 @@ export class ValidationSystem extends AbstractSystem {
 
     if (selectID) {  // Enter select mode
       window.setTimeout(() => {
-        context.enter(modeSelect(context, [selectID]));
+        context.enter('select-osm', { selectedIDs: [selectID] });
         this.emit('focusedIssue', issue);
       }, 250);  // after ease
     }

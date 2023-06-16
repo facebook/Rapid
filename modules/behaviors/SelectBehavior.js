@@ -1,7 +1,6 @@
 import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
-import { modeSelect } from '../modes/select';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { osmNode } from '../osm/node';
@@ -354,10 +353,10 @@ export class SelectBehavior extends AbstractBehavior {
           selectedIDs.length <= 1 ||
           selectedIDs.indexOf(datum.id) === -1
         ) {
-          // always enter modeSelect even if the entity is already
+          // Always re-enter select mode even if the entity is already
           // selected since listeners may expect `context.enter` events,
           // e.g. in the walkthrough
-          context.enter(modeSelect(context, [datum.id]));
+          context.enter('select-osm', { selectedIDs: [datum.id] });
         }
 
       } else {
@@ -366,12 +365,12 @@ export class SelectBehavior extends AbstractBehavior {
           if (!this._showsMenu) {
             // deselect clicked entity, then reenter select mode or return to browse mode..
             selectedIDs = selectedIDs.filter(id => id !== datum.id);
-            context.enter(modeSelect(context, selectedIDs));
+            context.enter('select-osm', { selectedIDs: selectedIDs });
           }
         } else {
           // clicked entity is not in the selected list, add it..
           selectedIDs = selectedIDs.concat([datum.id]);
-          context.enter(modeSelect(context, selectedIDs));
+          context.enter('select-osm', { selectedIDs: selectedIDs });
         }
       }
     }

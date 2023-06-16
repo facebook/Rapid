@@ -3,7 +3,6 @@ import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import * as sexagesimal from '@mapbox/sexagesimal';
 
 import { Graph } from '../core/lib';
-import { modeSelect } from '../modes/select';
 import { osmEntity } from '../osm/entity';
 import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
@@ -338,8 +337,7 @@ export function uiFeatureList(context) {
       } else if (d.entity) {
         utilHighlightEntities([d.id], false, context);
         context.mapSystem().zoomToEase(d.entity);
-        context.enter(modeSelect(context, [d.entity.id]));
-
+        context.enter('select-osm', { selectedIDs: [d.entity.id] });
       } else {
         // download, zoom to, and select the entity with the given ID
         context.zoomToEntity(d.id);

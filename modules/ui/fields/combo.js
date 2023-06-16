@@ -450,9 +450,9 @@ export function uiFieldCombo(context, uifield) {
                     keys = _multiData.map(function(d) { return d.key; });
 
                     // limit the input length so it fits after prepending the key prefix
-                    maxLength = context.maxCharsForTagKey() - utilUnicodeCharsCount(key);
+                    maxLength = context.maxCharsForTagKey - utilUnicodeCharsCount(key);
                 } else {
-                    maxLength = context.maxCharsForTagKey();
+                    maxLength = context.maxCharsForTagKey;
                 }
 
             } else if (_isSemi) {
@@ -488,7 +488,7 @@ export function uiFieldCombo(context, uifield) {
                 var currLength = utilUnicodeCharsCount(commonValues.join(';'));
 
                 // limit the input length to the remaining available characters
-                maxLength = context.maxCharsForTagValue() - currLength;
+                maxLength = context.maxCharsForTagValue - currLength;
 
                 if (currLength > 0) {
                     // account for the separator if a new value will be appended to existing

@@ -3,7 +3,6 @@ import { vecSubtract } from '@rapid-sdk/math';
 import { AbstractMode } from './AbstractMode';
 import { actionMove } from '../actions/move';
 import { actionNoop } from '../actions/noop';
-import { modeSelect } from './select';
 
 
 /**
@@ -169,7 +168,7 @@ export class MoveMode extends AbstractMode {
 
       context.replace(actionNoop(), annotation);   // annotate the move
     }
-    context.enter(modeSelect(context, this._entityIDs));
+    context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
 
 
@@ -182,7 +181,7 @@ export class MoveMode extends AbstractMode {
     if (this._prevGraph) {
       context.pop();   // remove the move
     }
-    context.enter(modeSelect(context, this._entityIDs));
+    context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
 
 

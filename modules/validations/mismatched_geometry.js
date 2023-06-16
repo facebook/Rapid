@@ -6,7 +6,6 @@ import { actionAddVertex } from '../actions/add_vertex';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionExtract } from '../actions/extract';
-import { modeSelect } from '../modes/select';
 import { osmJoinWays } from '../osm/multipolygon';
 import { osmNodeGeometriesForTags, osmTagSuggestingArea } from '../osm/tags';
 import { geoHasSelfIntersections } from '../geo';
@@ -80,7 +79,6 @@ export function validationMismatchedGeometry(context) {
     }
 
     function lineTaggedAsAreaIssue(entity) {
-
         var tagSuggestingArea = tagSuggestingLineIsArea(entity);
         if (!tagSuggestingArea) return null;
 
@@ -282,9 +280,7 @@ export function validationMismatchedGeometry(context) {
     }
 
     function lineToAreaDynamicFixes() {
-
         var convertOnClick;
-
         var entityId = this.entityIds[0];
         var entity = context.entity(entityId);
         var tags = Object.assign({}, entity.tags);  // shallow copy
@@ -315,12 +311,10 @@ export function validationMismatchedGeometry(context) {
     }
 
     function extractPointDynamicFixes() {
-
         var entityId = this.entityIds[0];
-
         var extractOnClick = null;
-        if (!context.hasHiddenConnections(entityId)) {
 
+        if (!context.hasHiddenConnections(entityId)) {
             extractOnClick = function() {
                 var entityId = this.issue.entityIds[0];
                 var action = actionExtract(entityId, context.projection);
@@ -329,7 +323,7 @@ export function validationMismatchedGeometry(context) {
                     l10n.t('operations.extract.annotation', { n: 1 })
                 );
                 // re-enter mode to trigger updates
-                context.enter(modeSelect(context, [action.getExtractedNodeID()]));
+                context.enter('select-osm', { selectedIDs: [ action.getExtractedNodeID() ] });
             };
         }
 
@@ -343,7 +337,6 @@ export function validationMismatchedGeometry(context) {
     }
 
     function unclosedMultipolygonPartIssues(entity, graph) {
-
         if (entity.type !== 'relation' ||
             !entity.isMultipolygon() ||
             entity.isDegenerate() ||
@@ -351,7 +344,6 @@ export function validationMismatchedGeometry(context) {
             !entity.isComplete(graph)) return [];
 
         var sequences = osmJoinWays(entity.members, graph);
-
         var issues = [];
 
         for (var i in sequences) {

@@ -71,7 +71,7 @@ export class DrawBehavior extends AbstractBehavior {
     const eventManager = this.context.mapSystem().renderer.events;
     eventManager.on('keydown', this._keydown);
     eventManager.on('keyup', this._keyup);
-    eventManager.on('modifierchanged', this._doMove);
+    eventManager.on('modifierchange', this._doMove);
     eventManager.on('pointerover', this._doMove);
     eventManager.on('pointerout', this._doMove);
     eventManager.on('pointerdown', this._pointerdown);
@@ -99,7 +99,7 @@ export class DrawBehavior extends AbstractBehavior {
     const eventManager = this.context.mapSystem().renderer.events;
     eventManager.off('keydown', this._keydown);
     eventManager.off('keyup', this._keyup);
-    eventManager.off('modifierchanged', this._doMove);
+    eventManager.off('modifierchange', this._doMove);
     eventManager.off('pointerover', this._doMove);
     eventManager.off('pointerout', this._doMove);
     eventManager.off('pointerdown', this._pointerdown);

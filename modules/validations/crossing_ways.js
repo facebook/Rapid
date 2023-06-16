@@ -8,7 +8,6 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
-import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
 import {
   osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
@@ -449,7 +448,7 @@ export function validationCrossingWays(context) {
             dynamicFixes: function() {
                 var mode = context.mode();
                 var selectedIDs = context.selectedIDs();
-                if (!mode || mode.id !== 'select' || selectedIDs.length !== 1) return [];
+                if (mode?.id !== 'select-osm' || selectedIDs.length !== 1) return [];
 
                 var selectedIndex = this.entityIds[0] === selectedIDs[0] ? 0 : 1;
                 var selectedFeatureType = this.data.featureTypes[selectedIndex];
@@ -512,7 +511,7 @@ export function validationCrossingWays(context) {
             title: l10n.tHtml('issues.fix.' + fixTitleID + '.title'),
             onClick: function() {
                 var mode = context.mode();
-                if (!mode || mode.id !== 'select') return;
+                if (mode?.id !== 'select-osm') return;
 
                 var selectedIDs = mode.selectedIDs();
                 if (selectedIDs.length !== 1) return;
@@ -704,7 +703,7 @@ export function validationCrossingWays(context) {
                 };
 
                 context.perform(action, l10n.t(`issues.fix.${fixTitleID}.annotation`));
-                context.enter(modeSelect(context, resultWayIDs));
+                context.enter('select-osm', { selectedIDs: resultWayIDs });
             }
         });
     }
@@ -781,7 +780,7 @@ export function validationCrossingWays(context) {
             title: l10n.tHtml(`issues.fix.tag_this_as_${higherOrLower}.title`),
             onClick: function() {
                 var mode = context.mode();
-                if (!mode || mode.id !== 'select') return;
+                if (mode?.id !== 'select-osm') return;
 
                 var selectedIDs = mode.selectedIDs();
                 if (selectedIDs.length !== 1) return;

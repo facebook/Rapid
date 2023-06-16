@@ -1,7 +1,6 @@
 import { Extent, geomPointInPolygon } from '@rapid-sdk/math';
 import { utilArrayIntersection } from '@rapid-sdk/util';
 
-import { modeSelect } from '../modes/select';
 import { AbstractBehavior } from './AbstractBehavior';
 
 
@@ -133,7 +132,7 @@ export class LassoBehavior extends AbstractBehavior {
     this._extent = null;
 
     if (ids.length) {
-      this.context.enter(modeSelect(this.context, ids));
+      this.context.enter('select-osm', { selectedIDs: ids });
     }
   }
 
