@@ -5,7 +5,6 @@ import { utilGetAllNodes } from '@rapid-sdk/util';
 import { AbstractMode } from './AbstractMode';
 import { actionRotate } from '../actions/rotate';
 import { actionNoop } from '../actions/noop';
-import { modeSelect } from './select';
 
 
 /**
@@ -233,7 +232,7 @@ export class RotateMode extends AbstractMode {
 
       context.replace(actionNoop(), annotation);   // annotate the rotation
     }
-    context.enter(modeSelect(context, this._entityIDs));
+    context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
 
 
@@ -246,7 +245,7 @@ export class RotateMode extends AbstractMode {
     if (this._prevGraph) {
       context.pop();   // remove the rotate
     }
-    context.enter(modeSelect(context, this._entityIDs));
+    context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
 
 

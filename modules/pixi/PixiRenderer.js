@@ -65,7 +65,7 @@ export class PixiRenderer extends EventEmitter {
     // Make sure callbacks have `this` bound correctly
     this._tick = this._tick.bind(this);
     this._onHoverChange = this._onHoverChange.bind(this);
-    this._onSelectChange = this._onSelectChange.bind(this);
+    this._onModeChange = this._onModeChange.bind(this);
 
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
@@ -144,36 +144,25 @@ export class PixiRenderer extends EventEmitter {
     this.textures = _sharedTextures;
 
     // Event listeners to respond to any changes in selection or hover
-    context.on('modechange', this._onSelectChange);
-    context.behaviors.get('hover').on('hoverchanged', this._onHoverChange);
+    context.on('modechange', this._onModeChange);
+    context.behaviors.get('hover').on('hoverchange', this._onHoverChange);
   }
 
 
   /**
-   * _onSelectChange
-   * Respond to any change in select (called on mode change)
+   * _onModeChange
+   * Respond to any change in selection (called on mode change)
    */
-  _onSelectChange() {
-    const selectedIDs = Array.from(this.context.selectedIDs());
-    const selectedData = this.context.selectedData();
+  _onModeChange(mode) {
     this.scene.clearClass('selected');
 
-    // hacky conversion to get around the id mismatch:
-    for (let dataID of selectedIDs) {
-      let layerID;
-      if (dataID) {
-        const datum = selectedData.get(dataID);
-        if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
-          layerID = 'osm';
-        } else if (datum?.__fbid__) {
-          layerID = 'rapid';
-        } else {
-          // there are other selectable things - we will not select-style them for now :(
-        }
-      }
-
-      if (layerID && dataID) {
-        this.scene.classData(layerID, dataID, 'selected');
+    for (const [datumID, datum] of this.context.selectedData()) {
+      if (mode.id === 'select' && datum.__fbid__) {  // a Rapid feature
+        this.scene.classData('rapid', datumID, 'selected');
+      } else if (mode.id === 'select-osm') {         // an OSM feature
+        this.scene.classData('osm', datumID, 'selected');
+      } else {
+        // there are other selectable things - we will not select-style them for now :(
       }
     }
 
@@ -191,8 +180,8 @@ export class PixiRenderer extends EventEmitter {
     const dataID = target?.dataID;
 
     const hoverData = target?.data;
-    const mode = this.context.mode();
-    if (mode?.id !== 'select') {
+    const modeID = this.context.mode()?.id;
+    if (modeID !== 'select' && modeID !== 'select-osm') {
       this.context.ui().sidebar.hover(hoverData ? [hoverData] : []);
     }
 

@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
 import { actionNoop, actionRapidAcceptFeature } from '../actions';
-import { modeSelect } from '../modes';
 import { uiIcon } from './icon';
 import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
@@ -57,7 +56,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (sourceTag) annotation.source = sourceTag;
 
     context.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
-    context.enter(modeSelect(context, [_datum.id]));
+    context.enter('select-osm', { selectedIDs: [_datum.id] });
 
     if (context.inIntro) return;
 

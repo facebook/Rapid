@@ -51,7 +51,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
       // If a Rapid feature is already selected, reselect it to update sidebar too
       const mode = context.mode();
-      if (mode.id === 'select' && mode.selectedData) {  // new (not legacy) select mode
+      if (mode.id === 'select') {  // new (not legacy) select mode
         const selection = new Map(mode.selectedData);
         context.enter('select', { selection: selection });
       }

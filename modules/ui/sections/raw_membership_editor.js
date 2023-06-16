@@ -5,7 +5,6 @@ import { actionAddEntity } from '../../actions/add_entity';
 import { actionAddMember } from '../../actions/add_member';
 import { actionChangeMember } from '../../actions/change_member';
 import { actionDeleteMembers } from '../../actions/delete_members';
-import { modeSelect } from '../../modes/select';
 import { osmEntity, osmRelation } from '../../osm';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
@@ -118,7 +117,7 @@ export function uiSectionRawMembershipEditor(context) {
         // remove the hover-highlight styling
         utilHighlightEntities([d.relation.id], false, context);
 
-        context.enter(modeSelect(context, [d.relation.id]));
+        context.enter('select-osm', { selectedIDs: [d.relation.id] });
     }
 
     function zoomToRelation(d3_event, d) {
@@ -192,7 +191,7 @@ export function uiSectionRawMembershipEditor(context) {
                 l10n.t('operations.add.annotation.relation')
             );
             // changing the mode also runs `validate`
-            context.enter(modeSelect(context, [relation.id]).newFeature(true));
+            context.enter('select-osm', { selectedIDs: [relation.id], newFeature: true });
         }
     }
 

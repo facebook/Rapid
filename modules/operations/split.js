@@ -1,6 +1,5 @@
 import { actionSplit } from '../actions/split';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { modeSelect } from '../modes/select';
 
 
 export function operationSplit(context, selectedIDs) {
@@ -57,7 +56,7 @@ export function operationSplit(context, selectedIDs) {
         idsToSelect.push(entityID);
       }
     }
-    context.enter(modeSelect(context, idsToSelect));
+    context.enter('select-osm', { selectedIDs: idsToSelect });
   };
 
 

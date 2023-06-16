@@ -1,6 +1,5 @@
 import { actionChangeTags } from '../actions/change_tags';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { modeSelect } from '../modes/select';
 import { uiCmd } from '../ui/cmd';
 
 
@@ -87,7 +86,7 @@ export function operationDowngrade(context, selectedIDs) {
     context.validationSystem().validate();
 
     // refresh the select mode to enable the delete operation
-    context.enter(modeSelect(context, selectedIDs));
+    context.enter('select-osm', { selectedIDs: selectedIDs });
   };
 
 

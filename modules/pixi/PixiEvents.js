@@ -17,7 +17,7 @@ import { utilDetect } from '../util/detect';
  *   `click`             Fires on stage.click, receives a Pixi FederatedPointerEvent
  *   `keydown`           Fires on window.keydown, receives a DOM KeyboardEvent
  *   `keyup`             Fires on window.keyup, receives a DOM KeyboardEvent
- *   `modifierchanged`   Fires when any modifier key is changed, receives the updated modifierKeys Set
+ *   `modifierchange`    Fires when any modifier key is changed, receives the updated modifierKeys Set
  *   `pointercancel`     Fires on stage.pointercancel, receives a Pixi FederatedPointerEvent
  *   `pointerdown`       Fires on stage.pointerdown, receives a Pixi FederatedPointerEvent
  *   `pointermove`       Fires on stage.pointermove, receives a Pixi FederatedPointerEvent
@@ -188,7 +188,7 @@ export class PixiEvents extends EventEmitter {
     }
 
     if (didChange) {
-      this.emit('modifierchanged', modifiers);
+      this.emit('modifierchange', modifiers);
     }
   }
 

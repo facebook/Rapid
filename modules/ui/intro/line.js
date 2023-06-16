@@ -1,7 +1,6 @@
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
 
@@ -51,7 +50,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _isLineSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (context.mode().id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _lineID;
   }
@@ -74,7 +73,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _isWoodStreetSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (context.mode().id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === woodStreetID;
   }
@@ -88,7 +87,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _is11thAveEndSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (context.mode().id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === eleventhAvenueEndID;
   }
@@ -261,7 +260,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
+        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
 
         _onModeChange = reject;   // disallow mode change
 
@@ -301,7 +300,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
+        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -358,7 +357,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
+        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -413,7 +412,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
+        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
 
         _onModeChange = () => resolve(didNameRoadAsync);
 
@@ -490,7 +489,7 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
 
       _onModeChange = (mode) => {
-        if (mode.id !== 'browse' && mode.id !== 'select') reject();
+        if (!['browse', 'select-osm'].includes(mode.id)) reject();
       };
       _onEditChange = (difference) => {
         if (difference && difference.created().length === 1) {   // expect to create 1 node
@@ -594,7 +593,7 @@ export function uiIntroLine(context, curtain) {
   // Create a node on Wood Street to advance
   function startDragMidpointAsync() {
     if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
-    if (!_isWoodStreetSelected()) context.enter(modeSelect(context, [woodStreetID]));
+    if (!_isWoodStreetSelected()) context.enter('select-osm', { selectedIDs: [woodStreetID] });
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -719,7 +718,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_has12thAvenueParts()) { resolve(deleteLinesAsync); return; }
-        if (!_is11thAveEndSelected()) context.enter(modeSelect(context, [eleventhAvenueEndID]));
+        if (!_is11thAveEndSelected()) context.enter('select-osm', { selectedIDs: [eleventhAvenueEndID] });
 
         const revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();

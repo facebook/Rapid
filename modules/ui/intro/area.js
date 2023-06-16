@@ -2,7 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 
-import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
 
@@ -33,7 +32,7 @@ export function uiIntroArea(context, curtain) {
   }
 
   function _isAreaSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (context.mode().id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _areaID;
   }
@@ -180,7 +179,7 @@ export function uiIntroArea(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
-        if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
+        if (!_isAreaSelected()) context.enter('select-osm', { selectedIDs: [_areaID] });
 
         _onModeChange = reject;   // disallow mode change;
         _onEditChange = (difference) => {
@@ -241,7 +240,7 @@ export function uiIntroArea(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
-        if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
+        if (!_isAreaSelected()) context.enter('select-osm', { selectedIDs: [_areaID] });
 
         if (!container.select('.form-field-description').empty()) {  // has description field already
           resolve(describePlaygroundAsync);

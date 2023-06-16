@@ -7,7 +7,6 @@ import { actionAddVertex } from '../actions/add_vertex';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
-import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
 
 const DEBUG = false;
@@ -483,7 +482,7 @@ export class DrawAreaMode extends AbstractMode {
         console.log(`DrawAreaMode: _finish, drawWay.id = ${this.drawWay.id}`);  // eslint-disable-line no-console
       }
       const context = this.context;
-      context.enter(modeSelect(context, [this.drawWay.id]).newFeature(true));
+      context.enter('select-osm', { selectedIDs: [this.drawWay.id], newFeature: true });
     } else {
       this._cancel();
     }

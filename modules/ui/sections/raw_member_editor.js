@@ -5,7 +5,6 @@ import { utilUniqueString } from '@rapid-sdk/util';
 import { actionChangeMember } from '../../actions/change_member';
 import { actionDeleteMember } from '../../actions/delete_member';
 import { actionMoveMember } from '../../actions/move_member';
-import { modeSelect } from '../../modes/select';
 import { osmEntity } from '../../osm';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
@@ -72,7 +71,7 @@ export function uiSectionRawMemberEditor(context) {
             context.mapSystem().zoomToEase(entity);
         }
 
-        context.enter(modeSelect(context, [d.id]));
+        context.enter('select-osm', { selectedIDs: [d.id] });
     }
 
 

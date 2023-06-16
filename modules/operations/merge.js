@@ -4,7 +4,6 @@ import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionMergePolygon } from '../actions/merge_polygon';
 
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { modeSelect } from '../modes/select';
 
 
 export function operationMerge(context, selectedIDs) {
@@ -50,7 +49,7 @@ export function operationMerge(context, selectedIDs) {
         successorIDs = interestingIDs;
       }
     }
-    context.enter(modeSelect(context, successorIDs));
+    context.enter('select-osm', { selectedIDs: successorIDs });
   };
 
 

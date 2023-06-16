@@ -7,7 +7,6 @@ import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
-import { modeSelect } from './select';
 import { osmNode } from '../osm';
 
 
@@ -281,9 +280,9 @@ export class DragNodeMode extends AbstractMode {
 
     // Choose next mode
     if (isPoint && context.hasEntity(this.dragNode.id)) {
-      context.enter(modeSelect(context, [this.dragNode.id]));
+      context.enter('select-osm', { selectedIDs: [this.dragNode.id] });
     } else if (this._reselectIDs.length) {
-      context.enter(modeSelect(context, this._reselectIDs));
+      context.enter('select-osm', { selectedIDs: this._reselectIDs });
     } else {
       context.enter('browse');
     }

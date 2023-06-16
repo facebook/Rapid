@@ -6,7 +6,6 @@ import debounce from 'lodash-es/debounce';
 
 import { behaviors } from './behaviors';
 import { modes } from './modes';
-import { modeSelect } from './modes/select';   // legacy
 import { services } from './services';
 import { systems } from './core';
 
@@ -401,7 +400,7 @@ export class Context extends EventEmitter {
     const entity = this.hasEntity(entityID);
 
     if (entity) {   // have it already
-      this.enter(modeSelect(this, [entityID]));
+      this.enter('select-osm', { selectedIDs: [entityID] });
       if (zoomTo !== false) {
         this._mapSystem.zoomTo(entity);
       }
@@ -412,7 +411,7 @@ export class Context extends EventEmitter {
         const loadedEntity = result.data.find(e => e.id === entityID);
         if (!loadedEntity) return;
 
-        this.enter(modeSelect(this, [entityID]));
+        this.enter('select-osm', { selectedIDs: [entityID] });
         if (zoomTo !== false) {
           this._mapSystem.zoomTo(loadedEntity);
         }
@@ -544,11 +543,7 @@ export class Context extends EventEmitter {
    */
   selectedIDs() {
     if (!this._currMode) return [];
-    if (typeof this._currMode.selectedIDs === 'function') {
-      return this._currMode.selectedIDs();         // class function
-    } else {
-      return this._currMode.selectedIDs || [];     // class property
-    }
+    return this._currMode.selectedIDs || [];
   }
 
   selectedNoteID() {

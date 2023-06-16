@@ -3,7 +3,6 @@ import { utilArrayIdentical } from '@rapid-sdk/util';
 import { actionChangePreset } from '../actions';
 import { actionNoop } from '../actions/noop';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { modeSelect } from '../modes/select';
 
 let _wasSelectedIDs = [];
 let _wasPresetIDs = [];
@@ -74,7 +73,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
       context.replace(action, annotation);
     }
 
-    context.enter(modeSelect(context, selectedIDs));  // reselect
+    context.enter('select-osm', { selectedIDs: selectedIDs });  // reselect
   };
 
 

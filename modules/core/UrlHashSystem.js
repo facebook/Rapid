@@ -2,7 +2,6 @@ import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '
 import throttle from 'lodash-es/throttle';
 
 import { AbstractSystem } from './AbstractSystem';
-import { modeSelect } from '../modes/select';
 
 
 /**
@@ -209,7 +208,7 @@ export class UrlHashSystem extends AbstractSystem {
     const toOmit = ['id', 'comment', 'source', 'hashtags', 'walkthrough'];
     let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
 
-    // update id  (this shouldn't be here, move to modeSelect?)
+    // update id  (this shouldn't be here, move to select mode?)
     const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
     if (selectedIDs.length) {
       params.id = selectedIDs.join(',');
@@ -287,8 +286,8 @@ export class UrlHashSystem extends AbstractSystem {
     if (typeof q.id === 'string') {
       const ids = q.id.split(',').filter(id => context.hasEntity(id));
       const mode = context.mode();
-      if (ids.length && (mode?.id === 'browse' || (mode?.id === 'select' && !utilArrayIdentical(mode.selectedIDs(), ids)))) {
-        context.enter(modeSelect(context, ids));
+      if (ids.length && (mode?.id === 'browse' || (mode?.id === 'select-osm' && !utilArrayIdentical(mode.selectedIDs(), ids)))) {
+        context.enter('select-osm', { selectedIDs: ids });
       }
     }
 

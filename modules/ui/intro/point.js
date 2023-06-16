@@ -3,7 +3,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { actionChangePreset } from '../../actions/change_preset';
-import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
 
@@ -33,7 +32,7 @@ export function uiIntroPoint(context, curtain) {
   }
 
   function _isPointSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (context.mode().id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _pointID;
   }
@@ -122,7 +121,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
 
         _onModeChange = reject;  // disallow mode change
         _onEditChange = (difference) => {
@@ -183,7 +182,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(addNameAsync);
@@ -211,7 +210,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(hasPointAsync);
@@ -252,7 +251,7 @@ export function uiIntroPoint(context, curtain) {
   // Close entity editor / leave select mode to advance
   function addCloseEditorAsync() {
     if (!_doesPointExist()) return Promise.resolve(addPointAsync);
-    if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+    if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -367,7 +366,7 @@ export function uiIntroPoint(context, curtain) {
   // Open the edit menu to advance
   function rightClickPointAsync() {
     if (!_doesPointExist()) return Promise.resolve(reselectPointAsync);
-    if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
+    if (!['browse', 'select-osm'].includes(context.mode().id)) context.enter('browse');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
