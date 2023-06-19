@@ -41,7 +41,7 @@ export function uiCommit(context) {
 
   const changesetEditor = uiChangesetEditor(context)
     .on('change', changeTags);
-  const rawTagEditor = uiSectionRawTagEditor('changeset-tag-editor', context)
+  const rawTagEditor = uiSectionRawTagEditor(context, 'changeset-tag-editor')
     .on('change', changeTags)
     .readOnlyTags(readOnlyTags);
   const commitChanges = uiSectionChanges(context);

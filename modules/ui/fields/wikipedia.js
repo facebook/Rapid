@@ -191,7 +191,7 @@ export function uiFieldWikipedia(context, uifield) {
       if (m[3]) {
         let anchor;
         // try {
-        // leave this out for now - #6232
+        // leave this out for now - iD#6232
           // Best-effort `anchordecode:` implementation
           // anchor = decodeURIComponent(m[3].replace(/\.([0-9A-F]{2})/g, '%$1'));
         // } catch (e) {

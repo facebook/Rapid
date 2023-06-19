@@ -174,7 +174,7 @@ export function uiEntityEditor(context) {
                 }),
                 uiSectionEntityIssues(context),
                 uiSectionPresetFields(context).on('change', changeTags).on('revert', revertTags),
-                uiSectionRawTagEditor('raw-tag-editor', context).on('change', changeTags),
+                uiSectionRawTagEditor(context, 'raw-tag-editor').on('change', changeTags),
                 uiSectionRawMemberEditor(context),
                 uiSectionRawMembershipEditor(context)
             ];

@@ -1,4 +1,4 @@
-describe('validations.outdated_tags', () => {
+describe('validationOutdatedTags', () => {
 
   class MockLocalizationSystem {
     constructor() {}

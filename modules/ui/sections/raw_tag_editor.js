@@ -9,7 +9,7 @@ import { uiTagReference } from '../tag_reference';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
-export function uiSectionRawTagEditor(id, context) {
+export function uiSectionRawTagEditor(context, id) {
     const prefs = context.storageSystem();
     var section = uiSection(id, context)
         .classes('raw-tag-editor')
@@ -44,7 +44,6 @@ export function uiSectionRawTagEditor(id, context) {
     }
 
     function renderDisclosureContent(wrap) {
-
         // remove deleted keys
         _orderedKeys = _orderedKeys.filter(function(key) {
             return _tags[key] !== undefined;

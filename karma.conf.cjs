@@ -1,6 +1,3 @@
-// Karma configuration
-// Generated on Wed Sep 01 2021 16:45:06 GMT+0200 (Central European Summer Time)
-
 module.exports = function (config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -30,9 +27,6 @@ module.exports = function (config) {
     // list of files / patterns to exclude
     exclude: [
       'test/spec/pixi/*.js',
-      'test/spec/renderer/features.js',
-      'test/spec/renderer/map.js',
-
       // Comment the next line to run the OSM renderer-specific unit test, which right now merely exercise the code.
       // These tests don't actually make any assertions and therefore always succeed.
       'test/spec/renderer/PixiRenderer.js'
@@ -72,7 +66,7 @@ module.exports = function (config) {
     // start these browsers
     // available browser launchers: https://www.npmjs.com/search?q=keywords:karma-launcher
     browsers: [
-      'ChromeHeadless',
+      'ChromeHeadless'
     ],
 
     // Continuous Integration mode

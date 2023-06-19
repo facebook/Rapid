@@ -1,5 +1,4 @@
 describe('operationExtract', () => {
-  let _context;
   let _graph;
 
   class MockMap {
@@ -13,7 +12,7 @@ describe('operationExtract', () => {
       this._storageSystem = new Rapid.StorageSystem(this);
       this._presetSystem = new Rapid.PresetSystem(this);
     }
-    map()                   { return this._map; }
+    mapSystem()             { return this._map; }
     storageSystem()         { return this._storageSystem; }
     presetSystem()          { return this._presetSystem; }
     graph()                 { return _graph; }
@@ -26,10 +25,7 @@ describe('operationExtract', () => {
     tHtml(id)               { return id; }
   }
 
-
-  beforeEach(() => {
-    _context = new MockContext();
-  });
+  const context = new MockContext();
 
 
   describe('available', () => {
@@ -53,52 +49,52 @@ describe('operationExtract', () => {
     });
 
     it('is not available for no selected ids', () => {
-      const result = Rapid.operationExtract(_context, []).available();
+      const result = Rapid.operationExtract(context, []).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for unknown selected id', () => {
-      const result = Rapid.operationExtract(_context, ['z']).available();
+      const result = Rapid.operationExtract(context, ['z']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for selected way', () => {
-      const result = Rapid.operationExtract(_context, ['x']).available();
+      const result = Rapid.operationExtract(context, ['x']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for selected node with tags, no parent way', () => {
-      const result = Rapid.operationExtract(_context, ['e']).available();
+      const result = Rapid.operationExtract(context, ['e']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for selected node with no tags, no parent way', () => {
-      const result = Rapid.operationExtract(_context, ['f']).available();
+      const result = Rapid.operationExtract(context, ['f']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for selected node with no tags, parent way', () => {
-      const result = Rapid.operationExtract(_context, ['c']).available();
+      const result = Rapid.operationExtract(context, ['c']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for selected node with no tags, two parent ways', () => {
-      const result = Rapid.operationExtract(_context, ['d']).available();
+      const result = Rapid.operationExtract(context, ['d']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is available for selected node with tags, parent way', () => {
-      const result = Rapid.operationExtract(_context, ['a']).available();
+      const result = Rapid.operationExtract(context, ['a']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for selected node with tags, two parent ways', () => {
-      const result = Rapid.operationExtract(_context, ['b']).available();
+      const result = Rapid.operationExtract(context, ['b']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for two selected nodes with tags and parent ways', () => {
-      const result = Rapid.operationExtract(_context, ['a', 'b']).available();
+      const result = Rapid.operationExtract(context, ['a', 'b']).available();
       expect(result).to.be.ok;
     });
   });
@@ -113,7 +109,7 @@ describe('operationExtract', () => {
         Rapid.osmWay({ id: 'x', nodes: ['a', 'b', 'c'] })
       ]);
 
-      const result = Rapid.operationExtract(_context, ['b']).disabled();
+      const result = Rapid.operationExtract(context, ['b']).disabled();
       expect(result).to.be.not.ok;
     });
 
@@ -125,7 +121,7 @@ describe('operationExtract', () => {
         Rapid.osmWay({ id: 'x', nodes: ['a', 'b', 'c'] }),
         Rapid.osmRelation({ id: 'r', members: [{ id: 'b', role: 'label' }] })
       ]);
-      const result = Rapid.operationExtract(_context, ['b']).disabled();
+      const result = Rapid.operationExtract(context, ['b']).disabled();
       expect(result).to.be.not.ok;
     });
 
@@ -150,7 +146,7 @@ describe('operationExtract', () => {
           ]
         })
       ]);
-      const result = Rapid.operationExtract(_context, ['d']).disabled();
+      const result = Rapid.operationExtract(context, ['d']).disabled();
       expect(result).to.be.not.ok;
     });
 
@@ -176,7 +172,7 @@ describe('operationExtract', () => {
           ]
         })
       ]);
-      const result = Rapid.operationExtract(_context, ['d']).disabled();
+      const result = Rapid.operationExtract(context, ['d']).disabled();
       expect(result).to.be.not.ok;
     });
   });
