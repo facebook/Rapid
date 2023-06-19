@@ -692,14 +692,17 @@ export class EditSystem extends AbstractSystem {
 
 
   save() {
-    // don't overwrite existing, unresolved changes
-    if (this._mutex.locked() && !this._hasRestorableChanges) {
-      const prefs = this.context.storageSystem();
-      const success = prefs.setItem(this._historyKey(), this.toJSON() || null);
+    // bail out if another browser tab has locked the mutex, or changes exist that the user may want to restore.
+    if (!this._mutex.locked() || this._hasRestorableChanges) return;
 
+    const prefs = this.context.storageSystem();
+    const json = this.toJSON();
+    if (json) {
+      const success = prefs.setItem(this._historyKey(), json);
       if (!success) this.emit('storage_error');
+    } else {
+      prefs.removeItem(this._historyKey());
     }
-    return this;
   }
 
 
@@ -707,17 +710,17 @@ export class EditSystem extends AbstractSystem {
   clearSaved() {
     this.context.debouncedSave.cancel();
 
-    if (this._mutex.locked()) {
-      this._hasRestorableChanges = false;
-      const prefs = this.context.storageSystem();
-      prefs.removeItem(this._historyKey());
+    // bail out if another browser tab has locked the mutex
+    if (!this._mutex.locked()) return;
 
-      // clear the changeset metadata associated with the saved history
-      prefs.removeItem('comment');
-      prefs.removeItem('hashtags');
-      prefs.removeItem('source');
-    }
-    return this;
+    this._hasRestorableChanges = false;
+    const prefs = this.context.storageSystem();
+    prefs.removeItem(this._historyKey());
+
+    // clear the changeset metadata associated with the saved history
+    prefs.removeItem('comment');
+    prefs.removeItem('hashtags');
+    prefs.removeItem('source');
   }
 
 
