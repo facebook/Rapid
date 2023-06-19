@@ -1,5 +1,5 @@
 describe('EditSystem', () => {
-  let _context, _editSystem, spy;
+  let _editSystem, spy;
 
   const actionNoop = function() {
     return (graph) => graph;
@@ -9,12 +9,28 @@ describe('EditSystem', () => {
   };
 
 
-  beforeEach(() => {
-    _context = Rapid.coreContext();
-    window._context = _context;  // lol
-    _context.init();
+  class MockStorageSystem {
+    constructor() { }
+    getItem() { return ''; }
+    hasItem() { return false; }
+    setItem() { }
+  }
 
-    _editSystem = _context.editSystem();
+  class MockContext {
+    constructor()   {
+      this.projection = new sdk.Projection();
+      this._storageSystem = new MockStorageSystem();
+     }
+    storageSystem() { return this._storageSystem; }
+    selectedIDs() { return []; }
+  }
+
+  const context = new MockContext();
+
+
+  beforeEach(() => {
+    _editSystem = new Rapid.EditSystem(context);
+    _editSystem.init();
     spy = sinon.spy();
   });
 

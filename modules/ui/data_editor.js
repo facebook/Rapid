@@ -6,7 +6,7 @@ import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
 
 export function uiDataEditor(context) {
   let dataHeader = uiDataHeader(context);
-  let rawTagEditor = uiSectionRawTagEditor('custom-data-tag-editor', context)
+  let rawTagEditor = uiSectionRawTagEditor(context, 'custom-data-tag-editor')
     .expandedByDefault(true)
     .readOnlyTags([/./]);
   let _datum;

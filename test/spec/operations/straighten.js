@@ -1,5 +1,4 @@
 describe('operationStraighten', () => {
-  let _context;
   let _graph;
 
   class MockMap {
@@ -9,21 +8,19 @@ describe('operationStraighten', () => {
 
   class MockContext {
     constructor()           { this.map = new MockMap(); }
+    mapSystem()             { return this.map; }
     graph()                 { return _graph; }
     entity(id)              { return _graph.entity(id); }
     hasEntity(id)           { return _graph.hasEntity(id); }
     hasHiddenConnections()  { return false; }
     inIntro()               { return false; }
     keyBinding()            { return false; }
-    map()                   { return this.map; }
     t(id)                   { return id; }
     tHtml(id)               { return id; }
   }
 
+  const context = new MockContext();
 
-  beforeEach(() => {
-    _context = new MockContext();
-  });
 
   describe('#available', () => {
     beforeEach(() => {
@@ -59,77 +56,77 @@ describe('operationStraighten', () => {
     });
 
     it('is not available for no selected ids', () => {
-      const result = Rapid.operationStraighten(_context, []).available();
+      const result = Rapid.operationStraighten(context, []).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for way with only 2 nodes', () => {
-      const result = Rapid.operationStraighten(_context, ['w1']).available();
+      const result = Rapid.operationStraighten(context, ['w1']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is available for way with only 2 nodes connected to another 2-node way', () => {
-      const result = Rapid.operationStraighten(_context, ['w1', 'w1-2']).available();
+      const result = Rapid.operationStraighten(context, ['w1', 'w1-2']).available();
       expect(result).to.be.ok;
     });
 
     it('is not available for non-continuous ways', () => {
-      const result = Rapid.operationStraighten(_context, ['w2', 'w4']).available();
+      const result = Rapid.operationStraighten(context, ['w2', 'w4']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is available for selected way with more than 2 nodes', () => {
-      const result = Rapid.operationStraighten(_context, ['w2']).available();
+      const result = Rapid.operationStraighten(context, ['w2']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for selected, ordered, continuous ways', () => {
-      const result = Rapid.operationStraighten(_context, ['w1', 'w2', 'w3']).available();
+      const result = Rapid.operationStraighten(context, ['w1', 'w2', 'w3']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for selected, un-ordered, continuous ways', () => {
-      const result = Rapid.operationStraighten(_context, ['w1', 'w3', 'w2']).available();
+      const result = Rapid.operationStraighten(context, ['w1', 'w3', 'w2']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for selected, continuous ways with different way-directions', () => {
-      const result = Rapid.operationStraighten(_context, ['w1', 'w3', 'w2-2']).available();
+      const result = Rapid.operationStraighten(context, ['w1', 'w3', 'w2-2']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for 2 selected nodes in the same way, more than one node apart', () => {
-      const result = Rapid.operationStraighten(_context, ['w5', 'n9', 'n11']).available();
+      const result = Rapid.operationStraighten(context, ['w5', 'n9', 'n11']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for 2 selected nodes in adjacent ways, more than one node apart', () => {
-      const result = Rapid.operationStraighten(_context, ['w2', 'w3', 'n5', 'n3']).available();
+      const result = Rapid.operationStraighten(context, ['w2', 'w3', 'n5', 'n3']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for 2 selected nodes in non-adjacent ways, providing in between ways are selected', () => {
-      const result = Rapid.operationStraighten(_context, ['n2', 'n7', 'w4', 'w1', 'w3', 'w2']).available();
+      const result = Rapid.operationStraighten(context, ['n2', 'n7', 'w4', 'w1', 'w3', 'w2']).available();
       expect(result).to.be.ok;
     });
 
     it('is available for 2 selected nodes in non-adjacent, non-same-directional ways, providing in between ways are selected', () => {
-      const result = Rapid.operationStraighten(_context, ['n2', 'n7', 'w4', 'w1', 'w3', 'w2-2']).available();
+      const result = Rapid.operationStraighten(context, ['n2', 'n7', 'w4', 'w1', 'w3', 'w2-2']).available();
       expect(result).to.be.ok;
     });
 
     it('is not available for nodes not on selected ways', () => {
-      const result = Rapid.operationStraighten(_context, ['w5', 'n4', 'n11']).available();
+      const result = Rapid.operationStraighten(context, ['w5', 'n4', 'n11']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for one selected node', () => {
-      const result = Rapid.operationStraighten(_context, ['w5', 'n9']).available();
+      const result = Rapid.operationStraighten(context, ['w5', 'n9']).available();
       expect(result).to.be.not.ok;
     });
 
     it('is not available for more than two selected nodes', () => {
-      const result = Rapid.operationStraighten(_context, ['w5', 'n9', 'n11', 'n12']).available();
+      const result = Rapid.operationStraighten(context, ['w5', 'n9', 'n11', 'n12']).available();
       expect(result).to.be.not.ok;
     });
   });

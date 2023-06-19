@@ -1,80 +1,113 @@
-describe('uiSectionRawTagEditor', function() {
-    var taglist, element, entity, context;
+describe('uiSectionRawTagEditor', () => {
+  let rawTagEditor, wrap;
 
-    function render(tags) {
-        taglist = Rapid.uiSectionRawTagEditor('raw-tag-editor', context)
-            .entityIDs([entity.id])
-            .presets([{isFallback: function() { return false; }}])
-            .tags(tags)
-            .expandedByDefault(true);
+  class MockLocalizationSystem {
+    constructor() { }
+    isRTL()  { return false; }
+    t()      { return ''; }
+    tHtml()  { return ''; }
+  }
 
-        element = d3.select('body')
-            .append('div')
-            .attr('class', 'ui-wrap')
-            .call(taglist.render);
+  class MockStorageSystem {
+    constructor() { }
+    getItem() { return null; }
+  }
+
+  class MockContext {
+    constructor()   {
+      this.services = new Map();
+      this._localizationSystem = new MockLocalizationSystem();
+      this._storageSystem = new MockStorageSystem();
     }
+    localizationSystem()  { return this._localizationSystem; }
+    storageSystem()       { return this._storageSystem; }
+    cleanTagKey(val)      { return val; }
+    cleanTagValue(val)    { return val; }
+    t()                   { return ''; }
+    tHtml()               { return ''; }
+  }
 
-    beforeEach(function () {
-        entity = Rapid.osmNode({id: 'n12345'});
-        context = Rapid.coreContext().assetPath('../dist/').init();
-        context.editSystem().merge([entity]);
-        render({highway: 'residential'});
+  const context = new MockContext();
+  const entity = Rapid.osmNode({ id: 'n-1' });
+
+
+  beforeEach(() => {
+    render({ highway: 'residential' });
+  });
+
+  afterEach(() => {
+    d3.selectAll('.ui-wrap').remove();
+  });
+
+
+  function render(tags) {
+    rawTagEditor = Rapid.uiSectionRawTagEditor(context, 'raw-tag-editor')
+      .entityIDs([ entity.id ])
+      .presets([ { isFallback: () => false } ])
+      .tags(tags)
+      .expandedByDefault(true);
+
+    wrap = d3.select('body')
+      .append('div')
+      .attr('class', 'ui-wrap')
+      .call(rawTagEditor.render);
+  }
+
+
+  it('creates input elements for each key-value pair', () => {
+    expect(wrap.selectAll('input[value=highway]')).not.to.be.empty;
+    expect(wrap.selectAll('input[value=residential]')).not.to.be.empty;
+  });
+
+
+  it('creates a pair of empty input elements if the entity has no tags', () => {
+    wrap.remove();
+    render({});
+    expect(wrap.select('.tag-list').selectAll('input.value').property('value')).to.be.empty;
+    expect(wrap.select('.tag-list').selectAll('input.key').property('value')).to.be.empty;
+  });
+
+
+  it('adds tags when clicking the add button', done => {
+    happen.click(wrap.selectAll('button.add-tag').node());
+    window.setTimeout(() => {
+      expect(wrap.select('.tag-list').selectAll('input').nodes()[2].value).to.be.empty;
+      expect(wrap.select('.tag-list').selectAll('input').nodes()[3].value).to.be.empty;
+      done();
+    }, 20);
+  });
+
+
+  it('removes tags when clicking the remove button', done => {
+    rawTagEditor.on('change', (entityIDs, tags) => {
+      expect(tags).to.eql({ highway: undefined });
+      done();
     });
-
-    afterEach(function () {
-        d3.selectAll('.ui-wrap')
-            .remove();
-    });
+    Rapid.utilTriggerEvent(wrap.selectAll('button.remove'), 'mousedown');
+  });
 
 
-    it('creates input elements for each key-value pair', function () {
-        expect(element.selectAll('input[value=highway]')).not.to.be.empty;
-        expect(element.selectAll('input[value=residential]')).not.to.be.empty;
-    });
+  it('adds tags when pressing the TAB key on last input.value', done => {
+    expect(wrap.selectAll('.tag-list li').nodes().length).to.eql(1);
+    const input = d3.select('.tag-list li:last-child input.value').nodes()[0];
 
-    it('creates a pair of empty input elements if the entity has no tags', function () {
-        element.remove();
-        render({});
-        expect(element.select('.tag-list').selectAll('input.value').property('value')).to.be.empty;
-        expect(element.select('.tag-list').selectAll('input.key').property('value')).to.be.empty;
-    });
+    happen.keydown(d3.select(input).node(), { keyCode: 9 });
+    window.setTimeout(() => {
+      expect(wrap.selectAll('.tag-list li').nodes().length).to.eql(2);
+      expect(wrap.select('.tag-list').selectAll('input').nodes()[2].value).to.be.empty;
+      expect(wrap.select('.tag-list').selectAll('input').nodes()[3].value).to.be.empty;
+      done();
+    }, 20);
+  });
 
-    it('adds tags when clicking the add button', function (done) {
-        happen.click(element.selectAll('button.add-tag').node());
-        setTimeout(function() {
-            expect(element.select('.tag-list').selectAll('input').nodes()[2].value).to.be.empty;
-            expect(element.select('.tag-list').selectAll('input').nodes()[3].value).to.be.empty;
-            done();
-        }, 20);
-    });
 
-    it('removes tags when clicking the remove button', function (done) {
-        taglist.on('change', function(entityIDs, tags) {
-            expect(tags).to.eql({highway: undefined});
-            done();
-        });
-        Rapid.utilTriggerEvent(element.selectAll('button.remove'), 'mousedown');
-    });
-
-    it('adds tags when pressing the TAB key on last input.value', function (done) {
-        expect(element.selectAll('.tag-list li').nodes().length).to.eql(1);
-        var input = d3.select('.tag-list li:last-child input.value').nodes()[0];
-        happen.keydown(d3.select(input).node(), {keyCode: 9});
-        setTimeout(function() {
-            expect(element.selectAll('.tag-list li').nodes().length).to.eql(2);
-            expect(element.select('.tag-list').selectAll('input').nodes()[2].value).to.be.empty;
-            expect(element.select('.tag-list').selectAll('input').nodes()[3].value).to.be.empty;
-            done();
-        }, 20);
-    });
-
-    it('does not add a tag when pressing TAB while shift is pressed', function (done) {
-        expect(element.selectAll('.tag-list li').nodes().length).to.eql(1);
-        var input = d3.select('.tag-list li:last-child input.value').nodes()[0];
-        happen.keydown(d3.select(input).node(), {keyCode: 9, shiftKey: true});
-        setTimeout(function() {
-            expect(element.selectAll('.tag-list li').nodes().length).to.eql(1);
-            done();
-        }, 20);
-    });
+  it('does not add a tag when pressing TAB while shift is pressed', done => {
+    expect(wrap.selectAll('.tag-list li').nodes().length).to.eql(1);
+    const input = d3.select('.tag-list li:last-child input.value').nodes()[0];
+    happen.keydown(d3.select(input).node(), { keyCode: 9, shiftKey: true });
+    window.setTimeout(() => {
+      expect(wrap.selectAll('.tag-list li').nodes().length).to.eql(1);
+      done();
+    }, 20);
+  });
 });

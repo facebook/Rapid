@@ -15,8 +15,8 @@ export function validationDisconnectedWay(context) {
 
 
   let validation = function checkDisconnectedWay(entity, graph) {
-    const routingIslandWays = routingIslandForEntity(entity);
-    if (!routingIslandWays) return [];
+    const routingIslandEntities = routingIslandForEntity(entity);
+    if (!routingIslandEntities) return [];
 
     return [new ValidationIssue(context, {
       type: type,
@@ -28,7 +28,7 @@ export function validationDisconnectedWay(context) {
         return l10n.tHtml('issues.disconnected_way.routable.message', { count: this.entityIds.length, highway: label });
       },
       reference: showReference,
-      entityIds: Array.from(routingIslandWays).map(way => way.id),
+      entityIds: Array.from(routingIslandEntities).map(entity => entity.id),
       dynamicFixes: makeFixes
     })];
 
@@ -130,7 +130,7 @@ export function validationDisconnectedWay(context) {
 
 
     function isConnectedVertex(vertex) {
-      // assume ways overlapping unloaded tiles are connected to the wider road network  - #5938
+      // assume ways overlapping unloaded tiles are connected to the wider road network  - iD#5938
       const osm = context.services.get('osm');
       if (osm && !osm.isDataLoaded(vertex.loc)) return true;
 

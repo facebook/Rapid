@@ -1,39 +1,46 @@
-describe('uiFlash', function () {
-    var context;
+describe('uiFlash', () => {
+  let body, container;
 
-    beforeEach(function() {
-        var container = d3.select('body');
-        context = Rapid.coreContext().assetPath('../dist/').init().container(container);
-        container
-            .append('div')
-            .attr('class', 'flash-wrap')
-            .append('div')
-            .attr('class', 'main-footer-wrap');
-    });
+  class MockContext {
+    constructor() { }
+    container()   { return container; }
+  }
 
-    afterEach(function() {
-        d3.select('.flash-wrap')
-            .remove();
-    });
+  const context = new MockContext();
 
-    it('flash is shown', function() {
-        Rapid.uiFlash(context).duration(200)();
-        var flashWrap = d3.selectAll('.flash-wrap');
-        var footerWrap = d3.selectAll('.main-footer-wrap');
-        expect(flashWrap.classed('footer-show')).to.be.ok;
-        expect(footerWrap.classed('footer-hide')).to.be.ok;
-    });
+  beforeEach(() => {
+    body = d3.select('body');
+    container = body.append('div');
+    container
+      .append('div')
+      .attr('class', 'flash-wrap')
+      .append('div')
+      .attr('class', 'main-footer-wrap');
+  });
 
-    it('flash goes away', function(done) {
-        Rapid.uiFlash(context).duration(200)();
-        window.setTimeout(function() {
-            d3.timerFlush();
-            var flashWrap = d3.selectAll('.flash-wrap');
-            var footerWrap = d3.selectAll('.main-footer-wrap');
-            expect(flashWrap.classed('footer-hide')).to.be.ok;
-            expect(footerWrap.classed('footer-show')).to.be.ok;
-            done();
-        }, 225);
-    });
+  afterEach(() => {
+    container.remove();
+  });
+
+
+  it('flash is shown', () => {
+    Rapid.uiFlash(context).duration(10)();
+    const flashWrap = d3.selectAll('.flash-wrap');
+    const footerWrap = d3.selectAll('.main-footer-wrap');
+    expect(flashWrap.classed('footer-show')).to.be.ok;
+    expect(footerWrap.classed('footer-hide')).to.be.ok;
+  });
+
+  it('flash goes away', done => {
+    Rapid.uiFlash(context).duration(10)();
+    window.setTimeout(() => {
+      d3.timerFlush();
+      const flashWrap = d3.selectAll('.flash-wrap');
+      const footerWrap = d3.selectAll('.main-footer-wrap');
+      expect(flashWrap.classed('footer-hide')).to.be.ok;
+      expect(footerWrap.classed('footer-show')).to.be.ok;
+      done();
+    }, 20);
+  });
 
 });

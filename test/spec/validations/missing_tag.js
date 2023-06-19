@@ -1,4 +1,4 @@
-describe('validations.missing_tag', () => {
+describe('validationMissingTag', () => {
 
   class MockLocalizationSystem {
     constructor() {}

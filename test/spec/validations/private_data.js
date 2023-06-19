@@ -1,4 +1,4 @@
-describe('validations.private_data', () => {
+describe('validationPrivateData', () => {
 
   class MockLocalizationSystem {
     constructor() {}

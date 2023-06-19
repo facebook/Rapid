@@ -1,11 +1,13 @@
-describe('validations.missing_role', () => {
+describe('validationMissingRole', () => {
 
   class MockLocalizationSystem {
     constructor() {}
   }
 
   class MockContext {
-    constructor() { this._l10n = new MockLocalizationSystem(this); }
+    constructor() {
+      this._l10n = new MockLocalizationSystem(this);
+    }
     localizationSystem() { return this._l10n; }
   }
 

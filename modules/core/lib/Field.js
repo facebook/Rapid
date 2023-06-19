@@ -51,6 +51,13 @@ export class Field {
 
     // Convert some `fieldData` properties to class properties.. (others will become class functions)
     Object.assign(this, utilObjectOmit(this.orig, ['increment', 'label', 'placeholder', 'terms']));
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this.title = this.title.bind(this);
+    this.label = this.label.bind(this);
+    this.placeholder = this.placeholder.bind(this);
+    this.terms = this.terms.bind(this);
   }
 
   increment() {

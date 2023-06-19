@@ -1,11 +1,14 @@
-describe('validations.incompatible_source', () => {
+describe('validationIncompatibleSource', () => {
+
   class MockLocalizationSystem {
     constructor() {}
   }
 
   class MockContext {
-    constructor() { this._l10n = new MockLocalizationSystem(this); }
-    localizationSystem() { return this._l10n; }
+    constructor() {
+      this._l10n = new MockLocalizationSystem(this);
+    }
+    localizationSystem()  { return this._l10n; }
   }
 
   const validator = Rapid.validationIncompatibleSource(new MockContext());

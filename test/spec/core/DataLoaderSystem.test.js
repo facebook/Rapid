@@ -11,6 +11,7 @@ describe('DataLoaderSystem', () => {
 
   beforeEach(() => {
     _dataLoader = new Rapid.DataLoaderSystem(context);
+    _dataLoader.init();
   });
 
 

@@ -1,4 +1,4 @@
-describe('validations.suspicious_name', () => {
+describe('validationSuspiciousName', () => {
 
   class MockNsi {
     constructor() {
