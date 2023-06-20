@@ -40,3 +40,10 @@ export const sdk = {
   utilQsString: SDKUTIL.utilQsString,
   utilStringQs: SDKUTIL.utilStringQs
 };
+
+// set global `marked` options
+import { marked } from 'marked';
+marked.setOptions({
+  headerIds: false,
+  mangle: false
+});
