@@ -493,7 +493,7 @@ export class OsmService extends AbstractService {
     function done(err, payload) {
       if (err) return callback(err);
 
-      var options = { skipSeen: false };
+      const options = { skipSeen: false };
       return this._parseUserJSON(payload, (err, results) => {
         if (err) return callback(err);
         this._userDetails = results.data[0];
@@ -662,7 +662,7 @@ export class OsmService extends AbstractService {
       if (!err) {
         delete cache.toLoad[tile.id];
         cache.loaded[tile.id] = true;
-        var bbox = tile.wgs84Extent.bbox();
+        const bbox = tile.wgs84Extent.bbox();
         bbox.id = tile.id;
         cache.rtree.insert(bbox);
       }
@@ -724,7 +724,7 @@ export class OsmService extends AbstractService {
     const that = this;
     const path = '/api/0.6/notes?limit=' + noteOptions.limit + '&closed=' + noteOptions.closed + '&bbox=';
     const deferLoadUsers = _throttle(() => {
-      var uids = Object.keys(that._userCache.toLoad);
+      const uids = Object.keys(that._userCache.toLoad);
       if (!uids.length) return;
       that.loadUsers(uids, function() {});  // eagerly load user details
     }, 750);
@@ -800,7 +800,7 @@ export class OsmService extends AbstractService {
       // we get the updated note back, remove from caches and reparse..
       this.removeNote(note);
 
-      var options = { skipSeen: false };
+      const options = { skipSeen: false };
       return this._parseXML(xml, (err, results) => {
         if (err) {
           return callback(err);
@@ -1451,7 +1451,7 @@ export class OsmService extends AbstractService {
   _parseNoteXML(xml, uid) {
     const attrs = xml.attributes;
     const childNodes = xml.childNodes;
-    var props = {};
+    const props = {};
 
     props.id = uid;
     props.loc = this._getLoc(attrs);

@@ -354,30 +354,13 @@ describe('OsmService', () => {
     });
 
 
-    it('#isDataLoaded', done => {
-      fetchMock.mock(/map.json\?bbox/, {
-        body: tileResponse,
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      // resetting the cache
-      const caches = _osm.caches('get');
-      caches.tile.toLoad = {};
-      caches.tile.loaded = {};
-      caches.tile.inflight = {};
-      caches.tile.seen = {};
-      caches.tile.rtree.clear();
-
+    it('#isDataLoaded', () => {
       expect(_osm.isDataLoaded([-74.0444216, 40.6694299])).to.be.false;
 
-      _osm.loadTiles(projection);
+      const bbox = { minX: -75, minY: 40, maxX: -74, maxY: 41, id: 'fake' };
+      _osm._tileCache.rtree.insert(bbox);
 
-      window.setTimeout(() => {
-        expect(fetchMock.called()).to.be.true;
-        expect(_osm.isDataLoaded([-74.0444216, 40.6694299])).to.be.true;
-        done();
-      }, 50);
+      expect(_osm.isDataLoaded([-74.0444216, 40.6694299])).to.be.true;
     });
   });
 
