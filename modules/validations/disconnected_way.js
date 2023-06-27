@@ -131,7 +131,7 @@ export function validationDisconnectedWay(context) {
 
     function isConnectedVertex(vertex) {
       // assume ways overlapping unloaded tiles are connected to the wider road network  - iD#5938
-      const osm = context.services.get('osm');
+      const osm = context.services.osm;
       if (osm && !osm.isDataLoaded(vertex.loc)) return true;
 
       // entrances are considered connected

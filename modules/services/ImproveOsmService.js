@@ -56,7 +56,7 @@ export class ImproveOsmService extends AbstractService {
     this.reset();
 
     const dataLoaderSystem = this.context.dataLoaderSystem();
-    dataLoaderSystem.get('qa_data')
+    dataLoaderSystem.getDataAsync('qa_data')
       .then(d => this._impOsmData = d.improveOSM);
   }
 
@@ -310,7 +310,7 @@ export class ImproveOsmService extends AbstractService {
    * @param   callback
    */
   postUpdate(d, callback) {
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     if (!osm || !osm.authenticated()) { // Username required in payload
       return callback({ message: 'Not Authenticated', status: -3}, d);
     }

@@ -15,7 +15,7 @@ export function uiImproveOsmHeader(context) {
 
   function improveOsmHeader(selection) {
     let iconFill = 0xffffff;
-    const improveosm = context.services.get('improveOSM');
+    const improveosm = context.services.improveOSM;
     if (improveosm) {
       iconFill = improveosm.getColor(_qaItem?.itemType);
     }

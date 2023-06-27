@@ -33,7 +33,7 @@ export function validationUnsquareWay(context) {
     if (nodes.length > nodeThreshold + 1) return [];   // +1 because closing node appears twice
 
     // ignore if not all nodes are fully downloaded
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm || nodes.some(node => !osm.isDataLoaded(node.loc))) return [];
 
     // don't flag connected ways to avoid unresolvable unsquare loops

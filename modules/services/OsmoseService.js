@@ -47,7 +47,7 @@ export class OsmoseService extends AbstractService {
     this.reset();
 
     const dataLoaderSystem = this.context.dataLoaderSystem();
-    dataLoaderSystem.get('qa_data')
+    dataLoaderSystem.getDataAsync('qa_data')
       .then(d => {
         this._osmoseData.icons = d.osmose.icons;
         this._osmoseData.types = Object.keys(d.osmose.icons)

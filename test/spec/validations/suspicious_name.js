@@ -21,7 +21,9 @@ describe('validationSuspiciousName', () => {
   class MockContext {
     constructor() {
       this._l10n = new MockLocalizationSystem(this);
-      this.services = new Map().set('nsi', new MockNsi(this));
+      this.services = {
+        nsi: new MockNsi(this)
+      };
     }
     localizationSystem() { return this._l10n; }
   }

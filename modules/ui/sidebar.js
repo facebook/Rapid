@@ -192,7 +192,7 @@ export function uiSidebar(context) {
                 if (context.mode().id === 'drag-note') return;
                 _wasNote = true;
 
-                var osm = context.services.get('osm');
+                var osm = context.services.osm;
                 if (osm) {
                     datum = osm.getNote(datum.id); // marker may contain stale data - get latest
                 }
@@ -206,7 +206,7 @@ export function uiSidebar(context) {
             } else if (datum instanceof QAItem) {
                 _wasQaItem = true;
 
-                var errService = context.services.get(datum.service);
+                var errService = context.services[datum.service];
                 if (errService) {
                     // marker may contain stale data - get latest
                     datum = errService.getError(datum.id);

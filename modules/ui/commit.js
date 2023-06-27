@@ -120,7 +120,7 @@ export function uiCommit(context) {
   // Calculates tags based on the user's editing session
   //
   function updateSessionChangesetTags() {
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm) return;
 
     let tags = Object.assign({}, uploader.changeset.tags);   // shallow copy
@@ -161,21 +161,21 @@ export function uiCommit(context) {
     if (osmClosed.length) {
       tags['closed:note'] = context.cleanTagValue(osmClosed.join(';'));
     }
-    const keepright = context.services.get('keepRight');
+    const keepright = context.services.keepRight;
     if (keepright) {
       const krClosed = keepright.getClosedIDs();
       if (krClosed.length) {
         tags['closed:keepright'] = context.cleanTagValue(krClosed.join(';'));
       }
     }
-    const improveosm = context.services.get('improveOSM');
+    const improveosm = context.services.improveOSM;
     if (improveosm) {
       const iOsmClosed = improveosm.getClosedCounts();
       for (let itemType in iOsmClosed) {
         tags[`closed:improveosm:${itemType}`] = context.cleanTagValue(iOsmClosed[itemType].toString());
       }
     }
-    const osmose = context.services.get('osmose');
+    const osmose = context.services.osmose;
     if (osmose) {
       const osmoseClosed = osmose.getClosedCounts();
       for (let itemType in osmoseClosed) {
@@ -225,7 +225,7 @@ export function uiCommit(context) {
   //
   //
   function render(selection) {
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm) return;
 
     let header = selection.selectAll('.header')
@@ -412,7 +412,7 @@ export function uiCommit(context) {
             if (!key) delete uploader.changeset.tags[key];
           }
 
-          context.uploader().save();
+          uploader.save();
         }
       });
 

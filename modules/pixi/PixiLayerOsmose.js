@@ -25,7 +25,7 @@ export class PixiLayerOsmose extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('osmose');
+    return !!this.context.services.osmose;
   }
 
 
@@ -36,7 +36,7 @@ export class PixiLayerOsmose extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.get('osmose');
+    const service = this.context.services.osmose;
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('qa');
@@ -79,7 +79,7 @@ export class PixiLayerOsmose extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.get('osmose');
+    const service = this.context.services.osmose;
     if (!this.enabled || !service || zoom < MINZOOM) return;
 
     service.loadIssues(this.context.projection);  // note: context.projection !== pixi projection

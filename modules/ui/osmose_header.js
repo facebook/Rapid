@@ -2,7 +2,7 @@ import { Color } from 'pixi.js';
 
 
 export function uiOsmoseHeader(context) {
-  const osmose = context.services.get('osmose');
+  const osmose = context.services.osmose;
   let _qaItem;
 
   function issueTitle(d) {

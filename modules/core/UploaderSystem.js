@@ -35,6 +35,7 @@ export class UploaderSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'uploader';
+    this.dependencies = new Set(['data', 'edits', 'l10n']);
 
     this.changeset = null;    // uiCommit will create it
 
@@ -50,6 +51,7 @@ export class UploaderSystem extends AbstractSystem {
     this._loadedIDs = new Set();
     this._conflicts = [];
     this._errors = [];
+    this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._loadedSome = this._loadedSome.bind(this);
@@ -58,22 +60,46 @@ export class UploaderSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    this.context.dataLoaderSystem().get('discarded')
-      .then(d => this._discardTags = d)
-      .catch(() => { /* ignore */ });
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
+
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
+    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const prerequisites = dataLoaderSystem.initAsync();
+
+    return this._initPromise = prerequisites
+      .then(() => dataLoaderSystem.getDataAsync('discarded'))
+      .then(d => this._discardTags = d);
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
     this.changeset = null;
+    return Promise.resolve();
   }
 
 
@@ -93,7 +119,7 @@ export class UploaderSystem extends AbstractSystem {
     if (this._isSaving && !tryAgain) return;
 
     const context = this.context;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm) return;
 
     // If user somehow got logged out mid-save, try to reauthenticate..
@@ -146,7 +172,7 @@ export class UploaderSystem extends AbstractSystem {
    */
   _startConflictCheck() {
     const context = this.context;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     const editSystem = context.editSystem();
     const summary = editSystem.difference().summary();
     const graph = context.graph();
@@ -230,7 +256,7 @@ export class UploaderSystem extends AbstractSystem {
 
     this.emit('progressChanged', this._loadedIDs.size, this._toCheckIDs.size);
 
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     if (osm && loadMoreIDs.size) {
       osm.loadMultiple(Array.from(loadMoreIDs), this._loadedSome);
 
@@ -245,7 +271,7 @@ export class UploaderSystem extends AbstractSystem {
   _detectConflicts() {
     const l10n = this.context.localizationSystem();
     const editSystem = this.context.editSystem();
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     if (!osm) return;
 
     const localGraph = this._localGraph;
@@ -334,7 +360,7 @@ export class UploaderSystem extends AbstractSystem {
   // If conflicts or errors exist, present them to the user instead.
   _tryUpload() {
     const context = this.context;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm) {
       this._errors.push({ msg: 'No OSM Service' });
     }
@@ -387,7 +413,6 @@ export class UploaderSystem extends AbstractSystem {
   _didResultInNoChanges() {
     this.emit('resultNoChanges');
     this._endSave();
-    this.context.reset();
   }
 
 
@@ -406,15 +431,9 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInSuccess() {
-    // delete the edit stack cached to local storage
-    this.context.editSystem().clearSaved();
+    this.context.editSystem().clearSaved();   // clear edits saved in localstorage
     this.emit('resultSuccess', this.changeset);
-
-    // Add delay to allow for postgres replication iD#1646 iD#2678
-    window.setTimeout(() => {
-      this._endSave();
-      this.context.reset();   // will call this.reset() and delete `this.changeset`
-    }, 2500);
+    this._endSave();
   }
 
 

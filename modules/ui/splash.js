@@ -26,7 +26,7 @@ export function uiSplash(context) {
 
     // fetch intro graph data now, while user is looking at the splash screen
     const dataLoaderSystem = context.dataLoaderSystem();
-    dataLoaderSystem.get('intro_graph');
+    dataLoaderSystem.getDataAsync('intro_graph');
 
     let modalSelection = uiModal(selection);
 

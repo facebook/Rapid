@@ -11,9 +11,10 @@ describe('EditSystem', () => {
 
   class MockStorageSystem {
     constructor() { }
-    getItem() { return ''; }
-    hasItem() { return false; }
-    setItem() { }
+    initAsync() { return Promise.resolve(); }
+    getItem()   { return ''; }
+    hasItem()   { return false; }
+    setItem()   { }
   }
 
   class MockContext {
@@ -29,9 +30,9 @@ describe('EditSystem', () => {
 
 
   beforeEach(() => {
-    _editSystem = new Rapid.EditSystem(context);
-    _editSystem.init();
     spy = sinon.spy();
+    _editSystem = new Rapid.EditSystem(context);
+    return _editSystem.initAsync();
   });
 
 

@@ -99,12 +99,12 @@ export class DragNodeMode extends AbstractMode {
 
     // `_clickLoc` is used later to calculate a drag offset,
     // to correct for where "on the pin" the user grabbed the target.
-    const clickCoord = context.behaviors.get('drag').lastDown.coord;
+    const clickCoord = context.behaviors.drag.lastDown.coord;
     this._clickLoc = context.projection.invert(clickCoord);
 
     context.enableBehaviors(['hover', 'drag']);
 
-    context.behaviors.get('drag')
+    context.behaviors.drag
       .on('move', this._move)
       .on('end', this._end)
       .on('cancel', this._cancel);
@@ -133,7 +133,7 @@ export class DragNodeMode extends AbstractMode {
     const context = this.context;
     context.scene().clearClass('drawing');
 
-    context.behaviors.get('drag')
+    context.behaviors.drag
       .off('move', this._move)
       .off('end', this._end)
       .off('cancel', this._cancel);

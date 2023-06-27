@@ -40,7 +40,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return !!this.context.services.has('osm');
+    return !!this.context.services.osm;
   }
 
 
@@ -51,7 +51,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     if (!osm) return;
 
     const parentContainer = this.scene.groups.get('qa');
@@ -101,7 +101,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     if (!this.enabled || !osm || zoom < MINZOOM) return;
 
     osm.loadNotes(this.context.projection);  // note: context.projection !== pixi projection

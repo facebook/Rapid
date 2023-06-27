@@ -4,7 +4,7 @@ import { uiIcon } from './icon';
 
 
 export function uiStatus(context) {
-  const osm = context.services.get('osm');
+  const osm = context.services.osm;
 
 
   return function(selection) {

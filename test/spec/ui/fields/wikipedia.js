@@ -11,9 +11,9 @@ describe('uiFieldWikipedia', () => {
   class MockContext {
     constructor()   {
       this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
-      this._dataLoaderSystem.init();
-      this.services = new Map();
-      this.services.set('wikidata', new MockWikidataService(this));
+      this.services = {
+        wikidata: new MockWikidataService(this)
+      };
     }
     dataLoaderSystem()  { return this._dataLoaderSystem; }
     cleanTagKey(val)    { return val; }

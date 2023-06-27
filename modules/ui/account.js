@@ -2,7 +2,7 @@ import { uiIcon } from './icon';
 
 
 export function uiAccount(context) {
-  const osm = context.services.get('osm');
+  const osm = context.services.osm;
 
 
   function updateUserDetails(selection) {

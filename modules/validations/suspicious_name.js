@@ -14,7 +14,7 @@ export function validationSuspiciousName(context) {
 
   // Attempt to match a generic record in the name-suggestion-index.
   function isGenericMatchInNsi(tags) {
-    const nsi = context.services.get('nsi');
+    const nsi = context.services.nsi;
     if (nsi) {
       _waitingForNsi = (nsi.status === 'loading');
       if (!_waitingForNsi) {

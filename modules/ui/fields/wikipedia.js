@@ -9,8 +9,8 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 export function uiFieldWikipedia(context, uifield) {
   const dispatch = d3_dispatch('change');
-  const wikipedia = context.services.get('wikipedia');
-  const wikidata = context.services.get('wikidata');
+  const wikipedia = context.services.wikipedia;
+  const wikidata = context.services.wikidata;
   let _langInput = d3_select(null);
   let _titleInput = d3_select(null);
   let _wikiURL = '';
@@ -19,7 +19,7 @@ export function uiFieldWikipedia(context, uifield) {
 
   let _dataWikipedia = [];
   const dataLoaderSystem = context.dataLoaderSystem();
-  dataLoaderSystem.get('wmf_sitematrix')
+  dataLoaderSystem.getDataAsync('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);

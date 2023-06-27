@@ -184,7 +184,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderCustomData(frame, projection, zoom) {
-    const vtService = this.context.services.get('vectortile');
+    const vtService = this.context.services.vectortile;
     let geoData, polygons, lines, points;
 
     if (this._template && vtService) {   // fetch data from vector tile service
@@ -403,7 +403,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (!arguments.length) return this._template;
 
     // test source against OSM imagery blocklists..
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     if (osm) {
       const blocklists = osm.imageryBlocklists ?? [];
       let fail = false;

@@ -42,7 +42,7 @@ export function uiNoteComments(context) {
       .attr('class', 'comment-author')
       .each((d, i, nodes) => {
         let selection = d3_select(nodes[i]);
-        const osm = context.services.get('osm');
+        const osm = context.services.osm;
         if (osm && d.user) {
           selection = selection
             .append('a')
@@ -75,7 +75,7 @@ export function uiNoteComments(context) {
   function replaceAvatars(selection) {
     const storageSystem = context.storageSystem();
     const showThirdPartyIcons = storageSystem.getItem('preferences.privacy.thirdpartyicons') ?? 'true';
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (showThirdPartyIcons !== 'true' || !osm) return;
 
     const uids = new Set();  // gather uids in the comment thread

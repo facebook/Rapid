@@ -39,7 +39,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('mapillary');
+    return !!this.context.services.mapillary;
   }
 
 
@@ -105,7 +105,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.get('mapillary');
+    const service = this.context.services.mapillary;
     if (!service) return;
 
     // const showMarkers = (zoom >= MINMARKERZOOM);
@@ -182,7 +182,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.get('mapillary');
+    const service = this.context.services.mapillary;
     if (!this._enabled || !service || zoom < MINZOOM) return;
 
     service.loadImages(this.context.projection);  // note: context.projection !== pixi projection

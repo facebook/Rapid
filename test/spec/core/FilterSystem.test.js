@@ -3,12 +3,14 @@ describe('FilterSystem', () => {
 
   class MockStorageSystem {
     constructor() { }
+    initAsync()   { return Promise.resolve(); }
     getItem() { return ''; }
     setItem() { }
   }
 
   class MockUrlHashSystem {
     constructor() { }
+    initAsync()   { return Promise.resolve(); }
     getParam() { return ''; }
     setParam() { }
     on() { return this; }
@@ -27,7 +29,7 @@ describe('FilterSystem', () => {
 
   beforeEach(() => {
     _filterSystem = new Rapid.FilterSystem(new MockContext());
-    _filterSystem.init();
+    return _filterSystem.initAsync();
   });
 
 

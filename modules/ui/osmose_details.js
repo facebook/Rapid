@@ -5,7 +5,7 @@ import { utilHighlightEntities } from '../util';
 
 export function uiOsmoseDetails(context) {
   const l10n = context.localizationSystem();
-  const osmose = context.services.get('osmose');
+  const osmose = context.services.osmose;
   let _qaItem;
 
   function issueString(d, type) {

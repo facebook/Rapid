@@ -10,7 +10,7 @@ export function uiIntroLine(context, curtain) {
   const chapter = { title: 'intro.lines.title' };
   const editMenu = context.ui().editMenu();
   const container = context.container();
-  const dragBehavior = context.behaviors.get('drag');
+  const dragBehavior = context.behaviors.drag;
   const editSystem = context.editSystem();
   const mapSystem = context.mapSystem();
   const presetSystem = context.presetSystem();

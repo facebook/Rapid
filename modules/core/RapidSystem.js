@@ -33,6 +33,7 @@ export class RapidSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'rapid';
+    this.dependencies = new Set(['l10n', 'urlhash']);
 
     this.showPowerUser = context.initialHashParams.poweruser === 'true';
     this.sources = new Set();
@@ -40,6 +41,7 @@ export class RapidSystem extends AbstractSystem {
     this._datasets = new Map();   // Map(datasetID -> dataset)
     this._taskExtent = null;
     this._isTaskBoundsRect = null;
+    this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
@@ -47,15 +49,27 @@ export class RapidSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    this.context.urlHashSystem().on('hashchange', this._hashchange);
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
 
-    // setup the built-in datasets (after localization ready)
-    const l10n = this.context.localizationSystem();
-    l10n.initAsync()
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
+    const context = this.context;
+    const urlHashSystem = context.urlHashSystem();
+    urlHashSystem.on('hashchange', this._hashchange);
+
+    const l10n = context.localizationSystem();
+    const prerequisites = l10n.initAsync();
+
+    return this._initPromise = prerequisites
       .then(() => {
         this._datasets.set('fbRoads', {
           id: 'fbRoads',
@@ -68,6 +82,7 @@ export class RapidSystem extends AbstractSystem {
           label: l10n.t('rapid_feature_toggle.fbRoads.label'),
           license_markdown: l10n.t('rapid_feature_toggle.fbRoads.license_markdown')
         });
+
         this._datasets.set('msBuildings', {
           id: 'msBuildings',
           beta: false,
@@ -84,11 +99,23 @@ export class RapidSystem extends AbstractSystem {
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
     this.sources = new Set();
+    return Promise.resolve();
   }
 
 
@@ -191,7 +218,7 @@ export class RapidSystem extends AbstractSystem {
     }
 
     // If there are remaining datasets to enable, try to load them from Esri.
-    const esri = this.context.services.get('esri');
+    const esri = this.context.services.esri;
     if (!esri || !toEnable.size) return;
 
     esri.loadDatasetsAsync()

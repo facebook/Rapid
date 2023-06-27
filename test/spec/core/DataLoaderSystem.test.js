@@ -11,7 +11,7 @@ describe('DataLoaderSystem', () => {
 
   beforeEach(() => {
     _dataLoader = new Rapid.DataLoaderSystem(context);
-    _dataLoader.init();
+    return _dataLoader.initAsync();
   });
 
 
@@ -23,11 +23,11 @@ describe('DataLoaderSystem', () => {
   });
 
 
-  describe('#get', () => {
+  describe('#getDataAsync', () => {
     it('returns a promise resolved if we already have the data', () => {
       _dataLoader._cachedData.test = { hello: 'world' };
 
-      const prom = _dataLoader.get('test');
+      const prom = _dataLoader.getDataAsync('test');
       expect(prom).to.be.an.instanceof(Promise);
       return prom
         .then(data => {
@@ -37,7 +37,7 @@ describe('DataLoaderSystem', () => {
     });
 
     it('returns a promise rejected if we can not get the data', done => {
-      const prom = _dataLoader.get('wat');
+      const prom = _dataLoader.getDataAsync('wat');
       expect(prom).to.be.an.instanceof(Promise);
       prom
         .then(data => {
@@ -56,7 +56,7 @@ describe('DataLoaderSystem', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      const prom = _dataLoader.get('intro_graph');
+      const prom = _dataLoader.getDataAsync('intro_graph');
       expect(prom).to.be.an.instanceof(Promise);
       return prom
         .then(data => {

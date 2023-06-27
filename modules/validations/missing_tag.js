@@ -39,7 +39,7 @@ export function validationMissingTag(context) {
 
 
   let validation = function checkMissingTag(entity, graph) {
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     const isUnloadedNode = (entity.type === 'node') && osm && !osm.isDataLoaded(entity.loc);
     let subtype;
 

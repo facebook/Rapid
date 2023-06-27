@@ -16,7 +16,7 @@ export function uiPhotoViewer(context) {
       .attr('class', 'thumb-hide')
       .on('click', () => {
         for (const serviceID of ['mapillary', 'kartaview', 'streetside']) {
-          const service = context.services.get(serviceID);
+          const service = context.services[serviceID];
           service?.hideViewer();
         }
       })

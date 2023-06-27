@@ -26,6 +26,7 @@ export class UrlHashSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'urlhash';
+    this.dependencies = new Set(['edits', 'l10n', 'map']);
 
     this.doUpdateTitle = true;
     this.titleBase = 'Rapid';
@@ -71,8 +72,8 @@ export class UrlHashSystem extends AbstractSystem {
     }
 
     this._currParams = new Map(this._initParams);  // make copy
-
     this._prevHash = null;   // cached window.location.hash
+    this._startPromise = null;
 
     // Make sure the event handlers have `this` bound correctly
     this.setParam = this.setParam.bind(this);
@@ -89,21 +90,46 @@ export class UrlHashSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    // If the hash started out with a selected id, try to load it
-    const initialID = this._initParams.get('id');
-    const hasMapParam = this._initParams.has('map');
-    if (initialID) {
-      this.context.zoomToEntity(initialID.split(',')[0], !hasMapParam);
+  initAsync() {
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
     }
+    return Promise.resolve();
+  }
 
-// warning, parsing hash and dispatching a hashchange will trigger things that need to
-// happen after the first render
-// for now this init() gets delayed until after ui/init, see context.js
-    this.enable();
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    if (this._startPromise) return this._startPromise;
+
+    const prerequisites = Promise.all([
+      this.context.localizationSystem().startAsync(),
+      this.context.editSystem().startAsync(),
+      this.context.mapSystem().startAsync(),
+    ]);
+
+    return this._startPromise = prerequisites
+      .then(() => this.enable());
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 

@@ -76,7 +76,7 @@ export class SelectMode extends AbstractMode {
         other = new Extent(bounds[0], bounds[1]);
 
       } else if (datum.__fbid__) {  // Rapid feature
-        const service = context.services.get(datum.__service__);
+        const service = context.services[datum.__service__];
         if (!service) continue;
         const graph = service.graph(datum.__datasetid__);
         if (!graph) continue;
@@ -96,7 +96,7 @@ export class SelectMode extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          const osm = context.services.get('osm');
+          const osm = context.services.osm;
           const note = osm?.getNote(datumID);
           if (!(note instanceof osmNote)) return;   // or - go to browse mode
           context.ui().sidebar.show(sidebarContent.note(note));
@@ -108,7 +108,7 @@ export class SelectMode extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          const improveosm = context.services.get('improveOSM');
+          const improveosm = context.services.improveOSM;
           const error = improveosm?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
@@ -120,7 +120,7 @@ export class SelectMode extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          const keepright = context.services.get('keepRight');
+          const keepright = context.services.keepRight;
           const error = keepright?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
@@ -132,7 +132,7 @@ export class SelectMode extends AbstractMode {
       sidebarContent
         .on('change', () => {
           context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          const osmose = context.services.get('osmose');
+          const osmose = context.services.osmose;
           const error = osmose?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));

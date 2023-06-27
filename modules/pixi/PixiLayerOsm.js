@@ -53,7 +53,7 @@ export class PixiLayerOsm extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('osm');
+    return !!this.context.services.osm;
   }
 
 

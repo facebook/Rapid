@@ -8,7 +8,8 @@ describe('MapSystem', () => {
 
   class MockStorageSystem {
     constructor() { }
-    getItem() { return ''; }
+    initAsync()   { return Promise.resolve(); }
+    getItem()     { return ''; }
   }
 
   class MockLocalizationSystem {
@@ -40,7 +41,7 @@ describe('MapSystem', () => {
 
   class MockContext {
     constructor()   {
-      this.services = new Map();
+      this.services = {};
       this.projection = new sdk.Projection();
       this._localizationSystem = new MockLocalizationSystem();
       this._storageSystem = new MockStorageSystem();
@@ -61,8 +62,9 @@ describe('MapSystem', () => {
     const context = new MockContext();  // get a fresh projection each time
     _mapSystem = new Rapid.MapSystem(context);
     _mapSystem._renderer = new MockRenderer(context);
-    _mapSystem.init();
-    _mapSystem.render(_container);
+
+    return _mapSystem.initAsync()
+      .then(() => _mapSystem.render(_container));
   });
 
   afterEach(() => {

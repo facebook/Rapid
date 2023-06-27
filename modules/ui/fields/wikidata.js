@@ -8,7 +8,7 @@ import { uiCombobox } from '../combobox';
 
 
 export function uiFieldWikidata(context, uifield) {
-    var wikidata = context.services.get('wikidata');
+    var wikidata = context.services.wikidata;
     var dispatch = d3_dispatch('change');
 
     var _selection = d3_select(null);

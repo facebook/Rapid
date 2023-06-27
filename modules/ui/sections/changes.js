@@ -15,7 +15,7 @@ export function uiSectionChanges(context) {
 
   let _discardTags = {};
   const dataLoaderSystem = context.dataLoaderSystem();
-  dataLoaderSystem.get('discarded')
+  dataLoaderSystem.getDataAsync('discarded')
     .then(d => _discardTags = d)
     .catch(() => { /* ignore */ });
 

@@ -20,8 +20,7 @@ describe('uiFieldLocalized', () => {
     constructor()   {
       this._localizationSystem = new MockLocalizationSystem();
       this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
-      this._dataLoaderSystem.init();
-      this.services = new Map();
+      this.services = {};
     }
     dataLoaderSystem()    { return this._dataLoaderSystem; }
     localizationSystem()  { return this._localizationSystem; }

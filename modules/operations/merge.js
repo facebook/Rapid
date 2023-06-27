@@ -62,7 +62,7 @@ export function operationMerge(context, selectedIDs) {
     const actionDisabled = action.disabled(context.graph());
     if (actionDisabled) return actionDisabled;
 
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (osm && action.resultingWayNodesLength && action.resultingWayNodesLength(context.graph()) > osm.maxWayNodes) {
       return 'too_many_vertices';
     }

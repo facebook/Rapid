@@ -22,6 +22,7 @@ export class PhotoSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'photos';
+    this.dependencies = new Set(['map', 'urlhash']);
 
     this._LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
     this._PHOTOTYPES = ['flat', 'panoramic'];
@@ -32,6 +33,8 @@ export class PhotoSystem extends AbstractSystem {
     this._usernames = null;
     this._currLayerID = null;
     this._currPhotoID = null;
+    this._initPromise = null;
+    this._startPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
@@ -40,16 +43,51 @@ export class PhotoSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
-   * Handles initial parsing of the url params, and setup of event listeners
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-// warning, depends on scene, which isn't ready until after first map render.
-// for now this init() gets delayed until after ui/init, see context.js
-    const context = this.context;
-    context.scene().on('layerchange', this._updateHash);
-    context.urlHashSystem().on('hashchange', this._hashchange);
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
+
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
+    const urlHashSystem = this.context.urlHashSystem();
+    urlHashSystem.on('hashchange', this._hashchange);
+
+    return this._initPromise = Promise.resolve();
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    if (this._startPromise) return this._startPromise;
+
+    const mapSystem = this.context.mapSystem();
+    const prerequisites = mapSystem.startAsync();
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        mapSystem.scene.on('layerchange', this._updateHash);
+      });
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 
@@ -212,7 +250,7 @@ export class PhotoSystem extends AbstractSystem {
 scene.clearClass('selected');
 
     if (layerID && photoID) {
-      const service = context.services.get(layerID);
+      const service = context.services[layerID];
       if (!service) return null;
 
       // If we're selecting a photo then make sure its layer is enabled too.

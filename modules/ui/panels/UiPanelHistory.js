@@ -71,7 +71,7 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-//    const osm = context.services.get('osm');
+//    const osm = context.services.osm;
 
     // Empty out the DOM content and rebuild from scratch..
     selection.html('');
@@ -116,7 +116,7 @@ export class UiPanelHistory extends AbstractUiPanel {
    */
   renderNote(selection, note) {
     const context = this.context;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
 
     if (!note || note.isNew()) {
       selection
@@ -167,7 +167,7 @@ export class UiPanelHistory extends AbstractUiPanel {
    */
   renderEntity(selection, entity) {
     const context = this.context;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
 
     if (!entity || entity.isNew()) {
       selection
@@ -253,7 +253,7 @@ export class UiPanelHistory extends AbstractUiPanel {
    */
   renderUser(selection, userName) {
     const context = this.context;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
 
     if (!userName) {
       selection
@@ -297,7 +297,7 @@ export class UiPanelHistory extends AbstractUiPanel {
    */
   renderChangeset(selection, changeset) {
     const context = this.context;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
 
     if (!changeset) {
       selection

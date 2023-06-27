@@ -98,7 +98,7 @@ export class HoverBehavior extends AbstractBehavior {
   _doHover() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
-    const interaction = this.context.behaviors.get('map-interaction');
+    const interaction = this.context.behaviors['map-interaction'];
     if (interaction.gesture) return;  // dont change hover while interacting with the map
 
     const context = this.context;

@@ -11,7 +11,7 @@ import { utilHighlightEntities, utilNoAuto } from '../util';
 
 
 export function uiFeatureList(context) {
-  const nominatim = context.services.get('nominatim');
+  const nominatim = context.services.nominatim;
   const presetSystem = context.presetSystem();
   const l10n = context.localizationSystem();
   let _geocodeResults;

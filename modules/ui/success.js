@@ -21,9 +21,9 @@ export function uiSuccess(context) {
   function getCommunityIndexAsync() {
     const dataLoaderSystem = context.dataLoaderSystem();
     return Promise.all([
-        dataLoaderSystem.get('oci_features'),
-        dataLoaderSystem.get('oci_resources'),
-        dataLoaderSystem.get('oci_defaults')
+        dataLoaderSystem.getDataAsync('oci_features'),
+        dataLoaderSystem.getDataAsync('oci_resources'),
+        dataLoaderSystem.getDataAsync('oci_defaults')
       ])
       .then(vals => {
         if (_oci) return _oci;
@@ -110,7 +110,7 @@ export function uiSuccess(context) {
       .append('span')
       .html(context.tHtml('success.help_link_text'));
 
-    let osm = context.services.get('osm');
+    let osm = context.services.osm;
     if (!osm) return;
 
     let changesetURL = osm.changesetURL(_changeset.id);

@@ -3,7 +3,7 @@ import { uiIcon } from './icon';
 
 
 export function uiViewOnOSM(context) {
-  const osm = context.services.get('osm');
+  const osm = context.services.osm;
   let _what;   // an osmEntity or osmNote
 
 

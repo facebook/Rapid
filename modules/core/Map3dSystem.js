@@ -18,6 +18,7 @@ export class Map3dSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map3d';
+    this.dependencies = new Set(['map']);
     this.containerID = '3d-buildings';
 
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
@@ -26,63 +27,99 @@ export class Map3dSystem extends AbstractSystem {
     this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec('Roads', 'osmroads');
     this.areaLayerSpec = this.getAreaLayerSpec('Areas', 'osmareas');
     this.maplibre = null;
+
+    this.autoStart = false;
+    this._startPromise = null;
   }
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
+  initAsync() {
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+    return Promise.resolve();
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    if (this._startPromise) return this._startPromise;
+
     this.maplibre = new MapLibre({
       container: this.containerID,
       pitch: 30,
       style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=5pbVUaiVhKNAxkLf1kts'
     });
 
-    this.maplibre.on('load', () => {
-      this.maplibre.setLight({
-        anchor: 'viewport',
-        color: '#ff00ff',
-        position: [1, 200, 30],
-        intensity: 0.3,
+    return this._startPromise = new Promise(resolve => {
+
+      this.maplibre.on('load', () => {
+        this.maplibre.setLight({
+          anchor: 'viewport',
+          color: '#ff00ff',
+          position: [1, 200, 30],
+          intensity: 0.3,
+        });
+
+        this.maplibre.jumpTo({
+          zoom: this.context.mapSystem().zoom() - 3,
+          center: this.context.mapSystem().extent().center(),
+        });
+
+        this.maplibre.addSource('osmareas', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] },
+        });
+
+        // Layers need to be added in 'painter's algorithm' order, so the stuff on the bottom goes first!
+        this.maplibre.addLayer(this.areaLayerSpec);
+
+        this.maplibre.addSource('osmroads', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] },
+        });
+
+        this.maplibre.addLayer(this.roadSelectedlayerSpec);
+        this.maplibre.addLayer(this.roadCasinglayerSpec);
+        this.maplibre.addLayer(this.roadStrokelayerSpec);
+
+        this.maplibre.addSource('osmbuildings', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] },
+        });
+        this.maplibre.addLayer(this.building3dlayerSpec);
+
+        // Turn off the existing 3d building data and road data that ships with the vector tile-
+        // we don't want to have that data competing with the custom data layer we want to render.
+        // Drawing both is bad!
+        this.maplibre.getLayer('building-3d').visibility = 'none';
+        this.maplibre.getLayer('road_network').visibility = 'none';
+        this.maplibre.getLayer('road_network-casing').visibility = 'none';
+        resolve();
       });
 
-      this.maplibre.jumpTo({
-        zoom: this.context.mapSystem().zoom() - 3,
-        center: this.context.mapSystem().extent().center(),
-      });
-
-      this.maplibre.addSource('osmareas', {
-        type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] },
-      });
-
-      // Layers need to be added in 'painter's algorithm' order, so the stuff on the bottom goes first!
-      this.maplibre.addLayer(this.areaLayerSpec);
-
-      this.maplibre.addSource('osmroads', {
-        type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] },
-      });
-
-      this.maplibre.addLayer(this.roadSelectedlayerSpec);
-      this.maplibre.addLayer(this.roadCasinglayerSpec);
-      this.maplibre.addLayer(this.roadStrokelayerSpec);
-
-      this.maplibre.addSource('osmbuildings', {
-        type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] },
-      });
-      this.maplibre.addLayer(this.building3dlayerSpec);
-
-      //Turn off the existing 3d building data and road data that ships with the vector tile-
-      // we don't want to have that data competing with the custom data layer we want to render.
-      // Drawing both is bad!
-      this.maplibre.getLayer('building-3d').visibility = 'none';
-      this.maplibre.getLayer('road_network').visibility = 'none';
-      this.maplibre.getLayer('road_network-casing').visibility = 'none';
     });
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 

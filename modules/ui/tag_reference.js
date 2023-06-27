@@ -15,7 +15,7 @@ import { uiIcon } from './icon';
 //
 export function uiTagReference(context, what) {
   const l10n = context.localizationSystem();
-  const wikibase = context.services.get(what.qid ? 'wikidata' : 'osmwikibase');
+  const wikibase = context.services[what.qid ? 'wikidata' : 'osmwikibase'];
   let tagReference = {};
 
   let _button = d3_select(null);

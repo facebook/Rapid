@@ -50,7 +50,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       origid: _datum.__origid__
     };
 
-    const service = context.services.get(_datum.__service__);
+    const service = context.services[_datum.__service__];
     const graph = service.graph(_datum.__datasetid__);
     const sourceTag = _datum.tags && _datum.tags.source;
     if (sourceTag) annotation.source = sourceTag;
@@ -69,7 +69,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
     window.sessionStorage.setItem('acknowledgedLogin', 'true');
 
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm.authenticated()) {
       context.container()
         .call(uiRapidFirstEditDialog(context));

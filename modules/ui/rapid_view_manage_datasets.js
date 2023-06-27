@@ -235,7 +235,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     const prefs = context.storageSystem();
     const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
-    const service = context.services.get('esri');
+    const service = context.services.esri;
 
     if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
       results.classed('hide', true);
@@ -431,7 +431,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       ds.added = !ds.added;
 
     } else {  // hasn't been added yet
-      const esri = context.services.get('esri');
+      const esri = context.services.esri;
       if (esri) {   // start fetching layer info (the mapping between attributes and tags)
         esri.loadLayerAsync(d.id);
       }

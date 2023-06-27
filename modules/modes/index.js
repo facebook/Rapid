@@ -31,8 +31,7 @@ export { modeDragNote } from './drag_note';
 
 // At init time, we will instantiate any that are in the 'available' collection.
 export const modes = {
-  available:    new Map(),   // Map (id -> Mode constructor)
-  instantiated: new Map()    // Map (id -> Mode instance)
+  available: new Map()   // Map (id -> Mode constructor)
 };
 
 modes.available.set('add-note', AddNoteMode);

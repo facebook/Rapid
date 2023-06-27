@@ -172,7 +172,8 @@ export class PixiLayerRapid extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('mapwithai') || this.context.services.has('esri');
+    const service = this.context.services;
+    return !!service.mapwithai || !!service.esri;
   }
 
 
@@ -213,7 +214,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const dsEnabled = (dataset.added && dataset.enabled);
     if (!dsEnabled) return;
 
-    const service = context.services.get(dataset.service);  // 'mapwithai' or 'esri'
+    const service = context.services[dataset.service];  // 'mapwithai' or 'esri'
     if (!service) return;
 
     // Adjust the dataset id for whether we want the data conflated or not.

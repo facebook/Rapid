@@ -39,7 +39,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('kartaview');
+    return !!this.context.services.kartaview;
   }
 
 
@@ -92,7 +92,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.get('kartaview');
+    const service = this.context.services.kartaview;
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('streetview');
@@ -165,7 +165,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.get('kartaview');
+    const service = this.context.services.kartaview;
     if (!this._enabled || !service || zoom < MINZOOM) return;
 
     service.loadImages(this.context.projection);  // note: context.projection !== pixi projection

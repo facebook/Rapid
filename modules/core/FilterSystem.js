@@ -64,11 +64,13 @@ export class FilterSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'filters';
+    this.dependencies = new Set(['storage', 'urlhash']);
 
     this._rules = new Map();          // Map(rulekey -> rule)
     this._hidden = new Set();         // Set(rulekey) to hide
     this._forceVisible = new Set();   // Set(entityIDs) to show
     this._cache = {};                 // Cache of entity.key to matched rules
+    this._initPromise = null;
 //    this._deferred = new Set();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -95,25 +97,44 @@ export class FilterSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    // Take initial values from urlhash first, localstorage second
-    const prefs = this.context.storageSystem();
-    const urlHashSystem = this.context.urlHashSystem();
-    const toHide = urlHashSystem.getParam('disable_features') ?? prefs.getItem('disabled-features');
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
 
-    if (toHide) {
-      const keys = toHide.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
-      for (const key of keys) {
-        this._hidden.add(key);
-        const rule = this._rules.get(key);
-        rule.enabled = false;
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
       }
     }
 
-    urlHashSystem.on('hashchange', this._hashchange);
+    // Take initial values from urlhash first, localstorage second
+    const storageSystem = this.context.storageSystem();
+    const urlHashSystem = this.context.urlHashSystem();
+
+    const prerequisites = Promise.all([
+      storageSystem.initAsync(),
+      urlHashSystem.initAsync()
+    ]);
+
+    return this._initPromise = prerequisites
+      .then(() => {
+        urlHashSystem.on('hashchange', this._hashchange);
+
+        const toHide = urlHashSystem.getParam('disable_features') ?? storageSystem.getItem('disabled-features');
+
+        if (toHide) {
+          const keys = toHide.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
+          for (const key of keys) {
+            this._hidden.add(key);
+            const rule = this._rules.get(key);
+            rule.enabled = false;
+          }
+        }
+      });
+
 
 //    // warm up the feature matching cache upon merging fetched data
 //    this.context.editSystem().on('merge.features', function(newEntities) {
@@ -130,22 +151,32 @@ export class FilterSystem extends AbstractSystem {
 //        });
 //        this._deferred.add(handle);
 //    });
-
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
 //    for (const handle of this._deferred) {
 //      window.cancelIdleCallback(handle);
 //    }
 //    this._deferred.clear();
-
     this._cache = {};
     this._forceVisible.clear();
+    return Promise.resolve();
   }
 
 

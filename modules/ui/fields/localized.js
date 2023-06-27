@@ -16,7 +16,7 @@ export function uiFieldLocalized(context, uifield) {
     const l10n = context.localizationSystem();
 
     var dispatch = d3_dispatch('change', 'input');
-    var wikipedia = context.services.get('wikipedia');
+    var wikipedia = context.services.wikipedia;
     var input = d3_select(null);
     var localizedInputs = d3_select(null);
     var _countryCode;
@@ -27,12 +27,12 @@ export function uiFieldLocalized(context, uifield) {
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
 
-    dataLoaderSystem.get('languages')
+    dataLoaderSystem.getDataAsync('languages')
         .then(loadLanguagesArray)
         .catch(e => console.error(e));  // eslint-disable-line
 
     var _territoryLanguages = {};
-    dataLoaderSystem.get('territory_languages')
+    dataLoaderSystem.getDataAsync('territory_languages')
         .then(function(d) { _territoryLanguages = d; })
         .catch(e => console.error(e));  // eslint-disable-line
 

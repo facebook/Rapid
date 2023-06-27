@@ -49,7 +49,7 @@ export class MoveMode extends AbstractMode {
     const context = this.context;
     context.filterSystem().forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction', 'map-nudging']);
-    context.behaviors.get('map-nudging').allow();
+    context.behaviors['map-nudging'].allow();
 
     this._prevGraph = null;
     this._startLoc = null;

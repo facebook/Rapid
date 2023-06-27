@@ -66,7 +66,7 @@ export function uiChangesetEditor(context) {
             // and checked for hashtags, even if retrieved from localstorage
             utilTriggerEvent(commentField, 'blur');
 
-            var osm = context.services.get('osm');
+            var osm = context.services.osm;
             if (osm) {
                 osm.userChangesets(function (err, changesets) {
                     if (err) return;

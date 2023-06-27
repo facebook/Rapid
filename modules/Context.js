@@ -51,35 +51,19 @@ export class Context extends EventEmitter {
     this.projection = new Projection();
 
     // "Systems" are the core components of Rapid.
-    this.systems = systems.instantiated;  // Map (systemID -> System)
-    this._dataLoaderSystem = null;
-    this._editSystem = null;
-    this._filterSystem = null;
-    this._imagerySystem = null;
-    this._localizationSystem = null;
-    this._locationSystem = null;
-    this._mapSystem = null;
-    this._map3dSystem = null;
-    this._photoSystem = null;
-    this._presetSystem = null;
-    this._rapidSystem = null;
-    this._storageSystem = null;
-    this._uiSystem = null;
-    this._uploaderSystem = null;
-    this._urlHashSystem = null;
-    this._validationSystem = null;
+    this.systems = {};
 
     // "Modes" are editing tasks that the user are allowed to perform.
     // Each mode is exclusive, i.e only one mode can be active at a time.
-    this.modes = modes.instantiated;  // Map (modeID -> Mode)
+    this.modes = {};
     this._currMode = null;
 
     // "Behaviors" are bundles of event handlers that we can
     // enable and disable depending on what the user is doing.
-    this.behaviors = behaviors.instantiated;  // Map (behaviorID -> Behavior)
+    this.behaviors = {};
 
     // "Services" are components that get data from other places
-    this.services = services.instantiated;  // Map (serviceID -> Service)
+    this.services = {};
 
 
     // User interface and keybinding
@@ -125,193 +109,159 @@ export class Context extends EventEmitter {
 
 
   /**
-   * init
+   * initAsync
    * Call one time to start up Rapid
+   * @return {Promise} Promise resolved when Rapid is ready
    */
-  init() {
+  initAsync() {
+    // --------------------------------------------------
+    // 1. Construct all the core classes
+    // --------------------------------------------------
+    for (const [id, System] of systems.available) {
+      this.systems[id] = new System(this);
+    }
+
+    // EditSystem
+    const editSystem = this.systems.edits;
     const withDebouncedSave = (fn) => {
       return (...args) => {
-        const result = fn.apply(this._editSystem, args);
+        const result = fn.apply(editSystem, args);
         this.debouncedSave();
         return result;
       };
     };
 
-
-    // Instantiate all the core classes
-    // These are dynamic and should be safe to instantiate in any order.
-    for (const [systemID, System] of systems.available) {
-      const mode = new System(this);
-      systems.instantiated.set(systemID, mode);
-    }
-
-    // Connect the wires
-    this._dataLoaderSystem = this.systems.get('data');
-    this._editSystem = this.systems.get('edits');
-    this._filterSystem = this.systems.get('filters');
-    this._imagerySystem = this.systems.get('imagery');
-    this._localizationSystem = this.systems.get('l10n');
-    this._locationSystem = this.systems.get('locations');
-    this._mapSystem = this.systems.get('map');
-    this._map3dSystem = this.systems.get('map3d');
-    this._photoSystem = this.systems.get('photos');
-    this._presetSystem = this.systems.get('presets');
-    this._rapidSystem = this.systems.get('rapid');
-    this._storageSystem = this.systems.get('storage');
-    this._uiSystem = this.systems.get('ui');
-    this._uploaderSystem = this.systems.get('uploader');
-    this._urlHashSystem = this.systems.get('urlhash');
-    this._validationSystem = this.systems.get('validator');
-
-    // EditSystem
-    this.graph = this._editSystem.graph;
-    this.hasEntity = (id) => this._editSystem.graph().hasEntity(id);
-    this.entity = (id) => this._editSystem.graph().entity(id);
-    this.pauseChangeDispatch = this._editSystem.pauseChangeDispatch;
-    this.resumeChangeDispatch = this._editSystem.resumeChangeDispatch;
-    this.perform = withDebouncedSave(this._editSystem.perform);
-    this.replace = withDebouncedSave(this._editSystem.replace);
-    this.pop = withDebouncedSave(this._editSystem.pop);
-    this.overwrite = withDebouncedSave(this._editSystem.overwrite);
-    this.undo = withDebouncedSave(this._editSystem.undo);
-    this.redo = withDebouncedSave(this._editSystem.redo);
+    this.graph = editSystem.graph;
+    this.hasEntity = (id) => editSystem.graph().hasEntity(id);
+    this.entity = (id) => editSystem.graph().entity(id);
+    this.pauseChangeDispatch = editSystem.pauseChangeDispatch;
+    this.resumeChangeDispatch = editSystem.resumeChangeDispatch;
+    this.perform = withDebouncedSave(editSystem.perform);
+    this.replace = withDebouncedSave(editSystem.replace);
+    this.pop = withDebouncedSave(editSystem.pop);
+    this.overwrite = withDebouncedSave(editSystem.overwrite);
+    this.undo = withDebouncedSave(editSystem.undo);
+    this.redo = withDebouncedSave(editSystem.redo);
 
     // LocalizationSystem
-    this.t = this._localizationSystem.t;
-    this.tHtml = this._localizationSystem.tHtml;
-    this.tAppend = this._localizationSystem.tAppend;
+    const l10n = this.systems.l10n;
+    this.t = l10n.t;
+    this.tHtml = l10n.tHtml;
+    this.tAppend = l10n.tAppend;
 
     // FilterSystem
+    const filterSystem = this.systems.filters;
     this.hasHiddenConnections = (entityID) => {
-      const graph = this._editSystem.graph();
+      const graph = editSystem.graph();
       const entity = graph.entity(entityID);
-      return this._filterSystem.hasHiddenConnections(entity, graph);
+      return filterSystem.hasHiddenConnections(entity, graph);
     };
 
     // MapSystem
-    this.deferredRedraw = this._mapSystem.deferredRedraw;
-    this.immediateRedraw = this._mapSystem.immediateRedraw;
-    this.scene = () => this._mapSystem.scene;
-    this.surface = () => this._mapSystem.surface;
-    this.surfaceRect = () => this._mapSystem.surface.node().getBoundingClientRect();
+    const map = this.systems.map;
+    this.deferredRedraw = map.deferredRedraw;
+    this.immediateRedraw = map.immediateRedraw;
+    this.scene = () => map.scene;
+    this.surface = () => map.surface;
+    this.surfaceRect = () => map.surface.node().getBoundingClientRect();
     this.editable = () => {
       const mode = this._currMode;
       if (!mode || mode.id === 'save') return false;      // don't allow editing during save
-      return true;  // this._mapSystem.editableDataEnabled();  // todo: disallow editing if OSM layer is off
+      return true;  // map.editableDataEnabled();  // todo: disallow editing if OSM layer is off
     };
 
-    for (const [modeID, Mode] of modes.available) {
-      const mode = new Mode(this);
-      modes.instantiated.set(modeID, mode);
+    for (const [id, Mode] of modes.available) {
+      this.modes[id] = new Mode(this);
     }
 
-    for (const [behaviorID, Behavior] of behaviors.available) {
-      const behavior = new Behavior(this);
-      behaviors.instantiated.set(behaviorID, behavior);
+    for (const [id, Behavior] of behaviors.available) {
+      this.behaviors[id] = new Behavior(this);
     }
 
     if (!window.mocha) {
-      for (const [serviceID, Service] of services.available) {
-        const service = new Service(this);
-        services.instantiated.set(serviceID, service);
+      for (const [id, Service] of services.available) {
+        this.services[id] = new Service(this);
       }
     }
 
 
-    // Initialize core systems
-    // Call .init() functions to start setting everything up.
-    // At this step all core object are instantiated and they may access context.
-    // They may start listening to events, but they should not call each other.
-    // The order of .init() may matter here if dependents make calls to each other.
-    // The UI is the final thing that gets initialized.
-    this._storageSystem.init();
-    this._dataLoaderSystem.init();
-
+    // --------------------------------------------------
+    // 2. Initialize all the core classes
+    // --------------------------------------------------
+    // i.e. Call `initAsync()` for everything.
+    // First grab a few things from the url hash we may need to know about
     if (this.initialHashParams.presets) {
       const presetIDs = this.initialHashParams.presets.split(',').map(s => s.trim()).filter(Boolean);
-      this._presetSystem.addablePresetIDs = new Set(presetIDs);
+      this.systems.presets.addablePresetIDs = new Set(presetIDs);
     }
-    let overrideLocale =  this.initialHashParams.locale ?? this._prelocale;
+    const overrideLocale =  this.initialHashParams.locale ?? this._prelocale;
     if (overrideLocale) {
-      this._localizationSystem.preferredLocaleCodes = overrideLocale;
+      this.systems.l10n.preferredLocaleCodes = overrideLocale;
     }
 
-    // kick off some async work
-    this._localizationSystem.initAsync();
-    this._presetSystem.initAsync();
+    const coreSystems = Object.values(this.systems);
+    const initPromises = coreSystems.map(system => system.initAsync());
 
-    for (const service of this.services.values()) {
-      service.init();
-    }
-
-    // Setup the connection if we have preauth credentials to use
-    const osm = this.services.get('osm');
-    if (osm && this._preauth) {
-      osm.switch(this._preauth);
-    }
-
-    this._uiSystem.init();
-    this._editSystem.init();
-    this._filterSystem.init();
-    this._imagerySystem.init();
-    this._locationSystem.init();
-    this._mapSystem.init();       // watch out - init doesn't actually create the renderer :(
-    this._rapidSystem.init();
-    this._uploaderSystem.init();
-    this._validationSystem.init();
-
-    // If the container isn't available, e.g. when testing, don't load the UI
-    if (!this._container.empty()) {
-      this._uiSystem.ensureLoaded()
-        .then(() => {
-          this._map3dSystem.init();
-          this._photoSystem.init();
-          this._urlHashSystem.init();  // tries to adjust map transform
+    return Promise.all(initPromises)
+      .then(() => {
+        for (const service of Object.values(this.services)) {
+          service.init();
+        }
+        // Setup the connection if we have preauth credentials to use
+        const osm = this.services.osm;
+        if (osm && this._preauth) {
+          osm.switch(this._preauth);
+        }
+      })
+      // --------------------------------------------------
+      // 3. Start all the core systems
+      // --------------------------------------------------
+      .then(() => {
+        const startPromises = coreSystems.map(system => {
+          return system.autoStart ? system.startAsync() : Promise.resolve();
         });
-    }
-
+        return Promise.all(startPromises);
+      });
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * resetAsync
+   * Call after completing an edit session to reset any intenal state
+   * @return {Promise} Promise resolved when Rapid is finished resetting
    */
-  reset() {
+  resetAsync() {
     this.debouncedSave.cancel();
 
-    for (const service of this.services.values()) {
+    for (const service of Object.values(this.services)) {
       service.reset();
     }
 
-    for (const system of this.systems.values()) {
-      system.reset();
-    }
-
-    // don't leave stale state in the inspector
-    this._container.select('.inspector-wrap *').remove();
+    const coreSystems = Object.values(this.systems);
+    const resetPromises = coreSystems.map(system => system.resetAsync());
+    return Promise.all(resetPromises);
   }
 
 
   // accessors
-  dataLoaderSystem()    { return this._dataLoaderSystem; }
-  editSystem()          { return this._editSystem; }
-  history()             { return this._editSystem; }       // legacy name
-  filterSystem()        { return this._filterSystem; }
-  imagerySystem()       { return this._imagerySystem; }
-  localizationSystem()  { return this._localizationSystem; }
-  locationSystem()      { return this._locationSystem; }
-  mapSystem()           { return this._mapSystem; }
-  map3dSystem()         { return this._map3dSystem; }
-  photoSystem()         { return this._photoSystem; }
-  presetSystem()        { return this._presetSystem; }
-  rapidSystem()         { return this._rapidSystem; }
-  storageSystem()       { return this._storageSystem; }
-  uiSystem()            { return this._uiSystem; }
-  ui()                  { return this._uiSystem; }         // legacy name
-  uploaderSystem()      { return this._uploaderSystem; }
-  urlHashSystem()       { return this._urlHashSystem; }
-  validationSystem()    { return this._validationSystem; }
+  dataLoaderSystem()    { return this.systems.data; }
+  editSystem()          { return this.systems.edits; }
+  history()             { return this.systems.edits; }       // legacy name
+  filterSystem()        { return this.systems.filters; }
+  imagerySystem()       { return this.systems.imagery; }
+  localizationSystem()  { return this.systems.l10n; }
+  locationSystem()      { return this.systems.locations; }
+  mapSystem()           { return this.systems.map; }
+  map3dSystem()         { return this.systems.map3d; }
+  photoSystem()         { return this.systems.photos; }
+  presetSystem()        { return this.systems.presets; }
+  rapidSystem()         { return this.systems.rapid; }
+  storageSystem()       { return this.systems.storage; }
+  uiSystem()            { return this.systems.ui; }
+  ui()                  { return this.systems.ui; }         // legacy name
+  uploaderSystem()      { return this.systems.uploader; }
+  urlHashSystem()       { return this.systems.urlhash; }
+  validationSystem()    { return this.systems.validator; }
 
   // not a system yet, but should be one
   keybinding()          { return this._keybinding; }
@@ -332,7 +282,7 @@ export class Context extends EventEmitter {
 
   _afterLoad(cid, callback) {
     return (err, result) => {
-      const osm = this.services.get('osm');
+      const osm = this.services.osm;
       if (err) {
         // 400 Bad Request, 401 Unauthorized, 403 Forbidden..
         if (err.status === 400 || err.status === 401 || err.status === 403) {
@@ -350,7 +300,7 @@ export class Context extends EventEmitter {
         return;
 
       } else {
-        this._editSystem.merge(result.data, result.seenIDs);
+        this.systems.edits.merge(result.data, result.seenIDs);
         if (typeof callback === 'function') {
           callback(err, result);
         }
@@ -361,7 +311,7 @@ export class Context extends EventEmitter {
 
 
   loadTiles(projection, callback) {
-    const osm = this.services.get('osm');
+    const osm = this.services.osm;
     if (!osm) return;
 
     const z = geoScaleToZoom(projection.scale(), TILESIZE);
@@ -375,7 +325,7 @@ export class Context extends EventEmitter {
 
 
   loadTileAtLoc(loc, callback) {
-    const osm = this.services.get('osm');
+    const osm = this.services.osm;
     if (!osm) return;
 
     if (this.editable()) {
@@ -387,7 +337,7 @@ export class Context extends EventEmitter {
 
   // Download the full entity and its parent relations. The callback may be called multiple times.
   loadEntity(entityID, callback) {
-    const osm = this.services.get('osm');
+    const osm = this.services.osm;
     if (!osm) return;
 
     const cid = osm.connectionID;
@@ -398,11 +348,12 @@ export class Context extends EventEmitter {
 
   zoomToEntity(entityID, zoomTo) {
     const entity = this.hasEntity(entityID);
+    const map = this.systems.map;
 
     if (entity) {   // have it already
       this.enter('select-osm', { selectedIDs: [entityID] });
       if (zoomTo !== false) {
-        this._mapSystem.zoomTo(entity);
+        map.zoomTo(entity);
       }
 
     } else {   // need to load it first
@@ -413,7 +364,7 @@ export class Context extends EventEmitter {
 
         this.enter('select-osm', { selectedIDs: [entityID] });
         if (zoomTo !== false) {
-          this._mapSystem.zoomTo(loadedEntity);
+          map.zoomTo(loadedEntity);
         }
       });
     }
@@ -447,6 +398,9 @@ export class Context extends EventEmitter {
   // Immediately save the user's history to localstorage, if possible
   // This is called sometimes, but also on the `window.onbeforeunload` handler
   save() {
+    const edits = this.systems.edits;
+    const l10n = this.systems.l10n;
+
     // no history save, no message onbeforeunload
     if (this.inIntro || this._container.select('.modal').size()) return;
 
@@ -455,9 +409,9 @@ export class Context extends EventEmitter {
       canSave = false;
 
       // Attempt to prevent user from creating duplicate changes - see iD#5200
-      const osm = this.services.get('osm');
+      const osm = this.services.osm;
       if (osm && osm.isChangesetInflight()) {
-        this._editSystem.clearSaved();
+        edits.clearSaved();
         return;
       }
 
@@ -469,10 +423,10 @@ export class Context extends EventEmitter {
     }
 
     if (canSave) {
-      this._editSystem.save();
+      edits.save();
     }
-    if (this._editSystem.hasChanges()) {
-      return this._localizationSystem.t('save.unsaved_changes');
+    if (edits.hasChanges()) {
+      return l10n.t('save.unsaved_changes');
     }
   }
 
@@ -497,13 +451,13 @@ export class Context extends EventEmitter {
     let newMode;
 
     if (typeof modeOrModeID === 'string') {
-      newMode = this.modes.get(modeOrModeID);
+      newMode = this.modes[modeOrModeID];
     } else {
       newMode = modeOrModeID;
     }
     if (!newMode) {
       console.error(`this.enter: no such mode: ${modeOrModeID}`);  // eslint-disable-line no-console
-      newMode = this.modes.get('browse');  // fallback
+      newMode = this.modes.browse;  // fallback
     }
 
     // Exit current mode, if any
@@ -516,7 +470,7 @@ export class Context extends EventEmitter {
     this._currMode = newMode;
     const didEnter = this._currMode.enter(options);
     if (!didEnter) {
-      this._currMode = this.modes.get('browse');
+      this._currMode = this.modes.browse;
       this._currMode.enter();
     }
     this._container.classed(`mode-${this._currMode.id}`, true);
@@ -566,7 +520,7 @@ export class Context extends EventEmitter {
       enableIDs = new Set([].concat(enableIDs));  // coax ids into a Set
     }
 
-    for (const [behaviorID, behavior] of this.behaviors) {
+    for (const [behaviorID, behavior] of Object.entries(this.behaviors)) {
       if (enableIDs.has(behaviorID)) {  // should be enabled
         if (!behavior.enabled) {
           behavior.enable();
@@ -587,7 +541,7 @@ export class Context extends EventEmitter {
   get copyIDs() { return this._copyIDs; }
   set copyIDs(val) {
     this._copyIDs = val;
-    this._copyGraph = this._editSystem.graph();
+    this._copyGraph = this.systems.edits.graph();
   }
 
   get copyLoc()     { return this._copyLoc; }
@@ -603,8 +557,8 @@ export class Context extends EventEmitter {
   }
   setDebug(flag, val = true) {
     this._debugFlags[flag] = val;
-    if (this._mapSystem?.renderer) {
-      this._mapSystem.immediateRedraw();
+    if (this.systems.map?.renderer) {
+      this.systems.map.immediateRedraw();
     }
   }
 

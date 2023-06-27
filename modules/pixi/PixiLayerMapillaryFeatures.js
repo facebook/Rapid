@@ -25,7 +25,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('mapillary');
+    return !!this.context.services.mapillary;
   }
 
 
@@ -56,7 +56,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.get('mapillary');
+    const service = this.context.services.mapillary;
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('points');
@@ -97,7 +97,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.get('mapillary');
+    const service = this.context.services.mapillary;
 
     if (this._enabled && service && zoom >= MINZOOM) {
       service.loadMapFeatures(this.context.projection);  // note: context.projection !== pixi projection

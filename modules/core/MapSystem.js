@@ -48,6 +48,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
+    this.dependencies = new Set(['edits', 'filters', 'imagery', 'storage', 'l10n', 'urlhash']);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -62,6 +63,7 @@ export class MapSystem extends AbstractSystem {
 
     this._renderer = null;
     this._dimensions = [1, 1];
+    this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -74,18 +76,33 @@ export class MapSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    const context = this.context;
-    const prefs = context.storageSystem();
-    this._currFillMode = prefs.getItem('area-fill') || 'partial';           // the current fill mode
-    this._toggleFillMode = prefs.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
 
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
+    const context = this.context;
+    const storage = context.storageSystem();
     const l10n = context.localizationSystem();
-    l10n.initAsync()
+
+    const prerequisites = Promise.all([
+      storage.initAsync(),
+      l10n.initAsync()
+    ]);
+
+    return this._initPromise = prerequisites
       .then(() => {
+        this._currFillMode = storage.getItem('area-fill') || 'partial';           // the current fill mode
+        this._toggleFillMode = storage.getItem('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
+
         const wireframeKey = l10n.t('area_fill.wireframe.key');
         const highlightEditsKey = l10n.t('map_data.highlight_edits.key');
 
@@ -113,6 +130,25 @@ export class MapSystem extends AbstractSystem {
       });
   }
 
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
+  }
 
 
   /**
@@ -215,7 +251,7 @@ export class MapSystem extends AbstractSystem {
 
     context.urlHashSystem().on('hashchange', this._hashchange);
 
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (osm) {
       osm.on('authchange', this.immediateRedraw);
     }

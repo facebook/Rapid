@@ -145,7 +145,7 @@ export class PixiRenderer extends EventEmitter {
 
     // Event listeners to respond to any changes in selection or hover
     context.on('modechange', this._onModeChange);
-    context.behaviors.get('hover').on('hoverchange', this._onHoverChange);
+    context.behaviors.hover.on('hoverchange', this._onHoverChange);
   }
 
 

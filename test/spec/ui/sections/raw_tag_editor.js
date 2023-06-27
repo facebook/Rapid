@@ -15,7 +15,7 @@ describe('uiSectionRawTagEditor', () => {
 
   class MockContext {
     constructor()   {
-      this.services = new Map();
+      this.services = {};
       this._localizationSystem = new MockLocalizationSystem();
       this._storageSystem = new MockStorageSystem();
     }

@@ -31,7 +31,7 @@ export function uiSectionRawMembershipEditor(context) {
         })
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = context.services.get('taginfo');
+    var taginfo = context.services.taginfo;
     var nearbyCombo = uiCombobox(context, 'parent-relation')
         .minItems(1)
         .fetcher(fetchNearbyRelations)

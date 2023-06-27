@@ -113,7 +113,7 @@ export class UiPanelLocation extends AbstractUiPanel {
 
     const selection = this._selection;
     const context = this.context;
-    const nominatim = context.services.get('nominatim');
+    const nominatim = context.services.nominatim;
 
     if (nominatim) {
       nominatim.reverse(loc, (err, result) => {

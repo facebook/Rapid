@@ -7,7 +7,7 @@ export function uiNoteReport(context) {
 
   function noteReport(selection) {
     let url;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (osm && (_note instanceof osmNote) && !_note.isNew()) {
       url = osm.noteReportURL(_note);
     }

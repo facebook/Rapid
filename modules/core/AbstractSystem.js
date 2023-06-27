@@ -6,8 +6,6 @@ import { EventEmitter } from '@pixi/utils';
  * They are owned by the context.
  *
  * `AbstractSystem` is the base class from which all systems inherit.
- *  It provides common methods `init` and `reset` to be overridden in derived classes.
- *  All systems are event emitters.
  *
  * Properties you can access:
  *   `id`   `String` identifier for the system (e.g. 'l10n')
@@ -22,22 +20,43 @@ export class AbstractSystem extends EventEmitter {
     super();
     this.context = context;
     this.id = '';
+    this.dependencies = new Set();
+    this.autoStart = true;
   }
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
+  initAsync() {
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+    return Promise.resolve();
   }
 
 
   /**
-   * reset
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
    * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
    */
-  reset() {
+  resetAsync() {
+    return Promise.resolve();
   }
 
 }

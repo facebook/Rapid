@@ -16,7 +16,7 @@ export function validationOutdatedTags(context) {
 
   // fetch deprecated tags
   const dataLoaderSystem = context.dataLoaderSystem();
-  dataLoaderSystem.get('deprecated')
+  dataLoaderSystem.getDataAsync('deprecated')
     .then(d => _dataDeprecated = d)
     .catch(() => { /* ignore */ })
     .finally(() => _waitingForDeprecated = false);
@@ -65,7 +65,7 @@ export function validationOutdatedTags(context) {
     }
 
     // Attempt to match a canonical record in the name-suggestion-index.
-    const nsi = context.services.get('nsi');
+    const nsi = context.services.nsi;
     let waitingForNsi = false;
     let nsiResult;
     if (nsi) {

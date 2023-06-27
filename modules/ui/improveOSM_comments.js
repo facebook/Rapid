@@ -8,7 +8,7 @@ export function uiImproveOsmComments(context) {
 
 
   function issueComments(selection) {
-    const improveosm = context.services.get('improveOSM');
+    const improveosm = context.services.improveOSM;
     if (!improveosm) return;
 
     // make the div immediately so it appears above the buttons
@@ -48,7 +48,7 @@ export function uiImproveOsmComments(context) {
           .append('div')
             .attr('class', 'comment-author')
             .each(function(d) {
-              const osm = context.services.get('osm');
+              const osm = context.services.osm;
               let selection = d3_select(this);
               if (osm && d.username) {
                 selection = selection

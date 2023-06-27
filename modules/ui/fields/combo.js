@@ -45,7 +45,7 @@ export function uiFieldCombo(context, uifield) {
     // initialize deprecated tags array
     var _dataDeprecated = [];
     const dataLoaderSystem = context.dataLoaderSystem();
-    dataLoaderSystem.get('deprecated')
+    dataLoaderSystem.getDataAsync('deprecated')
       .then(function(d) { _dataDeprecated = d; })
       .catch(e => console.error(e));  // eslint-disable-line
 
@@ -119,7 +119,7 @@ export function uiFieldCombo(context, uifield) {
             selection.attr('readonly', 'readonly');
         }
 
-        const taginfo = context.services.get('taginfo');
+        const taginfo = context.services.taginfo;
         if (taginfo && _showTagInfoSuggestions) {
           selection.call(_combobox.fetcher(setTaginfoValues), attachTo);
           setTaginfoValues('', setPlaceholder);
@@ -149,7 +149,7 @@ export function uiFieldCombo(context, uifield) {
 
 
     function setTaginfoValues(q, callback) {
-        const taginfo = context.services.get('taginfo');
+        const taginfo = context.services.taginfo;
         if (!taginfo) {
           _comboData = [];
           if (callback) callback(_comboData);

@@ -25,7 +25,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('improveOSM');
+    return !!this.context.services.improveOSM;
   }
 
 
@@ -36,7 +36,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.get('improveOSM');
+    const service = this.context.services.improveOSM;
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('qa');
@@ -79,7 +79,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.get('improveOSM');
+    const service = this.context.services.improveOSM;
     if (!this._enabled || !service || zoom < MINZOOM) return;
 
     service.loadIssues(this.context.projection);  // note: context.projection !== pixi projection

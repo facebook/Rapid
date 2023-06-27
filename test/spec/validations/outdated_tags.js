@@ -15,7 +15,7 @@ describe('validationOutdatedTags', () => {
       this._locations = new MockLocationSystem(this);
       this._presets = new Rapid.PresetSystem(this);
       this._data = new Rapid.DataLoaderSystem(this);
-      this.services = new Map();
+      this.services = {};
     }
     dataLoaderSystem() { return this._data; }
     localizationSystem() { return this._l10n; }

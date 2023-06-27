@@ -84,7 +84,7 @@ export class StreetsideService extends AbstractService {
       sequences: new Map(),   // Map(sequenceID -> sequence data)
       rtree:     new RBush(),
       leaders:   [],
-      metadataPromsie:  null
+      metadataPromise:  null
     };
   }
 

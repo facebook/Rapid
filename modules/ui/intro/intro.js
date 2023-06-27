@@ -48,8 +48,8 @@ export function uiIntro(context, skipToRapid) {
   function intro(selection) {
     const dataLoaderSystem = context.dataLoaderSystem();
     Promise.all([
-      dataLoaderSystem.get('intro_rapid_graph'),
-      dataLoaderSystem.get('intro_graph')
+      dataLoaderSystem.getDataAsync('intro_rapid_graph'),
+      dataLoaderSystem.getDataAsync('intro_graph')
     ])
     .then(values => {
       const rapidData = values[0];
@@ -75,8 +75,8 @@ export function uiIntro(context, skipToRapid) {
     const edits = context.editSystem();
     const imagery = context.imagerySystem();
     const l10n = context.localizationSystem();
-    const mapwithai = context.services.get('mapwithai');
-    const osm = context.services.get('osm');
+    const mapwithai = context.services.mapwithai;
+    const osm = context.services.osm;
     const prefs = context.storageSystem();
     const rapid = context.rapidSystem();
     const urlhash = context.urlHashSystem();

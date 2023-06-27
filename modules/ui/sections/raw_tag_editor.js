@@ -20,7 +20,7 @@ export function uiSectionRawTagEditor(context, id) {
         .expandedByDefault(false)
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = context.services.get('taginfo');
+    var taginfo = context.services.taginfo;
     var dispatch = d3_dispatch('change');
     var availableViews = [
         { id: 'list', icon: '#fas-th-list' },

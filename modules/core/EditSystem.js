@@ -32,6 +32,7 @@ export class EditSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'edits';   // was: 'history'
+    this.dependencies = new Set(['storage', 'map', 'rapid']);
 
     this._mutex = utilSessionMutex('lock');
     this._hasRestorableChanges = false;
@@ -43,6 +44,7 @@ export class EditSystem extends AbstractSystem {
     this._stack = [];
     this._tree = null;
     this._index = 0;
+    this._initPromise = null;
 
     // When called like `context.graph`, don't lose `this`
     this.graph = this.graph.bind(this);
@@ -52,15 +54,50 @@ export class EditSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
+
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
     this.reset();
 
-    // changes are restorable if Rapid is not open in another window/tab and a saved history exists in localStorage
-    const prefs = this.context.storageSystem();
-    this._hasRestorableChanges = this._mutex.lock() && prefs.hasItem(this._historyKey());
+    const storage = this.context.storageSystem();
+    const prerequisites = storage.initAsync();
+
+    return this._initPromise = prerequisites
+      .then(() => {
+        // changes are restorable if Rapid is not open in another window/tab and a saved history exists in localStorage
+        this._hasRestorableChanges = this._mutex.lock() && storage.hasItem(this._historyKey());
+      });
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    this.reset();
+    return Promise.resolve();
   }
 
 
@@ -580,7 +617,7 @@ export class EditSystem extends AbstractSystem {
       // When we restore a modified way, we also need to fetch any missing
       // childnodes that would normally have been downloaded with it.. #2142
       if (loadChildNodes) {
-        const osm = context.services.get('osm');
+        const osm = context.services.osm;
         const baseWays = baseEntities.filter(entity => entity.type === 'way');
         const nodeIDs = baseWays.reduce(function(acc, way) { return utilArrayUnion(acc, way.nodes); }, []);
         let missing = nodeIDs.filter(nodeID => !baseGraph.hasEntity(nodeID));

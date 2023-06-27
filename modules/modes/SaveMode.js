@@ -33,11 +33,13 @@ export class SaveMode extends AbstractMode {
     this._keybindingOff = this._keybindingOff.bind(this);
     this._keybindingOn = this._keybindingOn.bind(this);
     this._prepareForSuccess = this._prepareForSuccess.bind(this);
-    this._showConflicts = this._showConflicts.bind(this);
-    this._showErrors = this._showErrors.bind(this);
+    this._progressChanged = this._progressChanged.bind(this);
+    this._resultConflicts = this._resultConflicts.bind(this);
+    this._resultErrors = this._resultErrors.bind(this);
+    this._resultNoChanges = this._resultNoChanges.bind(this);
+    this._resultSuccess = this._resultSuccess.bind(this);
+    this._saveStarted = this._saveStarted.bind(this);
     this._showLoading = this._showLoading.bind(this);
-    this._showProgress = this._showProgress.bind(this);
-    this._showSuccess = this._showSuccess.bind(this);
 
     this._location = null;
     this._uiConflicts = null;
@@ -58,7 +60,7 @@ export class SaveMode extends AbstractMode {
     const context = this.context;
     context.ui().sidebar.expand();
 
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm) return false;  // can't enter save mode
 
     this._active = true;
@@ -86,14 +88,12 @@ export class SaveMode extends AbstractMode {
     context.enableBehaviors(['map-interaction']);
 
     context.uploaderSystem()
-      .on('progressChanged', this._showProgress)
-      .on('resultConflicts', this._showConflicts)
-      .on('resultErrors', this._showErrors)
-      .on('resultNoChanges', this._cancel)
-      .on('resultSuccess', this._showSuccess)
-      .on('saveEnded', this._hideLoading)
-      .on('saveStarted', this._keybindingOff)
-      .on('saveStarted', this._showLoading)
+      .on('progressChanged', this._progressChanged)
+      .on('resultConflicts', this._resultConflicts)
+      .on('resultErrors', this._resultErrors)
+      .on('resultNoChanges', this._resultNoChanges)
+      .on('resultSuccess', this._resultSuccess)
+      .on('saveStarted', this._saveStarted)
       .on('willAttemptUpload', this._prepareForSuccess);
 
     return true;
@@ -115,23 +115,22 @@ export class SaveMode extends AbstractMode {
     this._uiCommit = null;
 
     this.context.uploaderSystem()
-      .off('progressChanged', this._showProgress)
-      .off('resultConflicts', this._showConflicts)
-      .off('resultErrors', this._showErrors)
-      .off('resultNoChanges', this._cancel)
-      .off('resultSuccess', this._showSuccess)
-      .off('saveEnded', this._hideLoading)
-      .off('saveStarted', this._keybindingOff)
-      .off('saveStarted', this._showLoading)
+      .off('progressChanged', this._progressChanged)
+      .off('resultConflicts', this._resultConflicts)
+      .off('resultErrors', this._resultErrors)
+      .off('resultNoChanges', this._resultNoChanges)
+      .off('resultSuccess', this._resultSuccess)
+      .off('saveStarted', this._saveStarted)
       .off('willAttemptUpload', this._prepareForSuccess);
 
     this._keybindingOff();
+    this._hideLoading();
 
     this.context.container().selectAll('.main-content')
       .classed('active', true)
       .classed('inactive', false);
 
-    this.context.ui().sidebar.hide();
+    // this.context.ui().sidebar.hide();
   }
 
 
@@ -144,9 +143,9 @@ export class SaveMode extends AbstractMode {
 
 
   /**
-   * showProgress handler
+   * _progressChanged handler
    */
-  _showProgress(num, total) {
+  _progressChanged(num, total) {
     const modal = this.context.container().select('.loading-modal .modal-section');
     const progress = modal.selectAll('.progress')
       .data([0]);
@@ -161,9 +160,9 @@ export class SaveMode extends AbstractMode {
 
 
   /**
-   * showConflicts handler
+   * resultConflicts handler
    */
-  _showConflicts(conflicts, origChanges) {
+  _resultConflicts(conflicts, origChanges) {
     const context = this.context;
     const uploader = context.uploaderSystem();
 
@@ -201,9 +200,9 @@ export class SaveMode extends AbstractMode {
 
 
   /**
-   * showErrors handler
+   * resultErrors handler
    */
-  _showErrors(errors) {
+  _resultErrors(errors) {
     this._keybindingOn();
 
     const selection = uiConfirm(this.context, this.context.container());
@@ -270,36 +269,68 @@ export class SaveMode extends AbstractMode {
 
 
   /**
-   * _showSuccess handler
+   * resultNoChanges handler
    */
-  _showSuccess(changeset) {
+  _resultNoChanges() {
+    const context = this.context;
+    context.resetAsync()
+      .then(() => context.enter('browse'));
+  }
+
+
+  /**
+   * _resultSuccess handler
+   */
+  _resultSuccess(changeset) {
     const context = this.context;
     const successContent = this._uiSuccess
       .changeset(changeset)
       .location(this._location)
       .on('cancel', () => context.ui().sidebar.hide());
 
-    context.enter('browse');
     context.ui().sidebar.show(successContent);
+
+    // Add delay before resetting to allow for postgres replication iD#1646 iD#2678
+    window.setTimeout(() => {
+      context.resetAsync()
+        .then(() => context.enter('browse'));
+    }, 2500);
+  }
+
+
+  /**
+   * _saveStarted handler
+   * At this point, a changeset is inflight and we need to block the UI
+   */
+  _saveStarted() {
+    this._keybindingOff();
+    this._showLoading();
   }
 
 
   /**
    * _showLoading
+   * Block the UI by adding a spinner
    */
   _showLoading() {
+    if (this._saveLoading) return;
+
     const context = this.context;
     this._saveLoading = uiLoading(context)
       .message(context.tHtml('save.uploading'))
       .blocking(true);
+
     context.container().call(this._saveLoading);  // block input during upload
   }
 
 
   /**
    * _hideLoading
+   * Unlock the UI by removing the spinner
    */
   _hideLoading() {
+    if (!this._saveLoading) return;
+
     this._saveLoading.close();
     this._saveLoading = null;
   }
@@ -328,9 +359,10 @@ export class SaveMode extends AbstractMode {
     this._location = null;
 
     const loc = this.context.mapSystem().center();
-    const nominatim = this.context.services.get('nominatim');
+    const nominatim = this.context.services.nominatim;
+    if (!nominatim) return;
 
-    nominatim?.reverse(loc, (err, result) => {
+    nominatim.reverse(loc, (err, result) => {
       if (err || !result || !result.address) return;
 
       const addr = result.address;

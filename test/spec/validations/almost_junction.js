@@ -18,7 +18,7 @@ describe('validationAlmostJunction', () => {
     constructor() {
       this._l10n  = new MockLocalizationSystem(this);
       this._edits = new MockEditSystem(this);
-      this.services = new Map();
+      this.services = {};
     }
     localizationSystem()  { return this._l10n; }
     editSystem()          { return this._edits; }

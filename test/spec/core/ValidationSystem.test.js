@@ -3,6 +3,7 @@ describe('ValidationSystem', () => {
 
   class MockStorageSystem {
     constructor() { }
+    initAsync()   { return Promise.resolve(); }
     getItem() { return ''; }
     hasItem() { return false; }
     setItem() { }
@@ -17,10 +18,12 @@ describe('ValidationSystem', () => {
 
   class MockPresetSystem {
     constructor() { }
+    initAsync()   { return Promise.resolve(); }
   }
 
   class MockMapSystem {
     constructor() { }
+    initAsync()   { return Promise.resolve(); }
     extent()      { return new sdk.Extent(); }
   }
 
@@ -33,14 +36,10 @@ describe('ValidationSystem', () => {
       this._mapSystem = new MockMapSystem();
       this._presetSystem = new MockPresetSystem();
       this._storageSystem = new MockStorageSystem();
-
       this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
-      this._dataLoaderSystem.init();
-
       this._editSystem = new Rapid.EditSystem(this);
       this.graph = this._editSystem.graph;
       this.hasEntity = (id) => this._editSystem.graph().hasEntity(id);
-      this._editSystem.init();
      }
 
     dataLoaderSystem()    { return this._dataLoaderSystem; }
@@ -55,18 +54,21 @@ describe('ValidationSystem', () => {
 
   const context = new MockContext();
 
-
-  beforeEach(() => {
+  before(() => {
+    const editSystem = context.editSystem();
     _validator = new Rapid.ValidationSystem(context);
-    _validator.init();
 
-    // For now just run the one rule we are testing.
-    // Otherwise we need to mock out anything used by any validator.
-    for (const ruleID of _validator._rules.keys()) {
-      if (ruleID !== 'private_data') {
-        _validator._rules.delete(ruleID);
-      }
-    }
+    return editSystem.initAsync()
+      .then(() => _validator.initAsync())
+      .then(() => {
+        // For now just run the one rule we are testing.
+        // Otherwise we need to mock out anything used by any validator.
+        for (const ruleID of _validator._rules.keys()) {
+          if (ruleID !== 'private_data') {
+            _validator._rules.delete(ruleID);
+          }
+        }
+      });
   });
 
 

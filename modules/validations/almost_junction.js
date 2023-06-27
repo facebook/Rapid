@@ -163,7 +163,7 @@ export function validationAlmostJunction(context) {
 
     function isExtendableCandidate(node, way) {
       // can not accurately test vertices on tiles not downloaded from osm - iD#5938
-      const osm = context.services.get('osm');
+      const osm = context.services.osm;
       if (osm && !osm.isDataLoaded(node.loc)) {
         return false;
       }

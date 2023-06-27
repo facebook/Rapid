@@ -119,7 +119,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
   renderSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
     const textureManager = this.renderer.textures;
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
     let showDebug = false;

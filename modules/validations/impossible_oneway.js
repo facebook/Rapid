@@ -81,7 +81,7 @@ export function validationImpossibleOneway(context) {
       // ignore if this way is self-connected at this node
       if (nodeOccursMoreThanOnce(way, nodeID)) return [];
 
-      const osm = context.services.get('osm');
+      const osm = context.services.osm;
       if (!osm) return [];
 
       const node = graph.hasEntity(nodeID);

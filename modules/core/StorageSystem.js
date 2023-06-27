@@ -20,6 +20,8 @@ export class StorageSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'storage';   // was: 'prefs'
+    this.dependencies = new Set();
+
     this._storage = null;
 
     // Note that accessing localStorage may throw a `SecurityError`, so wrap in a try/catch.
@@ -35,6 +37,41 @@ export class StorageSystem extends AbstractSystem {
         clear: () => this._mock.clear()
       };
     }
+  }
+
+
+  /**
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
+   */
+  initAsync() {
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+    return Promise.resolve();
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 

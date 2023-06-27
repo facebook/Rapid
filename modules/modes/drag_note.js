@@ -9,7 +9,7 @@ export function modeDragNote(context) {
         button: 'browse'
     };
 
-    const behavior = context.behaviors.get('drag')
+    const behavior = context.behaviors.drag
       .on('start', start)
       .on('move', move)
       .on('end', end);
@@ -43,7 +43,7 @@ export function modeDragNote(context) {
 
     function start(d3_event, note) {
         _note = note;
-        var osm = context.services.get('osm');
+        var osm = context.services.osm;
         if (osm) {
             // Get latest note from cache.. The marker may have a stale datum bound to it
             // and dragging it around can sometimes delete the users note comment.
@@ -83,7 +83,7 @@ export function modeDragNote(context) {
 
         _note = _note.move(loc);
 
-        var osm = context.services.get('osm');
+        var osm = context.services.osm;
         if (osm) {
             osm.replaceNote(_note);  // update note cache
         }

@@ -22,6 +22,7 @@ export class PresetSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'presets';
+    this.dependencies = new Set(['data', 'locations', 'storage']);
     this.geometries = ['point', 'vertex', 'line', 'area', 'relation'];
 
     // Create geometry fallbacks
@@ -60,18 +61,30 @@ export class PresetSystem extends AbstractSystem {
 
   /**
    * initAsync
-   * Called one time after all objects have been instantiated.
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
   initAsync() {
     if (this._initPromise) return this._initPromise;
 
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
     const dataLoaderSystem = this.context.dataLoaderSystem();
-    return this._initPromise = Promise.all([
-        dataLoaderSystem.get('preset_categories'),
-        dataLoaderSystem.get('preset_defaults'),
-        dataLoaderSystem.get('preset_presets'),
-        dataLoaderSystem.get('preset_fields')
-      ])
+    const prerequisites = dataLoaderSystem.initAsync();
+
+    return this._initPromise = prerequisites
+      .then(() => {
+        return Promise.all([
+          dataLoaderSystem.getDataAsync('preset_categories'),
+          dataLoaderSystem.getDataAsync('preset_defaults'),
+          dataLoaderSystem.getDataAsync('preset_presets'),
+          dataLoaderSystem.getDataAsync('preset_fields')
+        ]);
+      })
       .then(vals => {
         this.merge({
           categories: vals[0],
@@ -83,6 +96,26 @@ export class PresetSystem extends AbstractSystem {
         osmSetPointTags(this.pointTags());
         osmSetVertexTags(this.vertexTags());
       });
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 

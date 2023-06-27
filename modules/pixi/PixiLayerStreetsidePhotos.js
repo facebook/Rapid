@@ -39,7 +39,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('streetside');
+    return !!this.context.services.streetside;
   }
 
 
@@ -92,7 +92,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.get('streetside');
+    const service = this.context.services.streetside;
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('streetview');
@@ -160,7 +160,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.get('streetside');
+    const service = this.context.services.streetside;
     if (!this.enabled || !service || zoom < MINZOOM) return;
 
     service.loadBubbles(this.context.projection);  // note: context.projection !== pixi projection

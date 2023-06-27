@@ -7,10 +7,14 @@ export function uiSourceSwitch(context) {
   function click(d3_event) {
     d3_event.preventDefault();
 
-    const osm = context.services.get('osm');
+    const osm = context.services.osm;
     if (!osm) return;
 
     if (context.inIntro) return;
+
+    const mode = context.mode();
+    if (mode?.id === 'save') return;
+
     if (context.editSystem().hasChanges() && !window.confirm(context.t('source_switch.lose_changes'))) return;
 
     let isLive = d3_select(this)
@@ -19,14 +23,16 @@ export function uiSourceSwitch(context) {
     isLive = !isLive;
     context.enter('browse');
     context.editSystem().clearSaved();   // remove saved history
-    context.reset();                     // remove stored data
 
-    d3_select(this)
-      .html(isLive ? context.tHtml('source_switch.live') : context.tHtml('source_switch.dev'))
-      .classed('live', isLive)
-      .classed('chip', isLive);
+    context.resetAsync()                 // remove stored data
+      .then(() => {
+        d3_select(this)
+          .html(isLive ? context.tHtml('source_switch.live') : context.tHtml('source_switch.dev'))
+          .classed('live', isLive)
+          .classed('chip', isLive);
 
-    osm.switch(isLive ? keys[0] : keys[1]);  // switch connection (warning: dispatches 'change' event)
+        osm.switch(isLive ? keys[0] : keys[1]);  // switch connection (warning: dispatches 'change' event)
+      });
   }
 
   let sourceSwitch = function(selection) {

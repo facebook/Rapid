@@ -18,6 +18,7 @@ export class DataLoaderSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'data';
+    this.dependencies = new Set();
 
     const fileMap  = new Map();
     fileMap.set('address_formats', 'data/address_formats.min.json');
@@ -74,9 +75,44 @@ export class DataLoaderSystem extends AbstractSystem {
   }
 
 
+  /**
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
+   */
+  initAsync() {
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+    return Promise.resolve();
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
+  }
+
+
   // Returns a Promise to fetch data
   // (resolved with the data if we have it already)
-  get(fileID) {
+  getDataAsync(fileID) {
     if (this._cachedData[fileID]) {
       return Promise.resolve(this._cachedData[fileID]);
     }

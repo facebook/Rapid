@@ -3,7 +3,7 @@ import { QAItem } from '../osm';
 
 
 export function uiViewOnKeepRight(context) {
-  const keepright = context.services.get('keepRight');
+  const keepright = context.services.keepRight;
   let _qaItem;
 
 

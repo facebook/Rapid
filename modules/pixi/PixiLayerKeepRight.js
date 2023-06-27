@@ -25,7 +25,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * Whether the Layer's service exists
    */
   get supported() {
-    return this.context.services.has('keepRight');
+    return !!this.context.services.keepRight;
   }
 
 
@@ -36,7 +36,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.context.services.get('keepRight');
+    const service = this.context.services.keepRight;
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('qa');
@@ -74,7 +74,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.context.services.get('keepRight');
+    const service = this.context.services.keepRight;
     if (!this._enabled || !service || zoom < MINZOOM) return;
 
     service.loadIssues(this.context.projection);  // note: context.projection !== pixi projection

@@ -94,7 +94,7 @@ export class DrawLineMode extends AbstractMode {
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
 
-    context.behaviors.get('draw')
+    context.behaviors.draw
       .on('move', this._move)
       .on('click', this._click)
       .on('finish', this._finish)
@@ -104,7 +104,7 @@ export class DrawLineMode extends AbstractMode {
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
-    context.behaviors.get('map-interaction').doubleClickEnabled = false;
+    context.behaviors['map-interaction'].doubleClickEnabled = false;
 
 
     // If we are continuing, perform initial actions to create the drawWay and drawNode..
@@ -171,10 +171,10 @@ export class DrawLineMode extends AbstractMode {
     context.scene().clearClass('drawing');
 
     window.setTimeout(() => {
-      context.behaviors.get('map-interaction').doubleClickEnabled = true;
+      context.behaviors['map-interaction'].doubleClickEnabled = true;
     }, 1000);
 
-    context.behaviors.get('draw')
+    context.behaviors.draw
       .off('move', this._move)
       .off('click', this._click)
       .off('finish', this._finish)
@@ -290,7 +290,7 @@ export class DrawLineMode extends AbstractMode {
     if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.
-    context.behaviors.get('map-nudging').allow();
+    context.behaviors['map-nudging'].allow();
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;

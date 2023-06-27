@@ -309,7 +309,7 @@ export class SelectBehavior extends AbstractBehavior {
 
     // If we're clicking on something, we want to pause doubleclick zooms
     if (datum) {
-      const behavior = this.context.behaviors.get('map-interaction');
+      const behavior = this.context.behaviors['map-interaction'];
       behavior.doubleClickEnabled = false;
       window.setTimeout(() => behavior.doubleClickEnabled = true, 500);
     }
@@ -390,7 +390,7 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked on a mapillary object detection or traffic sign, so open a streetview
     // image showing that object/sign
     if (datum.first_seen_at) {
-      const service = context.services.get('mapillary');
+      const service = context.services.mapillary;
       if (!service) return;
 
       context.mapSystem().centerEase(event.loc);

@@ -40,8 +40,7 @@ export {
 
 // At init time, we will instantiate any that are in the 'available' collection.
 export const systems = {
-  available:    new Map(),   // Map (id -> System constructor)
-  instantiated: new Map()    // Map (id -> System instance)
+  available: new Map()   // Map (id -> System constructor)
 };
 
 systems.available.set('data', DataLoaderSystem);

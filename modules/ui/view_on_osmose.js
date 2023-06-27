@@ -3,7 +3,7 @@ import { QAItem } from '../osm';
 
 
 export function uiViewOnOsmose(context) {
-  const osmose = context.services.get('osmose');
+  const osmose = context.services.osmose;
   let _qaItem;
 
 

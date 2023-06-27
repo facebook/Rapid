@@ -38,8 +38,7 @@ export {
 
 // At init time, we will instantiate any that are in the 'available' collection.
 export const services = {
-  available:    new Map(),   // Map (id -> Service constructor)
-  instantiated: new Map()    // Map (id -> Service instance)
+  available: new Map()  // Map (id -> Service constructor)
 };
 
 services.available.set('esri', EsriService);

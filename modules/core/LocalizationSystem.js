@@ -26,6 +26,7 @@ export class LocalizationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'l10n';
+    this.dependencies = new Set(['data', 'presets']);
 
     // `_supportedLanguages`
     // All known language codes and their local name. This is used for the language pickers.
@@ -71,6 +72,7 @@ export class LocalizationSystem extends AbstractSystem {
     // }
     this._cache = {};
 
+    this._initPromise = null;
     this._preferredLocaleCodes = [];
     this._currLocaleCode = 'en-US';            // The current locale
     this._currLocaleCodes = ['en-US', 'en'];   // Must contain `_currLocaleCode` first, followed by fallbacks
@@ -79,8 +81,6 @@ export class LocalizationSystem extends AbstractSystem {
     this._currIsMetric = false;
     this._languageNames = {};
     this._scriptNames = {};
-
-    this._initPromise = null;
 
     // When called like `context.t`, don't lose `this`
     this.t = this.t.bind(this);
@@ -120,14 +120,17 @@ export class LocalizationSystem extends AbstractSystem {
 
   /**
    * initAsync
-   * Call this before doing anything with the localizationSystem to ensure that
-   * the needed files have been loaded
-   * @return {Promise}   A Promise resolved after the files have been loaded
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved after the files have been loaded
    */
   initAsync() {
     if (this._initPromise) return this._initPromise;
 
-    let filesToFetch = ['languages', 'locales'];
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
 
     const scopes = {
       general: 'locales',
@@ -135,16 +138,23 @@ export class LocalizationSystem extends AbstractSystem {
     };
 
     const dataLoaderSystem = this.context.dataLoaderSystem();
-    let fileMap = dataLoaderSystem.fileMap;
-    for (let scope in scopes) {
-      const key = `locales_index_${scope}`;
-      if (!fileMap.has(key)) {
-        fileMap.set(key, scopes[scope] + '/index.min.json');
-      }
-      filesToFetch.push(key);
-    }
+    const prerequisites = dataLoaderSystem.initAsync();
 
-    return this._initPromise = Promise.all(filesToFetch.map(key => dataLoaderSystem.get(key)))
+    return this._initPromise = prerequisites
+      .then(() => {
+        let filesToFetch = ['languages', 'locales'];
+
+        const fileMap = dataLoaderSystem.fileMap;
+        for (let scope in scopes) {
+          const key = `locales_index_${scope}`;
+          if (!fileMap.has(key)) {
+            fileMap.set(key, scopes[scope] + '/index.min.json');
+          }
+          filesToFetch.push(key);
+        }
+
+        return Promise.all(filesToFetch.map(key => dataLoaderSystem.getDataAsync(key)));
+      })
       .then(results => {
         this._supportedLanguages = results[0];
         this._supportedLocales = results[1];
@@ -173,7 +183,7 @@ export class LocalizationSystem extends AbstractSystem {
             const scope = Object.keys(scopes)[i];
             const directory = Object.values(scopes)[i];
             if (index[code]) {
-              loadStringsPromises.push(this.loadLocale(code, scope, directory));
+              loadStringsPromises.push(this.loadLocaleAsync(code, scope, directory));
             }
           });
         });
@@ -186,14 +196,34 @@ export class LocalizationSystem extends AbstractSystem {
 
 
   /**
-   * loadLocale
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * loadLocaleAsync
    * Returns a Promise to load the strings for the requested locale
    * @param  {string}  locale     locale code to load
    * @param  {string}  scope      one of `general`, `tagging`, etc (not clear whether this is actually used?)
    * @param  {string}  directory  directory to include in the filename
    * @return {Promise}
    */
-  loadLocale(locale, scope, directory) {
+  loadLocaleAsync(locale, scope, directory) {
     if (locale.toLowerCase() === 'en-us') {   // US English is the default
       locale = 'en';
     }
@@ -203,13 +233,13 @@ export class LocalizationSystem extends AbstractSystem {
     }
 
     const dataLoaderSystem = this.context.dataLoaderSystem();
-    let fileMap = dataLoaderSystem.fileMap;
+    const fileMap = dataLoaderSystem.fileMap;
     const key = `locale_${scope}_${locale}`;
     if (!fileMap.has(key)) {
       fileMap.set(key, `${directory}/${locale}.min.json`);
     }
 
-    return dataLoaderSystem.get(key)
+    return dataLoaderSystem.getDataAsync(key)
       .then(d => {
         if (!this._cache[scope]) {
           this._cache[scope] = {};

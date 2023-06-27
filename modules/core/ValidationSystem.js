@@ -34,6 +34,7 @@ export class ValidationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'validator';
+    this.dependencies = new Set(['edits', 'storage', 'map']);
 
     this._rules = new Map();    // Map(ruleID -> validator)
     this._base = new ValidationCache('base');   // issues before any user edits
@@ -50,6 +51,7 @@ export class ValidationSystem extends AbstractSystem {
     this._errorOverrides = [];
     this._warningOverrides = [];
     this._disableOverrides = [];
+    this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this.validate = this.validate.bind(this);
@@ -58,44 +60,35 @@ export class ValidationSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    // Allow validation severity to be overridden by url queryparams...
-    // See: https://github.com/openstreetmap/iD/pull/8243
-    //
-    // Each param should contain a urlencoded comma separated list of
-    // `type/subtype` rules.  `*` may be used as a wildcard..
-    // Examples:
-    //  `validationError=disconnected_way/*`
-    //  `validationError=disconnected_way/highway`
-    //  `validationError=crossing_ways/bridge*`
-    //  `validationError=crossing_ways/bridge*,crossing_ways/tunnel*`
-    const context = this.context;
-    this._errorOverrides = this._parseHashParam(context.initialHashParams.validationError);
-    this._warningOverrides = this._parseHashParam(context.initialHashParams.validationWarning);
-    this._disableOverrides = this._parseHashParam(context.initialHashParams.validationDisable);
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
 
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
+    // Create the validation rules
+    const context = this.context;
     Object.values(Validations).forEach(validation => {
       if (typeof validation !== 'function') return;
       const fn = validation(context);
       this._rules.set(fn.type, fn);
     });
 
-    const prefs = context.storageSystem();
-    const disabledRules = prefs.getItem('validate-disabledRules');
-    if (disabledRules) {
-      const ruleIDs = disabledRules.split(',').map(s => s.trim()).filter(Boolean);
-      this._disabledRuleIDs = new Set(ruleIDs);
-    }
-
-
     // register event handlers:
+    const editSystem = context.editSystem();
 
     // WHEN TO RUN VALIDATION:
-    // When edits occur:
-    context.editSystem()
+    context
+      .on('modechange', this.validate);
+
+    editSystem
       .on('restore', this.validate)   // on restore saved history
       .on('undone', this.validate)    // on undo
       .on('redone', this.validate);   // on redo
@@ -107,33 +100,68 @@ export class ValidationSystem extends AbstractSystem {
 //      });
       // but not on 'change' (e.g. while drawing)
 
-    // When user changes editing modes (to catch recent changes e.g. drawing)
-    context
-      .on('modechange', this.validate);
-
     // When merging fetched data, validate base graph:
-    context.editSystem()
+    editSystem
       .on('merge', entityIDs => {
         if (!entityIDs) return;
 
         // Make sure the caches have graphs assigned to them.
         // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
-        const baseGraph = context.editSystem().base();
+        const baseGraph = editSystem.base();
         if (!this._head.graph) this._head.graph = baseGraph;
         if (!this._base.graph) this._base.graph = baseGraph;
 
         entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
         this._validateEntitiesAsync(entityIDs, this._base);
       });
+
+
+    const storageSystem = context.storageSystem();
+    const prerequisites = Promise.all([ storageSystem.initAsync() ]);
+
+    return this._initPromise = prerequisites
+      .then(() =>  {
+        // Allow validation severity to be overridden by url queryparams...
+        // See: https://github.com/openstreetmap/iD/pull/8243
+        //
+        // Each param should contain a urlencoded comma separated list of
+        //  `type/subtype` rules.  `*` may be used as a wildcard..
+        // Examples:
+        //  `validationError=disconnected_way/*`
+        //  `validationError=disconnected_way/highway`
+        //  `validationError=crossing_ways/bridge*`
+        //  `validationError=crossing_ways/bridge*,crossing_ways/tunnel*`
+        this._errorOverrides = this._parseHashParam(context.initialHashParams.validationError);
+        this._warningOverrides = this._parseHashParam(context.initialHashParams.validationWarning);
+        this._disableOverrides = this._parseHashParam(context.initialHashParams.validationDisable);
+
+        const disabledRules = storageSystem.getItem('validate-disabledRules');
+        if (disabledRules) {
+          const ruleIDs = disabledRules.split(',').map(s => s.trim()).filter(Boolean);
+          this._disabledRuleIDs = new Set(ruleIDs);
+        }
+      });
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
     this._reset(true);
+    return Promise.resolve();
   }
 
 

@@ -38,6 +38,7 @@ export class LocationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'locations';
+    this.dependencies = new Set();
 
     this._wp = null;                        // A which-polygon index
     this._resolved = new Map();             // Map (id -> GeoJSON feature)
@@ -68,6 +69,41 @@ export class LocationSystem extends AbstractSystem {
     const world = { locationSet: { include: ['Q2'] } };
     this._resolveLocationSet(world);
     this._rebuildIndex();
+  }
+
+
+  /**
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
+   */
+  initAsync() {
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+    return Promise.resolve();
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 

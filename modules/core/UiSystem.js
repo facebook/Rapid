@@ -31,6 +31,7 @@ export class UiSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'ui';
+    this.dependencies = new Set(['edits', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
 
     this.authModal = null;
     this.defs = null;
@@ -43,7 +44,8 @@ export class UiSystem extends AbstractSystem {
 
     this._didRender = false;
     this._needWidth = {};
-    this._loadPromise = null;
+    this._startPromise = null;
+    this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -54,12 +56,20 @@ export class UiSystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    const context = this.context;
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
 
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
+    const context = this.context;
     this.authModal = uiLoading(context).blocking(true);
     this.defs = new UiDefs(context);
     this.flash = uiFlash(context);
@@ -74,12 +84,14 @@ export class UiSystem extends AbstractSystem {
     window.addEventListener('unload', () => context.editSystem().unlock());
     window.addEventListener('resize', this.resize);
 
-    const l10n = this.context.localizationSystem();
-    l10n.initAsync()
+    const l10n = context.localizationSystem();
+    const prerequisites = l10n.initAsync();
+
+    return this._initPromise = prerequisites
       .then(() => {
         this.authModal.message(l10n.tHtml('loading_auth'));
 
-        const osm = context.services.get('osm');
+        const osm = context.services.osm;
         if (osm) {
           osm
             .on('authLoading', () => context.container()?.call(this.authModal))
@@ -139,7 +151,42 @@ export class UiSystem extends AbstractSystem {
   }
 
 
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    if (this._startPromise) return this._startPromise;
 
+    const container = this.context.container();
+    if (!container.empty()) {
+      this.render(container);
+    }
+
+    return this._startPromise = Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    // don't leave stale state in the inspector
+    const container = this.context.container();
+    if (!container.empty()) {
+      container.select('.inspector-wrap *').remove();
+    }
+
+    return Promise.resolve();
+  }
+
+
+  /**
+   * render
+   */
   render(container) {
 // this is a bit non-standard for how our ui components usually render, but for now
 // we'll guard so that this code can only happen one time to set everything up..
@@ -405,28 +452,6 @@ this.didRender = true;
   }
 
 
-  // renders the Rapid interface into the container node
-  ensureLoaded() {
-    if (this._loadPromise) return this._loadPromise;
-
-    // Wait for strings and presets to be ready before rendering the UI
-    const context = this.context;
-    const l10n = context.localizationSystem();
-    const presetSystem = context.presetSystem();
-
-    return this._loadPromise = Promise.all([
-      l10n.initAsync(),
-      presetSystem.initAsync()
-    ])
-    .then(() => {
-      const container = context.container();
-      if (!container.empty()) {
-        this.render(container);
-      }
-    })
-    .catch(err => console.error(err));  // eslint-disable-line
-  }
-
 
 // Removing for now, this will not work as written (it is a good idea though)
 // For it to work, it has to live in context, and all the core systems will need to have
@@ -436,7 +461,7 @@ this.didRender = true;
 //  // for example to switch the locale while Rapid is running.
 //  restart() {
 //    context.keybinding().clear();
-//    this._loadPromise = null;
+//    this._startPromise = null;
 //    context.container().selectAll('*').remove();
 //    this.ensureLoaded();
 //  }

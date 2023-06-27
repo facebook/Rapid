@@ -34,6 +34,7 @@ export class AbstractBehavior extends EventEmitter {
    * to setup whatever event handlers this behavior needs
    */
   enable() {
+    if (this._enabled) return;
     this._enabled = true;
   }
 
@@ -44,6 +45,7 @@ export class AbstractBehavior extends EventEmitter {
    * to teardown whatever event handlers this behavior needs
    */
   disable() {
+    if (!this._enabled) return;
     this._enabled = false;
   }
 

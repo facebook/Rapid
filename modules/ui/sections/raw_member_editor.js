@@ -34,7 +34,7 @@ export function uiSectionRawMemberEditor(context) {
         })
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = context.services.get('taginfo');
+    var taginfo = context.services.taginfo;
     var _entityIDs;
 
     function downloadMember(d3_event, d) {

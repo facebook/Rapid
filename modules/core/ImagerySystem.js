@@ -28,6 +28,7 @@ export class ImagerySystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'imagery';
+    this.dependencies = new Set(['data', 'edits', 'map', 'urlhash']);
 
     this._initPromise = null;
     this._imageryIndex = null;
@@ -48,12 +49,128 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
-   * init
-   * Called one time after all objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * Set up The imagery index loads after Rapid starts.
+   * It contains these properties:
+   *   {
+   *     features:  Map(id -> GeoJSON feature)
+   *     sources:   Map(id -> ImagerySource)
+   *     query:     A which-polygon index to perform spatial queries against
+   *   }
+   * @return {Promise} Promise resolved when this system has completed initialization
    */
-  init() {
-    this._initPromise = this._setupImageryAsync();
-    this.context.urlHashSystem().on('hashchange', this._hashchange);
+  initAsync() {
+    if (this._initPromise) return this._initPromise;
+
+    for (const id of this.dependencies) {
+      if (!this.context.systems[id]) {
+        return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
+      }
+    }
+
+    const context = this.context;
+    const dataLoaderSystem = context.dataLoaderSystem();
+    const storageSystem = context.storageSystem();
+
+    const urlHashSystem = context.urlHashSystem();
+    urlHashSystem.on('hashchange', this._hashchange);
+
+    const prerequisites = Promise.all([
+      dataLoaderSystem.initAsync(),
+      storageSystem.initAsync()
+    ]);
+
+    return this._initPromise = prerequisites
+      .then(() => dataLoaderSystem.getDataAsync('imagery'))
+      .then(data => this._initImageryIndex(data));
+      // .catch(e => {
+        // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+      // });
+  }
+
+
+  _initImageryIndex(data) {
+    const context = this.context;
+
+    this._imageryIndex = {
+      features: new Map(),   // Map(id -> GeoJSON feature)
+      sources: new Map(),    // Map(id -> ImagerySource)
+      query: null            // which-polygon index
+    };
+
+    // Extract a GeoJSON feature for each imagery item.
+    const features = data.map(d => {
+      if (!d.polygon) return null;
+
+      // workaround for editor-layer-index weirdness..
+      // Add an extra array nest to each element in `d.polygon`
+      // so the rings are not treated as a bunch of holes:
+      //   what we get:  [ [[outer],[hole],[hole]] ]
+      //   what we want: [ [[outer]],[[outer]],[[outer]] ]
+      const rings = d.polygon.map(ring => [ring]);
+
+      const feature = {
+        type: 'Feature',
+        properties: { id: d.id },
+        geometry: { type: 'MultiPolygon', coordinates: rings }
+      };
+
+      this._imageryIndex.features.set(d.id, feature);
+      return feature;
+    }).filter(Boolean);
+
+    // Create a which-polygon index to support efficient spatial querying.
+    this._imageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
+
+    // Instantiate `ImagerySource` objects for each imagery item.
+    for (const d of data) {
+      let source;
+      if (d.type === 'bing') {
+        source = new ImagerySourceBing(context, d);
+      } else if (/^EsriWorldImagery/.test(d.id)) {
+        source = new ImagerySourceEsri(context, d);
+      } else {
+        source = new ImagerySource(context, d);
+      }
+      this._imageryIndex.sources.set(d.id, source);
+    }
+
+    // Add 'None'
+    const none = new ImagerySourceNone(context);
+    this._imageryIndex.sources.set(none.id, none);
+
+    // Add 'Custom' - seed it with whatever template the user has used previously
+    const custom = new ImagerySourceCustom(context);
+    const storageSystem = this.context.storageSystem();
+    custom.template = storageSystem.getItem('background-custom-template') || '';
+    this._imageryIndex.sources.set(custom.id, custom);
+
+    // Default the locator overlay to "on"..
+    const locator = this._imageryIndex.sources.get('mapbox_locator_overlay');
+    if (locator) {
+      this.toggleOverlayLayer(locator);
+    }
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this system has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this system has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 
@@ -162,7 +279,7 @@ export class ImagerySystem extends AbstractSystem {
     const sources = [...this._imageryIndex.sources.values()];
 
     // Recheck blocked sources only if we detect new blocklists pulled from the OSM API.
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     const blocklists = osm?.imageryBlocklists ?? [];
     const blocklistChanged = (blocklists.length !== this._checkedBlocklists.length) ||
       blocklists.some((regex, index) => String(regex) !== this._checkedBlocklists[index]);
@@ -191,7 +308,7 @@ export class ImagerySystem extends AbstractSystem {
     if (!arguments.length) return this._baseLayer;
 
     // test source against OSM imagery blocklists..
-    const osm = this.context.services.get('osm');
+    const osm = this.context.services.osm;
     if (!osm) return this;
 
     const blocklists = osm?.imageryBlocklists ?? [];
@@ -401,91 +518,5 @@ export class ImagerySystem extends AbstractSystem {
     this.emit('imagerychange');
   }
 
-
-
-  /**
-   * _setupImageryAsync
-   * The imagery index loads after Rapid starts.
-   * It contains these properties:
-   *   {
-   *     features:  Map(id -> GeoJSON feature)
-   *     sources:   Map(id -> ImagerySource)
-   *     query:     A which-polygon index to perform spatial queries against
-   *   }
-   * @return  Promise that resolves with the imagery index once everything has been loaded and is ready
-   */
-  _setupImageryAsync() {
-    if (this._initPromise) return this._initPromise;
-
-    const context = this.context;
-    const dataLoaderSystem = context.dataLoaderSystem();
-    const storageSystem = this.context.storageSystem();
-
-    return dataLoaderSystem.get('imagery')
-      .then(data => {
-        this._imageryIndex = {
-          features: new Map(),   // Map(id -> GeoJSON feature)
-          sources: new Map(),    // Map(id -> ImagerySource)
-          query: null            // which-polygon index
-        };
-
-        // Extract a GeoJSON feature for each imagery item.
-        const features = data.map(d => {
-          if (!d.polygon) return null;
-
-          // workaround for editor-layer-index weirdness..
-          // Add an extra array nest to each element in `d.polygon`
-          // so the rings are not treated as a bunch of holes:
-          //   what we get:  [ [[outer],[hole],[hole]] ]
-          //   what we want: [ [[outer]],[[outer]],[[outer]] ]
-          const rings = d.polygon.map(ring => [ring]);
-
-          const feature = {
-            type: 'Feature',
-            properties: { id: d.id },
-            geometry: { type: 'MultiPolygon', coordinates: rings }
-          };
-
-          this._imageryIndex.features.set(d.id, feature);
-          return feature;
-        }).filter(Boolean);
-
-        // Create a which-polygon index to support efficient spatial querying.
-        this._imageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
-
-        // Instantiate `ImagerySource` objects for each imagery item.
-        for (const d of data) {
-          let source;
-          if (d.type === 'bing') {
-            source = new ImagerySourceBing(context, d);
-          } else if (/^EsriWorldImagery/.test(d.id)) {
-            source = new ImagerySourceEsri(context, d);
-          } else {
-            source = new ImagerySource(context, d);
-          }
-          this._imageryIndex.sources.set(d.id, source);
-        }
-
-        // Add 'None'
-        const none = new ImagerySourceNone(context);
-        this._imageryIndex.sources.set(none.id, none);
-
-        // Add 'Custom' - seed it with whatever template the user has used previously
-        const custom = new ImagerySourceCustom(context);
-        custom.template = storageSystem.getItem('background-custom-template') || '';
-        this._imageryIndex.sources.set(custom.id, custom);
-
-        // Default the locator overlay to "on"..
-        const locator = this._imageryIndex.sources.get('mapbox_locator_overlay');
-        if (locator) {
-          this.toggleOverlayLayer(locator);
-        }
-
-        return this._imageryIndex;
-      })
-      .catch(e => {
-        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
-      });
-  }
 
 }

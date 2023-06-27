@@ -25,7 +25,7 @@ export function uiFieldAddress(context, uifield) {
   }];
 
   const dataLoaderSystem = context.dataLoaderSystem();
-  dataLoaderSystem.get('address_formats')
+  dataLoaderSystem.getDataAsync('address_formats')
     .then(d => {
       _addressFormats = d;
       if (!_selection.empty()) {

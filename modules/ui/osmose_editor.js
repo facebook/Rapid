@@ -9,7 +9,7 @@ import { utilRebind } from '../util';
 
 
 export function uiOsmoseEditor(context) {
-  const osmose = context.services.get('osmose');
+  const osmose = context.services.osmose;
   const dispatch = d3_dispatch('change');
   const qaDetails = uiOsmoseDetails(context);
   const qaHeader = uiOsmoseHeader(context);

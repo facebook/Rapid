@@ -7,7 +7,7 @@ describe('validationMissingTag', () => {
   class MockContext {
     constructor() {
       this._l10n = new MockLocalizationSystem(this);
-      this.services = new Map();
+      this.services = {};
     }
     localizationSystem() { return this._l10n; }
   }

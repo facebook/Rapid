@@ -9,7 +9,7 @@ import { utilNoAuto, utilRebind } from '../util';
 
 
 export function uiImproveOsmEditor(context) {
-  const improveosm = context.services.get('improveOSM');
+  const improveosm = context.services.improveOSM;
   const dispatch = d3_dispatch('change');
   const qaDetails = uiImproveOsmDetails(context);
   const qaComments = uiImproveOsmComments(context);
