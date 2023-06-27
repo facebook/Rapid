@@ -71,7 +71,7 @@ export class UiPanelLocation extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
 
     // Empty out the DOM content and rebuild from scratch..
     selection.html('');
@@ -80,9 +80,9 @@ export class UiPanelLocation extends AbstractUiPanel {
       .append('ul');
 
     // Mouse coordinates as [lon,lat]
-    let loc = context.mapSystem().mouseLoc();
+    let loc = context.systems.map.mouseLoc();
     if (loc.some(isNaN)) {
-      loc = context.mapSystem().center();
+      loc = context.systems.map.center();
     }
 
     // Append coordinates of mouse

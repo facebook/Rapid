@@ -13,8 +13,8 @@
 //
 //export function uiFieldRestrictions(context, uifield) {
 //    const dispatch = d3_dispatch('change');
-//    const l10n = context.localizationSystem();
-//    const prefs = context.storageSystem();
+//    const l10n = context.systems.l10n;
+//    const prefs = context.systems.storage;
 //
 //    prefs.removeItem('turn-restriction-via-way');                    // remove old key
 //    var storedViaWay = prefs.getItem('turn-restriction-via-way0');   // use new key #6922
@@ -580,7 +580,7 @@
 //
 //
 //    function displayMaxDistance(maxDist) {
-//        var isImperial = !context.localizationSystem().usesMetric();
+//        var isImperial = !context.systems.l10n.usesMetric();
 //        var opts;
 //
 //        if (isImperial) {
@@ -606,7 +606,7 @@
 //    function displayName(entityID, graph) {
 //        var entity = graph.entity(entityID);
 //        var name = l10n.displayName(entity) || '';
-//        var matched = context.presetSystem().match(entity, graph);
+//        var matched = context.systems.presets.match(entity, graph);
 //        var type = (matched && matched.name()) || l10n.displayType(entity.id);
 //        return name || type;
 //    }

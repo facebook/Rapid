@@ -48,7 +48,7 @@ export class ValidationIssue {
         title: this.context.tHtml('issues.fix.ignore_issue.title'),
         icon: 'rapid-icon-close',
         onClick: () => {
-          this.context.validationSystem().ignoreIssue(this.id);
+          this.context.systems.validator.ignoreIssue(this.id);
         }
       }));
     }

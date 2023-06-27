@@ -255,7 +255,7 @@ export class OsmWikibaseService extends AbstractService {
    * @param   callback
    */
   getDocs(params, callback) {
-    const langCodes = this.context.localizationSystem().localeCodes().map(code => code.toLowerCase());
+    const langCodes = this.context.systems.l10n.localeCodes().map(code => code.toLowerCase());
     params.langCodes = langCodes;
 
     this.getEntity(params, (err, data) => {

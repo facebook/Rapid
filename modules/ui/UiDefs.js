@@ -81,7 +81,7 @@ export class UiDefs {
     // Notify Pixi about the icons so they can be used by WebGL - see Rapid#925
     // Note: We believe that by the time `_spritesheetLoaded` is called,
     // Pixi's textureManager should be set up, throw if we're wrong about this.
-    const textureManager = this.context.mapSystem().renderer?.textures;
+    const textureManager = this.context.systems.map.renderer?.textures;
     if (!textureManager) {
       throw new Error(`TextureManager not ready to pack icons for ${spritesheetID}`);
     }

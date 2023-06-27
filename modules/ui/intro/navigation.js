@@ -10,9 +10,9 @@ export function uiIntroNavigation(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.navigation.title' };
   const container = context.container();
-  const editSystem = context.editSystem();
-  const mapSystem = context.mapSystem();
-  const presetSystem = context.presetSystem();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
+  const presetSystem = context.systems.presets;
 
   const townHallID = 'n2061';
   const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);

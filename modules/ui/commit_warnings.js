@@ -7,7 +7,7 @@ import { uiTooltip } from './tooltip';
 export function uiCommitWarnings(context) {
 
   function commitWarnings(selection) {
-    const issuesBySeverity = context.validationSystem()
+    const issuesBySeverity = context.systems.validator
       .getIssuesBySeverity({ what: 'edited', where: 'all', includeDisabledRules: true });
 
     for (let severity in issuesBySeverity) {
@@ -65,7 +65,7 @@ export function uiCommitWarnings(context) {
             .classed('hover', false);
         })
         .on('click', (d3_event, d) => {
-          context.validationSystem().focusIssue(d);
+          context.systems.validator.focusIssue(d);
         });
 
       buttons

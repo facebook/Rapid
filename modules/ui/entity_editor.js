@@ -116,7 +116,7 @@ export function uiEntityEditor(context) {
 
     function entityEditor(selection) {
         var combinedTags = getCombinedTags(_entityIDs, context.graph());
-        const isRTL = context.localizationSystem().isRTL();
+        const isRTL = context.systems.l10n.isRTL();
 
         // Header
         var header = selection.selectAll('.header')
@@ -196,7 +196,7 @@ export function uiEntityEditor(context) {
             body.call(section.render);
         });
 
-        context.editSystem()
+        context.systems.edits
             .on('change', _onChange);
 
         function _onChange(difference) {
@@ -283,7 +283,7 @@ export function uiEntityEditor(context) {
 
         // if leaving field (blur event), rerun validation
         if (!onInput) {
-            context.validationSystem().validate();
+            context.systems.validator.validate();
         }
     }
 
@@ -337,7 +337,7 @@ export function uiEntityEditor(context) {
             }
         }
 
-        context.validationSystem().validate();
+        context.systems.validator.validate();
     }
 
 
@@ -382,7 +382,7 @@ export function uiEntityEditor(context) {
 
 
     function loadActivePresets(isForNewSelection) {
-        var presetSystem = context.presetSystem();
+        var presetSystem = context.systems.presets;
         var graph = context.graph();
 
         var counts = {};

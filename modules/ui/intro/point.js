@@ -10,11 +10,11 @@ import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetLi
 export function uiIntroPoint(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.points.title' };
-  const editMenu = context.ui().editMenu();
+  const editMenu = context.systems.ui.editMenu();
   const container = context.container();
-  const editSystem = context.editSystem();
-  const mapSystem = context.mapSystem();
-  const presetSystem = context.presetSystem();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
+  const presetSystem = context.systems.presets;
 
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);
   const cafePreset = presetSystem.item('amenity/cafe');

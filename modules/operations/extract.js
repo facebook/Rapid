@@ -8,7 +8,7 @@ import { utilTotalExtent } from '../util';
 
 
 export function operationExtract(context, selectedIDs) {
-  const presetSystem = context.presetSystem();
+  const presetSystem = context.systems.presets;
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -43,13 +43,13 @@ export function operationExtract(context, selectedIDs) {
     };
 
     context.perform(combinedAction, operation.annotation());
-    context.validationSystem().validate();
+    context.systems.validator.validate();
 
     // Move the extracted nodes to the mouse cursor location
     const projection = context.projection;
     const extractedNodeIDs = actions.map(action => action.getExtractedNodeID());
     const extractPoint = projection.project(extent.center());
-    const delta = vecSubtract(context.mapSystem().mouse(), extractPoint);
+    const delta = vecSubtract(context.systems.map.mouse(), extractPoint);
     context.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
 
     // Put the user in move mode so they can place the extracted nodes where they want.
@@ -79,9 +79,9 @@ export function operationExtract(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.storageSystem();
+      const prefs = context.systems.storage;
       const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.mapSystem().extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
   };
 

@@ -9,8 +9,8 @@ import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helpe
 export function uiIntroRapid(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.rapid.title' };
-  const editSystem = context.editSystem();
-  const mapSystem = context.mapSystem();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
 
   const tulipLaneID = 'w-516';
   const tulipLaneExtent = new Extent([-85.62991, 41.95568], [-85.62700, 41.95638]);
@@ -91,7 +91,7 @@ export function uiIntroRapid(context, curtain) {
     context.enter('browse');
     editSystem.resetToCheckpoint('initial');
     context.scene().enableLayers('rapid');
-    context.ui().togglePanes();   // close issue pane
+    context.systems.ui.togglePanes();   // close issue pane
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -235,7 +235,7 @@ export function uiIntroRapid(context, curtain) {
   function afterUndoRoadAddAsync() {
     if (_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);  // should be un-accepted now
 
-    context.ui().togglePanes();   // close issue pane
+    context.systems.ui.togglePanes();   // close issue pane
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;

@@ -89,7 +89,7 @@ export class NominatimService extends AbstractService {
     const controller = new AbortController();
     this._inflight[url] = controller;
 
-    const l10n = this.context.localizationSystem();
+    const l10n = this.context.systems.l10n;
     const opts = {
       signal: controller.signal,
       headers: { 'Accept-Language': l10n.localeCodes().join(',') }
@@ -126,7 +126,7 @@ export class NominatimService extends AbstractService {
     const controller = new AbortController();
     this._inflight[url] = controller;
 
-    const l10n = this.context.localizationSystem();
+    const l10n = this.context.systems.l10n;
     const opts = {
       signal: controller.signal,
       headers: { 'Accept-Language': l10n.localeCodes().join(',') }

@@ -24,7 +24,7 @@ export function eventCancel(d3_event) {
 // with custom `replacements`
 let helpStringReplacements;
 export function helpHtml(context, id, replacements) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   const isRTL = l10n.isRTL();
 
   // only load these the first time
@@ -161,7 +161,7 @@ export let missingStrings = {};
  * @param  text
  */
 function _checkKey(context, key, text) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   if (l10n.t(key, { default: undefined }) === undefined) {
     if (missingStrings.hasOwnProperty(key)) return;  // warn once
     missingStrings[key] = text;
@@ -176,7 +176,7 @@ function _checkKey(context, key, text) {
  * @param  obj
  */
 export function localize(context, obj) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   let key;
 
   // Assign name if entity has one..

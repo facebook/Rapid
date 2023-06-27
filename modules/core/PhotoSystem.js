@@ -56,7 +56,7 @@ export class PhotoSystem extends AbstractSystem {
       }
     }
 
-    const urlHashSystem = this.context.urlHashSystem();
+    const urlHashSystem = this.context.systems.urlhash;
     urlHashSystem.on('hashchange', this._hashchange);
 
     return this._initPromise = Promise.resolve();
@@ -71,7 +71,7 @@ export class PhotoSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
-    const mapSystem = this.context.mapSystem();
+    const mapSystem = this.context.systems.map;
     const prerequisites = mapSystem.startAsync();
 
     return this._startPromise = prerequisites
@@ -145,7 +145,7 @@ export class PhotoSystem extends AbstractSystem {
    * Push changes in photo viewer state to the urlhash
    */
   _updateHash() {
-    const urlhash = this.context.urlHashSystem();
+    const urlhash = this.context.systems.urlhash;
     const scene = this.context.scene();
 
     // photo_overlay

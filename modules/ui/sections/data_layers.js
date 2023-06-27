@@ -8,7 +8,7 @@ import { uiSettingsCustomData } from '../settings/custom_data';
 
 
 export function uiSectionDataLayers(context) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   const section = uiSection('data-layers', context)
     .label(l10n.tHtml('map_data.data_layers'))
     .disclosureContent(renderDisclosureContent);
@@ -296,7 +296,7 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.ui().info.toggle('history');
+        context.systems.ui.info.toggle('history');
       });
 
     historyPanelLabelEnter
@@ -318,7 +318,7 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.ui().info.toggle('measurement');
+        context.systems.ui.info.toggle('measurement');
       });
 
     measurementPanelLabelEnter

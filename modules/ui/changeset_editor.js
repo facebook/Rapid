@@ -27,7 +27,7 @@ export function uiChangesetEditor(context) {
 
         if (!_uifields) {
             initial = true;
-            var presetSysetem = context.presetSystem();
+            var presetSysetem = context.systems.presets;
 
             _uifields = [
                 new UiField(context, presetSysetem.field('comment'), null, { show: true, revert: false }),

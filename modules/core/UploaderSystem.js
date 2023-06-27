@@ -73,7 +73,7 @@ export class UploaderSystem extends AbstractSystem {
       }
     }
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     const prerequisites = dataLoaderSystem.initAsync();
 
     return this._initPromise = prerequisites
@@ -148,7 +148,7 @@ export class UploaderSystem extends AbstractSystem {
     this._errors = [];
 
     // Store original changes, in case user wants to download them as an .osc file
-    const editSystem = context.editSystem();
+    const editSystem = context.systems.edits;
     this._origChanges = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
 
     // First time, `perform` a no-op action.
@@ -173,7 +173,7 @@ export class UploaderSystem extends AbstractSystem {
   _startConflictCheck() {
     const context = this.context;
     const osm = context.services.osm;
-    const editSystem = context.editSystem();
+    const editSystem = context.systems.edits;
     const summary = editSystem.difference().summary();
     const graph = context.graph();
 
@@ -269,8 +269,8 @@ export class UploaderSystem extends AbstractSystem {
 
   // Test everything in `_toCheckIDs` for conflicts
   _detectConflicts() {
-    const l10n = this.context.localizationSystem();
-    const editSystem = this.context.editSystem();
+    const l10n = this.context.systems.l10n;
+    const editSystem = this.context.systems.edits;
     const osm = this.context.services.osm;
     if (!osm) return;
 
@@ -375,7 +375,7 @@ export class UploaderSystem extends AbstractSystem {
       this._didResultInErrors();
 
     } else {
-      const editSystem = context.editSystem();
+      const editSystem = context.systems.edits;
       const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
       if (changes.modified.length || changes.created.length || changes.deleted.length) {
         this.emit('willAttemptUpload');
@@ -417,7 +417,7 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInErrors() {
-    this.context.editSystem().pop();
+    this.context.systems.edits.pop();
     this.emit('resultErrors', this._errors);
     this._endSave();
   }
@@ -431,7 +431,7 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInSuccess() {
-    this.context.editSystem().clearSaved();   // clear edits saved in localstorage
+    this.context.systems.edits.clearSaved();   // clear edits saved in localstorage
     this.emit('resultSuccess', this.changeset);
     this._endSave();
   }
@@ -444,12 +444,12 @@ export class UploaderSystem extends AbstractSystem {
 
 
   cancelConflictResolution() {
-    this.context.editSystem().pop();
+    this.context.systems.edits.pop();
   }
 
 
   processResolvedConflicts() {
-    const editSystem = this.context.editSystem();
+    const editSystem = this.context.systems.edits;
 
     for (const conflict of this._conflicts) {
       if (conflict.chosen === 1) {   // user chose "use theirs"

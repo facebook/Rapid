@@ -110,20 +110,19 @@ export class FilterSystem extends AbstractSystem {
       }
     }
 
-    // Take initial values from urlhash first, localstorage second
-    const storageSystem = this.context.storageSystem();
-    const urlHashSystem = this.context.urlHashSystem();
-
+    const storage = this.context.systems.storage;
+    const urlhash = this.context.systems.urlhash;
     const prerequisites = Promise.all([
-      storageSystem.initAsync(),
-      urlHashSystem.initAsync()
+      storage.initAsync(),
+      urlhash.initAsync()
     ]);
 
     return this._initPromise = prerequisites
       .then(() => {
-        urlHashSystem.on('hashchange', this._hashchange);
+        urlhash.on('hashchange', this._hashchange);
 
-        const toHide = urlHashSystem.getParam('disable_features') ?? storageSystem.getItem('disabled-features');
+        // Take initial values from urlhash first, localstorage second
+        const toHide = urlhash.getParam('disable_features') ?? storage.getItem('disabled-features');
 
         if (toHide) {
           const keys = toHide.replace(/;/g, ',').split(',').map(s => s.trim()).filter(Boolean);
@@ -137,7 +136,7 @@ export class FilterSystem extends AbstractSystem {
 
 
 //    // warm up the feature matching cache upon merging fetched data
-//    this.context.editSystem().on('merge.features', function(newEntities) {
+//    this.context.systems.edits.on('merge.features', function(newEntities) {
 //        if (!newEntities) return;
 //        var handle = window.requestIdleCallback(function() {
 //            var graph = this.context.graph();
@@ -653,12 +652,12 @@ export class FilterSystem extends AbstractSystem {
     const ruleIDs = [...this._hidden].join(',');
 
     // update url hash
-    const urlhash = this.context.urlHashSystem();
+    const urlhash = this.context.systems.urlhash;
     urlhash.setParam('disable_features', ruleIDs.length ? ruleIDs : null);
 
     // update localstorage
-    const prefs = this.context.storageSystem();
-    prefs.setItem('disabled-features', ruleIDs);
+    const storage = this.context.systems.storage;
+    storage.setItem('disabled-features', ruleIDs);
 
     this.emit('filterchange');
   }

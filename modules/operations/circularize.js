@@ -34,7 +34,7 @@ export function operationCircularize(context, selectedIDs) {
     combinedAction.transitionable = true;
 
     context.perform(combinedAction, operation.annotation());
-    window.setTimeout(() => context.validationSystem().validate(), 300);  // after any transition
+    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
   };
 
 
@@ -65,9 +65,9 @@ export function operationCircularize(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.storageSystem();
+      const prefs = context.systems.storage;
       const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.mapSystem().extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet

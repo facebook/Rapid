@@ -72,7 +72,7 @@ export class KeepRightService extends AbstractService {
   init() {
     this.reset();
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     dataLoaderSystem.getDataAsync('keepRight')
       .then(d => this._krData = d);
   }

@@ -16,15 +16,15 @@ describe('validationAlmostJunction', () => {
 
   class MockContext {
     constructor() {
-      this._l10n  = new MockLocalizationSystem(this);
-      this._edits = new MockEditSystem(this);
       this.services = {};
+      this.systems = {
+        edits: new MockEditSystem(),
+        l10n:  new MockLocalizationSystem()
+      };
     }
-    localizationSystem()  { return this._l10n; }
-    editSystem()          { return this._edits; }
-    graph()               { return graph; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    graph()  { return graph; }
+    t()      { return ''; }
+    tHtml()  { return ''; }
   }
 
   const context = new MockContext();

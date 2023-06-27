@@ -10,11 +10,11 @@ import { delayAsync, eventCancel, helpHtml, isMostlySquare, showPresetList, tran
 export function uiIntroBuilding(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.buildings.title' };
-  const editMenu = context.ui().editMenu();
+  const editMenu = context.systems.ui.editMenu();
   const container = context.container();
-  const editSystem = context.editSystem();
-  const mapSystem = context.mapSystem();
-  const presetSystem = context.presetSystem();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
+  const presetSystem = context.systems.presets;
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
   const tankExtent = new Extent([-85.62766, 41.95324], [-85.62695, 41.95372]);

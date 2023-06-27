@@ -30,7 +30,7 @@ export function uiIntroWelcome(context, curtain) {
   // "Welcome! This walkthrough will teach you the basics of editing on OpenStreetMap."
   // Click Ok to advance
   function welcomeAsync() {
-    return context.mapSystem()
+    return context.systems.map
       .setCenterZoomAsync(townHallExtent.center(), 19)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;

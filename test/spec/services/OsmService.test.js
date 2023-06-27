@@ -3,10 +3,14 @@ describe('OsmService', () => {
   let serverXHR;
 
   class MockContext {
-    constructor()     { this._locationSystem = new Rapid.LocationSystem(this); }
-    locationSystem()  { return this._locationSystem; }
+    constructor() {
+      this.systems = {
+        locations: new Rapid.LocationSystem(this)
+      };
+    }
     deferredRedraw()  { }
   }
+
 
   beforeEach(() => {
     spy = sinon.spy();

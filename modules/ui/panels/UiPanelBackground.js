@@ -47,7 +47,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     this._currSourceID = null;
     this._metadata = {};
 
-    this.context.mapSystem()
+    this.context.systems.map
       .on('draw', this._deferredRender)
       .on('move', this._deferredUpdateMetadata);
   }
@@ -69,7 +69,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     this._currSourceID = null;
     this._metadata = {};
 
-    this.context.mapSystem()
+    this.context.systems.map
       .off('draw', this._deferredRender)
       .off('move', this._deferredUpdateMetadata);
   }
@@ -83,7 +83,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const imagery = context.imagerySystem();
+    const imagery = context.systems.imagery;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -143,7 +143,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const imagery = context.imagerySystem();
+    const imagery = context.systems.imagery;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -155,7 +155,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // Look for a loaded tile that covers the center of the map.
-    const center = context.mapSystem().center();
+    const center = context.systems.map.center();
     const centerExtent = new Extent(center);
     const layer = context.scene().layers.get('background');
     const tileMap = layer?._tileMaps.get(source.id);
@@ -173,7 +173,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // update zoom
-    const zoom = tileZoom || Math.floor(context.mapSystem().zoom());
+    const zoom = tileZoom || Math.floor(context.systems.map.zoom());
     this._metadata.zoom = String(zoom);
     selection.selectAll('.background-info-list-zoom')
       .classed('hide', false)

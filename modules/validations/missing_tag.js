@@ -6,7 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationMissingTag(context) {
   const type = 'missing_tag';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
 
   function hasDescriptiveTags(entity, graph) {
@@ -92,7 +92,7 @@ export function validationMissingTag(context) {
             icon: 'rapid-icon-search',
             title: l10n.tHtml(`issues.fix.${selectFixType}.title`),
             onClick: function() {
-              context.ui().sidebar.showPresetList();
+              context.systems.ui.sidebar.showPresetList();
             }
           }));
 

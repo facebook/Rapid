@@ -11,16 +11,14 @@ describe('validationOutdatedTags', () => {
 
   class MockContext {
     constructor() {
-      this._l10n = new MockLocalizationSystem(this);
-      this._locations = new MockLocationSystem(this);
-      this._presets = new Rapid.PresetSystem(this);
-      this._data = new Rapid.DataLoaderSystem(this);
       this.services = {};
+      this.systems = {
+        data:       new Rapid.DataLoaderSystem(this),
+        l10n:       new MockLocalizationSystem(),
+        locations:  new MockLocationSystem(),
+        presets:    new Rapid.PresetSystem(this)
+      };
     }
-    dataLoaderSystem() { return this._data; }
-    localizationSystem() { return this._l10n; }
-    locationSystem() { return this._locations; }
-    presetSystem() { return this._presets; }
   }
 
   const validator = Rapid.validationOutdatedTags(new MockContext());

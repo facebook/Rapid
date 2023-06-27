@@ -244,7 +244,7 @@ export class MapillaryService extends AbstractService {
 
   // Apply filter to image viewer
   filterViewer() {
-    const photoSystem = this.context.photoSystem();
+    const photoSystem = this.context.systems.photos;
     const showsPano = photoSystem.showsPanoramic;
     const showsFlat = photoSystem.showsFlat;
     const fromDate = photoSystem.fromDate;
@@ -296,7 +296,7 @@ export class MapillaryService extends AbstractService {
   hideViewer() {
     this._mlyActiveImage = null;
     const context = this.context;
-    context.photoSystem().selectPhoto(null);
+    context.systems.photos.selectPhoto(null);
 
     if (!this._mlyFallback && this._mlyViewer) {
       this._mlyViewer.getComponent('sequence').stop();
@@ -365,8 +365,8 @@ export class MapillaryService extends AbstractService {
       this.setActiveImage(image);
       this.setStyles(context, null);
       const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
-      context.mapSystem().centerEase(loc);
-      context.photoSystem().selectPhoto('mapillary', image.id);
+      context.systems.map.centerEase(loc);
+      context.systems.photos.selectPhoto('mapillary', image.id);
 
       if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
         this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
@@ -388,7 +388,7 @@ export class MapillaryService extends AbstractService {
     }
 
     // Register viewer resize handler
-    context.ui().photoviewer.on('resize.mapillary', () => {
+    context.systems.ui.photoviewer.on('resize.mapillary', () => {
       if (this._mlyViewer) this._mlyViewer.resize();
     });
   }

@@ -39,7 +39,7 @@ export function operationContinue(context, selectedIDs) {
 
   operation.available = function() {
     return geometries.vertex.length === 1 && geometries.line.length <= 1 &&
-      !context.filterSystem().hasHiddenConnections(continueFromNode, context.graph());
+      !context.systems.filters.hasHiddenConnections(continueFromNode, context.graph());
   };
 
 

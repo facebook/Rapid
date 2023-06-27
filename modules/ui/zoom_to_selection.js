@@ -3,7 +3,7 @@ import { uiIcon } from './icon';
 
 
 export function uiZoomToSelection(context) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   const shortcutKey = l10n.t('inspector.zoom_to.key');
   let _lastPointerUpType;
   let _lastTransform;
@@ -39,7 +39,7 @@ export function uiZoomToSelection(context) {
 
       const mode = context.mode();
       const extent = mode?.extent;
-      const map = context.mapSystem();
+      const map = context.systems.map;
 
       if (_lastTransform) {   // pop back out
         map.transformEase(_lastTransform);
@@ -53,7 +53,7 @@ export function uiZoomToSelection(context) {
 
       } else {   // tool disabled
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          context.ui().flash
+          context.systems.ui.flash
             .duration(2000)
             .iconName('#rapid-icon-framed-dot')
             .iconClass('disabled')

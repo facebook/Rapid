@@ -96,12 +96,12 @@ export class PixiLayerOsm extends AbstractLayer {
 
     const context = this.context;
     const graph = context.graph();
-    const map = context.mapSystem();
+    const map = context.systems.map;
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-    let entities = context.editSystem().intersects(map.extent());   // Gather data in view
-    entities = context.filterSystem().filter(entities, graph);   // Apply feature filters
+    let entities = context.systems.edits.intersects(map.extent());   // Gather data in view
+    entities = context.systems.filters.filter(entities, graph);   // Apply feature filters
 
     const data = {
       polygons: new Map(),
@@ -129,7 +129,7 @@ export class PixiLayerOsm extends AbstractLayer {
 //    // continuing will fire off the download of the data into a file called 'canned_data.json'.
 //    // move the data into the test/spec/renderer directory.
 //    if (this._saveCannedData && !this._alreadyDownloaded) {
-//      const map = context.mapSystem();
+//      const map = context.systems.map;
 //      const [lng, lat] = map.center();
 //
 //      let viewData = {
@@ -221,10 +221,10 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.polygons;
     const context = this.context;
     const graph = context.graph();
-    const l10n = context.localizationSystem();
-    const presetSystem = context.presetSystem();
+    const l10n = context.systems.l10n;
+    const presetSystem = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
-    const showPoints = context.filterSystem().isEnabled('points');
+    const showPoints = context.systems.filters.isEnabled('points');
 
     // For deciding if an unlabeled polygon feature is interesting enough to show a virtual pin.
     // Note that labeled polygon features will always get a virtual pin.
@@ -378,7 +378,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.lines;
     const context = this.context;
     const graph = context.graph();
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
     const lineContainer = this.lineContainer;
 
     for (const [entityID, entity] of entities) {
@@ -504,8 +504,8 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.vertices;
     const context = this.context;
     const graph = context.graph();
-    const l10n = context.localizationSystem();
-    const presetSystem = context.presetSystem();
+    const l10n = context.systems.l10n;
+    const presetSystem = context.systems.presets;
 
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
@@ -613,8 +613,8 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.points;
     const context = this.context;
     const graph = context.graph();
-    const l10n = context.localizationSystem();
-    const presetSystem = context.presetSystem();
+    const l10n = context.systems.l10n;
+    const presetSystem = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
 
     for (const [nodeID, node] of entities) {

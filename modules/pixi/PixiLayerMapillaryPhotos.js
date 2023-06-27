@@ -44,7 +44,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
 
   filterImages(images) {
-    const photoSystem = this.context.photoSystem();
+    const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
     const toDate = photoSystem.toDate;
     const usernames = photoSystem.usernames;
@@ -75,7 +75,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
 
   filterSequences(sequences) {
-    const photoSystem = this.context.photoSystem();
+    const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
     const toDate = photoSystem.toDate;
     const usernames = photoSystem.usernames;

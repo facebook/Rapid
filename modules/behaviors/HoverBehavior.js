@@ -43,7 +43,7 @@ export class HoverBehavior extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('modifierchange', this._doHover);
     eventManager.on('pointerover', this._doHover);
     eventManager.on('pointerout', this._doHover);
@@ -69,7 +69,7 @@ export class HoverBehavior extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.off('modifierchange', this._doHover);
     eventManager.off('pointerover', this._doHover);
     eventManager.off('pointerout', this._doHover);
@@ -102,7 +102,7 @@ export class HoverBehavior extends AbstractBehavior {
     if (interaction.gesture) return;  // dont change hover while interacting with the map
 
     const context = this.context;
-    const eventManager = context.mapSystem().renderer.events;
+    const eventManager = context.systems.map.renderer.events;
     const modifiers = eventManager.modifierKeys;
     const hasModifierKey = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
     const eventData = Object.assign({}, this.lastMove);  // shallow copy

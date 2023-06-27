@@ -6,7 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 // one another, so they are not visible ever).
 export function validationDuplicateWaySegments(context) {
   const type = 'duplicate_way_segments';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
 
   let validation = function(entity, graph) {

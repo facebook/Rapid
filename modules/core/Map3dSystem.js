@@ -73,8 +73,8 @@ export class Map3dSystem extends AbstractSystem {
         });
 
         this.maplibre.jumpTo({
-          zoom: this.context.mapSystem().zoom() - 3,
-          center: this.context.mapSystem().extent().center(),
+          zoom: this.context.systems.map.zoom() - 3,
+          center: this.context.systems.map.extent().center(),
         });
 
         this.maplibre.addSource('osmareas', {

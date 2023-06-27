@@ -63,7 +63,7 @@ export function uiPhotoViewer(context) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
 
-        const dims = context.mapSystem().dimensions;
+        const dims = context.systems.map.dimensions;
         if (resizeOnX) {
           const maxWidth = dims[0];
           const newWidth = clamp((startWidth + d3_event.clientX - startX), minWidth, maxWidth);

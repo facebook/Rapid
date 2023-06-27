@@ -30,7 +30,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
 
   filterDetections(detections) {
-    const photoSystem = this.context.photoSystem();
+    const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
     const toDate = photoSystem.toDate;
 

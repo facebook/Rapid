@@ -56,7 +56,7 @@ export class DragBehavior extends AbstractBehavior {
     this.lastMove = null;
     this.dragTarget = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('modifierchange', this._doMove);
     eventManager.on('pointerover', this._doMove);
     eventManager.on('pointerout', this._doMove);
@@ -87,7 +87,7 @@ export class DragBehavior extends AbstractBehavior {
     this.lastMove = null;
     this.dragTarget = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.off('modifierchange', this._doMove);
     eventManager.off('pointerover', this._doMove);
     eventManager.off('pointerout', this._doMove);
@@ -127,7 +127,7 @@ export class DragBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
-    const map = this.context.mapSystem();
+    const map = this.context.systems.map;
 
     // If we detect the edit (right-click) menu, we should cease any dragging behavior.
     const hasEditmenu = map.supersurface.select('.edit-menu').size();
@@ -231,7 +231,7 @@ export class DragBehavior extends AbstractBehavior {
   _snappingDisabled() {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     if (!eventManager.pointerOverRenderer) return false;
 
     const modifiers = eventManager.modifierKeys;

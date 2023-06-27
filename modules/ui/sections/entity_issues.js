@@ -7,10 +7,10 @@ import { uiSection } from '../section';
 
 
 export function uiSectionEntityIssues(context) {
-  const validator = context.validationSystem();
+  const validator = context.systems.validator;
   // Does the user prefer to expand the active issue?  Useful for viewing tag diff.
   // Expand by default so first timers see it - iD#6408, iD#8143
-  const prefs = context.storageSystem();
+  const prefs = context.systems.storage;
   let preference = prefs.getItem('entity-issues.reference.expanded') ?? 'true';
   let _expanded = (preference === 'true');
 
@@ -80,8 +80,8 @@ export function uiSectionEntityIssues(context) {
         makeActiveIssue(d.id);    // expand only the clicked item
         const extent = d.extent(context.graph());
         if (extent) {
-          const setZoom = Math.max(context.mapSystem().zoom(), 19);
-          context.mapSystem().centerZoomEase(extent.center(), setZoom);
+          const setZoom = Math.max(context.systems.map.zoom(), 19);
+          context.systems.map.centerZoomEase(extent.center(), setZoom);
         }
       });
 

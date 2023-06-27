@@ -27,7 +27,7 @@ export function uiToolSave(context) {
 
   function save(d3_event) {
     d3_event.preventDefault();
-    if (!context.inIntro && !isSaving() && context.editSystem().hasChanges()) {
+    if (!context.inIntro && !isSaving() && context.systems.edits.hasChanges()) {
       context.enter('save');
     }
   }
@@ -48,7 +48,7 @@ export function uiToolSave(context) {
   function updateCount() {
     if (!_button || !_tooltip) return;
 
-    const val = context.editSystem().difference().summary().size;
+    const val = context.systems.edits.difference().summary().size;
     if (val === _numChanges) return;  // no change
 
     _numChanges = val;
@@ -101,7 +101,7 @@ export function uiToolSave(context) {
         //     lastPointerUpType === 'pen')
         // ) {
         //     // there are no tooltips for touch interactions so flash feedback instead
-        //     context.ui().flash
+        //     context.systems.ui.flash
         //         .duration(2000)
         //         .iconName('#rapid-icon-save')
         //         .iconClass('disabled')
@@ -123,7 +123,7 @@ export function uiToolSave(context) {
     updateCount();
 
     context.keybinding().on(key, save, true /* capture */);
-    context.editSystem().on('change', updateCount);
+    context.systems.edits.on('change', updateCount);
     context.on('modechange', updateDisabled);
   };
 
@@ -132,7 +132,7 @@ export function uiToolSave(context) {
     if (!_button && !_tooltip) return;  // already uninstalled
 
     context.keybinding().off(key, true /* capture */);
-    context.editSystem().off('change', updateCount);
+    context.systems.edits.off('change', updateCount);
     context.off('modechange', updateDisabled);
     _button = null;
     _tooltip = null;

@@ -48,7 +48,7 @@ export class AddPointMode extends AbstractMode {
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .on('undone', this._cancel)
       .on('redone', this._cancel);
 
@@ -74,7 +74,7 @@ export class AddPointMode extends AbstractMode {
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .off('undone', this._cancel)
       .off('redone', this._cancel);
   }
@@ -91,7 +91,7 @@ export class AddPointMode extends AbstractMode {
     const coord = eventData.coord;
     const loc = projection.invert(coord);
 
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
     if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)

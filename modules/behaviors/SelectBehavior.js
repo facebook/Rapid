@@ -74,7 +74,7 @@ export class SelectBehavior extends AbstractBehavior {
     this.lastSpace = null;
     this.lastClick = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('keydown', this._keydown);
     eventManager.on('keyup', this._keyup);
     eventManager.on('pointerdown', this._pointerdown);
@@ -105,7 +105,7 @@ export class SelectBehavior extends AbstractBehavior {
 
     this._cancelLongPress();
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.off('keydown', this._keydown);
     eventManager.off('keyup', this._keyup);
     eventManager.off('pointerdown', this._pointerdown);
@@ -165,7 +165,7 @@ export class SelectBehavior extends AbstractBehavior {
   _pointerdown(e) {
     if (this.lastDown) return;  // a pointer is already down
 
-    this.context.ui().closeEditMenu();
+    this.context.systems.ui.closeEditMenu();
     this._showsMenu = false;
 
     const down = this._getEventData(e);
@@ -291,7 +291,7 @@ export class SelectBehavior extends AbstractBehavior {
     this._cancelLongPress();
 
     const context = this.context;
-    const eventManager = context.mapSystem().renderer.events;
+    const eventManager = context.systems.map.renderer.events;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
@@ -322,7 +322,7 @@ export class SelectBehavior extends AbstractBehavior {
 
     // Clicked on nothing
     if (!datum) {
-      context.photoSystem().selectPhoto(null);
+      context.systems.photos.selectPhoto(null);
 
       const mode = context.mode();
       if (mode.id !== 'browse' && !this._multiSelection.size) {
@@ -379,8 +379,8 @@ export class SelectBehavior extends AbstractBehavior {
     if (datum.captured_at) {
       // Determine the layer that was clicked on, obtain its service.
       const layerID = target.layer.id;
-      context.mapSystem().centerEase(datum.loc);
-      context.photoSystem().selectPhoto(layerID, datum.id);
+      context.systems.map.centerEase(datum.loc);
+      context.systems.photos.selectPhoto(layerID, datum.id);
 //      // No mode change event here, just manually tell the renderer to select it, for now
 //      const scene = context.scene();
 //      scene.clearClass('selected');
@@ -393,7 +393,7 @@ export class SelectBehavior extends AbstractBehavior {
       const service = context.services.mapillary;
       if (!service) return;
 
-      context.mapSystem().centerEase(event.loc);
+      context.systems.map.centerEase(event.loc);
       const selectedImageID = service.getActiveImage() && service.getActiveImage().id;
 
       service.getDetections(datum.id).then(detections => {
@@ -474,7 +474,7 @@ export class SelectBehavior extends AbstractBehavior {
         actionAddMidpoint({ loc: loc, edge: edge }, osmNode()),
         context.t('operations.add.annotation.vertex')
       );
-      context.validationSystem().validate();
+      context.systems.validator.validate();
 
     } else if (isMidpoint) {
       const edge = [data.a.id, data.b.id];
@@ -482,7 +482,7 @@ export class SelectBehavior extends AbstractBehavior {
         actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
         context.t('operations.add.annotation.vertex')
       );
-      context.validationSystem().validate();
+      context.systems.validator.validate();
     }
   }
 
@@ -496,7 +496,7 @@ export class SelectBehavior extends AbstractBehavior {
     if (!this._enabled || !this.lastClick) return;  // nothing to do
 
     const context = this.context;
-    const eventManager = context.mapSystem().renderer.events;
+    const eventManager = context.systems.map.renderer.events;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
@@ -508,13 +508,13 @@ export class SelectBehavior extends AbstractBehavior {
     }
 
     if (this._showsMenu) {   // menu is on, toggle it off
-      context.ui().closeEditMenu();
+      context.systems.ui.closeEditMenu();
       this._showsMenu = false;
 
     } else {                 // menu is off, toggle it on
       // Only attempt to display the context menu if we're focused on a non-Rapid OSM Entity.
         this._showsMenu = true;
-        context.ui().showEditMenu(eventData.coord);
+        context.systems.ui.showEditMenu(eventData.coord);
     }
   }
 

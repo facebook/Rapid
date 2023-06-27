@@ -299,9 +299,9 @@ export function uiConflicts(context) {
         var entity = context.graph().hasEntity(id);
         if (entity) {
             if (extent) {
-                context.mapSystem().trimmedExtent(extent);
+                context.systems.map.trimmedExtent(extent);
             } else {
-                context.mapSystem().zoomToEase(entity);
+                context.systems.map.zoomToEase(entity);
             }
             context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
                 .classed('hover', true);

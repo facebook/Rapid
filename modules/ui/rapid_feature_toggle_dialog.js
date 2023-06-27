@@ -9,8 +9,8 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
-  const l10n = context.localizationSystem();
-  const rapid = context.rapidSystem();
+  const l10n = context.systems.l10n;
+  const rapid = context.systems.rapid;
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
   let _viewManageModal;
@@ -28,7 +28,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.enabled = !dataset.enabled;
 
       // update url hash
-      const urlhash = context.urlHashSystem();
+      const urlhash = context.systems.urlhash;
       const datasetIDs = [...rapid.datasets.values()]
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)
@@ -46,7 +46,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.color = color;
 
       context.scene().dirtyLayers('rapid');
-      context.mapSystem().immediateRedraw();
+      context.systems.map.immediateRedraw();
       _content.call(renderModalContent);
 
       // If a Rapid feature is already selected, reselect it to update sidebar too
@@ -204,7 +204,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderDatasets(selection) {
-    const prefs = context.storageSystem();
+    const prefs = context.systems.storage;
     const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = [...rapid.datasets.values()]
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
@@ -286,7 +286,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
                 .text(l10n.t('rapid_feature_toggle.center_map'))
                 .on('click', (d3_event) => {
                   d3_event.preventDefault();
-                  context.mapSystem().extent(d.extent);
+                  context.systems.map.extent(d.extent);
                 });
             } else {
               selection

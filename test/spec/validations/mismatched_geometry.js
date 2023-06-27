@@ -14,15 +14,14 @@ describe('validationMismatchedGeometry', () => {
 
   class MockContext {
     constructor() {
-      this._l10n      = new MockLocalizationSystem(this);
-      this._locations = new MockLocationSystem(this);
-      this._presets   = new Rapid.PresetSystem(this);
+      this.systems = {
+        l10n:       new MockLocalizationSystem(),
+        locations:  new MockLocationSystem(),
+        presets:    new Rapid.PresetSystem(this)
+      };
     }
-    localizationSystem()  { return this._l10n; }
-    locationSystem()      { return this._locations; }
-    presetSystem()        { return this._presets; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    t()      { return ''; }
+    tHtml()  { return ''; }
   }
 
   const context = new MockContext();

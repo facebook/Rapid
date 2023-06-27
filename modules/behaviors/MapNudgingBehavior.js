@@ -38,7 +38,7 @@ export class MapNudgingBehavior extends AbstractBehavior {
    */
   enable() {
     if (this._enabled) return;
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('pointermove', this._pointermove);
   }
 
@@ -63,7 +63,7 @@ export class MapNudgingBehavior extends AbstractBehavior {
   disable() {
     if (!this._enabled) return;
     this._enabled = false;
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.off('pointermove', this._pointermove);
   }
 
@@ -77,12 +77,12 @@ export class MapNudgingBehavior extends AbstractBehavior {
     if (!this._enabled) return;
 
     const point = [e.global.x, e.global.y];
-    const nudge = geomViewportNudge(point, this.context.mapSystem().dimensions);
+    const nudge = geomViewportNudge(point, this.context.systems.map.dimensions);
     if (nudge) {
       const [dX, dY] = [nudge[0] * nudgeFactor, nudge[1] * nudgeFactor];
       const t = this.context.projection.transform();
       const tNew = { x: t.x + dX, y: t.y + dY, k: t.k };
-      this.context.mapSystem().transform(tNew);
+      this.context.systems.map.transform(tNew);
     }
   }
 

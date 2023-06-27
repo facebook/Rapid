@@ -7,7 +7,7 @@ import { utilHighlightEntities } from '../../util';
 
 
 export function uiSectionSelectionList(context) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   let _selectedIDs = [];
 
   const section = uiSection('selected-features', context)
@@ -109,7 +109,7 @@ export function uiSectionSelectionList(context) {
       });
 
     items.selectAll('.entity-type')
-      .html(entity => context.presetSystem().match(entity, context.graph()).name());
+      .html(entity => context.systems.presets.match(entity, context.graph()).name());
 
     items.selectAll('.entity-name')
       .html(d => {
@@ -119,7 +119,7 @@ export function uiSectionSelectionList(context) {
   }
 
 
-  context.editSystem()
+  context.systems.edits
     .on('change', difference => {
       if (difference) {
         section.reRender();

@@ -120,7 +120,7 @@ export function uiEditMenu(context) {
       .classed('disabled', d => d.disabled());
 
     _updatePosition();
-    context.mapSystem().on('move', _updatePosition);
+    context.systems.map.on('move', _updatePosition);
 
 
     // `pointerup` is always called before `click`
@@ -139,7 +139,7 @@ export function uiEditMenu(context) {
       if (operation.disabled()) {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
           // there are no tooltips for touch interactions so flash feedback instead
-          context.ui().flash
+          context.systems.ui.flash
             .duration(4000)
             .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation disabled')
@@ -147,7 +147,7 @@ export function uiEditMenu(context) {
         }
       } else {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          context.ui().flash
+          context.systems.ui.flash
             .duration(2000)
             .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation')
@@ -218,7 +218,7 @@ export function uiEditMenu(context) {
 
 
     function displayOnLeft(viewport) {
-      const isRTL = context.localizationSystem().isRTL();
+      const isRTL = context.systems.l10n.isRTL();
       if (isRTL) {  // right to left
         if ((anchor[0] - MENU_SIDE_MARGIN - _menuWidth) < VIEW_SIDE_MARGIN) {
           return false;  // left menu would be too close to the left viewport edge, go right
@@ -236,7 +236,7 @@ export function uiEditMenu(context) {
 
 
     function tooltipPosition(viewport, menuLeft) {
-      const isRTL = context.localizationSystem().isRTL();
+      const isRTL = context.systems.l10n.isRTL();
       if (isRTL) {  // right to left
         if (!menuLeft) {
           return 'right';
@@ -269,7 +269,7 @@ export function uiEditMenu(context) {
    * This removes the menu and unbinds the event handlers
    */
   editMenu.close = function () {
-     context.mapSystem().off('move', _updatePosition);
+     context.systems.map.off('move', _updatePosition);
 
     _menu.remove();
     _tooltips = [];

@@ -3,7 +3,7 @@ import { ValidationIssue } from '../core/lib';
 
 export function validationFormatting(context) {
   const type = 'invalid_format';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
 
   let validation = function(entity) {

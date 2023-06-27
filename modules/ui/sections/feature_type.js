@@ -85,7 +85,7 @@ export function uiSectionFeatureType(context) {
     selection.select('.preset-list-item button')
       .call(uiPresetIcon(context)
         .geometry(_presets.length === 1 ? (geometries.length === 1 && geometries[0]) : null)
-        .preset(_presets.length === 1 ? _presets[0] : context.presetSystem().item('point'))
+        .preset(_presets.length === 1 ? _presets[0] : context.systems.presets.item('point'))
       );
 
     let names = _presets.length === 1 ? [

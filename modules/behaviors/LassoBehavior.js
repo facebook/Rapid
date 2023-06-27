@@ -42,7 +42,7 @@ export class LassoBehavior extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -60,7 +60,7 @@ export class LassoBehavior extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
@@ -75,7 +75,7 @@ export class LassoBehavior extends AbstractBehavior {
    _pointerdown() {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-     const eventManager = this.context.mapSystem().renderer.events;
+     const eventManager = this.context.systems.map.renderer.events;
      if (!eventManager.pointerOverRenderer) return;
 
      const modifiers = eventManager.modifierKeys;
@@ -83,7 +83,7 @@ export class LassoBehavior extends AbstractBehavior {
 
      if (drawLasso) {
        this._lassoing = true;
-       const coord = this.context.mapSystem().mouseLoc();
+       const coord = this.context.systems.map.mouseLoc();
        this._extent = new Extent(coord);
        this._coords.push(coord);
      }
@@ -98,10 +98,10 @@ export class LassoBehavior extends AbstractBehavior {
   _pointermove() {
     if (!this._lassoing) return;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     if (!eventManager.pointerOverRenderer) return;
 
-    const coord = this.context.mapSystem().mouseLoc();
+    const coord = this.context.systems.map.mouseLoc();
 
     // Update geometry and extent
     this._extent = this._extent.extend(new Extent(coord));
@@ -110,7 +110,7 @@ export class LassoBehavior extends AbstractBehavior {
     // Push the polygon data to the map UI for rendering.
     const mapUILayer = this.context.scene().layers.get('map-ui');
     mapUILayer.lassoPolygonData = this._coords;
-    this.context.mapSystem().immediateRedraw();
+    this.context.systems.map.immediateRedraw();
   }
 
 
@@ -151,17 +151,17 @@ export class LassoBehavior extends AbstractBehavior {
     const graph = this.context.graph();
     const context = this.context;
     const polygonLocs = this._coords;
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
 
     if (!this.context.editable()) return [];
 
-    let intersects = this.context.editSystem()
+    let intersects = this.context.systems.edits
       .intersects(this._extent)
       .filter(entity => {
         return (
           entity.type === 'node' &&
           geomPointInPolygon(entity.loc, polygonLocs) &&
-          !context.filterSystem().isHidden(entity, graph, entity.geometry(graph)) &&
+          !context.systems.filters.isHidden(entity, graph, entity.geometry(graph)) &&
           !locationSystem.blocksAt(entity.loc).length
         );
       });

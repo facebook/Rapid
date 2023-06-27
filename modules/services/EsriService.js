@@ -93,7 +93,7 @@ export class EsriService extends AbstractService {
     if (!ds || !ds.layer) return;
 
     const cache = ds.cache;
-    const locationSystem = this.context.locationSystem();
+    const locationSystem = this.context.systems.locations;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed

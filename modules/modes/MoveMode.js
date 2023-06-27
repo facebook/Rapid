@@ -47,7 +47,7 @@ export class MoveMode extends AbstractMode {
     this._active = true;
 
     const context = this.context;
-    context.filterSystem().forceVisible(this._entityIDs);
+    context.systems.filters.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction', 'map-nudging']);
     context.behaviors['map-nudging'].allow();
 
@@ -55,14 +55,14 @@ export class MoveMode extends AbstractMode {
     this._startLoc = null;
     this._movementCache = null;
 
-    const eventManager = context.mapSystem().renderer.events;
+    const eventManager = context.systems.map.renderer.events;
     eventManager
       .on('click', this._finish)
       .on('keydown', this._keydown)
       .on('pointercancel', this._cancel)
       .on('pointermove', this._pointermove);
 
-    context.editSystem()
+    context.systems.edits
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -82,16 +82,16 @@ export class MoveMode extends AbstractMode {
     this._movementCache = null;
 
     const context = this.context;
-    context.filterSystem().forceVisible([]);
+    context.systems.filters.forceVisible([]);
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager
       .off('click', this._finish)
       .off('keydown', this._keydown)
       .off('pointercancel', this._cancel)
       .off('pointermove', this._pointermove);
 
-    context.editSystem()
+    context.systems.edits
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
   }
@@ -126,15 +126,15 @@ export class MoveMode extends AbstractMode {
     // If prevGraph doesn't match, either we haven't started moving, or something has
     // occurred during the move that interrupted it, so reset vars and start a new move
     if (this._prevGraph !== context.graph()) {
-      this._startLoc = context.mapSystem().mouseLoc();
+      this._startLoc = context.systems.map.mouseLoc();
       this._movementCache = {};
       fn = context.perform;     // start moving
     } else {
       fn = context.overwrite;   // continue moving
     }
 
-    const currLoc = context.mapSystem().mouseLoc();
-    const locationSystem = context.locationSystem();
+    const currLoc = context.systems.map.mouseLoc();
+    const locationSystem = context.systems.locations;
     if (locationSystem.blocksAt(currLoc).length) {  // editing is blocked here
       this._cancel();
       return;

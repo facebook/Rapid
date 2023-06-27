@@ -10,18 +10,18 @@ import { utilDetect } from '../../util';
 
 
 export function uiSectionChanges(context) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   let detected = utilDetect();
 
   let _discardTags = {};
-  const dataLoaderSystem = context.dataLoaderSystem();
+  const dataLoaderSystem = context.systems.data;
   dataLoaderSystem.getDataAsync('discarded')
     .then(d => _discardTags = d)
     .catch(() => { /* ignore */ });
 
   let section = uiSection('changes-list', context)
     .label(() => {
-      const editSystem = context.editSystem();
+      const editSystem = context.systems.edits;
       const summary = editSystem.difference().summary();
       return l10n.t('inspector.title_count', { title: l10n.tHtml('commit.changes'), count: summary.size });
     })
@@ -29,7 +29,7 @@ export function uiSectionChanges(context) {
 
 
   function renderDisclosureContent(selection) {
-    const editSystem = context.editSystem();
+    const editSystem = context.systems.edits;
     const summary = [...editSystem.difference().summary().values()];
 
     let container = selection.selectAll('.commit-section')
@@ -76,7 +76,7 @@ export function uiSectionChanges(context) {
       .append('strong')
       .attr('class', 'entity-type')
       .html(d => {
-        const matched = context.presetSystem().match(d.entity, d.graph);
+        const matched = context.systems.presets.match(d.entity, d.graph);
         return (matched && matched.name()) || l10n.displayType(d.entity.id);
       });
 
@@ -145,7 +145,7 @@ export function uiSectionChanges(context) {
     function click(d3_event, change) {
       if (change.changeType !== 'deleted') {
         let entity = change.entity;
-        context.mapSystem().zoomToEase(entity);
+        context.systems.map.zoomToEase(entity);
         context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
           .classed('hover', true);
       }

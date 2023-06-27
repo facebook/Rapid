@@ -111,7 +111,7 @@ export class PixiLayerRapid extends AbstractLayer {
     this._onChange = this._onChange.bind(this);
     this._onRestore = this._onRestore.bind(this);
 
-    this.context.editSystem()
+    this.context.systems.edits
       .on('undone', this._onUndone)
       .on('change', this._onChange)
       .on('restore', this._onRestore);
@@ -129,23 +129,23 @@ export class PixiLayerRapid extends AbstractLayer {
     if (!this._wasRapidEdit(annotation)) return;
 
     this._acceptedIDs.delete(annotation.id);
-    this.context.mapSystem().immediateRedraw();
+    this.context.systems.map.immediateRedraw();
   }
 
 
   _onChange() {
-    const annotation = this.context.editSystem().peekAnnotation();
+    const annotation = this.context.systems.edits.peekAnnotation();
     if (!this._wasRapidEdit(annotation)) return;
 
     this._acceptedIDs.add(annotation.id);
-    this.context.mapSystem().immediateRedraw();
+    this.context.systems.map.immediateRedraw();
   }
 
 
   _onRestore() {
     this._acceptedIDs = new Set();
 
-    this.context.editSystem().peekAllAnnotations().forEach(annotation => {
+    this.context.systems.edits.peekAllAnnotations().forEach(annotation => {
       if (!this._wasRapidEdit(annotation)) return;
 
       this._acceptedIDs.add(annotation.id);
@@ -163,7 +163,7 @@ export class PixiLayerRapid extends AbstractLayer {
       }
     });
 
-    this.context.mapSystem().immediateRedraw();
+    this.context.systems.map.immediateRedraw();
   }
 
 
@@ -185,7 +185,7 @@ export class PixiLayerRapid extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const rapid = this.context.rapidSystem();
+    const rapid = this.context.systems.rapid;
     if (!this.enabled || !rapid.datasets.size || zoom < MINZOOM) return;
 
 // shader experiment
@@ -236,7 +236,7 @@ export class PixiLayerRapid extends AbstractLayer {
         service.loadTiles(datasetID, context.projection);  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.mapSystem().extent())
+      const entities = service.intersects(datasetID, context.systems.map.extent())
         .filter(d => d.type === 'way' && !isAccepted(d));  // see this._onRestore()
 
       // fb_ai service gives us roads and buildings together,
@@ -262,7 +262,7 @@ export class PixiLayerRapid extends AbstractLayer {
         service.loadTiles(datasetID, context.projection);  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.mapSystem().extent());
+      const entities = service.intersects(datasetID, context.systems.map.extent());
 
       for (const entity of entities) {
         if (isAccepted(entity)) continue;   // skip features already accepted, see this._onRestore()
@@ -309,7 +309,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = new PIXI.Color(dataset.color);
-    const l10n = this.context.localizationSystem();
+    const l10n = this.context.systems.l10n;
 
     for (const entity of data.polygons) {
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
@@ -371,7 +371,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = new PIXI.Color(dataset.color);
-    const l10n = this.context.localizationSystem();
+    const l10n = this.context.systems.l10n;
 
     for (const entity of data.lines) {
       const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
@@ -415,7 +415,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderPoints(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = new PIXI.Color(dataset.color);
-    const l10n = this.context.localizationSystem();
+    const l10n = this.context.systems.l10n;
 
     const pointStyle = {
       markerName: 'largeCircle',

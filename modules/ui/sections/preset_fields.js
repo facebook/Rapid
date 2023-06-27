@@ -24,7 +24,7 @@ export function uiSectionPresetFields(context) {
   function renderDisclosureContent(selection) {
     if (!_uifields) {
       const graph = context.graph();
-      const presetSystem = context.presetSystem();
+      const presetSystem = context.systems.presets;
 
       const geometries = Object.keys(_entityIDs.reduce((geoms, entityID) => {
         geoms[graph.entity(entityID).geometry(graph)] = true;
@@ -66,7 +66,7 @@ export function uiSectionPresetFields(context) {
 //      _uifields.push(new UiField(context, presetSystem.field('restrictions'), _entityIDs));
 //    }
 
-      const localeCode = context.localizationSystem().localeCode();
+      const localeCode = context.systems.l10n.localeCode();
       let additionalFields = utilArrayUnion(sharedMoreFields, presetSystem.universal());
       additionalFields.sort((field1, field2) => {
         return field1.label().localeCompare(field2.label(), localeCode);

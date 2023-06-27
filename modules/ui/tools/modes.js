@@ -6,7 +6,7 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolDrawModes(context) {
-  const presetSystem = context.presetSystem();
+  const presetSystem = context.systems.presets;
   let debouncedUpdate;
   let _wrap;
 
@@ -90,7 +90,7 @@ export function uiToolDrawModes(context) {
 
     // if we are adding/removing the buttons, check if toolbar has overflowed
     if (buttons.enter().size() || buttons.exit().size()) {
-      context.ui().checkOverflow('.top-toolbar', true);
+      context.systems.ui.checkOverflow('.top-toolbar', true);
     }
 
     // update
@@ -121,7 +121,7 @@ export function uiToolDrawModes(context) {
       });
     });
 
-    context.mapSystem().on('draw', debouncedUpdate);
+    context.systems.map.on('draw', debouncedUpdate);
     context.on('modechange', update);
     update();
   };
@@ -133,7 +133,7 @@ export function uiToolDrawModes(context) {
     });
 
     debouncedUpdate.cancel();
-    context.mapSystem().off('draw', debouncedUpdate);
+    context.systems.map.off('draw', debouncedUpdate);
     context.off('modechange', update);
     _wrap = null;
   };

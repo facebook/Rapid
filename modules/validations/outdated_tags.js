@@ -9,13 +9,13 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationOutdatedTags(context) {
   const type = 'outdated_tags';
-  const l10n = context.localizationSystem();
-  const presetSystem = context.presetSystem();
+  const l10n = context.systems.l10n;
+  const presetSystem = context.systems.presets;
   let _waitingForDeprecated = true;
   let _dataDeprecated;
 
   // fetch deprecated tags
-  const dataLoaderSystem = context.dataLoaderSystem();
+  const dataLoaderSystem = context.systems.data;
   dataLoaderSystem.getDataAsync('deprecated')
     .then(d => _dataDeprecated = d)
     .catch(() => { /* ignore */ })

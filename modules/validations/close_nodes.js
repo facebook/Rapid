@@ -7,7 +7,7 @@ import { osmPathHighwayTagValues } from '../osm/tags';
 
 export function validationCloseNodes(context) {
     const type = 'close_nodes';
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
 
     var pointThresholdMeters = 0.2;
 
@@ -134,7 +134,7 @@ export function validationCloseNodes(context) {
                 [lon + lon_range, lat + lat_range]
             );
 
-            var intersected = context.editSystem().tree().intersects(queryExtent, graph);
+            var intersected = context.systems.edits.tree().intersects(queryExtent, graph);
             for (var j = 0; j < intersected.length; j++) {
                 var nearby = intersected[j];
 

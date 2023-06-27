@@ -6,7 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationShortRoad(context) {
   const type = 'short_road';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   // Thresholds for number of nodes and total length for a short road. A road
   // is considered as "short" only if it has less than 7 nodes and is shorter
@@ -29,7 +29,7 @@ export function validationShortRoad(context) {
     if (!context.editable()) return;
 
     // make sure the vertex is actually visible and editable
-    const map = context.mapSystem();
+    const map = context.systems.map;
     if (!map.trimmedExtent().contains(new Extent(vertex.loc))) {
       map.zoomToEase(vertex);
     }

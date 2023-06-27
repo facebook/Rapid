@@ -3,9 +3,9 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundDisplayOptions(context) {
-  const l10n = context.localizationSystem();
-  const storageSystem = context.storageSystem();
-  const imagerySystem = context.imagerySystem();
+  const l10n = context.systems.l10n;
+  const storageSystem = context.systems.storage;
+  const imagerySystem = context.systems.imagery;
 
   const section = uiSection('background-display-options', context)
     .label(l10n.tHtml('background.display_options'))

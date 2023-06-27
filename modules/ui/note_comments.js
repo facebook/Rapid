@@ -73,7 +73,7 @@ export function uiNoteComments(context) {
 
 
   function replaceAvatars(selection) {
-    const storageSystem = context.storageSystem();
+    const storageSystem = context.systems.storage;
     const showThirdPartyIcons = storageSystem.getItem('preferences.privacy.thirdpartyicons') ?? 'true';
     const osm = context.services.osm;
     if (showThirdPartyIcons !== 'true' || !osm) return;
@@ -105,7 +105,7 @@ export function uiNoteComments(context) {
     const d = new Date(s);
     if (isNaN(d.getTime())) return null;
 
-    const localeCode = context.localizationSystem().localeCode();
+    const localeCode = context.systems.l10n.localeCode();
     return d.toLocaleDateString(localeCode, options);
   }
 

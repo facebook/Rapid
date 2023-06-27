@@ -8,12 +8,12 @@ import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetLi
 export function uiIntroLine(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.lines.title' };
-  const editMenu = context.ui().editMenu();
+  const editMenu = context.systems.ui.editMenu();
   const container = context.container();
   const dragBehavior = context.behaviors.drag;
-  const editSystem = context.editSystem();
-  const mapSystem = context.mapSystem();
-  const presetSystem = context.presetSystem();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
+  const presetSystem = context.systems.presets;
 
   const flowerStreetID = 'w646';
   const tulipRoadStartExtent = new Extent([-85.63016, 41.95749], [-85.62937, 41.95843]);

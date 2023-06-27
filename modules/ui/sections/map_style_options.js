@@ -17,7 +17,7 @@ export function uiSectionMapStyleOptions(context) {
       .append('ul')
       .attr('class', 'layer-list layer-fill-list')
       .merge(container)
-      .call(drawListItems, context.mapSystem().areaFillOptions, 'radio', 'area_fill', setFill, isActiveFill);
+      .call(drawListItems, context.systems.map.areaFillOptions, 'radio', 'area_fill', setFill, isActiveFill);
 
     let container2 = selection.selectAll('.layer-visual-diff-list')
       .data([0]);
@@ -79,24 +79,24 @@ export function uiSectionMapStyleOptions(context) {
 
 
   function isActiveFill(d) {
-    return context.mapSystem().areaFillMode === d;
+    return context.systems.map.areaFillMode === d;
   }
 
   function setFill(d3_event, d) {
-    context.mapSystem().areaFillMode = d;
+    context.systems.map.areaFillMode = d;
   }
 
   function isHighlightChecked() {
-    return context.mapSystem().highlightEdits;
+    return context.systems.map.highlightEdits;
   }
 
   function setHighlighted(d3_event) {
     const input = d3_event.currentTarget;
-    context.mapSystem().highlightEdits = input.checked;
+    context.systems.map.highlightEdits = input.checked;
   }
 
 
-  context.mapSystem().on('mapchange', section.reRender);
+  context.systems.map.on('mapchange', section.reRender);
 
   return section;
 }

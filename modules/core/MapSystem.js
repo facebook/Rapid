@@ -90,8 +90,8 @@ export class MapSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const storage = context.storageSystem();
-    const l10n = context.localizationSystem();
+    const storage = context.systems.storage;
+    const l10n = context.systems.l10n;
 
     const prerequisites = Promise.all([
       storage.initAsync(),
@@ -217,7 +217,7 @@ export class MapSystem extends AbstractSystem {
       }
     };
 
-    context.editSystem()
+    context.systems.edits
       .on('merge', entityIDs => {
         if (entityIDs) {
           scene.dirtyData('osm', entityIDs);
@@ -231,7 +231,7 @@ export class MapSystem extends AbstractSystem {
           for (const entity of complete.values()) {
             if (entity) {      // may be undefined if entity was deleted
               entity.touch();  // bump version in place
-              context.filterSystem().clearEntity(entity);  // clear feature filter cache
+              context.systems.filters.clearEntity(entity);  // clear feature filter cache
             }
           }
           // touching entity will bump .v and the renderer should pick it up as dirty?
@@ -243,13 +243,13 @@ export class MapSystem extends AbstractSystem {
       .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
       .on('redone', (stack) => _didUndoOrRedo(stack.transform));
 
-    context.filterSystem()
+    context.systems.filters
       .on('filterchange', () => {
         scene.dirtyLayers('osm');
         this.immediateRedraw();
       });
 
-    context.urlHashSystem().on('hashchange', this._hashchange);
+    context.systems.urlhash.on('hashchange', this._hashchange);
 
     const osm = context.services.osm;
     if (osm) {
@@ -258,7 +258,7 @@ export class MapSystem extends AbstractSystem {
 
     scene
       .on('layerchange', () => {
-        context.imagerySystem().updateImagery();
+        context.systems.imagery.updateImagery();
         this.immediateRedraw();
     });
   }
@@ -313,7 +313,7 @@ export class MapSystem extends AbstractSystem {
     if (Math.abs(rot) > EPSILON) {
       v += `/${rotStr}`;
     }
-    this.context.urlHashSystem().setParam('map', v);
+    this.context.systems.urlhash.setParam('map', v);
   }
 
 
@@ -713,7 +713,7 @@ export class MapSystem extends AbstractSystem {
     return this._currFillMode;
   }
   set areaFillMode(val) {
-    const prefs = this.context.storageSystem();
+    const prefs = this.context.systems.storage;
     const current = this._currFillMode;
     if (current === val) return;  // no change
 

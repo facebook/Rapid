@@ -63,10 +63,10 @@ export class RapidSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const urlHashSystem = context.urlHashSystem();
+    const urlHashSystem = context.systems.urlhash;
     urlHashSystem.on('hashchange', this._hashchange);
 
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
     const prerequisites = l10n.initAsync();
 
     return this._initPromise = prerequisites

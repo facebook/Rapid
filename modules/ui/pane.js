@@ -50,25 +50,25 @@ export function uiPane(context, id) {
   };
 
   function hidePane() {
-    context.ui().togglePanes();
+    context.systems.ui.togglePanes();
   }
 
   pane.togglePane = function(d3_event) {
     if (d3_event) d3_event.preventDefault();
     _paneTooltip.hide();
     const shown = !_paneSelection.classed('shown');
-    context.ui().togglePanes(shown ? _paneSelection : undefined);
+    context.systems.ui.togglePanes(shown ? _paneSelection : undefined);
 
     // iD#655: Since firing the validator is so expensive,
     // only do it when we're right about to open the validation pane.
     if (pane.id === 'issues' && shown) {
-      context.validationSystem().validate();
+      context.systems.validator.validate();
     }
   };
 
   pane.renderToggleButton = function(selection) {
     if (!_paneTooltip) {
-      const isRTL = context.localizationSystem().isRTL();
+      const isRTL = context.systems.l10n.isRTL();
       _paneTooltip = uiTooltip(context)
         .placement(isRTL ? 'right' : 'left')
         .title(_description)

@@ -20,12 +20,13 @@ describe('validationSuspiciousName', () => {
 
   class MockContext {
     constructor() {
-      this._l10n = new MockLocalizationSystem(this);
       this.services = {
         nsi: new MockNsi(this)
       };
+      this.systems = {
+        l10n: new MockLocalizationSystem(this)
+      };
     }
-    localizationSystem() { return this._l10n; }
   }
 
 

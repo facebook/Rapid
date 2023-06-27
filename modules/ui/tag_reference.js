@@ -14,7 +14,7 @@ import { uiIcon } from './icon';
 // }
 //
 export function uiTagReference(context, what) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   const wikibase = context.services[what.qid ? 'wikidata' : 'osmwikibase'];
   let tagReference = {};
 

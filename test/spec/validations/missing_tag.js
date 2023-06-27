@@ -6,10 +6,11 @@ describe('validationMissingTag', () => {
 
   class MockContext {
     constructor() {
-      this._l10n = new MockLocalizationSystem(this);
       this.services = {};
+      this.systems = {
+        l10n:  new MockLocalizationSystem()
+      };
     }
-    localizationSystem() { return this._l10n; }
   }
 
   const validator = Rapid.validationMissingTag(new MockContext());

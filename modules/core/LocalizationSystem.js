@@ -137,7 +137,7 @@ export class LocalizationSystem extends AbstractSystem {
       tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/translations'
     };
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     const prerequisites = dataLoaderSystem.initAsync();
 
     return this._initPromise = prerequisites
@@ -232,7 +232,7 @@ export class LocalizationSystem extends AbstractSystem {
       return Promise.resolve(locale);
     }
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     const fileMap = dataLoaderSystem.fileMap;
     const key = `locale_${scope}_${locale}`;
     if (!fileMap.has(key)) {
@@ -582,7 +582,7 @@ export class LocalizationSystem extends AbstractSystem {
   //
   displayLabel(entity, graphOrGeometry, verbose) {
     const displayName = this.displayName(entity);
-    const presetSystem = this.context.presetSystem();
+    const presetSystem = this.context.systems.presets;
     const preset = typeof graphOrGeometry === 'string' ?
       presetSystem.matchTags(entity.tags, graphOrGeometry) :
       presetSystem.match(entity, graphOrGeometry);

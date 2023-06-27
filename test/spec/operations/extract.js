@@ -7,14 +7,13 @@ describe('operationExtract', () => {
   }
 
   class MockContext {
-    constructor()           {
-      this._map = new MockMap();
-      this._storageSystem = new Rapid.StorageSystem(this);
-      this._presetSystem = new Rapid.PresetSystem(this);
+    constructor() {
+      this.systems = {
+        map:      new MockMap(),
+        presets:  new Rapid.PresetSystem(this),
+        storage:  new Rapid.StorageSystem(this)
+      };
     }
-    mapSystem()             { return this._map; }
-    storageSystem()         { return this._storageSystem; }
-    presetSystem()          { return this._presetSystem; }
     graph()                 { return _graph; }
     entity(id)              { return _graph.entity(id); }
     hasEntity(id)           { return _graph.hasEntity(id); }

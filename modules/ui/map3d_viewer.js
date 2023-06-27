@@ -26,21 +26,21 @@ export function uiMap3dViewer(context) {
     function updateProjection() {
       // Since the bounds are intended to wrap a box around a perfectly orthogonal view,
       // for a pitched, isometric view we need to enlarge the box a bit to display more buildings.
-      let extent = context.mapSystem().extent();
+      let extent = context.systems.map.extent();
       let center = extent.center();
       extent.padByMeters(100);
 
-      context.map3dSystem().maplibre.jumpTo({
+      context.systems.map3d.maplibre.jumpTo({
         center: center,
         bearing: 0,
-        zoom: context.mapSystem().zoom() - 3,
+        zoom: context.systems.map.zoom() - 3,
       });
     }
 
 
     function featuresToGeoJSON() {
-      let mainmap = context.mapSystem();
-      const entities = context.editSystem().intersects(mainmap.extent());
+      let mainmap = context.systems.map;
+      const entities = context.systems.edits.intersects(mainmap.extent());
 
       const buildingEnts = entities.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
@@ -101,7 +101,7 @@ export function uiMap3dViewer(context) {
         buildingFeatures.push(newFeature);
       }
 
-      const maplibre = context.map3dSystem().maplibre;
+      const maplibre = context.systems.map3d.maplibre;
       const buildingSource = maplibre?.getSource('osmbuildings');
 
       if (buildingSource) {
@@ -138,7 +138,7 @@ export function uiMap3dViewer(context) {
         areaFeatures.push(newFeature);
       }
 
-      const maplibre = context.map3dSystem().maplibre;
+      const maplibre = context.systems.map3d.maplibre;
       const areaSource = maplibre?.getSource('osmareas');
 
       if (areaSource) {
@@ -176,7 +176,7 @@ export function uiMap3dViewer(context) {
         roadFeatures.push(newFeature);
       }
 
-      const maplibre = context.map3dSystem().maplibre;
+      const maplibre = context.systems.map3d.maplibre;
       const roadSource = maplibre?.getSource('osmroads');
 
       if (roadSource) {
@@ -235,9 +235,9 @@ export function uiMap3dViewer(context) {
 
     wrap = wrapEnter.merge(wrap);
 
-//    context.mapSystem().on('draw', () => redraw());
-//    context.mapSystem().on('move', () => redraw());
-//    context.editSystem().on('change', () => featuresToGeoJSON());
+//    context.systems.map.on('draw', () => redraw());
+//    context.systems.map.on('move', () => redraw());
+//    context.systems.edits.on('change', () => featuresToGeoJSON());
 //    context.on('modechange', () => featuresToGeoJSON());
 //    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
 

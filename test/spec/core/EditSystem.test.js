@@ -20,9 +20,12 @@ describe('EditSystem', () => {
   class MockContext {
     constructor()   {
       this.projection = new sdk.Projection();
-      this._storageSystem = new MockStorageSystem();
-     }
-    storageSystem() { return this._storageSystem; }
+      this.systems = {
+        storage: new MockStorageSystem(this),
+        map: true,
+        rapid: true
+      };
+    }
     selectedIDs() { return []; }
   }
 

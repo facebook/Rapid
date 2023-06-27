@@ -58,7 +58,7 @@ export class SaveMode extends AbstractMode {
 
     // Show sidebar
     const context = this.context;
-    context.ui().sidebar.expand();
+    context.systems.ui.sidebar.expand();
 
     const osm = context.services.osm;
     if (!osm) return false;  // can't enter save mode
@@ -69,13 +69,13 @@ export class SaveMode extends AbstractMode {
       .on('cancel', this._cancel);
 
     if (osm.authenticated()) {
-      context.ui().sidebar.show(this._uiCommit);
+      context.systems.ui.sidebar.show(this._uiCommit);
     } else {
       osm.authenticate(err => {
         if (err) {
           this._cancel();
         } else {
-          context.ui().sidebar.show(this._uiCommit);
+          context.systems.ui.sidebar.show(this._uiCommit);
         }
       });
     }
@@ -87,7 +87,7 @@ export class SaveMode extends AbstractMode {
     this._keybindingOn();
     context.enableBehaviors(['map-interaction']);
 
-    context.uploaderSystem()
+    context.systems.uploader
       .on('progressChanged', this._progressChanged)
       .on('resultConflicts', this._resultConflicts)
       .on('resultErrors', this._resultErrors)
@@ -114,7 +114,7 @@ export class SaveMode extends AbstractMode {
     this._uiCommit.on('cancel', null);
     this._uiCommit = null;
 
-    this.context.uploaderSystem()
+    this.context.systems.uploader
       .off('progressChanged', this._progressChanged)
       .off('resultConflicts', this._resultConflicts)
       .off('resultErrors', this._resultErrors)
@@ -130,7 +130,7 @@ export class SaveMode extends AbstractMode {
       .classed('active', true)
       .classed('inactive', false);
 
-    // this.context.ui().sidebar.hide();
+    // this.context.systems.ui.sidebar.hide();
   }
 
 
@@ -164,7 +164,7 @@ export class SaveMode extends AbstractMode {
    */
   _resultConflicts(conflicts, origChanges) {
     const context = this.context;
-    const uploader = context.uploaderSystem();
+    const uploader = context.systems.uploader;
 
     const selection = context.container().select('.sidebar')
       .append('div')
@@ -286,9 +286,9 @@ export class SaveMode extends AbstractMode {
     const successContent = this._uiSuccess
       .changeset(changeset)
       .location(this._location)
-      .on('cancel', () => context.ui().sidebar.hide());
+      .on('cancel', () => context.systems.ui.sidebar.hide());
 
-    context.ui().sidebar.show(successContent);
+    context.systems.ui.sidebar.show(successContent);
 
     // Add delay before resetting to allow for postgres replication iD#1646 iD#2678
     window.setTimeout(() => {
@@ -358,7 +358,7 @@ export class SaveMode extends AbstractMode {
     this._uiSuccess = uiSuccess(this.context);
     this._location = null;
 
-    const loc = this.context.mapSystem().center();
+    const loc = this.context.systems.map.center();
     const nominatim = this.context.services.nominatim;
     if (!nominatim) return;
 

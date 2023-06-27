@@ -4,7 +4,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationSuspiciousName(context) {
   const type = 'suspicious_name';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   const keysToTestForGenericValues = [
     'aerialway', 'aeroway', 'amenity', 'building', 'craft', 'highway',
     'leisure', 'railway', 'man_made', 'office', 'shop', 'tourism', 'waterway'
@@ -55,7 +55,7 @@ export function validationSuspiciousName(context) {
       message: function() {
         const entity = context.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        const preset = context.presetSystem().match(entity, context.graph());
+        const preset = context.systems.presets.match(entity, context.graph());
         const langName = langCode && l10n.languageName(langCode);
         return l10n.tHtml('issues.generic_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: genericName, language: langName }
@@ -101,7 +101,7 @@ export function validationSuspiciousName(context) {
       message: function() {
         const entity = context.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        const preset = context.presetSystem().match(entity, context.graph());
+        const preset = context.systems.presets.match(entity, context.graph());
         const langName = langCode && l10n.languageName(langCode);
         return l10n.tHtml('issues.incorrect_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: incorrectName, language: langName }

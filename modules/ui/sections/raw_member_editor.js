@@ -15,7 +15,7 @@ const MAX_MEMBERS = 1000;
 
 
 export function uiSectionRawMemberEditor(context) {
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
 
     var section = uiSection('raw-member-editor', context)
         .shouldDisplay(function() {
@@ -51,7 +51,7 @@ export function uiSectionRawMemberEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.id);
-        context.mapSystem().zoomToEase(entity);
+        context.systems.map.zoomToEase(entity);
 
         // highlight the feature in case it wasn't previously on-screen
         utilHighlightEntities([d.id], true, context);
@@ -65,10 +65,10 @@ export function uiSectionRawMemberEditor(context) {
         utilHighlightEntities([d.id], false, context);
 
         var entity = context.entity(d.id);
-        var mapExtent = context.mapSystem().extent();
+        var mapExtent = context.systems.map.extent();
         if (!entity.intersects(mapExtent, context.graph())) {
             // zoom to the entity if its extent is not visible now
-            context.mapSystem().zoomToEase(entity);
+            context.systems.map.zoomToEase(entity);
         }
 
         context.enter('select-osm', { selectedIDs: [d.id] });
@@ -85,7 +85,7 @@ export function uiSectionRawMemberEditor(context) {
                 actionChangeMember(d.relation.id, member, d.index),
                 l10n.t('operations.change_role.annotation', { n: 1 })
             );
-            context.validationSystem().validate();
+            context.systems.validator.validate();
         }
     }
 
@@ -105,7 +105,7 @@ export function uiSectionRawMemberEditor(context) {
         } else {
             // Changing the mode also runs `validate`, but otherwise we need to
             // rerun it manually
-            context.validationSystem().validate();
+            context.systems.validator.validate();
         }
     }
 
@@ -179,7 +179,7 @@ export function uiSectionRawMemberEditor(context) {
                         .append('span')
                         .attr('class', 'member-entity-type')
                         .html(function(d) {
-                            var matched = context.presetSystem().match(d.member, context.graph());
+                            var matched = context.systems.presets.match(d.member, context.graph());
                             return (matched && matched.name()) || l10n.displayType(d.member.id);
                         });
 
@@ -316,7 +316,7 @@ export function uiSectionRawMemberEditor(context) {
                         actionMoveMember(d.relation.id, index, targetIndex),
                         l10n.t('operations.reorder_members.annotation')
                     );
-                    context.validationSystem().validate();
+                    context.systems.validator.validate();
                 }
             })
         );

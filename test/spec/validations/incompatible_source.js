@@ -6,9 +6,10 @@ describe('validationIncompatibleSource', () => {
 
   class MockContext {
     constructor() {
-      this._l10n = new MockLocalizationSystem(this);
+      this.systems = {
+        l10n:  new MockLocalizationSystem()
+      };
     }
-    localizationSystem()  { return this._l10n; }
   }
 
   const validator = Rapid.validationIncompatibleSource(new MockContext());

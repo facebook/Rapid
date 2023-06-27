@@ -6,7 +6,7 @@ export function uiScale(context) {
   const MAXLENGTH = 180;
   const TICKHEIGHT = 8;
 
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   let _isImperial = !l10n.usesMetric();
 
 
@@ -43,7 +43,7 @@ export function uiScale(context) {
 
   function update(selection) {
     // choose loc1, loc2 along bottom of viewport (near where the scale will be drawn)
-    const dims = context.mapSystem().dimensions;
+    const dims = context.systems.map.dimensions;
     const loc1 = projection.invert([0, dims[1]]);
     const loc2 = projection.invert([MAXLENGTH, dims[1]]);
     const scale = scaleDefs(loc1, loc2);
@@ -78,7 +78,7 @@ export function uiScale(context) {
       .append('div')
       .attr('class', 'scale-text');
 
-    context.mapSystem().on('draw', () => {
+    context.systems.map.on('draw', () => {
       window.requestIdleCallback(() => update(selection));
     });
   };

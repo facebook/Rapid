@@ -242,27 +242,6 @@ export class Context extends EventEmitter {
     return Promise.all(resetPromises);
   }
 
-
-  // accessors
-  dataLoaderSystem()    { return this.systems.data; }
-  editSystem()          { return this.systems.edits; }
-  history()             { return this.systems.edits; }       // legacy name
-  filterSystem()        { return this.systems.filters; }
-  imagerySystem()       { return this.systems.imagery; }
-  localizationSystem()  { return this.systems.l10n; }
-  locationSystem()      { return this.systems.locations; }
-  mapSystem()           { return this.systems.map; }
-  map3dSystem()         { return this.systems.map3d; }
-  photoSystem()         { return this.systems.photos; }
-  presetSystem()        { return this.systems.presets; }
-  rapidSystem()         { return this.systems.rapid; }
-  storageSystem()       { return this.systems.storage; }
-  uiSystem()            { return this.systems.ui; }
-  ui()                  { return this.systems.ui; }         // legacy name
-  uploaderSystem()      { return this.systems.uploader; }
-  urlHashSystem()       { return this.systems.urlhash; }
-  validationSystem()    { return this.systems.validator; }
-
   // not a system yet, but should be one
   keybinding()          { return this._keybinding; }
 

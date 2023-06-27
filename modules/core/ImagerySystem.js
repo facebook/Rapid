@@ -70,10 +70,10 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const dataLoaderSystem = context.dataLoaderSystem();
-    const storageSystem = context.storageSystem();
+    const dataLoaderSystem = context.systems.data;
+    const storageSystem = context.systems.storage;
 
-    const urlHashSystem = context.urlHashSystem();
+    const urlHashSystem = context.systems.urlhash;
     urlHashSystem.on('hashchange', this._hashchange);
 
     const prerequisites = Promise.all([
@@ -142,7 +142,7 @@ export class ImagerySystem extends AbstractSystem {
 
     // Add 'Custom' - seed it with whatever template the user has used previously
     const custom = new ImagerySourceCustom(context);
-    const storageSystem = this.context.storageSystem();
+    const storageSystem = this.context.systems.storage;
     custom.template = storageSystem.getItem('background-custom-template') || '';
     this._imageryIndex.sources.set(custom.id, custom);
 
@@ -246,10 +246,10 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     // Update history "imagery used" property
-    this.context.editSystem().imageryUsed(imageryUsed);
+    this.context.systems.edits.imageryUsed(imageryUsed);
 
     // Update hash params: 'background', 'overlays', 'offset'
-    const urlhash = this.context.urlHashSystem();
+    const urlhash = this.context.systems.urlhash;
     urlhash.setParam('background', baseID);
     urlhash.setParam('overlays', overlayIDs.length ? overlayIDs.join(',') : null);
 
@@ -342,11 +342,11 @@ export class ImagerySystem extends AbstractSystem {
    *
    */
   chooseDefaultSource() {
-    const map = this.context.mapSystem();
+    const map = this.context.systems.map;
     const available = this.sources(map.extent(), map.zoom());
     const first = available[0];
     const best = available.find(s => s.best);
-    const prefs = this.context.storageSystem();
+    const prefs = this.context.systems.storage;
     const lastUsed = prefs.getItem('background-last-used') || '';
 
     return best ||

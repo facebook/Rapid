@@ -167,7 +167,7 @@ export class UiField {
    * @param  `selection`  A d3-selection to a parent element that the field should render itself into
    */
   render(selection) {
-    const l10n = this.context.localizationSystem();
+    const l10n = this.context.systems.l10n;
 
     let container = selection.selectAll('.form-field')
       .data([this]);
@@ -365,7 +365,7 @@ export class UiField {
   isAllowed() {
     const context = this.context;
     const presetField = this.presetField;
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
 
     // Most of the time we have entityIDs to consider, but if not, just return `true`.
     // For example: the fields on the upload dialog that set the changeset tags.

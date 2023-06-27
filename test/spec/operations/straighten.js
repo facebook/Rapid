@@ -7,8 +7,11 @@ describe('operationStraighten', () => {
   }
 
   class MockContext {
-    constructor()           { this.map = new MockMap(); }
-    mapSystem()             { return this.map; }
+    constructor() {
+      this.systems = {
+        map: new MockMap()
+      };
+    }
     graph()                 { return _graph; }
     entity(id)              { return _graph.entity(id); }
     hasEntity(id)           { return _graph.hasEntity(id); }

@@ -539,7 +539,7 @@ this.placeRopeLabel(feature, labelObj, coords);
     // Prefer placements that are more "visually attached" to the pin (right,bottom,left,top)
     // over placements that are further away (corners)
     let preferences;
-    const isRTL = this.context.localizationSystem().isRTL();
+    const isRTL = this.context.systems.l10n.isRTL();
 
     if (isRTL) {   // right to left
       preferences = [

@@ -16,9 +16,9 @@ const MAX_MEMBERSHIPS = 1000;
 
 
 export function uiSectionRawMembershipEditor(context) {
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
 
-    var presetSystem = context.presetSystem();
+    var presetSystem = context.systems.presets;
     var section = uiSection('raw-membership-editor', context)
         .shouldDisplay(function() {
             return _entityIDs && _entityIDs.length;
@@ -124,7 +124,7 @@ export function uiSectionRawMembershipEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.relation.id);
-        context.mapSystem().zoomToEase(entity);
+        context.systems.map.zoomToEase(entity);
 
         // highlight the relation in case it wasn't previously on-screen
         utilHighlightEntities([d.relation.id], true, context);
@@ -156,7 +156,7 @@ export function uiSectionRawMembershipEditor(context) {
                 },
                 l10n.t('operations.change_role.annotation', { n: membersToUpdate.length })
             );
-            context.validationSystem().validate();
+            context.systems.validator.validate();
         }
         _inChange = false;
     }
@@ -181,7 +181,7 @@ export function uiSectionRawMembershipEditor(context) {
                 actionAddMembers(d.relation.id, _entityIDs, role),
                 l10n.t('operations.add_member.annotation', { n: _entityIDs.length })
             );
-            context.validationSystem().validate();
+            context.systems.validator.validate();
 
         } else {
             var relation = osmRelation();
@@ -211,7 +211,7 @@ export function uiSectionRawMembershipEditor(context) {
             actionDeleteMembers(d.relation.id, indexes),
             l10n.t('operations.delete_member.annotation', { n: _entityIDs.length })
         );
-        context.validationSystem().validate();
+        context.systems.validator.validate();
     }
 
 
@@ -243,7 +243,7 @@ export function uiSectionRawMembershipEditor(context) {
             });
 
         } else {
-            context.editSystem().intersects(context.mapSystem().extent()).forEach(function(entity) {
+            context.systems.edits.intersects(context.systems.map.extent()).forEach(function(entity) {
                 if (entity.type !== 'relation' || entity.id === entityID) return;
 
                 var value = baseDisplayLabel(entity);

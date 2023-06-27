@@ -92,7 +92,7 @@ export function uiSidebar(context) {
 
             lastClientX = d3_event.clientX;
 
-            var isRTL = context.localizationSystem().isRTL();
+            var isRTL = context.systems.l10n.isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -110,7 +110,7 @@ export function uiSidebar(context) {
                         .style(xMarginProperty, '-400px')
                         .style('width', '400px');
 
-                    context.ui().resize([(sidebarWidth - dx) * scaleX, 0]);
+                    context.systems.ui.resize([(sidebarWidth - dx) * scaleX, 0]);
                 }
 
             } else {
@@ -120,9 +120,9 @@ export function uiSidebar(context) {
                     .style('width', widthPct + '%');
 
                 if (isCollapsed) {
-                    context.ui().resize([-sidebarWidth * scaleX, 0]);
+                    context.systems.ui.resize([-sidebarWidth * scaleX, 0]);
                 } else {
-                    context.ui().resize([-dx * scaleX, 0]);
+                    context.systems.ui.resize([-dx * scaleX, 0]);
                 }
             }
         }
@@ -367,7 +367,7 @@ export function uiSidebar(context) {
 
             var isCollapsed = selection.classed('collapsed');
             var isCollapsing = !isCollapsed;
-            var isRTL = context.localizationSystem().isRTL();
+            var isRTL = context.systems.l10n.isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -398,7 +398,7 @@ export function uiSidebar(context) {
                     return function(t) {
                         var dx = lastMargin - Math.round(i(t));
                         lastMargin = lastMargin - dx;
-                        context.ui().resize(moveMap ? undefined : [dx * scaleX, 0]);
+                        context.systems.ui.resize(moveMap ? undefined : [dx * scaleX, 0]);
                     };
                 })
                 .on('end', function() {

@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 
 export function uiAttribution(context) {
-  const imagerySystem = context.imagerySystem();
+  const imagerySystem = context.systems.imagery;
   let _selection = d3_select(null);
 
 
@@ -60,7 +60,7 @@ export function uiAttribution(context) {
 
     let copyright = attributions.selectAll('.copyright-notice')
       .data(d => {
-        let notice = d.copyrightNotices(context.mapSystem().zoom(), context.mapSystem().extent());
+        let notice = d.copyrightNotices(context.systems.map.zoom(), context.systems.map.extent());
         return notice ? [notice] : [];
       });
 
@@ -82,7 +82,7 @@ export function uiAttribution(context) {
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
-    const z = context.mapSystem().zoom();
+    const z = context.systems.map.zoom();
     let overlays = imagerySystem.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');
@@ -93,7 +93,7 @@ export function uiAttribution(context) {
     _selection = selection;
 
     imagerySystem.on('imagerychange', update);
-    context.mapSystem().on('draw', _throttle(update, 400, { leading: false }));
+    context.systems.map.on('draw', _throttle(update, 400, { leading: false }));
 
     update();
   };

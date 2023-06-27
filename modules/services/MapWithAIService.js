@@ -119,7 +119,7 @@ export class MapWithAIService extends AbstractService {
       this._datasets[datasetID] = ds;
     }
 
-    const locationSystem = this.context.locationSystem();
+    const locationSystem = this.context.systems.locations;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -199,7 +199,7 @@ export class MapWithAIService extends AbstractService {
 
     qs.bbox = extent.toParam();
 
-    const taskExtent = this.context.rapidSystem().taskExtent;
+    const taskExtent = this.context.systems.rapid.taskExtent;
     if (taskExtent) {
       qs.crop_bbox = taskExtent.toParam();
     }

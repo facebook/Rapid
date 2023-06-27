@@ -44,7 +44,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
 
   filterImages(images) {
-    const photoSystem = this.context.photoSystem();
+    const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
     const toDate = photoSystem.toDate;
     const usernames = photoSystem.usernames;
@@ -65,7 +65,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
 
   filterSequences(sequences) {
-    const photoSystem = this.context.photoSystem();
+    const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
     const toDate = photoSystem.toDate;
     const usernames = photoSystem.usernames;

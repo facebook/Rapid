@@ -93,7 +93,7 @@ export class Collection {
 
     let pool = this.array;
     if (Array.isArray(loc)) {
-      const locationSystem = this.context.locationSystem();
+      const locationSystem = this.context.systems.locations;
       const validHere = locationSystem.locationSetsAt(loc);
       pool = pool.filter(a => !a.locationSetID || validHere[a.locationSetID]);
     }

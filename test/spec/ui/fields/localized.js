@@ -18,12 +18,12 @@ describe('uiFieldLocalized', () => {
 
   class MockContext {
     constructor()   {
-      this._localizationSystem = new MockLocalizationSystem();
-      this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
       this.services = {};
+      this.systems = {
+        data: new Rapid.DataLoaderSystem(this),
+        l10n: new MockLocalizationSystem(this)
+      };
     }
-    dataLoaderSystem()    { return this._dataLoaderSystem; }
-    localizationSystem()  { return this._localizationSystem; }
     cleanTagKey(val)      { return val; }
     cleanTagValue(val)    { return val; }
     container()  { return selection; }

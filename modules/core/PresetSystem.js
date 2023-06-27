@@ -73,7 +73,7 @@ export class PresetSystem extends AbstractSystem {
       }
     }
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     const prerequisites = dataLoaderSystem.initAsync();
 
     return this._initPromise = prerequisites
@@ -133,7 +133,7 @@ export class PresetSystem extends AbstractSystem {
   merge(src) {
     let newLocationSets = [];
     const context = this.context;
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
 
     // Merge Fields
     if (src.fields) {
@@ -310,7 +310,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
       }
     }
 
-    const locationSystem = this.context.locationSystem();
+    const locationSystem = this.context.systems.locations;
     if (bestMatch && bestMatch.locationSetID && bestMatch.locationSetID !== '+[Q2]' && Array.isArray(loc)) {
       const validHere = locationSystem.locationSetsAt(loc);
       if (!validHere[bestMatch.locationSetID]) {
@@ -511,7 +511,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
     // If a location was provided, filter results to only those valid here.
     let arr = [...results.values()];
     if (Array.isArray(loc)) {
-      const locationSystem = this.context.locationSystem();
+      const locationSystem = this.context.systems.locations;
       const validHere = locationSystem.locationSetsAt(loc);
       arr = arr.filter(item => !item.locationSetID || validHere[item.locationSetID]);
     }
@@ -529,7 +529,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
   getRecents() {
     let presetIDs = this._recentIDs;
     if (!presetIDs) {  // first time, try to get them from localStorage
-      const prefs = this.context.storageSystem();
+      const prefs = this.context.systems.storage;
       presetIDs = JSON.parse(prefs.getItem('preset_recents')) || [];
     }
 
@@ -559,7 +559,7 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
     this._recentIDs.unshift(preset.id);   // prepend array
     this._recentIDs = utilArrayUniq(this._recentIDs).slice(0, MAXRECENTS);
 
-    const prefs = this.context.storageSystem();
+    const prefs = this.context.systems.storage;
     prefs.setItem('preset_recents', JSON.stringify(this._recentIDs));
   }
 

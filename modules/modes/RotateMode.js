@@ -49,21 +49,21 @@ export class RotateMode extends AbstractMode {
     this._active = true;
 
     const context = this.context;
-    context.filterSystem().forceVisible(this._entityIDs);
+    context.systems.filters.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction']);
 
     this._prevGraph = null;
     this._lastPoint = null;
     this._pivotLoc = null;
 
-    const eventManager = context.mapSystem().renderer.events;
+    const eventManager = context.systems.map.renderer.events;
     eventManager
       .on('click', this._finish)
       .on('keydown', this._keydown)
       .on('pointercancel', this._cancel)
       .on('pointermove', this._pointermove);
 
-    context.editSystem()
+    context.systems.edits
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -83,16 +83,16 @@ export class RotateMode extends AbstractMode {
     this._pivotLoc = null;
 
     const context = this.context;
-    context.filterSystem().forceVisible([]);
+    context.systems.filters.forceVisible([]);
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager
       .off('click', this._finish)
       .off('keydown', this._keydown)
       .off('pointercancel', this._cancel)
       .off('pointermove', this._pointermove);
 
-    context.editSystem()
+    context.systems.edits
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
   }
@@ -122,7 +122,7 @@ export class RotateMode extends AbstractMode {
    */
   _pointermove() {
     const context = this.context;
-    const eventManager = context.mapSystem().renderer.events;
+    const eventManager = context.systems.map.renderer.events;
     const currPoint = eventManager.coord;
 
     let fn;

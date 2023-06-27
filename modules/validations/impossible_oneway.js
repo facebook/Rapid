@@ -7,7 +7,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationImpossibleOneway(context) {
   const type = 'impossible_oneway';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   let validation = function checkImpossibleOneway(entity, graph) {
     if (entity.type !== 'way' || entity.geometry(graph) !== 'line') return [];
@@ -184,7 +184,7 @@ export function validationImpossibleOneway(context) {
 
   function continueDrawing(way, vertex, context) {
     // make sure the vertex is actually visible and editable
-    let map = context.mapSystem();
+    let map = context.systems.map;
     if (!context.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
       map.zoomToEase(vertex);
     }

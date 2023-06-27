@@ -4,8 +4,8 @@ import { uiSection } from '../section';
 
 
 export function uiSectionGridDisplayOptions(context) {
-  const imagerySystem = context.imagerySystem();
-  const rapid = context.rapidSystem();
+  const imagerySystem = context.systems.imagery;
+  const rapid = context.systems.rapid;
 
   let section = uiSection('grid-display-options', context)
     .label(context.t('background.grid.grids'))

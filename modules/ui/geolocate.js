@@ -38,7 +38,7 @@ export function uiGeolocate(context) {
     } else {   // stop geolocating
       _enabled = false;
       _layer.geolocationData = null;
-      context.mapSystem().deferredRedraw();
+      context.systems.map.deferredRedraw();
       finish();
     }
   }
@@ -51,7 +51,7 @@ export function uiGeolocate(context) {
       const coords = result.coords;
       const extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
       _layer.geolocationData = result;
-      context.mapSystem().deferredRedraw();
+      context.systems.map.deferredRedraw();
 
       // If `_timeoutID` has a value, this is the first successful result we've received.
       // Recenter the map and clear the timeout.
@@ -59,7 +59,7 @@ export function uiGeolocate(context) {
         window.clearTimeout(_timeoutID);
         _timeoutID = undefined;
 
-        const map = context.mapSystem();
+        const map = context.systems.map;
         map.centerZoomEase(extent.center(), Math.min(20, map.extentZoom(extent)));
       }
 
@@ -74,14 +74,14 @@ export function uiGeolocate(context) {
 
   function error() {
     if (_enabled) {    // user may have disabled it before the callback fires
-      context.ui().flash
+      context.systems.ui.flash
         .label(context.tHtml('geolocate.location_unavailable'))
         .iconName('#rapid-icon-geolocate')();
     }
 
     _enabled = false;
     _layer.geolocationData = null;
-    context.mapSystem().deferredRedraw();
+    context.systems.map.deferredRedraw();
     finish();
   }
 
@@ -100,7 +100,7 @@ export function uiGeolocate(context) {
   return function(selection) {
     if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) return;
 
-    const isRTL = context.localizationSystem().isRTL();
+    const isRTL = context.systems.l10n.isRTL();
 
     _button = selection
       .append('button')

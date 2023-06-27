@@ -68,7 +68,7 @@ export function uiStatus(context) {
 
     osm.on('apiStatusChange.uiStatus', update);
 
-    context.editSystem().on('storage_error', () => {
+    context.systems.edits.on('storage_error', () => {
       selection.html(context.tHtml('osm_api_status.message.local_storage_full'));
       selection.attr('class', 'api-status error');
     });

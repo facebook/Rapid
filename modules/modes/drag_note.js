@@ -22,7 +22,7 @@ export function modeDragNote(context) {
     function startNudge(d3_event, nudge) {
         if (_nudgeInterval) window.clearInterval(_nudgeInterval);
         _nudgeInterval = window.setInterval(function() {
-            context.mapSystem().pan(nudge);
+            context.systems.map.pan(nudge);
             doMove(d3_event, nudge);
         }, 50);
     }
@@ -65,7 +65,7 @@ export function modeDragNote(context) {
         _lastLoc = context.projection.invert(point);
 
         doMove(d3_event);
-        var nudge = geomViewportNudge(point, context.mapSystem().dimensions);
+        var nudge = geomViewportNudge(point, context.systems.map.dimensions);
         if (nudge) {
             startNudge(d3_event, nudge);
         } else {
@@ -108,7 +108,7 @@ export function modeDragNote(context) {
 
 
     mode.exit = function() {
-        context.ui().sidebar.hover.cancel();
+        context.systems.ui.sidebar.hover.cancel();
 
         context.surface()
             .selectAll('.active')

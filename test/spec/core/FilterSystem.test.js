@@ -18,11 +18,11 @@ describe('FilterSystem', () => {
 
   class MockContext {
     constructor()   {
-      this._storageSystem = new MockStorageSystem();
-      this._urlHashSystem = new MockUrlHashSystem();
+      this.systems = {
+        storage: new MockStorageSystem(this),
+        urlhash: new MockUrlHashSystem(this)
+      };
      }
-    storageSystem() { return this._storageSystem; }
-    urlHashSystem() { return this._urlHashSystem; }
     hasEntity()     { return null; }
   }
 

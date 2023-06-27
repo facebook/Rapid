@@ -5,7 +5,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationMissingRole(context) {
   const type = 'missing_role';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
 
   let validation = function checkMissingRole(entity, graph) {

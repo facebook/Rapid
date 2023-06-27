@@ -7,8 +7,11 @@ describe('TaginfoService', () => {
   }
 
   class MockContext {
-    constructor()        { this._localizationSystem = new MockLocalizationSystem(this); }
-    localizationSystem() { return this._localizationSystem; }
+    constructor() {
+      this.systems = {
+        l10n: new MockLocalizationSystem(this)
+      };
+    }
   }
 
 

@@ -218,7 +218,7 @@ export class StreetsideService extends AbstractService {
       .call(this._setupCanvas);
 
     // Register viewer resize handler
-    context.ui().photoviewer.on('resize.streetside', () => {
+    context.systems.ui.photoviewer.on('resize.streetside', () => {
       if (this._pannellumViewer) this._pannellumViewer.resize();
     });
 
@@ -337,8 +337,8 @@ export class StreetsideService extends AbstractService {
     const nextBubble = nextID && this.cachedImage(nextID);
     if (!nextBubble) return;
 
-    context.mapSystem().centerEase(nextBubble.loc);
-    context.photoSystem().selectPhoto('streetside', nextBubble.id);
+    context.systems.map.centerEase(nextBubble.loc);
+    context.systems.photos.selectPhoto('streetside', nextBubble.id);
   }
 
 
@@ -368,7 +368,7 @@ export class StreetsideService extends AbstractService {
    */
   hideViewer() {
     const context = this.context;
-    context.photoSystem().selectPhoto(null);
+    context.systems.photos.selectPhoto(null);
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
@@ -443,7 +443,7 @@ export class StreetsideService extends AbstractService {
         };
 
         this._sceneOptions = Object.assign(this._sceneOptions, viewstate);
-        context.photoSystem().selectPhoto('streetside', d.id);
+        context.systems.photos.selectPhoto('streetside', d.id);
       });
 
     label
@@ -620,7 +620,7 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     const d = new Date(s);
     if (isNaN(d.getTime())) return null;
 
-    const localeCode = this.context.localizationSystem().localeCode();
+    const localeCode = this.context.systems.l10n.localeCode();
     return d.toLocaleString(localeCode, options);
   }
 

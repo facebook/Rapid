@@ -14,12 +14,12 @@ export function uiSectionReactContainer(context) {
     .disclosureContent(content);
 
   const chooseBackground = (source) => {
-    context.imagerySystem().baseLayerSource(source);
+    context.systems.imagery.baseLayerSource(source);
   };
 
   const content = (selection) => {
-    const sources = context.imagerySystem()
-      .sources(context.mapSystem().extent(), context.mapSystem().zoom())
+    const sources = context.systems.imagery
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(d => !d.isHidden() && !d.overlay);
 
     selection
@@ -33,7 +33,7 @@ export function uiSectionReactContainer(context) {
   };
 
 
-  context.mapSystem()
+  context.systems.map
     .on('draw', debounce(() => {
         reRenderCount++;
         window.requestIdleCallback(section.reRender);

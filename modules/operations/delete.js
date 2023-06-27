@@ -49,10 +49,10 @@ export function operationDelete(context, selectedIDs) {
     }
 
     context.perform(action, operation.annotation());
-    context.validationSystem().validate();
+    context.systems.validator.validate();
 
     if (nextNode && nextLoc) {
-      context.mapSystem().centerEase(nextLoc);
+      context.systems.map.centerEase(nextLoc);
       // Try to select the next node.
       // It may be deleted and that's ok, we'll fallback to browse mode automatically
       context.enter('select-osm', { selectedIDs: [nextNode.id] });
@@ -86,9 +86,9 @@ export function operationDelete(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.storageSystem();
+      const prefs = context.systems.storage;
       const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.mapSystem().extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet

@@ -19,7 +19,7 @@ export function uiSuccess(context) {
 
 
   function getCommunityIndexAsync() {
-    const dataLoaderSystem = context.dataLoaderSystem();
+    const dataLoaderSystem = context.systems.data;
     return Promise.all([
         dataLoaderSystem.getDataAsync('oci_features'),
         dataLoaderSystem.getDataAsync('oci_resources'),
@@ -29,7 +29,7 @@ export function uiSuccess(context) {
         if (_oci) return _oci;
 
         // Merge Custom Features
-        const locationSystem = context.locationSystem();
+        const locationSystem = context.systems.locations;
         if (vals[0] && Array.isArray(vals[0].features)) {
           locationSystem.mergeCustomGeoJSON(vals[0]);
         }
@@ -155,8 +155,8 @@ export function uiSuccess(context) {
     // Get OSM community index features intersecting the map..
     getCommunityIndexAsync()
       .then(oci => {
-        const loc = context.mapSystem().center();
-        const locationSystem = context.locationSystem();
+        const loc = context.systems.map.center();
+        const locationSystem = context.systems.locations;
         const validHere = locationSystem.locationSetsAt(loc);
 
         // Gather the communities
@@ -311,7 +311,7 @@ export function uiSuccess(context) {
 
       if (d.languageCodes && d.languageCodes.length) {
         const languageList = d.languageCodes
-          .map(code => context.localizationSystem().languageName(code))
+          .map(code => context.systems.l10n.languageName(code))
           .join(', ');
 
         moreEnter
@@ -357,7 +357,7 @@ export function uiSuccess(context) {
             options.hour = 'numeric';
             options.minute = 'numeric';
           }
-          const localeCode = context.localizationSystem().localeCode();
+          const localeCode = context.systems.l10n.localeCode();
           return d.date.toLocaleString(localeCode, options);
         });
 

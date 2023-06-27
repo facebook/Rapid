@@ -10,7 +10,7 @@ export function operationMerge(context, selectedIDs) {
   let action = chooseAction();
 
   function chooseAction() {
-    const prefs = context.storageSystem();
+    const prefs = context.systems.storage;
     const tagnosticRoadCombine = prefs.getItem('rapid-internal-feature.tagnosticRoadCombine') === 'true';
     const options = { tagnosticRoadCombine: tagnosticRoadCombine };
 
@@ -40,7 +40,7 @@ export function operationMerge(context, selectedIDs) {
     if (operation.disabled()) return;
 
     context.perform(action, operation.annotation());
-    context.validationSystem().validate();
+    context.systems.validator.validate();
 
     let successorIDs = selectedIDs.filter(entityID => context.hasEntity(entityID));
     if (successorIDs.length > 1) {
@@ -73,7 +73,7 @@ export function operationMerge(context, selectedIDs) {
 
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
-    const presetSystem = context.presetSystem();
+    const presetSystem = context.systems.presets;
 
     if (disabledReason) {
       if (disabledReason === 'conflicting_relations') {

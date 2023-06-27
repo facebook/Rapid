@@ -6,7 +6,7 @@ import { uiModal } from './modal';
 export function uiRapidSplash(context) {
 
   return function render(selection) {
-    const prefs = context.storageSystem();
+    const prefs = context.systems.storage;
     if (prefs.getItem('sawRapidSplash')) return;
     prefs.setItem('sawRapidSplash', true);
 

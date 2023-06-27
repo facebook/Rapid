@@ -82,7 +82,7 @@ export class ValidationSystem extends AbstractSystem {
     });
 
     // register event handlers:
-    const editSystem = context.editSystem();
+    const editSystem = context.systems.edits;
 
     // WHEN TO RUN VALIDATION:
     context
@@ -116,7 +116,7 @@ export class ValidationSystem extends AbstractSystem {
       });
 
 
-    const storageSystem = context.storageSystem();
+    const storageSystem = context.systems.storage;
     const prerequisites = Promise.all([ storageSystem.initAsync() ]);
 
     return this._initPromise = prerequisites
@@ -250,7 +250,7 @@ export class ValidationSystem extends AbstractSystem {
       cache.uncacheIssuesOfType('unsquare_way');   // uncache existing
 
       // rerun for all buildings
-      const tree = this.context.editSystem().tree();
+      const tree = this.context.systems.edits.tree();
       const buildings = tree.intersects(new Extent([-180,-90],[180, 90]), cache.graph)  // everywhere
         .filter(entity => (entity.type === 'way' && entity.tags.building && entity.tags.building !== 'no'));
 
@@ -285,7 +285,7 @@ export class ValidationSystem extends AbstractSystem {
   getIssues(options) {
     const opts = Object.assign({ what: 'all', where: 'all', includeIgnored: false, includeDisabledRules: false }, options);
     const context = this.context;
-    const view = context.mapSystem().extent();
+    const view = context.systems.map.extent();
     let seen = new Set();
     let results = [];
 
@@ -404,8 +404,8 @@ export class ValidationSystem extends AbstractSystem {
     }
 
     if (focusCenter) {  // Adjust the view
-      const setZoom = Math.max(context.mapSystem().zoom(), 19);
-      context.mapSystem().centerZoomEase(focusCenter, setZoom);
+      const setZoom = Math.max(context.systems.map.zoom(), 19);
+      context.systems.map.centerZoomEase(focusCenter, setZoom);
     }
 
     if (selectID) {  // Enter select mode
@@ -521,7 +521,7 @@ export class ValidationSystem extends AbstractSystem {
       this._disabledRuleIDs.add(ruleID);
     }
 
-    const prefs = this.context.storageSystem();
+    const prefs = this.context.systems.storage;
     prefs.setItem('validate-disabledRules', [...this._disabledRuleIDs].join(','));
     this.validateAsync();
   }
@@ -536,7 +536,7 @@ export class ValidationSystem extends AbstractSystem {
   disableRules(ruleIDs = []) {
     this._disabledRuleIDs = new Set(ruleIDs);
 
-    const prefs = this.context.storageSystem();
+    const prefs = this.context.systems.storage;
     prefs.setItem('validate-disabledRules', [...this._disabledRuleIDs].join(','));
     this.validateAsync();
   }
@@ -564,7 +564,7 @@ export class ValidationSystem extends AbstractSystem {
     // Make sure the caches have graphs assigned to them.
     // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
     const context = this.context;
-    const baseGraph = context.editSystem().base();
+    const baseGraph = context.systems.edits.base();
     if (!this._head.graph) this._head.graph = baseGraph;
     if (!this._base.graph) this._base.graph = baseGraph;
 
@@ -584,7 +584,7 @@ export class ValidationSystem extends AbstractSystem {
 
     // If we get here, its time to start validating stuff.
     this._head.graph = currGraph;  // take snapshot
-    this._completeDiff = context.editSystem().difference().complete();
+    this._completeDiff = context.systems.edits.difference().complete();
     const incrementalDiff = new Difference(prevGraph, currGraph);
     let entityIDs = [...incrementalDiff.complete().keys()];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set

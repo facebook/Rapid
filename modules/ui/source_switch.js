@@ -15,14 +15,14 @@ export function uiSourceSwitch(context) {
     const mode = context.mode();
     if (mode?.id === 'save') return;
 
-    if (context.editSystem().hasChanges() && !window.confirm(context.t('source_switch.lose_changes'))) return;
+    if (context.systems.edits.hasChanges() && !window.confirm(context.t('source_switch.lose_changes'))) return;
 
     let isLive = d3_select(this)
       .classed('live');
 
     isLive = !isLive;
     context.enter('browse');
-    context.editSystem().clearSaved();   // remove saved history
+    context.systems.edits.clearSaved();   // remove saved history
 
     context.resetAsync()                 // remove stored data
       .then(() => {

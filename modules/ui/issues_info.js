@@ -5,8 +5,8 @@ import { uiTooltip } from './tooltip';
 
 
 export function uiIssuesInfo(context) {
-  const validator = context.validationSystem();
-  const prefs = context.storageSystem();
+  const validator = context.systems.validator;
+  const prefs = context.systems.storage;
 
   let warningsItem = {
     id: 'warnings',
@@ -64,7 +64,7 @@ export function uiIssuesInfo(context) {
             d3_event.preventDefault();
             tooltip.hide();
             // open the Issues pane
-            context.ui().togglePanes(context.container().select('.map-panes .issues-pane'));
+            context.systems.ui.togglePanes(context.container().select('.map-panes .issues-pane'));
           });
 
         chipSelection.call(uiIcon(`#${d.iconID}`));

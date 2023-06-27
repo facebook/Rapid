@@ -245,7 +245,7 @@ export function uiPresetIcon(context) {
       geom = 'route';
     }
 
-    const prefs = context.storageSystem();
+    const prefs = context.systems.storage;
     const showThirdPartyIcons = (prefs.getItem('preferences.privacy.thirdpartyicons') ?? 'true') === 'true';
     const imageURL = showThirdPartyIcons && p.imageURL;
     const picon = getIcon(p, geom);

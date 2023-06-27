@@ -10,9 +10,9 @@ export function uiIntroArea(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.areas.title' };
   const container = context.container();
-  const editSystem = context.editSystem();
-  const mapSystem = context.mapSystem();
-  const presetSystem = context.presetSystem();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
+  const presetSystem = context.systems.presets;
 
   const playgroundExtent = new Extent([-85.63575, 41.94137], [-85.63526, 41.94180]);
   const playgroundPreset = presetSystem.item('leisure/playground');

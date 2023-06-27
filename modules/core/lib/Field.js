@@ -103,7 +103,7 @@ export class Field {
   }
 
   hasTextForStringID(scope) {
-    const l10n = this.context.localizationSystem();
+    const l10n = this.context.systems.l10n;
     return l10n.hasTextForStringID(`_tagging.presets.fields.${this.id}.${scope}`);
   }
 

@@ -8,14 +8,16 @@ describe('uiFieldAccess', () => {
   }
 
   class MockContext {
-    constructor()   {
-      this._localizationSystem = new MockLocalizationSystem();
+    constructor() {
+      this.systems = {
+        l10n: new MockLocalizationSystem(this)
+      };
     }
-    localizationSystem()  { return this._localizationSystem; }
     container()  { return selection; }
     t()          { return ''; }
     tHtml()      { return ''; }
   }
+
 
   const context = new MockContext();
 

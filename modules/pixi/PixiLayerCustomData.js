@@ -60,7 +60,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       });
 
     // hashchange - pick out the 'gpx' param
-    this.context.urlHashSystem()
+    this.context.systems.urlhash
       .on('hashchange', q => this.url(q.gpx || '', '.gpx'));
   }
 
@@ -216,11 +216,11 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @returns a list of linestrings to draw as gridlines.
   */
   createGridLines (lines) {
-    const numSplits = this.context.imagerySystem().numGridSplits;
+    const numSplits = this.context.systems.imagery.numGridSplits;
     let gridLines = [];
 
     //'isTaskRectangular' implies one and only one rectangular linestring.
-    if (this.context.rapidSystem().isTaskRectangular && numSplits > 0) {
+    if (this.context.systems.rapid.isTaskRectangular && numSplits > 0) {
       const box = lines[0];
 
       const lats = box.geometry.coordinates.map((f) => f[0]);
@@ -511,7 +511,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           setFile(extension, data);
           const isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
           if (isTaskBoundsUrl) {
-            this.context.rapidSystem().setTaskExtentByGpxData(data);
+            this.context.systems.rapid.setTaskExtentByGpxData(data);
           }
         })
         .catch(e => console.error(e));  // eslint-disable-line
@@ -538,7 +538,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     const features = this.getFeatures(this._geojson);
     if (!features.length) return;
 
-    const map = this.context.mapSystem();
+    const map = this.context.systems.map;
     const viewport = map.trimmedExtent().polygon();
 
     const coords = features.reduce((coords, feature) => {

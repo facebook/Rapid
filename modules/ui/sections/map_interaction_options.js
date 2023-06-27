@@ -3,7 +3,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapInteractionOptions(context) {
-  const prefs = context.storageSystem();
+  const prefs = context.systems.storage;
   const section = uiSection('map-interaction', context)
     .label(context.tHtml('preferences.map_interaction.title'))
     .disclosureContent(renderDisclosureContent)

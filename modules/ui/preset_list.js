@@ -12,9 +12,9 @@ import { utilKeybinding, utilNoAuto, utilRebind, utilTotalExtent } from '../util
 
 
 export function uiPresetList(context) {
-    var l10n = context.localizationSystem();
-    var filterSystem = context.filterSystem();
-    var presetSystem = context.presetSystem();
+    var l10n = context.systems.l10n;
+    var filterSystem = context.systems.filters;
+    var presetSystem = context.systems.presets;
 
     var dispatch = d3_dispatch('cancel', 'choose');
     var _entityIDs;
@@ -424,7 +424,7 @@ export function uiPresetList(context) {
                 l10n.t('operations.change_tags.annotation')
             );
 
-            context.validationSystem().validate();  // rerun validation
+            context.systems.validator.validate();  // rerun validation
             dispatch.call('choose', this, preset);
         };
 

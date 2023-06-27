@@ -81,7 +81,7 @@ export class UiCurtain {
 
     // register event handlers
     d3_select(window).on('resize.curtain', this.resize);
-    this.context.mapSystem().on('move', this.redraw);
+    this.context.systems.map.on('move', this.redraw);
 
     this.resize();   // get the width/height
   }
@@ -108,7 +108,7 @@ export class UiCurtain {
 
     // unregister event handlers
     d3_select(window).on('resize.curtain', null);
-    this.context.mapSystem().off('move', this.redraw);
+    this.context.systems.map.off('move', this.redraw);
   }
 
 
@@ -389,7 +389,7 @@ export class UiCurtain {
       } else {   // tooltip to the side of the reveal..
         tipY = reveal.top + (reveal.height / 2) - (tip.height / 2);
 
-        if (this.context.localizationSystem().textDirection() === 'rtl') {
+        if (this.context.systems.l10n.textDirection() === 'rtl') {
           if (reveal.left - tip.width - ARROW < 70) {
             placement = 'right';
             tipX = reveal.right + ARROW;

@@ -56,7 +56,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    * @param  projection   Pixi projection to use for rendering
    */
   render(frame, projection) {
-    const imagery = this.context.imagerySystem();
+    const imagery = this.context.systems.imagery;
     const groupContainer = this.scene.groups.get('background');
 
     // Collect tile sources - baselayer and overlays
@@ -207,13 +207,13 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
         tile.loaded = true;
         tile.image = null;  // image is copied to the atlas, we can free it
-        context.mapSystem().deferredRedraw();
+        context.systems.map.deferredRedraw();
       };
 
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        context.mapSystem().deferredRedraw();
+        context.systems.map.deferredRedraw();
       };
     }
 

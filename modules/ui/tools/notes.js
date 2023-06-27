@@ -75,7 +75,7 @@ export function uiToolNotes(context) {
 
     // if we are adding/removing the buttons, check if toolbar has overflowed
     if (buttons.enter().size() || buttons.exit().size()) {
-      context.ui().checkOverflow('.top-toolbar', true);
+      context.systems.ui.checkOverflow('.top-toolbar', true);
     }
 
     // update
@@ -100,7 +100,7 @@ export function uiToolNotes(context) {
       }
     });
 
-    context.mapSystem().on('draw', debouncedUpdate);
+    context.systems.map.on('draw', debouncedUpdate);
     context.on('modechange', update);
 
     update();
@@ -111,7 +111,7 @@ export function uiToolNotes(context) {
     debouncedUpdate.cancel();
     context.keybinding().off(mode.key);
     context.off('modechange', update);
-    context.mapSystem().off('draw', debouncedUpdate);
+    context.systems.map.off('draw', debouncedUpdate);
     _selection = null;
   };
 

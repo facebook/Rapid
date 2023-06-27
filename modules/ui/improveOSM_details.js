@@ -4,7 +4,7 @@ import { utilHighlightEntities } from '../util';
 
 
 export function uiImproveOsmDetails(context) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   let _qaItem;
 
 
@@ -73,7 +73,7 @@ export function uiImproveOsmDetails(context) {
             utilHighlightEntities([entityID], false, context);
 
             context.scene().enableLayers('osm');  // make sure osm layer is even on
-            context.mapSystem().centerZoom(_qaItem.loc, 20);
+            context.systems.map.centerZoom(_qaItem.loc, 20);
 
             if (entity) {
               context.enter('select-osm', { selectedIDs: [entityID] });
@@ -93,7 +93,7 @@ export function uiImproveOsmDetails(context) {
         if (entity) {
           let name = l10n.displayName(entity);  // try to use common name
           if (!name && !isObjectLink) {
-            const presetSystem = context.presetSystem();
+            const presetSystem = context.systems.presets;
             const preset = presetSystem.match(entity, context.graph());
             name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
           }
@@ -105,8 +105,8 @@ export function uiImproveOsmDetails(context) {
       });
 
     // Don't hide entities related to this error - iD#5880
-    context.filterSystem().forceVisible(relatedEntities);
-    context.mapSystem().immediateRedraw();
+    context.systems.filters.forceVisible(relatedEntities);
+    context.systems.map.immediateRedraw();
   }
 
   improveOsmDetails.issue = function(val) {

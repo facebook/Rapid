@@ -49,7 +49,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this.key = context.t('info_panels.measurement.key');
 
     this._selection = d3_select(null);
-    this._isImperial = !context.localizationSystem().usesMetric();
+    this._isImperial = !context.systems.l10n.usesMetric();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -67,7 +67,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this._enabled = true;
     this._selection = selection;
 
-    this.context.mapSystem().on('draw', this.render);
+    this.context.systems.map.on('draw', this.render);
     this.context.on('modechange', this.render);
   }
 
@@ -83,7 +83,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this._enabled = false;
     this._selection = d3_select(null);
 
-    this.context.mapSystem().off('draw', this.render);
+    this.context.systems.map.off('draw', this.render);
     this.context.off('modechange', this.render);
   }
 
@@ -97,7 +97,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     const selection = this._selection;
     const context = this.context;
     const graph = context.graph();
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
     const localeCode = l10n.localeCode();
 
     // Empty out the DOM content and rebuild from scratch..

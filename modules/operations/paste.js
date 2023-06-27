@@ -72,7 +72,7 @@ export function operationPaste(context) {
 
 
   operation.tooltip = function() {
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
     const oldGraph = context.copyGraph;
     const ids = context.copyIDs;
     if (!ids.length) {

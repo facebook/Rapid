@@ -7,7 +7,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationDisconnectedWay(context) {
   const type = 'disconnected_way';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   function isTaggedAsHighway(entity) {
     return osmRoutableHighwayTagValues[entity.tags.highway];
@@ -185,7 +185,7 @@ export function validationDisconnectedWay(context) {
           if (!way || !vertex) return;
 
           // make sure the vertex is actually visible and editable
-          const map = context.mapSystem();
+          const map = context.systems.map;
           if (!context.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
             map.zoomToEase(vertex);
           }

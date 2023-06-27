@@ -27,7 +27,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   // same selection as before?
   const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
   const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
-  const presetSystem = context.presetSystem();
+  const presetSystem = context.systems.presets;
 
   // Gather current entities allowed to be cycled
   const entities = selectedIDs
@@ -54,7 +54,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     // If this is the same selection as before, and the previous edit was also a cycle-tags,
     // skip this `perform`, then all tag updates will be coalesced into the previous edit.
     const annotation = operation.annotation();
-    if (!isSameSelection || context.editSystem().undoAnnotation() !== annotation) {
+    if (!isSameSelection || context.systems.edits.undoAnnotation() !== annotation) {
       // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
       context.perform(actionNoop(), annotation);
     }

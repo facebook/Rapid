@@ -27,7 +27,7 @@ export function uiShortcuts(context) {
             .append('h3')
             .html(context.tHtml('shortcuts.title'));
 
-        const dataLoaderSystem = context.dataLoaderSystem();
+        const dataLoaderSystem = context.systems.data;
         dataLoaderSystem.get('shortcuts')
           .then(data => {
             _dataShortcuts = data;

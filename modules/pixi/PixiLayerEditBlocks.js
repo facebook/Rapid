@@ -46,8 +46,8 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     let blocks;
 
     if (zoom >= MINZOOM) {
-      const viewport = this.context.mapSystem().extent().rectangle();
-      const locationSystem = this.context.locationSystem();
+      const viewport = this.context.systems.map.extent().rectangle();
+      const locationSystem = this.context.systems.locations;
       blocks = locationSystem.wpblocks().bbox(viewport);
       this.renderEditBlocks(frame, projection, zoom, blocks);
 
@@ -89,7 +89,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * @param  blocks       Array of block data visible in the view
    */
   renderEditBlocks(frame, projection, zoom, blocks) {
-    const locationSystem = this.context.locationSystem();
+    const locationSystem = this.context.systems.locations;
     const parentContainer = this.scene.groups.get('blocks');
     const BLOCK_STYLE = {
       requireFill: true,    // no partial fill option - must fill fully

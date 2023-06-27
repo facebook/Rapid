@@ -5,8 +5,11 @@ describe('validationPrivateData', () => {
   }
 
   class MockContext {
-    constructor() { this._l10n = new MockLocalizationSystem(this); }
-    localizationSystem() { return this._l10n; }
+    constructor() {
+      this.systems = {
+        l10n:  new MockLocalizationSystem()
+      };
+    }
   }
 
   const validator = Rapid.validationPrivateData(new MockContext());

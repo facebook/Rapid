@@ -6,8 +6,8 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundOffset(context) {
-  const l10n = context.localizationSystem();
-  const imagerySystem = context.imagerySystem();
+  const l10n = context.systems.l10n;
+  const imagerySystem = context.systems.imagery;
 
   const section = uiSection('background-offset', context)
     .label(l10n.tHtml('background.fix_misalignment'))
@@ -44,7 +44,7 @@ export function uiSectionBackgroundOffset(context) {
 
 
   function nudge(d) {
-    imagerySystem.nudge(d, context.mapSystem().zoom());
+    imagerySystem.nudge(d, context.systems.map.zoom());
     updateValue();
   }
 

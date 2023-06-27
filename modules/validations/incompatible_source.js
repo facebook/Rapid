@@ -3,7 +3,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationIncompatibleSource(context) {
   const type = 'incompatible_source';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   const incompatibleRules = [
     {

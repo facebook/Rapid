@@ -81,7 +81,7 @@ export class TaginfoService extends AbstractService {
    * Called one time after all core objects have been instantiated.
    */
   init() {
-    const langCode = this.context.localizationSystem().languageCode();
+    const langCode = this.context.systems.l10n.languageCode();
 
     // Fetch popular keys.  We'll exclude these from `values`
     // lookups because they stress taginfo, and they aren't likely
@@ -121,7 +121,7 @@ export class TaginfoService extends AbstractService {
    * @param  callback
    */
   keys(params, callback) {
-    const langCode = this.context.localizationSystem().languageCode();
+    const langCode = this.context.systems.l10n.languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     params = this._clean(this._setSort(params));
     params = Object.assign({
@@ -152,7 +152,7 @@ export class TaginfoService extends AbstractService {
    * @param  callback
    */
   multikeys(params, callback) {
-    const langCode = this.context.localizationSystem().languageCode();
+    const langCode = this.context.systems.l10n.languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     params = this._clean(this._setSort(params));
     params = Object.assign({
@@ -191,7 +191,7 @@ export class TaginfoService extends AbstractService {
       return;
     }
 
-    const langCode = this.context.localizationSystem().languageCode();
+    const langCode = this.context.systems.l10n.languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     params = this._clean(this._setSort(this._setFilter(params)));
     params = Object.assign({
@@ -229,7 +229,7 @@ export class TaginfoService extends AbstractService {
    * @param  callback
    */
   roles(params, callback) {
-    const langCode = this.context.localizationSystem().languageCode();
+    const langCode = this.context.systems.l10n.languageCode();
     const doRequest = params.debounce ? this._debouncedRequest : this._request;
     const geometry = params.geometry;
     params = this._clean(this._setSortMembers(params));

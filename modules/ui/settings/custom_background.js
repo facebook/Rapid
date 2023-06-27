@@ -6,7 +6,7 @@ import { utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSettingsCustomBackground(context) {
-  const prefs = context.storageSystem();
+  const prefs = context.systems.storage;
   const dispatch = d3_dispatch('change');
 
 

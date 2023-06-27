@@ -193,7 +193,7 @@ export class KartaviewService extends AbstractService {
 
 
     // Register viewer resize handler
-    context.ui().photoviewer.on('resize.kartaview', dimensions => {
+    context.systems.ui.photoviewer.on('resize.kartaview', dimensions => {
       this._imgZoom = d3_zoom()
         .extent([[0, 0], dimensions])
         .translateExtent([[0, 0], dimensions])
@@ -245,8 +245,8 @@ export class KartaviewService extends AbstractService {
       const nextImage = sequence.images[nextIndex];
       if (!nextImage) return;
 
-      context.mapSystem().centerEase(nextImage.loc);
-      context.photoSystem().selectPhoto('kartaview', nextImage.id);
+      context.systems.map.centerEase(nextImage.loc);
+      context.systems.photos.selectPhoto('kartaview', nextImage.id);
     }
 
     // don't need any async loading so resolve immediately
@@ -277,7 +277,7 @@ export class KartaviewService extends AbstractService {
   hideViewer() {
     this._selectedImage = null;
     const context = this.context;
-    context.photoSystem().selectPhoto(null);
+    context.systems.photos.selectPhoto(null);
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
@@ -294,7 +294,7 @@ export class KartaviewService extends AbstractService {
   }
 
 
-  // note: call `context.photoSystem().selectPhoto(layerID, photoID)` instead
+  // note: call `context.systems.photos.selectPhoto(layerID, photoID)` instead
   // That will deal with the URL and call this function
   selectImage(imageID) {
     let d = this.cachedImage(imageID);
@@ -377,7 +377,7 @@ export class KartaviewService extends AbstractService {
       const d = new Date(s);
       if (isNaN(d.getTime())) return null;
 
-      const localeCode = this.context.localizationSystem().localeCode();
+      const localeCode = this.context.systems.l10n.localeCode();
       return d.toLocaleDateString(localeCode, options);
     }
   }

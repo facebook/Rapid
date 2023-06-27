@@ -100,7 +100,7 @@ export class DrawLineMode extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -117,7 +117,7 @@ export class DrawLineMode extends AbstractMode {
       this.drawWay = continueWay;
 
       // Create draw node where we think the poitner is, and extend continue way to it
-      this.drawNode = osmNode({ loc: context.mapSystem().mouseLoc() });
+      this.drawNode = osmNode({ loc: context.systems.map.mouseLoc() });
       context.perform(
         actionAddEntity(this.drawNode),                                          // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex)    // Add draw node to draw way
@@ -180,7 +180,7 @@ export class DrawLineMode extends AbstractMode {
       .off('finish', this._finish)
       .off('cancel', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
 
@@ -286,7 +286,7 @@ export class DrawLineMode extends AbstractMode {
     const coord = eventData.coord;
     const loc = projection.invert(coord);
 
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
     if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.

@@ -18,7 +18,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationCrossingWays(context) {
     const type = 'crossing_ways';
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
 
     // returns the way or its parent relation, whichever has a useful feature type
     function getFeatureWithFeatureTypeTagsForWay(way, graph) {
@@ -353,7 +353,7 @@ export function validationCrossingWays(context) {
 
     var validation = function checkCrossingWays(entity, graph) {
 
-        var tree = context.editSystem().tree();
+        var tree = context.systems.edits.tree();
 
         var ways = waysToCheck(entity, graph);
 

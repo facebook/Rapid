@@ -59,7 +59,7 @@ export class SelectMode extends AbstractMode {
     const context = this.context;
     context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'lasso', 'paste']);
 
-    const sidebar = context.ui().sidebar;
+    const sidebar = context.systems.ui.sidebar;
     let sidebarContent = null;
 
     // Compute the total extent of selected items
@@ -95,11 +95,11 @@ export class SelectMode extends AbstractMode {
       sidebarContent = uiNoteEditor(context).note(datum);
       sidebarContent
         .on('change', () => {
-          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const osm = context.services.osm;
           const note = osm?.getNote(datumID);
           if (!(note instanceof osmNote)) return;   // or - go to browse mode
-          context.ui().sidebar.show(sidebarContent.note(note));
+          context.systems.ui.sidebar.show(sidebarContent.note(note));
           this._selectedData.set(datumID, note);  // update selectedData after a change happens?
         });
 
@@ -107,11 +107,11 @@ export class SelectMode extends AbstractMode {
       sidebarContent = uiImproveOsmEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const improveosm = context.services.improveOSM;
           const error = improveosm?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          context.ui().sidebar.show(sidebarContent.error(error));
+          context.systems.ui.sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -119,11 +119,11 @@ export class SelectMode extends AbstractMode {
       sidebarContent = uiKeepRightEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const keepright = context.services.keepRight;
           const error = keepright?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          context.ui().sidebar.show(sidebarContent.error(error));
+          context.systems.ui.sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -131,11 +131,11 @@ export class SelectMode extends AbstractMode {
       sidebarContent = uiOsmoseEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
-          context.mapSystem().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const osmose = context.services.osmose;
           const error = osmose?.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          context.ui().sidebar.show(sidebarContent.error(error));
+          context.systems.ui.sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
@@ -187,7 +187,7 @@ export class SelectMode extends AbstractMode {
     }
 
     this._selectedData.clear();
-    this.context.ui().sidebar.hide();
+    this.context.systems.ui.sidebar.hide();
   }
 
 }

@@ -112,7 +112,7 @@ export class WikidataService extends AbstractService {
    * languagesToQuery
    */
   languagesToQuery() {
-    const localeCodes = this.context.localizationSystem().localeCodes();
+    const localeCodes = this.context.systems.l10n.localeCodes();
     return localeCodes
       .map(code => code.toLowerCase())
       .filter(code => code !== 'en-us');
@@ -231,7 +231,7 @@ export class WikidataService extends AbstractService {
 
       // add wiki sitelink
       if (entity.sitelinks) {
-        const languageCode = this.context.localizationSystem().languageCode();
+        const languageCode = this.context.systems.l10n.languageCode();
         const isEn = languageCode.toLowerCase() === 'en';
 
         // must be one of these that we requested..

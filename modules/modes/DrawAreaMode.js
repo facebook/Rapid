@@ -77,7 +77,7 @@ export class DrawAreaMode extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -137,7 +137,7 @@ export class DrawAreaMode extends AbstractMode {
       .off('finish', this._finish)
       .off('cancel', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
 
@@ -241,7 +241,7 @@ export class DrawAreaMode extends AbstractMode {
     const coord = eventData.coord;
     const loc = projection.invert(coord);
 
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
     if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.

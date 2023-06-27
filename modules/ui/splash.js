@@ -7,8 +7,8 @@ export function uiSplash(context) {
     // Exception - if there are restorable changes, skip this splash screen.
     // This is because we currently only support one `uiModal` at a time
     //  and we need to show them `uiRestore`` instead of this one.
-    const prefs = context.storageSystem();
-    if (context.editSystem().hasRestorableChanges()) return;
+    const prefs = context.systems.storage;
+    if (context.systems.edits.hasRestorableChanges()) return;
 
     // If user has not seen this version of the privacy policy, show the splash again.
     let updateMessage = '';
@@ -25,7 +25,7 @@ export function uiSplash(context) {
     prefs.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // fetch intro graph data now, while user is looking at the splash screen
-    const dataLoaderSystem = context.dataLoaderSystem();
+    const dataLoaderSystem = context.systems.data;
     dataLoaderSystem.getDataAsync('intro_graph');
 
     let modalSelection = uiModal(selection);

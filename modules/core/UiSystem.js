@@ -81,10 +81,10 @@ export class UiSystem extends AbstractSystem {
 
     // Setup event handlers
     window.addEventListener('beforeunload', () => context.save());
-    window.addEventListener('unload', () => context.editSystem().unlock());
+    window.addEventListener('unload', () => context.systems.edits.unlock());
     window.addEventListener('resize', this.resize);
 
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
     const prerequisites = l10n.initAsync();
 
     return this._initPromise = prerequisites
@@ -106,8 +106,8 @@ export class UiSystem extends AbstractSystem {
               e.stopImmediatePropagation();
               e.preventDefault();
             }
-            const imagerySystem = context.imagerySystem();
-            const storageSystem = context.storageSystem();
+            const imagerySystem = context.systems.imagery;
+            const storageSystem = context.systems.storage;
             const previousBackground = imagerySystem.findSource(storageSystem.getItem('background-last-used-toggle'));
             if (previousBackground) {
               const currentBackground = imagerySystem.baseLayerSource();
@@ -194,7 +194,7 @@ if (this._didRender) return;  // one time only
 this.didRender = true;
 
     const context = this.context;
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
 
     container
       .attr('lang', l10n.localeCode())
@@ -204,7 +204,7 @@ this.didRender = true;
     container
       .call(uiFullScreen(context));
 
-    const map = context.mapSystem();
+    const map = context.systems.map;
     map.redrawEnabled = false;  // don't draw until we've set zoom/lat/long
 
     container
@@ -431,8 +431,8 @@ this.didRender = true;
 
 
     // What to show first?
-    const editSystem = context.editSystem();
-    const urlHash = context.urlHashSystem();
+    const editSystem = context.systems.edits;
+    const urlHash = context.systems.urlhash;
     const startWalkthrough = urlHash.initialHashParams.get('walkthrough') === 'true';
 
     if (startWalkthrough) {
@@ -443,7 +443,7 @@ this.didRender = true;
 
     } else {
 // uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew
-//      if (context.storageSystem().getItem('sawRapidSplash')) {
+//      if (context.systems.storage.getItem('sawRapidSplash')) {
        container.call(uiRapidWhatsNew(context));    // Show "Whats New"
 //      } else {
 //        container.call(uiRapidSplash(context));      // Show "Welcome to Rapid"
@@ -470,7 +470,7 @@ this.didRender = true;
   resize(offset) {
     const context = this.context;
     const container = context.container();
-    const map = context.mapSystem();
+    const map = context.systems.map;
 
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
@@ -528,7 +528,7 @@ this.didRender = true;
 
   togglePanes(showPane) {
     const context = this.context;
-    const l10n = context.localizationSystem();
+    const l10n = context.systems.l10n;
     const container = context.container();
 
     let hidePanes = container.selectAll('.map-pane.shown');
@@ -614,7 +614,7 @@ this.didRender = true;
       .operations(operations);
 
     // render the menu
-    context.mapSystem().overlay.call(this.editMenu);
+    context.systems.map.overlay.call(this.editMenu);
   }
 
 

@@ -16,7 +16,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
  */
 export function validationAlmostJunction(context) {
   const type = 'almost_junction';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   const EXTEND_TH_METERS = 5;
   const WELD_TH_METERS = 0.75;
@@ -41,7 +41,7 @@ export function validationAlmostJunction(context) {
     if (!isHighway(entity)) return [];
     if (entity.isDegenerate()) return [];
 
-    const tree = context.editSystem().tree();
+    const tree = context.systems.edits.tree();
     const extendableNodeInfos = findConnectableEndNodesByExtension(entity);
 
     let issues = [];

@@ -17,8 +17,8 @@ const MAX_ISSUES = 1000;
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
-  const validator = context.validationSystem();
-  const prefs = context.storageSystem();
+  const validator = context.systems.validator;
+  const prefs = context.systems.storage;
   const section = uiSection(sectionID, context)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)
@@ -38,7 +38,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
-    const center = context.mapSystem().center();
+    const center = context.systems.map.center();
     const graph = context.graph();
 
     // sort issues by distance away from the center of the map
@@ -220,7 +220,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     });
   });
 
-  context.mapSystem().on('draw',
+  context.systems.map.on('draw',
     debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;

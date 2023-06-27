@@ -8,7 +8,7 @@ import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
 
 
 export function uiRapidFeatureInspector(context, keybinding) {
-  const rapid = context.rapidSystem();
+  const rapid = context.systems.rapid;
   const showPowerUser = rapid.showPowerUser;
   const ACCEPT_FEATURES_LIMIT = showPowerUser ? Infinity : 50;
   let _datum;
@@ -19,7 +19,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
     if (gpxInUrl) return false;
 
-    const annotations = context.editSystem().peekAllAnnotations();
+    const annotations = context.systems.edits.peekAllAnnotations();
     const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');
     return aiFeatureAccepts.length >= ACCEPT_FEATURES_LIMIT;
   }

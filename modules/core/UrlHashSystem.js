@@ -113,9 +113,9 @@ export class UrlHashSystem extends AbstractSystem {
     if (this._startPromise) return this._startPromise;
 
     const prerequisites = Promise.all([
-      this.context.localizationSystem().startAsync(),
-      this.context.editSystem().startAsync(),
-      this.context.mapSystem().startAsync(),
+      this.context.systems.l10n.startAsync(),
+      this.context.systems.edits.startAsync(),
+      this.context.systems.map.startAsync(),
     ]);
 
     return this._startPromise = prerequisites
@@ -143,7 +143,7 @@ export class UrlHashSystem extends AbstractSystem {
 
     this._prevHash = null;
 
-    this.context.editSystem().on('change', this.deferredUpdateTitle);
+    this.context.systems.edits.on('change', this.deferredUpdateTitle);
     this.context.on('modechange', this.deferredUpdateAll);
     window.addEventListener('hashchange', this.parseHash);
 
@@ -165,7 +165,7 @@ export class UrlHashSystem extends AbstractSystem {
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
 
-    this.context.editSystem().off('change', this.deferredUpdateTitle);
+    this.context.systems.edits.off('change', this.deferredUpdateTitle);
     this.context.off('modechange', this.deferredUpdateAll);
     window.removeEventListener('hashchange', this.parseHash);
   }
@@ -257,8 +257,8 @@ export class UrlHashSystem extends AbstractSystem {
     if (!this.doUpdateTitle) return;
 
     const context = this.context;
-    const l10n = context.localizationSystem();
-    const editSystem = context.editSystem();
+    const l10n = context.systems.l10n;
+    const editSystem = context.systems.edits;
     const changeCount = editSystem.difference().summary().size;
 
     // Currently only support OSM ids

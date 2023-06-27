@@ -1,7 +1,7 @@
 describe('MapSystem', () => {
   let _container, _mapSystem;
 
-  class MockOn {   // an event emitter, mocks .on()
+  class MockEventEmitter {   // just mocks .on()
     constructor() { }
     on() { return this; }
   }
@@ -19,41 +19,36 @@ describe('MapSystem', () => {
     tHtml()       { return ''; }
   }
 
-  class MockScene {
-    constructor() { }
-    on() { return this; }
-  }
-
   class MockRenderer {
     constructor(context) {
       this.context = context;
-      this.scene = new MockScene();
+      this.scene = new MockEventEmitter();
     }
     resize() {}
     render() {}
+    on() { return this; }
     deferredRender() {}
     setTransformAsync(t) {
       this.context.projection.transform(t);
       return Promise.resolve(t);
     }
-    on() { return this; }
   }
 
   class MockContext {
     constructor()   {
       this.services = {};
+      this.systems = {
+        edits:   new MockEventEmitter(),
+        filters: new MockEventEmitter(),
+        imagery: true,
+        l10n:    new MockLocalizationSystem(),
+        storage: new MockStorageSystem(),
+        urlhash: new MockEventEmitter()
+      };
       this.projection = new sdk.Projection();
-      this._localizationSystem = new MockLocalizationSystem();
-      this._storageSystem = new MockStorageSystem();
-      this._mockOn = new MockOn();
     }
-    container()           { return _container; }
-    localizationSystem()  { return this._localizationSystem; }
-    storageSystem()       { return this._storageSystem; }
-    keybinding()          { return this._mockOn; }
-    editSystem()          { return this._mockOn; }
-    filterSystem()        { return this._mockOn; }
-    urlHashSystem()       { return this._mockOn; }
+    container()   { return _container; }
+    keybinding()  { return new MockEventEmitter(); }
   }
 
 

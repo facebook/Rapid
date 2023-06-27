@@ -42,7 +42,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     this._enabled = true;
     this._selection = selection;
 
-    this.context.mapSystem().on('draw', this.render);
+    this.context.systems.map.on('draw', this.render);
     this.context.on('modechange', this.render);
   }
 
@@ -58,7 +58,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     this._enabled = false;
     this._selection = d3_select(null);
 
-    this.context.mapSystem().off('draw', this.render);
+    this.context.systems.map.off('draw', this.render);
     this.context.off('modechange', this.render);
   }
 
@@ -241,7 +241,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     const d = new Date(timestamp);
     if (isNaN(d.getTime())) return context.t('info_panels.history.unknown');
 
-    const localeCode = context.localizationSystem().localeCode();
+    const localeCode = context.systems.l10n.localeCode();
     return d.toLocaleString(localeCode, options);
   }
 

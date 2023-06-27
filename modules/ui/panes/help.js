@@ -8,7 +8,7 @@ import { helpHtml } from '../intro/helper';
 
 
 export function uiPaneHelp(context) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   const docSections = [
     ['help', [
@@ -347,13 +347,13 @@ export function uiPaneHelp(context) {
       d3_event.preventDefault();
       if (context.inIntro) return;
       context.container().call(uiIntro(context));
-      context.ui().togglePanes();
+      context.systems.ui.togglePanes();
     }
 
 
     function clickShortcuts(d3_event) {
       d3_event.preventDefault();
-      context.container().call(context.ui().shortcuts, true);
+      context.container().call(context.systems.ui.shortcuts, true);
     }
 
     let toc = content   // table of contents

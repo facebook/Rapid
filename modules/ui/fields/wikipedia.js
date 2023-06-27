@@ -18,7 +18,7 @@ export function uiFieldWikipedia(context, uifield) {
   let _tags;
 
   let _dataWikipedia = [];
-  const dataLoaderSystem = context.dataLoaderSystem();
+  const dataLoaderSystem = context.systems.data;
   dataLoaderSystem.getDataAsync('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
@@ -143,7 +143,7 @@ export function uiFieldWikipedia(context, uifield) {
 
 
   function defaultLanguageInfo(skipEnglishFallback) {
-    const langCode = context.localizationSystem().languageCode().toLowerCase();
+    const langCode = context.systems.l10n.languageCode().toLowerCase();
 
     for (let i in _dataWikipedia) {
       let d = _dataWikipedia[i];
@@ -248,7 +248,7 @@ export function uiFieldWikipedia(context, uifield) {
           });
           return graph;
         },
-        context.editSystem().undoAnnotation()
+        context.systems.edits.undoAnnotation()
       );
 
       // do not dispatch.call('change') here, because entity_editor

@@ -69,7 +69,7 @@ export class EditSystem extends AbstractSystem {
 
     this.reset();
 
-    const storage = this.context.storageSystem();
+    const storage = this.context.systems.storage;
     const prerequisites = storage.initAsync();
 
     return this._initPromise = prerequisites
@@ -435,7 +435,7 @@ export class EditSystem extends AbstractSystem {
   //  1. Start the walkthrough.
   //  2. Get to a "free editing" tutorial step
   //  3. Make your edits to the walkthrough map
-  //  4. In your browser dev console run:  `context.editSystem().toIntroGraph()`
+  //  4. In your browser dev console run:  `context.systems.edits.toIntroGraph()`
   //  5. This outputs stringified JSON to the browser console
   //  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
   toIntroGraph() {
@@ -587,6 +587,9 @@ export class EditSystem extends AbstractSystem {
   //
   fromJSON(json, loadChildNodes) {
     const context = this.context;
+    const rapidSystem = context.systems.rapid;
+    const mapSystem = context.systems.map;
+
     const baseGraph = this.base();   // The initial unedited graph
     const hist = JSON.parse(json);
     let loadComplete = true;
@@ -615,7 +618,7 @@ export class EditSystem extends AbstractSystem {
       this._tree.rebase(baseEntities, true);
 
       // When we restore a modified way, we also need to fetch any missing
-      // childnodes that would normally have been downloaded with it.. #2142
+      // childnodes that would normally have been downloaded with it.. iD#2142
       if (loadChildNodes) {
         const osm = context.services.osm;
         const baseWays = baseEntities.filter(entity => entity.type === 'way');
@@ -624,7 +627,7 @@ export class EditSystem extends AbstractSystem {
 
         if (missing.length && osm) {
           loadComplete = false;
-          context.mapSystem().redrawEnabled = false;
+          mapSystem.redrawEnabled = false;
 
           const loading = uiLoading(context).blocking(true);
           context.container().call(loading);
@@ -640,7 +643,7 @@ export class EditSystem extends AbstractSystem {
                 const graphs = this._stack.map(s => s.graph);
                 missing = utilArrayDifference(missing, visibleIDs);
                 baseGraph.rebase(visibles, graphs, true);   // force = true
-                this._tree.rebase(visibles, true);               // force = true
+                this._tree.rebase(visibles, true);          // force = true
               }
 
               // fetch older versions of nodes that were deleted..
@@ -651,7 +654,7 @@ export class EditSystem extends AbstractSystem {
 
             if (err || !missing.length) {
               loading.close();
-              context.mapSystem().redrawEnabled = true;
+              mapSystem.redrawEnabled = true;
               this.emit('change');
               this.emit('restore');
             }
@@ -684,8 +687,7 @@ export class EditSystem extends AbstractSystem {
       }
 
       // restore Rapid sources
-      if (s.annotation && s.annotation.type === 'rapid_accept_feature') {
-        const rapidSystem = context.rapidSystem();
+      if (rapidSystem && s.annotation?.type === 'rapid_accept_feature') {
         const sourceTag = s.annotation.source;
         rapidSystem.sources.add('mapwithai');      // always add 'mapwithai'
         if (sourceTag && /^esri/.test(sourceTag)) {
@@ -706,7 +708,7 @@ export class EditSystem extends AbstractSystem {
 
     const transform = this._stack[this._index].transform;
     if (transform) {
-      context.mapSystem().transform(transform);
+      mapSystem.transform(transform);
     }
 
     if (loadComplete) {
@@ -732,13 +734,13 @@ export class EditSystem extends AbstractSystem {
     // bail out if another browser tab has locked the mutex, or changes exist that the user may want to restore.
     if (!this._mutex.locked() || this._hasRestorableChanges) return;
 
-    const prefs = this.context.storageSystem();
+    const storage = this.context.systems.storage;
     const json = this.toJSON();
     if (json) {
-      const success = prefs.setItem(this._historyKey(), json);
+      const success = storage.setItem(this._historyKey(), json);
       if (!success) this.emit('storage_error');
     } else {
-      prefs.removeItem(this._historyKey());
+      storage.removeItem(this._historyKey());
     }
   }
 
@@ -751,19 +753,19 @@ export class EditSystem extends AbstractSystem {
     if (!this._mutex.locked()) return;
 
     this._hasRestorableChanges = false;
-    const prefs = this.context.storageSystem();
-    prefs.removeItem(this._historyKey());
+    const storage = this.context.systems.storage;
+    storage.removeItem(this._historyKey());
 
     // clear the changeset metadata associated with the saved history
-    prefs.removeItem('comment');
-    prefs.removeItem('hashtags');
-    prefs.removeItem('source');
+    storage.removeItem('comment');
+    storage.removeItem('hashtags');
+    storage.removeItem('source');
   }
 
 
   savedHistoryJSON() {
-    const prefs = this.context.storageSystem();
-    return prefs.getItem(this._historyKey());
+    const storage = this.context.systems.storage;
+    return storage.getItem(this._historyKey());
   }
 
 

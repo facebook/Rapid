@@ -3,7 +3,7 @@ import { uiModal } from './modal';
 
 export function uiRestore(context) {
   return function(selection) {
-    if (!context.editSystem().hasRestorableChanges()) return;
+    if (!context.systems.edits.hasRestorableChanges()) return;
 
     let modalSelection = uiModal(selection, true);
 
@@ -32,7 +32,7 @@ export function uiRestore(context) {
       .append('button')
       .attr('class', 'restore')
       .on('click', () => {
-        context.editSystem().restore();
+        context.systems.edits.restore();
         modalSelection.remove();
       });
 
@@ -50,7 +50,7 @@ export function uiRestore(context) {
       .append('button')
       .attr('class', 'reset')
       .on('click', () => {
-        context.editSystem().clearSaved();
+        context.systems.edits.clearSaved();
         modalSelection.remove();
       });
 

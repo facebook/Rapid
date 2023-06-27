@@ -46,7 +46,7 @@ export function uiIntro(context, skipToRapid) {
 
 
   function intro(selection) {
-    const dataLoaderSystem = context.dataLoaderSystem();
+    const dataLoaderSystem = context.systems.data;
     Promise.all([
       dataLoaderSystem.getDataAsync('intro_rapid_graph'),
       dataLoaderSystem.getDataAsync('intro_graph')
@@ -72,14 +72,14 @@ export function uiIntro(context, skipToRapid) {
 
 
   function startIntro(selection) {
-    const edits = context.editSystem();
-    const imagery = context.imagerySystem();
-    const l10n = context.localizationSystem();
+    const edits = context.systems.edits;
+    const imagery = context.systems.imagery;
+    const l10n = context.systems.l10n;
     const mapwithai = context.services.mapwithai;
     const osm = context.services.osm;
-    const prefs = context.storageSystem();
-    const rapid = context.rapidSystem();
-    const urlhash = context.urlHashSystem();
+    const prefs = context.systems.storage;
+    const rapid = context.systems.rapid;
+    const urlhash = context.systems.urlhash;
 
     urlhash.disable();
     context.inIntro = true;
@@ -88,7 +88,7 @@ export function uiIntro(context, skipToRapid) {
     // Save current state
     const original = {
       hash: window.location.hash,
-      transform: context.mapSystem().transform(),
+      transform: context.systems.map.transform(),
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
@@ -106,7 +106,7 @@ export function uiIntro(context, skipToRapid) {
     context.scene().onlyLayers(['background', 'osm', 'labels']);
 
     // Show sidebar and disable the sidebar resizing button
-    context.ui().sidebar.expand();
+    context.systems.ui.sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
     // Disable OSM
@@ -212,7 +212,7 @@ export function uiIntro(context, skipToRapid) {
       imagery.baseLayerSource(original.baseLayer);
       original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
       imagery.brightness = original.brightness;
-      context.mapSystem().transform(original.transform);
+      context.systems.map.transform(original.transform);
       window.location.replace(original.hash);
 
       // Restore Edits

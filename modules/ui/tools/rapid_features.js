@@ -12,7 +12,7 @@ export function uiToolRapidFeatures(context) {
   const rapidFeaturesToggleKey = '⇧' + context.t('map_data.layers.ai-features.key');
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
-  const showPowerUser = context.rapidSystem().showPowerUser;
+  const showPowerUser = context.systems.rapid.showPowerUser;
   let debouncedUpdate;
   let _wrap;
 
@@ -98,7 +98,7 @@ export function uiToolRapidFeatures(context) {
         toggleFeatures();
       });
 
-    context.mapSystem().on('draw', debouncedUpdate);
+    context.systems.map.on('draw', debouncedUpdate);
     context.on('modechange', update);
 
     _wrap = selection
@@ -113,7 +113,7 @@ export function uiToolRapidFeatures(context) {
   tool.uninstall = function () {
     debouncedUpdate.cancel();
     context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
-    context.mapSystem().off('draw', debouncedUpdate);
+    context.systems.map.off('draw', debouncedUpdate);
     context.off('modechange', update);
     _wrap = null;
   };

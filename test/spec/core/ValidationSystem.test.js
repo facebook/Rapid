@@ -31,31 +31,26 @@ describe('ValidationSystem', () => {
     constructor()   {
       this.initialHashParams = {};
       this.projection = new sdk.Projection();
-
-      this._localizationSystem = new MockLocalizationSystem();
-      this._mapSystem = new MockMapSystem();
-      this._presetSystem = new MockPresetSystem();
-      this._storageSystem = new MockStorageSystem();
-      this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
-      this._editSystem = new Rapid.EditSystem(this);
-      this.graph = this._editSystem.graph;
-      this.hasEntity = (id) => this._editSystem.graph().hasEntity(id);
+      this.systems = {
+        data:     new Rapid.DataLoaderSystem(this),
+        edits:    new Rapid.EditSystem(this),
+        l10n:     new MockLocalizationSystem(),
+        map:      new MockMapSystem(),
+        presets:  new MockPresetSystem(),
+        rapid:    true,
+        storage:  new MockStorageSystem()
+      };
+      this.graph = this.systems.edits.graph;
+      this.hasEntity = (id) => this.systems.edits.graph().hasEntity(id);
      }
-
-    dataLoaderSystem()    { return this._dataLoaderSystem; }
-    editSystem()          { return this._editSystem; }
-    localizationSystem()  { return this._localizationSystem; }
-    mapSystem()           { return this._mapSystem; }
-    presetSystem()        { return this._presetSystem; }
-    storageSystem()       { return this._storageSystem; }
-    selectedIDs()         { return []; }
+    selectedIDs() { return []; }
     on() {}
   }
 
   const context = new MockContext();
 
   before(() => {
-    const editSystem = context.editSystem();
+    const editSystem = context.systems.edits;
     _validator = new Rapid.ValidationSystem(context);
 
     return editSystem.initAsync()
@@ -80,7 +75,7 @@ describe('ValidationSystem', () => {
 
   it('validateAsync returns a Promise, fulfilled when the validation has completed', () => {
     const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, 0], tags: { building: 'house', phone: '555-1212' } });
-    context.editSystem().perform( Rapid.actionAddEntity(n1) );
+    context.systems.edits.perform( Rapid.actionAddEntity(n1) );
 
     const prom = _validator.validateAsync();
     expect(prom).to.be.a('promise');

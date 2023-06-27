@@ -7,7 +7,7 @@ import { uiToggle } from './toggle';
 
 
 export function uiDisclosure(context, key, expandedDefault) {
-  const prefs = context.storageSystem();
+  const prefs = context.systems.storage;
   const dispatch = d3_dispatch('toggled');
   let _expanded;
   let _label = utilFunctor('');
@@ -47,7 +47,7 @@ export function uiDisclosure(context, key, expandedDefault) {
     hideToggle.selectAll('.hide-toggle-text')
       .html(_label());
 
-    const isRTL = context.localizationSystem().isRTL();
+    const isRTL = context.systems.l10n.isRTL();
     const icon = _expanded ? 'down' : isRTL ? 'backward' : 'forward';
     hideToggle.selectAll('.hide-toggle-icon > use')
       .attr('xlink:href', `#rapid-icon-${icon}`);

@@ -3,7 +3,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapFeatures(context) {
-  const filterSystem = context.filterSystem();
+  const filterSystem = context.systems.filters;
   const section = uiSection('map-features', context)
     .label(context.tHtml('map_data.map_features'))
     .disclosureContent(renderDisclosureContent)

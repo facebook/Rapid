@@ -55,7 +55,7 @@ export class ImproveOsmService extends AbstractService {
   init() {
     this.reset();
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     dataLoaderSystem.getDataAsync('qa_data')
       .then(d => this._impOsmData = d.improveOSM);
   }

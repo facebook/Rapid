@@ -3,7 +3,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationHelpRequest(context) {
   const type = 'help_request';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
 
   let validation = function checkFixmeTag(entity) {
@@ -13,7 +13,7 @@ export function validationHelpRequest(context) {
     if (entity.version === undefined) return [];
 
     if (entity.v !== undefined) {
-      const baseEntity = context.editSystem().base().hasEntity(entity.id);
+      const baseEntity = context.systems.edits.base().hasEntity(entity.id);
       // don't flag fixmes added by the user on existing features
       if (!baseEntity || !baseEntity.tags.fixme) return [];
     }

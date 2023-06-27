@@ -16,15 +16,15 @@ describe('uiSectionRawTagEditor', () => {
   class MockContext {
     constructor()   {
       this.services = {};
-      this._localizationSystem = new MockLocalizationSystem();
-      this._storageSystem = new MockStorageSystem();
+      this.systems = {
+        l10n:     new MockLocalizationSystem(),
+        storage:  new MockStorageSystem()
+      };
     }
-    localizationSystem()  { return this._localizationSystem; }
-    storageSystem()       { return this._storageSystem; }
-    cleanTagKey(val)      { return val; }
-    cleanTagValue(val)    { return val; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    cleanTagKey(val)    { return val; }
+    cleanTagValue(val)  { return val; }
+    t()                 { return ''; }
+    tHtml()             { return ''; }
   }
 
   const context = new MockContext();

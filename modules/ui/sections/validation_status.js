@@ -5,7 +5,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionValidationStatus(context) {
-  const validator = context.validationSystem();
+  const validator = context.systems.validator;
 
   const section = uiSection('issues-status', context)
     .shouldDisplay(sectionShouldDisplay)
@@ -18,7 +18,7 @@ export function uiSectionValidationStatus(context) {
   }
 
   function getOptions() {
-    const prefs = context.storageSystem();
+    const prefs = context.systems.storage;
     return {
       what: prefs.getItem('validate-what') || 'edited',
       where: prefs.getItem('validate-where') || 'all'
@@ -153,7 +153,7 @@ export function uiSectionValidationStatus(context) {
       });
     }
 
-    if (opts.what === 'edited' && context.editSystem().difference().summary().size === 0) {
+    if (opts.what === 'edited' && context.systems.edits.difference().summary().size === 0) {
       messageType = 'no_edits';
     }
 
@@ -166,7 +166,7 @@ export function uiSectionValidationStatus(context) {
     window.requestIdleCallback(section.reRender);
   });
 
-  context.mapSystem().on('draw', debounce(() => {
+  context.systems.map.on('draw', debounce(() => {
     window.requestIdleCallback(section.reRender);
   }, 1000));
 

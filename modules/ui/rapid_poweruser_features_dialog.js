@@ -4,11 +4,11 @@ import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
-  const prefs = context.storageSystem();
+  const prefs = context.systems.storage;
   const featureFlags = [
     'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits'
   ];
-  const rapid = context.rapidSystem();
+  const rapid = context.systems.rapid;
   const showPowerUser = rapid.showPowerUser;
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
@@ -51,7 +51,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
         }
       }
       context.enter('browse');   // return to browse mode (in case something was selected)
-      context.mapSystem().immediateRedraw();
+      context.systems.map.immediateRedraw();
     }
   }
 

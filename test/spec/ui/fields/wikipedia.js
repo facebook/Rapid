@@ -10,12 +10,13 @@ describe('uiFieldWikipedia', () => {
 
   class MockContext {
     constructor()   {
-      this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
       this.services = {
         wikidata: new MockWikidataService(this)
       };
+      this.systems = {
+        data: new Rapid.DataLoaderSystem(this)
+      };
     }
-    dataLoaderSystem()  { return this._dataLoaderSystem; }
     cleanTagKey(val)    { return val; }
     cleanTagValue(val)  { return val; }
     container()         { return selection; }

@@ -14,8 +14,8 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationMismatchedGeometry(context) {
     const type = 'mismatched_geometry';
-    const l10n = context.localizationSystem();
-    const presetSystem = context.presetSystem();
+    const l10n = context.systems.l10n;
+    const presetSystem = context.systems.presets;
 
     function tagSuggestingLineIsArea(entity) {
         if (entity.type !== 'way' || entity.isClosed()) return null;

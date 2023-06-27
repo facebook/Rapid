@@ -82,7 +82,7 @@ export function uiImproveOsmComments(context) {
     const d = new Date(s * 1000); // timestamp is served in seconds, date takes ms
     if (isNaN(d.getTime())) return null;
 
-    const localeCode = context.localizationSystem().localeCode();
+    const localeCode = context.systems.l10n.localeCode();
     return d.toLocaleDateString(localeCode, options);
   }
 

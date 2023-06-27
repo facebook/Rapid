@@ -182,7 +182,7 @@ export class PixiRenderer extends EventEmitter {
     const hoverData = target?.data;
     const modeID = this.context.mode()?.id;
     if (modeID !== 'select' && modeID !== 'select-osm') {
-      this.context.ui().sidebar.hover(hoverData ? [hoverData] : []);
+      this.context.systems.ui.sidebar.hover(hoverData ? [hoverData] : []);
     }
 
     this.scene.clearClass('hovered');
@@ -399,7 +399,7 @@ export class PixiRenderer extends EventEmitter {
     const pixiProjection = this.pixiProjection;
     const currTransform = context.projection.transform();
     const pixiTransform = pixiProjection.transform();
-    const effectiveZoom = context.mapSystem().effectiveZoom();
+    const effectiveZoom = context.systems.map.effectiveZoom();
 
     let offset;
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset

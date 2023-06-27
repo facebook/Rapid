@@ -2,7 +2,7 @@ import { uiTooltip } from './tooltip';
 
 
 export function uiFeatureInfo(context) {
-  const filterSystem = context.filterSystem();
+  const filterSystem = context.systems.filters;
 
   function update(selection) {
     const stats = filterSystem.stats();
@@ -34,7 +34,7 @@ export function uiFeatureInfo(context) {
           tooltipBehavior.hide();
           d3_event.preventDefault();
           // open the Map Data pane
-          context.ui().togglePanes(context.container().select('.map-panes .map-data-pane'));
+          context.systems.ui.togglePanes(context.container().select('.map-panes .map-data-pane'));
         });
     }
 

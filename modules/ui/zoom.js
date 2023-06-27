@@ -7,14 +7,14 @@ import { utilKeybinding } from '../util/keybinding';
 
 
 export function uiZoom(context) {
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   const zooms = [{
     id: 'zoom-in',
     icon: 'rapid-icon-plus',
     title: l10n.t('zoom.in'),
     action: zoomIn,
-    isDisabled: () => !context.mapSystem().canZoomIn(),
+    isDisabled: () => !context.systems.map.canZoomIn(),
     disabledTitle: l10n.t('zoom.disabled.in'),
     key: '+'
   }, {
@@ -22,7 +22,7 @@ export function uiZoom(context) {
     icon: 'rapid-icon-minus',
     title: l10n.t('zoom.out'),
     action: zoomOut,
-    isDisabled: () => !context.mapSystem().canZoomOut(),
+    isDisabled: () => !context.systems.map.canZoomOut(),
     disabledTitle: l10n.t('zoom.disabled.out'),
     key: '-'
   }];
@@ -30,25 +30,25 @@ export function uiZoom(context) {
   function zoomIn(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.mapSystem().zoomIn();
+    context.systems.map.zoomIn();
   }
 
   function zoomOut(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.mapSystem().zoomOut();
+    context.systems.map.zoomOut();
   }
 
   function zoomInFurther(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.mapSystem().zoomInFurther();
+    context.systems.map.zoomInFurther();
   }
 
   function zoomOutFurther(d3_event) {
     if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.mapSystem().zoomOutFurther();
+    context.systems.map.zoomOutFurther();
   }
 
   return function render(selection) {
@@ -69,7 +69,7 @@ export function uiZoom(context) {
         if (!d.isDisabled()) {
           d.action(d3_event);
         } else if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          context.ui().flash
+          context.systems.ui.flash
             .duration(2000)
             .iconName(`#${d.icon}`)
             .iconClass('disabled')
@@ -107,6 +107,6 @@ export function uiZoom(context) {
 
     updateButtonStates();
 
-    context.mapSystem().on('draw', updateButtonStates);
+    context.systems.map.on('draw', updateButtonStates);
   };
 }

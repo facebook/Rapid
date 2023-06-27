@@ -6,7 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationPrivateData(context) {
   const type = 'private_data';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
 
   // assume that some buildings are private
   const privateBuildingValues = new Set([

@@ -12,8 +12,8 @@ import { utilHighlightEntities, utilNoAuto } from '../util';
 
 export function uiFeatureList(context) {
   const nominatim = context.services.nominatim;
-  const presetSystem = context.presetSystem();
-  const l10n = context.localizationSystem();
+  const presetSystem = context.systems.presets;
+  const l10n = context.systems.l10n;
   let _geocodeResults;
 
 
@@ -52,7 +52,7 @@ export function uiFeatureList(context) {
 
     context
       .on('modechange', clearSearch);
-//    context.mapSystem()
+//    context.systems.map
 //     .on('drawn.feature-list', mapDrawn);
 
     context.keybinding()
@@ -105,7 +105,7 @@ export function uiFeatureList(context) {
 
     function features() {
       const graph = context.graph();
-      const centerLoc = context.mapSystem().centerLoc();
+      const centerLoc = context.systems.map.centerLoc();
       const q = search.property('value').toLowerCase();
       let result = [];
 
@@ -332,11 +332,11 @@ export function uiFeatureList(context) {
       d3_event.preventDefault();
 
       if (d.location) {
-        context.mapSystem().centerZoomEase([d.location[1], d.location[0]], 19);
+        context.systems.map.centerZoomEase([d.location[1], d.location[0]], 19);
 
       } else if (d.entity) {
         utilHighlightEntities([d.id], false, context);
-        context.mapSystem().zoomToEase(d.entity);
+        context.systems.map.zoomToEase(d.entity);
         context.enter('select-osm', { selectedIDs: [d.entity.id] });
       } else {
         // download, zoom to, and select the entity with the given ID

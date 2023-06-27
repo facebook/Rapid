@@ -258,7 +258,7 @@ export function uiFieldWikidata(context, uifield) {
                     });
                     return graph;
                 },
-                context.editSystem().undoAnnotation()
+                context.systems.edits.undoAnnotation()
             );
 
             // do not dispatch.call('change') here, because entity_editor

@@ -36,7 +36,7 @@ export function operationDowngrade(context, selectedIDs) {
   function downgradeTypeForEntityID(entityID) {
     const graph = context.graph();
     const entity = graph.entity(entityID);
-    const presetSystem = context.presetSystem();
+    const presetSystem = context.systems.presets;
     const preset = presetSystem.match(entity, graph);
 
     if (!preset || preset.isFallback()) return null;
@@ -83,7 +83,7 @@ export function operationDowngrade(context, selectedIDs) {
       return graph;
     }, operation.annotation());
 
-    context.validationSystem().validate();
+    context.systems.validator.validate();
 
     // refresh the select mode to enable the delete operation
     context.enter('select-osm', { selectedIDs: selectedIDs });

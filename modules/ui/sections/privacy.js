@@ -4,7 +4,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionPrivacy(context) {
-  const prefs = context.storageSystem();
+  const prefs = context.systems.storage;
   const section = uiSection('preferences-third-party', context)
     .label(context.tHtml('preferences.privacy.title'))
     .disclosureContent(renderDisclosureContent);

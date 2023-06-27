@@ -46,7 +46,7 @@ export class OsmoseService extends AbstractService {
   init() {
     this.reset();
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     dataLoaderSystem.getDataAsync('qa_data')
       .then(d => {
         this._osmoseData.icons = d.osmose.icons;
@@ -147,7 +147,7 @@ export class OsmoseService extends AbstractService {
     // Issue details only need to be fetched once
     if (issue.elems !== undefined) return Promise.resolve(issue);
 
-    const localeCode = this.context.localizationSystem().localeCode();
+    const localeCode = this.context.systems.l10n.localeCode();
     const url = `${OSMOSE_API}/issue/${issue.id}?langs=${localeCode}`;
     const handleResponse = (data) => {
       // Associated elements used for highlighting
@@ -176,7 +176,7 @@ export class OsmoseService extends AbstractService {
     // For now, we only do this one time at init.
     // Todo: support switching locales
     let stringData = {};
-    const localeCode = this.context.localizationSystem().localeCode();
+    const localeCode = this.context.systems.l10n.localeCode();
     this._osmoseStrings.set(localeCode, stringData);
 
     // Using multiple individual item + class requests to reduce fetched data size
@@ -232,7 +232,7 @@ export class OsmoseService extends AbstractService {
    * @return  stringdata
    */
   getStrings(itemType, locale) {
-    locale = locale || this.context.localizationSystem().localeCode();
+    locale = locale || this.context.systems.l10n.localeCode();
 
     const stringData = this._osmoseStrings.get(locale) ?? {};
     return stringData[itemType] ?? {};

@@ -61,7 +61,7 @@ export class SelectOsmMode extends AbstractMode {
     if (!entityIDs.length) return false;
 
     const context = this.context;
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
 
     // For this mode, keep only the OSM data
     let selectedIDs = [];
@@ -88,7 +88,7 @@ export class SelectOsmMode extends AbstractMode {
     // Compute the total extent of selected items
     this.extent = utilTotalExtent(selectedIDs, context.graph());
 
-    context.filterSystem().forceVisible(selectedIDs);
+    context.systems.filters.forceVisible(selectedIDs);
 
     // setup which operations are valid for this selection
     this.operations.forEach(o => {
@@ -114,7 +114,7 @@ export class SelectOsmMode extends AbstractMode {
       }
     });
 
-    context.ui().closeEditMenu();   // remove any displayed menu
+    context.systems.ui.closeEditMenu();   // remove any displayed menu
 
     this.keybinding = utilKeybinding('select');
     this.keybinding
@@ -130,10 +130,10 @@ export class SelectOsmMode extends AbstractMode {
     d3_select(document)
       .call(this.keybinding);
 
-    context.ui().sidebar
+    context.systems.ui.sidebar
       .select(selectedIDs, this._newFeature);
 
-    context.editSystem()
+    context.systems.edits
       // this was probably to style the elements
       // .on('change', this._selectElements)    // reselect, in case relation members were removed or added
       .on('undone', this._undoOrRedo)
@@ -166,7 +166,7 @@ export class SelectOsmMode extends AbstractMode {
       // The user added this relation but didn't edit it at all, so just delete it
       const deleteAction = actionDeleteRelation(entity.id, true /* don't delete untagged members */);
       context.perform(deleteAction, context.t('operations.delete.annotation.relation'));
-      context.validationSystem().validate();
+      context.systems.validator.validate();
     }
 
 
@@ -183,16 +183,16 @@ export class SelectOsmMode extends AbstractMode {
     });
     this.operations = [];
 
-    context.ui().closeEditMenu();
-    context.ui().sidebar.hide();
-    context.filterSystem().forceVisible([]);
+    context.systems.ui.closeEditMenu();
+    context.systems.ui.sidebar.hide();
+    context.systems.filters.forceVisible([]);
 
     if (this.keybinding) {
       d3_select(document).call(this.keybinding.unbind);
       this.keybinding = null;
     }
 
-    context.editSystem()
+    context.systems.edits
       // .off('change', this._selectElements)
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
@@ -216,7 +216,7 @@ export class SelectOsmMode extends AbstractMode {
    */
   _undoOrRedo() {
     const context = this.context;
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
     let selectedIDs = [];
 
     for (const [datumID, datum] of this._selectedData) {
@@ -277,7 +277,7 @@ export class SelectOsmMode extends AbstractMode {
 
     const node = context.entity(way.first());
     context.enter('select-osm', { selectedIDs: [node.id] });
-    context.mapSystem().centerEase(node.loc);
+    context.systems.map.centerEase(node.loc);
   }
 
 
@@ -294,7 +294,7 @@ export class SelectOsmMode extends AbstractMode {
 
     const node = context.entity(way.last());
     context.enter('select-osm', { selectedIDs: [node.id] });
-    context.mapSystem().centerEase(node.loc);
+    context.systems.map.centerEase(node.loc);
   }
 
 
@@ -324,7 +324,7 @@ export class SelectOsmMode extends AbstractMode {
     if (nextIndex !== -1) {
       const node = context.entity(way.nodes[nextIndex]);
       context.enter('select-osm', { selectedIDs: [node.id] });
-      context.mapSystem().centerEase(node.loc);
+      context.systems.map.centerEase(node.loc);
     }
   }
 
@@ -355,7 +355,7 @@ export class SelectOsmMode extends AbstractMode {
     if (nextIndex !== -1) {
       const node = context.entity(way.nodes[nextIndex]);
       context.enter('select-osm', { selectedIDs: [node.id] });
-      context.mapSystem().centerEase(node.loc);
+      context.systems.map.centerEase(node.loc);
     }
   }
 

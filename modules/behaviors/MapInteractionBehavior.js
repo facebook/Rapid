@@ -59,7 +59,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.lastDown = null;
     this.gesture = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('click', this._click);
     eventManager.on('keydown', this._keydown);
     eventManager.on('pointerdown', this._pointerdown);
@@ -81,7 +81,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.lastDown = null;
     this.gesture = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.off('click', this._click);
     eventManager.off('keydown', this._keydown);
     eventManager.off('pointerdown', this._pointerdown);
@@ -104,7 +104,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (activeElement !== 'BODY') return;
 
     const context = this.context;
-    const map = context.mapSystem();
+    const map = context.systems.map;
     const EASE = 100;  // milliseconds
 
     if (e.shiftKey) {
@@ -161,7 +161,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const x2 = x - p1[0] * k2;
     const y2 = y - p1[1] * k2;
 
-    this.context.mapSystem().transformEase({ x: x2, y: y2, k: k2 });
+    this.context.systems.map.transformEase({ x: x2, y: y2, k: k2 });
   }
 
 
@@ -175,7 +175,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (this.lastDown) return;   // a pointer is already down
 
     // If shift is pressed it's a lasso, not a map drag
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     if (eventManager.modifierKeys.has('Shift')) return;
 
     const down = this._getEventData(e);
@@ -219,7 +219,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
       const tNew = { x: t.x + newX, y: t.y + newY, k: t.k };
 
-      this.context.mapSystem().transform(tNew);
+      this.context.systems.map.transform(tNew);
     }
   }
 
@@ -237,7 +237,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.lastDown = null;
     this.gesture = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.setCursor('inherit');
   }
 
@@ -253,7 +253,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.lastDown = null;
     this.gesture = null;
 
-    const eventManager = this.context.mapSystem().renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
     eventManager.setCursor('inherit');
   }
 
@@ -294,7 +294,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
       tNew = { x: t.x - dX, y: t.y - dY, k: t.k };
     }
 
-    this.context.mapSystem().transform(tNew);
+    this.context.systems.map.transform(tNew);
   }
 
 }

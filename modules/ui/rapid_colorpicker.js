@@ -72,7 +72,7 @@ export function uiRapidColorpicker(context, parentModal) {
 
 
   function renderPopup(selection, forNode) {
-    const isRTL = context.localizationSystem().isRTL();
+    const isRTL = context.systems.l10n.isRTL();
     const dataset = forNode.__data__;
     const rect = forNode.getBoundingClientRect();
     const popWidth = 180;
@@ -133,7 +133,7 @@ export function uiRapidColorpicker(context, parentModal) {
       .merge(colorlist);
 
     let colorItems = colorlist.selectAll('.colorpicker-option')
-      .data(context.rapidSystem().colors);
+      .data(context.systems.rapid.colors);
 
     // enter
     let colorItemsEnter = colorItems.enter()

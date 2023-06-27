@@ -31,7 +31,7 @@ export function uiTopToolbar(context) {
     tools.push('spacer', undoRedo, save);
 
     // Undocumented feature 'support_download_osc'
-    const hash = context.urlHashSystem().initialHashParams;
+    const hash = context.systems.urlhash.initialHashParams;
     if (hash.get('support_download_osc') === 'true') {
       tools.push(downloadOsc);
     }

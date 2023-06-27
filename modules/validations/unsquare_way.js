@@ -6,7 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationUnsquareWay(context) {
   const type = 'unsquare_way';
-  const l10n = context.localizationSystem();
+  const l10n = context.systems.l10n;
   const DEFAULT_DEG_THRESHOLD = 5;   // see also issues.js
 
   // use looser epsilon for detection to reduce warnings of buildings that are essentially square already
@@ -53,7 +53,7 @@ export function validationUnsquareWay(context) {
 
 
     // user-configurable square threshold
-    const storageSystem = context.storageSystem();
+    const storageSystem = context.systems.storage;
     const storedDegreeThreshold = storageSystem.getItem('validate-square-degrees');
     const degreeThreshold = isNaN(storedDegreeThreshold) ? DEFAULT_DEG_THRESHOLD : parseFloat(storedDegreeThreshold);
 

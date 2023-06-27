@@ -8,13 +8,12 @@ describe('PresetSystem', () => {
 
   class MockContext {
     constructor()   {
-      this._dataLoaderSystem = new Rapid.DataLoaderSystem(this);
-      this._locationSystem = new Rapid.LocationSystem(this);
-      this._storageSystem = new MockStorageSystem();
-     }
-    dataLoaderSystem() { return this._dataLoaderSystem; }
-    locationSystem()   { return this._locationSystem; }
-    storageSystem()    { return this._storageSystem; }
+      this.systems = {
+        data:      new Rapid.DataLoaderSystem(this),
+        locations: new Rapid.LocationSystem(this),
+        storage:   new MockStorageSystem()
+      };
+    }
   }
 
   const context = new MockContext();
@@ -68,7 +67,7 @@ describe('PresetSystem', () => {
         residential: { tags: { highway: 'residential' }, geometry: ['line'] },
         park: { tags: { leisure: 'park' }, geometry: ['point', 'area'] }
       };
-      context.dataLoaderSystem()._cachedData.preset_presets = testPresets;
+      context.systems.data._cachedData.preset_presets = testPresets;
     });
 
     it('returns a collection containing presets matching a geometry and tags', () => {
@@ -127,7 +126,7 @@ describe('PresetSystem', () => {
         'natural/tree_row': { tags: { 'natural': 'tree_row' }, geometry: ['line'] },
         'natural/wood': { tags: { 'natural': 'wood' }, geometry: ['point', 'area'] }
       };
-      context.dataLoaderSystem()._cachedData.preset_presets = testPresets;
+      context.systems.data._cachedData.preset_presets = testPresets;
     });
 
     it('includes keys for presets with area geometry', () => {
@@ -233,7 +232,7 @@ describe('PresetSystem', () => {
           tags: { highway: 'pedestrian', area: 'yes' }
         }
       };
-      context.dataLoaderSystem()._cachedData.preset_presets = testPresets;
+      context.systems.data._cachedData.preset_presets = testPresets;
     });
 
 

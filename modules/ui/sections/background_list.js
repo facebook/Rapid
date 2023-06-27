@@ -14,9 +14,9 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundList(context) {
-  const l10n = context.localizationSystem();
-  const imagerySystem = context.imagerySystem();
-  const storageSystem = context.storageSystem();
+  const l10n = context.systems.l10n;
+  const imagerySystem = context.systems.imagery;
+  const storageSystem = context.systems.storage;
 
   const section = uiSection('background-list', context)
     .label(l10n.t('background.backgrounds'))
@@ -117,7 +117,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', (d3_event) => {
         d3_event.preventDefault();
-        context.ui().info.toggle('background');
+        context.systems.ui.info.toggle('background');
       });
 
     panelLabelEnter
@@ -139,7 +139,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', (d3_event) => {
         d3_event.preventDefault();
-        context.ui().info.toggle('location');
+        context.systems.ui.info.toggle('location');
       });
 
     locPanelLabelEnter
@@ -201,7 +201,7 @@ export function uiSectionBackgroundList(context) {
 
   function drawListItems(layerList, type, change, filter) {
     const sources = imagerySystem
-      .sources(context.mapSystem().extent(), context.mapSystem().zoom())
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(filter);
 
     const layerLinks = layerList.selectAll('li')
@@ -336,7 +336,7 @@ export function uiSectionBackgroundList(context) {
 
   function getBackgrounds(filter) {
     return imagerySystem
-      .sources(context.mapSystem().extent(), context.mapSystem().zoom())
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(filter);
   }
 
@@ -371,7 +371,7 @@ export function uiSectionBackgroundList(context) {
   imagerySystem
     .on('imagerychange', () => _backgroundList.call(updateLayerSelections));
 
-  context.mapSystem()
+  context.systems.map
     .on('draw', debounce(() => {
         // layers in-view may have changed due to map move
         window.requestIdleCallback(section.reRender);

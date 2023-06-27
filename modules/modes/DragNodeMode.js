@@ -65,9 +65,9 @@ export class DragNodeMode extends AbstractMode {
 
     if (!this._wasMidpoint) {
       // Bail out if the node is connected to something hidden.
-      const hasHidden = context.filterSystem().hasHiddenConnections(entity, context.graph());
+      const hasHidden = context.systems.filters.hasHiddenConnections(entity, context.graph());
       if (hasHidden) {
-        context.ui().flash
+        context.systems.ui.flash
           .duration(4000)
           .iconName('#rapid-icon-no')
           .label(context.t('modes.drag_node.connected_to_hidden'))();
@@ -109,7 +109,7 @@ export class DragNodeMode extends AbstractMode {
       .on('end', this._end)
       .on('cancel', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .on('undone', this._cancel)
       .on('redone', this._cancel);
 
@@ -138,7 +138,7 @@ export class DragNodeMode extends AbstractMode {
       .off('end', this._end)
       .off('cancel', this._cancel);
 
-    context.editSystem()
+    context.systems.edits
       .off('undone', this._cancel)
       .off('redone', this._cancel);
   }
@@ -214,7 +214,7 @@ export class DragNodeMode extends AbstractMode {
       loc = projection.invert(adjustedCoord);
     }
 
-    const locationSystem = context.locationSystem();
+    const locationSystem = context.systems.locations;
     if (locationSystem.blocksAt(loc).length) {  // editing is blocked here
       this._cancel();
       return;
@@ -338,7 +338,7 @@ export class DragNodeMode extends AbstractMode {
     if (!this.dragNode) return false;
 
     const graph = this.context.graph();
-    const presetSystem = this.context.presetSystem();
+    const presetSystem = this.context.systems.presets;
     return this.dragNode.geometry(graph) !== 'vertex' ||
       (target.geometry(graph) === 'vertex' || presetSystem.allowsVertex(target, graph));
   }

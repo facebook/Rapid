@@ -63,7 +63,7 @@ export class NsiService extends AbstractService {
       'nsi_trees': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json'
     };
 
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
     const fileMap = dataLoaderSystem.fileMap;
     for (const [k, url] of Object.entries(sources)) {
       if (!fileMap.has(k)) {
@@ -73,7 +73,7 @@ export class NsiService extends AbstractService {
 
     // Note: `init` is called immediately after the presetsystem has started loading its data.
     // We expect to chain onto an unfulfilled promise here.
-    const presetSystem = this.context.presetSystem();
+    const presetSystem = this.context.systems.presets;
     presetSystem.initAsync()
       .then(() => this._loadNsiPresetsAsync())
       .then(() => this._loadNsiDataAsync())
@@ -331,7 +331,7 @@ export class NsiService extends AbstractService {
   // _loadNsiPresetsAsync()
   //  Returns a Promise fulfilled when the presets have been downloaded and merged into Rapid.
   _loadNsiPresetsAsync() {
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
 
     return (
       Promise.all([
@@ -343,7 +343,7 @@ export class NsiService extends AbstractService {
         // The preset json schema doesn't include it, but the Rapid code still uses it
         Object.values(vals[0].presets).forEach(preset => preset.suggestion = true);
 
-        const presetSystem = this.context.presetSystem();
+        const presetSystem = this.context.systems.presets;
         presetSystem.merge({ presets: vals[0].presets, featureCollection: vals[1] });
       })
     );
@@ -354,7 +354,7 @@ export class NsiService extends AbstractService {
   //  Returns a Promise fulfilled when the other data have been downloaded and processed
   //
   _loadNsiDataAsync() {
-    const dataLoaderSystem = this.context.dataLoaderSystem();
+    const dataLoaderSystem = this.context.systems.data;
 
     return (
       Promise.all([
@@ -393,7 +393,7 @@ matcher.itemLocation = new Map();
 // We definitely need this, but don't need full geojson, just { properties: { area: xxx }}
 matcher.locationSets = new Map();
 
-const locationSystem = this.context.locationSystem();
+const locationSystem = this.context.systems.locations;
 for (const category of Object.values(this._nsi.data)) {
   for (const item of category.items ?? []) {
     if (matcher.itemLocation.has(item.id)) continue;   // we've seen item id already - shouldn't be possible?
@@ -509,7 +509,7 @@ matcher.locationIndex = (bbox) => {
     // Only try this if we do a preset match and find nothing else remarkable about that building.
     // For example, a way with `building=yes` + `name=Westfield` may be a Westfield department store.
     // But a way with `building=yes` + `name=Westfield` + `public_transport=station` is a train station for a town named "Westfield"
-    const presetSystem = this.context.presetSystem();
+    const presetSystem = this.context.systems.presets;
     const preset = presetSystem.matchTags(tags, 'area');
     if (buildingPreset[preset.id]) {
       alternate.add('building/yes');

@@ -7,7 +7,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionOverlayList(context) {
-  const imagerySystem = context.imagerySystem();
+  const imagerySystem = context.systems.imagery;
   const section = uiSection('overlay-list', context)
     .label(context.tHtml('background.overlays'))
     .disclosureContent(renderDisclosureContent);
@@ -48,7 +48,7 @@ export function uiSectionOverlayList(context) {
 
   function drawListItems(layerList, type, change, filter) {
     let sources = imagerySystem
-      .sources(context.mapSystem().extent(), context.mapSystem().zoom())
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(filter);
 
     let layerLinks = layerList.selectAll('li')
@@ -117,7 +117,7 @@ export function uiSectionOverlayList(context) {
   imagerySystem
     .on('imagerychange', () => section.reRender);
 
-  context.mapSystem()
+  context.systems.map
     .on('draw', debounce(() => {
       // layers in-view may have changed due to map move
       window.requestIdleCallback(section.reRender);
