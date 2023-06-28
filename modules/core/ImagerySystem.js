@@ -180,40 +180,35 @@ export class ImagerySystem extends AbstractSystem {
    * @param  q   Object containing key/value pairs of the current query parameters
    */
   _hashchange(q) {
-    if (!this._initPromise) return;  // called too early
+    // background
+    let baseLayer;
+    if (typeof q.background === 'string') {
+      baseLayer = this.findSource(q.background);
+    }
+    if (!baseLayer) {
+      baseLayer = this.chooseDefaultSource();
+    }
+    this.baseLayerSource(baseLayer);
 
-    this._initPromise  // after imagery loaded
-      .then(() => {
-        // background
-        let baseLayer;
-        if (typeof q.background === 'string') {
-          baseLayer = this.findSource(q.background);
-        }
-        if (!baseLayer) {
-          baseLayer = this.chooseDefaultSource();
-        }
-        this.baseLayerSource(baseLayer);
+    // overlays
+    let toEnableIDs = new Set();
+    if (typeof q.overlays === 'string') {
+      toEnableIDs = new Set(q.overlays.split(','));
+    }
+    for (const overlayLayer of this.overlayLayerSources()) {  // for each enabled overlay layer
+      if (overlayLayer.isLocatorOverlay()) continue;
+      if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
+      this.toggleOverlayLayer(overlayLayer);           // make disabled
+    }
 
-        // overlays
-        let toEnableIDs = new Set();
-        if (typeof q.overlays === 'string') {
-          toEnableIDs = new Set(q.overlays.split(','));
-        }
-        for (const overlayLayer of this.overlayLayerSources()) {  // for each enabled overlay layer
-          if (overlayLayer.isLocatorOverlay()) continue;
-          if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
-          this.toggleOverlayLayer(overlayLayer);           // make disabled
-        }
-
-        // offset
-        let x, y;
-        if (typeof q.offset === 'string') {
-          [x, y] = q.offset.replace(/;/g, ',').split(',').map(Number);
-        }
-        if (isNaN(x) || !isFinite(x)) x = 0;
-        if (isNaN(y) || !isFinite(y)) y = 0;
-        this.offset = geoMetersToOffset([x, y]);
-      });
+    // offset
+    let x, y;
+    if (typeof q.offset === 'string') {
+      [x, y] = q.offset.replace(/;/g, ',').split(',').map(Number);
+    }
+    if (isNaN(x) || !isFinite(x)) x = 0;
+    if (isNaN(y) || !isFinite(y)) y = 0;
+    this.offset = geoMetersToOffset([x, y]);
   }
 
 
