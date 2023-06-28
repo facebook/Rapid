@@ -24,14 +24,14 @@ export function uiSourceSwitch(context) {
     context.enter('browse');
     context.systems.edits.clearSaved();   // remove saved history
 
-    context.resetAsync()                 // remove stored data
+    context.resetAsync()   // remove stored data
       .then(() => {
         d3_select(this)
           .html(isLive ? context.tHtml('source_switch.live') : context.tHtml('source_switch.dev'))
           .classed('live', isLive)
           .classed('chip', isLive);
 
-        osm.switch(isLive ? keys[0] : keys[1]);  // switch connection (warning: dispatches 'change' event)
+        return osm.switchAsync(isLive ? keys[0] : keys[1]);  // switch connection (warning: dispatches 'change' event)
       });
   }
 

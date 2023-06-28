@@ -38,27 +38,40 @@ export class MapWithAIService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
-    this.reset();
-
-    // allocate a special dataset for the rapid intro graph.
-    const datasetID = 'rapid_intro_graph';
-    const graph = new Graph();
-    const tree = new Tree(graph);
-    const cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
-    const ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
-    this._datasets[datasetID] = ds;
+  initAsync() {
+    return this.resetAsync()
+      .then(() => {
+        // allocate a special dataset for the rapid intro graph.
+        const datasetID = 'rapid_intro_graph';
+        const graph = new Graph();
+        const tree = new Tree(graph);
+        const cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
+        const ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+        this._datasets[datasetID] = ds;
+      });
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
     for (const handle of this._deferred) {
       window.cancelIdleCallback(handle);
       this._deferred.delete(handle);
@@ -72,7 +85,9 @@ export class MapWithAIService extends AbstractService {
       ds.tree = new Tree(ds.graph);
       ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
     }
+    return Promise.resolve();
   }
+
 
 
   graph(datasetID) {

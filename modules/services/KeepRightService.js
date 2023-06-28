@@ -66,23 +66,33 @@ export class KeepRightService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
-    this.reset();
+  initAsync() {
+    return this.resetAsync();
+  }
 
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
+  startAsync() {
     const dataLoaderSystem = this.context.systems.data;
-    dataLoaderSystem.getDataAsync('keepRight')
+    return dataLoaderSystem.getDataAsync('keepRight')
       .then(d => this._krData = d);
   }
 
 
   /**
-   * reset
+   * resetAsync
    * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
    */
-  reset() {
+  resetAsync() {
     if (this._cache) {
       Object.values(this._cache.inflightTile).forEach(controller => this._abortRequest(controller));
     }
@@ -95,6 +105,8 @@ export class KeepRightService extends AbstractService {
       closed: {},
       rtree: new RBush()
     };
+
+    return Promise.resolve();
   }
 
 

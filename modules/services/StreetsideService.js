@@ -58,19 +58,31 @@ export class StreetsideService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
-    this.reset();
+  initAsync() {
+    return this.resetAsync();
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
     if (this._cache.inflight) {
       for (const inflight of this._cache.inflight.values()) {
         inflight.controller.abort();
@@ -86,6 +98,8 @@ export class StreetsideService extends AbstractService {
       leaders:   [],
       metadataPromise:  null
     };
+
+    return Promise.resolve();
   }
 
 

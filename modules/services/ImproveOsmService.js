@@ -49,23 +49,33 @@ export class ImproveOsmService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
-    this.reset();
+  initAsync() {
+    return this.resetAsync();
+  }
 
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
+  startAsync() {
     const dataLoaderSystem = this.context.systems.data;
-    dataLoaderSystem.getDataAsync('qa_data')
+    return dataLoaderSystem.getDataAsync('qa_data')
       .then(d => this._impOsmData = d.improveOSM);
   }
 
 
   /**
-   * reset
+   * resetAsync
    * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
    */
-  reset() {
+  resetAsync() {
     if (this._cache) {
       for (const requests of Object.values(this._cache.inflightTile)) {
         this._abortRequest(requests);
@@ -80,6 +90,7 @@ export class ImproveOsmService extends AbstractService {
       closed: {},
       rtree: new RBush()
     };
+    return Promise.resolve();
   }
 
 

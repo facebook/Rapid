@@ -35,7 +35,7 @@ describe('NominatimService', () => {
     });
 
     nominatim = new Rapid.NominatimService(new MockContext());
-    nominatim.init();
+    return nominatim.initAsync();
   });
 
 

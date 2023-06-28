@@ -15,7 +15,7 @@ describe('StreetsideService', () => {
       .dimensions([[0,0], [64, 64]]);
 
     _streetside = new Rapid.StreetsideService(new MockContext());
-    _streetside.init();
+    return _streetside.initAsync();
   });
 
 
@@ -24,7 +24,7 @@ describe('StreetsideService', () => {
   });
 
 
-  describe('#init', () => {
+  describe('#initAsync', () => {
     it('initializes cache', () => {
       const cache = _streetside._cache;
       expect(cache).to.have.property('bubbles');
@@ -34,12 +34,12 @@ describe('StreetsideService', () => {
     });
   });
 
-  describe('#reset', () => {
+  describe('#resetAsync', () => {
     it('resets cache', () => {
       _streetside._cache.bubbles.set('foo', { id: 'foo' });
 
-      _streetside.reset();
-      expect(_streetside._cache.bubbles.has('foo')).to.be.false;
+      return _streetside.resetAsync()
+        .then(() => expect(_streetside._cache.bubbles.has('foo')).to.be.false);
     });
   });
 

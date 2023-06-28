@@ -114,9 +114,9 @@ export class Context extends EventEmitter {
    * @return {Promise} Promise resolved when Rapid is ready
    */
   initAsync() {
-    // --------------------------------------------------
-    // 1. Construct all the core classes
-    // --------------------------------------------------
+    // -------------------------------
+    // Construct all the core classes
+    // -------------------------------
     for (const [id, System] of systems.available) {
       this.systems[id] = new System(this);
     }
@@ -185,10 +185,10 @@ export class Context extends EventEmitter {
     }
 
 
-    // --------------------------------------------------
-    // 2. Initialize all the core classes
-    // --------------------------------------------------
-    // i.e. Call `initAsync()` for everything.
+    // ---------------------------------
+    // Initialize all the core classes
+    // ---------------------------------
+
     // First grab a few things from the url hash we may need to know about
     if (this.initialHashParams.presets) {
       const presetIDs = this.initialHashParams.presets.split(',').map(s => s.trim()).filter(Boolean);
@@ -199,29 +199,19 @@ export class Context extends EventEmitter {
       this.systems.l10n.preferredLocaleCodes = overrideLocale;
     }
 
-    const coreSystems = Object.values(this.systems);
-    const initPromises = coreSystems.map(system => system.initAsync());
+    const allSystems = Object.values(this.systems);
+    const allServices = Object.values(this.services);
 
-    return Promise.all(initPromises)
+    return Promise.resolve()
+      .then(() => Promise.all( allSystems.map(s => s.initAsync()) ))
+      .then(() => Promise.all( allServices.map(s => s.initAsync()) ))
       .then(() => {
-        for (const service of Object.values(this.services)) {
-          service.init();
-        }
-        // Setup the connection if we have preauth credentials to use
+        // Setup the osm connection if we have preauth credentials to use
         const osm = this.services.osm;
-        if (osm && this._preauth) {
-          osm.switch(this._preauth);
-        }
+        return (osm && this._preauth) ? osm.switchAsync(this._preauth) : Promise.resolve();
       })
-      // --------------------------------------------------
-      // 3. Start all the core systems
-      // --------------------------------------------------
-      .then(() => {
-        const startPromises = coreSystems.map(system => {
-          return system.autoStart ? system.startAsync() : Promise.resolve();
-        });
-        return Promise.all(startPromises);
-      });
+      .then(() => Promise.all( allSystems.map(s => s.autoStart ? s.startAsync() : Promise.resolve()) ))
+      .then(() => Promise.all( allServices.map(s => s.autoStart ? s.startAsync() : Promise.resolve()) ));
   }
 
 
@@ -233,17 +223,17 @@ export class Context extends EventEmitter {
   resetAsync() {
     this.debouncedSave.cancel();
 
-    for (const service of Object.values(this.services)) {
-      service.reset();
-    }
+    const allSystems = Object.values(this.systems);
+    const allServices = Object.values(this.services);
 
-    const coreSystems = Object.values(this.systems);
-    const resetPromises = coreSystems.map(system => system.resetAsync());
-    return Promise.all(resetPromises);
+    return Promise.resolve()
+      .then(() => Promise.all( allSystems.map(s => s.resetAsync()) ))
+      .then(() => Promise.all( allServices.map(s => s.resetAsync()) ));
   }
 
+
   // not a system yet, but should be one
-  keybinding()          { return this._keybinding; }
+  keybinding()  { return this._keybinding; }
 
 
   /* Connection */

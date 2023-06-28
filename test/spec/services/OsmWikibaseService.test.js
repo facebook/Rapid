@@ -4,7 +4,7 @@ describe('OsmWikibaseService', () => {
   beforeEach(() => {
     fetchMock.reset();
     wikibase = new Rapid.OsmWikibaseService();
-    wikibase.init();
+    return wikibase.initAsync();
   });
 
 

@@ -17,11 +17,11 @@ describe('KartaviewService', () => {
       .dimensions([[0,0], [64, 64]]);
 
     _kartaview = new Rapid.KartaviewService(new MockContext());
-    _kartaview.init();
+    return _kartaview.initAsync();
   });
 
 
-  describe('#init', () => {
+  describe('#initAsync', () => {
     it('initializes cache', () => {
       const cache = _kartaview._cache;
       expect(cache).to.have.property('images');
@@ -31,14 +31,16 @@ describe('KartaviewService', () => {
     });
   });
 
-  describe('#reset', () => {
+  describe('#resetAsync', () => {
     it('resets cache and selected image', () => {
       _kartaview._cache.images.set('foo', { id: 'foo' });
       _kartaview._selectedImage = 'foo';
 
-      _kartaview.reset();
-      expect(_kartaview._cache.images.has('foo')).to.be.false;
-      expect(_kartaview._selectedImage).to.be.null;
+      return _kartaview.resetAsync()
+        .then(() => {
+          expect(_kartaview._cache.images.has('foo')).to.be.false;
+          expect(_kartaview._selectedImage).to.be.null;
+        });
     });
   });
 

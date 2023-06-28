@@ -32,10 +32,31 @@ export class VectorTileService extends AbstractService {
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  reset() {
+  initAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
     for (const source of this._cache.values()) {
       for (const controller of Object.values(source.inflight)) {
         this._abortRequest(controller);
@@ -43,6 +64,8 @@ export class VectorTileService extends AbstractService {
     }
 
     this._cache.clear();
+
+    return Promise.resolve();
   }
 
 

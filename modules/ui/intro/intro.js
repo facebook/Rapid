@@ -15,6 +15,8 @@ import { uiIntroStartEditing } from './start_editing';
 import { uiIntroRapid } from './rapid';
 
 
+const INTRO_IMAGERY = 'EsriWorldImageryClarity';
+
 const chapterUi = {
   welcome: uiIntroWelcome,
   navigation: uiIntroNavigation,
@@ -39,7 +41,6 @@ const chapterFlow = [
 
 
 export function uiIntro(context, skipToRapid) {
-  const INTRO_IMAGERY = 'EsriWorldImageryClarity';
   let _introGraph = {};
   let _rapidGraph = {};
   let _currChapter;
@@ -66,7 +67,7 @@ export function uiIntro(context, skipToRapid) {
         }
       }
 
-      selection.call(startIntro, skipToRapid);
+      selection.call(startIntro);
     });
   }
 
@@ -111,7 +112,7 @@ export function uiIntro(context, skipToRapid) {
 
     // Disable OSM
     if (osm) {
-      osm.toggle(false).reset();
+      osm.toggle(false);
     }
 
     // Load walkthrough data
@@ -159,6 +160,7 @@ export function uiIntro(context, skipToRapid) {
     const storedProgress = prefs.getItem('walkthrough_progress') || '';
     let progress = storedProgress.split(';').filter(Boolean);
 
+    // When completing each chapter..
     let chapters = chapterFlow.map((chapter, i) => {
       let s = chapterUi[chapter](context, curtain)
         .on('done', () => {
@@ -197,10 +199,6 @@ export function uiIntro(context, skipToRapid) {
       }
       rapid.datasets.delete('rapid_intro_graph');
 
-      if (mapwithai) {
-        mapwithai.toggle(true);
-      }
-
       curtain.disable();
       navwrap.remove();
       context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
@@ -215,19 +213,24 @@ export function uiIntro(context, skipToRapid) {
       context.systems.map.transform(original.transform);
       window.location.replace(original.hash);
 
-      // Restore Edits
-      edits.reset();
-      if (original.edits) {
-        edits.fromJSON(original.edits, true);
-      }
+      // Restore edits and re-enable services.
+      context.resetAsync()
+        .then(() => {
+          if (original.edits) {
+            edits.fromJSON(original.edits, true);
+          }
 
-      // Enable OSM
-      if (osm) {
-        osm.toggle(true).reset();
-      }
+          if (osm) {
+            osm.toggle(true);
+          }
 
-      context.inIntro = false;
-      urlhash.enable();
+          if (mapwithai) {
+            mapwithai.toggle(true);
+          }
+
+          context.inIntro = false;
+          urlhash.enable();
+        });
     });
 
 

@@ -42,19 +42,31 @@ export class EsriService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
-    this.reset();
+  initAsync() {
+    return this.resetAsync();
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
     for (const ds of Object.values(this._datasets)) {
       if (ds.cache.inflight) {
         Object.values(ds.cache.inflight).forEach(controller => this._abortRequest(controller));
@@ -63,7 +75,10 @@ export class EsriService extends AbstractService {
       ds.tree = new Tree(ds.graph);
       ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
     }
+
+    return Promise.resolve();
   }
+
 
 
   graph(datasetID)  {

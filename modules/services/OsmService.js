@@ -96,19 +96,31 @@ export class OsmService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
-    this.reset();
+  initAsync() {
+    return this.resetAsync();
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
     for (const handle of this._deferred) {
       window.cancelIdleCallback(handle);
       this._deferred.delete(handle);
@@ -129,8 +141,40 @@ export class OsmService extends AbstractService {
     this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
     this._userCache = { toLoad: {}, user: {} };
     this._changeset = {};
+
+    return Promise.resolve();
   }
 
+
+  /**
+   * switchAsync
+   * Switch connection and credentials , and reset
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  switchAsync(newOptions) {
+    this._urlroot = newOptions.url;
+
+    // Copy the existing options, but omit 'access_token'.
+    // (if we did preauth, access_token won't work on a different server)
+    const oldOptions = utilObjectOmit(this._oauth.options(), 'access_token');
+    this._oauth.options(Object.assign(oldOptions, newOptions));
+
+    return this.resetAsync()
+      .then(() => {
+        this.userChangesets(function() {});  // eagerly load user details/changesets
+        this.emit('authchange');
+      });
+  }
+
+
+  toggle(val) {
+    this._off = !val;
+  }
+
+
+  isChangesetInflight() {
+    return !!this._changeset.inflight;
+  }
 
   get connectionID() {
     return this._connectionID;
@@ -717,8 +761,8 @@ export class OsmService extends AbstractService {
   // Load notes from the API in tiles
   // GET /api/0.6/notes?bbox=
   loadNotes(projection, noteOptions) {
-    noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
     if (this._off) return;
+    noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
 
     const cache = this._noteCache;
     const that = this;
@@ -868,32 +912,6 @@ export class OsmService extends AbstractService {
         }
       }, options);
     }
-  }
-
-
-  switch(newOptions) {
-    this._urlroot = newOptions.url;
-
-    // Copy the existing options, but omit 'access_token'.
-    // (if we did preauth, access_token won't work on a different server)
-    let oldOptions = utilObjectOmit(this._oauth.options(), 'access_token');
-    this._oauth.options(Object.assign(oldOptions, newOptions));
-
-    this.reset();
-    this.userChangesets(function() {});  // eagerly load user details/changesets
-    this.emit('authchange');
-    return this;
-  }
-
-
-  toggle(val) {
-    this._off = !val;
-    return this;
-  }
-
-
-  isChangesetInflight() {
-    return !!this._changeset.inflight;
   }
 
 

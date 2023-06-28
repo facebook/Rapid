@@ -56,7 +56,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * initAsync
    * Called after all core objects have been constructed.
-   * @return {Promise} Promise resolved when this system has completed initialization
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
     if (this._initPromise) return this._initPromise;
@@ -83,7 +83,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * startAsync
    * Called after all core objects have been initialized.
-   * @return {Promise} Promise resolved when this system has completed startup
+   * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
     return Promise.resolve();
@@ -93,7 +93,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * resetAsync
    * Called after completing an edit session to reset any internal state
-   * @return {Promise} Promise resolved when this system has completed resetting
+   * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
     this.reset();
@@ -442,7 +442,7 @@ export class EditSystem extends AbstractSystem {
     let nextID = { n: 0, r: 0, w: 0 };
     let permIDs = {};
     let graph = this.graph();
-    let result = new Map;   // Map(entityID -> Entity)
+    let result = new Map();   // Map(entityID -> Entity)
 
     // Copy base entities..
     for (const entity of graph.base.entities.values()) {
@@ -461,7 +461,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     // Swap ids in node and member lists..
-    for (let entity of result.values()) {
+    for (const entity of result.values()) {
       if (Array.isArray(entity.nodes)) {
         entity.nodes = entity.nodes.map(nodeID => {
           return permIDs[nodeID] ?? nodeID;
@@ -539,13 +539,13 @@ export class EditSystem extends AbstractSystem {
       }
 
       const item = {};
-      if (modified.length)      item.modified = modified;
-      if (deleted.length)       item.deleted = deleted;
-      if (s.imageryUsed)        item.imageryUsed = s.imageryUsed;
-      if (s.photosUsed)  item.photosUsed = s.photosUsed;
-      if (s.annotation)         item.annotation = s.annotation;
-      if (s.transform)          item.transform = s.transform;
-      if (s.selectedIDs)        item.selectedIDs = s.selectedIDs;
+      if (modified.length)  item.modified = modified;
+      if (deleted.length)   item.deleted = deleted;
+      if (s.imageryUsed)    item.imageryUsed = s.imageryUsed;
+      if (s.photosUsed)     item.photosUsed = s.photosUsed;
+      if (s.annotation)     item.annotation = s.annotation;
+      if (s.transform)      item.transform = s.transform;
+      if (s.selectedIDs)    item.selectedIDs = s.selectedIDs;
       stackData.push(item);
     }
 
@@ -602,7 +602,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     // Instantiate the modified entities
-    const modifiedEntities = new Map;  // Map(Entity.key -> Entity)
+    const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
     for (const e of hist.entities) {
       modifiedEntities.set(osmEntity.key(e), osmEntity(e));
     }
@@ -632,7 +632,7 @@ export class EditSystem extends AbstractSystem {
           const loading = uiLoading(context).blocking(true);
           context.container().call(loading);
 
-          var _childNodesLoaded = function(err, result) {
+          const _childNodesLoaded = function(err, result) {
             if (!err) {
               const visibleGroups = utilArrayGroupBy(result.data, 'visible');
               const visibles = visibleGroups.true || [];      // alive nodes

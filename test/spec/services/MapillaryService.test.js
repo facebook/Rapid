@@ -15,11 +15,11 @@ describe('MapillaryService', () => {
       .dimensions([[0,0], [64, 64]]);
 
     _mapillary = new Rapid.MapillaryService(new MockContext());
-    _mapillary.init();
+    return _mapillary.initAsync();
   });
 
 
-  describe('#init', () => {
+  describe('#initAsync', () => {
     it('initializes cache', () => {
       const cache = _mapillary._mlyCache;
       expect(cache).to.have.property('images');
@@ -31,14 +31,16 @@ describe('MapillaryService', () => {
   });
 
 
-  describe('#reset', () => {
+  describe('#resetAsync', () => {
     it('resets cache and selected image', () => {
       _mapillary._mlyCache.images.forImageID.foo = { id: 'foo' };
       _mapillary._mlyActiveImage = 'foo';
 
-      _mapillary.reset();
-      expect(_mapillary._mlyCache.images.forImageID).to.not.have.property('foo');
-      expect(_mapillary._mlyActiveImage).to.be.null;
+      return _mapillary.resetAsync()
+        .then(() => {
+          expect(_mapillary._mlyCache.images.forImageID).to.not.have.property('foo');
+          expect(_mapillary._mlyActiveImage).to.be.null;
+        });
     });
   });
 

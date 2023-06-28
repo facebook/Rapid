@@ -34,22 +34,38 @@ export class OsmWikibaseService extends AbstractService {
   }
 
 
+
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
+  initAsync() {
+    return Promise.resolve();
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
     this._debouncedRequest.cancel();
     Object.values(this._inflight).forEach(controller => controller.abort());
     this._inflight = {};
+
+    return Promise.resolve();
   }
 
 

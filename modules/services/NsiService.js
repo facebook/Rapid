@@ -48,10 +48,11 @@ export class NsiService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
+  initAsync() {
     // Add the sources to the dataloader so we can start downloading data.
     const sources = {
       'nsi_data': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/nsi.min.json',
@@ -71,10 +72,8 @@ export class NsiService extends AbstractService {
       }
     }
 
-    // Note: `init` is called immediately after the presetsystem has started loading its data.
-    // We expect to chain onto an unfulfilled promise here.
     const presetSystem = this.context.systems.presets;
-    presetSystem.initAsync()
+    return presetSystem.initAsync()
       .then(() => this._loadNsiPresetsAsync())
       .then(() => this._loadNsiDataAsync())
       .then(() => this.status = 'ok')
@@ -84,11 +83,24 @@ export class NsiService extends AbstractService {
       });
   }
 
+
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
    */
-  reset() {
+  startAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
+  resetAsync() {
+    return Promise.resolve();
   }
 
 
@@ -324,7 +336,6 @@ export class NsiService extends AbstractService {
 
     return changed ? { newTags: newTags, matched: null } : null;
   }
-
 
 
 

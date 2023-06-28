@@ -40,29 +40,39 @@ export class OsmoseService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
-    this.reset();
+  initAsync() {
+    return this.resetAsync();
+  }
 
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
+  startAsync() {
     const dataLoaderSystem = this.context.systems.data;
-    dataLoaderSystem.getDataAsync('qa_data')
+    return dataLoaderSystem.getDataAsync('qa_data')
       .then(d => {
         this._osmoseData.icons = d.osmose.icons;
         this._osmoseData.types = Object.keys(d.osmose.icons)
           .map(s => s.split('-')[0])
           .reduce((unique, item) => unique.indexOf(item) !== -1 ? unique : [...unique, item], []);
       })
-      .then(() => this.loadStringsAsync());
+      .then(() => this._loadStringsAsync());
   }
 
 
   /**
-   * reset
+   * resetAsync
    * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
    */
-  reset() {
+  resetAsync() {
     if (this._cache) {
       Object.values(this._cache.inflightTile).forEach(controller => this._abortRequest(controller));
     }
@@ -74,6 +84,8 @@ export class OsmoseService extends AbstractService {
       closed: {},
       rtree: new RBush()
     };
+
+    return Promise.resolve();
   }
 
 
@@ -165,11 +177,11 @@ export class OsmoseService extends AbstractService {
 
 
   /**
-   * loadStringsAsync
+   * _loadStringsAsync
    * Load the strings for the types of issues that we support
    * @return  Promise
    */
-  loadStringsAsync() {
+  _loadStringsAsync() {
     // Only need to cache strings for supported issue types
     const itemTypes = Object.keys(this._osmoseData.icons);
 

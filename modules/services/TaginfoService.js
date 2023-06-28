@@ -77,10 +77,21 @@ export class TaginfoService extends AbstractService {
 
 
   /**
-   * init
-   * Called one time after all core objects have been instantiated.
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
    */
-  init() {
+  initAsync() {
+    return Promise.resolve();
+  }
+
+
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
+  startAsync() {
     const langCode = this.context.systems.l10n.languageCode();
 
     // Fetch popular keys.  We'll exclude these from `values`
@@ -94,24 +105,35 @@ export class TaginfoService extends AbstractService {
       debounce: false,
       lang: langCode
     };
-    this.keys(params, (err, vals) => {
-      if (err) return;
-      vals.forEach(d => {
-        if (d.value === 'opening_hours') return;  // exception
-        this._popularKeys[d.value] = true;
+
+    return new Promise((resolve, reject) => {
+      this.keys(params, (err, results) => {
+        if (err) {
+          reject();
+        } else {
+          for (const d of results) {
+            if (d.value === 'opening_hours') continue;  // exception
+            this._popularKeys[d.value] = true;
+          }
+          resolve();
+        }
       });
+
     });
   }
 
 
   /**
-   * reset
+   * resetAsync
    * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
    */
-  reset() {
+  resetAsync() {
     this._debouncedRequest.cancel();
     Object.values(this._inflight).forEach(controller => controller.abort());
     this._inflight = {};
+
+    return Promise.resolve();
   }
 
 

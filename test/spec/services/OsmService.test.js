@@ -45,8 +45,8 @@ describe('OsmService', () => {
     });
 
     _osm = new Rapid.OsmService(new MockContext());
-    _osm.init();
-    _osm.switch({ url: 'https://www.openstreetmap.org' });
+    return _osm.initAsync()
+      .then(() => _osm.switchAsync({ url: 'https://www.openstreetmap.org' }));
   });
 
   afterEach(() => {
@@ -54,8 +54,8 @@ describe('OsmService', () => {
   });
 
 
-  function login() {
-    _osm.switch({
+  function loginAsync() {
+    return _osm.switchAsync({
       url: 'https://www.openstreetmap.org',
       client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
       client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
@@ -70,27 +70,20 @@ describe('OsmService', () => {
 
   describe('#connectionID', () => {
     it('changes the connectionID every time service is reset', () => {
-      const cid1 = _osm.connectionID;
-      _osm.reset();
-      const cid2 = _osm.connectionID;
-      expect(cid2).to.be.above(cid1);
+      const originalID = _osm.connectionID;
+      return _osm.resetAsync()
+        .then(() => expect(_osm.connectionID).to.be.above(originalID));
     });
 
     it('changes the connectionID every time service is switched', () => {
-      const cid1 = _osm.connectionID;
-      _osm.switch({ url: 'https://api06.dev.openstreetmap.org' });
-      const cid2 = _osm.connectionID;
-      expect(cid2).to.be.above(cid1);
+      const originalID = _osm.connectionID;
+      return _osm.switchAsync({ url: 'https://api06.dev.openstreetmap.org' })
+        .then(() => expect(_osm.connectionID).to.be.above(originalID) );
     });
   });
 
   describe('#changesetURL', () => {
     it('provides a changeset url', () => {
-      expect(_osm.changesetURL(2)).to.eql('https://www.openstreetmap.org/changeset/2');
-    });
-
-    it('allows secure _osms', () => {
-      _osm.switch({ url: 'https://www.openstreetmap.org' });
       expect(_osm.changesetURL(2)).to.eql('https://www.openstreetmap.org/changeset/2');
     });
   });
@@ -144,26 +137,25 @@ describe('OsmService', () => {
   });
 
 
-  describe('#reset', () => {
+  describe('#resetAsync', () => {
     it('resets cache', () => {
       _osm._tileCache.loaded['0,0,0'] = true;
-
-      _osm.reset();
-      expect(_osm._tileCache.loaded).to.not.have.property('0,0,0');
+      return _osm.resetAsync()
+        .then(() => expect(_osm._tileCache.loaded).to.not.have.property('0,0,0'));
     });
   });
 
 
-  describe('#switch', () => {
+  describe('#switchAsync', () => {
     it('changes the URL', () => {
-      _osm.switch({ url: 'https://example.com' });
-      expect(_osm.changesetURL(1)).to.equal('https://example.com/changeset/1');
+      return _osm.switchAsync({ url: 'https://example.com' })
+        .then(() => expect(_osm.changesetURL(1)).to.equal('https://example.com/changeset/1'));
     });
 
     it('emits a change event', () => {
       _osm.on('authchange', spy);
-      _osm.switch({ url: 'https://example.com' });
-      expect(spy).to.have.been.calledOnce;
+      return _osm.switchAsync({ url: 'https://example.com' })
+        .then(() => expect(spy).to.have.been.calledOnce);
     });
   });
 
@@ -204,17 +196,18 @@ describe('OsmService', () => {
       serverXHR.respondWith('GET', `https://www.openstreetmap.org${path}`,
         [400, { 'Content-Type': 'text/plain' }, 'Bad Request']);
 
-      login();
+      loginAsync()
+        .then(() => {
+          _osm.loadFromAPI(path, (err, xml) => {
+            expect(err).to.be.not.ok;
+            expect(typeof xml).to.eql('object');
+            expect(_osm.authenticated()).to.be.not.ok;
+            expect(fetchMock.called()).to.be.true;
+            done();
+          });
 
-      _osm.loadFromAPI(path, (err, xml) => {
-        expect(err).to.be.not.ok;
-        expect(typeof xml).to.eql('object');
-        expect(_osm.authenticated()).to.be.not.ok;
-        expect(fetchMock.called()).to.be.true;
-        done();
-      });
-
-      serverXHR.respond();
+          serverXHR.respond();
+        });
     });
 
 
@@ -227,16 +220,18 @@ describe('OsmService', () => {
       serverXHR.respondWith('GET', `https://www.openstreetmap.org${path}`,
         [401, { 'Content-Type': 'text/plain' }, 'Unauthorized']);
 
-      login();
-      _osm.loadFromAPI(path, (err, xml) => {
-        expect(err).to.be.not.ok;
-        expect(typeof xml).to.eql('object');
-        expect(_osm.authenticated()).to.be.not.ok;
-        expect(fetchMock.called()).to.be.true;
-        done();
-      });
+      loginAsync()
+        .then(() => {
+          _osm.loadFromAPI(path, (err, xml) => {
+            expect(err).to.be.not.ok;
+            expect(typeof xml).to.eql('object');
+            expect(_osm.authenticated()).to.be.not.ok;
+            expect(fetchMock.called()).to.be.true;
+            done();
+          });
 
-      serverXHR.respond();
+          serverXHR.respond();
+        });
     });
 
 
@@ -249,16 +244,18 @@ describe('OsmService', () => {
       serverXHR.respondWith('GET', `https://www.openstreetmap.org${path}`,
         [403, { 'Content-Type': 'text/plain' }, 'Forbidden']);
 
-      login();
-      _osm.loadFromAPI(path, (err, xml) => {
-        expect(err).to.be.not.ok;
-        expect(typeof xml).to.eql('object');
-        expect(_osm.authenticated()).to.be.not.ok;
-        expect(fetchMock.called()).to.be.true;
-        done();
-      });
+      loginAsync()
+        .then(() => {
+          _osm.loadFromAPI(path, (err, xml) => {
+            expect(err).to.be.not.ok;
+            expect(typeof xml).to.eql('object');
+            expect(_osm.authenticated()).to.be.not.ok;
+            expect(fetchMock.called()).to.be.true;
+            done();
+          });
 
-      serverXHR.respond();
+          serverXHR.respond();
+        });
     });
 
 
@@ -538,21 +535,23 @@ describe('OsmService', () => {
 </changeset>
 </osm>`;
 
-      login();
-      _osm.userChangesets((err, changesets) => {
-        expect(changesets).to.deep.equal([{
-          tags: {
-            comment: 'Caprice Court has been extended',
-            created_by: 'Rapid 2.0.0'
-          }
-        }]);
-        _osm.logout();
-        done();
-      });
+      loginAsync()
+        .then(() => {
+          _osm.userChangesets((err, changesets) => {
+            expect(changesets).to.deep.equal([{
+              tags: {
+                comment: 'Caprice Court has been extended',
+                created_by: 'Rapid 2.0.0'
+              }
+            }]);
+            _osm.logout();
+            done();
+          });
 
-      serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
-        [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
-      serverXHR.respond();
+          serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
+            [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
+          serverXHR.respond();
+        });
     });
 
 
@@ -569,21 +568,23 @@ describe('OsmService', () => {
 </changeset>
 </osm>`;
 
-      login();
-      _osm.userChangesets((err, changesets) => {
-        expect(changesets).to.deep.equal([{
-          tags: {
-            comment: 'Caprice Court has been extended',
-            created_by: 'Rapid 2.0.0'
-          }
-        }]);
-        _osm.logout();
-        done();
-      });
+      loginAsync()
+        .then(() => {
+          _osm.userChangesets((err, changesets) => {
+            expect(changesets).to.deep.equal([{
+              tags: {
+                comment: 'Caprice Court has been extended',
+                created_by: 'Rapid 2.0.0'
+              }
+            }]);
+            _osm.logout();
+            done();
+          });
 
-      serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
-        [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
-      serverXHR.respond();
+          serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
+            [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
+          serverXHR.respond();
+        });
     });
 
 
@@ -601,21 +602,23 @@ describe('OsmService', () => {
 </changeset>
 </osm>`;
 
-      login();
-      _osm.userChangesets((err, changesets) => {
-        expect(changesets).to.deep.equal([{
-          tags: {
-            comment: 'Caprice Court has been extended',
-            created_by: 'Rapid 2.0.0'
-          }
-        }]);
-        _osm.logout();
-        done();
-      });
+      loginAsync()
+        .then(() => {
+          _osm.userChangesets((err, changesets) => {
+            expect(changesets).to.deep.equal([{
+              tags: {
+                comment: 'Caprice Court has been extended',
+                created_by: 'Rapid 2.0.0'
+              }
+            }]);
+            _osm.logout();
+            done();
+          });
 
-      serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
-        [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
-      serverXHR.respond();
+          serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
+            [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
+          serverXHR.respond();
+        });
     });
   });
 
