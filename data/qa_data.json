@@ -124,6 +124,17 @@
       "8360-4": "temaki-fire_hydrant",
       "8360-5": "temaki-traffic_signals",
       "8360-6": "maki-telephone",
+      "8040-31": "roentgen-charging-station",
+      "8040-31": "temaki-stop",
+      "8040-41": "temaki-stop",
+      "8040-51": "temaki-stop",
+      "8040-81": "temaki-stop",
+      "8040-91": "temaki-stop",
+      "8040-101": "temaki-stop",
+      "8040-111": "temaki-stop",
+      "8040-121": "temaki-stop",
+      "8040-131": "temaki-stop",
+      "8040-141": "temaki-stop",
       "9010-9010001": "fas-tags",
       "9010-9010003": "temaki-plaque"
     }
