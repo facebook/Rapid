@@ -133,6 +133,10 @@ export default {
               const { item, class: cl, uuid: id } = issue.properties;
               const itemType = `${item}-${cl}`;
 
+              // TODO: Delete before pushing to main.
+              // if (issue.properties.item === 8410) {
+              //   console.log('we got a live one');
+              // }
               // Filter out unsupported issue types (some are too specific or advanced)
               if (itemType in _osmoseData.icons) {
                 let loc = issue.geometry.coordinates; // lon, lat
