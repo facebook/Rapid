@@ -43,6 +43,29 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
   }
 
 
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
+    }
+
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.mapillary.startAsync();
+    }
+  }
+
+
   filterImages(images) {
     const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
@@ -106,7 +129,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    */
   renderMarkers(frame, projection, zoom) {
     const service = this.context.services.mapillary;
-    if (!service) return;
+    if (!service?.started) return;
 
     // const showMarkers = (zoom >= MINMARKERZOOM);
     // const showViewfields = (zoom >= MINVIEWFIELDZOOM);
@@ -183,7 +206,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    */
   render(frame, projection, zoom) {
     const service = this.context.services.mapillary;
-    if (!this._enabled || !service || zoom < MINZOOM) return;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
     service.loadImages(this.context.projection);  // note: context.projection !== pixi projection
     this.renderMarkers(frame, projection, zoom);

@@ -3,7 +3,7 @@ import { Extent, Tiler, vecAdd, vecScale} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 import { QAItem } from '../osm';
 
 
@@ -30,7 +30,7 @@ IMPOSM_COLORS.set('mr-both', 0xffa500);    // missing road + parking
  * Events available:
  *   `loadedData`
  */
-export class ImproveOsmService extends AbstractService {
+export class ImproveOsmService extends AbstractSystem {
 
   /**
    * @constructor
@@ -39,6 +39,7 @@ export class ImproveOsmService extends AbstractService {
   constructor(context) {
     super(context);
     this.id = 'improveOSM';
+    this.autoStart = false;
 
     // persistent data - loaded at init
     this._impOsmData = { icons: {} };
@@ -66,7 +67,10 @@ export class ImproveOsmService extends AbstractService {
   startAsync() {
     const dataLoaderSystem = this.context.systems.data;
     return dataLoaderSystem.getDataAsync('qa_data')
-      .then(d => this._impOsmData = d.improveOSM);
+      .then(data => {
+        this._impOsmData = data.improveOSM;
+        this._started = true;
+      });
   }
 
 

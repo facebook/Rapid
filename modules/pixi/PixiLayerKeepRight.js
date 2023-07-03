@@ -30,6 +30,29 @@ export class PixiLayerKeepRight extends AbstractLayer {
 
 
   /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
+    }
+
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.keepRight.startAsync();
+    }
+  }
+
+
+  /**
    * renderMarkers
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
@@ -37,7 +60,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
    */
   renderMarkers(frame, projection, zoom) {
     const service = this.context.services.keepRight;
-    if (!service) return;
+    if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
     const items = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
@@ -75,7 +98,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
    */
   render(frame, projection, zoom) {
     const service = this.context.services.keepRight;
-    if (!this._enabled || !service || zoom < MINZOOM) return;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
     service.loadIssues(this.context.projection);  // note: context.projection !== pixi projection
     this.renderMarkers(frame, projection, zoom);

@@ -22,7 +22,7 @@ export class PresetSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'presets';
-    this.dependencies = new Set(['data', 'locations', 'storage']);
+    this.dependencies = new Set(['data', 'l10n', 'locations', 'storage']);
     this.geometries = ['point', 'vertex', 'line', 'area', 'relation'];
 
     // Create geometry fallbacks
@@ -105,6 +105,7 @@ export class PresetSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

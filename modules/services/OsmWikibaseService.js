@@ -2,13 +2,13 @@ import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 import debounce from 'lodash-es/debounce';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 
 
 /**
  * `OsmWikibaseService`
  */
-export class OsmWikibaseService extends AbstractService {
+export class OsmWikibaseService extends AbstractSystem {
 
   /**
    * @constructor
@@ -51,6 +51,7 @@ export class OsmWikibaseService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

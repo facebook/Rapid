@@ -88,6 +88,7 @@ export class UploaderSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 
@@ -215,10 +216,13 @@ export class UploaderSystem extends AbstractSystem {
   _loadedSome(err, result) {
     if (this._errors.length) return;   // give up if there are errors
 
+    const l10n = this.context.systems.l10n;
+    const osm = this.context.services.osm;
+
     if (err) {
       this._errors.push({
         msg: err.message || err.responseText,
-        details: [ this.context.t('save.status_code', { code: err.status }) ]
+        details: [ l10n.t('save.status_code', { code: err.status }) ]
       });
       this._didResultInErrors();
       return;
@@ -256,7 +260,6 @@ export class UploaderSystem extends AbstractSystem {
 
     this.emit('progressChanged', this._loadedIDs.size, this._toCheckIDs.size);
 
-    const osm = this.context.services.osm;
     if (osm && loadMoreIDs.size) {
       osm.loadMultiple(Array.from(loadMoreIDs), this._loadedSome);
 
@@ -395,11 +398,12 @@ export class UploaderSystem extends AbstractSystem {
 
     if (err) {
       if (err.status === 409) {  // 409 Conflict
-        this.save(true, true);  // tryAgain = true, checkConflicts = true
+        this.save(true, true);   // tryAgain = true, checkConflicts = true
       } else {
+        const l10n = this.context.systems.l10n;
         this._errors.push({
           msg: err.message || err.responseText,
-          details: [ this.context.t('save.status_code', { code: err.status }) ]
+          details: [ l10n.t('save.status_code', { code: err.status }) ]
         });
         this._didResultInErrors();
       }

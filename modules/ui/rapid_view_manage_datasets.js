@@ -235,9 +235,9 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     const prefs = context.systems.storage;
     const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
-    const service = context.services.esri;
+    const esri = context.services.esri;
 
-    if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
+    if (!esri || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
       results.classed('hide', true);
       status.classed('hide', false).text(context.t('rapid_feature_toggle.esri.no_datasets'));
       return;
@@ -256,7 +256,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         .attr('class', 'rapid-view-manage-datasets-spinner')
         .attr('src', context.asset('img/loader-black.gif'));
 
-      service.loadDatasetsAsync()
+      esri.startAsync()
+        .then(() => esri.loadDatasetsAsync())
         .then(results => {
           // Build set of available categories
           let categories = new Set();
@@ -459,7 +460,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         dataset.extent = new Extent(d.extent[0], d.extent[1]);
       }
 
-      // Test running building layers through MapWithAI conflation service
+      // Experiment: run building layers through MapWithAI conflation service
       if (isBuildings) {
         dataset.conflated = true;
         dataset.service = 'mapwithai';

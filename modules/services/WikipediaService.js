@@ -1,7 +1,7 @@
 import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 
 const WIKIPEDIA_API = 'https://en.wikipedia.org/w/api.php?';
 
@@ -9,7 +9,7 @@ const WIKIPEDIA_API = 'https://en.wikipedia.org/w/api.php?';
 /**
  * `WikipediaService`
  */
-export class WikipediaService extends AbstractService {
+export class WikipediaService extends AbstractSystem {
 
   /**
    * @constructor
@@ -37,6 +37,7 @@ export class WikipediaService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

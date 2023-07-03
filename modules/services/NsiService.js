@@ -1,6 +1,6 @@
 import { Matcher } from 'name-suggestion-index';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 
 
 
@@ -32,7 +32,7 @@ const notBranches = /(coop|express|wireless|factory|outlet)/i;
 /**
  * `NsiService`
  */
-export class NsiService extends AbstractService {
+export class NsiService extends AbstractSystem {
 
   /**
    * @constructor
@@ -90,6 +90,7 @@ export class NsiService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

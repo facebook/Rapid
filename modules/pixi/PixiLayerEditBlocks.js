@@ -17,8 +17,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-
-    this._enabled = true;   // this layer should always be enabled
+    this.enabled = true;   // this layer should always be enabled
     this._oldk = 0;
   }
 
@@ -28,10 +27,10 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * This layer should always be enabled
    */
   get enabled() {
-    return this._enabled;
+    return true;
   }
   set enabled(val) {
-    // noop
+    this._enabled = true;
   }
 
 

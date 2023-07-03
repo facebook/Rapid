@@ -3,7 +3,7 @@ import { Extent, Tiler, vecAdd} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 import { QAItem } from '../osm';
 
 
@@ -47,7 +47,7 @@ KR_COLORS.set('400', 0xcc3355);
  * Events available:
  *   `loadedData`
  */
-export class KeepRightService extends AbstractService {
+export class KeepRightService extends AbstractSystem {
 
   /**
    * @constructor
@@ -56,6 +56,7 @@ export class KeepRightService extends AbstractService {
   constructor(context) {
     super(context);
     this.id = 'keepRight';
+    this.autoStart = false;
 
     // persistent data - loaded at init
     this._krData = { errorTypes: {}, localizeStrings: {} };
@@ -83,7 +84,10 @@ export class KeepRightService extends AbstractService {
   startAsync() {
     const dataLoaderSystem = this.context.systems.data;
     return dataLoaderSystem.getDataAsync('keepRight')
-      .then(d => this._krData = d);
+      .then(data => {
+        this._krData = data;
+        this._started = true;
+      });
   }
 
 

@@ -5,7 +5,7 @@ import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 import { QAItem } from '../osm';
 
 
@@ -19,7 +19,7 @@ const OSMOSE_API = 'https://osmose.openstreetmap.fr/api/0.3';
  * Events available:
  *   'loadedData'
  */
-export class OsmoseService extends AbstractService {
+export class OsmoseService extends AbstractSystem {
 
   /**
    * @constructor
@@ -28,6 +28,7 @@ export class OsmoseService extends AbstractService {
   constructor(context) {
     super(context);
     this.id = 'osmose';
+    this.autoStart = false;
 
     // persistent data - loaded at init
     this._osmoseColors = new Map();    // Map (itemType -> hex color)
@@ -63,7 +64,8 @@ export class OsmoseService extends AbstractService {
           .map(s => s.split('-')[0])
           .reduce((unique, item) => unique.indexOf(item) !== -1 ? unique : [...unique, item], []);
       })
-      .then(() => this._loadStringsAsync());
+      .then(() => this._loadStringsAsync())
+      .then(() => this._started = true);
   }
 
 
@@ -173,67 +175,6 @@ export class OsmoseService extends AbstractService {
     return d3_json(url)
       .then(handleResponse)
       .then(() => issue);
-  }
-
-
-  /**
-   * _loadStringsAsync
-   * Load the strings for the types of issues that we support
-   * @return  Promise
-   */
-  _loadStringsAsync() {
-    // Only need to cache strings for supported issue types
-    const itemTypes = Object.keys(this._osmoseData.icons);
-
-    // For now, we only do this one time at init.
-    // Todo: support switching locales
-    let stringData = {};
-    const localeCode = this.context.systems.l10n.localeCode();
-    this._osmoseStrings.set(localeCode, stringData);
-
-    // Using multiple individual item + class requests to reduce fetched data size
-    const allRequests = itemTypes.map(itemType => {
-
-      const handleResponse = (data) => {
-        // Bunch of nested single value arrays of objects
-        const [ cat = { items:[] } ] = data.categories;
-        const [ item = { class:[] } ] = cat.items;
-        const [ cl = null ] = item.class;
-
-        // If null default value is reached, data wasn't as expected (or was empty)
-        if (!cl) {
-          /* eslint-disable no-console */
-          console.log(`Osmose strings request (${itemType}) had unexpected data`);
-          /* eslint-enable no-console */
-          return;
-        }
-
-        // Save item colors to automatically style issue markers later
-        const itemInt = item.item;
-        this._osmoseColors.set(itemInt, new Color(item.color).toNumber());
-
-        // Value of root key will be null if no string exists
-        // If string exists, value is an object with key 'auto' for string
-        const { title, detail, fix, trap } = cl;
-
-        let issueStrings = {};
-        // Force title to begin with an uppercase letter
-        if (title)  issueStrings.title = title.auto.charAt(0).toUpperCase() + title.auto.slice(1);
-        if (detail) issueStrings.detail = marked.parse(detail.auto);
-        if (trap)   issueStrings.trap = marked.parse(trap.auto);
-        if (fix)    issueStrings.fix = marked.parse(fix.auto);
-
-        stringData[itemType] = issueStrings;
-      };
-
-      // Osmose API falls back to English strings where untranslated or if locale doesn't exist
-      const [item, cl] = itemType.split('-');
-      const url = `${OSMOSE_API}/items/${item}/class/${cl}?langs=${localeCode}`;
-
-      return d3_json(url).then(handleResponse);
-    }).filter(Boolean);
-
-    return Promise.all(allRequests);
   }
 
 
@@ -430,4 +371,63 @@ export class OsmoseService extends AbstractService {
   }
 
 
+  /**
+   * _loadStringsAsync
+   * Load the strings for the types of issues that we support
+   * @return  Promise
+   */
+  _loadStringsAsync() {
+    // Only need to cache strings for supported issue types
+    const itemTypes = Object.keys(this._osmoseData.icons);
+
+    // For now, we only do this one time at init.
+    // Todo: support switching locales
+    let stringData = {};
+    const localeCode = this.context.systems.l10n.localeCode();
+    this._osmoseStrings.set(localeCode, stringData);
+
+    // Using multiple individual item + class requests to reduce fetched data size
+    const allRequests = itemTypes.map(itemType => {
+
+      const handleResponse = (data) => {
+        // Bunch of nested single value arrays of objects
+        const [ cat = { items:[] } ] = data.categories;
+        const [ item = { class:[] } ] = cat.items;
+        const [ cl = null ] = item.class;
+
+        // If null default value is reached, data wasn't as expected (or was empty)
+        if (!cl) {
+          /* eslint-disable no-console */
+          console.log(`Osmose strings request (${itemType}) had unexpected data`);
+          /* eslint-enable no-console */
+          return;
+        }
+
+        // Save item colors to automatically style issue markers later
+        const itemInt = item.item;
+        this._osmoseColors.set(itemInt, new Color(item.color).toNumber());
+
+        // Value of root key will be null if no string exists
+        // If string exists, value is an object with key 'auto' for string
+        const { title, detail, fix, trap } = cl;
+
+        let issueStrings = {};
+        // Force title to begin with an uppercase letter
+        if (title)  issueStrings.title = title.auto.charAt(0).toUpperCase() + title.auto.slice(1);
+        if (detail) issueStrings.detail = marked.parse(detail.auto);
+        if (trap)   issueStrings.trap = marked.parse(trap.auto);
+        if (fix)    issueStrings.fix = marked.parse(fix.auto);
+
+        stringData[itemType] = issueStrings;
+      };
+
+      // Osmose API falls back to English strings where untranslated or if locale doesn't exist
+      const [item, cl] = itemType.split('-');
+      const url = `${OSMOSE_API}/items/${item}/class/${cl}?langs=${localeCode}`;
+
+      return d3_json(url).then(handleResponse);
+    }).filter(Boolean);
+
+    return Promise.all(allRequests);
+  }
 }

@@ -28,7 +28,7 @@ export class ImagerySystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'imagery';
-    this.dependencies = new Set(['data', 'edits', 'map', 'urlhash']);
+    this.dependencies = new Set(['data', 'edits', 'l10n', 'map', 'urlhash']);
 
     this._initPromise = null;
     this._imageryIndex = null;
@@ -160,6 +160,7 @@ export class ImagerySystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

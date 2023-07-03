@@ -5,7 +5,7 @@ import _throttle from 'lodash-es/throttle';
 import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 import { JXON } from '../util/jxon';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
 
@@ -22,7 +22,7 @@ import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
  *   'loaded'
  *   'loadedNotes'
  */
-export class OsmService extends AbstractService {
+export class OsmService extends AbstractSystem {
 
   /**
    * @constructor
@@ -111,6 +111,7 @@ export class OsmService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

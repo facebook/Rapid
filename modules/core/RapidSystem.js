@@ -104,6 +104,7 @@ export class RapidSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 
@@ -221,8 +222,11 @@ export class RapidSystem extends AbstractSystem {
     const esri = this.context.services.esri;
     if (!esri || !toEnable.size) return;
 
-    esri.loadDatasetsAsync()
+    esri.startAsync()
+      .then(() => esri.loadDatasetsAsync())
       .then(results => {
+        const l10n = this.context.systems.l10n;
+
         for (const datasetID of toEnable) {
           const d = results[datasetID];
           if (!d) continue;  // dataset with requested id not found, fail silently
@@ -243,7 +247,7 @@ export class RapidSystem extends AbstractSystem {
             service: 'esri',
             color: RAPID_COLORS[nextColor],
             label: d.title,
-            license_markdown: this.context.t('rapid_feature_toggle.esri.license_markdown')
+            license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown')
           };
 
           if (d.extent) {

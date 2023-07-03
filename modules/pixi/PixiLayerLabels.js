@@ -56,7 +56,7 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-    this._enabled = true;   // labels should be enabled by default
+    this.enabled = true;   // labels should be enabled by default
 
     // Items in this layer don't actually need to be interactive
     const groupContainer = this.scene.groups.get('labels');
@@ -176,7 +176,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    if (this._enabled && zoom >= MINZOOM) {
+    if (this.enabled && zoom >= MINZOOM) {
       this.labelContainer.visible = true;
       this.debugContainer.visible = this.context.getDebug('label');
 

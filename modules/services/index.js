@@ -1,4 +1,3 @@
-import { AbstractService } from './AbstractService';
 import { EsriService } from './EsriService';
 import { ImproveOsmService } from './ImproveOsmService';
 import { KartaviewService } from './KartaviewService';
@@ -17,7 +16,6 @@ import { WikidataService } from './WikidataService';
 import { WikipediaService } from './WikipediaService';
 
 export {
-  AbstractService,
   EsriService,
   ImproveOsmService,
   KartaviewService,

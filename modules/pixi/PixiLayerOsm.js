@@ -24,10 +24,9 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+    this.enabled = true;   // OSM layers should be enabled by default
 
     const basemapContainer = this.scene.groups.get('basemap');
-
-    this._enabled = true;  // OSM layers should be enabled by default
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
 
 // experiment for benchmarking
@@ -54,6 +53,29 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   get supported() {
     return !!this.context.services.osm;
+  }
+
+
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
+    }
+
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.osm.startAsync();
+    }
   }
 
 
@@ -92,7 +114,8 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    if (!this._enabled || !this.supported || zoom < MINZOOM) return;
+    const service = this.context.services.osm;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
     const context = this.context;
     const graph = context.graph();

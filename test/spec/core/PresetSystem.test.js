@@ -6,10 +6,18 @@ describe('PresetSystem', () => {
     getItem() { return ''; }
   }
 
+  class MockLocalizationSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    t()           { return ''; }
+    tHtml()       { return ''; }
+  }
+
   class MockContext {
     constructor()   {
       this.systems = {
         data:      new Rapid.DataLoaderSystem(this),
+        l10n:      new MockLocalizationSystem(this),
         locations: new Rapid.LocationSystem(this),
         storage:   new MockStorageSystem()
       };

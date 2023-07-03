@@ -7,7 +7,7 @@ import polygonClipping from 'polygon-clipping';
 import Protobuf from 'pbf';
 import vt from '@mapbox/vector-tile';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 
 
 /**
@@ -16,7 +16,7 @@ import { AbstractService } from './AbstractService';
  * Events available:
  *   'loadedData'
  */
-export class VectorTileService extends AbstractService {
+export class VectorTileService extends AbstractSystem {
 
   /**
    * @constructor
@@ -47,6 +47,7 @@ export class VectorTileService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 import { Graph, Tree } from '../core/lib';
 import { osmNode, osmRelation, osmWay } from '../osm';
 
@@ -20,7 +20,7 @@ const TILEZOOM = 14;
  * Events available:
  *   `loadedData`
  */
-export class EsriService extends AbstractService {
+export class EsriService extends AbstractSystem {
 
   /**
    * @constructor
@@ -57,6 +57,7 @@ export class EsriService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

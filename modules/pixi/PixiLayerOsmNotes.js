@@ -45,17 +45,40 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 
 
   /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
+    }
+
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.osm.startAsync();
+    }
+  }
+
+
+  /**
    * renderMarkers
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const osm = this.context.services.osm;
-    if (!osm) return;
+    const service = this.context.services.osm;
+    if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = osm.notes(this.context.projection);
+    const items = service.notes(this.context.projection);
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -101,10 +124,10 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const osm = this.context.services.osm;
-    if (!this.enabled || !osm || zoom < MINZOOM) return;
+    const service = this.context.services.osm;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    osm.loadNotes(this.context.projection);  // note: context.projection !== pixi projection
+    service.loadNotes(this.context.projection);  // note: context.projection !== pixi projection
     this.renderMarkers(frame, projection, zoom);
   }
 

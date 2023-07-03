@@ -4,16 +4,16 @@ describe('FilterSystem', () => {
   class MockStorageSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    getItem() { return ''; }
-    setItem() { }
+    getItem()     { return ''; }
+    setItem()     { }
   }
 
   class MockUrlHashSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    getParam() { return ''; }
-    setParam() { }
-    on() { return this; }
+    getParam()    { return ''; }
+    setParam()    { }
+    on()          { return this; }
   }
 
   class MockContext {
@@ -23,7 +23,7 @@ describe('FilterSystem', () => {
         urlhash: new MockUrlHashSystem(this)
       };
      }
-    hasEntity()     { return null; }
+    hasEntity()  { return null; }
   }
 
 

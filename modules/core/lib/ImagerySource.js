@@ -52,15 +52,15 @@ export class ImagerySource {
   }
 
   get name() {
-    return this.context.t(`imagery.${this._idtx}.name`, { default: this._name });
+    return this.context.systems.l10n.t(`imagery.${this._idtx}.name`, { default: this._name });
   }
 
   get label() {
-    return this.context.tHtml(`imagery.${this._idtx}.name`, { default: this._name });
+    return this.context.systems.l10n.tHtml(`imagery.${this._idtx}.name`, { default: this._name });
   }
 
   get description() {
-    return this.context.tHtml(`imagery.${this._idtx}.description`, { default: this._description });
+    return this.context.systems.l10n.tHtml(`imagery.${this._idtx}.description`, { default: this._description });
   }
 
   get imageryUsed() {
@@ -260,10 +260,10 @@ export class ImagerySourceNone extends ImagerySource {
     super(context, { id: 'none', template: '' });
   }
   get name() {
-    return this.context.t('background.none');
+    return this.context.systems.l10n.t('background.none');
   }
   get label() {
-    return this.context.tHtml('background.none');
+    return this.context.systems.l10n.tHtml('background.none');
   }
   get area() {
     return -1;  // sources in background pane are sorted by area
@@ -284,10 +284,10 @@ export class ImagerySourceCustom extends ImagerySource {
     super(context, { id: 'custom', template: template });
   }
   get name() {
-    return this.context.t('background.custom');
+    return this.context.systems.l10n.t('background.custom');
   }
   get label() {
-    return this.context.tHtml('background.custom');
+    return this.context.systems.l10n.tHtml('background.custom');
   }
   get area() {
     return -2;  // sources in background pane are sorted by area
@@ -412,7 +412,7 @@ export class ImagerySourceEsri extends ImagerySource {
     const tileID = tileCoord.slice(0, 3).join('/');
     const zoom = Math.min(tileCoord[2], this.zoomExtent[1]);
     const centerPoint = center[0] + ',' + center[1];  // long, lat (as it should be)
-    const unknown = this.context.t('info_panels.background.unknown');
+    const unknown = this.context.systems.l10n.t('info_panels.background.unknown');
 
     if (this._inflight[tileID]) return;
 

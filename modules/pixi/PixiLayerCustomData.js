@@ -28,8 +28,8 @@ export class PixiLayerCustomData extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+    this.enabled = true;     // this layer should always be enabled
 
-    this._enabled = true;            // this layer should always be enabled
     this._loadedUrlData = false;
     // setup the child containers
     // these only go visible if they have something to show

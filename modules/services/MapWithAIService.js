@@ -1,7 +1,7 @@
 import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@rapid-sdk/math';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 import { Graph, Tree } from '../core/lib';
 import { osmEntity, osmNode, osmWay } from '../osm';
 
@@ -16,7 +16,7 @@ const TILEZOOM = 16;
  * Events available:
  *   `loadedData`
  */
-export class MapWithAIService extends AbstractService {
+export class MapWithAIService extends AbstractSystem {
 
   /**
    * @constructor
@@ -62,6 +62,7 @@ export class MapWithAIService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

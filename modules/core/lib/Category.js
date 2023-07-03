@@ -65,11 +65,11 @@ export class Category {
   }
 
   name() {
-    return this.context.t(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
+    return this.context.systems.l10n.t(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
   }
 
   nameLabel() {
-    return this.context.tHtml(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
+    return this.context.systems.l10n.tHtml(`_tagging.presets.categories.${this.id}.name`, { 'default': this.id });
   }
 
   terms() {

@@ -91,20 +91,19 @@ export class Field {
   }
 
   t(scope, options) {
-    return this.context.t(`_tagging.presets.fields.${this.id}.${scope}`, options);
+    return this.context.systems.l10n.t(`_tagging.presets.fields.${this.id}.${scope}`, options);
   }
 
   tHtml(scope, options) {
-    return this.context.tHtml(`_tagging.presets.fields.${this.id}.${scope}`, options);
+    return this.context.systems.l10n.tHtml(`_tagging.presets.fields.${this.id}.${scope}`, options);
   }
 
   tAppend(scope, options) {
-    return this.context.tAppend(`_tagging.presets.fields.${this.id}.${scope}`, options);
+    return this.context.systems.l10n.tAppend(`_tagging.presets.fields.${this.id}.${scope}`, options);
   }
 
   hasTextForStringID(scope) {
-    const l10n = this.context.systems.l10n;
-    return l10n.hasTextForStringID(`_tagging.presets.fields.${this.id}.${scope}`);
+    return this.context.systems.l10n.hasTextForStringID(`_tagging.presets.fields.${this.id}.${scope}`);
   }
 
   _resolveReference(prop) {

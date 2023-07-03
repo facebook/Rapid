@@ -2,7 +2,7 @@ import { json as d3_json } from 'd3-fetch';
 import { utilObjectOmit, utilQsString } from '@rapid-sdk/util';
 import debounce from 'lodash-es/debounce';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 
 
 const TAGINFO_API = 'https://taginfo.openstreetmap.org/api/4/';
@@ -39,7 +39,7 @@ const tag_members_fractions = {
 /**
  * `TaginfoService`
  */
-export class TaginfoService extends AbstractService {
+export class TaginfoService extends AbstractSystem {
 
   /**
    * @constructor
@@ -115,6 +115,8 @@ export class TaginfoService extends AbstractService {
             if (d.value === 'opening_hours') continue;  // exception
             this._popularKeys[d.value] = true;
           }
+
+          this._started = true;
           resolve();
         }
       });

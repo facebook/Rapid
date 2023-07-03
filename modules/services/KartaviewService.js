@@ -4,7 +4,7 @@ import { Extent, Tiler, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 import { utilSetTransform } from '../util';
 
 
@@ -17,9 +17,10 @@ const TILEZOOM = 14;
  * `KartaviewService`
  *
  * Events available:
+ *   `imageChanged`
  *   `loadedData`
  */
-export class KartaviewService extends AbstractService {
+export class KartaviewService extends AbstractSystem {
 
   /**
    * @constructor
@@ -28,6 +29,7 @@ export class KartaviewService extends AbstractService {
   constructor(context) {
     super(context);
     this.id = 'kartaview';
+    this.autoStart = false;
 
     this._imgZoom = d3_zoom()
       .extent([[0, 0], [320, 240]])
@@ -36,8 +38,12 @@ export class KartaviewService extends AbstractService {
 
     this._cache = {};
     this._selectedImage = null;
-    this._loadViewerPromise = null;
+    this._waitingForPhotoID = null;
+    this._startPromise = null;
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    this._zoomPan = this._zoomPan.bind(this);
   }
 
 
@@ -57,7 +63,67 @@ export class KartaviewService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    return Promise.resolve();
+    if (this._startPromise) return this._startPromise;
+    const context = this.context;
+
+    // add osc-wrapper
+    let wrap = context.container().select('.photoviewer').selectAll('.osc-wrapper')
+      .data([0]);
+
+    let wrapEnter = wrap.enter()
+      .append('div')
+      .attr('class', 'photo-wrapper osc-wrapper')
+      .classed('hide', true)
+      .call(this._imgZoom.on('zoom', this._zoomPan))
+      .on('dblclick.zoom', null);
+
+    wrapEnter
+      .append('div')
+      .attr('class', 'photo-attribution fillD');
+
+    let controlsEnter = wrapEnter
+      .append('div')
+      .attr('class', 'photo-controls-wrap')
+      .append('div')
+      .attr('class', 'photo-controls');
+
+    controlsEnter
+      .append('button')
+      .on('click.back', () => this._step(-1))
+      .html('◄');
+
+    controlsEnter
+      .append('button')
+      .on('click.rotate-ccw', () => this._rotate(-90))
+      .html('⤿');
+
+    controlsEnter
+      .append('button')
+      .on('click.rotate-cw', () => this._rotate(90))
+      .html('⤾');
+
+    controlsEnter
+      .append('button')
+      .on('click.forward', () => this._step(1))
+      .html('►');
+
+    wrapEnter
+      .append('div')
+      .attr('class', 'osc-image-wrap');
+
+
+    // Register viewer resize handler
+    context.systems.ui.photoviewer.on('resize.kartaview', dimensions => {
+      this._imgZoom = d3_zoom()
+        .extent([[0, 0], dimensions])
+        .translateExtent([[0, 0], dimensions])
+        .scaleExtent([1, 15])
+        .on('zoom', this._zoomPan);
+    });
+
+    // don't need any async loading so resolve immediately
+    this._started = true;
+    return this._startPromise = Promise.resolve();
   }
 
 
@@ -88,6 +154,12 @@ export class KartaviewService extends AbstractService {
   }
 
 
+  /**
+   * images
+   * Returns an Array of already-loaded images within the viewport
+   * @param  {Projection}  Projection that defines the current map view
+   * @return {Array}
+   */
   images(projection) {
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
@@ -97,6 +169,12 @@ export class KartaviewService extends AbstractService {
   }
 
 
+  /**
+   * sequences
+   * Returns an Array of already-loaded sequences within the viewport
+   * @param  {Projection}  Projection that defines the current map view
+   * @return {Array}
+   */
   sequences(projection) {
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
@@ -131,11 +209,11 @@ export class KartaviewService extends AbstractService {
   }
 
 
-  cachedImage(imageID) {
-    return this._cache.images.get(imageID);
-  }
-
-
+  /**
+   * loadImages
+   * Loads image data for the given viewport
+   * @param  {Projection}  Projection that defines the current map view
+   */
   loadImages(projection) {
     const currZoom = Math.floor(geoScaleToZoom(projection.scale()));
     // Determine the needed tiles to cover the view
@@ -156,118 +234,10 @@ export class KartaviewService extends AbstractService {
   }
 
 
-  loadViewerAsync() {
-    if (this._loadViewerPromise) return this._loadViewerPromise;
-    const context = this.context;
-
-    // add osc-wrapper
-    let wrap = context.container().select('.photoviewer').selectAll('.osc-wrapper')
-      .data([0]);
-
-    let wrapEnter = wrap.enter()
-      .append('div')
-      .attr('class', 'photo-wrapper osc-wrapper')
-      .classed('hide', true)
-      .call(this._imgZoom.on('zoom', zoomPan))
-      .on('dblclick.zoom', null);
-
-    wrapEnter
-      .append('div')
-      .attr('class', 'photo-attribution fillD');
-
-    let controlsEnter = wrapEnter
-      .append('div')
-      .attr('class', 'photo-controls-wrap')
-      .append('div')
-      .attr('class', 'photo-controls');
-
-    controlsEnter
-      .append('button')
-      .on('click.back', () => step(-1))
-      .html('◄');
-
-    controlsEnter
-      .append('button')
-      .on('click.rotate-ccw', () => rotate(-90))
-      .html('⤿');
-
-    controlsEnter
-      .append('button')
-      .on('click.rotate-cw', () => rotate(90))
-      .html('⤾');
-
-    controlsEnter
-      .append('button')
-      .on('click.forward', () => step(1))
-      .html('►');
-
-    wrapEnter
-      .append('div')
-      .attr('class', 'osc-image-wrap');
-
-
-    // Register viewer resize handler
-    context.systems.ui.photoviewer.on('resize.kartaview', dimensions => {
-      this._imgZoom = d3_zoom()
-        .extent([[0, 0], dimensions])
-        .translateExtent([[0, 0], dimensions])
-        .scaleExtent([1, 15])
-        .on('zoom', zoomPan);
-    });
-
-
-    function zoomPan(d3_event) {
-      const t = d3_event.transform;
-      context.container().select('.photoviewer .osc-image-wrap')
-        .call(utilSetTransform, t.x, t.y, t.k);
-    }
-
-
-    function rotate(deg) {
-      if (!this._selectedImage) return;
-      const sequenceID = this._selectedImage.sequenceID;
-      const sequence = this._cache.sequences.get(sequenceID);
-      if (!sequence) return;
-
-      let r = sequence.rotation || 0;
-      r += deg;
-
-      if (r > 180) r -= 360;
-      if (r < -180) r += 360;
-      sequence.rotation = r;
-
-      let wrap = context.container().select('.photoviewer .osc-wrapper');
-
-      wrap
-        .transition()
-        .duration(100)
-        .call(this._imgZoom.transform, d3_zoomIdentity);
-
-      wrap.selectAll('.osc-image')
-        .transition()
-        .duration(100)
-        .style('transform', `rotate(${r}deg)`);
-    }
-
-    function step(stepBy) {
-      if (!this._selectedImage) return;
-      const sequenceID = this._selectedImage.sequenceID;
-      const sequence = this._cache.sequences.get(sequenceID);
-      if (!sequence) return;
-
-      const nextIndex = this._selectedImage.sequenceIndex + stepBy;
-      const nextImage = sequence.images[nextIndex];
-      if (!nextImage) return;
-
-      context.systems.map.centerEase(nextImage.loc);
-      context.systems.photos.selectPhoto('kartaview', nextImage.id);
-    }
-
-    // don't need any async loading so resolve immediately
-    return this._loadViewerPromise = Promise.resolve();
-  }
-
-
+  /**
+   * showViewer
+   * Shows the photo viewer, and hides all other photo viewers
+   */
   showViewer() {
     let viewer = this.context.container().select('.photoviewer')
       .classed('hide', false);
@@ -283,11 +253,13 @@ export class KartaviewService extends AbstractService {
         .selectAll('.photo-wrapper.osc-wrapper')
         .classed('hide', false);
     }
-
-    return this;
   }
 
 
+  /**
+   * hideViewer
+   * Hides the photo viewer and clears the currently selected image
+   */
   hideViewer() {
     this._selectedImage = null;
     const context = this.context;
@@ -304,14 +276,21 @@ export class KartaviewService extends AbstractService {
     context.container().selectAll('.viewfield-group, .sequence, .icon-sign')
       .classed('currentView', false);
 
-    return this.setStyles(context, null, true);
+    this.setStyles(context, null, true);
+    this.emit('imageChanged');
   }
 
 
-  // note: call `context.systems.photos.selectPhoto(layerID, photoID)` instead
-  // That will deal with the URL and call this function
-  selectImage(imageID) {
-    let d = this.cachedImage(imageID);
+  /**
+   * selectImageAsync
+   * Note:  most code should call `PhotoSystem.selectPhoto(layerID, photoID)` instead.
+   * That will manage the state of what the user clicked on, and then call this function.
+   * @param  {string} imageID - the id of the image to select
+   * @return {Promise} Promise that always resolves (we should change this to resolve after the image is ready)
+   */
+  selectImageAsync(imageID) {
+    let d = this._cache.images.get(imageID);
+
     this._selectedImage = d;
 
     const context = this.context;
@@ -325,7 +304,12 @@ export class KartaviewService extends AbstractService {
     context.container().selectAll('.icon-sign')
       .classed('currentView', false);
 
-    if (!d) return this;
+    // It's possible we could be trying to show a photo that hasn't been fetched yet
+    // (e.g. if we are starting up with a photoID specified in the url hash)
+    if (imageID && !d) {
+      this._waitingForPhotoID = imageID;
+    }
+    if (!d) return Promise.resolve();
 
     let wrap = context.container().select('.photoviewer .osc-wrapper');
     let imageWrap = wrap.selectAll('.osc-image-wrap');
@@ -367,7 +351,7 @@ export class KartaviewService extends AbstractService {
         attribution
           .append('span')
           .attr('class', 'captured_at')
-          .text(localeDateString(d.captured_at));
+          .text(_localeDateString(d.captured_at));
 
         attribution
           .append('span')
@@ -382,25 +366,23 @@ export class KartaviewService extends AbstractService {
         .text('kartaview.org');
     }
 
-    return this;
+    return Promise.resolve();
 
 
-    function localeDateString(s) {
+    function _localeDateString(s) {
       if (!s) return null;
       const options = { day: 'numeric', month: 'short', year: 'numeric' };
       const d = new Date(s);
       if (isNaN(d.getTime())) return null;
 
-      const localeCode = this.context.systems.l10n.localeCode();
+      const localeCode = context.systems.l10n.localeCode();
       return d.toLocaleDateString(localeCode, options);
     }
   }
 
 
-  getSelectedImage() {
-    return this._selectedImage;
-  }
-
+  // NOTE: the setStyles() functions all dont work right now since the WebGL rewrite.
+  // They depended on selecting svg stuff from the container - see #740
 
   // Updates the currently highlighted sequence and selected bubble.
   // Reset is only necessary when interacting with the viewport because
@@ -453,11 +435,16 @@ export class KartaviewService extends AbstractService {
         return 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z';
       }
     }
-
-    return this;
   }
 
 
+  /**
+   * _maxPageAtZoom
+   * How many pages of data should we fetch at different zooms?
+   * The idea is that the user can zoom in more to see more images.
+   * @param  {Number} z - zoom level
+   * @return {Number} max pages of data to fetch
+   */
   _maxPageAtZoom(z) {
     if (z < 15)   return 2;
     if (z === 15) return 5;
@@ -468,6 +455,12 @@ export class KartaviewService extends AbstractService {
   }
 
 
+  /**
+   * _loadNextTilePage
+   * Loads more image data
+   * @param  {Number} currZoom - current zoom level
+   * @param  {Tile} tile - tile object
+   */
   _loadNextTilePage(currZoom, tile) {
     const bbox = tile.wgs84Extent.bbox();
     const maxPages = this._maxPageAtZoom(currZoom);
@@ -502,12 +495,19 @@ export class KartaviewService extends AbstractService {
           throw new Error('No Data');
         }
 
+        let selectPhotoID = null;
         const boxes = data.currentPageItems.map(image => {
-          if (this._cache.images.has(image.id)) return null;  // skip duplicates
+          const imageID = image.id;
+          if (this._waitingForPhotoID === imageID) {
+            selectPhotoID = imageID;
+            this._waitingForPhotoID = null;
+          }
+
+          if (this._cache.images.has(imageID)) return null;  // skip duplicates
 
           const loc = [+image.lng, +image.lat];
           const d = {
-            id: image.id,
+            id: imageID,
             loc: loc,
             ca: +image.heading,
             captured_at: (image.shot_date || image.date_added),
@@ -517,7 +517,7 @@ export class KartaviewService extends AbstractService {
             sequenceIndex: +image.sequence_index
           };
           // cache image info
-          this._cache.images.set(d.id, d);
+          this._cache.images.set(imageID, d);
 
           // cache sequence info
           let sequence = this._cache.sequences.get(d.sequenceID);
@@ -543,6 +543,12 @@ export class KartaviewService extends AbstractService {
           this._cache.nextPage.set(tile.id, Infinity);   // no more pages to load
         }
 
+        if (selectPhotoID) {
+          const photoSystem = this.context.systems.photos;
+          photoSystem.selectPhoto();                            // deselect
+          photoSystem.selectPhoto('kartaview', selectPhotoID);  // reselect
+        }
+
         this.context.deferredRedraw();
         this.emit('loadedData');
       })
@@ -557,4 +563,74 @@ export class KartaviewService extends AbstractService {
     this._cache.inflight.set(k, { promise: promise, controller: controller });
   }
 
+
+
+  /**
+   * _zoomPan
+   * Handler for zoom/pan events in the viewer.
+   * The user can drag and zoom in on the image.
+   * @param  {Event}  d3_event
+   */
+  _zoomPan(d3_event) {
+    const t = d3_event.transform;
+    this.context.container().select('.photoviewer .osc-image-wrap')
+      .call(utilSetTransform, t.x, t.y, t.k);
+  }
+
+
+  /**
+   * _rotate
+   * Rotate the sequence in the viewer.
+   * The user can press buttons to rotate the image if it has been recorded sideways.
+   * @param  {Number}  deg - degrees to rotate
+   */
+  _rotate(deg) {
+    if (!this._selectedImage) return;
+
+    const sequenceID = this._selectedImage.sequenceID;
+    const sequence = this._cache.sequences.get(sequenceID);
+    if (!sequence) return;
+
+    let r = sequence.rotation || 0;
+    r += deg;
+
+    if (r > 180) r -= 360;
+    if (r < -180) r += 360;
+    sequence.rotation = r;
+
+    let wrap = this.context.container().select('.photoviewer .osc-wrapper');
+
+    wrap
+      .transition()
+      .duration(100)
+      .call(this._imgZoom.transform, d3_zoomIdentity);
+
+    wrap.selectAll('.osc-image')
+      .transition()
+      .duration(100)
+      .style('transform', `rotate(${r}deg)`);
+  }
+
+
+  /**
+   * _step
+   * Step forward/backward along the sequence in the viewer.
+   * @param  {Number}  stepBy - number to step by, either +1 or -1
+   */
+  _step(stepBy) {
+    if (!this._selectedImage) return;
+
+    const sequenceID = this._selectedImage.sequenceID;
+    const sequence = this._cache.sequences.get(sequenceID);
+    if (!sequence) return;
+
+    const nextIndex = this._selectedImage.sequenceIndex + stepBy;
+    const nextImage = sequence.images[nextIndex];
+    if (!nextImage) return;
+
+    const context = this.context;
+    context.systems.map.centerEase(nextImage.loc);
+    context.systems.photos.selectPhoto('kartaview', nextImage.id);
+    this.emit('imageChanged');
+  }
 }

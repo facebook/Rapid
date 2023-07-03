@@ -27,6 +27,7 @@ export class PixiLayerMapUI extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+    this.enabled = true;   // this layer should always be enabled
 
 // todo: I'm adjusting the container nesting, this will need to be revisited
 const container = new PIXI.Container();
@@ -37,7 +38,6 @@ this.container = container;
 const groupContainer = this.scene.groups.get('ui');
 groupContainer.addChild(container);
 
-    this._enabled = true;            // this layer should always be enabled
     this._oldk = 0;
 
     // setup the child containers
@@ -90,10 +90,10 @@ groupContainer.addChild(container);
    * This layer should always be enabled - it contains important UI stuff
    */
   get enabled() {
-    return this._enabled;
+    return true;
   }
   set enabled(val) {
-    // noop
+    this._enabled = true;
   }
 
 

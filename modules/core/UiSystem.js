@@ -159,11 +159,13 @@ export class UiSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
+    // Render one time
     const container = this.context.container();
     if (!container.empty()) {
       this.render(container);
     }
 
+    this._started = true;
     return this._startPromise = Promise.resolve();
   }
 

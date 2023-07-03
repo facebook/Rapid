@@ -119,7 +119,10 @@ export class UrlHashSystem extends AbstractSystem {
     ]);
 
     return this._startPromise = prerequisites
-      .then(() => this.enable());
+      .then(() => {
+        this._started = true;
+        this.enable();
+      });
   }
 
 
@@ -284,7 +287,7 @@ export class UrlHashSystem extends AbstractSystem {
 
     let title;
     if (format) {
-      title = context.t(format, { changes: changeCount, base: this.titleBase, context: selected });
+      title = l10n.t(format, { changes: changeCount, base: this.titleBase, context: selected });
     } else {
       title = this.titleBase;
     }

@@ -22,8 +22,8 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+    this.enabled = true;     // Rapid features should be enabled by default
 
-    this._enabled = true;     // Rapid features should be enabled by default
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
 
 //// shader experiment:
@@ -178,6 +178,30 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
   /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the services first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
+    }
+
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.mapwithai.startAsync();
+      this.context.services.esri.startAsync();
+    }
+  }
+
+
+  /**
    * render
    * Render any data we have, and schedule fetching more of it to cover the view
    * @param  frame        Integer frame being rendered
@@ -215,7 +239,7 @@ export class PixiLayerRapid extends AbstractLayer {
     if (!dsEnabled) return;
 
     const service = context.services[dataset.service];  // 'mapwithai' or 'esri'
-    if (!service) return;
+    if (!service?.started) return;
 
     // Adjust the dataset id for whether we want the data conflated or not.
     const datasetID = dataset.id + (dataset.conflated ? '-conflated' : '');

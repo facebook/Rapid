@@ -18,18 +18,18 @@ export class Map3dSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map3d';
+    this.autoStart = false;
     this.dependencies = new Set(['map']);
     this.containerID = '3d-buildings';
+    this.maplibre = null;
+
+    this._startPromise = null;
 
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
     this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec('Roads', 'osmroads');
     this.areaLayerSpec = this.getAreaLayerSpec('Areas', 'osmareas');
-    this.maplibre = null;
-
-    this.autoStart = false;
-    this._startPromise = null;
   }
 
 
@@ -106,6 +106,8 @@ export class Map3dSystem extends AbstractSystem {
         this.maplibre.getLayer('building-3d').visibility = 'none';
         this.maplibre.getLayer('road_network').visibility = 'none';
         this.maplibre.getLayer('road_network-casing').visibility = 'none';
+
+        this._started = true;
         resolve();
       });
 

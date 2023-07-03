@@ -1,10 +1,20 @@
 describe('ImagerySource', () => {
 
-  class MockContext {
-    constructor() {}
-    t() {}
-    tHtml() {}
+  class MockLocalizationSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    t()           { return ''; }
+    tHtml()       { return ''; }
   }
+
+  class MockContext {
+    constructor()  {
+      this.systems = {
+        l10n:  new MockLocalizationSystem(this)
+      };
+    }
+  }
+
   const context = new MockContext();
 
 

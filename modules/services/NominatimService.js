@@ -3,13 +3,13 @@ import { Extent } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 
 
 /**
  * `NominatimService`
  */
-export class NominatimService extends AbstractService {
+export class NominatimService extends AbstractSystem {
 
   /**
    * @constructor
@@ -46,6 +46,7 @@ export class NominatimService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this._started = true;
     return Promise.resolve();
   }
 

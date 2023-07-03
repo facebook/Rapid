@@ -4,7 +4,7 @@ import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
 
-import { AbstractService } from './AbstractService';
+import { AbstractSystem } from '../core/AbstractSystem';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -27,7 +27,7 @@ const minZoom = 14;
  *   `loadedSigns`
  *   `loadedMapFeatures`
  */
-export class MapillaryService extends AbstractService {
+export class MapillaryService extends AbstractSystem {
 
   /**
    * @constructor
@@ -37,11 +37,11 @@ export class MapillaryService extends AbstractService {
     super(context);
     this.id = 'mapillary';
 
-    this._loadViewerPromise = null;
+    this._startPromise = null;
     this._mlyActiveImage = null;
     this._mlyCache = {};
 
-    this._mlyFallback = false;
+    this._mlyIsFallback = false;
     this._mlyHighlightedDetection = null;
     this._mlyShowFeatureDetections = false;
     this._mlyShowSignDetections = false;
@@ -67,7 +67,62 @@ export class MapillaryService extends AbstractService {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    return Promise.resolve();  // or return this.loadViewerAsync() ?
+    if (this._startPromise) return this._startPromise;
+
+    const context = this.context;
+
+    // add mly-wrapper
+    const wrap = context.container().select('.photoviewer')
+      .selectAll('.mly-wrapper')
+      .data([0]);
+
+    wrap.enter()
+      .append('div')
+      .attr('id', 'rapideditor-mly')
+      .attr('class', 'photo-wrapper mly-wrapper')
+      .classed('hide', true);
+
+    this._startPromise = new Promise((resolve, reject) => {
+      let loadedCount = 0;
+
+      function loaded() {
+        loadedCount += 1;
+        if (loadedCount === 2) resolve();
+      }
+
+      const head = d3_select('head');
+
+      // load mapillary-viewercss
+      head.selectAll('#rapideditor-mapillary-viewercss')
+        .data([0])
+        .enter()
+        .append('link')
+        .attr('id', 'rapideditor-mapillary-viewercss')
+        .attr('rel', 'stylesheet')
+        .attr('crossorigin', 'anonymous')
+        .attr('href', context.asset(viewercss))
+        .on('load', loaded)
+        .on('error', reject);
+
+      // load mapillary-viewerjs
+      head.selectAll('#rapideditor-mapillary-viewerjs')
+        .data([0])
+        .enter()
+        .append('script')
+        .attr('id', 'rapideditor-mapillary-viewerjs')
+        .attr('crossorigin', 'anonymous')
+        .attr('src', context.asset(viewerjs))
+        .on('load', loaded)
+        .on('error', reject);
+    })
+    .then(() => this._initViewer())
+    .then(() => this._started = true)
+    .catch(err => {
+      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+      this._startPromise = null;
+    });
+
+    return this._startPromise;
   }
 
 
@@ -96,7 +151,12 @@ export class MapillaryService extends AbstractService {
   }
 
 
-  // Get visible images
+  /**
+   * images
+   * Returns an Array of already-loaded images within the viewport
+   * @param  {Projection}  Projection that defines the current map view
+   * @return {Array}
+   */
   images(projection) {
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
@@ -105,7 +165,12 @@ export class MapillaryService extends AbstractService {
     return this._mlyCache.images.rtree.search(box).map(d => d.data);
   }
 
-  // Get visible traffic signs
+  /**
+   * signs
+   * Returns an Array of already-loaded traffic signs within the viewport
+   * @param  {Projection}  Projection that defines the current map view
+   * @return {Array}
+   */
   signs(projection) {
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
@@ -114,7 +179,12 @@ export class MapillaryService extends AbstractService {
     return this._mlyCache.signs.rtree.search(box).map(d => d.data);
   }
 
-  // Get visible map (point) features
+  /**
+   * mapFeatures
+   * Returns an Array of already-loaded detected point features within the viewport
+   * @param  {Projection}  Projection that defines the current map view
+   * @return {Array}
+   */
   mapFeatures(projection) {
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
@@ -123,12 +193,12 @@ export class MapillaryService extends AbstractService {
     return this._mlyCache.points.rtree.search(box).map(d => d.data);
   }
 
-  // Get cached image by id
-  cachedImage(imageID) {
-    return this._mlyCache.images.forImageID[imageID];
-  }
-
-  // Get visible sequences
+  /**
+   * sequences
+   * Returns an Array of already-loaded sequences within the viewport
+   * @param  {Projection}  Projection that defines the current map view
+   * @return {Array}
+   */
   sequences(projection) {
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
@@ -151,94 +221,50 @@ export class MapillaryService extends AbstractService {
   }
 
 
-  // Load images in the visible area
+  /**
+   * loadImages
+   * Loads image data for the given viewport
+   * @param  {Projection}  Projection that defines the current map view
+   */
   loadImages(projection) {
     this._loadTiles('images', tileUrl, 14, projection);
   }
 
 
-  // Load traffic signs in the visible area
+  /**
+   * loadSigns
+   * Loads traffic sign data for the given viewport
+   * @param  {Projection}  Projection that defines the current map view
+   */
   loadSigns(projection) {
     this._loadTiles('signs', trafficSignTileUrl, 14, projection);
   }
 
 
-  // Load map (point) features in the visible area
+  /**
+   * loadMapFeatures
+   * Loads detected point feature data for the given viewport
+   * @param  {Projection}  Projection that defines the current map view
+   */
   loadMapFeatures(projection) {
     this._loadTiles('points', mapFeatureTileUrl, 14, projection);
   }
 
-
-  // Return a promise that resolves when the image viewer (Mapillary JS) library has finished loading
-  loadViewerAsync() {
-    if (this._loadViewerPromise) return this._loadViewerPromise;
-
-    const context = this.context;
-
-    // add mly-wrapper
-    const wrap = context.container().select('.photoviewer')
-      .selectAll('.mly-wrapper')
-      .data([0]);
-
-    wrap.enter()
-      .append('div')
-      .attr('id', 'ideditor-mly')
-      .attr('class', 'photo-wrapper mly-wrapper')
-      .classed('hide', true);
-
-    this._loadViewerPromise = new Promise((resolve, reject) => {
-      let loadedCount = 0;
-
-      function loaded() {
-        loadedCount += 1;
-        // wait until both files are loaded
-        if (loadedCount === 2) resolve();
-      }
-
-      const head = d3_select('head');
-
-      // load mapillary-viewercss
-      head.selectAll('#ideditor-mapillary-viewercss')
-        .data([0])
-        .enter()
-        .append('link')
-        .attr('id', 'ideditor-mapillary-viewercss')
-        .attr('rel', 'stylesheet')
-        .attr('crossorigin', 'anonymous')
-        .attr('href', context.asset(viewercss))
-        .on('load.MapillaryService', loaded)
-        .on('error.MapillaryService', reject);
-
-      // load mapillary-viewerjs
-      head.selectAll('#ideditor-mapillary-viewerjs')
-        .data([0])
-        .enter()
-        .append('script')
-        .attr('id', 'ideditor-mapillary-viewerjs')
-        .attr('crossorigin', 'anonymous')
-        .attr('src', context.asset(viewerjs))
-        .on('load.MapillaryService', loaded)
-        .on('error.MapillaryService', reject);
-    })
-    .then(() => this.initViewer())
-    .catch(err => {
-      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-      this._loadViewerPromise = null;
-    });
-
-    return this._loadViewerPromise;
-  }
-
-
-  // Remove previous detections in image viewer
+  /**
+   * resetTags
+   * Remove highlghted detections from the Mapillary viewer
+   */
   resetTags() {
-    if (this._mlyViewer && !this._mlyFallback) {
+    if (this._mlyViewer && !this._mlyIsFallback) {
       this._mlyViewer.getComponent('tag').removeAll();
     }
   }
 
-
-  // Show map feature detections in image viewer
+  /**
+   * showFeatureDetections
+   * Show highlghted detections in the Mapillary viewer
+   * @param  {Boolean}  `true` to show them, `false` to hide them
+   */
   showFeatureDetections(value) {
     this._mlyShowFeatureDetections = value;
     if (!this._mlyShowFeatureDetections && !this._mlyShowSignDetections) {
@@ -246,8 +272,11 @@ export class MapillaryService extends AbstractService {
     }
   }
 
-
-  // Show traffic sign detections in image viewer
+  /**
+   * showSignDetections
+   * Show highlghted traffic signs in the Mapillary viewer
+   * @param  {Boolean}  `true` to show them, `false` to hide them
+   */
   showSignDetections(value) {
     this._mlyShowSignDetections = value;
     if (!this._mlyShowFeatureDetections && !this._mlyShowSignDetections) {
@@ -256,7 +285,11 @@ export class MapillaryService extends AbstractService {
   }
 
 
-  // Apply filter to image viewer
+  /**
+   * filterViewer
+   * Apply filters to the Mapillary viewer
+   * The filters settings are stored in the PhotoSystem
+   */
   filterViewer() {
     const photoSystem = this.context.systems.photos;
     const showsPano = photoSystem.showsPanoramic;
@@ -283,7 +316,10 @@ export class MapillaryService extends AbstractService {
   }
 
 
-  // Make the image viewer visible
+  /**
+   * showViewer
+   * Shows the photo viewer, and hides all other photo viewers
+   */
   showViewer() {
     const wrap = this.context.container().select('.photoviewer')
       .classed('hide', false);
@@ -301,18 +337,19 @@ export class MapillaryService extends AbstractService {
 
       this._mlyViewer.resize();
     }
-
-    return this;
   }
 
 
-  // Hide the image viewer and resets map markers
+  /**
+   * hideViewer
+   * Hides the photo viewer and clears the currently selected image
+   */
   hideViewer() {
     this._mlyActiveImage = null;
     const context = this.context;
     context.systems.photos.selectPhoto(null);
 
-    if (!this._mlyFallback && this._mlyViewer) {
+    if (!this._mlyIsFallback && this._mlyViewer) {
       this._mlyViewer.getComponent('sequence').stop();
     }
 
@@ -324,9 +361,8 @@ export class MapillaryService extends AbstractService {
       .selectAll('.photo-wrapper')
       .classed('hide', true);
 
-    this.emit.call('imageChanged');
-
-    return this.setStyles(context, null);
+    this.setStyles(context, null);
+    this.emit('imageChanged');
   }
 
 
@@ -339,85 +375,22 @@ export class MapillaryService extends AbstractService {
   }
 
 
-  // Initialize image viewer (Mapillary JS)
-  initViewer() {
-    const mapillary = window.mapillary;
-    if (!mapillary) return;
+  /**
+   * selectImageAsync
+   * Note:  most code should call `PhotoSystem.selectPhoto(layerID, photoID)` instead.
+   * That will manage the state of what the user clicked on, and then call this function.
+   * @param  {string} imageID - the id of the image to select
+   * @return {Promise} Promise that always resolves (we should change this to resolve after the image is ready)
+   */
+  selectImageAsync(imageID) {
+    if (!imageID) return Promise.resolve();  // do nothing
 
-    const context = this.context;
-
-    const opts = {
-      accessToken: accessToken,
-      component: {
-        cover: false,
-        keyboard: false,
-        tag: true
-      },
-      container: 'ideditor-mly',
-    };
-
-    // Disable components requiring WebGL support
-    if (!mapillary.isSupported() && mapillary.isFallbackSupported()) {
-      this._mlyFallback = true;
-      opts.component = {
-        cover: false,
-        direction: false,
-        imagePlane: false,
-        keyboard: false,
-        mouse: false,
-        sequence: false,
-        tag: false,
-        image: true,        // fallback
-        navigation: true    // fallback
-      };
-    }
-
-    // imageChanged: called after the viewer has changed images and is ready.
-    const imageChanged = (node) => {
-      this.resetTags();
-      const image = node.image;
-      this.setActiveImage(image);
-      this.setStyles(context, null);
-      const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
-      context.systems.map.centerEase(loc);
-      context.systems.photos.selectPhoto('mapillary', image.id);
-
-      if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
-        this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
-      }
-      this.emit.call('imageChanged');
-    };
-
-    // bearingChanged: called when the bearing changes in the image viewer.
-    const bearingChanged = (e) => {
-      this.emit.call('bearingChanged', undefined, e);
-    };
-
-    this._mlyViewer = new mapillary.Viewer(opts);
-    this._mlyViewer.on('image', imageChanged);
-    this._mlyViewer.on('bearing', bearingChanged);
-
-    if (this._mlyViewerFilter) {
-      this._mlyViewer.setFilter(this._mlyViewerFilter);
-    }
-
-    // Register viewer resize handler
-    context.systems.ui.photoviewer.on('resize.mapillary', () => {
-      if (this._mlyViewer) this._mlyViewer.resize();
-    });
-  }
-
-
-  // Move to an image
-  // note: call `photoSystem.selectPhoto(layerID, photoID)` instead
-  // That will deal with the URL and call this function
-  selectImage(imageID) {
-    if (this._mlyViewer && imageID) {
-      this._mlyViewer
-        .moveTo(imageID)
-        .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
-    }
-    return this;
+    return this.startAsync()
+      .then(() => {
+        return this._mlyViewer
+          .moveTo(imageID)
+          .catch(err => console.error('mly3', err));   // eslint-disable-line no-console
+      });
   }
 
 
@@ -428,7 +401,7 @@ export class MapillaryService extends AbstractService {
 
 
   // Return a list of detection objects for the given id
-  getDetections(id) {
+  getDetectionsAsync(id) {
     return this._loadDataAsync(`${apiUrl}/${id}/detections?access_token=${accessToken}&fields=id,value,image`);
   }
 
@@ -449,6 +422,9 @@ export class MapillaryService extends AbstractService {
   }
 
 
+  // NOTE: the setStyles() functions all dont work right now since the WebGL rewrite.
+  // They depended on selecting svg stuff from the container - see #740
+
   // Update the currently highlighted sequence and selected bubble.
   setStyles(context, hovered) {
     const hoveredImageID = hovered?.id;
@@ -462,14 +438,12 @@ export class MapillaryService extends AbstractService {
     context.container().selectAll('.layer-mapillary .sequence')
       .classed('highlighted', function(d) { return d.properties.id === hoveredSequenceID; })
       .classed('currentView', function(d) { return d.properties.id === selectedSequenceID; });
-
-    return this;
   }
 
 
   // Get detections for the current image and shows them in the image viewer
   updateDetections(imageID, url) {
-    if (!this._mlyViewer || this._mlyFallback) return;
+    if (!this._mlyViewer || this._mlyIsFallback) return;
     if (!imageID) return;
 
     const cache = this._mlyCache.image_detections;
@@ -596,11 +570,11 @@ export class MapillaryService extends AbstractService {
 
         this.context.deferredRedraw();
         if (which === 'images') {
-          this.emit.call('loadedImages');
+          this.emit('loadedImages');
         } else if (which === 'signs') {
-          this.emit.call('loadedSigns');
+          this.emit('loadedSigns');
         } else if (which === 'points') {
-          this.emit.call('loadedMapFeatures');
+          this.emit('loadedMapFeatures');
         }
       })
       .catch(err => {
@@ -724,5 +698,75 @@ export class MapillaryService extends AbstractService {
         if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
       });
   }
+
+
+  // Initialize image viewer (Mapillary JS)
+  _initViewer() {
+    const mapillary = window.mapillary;
+    if (!mapillary) return;
+
+    const context = this.context;
+
+    const opts = {
+      accessToken: accessToken,
+      component: {
+        cover: false,
+        keyboard: false,
+        tag: true
+      },
+      container: 'rapideditor-mly',
+    };
+
+    // Disable components requiring WebGL support
+    if (!mapillary.isSupported() && mapillary.isFallbackSupported()) {
+      this._mlyIsFallback = true;
+      opts.component = {
+        cover: false,
+        direction: false,
+        imagePlane: false,
+        keyboard: false,
+        mouse: false,
+        sequence: false,
+        tag: false,
+        image: true,        // fallback
+        navigation: true    // fallback
+      };
+    }
+
+    // imageChanged: called after the viewer has changed images and is ready.
+    const imageChanged = (node) => {
+      this.resetTags();
+      const image = node.image;
+      this.setActiveImage(image);
+      this.setStyles(context, null);
+      const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
+      context.systems.map.centerEase(loc);
+      context.systems.photos.selectPhoto('mapillary', image.id);
+
+      if (this._mlyShowFeatureDetections || this._mlyShowSignDetections) {
+        this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
+      }
+      this.emit('imageChanged');
+    };
+
+    // bearingChanged: called when the bearing changes in the image viewer.
+    const bearingChanged = (e) => {
+      this.emit('bearingChanged', undefined, e);
+    };
+
+    this._mlyViewer = new mapillary.Viewer(opts);
+    this._mlyViewer.on('image', imageChanged);
+    this._mlyViewer.on('bearing', bearingChanged);
+
+    if (this._mlyViewerFilter) {
+      this._mlyViewer.setFilter(this._mlyViewerFilter);
+    }
+
+    // Register viewer resize handler
+    context.systems.ui.photoviewer.on('resize.mapillary', () => {
+      if (this._mlyViewer) this._mlyViewer.resize();
+    });
+  }
+
 
 }

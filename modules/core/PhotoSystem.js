@@ -77,6 +77,7 @@ export class PhotoSystem extends AbstractSystem {
     return this._startPromise = prerequisites
       .then(() => {
         mapSystem.scene.on('layerchange', this._updateHash);
+        this._started = true;
       });
   }
 
@@ -246,7 +247,7 @@ export class PhotoSystem extends AbstractSystem {
     const context = this.context;
     const scene = context.scene();
 
-// we're not listening to photochange, so just manually tell the renderer to select-style it, for now
+// renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
 scene.clearClass('selected');
 
     if (layerID && photoID) {
@@ -256,15 +257,13 @@ scene.clearClass('selected');
       // If we're selecting a photo then make sure its layer is enabled too.
       scene.enableLayers(layerID);
 
-// we're not listening to photochange, so just manually tell the renderer to select-style it, for now
+// renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
 scene.classData(layerID, photoID, 'selected');
 
       // Try to show the viewer with the image selected..
-      service.loadViewerAsync()
-        .then(() => {
-          service.selectImage(photoID);
-          service.showViewer();
-        });
+      service.startAsync()
+        .then(() => service.selectImageAsync(photoID))
+        .then(() => service.showViewer());
     }
 
     this._updateHash();

@@ -214,13 +214,4 @@ describe('KartaviewService', () => {
     });
   });
 
-  describe('#selectedImage', () => {
-    it('sets and gets selected image', () => {
-      const imagedata = { id: 'foo' };
-      _kartaview._cache.images.set('foo', imagedata);
-      _kartaview.selectImage('foo');
-      expect(_kartaview.getSelectedImage()).to.eql(imagedata);
-    });
-  });
-
 });

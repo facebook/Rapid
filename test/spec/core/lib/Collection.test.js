@@ -1,8 +1,18 @@
 describe('Collection', () => {
+
+  class MockLocalizationSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    t()           { return ''; }
+    tHtml()       { return ''; }
+  }
+
   class MockContext {
-    constructor()  {}
-    t(id)      { return id; }
-    tHtml(id)  { return id; }
+    constructor()  {
+      this.systems = {
+        l10n:  new MockLocalizationSystem(this)
+      };
+    }
   }
 
   const context = new MockContext();

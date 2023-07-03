@@ -29,7 +29,6 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   constructor(scene, layerID, isMinimap) {
     super(scene, layerID);
-
     this.enabled = true;   // background imagery should be enabled by default
     this.isMinimap = isMinimap;
 
