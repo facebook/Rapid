@@ -1,4 +1,4 @@
-import { json as d3_json, xml as d3_xml } from 'd3-fetch';
+import { xml as d3_xml } from 'd3-fetch';
 import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle';
@@ -284,34 +284,39 @@ export class OsmService extends AbstractSystem {
       }
     };
 
-    if (this.authenticated()) {
-      return this._oauth.xhr({ method: 'GET', path: path }, done);
-    } else {
-      const url = this._urlroot + path;
-      const controller = new AbortController();
-      let fn;
-      if (path.indexOf('.json') !== -1) {
-        fn = d3_json;
-      } else {
-        fn = d3_xml;
-      }
+    const resource = this._urlroot + path;
+    const controller = new AbortController();
+    let fn;
 
-      fn(url, { signal: controller.signal })
-        .then(result => done(null, result))
-        .catch(err => {
-          if (err.name === 'AbortError') return;  // ok
-          // d3-fetch includes status in the error message,
-          // but we can't access the response itself
-          // https://github.com/d3/d3-fetch/issues/27
-          const match = err.message.match(/^\d{3}/);
-          if (match) {
-            done({ status: +match[0], statusText: err.message });
-          } else {
-            done(err.message);
-          }
-        });
-      return controller;
+    if (this.authenticated()) {
+      fn = this._oauth.fetch;
+    } else {
+      fn = window.fetch;
     }
+
+    fn(resource, { signal: controller.signal })
+      .then(response => {
+        if (!response.ok) {
+          done(response);
+          throw new Error(response.status + " " + response.statusText);
+        }
+        const contentType = response.headers.get('content-type').split(';')[0];
+        switch (contentType) {
+          case 'application/xml':
+            return response.text()
+              .then(txt => new window.DOMParser().parseFromString(txt, contentType));
+          case 'application/json':
+            return response.json();
+          default:
+            return response.text();
+        }
+      })
+      .then(result => done(null, result))
+      .catch(err => {
+        if (err.name === 'AbortError') return;  // ok
+      });
+
+    return controller;
   }
 
 
