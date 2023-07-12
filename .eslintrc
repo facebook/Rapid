@@ -96,7 +96,7 @@
         "no-warning-comments": "warn",
         "no-whitespace-before-property": "warn",
         "no-with": "error",
-        "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+        "quotes": [ "single", { "allowTemplateLiterals": true }],
         "radix": ["error", "always"],
         "require-atomic-updates": "error",
         "require-await": "error",
