@@ -1,7 +1,8 @@
-import { utilStringQs } from '@rapid-sdk/util';
-
 import { AbstractSystem } from './AbstractSystem';
-import { utilDetect } from '../util/detect';
+// import { utilStringQs } from '@rapid-sdk/util';
+
+
+// import { utilDetect } from '../util/detect';
 
 
 function wrap(x, min, max) {
