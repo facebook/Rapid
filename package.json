@@ -44,6 +44,11 @@
     "test": "jest",
     "translations": "node scripts/update_locales.js"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
   "dependencies": {
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.2",
@@ -79,6 +84,7 @@
     "which-polygon": "2.2.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.22.7",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
@@ -89,6 +95,7 @@
     "@playwright/test": "^1.35.1",
     "@rapideditor/temaki": "~5.4.0",
     "autoprefixer": "^10.4.14",
+    "babel-jest": "^29.6.1",
     "benchmark": "^2.1.4",
     "btoa": "^1.2.1",
     "chai": "^4.3.7",
