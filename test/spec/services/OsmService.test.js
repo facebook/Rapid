@@ -14,7 +14,7 @@ describe('OsmService', () => {
 
   beforeEach(() => {
     spy = sinon.spy();
-    serverXHR = sinon.fakeServer.create();      // authenticated calls use XHR via osm-auth
+    serverXHR = sinon.fakeServer.create();   // some calls still use XHR via osm-auth
     fetchMock.reset();
 
     const capabilitiesXML =
@@ -161,7 +161,7 @@ describe('OsmService', () => {
 
   describe('#loadFromAPI', () => {
     const path = '/api/0.6/map.json?bbox=-74.542,40.655,-74.541,40.656';
-    const response =
+    const body =
 `{
   "version":"0.6",
   "bounds":{"minlat":40.6550000,"minlon":-74.5420000,"maxlat":40.6560000,"maxlon":-74.5410000},
@@ -171,13 +171,10 @@ describe('OsmService', () => {
     {"type":"way","id":"40376199","visible":true,"version":1,"changeset":2403012,"timestamp":"2009-09-07T16:01:13Z","user":"NJDataUploads","uid":148169,"nodes":[105340439,105340442],"tags":{"highway":"residential","name":"Potomac Drive"}}
   ]
 }`;
+    const okResponse = { status: 200, body: body, headers: { 'Content-Type': 'application/json' } };
 
     it('returns an object', done => {
-      fetchMock.mock(`https://www.openstreetmap.org${path}`, {
-        body: response,
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      fetchMock.mock('*', okResponse);
 
       _osm.loadFromAPI(path, (err, result) => {
         expect(err).to.not.be.ok;
@@ -188,79 +185,78 @@ describe('OsmService', () => {
 
 
     it('retries an authenticated call unauthenticated if 400 Bad Request', done => {
-      fetchMock.mock(`https://www.openstreetmap.org${path}`, {
-        body: response,
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
-      serverXHR.respondWith('GET', `https://www.openstreetmap.org${path}`,
-        [400, { 'Content-Type': 'text/plain' }, 'Bad Request']);
+      const badResponse = { status: 400, body: 'Bad Request', headers: { 'Content-Type': 'text/plain' } };
+
+      fetchMock
+        .mock((url, { headers }) => !headers?.Authorization,  okResponse)
+        .mock((url, { headers }) => !!headers?.Authorization, badResponse);
 
       loginAsync()
         .then(() => {
-          _osm.loadFromAPI(path, (err, xml) => {
+          _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
-            expect(typeof xml).to.eql('object');
+            expect(typeof result).to.eql('object');
             expect(_osm.authenticated()).to.be.not.ok;
-            expect(fetchMock.called()).to.be.true;
+
+            const calls = fetchMock.calls();
+            expect(calls).to.have.lengthOf.at.least(2);   // auth, unauth, capabilities
+            expect(calls[0][1]).to.have.nested.property('headers.Authorization');
+            expect(calls[1][1]).to.not.have.nested.property('headers.Authorization');
             done();
           });
-
-          serverXHR.respond();
         });
     });
 
 
     it('retries an authenticated call unauthenticated if 401 Unauthorized', done => {
-      fetchMock.mock(`https://www.openstreetmap.org${path}`, {
-        body: response,
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
-      serverXHR.respondWith('GET', `https://www.openstreetmap.org${path}`,
-        [401, { 'Content-Type': 'text/plain' }, 'Unauthorized']);
+      const badResponse = { status: 401, body: 'Unauthorized', headers: { 'Content-Type': 'text/plain' } };
+
+      fetchMock
+        .mock((url, { headers }) => !headers?.Authorization,  okResponse)
+        .mock((url, { headers }) => !!headers?.Authorization, badResponse);
 
       loginAsync()
         .then(() => {
-          _osm.loadFromAPI(path, (err, xml) => {
+          _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
-            expect(typeof xml).to.eql('object');
+            expect(typeof result).to.eql('object');
             expect(_osm.authenticated()).to.be.not.ok;
-            expect(fetchMock.called()).to.be.true;
+
+            const calls = fetchMock.calls();
+            expect(calls).to.have.lengthOf.at.least(2);   // auth, unauth, capabilities
+            expect(calls[0][1]).to.have.nested.property('headers.Authorization');
+            expect(calls[1][1]).to.not.have.nested.property('headers.Authorization');
             done();
           });
-
-          serverXHR.respond();
         });
     });
 
-
     it('retries an authenticated call unauthenticated if 403 Forbidden', done => {
-      fetchMock.mock(`https://www.openstreetmap.org${path}`, {
-        body: response,
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
-      serverXHR.respondWith('GET', `https://www.openstreetmap.org${path}`,
-        [403, { 'Content-Type': 'text/plain' }, 'Forbidden']);
+      const badResponse = { status: 403, body: 'Forbidden', headers: { 'Content-Type': 'text/plain' } };
+
+      fetchMock
+        .mock((url, { headers }) => !headers?.Authorization,  okResponse)
+        .mock((url, { headers }) => !!headers?.Authorization, badResponse);
 
       loginAsync()
         .then(() => {
-          _osm.loadFromAPI(path, (err, xml) => {
+          _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
-            expect(typeof xml).to.eql('object');
+            expect(typeof result).to.eql('object');
             expect(_osm.authenticated()).to.be.not.ok;
-            expect(fetchMock.called()).to.be.true;
+
+            const calls = fetchMock.calls();
+            expect(calls).to.have.lengthOf.at.least(2);   // auth, unauth, capabilities
+            expect(calls[0][1]).to.have.nested.property('headers.Authorization');
+            expect(calls[1][1]).to.not.have.nested.property('headers.Authorization');
             done();
           });
-
-          serverXHR.respond();
         });
     });
 
 
     it('emits authchange event if 509 Bandwidth Limit Exceeded', done => {
-      fetchMock.mock(`https://www.openstreetmap.org${path}`, {
+      fetchMock.mock('*', {
         body: 'Bandwidth Limit Exceeded',
         status: 509,
         headers: { 'Content-Type': 'text/plain' }
@@ -275,8 +271,9 @@ describe('OsmService', () => {
       });
     });
 
+
     it('emits authchange event if 429 Too Many Requests', done => {
-      fetchMock.mock(`https://www.openstreetmap.org${path}`, {
+      fetchMock.mock('*', {
         body: '429 Too Many Requests',
         status: 429,
         headers: { 'Content-Type': 'text/plain' }
@@ -295,7 +292,7 @@ describe('OsmService', () => {
 
   describe('#loadFromAPIWithErrors', () => {
     const path = '/api/0.6/map.json?bbox=-74.542,40.655,-74.541,40.656';
-    const response =
+    const partialBody =
 `{
   "version":"0.6",
   "bounds":{"minlat":40.6550000,"minlon":-74.5420000,"maxlat":40.6560000,"maxlon":-74.5410000},
@@ -306,13 +303,10 @@ describe('OsmService', () => {
     {"type":"way","id":"40376199","visible":true,"version":1,"changeset":2403012,"timestamp":"2009-09-07T16:01:13Z","user":"NJDataUploads","uid":148169,"nodes":[105340439,105340442],"tags":{"highway":"residential","name":"Potomac Drive"}}
   ]
 }`;
+    const partialResponse = { status: 200, body: partialBody, headers: { 'Content-Type': 'application/json' } };
 
     it('returns a partial JSON error', done => {
-      fetchMock.mock(`https://www.openstreetmap.org${path}`, {
-        body: response,
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      fetchMock.mock('*', partialResponse);
 
       _osm.loadFromAPI(path, err => {
         expect(err.message).to.eql('Partial JSON');

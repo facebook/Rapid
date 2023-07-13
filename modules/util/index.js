@@ -1,5 +1,6 @@
 export { utilDetect } from './detect';
 export { utilFastMouse } from './util';
+export { utilFetchResponse, FetchError } from './fetch_response';
 export { utilFunctor } from './util';
 export { utilGetSetValue } from './get_set_value';
 export { utilHighlightEntities } from './util';
@@ -10,3 +11,4 @@ export { utilSetTransform } from './util';
 export { utilTotalExtent } from './util';
 export { utilTriggerEvent } from './trigger_event';
 export { utilWrap } from './util';
+

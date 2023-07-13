@@ -8,6 +8,7 @@ import RBush from 'rbush';
 import { AbstractSystem } from '../core/AbstractSystem';
 import { JXON } from '../util/jxon';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -286,34 +287,17 @@ export class OsmService extends AbstractSystem {
 
     const resource = this._urlroot + path;
     const controller = new AbortController();
-    let fn;
+    const _fetch = this.authenticated() ? this._oauth.fetch : window.fetch;
 
-    if (this.authenticated()) {
-      fn = this._oauth.fetch;
-    } else {
-      fn = window.fetch;
-    }
-
-    fn(resource, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) {
-          done(response);
-          throw new Error(response.status + " " + response.statusText);
-        }
-        const contentType = response.headers.get('content-type').split(';')[0];
-        switch (contentType) {
-          case 'application/xml':
-            return response.text()
-              .then(txt => new window.DOMParser().parseFromString(txt, contentType));
-          case 'application/json':
-            return response.json();
-          default:
-            return response.text();
-        }
-      })
+    _fetch(resource, { signal: controller.signal })
+      .then(utilFetchResponse)
       .then(result => done(null, result))
       .catch(err => {
         if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          done(err);
+          return;
+        }
       });
 
     return controller;
