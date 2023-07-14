@@ -38,11 +38,111 @@ describe('OsmService', () => {
  </policy>
 </osm>`;
 
-    fetchMock.mock(/api\/capabilities/, {
-      body: capabilitiesXML,
-      status: 200,
-      headers: { 'Content-Type': 'text/xml' }
-    });
+    const userJSON =
+`{
+  "version": "0.6",
+  "generator": "OpenStreetMap server",
+  "copyright": "OpenStreetMap and contributors",
+  "attribution": "http://www.openstreetmap.org/copyright",
+  "license": "http://opendatacommons.org/licenses/odbl/1-0/",
+  "user": {
+    "id": 584325,
+    "display_name": "bhousel",
+    "account_created": "2010-01-01T00:00:00Z",
+    "description": "Hi",
+    "contributor_terms": { "agreed": true, "pd": true },
+    "img": {"href": "https://www.gravatar.com/avatar/test.png"},
+    "roles": [],
+    "changesets": {"count": 999 },
+    "traces": {"count": 999},
+    "blocks": {"received": {"count": 0, "active": 0 } },
+    "home": {"lat": 40, "lon": -74, "zoom": 3 },
+    "languages": ["en", "en-US"],
+    "messages": {
+      "received": {"count": 99, "unread": 1 },
+      "sent": {"count": 99 }
+    }
+  }
+}`;
+
+    const changesetJSON =
+`{
+  "version": "0.6",
+  "generator": "OpenStreetMap server",
+  "copyright": "OpenStreetMap and contributors",
+  "attribution": "http://www.openstreetmap.org/copyright",
+  "license": "http://opendatacommons.org/licenses/odbl/1-0/",
+  "changesets": [
+    {
+      "id": 137842015,
+      "created_at": "2023-06-01T00:00:00Z",
+      "open": false,
+      "comments_count": 0,
+      "changes_count": 10,
+      "closed_at": "2023-06-01T00:00:01Z",
+      "min_lat": 40.060883,
+      "min_lon": -75.2392873,
+      "max_lat": 40.060993,
+      "max_lon": -75.2391612,
+      "uid": 584325,
+      "user": "bhousel",
+      "tags": {
+        "comment": "Fix unsquare corners",
+        "created_by": "Rapid 2.0.3",
+        "host": "http://127.0.0.1:8080/",
+        "locale": "en-US",
+        "imagery_used": "Bing Maps Aerial"
+      }
+    },
+    {
+      "id": 137842016,
+      "created_at": "2023-06-02T00:00:00Z",
+      "open": false,
+      "comments_count": 0,
+      "changes_count": 10,
+      "closed_at": "2023-06-02T00:00:01Z",
+      "min_lat": 40.060883,
+      "min_lon": -75.2392873,
+      "max_lat": 40.060993,
+      "max_lon": -75.2391612,
+      "uid": 584325,
+      "user": "bhousel",
+      "tags": {
+        "comment": "",
+        "created_by": "Rapid 2.0.3",
+        "host": "http://127.0.0.1:8080/",
+        "locale": "en-US",
+        "imagery_used": "Bing Maps Aerial"
+      }
+    },
+    {
+      "id": 137842017,
+      "created_at": "2023-06-03T00:00:00Z",
+      "open": false,
+      "comments_count": 0,
+      "changes_count": 10,
+      "closed_at": "2023-06-02T00:00:01Z",
+      "min_lat": 40.060883,
+      "min_lon": -75.2392873,
+      "max_lat": 40.060993,
+      "max_lon": -75.2391612,
+      "uid": 584325,
+      "user": "bhousel",
+      "tags": {
+        "created_by": "Rapid 2.0.3",
+        "host": "http://127.0.0.1:8080/",
+        "locale": "en-US",
+        "imagery_used": "Bing Maps Aerial"
+      }
+    }
+  ]
+}`;
+
+    fetchMock
+      .mock(/api\/capabilities/, { status: 200, body: capabilitiesXML, headers: { 'Content-Type': 'application/xml' } })
+      .mock(/user\/details\.json/, { status: 200, body: userJSON, headers: { 'Content-Type': 'application/json' } })
+      .mock(/changesets\.json/, { status: 200, body: changesetJSON, headers: { 'Content-Type': 'application/json' } });
+
 
     _osm = new Rapid.OsmService(new MockContext());
     return _osm.initAsync()
@@ -50,7 +150,8 @@ describe('OsmService', () => {
   });
 
   afterEach(() => {
-    _osm.throttledReloadApiStatus?.cancel();
+    _osm.throttledReloadApiStatus.cancel();
+    fetchMock.reset();
   });
 
 
@@ -174,7 +275,7 @@ describe('OsmService', () => {
     const okResponse = { status: 200, body: body, headers: { 'Content-Type': 'application/json' } };
 
     it('returns an object', done => {
-      fetchMock.mock('*', okResponse);
+      fetchMock.mock(/map\.json/, okResponse);
 
       _osm.loadFromAPI(path, (err, result) => {
         expect(err).to.not.be.ok;
@@ -188,11 +289,12 @@ describe('OsmService', () => {
       const badResponse = { status: 400, body: 'Bad Request', headers: { 'Content-Type': 'text/plain' } };
 
       fetchMock
-        .mock((url, { headers }) => !headers?.Authorization,  okResponse)
-        .mock((url, { headers }) => !!headers?.Authorization, badResponse);
+        .mock((url, { headers }) => /map\.json/.test(url) && !!headers?.Authorization, badResponse)
+        .mock((url, { headers }) => /map\.json/.test(url) && !headers?.Authorization,  okResponse);
 
       loginAsync()
         .then(() => {
+          fetchMock.resetHistory();
           _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
             expect(typeof result).to.eql('object');
@@ -212,11 +314,12 @@ describe('OsmService', () => {
       const badResponse = { status: 401, body: 'Unauthorized', headers: { 'Content-Type': 'text/plain' } };
 
       fetchMock
-        .mock((url, { headers }) => !headers?.Authorization,  okResponse)
-        .mock((url, { headers }) => !!headers?.Authorization, badResponse);
+        .mock((url, { headers }) => /map\.json/.test(url) && !!headers?.Authorization, badResponse)
+        .mock((url, { headers }) => /map\.json/.test(url) && !headers?.Authorization,  okResponse);
 
       loginAsync()
         .then(() => {
+          fetchMock.resetHistory();
           _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
             expect(typeof result).to.eql('object');
@@ -235,11 +338,12 @@ describe('OsmService', () => {
       const badResponse = { status: 403, body: 'Forbidden', headers: { 'Content-Type': 'text/plain' } };
 
       fetchMock
-        .mock((url, { headers }) => !headers?.Authorization,  okResponse)
-        .mock((url, { headers }) => !!headers?.Authorization, badResponse);
+        .mock((url, { headers }) => /map\.json/.test(url) && !!headers?.Authorization, badResponse)
+        .mock((url, { headers }) => /map\.json/.test(url) && !headers?.Authorization,  okResponse);
 
       loginAsync()
         .then(() => {
+          fetchMock.resetHistory();
           _osm.loadFromAPI(path, (err, result) => {
             expect(err).to.be.not.ok;
             expect(typeof result).to.eql('object');
@@ -306,7 +410,7 @@ describe('OsmService', () => {
     const partialResponse = { status: 200, body: partialBody, headers: { 'Content-Type': 'application/json' } };
 
     it('returns a partial JSON error', done => {
-      fetchMock.mock('*', partialResponse);
+      fetchMock.mock(/map\.json/, partialResponse);
 
       _osm.loadFromAPI(path, err => {
         expect(err.message).to.eql('Partial JSON');
@@ -322,7 +426,7 @@ describe('OsmService', () => {
       .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
       .dimensions([[0,0], [64,64]]);
 
-    const tileResponse =
+    const tileBody =
 `{
   "version":"0.6",
   "bounds":{"minlat":40.6681396,"minlon":-74.0478516,"maxlat":40.6723060,"maxlon":-74.0423584},
@@ -332,8 +436,8 @@ describe('OsmService', () => {
 }`;
 
     it('calls callback when data tiles are loaded', done => {
-      fetchMock.mock(/map.json\?bbox/, {
-        body: tileResponse,
+      fetchMock.mock(/map\.json/, {
+        body: tileBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -361,7 +465,7 @@ describe('OsmService', () => {
 
 
   describe('#loadEntity', () => {
-    const nodeResponse =
+    const nodeBody =
 `{
   "version":"0.6",
   "elements":[
@@ -369,7 +473,7 @@ describe('OsmService', () => {
   ]
 }`;
 
-    const wayResponse =
+    const wayBody =
 `{
   "version":"0.6",
   "elements":[
@@ -379,8 +483,8 @@ describe('OsmService', () => {
 }`;
 
     it('loads a node', done => {
-      fetchMock.mock('https://www.openstreetmap.org/api/0.6/node/1.json', {
-        body: nodeResponse,
+      fetchMock.mock(/node\/1\.json/, {
+        body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -395,8 +499,8 @@ describe('OsmService', () => {
 
 
     it('loads a way', done => {
-      fetchMock.mock('https://www.openstreetmap.org/api/0.6/way/1/full.json', {
-        body: wayResponse,
+      fetchMock.mock(/way\/1\/full\.json/, {
+        body: wayBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -411,8 +515,8 @@ describe('OsmService', () => {
 
 
     it('does not ignore repeat requests', done => {
-      fetchMock.mock('https://www.openstreetmap.org/api/0.6/node/1.json', {
-        body: wayResponse,
+      fetchMock.mock(/node\/1\.json/, {
+        body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -433,14 +537,14 @@ describe('OsmService', () => {
 
 
   describe('#loadEntityVersion', () => {
-    const nodeResponse =
+    const nodeBody =
 `{
   "version":"0.6",
   "elements":[
     {"type":"node","id":1,"visible":true,"version":1,"changeset":28924294,"timestamp":"2009-03-07T03:26:33Z","user":"peace2","uid":119748,"lat":0,"lon":0}
   ]
 }`;
-    const wayResponse =
+    const wayBody =
 `{
   "version":"0.6",
   "elements":[
@@ -450,8 +554,8 @@ describe('OsmService', () => {
 }`;
 
     it('loads a node', done => {
-      fetchMock.mock('https://www.openstreetmap.org/api/0.6/node/1/1.json', {
-        body: nodeResponse,
+      fetchMock.mock(/node\/1\/1\.json/, {
+        body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -466,8 +570,8 @@ describe('OsmService', () => {
 
 
     it('loads a way', done => {
-      fetchMock.mock('https://www.openstreetmap.org/api/0.6/way/1/1.json', {
-        body: wayResponse,
+      fetchMock.mock(/way\/1\/1\.json/, {
+        body: wayBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -482,8 +586,8 @@ describe('OsmService', () => {
 
 
     it('does not ignore repeat requests', done => {
-      fetchMock.mock('https://www.openstreetmap.org/api/0.6/node/1/1.json', {
-        body: nodeResponse,
+      fetchMock.mock(/node\/1\/1\.json/, {
+        body: nodeBody,
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -504,114 +608,32 @@ describe('OsmService', () => {
   });
 
 
+  describe('#userDetails', () => {
+    it('retrieves user details', done => {
+      loginAsync()
+        .then(() => {
+          _osm.userDetails((err, user) => {
+            expect(user.id).to.eql('584325');
+            done();
+          });
+        });
+    });
+  });
+
+
   describe('#userChangesets', () => {
-    let userDetailsFn;
-
-    beforeEach(() => {
-      userDetailsFn = _osm.userDetails;
-      _osm.userDetails = (callback) => {
-        callback(undefined, { id: 1, displayName: 'Steve' });
-      };
-    });
-
-    afterEach(() => {
-      _osm.userDetails = userDetailsFn;
-    });
-
-
-    it('loads user changesets', done => {
-      const changesetsXML =
-`<?xml version="1.0" encoding="UTF-8"?>
-<osm>
-<changeset id="36777543" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">
-  <tag k="comment" v="Caprice Court has been extended"/>
-  <tag k="created_by" v="Rapid 2.0.0"/>
-</changeset>
-</osm>`;
-
+    it('retrieves user changesets', done => {
       loginAsync()
         .then(() => {
           _osm.userChangesets((err, changesets) => {
-            expect(changesets).to.deep.equal([{
-              tags: {
-                comment: 'Caprice Court has been extended',
-                created_by: 'Rapid 2.0.0'
-              }
-            }]);
-            _osm.logout();
+            // ignore changesets with empty or missing comment
+            expect(changesets).to.have.lengthOf(1);
+
+            const changeset = changesets[0];
+            expect(changeset.id).to.eql(137842015);
+            expect(changeset.tags.comment).to.eql('Fix unsquare corners');
             done();
           });
-
-          serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
-            [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
-          serverXHR.respond();
-        });
-    });
-
-
-    it('excludes changesets without comment tag', done => {
-      const changesetsXML =
-`<?xml version="1.0" encoding="UTF-8"?>
-<osm>
-<changeset id="36777543" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">
-  <tag k="comment" v="Caprice Court has been extended"/>
-  <tag k="created_by" v="Rapid 2.0.0"/>
-</changeset>
-<changeset id="36777544" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">
-  <tag k="created_by" v="Rapid 2.0.0"/>
-</changeset>
-</osm>`;
-
-      loginAsync()
-        .then(() => {
-          _osm.userChangesets((err, changesets) => {
-            expect(changesets).to.deep.equal([{
-              tags: {
-                comment: 'Caprice Court has been extended',
-                created_by: 'Rapid 2.0.0'
-              }
-            }]);
-            _osm.logout();
-            done();
-          });
-
-          serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
-            [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
-          serverXHR.respond();
-        });
-    });
-
-
-    it('excludes changesets with empty comment', done => {
-      const changesetsXML =
-`<?xml version="1.0" encoding="UTF-8"?>
-<osm>
-<changeset id="36777543" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">
-  <tag k="comment" v="Caprice Court has been extended"/>
-  <tag k="created_by" v="Rapid 2.0.0"/>
-</changeset>
-<changeset id="36777544" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">
-  <tag k="comment" v=""/>
-  <tag k="created_by" v="Rapid 2.0.0"/>
-</changeset>
-</osm>`;
-
-      loginAsync()
-        .then(() => {
-          _osm.userChangesets((err, changesets) => {
-            expect(changesets).to.deep.equal([{
-              tags: {
-                comment: 'Caprice Court has been extended',
-                created_by: 'Rapid 2.0.0'
-              }
-            }]);
-            _osm.logout();
-            done();
-          });
-
-          serverXHR.respondWith('GET', 'https://www.openstreetmap.org/api/0.6/changesets?user=1',
-            [200, { 'Content-Type': 'text/xml' }, changesetsXML]);
-          serverXHR.respond();
         });
     });
   });
@@ -666,7 +688,7 @@ describe('OsmService', () => {
       .translate([-116508, 0])  // 10,0
       .dimensions([[0,0], [64,64]]);
 
-    const notesXML =
+    const notesBody =
 `<?xml version="1.0" encoding="UTF-8"?>
 <osm>
 <note lon="10" lat="0">
@@ -679,9 +701,9 @@ describe('OsmService', () => {
   <comments>
     <comment>
       <date>2019-01-01 00:00:00 UTC</date>
-      <uid>1</uid>
-      <user>Steve</user>
-      <user_url>https://www.openstreetmap.org/user/Steve</user_url>
+      <uid>584325</uid>
+      <user>bhousel</user>
+      <user_url>https://www.openstreetmap.org/user/bhousel</user_url>
       <action>opened</action>
       <text>This is a note</text>
       <html>&lt;p&gt;This is a note&lt;/p&gt;</html>
@@ -692,7 +714,7 @@ describe('OsmService', () => {
 
     it('fires loadedNotes when notes are loaded', done => {
       fetchMock.mock(/notes\?/, {
-        body: notesXML,
+        body: notesBody,
         status: 200,
         headers: { 'Content-Type': 'text/xml' }
       });

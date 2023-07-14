@@ -46,8 +46,11 @@ export function utilFetchResponse(response) {
       if (response.status === 204 || response.status === 205) return;  // No Content, Reset Content
       return response.json();
 
+    // see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
     case 'text/html':
+    case 'text/xml':
     case 'application/xml':
+    case 'application/xhtml+xml':
     case 'image/svg+xml':
       return response.text()
         .then(txt => new window.DOMParser().parseFromString(txt, contentType));
