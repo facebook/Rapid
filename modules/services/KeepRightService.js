@@ -1,10 +1,10 @@
-import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { QAItem } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const KEEPRIGHT_API = 'https://www.keepright.at';
@@ -142,7 +142,8 @@ export class KeepRightService extends AbstractSystem {
 
       this._cache.inflightTile[tile.id] = controller;
 
-      d3_json(url, { signal: controller.signal })
+      fetch(url, { signal: controller.signal })
+        .then(utilFetchResponse)
         .then(data => {
           delete this._cache.inflightTile[tile.id];
           this._cache.loadedTile[tile.id] = true;
@@ -273,7 +274,8 @@ export class KeepRightService extends AbstractSystem {
 
     // Since this is expected to throw an error just continue as if it worked
     // (worst case scenario the request truly fails and issue will show up if Rapid restarts)
-    d3_json(url, { signal: controller.signal })
+    fetch(url, { signal: controller.signal })
+      .then(utilFetchResponse)
       .finally(() => {
         delete this._cache.inflightPost[d.id];
 

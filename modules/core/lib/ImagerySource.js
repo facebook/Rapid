@@ -1,7 +1,8 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
-import { json as d3_json } from 'd3-fetch';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import { geoSphericalDistance } from '@rapid-sdk/math';
+
+import { utilFetchResponse } from '../../util';
 
 
 /**
@@ -388,7 +389,8 @@ export class ImagerySourceEsri extends ImagerySource {
     let tilemapUrl = dummyUrl.replace(/tile\/[0-9]+\/[0-9]+\/[0-9]+\?blankTile=false/, 'tilemap') + '/' + z + '/' + y + '/' + x + '/8/8';
 
     // make the request and inspect the response from the tilemap server
-    d3_json(tilemapUrl)
+    fetch(tilemapUrl)
+      .then(utilFetchResponse)
       .then(tilemap => {
         if (!tilemap) {
           throw new Error('Unknown Error');
@@ -474,7 +476,8 @@ export class ImagerySourceEsri extends ImagerySource {
 
     } else {
       this._inflight[tileID] = true;
-      d3_json(url)
+      fetch(url)
+        .then(utilFetchResponse)
         .then(result => {
           delete this._inflight[tileID];
 

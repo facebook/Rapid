@@ -1,11 +1,10 @@
-import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { Extent, Tiler, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
-import { utilSetTransform } from '../util';
+import { utilFetchResponse, utilSetTransform } from '../util';
 
 
 const KARTAVIEW_API = 'https://kartaview.org';
@@ -488,7 +487,8 @@ export class KartaviewService extends AbstractSystem {
     };
 
     const url = `${KARTAVIEW_API}/1.0/list/nearby-photos/`;
-    const promise = d3_json(url, options)
+    const promise = fetch(url, options)
+      .then(utilFetchResponse)
       .then(data => {
         this._cache.loaded.add(k);
         if (!data || !data.currentPageItems || !data.currentPageItems.length) {

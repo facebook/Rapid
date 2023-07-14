@@ -1,5 +1,6 @@
-import { svg as d3_svg } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
+
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -51,8 +52,8 @@ export class UiDefs {
       .each((d, i, nodes) => {
         const group = d3_select(nodes[i]);
         const url = context.asset(`img/${d}-sprite.svg`);
-
-        d3_svg(url)
+        fetch(url)
+          .then(utilFetchResponse)
           .then(svg => group.call(this._spritesheetLoaded, d, svg))
           .catch(e => console.error(e));  // eslint-disable-line
       });

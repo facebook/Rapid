@@ -1,9 +1,9 @@
-import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@rapid-sdk/math';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { Graph, Tree } from '../core/lib';
 import { osmEntity, osmNode, osmWay } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const APIROOT = 'https://mapwith.ai/maps/ml_roads';
@@ -158,8 +158,10 @@ export class MapWithAIService extends AbstractSystem {
         continue;
       }
 
+      const resource = this._tileURL(ds, tile.wgs84Extent);
       const controller = new AbortController();
-      d3_xml(this._tileURL(ds, tile.wgs84Extent), { signal: controller.signal })
+      fetch(resource, { signal: controller.signal })
+        .then(utilFetchResponse)
         .then(xml => {
           delete cache.inflight[tile.id];
           if (!xml) return;

@@ -1,5 +1,4 @@
 import { Color } from 'pixi.js';
-import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
@@ -7,6 +6,7 @@ import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { QAItem } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const TILEZOOM = 14;
@@ -113,9 +113,9 @@ export class OsmoseService extends AbstractSystem {
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
 
-      d3_json(url, { signal: controller.signal })
+      fetch(url, { signal: controller.signal })
+        .then(utilFetchResponse)
         .then(data => {
-          delete this._cache.inflightTile[tile.id];
           this._cache.loadedTile[tile.id] = true;
 
           for (const issue of (data.features ?? [])) {
@@ -144,9 +144,12 @@ export class OsmoseService extends AbstractSystem {
           this.context.deferredRedraw();
           this.emit('loadedData');
         })
-        .catch(() => {
+        .catch(err => {
+          if (err.name === 'AbortError') return;    // ok
+          this._cache.loadedTile[tile.id] = true;   // don't retry
+        })
+        .finally(() => {
           delete this._cache.inflightTile[tile.id];
-          this._cache.loadedTile[tile.id] = true;
         });
     }
   }
@@ -172,7 +175,8 @@ export class OsmoseService extends AbstractSystem {
       this.replaceItem(issue);
     };
 
-    return d3_json(url)
+    return fetch(url)
+      .then(utilFetchResponse)
       .then(handleResponse)
       .then(() => issue);
   }
@@ -425,7 +429,10 @@ export class OsmoseService extends AbstractSystem {
       const [item, cl] = itemType.split('-');
       const url = `${OSMOSE_API}/items/${item}/class/${cl}?langs=${localeCode}`;
 
-      return d3_json(url).then(handleResponse);
+      return fetch(url)
+        .then(utilFetchResponse)
+        .then(handleResponse);
+
     }).filter(Boolean);
 
     return Promise.all(allRequests);

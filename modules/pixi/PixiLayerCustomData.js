@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js';
-import { text as d3_text } from 'd3-fetch';
 import { geoBounds as d3_geoBounds } from 'd3-geo';
 
 import stringify from 'fast-json-stable-stringify';
 import { gpx, kml } from '@tmcw/togeojson';
 import { Extent, geomPolygonIntersectsPolygon } from '@rapid-sdk/math';
 import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '@rapid-sdk/util';
-import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -506,7 +506,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (extension) {
       this._template = null;
       const setFile = this.setFile;
-      d3_text(url)
+      fetch(url)
+        .then(utilFetchResponse)
         .then(data => {
           setFile(extension, data);
           const isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;

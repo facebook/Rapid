@@ -1,7 +1,7 @@
-import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 
 import { AbstractSystem } from '../core/AbstractSystem';
+import { utilFetchResponse } from '../util';
 
 const WIKIPEDIA_API = 'https://en.wikipedia.org/w/api.php?';
 
@@ -76,7 +76,8 @@ export class WikipediaService extends AbstractSystem {
         srsearch: query
       });
 
-    d3_json(url)
+    fetch(url)
+      .then(utilFetchResponse)
       .then(result => {
         if (result && result.error) {
           throw new Error(result.error);
@@ -117,7 +118,8 @@ export class WikipediaService extends AbstractSystem {
         search: query
       });
 
-    d3_json(url)
+    fetch(url)
+      .then(utilFetchResponse)
       .then(result => {
         if (result && result.error) {
           throw new Error(result.error);
@@ -155,7 +157,8 @@ export class WikipediaService extends AbstractSystem {
         titles: title
       });
 
-    d3_json(url)
+    fetch(url)
+      .then(utilFetchResponse)
       .then(result => {
         if (result && result.error) {
           throw new Error(result.error);

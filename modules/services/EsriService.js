@@ -1,4 +1,3 @@
-import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
@@ -6,6 +5,7 @@ import { utilQsString } from '@rapid-sdk/util';
 import { AbstractSystem } from '../core/AbstractSystem';
 import { Graph, Tree } from '../core/lib';
 import { osmNode, osmRelation, osmWay } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
@@ -148,7 +148,8 @@ export class EsriService extends AbstractSystem {
         fetchMore(start);
 
         function fetchMore(start) {
-          d3_json(thiz._searchURL(start))
+          fetch(thiz._searchURL(start))
+            .then(utilFetchResponse)
             .then(json => {
               for (const ds of json.results ?? []) {
                 thiz._parseDataset(ds);
@@ -179,7 +180,8 @@ export class EsriService extends AbstractSystem {
       return Promise.resolve(ds.layer);
     }
 
-    return d3_json(this._layerURL(ds.url))
+    return fetch(this._layerURL(ds.url))
+      .then(utilFetchResponse)
       .then(json => {
         if (!json.layers || !json.layers.length) {
           throw new Error(`Missing layer info for datasetID: ${datasetID}`);
@@ -294,7 +296,8 @@ export class EsriService extends AbstractSystem {
     const controller = new AbortController();
     const url = this._tileURL(ds, tile.wgs84Extent, page);
 
-    d3_json(url, { signal: controller.signal })
+    fetch(url, { signal: controller.signal })
+      .then(utilFetchResponse)
       .then(geojson => {
         if (!geojson) throw new Error('no geojson');
 

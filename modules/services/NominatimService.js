@@ -1,9 +1,9 @@
-import { json as d3_json } from 'd3-fetch';
 import { Extent } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -110,7 +110,8 @@ export class NominatimService extends AbstractSystem {
       headers: { 'Accept-Language': l10n.localeCodes().join(',') }
     };
 
-    d3_json(url, opts)
+    fetch(url, opts)
+      .then(utilFetchResponse)
       .then(result => {
         delete this._inflight[url];
         if (result?.error) {
@@ -147,7 +148,8 @@ export class NominatimService extends AbstractSystem {
       headers: { 'Accept-Language': l10n.localeCodes().join(',') }
     };
 
-    d3_json(url, opts)
+    fetch(url, opts)
+      .then(utilFetchResponse)
       .then(result => {
         delete this._inflight[url];
         if (result?.error) {

@@ -1,4 +1,3 @@
-import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
 import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@rapid-sdk/math';
@@ -7,6 +6,7 @@ import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { jsonpRequest } from '../util/jsonp_request';
+import { utilFetchResponse } from '../util';
 
 const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
@@ -826,7 +826,8 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     const metadataKey = 'AoG8TaQvkPo6o8SlpRVmBs7WJwO_NDQklVRcAfpn7P8oiEMYWNY59XHSJU81sP1Y';
     const metadataURL = `${metadataURLBase}/${lat},${lon}?key=${metadataKey}`;
 
-    this._cache.metadataPromise = d3_json(metadataURL)
+    this._cache.metadataPromise = fetch(metadataURL)
+      .then(utilFetchResponse)
       .then(data => {
         if (!data) throw new Error('no data');
         return data;

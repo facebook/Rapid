@@ -1,10 +1,10 @@
-import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd, vecScale} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { QAItem } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const TILEZOOM = 14;
@@ -137,7 +137,8 @@ export class ImproveOsmService extends AbstractSystem {
 
         requests[k] = controller;
 
-        d3_json(url, { signal: controller.signal })
+        fetch(url, { signal: controller.signal })
+          .then(utilFetchResponse)
           .then(data => {
             delete this._cache.inflightTile[tile.id][k];
             if (!Object.keys(this._cache.inflightTile[tile.id]).length) {
@@ -315,7 +316,10 @@ export class ImproveOsmService extends AbstractSystem {
       this.replaceItem(item);
     };
 
-    return d3_json(url).then(cacheComments).then(() => item);
+    return fetch(url)
+      .then(utilFetchResponse)
+      .then(cacheComments)
+      .then(() => item);
   }
 
 
@@ -365,7 +369,8 @@ export class ImproveOsmService extends AbstractSystem {
         body: JSON.stringify(payload)
       };
 
-      d3_json(url, options)
+      fetch(url, options)
+        .then(utilFetchResponse)
         .then(() => {
           delete this._cache.inflightPost[d.id];
 

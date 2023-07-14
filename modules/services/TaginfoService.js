@@ -1,8 +1,8 @@
-import { json as d3_json } from 'd3-fetch';
 import { utilObjectOmit, utilQsString } from '@rapid-sdk/util';
 import debounce from 'lodash-es/debounce';
 
 import { AbstractSystem } from '../core/AbstractSystem';
+import { utilFetchResponse } from '../util';
 
 
 const TAGINFO_API = 'https://taginfo.openstreetmap.org/api/4/';
@@ -400,7 +400,8 @@ export class TaginfoService extends AbstractSystem {
     const controller = new AbortController();
     this._inflight[url] = controller;
 
-    d3_json(url, { signal: controller.signal })
+    fetch(url, { signal: controller.signal })
+      .then(utilFetchResponse)
       .then(result => {
         delete this._inflight[url];
         if (loaded) loaded(null, result);
