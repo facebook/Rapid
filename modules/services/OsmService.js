@@ -238,7 +238,7 @@ export class OsmService extends AbstractSystem {
     const cid = this._connectionID;
 
     const done = (err, results) => {
-      if (this.connectionID !== cid) {
+      if (this._connectionID !== cid) {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
@@ -369,74 +369,172 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  // Create, upload, and close a changeset
+  // Create a changeset
   // PUT /api/0.6/changeset/create
-  // POST /api/0.6/changeset/#id/upload
-  // PUT /api/0.6/changeset/#id/close
-  putChangeset(changeset, changes, callback) {
-    const cid = this._connectionID;
-
+  createChangeset(changeset, callback) {
     if (this._changeset.inflight) {
-      return callback({ message: 'Changeset already inflight', status: -2 }, changeset);
-
-    } else if (this._changeset.open) {   // reuse existing open changeset..
-      return createdChangeset.call(this, null, this._changeset.open);
-
-    } else {   // Open a new changeset..
-      const options = {
-        method: 'PUT',
-        path: '/api/0.6/changeset/create',
-        headers: { 'Content-Type': 'text/xml' },
-        content: JXON.stringify(changeset.asJXON())
-      };
-      this._changeset.inflight = this._oauth.xhr(
-        options,
-        this._wrapcb(createdChangeset, cid)
-      );
+      return callback({ message: 'Changeset already inflight', status: -2 });
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 });
     }
 
-
-    function createdChangeset(err, changesetID) {
+    const createdChangeset = (err, changesetID) => {
       this._changeset.inflight = null;
       if (err) { return callback(err, changeset); }
 
-      this._changeset.open = changesetID;
+      this._changeset.openChangesetID = changesetID;
       changeset = changeset.update({ id: changesetID });
+      callback(null, changeset);
+    };
 
-      // Upload the changeset..
-      const options = {
-        method: 'POST',
-        path: `/api/0.6/changeset/${changesetID}/upload`,
-        headers: { 'Content-Type': 'text/xml' },
-        content: JXON.stringify(changeset.osmChangeJXON(changes))
-      };
-      this._changeset.inflight = this._oauth.xhr(
-        options,
-        this._wrapcb(uploadedChangeset, cid)
-      );
+    // try to reuse an existing open changeset
+    if (this._changeset.openChangesetID) {
+      return createdChangeset(null, this._changeset.openChangesetID);
     }
 
+    const errback = this._wrapcb(createdChangeset);
+    const resource = this._urlroot + '/api/0.6/changeset/create';
+    const controller = new AbortController();
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'text/xml' },
+      body: JXON.stringify(changeset.asJXON()),
+      signal: controller.signal
+    };
 
-    function uploadedChangeset(err) {
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._changeset.inflight = controller;
+  }
+
+
+  // Upload changes to a changeset
+  // POST /api/0.6/changeset/#id/upload
+  uploadChangeset(changeset, changes, callback) {
+    if (this._changeset.inflight) {
+      return callback({ message: 'Changeset already inflight', status: -2 });
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 });
+    } else if (changeset.id !== this._changeset.openChangesetID) {
+      // the given changeset is not open, or a different changeset is open?
+      return callback({ message: 'Changeset ID mismatch', status: -4 });
+    }
+
+    const uploadedChangeset = (err, /*result*/) => {
       this._changeset.inflight = null;
-      if (err) return callback(err, changeset);
+      // we do get a changeset diff result, but we don't currently use it for anything
+      callback(err, changeset);
+    };
 
-      // Upload was successful, safe to call the callback.
-      // Add delay to allow for postgres replication iD#1646 iD#2678
-      window.setTimeout(function() { callback(null, changeset); }, 2500);
-      this._changeset.open = null;
+    const errback = this._wrapcb(uploadedChangeset);
+    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/upload`;
+    const controller = new AbortController();
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/xml' },
+      body: JXON.stringify(changeset.osmChangeJXON(changes)),
+      signal: controller.signal
+    };
 
-      // At this point, we don't really care if the connection was switched..
-      // Only try to close the changeset if we're still talking to the same server.
-      if (this.connectionID === cid) {
-        // Still attempt to close changeset, but ignore response because iD#2667
-        this._oauth.xhr({
-          method: 'PUT',
-          path: '/api/0.6/changeset/' + changeset.id + '/close',
-          headers: { 'Content-Type': 'text/xml' }
-        }, function() { return true; });
-      }
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._changeset.inflight = controller;
+  }
+
+
+  // Close a changeset
+  // PUT /api/0.6/changeset/#id/close
+  closeChangeset(changeset, callback) {
+    if (this._changeset.inflight) {
+      return callback({ message: 'Changeset already inflight', status: -2 });
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 });
+    } else if (changeset.id !== this._changeset.openChangesetID) {
+      // the given changeset is not open, or a different changeset is open?
+      return callback({ message: 'Changeset ID mismatch', status: -4 });
     }
+
+    const closedChangeset = (err, /*result*/) => {
+      this._changeset.inflight = null;
+      this._changeset.openChangesetID = null;
+      // there is no result to this call
+      callback(err, changeset);
+    };
+
+    const errback = this._wrapcb(closedChangeset);
+    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/close`;
+    const controller = new AbortController();
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'text/xml' },
+      signal: controller.signal
+    };
+
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._changeset.inflight = controller;
+  }
+
+
+  // Just chains together create, upload, and close a changeset
+  // PUT /api/0.6/changeset/create
+  // POST /api/0.6/changeset/#id/upload
+  // PUT /api/0.6/changeset/#id/close
+  sendChangeset(changeset, changes, callback) {
+    const cid = this._connectionID;
+
+    this.createChangeset(changeset, (err, updated) => {
+      changeset = updated;
+      if (err) { return callback(err, changeset); }
+
+      this.uploadChangeset(changeset, changes, (err, updated) => {
+        changeset = updated;
+        if (err) { return callback(err, changeset); }
+
+        // Upload was successful, it is safe to call the callback.
+        // Add delay to allow for postgres replication iD#1646 iD#2678
+        window.setTimeout(() => {
+          this._changeset.openChangesetID = null;
+          callback(null, changeset);
+        }, 2500);
+
+        // Closing the changeset is optional, and we won't get a result.
+        // Only try to close the changeset if we're still talking to the same server.
+        if (this.connectionID === cid) {
+          this.closeChangeset(changeset, () => {});
+        }
+      });
+    });
   }
 
 
@@ -591,7 +689,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const url = this._urlroot + '/api/capabilities';
-    const errback = this._wrapcb(gotResult, this._connectionID);
+    const errback = this._wrapcb(gotResult);
 
     fetch(url)
       .then(utilFetchResponse)
@@ -784,19 +882,7 @@ export class OsmService extends AbstractSystem {
 
     if (!note.loc[0] || !note.loc[1] || !note.newComment) return;  // location & description required
 
-    const path = '/api/0.6/notes?' + utilQsString({
-      lon: note.loc[0],
-      lat: note.loc[1],
-      text: note.newComment
-    });
-
-    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
-      { method: 'POST', path: path },
-      this._wrapcb(done, this._connectionID)
-    );
-
-
-    function done(err, xml) {
+    const createdNote = (err, xml) => {
       delete this._noteCache.inflightPost[note.id];
       if (err) { return callback(err); }
 
@@ -811,7 +897,18 @@ export class OsmService extends AbstractSystem {
           return callback(undefined, results.data[0]);
         }
       }, options);
-    }
+    };
+
+    const path = '/api/0.6/notes?' + utilQsString({
+      lon: note.loc[0],
+      lat: note.loc[1],
+      text: note.newComment
+    });
+
+    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
+      { method: 'POST', path: path },
+      this._wrapcb(createdNote)
+    );
   }
 
 
@@ -837,18 +934,7 @@ export class OsmService extends AbstractSystem {
       if (!note.newComment) return; // when commenting, comment required
     }
 
-    let path = `/api/0.6/notes/${note.id}/${action}`;
-    if (note.newComment) {
-      path += '?' + utilQsString({ text: note.newComment });
-    }
-
-    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
-      { method: 'POST', path: path },
-      this._wrapcb(done, this._connectionID)
-    );
-
-
-    function done(err, xml) {
+    const updatedNote = (err, xml) => {
       delete this._noteCache.inflightPost[note.id];
       if (err) { return callback(err); }
 
@@ -870,7 +956,18 @@ export class OsmService extends AbstractSystem {
           return callback(undefined, results.data[0]);
         }
       }, options);
+    };
+
+    let path = `/api/0.6/notes/${note.id}/${action}`;
+    if (note.newComment) {
+      path += '?' + utilQsString({ text: note.newComment });
     }
+
+    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
+      { method: 'POST', path: path },
+      this._wrapcb(updatedNote)
+    );
+
   }
 
 
@@ -953,7 +1050,7 @@ export class OsmService extends AbstractSystem {
         if (callback) callback(err);
         return;
       }
-      if (this.connectionID !== cid) {
+      if (this._connectionID !== cid) {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
@@ -1489,7 +1586,13 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  _wrapcb(callback, cid) {
+  // Wraps an API callback in some additional checks.
+  // Logout if we receive 400, 401, 403
+  // Raise an error if the connectionID has switched during the API call.
+  // @param  callback
+  //
+  _wrapcb(callback) {
+    const cid = this._connectionID;
     return (err, results) => {
       if (err) {
         // 400 Bad Request, 401 Unauthorized, 403 Forbidden..
@@ -1498,7 +1601,7 @@ export class OsmService extends AbstractSystem {
         }
         return callback.call(this, err);
 
-      } else if (this.connectionID !== cid) {
+      } else if (this._connectionID !== cid) {
         return callback.call(this, { message: 'Connection Switched', status: -1 });
 
       } else {
