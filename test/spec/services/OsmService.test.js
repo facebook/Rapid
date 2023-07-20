@@ -1,6 +1,5 @@
 describe('OsmService', () => {
   let _osm, spy;
-  let serverXHR;
 
   class MockContext {
     constructor() {
@@ -14,7 +13,6 @@ describe('OsmService', () => {
 
   beforeEach(() => {
     spy = sinon.spy();
-    serverXHR = sinon.fakeServer.create();   // some calls still use XHR via osm-auth
     fetchMock.reset();
 
     const capabilitiesXML =

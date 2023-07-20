@@ -873,11 +873,10 @@ export class OsmService extends AbstractSystem {
   // Create a note
   // POST /api/0.6/notes?params
   postNoteCreate(note, callback) {
-    if (!this.authenticated()) {
-      return callback({ message: 'Not Authenticated', status: -3 }, note);
-    }
     if (this._noteCache.inflightPost[note.id]) {
       return callback({ message: 'Note update already inflight', status: -2 }, note);
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 }, note);
     }
 
     if (!note.loc[0] || !note.loc[1] || !note.newComment) return;  // location & description required
@@ -899,16 +898,25 @@ export class OsmService extends AbstractSystem {
       }, options);
     };
 
-    const path = '/api/0.6/notes?' + utilQsString({
-      lon: note.loc[0],
-      lat: note.loc[1],
-      text: note.newComment
-    });
+    const errback = this._wrapcb(createdNote);
+    const resource = this._urlroot + '/api/0.6/notes?' +
+      utilQsString({ lon: note.loc[0], lat: note.loc[1], text: note.newComment });
+    const controller = new AbortController();
+    const options = { method: 'POST', signal: controller.signal };
 
-    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
-      { method: 'POST', path: path },
-      this._wrapcb(createdNote)
-    );
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._noteCache.inflightPost[note.id] = controller;
   }
 
 
@@ -958,16 +966,27 @@ export class OsmService extends AbstractSystem {
       }, options);
     };
 
-    let path = `/api/0.6/notes/${note.id}/${action}`;
+    const errback = this._wrapcb(updatedNote);
+    let resource = this._urlroot + `/api/0.6/notes/${note.id}/${action}`;
     if (note.newComment) {
-      path += '?' + utilQsString({ text: note.newComment });
+      resource += '?' + utilQsString({ text: note.newComment });
     }
+    const controller = new AbortController();
+    const options = { method: 'POST', signal: controller.signal };
 
-    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
-      { method: 'POST', path: path },
-      this._wrapcb(updatedNote)
-    );
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
 
+    this._noteCache.inflightPost[note.id] = controller;
   }
 
 
@@ -1116,9 +1135,9 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  _abortRequest(controllerOrXHR) {
-    if (controllerOrXHR) {
-      controllerOrXHR.abort();
+  _abortRequest(controller) {
+    if (controller) {
+      controller.abort();
     }
   }
 
