@@ -195,13 +195,13 @@ export class KartaviewService extends AbstractSystem {
 
       lineStrings.push({
         type: 'LineString',
-        coordinates: images.map(d => d.loc).filter(Boolean),
         properties: {
           id: sequenceID,
           v: sequence.v,
           captured_at: images[0]?.captured_at,
           captured_by: images[0]?.captured_by
-        }
+        },
+        coordinates: images.map(image => image.loc).filter(Boolean)
       });
     }
     return lineStrings;

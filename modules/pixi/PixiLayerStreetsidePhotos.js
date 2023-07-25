@@ -81,7 +81,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
     }
     if (usernames) {
-      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+      images = images.filter(i => usernames.includes(i.captured_by));
     }
     return images;
   }
@@ -95,14 +95,14 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+      sequences = sequences.filter(s => new Date(s.captured_at).getTime() >= fromTimestamp);
     }
     if (toDate) {
       const toTimestamp = new Date(toDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+      sequences = sequences.filter(s => new Date(s.captured_at).getTime() <= toTimestamp);
     }
     if (usernames) {
-      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+      sequences = sequences.filter(s => usernames.includes(s.captured_by));
     }
     return sequences;
   }
@@ -125,17 +125,26 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
 
-    for (const d of sequenceData) {
-      const featureID = `${this.layerID}-sequence-${d.properties.id}`;
+    for (const sequence of sequenceData) {
+      const dataID =  sequence.id;
+      const featureID = `${this.layerID}-sequence-${dataID}`;
+      const sequenceVersion = sequence.v || 0;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
-        feature.geometry.setCoords(d.coordinates);
         feature.style = LINESTYLE;
         feature.parentContainer = parentContainer;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        feature.setData(d.properties.id, d);
+      }
+
+      // If sequence has changed, update data and coordinates.
+      if (feature.v !== sequenceVersion) {
+        feature.v = sequenceVersion;
+        feature.geometry.setCoords(sequence.coordinates);
+        feature.setData(dataID, sequence);
+        feature.clearChildData(dataID);
+        sequence.bubbleIDs.forEach(bubbleID => feature.addChildData(dataID, bubbleID));
       }
 
       this.syncFeatureClasses(feature);
@@ -144,28 +153,25 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     }
 
 
-    for (const d of photoData) {
-      const featureID = `${this.layerID}-photo-${d.id}`;
+    for (const photo of photoData) {
+      const dataID = photo.id;
+      const featureID = `${this.layerID}-photo-${dataID}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         const style = Object.assign({}, MARKERSTYLE);
-        if (Number.isFinite(d.ca)) {
-          style.viewfieldAngles = [d.ca];   // ca = camera angle
+        if (Number.isFinite(photo.ca)) {
+          style.viewfieldAngles = [photo.ca];   // ca = camera angle
         }
-        if (d.isPano) {
+        if (photo.isPano) {
           style.viewfieldName = 'pano';
         }
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry.setCoords(d.loc);
+        feature.geometry.setCoords(photo.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.setData(d.id, d);
-
-        if (d.sequenceID) {
-          feature.addChildData(d.sequenceID, d.id);
-        }
+        feature.setData(dataID, photo);
       }
 
       this.syncFeatureClasses(feature);

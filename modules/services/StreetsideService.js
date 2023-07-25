@@ -37,6 +37,7 @@ export class StreetsideService extends AbstractSystem {
     this._currScene = 0;
     this._cache = {};
     this._pannellumViewer = null;
+    this._nextSequenceID = 0;
     this._waitingForPhotoID = null;
     this._startPromise = null;
 
@@ -198,12 +199,13 @@ export class StreetsideService extends AbstractSystem {
     }
 
     this._cache = {
-      inflight:  new Map(),   // Map(tileID -> { Promise, AbortController})
+      rtree:     new RBush(),
+      inflight:  new Map(),   // Map(tileID -> {Promise, AbortController})
       loaded:    new Set(),   // Set(tileID)
       bubbles:   new Map(),   // Map(bubbleID -> bubble data)
       sequences: new Map(),   // Map(sequenceID -> sequence data)
-      rtree:     new RBush(),
-      leaders:   [],
+      unattachedBubbles:   new Set(),  // Set(bubbleID)
+      bubbleHasSequences:  new Map(),  // Map(bubbleID -> Array(sequenceID))
       metadataPromise:  null
     };
 
@@ -218,34 +220,37 @@ export class StreetsideService extends AbstractSystem {
    * @return {Array}
    */
   bubbles(projection) {
+    const cache = this._cache;
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return this._cache.rtree.search(box).map(d => d.data);
+    return cache.rtree.search(box).map(d => d.data);
   }
-
 
 
   /**
    * sequences
    * Returns an Array of already-loaded sequences within the viewport
    * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * @return {Array} of Sequence data
    */
   sequences(projection) {
+    const cache = this._cache;
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    let result = new Map();  // Map(sequenceID -> sequence geojson)
+    const result = new Map();  // Map(sequenceID -> sequence)
 
-    // Gather sequences for bubbles in viewport
-    for (const box of this._cache.rtree.search(bbox)) {
-      const sequenceID = box.data.sequenceID;
-      if (!sequenceID) continue;  // no sequence for this bubble
-      if (!result.has(sequenceID)) {
-        result.set(sequenceID, this._cache.sequences.get(sequenceID).geojson);
+    // Gather sequences for the bubbles in viewport
+    for (const box of cache.rtree.search(bbox)) {
+      const bubbleID = box.data.id;
+      const sequenceIDs = cache.bubbleHasSequences.get(bubbleID) ?? [];
+      for (const sequenceID of sequenceIDs) {
+        if (!result.has(sequenceID)) {
+          result.set(sequenceID, cache.sequences.get(sequenceID));
+        }
       }
     }
     return [...result.values()];
@@ -697,7 +702,9 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     // const metadata = results[0];
     // this._cache.loaded.add(results[1].tile.id);
     // const bubbles = results[1].data;
-    this._cache.loaded.add(results.tile.id);
+    const cache = this._cache;
+
+    cache.loaded.add(results.tile.id);
     const bubbles = results.data;
     if (!bubbles) return;
     if (bubbles.error) throw new Error(bubbles.error);
@@ -707,13 +714,14 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
     let selectBubbleID = null;
     const boxes = bubbles.map(bubble => {
-      const bubbleID = bubble.id.toString();
+      const bubbleNum = bubble.id;
+      const bubbleID = bubbleNum.toString();
       if (this._waitingForPhotoID === bubbleID) {
         selectBubbleID = bubbleID;
         this._waitingForPhotoID = null;
       }
 
-      if (this._cache.bubbles.has(bubbleID)) return null;  // skip duplicates
+      if (cache.bubbles.has(bubbleID)) return null;  // skip duplicates
 
       const loc = [bubble.lo, bubble.la];
       const bubbleData = {
@@ -724,16 +732,11 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
         captured_by: 'microsoft',
         pr: bubble.pr?.toString(),  // previous
         ne: bubble.ne?.toString(),  // next
-        isPano: true,
-        sequenceID: null
+        isPano: true
       };
 
-      this._cache.bubbles.set(bubbleID,  bubbleData);
-
-      // a sequence starts here
-      if (bubble.pr === undefined) {
-        this._cache.leaders.push(bubbleID);
-      }
+      cache.bubbles.set(bubbleID, bubbleData);
+      cache.unattachedBubbles.add(bubbleID);
 
       return {
         minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: bubbleData
@@ -757,59 +760,115 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
   /**
    * _connectSequences
-   * Call this sometimes to connect the bubbles into sequences
-   * Each bubble has "previous" and "next" properties.
-   * The sequence is complete when it starts at a bubble with no "previous"
-   * and ends at a bubble with no "next".
+   * Call this sometimes to connect unattached bubbles into sequences.
+   * Note that this algorithm has changed, as we seem to get different data.
+   * The API we are using is undocumented :(
    */
   _connectSequences() {
-    let keepLeaders = [];
+    const cache = this._cache;
+    const touchedSequenceIDs = new Set();  // sequences that we touched will need recalculation
 
-    for (let i = 0; i < this._cache.leaders.length; i++) {
-      let bubble = this._cache.bubbles.get(this._cache.leaders[i]);
-      let seen = {};
+    // bubbles that haven't been added to a sequence yet.
+    // note: sort numerically to minimize the chance that we'll start assembling mid-sequence.
+    const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+    const toAttach = Array.from(cache.unattachedBubbles).sort(collator.compare);
 
-      // Try to make a sequence.. use the id of the leader bubble.
-      let sequence = { id: bubble.id, bubbles: [] };
-      let complete = false;
+    const _updateCaches = (sequenceID, bubbleID) => {
+      touchedSequenceIDs.add(sequenceID);
+      cache.unattachedBubbles.delete(bubbleID);
 
-      do {
-        sequence.bubbles.push(bubble);
-        seen[bubble.id] = true;
+      let seqs = cache.bubbleHasSequences.get(bubbleID);
+      if (!seqs) {
+        seqs = [];
+        cache.bubbleHasSequences.set(bubbleID, seqs);
+      }
+      seqs.push(sequenceID);
+    };
 
-        if (bubble.ne === undefined) {  // no next
-          complete = true;
-        } else {
-          bubble = this._cache.bubbles.get(bubble.ne);  // advance to next
+
+    for (const currBubbleID of toAttach) {
+      const isUnattached = cache.unattachedBubbles.has(currBubbleID);
+      const currBubble = cache.bubbles.get(currBubbleID);
+      if (!currBubble || !isUnattached) continue;   // done already
+
+      // Look at adjacent bubbles
+      const nextBubbleID = currBubble.ne;
+      const nextBubble = nextBubbleID && cache.bubbles.get(nextBubbleID);
+      const prevBubbleID = currBubble.pr;
+      const prevBubble = prevBubbleID && cache.bubbles.get(prevBubbleID);
+
+      // Try to link next bubble back to current bubble.
+      // Prefer a sequence where next.pr === currentBubbleID
+      // But accept any sequence we can make, they don't always link in both directions.
+      if (nextBubbleID && nextBubble) {
+        let sequenceID, sequence;
+        const trySequenceIDs = (nextBubble && cache.bubbleHasSequences.get(nextBubbleID)) || [];
+        for (sequenceID of trySequenceIDs) {
+          sequence = cache.sequences.get(sequenceID);
+          const firstID = sequence.bubbleIDs.at(0);
+          const lastID = sequence.bubbleIDs.at(-1);
+          if (nextBubbleID === lastID) {
+            sequence.bubbleIDs.push(currBubbleID);   // add current bubble to end of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          } else if (nextBubbleID === firstID) {
+            sequence.bubbleIDs.unshift(currBubbleID);  // add current bubble to beginning of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          }
         }
-      } while (bubble && !seen[bubble.id] && !complete);
+      }
 
-      if (complete) {
-        // assign bubbles to the sequence
-        for (let j = 0; j < sequence.bubbles.length; j++) {
-          sequence.bubbles[j].sequenceID = sequence.id;
+      // Try to link previous bubble forward to current bubble.
+      if (prevBubbleID && prevBubble) {
+        let sequenceID, sequence;
+        const trySequenceIDs = (prevBubble && cache.bubbleHasSequences.get(prevBubbleID)) || [];
+        for (sequenceID of trySequenceIDs) {
+          sequence = cache.sequences.get(sequenceID);
+          const firstID = sequence.bubbleIDs.at(0);
+          const lastID = sequence.bubbleIDs.at(-1);
+          if (prevBubbleID === lastID) {
+            sequence.bubbleIDs.push(currBubbleID);   // add current bubble to end of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          } else if (prevBubbleID === firstID) {
+            sequence.bubbleIDs.unshift(currBubbleID);  // add current bubble to beginning of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          }
         }
+      }
 
-        // create a GeoJSON LineString
-        sequence.geojson = {
-          type: 'LineString',
-          properties: {
-            id: sequence.id,
-            captured_at: sequence.bubbles[0] ? sequence.bubbles[0].captured_at : null,
-            captured_by: sequence.bubbles[0] ? sequence.bubbles[0].captured_by : null
-          },
-          coordinates: sequence.bubbles.map(d => d.loc)
-        };
+      // If neither of those worked (current bubble still "unattached"),
+      // Start a new sequence at the current bubble.
+      if (cache.unattachedBubbles.has(currBubbleID)) {
+        const sequenceNum = this._nextSequenceID++;
+        const sequenceID = `s${sequenceNum}`;
+        const sequence = { id: sequenceID, v: 0, bubbleIDs: [currBubbleID] };
+        cache.sequences.set(sequenceID, sequence);
+        _updateCaches(sequenceID, currBubbleID);
 
-        this._cache.sequences.set(sequence.id, sequence);
-
-      } else {
-        keepLeaders.push(this._cache.leaders[i]);
+        // Include previous and next bubbles if we have them loaded
+        if (prevBubbleID && prevBubble) {
+          sequence.bubbleIDs.unshift(prevBubbleID);  // add previous to beginning
+          _updateCaches(sequenceID, prevBubbleID);
+        }
+        if (nextBubbleID && nextBubble) {
+          sequence.bubbleIDs.push(nextBubbleID);  // add next to end
+          _updateCaches(sequenceID, nextBubbleID);
+        }
       }
     }
 
-    // couldn't complete these, save for later
-    this._cache.leaders = keepLeaders;
+    // Any sequences that we touched, bump version number and recompute the coordinate array
+    for (const sequenceID of touchedSequenceIDs) {
+      const sequence = cache.sequences.get(sequenceID);
+      const bubbles = sequence.bubbleIDs.map(bubbleID => cache.bubbles.get(bubbleID));
+      sequence.v++;
+      sequence.captured_at = bubbles[0].captured_at;
+      sequence.captured_by = bubbles[0].captured_by;
+      sequence.coordinates = bubbles.map(bubble => bubble.loc);
+    }
   }
 
 
