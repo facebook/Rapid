@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq, utilUniqueString } from '@rapid-sdk/util';
-import * as countryCoder from '@rapideditor/country-coder';
+import { iso1A2Code } from '@rapideditor/country-coder';
 
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
@@ -514,7 +514,7 @@ export function uiFieldLocalized(context, uifield) {
 
     function loadCountryCode() {
         var extent = uifield.entityExtent;
-        var countryCode = extent && countryCoder.iso1A2Code(extent.center());
+        var countryCode = extent && iso1A2Code(extent.center());
         _countryCode = countryCode && countryCode.toLowerCase();
     }
 
