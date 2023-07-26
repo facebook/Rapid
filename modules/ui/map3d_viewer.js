@@ -234,12 +234,11 @@ export function uiMap3dViewer(context) {
       .style('display', _isHidden ? 'none' : 'block');
 
     wrap = wrapEnter.merge(wrap);
+    context.systems.map3d.startAsync();
 
-//    context.systems.map.on('draw', () => redraw());
-//    context.systems.map.on('move', () => redraw());
-//    context.systems.edits.on('change', () => featuresToGeoJSON());
-//    context.on('modechange', () => featuresToGeoJSON());
-//    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
+    context.systems.map.on('draw', () => redraw());
+    context.systems.map.on('move', () => redraw());
+    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
 
     redraw();
   }
