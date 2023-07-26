@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import * as countryCoder from '@rapideditor/country-coder';
+import { roadSpeedUnit } from '@rapideditor/country-coder';
 
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
@@ -48,7 +48,7 @@ export function uiFieldRoadspeed(context, uifield) {
             .on('blur', change);
 
         var loc = uifield.entityExtent.center();
-        _isImperial = countryCoder.roadSpeedUnit(loc) === 'mph';
+        _isImperial = roadSpeedUnit(loc) === 'mph';
 
         unitInput = wrap.selectAll('input.roadspeed-unit')
             .data([0]);

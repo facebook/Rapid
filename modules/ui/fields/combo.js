@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { drag as d3_drag } from 'd3-drag';
 import { utilArrayUniq, utilUnicodeCharsCount } from '@rapid-sdk/util';
-import * as countryCoder from '@rapideditor/country-coder';
+import { iso1A2Code } from '@rapideditor/country-coder';
 
 import { osmEntity } from '../../osm/entity';
 import { uiCombobox } from '../combobox';
@@ -387,7 +387,7 @@ export function uiFieldCombo(context, uifield) {
 
         if (_isNetwork) {
             var extent = uifield.entityExtent;
-            var countryCode = extent && countryCoder.iso1A2Code(extent.center());
+            var countryCode = extent && iso1A2Code(extent.center());
             _countryCode = countryCode && countryCode.toLowerCase();
         }
 

@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { utilArrayUniqBy } from '@rapid-sdk/util';
-import * as countryCoder from '@rapideditor/country-coder';
+import { iso1A2Code } from '@rapideditor/country-coder';
 
 import { geoChooseEdge } from '../../geo';
 import { uiCombobox } from '../combobox';
@@ -220,7 +220,7 @@ export function uiFieldAddress(context, uifield) {
     if (context.inIntro) {  // localize the address format for the walkthrough
       countryCode = context.t('intro.graph.countrycode');
     } else {
-      countryCode = countryCoder.iso1A2Code(center);
+      countryCode = iso1A2Code(center);
     }
     if (countryCode) {
       _countryCode = countryCode.toLowerCase();
