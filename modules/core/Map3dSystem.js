@@ -59,7 +59,30 @@ export class Map3dSystem extends AbstractSystem {
     this.maplibre = new MapLibre({
       container: this.containerID,
       pitch: 30,
-      style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=5pbVUaiVhKNAxkLf1kts'
+      style: {
+        version: 8, sources: {}, layers: [
+          {
+            'id': 'Background',
+            'type': 'background',
+            'layout': {
+              'visibility': 'visible'
+            },
+            'paint': {
+              'background-color': {
+                'stops': [
+                  [
+                    6,
+                    'hsl(47,79%,94%)'
+                  ],
+                  [
+                    14,
+                    'hsl(42,49%,93%)'
+                  ]
+                ]
+              }
+            }
+          },
+      ]}
     });
 
     return this._startPromise = new Promise(resolve => {
@@ -99,13 +122,6 @@ export class Map3dSystem extends AbstractSystem {
           data: { type: 'FeatureCollection', features: [] },
         });
         this.maplibre.addLayer(this.building3dlayerSpec);
-
-        // Turn off the existing 3d building data and road data that ships with the vector tile-
-        // we don't want to have that data competing with the custom data layer we want to render.
-        // Drawing both is bad!
-        this.maplibre.getLayer('building-3d').visibility = 'none';
-        this.maplibre.getLayer('road_network').visibility = 'none';
-        this.maplibre.getLayer('road_network-casing').visibility = 'none';
 
         this._started = true;
         resolve();
