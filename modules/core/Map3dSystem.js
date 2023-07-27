@@ -68,18 +68,7 @@ export class Map3dSystem extends AbstractSystem {
               'visibility': 'visible'
             },
             'paint': {
-              'background-color': {
-                'stops': [
-                  [
-                    6,
-                    'hsl(47,79%,94%)'
-                  ],
-                  [
-                    14,
-                    'hsl(42,49%,93%)'
-                  ]
-                ]
-              }
+              'background-color': 'white'
             }
           },
       ]}
@@ -122,7 +111,6 @@ export class Map3dSystem extends AbstractSystem {
           data: { type: 'FeatureCollection', features: [] },
         });
         this.maplibre.addLayer(this.building3dlayerSpec);
-
         this._started = true;
         resolve();
       });
@@ -162,7 +150,7 @@ export class Map3dSystem extends AbstractSystem {
           ['get', 'selected'],
           'true',
           SELECTION_COLOR,
-          /* other */ '#ff26db',
+          /* Regular building 'red' color */ '#ff0000',
         ],
 
         // use an 'interpolate' expression to add a smooth transition effect to the
