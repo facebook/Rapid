@@ -35,6 +35,41 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.1.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.0)
+#### 2023-Aug-01
+
+#### :sparkles: new 3D inset Map!
+* [#988], [#991], [#994] Added a mapLibre-powered 3D inset map.
+
+#### :bug: fixes:
+* [#984] Fixed the stitching of streetside image sequences.
+
+#### :hammer: Development / Code Improvements
+* Renamed many 'core' classes to be Systems adopting a 'ThingCategory' (not 'CategoryThing') naming convention:
+  * coreContext :fast_forward: Context
+  * localizer :fast_forward: LocalizationSystem
+  * fileFetcher :fast_forward: DataLoaderSystem
+  * rendererFeatures :fast_forward: FilterSystem
+  * rendererImagery :fast_forward: ImagerySystem
+  * coreHistory :fast_forward: EditSystem
+  * coreUploader :fast_forward: UploaderSystem
+  * coreRapidContext :fast_forward: RapidSystem
+  * rendererPhotos :fast_forward: PhotoSystem
+  * urlhash :fast_forward: urlHashSystem
+  * rendererMap :fast_forward: MapSystem
+  * 3dMap :fast_forward: Map3dSystem
+  * etc...
+* All services have been renamed with 'Service' prefix- e.g. improveOSM :fast_forward: ServiceImproveOsm
+* Core classes and Services now use promises for ensuring upstream dependencies have already started.
+* Converted several more classes/files to ES6 Syntax.
+* Converted use of xhr and d3_fetch helpers to instead use fetch proper for data downloads
+* Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
+
+
+[#988]: https://github.com/facebook/Rapid/issues/988
+[#991]: https://github.com/facebook/Rapid/issues/991
+[#994]: https://github.com/facebook/Rapid/issues/994
+[#984]: https://github.com/facebook/Rapid/issues/984
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
 #### 2023-May-01
