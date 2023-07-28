@@ -20,6 +20,7 @@ const readOnlyTags = [
   /^imagery_used$/,
   /^host$/,
   /^locale$/,
+  /^poweruser$/,
   /^warnings:/,
   /^resolved:/,
   /^closed:note$/,
@@ -34,6 +35,7 @@ const hashtagRegex = /(#[^\u2000-\u206F\u2E00-\u2E7F\s\\'!"#$%()*,.\/:;<=>?@\[\]
 
 
 export function uiCommit(context) {
+  const rapid = context.systems.rapid;
   const storage = context.systems.storage;
   const uploader = context.systems.uploader;
 
@@ -132,7 +134,15 @@ export function uiCommit(context) {
     let tags = Object.assign({}, uploader.changeset.tags);   // shallow copy
     let sources = new Set((tags.source || '').split(';'));
 
-    // Sync up the the used photo sources with `sources`
+    // Sync up the poweruser tag
+    // Set to true if the user had poweruser on at any point during their editing
+    if (rapid.hadPoweruser) {
+      tags.poweruser = 'true';
+    } else {
+      delete tags.poweruser;
+    }
+
+    // Sync up the used photo sources with `sources`
     let usedPhotos = new Set(context.systems.edits.photosUsed());
     let allPhotos = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
     allPhotos.forEach(function(val) { sources.delete(val); });   // reset all
@@ -144,7 +154,7 @@ export function uiCommit(context) {
     }
 
     // Sync up the used Rapid sources with `sources`
-    let usedRapid = context.systems.rapid.sources;
+    let usedRapid = rapid.sources;
     let allRapid = ['mapwithai', 'esri'];
     allRapid.forEach(function(val) { sources.delete(val); });   // reset all
     usedRapid.forEach(function(val) { sources.add(val); });

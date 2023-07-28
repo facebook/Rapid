@@ -40,6 +40,8 @@ export class RapidSystem extends AbstractSystem {
     this._datasets = new Map();   // Map(datasetID -> dataset)
     this._taskExtent = null;
     this._isTaskBoundsRect = null;
+    this._hadPoweruser = false;   // true if the user had poweruser mode at any point in their editing
+
     this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -137,6 +139,16 @@ export class RapidSystem extends AbstractSystem {
 
 
   /**
+   * hadPoweruser
+   * true if the user had poweruser mode at any point in their editing
+   * @readonly
+   */
+  get hadPoweruser() {
+    return this._hadPoweruser;
+  }
+
+
+  /**
    * setTaskExtentByGpxData
    */
   setTaskExtentByGpxData(gpxData) {
@@ -201,6 +213,11 @@ export class RapidSystem extends AbstractSystem {
    * @param  q   Object containing key/value pairs of the current query parameters
    */
   _hashchange(q) {
+    // remember if the user had poweruser on at any point in their editing
+    if (q.poweruser === 'true') {
+      this._hadPoweruser = true;
+    }
+
     // datasets
     let toEnable = new Set();
     if (typeof q.datasets === 'string') {
