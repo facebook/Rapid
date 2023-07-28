@@ -121,18 +121,19 @@ describe('StreetsideService', () => {
 
   describe('#bubbles', () => {
     it('returns bubbles in the visible map area', () => {
-      const data = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: 1, loc: [10, 0], ca: 90, pr: undefined, ne: 2, isPano: true, sequenceID: 1 } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: 2, loc: [10, 0], ca: 90, pr: 1, ne: 3, isPano: true, sequenceID: 1 } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: 3, loc: [10, 1], ca: 90, pr: 2, ne: undefined, isPano: true, sequenceID: 1 } }
+      const bubbles = [
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '3', loc: [10, 1], ca: 90, pr: '2', ne: undefined, isPano: true } }
       ];
 
-      _streetside._cache.rtree.load(data);
+      const cache = _streetside._cache;
+      cache.rtree.load(bubbles);
 
       const result = _streetside.bubbles(_projection);
       expect(result).to.deep.eql([
-        { id: 1, loc: [10, 0], ca: 90, pr: undefined, ne: 2, isPano: true, sequenceID: 1 },
-        { id: 2, loc: [10, 0], ca: 90, pr: 1, ne: 3, isPano: true, sequenceID: 1 }
+        { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true },
+        { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true }
       ]);
     });
   });
@@ -140,27 +141,28 @@ describe('StreetsideService', () => {
 
   describe('#sequences', () => {
     it('returns sequence linestrings in the visible map area', () => {
-      const data = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: 1, loc: [10, 0], ca: 90, pr: undefined, ne: 2, isPano: true, sequenceID: 1 } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: 2, loc: [10, 0], ca: 90, pr: 1, ne: 3, isPano: true, sequenceID: 1 } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: 3, loc: [10, 1], ca: 90, pr: 2, ne: undefined, isPano: true, sequenceID: 1 } }
+      const bubbles = [
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '3', loc: [10, 1], ca: 90, pr: '2', ne: undefined, isPano: true } }
       ];
 
       const sequence = {
-        id: 1,
-        bubbles: data.map(d => d.data),
-        geojson: {
-          type: 'LineString',
-          properties: { id: 1 },
-          coordinates: data.map(d => d.data.loc),
-        }
+        id: 's1',
+        v: 1,
+        bubbleIDs: bubbles.map(d => d.data.id),
+        coordinates: bubbles.map(d => d.data.loc)
       };
 
-      _streetside._cache.rtree.load(data);
-      _streetside._cache.sequences.set(1, sequence);
+      const cache = _streetside._cache;
+      cache.rtree.load(bubbles);
+      cache.sequences.set('s1', sequence);
+      cache.bubbleHasSequences.set('1', ['s1']);
+      cache.bubbleHasSequences.set('2', ['s1']);
+      cache.bubbleHasSequences.set('3', ['s1']);
 
       const result = _streetside.sequences(_projection);
-      expect(result).to.deep.eql([sequence.geojson]);
+      expect(result).to.deep.eql([sequence]);
     });
   });
 
