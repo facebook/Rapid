@@ -35,7 +35,6 @@ export class RapidSystem extends AbstractSystem {
     this.id = 'rapid';
     this.dependencies = new Set(['l10n', 'urlhash']);
 
-    this.showPowerUser = context.initialHashParams.poweruser === 'true';
     this.sources = new Set();
 
     this._datasets = new Map();   // Map(datasetID -> dataset)

@@ -1,5 +1,3 @@
-import { utilStringQs } from '@rapid-sdk/util';
-
 import { AbstractSystem } from './AbstractSystem';
 import { utilDetect } from '../util/detect';
 
@@ -26,7 +24,7 @@ export class LocalizationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'l10n';
-    this.dependencies = new Set(['data', 'presets']);
+    this.dependencies = new Set(['data', 'presets', 'urlhash']);
 
     // `_supportedLanguages`
     // All known language codes and their local name. This is used for the language pickers.
@@ -138,7 +136,11 @@ export class LocalizationSystem extends AbstractSystem {
     };
 
     const dataLoaderSystem = this.context.systems.data;
-    const prerequisites = dataLoaderSystem.initAsync();
+    const urlHashSystem = this.context.systems.urlhash;
+    const prerequisites = Promise.all([
+      dataLoaderSystem.initAsync(),
+      urlHashSystem.initAsync()
+    ]);
 
     return this._initPromise = prerequisites
       .then(() => {
@@ -159,8 +161,14 @@ export class LocalizationSystem extends AbstractSystem {
         this._supportedLanguages = results[0];
         this._supportedLocales = results[1];
 
-        let indexes = results.slice(2);
-        let requestedLocales = (this._preferredLocaleCodes || [])
+        // If a `locale` param was included in the url hash, use that instead..
+        const urlLocale = urlHashSystem.initialHashParams.get('locale');
+        if (urlLocale) {
+          this._preferredLocaleCodes = urlLocale.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        const indexes = results.slice(2);
+        const requestedLocales = (this._preferredLocaleCodes || [])
           .concat(utilDetect().browserLocales)   // List of locales preferred by the browser in priority order.
           .concat(['en']);   // fallback to English since it's the only guaranteed complete language
 
@@ -177,7 +185,7 @@ export class LocalizationSystem extends AbstractSystem {
 //          // We only need to load locales up until we find one with full coverage
 //          // this._currLocaleCodes.slice(0, fullCoverageIndex + 1).forEach(code => {
 // Rapid note:
-// We always need `en` because it contains Rapid strings that are not localized to other languages.
+// We always need `en` because it contains Rapid strings that are not localized to other languages, see #206
 // This means we can't assume that a language with 100% coverage is an alternative for `en`.
           this._currLocaleCodes.forEach(code => {
             const scope = Object.keys(scopes)[i];
@@ -787,11 +795,13 @@ export class LocalizationSystem extends AbstractSystem {
     this._currLanguageCode = language;
     this._currIsMetric = (culture !== 'us');
 
-    // Allow hash parameter to override the locale 'rtl' setting - useful for testing
-    const hash = utilStringQs(window.location.hash);
-    if (hash.rtl === 'true') {
+    // If an `rtl` param was included in the url hash, use that instead..
+    const urlHashSystem = this.context.systems.urlhash;
+    const urlRTL = urlHashSystem.initialHashParams.get('rtl');
+
+    if (urlRTL === 'true') {
       this._currTextDirection = 'rtl';
-    } else if (hash.rtl === 'false') {
+    } else if (urlRTL === 'false') {
       this._currTextDirection = 'ltr';
     } else {
       const supported = this._supportedLocales[this._currLocaleCode] || this._supportedLocales[this._currLanguageCode];

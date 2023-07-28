@@ -9,6 +9,12 @@ describe('EditSystem', () => {
   };
 
 
+  class MockSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    on()          { return this; }
+  }
+
   class MockStorageSystem {
     constructor() { }
     initAsync() { return Promise.resolve(); }
@@ -21,9 +27,9 @@ describe('EditSystem', () => {
     constructor()   {
       this.projection = new sdk.Projection();
       this.systems = {
-        storage: new MockStorageSystem(this),
-        map: true,
-        rapid: true
+        storage: new MockStorageSystem(),
+        map:     new MockSystem(),
+        rapid:   new MockSystem()
       };
     }
     selectedIDs() { return []; }

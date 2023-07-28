@@ -1,7 +1,7 @@
 import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
-import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
+import { utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import debounce from 'lodash-es/debounce';
 
 import { behaviors } from './behaviors';
@@ -33,12 +33,6 @@ export class Context extends EventEmitter {
     this.version = '2.0.3';
     this.privacyVersion = '20201202';
 
-    // `this.initialHashParams` is older, try to use `this.urlHashSystem()` instead
-    this.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
-    this.defaultChangesetComment = this.initialHashParams.comment;
-    this.defaultChangesetSource = this.initialHashParams.source;
-    this.defaultChangesetHashtags = this.initialHashParams.hashtags;
-
     this.maxCharsForTagKey = 255;
     this.maxCharsForTagValue = 255;
     this.maxCharsForRelationRole = 255;
@@ -54,7 +48,7 @@ export class Context extends EventEmitter {
     this.systems = {};
 
     // "Modes" are editing tasks that the user are allowed to perform.
-    // Each mode is exclusive, i.e only one mode can be active at a time.
+    // Each mode is exclusive, i.e. only one mode can be active at a time.
     this.modes = {};
     this._currMode = null;
 
@@ -148,6 +142,9 @@ export class Context extends EventEmitter {
     this.t = l10n.t;
     this.tHtml = l10n.tHtml;
     this.tAppend = l10n.tAppend;
+    if (this._prelocale) {   // set preferred locale codes, if we have them
+      this.systems.l10n.preferredLocaleCodes = this._prelocale;
+    }
 
     // FilterSystem
     const filterSystem = this.systems.filters;
@@ -184,21 +181,9 @@ export class Context extends EventEmitter {
       }
     }
 
-
     // ---------------------------------
     // Initialize all the core classes
     // ---------------------------------
-
-    // First grab a few things from the url hash we may need to know about
-    if (this.initialHashParams.presets) {
-      const presetIDs = this.initialHashParams.presets.split(',').map(s => s.trim()).filter(Boolean);
-      this.systems.presets.addablePresetIDs = new Set(presetIDs);
-    }
-    const overrideLocale =  this.initialHashParams.locale ?? this._prelocale;
-    if (overrideLocale) {
-      this.systems.l10n.preferredLocaleCodes = overrideLocale;
-    }
-
     const allSystems = Object.values(this.systems);
     const allServices = Object.values(this.services);
 
@@ -245,6 +230,13 @@ export class Context extends EventEmitter {
   set apiConnections(arr)  { this._apiConnections = arr; }
 
   // A String or Array of locale codes to prefer over the browser's settings
+// TODO: For now, this must be set before init, and it will be passed
+// to the LocalizationSystem after it has been created but before init.
+// We should deprecate setting the locale through Context like this.
+// Other methods that locale can be set include:
+//  - `locale` param in the urlhash or
+//  - directly accessing the LocalizationSystem
+// and both of _those_ should be made dynamic so locale can switch while Rapid is running
   get locale()     { return this._prelocale; }
   set locale(val)  { this._prelocale = val; }    // remember for init time
 
@@ -425,7 +417,7 @@ export class Context extends EventEmitter {
       newMode = modeOrModeID;
     }
     if (!newMode) {
-      console.error(`this.enter: no such mode: ${modeOrModeID}`);  // eslint-disable-line no-console
+      console.error(`context.enter: no such mode: ${modeOrModeID}`);  // eslint-disable-line no-console
       newMode = this.modes.browse;  // fallback
     }
 

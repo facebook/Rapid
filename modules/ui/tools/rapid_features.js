@@ -12,7 +12,7 @@ export function uiToolRapidFeatures(context) {
   const rapidFeaturesToggleKey = '⇧' + context.t('map_data.layers.ai-features.key');
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
-  const showPowerUser = context.systems.rapid.showPowerUser;
+
   let debouncedUpdate;
   let _wrap;
 
@@ -38,12 +38,22 @@ export function uiToolRapidFeatures(context) {
     context.container().call(datasetDialog);
   }
 
+
   function showPowerUserFeaturesDialog() {
     context.container().call(powerUserDialog);
   }
 
+
   function update() {
     if (!_wrap) return;
+
+    const urlhash = context.systems.urlhash;
+    const isPowerUser = urlhash.getParam('poweruser') === 'true';
+
+    _wrap
+      .attr('class', isPowerUser ? 'joined' : null);
+
+
     let rapidButton = _wrap.selectAll('.rapid-features')
       .data([0]);
 
@@ -71,7 +81,10 @@ export function uiToolRapidFeatures(context) {
 
 
     let powerUserButton = _wrap.selectAll('.rapid-poweruser-features')
-      .data(showPowerUser ? [0] : []);
+      .data(isPowerUser ? [0] : []);
+
+    powerUserButton.exit()
+      .remove();
 
     powerUserButton.enter()
       .append('button')
@@ -98,12 +111,13 @@ export function uiToolRapidFeatures(context) {
         toggleFeatures();
       });
 
+
     context.systems.map.on('draw', debouncedUpdate);
+    context.systems.urlhash.on('hashchange', update);
     context.on('modechange', update);
 
     _wrap = selection
       .append('div')
-      .attr('class', showPowerUser ? 'joined' : null)
       .style('display', 'flex');
 
     update();
@@ -114,6 +128,7 @@ export function uiToolRapidFeatures(context) {
     debouncedUpdate.cancel();
     context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
     context.systems.map.off('draw', debouncedUpdate);
+    context.systems.urlhash.off('hashchange', update);
     context.off('modechange', update);
     _wrap = null;
   };

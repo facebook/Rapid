@@ -19,8 +19,8 @@ describe('FilterSystem', () => {
   class MockContext {
     constructor()   {
       this.systems = {
-        storage: new MockStorageSystem(this),
-        urlhash: new MockUrlHashSystem(this)
+        storage: new MockStorageSystem(),
+        urlhash: new MockUrlHashSystem()
       };
      }
     hasEntity()  { return null; }

@@ -6,18 +6,23 @@ import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
 import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
 
+const ACCEPT_FEATURES_LIMIT = 50;
+
 
 export function uiRapidFeatureInspector(context, keybinding) {
   const rapid = context.systems.rapid;
-  const showPowerUser = rapid.showPowerUser;
-  const ACCEPT_FEATURES_LIMIT = showPowerUser ? Infinity : 50;
+  const urlhash = context.systems.urlhash;
   let _datum;
 
 
   function isAddFeatureDisabled() {
-    // when task GPX is set in URL (TM mode), "add roads" is always enabled
-    const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
-    if (gpxInUrl) return false;
+    // When task GPX appears in URL, "add roads" is always enabled
+    const hasTask = urlhash.initialHashParams.has('gpx');
+    if (hasTask) return false;
+
+    // Power users aren't limited by the max featues limit
+    const isPowerUser = urlhash.getParam('poweruser') === 'true';
+    if (isPowerUser) return false;
 
     const annotations = context.systems.edits.peekAllAnnotations();
     const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');

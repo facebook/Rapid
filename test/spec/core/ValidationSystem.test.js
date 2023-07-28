@@ -1,12 +1,18 @@
 describe('ValidationSystem', () => {
   let _validator;
 
+  class MockSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    on()          { return this; }
+  }
+
   class MockStorageSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    getItem() { return ''; }
-    hasItem() { return false; }
-    setItem() { }
+    getItem()     { return ''; }
+    hasItem()     { return false; }
+    setItem()     { }
   }
 
   class MockLocalizationSystem {
@@ -16,29 +22,32 @@ describe('ValidationSystem', () => {
     tHtml()       { return ''; }
   }
 
-  class MockPresetSystem {
-    constructor() { }
-    initAsync()   { return Promise.resolve(); }
-  }
-
   class MockMapSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     extent()      { return new sdk.Extent(); }
   }
 
+  class MockUrlSystem {
+    constructor() {
+      this.initialHashParams = new Map();
+    }
+    initAsync()   { return Promise.resolve(); }
+    on()          { return this; }
+  }
+
   class MockContext {
     constructor()   {
-      this.initialHashParams = {};
       this.projection = new sdk.Projection();
       this.systems = {
         data:     new Rapid.DataLoaderSystem(this),
         edits:    new Rapid.EditSystem(this),
         l10n:     new MockLocalizationSystem(),
         map:      new MockMapSystem(),
-        presets:  new MockPresetSystem(),
-        rapid:    true,
-        storage:  new MockStorageSystem()
+        presets:  new MockSystem(),
+        rapid:    new MockSystem(),
+        storage:  new MockStorageSystem(),
+        urlhash:  new MockUrlSystem()
       };
       this.graph = this.systems.edits.graph;
       this.hasEntity = (id) => this.systems.edits.graph().hasEntity(id);

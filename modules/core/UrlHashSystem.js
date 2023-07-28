@@ -34,10 +34,9 @@ export class UrlHashSystem extends AbstractSystem {
 /**
 * Initial only
 * __`comment`__ - Prefills the changeset comment. Pass a url encoded string.
-* __`gpx`__ - A custom URL for loading a gpx track.  Specifying a `gpx` parameter will
+* __`gpx`__ - A custom URL for loading a gpx track.
 * __`hashtags`__ - Prefills the changeset hashtags.  Pass a url encoded list of event
 * __`locale`__ - A code specifying the localization to use, affecting the language, layout, and keyboard shortcuts. Multiple codes may be specified in order of preference. The first valid code will be the locale, while the rest will be used as fallbacks if certain text hasn't been translated. The default locale preferences are set by the browser.
-* __`poweruser=true`__
 * __`presets`__ - A comma-separated list of preset IDs. These will be the only presets the user may select.
 * __`rtl=true`__ - Force Rapid into right-to-left mode (useful for testing).
 * __`source`__ - Prefills the changeset source. Pass a url encoded string.
@@ -55,6 +54,7 @@ export class UrlHashSystem extends AbstractSystem {
 * __`photo_overlay`__ - The street-level photo overlay layers to enable.
 * __`photo_dates`__ - The range of capture dates by which to filter street-level photos. Dates are given in YYYY-MM-DD format and separated by `_`. One-sided ranges are supported.
 * __`photo_username`__ - The Mapillary or KartaView username by which to filter street-level photos. Multiple comma-separated usernames are supported.
+* __`poweruser=true`__ - True to enable poweruser features, false to hide poweruser features
 * __`id`__ - An OSM ID to select.
 * __`map`__ - A slash-separated `zoom/lat/lon/rot`.
 * __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.
@@ -72,7 +72,7 @@ export class UrlHashSystem extends AbstractSystem {
     }
 
     this._currParams = new Map(this._initParams);  // make copy
-    this._prevHash = null;   // cached window.location.hash
+    this._currHash = null;   // cached window.location.hash
     this._startPromise = null;
 
     // Make sure the event handlers have `this` bound correctly
@@ -144,7 +144,7 @@ export class UrlHashSystem extends AbstractSystem {
     if (this._enabled) return;
     this._enabled = true;
 
-    this._prevHash = null;
+    this._currHash = null;
 
     this.context.systems.edits.on('change', this.deferredUpdateTitle);
     this.context.on('modechange', this.deferredUpdateAll);
@@ -163,7 +163,7 @@ export class UrlHashSystem extends AbstractSystem {
     if (!this._enabled) return;
     this._enabled = false;
 
-    this._prevHash = null;
+    this._currHash = null;
     this.deferredUpdateAll.cancel();
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
@@ -243,10 +243,10 @@ export class UrlHashSystem extends AbstractSystem {
       params.id = selectedIDs.join(',');
     }
 
-    const currHash = '#' + utilQsString(params, true);
-    if (currHash !== this._prevHash) {
-      window.history.replaceState(null, this.titleBase, currHash);
-      this._prevHash = currHash;
+    const newHash = '#' + utilQsString(params, true);
+    if (newHash !== this._currHash) {
+      window.history.replaceState(null, this.titleBase, newHash);
+      this._currHash = newHash;
     }
   }
 
@@ -305,10 +305,11 @@ export class UrlHashSystem extends AbstractSystem {
   parseHash() {
     if (!this._enabled) return;
 
-    if (window.location.hash === this._prevHash) return;   // nothing changed
-    this._prevHash = window.location.hash;
+    if (window.location.hash === this._currHash) return;   // nothing changed
+    this._currHash = window.location.hash;
 
-    const q = utilStringQs(this._prevHash);
+    const q = utilStringQs(this._currHash);
+    this._currParams = new Map(Object.entries(q));
 
     // id (currently only support OSM ids)
     const context = this.context;

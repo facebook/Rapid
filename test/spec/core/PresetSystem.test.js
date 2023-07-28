@@ -6,6 +6,14 @@ describe('PresetSystem', () => {
     getItem() { return ''; }
   }
 
+  class MockUrlSystem {
+    constructor() {
+      this.initialHashParams = new Map();
+    }
+    initAsync()   { return Promise.resolve(); }
+    on()          { return this; }
+  }
+
   class MockLocalizationSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
@@ -17,9 +25,10 @@ describe('PresetSystem', () => {
     constructor()   {
       this.systems = {
         data:      new Rapid.DataLoaderSystem(this),
-        l10n:      new MockLocalizationSystem(this),
+        l10n:      new MockLocalizationSystem(),
         locations: new Rapid.LocationSystem(this),
-        storage:   new MockStorageSystem()
+        storage:   new MockStorageSystem(),
+        urlhash:   new MockUrlSystem()
       };
     }
   }
@@ -36,7 +45,7 @@ describe('PresetSystem', () => {
   });
 
 
-  describe('#initAsync', () => {
+  describe('fallbacks', () => {
     it('has a fallback point preset', () => {
       const node = Rapid.osmNode({ id: 'n' });
       const graph = new Rapid.Graph([node]);

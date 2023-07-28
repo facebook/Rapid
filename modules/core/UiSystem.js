@@ -434,8 +434,8 @@ this.didRender = true;
 
     // What to show first?
     const editSystem = context.systems.edits;
-    const urlHash = context.systems.urlhash;
-    const startWalkthrough = urlHash.initialHashParams.get('walkthrough') === 'true';
+    const urlhash = context.systems.urlhash;
+    const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
 
     if (startWalkthrough) {
       container.call(uiIntro(context));   // Jump right into walkthrough..

@@ -1,9 +1,10 @@
 describe('MapSystem', () => {
   let _container, _mapSystem;
 
-  class MockEventEmitter {   // just mocks .on()
+  class MockSystem {
     constructor() { }
-    on() { return this; }
+    initAsync()   { return Promise.resolve(); }
+    on()          { return this; }
   }
 
   class MockStorageSystem {
@@ -22,7 +23,7 @@ describe('MapSystem', () => {
   class MockRenderer {
     constructor(context) {
       this.context = context;
-      this.scene = new MockEventEmitter();
+      this.scene = new MockSystem();
     }
     resize() {}
     render() {}
@@ -38,17 +39,17 @@ describe('MapSystem', () => {
     constructor()   {
       this.services = {};
       this.systems = {
-        edits:   new MockEventEmitter(),
-        filters: new MockEventEmitter(),
-        imagery: true,
+        edits:   new MockSystem(),
+        filters: new MockSystem(),
+        imagery: new MockSystem(),
         l10n:    new MockLocalizationSystem(),
         storage: new MockStorageSystem(),
-        urlhash: new MockEventEmitter()
+        urlhash: new MockSystem()
       };
       this.projection = new sdk.Projection();
     }
     container()   { return _container; }
-    keybinding()  { return new MockEventEmitter(); }
+    keybinding()  { return new MockSystem(); }
   }
 
 
