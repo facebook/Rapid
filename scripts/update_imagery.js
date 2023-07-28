@@ -25,54 +25,36 @@ let cutoffDate = new Date();
 cutoffDate.setFullYear(cutoffDate.getFullYear() - 30);
 
 
-const discard = {
-  'osmbe': true,                        // 'OpenStreetMap (Belgian Style)'
-  'osmfr': true,                        // 'OpenStreetMap (French Style)'
-  'osm-mapnik-german_style': true,      // 'OpenStreetMap (German Style)'
-  'HDM_HOT': true,                      // 'OpenStreetMap (HOT Style)'
-  'osm-mapnik-black_and_white': true,   // 'OpenStreetMap (Standard Black & White)'
-  'osm-mapnik-no_labels': true,         // 'OpenStreetMap (Mapnik, no labels)'
-  'OpenStreetMap-turistautak': true,    // 'OpenStreetMap (turistautak)'
+const discard = [
+  /^osmbe$/,                              // 'OpenStreetMap (Belgian Style)'
+  /^osmfr(-(basque|breton|occitan))?$/,   // 'OpenStreetMap (French, Basque, Breton, Occitan Style)'
+  /^osm-mapnik-german_style$/,            // 'OpenStreetMap (German Style)'
+  /^HDM_HOT$/,                            // 'OpenStreetMap (HOT Style)'
+  /^osm-mapnik-black_and_white$/,         // 'OpenStreetMap (Standard Black & White)'
+  /^osm-mapnik-no_labels$/,               // 'OpenStreetMap (Mapnik, no labels)'
+  /^OpenStreetMap-turistautak$/,          // 'OpenStreetMap (turistautak)'
 
-  'cyclosm': true,                      // 'CyclOSM'
-  'hike_n_bike': true,                  // 'Hike & Bike'
-  'landsat': true,                      // 'Landsat'
-  'skobbler': true,                     // 'Skobbler'
-  'public_transport_oepnv': true,       // 'Public Transport (ÖPNV)'
-  'tf-cycle': true,                     // 'Thunderforest OpenCycleMap'
-  'tf-landscape': true,                 // 'Thunderforest Landscape'
-  'tf-outdoors': true,                  // 'Thunderforest Outdoors'
-  'qa_no_address': true,                // 'QA No Address'
-  'wikimedia-map': true,                // 'Wikimedia Map'
+  /^cyclosm$/,                            // 'CyclOSM'
+  /^hike_n_bike$/,                        // 'Hike & Bike'
+  /^landsat$/,                            // 'Landsat'
+  /^skobbler$/,                           // 'Skobbler'
+  /^public_transport_oepnv$/,             // 'Public Transport (ÖPNV)'
+  /^tf-(cycle|landscape|outdoors)$/,      // 'Thunderforest OpenCycleMap, Landscape, Outdoors'
+  /^qa_no_address$/,                      // 'QA No Address'
+  /^wikimedia-map$/,                      // 'Wikimedia Map'
 
-  'openinframap-petroleum': true,
-  'openinframap-power': true,
-  'openinframap-telecoms': true,
-  'openpt_map': true,
-  'openrailwaymap': true,
-  'openseamap': true,
-  'opensnowmap-overlay': true,
+  /^openpt_map$/,
+  /^openrailwaymap$/,
+  /^openseamap$/,
+  /^opensnowmap-overlay$/,
 
-  'US-TIGER-Roads-2012': true,
-  'US-TIGER-Roads-2014': true,
+  /^osmim-/,                   // low zoom osmim imagery
+  /^US-TIGER-Roads-201\d/,     // older than 2020
+  /^Waymarked_Trails/,         // Waymarked Trails *
+  /^OSM_Inspector/,            // OSM Inspector *
+  /^EOXAT2018CLOUDLESS/
+];
 
-  'Waymarked_Trails-Cycling': true,
-  'Waymarked_Trails-Hiking': true,
-  'Waymarked_Trails-Horse_Riding': true,
-  'Waymarked_Trails-MTB': true,
-  'Waymarked_Trails-Skating': true,
-  'Waymarked_Trails-Winter_Sports': true,
-
-  'OSM_Inspector-Addresses': true,
-  'OSM_Inspector-Geometry': true,
-  'OSM_Inspector-Highways': true,
-  'OSM_Inspector-Multipolygon': true,
-  'OSM_Inspector-Places': true,
-  'OSM_Inspector-Routing': true,
-  'OSM_Inspector-Tagging': true,
-
-  'EOXAT2018CLOUDLESS': true
-};
 
 const supportedWMSProjections = [
   // Web Mercator
@@ -93,8 +75,14 @@ const supportedWMSProjections = [
 
 let imagery = [];
 for (const [sourceID, source] of sources) {
-  if (source.type !== 'tms' && source.type !== 'wms' && source.type !== 'bing') continue;
-  if (sourceID in discard) continue;
+  if (source.type !== 'tms' && source.type !== 'wms' && source.type !== 'bing') {
+    // console.log(`discarding ${sourceID}  (type ${source.type})`);
+    continue;
+  }
+  if (discard.some(regex => regex.test(sourceID))) {
+    // console.log(`discarding ${sourceID}  (discard regex)`);
+    continue;
+  }
 
   let item = {
     id: sourceID,
@@ -118,7 +106,10 @@ for (const [sourceID, source] of sources) {
   // Some WMS sources are supported, check projection
   if (source.type === 'wms') {
     const projection = source.available_projections && supportedWMSProjections.find(p => source.available_projections.indexOf(p) !== -1);
-    if (!projection) continue;
+    if (!projection) {
+      // console.log(`discarding ${sourceID}  (no supported projection)`);
+      continue;
+    }
     // if (sources.some(other => other.name === source.name && other.type !== source.type)) continue;
     item.projection = projection;
   }
@@ -130,7 +121,10 @@ for (const [sourceID, source] of sources) {
     endDate = new Date(source.end_date);
     isValid = !isNaN(endDate.getTime());
     if (isValid) {
-      if (endDate <= cutoffDate) continue;  // too old
+      if (endDate <= cutoffDate) {
+        // console.log(`discarding ${sourceID}  (${endDate.toDateString()} too old)`);
+        continue;
+      }
       item.endDate = endDate;
     }
   }
