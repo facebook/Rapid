@@ -30,7 +30,7 @@ export function uiIntroNavigation(context, curtain) {
   // Helper functions
   function _isTownHallSelected() {
     if (!context.hasEntity(townHallID)) return false;
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === townHallID;
   }
@@ -41,7 +41,7 @@ export function uiIntroNavigation(context, curtain) {
 
   function _isSpringStreetSelected() {
     if (!context.hasEntity(springStreetID)) return false;
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === springStreetID;
   }

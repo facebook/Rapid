@@ -611,28 +611,33 @@ export class FilterSystem extends AbstractSystem {
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  q   Object containing key/value pairs of the current query parameters
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
-  _hashchange(q) {
+  _hashchange(currParams, prevParams) {
     // disable_features
-    let toDisableIDs = new Set();
-    if (typeof q.disable_features === 'string') {
-      toDisableIDs = new Set(q.disable_features.replace(/;/g, ',').split(','));
-    }
-
-    let didChange = false;
-    for (const [key, rule] of this._rules) {
-      if (rule.enabled && toDisableIDs.has(key)) {
-        rule.enabled = false;
-        didChange = true;
-      } else if (!rule.enabled && !toDisableIDs.has(key)) {
-        rule.enabled = true;
-        didChange = true;
+    const newDisable = currParams.get('disable_features');
+    const oldDisable = prevParams.get('disable_features');
+    if (newDisable !== oldDisable) {
+      let toDisableIDs = new Set();
+      if (typeof newDisable === 'string') {
+        toDisableIDs = new Set(newDisable.replace(/;/g, ',').split(','));
       }
-    }
 
-    if (didChange) {
-      this._update();
+      let didChange = false;
+      for (const [key, rule] of this._rules) {
+        if (rule.enabled && toDisableIDs.has(key)) {
+          rule.enabled = false;
+          didChange = true;
+        } else if (!rule.enabled && !toDisableIDs.has(key)) {
+          rule.enabled = true;
+          didChange = true;
+        }
+      }
+
+      if (didChange) {
+        this._update();
+      }
     }
   }
 

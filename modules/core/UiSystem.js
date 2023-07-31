@@ -592,7 +592,7 @@ this.didRender = true;
     this.editMenu.close();   // remove any displayed menu
 
     const context = this.context;
-    const mode = context.mode();
+    const mode = context.mode;
     //TODO: Remove this after the mode rewrite has completed
     if (!operations && mode.operations) operations = typeof mode.operations === 'function' ? mode.operations() : mode.operations;
     if (!operations || !operations.length) return;

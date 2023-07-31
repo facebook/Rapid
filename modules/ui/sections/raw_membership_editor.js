@@ -124,7 +124,7 @@ export function uiSectionRawMembershipEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.relation.id);
-        context.systems.map.zoomToEase(entity);
+        context.systems.map.fitEntitiesEase(entity);
 
         // highlight the relation in case it wasn't previously on-screen
         utilHighlightEntities([d.relation.id], true, context);

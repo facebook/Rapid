@@ -180,7 +180,7 @@ export class PixiRenderer extends EventEmitter {
     const dataID = target?.dataID;
 
     const hoverData = target?.data;
-    const modeID = this.context.mode()?.id;
+    const modeID = this.context.mode?.id;
     if (modeID !== 'select' && modeID !== 'select-osm') {
       this.context.systems.ui.sidebar.hover(hoverData ? [hoverData] : []);
     }

@@ -323,9 +323,7 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked on nothing
     if (!datum) {
       context.systems.photos.selectPhoto(null);
-
-      const mode = context.mode();
-      if (mode.id !== 'browse' && !this._multiSelection.size) {
+      if (context.mode?.id !== 'browse' && !this._multiSelection.size) {
         context.enter('browse');
       }
       return;

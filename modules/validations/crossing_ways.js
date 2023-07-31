@@ -446,9 +446,8 @@ export function validationCrossingWays(context) {
             loc: crossing.crossPoint,
             autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function() {
-                var mode = context.mode();
                 var selectedIDs = context.selectedIDs();
-                if (mode?.id !== 'select-osm' || selectedIDs.length !== 1) return [];
+                if (context.mode?.id !== 'select-osm' || selectedIDs.length !== 1) return [];
 
                 var selectedIndex = this.entityIds[0] === selectedIDs[0] ? 0 : 1;
                 var selectedFeatureType = this.data.featureTypes[selectedIndex];
@@ -510,10 +509,9 @@ export function validationCrossingWays(context) {
             icon: iconName,
             title: l10n.tHtml('issues.fix.' + fixTitleID + '.title'),
             onClick: function() {
-                var mode = context.mode();
-                if (mode?.id !== 'select-osm') return;
+                if (context.mode?.id !== 'select-osm') return;
 
-                var selectedIDs = mode.selectedIDs();
+                var selectedIDs = context.selectedIDs();
                 if (selectedIDs.length !== 1) return;
 
                 var selectedWayID = selectedIDs[0];
@@ -779,10 +777,9 @@ export function validationCrossingWays(context) {
             icon: 'rapid-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
             title: l10n.tHtml(`issues.fix.tag_this_as_${higherOrLower}.title`),
             onClick: function() {
-                var mode = context.mode();
-                if (mode?.id !== 'select-osm') return;
+                if (context.mode?.id !== 'select-osm') return;
 
-                var selectedIDs = mode.selectedIDs();
+                var selectedIDs = context.selectedIDs();
                 if (selectedIDs.length !== 1) return;
 
                 var selectedID = selectedIDs[0];

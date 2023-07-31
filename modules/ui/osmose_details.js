@@ -4,9 +4,14 @@ import { utilHighlightEntities } from '../util';
 
 
 export function uiOsmoseDetails(context) {
+  const filters = context.systems.filters;
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
   const osmose = context.services.osmose;
+  const presets = context.systems.presets;
+
   let _qaItem;
+
 
   function issueString(d, type) {
     if (!osmose || !d) return '';
@@ -150,20 +155,9 @@ export function uiOsmoseDetails(context) {
 
                 utilHighlightEntities([entityID], false, context);
 
-                context.scene().enableLayers('osm');  // make sure osm layer is even on
-                context.systems.map.centerZoom(d.loc, 20);
-
-                if (entity) {
-                  context.enter('select-osm', { selectedIDs: [entityID] });
-                } else {
-                  context.loadEntity(entityID, (err, result) => {
-                    if (err) return;
-                    const entity = result.data.find(e => e.id === entityID);
-                    if (entity) {
-                      context.enter('select-osm', { selectedIDs: [entityID] });
-                    }
-                  });
-                }
+                map.scene.enableLayers('osm');  // make sure osm layer is even on
+                map.centerZoom(d.loc, 20);
+                map.selectEntityID(entityID);
               });
 
             // Replace with friendly name if possible
@@ -171,8 +165,7 @@ export function uiOsmoseDetails(context) {
             if (entity) {
               let name = l10n.displayName(entity);  // try to use common name
               if (!name) {
-                const presetSystem = context.systems.presets;
-                const preset = presetSystem.match(entity, context.graph());
+                const preset = presets.match(entity, context.graph());
                 name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
               }
 
@@ -183,8 +176,8 @@ export function uiOsmoseDetails(context) {
           });
 
         // Don't hide entities related to this issue - iD#5880
-        context.systems.filters.forceVisible(d.elems);
-        context.systems.map.immediateRedraw();
+        filters.forceVisible(d.elems);
+        map.immediateRedraw();
       })
       .catch(e => console.error(e));  // eslint-disable-line
   }

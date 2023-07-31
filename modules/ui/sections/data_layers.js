@@ -41,8 +41,8 @@ export function uiSectionDataLayers(context) {
 
 
   function setLayer(layerID, val) {
-    // Don't allow layer changes while drawing - #6584
-    const mode = context.mode();
+    // Don't allow layer changes while drawing - iD#6584
+    const mode = context.mode;
     if (mode && /^draw/.test(mode.id)) return;
 
     if (val) {

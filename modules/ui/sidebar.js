@@ -189,7 +189,7 @@ export function uiSidebar(context) {
 
 
             } else if (datum instanceof osmNote) {
-                if (context.mode().id === 'drag-note') return;
+                if (context.mode?.id === 'drag-note') return;
                 _wasNote = true;
 
                 var osm = context.services.osm;

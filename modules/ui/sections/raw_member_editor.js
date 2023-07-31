@@ -51,7 +51,7 @@ export function uiSectionRawMemberEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.id);
-        context.systems.map.zoomToEase(entity);
+        context.systems.map.fitEntitiesEase(entity);
 
         // highlight the feature in case it wasn't previously on-screen
         utilHighlightEntities([d.id], true, context);
@@ -68,7 +68,7 @@ export function uiSectionRawMemberEditor(context) {
         var mapExtent = context.systems.map.extent();
         if (!entity.intersects(mapExtent, context.graph())) {
             // zoom to the entity if its extent is not visible now
-            context.systems.map.zoomToEase(entity);
+            context.systems.map.fitEntitiesEase(entity);
         }
 
         context.enter('select-osm', { selectedIDs: [d.id] });

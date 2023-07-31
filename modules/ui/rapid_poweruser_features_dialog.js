@@ -17,9 +17,20 @@ export function uiRapidPowerUserFeaturesDialog(context) {
   context.systems.urlhash.on('hashchange', updatePowerUserKeys);
 
 
-  // On any change in poweruser, setting update the storage keys.
-  // if we are not currently showing poweruser features, move all the feature flags to a different keyspace
-  function updatePowerUserKeys() {
+  /**
+   * On any change in poweruser setting, update the storage keys.
+   * If user is not currently a poweruser, move all the feature flags to a different keyspace
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   */
+  function updatePowerUserKeys(currParams, prevParams) {
+    let needsUpdate = true;
+    if (currParams && prevParams) {
+      needsUpdate = currParams.get('poweruser') !== prevParams.get('poweruser');
+    }
+    if (!needsUpdate) return;
+
+
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
     if (!isPowerUser) {
       for (const featureFlag of featureFlags) {
@@ -44,6 +55,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
   function isEnabled(featureFlag) {
     return storage.getItem(`rapid-internal-feature.${featureFlag}`) === 'true';
   }
+
 
   function toggleFeature(_, featureFlag) {
     let enabled = storage.getItem(`rapid-internal-feature.${featureFlag}`) === 'true';

@@ -32,7 +32,7 @@ export function uiIntroArea(context, curtain) {
   }
 
   function _isAreaSelected() {
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _areaID;
   }
@@ -88,7 +88,7 @@ export function uiIntroArea(context, curtain) {
   // "Let's add this playground to the map by drawing an area..."
   // Click to place the initial point to advance
   function startPlaygroundAsync() {
-    if (context.mode().id !== 'draw-area') return Promise.resolve(addAreaAsync);
+    if (context.mode?.id !== 'draw-area') return Promise.resolve(addAreaAsync);
     _areaID = null;
 
     return new Promise((resolve, reject) => {
@@ -123,7 +123,7 @@ export function uiIntroArea(context, curtain) {
   // "Continue drawing the area by placing more nodes along the playground's edge..."
   // Add at least 5 nodes to advance
   function continuePlaygroundAsync() {
-    if (!_doesAreaExist() || context.mode().id !== 'draw-area') return Promise.resolve(addAreaAsync);
+    if (!_doesAreaExist() || context.mode?.id !== 'draw-area') return Promise.resolve(addAreaAsync);
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -152,7 +152,7 @@ export function uiIntroArea(context, curtain) {
   // "Finish the area by pressing return, or clicking again on either the first or last node..."
   // Finish the area to advance
   function finishPlaygroundAsync() {
-    if (!_doesAreaExist() || context.mode().id !== 'draw-area') return Promise.resolve(addAreaAsync);
+    if (!_doesAreaExist() || context.mode?.id !== 'draw-area') return Promise.resolve(addAreaAsync);
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;

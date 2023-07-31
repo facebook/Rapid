@@ -210,29 +210,36 @@ export class RapidSystem extends AbstractSystem {
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  q   Object containing key/value pairs of the current query parameters
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
-  _hashchange(q) {
+  _hashchange(currParams, prevParams) {
+    // poweruser
     // remember if the user had poweruser on at any point in their editing
-    if (q.poweruser === 'true') {
+    if (currParams.get('poweruser') === 'true') {
       this._hadPoweruser = true;
     }
 
     // datasets
     let toEnable = new Set();
-    if (typeof q.datasets === 'string') {
-      toEnable = new Set(q.datasets.split(','));
-    }
+    const newDatasets = currParams.get('datasets');
+    const oldDatasets = prevParams.get('datasets');
+    if (newDatasets !== oldDatasets) {
+      if (typeof newDatasets === 'string') {
+        toEnable = new Set(newDatasets.split(','));
+      }
 
-    // Update all known datasets
-    for (const [datasetID, dataset] of this._datasets) {
-      if (toEnable.has(datasetID)) {
-        dataset.enabled = true;
-        toEnable.delete(datasetID);  // delete marks it as done
-      } else {
-        dataset.enabled = false;
+      // Update all known datasets
+      for (const [datasetID, dataset] of this._datasets) {
+        if (toEnable.has(datasetID)) {
+          dataset.enabled = true;
+          toEnable.delete(datasetID);  // delete marks it as done
+        } else {
+          dataset.enabled = false;
+        }
       }
     }
+
 
     // If there are remaining datasets to enable, try to load them from Esri.
     const esri = this.context.services.esri;

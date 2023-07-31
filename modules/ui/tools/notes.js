@@ -25,7 +25,7 @@ export function uiToolNotes(context) {
   }
 
   function notesEditable() {
-    return context.mode()?.id !== 'save';
+    return context.mode?.id !== 'save';
   }
 
   let debouncedUpdate;
@@ -51,7 +51,7 @@ export function uiToolNotes(context) {
         if (!notesEditable()) return;
 
         // When drawing, ignore accidental clicks on mode buttons - #4042
-        var currMode = context.mode().id;
+        var currMode = context.mode?.id;
         if (/^draw/.test(currMode)) return;
 
         if (d.id === currMode) {
@@ -82,7 +82,7 @@ export function uiToolNotes(context) {
     buttons = buttons
       .merge(buttonsEnter)
       .classed('disabled', () => !notesEnabled())
-      .classed('active', d => context.mode() && context.mode().id === d.id);
+      .classed('active', d => context.mode?.id === d.id);
   }
 
 
@@ -93,7 +93,7 @@ export function uiToolNotes(context) {
     context.keybinding().on(mode.key, () => {
       if (!notesEditable()) return;
 
-      if (mode.id === context.mode().id) {
+      if (mode.id === context.mode?.id) {
         context.enter('browse');
       } else {
         context.enter(mode.id);

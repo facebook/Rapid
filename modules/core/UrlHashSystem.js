@@ -1,4 +1,4 @@
-import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
+import { utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import throttle from 'lodash-es/throttle';
 
 import { AbstractSystem } from './AbstractSystem';
@@ -15,7 +15,7 @@ import { AbstractSystem } from './AbstractSystem';
  *   `titleBase`         The document title to use (default `Rapid`)
  *
  * Events available:
- *   `hashchange`     Fires on hashchange and when enable is called, receives an Object with the current hash params
+ *   `hashchange`   Fires on hashchange and when enable is called, receives Map(currParams), Map(prevParams)
  */
 export class UrlHashSystem extends AbstractSystem {
 
@@ -73,19 +73,17 @@ export class UrlHashSystem extends AbstractSystem {
 
     this._currParams = new Map(this._initParams);  // make copy
     this._currHash = null;   // cached window.location.hash
+    this._prevParams = null;
     this._startPromise = null;
 
     // Make sure the event handlers have `this` bound correctly
-    this.setParam = this.setParam.bind(this);
-    this.parseHash = this.parseHash.bind(this);
-    this.updateAll = this.updateAll.bind(this);
-    this.updateHash = this.updateHash.bind(this);
-    this.updateTitle = this.updateTitle.bind(this);
+    this._hashchange = this._hashchange.bind(this);
+    this._updateHash = this._updateHash.bind(this);
+    this._updateTitle = this._updateTitle.bind(this);
 
     // `leading: false` means that we wait a bit for more updates to sneak in.
-    this.deferredUpdateAll = throttle(this.updateAll, 500, { leading: false });
-    this.deferredUpdateHash = throttle(this.updateHash, 500, { leading: false });
-    this.deferredUpdateTitle = throttle(this.updateTitle, 500, { leading: false });
+    this.deferredUpdateHash = throttle(this._updateHash, 500, { leading: false });
+    this.deferredUpdateTitle = throttle(this._updateTitle, 500, { leading: false });
   }
 
 
@@ -147,11 +145,12 @@ export class UrlHashSystem extends AbstractSystem {
     this._currHash = null;
 
     this.context.systems.edits.on('change', this.deferredUpdateTitle);
-    this.context.on('modechange', this.deferredUpdateAll);
-    window.addEventListener('hashchange', this.parseHash);
+    this.context.on('modechange', this.deferredUpdateTitle);
+    window.addEventListener('hashchange', this._hashchange);
 
-    this.parseHash();
-    this.updateTitle();
+    this._updateHash();   // make sure hash matches the _currParams
+    this._hashchange();   // emit 'hashchange' so other code knows what the hash contains
+    this._updateTitle();
   }
 
 
@@ -164,13 +163,12 @@ export class UrlHashSystem extends AbstractSystem {
     this._enabled = false;
 
     this._currHash = null;
-    this.deferredUpdateAll.cancel();
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
 
     this.context.systems.edits.off('change', this.deferredUpdateTitle);
-    this.context.off('modechange', this.deferredUpdateAll);
-    window.removeEventListener('hashchange', this.parseHash);
+    this.context.off('modechange', this.deferredUpdateTitle);
+    window.removeEventListener('hashchange', this._hashchange);
   }
 
 
@@ -203,7 +201,6 @@ export class UrlHashSystem extends AbstractSystem {
    * @param  v  {String} The value to set, pass `undefined` to delete the value
    */
   setParam(k, v) {
-    if (!this._enabled) return;
     if (typeof k !== 'string') return;
 
     if (v === undefined || v === null || v === 'undefined' || v === 'null') {
@@ -211,37 +208,24 @@ export class UrlHashSystem extends AbstractSystem {
     } else {
       this._currParams.set(k, v);
     }
-    this.deferredUpdateHash();
+
+    if (this._enabled) {
+      this.deferredUpdateHash();
+    }
   }
 
 
   /**
-   * updateAll
-   * Updates hash and title
-   */
-  updateAll() {
-    this.updateHash();
-    this.updateTitle();
-  }
-
-
-  /**
-   * updateHash
-   * Updates the hash (by calling `window.history.replaceState()`)
+   * _updateHash
+   * Updates the hash (by calling `window.history.replaceState()`) to match _currParams;
    * This updates the URL hash without affecting the browser navigation stack.
    */
-  updateHash() {
+  _updateHash() {
     if (!this._enabled) return;
 
-    const context = this.context;
-    const toOmit = ['id', 'comment', 'source', 'hashtags', 'walkthrough'];
+    // Remove some of the initial-only params that only clutter up the hash
+    const toOmit = ['comment', 'source', 'hashtags', 'walkthrough'];
     let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
-
-    // update id  (this shouldn't be here, move to select mode?)
-    const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
-    if (selectedIDs.length) {
-      params.id = selectedIDs.join(',');
-    }
 
     const newHash = '#' + utilQsString(params, true);
     if (newHash !== this._currHash) {
@@ -252,10 +236,10 @@ export class UrlHashSystem extends AbstractSystem {
 
 
   /**
-   * updateTitle
+   * _updateTitle
    * Updates the title of the tab (by setting `document.title`)
    */
-  updateTitle() {
+  _updateTitle() {
     if (!this._enabled) return;
     if (!this.doUpdateTitle) return;
 
@@ -299,28 +283,24 @@ export class UrlHashSystem extends AbstractSystem {
 
 
   /**
-   * parseHash
+   * _hashchange
    * Called on hashchange event (user changes url manually), and when enabling the hash behavior
+   * Receiving code will receive copies of both the current and previous parameters.
    */
-  parseHash() {
+  _hashchange() {
     if (!this._enabled) return;
 
-    if (window.location.hash === this._currHash) return;   // nothing changed
     this._currHash = window.location.hash;
-
     const q = utilStringQs(this._currHash);
-    this._currParams = new Map(Object.entries(q));
 
-    // id (currently only support OSM ids)
-    const context = this.context;
-    if (typeof q.id === 'string') {
-      const ids = q.id.split(',').filter(id => context.hasEntity(id));
-      const mode = context.mode();
-      if (ids.length && (mode?.id === 'browse' || (mode?.id === 'select-osm' && !utilArrayIdentical(mode.selectedIDs(), ids)))) {
-        context.enter('select-osm', { selectedIDs: ids });
-      }
+    if (!this._prevParams) {         // We haven't emitted `hashchange` yet
+      this._prevParams = new Map();  // set previous to empty Map, so everything looks new
+    } else {
+      this._prevParams = this._currParams;   // copy current -> previous
     }
 
-    this.emit('hashchange', q);
+    this._currParams = new Map(Object.entries(q));
+
+    this.emit('hashchange', new Map(this._currParams), new Map(this._prevParams));  // emit copies
   }
 }
