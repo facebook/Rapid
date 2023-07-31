@@ -1,13 +1,14 @@
 import { Tiler } from '@rapid-sdk/math';
 import { utilHashcode } from '@rapid-sdk/util';
+import { VectorTile } from '@mapbox/vector-tile';
 import deepEqual from 'fast-deep-equal';
 import turf_bboxClip from '@turf/bbox-clip';
 import stringify from 'fast-json-stable-stringify';
 import polygonClipping from 'polygon-clipping';
 import Protobuf from 'pbf';
-import vt from '@mapbox/vector-tile';
 
 import { AbstractSystem } from '../core/AbstractSystem';
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -177,16 +178,10 @@ export class VectorTileService extends AbstractSystem {
     source.inflight[tile.id] = controller;
 
     fetch(url, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.status + ' ' + response.statusText);
-        }
-        source.loaded[tile.id] = [];
+      .then(utilFetchResponse)
+      .then(buffer => {
         delete source.inflight[tile.id];
-        return response.arrayBuffer();
-      })
-      .then(data => {
-        if (!data) {
+        if (!buffer) {
           throw new Error('No Data');
         }
 
@@ -195,11 +190,13 @@ export class VectorTileService extends AbstractSystem {
           source.canMerge[z] = {};  // initialize mergeCache
         }
 
-        source.loaded[tile.id] = this._vtToGeoJSON(data, tile, source.canMerge[z]);
+        source.loaded[tile.id] = this._vtToGeoJSON(buffer, tile, source.canMerge[z]);
         this.context.deferredRedraw();
         this.emit('loadedData');
       })
-      .catch(() => {
+      .catch(err => {
+        if (err.name === 'AbortError') return;          // ok
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
         source.loaded[tile.id] = [];
         delete source.inflight[tile.id];
       });
@@ -208,12 +205,12 @@ export class VectorTileService extends AbstractSystem {
 
   /**
    * _vtToGeoJSON
-   * @param  data
+   * @param  buffer
    * @param  tile
    * @param  mergeCache
    */
-  _vtToGeoJSON(data, tile, mergeCache) {
-    const vectorTile = new vt.VectorTile(new Protobuf(data));
+  _vtToGeoJSON(buffer, tile, mergeCache) {
+    const vectorTile = new VectorTile(new Protobuf(buffer));
     let layerIDs = Object.keys(vectorTile.layers);
     if (!Array.isArray(layerIDs)) layerIDs = [layerIDs];
 

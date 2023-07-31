@@ -5,6 +5,7 @@ import Protobuf from 'pbf';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
+import { utilFetchResponse } from '../util';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -554,19 +555,14 @@ export class MapillaryService extends AbstractSystem {
       .replace('{z}', tile.xyz[2]);
 
     fetch(requestUrl, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.status + ' ' + response.statusText);
-        }
+      .then(utilFetchResponse)
+      .then(buffer => {
         cache.loaded[tileID] = true;
-        return response.arrayBuffer();
-      })
-      .then(data => {
-        if (!data) {
+        if (!buffer) {
           throw new Error('No Data');
         }
 
-        this._loadTileDataToCache(data, tile);
+        this._loadTileDataToCache(buffer, tile);
 
         this.context.deferredRedraw();
         if (which === 'images') {
@@ -589,8 +585,8 @@ export class MapillaryService extends AbstractSystem {
 
 
   // Load the data from the vector tile into cache
-  _loadTileDataToCache(data, tile) {
-    const vectorTile = new VectorTile(new Protobuf(data));
+  _loadTileDataToCache(buffer, tile) {
+    const vectorTile = new VectorTile(new Protobuf(buffer));
 
     if (vectorTile.layers.hasOwnProperty('image')) {
       const cache = this._mlyCache.images;
@@ -684,12 +680,7 @@ export class MapillaryService extends AbstractSystem {
   // Get data from the API
   _loadDataAsync(url) {
     return fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.status + ' ' + response.statusText);
-        }
-        return response.json();
-      })
+      .then(utilFetchResponse)
       .then(result => {
         return result?.data || [];
       })

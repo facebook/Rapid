@@ -55,6 +55,12 @@ export function utilFetchResponse(response) {
       return response.text()
         .then(txt => new window.DOMParser().parseFromString(txt, contentType));
 
+    case 'application/octet-stream':
+    case 'application/x-protobuf':
+    case 'application/protobuf':
+    case 'application/vnd.google.protobuf':
+      return response.arrayBuffer();
+
     default:
       return response.text();
   }
