@@ -23,6 +23,7 @@ export function uiNoteHeader(context) {
 
     iconEnter
       .append('div')
+      .attr('class', 'preset-icon-28')
       .call(uiIcon('#rapid-icon-note', 'note-fill'));
 
     iconEnter

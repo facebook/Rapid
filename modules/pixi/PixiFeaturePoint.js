@@ -139,7 +139,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Show icon, if any..
     if (style.iconTexture || style.iconName) {
       icon.texture = style.iconTexture || textureManager.get(style.iconName);
-      icon.anchor.set(0.5, 0.5);   // middle, middle
+      icon.anchor.set(style.anchor?.x || 0.5, style.anchor?.y || 0.5);   // middle, middle by default, can be overridden in layer code
       const ICONSIZE = 11;
       icon.width = ICONSIZE;
       icon.height = ICONSIZE;
