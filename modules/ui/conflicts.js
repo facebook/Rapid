@@ -175,7 +175,7 @@ export function uiConflicts(context) {
             .html(function(d) { return d.name; })
             .on('click', function(d3_event, d) {
                 d3_event.preventDefault();
-                zoomToEntity(d.id);
+                showEntityID(d.id);
             });
 
         var details = conflictEnter
@@ -288,11 +288,11 @@ export function uiConflicts(context) {
         entity = context.graph().hasEntity(datum.id);
         if (entity) extent = extent.extend(entity.extent(context.graph()));
 
-        zoomToEntity(datum.id, extent);
+        showEntityID(datum.id, extent);
     }
 
 
-    function zoomToEntity(id, extent) {
+    function showEntityID(id, extent) {
         context.surface().selectAll('.hover')
             .classed('hover', false);
 
@@ -301,7 +301,7 @@ export function uiConflicts(context) {
             if (extent) {
                 context.systems.map.trimmedExtent(extent);
             } else {
-                context.systems.map.zoomToEase(entity);
+                context.systems.map.fitEntitiesEase(entity);
             }
             context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
                 .classed('hover', true);

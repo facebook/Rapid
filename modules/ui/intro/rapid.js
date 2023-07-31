@@ -23,7 +23,7 @@ export function uiIntroRapid(context, curtain) {
   // Helper functions
   // (Note that this returns true whether the way lives in the Rapid graph or OSM graph)
   function _isTulipLaneSelected() {
-    if (['select', 'select-osm'].includes(context.mode().id))  return false;
+    if (['select', 'select-osm'].includes(context.mode?.id))  return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === tulipLaneID;
   }

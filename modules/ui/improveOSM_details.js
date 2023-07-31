@@ -4,7 +4,11 @@ import { utilHighlightEntities } from '../util';
 
 
 export function uiImproveOsmDetails(context) {
+  const filters = context.systems.filters;
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
+
   let _qaItem;
 
 
@@ -72,20 +76,9 @@ export function uiImproveOsmDetails(context) {
 
             utilHighlightEntities([entityID], false, context);
 
-            context.scene().enableLayers('osm');  // make sure osm layer is even on
-            context.systems.map.centerZoom(_qaItem.loc, 20);
-
-            if (entity) {
-              context.enter('select-osm', { selectedIDs: [entityID] });
-            } else {
-              context.loadEntity(entityID, (err, result) => {
-                if (err) return;
-                const entity = result.data.find(e => e.id === entityID);
-                if (entity) {
-                  context.enter('select-osm', { selectedIDs: [entityID] });
-                }
-              });
-            }
+            map.scene.enableLayers('osm');  // make sure osm layer is even on
+            map.centerZoom(_qaItem.loc, 20);
+            map.selectEntityID(entityID);
           });
 
         // Replace with friendly name if possible
@@ -93,8 +86,7 @@ export function uiImproveOsmDetails(context) {
         if (entity) {
           let name = l10n.displayName(entity);  // try to use common name
           if (!name && !isObjectLink) {
-            const presetSystem = context.systems.presets;
-            const preset = presetSystem.match(entity, context.graph());
+            const preset = presets.match(entity, context.graph());
             name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
           }
 
@@ -105,9 +97,10 @@ export function uiImproveOsmDetails(context) {
       });
 
     // Don't hide entities related to this error - iD#5880
-    context.systems.filters.forceVisible(relatedEntities);
-    context.systems.map.immediateRedraw();
+    filters.forceVisible(relatedEntities);
+    map.immediateRedraw();
   }
+
 
   improveOsmDetails.issue = function(val) {
     if (!arguments.length) return _qaItem;

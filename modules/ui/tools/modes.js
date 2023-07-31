@@ -61,7 +61,7 @@ export function uiToolDrawModes(context) {
 
         if (d.id === 'add-area') return; //Short-circuit area drawing temporarily.
         // When drawing, ignore accidental clicks on mode buttons - #4042
-        const currMode = context.mode().id;
+        const currMode = context.mode?.id;
         if (/^draw/.test(currMode)) return;
 
         if (d.id === currMode) {
@@ -97,7 +97,7 @@ export function uiToolDrawModes(context) {
     buttons = buttons
       .merge(buttonsEnter)
       .classed('disabled', () => !context.editable())
-      .classed('active', d => (context.mode() && context.mode().id === d.id));
+      .classed('active', d => context.mode?.id === d.id);
   }
 
 
@@ -113,7 +113,7 @@ export function uiToolDrawModes(context) {
       context.keybinding().on(d.key, () => {
         if (!context.editable()) return;
 
-        if (d.id === context.mode().id) {
+        if (d.id === context.mode?.id) {
           context.enter('browse');
         } else {
           context.enter(d.id);

@@ -50,7 +50,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _isLineSelected() {
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _lineID;
   }
@@ -73,7 +73,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _isWoodStreetSelected() {
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === woodStreetID;
   }
@@ -87,7 +87,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _is11thAveEndSelected() {
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === eleventhAvenueEndID;
   }
@@ -145,7 +145,7 @@ export function uiIntroLine(context, curtain) {
   // "Here is a road that is missing. Let's add it!"
   // Place the first point to advance
   function startLineAsync() {
-    if (context.mode().id !== 'draw-line') return Promise.resolve(addLineAsync);
+    if (context.mode?.id !== 'draw-line') return Promise.resolve(addLineAsync);
     _lineID = null;
 
     return new Promise((resolve, reject) => {
@@ -187,7 +187,7 @@ export function uiIntroLine(context, curtain) {
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        if (!_doesLineExist() || context.mode().id !== 'draw-line') { resolve(addLineAsync); return; }
+        if (!_doesLineExist() || context.mode?.id !== 'draw-line') { resolve(addLineAsync); return; }
 
         _onModeChange = () => resolve(retryIntersectAsync);
         _onEditChange = () => {
@@ -232,7 +232,7 @@ export function uiIntroLine(context, curtain) {
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        if (!_doesLineExist() || context.mode().id !== 'draw-line') { resolve(addLineAsync); return; }
+        if (!_doesLineExist() || context.mode?.id !== 'draw-line') { resolve(addLineAsync); return; }
 
         _onModeChange = () => resolve(chooseCategoryRoadAsync);
 

@@ -167,6 +167,7 @@ export class Context extends EventEmitter {
       return true;  // map.editableDataEnabled();  // todo: disallow editing if OSM layer is off
     };
 
+
     for (const [id, Mode] of modes.available) {
       this.modes[id] = new Mode(this);
     }
@@ -180,6 +181,7 @@ export class Context extends EventEmitter {
         this.services[id] = new Service(this);
       }
     }
+
 
     // ---------------------------------
     // Initialize all the core classes
@@ -307,31 +309,6 @@ export class Context extends EventEmitter {
   }
 
 
-  zoomToEntity(entityID, zoomTo) {
-    const entity = this.hasEntity(entityID);
-    const map = this.systems.map;
-
-    if (entity) {   // have it already
-      this.enter('select-osm', { selectedIDs: [entityID] });
-      if (zoomTo !== false) {
-        map.zoomTo(entity);
-      }
-
-    } else {   // need to load it first
-      this.loadEntity(entityID, (err, result) => {
-        if (err) return;
-        const loadedEntity = result.data.find(e => e.id === entityID);
-        if (!loadedEntity) return;
-
-        this.enter('select-osm', { selectedIDs: [entityID] });
-        if (zoomTo !== false) {
-          map.zoomTo(loadedEntity);
-        }
-      });
-    }
-  }
-
-
   // String length limits in Unicode characters, not JavaScript UTF-16 code units
   _cleanOsmString(val, maxChars) {
     // be lenient with input
@@ -392,8 +369,13 @@ export class Context extends EventEmitter {
   }
 
 
-  // The current mode (`null` until ui.render initializes the map and enters browse mode)
-  mode() {
+  /**
+   * mode
+   * Gets the current mode (`null` until UiSystem.render initializes the map and enters browse mode)
+   * @return the current mode
+   * @readonly
+   */
+  get mode() {
     return this._currMode;
   }
 

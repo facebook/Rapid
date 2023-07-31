@@ -117,7 +117,7 @@ export class MapSystem extends AbstractSystem {
             e.stopPropagation();
 
             // Don't allow layer changes while drawing - iD#6584
-            const mode = context.mode();
+            const mode = context.mode;
             if (mode && /^draw/.test(mode.id)) return;
 
             this.scene.toggleLayers('osm');
@@ -211,8 +211,8 @@ export class MapSystem extends AbstractSystem {
 
     // Setup events that cause the map to redraw...
     const _didUndoOrRedo = (targetTransform) => {
-      const mode = context.mode().id;
-      if (mode !== 'browse' && mode !== 'select') return;
+      const modeID = context.mode?.id;
+      if (modeID !== 'browse' && modeID !== 'select') return;
       if (targetTransform) {
         this.transformEase(targetTransform);
       }
@@ -268,24 +268,43 @@ export class MapSystem extends AbstractSystem {
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  q   Object containing key/value pairs of the current query parameters
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
-  _hashchange(q) {
-    let zoom, lat, lon, rot;
-    if (typeof q.map === 'string') {
-      [zoom, lat, lon, rot] = q.map.split('/', 4).map(Number);
+  _hashchange(currParams, prevParams) {
+    // map
+    const newMap = currParams.get('map');
+    const oldMap = prevParams.get('map');
+    if (newMap !== oldMap) {
+      let zoom, lat, lon, rot;
+      if (typeof newMap === 'string') {
+        [zoom, lat, lon, rot] = newMap.split('/', 4).map(Number);
+      }
+      if (isNaN(zoom) || !isFinite(zoom)) zoom = 2;
+      if (isNaN(lat) || !isFinite(lat)) lat = 0;
+      if (isNaN(lon) || !isFinite(lon)) lon = 0;
+      if (isNaN(rot) || !isFinite(rot)) rot = 0;
+
+      zoom = clamp(zoom, 2, 24);
+      lat = clamp(lat, -90, 90);
+      lon = clamp(lon, -180, 180);
+      rot = clamp(rot, 0, 360);
+
+      this.centerZoom([lon, lat], zoom);
     }
-    if (isNaN(zoom) || !isFinite(zoom)) zoom = 2;
-    if (isNaN(lat) || !isFinite(lat)) lat = 0;
-    if (isNaN(lon) || !isFinite(lon)) lon = 0;
-    if (isNaN(rot) || !isFinite(rot)) rot = 0;
 
-    zoom = clamp(zoom, 2, 24);
-    lat = clamp(lat, -90, 90);
-    lon = clamp(lon, -180, 180);
-    rot = clamp(rot, 0, 360);
-
-    this.centerZoom([lon, lat], zoom);
+    // id
+    const newIds = currParams.get('id');
+    const oldIds = prevParams.get('id');
+    if (newIds !== oldIds) {
+      if (typeof newIds === 'string') {
+        const ids = newIds.split(',').map(s => s.trim()).filter(Boolean);
+        const modeID = this.mode?.id;
+        if (ids.length && modeID !== 'save') {
+          this.selectEntityID(ids[0]);  // for now, just the select first one
+        }
+      }
+    }
   }
 
 
@@ -546,23 +565,58 @@ export class MapSystem extends AbstractSystem {
 
 
   /**
-   * zoomTo
-   * Adjust the map to fit to see the given entity or entities  (should be called `fitTo`)
-   * @param  val        Entity or Array of entities to fit in the map view
+   * fitEntities
+   * Adjust the map to fit to see the given entity or entities
+   * @param  entities   Entity or Array of entities to fit in the map view
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
-  zoomTo(val, duration = 0) {
+  fitEntities(entities, duration = 0) {
     let extent;
-    if (Array.isArray(val)) {
-      extent = utilTotalExtent(val, this.context.graph());
+    if (Array.isArray(entities)) {
+      extent = utilTotalExtent(entities, this.context.graph());
     } else {
-      extent = val.extent(this.context.graph());
+      extent = entities.extent(this.context.graph());
     }
     if (!isFinite(extent.area())) return this;
 
     const z2 = clamp(this.trimmedExtentZoom(extent), 0, 20);
     return this.centerZoom(extent.center(), z2, duration);
+  }
+
+
+  /**
+   * selectEntityID
+   * Selects an entity by ID, loading it first if needed
+   * @param  entityID   entityID to select
+   */
+  selectEntityID(entityID) {
+    const context = this.context;
+
+    const gotEntity = (entity) => {
+      const selectedIDs = context.selectedIDs();
+      if (context.mode?.id !== 'select-osm' || !selectedIDs.includes(entityID)) {
+        context.enter('select-osm', { selectedIDs: [entity.id] });
+      }
+
+      const extent = entity.extent(context.graph());
+      if (extent.percentContainedIn(this.extent()) < 0.8) {   // can't see it
+        this.fitEntities(entity);
+      }
+    };
+
+    let entity = context.hasEntity(entityID);
+    if (entity) {   // have it already
+      gotEntity(entity);
+
+    } else {   // need to load it first
+      context.loadEntity(entityID, (err, result) => {
+        if (err) return;
+        entity = result.data.find(e => e.id === entityID);
+        if (!entity) return;
+        gotEntity(entity);
+      });
+    }
   }
 
 
@@ -579,11 +633,11 @@ export class MapSystem extends AbstractSystem {
   canZoomOut()     { return this.zoom() > MINZOOM; }
 
   // convenience methods for the above, but with easing
-  transformEase(t2, duration = 250)        { return this.transform(t2, duration); }
-  centerZoomEase(loc2, z2, duration = 250) { return this.centerZoom(loc2, z2, duration); }
-  centerEase(loc2, duration = 250)         { return this.center(loc2, duration); }
-  zoomEase(z2, duration = 250)             { return this.zoom(z2, duration); }
-  zoomToEase(val, duration = 250)          { return this.zoomTo(val, duration); }
+  transformEase(t2, duration = 250)          { return this.transform(t2, duration); }
+  centerZoomEase(loc2, z2, duration = 250)   { return this.centerZoom(loc2, z2, duration); }
+  centerEase(loc2, duration = 250)           { return this.center(loc2, duration); }
+  zoomEase(z2, duration = 250)               { return this.zoom(z2, duration); }
+  fitEntitiesEase(entities, duration = 250)  { return this.fitEntities(entities, duration); }
 
 
   /**

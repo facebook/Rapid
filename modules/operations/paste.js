@@ -62,7 +62,7 @@ export function operationPaste(context) {
 
 
   operation.available = function() {
-    return context.mode().id === 'browse';
+    return context.mode?.id === 'browse';
   };
 
 

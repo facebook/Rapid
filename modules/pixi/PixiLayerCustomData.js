@@ -59,9 +59,12 @@ export class PixiLayerCustomData extends AbstractLayer {
         this.fileList(d3_event.dataTransfer.files);
       });
 
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    this._hashchange = this._hashchange.bind(this);
+
     // hashchange - pick out the 'gpx' param
     this.context.systems.urlhash
-      .on('hashchange', q => this.url(q.gpx || '', '.gpx'));
+      .on('hashchange', this._hashchange);
   }
 
 
@@ -575,6 +578,22 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
 
     return this;
+  }
+
+
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   */
+  _hashchange(currParams, prevParams) {
+    // gpx
+    const newGpx = currParams.get('gpx');
+    const oldGpx = prevParams.get('gpx');
+    if (newGpx !== oldGpx) {
+      this.url(newGpx || '', '.gpx');
+    }
   }
 
 }

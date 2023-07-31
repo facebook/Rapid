@@ -29,16 +29,14 @@ export function uiZoomToSelection(context) {
 
 
     function isDisabled() {
-      const mode = context.mode();
-      return !_lastTransform && !mode?.extent;
+      return !_lastTransform && !context.mode?.extent;
     }
 
 
     function onClick(e) {
       if (e) e.preventDefault();
 
-      const mode = context.mode();
-      const extent = mode?.extent;
+      const extent = context.mode?.extent;
       const map = context.systems.map;
 
       if (_lastTransform) {   // pop back out

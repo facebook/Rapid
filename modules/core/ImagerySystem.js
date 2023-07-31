@@ -178,38 +178,51 @@ export class ImagerySystem extends AbstractSystem {
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  q   Object containing key/value pairs of the current query parameters
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
-  _hashchange(q) {
+  _hashchange(currParams, prevParams) {
     // background
-    let baseLayer;
-    if (typeof q.background === 'string') {
-      baseLayer = this.findSource(q.background);
+    const newBackground = currParams.get('background');
+    const oldBackground = prevParams.get('background');
+    if (newBackground !== oldBackground) {
+      let setBaseLayer;
+      if (typeof newBackground === 'string') {
+        setBaseLayer = this.findSource(newBackground);
+      }
+      if (!setBaseLayer) {
+        setBaseLayer = this.chooseDefaultSource();
+      }
+      this.baseLayerSource(setBaseLayer);
     }
-    if (!baseLayer) {
-      baseLayer = this.chooseDefaultSource();
-    }
-    this.baseLayerSource(baseLayer);
 
     // overlays
-    let toEnableIDs = new Set();
-    if (typeof q.overlays === 'string') {
-      toEnableIDs = new Set(q.overlays.split(','));
-    }
-    for (const overlayLayer of this.overlayLayerSources()) {  // for each enabled overlay layer
-      if (overlayLayer.isLocatorOverlay()) continue;
-      if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
-      this.toggleOverlayLayer(overlayLayer);           // make disabled
+    const newOverlays = currParams.get('overlays');
+    const oldOverlays = prevParams.get('overlays');
+    if (newOverlays !== oldOverlays) {
+      let toEnableIDs = new Set();
+      if (typeof newOverlays === 'string') {
+        toEnableIDs = new Set(newOverlays.split(','));
+      }
+      for (const overlayLayer of this.overlayLayerSources()) {  // for each enabled overlay layer
+        if (overlayLayer.isLocatorOverlay()) continue;
+        if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
+        this.toggleOverlayLayer(overlayLayer);           // make disabled
+      }
     }
 
     // offset
-    let x, y;
-    if (typeof q.offset === 'string') {
-      [x, y] = q.offset.replace(/;/g, ',').split(',').map(Number);
+    const newOffset = currParams.get('offset');
+    const oldOffset = prevParams.get('offset');
+    if (newOffset !== oldOffset) {
+      let x, y;
+      if (typeof newOffset === 'string') {
+        [x, y] = newOffset.replace(/;/g, ',').split(',').map(Number);
+      }
+      if (isNaN(x) || !isFinite(x)) x = 0;
+      if (isNaN(y) || !isFinite(y)) y = 0;
+      this.offset = geoMetersToOffset([x, y]);
     }
-    if (isNaN(x) || !isFinite(x)) x = 0;
-    if (isNaN(y) || !isFinite(y)) y = 0;
-    this.offset = geoMetersToOffset([x, y]);
   }
 
 

@@ -32,7 +32,7 @@ export function uiIntroPoint(context, curtain) {
   }
 
   function _isPointSelected() {
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _pointID;
   }
@@ -87,7 +87,7 @@ export function uiIntroPoint(context, curtain) {
 
   // Place a point in the revealed rectangle to advance
   function placePointAsync() {
-    if (context.mode().id !== 'add-point') return Promise.resolve(addPointAsync);
+    if (context.mode?.id !== 'add-point') return Promise.resolve(addPointAsync);
     _pointID = null;
 
     return new Promise((resolve, reject) => {
@@ -366,7 +366,7 @@ export function uiIntroPoint(context, curtain) {
   // Open the edit menu to advance
   function rightClickPointAsync() {
     if (!_doesPointExist()) return Promise.resolve(reselectPointAsync);
-    if (!['browse', 'select-osm'].includes(context.mode().id)) context.enter('browse');
+    if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;

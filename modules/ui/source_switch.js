@@ -9,11 +9,8 @@ export function uiSourceSwitch(context) {
 
     const osm = context.services.osm;
     if (!osm) return;
-
     if (context.inIntro) return;
-
-    const mode = context.mode();
-    if (mode?.id === 'save') return;
+    if (context.mode?.id === 'save') return;
 
     if (context.systems.edits.hasChanges() && !window.confirm(context.t('source_switch.lose_changes'))) return;
 
