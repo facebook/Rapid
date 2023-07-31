@@ -2714,6 +2714,17 @@ img.tag-reference-wiki-image {
     top: 0px;
 }
 
+.preset-icon-28 {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    margin: auto;
+}
+.preset-icon-28 .icon {
+    width: 28px;
+    height: 28px;
+}
+
 .note-header-label,
 .qa-header-label {
     background-color: #f6f6f6;

@@ -1,0 +1,34 @@
+
+.note-header-icon .note-fill,
+.layer-notes .note .note-fill {
+    color: #f30;
+    stroke: #333;
+    stroke-width: 40px;
+}
+.note-header-icon.new .note-fill,
+.layer-notes .note.new .note-fill {
+    color: #fe0;
+    stroke: #333;
+    stroke-width: 40px;
+}
+.note-header-icon.closed .note-fill,
+.layer-notes .note.closed .note-fill {
+    color: #5d0;
+    stroke: #333;
+    stroke-width: 40px;
+}
+
+/* slight adjustments to preset icon for note icons */
+.note-header-icon .preset-icon-28 {
+    top: 18px;
+}
+.note-header-icon .note-icon-annotation {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    margin: auto;
+}
+.note-header-icon .note-icon-annotation .icon {
+    width: 15px;
+    height: 15px;
+}
