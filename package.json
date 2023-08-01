@@ -94,7 +94,7 @@
     "@mapbox/maki": "^8.0.1",
     "@openstreetmap/id-tagging-schema": "~6.3.0",
     "@pixi/jsdoc-template": "^2.6.0",
-    "@playwright/test": "^1.36.0",
+    "@playwright/test": "^1.36.2",
     "@rapideditor/temaki": "~5.4.0",
     "autoprefixer": "^10.4.14",
     "benchmark": "^2.1.4",
