@@ -285,13 +285,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     for (const d of polygons) {
+      const dataID = d.id ? d.id : d.__featurehash__.toString();
       const parts = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const id = d.id ? d.id : d.__featurehash__.toString();
-        const featureID = `${this.layerID}-${id}-${i}`;
+        const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
         const version = d.v || 0;
 
@@ -304,7 +304,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.setData(d.id, d);
+          feature.setData(dataID, d);
         }
 
         this.syncFeatureClasses(feature);
@@ -332,13 +332,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     let style = styleOverride || LINE_STYLE;
 
     for (const d of lines) {
+      const dataID = d.id ? d.id : d.__featurehash__.toString();
       const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiLineString') ? d.geometry.coordinates : [];
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const id = d.id ? d.id : d.__featurehash__.toString();
-        const featureID = `${this.layerID}-${id}-${i}`;
+        const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
         const version = d.v || 0;
 
@@ -351,7 +351,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.setData(d.id, d);
+          feature.setData(dataID, d);
         }
 
         this.syncFeatureClasses(feature);
@@ -374,12 +374,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     const POINT_STYLE = { markerTint: 0x00ffff };
 
     for (const d of points) {
+      const dataID = d.id ? d.id : d.__featurehash__.toString();
       const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const featureID = `${this.layerID}-${d.id}-${i}`;
+        const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
 
         if (!feature) {
@@ -387,7 +388,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.geometry.setCoords(coords);
           feature.style = POINT_STYLE;
           feature.parentContainer = parentContainer;
-          feature.setData(d.id, d);
+          feature.setData(dataID, d);
         }
 
         this.syncFeatureClasses(feature);
