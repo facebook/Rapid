@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 import { Projection } from '@rapid-sdk/math';
 
+import { osmNote, QAItem } from '../osm';
 import { PixiEvents } from './PixiEvents';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
@@ -157,13 +158,27 @@ export class PixiRenderer extends EventEmitter {
     this.scene.clearClass('selected');
 
     for (const [datumID, datum] of this.context.selectedData()) {
-      if (mode.id === 'select' && datum.__fbid__) {  // a Rapid feature
-        this.scene.classData('rapid', datumID, 'selected');
-      } else if (mode.id === 'select-osm') {         // an OSM feature
-        this.scene.classData('osm', datumID, 'selected');
+      let layerID = null;
+
+      // hacky - improve?
+      if (datum instanceof osmNote) {
+        layerID = 'notes';
+      } else if (datum instanceof QAItem && datum.service === 'improveOSM') {
+        layerID = datum.service; // 'improveOSM', 'keepRight', 'osmose'
+      } else if (datum.__fbid__) {           // a Rapid feature
+        layerID = 'rapid';
+      } else if (datum.__featurehash__) {  // custom data
+        layerID = 'custom-data';
+      } else if (mode.id === 'select-osm') {   // an OSM feature
+        layerID = 'osm';
       } else {
-        // there are other selectable things - we will not select-style them for now :(
+        // other selectable things (photos?) - we will not select-style them for now :(
       }
+
+      if (layerID) {
+        this.scene.classData(layerID, datumID, 'selected');
+      }
+
     }
 
     this.render();

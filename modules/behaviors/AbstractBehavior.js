@@ -127,7 +127,7 @@ export class AbstractBehavior extends EventEmitter {
         layer: feature.layer,
         layerID: feature.layer.id,
         data: feature.data,
-        dataID: feature.data?.id
+        dataID: feature.dataID
       };
       return result;
     }
@@ -143,7 +143,7 @@ export class AbstractBehavior extends EventEmitter {
         layer: feature.layer,
         layerID: feature.layer.id,
         data: feature.data,
-        dataID: feature.data?.id
+        dataID: feature.dataID
       };
       return result;
     }

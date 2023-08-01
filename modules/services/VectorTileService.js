@@ -262,7 +262,6 @@ export class VectorTileService extends AbstractSystem {
           geometry.coordinates = [geometry.coordinates];
         }
 
-
         // Does this feature clip to tile bounds?
         // (there is probably a much more efficient way to determine this)
         let isClipped = false;
