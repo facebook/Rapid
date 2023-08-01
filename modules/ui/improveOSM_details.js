@@ -84,7 +84,7 @@ export function uiImproveOsmDetails(context) {
         // Replace with friendly name if possible
         // (The entity may not yet be loaded into the graph)
         if (entity) {
-          let name = l10n.displayName(entity);  // try to use common name
+          let name = l10n.displayName(entity.tags);  // try to use common name
           if (!name && !isObjectLink) {
             const preset = presets.match(entity, context.graph());
             name = preset && !preset.isFallback() && preset.name();  // fallback to preset name

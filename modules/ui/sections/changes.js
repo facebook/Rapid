@@ -84,7 +84,7 @@ export function uiSectionChanges(context) {
       .append('span')
       .attr('class', 'entity-name')
       .html(d => {
-        const name = l10n.displayName(d.entity) || '';
+        const name = l10n.displayName(d.entity.tags);
         let string = '';
         if (name !== '') {
           string += ':';

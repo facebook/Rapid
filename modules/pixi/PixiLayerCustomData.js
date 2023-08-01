@@ -12,6 +12,8 @@ import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 import { utilFetchResponse } from '../util';
 
+const CUSTOM_COLOR = 0x00ffff;
+
 
 /**
  * PixiLayerCustomData
@@ -205,15 +207,17 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       this.renderPolygons(frame, projection, zoom, polygons);
       const gridLines = this.createGridLines(lines);
+      const gridStyle = { stroke: { width: 0.5, color: 0x00ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
 
       this.renderLines(frame, projection, zoom, lines);
-      this.renderLines(frame, projection, zoom, gridLines, { stroke: {width: 0.5, color:0x00ffff, alpha:0.5, cap:PIXI.LINE_CAP.ROUND}});
+      this.renderLines(frame, projection, zoom, gridLines, gridStyle);
       this.renderPoints(frame, projection, zoom, points);
     }
   }
 
 
-  /** createGridLines
+  /**
+   * createGridLines
    * creates interstitial grid lines inside the rectangular bounding box, if specified.
    * @param lines - the line string(s) that may contain a rectangular bounding box
    * @returns a list of linestrings to draw as gridlines.
@@ -278,14 +282,17 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  polygons     Array of polygon data
    */
   renderPolygons(frame, projection, zoom, polygons) {
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
-    const POLY_STYLE = {
-      fill: { color: 0x00ffff, alpha: 0.3, },
-      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+
+    const polygonStyle = {
+      fill: { color: CUSTOM_COLOR, alpha: 0.3, },
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
     for (const d of polygons) {
       const dataID = d.id ? d.id : d.__featurehash__.toString();
+      const label = l10n.displayName(d.properties);
       const parts = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
@@ -297,13 +304,14 @@ export class PixiLayerCustomData extends AbstractLayer {
 
         if (!feature) {
           feature = new PixiFeaturePolygon(this, featureID);
-          feature.style = POLY_STYLE;
+          feature.style = polygonStyle;
           feature.parentContainer = parentContainer;
         }
 
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
+          feature.label = label;
           feature.setData(dataID, d);
         }
 
@@ -324,15 +332,16 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param styleOverride Custom style
    */
   renderLines(frame, projection, zoom, lines, styleOverride) {
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
-    const LINE_STYLE = {
-      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
-    };
 
-    let style = styleOverride || LINE_STYLE;
+    let lineStyle = styleOverride || {
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+    };
 
     for (const d of lines) {
       const dataID = d.id ? d.id : d.__featurehash__.toString();
+      const label = l10n.displayName(d.properties);
       const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiLineString') ? d.geometry.coordinates : [];
 
@@ -344,13 +353,14 @@ export class PixiLayerCustomData extends AbstractLayer {
 
         if (!feature) {
           feature = new PixiFeatureLine(this, featureID);
-          feature.style = style;
+          feature.style = lineStyle;
           feature.parentContainer = parentContainer;
         }
 
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
+          feature.label = label;
           feature.setData(dataID, d);
         }
 
@@ -370,11 +380,19 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of point data
    */
   renderPoints(frame, projection, zoom, points) {
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('points');
-    const POINT_STYLE = { markerTint: 0x00ffff };
+
+    const pointStyle = {
+      markerName: 'largeCircle',
+      markerTint: CUSTOM_COLOR,
+      iconName: 'maki-circle-stroked',
+      labelTint: CUSTOM_COLOR
+    };
 
     for (const d of points) {
       const dataID = d.id ? d.id : d.__featurehash__.toString();
+      const label = l10n.displayName(d.properties);
       const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
 
@@ -386,7 +404,8 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (!feature) {
           feature = new PixiFeaturePoint(this, featureID);
           feature.geometry.setCoords(coords);
-          feature.style = POINT_STYLE;
+          feature.style = pointStyle;
+          feature.label = label;
           feature.parentContainer = parentContainer;
           feature.setData(dataID, d);
         }
@@ -397,6 +416,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       }
     }
   }
+
 
   /**
    * template

@@ -149,7 +149,7 @@ export function uiFeatureList(context) {
         const entity = graph.hasEntity(id);
         if (!entity) continue;
 
-        const name = l10n.displayName(entity) || '';
+        const name = l10n.displayName(entity.tags) || '';
         if (name.toLowerCase().indexOf(q) < 0) continue;
 
         const matched = presets.match(entity, graph);

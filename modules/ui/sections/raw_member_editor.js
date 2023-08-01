@@ -186,7 +186,7 @@ export function uiSectionRawMemberEditor(context) {
                     labelLink
                         .append('span')
                         .attr('class', 'member-entity-name')
-                        .html(function(d) { return l10n.displayName(d.member); });
+                        .html(d => (d.member ? l10n.displayName(d.member.tags) : ''));
 
                     label
                         .append('button')

@@ -380,7 +380,7 @@ export class PixiLayerRapid extends AbstractLayer {
             // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
           };
           feature.style = style;
-          feature.label = l10n.displayName(entity);
+          feature.label = l10n.displayName(entity.tags);
           feature.update(projection, zoom);
         }
 
@@ -425,7 +425,7 @@ export class PixiLayerRapid extends AbstractLayer {
         };
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
-        feature.label = l10n.displayName(entity);
+        feature.label = l10n.displayName(entity.tags);
         feature.update(projection, zoom);
       }
 
@@ -469,7 +469,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = pointStyle;
-        feature.label = l10n.displayName(entity);
+        feature.label = l10n.displayName(entity.tags);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
         if (!feature.label && housenumber) {
@@ -499,7 +499,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = vertexStyle;
-        feature.label = l10n.displayName(entity);
+        feature.label = l10n.displayName(entity.tags);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
         if (!feature.label && housenumber) {

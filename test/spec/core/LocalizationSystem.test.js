@@ -42,68 +42,68 @@ describe('LocalizationSystem', () => {
 
   describe('#displayName', () => {
     it('returns the name if tagged with a name', () => {
-      const entity = { tags: { name: 'East Coast Greenway' }};
-      expect(_l10n.displayName(entity)).to.eql('East Coast Greenway');
+      const tags = { name: 'East Coast Greenway' };
+      expect(_l10n.displayName(tags)).to.eql('East Coast Greenway');
     });
 
     it('returns just the name for non-routes', () => {
-      const entity = { tags: { name: 'Abyssinian Room', ref: '260-115' }};
-      expect(_l10n.displayName(entity)).to.eql('Abyssinian Room');
+      const tags = { name: 'Abyssinian Room', ref: '260-115' };
+      expect(_l10n.displayName(tags)).to.eql('Abyssinian Room');
     });
 
     it('returns the name and the ref for routes', () => {
-      const entity1 = { tags: { name: 'Lynfield Express', ref: '25L', route: 'bus' }};
-      expect(_l10n.displayName(entity1)).to.eql('25L: Lynfield Express');
-      const entity2 = { tags: { name: 'Kāpiti Expressway', ref: 'SH1', route: 'road' }};
-      expect(_l10n.displayName(entity2)).to.eql('SH1: Kāpiti Expressway');
+      const tags1 = { name: 'Lynfield Express', ref: '25L', route: 'bus' };
+      expect(_l10n.displayName(tags1)).to.eql('25L: Lynfield Express');
+      const tags2 = { name: 'Kāpiti Expressway', ref: 'SH1', route: 'road' };
+      expect(_l10n.displayName(tags2)).to.eql('SH1: Kāpiti Expressway');
     });
 
     it('returns the name, ref, and network for routes', () => {
-      const entity = { tags: { name: 'Lynfield Express', ref: '25L', network: 'AT', route: 'bus' }};
-      expect(_l10n.displayName(entity)).to.eql('AT 25L: Lynfield Express');
+      const tags = { name: 'Lynfield Express', ref: '25L', network: 'AT', route: 'bus' };
+      expect(_l10n.displayName(tags)).to.eql('AT 25L: Lynfield Express');
     });
 
     it('does not use the network tag if the hideNetwork argument is true', () => {
-      const entity1 = { tags: { name: 'Lynfield Express', ref: '25L', network: 'AT', route: 'bus' }};
-      expect(_l10n.displayName(entity1, true)).to.eql('25L: Lynfield Express');
-      const entity2 = { tags: { network: 'SORTA', ref: '3X' }};
-      expect(_l10n.displayName(entity2, true)).to.eql('3X');
+      const tags1 = { name: 'Lynfield Express', ref: '25L', network: 'AT', route: 'bus' };
+      expect(_l10n.displayName(tags1, true)).to.eql('25L: Lynfield Express');
+      const tags2 = { network: 'SORTA', ref: '3X' };
+      expect(_l10n.displayName(tags2, true)).to.eql('3X');
     });
 
     it('distinguishes unnamed features by ref', () => {
-      const entity = { tags: { ref: '66' }};
-      expect(_l10n.displayName(entity)).to.eql('66');
+      const tags = { ref: '66' };
+      expect(_l10n.displayName(tags)).to.eql('66');
     });
 
     it('distinguishes unnamed features by network or cycle_network', () => {
-      const entity1 = { tags: { network: 'SORTA', ref: '3X' }};
-      expect(_l10n.displayName(entity1)).to.eql('SORTA 3X');
-      const entity2 = { tags: { network: 'ncn', cycle_network: 'US:US', ref: '76' }};
-      expect(_l10n.displayName(entity2)).to.eql('US:US 76');
+      const tags1 = { network: 'SORTA', ref: '3X' };
+      expect(_l10n.displayName(tags1)).to.eql('SORTA 3X');
+      const tags2 = { network: 'ncn', cycle_network: 'US:US', ref: '76' };
+      expect(_l10n.displayName(tags2)).to.eql('US:US 76');
     });
 
     it('distinguishes unnamed routes by direction', () => {
-      const entity1 = { tags: { network: 'US:US', ref: '66', direction: 'west', route: 'road' }};
-      expect(_l10n.displayName(entity1)).to.eql('US:US 66 west');
-      const entity2 = { tags: { network: 'Marguerite', ref: 'X', direction: 'anticlockwise', route: 'bus' }};
-      expect(_l10n.displayName(entity2)).to.eql('Marguerite X anticlockwise');
+      const tags1 = { network: 'US:US', ref: '66', direction: 'west', route: 'road' };
+      expect(_l10n.displayName(tags1)).to.eql('US:US 66 west');
+      const tags2 = { network: 'Marguerite', ref: 'X', direction: 'anticlockwise', route: 'bus' };
+      expect(_l10n.displayName(tags2)).to.eql('Marguerite X anticlockwise');
     });
 
     it('distinguishes unnamed routes by waypoints', () => {
-      const entity1 = { tags: { network: 'SORTA', ref: '3X', from: 'Downtown', route: 'bus' }};
-      expect(_l10n.displayName(entity1)).to.eql('SORTA 3X');
-      const entity2 = { tags: { network: 'SORTA', ref: '3X', to: 'Kings Island', route: 'bus' }};
-      expect(_l10n.displayName(entity2)).to.eql('SORTA 3X');
-      const entity3 = { tags: {network: 'SORTA', ref: '3X', via: 'Montgomery', route: 'bus' }};
-      expect(_l10n.displayName(entity3)).to.eql('SORTA 3X');
+      const tags1 = { network: 'SORTA', ref: '3X', from: 'Downtown', route: 'bus' };
+      expect(_l10n.displayName(tags1)).to.eql('SORTA 3X');
+      const tags2 = { network: 'SORTA', ref: '3X', to: 'Kings Island', route: 'bus' };
+      expect(_l10n.displayName(tags2)).to.eql('SORTA 3X');
+      const tags3 = {network: 'SORTA', ref: '3X', via: 'Montgomery', route: 'bus' };
+      expect(_l10n.displayName(tags3)).to.eql('SORTA 3X');
 
       // Green Line: Old Ironsides => Winchester
-      const entity4 = { tags: { network: 'VTA', ref: 'Green', from: 'Old Ironsides', to: 'Winchester', route: 'bus' }};
-      expect(_l10n.displayName(entity4)).to.eql('VTA Green from Old Ironsides to Winchester');
+      const tags4 = { network: 'VTA', ref: 'Green', from: 'Old Ironsides', to: 'Winchester', route: 'bus' };
+      expect(_l10n.displayName(tags4)).to.eql('VTA Green from Old Ironsides to Winchester');
 
       // BART Yellow Line: Antioch => Pittsburg/Bay Point => SFO Airport => Millbrae
-      const entity5 = { tags: { network: 'BART', ref: 'Yellow', from: 'Antioch', to: 'Millbrae', via: 'Pittsburg/Bay Point;San Francisco International Airport', route: 'subway' }};
-      expect(_l10n.displayName(entity5)).to.eql('BART Yellow from Antioch to Millbrae via Pittsburg/Bay Point;San Francisco International Airport');
+      const tags5 = { network: 'BART', ref: 'Yellow', from: 'Antioch', to: 'Millbrae', via: 'Pittsburg/Bay Point;San Francisco International Airport', route: 'subway' };
+      expect(_l10n.displayName(tags5)).to.eql('BART Yellow from Antioch to Millbrae via Pittsburg/Bay Point;San Francisco International Airport');
     });
   });
 });
