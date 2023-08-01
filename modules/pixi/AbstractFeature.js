@@ -65,6 +65,7 @@ export class AbstractFeature {
     this._label = null;
     this._labelDirty = true;
 
+    this._dataID = null;
     this._data = null;
 
     this._selected = false;
@@ -110,6 +111,8 @@ export class AbstractFeature {
     this.geometry = null;
     this._style = null;
     this._label = null;
+
+    this._dataID = null;
     this._data = null;
 
     this.sceneBounds = null;
@@ -316,6 +319,16 @@ export class AbstractFeature {
     return this._data;
   }
 
+  /**
+   * dataID
+   * Getter only, use `setData()` to change it.
+   * (because we need to know an id/key to identify the data by, and these can be anything)
+   * @readonly
+   */
+  get dataID() {
+    return this._dataID;
+  }
+
 
   /**
    * setData
@@ -324,8 +337,8 @@ export class AbstractFeature {
    * @param   data     `Object` data to bind to the feature (e.g. an OSM Node)
    */
   setData(dataID, data) {
+    this._dataID = dataID;
     this._data = data;
-    this.dataID = dataID;
     this.layer.bindData(this.id, dataID);
     this.dirty = true;
   }

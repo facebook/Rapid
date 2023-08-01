@@ -70,32 +70,6 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
-  // Ensure that all geojson features in a collection have IDs
-  ensureIDs(geojson) {
-    if (!geojson) return null;
-
-    if (geojson.type === 'FeatureCollection') {
-      (geojson.features || []).forEach(feature => this.ensureFeatureID(feature));
-    } else {
-      this.ensureFeatureID(geojson);
-    }
-    return geojson;
-  }
-
-  // ensure that each single Feature object has a unique ID
-  ensureFeatureID(feature) {
-    if (!feature) return;
-    feature.__featurehash__ = utilHashcode(stringify(feature));
-
-    // The pixi scene cache relies on each feature having its own id member,
-    // so use the hashcode string as a fallback.
-    if (!feature.id) {
-      feature.id = feature.__featurehash__.toString();
-    }
-    return feature;
-  }
-
-
   // Prefer an array of Features instead of a FeatureCollection
   getFeatures(geojson) {
     if (!geojson) return [];
@@ -105,11 +79,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     } else {
       return [geojson];
     }
-  }
-
-
-  isPolygon(d) {
-    return d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon';
   }
 
 
@@ -148,7 +117,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     gj = gj || {};
     if (Object.keys(gj).length) {
-      this._geojson = this.ensureIDs(gj);
+      this._geojson = this._ensureIDs(gj);
       this._src = extension + ' data file';
       this.fitZoom();
     }
@@ -291,8 +260,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     for (const d of polygons) {
-      const dataID = d.id ? d.id : d.__featurehash__.toString();
-      const label = l10n.displayName(d.properties);
+      const dataID = d.__featurehash__.toString();
+      const version = d.v || 0;
       const parts = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
@@ -300,7 +269,12 @@ export class PixiLayerCustomData extends AbstractLayer {
         const coords = parts[i];
         const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
-        const version = d.v || 0;
+
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'polygon') {
+          feature.destroy();
+          feature = null;
+        }
 
         if (!feature) {
           feature = new PixiFeaturePolygon(this, featureID);
@@ -308,10 +282,11 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.parentContainer = parentContainer;
         }
 
+        // If data has changed.. Replace it.
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = label;
+          feature.label = l10n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
@@ -335,13 +310,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
 
-    let lineStyle = styleOverride || {
+    const lineStyle = styleOverride || {
       stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
     for (const d of lines) {
-      const dataID = d.id ? d.id : d.__featurehash__.toString();
-      const label = l10n.displayName(d.properties);
+      const dataID = d.__featurehash__.toString();
+      const version = d.v || 0;
       const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiLineString') ? d.geometry.coordinates : [];
 
@@ -349,7 +324,12 @@ export class PixiLayerCustomData extends AbstractLayer {
         const coords = parts[i];
         const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
-        const version = d.v || 0;
+
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'line') {
+          feature.destroy();
+          feature = null;
+        }
 
         if (!feature) {
           feature = new PixiFeatureLine(this, featureID);
@@ -357,10 +337,11 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.parentContainer = parentContainer;
         }
 
+        // If data has changed.. Replace it.
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = label;
+          feature.label = l10n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
@@ -391,8 +372,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     for (const d of points) {
-      const dataID = d.id ? d.id : d.__featurehash__.toString();
-      const label = l10n.displayName(d.properties);
+      const dataID = d.__featurehash__.toString();
+      const version = d.v || 0;
       const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
 
@@ -401,12 +382,23 @@ export class PixiLayerCustomData extends AbstractLayer {
         const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
 
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'point') {
+          feature.destroy();
+          feature = null;
+        }
+
         if (!feature) {
           feature = new PixiFeaturePoint(this, featureID);
-          feature.geometry.setCoords(coords);
           feature.style = pointStyle;
-          feature.label = label;
           feature.parentContainer = parentContainer;
+        }
+
+        // If data has changed.. Replace it.
+        if (feature.v !== version) {
+          feature.v = version;
+          feature.geometry.setCoords(coords);
+          feature.label = l10n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
@@ -475,7 +467,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     gj = gj || {};
     if (Object.keys(gj).length) {
-      this._geojson = this.ensureIDs(gj);
+      this._geojson = this._ensureIDs(gj);
       this._src = src || 'unknown.geojson';
     }
 
@@ -599,6 +591,26 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
 
     return this;
+  }
+
+
+  // Ensure that all geojson features in a collection have IDs
+  _ensureIDs(geojson) {
+    if (!geojson) return null;
+
+    if (geojson.type === 'FeatureCollection') {
+      (geojson.features || []).forEach(feature => this._ensureFeatureID(feature));
+    } else {
+      this._ensureFeatureID(geojson);
+    }
+    return geojson;
+  }
+
+  // ensure that each single Feature object has a unique ID
+  _ensureFeatureID(feature) {
+    if (!feature) return;
+    feature.__featurehash__ = utilHashcode(stringify(feature));
+    return feature;
   }
 
 
