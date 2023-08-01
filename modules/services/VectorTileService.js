@@ -1,6 +1,7 @@
 import { Tiler } from '@rapid-sdk/math';
 import { utilHashcode } from '@rapid-sdk/util';
 import { VectorTile } from '@mapbox/vector-tile';
+import { PMTiles } from 'pmtiles';
 import deepEqual from 'fast-deep-equal';
 import turf_bboxClip from '@turf/bbox-clip';
 import stringify from 'fast-json-stable-stringify';
@@ -72,20 +73,6 @@ export class VectorTileService extends AbstractSystem {
 
 
   /**
-   * addSource
-   * Create a new cache to hold data for a given source
-   * @param   sourceID
-   * @param   template
-   * @return  Object containing the cache
-   */
-  addSource(sourceID, template) {
-    const source = { template: template, inflight: {}, loaded: {}, canMerge: {} };
-    this._cache.set(sourceID, source);
-    return source;
-  }
-
-
-  /**
    * data (maybe should be "getData"?)
    * @param  sourceID
    * @param  projection
@@ -116,31 +103,65 @@ export class VectorTileService extends AbstractSystem {
 
 
   /**
+   * addSourceAsync
+   * Create a new cache to hold data for a given source
+   * @param   sourceID
+   * @param   template
+   * @return  Promise resolved to the source object
+   */
+  addSourceAsync(sourceID, template) {
+    let source = this._cache.get(sourceID);
+
+    if (!source) {  // create it
+      source = { template: template, inflight: {}, loaded: {}, canMerge: {} };
+      this._cache.set(sourceID, source);
+
+      if (/\.pmtiles$/.test(template)) {
+        source.pmtiles = new PMTiles(template);
+        source.addPromise = source.pmtiles.getHeader()
+          .then(header => source.header = header)
+          .then(() => Promise.resolve(source));
+      } else {
+        source.addPromise = Promise.resolve(source);
+      }
+    }
+
+    return source.addPromise;
+  }
+
+
+  /**
    * loadTiles
    * @param  sourceID
    * @param  template
    * @param  projection
    */
   loadTiles(sourceID, template, projection) {
-    let source = this._cache.get(sourceID);
-    if (!source) {
-      source = this.addSource(sourceID, template);
-    }
+    this.addSourceAsync(sourceID, template)
+      .then(source => {
+        const header = source.header;
+        if (header) {  // pmtiles - set up allowable zoom range
+          this._tiler.zoomRange(header.minZoom, header.maxZoom);
+          if (header.tileType !== 1) {
+            throw new Error(`Unsupported tileType ${header.tileType}. Only Type 1 (MVT) is supported`);
+          }
+        }
 
-    const tiles = this._tiler.getTiles(projection).tiles;
+        const tiles = this._tiler.getTiles(projection).tiles;
 
-    // abort inflight requests that are no longer needed
-    for (const k of Object.keys(source.inflight)) {
-      const wanted = tiles.find(tile => tile.id === k);
-      if (!wanted) {
-        this._abortRequest(source.inflight[k]);
-        delete source.inflight[k];
-      }
-    }
+        // abort inflight requests that are no longer needed
+        for (const k of Object.keys(source.inflight)) {
+          const wanted = tiles.find(tile => tile.id === k);
+          if (!wanted) {
+            this._abortRequest(source.inflight[k]);
+            delete source.inflight[k];
+          }
+        }
 
-    for (const tile of tiles) {
-      this._loadTile(source, tile);
-    }
+        for (const tile of tiles) {
+          this._loadTile(source, tile);
+        }
+      });
   }
 
 
@@ -162,23 +183,35 @@ export class VectorTileService extends AbstractSystem {
   _loadTile(source, tile) {
     if (source.loaded[tile.id] || source.inflight[tile.id]) return;
 
-    const url = source.template
-      .replace('{x}', tile.xyz[0])
-      .replace('{y}', tile.xyz[1])
-      // TMS-flipped y coordinate
-      .replace(/\{[t-]y\}/, Math.pow(2, tile.xyz[2]) - tile.xyz[1] - 1)
-      .replace(/\{z(oom)?\}/, tile.xyz[2])
-      .replace(/\{switch:([^}]+)\}/, function(s, r) {
-        const subdomains = r.split(',');
-        return subdomains[(tile.xyz[0] + tile.xyz[1]) % subdomains.length];
-      });
-
-
     const controller = new AbortController();
     source.inflight[tile.id] = controller;
 
-    fetch(url, { signal: controller.signal })
-      .then(utilFetchResponse)
+    let _fetch;
+
+    if (source.pmtiles) {
+      _fetch = source.pmtiles
+        .getZxy(tile.xyz[2], tile.xyz[0], tile.xyz[1], controller.signal)
+        .then(response => {
+          return response?.data;
+        });
+
+    } else {
+      const url = source.template
+        .replace('{x}', tile.xyz[0])
+        .replace('{y}', tile.xyz[1])
+        // TMS-flipped y coordinate
+        .replace(/\{[t-]y\}/, Math.pow(2, tile.xyz[2]) - tile.xyz[1] - 1)
+        .replace(/\{z(oom)?\}/, tile.xyz[2])
+        .replace(/\{switch:([^}]+)\}/, function(s, r) {
+          const subdomains = r.split(',');
+          return subdomains[(tile.xyz[0] + tile.xyz[1]) % subdomains.length];
+        });
+
+      _fetch = fetch(url, { signal: controller.signal })
+        .then(utilFetchResponse);
+    }
+
+    _fetch
       .then(buffer => {
         delete source.inflight[tile.id];
         if (!buffer) {

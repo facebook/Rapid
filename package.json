@@ -81,6 +81,7 @@
     "pbf": "^3.2.1",
     "pixi-filters": "5.2.1",
     "pixi.js": "7.2.4",
+    "pmtiles": "^2.10.0",
     "polygon-clipping": "~0.15.3",
     "prop-types": "^15.8.1",
     "rbush": "3.0.1",
