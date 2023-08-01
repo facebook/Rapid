@@ -326,7 +326,7 @@ export class PixiLayerOsm extends AbstractLayer {
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
           feature.style = style;
 
-          const label = l10n.displayPOIName(entity);
+          const label = l10n.displayPOIName(entity.tags);
           feature.label = label;
 
           // POI = "Point of Interest" -and- "Pole of Inaccessability"
@@ -490,7 +490,7 @@ export class PixiLayerOsm extends AbstractLayer {
             }
             feature.style = style;
 
-            feature.label = l10n.displayName(entity);
+            feature.label = l10n.displayName(entity.tags);
           }
 
           feature.update(projection, zoom);
@@ -616,7 +616,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = l10n.displayName(node);
+        feature.label = l10n.displayName(node.tags);
       }
 
       feature.update(projection, zoom);
@@ -701,7 +701,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = l10n.displayName(node);
+        feature.label = l10n.displayName(node.tags);
       }
 
       feature.update(projection, zoom);

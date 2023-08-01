@@ -114,7 +114,7 @@ export function uiSectionSelectionList(context) {
     items.selectAll('.entity-name')
       .html(d => {
         const entity = context.entity(d.id);  // current version of the entity
-        return l10n.displayName(entity);
+        return l10n.displayName(entity.tags);
       });
   }
 

@@ -229,7 +229,7 @@ export function uiSectionRawMembershipEditor(context) {
         function baseDisplayLabel(entity) {
             var matched = presetSystem.match(entity, graph);
             var presetName = (matched && matched.name()) || l10n.t('inspector.relation');
-            var entityName = l10n.displayName(entity) || '';
+            var entityName = l10n.displayName(entity.tags) || '';
 
             return presetName + ' ' + entityName;
         }
@@ -336,7 +336,7 @@ export function uiSectionRawMembershipEditor(context) {
             .html(function(d) {
                 const matched = presetSystem.match(d.relation, context.graph());
                 // hide the network from the name if there is NSI match
-                return l10n.displayName(d.relation, matched.suggestion);
+                return l10n.displayName(d.relation.tags, matched.suggestion);
             });
 
         labelEnter

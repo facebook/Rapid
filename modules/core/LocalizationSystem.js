@@ -101,7 +101,7 @@ export class LocalizationSystem extends AbstractSystem {
    * preferredLocaleCodes
    * Allows the user to manually set the locale, overriding the locales specified by the browser
    * If you're going to use this, you must call it before `initAsync` starts fetching data.
-   * @param   codes  Array or String of preferred locales
+   * @param  {Array|string}  codes - Array or String of preferred locales
    */
   set preferredLocaleCodes(codes) {
     if (typeof codes === 'string') {
@@ -206,7 +206,7 @@ export class LocalizationSystem extends AbstractSystem {
   /**
    * startAsync
    * Called after all core objects have been initialized.
-   * @return {Promise} Promise resolved when this component has completed startup
+   * @return {Promise}  Promise resolved when this component has completed startup
    */
   startAsync() {
     this._started = true;
@@ -264,8 +264,8 @@ export class LocalizationSystem extends AbstractSystem {
    * Returns the plural rule for the given `number` with the given `code`.
    * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules/select
    *
-   * @param  {number}   number      number to get the plural rule
-   * @param  {string?}  locale      locale to use (defaults to currentLocale)
+   * @param  {number}   number - number to get the plural rule
+   * @param  {string?}  locale - locale to use (defaults to currentLocale)
    * @return {string}   One of: `zero`, `one`, `two`, `few`, `many`, `other`
    */
   pluralRule(number, locale = this._currLocaleCode) {
@@ -286,9 +286,9 @@ export class LocalizationSystem extends AbstractSystem {
    * we'll recurse through all the `this._currLocaleCodes` until one is found.
    *
    * @param  {string}   origStringID   string identifier
-   * @param  {object?}  replacements   token replacements and default string
+   * @param  {Object?}  replacements   token replacements and default string
    * @param  {string?}  locale         locale to use (defaults to currentLocale)
-   * @return {object?}  result containing the localized string and chosen locale
+   * @return {Object?}  result containing the localized string and chosen locale
    */
   _getString(origStringID, replacements, locale) {
     let stringID = origStringID.trim();
@@ -399,7 +399,7 @@ export class LocalizationSystem extends AbstractSystem {
    * t
    * Returns only the localized text, discarding the locale info
    * @param  {string}   stringID      string identifier
-   * @param  {object?}  replacements  token replacements and default string
+   * @param  {Object?}  replacements  token replacements and default string
    * @param  {string?}  locale        locale to use (defaults to currentLocale)
    * @return {string?}  the localized string
    */
@@ -412,7 +412,7 @@ export class LocalizationSystem extends AbstractSystem {
    * t.html
    * Returns the localized text wrapped in an HTML span element encoding the locale info
    * @param  {string}   stringID      string identifier
-   * @param  {object?}  replacements  token replacements and default string
+   * @param  {Object?}  replacements  token replacements and default string
    * @param  {string?}  locale        locale to use (defaults to currentLocale)
    * @return {string}   localized string wrapped in a HTML span, or empty string ''
    */
@@ -427,7 +427,7 @@ export class LocalizationSystem extends AbstractSystem {
    * t.append
    * Safer version of t.html that instead uses a function that appends the localized text to the given d3 selection
    * @param  {string}   stringID      string identifier
-   * @param  {object?}  replacements  token replacements and default string
+   * @param  {Object?}  replacements  token replacements and default string
    * @param  {string?}  locale        locale to use (defaults to currentLocale)
    * @return {Function} Function that accepts a d3 selection and appends the localized text
    */
@@ -460,7 +460,7 @@ export class LocalizationSystem extends AbstractSystem {
    * languageName
    * Returns a display-ready string for a given language code
    * @param  {string}   code          the language code (e.g. 'de')
-   * @param  {object?}  options       see below
+   * @param  {Object?}  options       see below
    * @return {string}   the language string to display (e.g. "Deutsch (de)")
    */
   languageName(code, options) {
@@ -499,98 +499,124 @@ export class LocalizationSystem extends AbstractSystem {
 
   /**
    * displayName
-   * Display a name for an Entity
-   * @param {boolean} hideNetwork If true, the `network` tag will not be used in the name to prevent
-   *                              it being shown twice (see PR #8707#discussion_r712658175)
+   * Get a localized display name for a map feature
+   * @param  {Object}  tags
+   * @param  {boolean} hideNetwork - If true, the `network` tag will not be used in the name to prevent
+   *   it being shown twice (see PR iD#8707#discussion_r712658175)
+   * @return {string}  A name string suitable for display
    */
-  displayName(entity, hideNetwork) {
+  displayName(tags, hideNetwork) {
     const code = this._currLanguageCode.toLowerCase();
-    let name = entity.tags[`name:${code}`] ?? entity.tags.name ?? '';
 
-    let tags = {
-      name,
-      direction: entity.tags.direction,
-      from: entity.tags.from,
-      network: hideNetwork ? undefined : (entity.tags.cycle_network || entity.tags.network),
-      ref: entity.tags.ref,
-      to: entity.tags.to,
-      via: entity.tags.via
+    const route = tags.route;
+    let name = tags[`name:${code}`] ?? tags.name ?? '';
+
+    // Gather the properties we may use to construct a display name
+    let props = {
+      name: name,
+      direction: tags.direction,
+      from: tags.from,
+      network: hideNetwork ? undefined : (tags.cycle_network ?? tags.network),
+      ref: tags.ref,
+      to: tags.to,
+      via: tags.via
     };
 
-    // for routes, prefer `network+ref+name` or `ref+name` over `name`
-    if (name && tags.ref && entity.tags.route) {
-      return tags.network
-        ? this.t('inspector.display_name.network_ref_name', tags)
-        : this.t('inspector.display_name.ref_name', tags);
+    // For routes, prefer `network+ref+name` or `ref+name` over `name`
+    if (route && props.ref && props.name) {
+      return props.network
+        ? this.t('inspector.display_name.network_ref_name', props)
+        : this.t('inspector.display_name.ref_name', props);
     }
-    if (name) return name;
 
+    // If we have a name, return it
+    if (name) {
+      return name;
+    }
+
+    // Construct a name from other tags.
     let keyComponents = [];
-    if (tags.network) {
+    if (props.network) {
       keyComponents.push('network');
     }
-    if (tags.ref) {
+    if (props.ref) {
       keyComponents.push('ref');
     }
 
     // Routes may need more disambiguation based on direction or destination
-    if (entity.tags.route) {
-      if (tags.direction) {
+    if (route) {
+      if (props.direction) {
         keyComponents.push('direction');
-      } else if (tags.from && tags.to) {
+      } else if (props.from && props.to) {
         keyComponents.push('from');
         keyComponents.push('to');
-        if (tags.via) {
+        if (props.via) {
           keyComponents.push('via');
         }
       }
     }
 
     if (keyComponents.length) {
-      name = this.t('inspector.display_name.' + keyComponents.join('_'), tags);
+      return this.t('inspector.display_name.' + keyComponents.join('_'), props);
     }
 
-  // bhousel 3/28 - no labels for addresses for now
-  //    // if there's still no name found, try addr:housename
-  //    if (!name && entity.tags['addr:housename']) {
-  //        name = entity.tags['addr:housename'];
-  //    }
+  // bhousel 3/28/22 - no labels for addresses for now
+  // // if there's still no name found, try addr:housename
+  // if (tags['addr:housename']) {
+  //   return tags['addr:housename'];
+  // }
   //
-  //    // as a last resort, use the street address as a name
-  //    if (!name && entity.tags['addr:housenumber'] && entity.tags['addr:street']) {
-  //        name = entity.tags['addr:housenumber'] + ' ' + entity.tags['addr:street'];
-  //    }
+  // // as a last resort, use the street address as a name
+  // if (tags['addr:housenumber'] && tags['addr:street']) {
+  //   return tags['addr:housenumber'] + ' ' + tags['addr:street'];
+  // }
 
-    return name;
+    return '';
   }
 
 
-  // This is like `displayName`, but more useful for POI display names
-  displayPOIName(entity) {
+  /**
+   * displayPOIName
+   * This is like `displayName`, but more useful for POI display names (includes brand)
+   * @param  {Object}  tags
+   * @return {string}  A name string suitable for display
+   */
+  displayPOIName(tags) {
     const code = this._currLanguageCode.toLowerCase();
-    const tags = entity.tags;
-    return tags[`name:${code}`] ?? tags.name ?? tags[`brand:${code}`] ?? tags.brand;
+    return tags[`name:${code}`] ?? tags.name
+      ?? tags[`brand:${code}`] ?? tags.brand
+      ?? tags[`operator:${code}`] ?? tags.operator
+      ?? '';
   }
 
 
-  displayType(id) {
+  /**
+   * displayType
+   * @param  {string}  entityID - OSM-like ID that starts with 'n', 'w', or 'r'
+   * @return {string}  Localized string for 'Node', 'Way', or 'Relation'
+   */
+  displayType(entityID) {
     return {
       n: this.t('inspector.node'),
       w: this.t('inspector.way'),
       r: this.t('inspector.relation')
-    }[id.charAt(0)];
+    }[entityID.charAt(0)];
   }
 
 
-  // displayLabel
-  // Returns a string suitable for display
-  // By default returns something like name/ref, fallback to preset type, fallback to OSM type
-  //   "Main Street" or "Tertiary Road"
-  // If `verbose=true`, include both preset name and feature name.
-  //   "Tertiary Road Main Street"
-  //
+  /**
+   * displayLabel
+   * Returns a string suitable for display
+   * By default returns something like name/ref, fallback to preset type, fallback to OSM type
+   *   "Main Street" or "Tertiary Road"
+   * If `verbose=true`, include both preset name and feature name.
+   *   "Tertiary Road Main Street"
+   * @param  {Entity}        entity            The entity to get the label for
+   * @param  {Graph|string}  graphOrGeometry   Either a Graph or geometry
+   * @return {string}  A name string suitable for display
+   */
   displayLabel(entity, graphOrGeometry, verbose) {
-    const displayName = this.displayName(entity);
+    const displayName = this.displayName(entity.tags);
     const presetSystem = this.context.systems.presets;
     const preset = typeof graphOrGeometry === 'string' ?
       presetSystem.matchTags(entity.tags, graphOrGeometry) :
@@ -605,7 +631,7 @@ export class LocalizationSystem extends AbstractSystem {
     }
 
     // Fallback to the OSM type (node/way/relation)
-    return result || this.displayType(entity.id);
+    return result ?? this.displayType(entity.id);
   }
 
 
@@ -613,7 +639,7 @@ export class LocalizationSystem extends AbstractSystem {
    * Returns a localized representation of the given length measurement.
    * @param  {Number}  meters
    * @param  {Boolean} isImperial true for U.S. customary units; false for metric
-   * @return {String}  Text to display
+   * @return {string}  Text to display
    */
   displayLength(meters, isImperial) {
     const locale = this._currLocaleCode;
@@ -647,7 +673,7 @@ export class LocalizationSystem extends AbstractSystem {
    *
    * @param {Number}  meters2 area in square meters
    * @param {Boolean} isImperial true for U.S. customary units; false for metric
-   * @return {String}  Text to display
+   * @return {string}  Text to display
    */
   displayArea(meters2, isImperial) {
     const locale = this._currLocaleCode;
@@ -702,7 +728,7 @@ export class LocalizationSystem extends AbstractSystem {
   /**
    * Returns given coordinate pair in degree-minute-second format.
    * @param {Array<Number>} coord longitude and latitude
-   * @return {String}  Text to display
+   * @return {string}  Text to display
    */
   dmsCoordinatePair(coord) {
     return this.t('units.coordinate_pair', {
@@ -716,7 +742,7 @@ export class LocalizationSystem extends AbstractSystem {
    * Returns the given coordinate pair in decimal format.
    * note: unlocalized to avoid comma ambiguity - see iD#4765
    * @param {Array<Number>} coord longitude and latitude
-   * @return {String}  Text to display
+   * @return {string}  Text to display
    */
   decimalCoordinatePair(coord) {
     const OSM_PRECISION = 7;

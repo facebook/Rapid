@@ -341,7 +341,7 @@ export class UploaderSystem extends AbstractSystem {
     }
 
     function entityName(entity) {
-      return l10n.displayName(entity) || (l10n.displayType(entity.id) + ' ' + entity.id);
+      return l10n.displayName(entity.tags) || (l10n.displayType(entity.id) + ' ' + entity.id);
     }
 
     function sameVersions(local, remote) {
