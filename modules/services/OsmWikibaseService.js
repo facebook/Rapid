@@ -34,7 +34,6 @@ export class OsmWikibaseService extends AbstractSystem {
   }
 
 
-
   /**
    * initAsync
    * Called after all core objects have been constructed.

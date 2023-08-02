@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { Extent, Tiler } from '@rapid-sdk/math';
+import { Tiler } from '@rapid-sdk/math';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
@@ -10,13 +10,13 @@ import { utilFetchResponse } from '../util';
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
 const baseTileUrl = 'https://tiles.mapillary.com/maps/vtp';
+const imageTileUrl = `${baseTileUrl}/mly1_public/2/{z}/{x}/{y}?access_token=${accessToken}`;
 const mapFeatureTileUrl = `${baseTileUrl}/mly_map_feature_point/2/{z}/{x}/{y}?access_token=${accessToken}`;
-const tileUrl = `${baseTileUrl}/mly1_public/2/{z}/{x}/{y}?access_token=${accessToken}`;
 const trafficSignTileUrl = `${baseTileUrl}/mly_map_feature_traffic_sign/2/{z}/{x}/{y}?access_token=${accessToken}`;
 
 const viewercss = 'mapillary-js/mapillary.css';
 const viewerjs = 'mapillary-js/mapillary.js';
-const minZoom = 14;
+const TILEZOOM = 14;
 
 
 /**
@@ -48,7 +48,7 @@ export class MapillaryService extends AbstractSystem {
     this._mlyShowSignDetections = false;
     this._mlyViewer = null;
     this._mlyViewerFilter = ['all'];
-    this._tiler = new Tiler().skipNullIsland(true);
+    this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
 
@@ -139,10 +139,10 @@ export class MapillaryService extends AbstractSystem {
 
     this._mlyCache = {
       images: { rtree: new RBush(), forImageID: {} },
-      image_detections: { forImageID: {} },
-      signs: { rtree: new RBush() },
+      signs:  { rtree: new RBush() },
       points: { rtree: new RBush() },
       sequences: new Map(),    // Map(sequenceID -> Array of LineStrings)
+      image_detections: { forImageID: {} },
       requests: { loaded: {}, inflight: {} }
     };
 
@@ -153,62 +153,30 @@ export class MapillaryService extends AbstractSystem {
 
 
   /**
-   * images
-   * Returns an Array of already-loaded images within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @param   {string}  datasetID - one of 'images', 'signs', or 'points'
+   * @return  {Array}
    */
-  images(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return this._mlyCache.images.rtree.search(box).map(d => d.data);
+  getData(datasetID) {
+    if (!['images', 'signs', 'points'].includes(datasetID)) return [];
+
+    const extent = this.context.systems.map.extent();
+    const cache = this._mlyCache[datasetID];
+    return cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
-  /**
-   * signs
-   * Returns an Array of already-loaded traffic signs within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
-   */
-  signs(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return this._mlyCache.signs.rtree.search(box).map(d => d.data);
-  }
 
   /**
-   * mapFeatures
-   * Returns an Array of already-loaded detected point features within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * getSequences
+   * Get already loaded sequence data that appears in the current map view
+   * @return  {Array}
    */
-  mapFeatures(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return this._mlyCache.points.rtree.search(box).map(d => d.data);
-  }
-
-  /**
-   * sequences
-   * Returns an Array of already-loaded sequences within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
-   */
-  sequences(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
+  getSequences() {
+    const extent = this.context.systems.map.extent();
     let result = new Map();  // Map(sequenceID -> Array of LineStrings)
 
-    // Gather sequences for images in viewport
-    for (const box of this._mlyCache.images.rtree.search(bbox)) {
+    for (const box of this._mlyCache.images.rtree.search(extent.bbox())) {
       const sequenceID = box.data.sequenceID;
       if (!sequenceID) continue;  // no sequence for this image
       const sequence = this._mlyCache.sequences.get(sequenceID);
@@ -218,38 +186,27 @@ export class MapillaryService extends AbstractSystem {
         result.set(sequenceID, sequence);
       }
     }
+
     return [...result.values()];
   }
 
 
   /**
-   * loadImages
-   * Loads image data for the given viewport
-   * @param  {Projection}  Projection that defines the current map view
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   * @param   {string}  datasetID - one of 'images', 'signs', or 'points'
    */
-  loadImages(projection) {
-    this._loadTiles('images', tileUrl, 14, projection);
+  loadTiles(datasetID) {
+    if (!['images', 'signs', 'points'].includes(datasetID)) return;
+
+    // determine the needed tiles to cover the view
+    const projection = this.context.projection;
+    const tiles = this._tiler.getTiles(projection).tiles;
+    for (const tile of tiles) {
+      this._loadTile(datasetID, tile);
+    }
   }
 
-
-  /**
-   * loadSigns
-   * Loads traffic sign data for the given viewport
-   * @param  {Projection}  Projection that defines the current map view
-   */
-  loadSigns(projection) {
-    this._loadTiles('signs', trafficSignTileUrl, 14, projection);
-  }
-
-
-  /**
-   * loadMapFeatures
-   * Loads detected point feature data for the given viewport
-   * @param  {Projection}  Projection that defines the current map view
-   */
-  loadMapFeatures(projection) {
-    this._loadTiles('points', mapFeatureTileUrl, 14, projection);
-  }
 
   /**
    * resetTags
@@ -260,6 +217,7 @@ export class MapillaryService extends AbstractSystem {
       this._mlyViewer.getComponent('tag').removeAll();
     }
   }
+
 
   /**
    * showFeatureDetections
@@ -531,30 +489,29 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
-  // Load all data for the specified type from Mapillary vector tiles
-  _loadTiles(which, url, maxZoom, projection) {
-    // determine the needed tiles to cover the view
-    const tiles = this._tiler.zoomRange(minZoom, maxZoom).getTiles(projection).tiles;
-    for (const tile of tiles) {
-      this._loadTile(which, url, tile);
-    }
-  }
-
-
   // Load all data for the specified type from one vector tile
-  _loadTile(which, url, tile) {
+  _loadTile(datasetID, tile) {
+    if (!['images', 'signs', 'points'].includes(datasetID)) return;
+
     const cache = this._mlyCache.requests;
-    const tileID = `${tile.id}-${which}`;
+    const tileID = `${tile.id}-${datasetID}`;
     if (cache.loaded[tileID] || cache.inflight[tileID]) return;
 
     const controller = new AbortController();
     cache.inflight[tileID] = controller;
-    const requestUrl = url
+
+    let url = {
+      images: imageTileUrl,
+      signs: trafficSignTileUrl,
+      points: mapFeatureTileUrl
+    }[datasetID];
+
+    url = url
       .replace('{x}', tile.xyz[0])
       .replace('{y}', tile.xyz[1])
       .replace('{z}', tile.xyz[2]);
 
-    fetch(requestUrl, { signal: controller.signal })
+    fetch(url, { signal: controller.signal })
       .then(utilFetchResponse)
       .then(buffer => {
         cache.loaded[tileID] = true;
@@ -565,11 +522,11 @@ export class MapillaryService extends AbstractSystem {
         this._loadTileDataToCache(buffer, tile);
 
         this.context.deferredRedraw();
-        if (which === 'images') {
+        if (datasetID === 'images') {
           this.emit('loadedImages');
-        } else if (which === 'signs') {
+        } else if (datasetID === 'signs') {
           this.emit('loadedSigns');
-        } else if (which === 'points') {
+        } else if (datasetID === 'points') {
           this.emit('loadedMapFeatures');
         }
       })

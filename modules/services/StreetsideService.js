@@ -214,37 +214,28 @@ export class StreetsideService extends AbstractSystem {
 
 
   /**
-   * bubbles
-   * Returns an Array of already-loaded images within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * getImages
+   * Get already loaded image data that appears in the current map view
+   * @return  {Array}  Array of image data
    */
-  bubbles(projection) {
-    const cache = this._cache;
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return cache.rtree.search(box).map(d => d.data);
+  getImages() {
+    const extent = this.context.systems.map.extent();
+    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
 
   /**
-   * sequences
-   * Returns an Array of already-loaded sequences within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array} of Sequence data
+   * getSequences
+   * Get already loaded sequence data that appears in the current map view
+   * @return  {Array}  Array of sequence data
    */
-  sequences(projection) {
+  getSequences() {
     const cache = this._cache;
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
+    const extent = this.context.systems.map.extent();
     const result = new Map();  // Map(sequenceID -> sequence)
 
     // Gather sequences for the bubbles in viewport
-    for (const box of cache.rtree.search(bbox)) {
+    for (const box of cache.rtree.search(extent.bbox())) {
       const bubbleID = box.data.id;
       const sequenceIDs = cache.bubbleHasSequences.get(bubbleID) ?? [];
       for (const sequenceID of sequenceIDs) {
@@ -258,14 +249,37 @@ export class StreetsideService extends AbstractSystem {
 
 
   /**
-   * loadBubbles
-   * Loads image data for the given viewport
-   * By default: request 2 nearby tiles so we can connect sequences.
-   * @param  {Projection}  Projection that defines the current map view
-   * @param  {Number}  margin - number of margin tiles to fetch in addition to the view-covering tiles
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
    */
-  loadBubbles(projection, margin = 2) {
-    this._loadTiles(projection, margin);
+  loadTiles() {
+    // Determine the needed tiles to cover the view
+    // By default: request 2 nearby tiles so we can connect sequences.
+    const margin = 2;
+    const projection = this.context.projection;
+    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
+
+    // Abort inflight requests that are no longer needed
+    for (const [tileID, inflight] of this._cache.inflight) {
+      const needed = needTiles.find(tile => tile.id === tileID);
+      if (!needed) {
+        inflight.controller.abort();
+      }
+    }
+
+    // Fetch files that are needed
+    for (const tile of needTiles) {
+      const tileID = tile.id;
+      if (this._cache.loaded.has(tileID) || this._cache.inflight.has(tileID)) continue;
+
+      // Promise.all([this._fetchMetadataAsync(tile), this._loadTileAsync(tile)])
+      this._loadTileAsync(tile)
+        .then(results => this._processResults(results))
+        .catch(err => {
+          if (err.name === 'AbortError') return;          // ok
+          if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+        });
+    }
   }
 
 
@@ -660,40 +674,6 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
 
   /**
-   * _loadTiles
-   * Loads tiles of data to cover the given viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @param  {Number}  margin - number of margin tiles to fetch in addition to the view-covering tiles
-   */
-  _loadTiles(projection, margin) {
-    // Determine the needed tiles to cover the view
-    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
-
-    // Abort inflight requests that are no longer needed
-    for (const [tileID, inflight] of this._cache.inflight) {
-      const needed = needTiles.find(tile => tile.id === tileID);
-      if (!needed) {
-        inflight.controller.abort();
-      }
-    }
-
-    // Fetch files that are needed
-    for (const tile of needTiles) {
-      const tileID = tile.id;
-      if (this._cache.loaded.has(tileID) || this._cache.inflight.has(tileID)) continue;
-
-      // Promise.all([this._fetchMetadataAsync(tile), this._fetchBubblesAsync(tile)])
-      this._fetchBubblesAsync(tile)
-        .then(results => this._processResults(results))
-        .catch(err => {
-          if (err.name === 'AbortError') return;          // ok
-          if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-        });
-    }
-  }
-
-
-  /**
    * _processResults
    * Processes the results of the tile data fetch.
    * @param  {Array}  results
@@ -895,10 +875,10 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
 
   /**
-   * _fetchBubblesAsync
+   * _loadTileAsync
    * bubbles:   undocumented / unsupported API?
    */
-  _fetchBubblesAsync(tile) {
+  _loadTileAsync(tile) {
     const [w, s, e, n] = tile.wgs84Extent.rectangle();
     const MAXRESULTS = 2000;
 

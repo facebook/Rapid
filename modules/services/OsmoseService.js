@@ -92,11 +92,23 @@ export class OsmoseService extends AbstractSystem {
 
 
   /**
-   * loadIssues
-   * @param  projection
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @return  {Array}  Array of data
    */
-  loadIssues(projection) {
+  getData() {
+    const extent = this.context.systems.map.extent();
+    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+  }
+
+
+  /**
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   */
+  loadTiles() {
     // determine the needed tiles to cover the view
+    const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -253,22 +265,6 @@ export class OsmoseService extends AbstractSystem {
         delete this._cache.inflightPost[issue.id];
         if (callback) callback(err.message);
       });
-  }
-
-
-  /**
-   * getItems
-   * Get all cached QAItems covering the viewport
-   * @param   projection
-   * @return  Array of data
-   */
-  getItems(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-
-    return this._cache.rtree.search(bbox).map(d => d.data);
   }
 
 

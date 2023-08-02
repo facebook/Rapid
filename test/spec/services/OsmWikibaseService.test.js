@@ -1,10 +1,10 @@
 describe('OsmWikibaseService', () => {
-  let wikibase;
+  let _wikibase;
 
   beforeEach(() => {
     fetchMock.reset();
-    wikibase = new Rapid.OsmWikibaseService();
-    return wikibase.initAsync();
+    _wikibase = new Rapid.OsmWikibaseService();
+    return _wikibase.initAsync();
   });
 
 
@@ -247,7 +247,7 @@ describe('OsmWikibaseService', () => {
 
   const localeData = {
     id: 'Q7792',
-    sitelinks: {wiki: {site: 'wiki', title: 'Locale:fr'}}
+    sitelinks: { wiki: { site: 'wiki', title: 'Locale:fr' } }
   };
 
   describe('#getEntity', () => {
@@ -266,7 +266,7 @@ describe('OsmWikibaseService', () => {
         headers: { 'Content-Type': 'application/json' }
     });
 
-      wikibase.getEntity({ key: 'amenity', value: 'parking', langCodes: ['fr'] }, callback);
+      _wikibase.getEntity({ key: 'amenity', value: 'parking', langCodes: ['fr'] }, callback);
 
       window.setTimeout(() => {
         expect(parseQueryString(fetchMock.lastUrl())).to.eql(
@@ -285,32 +285,32 @@ describe('OsmWikibaseService', () => {
           tag: tagData()
         });
         done();
-      }, 50);
+      }, 20);
     });
   });
 
 
   it('creates correct sitelinks', () => {
-    expect(wikibase.toSitelink('amenity')).to.eql('Key:amenity');
-    expect(wikibase.toSitelink('amenity_')).to.eql('Key:amenity');
-    expect(wikibase.toSitelink('_amenity_')).to.eql('Key: amenity');
-    expect(wikibase.toSitelink('amenity or_not_')).to.eql('Key:amenity or not');
-    expect(wikibase.toSitelink('amenity', 'parking')).to.eql('Tag:amenity=parking');
-    expect(wikibase.toSitelink(' amenity_', '_parking_')).to.eql('Tag: amenity = parking');
-    expect(wikibase.toSitelink('amenity or_not', '_park ing_')).to.eql('Tag:amenity or not= park ing');
+    expect(_wikibase.toSitelink('amenity')).to.eql('Key:amenity');
+    expect(_wikibase.toSitelink('amenity_')).to.eql('Key:amenity');
+    expect(_wikibase.toSitelink('_amenity_')).to.eql('Key: amenity');
+    expect(_wikibase.toSitelink('amenity or_not_')).to.eql('Key:amenity or not');
+    expect(_wikibase.toSitelink('amenity', 'parking')).to.eql('Tag:amenity=parking');
+    expect(_wikibase.toSitelink(' amenity_', '_parking_')).to.eql('Tag: amenity = parking');
+    expect(_wikibase.toSitelink('amenity or_not', '_park ing_')).to.eql('Tag:amenity or not= park ing');
   });
 
   it('gets correct value from entity', () => {
-    wikibase.addLocale('de', 'Q6994');
-    wikibase.addLocale('fr', 'Q7792');
-    expect(wikibase.claimToValue(tagData(), 'P4', 'en')).to.eql('Primary image.jpg');
-    expect(wikibase.claimToValue(keyData(), 'P6', 'en')).to.eql('Q15');
-    expect(wikibase.claimToValue(keyData(), 'P6', 'fr')).to.eql('Q15');
-    expect(wikibase.claimToValue(keyData(), 'P6', 'de')).to.eql('Q14');
+    _wikibase.addLocale('de', 'Q6994');
+    _wikibase.addLocale('fr', 'Q7792');
+    expect(_wikibase.claimToValue(tagData(), 'P4', 'en')).to.eql('Primary image.jpg');
+    expect(_wikibase.claimToValue(keyData(), 'P6', 'en')).to.eql('Q15');
+    expect(_wikibase.claimToValue(keyData(), 'P6', 'fr')).to.eql('Q15');
+    expect(_wikibase.claimToValue(keyData(), 'P6', 'de')).to.eql('Q14');
   });
 
   it('gets monolingual value from entity as an object', () => {
-    expect(wikibase.monolingualClaimToValueObj(tagData(), 'P31')).to.eql({
+    expect(_wikibase.monolingualClaimToValueObj(tagData(), 'P31')).to.eql({
       cs: 'Cs:Key:bridge:movable',
       de: 'DE:Key:bridge:movable',
       fr: 'FR:Key:bridge:movable',

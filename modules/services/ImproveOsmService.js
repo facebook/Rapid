@@ -99,10 +99,21 @@ export class ImproveOsmService extends AbstractSystem {
 
 
   /**
-   * loadIssues
-   * @param  projection
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @return  {Array}  Array of data
    */
-  loadIssues(projection) {
+  getData() {
+    const extent = this.context.systems.map.extent();
+    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+  }
+
+
+  /**
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   */
+  loadTiles() {
     const options = {
       client: 'Rapid',
       status: 'OPEN',
@@ -111,7 +122,7 @@ export class ImproveOsmService extends AbstractSystem {
 
     // determine the needed tiles to cover the view
     const context = this.context;
-    const tiles = this._tiler.getTiles(projection).tiles;
+    const tiles = this._tiler.getTiles(context.projection).tiles;
 
     // abort inflight requests that are no longer needed
     this._abortUnwantedRequests(this._cache, tiles);
@@ -406,22 +417,6 @@ export class ImproveOsmService extends AbstractSystem {
           if (callback) callback(e.message);
         });
     }
-  }
-
-
-  /**
-   * getItems
-   * Get all cached QAItems covering the viewport
-   * @param   projection
-   * @return  Array
-   */
-  getItems(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-
-    return this._cache.rtree.search(bbox).map(d => d.data);
   }
 
 

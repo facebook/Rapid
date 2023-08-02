@@ -103,6 +103,41 @@ export class VectorTileService extends AbstractSystem {
 
 
   /**
+   * loadTiles
+   * @param  sourceID
+   * @param  template
+   * @param  projection
+   */
+  loadTiles(sourceID, template, projection) {
+    this.addSourceAsync(sourceID, template)
+      .then(source => {
+        const header = source.header;
+        if (header) {  // pmtiles - set up allowable zoom range
+          this._tiler.zoomRange(header.minZoom, header.maxZoom);
+          if (header.tileType !== 1) {
+            throw new Error(`Unsupported tileType ${header.tileType}. Only Type 1 (MVT) is supported`);
+          }
+        }
+
+        const tiles = this._tiler.getTiles(projection).tiles;
+
+        // abort inflight requests that are no longer needed
+        for (const k of Object.keys(source.inflight)) {
+          const wanted = tiles.find(tile => tile.id === k);
+          if (!wanted) {
+            this._abortRequest(source.inflight[k]);
+            delete source.inflight[k];
+          }
+        }
+
+        for (const tile of tiles) {
+          this._loadTile(source, tile);
+        }
+      });
+  }
+
+
+  /**
    * addSourceAsync
    * Create a new cache to hold data for the given source
    * @param   sourceID
@@ -142,41 +177,6 @@ export class VectorTileService extends AbstractSystem {
     }
 
     return source.readyPromise;
-  }
-
-
-  /**
-   * loadTiles
-   * @param  sourceID
-   * @param  template
-   * @param  projection
-   */
-  loadTiles(sourceID, template, projection) {
-    this.addSourceAsync(sourceID, template)
-      .then(source => {
-        const header = source.header;
-        if (header) {  // pmtiles - set up allowable zoom range
-          this._tiler.zoomRange(header.minZoom, header.maxZoom);
-          if (header.tileType !== 1) {
-            throw new Error(`Unsupported tileType ${header.tileType}. Only Type 1 (MVT) is supported`);
-          }
-        }
-
-        const tiles = this._tiler.getTiles(projection).tiles;
-
-        // abort inflight requests that are no longer needed
-        for (const k of Object.keys(source.inflight)) {
-          const wanted = tiles.find(tile => tile.id === k);
-          if (!wanted) {
-            this._abortRequest(source.inflight[k]);
-            delete source.inflight[k];
-          }
-        }
-
-        for (const tile of tiles) {
-          this._loadTile(source, tile);
-        }
-      });
   }
 
 

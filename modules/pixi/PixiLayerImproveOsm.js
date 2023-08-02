@@ -63,7 +63,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
+    const items = service.getData();
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -105,7 +105,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
     const service = this.context.services.improveOSM;
     if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    service.loadIssues(this.context.projection);  // note: context.projection !== pixi projection
+    service.loadTiles();
     this.renderMarkers(frame, projection, zoom);
   }
 

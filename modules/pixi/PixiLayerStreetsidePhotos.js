@@ -119,8 +119,8 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
-    const images = service.bubbles(this.context.projection);
-    const sequences = service.sequences(this.context.projection);
+    const images = service.getImages();
+    const sequences = service.getSequences();
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
@@ -192,7 +192,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     const service = this.context.services.streetside;
     if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    service.loadBubbles(this.context.projection);  // note: context.projection !== pixi projection
+    service.loadTiles();
     this.renderMarkers(frame, projection, zoom);
   }
 

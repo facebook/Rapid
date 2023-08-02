@@ -1,20 +1,39 @@
 describe('MapillaryService', () => {
-  let _mapillary, _projection;
+  let _mapillary;
+
+  class MockMapSystem {
+    constructor(context) { this.context = context; }
+    initAsync() { return Promise.resolve(); }
+    extent() {
+      return new sdk.Extent(
+        this.context.projection.invert([0, 64]), // bottom left
+        this.context.projection.invert([64, 0])  // top right
+      );
+    }
+  }
 
   class MockContext {
-    constructor() { }
+    constructor() {
+      this.systems = {
+        map: new MockMapSystem(this),
+      };
+
+      this.projection = new sdk.Projection()
+        .scale(sdk.geoZoomToScale(14))
+        .translate([-116508, 0])  // 10,0
+        .dimensions([[0,0], [64, 64]]);
+    }
     deferredRedraw() { }
   }
 
+
   beforeEach(() => {
     fetchMock.reset();
-
-    _projection = new sdk.Projection()
-      .scale(sdk.geoZoomToScale(14))
-      .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], [64, 64]]);
-
     _mapillary = new Rapid.MapillaryService(new MockContext());
+
+    // Mock function for retieving tile data.. The original expects a protobuffer vector tile.
+    _mapillary._loadTileDataToCache = () => { };
+
     return _mapillary.initAsync();
   });
 
@@ -45,7 +64,7 @@ describe('MapillaryService', () => {
   });
 
 
-  describe('#images', () => {
+  describe('#getData', () => {
     it('returns images in the visible map area', () => {
       const data = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0], ca: 90 } },
@@ -54,36 +73,13 @@ describe('MapillaryService', () => {
       ];
 
       _mapillary._mlyCache.images.rtree.load(data);
-      const result = _mapillary.images(_projection);
-
+      const result = _mapillary.getData('images');
       expect(result).to.deep.eql([
         { id: '0', loc: [10,0], ca: 90 },
         { id: '1', loc: [10,0], ca: 90 }
       ]);
     });
-  });
 
-
-  describe('#signs', () => {
-    it('returns signs in the visible map area', () => {
-      const data = [
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0] } },
-        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10,0] } },
-        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1] } }
-      ];
-
-      _mapillary._mlyCache.signs.rtree.load(data);
-      const result = _mapillary.signs(_projection);
-
-      expect(result).to.deep.eql([
-        { id: '0', loc: [10,0] },
-        { id: '1', loc: [10,0] }
-      ]);
-    });
-  });
-
-
-  describe('#mapFeatures', () => {
     it('returns map features in the visible map area', () => {
       const data = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0] } },
@@ -92,8 +88,22 @@ describe('MapillaryService', () => {
       ];
 
       _mapillary._mlyCache.points.rtree.load(data);
-      const result = _mapillary.mapFeatures(_projection);
+      const result = _mapillary.getData('points');
+      expect(result).to.deep.eql([
+        { id: '0', loc: [10,0] },
+        { id: '1', loc: [10,0] }
+      ]);
+    });
 
+    it('returns signs in the visible map area', () => {
+      const data = [
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0] } },
+        { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10,0] } },
+        { minX: 10, minY: 1, maxX: 10, maxY: 1, data: { id: '2', loc: [10,1] } }
+      ];
+
+      _mapillary._mlyCache.signs.rtree.load(data);
+      const result = _mapillary.getData('signs');
       expect(result).to.deep.eql([
         { id: '0', loc: [10,0] },
         { id: '1', loc: [10,0] }
@@ -102,7 +112,7 @@ describe('MapillaryService', () => {
   });
 
 
-  describe('#sequences', () => {
+  describe('#getSequences', () => {
     it('returns sequence linestrings in the visible map area', () => {
       const data = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0], ca: 90, sequenceID: '-' } },
@@ -130,10 +140,49 @@ describe('MapillaryService', () => {
 
       _mapillary._mlyCache.sequences = new Map().set('-', [gj]);
 
-      const res = _mapillary.sequences(_projection);
-      expect(res).to.deep.eql([[gj]]);
+      const result = _mapillary.getSequences();
+      expect(result).to.deep.eql([[gj]]);
     });
   });
+
+
+  describe('#loadTiles', () => {
+    it('fires loadedImages when image tiles are loaded', done => {
+      fetchMock.mock(new RegExp('/mly1_public/'), {
+        body: '{"data":[]}',
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      _mapillary.on('loadedImages', () => {
+        expect(fetchMock.calls().length).to.eql(1);
+        done();
+      });
+
+      _mapillary.loadTiles('images');
+    });
+
+
+    it('does not load tiles around Null Island', done => {
+      const spy = sinon.spy();
+      fetchMock.mock(new RegExp('/mly1_public/'), {
+        body: '{"data":[]}',
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      _mapillary.context.projection.translate([0, 0]);  // move map to Null Island
+      _mapillary.on('loadedImages', spy);
+      _mapillary.loadTiles('images');
+
+      window.setTimeout(() => {
+        expect(spy).to.have.been.not.called;
+        expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
+        done();
+      }, 20);
+    });
+  });
+
 
 
   describe('#setActiveImage', () => {
@@ -144,14 +193,4 @@ describe('MapillaryService', () => {
     });
   });
 
-
-// won't work until we straighten out init better - there is no scene yet
-//  describe('#filterViewer', () => {
-//    it('filters images by dates', () => {
-//      context.photos().setDateFilter('fromDate', '2020-01-01');
-//      context.photos().setDateFilter('toDate', '2021-01-01');
-//      const filter = mapillary.filterViewer(context);
-//      expect(filter.length).to.be.equal(3);
-//    });
-//  });
 });

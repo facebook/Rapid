@@ -84,7 +84,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
     const parentContainer = this.scene.groups.get('points');
 
-    let items = service.signs(this.context.projection);
+    let items = service.getData('signs');
     items = this.filterDetections(items);
 
     for (const d of items) {
@@ -124,7 +124,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
     const service = this.context.services.mapillary;
 
     if (this.enabled && service?.started && zoom >= MINZOOM) {
-      service.loadSigns(this.context.projection);  // note: context.projection !== pixi projection
+      service.loadTiles('signs');
       service.showSignDetections(true);
       this.renderMarkers(frame, projection, zoom);
 

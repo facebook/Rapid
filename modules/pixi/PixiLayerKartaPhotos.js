@@ -119,8 +119,8 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
-    const images = service.images(this.context.projection);
-    const sequences = service.sequences(this.context.projection);
+    const images = service.getImages();
+    const sequences = service.getSequences();
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
@@ -191,7 +191,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     const service = this.context.services.kartaview;
     if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    service.loadImages(this.context.projection);  // note: context.projection !== pixi projection
+    service.loadTiles();
     this.renderMarkers(frame, projection, zoom);
   }
 
