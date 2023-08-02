@@ -1,19 +1,34 @@
 describe('StreetsideService', () => {
-  let _streetside, _projection;
+  let _streetside;
+
+  class MockMapSystem {
+    constructor(context) { this.context = context; }
+    initAsync() { return Promise.resolve(); }
+    extent() {
+      return new sdk.Extent(
+        this.context.projection.invert([0, 64]), // bottom left
+        this.context.projection.invert([64, 0])  // top right
+      );
+    }
+  }
 
   class MockContext {
-    constructor() { }
+    constructor() {
+      this.systems = {
+        map: new MockMapSystem(this),
+      };
+
+      this.projection = new sdk.Projection()
+        .scale(sdk.geoZoomToScale(14))
+        .translate([-116508, 0])  // 10,0
+        .dimensions([[0,0], [64, 64]]);
+    }
     deferredRedraw() { }
   }
 
+
   beforeEach(() => {
     fetchMock.reset();
-
-    _projection = new sdk.Projection()
-      .scale(sdk.geoZoomToScale(14))
-      .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], [64, 64]]);
-
     _streetside = new Rapid.StreetsideService(new MockContext());
     return _streetside.initAsync();
   });
@@ -44,15 +59,8 @@ describe('StreetsideService', () => {
   });
 
 
-  describe('#loadBubbles', () => {
-    it('fires loadedData when bubbles are loaded', done => {
-      // adjust projection so that only one tile is fetched
-      // (JSONP hack will return the same data for every fetch)
-      _projection
-        .scale(sdk.geoZoomToScale(18))
-        .translate([-1863988.9381333336, 762.8270222954452])  // 10.002,0.002
-        .dimensions([[0,0], [64,64]]);
-
+  describe('#loadTiles', () => {
+    it('fires loadedData when tiles are loaded', done => {
       const spy = sinon.spy();
       _streetside.on('loadedData', spy);
 
@@ -74,19 +82,16 @@ describe('StreetsideService', () => {
         }
       ];
 
-      _streetside.loadBubbles(_projection, 0);  // 0 = don't fetch margin tiles
+      _streetside.loadTiles();
 
       window.setTimeout(() => {
-        expect(spy).to.have.been.calledOnce;
+        expect(spy).to.have.been.called;   // called many times because of margin tiles
         done();
-      }, 50);
+      }, 20);
     });
 
-    it('does not load bubbles around null island', done => {
-      _projection
-        .scale(sdk.geoZoomToScale(18))
-        .translate([0, 0])
-        .dimensions([[0,0], [64,64]]);
+    it('does not load tiles around Null Island', done => {
+      _streetside.context.projection.translate([0, 0]);     // move map to Null Island
 
       const spy = sinon.spy();
       _streetside.on('loadedData', spy);
@@ -109,18 +114,18 @@ describe('StreetsideService', () => {
         }
       ];
 
-      _streetside.loadBubbles(_projection, 0);  // 0 = don't fetch margin tiles
+      _streetside.loadTiles();
 
       window.setTimeout(() => {
         expect(spy).to.have.been.not.called;
         done();
-      }, 50);
+      }, 20);
     });
   });
 
 
-  describe('#bubbles', () => {
-    it('returns bubbles in the visible map area', () => {
+  describe('#getImages', () => {
+    it('returns images in the visible map area', () => {
       const bubbles = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true } },
@@ -130,7 +135,7 @@ describe('StreetsideService', () => {
       const cache = _streetside._cache;
       cache.rtree.load(bubbles);
 
-      const result = _streetside.bubbles(_projection);
+      const result = _streetside.getImages();
       expect(result).to.deep.eql([
         { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true },
         { id: '2', loc: [10, 0], ca: 90, pr: '1', ne: '3', isPano: true }
@@ -139,7 +144,7 @@ describe('StreetsideService', () => {
   });
 
 
-  describe('#sequences', () => {
+  describe('#getSequences', () => {
     it('returns sequence linestrings in the visible map area', () => {
       const bubbles = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '1', loc: [10, 0], ca: 90, pr: undefined, ne: '2', isPano: true } },
@@ -161,7 +166,7 @@ describe('StreetsideService', () => {
       cache.bubbleHasSequences.set('2', ['s1']);
       cache.bubbleHasSequences.set('3', ['s1']);
 
-      const result = _streetside.sequences(_projection);
+      const result = _streetside.getSequences();
       expect(result).to.deep.eql([sequence]);
     });
   });

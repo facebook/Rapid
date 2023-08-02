@@ -51,7 +51,7 @@ describe('TaginfoService', () => {
         );
         expect(callback).to.have.been.calledWith(null, [{ title: 'amenity', value: 'amenity' }] );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes popular keys', done => {
@@ -68,7 +68,7 @@ describe('TaginfoService', () => {
       window.setTimeout(() => {
         expect(callback).to.have.been.calledWith(null, [{ title: 'amenity', value: 'amenity' }] );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes popular keys with an entity type filter', done => {
@@ -85,7 +85,7 @@ describe('TaginfoService', () => {
       window.setTimeout(() => {
         expect(callback).to.have.been.calledWith(null, [{ title: 'amenity', value: 'amenity' }] );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes unpopular keys with a wiki page', done => {
@@ -105,7 +105,7 @@ describe('TaginfoService', () => {
           { title: 'amenityother', value: 'amenityother' }
         ]);
         done();
-      }, 50);
+      }, 20);
     });
 
     it('sorts keys with \':\' below keys without \':\'', done => {
@@ -124,7 +124,7 @@ describe('TaginfoService', () => {
           null, [{ title: 'ref', value: 'ref' }, { title: 'ref:bag', value: 'ref:bag' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
   });
 
@@ -147,7 +147,7 @@ describe('TaginfoService', () => {
           null, [{ title: 'recycling:glass', value: 'recycling:glass' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('excludes multikeys with extra colons', done => {
@@ -166,7 +166,7 @@ describe('TaginfoService', () => {
           null, [{ title: 'service:bicycle:retail', value: 'service:bicycle:retail' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('excludes multikeys with wrong prefix', done => {
@@ -185,7 +185,7 @@ describe('TaginfoService', () => {
           null, [{ title: 'service:bicycle:retail', value: 'service:bicycle:retail' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
   });
 
@@ -208,7 +208,7 @@ describe('TaginfoService', () => {
           null, [{ value: 'parking', title: 'A place for parking cars' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes popular values', done => {
@@ -227,7 +227,7 @@ describe('TaginfoService', () => {
           null, [{ value: 'parking', title: 'A place for parking cars' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('does not get values for extremely popular keys', done => {
@@ -244,7 +244,7 @@ describe('TaginfoService', () => {
       window.setTimeout(() => {
         expect(callback).to.have.been.calledWith(null, []);
         done();
-      }, 50);
+      }, 20);
     });
 
     it('excludes values with capital letters and some punctuation', done => {
@@ -266,7 +266,7 @@ describe('TaginfoService', () => {
           null, [{ value: 'parking', title: 'A place for parking cars' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes network values with capital letters and some punctuation', done => {
@@ -292,7 +292,7 @@ describe('TaginfoService', () => {
           { value: 'US:MD', title: 'State highways in the U.S. state of Maryland.' }
         ]);
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes biological genus values with capital letters', done => {
@@ -308,7 +308,7 @@ describe('TaginfoService', () => {
       window.setTimeout(() => {
         expect(callback).to.have.been.calledWith(null, [{ value: 'Quercus', title: 'Oak' }] );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes biological taxon values with capital letters', done => {
@@ -324,7 +324,7 @@ describe('TaginfoService', () => {
       window.setTimeout(() => {
         expect(callback).to.have.been.calledWith(null, [{ value: 'Quercus robur', title: 'Oak' }] );
         done();
-      }, 50);
+      }, 20);
     });
 
     it('includes biological species values with capital letters', done => {
@@ -340,7 +340,7 @@ describe('TaginfoService', () => {
       window.setTimeout(() => {
         expect(callback).to.have.been.calledWith(null, [{ value: 'Quercus robur', title: 'Oak' }] );
         done();
-      }, 50);
+      }, 20);
     });
   });
 
@@ -365,7 +365,7 @@ describe('TaginfoService', () => {
           { value: 'south', title: 'south' }
         ]);
         done();
-      }, 50);
+      }, 20);
     });
   });
 
@@ -386,7 +386,7 @@ describe('TaginfoService', () => {
           null, [{ on_way: false, lang: 'en', on_area: true, image: 'File:Car park2.jpg' }]
         );
         done();
-      }, 50);
+      }, 20);
     });
   });
 

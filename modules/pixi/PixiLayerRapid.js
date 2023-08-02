@@ -252,15 +252,14 @@ export class PixiLayerRapid extends AbstractLayer {
 
     // Gather data
     let data = { points: [], vertices: new Set(), lines: [], polygons: [] };
-    // let data = { polygons: [], lines: [], points: [], vertices: new Set() };
 
     /* Facebook AI/ML */
     if (dataset.service === 'mapwithai') {
       if (zoom >= 15) { // avoid firing off too many API requests
-        service.loadTiles(datasetID, context.projection);  // fetch more
+        service.loadTiles(datasetID);  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.systems.map.extent())
+      const entities = service.getData(datasetID)
         .filter(d => d.type === 'way' && !isAccepted(d));  // see this._onRestore()
 
       // fb_ai service gives us roads and buildings together,
@@ -283,10 +282,10 @@ export class PixiLayerRapid extends AbstractLayer {
     /* ESRI ArcGIS */
     } else if (dataset.service === 'esri') {
       if (zoom >= 14) { // avoid firing off too many API requests
-        service.loadTiles(datasetID, context.projection);  // fetch more
+        service.loadTiles(datasetID);  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.systems.map.extent());
+      const entities = service.getData(datasetID);
 
       for (const entity of entities) {
         if (isAccepted(entity)) continue;   // skip features already accepted, see this._onRestore()

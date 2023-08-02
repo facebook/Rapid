@@ -1,21 +1,35 @@
 describe('KartaviewService', () => {
-  let _kartaview, _projection;
+  let _kartaview;
+
+  class MockMapSystem {
+    constructor(context) { this.context = context; }
+    initAsync() { return Promise.resolve(); }
+    extent() {
+      return new sdk.Extent(
+        this.context.projection.invert([0, 64]), // bottom left
+        this.context.projection.invert([64, 0])  // top right
+      );
+    }
+  }
 
   class MockContext {
-    constructor()    { }
-    container()      { return null; }
+    constructor() {
+      this.systems = {
+        map: new MockMapSystem(this),
+      };
+
+      this.projection = new sdk.Projection()
+        .scale(sdk.geoZoomToScale(14))
+        .translate([-116508, 0])  // 10,0
+        .dimensions([[0,0], [64, 64]]);
+    }
+    container() { return null; }
     deferredRedraw() { }
   }
 
 
   beforeEach(() => {
     fetchMock.reset();
-
-    _projection = new sdk.Projection()
-      .scale(sdk.geoZoomToScale(14))
-      .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], [64, 64]]);
-
     _kartaview = new Rapid.KartaviewService(new MockContext());
     return _kartaview.initAsync();
   });
@@ -44,8 +58,8 @@ describe('KartaviewService', () => {
     });
   });
 
-  describe('#loadImages', () => {
-    it('fires loadedData when images are loaded', done => {
+  describe('#loadTiles', () => {
+    it('fires loadedData when tiles are loaded', done => {
       const response = {
         status: { apiCode: '600', httpCode: 200, httpMessage: 'Success' },
         currentPageItems:[{
@@ -99,11 +113,11 @@ describe('KartaviewService', () => {
         done();
       });
 
-      _kartaview.loadImages(_projection);
+      _kartaview.loadTiles();
     });
 
 
-    it('does not load images around null island', done => {
+    it('does not load tiles around Null Island', done => {
       const response = {
         status: { apiCode: '600', httpCode: 200, httpMessage: 'Success' },
         currentPageItems:[{
@@ -153,20 +167,20 @@ describe('KartaviewService', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      _projection.translate([0, 0]);
+      _kartaview.context.projection.translate([0, 0]);  // move map to Null Island
       _kartaview.on('loadedData', spy);
-      _kartaview.loadImages(_projection);
+      _kartaview.loadTiles();
 
       window.setTimeout(() => {
         expect(spy).to.have.been.not.called;
         expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
         done();
-      }, 50);
+      }, 20);
     });
   });
 
 
-  describe('#images', () => {
+  describe('#getImages', () => {
     it('returns images in the visible map area', () => {
       const data = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0], ca: 90, sequenceID: '100', sequenceIndex: 0 } },
@@ -175,8 +189,8 @@ describe('KartaviewService', () => {
       ];
 
       _kartaview._cache.rtree.load(data);
-      const result = _kartaview.images(_projection);
 
+      const result = _kartaview.getImages();
       expect(result).to.deep.eql([
         { id: '0', loc: [10,0], ca: 90, sequenceID: '100', sequenceIndex: 0 },
         { id: '1', loc: [10,0], ca: 90, sequenceID: '100', sequenceIndex: 1 }
@@ -185,7 +199,7 @@ describe('KartaviewService', () => {
   });
 
 
-  describe('#sequences', () => {
+  describe('#getSequences', () => {
     it('returns sequence linestrings in the visible map area', () => {
       const data = [
         { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { id: '0', loc: [10,0], ca: 90, sequenceID: '100', sequenceIndex: 0 } },
@@ -200,7 +214,7 @@ describe('KartaviewService', () => {
         v: 1
       });
 
-      const result = _kartaview.sequences(_projection);
+      const result = _kartaview.getSequences();
       expect(result).to.deep.eql([{
         type: 'LineString',
         coordinates: [[10,0], [10,0], [10,1]],

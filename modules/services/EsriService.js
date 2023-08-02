@@ -81,26 +81,27 @@ export class EsriService extends AbstractSystem {
   }
 
 
-
-  graph(datasetID)  {
-    const ds = this._datasets[datasetID];
-    return ds?.graph;
-  }
-
-
-  intersects(datasetID, extent) {
+  /**
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @param   {string}  datasetID - datasetID to get data for
+   * @return  {Array}   Array of data (OSM Entities)
+   */
+  getData(datasetID) {
     const ds = this._datasets[datasetID];
     if (!ds || !ds.tree || !ds.graph) return [];
+
+    const extent = this.context.systems.map.extent();
     return ds.tree.intersects(extent, ds.graph);
   }
 
 
-  toggle(val) {
-    this._off = !val;
-  }
-
-
-  loadTiles(datasetID, projection) {
+  /**
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   * @param   {string}  datasetID - datasetID to load tiles for
+   */
+  loadTiles(datasetID) {
     if (this._off) return;
 
     // `loadDatasetsAsync` and `loadLayerAsync` are asynchronous,
@@ -110,6 +111,7 @@ export class EsriService extends AbstractSystem {
 
     const cache = ds.cache;
     const locationSystem = this.context.systems.locations;
+    const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -134,6 +136,17 @@ export class EsriService extends AbstractSystem {
 
       this._loadTilePage(ds, tile, 0);
     }
+  }
+
+
+  graph(datasetID)  {
+    const ds = this._datasets[datasetID];
+    return ds?.graph;
+  }
+
+
+  toggle(val) {
+    this._off = !val;
   }
 
 

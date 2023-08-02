@@ -55,7 +55,7 @@ describe('NominatimService', () => {
         );
         expect(callback).to.have.been.calledWithExactly(null, 'at');
         done();
-      }, 50);
+      }, 20);
     });
   });
 

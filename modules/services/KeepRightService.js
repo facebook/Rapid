@@ -115,17 +115,29 @@ export class KeepRightService extends AbstractSystem {
 
 
   /**
-   * loadIssues
-   * KeepRight API:  http://osm.mueschelsoft.de/keepright/interfacing.php
-   * @param  projection
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @return  {Array}  Array of data
    */
-  loadIssues(projection) {
+  getData() {
+    const extent = this.context.systems.map.extent();
+    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+  }
+
+
+  /**
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   * KeepRight API:  http://osm.mueschelsoft.de/keepright/interfacing.php
+   */
+  loadTiles() {
     const options = {
       format: 'geojson',
       ch: KR_RULES
     };
 
     // determine the needed tiles to cover the view
+    const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -294,22 +306,6 @@ export class KeepRightService extends AbstractSystem {
 
         if (callback) callback(null, d);
       });
-  }
-
-
-  /**
-   * getItems
-   * Get all cached QAItems covering the viewport
-   * @param   projection
-   * @return  Array
-   */
-  getItems(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-
-    return this._cache.rtree.search(bbox).map(d => d.data);
   }
 
 

@@ -84,7 +84,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
 
     const parentContainer = this.scene.groups.get('points');
 
-    let items = service.mapFeatures(this.context.projection);
+    let items = service.getData('points');
     items = this.filterDetections(items);
 
     for (const d of items) {
@@ -123,7 +123,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
     const service = this.context.services.mapillary;
 
     if (this.enabled && service?.started && zoom >= MINZOOM) {
-      service.loadMapFeatures(this.context.projection);  // note: context.projection !== pixi projection
+      service.loadTiles('points');
       service.showFeatureDetections(true);
       this.renderMarkers(frame, projection, zoom);
 
