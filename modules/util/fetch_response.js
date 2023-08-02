@@ -42,23 +42,26 @@ export function utilFetchResponse(response) {
 
   const contentType = response.headers.get('content-type').split(';')[0];
   switch (contentType) {
+    case 'application/geo+json':
     case 'application/json':
+    case 'application/vnd.geo+json':
+    case 'text/x-json':
       if (response.status === 204 || response.status === 205) return;  // No Content, Reset Content
       return response.json();
 
     // see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString
+    case 'application/xhtml+xml':
+    case 'application/xml':
+    case 'image/svg+xml':
     case 'text/html':
     case 'text/xml':
-    case 'application/xml':
-    case 'application/xhtml+xml':
-    case 'image/svg+xml':
       return response.text()
         .then(txt => new window.DOMParser().parseFromString(txt, contentType));
 
     case 'application/octet-stream':
-    case 'application/x-protobuf':
     case 'application/protobuf':
     case 'application/vnd.google.protobuf':
+    case 'application/x-protobuf':
       return response.arrayBuffer();
 
     default:
