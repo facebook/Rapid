@@ -104,29 +104,44 @@ export class VectorTileService extends AbstractSystem {
 
   /**
    * addSourceAsync
-   * Create a new cache to hold data for a given source
+   * Create a new cache to hold data for the given source
    * @param   sourceID
    * @param   template
-   * @return  Promise resolved to the source object
+   * @return  Promise resolved to the source object once it is ready to use
    */
   addSourceAsync(sourceID, template) {
     let source = this._cache.get(sourceID);
 
     if (!source) {  // create it
-      source = { template: template, inflight: {}, loaded: {}, canMerge: {} };
+      const url = new URL(template);
+      const hostname = url.hostname;
+      const filename = url.pathname.split('/').at(-1);
+      let displayName = hostname;
+
+      source = {
+        displayName: displayName,
+        template: template,
+        inflight: {},
+        loaded: {},
+        canMerge: {}
+      };
+
       this._cache.set(sourceID, source);
 
-      if (/\.pmtiles$/.test(template)) {
+      // Special handling for PMTiles sources
+      // Create a PMTiles instance and fetch the header so we know more aobut the source.
+      if (filename && /\.pmtiles$/.test(filename)) {
+        source.displayName = filename;
         source.pmtiles = new PMTiles(template);
-        source.addPromise = source.pmtiles.getHeader()
+        source.readyPromise = source.pmtiles.getHeader()
           .then(header => source.header = header)
           .then(() => Promise.resolve(source));
       } else {
-        source.addPromise = Promise.resolve(source);
+        source.readyPromise = Promise.resolve(source);
       }
     }
 
-    return source.addPromise;
+    return source.readyPromise;
   }
 
 
