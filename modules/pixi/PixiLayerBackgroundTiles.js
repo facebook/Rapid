@@ -120,6 +120,11 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const textureManager = this.renderer.textures;
     const osm = context.services.osm;
 
+    // Defensive coding in case nominatim/other reasons cause us to get an invalid projection.
+    if (isNaN(projection._x) || isNaN(projection._y)) {
+      return;
+    }
+
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
     let showDebug = false;
     let debugContainer;
