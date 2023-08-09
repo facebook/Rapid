@@ -43,6 +43,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 #### :bug: fixes:
 * [#984] Fixed the stitching of streetside image sequences.
+* [#1010] Tile Renderer occasionally stacktraces
+* [#1011] Map imagery source stays blank/unfilled
+* [#1012] Default location for map is out-of-bounds
 
 #### :hammer: Development / Code Improvements
 * Renamed many 'core' classes to be Systems adopting a 'ThingCategory' (not 'CategoryThing') naming convention:
@@ -70,6 +73,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#991]: https://github.com/facebook/Rapid/issues/991
 [#994]: https://github.com/facebook/Rapid/issues/994
 [#984]: https://github.com/facebook/Rapid/issues/984
+[#1010]: https://github.com/facebook/Rapid/issues/1010
+[#1011]: https://github.com/facebook/Rapid/issues/1011
+[#1012]: https://github.com/facebook/Rapid/issues/1012
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
 #### 2023-May-01
