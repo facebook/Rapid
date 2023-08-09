@@ -275,7 +275,11 @@ export class MapSystem extends AbstractSystem {
     // map
     const newMap = currParams.get('map');
     const oldMap = prevParams.get('map');
-    if (newMap !== oldMap) {
+    const noMap = oldMap === undefined;
+
+    if (noMap) {
+      this.centerZoom([0, 0], 2);
+    } else if (newMap !== oldMap) {
       let zoom, lat, lon, rot;
       if (typeof newMap === 'string') {
         [zoom, lat, lon, rot] = newMap.split('/', 4).map(Number);
