@@ -136,7 +136,7 @@ export class NominatimService extends AbstractSystem {
    */
   search(val, callback) {
     const searchVal = encodeURIComponent(val);
-    const url = this.apibase + `search/${searchVal}?limit=10&format=json`;
+    const url = this.apibase + `search?q=${searchVal}&limit=10&format=json`;
     if (this._inflight[url]) return;
 
     const controller = new AbortController();

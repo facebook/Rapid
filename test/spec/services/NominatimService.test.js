@@ -135,7 +135,7 @@ describe('NominatimService', () => {
       nominatim.search('philadelphia', callback);
 
       window.setTimeout(() => {
-        expect(parseQueryString(fetchMock.lastUrl())).to.eql({ format: 'json', limit: '10' });
+        expect(parseQueryString(fetchMock.lastUrl())).to.eql({q: 'philadelphia', format: 'json', limit: '10' });
         expect(callback).to.have.been.calledOnce;
         done();
       }, 50);
