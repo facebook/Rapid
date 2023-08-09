@@ -185,7 +185,9 @@ export class ImagerySystem extends AbstractSystem {
     // background
     const newBackground = currParams.get('background');
     const oldBackground = prevParams.get('background');
-    if (newBackground !== oldBackground) {
+    const noBackground = oldBackground === undefined;
+
+    if (newBackground !== oldBackground || noBackground ) {
       let setBaseLayer;
       if (typeof newBackground === 'string') {
         setBaseLayer = this.findSource(newBackground);
@@ -361,8 +363,7 @@ export class ImagerySystem extends AbstractSystem {
     return best ||
       this.findSource(lastUsed) ||
       this.findSource('Bing') ||
-      this.findSource('Maxar-Premium') ||
-      first ||    // maybe this is a custom Rapid that doesn't include Bing or Maxar?
+      first ||    // maybe this is a custom Rapid that doesn't include Bing?
       this.findSource('none');
   }
 
