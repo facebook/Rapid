@@ -275,7 +275,7 @@ export class MapSystem extends AbstractSystem {
     // map
     const newMap = currParams.get('map');
     const oldMap = prevParams.get('map');
-    const noMap = oldMap === undefined;
+    const noMap = oldMap === newMap === undefined;
 
     if (noMap) {
       this.centerZoom([0, 0], 2);
