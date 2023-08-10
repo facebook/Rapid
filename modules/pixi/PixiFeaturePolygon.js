@@ -271,6 +271,19 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (wireframeMode) {
       this.fill.visible = false;
       this.fill.clear();
+
+      const hitWidth = 2.5;
+      const hitStyle = {
+        alignment: 0.5,  // middle of line
+        color: 0x0,
+        width: hitWidth,
+        alpha: 1.0,
+        join: PIXI.LINE_JOIN.BEVEL,
+        cap: PIXI.LINE_CAP.BUTT
+      };
+
+      this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
+      this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
     }
 
     if (shape && this.fill.visible) {
