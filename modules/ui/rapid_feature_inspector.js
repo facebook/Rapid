@@ -20,7 +20,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const hasTask = urlhash.initialHashParams.has('gpx');
     if (hasTask) return false;
 
-    // Power users aren't limited by the max featues limit
+    // Power users aren't limited by the max features limit
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
     if (isPowerUser) return false;
 
