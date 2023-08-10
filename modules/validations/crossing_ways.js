@@ -88,10 +88,14 @@ export function validationCrossingWays(context) {
             // assume features don't interact if they're indoor on different levels
             return true;
         }
-
         // assume 0 by default; don't use way.layer() since we account for structures here
         var layer1 = tags1.layer || '0';
         var layer2 = tags2.layer || '0';
+
+        if ((featureType1 === 'highway' && featureType2 === 'highway') && layer1 !== layer2) {
+            // assume highways don't interact if they're on different layers
+            return true;
+        }
 
         if (allowsBridge(featureType1) && allowsBridge(featureType2)) {
             if (hasTag(tags1, 'bridge') && !hasTag(tags2, 'bridge')) return true;

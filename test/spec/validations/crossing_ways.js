@@ -129,6 +129,12 @@ describe('validationCrossingWays', () => {
   });
 
   // legit crossing cases
+  it('ignores roads crossing roads on different layers', () => {
+    createWaysWithOneCrossingPoint({ highway: 'residential', layer: '0' }, { highway: 'residential', layer: '1'});
+    const issues = validate();
+    expect(issues).to.have.lengthOf(0);
+  });
+
   it('ignores road tunnel crossing road', () => {
     createWaysWithOneCrossingPoint({ highway: 'residential', tunnel: 'yes', layer: '-1' }, { highway: 'residential' });
     const issues = validate();
