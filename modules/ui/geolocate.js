@@ -27,6 +27,7 @@ export function uiGeolocate(context) {
     if (!_enabled) {   // start geolocating
       _enabled = true;
       _button.classed('active', true);
+      context.enter('browse'); //Clear any selections only ONCE on click, not subsequently!
 
       // Ensures that we complete even if the success/error callbacks never get called.
       // This can happen if the user declines to share their location.
@@ -46,7 +47,6 @@ export function uiGeolocate(context) {
 
   function success(result) {
     if (_enabled) {    // user may have disabled it before the callback fires
-      context.enter('browse');
 
       const coords = result.coords;
       const extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
