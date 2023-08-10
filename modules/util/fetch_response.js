@@ -61,6 +61,7 @@ export function utilFetchResponse(response) {
     case 'application/octet-stream':
     case 'application/protobuf':
     case 'application/vnd.google.protobuf':
+    case 'application/vnd.mapbox-vector-tile':
     case 'application/x-protobuf':
       return response.arrayBuffer();
 

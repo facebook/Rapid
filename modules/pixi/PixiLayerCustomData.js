@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
 import { geoBounds as d3_geoBounds } from 'd3-geo';
-
-import stringify from 'fast-json-stable-stringify';
 import { gpx, kml } from '@tmcw/togeojson';
 import { Extent, geomPolygonIntersectsPolygon } from '@rapid-sdk/math';
 import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '@rapid-sdk/util';
+import geojsonRewind from '@mapbox/geojson-rewind';
+import stringify from 'fast-json-stable-stringify';
 
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
@@ -118,6 +118,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     gj = gj || {};
     if (Object.keys(gj).length) {
       this._geojson = this._ensureIDs(gj);
+      geojsonRewind(this._geojson);
       this._src = extension + ' data file';
       this.fitZoom();
     }
@@ -162,9 +163,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     let geoData, polygons, lines, points;
 
     if (this._template && vtService) {   // fetch data from vector tile service
-      const sourceID = this._template;
-      vtService.loadTiles(sourceID, this._template, this.context.projection);
-      geoData = vtService.data(sourceID, this.context.projection);
+      vtService.loadTiles(this._template);
+      geoData = vtService.getData(this._template).map(d => d.geojson);
     } else {
       geoData = this.getFeatures(this._geojson);
     }
@@ -256,7 +256,8 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     const polygonStyle = {
       fill: { color: CUSTOM_COLOR, alpha: 0.3, },
-      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      labelTint: CUSTOM_COLOR
     };
 
     for (const d of polygons) {
@@ -311,7 +312,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     const parentContainer = this.scene.groups.get('basemap');
 
     const lineStyle = styleOverride || {
-      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      labelTint: CUSTOM_COLOR
     };
 
     for (const d of lines) {
@@ -468,6 +470,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     gj = gj || {};
     if (Object.keys(gj).length) {
       this._geojson = this._ensureIDs(gj);
+      geojsonRewind(this._geojson);
       this._src = src || 'unknown.geojson';
     }
 

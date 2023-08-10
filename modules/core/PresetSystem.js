@@ -5,7 +5,7 @@ import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertex
 import { Category, Collection, Field, Preset } from './lib';
 import { uiFields } from '../ui/fields';
 
-const VERBOSE = true;        // warn about v6 preset featues we don't support currently
+const VERBOSE = true;        // warn about v6 preset features we don't support currently
 const MAXRECENTS = 30;       // how many recents to store in localstorage
 const MAXRECENTS_SHOW = 6;   // how many recents to show on the preset list
 
