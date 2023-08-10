@@ -49,13 +49,13 @@ export function uiDataEditor(context) {
       .merge(editor)
       .call(dataHeader.datum(_datum));
 
-    let rte = body.selectAll('.raw-tag-editor')
+    let rte = body.selectAll('.data-tag-editor')
       .data([0]);
 
     // enter/update
     rte.enter()
       .append('div')
-      .attr('class', 'raw-tag-editor data-editor')
+      .attr('class', 'data-tag-editor')
       .merge(rte)
       .call(rawTagEditor
         .tags((_datum && _datum.properties) || {})

@@ -21,7 +21,8 @@ export function uiDataHeader(context) {
 
     iconEnter
       .append('div')
-      .call(uiIcon('#rapid-icon-data', 'note-fill'));
+      .attr('class', 'preset-icon-28')
+      .call(uiIcon('#rapid-icon-data'));
 
     headerEnter
       .append('div')
