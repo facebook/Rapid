@@ -160,6 +160,7 @@ export class AbstractLayer {
     feature.hovered = classList.has('hovered');
     feature.drawing = classList.has('drawing');
     feature.active = classList.has('drawing');
+    feature.highlighted = classList.has('highlighted');
   }
 
 

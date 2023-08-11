@@ -19,9 +19,14 @@ export function utilTotalExtent(array, graph) {
 
 // Adds or removes highlight styling for the specified entities
 export function utilHighlightEntities(ids, highlighted, context) {
-  context.surface()
-    .selectAll(utilEntityOrDeepMemberSelector(ids, context.graph()))
-    .classed('highlighted', highlighted);
+  const scene = context.scene();
+
+  if (highlighted) {
+    ids.forEach(id => scene.classData('osm', id, 'highlighted'));
+  } else {
+    scene.clearClass('highlighted');
+  }
+  context.systems.map.immediateRedraw();
 }
 
 

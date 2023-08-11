@@ -42,9 +42,11 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * [#988], [#991], [#994] Added a mapLibre-powered 3D inset map.
 
 #### :bug: fixes:
+* [#983] Cannot select Rapid polygons when wireframe is enggaged
 * [#984] Fixed the stitching of streetside image sequences.
 * [#1010] Tile Renderer occasionally stacktraces
 * [#1011] Map imagery source stays blank/unfilled
+* [#1009] Ways on different layers will no longer be flagged as :warning:s in the validator
 * [#1012] Default location for map is out-of-bounds
 
 #### :hammer: Development / Code Improvements
@@ -69,10 +71,12 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
 
 
+[#983]: https://github.com/facebook/Rapid/issues/938
 [#988]: https://github.com/facebook/Rapid/issues/988
 [#991]: https://github.com/facebook/Rapid/issues/991
 [#994]: https://github.com/facebook/Rapid/issues/994
 [#984]: https://github.com/facebook/Rapid/issues/984
+[#1009]: https://github.com/facebook/Rapid/issues/1009
 [#1010]: https://github.com/facebook/Rapid/issues/1010
 [#1011]: https://github.com/facebook/Rapid/issues/1011
 [#1012]: https://github.com/facebook/Rapid/issues/1012

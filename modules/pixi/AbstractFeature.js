@@ -21,6 +21,7 @@ import { PixiGeometry } from './PixiGeometry';
  *   `active`            `true` if the Feature is currently being interacted with (dragged, etc)
  *   `dirty`             `true` if the Feature needs to be rebuilt
  *   `selected`          `true` if the Feature is selected
+ *   `highlighted`       `true` if the Feature is highlighted
  *   `hovered`           `true` if the Feature is hovered
  *   `v`                 Version of the Feature, can be used to detect changes
  *   `lod`               Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
@@ -69,6 +70,7 @@ export class AbstractFeature {
     this._data = null;
 
     this._selected = false;
+    this._highlighted = false;
     this._hovered = false;
     this._drawing = false;
 
@@ -260,6 +262,21 @@ export class AbstractFeature {
   set selected(val) {
     if (val === this._selected) return;  // no change
     this._selected = val;
+    this._styleDirty = true;
+    this._labelDirty = true;
+  }
+
+
+  /**
+   * highlighted
+   * @param  val  `true` to make the Feature highlighted
+   */
+  get highlighted() {
+    return this._highlighted;
+  }
+  set highlighted(val) {
+    if (val === this._highlighted) return;  // no change
+    this._highlighted = val;
     this._styleDirty = true;
     this._labelDirty = true;
   }

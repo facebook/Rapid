@@ -197,10 +197,10 @@ export function uiSectionEntityIssues(context) {
         .then(() => validator.validate());   // revalidate after the fix has finished running
       })
       .on('mouseover.highlight', function(d3_event, d) {
-          utilHighlightEntities(d.entityIds, true, context);
+          utilHighlightEntities(d.issue.entityIds, true, context);
       })
       .on('mouseout.highlight', function(d3_event, d) {
-          utilHighlightEntities(d.entityIds, false, context);
+          utilHighlightEntities(d.issue.entityIds, false, context);
       });
 
     buttons

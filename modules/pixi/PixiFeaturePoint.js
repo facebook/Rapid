@@ -290,11 +290,18 @@ export class PixiFeaturePoint extends AbstractFeature {
   updateHalo() {
     const showHover = (this.visible && this.hovered);
     const showSelect = (this.visible && this.selected && !this.virtual);
+    const showHighlight = (this.visible && this.highlighted);
 
     // Hover
     if (showHover) {
       if (!this.container.filters) {
         const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+        glow.resolution = 2;
+        this.container.filters = [glow];
+      }
+    } else if (showHighlight) {
+      if (!this.container.filters) {
+        const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0x7092ff });
         glow.resolution = 2;
         this.container.filters = [glow];
       }
