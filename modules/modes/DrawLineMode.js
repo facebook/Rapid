@@ -153,7 +153,7 @@ export class DrawLineMode extends AbstractMode {
 
     // Confirm that the draw way exists and is valid..
     const length = this.drawWay?.nodes?.length || 0;
-    if (length < 2) {
+    if (length < 2 || this.firstNode.id === this.lastNode.id) {
       if (DEBUG) {
         console.log('DrawLineMode: draw way invalid, rolling back');  // eslint-disable-line no-console
       }
