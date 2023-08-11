@@ -39,11 +39,13 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### 2023-Aug-01
 
 #### :sparkles: new 3D inset Map!
-* [#988], [#991], [#994] Added a mapLibre-powered 3D inset map.
+* [#988], [#991], [#994] Added a mapLibre-powered 3D inset map! :office: :bank:
 
 #### :bug: fixes:
-* [#983] Cannot select Rapid polygons when wireframe is enggaged
+* [#939] Added relation highlighting back!
+* [#983] Wireframe-mode polygons should be interative once again.
 * [#984] Fixed the stitching of streetside image sequences.
+* [#997], [#1014] 'Find my location' should no longer clear the sidebar more than once.
 * [#1010] Tile Renderer occasionally stacktraces
 * [#1011] Map imagery source stays blank/unfilled
 * [#1009] Ways on different layers will no longer be flagged as :warning:s in the validator
@@ -71,7 +73,8 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
 
 
-[#983]: https://github.com/facebook/Rapid/issues/938
+[#939]: https://github.com/facebook/Rapid/issues/939
+[#983]: https://github.com/facebook/Rapid/issues/983
 [#988]: https://github.com/facebook/Rapid/issues/988
 [#991]: https://github.com/facebook/Rapid/issues/991
 [#994]: https://github.com/facebook/Rapid/issues/994
