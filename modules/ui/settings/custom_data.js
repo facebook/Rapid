@@ -1,4 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { marked } from 'marked';
 
 import { uiConfirm } from '../confirm';
 import { utilNoAuto, utilRebind } from '../../util';
@@ -6,7 +7,8 @@ import { utilNoAuto, utilRebind } from '../../util';
 
 export function uiSettingsCustomData(context) {
   const storage = context.systems.storage;
-  let dispatch = d3_dispatch('change');
+  const dispatch = d3_dispatch('change');
+  const prefix = 'settings.custom_data';  // prefix for text strings
 
   const accept = [
     '.gpx', 'application/gpx', 'application/gpx+xml',
@@ -37,10 +39,28 @@ export function uiSettingsCustomData(context) {
 
     const textSection = modal.select('.modal-section.message-text');
 
+    const data_instructions = context.t(`${prefix}.instructions`);
+    const file_heading = context.t(`${prefix}.file.heading`);
+    const file_instructions = context.t(`${prefix}.file.instructions`);
+    const file_types = context.t(`${prefix}.file.types`);
+    const file_tip = context.t(`${prefix}.file.tip`);
+
+    const fileHtml = marked.parse(`
+${data_instructions}
+&nbsp;<br>
+&nbsp;<br>
+### ${file_heading}
+${file_instructions}
+* ${file_types}
+&nbsp;<br>
+&nbsp;<br>
+${file_tip}
+`);
+
     textSection
-      .append('pre')
-      .attr('class', 'instructions-file')
-      .html(context.tHtml('settings.custom_data.file.instructions'));
+      .append('div')
+      .attr('class', 'instructions-template')
+      .html(fileHtml);
 
     textSection
       .append('input')
@@ -59,14 +79,36 @@ export function uiSettingsCustomData(context) {
         }
       });
 
-    textSection
-      .append('h4')
-      .html(context.tHtml('settings.custom_data.or'));
+    const data_or = context.t(`${prefix}.or`);
+    const url_heading = context.t(`${prefix}.url.heading`);
+    const url_instructions = context.t(`${prefix}.url.instructions`);
+    const url_tokens = context.t(`${prefix}.url.tokens`);
+    const url_xyz = context.t(`${prefix}.url.xyz`);
+    const url_example_file = context.t(`${prefix}.url.example_file`);
+    const url_example_xyz = context.t(`${prefix}.url.example_xyz`);
+    const url_example_pmtiles = context.t(`${prefix}.url.example_pmtiles`);
+    const example = context.t('example');
+
+    const urlHtml = marked.parse(`
+### ${data_or}
+### ${url_heading}
+${url_instructions}
+&nbsp;<br>
+&nbsp;<br>
+${url_tokens}
+* ${url_xyz}
+&nbsp;<br>
+&nbsp;<br>
+#### ${example}
+* \`${url_example_file}\`
+* \`${url_example_xyz}\`
+* \`${url_example_pmtiles}\`
+`);
 
     textSection
-      .append('pre')
-      .attr('class', 'instructions-url')
-      .html(context.tHtml('settings.custom_data.url.instructions'));
+      .append('div')
+      .attr('class', 'instructions-template')
+      .html(urlHtml);
 
     textSection
       .append('textarea')

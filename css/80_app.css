@@ -4686,7 +4686,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     padding: 20px;
     border-bottom: 1px solid #ccc;
 }
-.modal-section p:not(:last-of-type) {
+.modal-section p:not(:last-child) {
     padding-bottom: 20px;
 }
 .modal-section h4 {
@@ -4952,33 +4952,27 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 
-/* Settings Modals
+/* Settings Modals (custom background, custom data)
 ------------------------------------------------------- */
 .settings-modal textarea {
-    height: 70px;
-    width: 100%;
+  height: 70px;
+  width: 100%;
 }
 
-.settings-custom-background .instructions-template {
-    margin-bottom: 20px;
-}
-.settings-custom-background .instructions-template p {
-    margin-bottom: 0;
-}
-.settings-custom-background .instructions-template ul {
-    padding-bottom: 20px;
-}
-.settings-custom-background .instructions-template ul li {
-    list-style-type: disc;
-    list-style-position: inside;
+.modal-section .instructions-template p {
+  padding-bottom: 0px;
 }
 
-.settings-custom-data .instructions-url {
-    margin-bottom: 10px;
+.modal-section .instructions-template {
+  margin-bottom: 20px;
 }
-.settings-custom-data .field-file,
-.settings-custom-data .instructions-template {
-    margin-bottom: 20px;
+.modal-section .instructions-template li {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.settings-custom-data .field-file {
+  margin-bottom: 20px;
 }
 
 
