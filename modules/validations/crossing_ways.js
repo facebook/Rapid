@@ -166,24 +166,28 @@ export function validationCrossingWays(context) {
         if (featureTypes === 'aeroway-waterway') return null;
 
         if (featureType1 === featureType2) {
-            if (featureType1 === 'highway') {
+            if (featureType1 === 'highway') {  // highway-highway crossing
                 var entity1IsPath = osmPathHighwayTagValues[entity1.tags.highway];
                 var entity2IsPath = osmPathHighwayTagValues[entity2.tags.highway];
+                // one feature is a path but not both
                 if ((entity1IsPath || entity2IsPath) && entity1IsPath !== entity2IsPath) {
-                    // one feature is a path but not both
 
+                    // Ignore highway crossings in some situations
                     var roadFeature = entity1IsPath ? entity2 : entity1;
-                    if (nonCrossingHighways[roadFeature.tags.highway]) {
-                        // don't mark path connections with certain roads as crossings
+                    if (!bothLines || nonCrossingHighways[roadFeature.tags.highway]) {
                         return {};
                     }
+
+                    // Suggest joining them with a `highway=crossing` node,
+                    // and copy important crossing tags from the path, if any
+                    var suggestion = { highway: 'crossing' };
                     var pathFeature = entity1IsPath ? entity1 : entity2;
-                    if (['marked', 'unmarked'].indexOf(pathFeature.tags.crossing) !== -1) {
-                        // if the path is a crossing, match the crossing type
-                        return bothLines ? { highway: 'crossing', crossing: pathFeature.tags.crossing } : {};
+                    for (const k of ['crossing', 'crossing:markings', 'crossing:signals']) {
+                        if (pathFeature.tags[k]) {
+                            suggestion[k] = pathFeature.tags[k];
+                        }
                     }
-                    // don't add a `crossing` subtag to ambiguous crossings
-                    return bothLines ? { highway: 'crossing' } : {};
+                    return suggestion;
                 }
                 return {};
             }
