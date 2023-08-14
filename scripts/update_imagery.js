@@ -52,7 +52,7 @@ const discard = [
   /^US-TIGER-Roads-201\d/,     // older than 2020
   /^Waymarked_Trails/,         // Waymarked Trails *
   /^OSM_Inspector/,            // OSM Inspector *
-  /^EOXAT2018CLOUDLESS/
+  /^EOXAT/                     // EOX AT *  (iD#9807)
 ];
 
 
