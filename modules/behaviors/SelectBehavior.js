@@ -362,7 +362,7 @@ export class SelectBehavior extends AbstractBehavior {
             context.enter('select-osm', { selectedIDs: selectedIDs });
           }
         } else {                         // not already in selectedIDs...
-          selectedIDs.push([dataID]);    // select it..
+          selectedIDs.push(dataID);    // select it..
           context.enter('select-osm', { selectedIDs: selectedIDs });
         }
       }
