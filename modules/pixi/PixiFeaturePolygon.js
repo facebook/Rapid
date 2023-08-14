@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
-
+import { flatCoordsToPoints } from '../util/util';
 import { AbstractFeature } from './AbstractFeature';
 import { lineToPoly } from './helpers';
 
@@ -177,6 +177,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const color = style.fill.color || 0xaaaaaa;
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;
+    const dash = style.stroke.dash || null;
+
     let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
     let shape;
 // bhousel update 5/27/22:
@@ -255,16 +257,34 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     // STROKE
     if (shape && this.stroke.visible) {
-      this.stroke
+      const lineWidth = wireframeMode ? 1 : style.fill.width || 2;
+
+      // Solid lines
+      if (!dash) {
+        this.stroke
         .clear()
         .lineStyle({
           alpha: 1,
-          width: wireframeMode ? 1 : style.fill.width || 2,
+          width: lineWidth,
           color: color,
         })
         .drawShape(shape.outer);
 
       shape.holes.forEach(hole => this.stroke.drawShape(hole));
+      } else {
+        //Dashed lines
+        const DASH_STYLE = {
+          alpha: 1.0,
+          dash: dash,
+          width: lineWidth,   // px
+          color: color,
+        };
+        this.stroke.clear();
+        const dl = new DashLine(this.stroke, DASH_STYLE);
+        const coords = flatCoordsToPoints(shape.outer.points);
+        dl.drawPolygon(coords);
+        shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
+      }
     }
 
     // FILL

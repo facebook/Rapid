@@ -1,4 +1,5 @@
 import { Extent } from '@rapid-sdk/math';
+import * as PIXI from 'pixi.js';
 import { utilEntityOrDeepMemberSelector } from '@rapid-sdk/util';
 
 
@@ -16,6 +17,13 @@ export function utilTotalExtent(array, graph) {
   }, new Extent());
 }
 
+export function flatCoordsToPoints(coords) {
+  let points = [];
+  for (let i = 0; i < coords.length; i += 2){
+    points.push(new PIXI.Point(coords[i], coords[i + 1]));
+  }
+  return points;
+}
 
 // Adds or removes highlight styling for the specified entities
 export function utilHighlightEntities(ids, highlighted, context) {
