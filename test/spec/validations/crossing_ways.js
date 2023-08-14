@@ -153,6 +153,12 @@ describe('validationCrossingWays', () => {
     expect(issues).to.have.lengthOf(0);
   });
 
+  it('ignores road crossing intermittent waterway', () => {
+    createWaysWithOneCrossingPoint({ highway: 'residential' }, { waterway: 'river', intermittent: 'yes' });
+    const issues = validate();
+    expect(issues).to.have.lengthOf(0);
+  });
+
   it('ignores road crossing building on different layers', () => {
     createWaysWithOneCrossingPoint({ highway: 'residential', layer: '-1' }, { building: 'yes' });
     const issues = validate();

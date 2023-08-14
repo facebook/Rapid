@@ -73,7 +73,11 @@ export function validationCrossingWays(context) {
         if (geometry !== 'line') return null;
 
         if (hasTag(tags, 'railway') && osmRailwayTrackTagValues[tags.railway]) return 'railway';
-        if (hasTag(tags, 'waterway') && osmFlowingWaterwayTagValues[tags.waterway]) return 'waterway';
+
+        if (hasTag(tags, 'waterway') &&
+            osmFlowingWaterwayTagValues[tags.waterway] &&
+            entity.tags.intermittent !== 'yes'      // Ignore intermittent waterways - Rapid#1018
+        ) return 'waterway';
 
         return null;
     }
@@ -191,19 +195,17 @@ export function validationCrossingWays(context) {
                 }
                 return {};
             }
-            if (featureType1 === 'waterway') return {};
-            if (featureType1 === 'railway') return {};
+            if (featureType1 === 'waterway') return {};   // waterway-waterway
+            if (featureType1 === 'railway') return {};    // railway-railway
 
         } else {
-            if (featureTypes.indexOf('highway') !== -1) {
-                if (featureTypes.indexOf('railway') !== -1) {
+            if (featureTypes.includes('highway')) {
+                if (featureTypes.includes('railway')) {   // highway-railway
                     if (!bothLines) return {};
 
                     var isTram = entity1.tags.railway === 'tram' || entity2.tags.railway === 'tram';
 
-                    if (osmPathHighwayTagValues[entity1.tags.highway] ||
-                        osmPathHighwayTagValues[entity2.tags.highway]) {
-
+                    if (osmPathHighwayTagValues[entity1.tags.highway] || osmPathHighwayTagValues[entity2.tags.highway]) {
                         // path-tram connections use this tag
                         if (isTram) return { railway: 'tram_crossing' };
 
@@ -218,14 +220,13 @@ export function validationCrossingWays(context) {
                     }
                 }
 
-                if (featureTypes.indexOf('waterway') !== -1) {
-                    // do not allow fords on structures
+                if (featureTypes.includes('waterway')) {    // highway-waterway
+                    // Do not suggest fords on structures
                     if (hasTag(entity1.tags, 'tunnel') && hasTag(entity2.tags, 'tunnel')) return null;
                     if (hasTag(entity1.tags, 'bridge') && hasTag(entity2.tags, 'bridge')) return null;
 
-                    if (highwaysDisallowingFords[entity1.tags.highway] ||
-                        highwaysDisallowingFords[entity2.tags.highway]) {
-                        // do not allow fords on major highways
+                    // Do not suggest fords on major highways
+                    if (highwaysDisallowingFords[entity1.tags.highway] || highwaysDisallowingFords[entity2.tags.highway]) {
                         return null;
                     }
                     return bothLines ? { ford: 'yes' } : {};
@@ -348,7 +349,7 @@ export function validationCrossingWays(context) {
                     (!member.role || member.role === 'outer' || member.role === 'inner')) {
                     var entity = graph.hasEntity(member.id);
                     // don't add duplicates
-                    if (entity && array.indexOf(entity) === -1) {
+                    if (entity && !array.includes(entity)) {
                         array.push(entity);
                     }
                 }
@@ -360,11 +361,8 @@ export function validationCrossingWays(context) {
 
 
     var validation = function checkCrossingWays(entity, graph) {
-
         var tree = context.systems.edits.tree();
-
         var ways = waysToCheck(entity, graph);
-
         var issues = [];
         // declare these here to reduce garbage collection
         var wayIndex, crossingIndex, crossings;
@@ -379,7 +377,6 @@ export function validationCrossingWays(context) {
 
 
     function createIssue(crossing, graph) {
-
         // use the entities with the tags that define the feature type
         crossing.wayInfos.sort(function(way1Info, way2Info) {
             var type1 = way1Info.featureType;
@@ -686,8 +683,7 @@ export function validationCrossingWays(context) {
                     var structureWay = resultWayIDs.map(function(id) {
                         return graph.entity(id);
                     }).find(function(way) {
-                        return way.nodes.indexOf(structEndNode1.id) !== -1 &&
-                            way.nodes.indexOf(structEndNode2.id) !== -1;
+                        return way.nodes.includes(structEndNode1.id) && way.nodes.includes(structEndNode2.id);
                     });
 
                     var tags = Object.assign({}, structureWay.tags); // copy tags
