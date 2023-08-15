@@ -42,8 +42,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * [#988], [#991], [#994] Added a mapLibre-powered 3D inset map! :office: :bank:
 
 #### :bug: fixes:
+* [#1007] Places search has been fixed.
 * [#939] Added relation highlighting back!
-* [#983] Wireframe-mode polygons should be interative once again.
+* [#983] Wireframe-mode polygons should be interactive once again.
 * [#984] Fixed the stitching of streetside image sequences.
 * [#997], [#1014] 'Find my location' should no longer clear the sidebar more than once.
 * [#1010] Tile Renderer occasionally stacktraces
@@ -79,10 +80,13 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#991]: https://github.com/facebook/Rapid/issues/991
 [#994]: https://github.com/facebook/Rapid/issues/994
 [#984]: https://github.com/facebook/Rapid/issues/984
+[#997]: https://github.com/facebook/Rapid/issues/997
+[#1014]: https://github.com/facebook/Rapid/issues/1014
 [#1009]: https://github.com/facebook/Rapid/issues/1009
 [#1010]: https://github.com/facebook/Rapid/issues/1010
 [#1011]: https://github.com/facebook/Rapid/issues/1011
 [#1012]: https://github.com/facebook/Rapid/issues/1012
+[#1007]: https://github.com/facebook/Rapid/issues/1007
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
 #### 2023-May-01
