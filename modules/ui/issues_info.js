@@ -1,99 +1,86 @@
 import { select as d3_select } from 'd3-selection';
 
-import { prefs } from '../core/preferences';
 import { uiIcon } from './icon';
-import { t } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 
 
 export function uiIssuesInfo(context) {
+  const validator = context.systems.validator;
+  const prefs = context.systems.storage;
 
-    var warningsItem = {
-        id: 'warnings',
-        count: 0,
-        iconID: 'rapid-icon-alert',
-        descriptionID: 'issues.warnings_and_errors'
-    };
+  let warningsItem = {
+    id: 'warnings',
+    count: 0,
+    iconID: 'rapid-icon-alert',
+    descriptionID: 'issues.warnings_and_errors'
+  };
 
-    var resolvedItem = {
-        id: 'resolved',
-        count: 0,
-        iconID: 'rapid-icon-apply',
-        descriptionID: 'issues.user_resolved_issues'
-    };
+  let resolvedItem = {
+    id: 'resolved',
+    count: 0,
+    iconID: 'rapid-icon-apply',
+    descriptionID: 'issues.user_resolved_issues'
+  };
 
-    function update(selection) {
 
-        var shownItems = [];
-
-        var liveIssues = context.validator().getIssues({
-            what: prefs('validate-what') || 'edited',
-            where: prefs('validate-where') || 'all'
-        });
-        if (liveIssues.length) {
-            warningsItem.count = liveIssues.length;
-            shownItems.push(warningsItem);
-        }
-
-        if (prefs('validate-what') === 'all') {
-            var resolvedIssues = context.validator().getResolvedIssues();
-            if (resolvedIssues.length) {
-                resolvedItem.count = resolvedIssues.length;
-                shownItems.push(resolvedItem);
-            }
-        }
-
-        var chips = selection.selectAll('.chip')
-            .data(shownItems, function(d) {
-                return d.id;
-            });
-
-        chips.exit().remove();
-
-        var enter = chips.enter()
-            .append('a')
-            .attr('class', function(d) {
-                return 'chip ' + d.id + '-count';
-            })
-            .attr('href', '#')
-            .each(function(d) {
-
-                var chipSelection = d3_select(this);
-
-                var tooltipBehavior = uiTooltip()
-                    .placement('top')
-                    .title(t.html(d.descriptionID));
-
-                chipSelection
-                    .call(tooltipBehavior)
-                    .on('click', function(d3_event) {
-                        d3_event.preventDefault();
-
-                        tooltipBehavior.hide(d3_select(this));
-                        // open the Issues pane
-                        context.ui().togglePanes(context.container().select('.map-panes .issues-pane'));
-                    });
-
-                chipSelection.call(uiIcon('#' + d.iconID));
-
-            });
-
-        enter.append('span')
-            .attr('class', 'count');
-
-        enter.merge(chips)
-            .selectAll('span.count')
-            .html(function(d) {
-                return d.count.toString();
-            });
+  function update(selection) {
+    let shownItems = [];
+    let liveIssues = validator.getIssues({
+      what: prefs.getItem('validate-what') ?? 'edited',
+      where: prefs.getItem('validate-where') ?? 'all'
+    });
+    if (liveIssues.length) {
+      warningsItem.count = liveIssues.length;
+      shownItems.push(warningsItem);
     }
 
+    if (prefs.getItem('validate-what') === 'all') {
+      let resolvedIssues = validator.getResolvedIssues();
+      if (resolvedIssues.length) {
+        resolvedItem.count = resolvedIssues.length;
+        shownItems.push(resolvedItem);
+      }
+    }
 
-    return function(selection) {
-        update(selection);
+    let chips = selection.selectAll('.chip')
+      .data(shownItems, d => d.id);
 
-        context.validator().on('validated.infobox', function() {
-            update(selection);
-        });
-    };
+    chips.exit().remove();
+
+    let enter = chips.enter()
+      .append('a')
+      .attr('class', d => `chip ${d.id}-count`)
+      .attr('href', '#')
+      .each((d, i, nodes) => {
+        let chipSelection = d3_select(nodes[i]);
+
+        let tooltip = uiTooltip(context)
+          .placement('top')
+          .title(context.tHtml(d.descriptionID));
+
+        chipSelection
+          .call(tooltip)
+          .on('click', d3_event => {
+            d3_event.preventDefault();
+            tooltip.hide();
+            // open the Issues pane
+            context.systems.ui.togglePanes(context.container().select('.map-panes .issues-pane'));
+          });
+
+        chipSelection.call(uiIcon(`#${d.iconID}`));
+      });
+
+    enter.append('span')
+      .attr('class', 'count');
+
+    enter.merge(chips)
+      .selectAll('span.count')
+      .text(d => d.count.toString());
+  }
+
+
+  return function render(selection) {
+    update(selection);
+    validator.on('validated', () => update(selection));
+  };
 }

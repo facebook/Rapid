@@ -1,7 +1,5 @@
 import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
-import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
@@ -10,26 +8,25 @@ import { uiTooltip } from '../tooltip';
 export function uiToolSave(context) {
   let tool = {
     id: 'save',
-    label: t.html('save.title')
+    label: context.tHtml('save.title')
   };
 
-  let button = d3_select(null);
-  let tooltip = null;
   let key = uiCmd('⌘S');
   let _numChanges = 0;
+  let _button = null;
+  let _tooltip = null;
 
   function isSaving() {
-    const mode = context.mode();
-    return mode && mode.id === 'save';
+    return context.mode?.id === 'save';
   }
 
   function isDisabled() {
-    return _numChanges === 0 || isSaving();
+    return _numChanges === 0 || context.inIntro || isSaving();
   }
 
   function save(d3_event) {
     d3_event.preventDefault();
-    if (!context.inIntro() && !isSaving() && context.history().hasChanges()) {
+    if (!context.inIntro && !isSaving() && context.systems.edits.hasChanges()) {
       context.enter('save');
     }
   }
@@ -48,35 +45,49 @@ export function uiToolSave(context) {
   }
 
   function updateCount() {
-    const val = context.history().difference().summary().size;
+    if (!_button || !_tooltip) return;
+
+    const val = context.systems.edits.difference().summary().size;
     if (val === _numChanges) return;  // no change
 
     _numChanges = val;
 
-    if (tooltip) {
-      tooltip
-        .title(t.html(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
+    if (_tooltip) {
+      _tooltip
+        .title(context.tHtml(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
         .keys([key]);
     }
 
-    button
+    _button
       .classed('disabled', isDisabled())
       .style('background', bgColor(_numChanges));
 
-    button.select('span.count')
+    _button.select('span.count')
       .html(_numChanges);
   }
 
 
+  function updateDisabled() {
+    if (!_button || !_tooltip) return;
+
+    _button.classed('disabled', isDisabled());
+    if (isSaving()) {
+      _button.call(_tooltip.hide);
+    }
+  }
+
+
   tool.install = function(selection) {
-    tooltip = uiTooltip()
+    if (_button && _tooltip) return;  // already installed
+
+    _tooltip = uiTooltip(context)
       .placement('bottom')
-      .title(t.html('save.no_changes'))
+      .title(context.tHtml('save.no_changes'))
       .keys([key])
       .scrollContainer(context.container().select('.top-toolbar'));
 
     // var lastPointerUpType;
-    button = selection
+    _button = selection
       .append('button')
       .attr('class', 'save disabled bar-button')
       // .on('pointerup', function(d3_event) {
@@ -89,20 +100,20 @@ export function uiToolSave(context) {
         //     lastPointerUpType === 'pen')
         // ) {
         //     // there are no tooltips for touch interactions so flash feedback instead
-        //     context.ui().flash
+        //     context.systems.ui.flash
         //         .duration(2000)
         //         .iconName('#rapid-icon-save')
         //         .iconClass('disabled')
-        //         .label(t.html('save.no_changes'))();
+        //         .label(context.tHtml('save.no_changes'))();
         // }
         // lastPointerUpType = null;
       })
-      .call(tooltip);
+      .call(_tooltip);
 
-    button
+    _button
       .call(uiIcon('#rapid-icon-save'));
 
-    button
+    _button
       .append('span')
       .attr('class', 'count')
       .attr('aria-hidden', 'true')
@@ -110,35 +121,20 @@ export function uiToolSave(context) {
 
     updateCount();
 
-
-    context.keybinding()
-      .on(key, save, true /* capture */);
-
-    context.history()
-      .on('change.save', updateCount);
-
-    context
-      .on('enter.save', () => {
-        button.classed('disabled', isDisabled());
-        if (isSaving()) {
-          button.call(tooltip.hide);
-        }
-      });
+    context.keybinding().on(key, save, true /* capture */);
+    context.systems.edits.on('change', updateCount);
+    context.on('modechange', updateDisabled);
   };
 
 
   tool.uninstall = function() {
-    context.keybinding()
-      .off(key, true /* capture */);
+    if (!_button && !_tooltip) return;  // already uninstalled
 
-    context.history()
-      .on('change.save', null);
-
-    context
-      .on('enter.save', null);
-
-    button = d3_select(null);
-    tooltip = null;
+    context.keybinding().off(key, true /* capture */);
+    context.systems.edits.off('change', updateCount);
+    context.off('modechange', updateDisabled);
+    _button = null;
+    _tooltip = null;
   };
 
   return tool;

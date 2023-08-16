@@ -1,10 +1,8 @@
-import { prefs } from '../core/preferences';
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 
 
-// these are module variables so they are preserved through a ui.restart()
+// These are module variables so they are preserved through a ui.restart()
 let sawVersion = null;
 let isNewVersion = false;
 let isNewUser = false;
@@ -13,16 +11,17 @@ let isNewUser = false;
 export function uiVersion(context) {
   const currVersion = context.version;
   const matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
+  const prefs = context.systems.storage;
 
   if (sawVersion === null && matchedVersion !== null) {
-    if (prefs('sawVersion')) {
+    if (prefs.getItem('sawVersion')) {
       isNewUser = false;
-      isNewVersion = prefs('sawVersion') !== currVersion && currVersion.indexOf('-') === -1;
+      isNewVersion = prefs.getItem('sawVersion') !== currVersion && currVersion.indexOf('-') === -1;
     } else {
       isNewUser = true;
       isNewVersion = true;
     }
-    prefs('sawVersion', currVersion);
+    prefs.setItem('sawVersion', currVersion);
     sawVersion = currVersion;
   }
 
@@ -43,8 +42,8 @@ export function uiVersion(context) {
         .attr('tabindex', -1)
         .attr('href', 'https://github.com/facebook/Rapid/blob/main/CHANGELOG.md')
         .call(uiIcon('#maki-gift'))
-        .call(uiTooltip()
-          .title(t.html('version.whats_new', { version: currVersion }))
+        .call(uiTooltip(context)
+          .title(context.tHtml('version.whats_new', { version: currVersion }))
           .placement('top')
           .scrollContainer(context.container().select('.main-footer-wrap'))
         );

@@ -1,27 +1,24 @@
-import * as PIXI from 'pixi.js';
-
-import { services } from '../services';
-import { t } from '../core/localizer';
+import { Color } from 'pixi.js';
 
 
-export function uiOsmoseHeader() {
+export function uiOsmoseHeader(context) {
+  const osmose = context.services.osmose;
   let _qaItem;
 
   function issueTitle(d) {
-    const unknown = t('inspector.unknown');
-    if (!d) return unknown;
+    const unknown = context.t('inspector.unknown');
+    if (!osmose || !d) return unknown;
 
     // Issue titles supplied by Osmose
-    const s = services.osmose.getStrings(d.itemType);
+    const s = osmose.getStrings(d.itemType);
     return ('title' in s) ? s.title : unknown;
   }
 
 
   function osmoseHeader(selection) {
     let iconFill = 0xffffff;
-    const service = services.osmose;
-    if (service) {
-      iconFill = service.getColor(_qaItem?.item);
+    if (osmose) {
+      iconFill = osmose.getColor(_qaItem?.item);
     }
 
     const header = selection.selectAll('.qa-header')
@@ -48,7 +45,7 @@ export function uiOsmoseHeader() {
 
     svgEnter
       .append('polygon')
-      .attr('fill', PIXI.utils.hex2string(iconFill))
+      .attr('fill', new Color(iconFill).toHex())
       .attr('stroke', '#333')
       .attr('points', '16,3 4,3 1,6 1,17 4,20 7,20 10,27 13,20 16,20 19,17.033 19,6');
 

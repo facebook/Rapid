@@ -1,64 +1,84 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
-import { prefs } from '../core/preferences';
 import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
+  const rapid = context.systems.rapid;
+  const storage = context.systems.storage;
+  const urlhash = context.systems.urlhash;
+
   const featureFlags = [
     'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits'
   ];
-  const rapidContext = context.rapidContext();
-  const showPowerUser = rapidContext.showPowerUser;
+
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
+  context.systems.urlhash.on('hashchange', updatePowerUserKeys);
 
-  // if we are not currently showing poweruser features, move all the feature flags to a different keyspace
-  if (!showPowerUser) {
-    featureFlags.forEach(featureFlag => {
-      const val = prefs(`rapid-internal-feature.${featureFlag}`);
-      if (val) {
-        prefs(`rapid-internal-feature.was.${featureFlag}`, val);
-        prefs(`rapid-internal-feature.${featureFlag}`, null);
+
+  /**
+   * On any change in poweruser setting, update the storage keys.
+   * If user is not currently a poweruser, move all the feature flags to a different keyspace
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   */
+  function updatePowerUserKeys(currParams, prevParams) {
+    let needsUpdate = true;
+    if (currParams && prevParams) {
+      needsUpdate = currParams.get('poweruser') !== prevParams.get('poweruser');
+    }
+    if (!needsUpdate) return;
+
+
+    const isPowerUser = urlhash.getParam('poweruser') === 'true';
+    if (!isPowerUser) {
+      for (const featureFlag of featureFlags) {
+        const val = storage.getItem(`rapid-internal-feature.${featureFlag}`);
+        if (val) {
+          storage.setItem(`rapid-internal-feature.was.${featureFlag}`, val);
+          storage.removeItem(`rapid-internal-feature.${featureFlag}`);
+        }
       }
-    });
-  } else {
-    featureFlags.forEach(featureFlag => {
-      const val = prefs(`rapid-internal-feature.was.${featureFlag}`);
-      if (val) {
-        prefs(`rapid-internal-feature.${featureFlag}`, val);
-        prefs(`rapid-internal-feature.was.${featureFlag}`, null);
+    } else {
+      for (const featureFlag of featureFlags) {
+        const val = storage.getItem(`rapid-internal-feature.was.${featureFlag}`);
+        if (val) {
+          storage.setItem(`rapid-internal-feature.${featureFlag}`, val);
+          storage.removeItem(`rapid-internal-feature.was.${featureFlag}`);
+        }
       }
-    });
+    }
   }
 
 
   function isEnabled(featureFlag) {
-    return prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
+    return storage.getItem(`rapid-internal-feature.${featureFlag}`) === 'true';
   }
 
+
   function toggleFeature(_, featureFlag) {
-    let enabled = prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
+    let enabled = storage.getItem(`rapid-internal-feature.${featureFlag}`) === 'true';
     enabled = !enabled;
-    prefs(`rapid-internal-feature.${featureFlag}`, enabled);
+    storage.setItem(`rapid-internal-feature.${featureFlag}`, enabled);
 
     // custom on-toggle behaviors can go here
-    if (featureFlag === 'previewDatasets' && !enabled) {   // user unchecked previewDatasets feature
-      const datasets = rapidContext.datasets();
-      Object.values(datasets).forEach(ds => {
-        if (ds.beta) {
-          ds.added = false;
-          ds.enabled = false;
+    if (featureFlag === 'previewDatasets' && !enabled) {   // if user unchecked previewDatasets feature
+      for (const dataset of rapid.datasets.values()) {
+        if (dataset.beta) {
+          dataset.added = false;
+          dataset.enabled = false;
         }
-      });
+      }
       context.enter('browse');   // return to browse mode (in case something was selected)
-      context.map().immediateRedraw();
+      context.systems.map.immediateRedraw();
     }
   }
 
 
   return (selection) => {
+    updatePowerUserKeys();
+
     _modalSelection = uiModal(selection);
 
     _modalSelection.select('.modal')
@@ -88,12 +108,12 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     headerEnter
       .append('h3')
       .attr('class', 'modal-heading')
-      .html(t('rapid_poweruser_features.heading.label'));
+      .html(context.t('rapid_poweruser_features.heading.label'));
 
     headerEnter
       .append('div')
       .attr('class', 'modal-heading-desc')
-      .text(t('rapid_poweruser_features.heading.description'))
+      .text(context.t('rapid_poweruser_features.heading.description'))
       .append('span')
       .attr('class', 'smile')
       .text('😎');
@@ -123,7 +143,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
       .append('button')
       .attr('class', 'button ok-button action')
       .on('click', () => _modalSelection.remove())
-      .text(t('confirm.okay'));
+      .text(context.t('confirm.okay'));
   }
 
 
@@ -146,13 +166,13 @@ export function uiRapidPowerUserFeaturesDialog(context) {
         selection
           .append('div')
           .attr('class', 'rapid-feature-label')
-          .text(d => t(`rapid_poweruser_features.${d}.label`));
+          .text(d => context.t(`rapid_poweruser_features.${d}.label`));
 
         // line2: description
         selection
           .append('div')
           .attr('class', 'rapid-feature-description')
-          .text(d => t(`rapid_poweruser_features.${d}.description`));
+          .text(d => context.t(`rapid_poweruser_features.${d}.description`));
       });
 
     let inputsEnter = rowsEnter

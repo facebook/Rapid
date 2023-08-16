@@ -1,41 +1,43 @@
-import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
+import debounce from 'lodash-es/debounce';
 
-import { prefs } from '../../core/preferences';
-import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
-import { RendererImagerySource } from '../../renderer/RendererImagerySource';
+import { ImagerySource } from '../../core/lib';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
 import { uiMapInMap } from '../map_in_map';
-import { ui3DMap } from '../tools/3dmap/3d_map';
+import { uiMap3dViewer } from '../map3d_viewer';
 import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundList(context) {
+  const l10n = context.systems.l10n;
+  const imagerySystem = context.systems.imagery;
+  const storageSystem = context.systems.storage;
+
   const section = uiSection('background-list', context)
-    .label(t('background.backgrounds'))
+    .label(l10n.t('background.backgrounds'))
     .disclosureContent(renderDisclosureContent);
 
   let _backgroundList = d3_select(null);
 
-  const customSource = context.imagery().findSource('custom');
+  const customSource = imagerySystem.findSource('custom');
   const settingsCustomBackground = uiSettingsCustomBackground(context)
     .on('change', customChanged);
 
-
-  const favoriteBackgroundsJSON = prefs('background-favorites');
+  const favoriteBackgroundsJSON = storageSystem.getItem('background-favorites');
   const _favoriteBackgrounds = favoriteBackgroundsJSON ? JSON.parse(favoriteBackgroundsJSON) : {};
 
+
   function previousBackgroundID() {
-    return prefs('background-last-used-toggle');
+    return storageSystem.getItem('background-last-used-toggle');
   }
 
-  function renderDisclosureContent(selection) {
 
+  function renderDisclosureContent(selection) {
     // the background list
     const container = selection.selectAll('.layer-background-list')
       .data([0]);
@@ -58,9 +60,9 @@ export function uiSectionBackgroundList(context) {
       .append('li')
       .attr('class', 'minimap-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.minimap.tooltip'))
-        .keys([t('background.minimap.key')])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.minimap.tooltip'))
+        .keys([l10n.t('background.minimap.key')])
         .placement('top')
       );
 
@@ -74,40 +76,39 @@ export function uiSectionBackgroundList(context) {
 
     minimapLabelEnter
       .append('span')
-      .text(t('background.minimap.description'));
+      .text(l10n.t('background.minimap.description'));
 
 
-      const threeDmapLabelEnter = bgExtrasListEnter
+    const threeDmapLabelEnter = bgExtrasListEnter
       .append('li')
       .attr('class', 'three-d-map-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.3dmap.tooltip'))
-        .keys([uiCmd('⌘' + t('background.3dmap.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.3dmap.tooltip'))
+        .keys([uiCmd('⌘' + l10n.t('background.3dmap.key'))])
         .placement('top')
       );
 
-      threeDmapLabelEnter
+    threeDmapLabelEnter
       .append('input')
       .attr('type', 'checkbox')
       .on('change', (d3_event) => {
         d3_event.preventDefault();
-        ui3DMap.toggle();
+        uiMap3dViewer.toggle();
       });
 
-      threeDmapLabelEnter
+    threeDmapLabelEnter
       .append('span')
-      .text(t('background.3dmap.description'));
-
+      .text(l10n.t('background.3dmap.description'));
 
 
     const panelLabelEnter = bgExtrasListEnter
       .append('li')
       .attr('class', 'background-panel-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.panel.tooltip'))
-        .keys([uiCmd('⌘⇧' + t('info_panels.background.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.panel.tooltip'))
+        .keys([uiCmd('⌘⇧' + l10n.t('info_panels.background.key'))])
         .placement('top')
       );
 
@@ -116,20 +117,20 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', (d3_event) => {
         d3_event.preventDefault();
-        context.ui().info.toggle('background');
+        context.systems.ui.info.toggle('background');
       });
 
     panelLabelEnter
       .append('span')
-      .text(t('background.panel.description'));
+      .text(l10n.t('background.panel.description'));
 
     const locPanelLabelEnter = bgExtrasListEnter
       .append('li')
       .attr('class', 'location-panel-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t('background.location_panel.tooltip'))
-        .keys([uiCmd('⌘⇧' + t('info_panels.location.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.t('background.location_panel.tooltip'))
+        .keys([uiCmd('⌘⇧' + l10n.t('info_panels.location.key'))])
         .placement('top')
       );
 
@@ -138,12 +139,12 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', (d3_event) => {
         d3_event.preventDefault();
-        context.ui().info.toggle('location');
+        context.systems.ui.info.toggle('location');
       });
 
     locPanelLabelEnter
       .append('span')
-      .text(t('background.location_panel.description'));
+      .text(l10n.t('background.location_panel.description'));
 
 
     // "Info / Report a Problem" link
@@ -157,7 +158,7 @@ export function uiSectionBackgroundList(context) {
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/FAQ.md#how-can-i-report-an-issue-with-background-imagery')
       .append('span')
-      .text(t('background.imagery_problem_faq'));
+      .text(l10n.t('background.imagery_problem_faq'));
 
     _backgroundList
       .call(drawListItems, 'radio', chooseBackground, (d) => { return !d.isHidden() && !d.overlay; });
@@ -171,16 +172,16 @@ export function uiSectionBackgroundList(context) {
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
       const isOverflowing = (span.property('clientWidth') !== span.property('scrollWidth'));
 
-      item.call(uiTooltip().destroyAny);
+      item.call(uiTooltip(context).destroyAny);
 
       if (d.id === previousBackgroundID()) {
-        item.call(uiTooltip()
+        item.call(uiTooltip(context)
           .placement(placement)
-          .title('<div>' + t('background.switch') + '</div>')
-          .keys([uiCmd('⌘' + t('background.key'))])
+          .title('<div>' + l10n.t('background.switch') + '</div>')
+          .keys([uiCmd('⌘' + l10n.t('background.key'))])
         );
       } else if (d.description || isOverflowing) {
-        item.call(uiTooltip()
+        item.call(uiTooltip(context)
           .placement(placement)
           .title(d.description || d.name)
         );
@@ -199,8 +200,8 @@ export function uiSectionBackgroundList(context) {
 
 
   function drawListItems(layerList, type, change, filter) {
-    const sources = context.imagery()
-      .sources(context.map().extent(), context.map().zoom())
+    const sources = imagerySystem
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(filter);
 
     const layerLinks = layerList.selectAll('li')
@@ -242,7 +243,7 @@ export function uiSectionBackgroundList(context) {
           d3_select(d3_event.currentTarget).classed('active', true);
           _favoriteBackgrounds[d.id] = true;
         }
-        prefs('background-favorites', JSON.stringify(_favoriteBackgrounds));
+        storageSystem.setItem('background-favorites', JSON.stringify(_favoriteBackgrounds));
 
         d3_select(d3_event.currentTarget.parentElement)
           .transition()
@@ -263,9 +264,9 @@ export function uiSectionBackgroundList(context) {
     layerLinksEnter.filter(d => d.id === 'custom')
       .append('button')
       .attr('class', 'layer-browse')
-      .call(uiTooltip()
-        .title(t('settings.custom_background.tooltip'))
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+      .call(uiTooltip(context)
+        .title(l10n.t('settings.custom_background.tooltip'))
+        .placement(l10n.isRTL() ? 'right' : 'left')
       )
       .on('click', editCustom)
       .call(uiIcon('#rapid-icon-more'));
@@ -274,8 +275,8 @@ export function uiSectionBackgroundList(context) {
       .selectAll('label')
       .append('span')
       .attr('class', 'best')
-      .call(uiTooltip()
-        .title(t('background.best_imagery'))
+      .call(uiTooltip(context)
+        .title(l10n.t('background.best_imagery'))
         .placement('bottom')
       )
       .call(uiIcon('#rapid-icon-best-background'));
@@ -290,7 +291,7 @@ export function uiSectionBackgroundList(context) {
 
   function updateLayerSelections(selection) {
     function active(d) {
-      return context.imagery().showsLayer(d);
+      return imagerySystem.showsLayer(d);
     }
 
     selection.selectAll('li')
@@ -307,12 +308,12 @@ export function uiSectionBackgroundList(context) {
       return editCustom();
     }
 
-    const previousBackground = context.imagery().baseLayerSource();
-    if (previousBackground instanceof RendererImagerySource) {
-      prefs('background-last-used-toggle', previousBackground.id);
+    const previousBackground = imagerySystem.baseLayerSource();
+    if (previousBackground instanceof ImagerySource) {
+      storageSystem.setItem('background-last-used-toggle', previousBackground.id);
     }
-    prefs('background-last-used', d.id);
-    context.imagery().baseLayerSource(d);
+    storageSystem.setItem('background-last-used', d.id);
+    imagerySystem.baseLayerSource(d);
   }
 
 
@@ -322,7 +323,7 @@ export function uiSectionBackgroundList(context) {
       chooseBackground(undefined, customSource);
     } else {
       customSource.template = '';
-      chooseBackground(undefined, context.imagery().findSource('none'));
+      chooseBackground(undefined, imagerySystem.findSource('none'));
     }
   }
 
@@ -334,15 +335,15 @@ export function uiSectionBackgroundList(context) {
   }
 
   function getBackgrounds(filter) {
-    return context.imagery()
-      .sources(context.map().extent(), context.map().zoom())
+    return imagerySystem
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(filter);
   }
 
   function chooseBackgroundAtOffset(offset) {
     const backgrounds = getBackgrounds((d) => { return !d.isHidden() && !d.overlay; });
     backgrounds.sort(sortSources);
-    const currentBackground = context.imagery().baseLayerSource();
+    const currentBackground = imagerySystem.baseLayerSource();
     const foundIndex = backgrounds.indexOf(currentBackground);
     if (foundIndex === -1) {
       // Can't find the current background, so just do nothing
@@ -367,19 +368,19 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  context.imagery()
+  imagerySystem
     .on('imagerychange', () => _backgroundList.call(updateLayerSelections));
 
-  context.map()
-    .on('draw', _debounce(() => {
+  context.systems.map
+    .on('draw', debounce(() => {
         // layers in-view may have changed due to map move
         window.requestIdleCallback(section.reRender);
       }, 1000)
     );
 
   context.keybinding()
-    .on(t('background.next_background.key'), nextBackground)
-    .on(t('background.previous_background.key'), previousBackground);
+    .on(l10n.t('background.next_background.key'), nextBackground)
+    .on(l10n.t('background.previous_background.key'), previousBackground);
 
   return section;
 }

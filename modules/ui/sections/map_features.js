@@ -1,15 +1,13 @@
-import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
 
 export function uiSectionMapFeatures(context) {
+  const filterSystem = context.systems.filters;
   const section = uiSection('map-features', context)
-    .label(t.html('map_data.map_features'))
+    .label(context.tHtml('map_data.map_features'))
     .disclosureContent(renderDisclosureContent)
     .expandedByDefault(false);
-
-  const featureKeys = context.features().keys();
 
 
   function renderDisclosureContent(selection) {
@@ -32,20 +30,20 @@ export function uiSectionMapFeatures(context) {
       .append('a')
       .attr('class', 'feature-list-link')
       .attr('href', '#')
-      .html(t.html('issues.disable_all'))
+      .html(context.tHtml('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        context.features().disableAll();
+        filterSystem.disableAll();
       });
 
     footer
       .append('a')
       .attr('class', 'feature-list-link')
       .attr('href', '#')
-      .html(t.html('issues.enable_all'))
+      .html(context.tHtml('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        context.features().enableAll();
+        filterSystem.enableAll();
       });
 
     // Update
@@ -53,7 +51,7 @@ export function uiSectionMapFeatures(context) {
       .merge(containerEnter);
 
     container.selectAll('.layer-feature-list')
-      .call(drawListItems, featureKeys, 'checkbox', 'feature', clickFeature, showsFeature);
+      .call(drawListItems, filterSystem.keys, 'checkbox', 'feature', clickFeature, showsFeature);
   }
 
 
@@ -68,15 +66,8 @@ export function uiSectionMapFeatures(context) {
     // Enter
     let enter = items.enter()
       .append('li')
-      .call(uiTooltip()
-        .title(function(d) {
-          let tip = t.html(`${name}.${d}.tooltip`);
-          if (autoHiddenFeature(d)) {
-            const msg = showsLayer('osm') ? t.html('map_data.autohidden') : t.html('map_data.osmhidden');
-            tip += `<div>${msg}</div>`;
-          }
-          return tip;
-        })
+      .call(uiTooltip(context)
+        .title(d => context.tHtml(`${name}.${d}.tooltip`))
         .placement('top')
       );
 
@@ -91,7 +82,7 @@ export function uiSectionMapFeatures(context) {
 
     label
       .append('span')
-      .html(d => t.html(`${name}.${d}.description`));
+      .html(d => context.tHtml(`${name}.${d}.description`));
 
     // Update
     items = items
@@ -100,20 +91,15 @@ export function uiSectionMapFeatures(context) {
     items
       .classed('active', active)
       .selectAll('input')
-      .property('checked', active)
-      .property('indeterminate', autoHiddenFeature);
-  }
-
-  function autoHiddenFeature(d) {
-    return context.features().autoHidden(d);
+      .property('checked', active);
   }
 
   function showsFeature(d) {
-    return context.features().enabled(d);
+    return filterSystem.isEnabled(d);
   }
 
   function clickFeature(d3_event, d) {
-    context.features().toggle(d);
+    filterSystem.toggle(d);
   }
 
   function showsLayer(id) {
@@ -122,8 +108,7 @@ export function uiSectionMapFeatures(context) {
   }
 
 
-  context.features()
-    .on('change.map_features', section.reRender);
+  filterSystem.on('filterchange', section.reRender);
 
   return section;
 }

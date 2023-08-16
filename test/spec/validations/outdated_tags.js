@@ -1,147 +1,87 @@
-describe('validations.outdated_tags', function () {
-    var context;
+describe('validationOutdatedTags', () => {
 
-    before(function() {
-        Rapid.fileFetcher.cache().deprecated = [
-          { old: { highway: 'no' } },
-          { old: { highway: 'ford' }, replace: { ford: '*' } }
-        ];
-    });
+  class MockLocalizationSystem {
+    constructor() {}
+    t(id) { return id; }
+  }
 
-    after(function() {
-        Rapid.fileFetcher.cache().deprecated = [];
-    });
+  class MockLocationSystem {
+    constructor() {}
+  }
 
-    beforeEach(function() {
-        context = Rapid.coreContext()
-            .assetPath('../dist/')
-            .init();
-    });
-
-
-    function createWay(tags) {
-        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
-        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags});
-
-        context.perform(
-            Rapid.actionAddEntity(n1),
-            Rapid.actionAddEntity(n2),
-            Rapid.actionAddEntity(w)
-        );
+  class MockContext {
+    constructor() {
+      this.services = {};
+      this.systems = {
+        data:       new Rapid.DataLoaderSystem(this),
+        l10n:       new MockLocalizationSystem(),
+        locations:  new MockLocationSystem(),
+        presets:    new Rapid.PresetSystem(this)
+      };
     }
+  }
 
-    function createRelation(wayTags, relationTags) {
-        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
-        var n3 = Rapid.osmNode({id: 'n-3', loc: [5,5]});
-        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2', 'n-3', 'n-1'], tags: wayTags});
-        var r = Rapid.osmRelation({id: 'r-1', members: [{id: 'w-1'}], tags: relationTags});
+  const validator = Rapid.validationOutdatedTags(new MockContext());
 
-        context.perform(
-            Rapid.actionAddEntity(n1),
-            Rapid.actionAddEntity(n2),
-            Rapid.actionAddEntity(n3),
-            Rapid.actionAddEntity(w),
-            Rapid.actionAddEntity(r)
-        );
-    }
 
-    function validate(validator) {
-        var changes = context.history().changes();
-        var entities = changes.modified.concat(changes.created);
-        var issues = [];
-        entities.forEach(function(entity) {
-            issues = issues.concat(validator(entity, context.graph()));
-        });
-        return issues;
-    }
+  it('has no errors on good tags', () => {
+    const w = Rapid.osmWay({ tags: { highway: 'unclassified' }});
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(0);
+  });
 
-    it('has no errors on init', function(done) {
-        var validator = Rapid.validationOutdatedTags(context);
-        window.setTimeout(function() {   // async, so data will be available
-            var issues = validate(validator);
-            expect(issues).to.have.lengthOf(0);
-            done();
-        }, 20);
-    });
+  it('flags deprecated tag with replacement', () => {
+    const w = Rapid.osmWay({ tags: { highway: 'ford' }});
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(1);
+    const issue = issues[0];
+    expect(issue.type).to.eql('outdated_tags');
+    expect(issue.subtype).to.eql('deprecated_tags');
+    expect(issue.severity).to.eql('warning');
+    expect(issue.entityIds).to.have.lengthOf(1);
+    expect(issue.entityIds[0]).to.eql(w.id);
+  });
 
-    it('has no errors on good tags', function(done) {
-        createWay({'highway': 'unclassified'});
-        var validator = Rapid.validationOutdatedTags(context);
-        window.setTimeout(function() {   // async, so data will be available
-            var issues = validate(validator);
-            expect(issues).to.have.lengthOf(0);
-            done();
-        }, 20);
-    });
+  it('flags deprecated tag with no replacement', () => {
+    const w = Rapid.osmWay({ tags: { highway: 'no' }});
+    const g = new Rapid.Graph([w]);
+    const issues = validator(w, g);
+    expect(issues).to.have.lengthOf(1);
+    const issue = issues[0];
+    expect(issue.type).to.eql('outdated_tags');
+    expect(issue.subtype).to.eql('deprecated_tags');
+    expect(issue.severity).to.eql('warning');
+    expect(issue.entityIds).to.have.lengthOf(1);
+    expect(issue.entityIds[0]).to.eql(w.id);
+  });
 
-    it('flags deprecated tag with replacement', function(done) {
-        createWay({'highway': 'ford'});
-        var validator = Rapid.validationOutdatedTags(context);
-        window.setTimeout(function() {   // async, so data will be available
-            var issues = validate(validator);
-            expect(issues).to.have.lengthOf(1);
-            var issue = issues[0];
-            expect(issue.type).to.eql('outdated_tags');
-            expect(issue.subtype).to.eql('deprecated_tags');
-            expect(issue.severity).to.eql('warning');
-            expect(issue.entityIds).to.have.lengthOf(1);
-            expect(issue.entityIds[0]).to.eql('w-1');
-            done();
-        }, 20);
-    });
+  it('ignores multipolygon tagged on the relation', () => {
+    const w = Rapid.osmWay({ tags: {} });
+    const r = Rapid.osmRelation({ tags: { building: 'yes', type: 'multipolygon' }, members: [{ id: w.id, role: 'outer' }] });
+    const g = new Rapid.Graph([w, r]);
+    const wIssues = validator(w, g);
+    const rIssues = validator(r, g);
+    expect(wIssues).to.have.lengthOf(0);
+    expect(rIssues).to.have.lengthOf(0);
+  });
 
-    it('flags deprecated tag with no replacement', function(done) {
-        createWay({'highway': 'no'});
-        var validator = Rapid.validationOutdatedTags(context);
-        window.setTimeout(function() {   // async, so data will be available
-            var issues = validate(validator);
-            expect(issues).to.have.lengthOf(1);
-            var issue = issues[0];
-            expect(issue.type).to.eql('outdated_tags');
-            expect(issue.subtype).to.eql('deprecated_tags');
-            expect(issue.severity).to.eql('warning');
-            expect(issue.entityIds).to.have.lengthOf(1);
-            expect(issue.entityIds[0]).to.eql('w-1');
-            done();
-        }, 20);
-    });
+  it('flags multipolygon tagged on the outer way', () => {
+    const w = Rapid.osmWay({ tags: { building: 'yes' } });
+    const r = Rapid.osmRelation({ tags: { type: 'multipolygon' }, members: [{ id: w.id, role: 'outer' }] });
+    const g = new Rapid.Graph([w, r]);
+    const wIssues = validator(w, g);
+    const rIssues = validator(r, g);
+    expect(rIssues).to.have.lengthOf(0);
+    expect(wIssues).to.have.lengthOf(1);
 
-    it('ignores way with no relations', function(done) {
-        createWay({});
-        var validator = Rapid.validationOutdatedTags(context);
-        window.setTimeout(function() {   // async, so data will be available
-            var issues = validate(validator);
-            expect(issues).to.have.lengthOf(0);
-            done();
-        }, 20);
-    });
-
-    it('ignores multipolygon tagged on the relation', function(done) {
-        createRelation({}, { type: 'multipolygon', building: 'yes' });
-        var validator = Rapid.validationOutdatedTags(context);
-        window.setTimeout(function() {   // async, so data will be available
-            var issues = validate(validator);
-            expect(issues).to.have.lengthOf(0);
-            done();
-        }, 20);
-    });
-
-    it('flags multipolygon tagged on the outer way', function(done) {
-        createRelation({ building: 'yes' }, { type: 'multipolygon' });
-        var validator = Rapid.validationOutdatedTags(context);
-        window.setTimeout(function() {   // async, so data will be available
-            var issues = validate(validator);
-            expect(issues).to.not.have.lengthOf(0);
-            var issue = issues[0];
-            expect(issue.type).to.eql('outdated_tags');
-            expect(issue.subtype).to.eql('old_multipolygon');
-            expect(issue.entityIds).to.have.lengthOf(2);
-            expect(issue.entityIds[0]).to.eql('w-1');
-            expect(issue.entityIds[1]).to.eql('r-1');
-            done();
-        }, 20);
-    });
+    const issue = wIssues[0];
+    expect(issue.type).to.eql('outdated_tags');
+    expect(issue.subtype).to.eql('old_multipolygon');
+    expect(issue.entityIds).to.have.lengthOf(2);
+    expect(issue.entityIds[0]).to.eql(w.id);
+    expect(issue.entityIds[1]).to.eql(r.id);
+  });
 
 });

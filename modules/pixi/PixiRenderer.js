@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 import { Projection } from '@rapid-sdk/math';
 
+import { osmNote, QAItem } from '../osm';
 import { PixiEvents } from './PixiEvents';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
@@ -65,7 +66,7 @@ export class PixiRenderer extends EventEmitter {
     // Make sure callbacks have `this` bound correctly
     this._tick = this._tick.bind(this);
     this._onHoverChange = this._onHoverChange.bind(this);
-    this._onSelectChange = this._onSelectChange.bind(this);
+    this._onModeChange = this._onModeChange.bind(this);
 
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
@@ -144,37 +145,40 @@ export class PixiRenderer extends EventEmitter {
     this.textures = _sharedTextures;
 
     // Event listeners to respond to any changes in selection or hover
-    context.on('enter.PixiRenderer', this._onSelectChange);
-    context.behaviors.get('hover').on('hoverchanged', this._onHoverChange);
+    context.on('modechange', this._onModeChange);
+    context.behaviors.hover.on('hoverchange', this._onHoverChange);
   }
 
 
   /**
-   * _onSelectChange
-   * Respond to any change in select (called on mode change)
+   * _onModeChange
+   * Respond to any change in selection (called on mode change)
    */
-  _onSelectChange() {
-    const selectedIDs = Array.from(this.context.selectedIDs());
-    const selectedData = this.context.selectedData();
+  _onModeChange(mode) {
     this.scene.clearClass('selected');
 
-    // hacky conversion to get around the id mismatch:
-    for (let dataID of selectedIDs) {
-      let layerID;
-      if (dataID) {
-        const datum = selectedData.get(dataID);
-        if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
-          layerID = 'osm';
-        } else if (datum?.__fbid__) {
-          layerID = 'rapid';
-        } else {
-          // there are other selectable things - we will not select-style them for now :(
-        }
+    for (const [datumID, datum] of this.context.selectedData()) {
+      let layerID = null;
+
+      // hacky - improve?
+      if (datum instanceof osmNote) {
+        layerID = 'notes';
+      } else if (datum instanceof QAItem && datum.service === 'improveOSM') {
+        layerID = datum.service; // 'improveOSM', 'keepRight', 'osmose'
+      } else if (datum.__fbid__) {           // a Rapid feature
+        layerID = 'rapid';
+      } else if (datum.__featurehash__) {  // custom data
+        layerID = 'custom-data';
+      } else if (mode.id === 'select-osm') {   // an OSM feature
+        layerID = 'osm';
+      } else {
+        // other selectable things (photos?) - we will not select-style them for now :(
       }
 
-      if (layerID && dataID) {
-        this.scene.classData(layerID, dataID, 'selected');
+      if (layerID) {
+        this.scene.classData(layerID, datumID, 'selected');
       }
+
     }
 
     this.render();
@@ -191,9 +195,9 @@ export class PixiRenderer extends EventEmitter {
     const dataID = target?.dataID;
 
     const hoverData = target?.data;
-    const mode = this.context.mode();
-    if (mode?.id !== 'select') {
-      this.context.ui().sidebar.hover(hoverData ? [hoverData] : []);
+    const modeID = this.context.mode?.id;
+    if (modeID !== 'select' && modeID !== 'select-osm') {
+      this.context.systems.ui.sidebar.hover(hoverData ? [hoverData] : []);
     }
 
     this.scene.clearClass('hovered');
@@ -410,7 +414,7 @@ export class PixiRenderer extends EventEmitter {
     const pixiProjection = this.pixiProjection;
     const currTransform = context.projection.transform();
     const pixiTransform = pixiProjection.transform();
-    const effectiveZoom = context.map().effectiveZoom();
+    const effectiveZoom = context.systems.map.effectiveZoom();
 
     let offset;
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset

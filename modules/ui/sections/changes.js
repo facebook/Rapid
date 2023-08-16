@@ -1,159 +1,156 @@
 import { select as d3_select } from 'd3-selection';
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
-import { fileFetcher } from '../../core/file_fetcher';
-import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { actionDiscardTags } from '../../actions/discard_tags';
 import { osmChangeset } from '../../osm';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
-import { utilDetect, utilDisplayName, utilDisplayType } from '../../util';
+import { utilDetect } from '../../util';
 
 
 export function uiSectionChanges(context) {
-    var detected = utilDetect();
+  const l10n = context.systems.l10n;
+  let detected = utilDetect();
 
-    var _discardTags = {};
-    fileFetcher.get('discarded')
-        .then(function(d) { _discardTags = d; })
-        .catch(function() { /* ignore */ });
+  let _discardTags = {};
+  const dataLoaderSystem = context.systems.data;
+  dataLoaderSystem.getDataAsync('discarded')
+    .then(d => _discardTags = d)
+    .catch(() => { /* ignore */ });
 
-    var section = uiSection('changes-list', context)
-        .label(function() {
-            var history = context.history();
-            var summary = history.difference().summary();
-            return t('inspector.title_count', { title: t.html('commit.changes'), count: summary.size });
-        })
-        .disclosureContent(renderDisclosureContent);
-
-    function renderDisclosureContent(selection) {
-        var history = context.history();
-        var summary = [...history.difference().summary().values()];
-
-        var container = selection.selectAll('.commit-section')
-            .data([0]);
-
-        var containerEnter = container.enter()
-            .append('div')
-            .attr('class', 'commit-section');
-
-        containerEnter
-            .append('ul')
-            .attr('class', 'changeset-list');
-
-        container = containerEnter
-            .merge(container);
+  let section = uiSection('changes-list', context)
+    .label(() => {
+      const editSystem = context.systems.edits;
+      const summary = editSystem.difference().summary();
+      return l10n.t('inspector.title_count', { title: l10n.tHtml('commit.changes'), count: summary.size });
+    })
+    .disclosureContent(renderDisclosureContent);
 
 
-        var items = container.select('ul').selectAll('li')
-            .data(summary);
+  function renderDisclosureContent(selection) {
+    const editSystem = context.systems.edits;
+    const summary = [...editSystem.difference().summary().values()];
 
-        var itemsEnter = items.enter()
-            .append('li')
-            .attr('class', 'change-item');
+    let container = selection.selectAll('.commit-section')
+      .data([0]);
 
-        var buttons = itemsEnter
-            .append('button')
-            .on('mouseover', mouseover)
-            .on('mouseout', mouseout)
-            .on('click', click);
+    let containerEnter = container.enter()
+      .append('div')
+      .attr('class', 'commit-section');
 
-        buttons
-            .each(function(d) {
-                d3_select(this)
-                    .call(uiIcon('#rapid-icon-' + d.entity.geometry(d.graph), 'pre-text ' + d.changeType));
-            });
+    containerEnter
+      .append('ul')
+      .attr('class', 'changeset-list');
 
-        buttons
-            .append('span')
-            .attr('class', 'change-type')
-            .html(function(d) { return t.html('commit.' + d.changeType) + ' '; });
-
-        buttons
-            .append('strong')
-            .attr('class', 'entity-type')
-            .html(function(d) {
-                var matched = presetManager.match(d.entity, d.graph);
-                return (matched && matched.name()) || utilDisplayType(d.entity.id);
-            });
-
-        buttons
-            .append('span')
-            .attr('class', 'entity-name')
-            .html(function(d) {
-                var name = utilDisplayName(d.entity) || '',
-                    string = '';
-                if (name !== '') {
-                    string += ':';
-                }
-                return string += ' ' + name;
-            });
-
-        items = itemsEnter
-            .merge(items);
+    container = containerEnter
+      .merge(container);
 
 
-        // Download changeset link
-        var changeset = new osmChangeset().update({ id: undefined });
-        var changes = history.changes(actionDiscardTags(history.difference(), _discardTags));
+    let items = container.select('ul').selectAll('li')
+      .data(summary);
 
-        delete changeset.id;  // Export without chnageset_id
+    let itemsEnter = items.enter()
+      .append('li')
+      .attr('class', 'change-item');
 
-        var data = JXON.stringify(changeset.osmChangeJXON(changes));
-        var blob = new Blob([data], {type: 'text/xml;charset=utf-8;'});
-        var fileName = 'changes.osc';
+    let buttons = itemsEnter
+      .append('button')
+      .on('mouseover', mouseover)
+      .on('mouseout', mouseout)
+      .on('click', click);
 
-        var linkEnter = container.selectAll('.download-changes')
-            .data([0])
-            .enter()
-            .append('a')
-            .attr('class', 'download-changes');
+    buttons
+      .each((d, i, nodes) => {
+        const geom = d.entity.geometry(d.graph);
+        d3_select(nodes[i])
+          .call(uiIcon(`#rapid-icon-${geom}`, `pre-text ${d.changeType}`));
+      });
 
-        if (detected.download) {      // All except IE11 and Edge
-            linkEnter                 // download the data as a file
-                .attr('href', window.URL.createObjectURL(blob))
-                .attr('download', fileName);
+    buttons
+      .append('span')
+      .attr('class', 'change-type')
+      .html(d => l10n.tHtml(`commit.${d.changeType}`) + ' ');
 
-        } else {                      // IE11 and Edge
-            linkEnter                 // open data uri in a new tab
-                .attr('target', '_blank')
-                .on('click.download', function() {
-                    navigator.msSaveBlob(blob, fileName);
-                });
+    buttons
+      .append('strong')
+      .attr('class', 'entity-type')
+      .html(d => {
+        const matched = context.systems.presets.match(d.entity, d.graph);
+        return (matched && matched.name()) || l10n.displayType(d.entity.id);
+      });
+
+    buttons
+      .append('span')
+      .attr('class', 'entity-name')
+      .html(d => {
+        const name = l10n.displayName(d.entity.tags);
+        let string = '';
+        if (name !== '') {
+          string += ':';
         }
+        return string += ' ' + name;
+      });
 
-        linkEnter
-            .call(uiIcon('#rapid-icon-load', 'inline'))
-            .append('span')
-            .html(t.html('commit.download_changes'));
-
-
-        function mouseover(d) {
-            if (d.entity) {
-                context.surface().selectAll(
-                    utilEntityOrMemberSelector([d.entity.id], context.graph())
-                ).classed('hover', true);
-            }
-        }
+    items = itemsEnter
+      .merge(items);
 
 
-        function mouseout() {
-            context.surface().selectAll('.hover')
-                .classed('hover', false);
-        }
+    // Download changeset link
+    let changeset = new osmChangeset().update({ id: undefined });
+    const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), _discardTags));
 
+    delete changeset.id;  // Export without chnageset_id
 
-        function click(d3_event, change) {
-            if (change.changeType !== 'deleted') {
-                var entity = change.entity;
-                context.map().zoomToEase(entity);
-                context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
-                    .classed('hover', true);
-            }
-        }
+    const data = JXON.stringify(changeset.osmChangeJXON(changes));
+    const blob = new Blob([data], {type: 'text/xml;charset=utf-8;'});
+    const fileName = 'changes.osc';
+
+    let linkEnter = container.selectAll('.download-changes')
+      .data([0])
+      .enter()
+      .append('a')
+      .attr('class', 'download-changes');
+
+    if (detected.download) {    // All except IE11 and Edge
+      linkEnter                 // download the data as a file
+        .attr('href', window.URL.createObjectURL(blob))
+        .attr('download', fileName);
+
+    } else {                    // IE11 and Edge
+      linkEnter                 // open data uri in a new tab
+        .attr('target', '_blank')
+        .on('click.download', () => navigator.msSaveBlob(blob, fileName));
     }
 
-    return section;
+    linkEnter
+      .call(uiIcon('#rapid-icon-load', 'inline'))
+      .append('span')
+      .html(l10n.tHtml('commit.download_changes'));
+
+
+    function mouseover(d) {
+      if (d.entity) {
+        context.surface().selectAll(
+          utilEntityOrMemberSelector([d.entity.id], context.graph())
+        ).classed('hover', true);
+      }
+    }
+
+    function mouseout() {
+      context.surface().selectAll('.hover')
+        .classed('hover', false);
+    }
+
+    function click(d3_event, change) {
+      if (change.changeType !== 'deleted') {
+        let entity = change.entity;
+        context.systems.map.fitEntitiesEase(entity);
+        context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
+          .classed('hover', true);
+      }
+    }
+  }
+
+  return section;
 }

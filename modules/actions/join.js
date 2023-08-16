@@ -5,7 +5,6 @@ import { actionDeleteRelation } from './delete_relation';
 import { actionDeleteWay } from './delete_way';
 import { osmIsInterestingTag } from '../osm/tags';
 import { osmJoinWays } from '../osm/multipolygon';
-import { prefs } from '../core/preferences';
 
 
 // Join ways at the end node they share.
@@ -16,7 +15,7 @@ import { prefs } from '../core/preferences';
 //   https://github.com/systemed/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/MergeWaysAction.as
 //   https://github.com/openstreetmap/josm/blob/mirror/src/org/openstreetmap/josm/actions/CombineWayAction.java
 //
-export function actionJoin(ids) {
+export function actionJoin(ids, options = {}) {
 
     function groupEntitiesByGeometry(graph) {
         var entities = ids.map(function(id) { return graph.entity(id); });
@@ -75,9 +74,8 @@ export function actionJoin(ids) {
             graph = actionDeleteWay(way.id)(graph);
         });
 
-        // Rapid tagnosticRoadCombine
-        var tagnosticRoadCombine = prefs('rapid-internal-feature.tagnosticRoadCombine') === 'true';
-        if (tagnosticRoadCombine && ways.length && ways[0].tags.highway) {
+        // Rapid tagnosticRoadCombine - allow combining highways with conflicting tags
+        if (options.tagnosticRoadCombine && ways.length && ways[0].tags.highway) {
             var newTags = Object.assign({}, survivor.tags);
             newTags.highway = ways[0].tags.highway;
             survivor = survivor.update({ tags: newTags });
@@ -201,9 +199,8 @@ export function actionJoin(ids) {
                 } else if (tags[k] && osmIsInterestingTag(k) && tags[k] !== way.tags[k]) {
                     conflicting = true;
 
-                    // Rapid tagnosticRoadCombine
-                    var tagnosticRoadCombine = prefs('rapid-internal-feature.tagnosticRoadCombine') === 'true';
-                    if (k === 'highway' && tagnosticRoadCombine && !window.mocha) {
+                    // Rapid tagnosticRoadCombine - allow combining highways with conflicting tags
+                    if (k === 'highway' && options.tagnosticRoadCombine && !window.mocha) {
                         conflicting = false;
                     }
                 }

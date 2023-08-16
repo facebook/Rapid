@@ -72,7 +72,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -84,7 +89,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -96,7 +106,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -108,7 +123,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -121,7 +141,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result.entity('a').version).to.eql('2');
         expect(result.entity('a').tags).to.eql(mergedTags);
@@ -135,7 +160,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result.entity('a').version).to.eql('2');
         expect(result.entity('a').tags).to.eql(mergedTags);
@@ -152,7 +182,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -167,7 +202,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result.entity('a').version).to.eql('2');
         expect(result.entity('a').tags).to.eql(mergedTags);
@@ -184,7 +224,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('w1').version).to.eql('2');
         expect(result.entity('w1').tags).to.eql(mergedTags);
@@ -200,7 +245,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote, r2, r3]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('w1').version).to.eql('2');
         expect(result.entity('w1').tags).to.eql(mergedTags);
@@ -219,7 +269,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local, r2, r3]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('w1').version).to.eql('2');
         expect(result.entity('w1').tags).to.eql(mergedTags);
@@ -237,7 +292,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local, r1, r2]);
         const remoteGraph = makeGraph([remote, r3, r4]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
 
         expect(result.entity('w1').version).to.eql('2');
@@ -256,7 +316,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local, r1, r2]);
         const remoteGraph = makeGraph([remote, r3, r4]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -268,7 +333,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('p1').version).to.eql('2');
         expect(result.entity('p1').loc).to.eql(remoteLoc);
@@ -281,7 +351,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -297,7 +372,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote, s1, s2, s3, s4, w4]);
-        const action = Rapid.actionMergeRemoteChanges('r', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
         expect(result).to.eql(localGraph);
       });
@@ -312,7 +392,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('r', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
         expect(result.entity('r').version).to.eql('2');
         expect(result.entity('r').tags).to.eql(mergedTags);
@@ -328,7 +413,12 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags);
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         action(localGraph);
         expect(action.conflicts()).not.to.be.empty;
       });
@@ -347,7 +437,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags).withOption('force_local');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_local'
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result.entity('a').version).to.eql('2');
         expect(result.entity('a').tags).to.eql(localTags);
@@ -363,7 +459,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('a', localGraph, remoteGraph, discardTags).withOption('force_remote');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_remote'
+        };
+        const action = Rapid.actionMergeRemoteChanges('a', opts);
         const result = action(localGraph);
         expect(result.entity('a').version).to.eql('2');
         expect(result.entity('a').tags).to.eql(remoteTags);
@@ -381,7 +483,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local, r1, r2]);
         const remoteGraph = makeGraph([remote, r3, r4]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags).withOption('force_local');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_local'
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('w1').version).to.eql('2');
         expect(result.entity('w1').tags).to.eql(localTags);
@@ -397,7 +505,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local, r1, r2]);
         const remoteGraph = makeGraph([remote, r3, r4]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags).withOption('force_remote');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_remote'
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('w1').version).to.eql('2');
         expect(result.entity('w1').tags).to.eql(remoteTags);
@@ -413,7 +527,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags).withOption('force_local');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_local'
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('p1').version).to.eql('2');
         expect(result.entity('p1').loc).to.eql(localLoc);
@@ -426,7 +546,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags).withOption('force_remote');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_remote'
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('p1').version).to.eql('2');
         expect(result.entity('p1').loc).to.eql(remoteLoc);
@@ -440,7 +566,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('w1').update({ nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local, localr1, r2]);
         const remoteGraph = makeGraph([remote, r3, r4]);
-        const action = Rapid.actionMergeRemoteChanges('w1', localGraph, remoteGraph, discardTags).withOption('force_remote');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_remote'
+        };
+        const action = Rapid.actionMergeRemoteChanges('w1', opts);
         const result = action(localGraph);
         expect(result.entity('w1').nodes).to.eql(remoteNodes);
         expect(result.hasEntity('r1')).to.eql(localr1);
@@ -458,7 +590,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
         const localGraph = makeGraph([local, r1, r2, r3, r4, w3]);
         const remoteGraph = makeGraph([remote, s1, s2, s3, s4, w4]);
-        const action = Rapid.actionMergeRemoteChanges('r', localGraph, remoteGraph, discardTags).withOption('force_local');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_local'
+        };
+        const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
         expect(result.entity('r').version).to.eql('2');
         expect(result.entity('r').tags).to.eql(localTags);
@@ -474,7 +612,13 @@ describe('actionMergeRemoteChanges', () => {
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
         const localGraph = makeGraph([local, r1, r2, r3, r4, w3]);
         const remoteGraph = makeGraph([remote, s1, s2, s3, s4, w4]);
-        const action = Rapid.actionMergeRemoteChanges('r', localGraph, remoteGraph, discardTags).withOption('force_remote');
+        const opts = {
+          localGraph: localGraph,
+          remoteGraph: remoteGraph,
+          discardTags: discardTags,
+          strategy: 'force_remote'
+        };
+        const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
         expect(result.entity('r').version).to.eql('2');
         expect(result.entity('r').tags).to.eql(remoteTags);

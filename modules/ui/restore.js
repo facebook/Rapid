@@ -1,10 +1,9 @@
-import { t } from '../core/localizer';
 import { uiModal } from './modal';
 
 
 export function uiRestore(context) {
   return function(selection) {
-    if (!context.history().hasRestorableChanges()) return;
+    if (!context.systems.edits.hasRestorableChanges()) return;
 
     let modalSelection = uiModal(selection, true);
 
@@ -17,13 +16,13 @@ export function uiRestore(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h3')
-      .html(t.html('restore.heading'));
+      .text(context.t('restore.heading'));
 
     introModal
       .append('div')
       .attr('class','modal-section')
       .append('p')
-      .html(t.html('restore.description'));
+      .text(context.t('restore.description'));
 
     let buttonWrap = introModal
       .append('div')
@@ -33,7 +32,7 @@ export function uiRestore(context) {
       .append('button')
       .attr('class', 'restore')
       .on('click', () => {
-        context.history().restore();
+        context.systems.edits.restore();
         modalSelection.remove();
       });
 
@@ -45,13 +44,13 @@ export function uiRestore(context) {
 
     restore
       .append('div')
-      .html(t.html('restore.restore'));
+      .text(context.t('restore.restore'));
 
     let reset = buttonWrap
       .append('button')
       .attr('class', 'reset')
       .on('click', () => {
-        context.history().clearSaved();
+        context.systems.edits.clearSaved();
         modalSelection.remove();
       });
 
@@ -63,7 +62,7 @@ export function uiRestore(context) {
 
     reset
       .append('div')
-      .html(t.html('restore.reset'));
+      .text(context.t('restore.reset'));
 
     restore.node().focus();
   };

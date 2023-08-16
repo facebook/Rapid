@@ -2,7 +2,6 @@ import { Extent, vecAdd } from '@rapid-sdk/math';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 
-import { localizer } from '../../core/localizer';
 import { uiToggle } from '../toggle';
 
 function clamp(num, min, max) {
@@ -82,7 +81,7 @@ export class UiCurtain {
 
     // register event handlers
     d3_select(window).on('resize.curtain', this.resize);
-    this.context.map().on('move', this.redraw);
+    this.context.systems.map.on('move', this.redraw);
 
     this.resize();   // get the width/height
   }
@@ -109,7 +108,7 @@ export class UiCurtain {
 
     // unregister event handlers
     d3_select(window).on('resize.curtain', null);
-    this.context.map().off('move', this.redraw);
+    this.context.systems.map.off('move', this.redraw);
   }
 
 
@@ -390,7 +389,7 @@ export class UiCurtain {
       } else {   // tooltip to the side of the reveal..
         tipY = reveal.top + (reveal.height / 2) - (tip.height / 2);
 
-        if (localizer.textDirection() === 'rtl') {
+        if (this.context.systems.l10n.textDirection() === 'rtl') {
           if (reveal.left - tip.width - ARROW < 70) {
             placement = 'right';
             tipX = reveal.right + ARROW;

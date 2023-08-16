@@ -75,22 +75,6 @@ which makes hot code replacement tricky.  (ES6 module exports are
 Because of this, the parts of Rapid which are designed for customization are exported
 as live bound objects that can be overridden at runtime _before initializing the Rapid context_.
 
-### Services
-
-The `Rapid.services` object includes code that talks to other web services.
-
-To replace the OSM service with a custom service that exactly mimics the default OSM service:
-```js
-Rapid.services.osm = serviceMyOSM;
-```
-
-Some services may be removed entirely.  For example, to remove the Mapillary service:
-```js
-Rapid.services.mapillary = undefined;
-// or
-delete Rapid.services.mapillary;
-```
-
 
 ### Background Imagery
 

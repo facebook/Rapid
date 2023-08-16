@@ -2,8 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilCleanTags } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { presetManager } from '../presets';
-import { t, localizer } from '../core/localizer';
 import { actionChangeTags } from '../actions/change_tags';
 import { uiIcon } from './icon';
 import { utilRebind } from '../util';
@@ -28,7 +26,7 @@ export function uiEntityEditor(context) {
     var _newFeature;
 
     var _sections;
-
+    var _init = false;
 
     // Returns a single object containing the tags of all the given entities.
     // Example:
@@ -118,6 +116,7 @@ export function uiEntityEditor(context) {
 
     function entityEditor(selection) {
         var combinedTags = getCombinedTags(_entityIDs, context.graph());
+        const isRTL = context.systems.l10n.isRTL();
 
         // Header
         var header = selection.selectAll('.header')
@@ -131,7 +130,7 @@ export function uiEntityEditor(context) {
         headerEnter
             .append('button')
             .attr('class', 'preset-reset preset-choose')
-            .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-forward' : '#rapid-icon-backward'));
+            .call(uiIcon(isRTL ? '#rapid-icon-forward' : '#rapid-icon-backward'));
 
         headerEnter
             .append('button')
@@ -147,7 +146,7 @@ export function uiEntityEditor(context) {
             .merge(headerEnter);
 
         header.selectAll('h3')
-            .html(_entityIDs.length === 1 ? t.html('inspector.edit') : t.html('rapid_multiselect'));
+            .html(_entityIDs.length === 1 ? context.tHtml('inspector.edit') : context.tHtml('rapid_multiselect'));
 
         header.selectAll('.preset-reset')
             .on('click', function() {
@@ -175,7 +174,7 @@ export function uiEntityEditor(context) {
                 }),
                 uiSectionEntityIssues(context),
                 uiSectionPresetFields(context).on('change', changeTags).on('revert', revertTags),
-                uiSectionRawTagEditor('raw-tag-editor', context).on('change', changeTags),
+                uiSectionRawTagEditor(context, 'raw-tag-editor').on('change', changeTags),
                 uiSectionRawMemberEditor(context),
                 uiSectionRawMembershipEditor(context)
             ];
@@ -197,10 +196,13 @@ export function uiEntityEditor(context) {
             body.call(section.render);
         });
 
-        context.history()
-            .on('change.entity-editor', historyChanged);
+        if (!_init) {
+            context.systems.edits
+            .on('change', _onChange);
+            _init = true;
+        }
 
-        function historyChanged(difference) {
+        function _onChange(difference) {
             if (selection.selectAll('.entity-editor').empty()) return;
             if (_state === 'hide') return;
             var significant = !difference ||
@@ -233,7 +235,7 @@ export function uiEntityEditor(context) {
 
 
     // Tag changes that fire on input can all get coalesced into a single
-    // history operation when the user leaves the field.  #2342
+    // history operation when the user leaves the field.  iD#2342
     // Use explicit entityIDs in case the selection changes before the event is fired.
     function changeTags(entityIDs, changed, onInput) {
 
@@ -272,7 +274,7 @@ export function uiEntityEditor(context) {
                 return graph;
             };
 
-            var annotation = t('operations.change_tags.annotation');
+            var annotation = context.t('operations.change_tags.annotation');
 
             if (_coalesceChanges) {
                 context.overwrite(combinedAction, annotation);
@@ -284,7 +286,7 @@ export function uiEntityEditor(context) {
 
         // if leaving field (blur event), rerun validation
         if (!onInput) {
-            context.validator().validate();
+            context.systems.validator.validate();
         }
     }
 
@@ -328,7 +330,7 @@ export function uiEntityEditor(context) {
                 return graph;
             };
 
-            var annotation = t('operations.change_tags.annotation');
+            var annotation = context.t('operations.change_tags.annotation');
 
             if (_coalesceChanges) {
                 context.overwrite(combinedAction, annotation);
@@ -338,7 +340,7 @@ export function uiEntityEditor(context) {
             }
         }
 
-        context.validator().validate();
+        context.systems.validator.validate();
     }
 
 
@@ -383,6 +385,7 @@ export function uiEntityEditor(context) {
 
 
     function loadActivePresets(isForNewSelection) {
+        var presetSystem = context.systems.presets;
         var graph = context.graph();
 
         var counts = {};
@@ -391,7 +394,7 @@ export function uiEntityEditor(context) {
             var entity = graph.hasEntity(_entityIDs[i]);
             if (!entity) return;
 
-            var match = presetManager.match(entity, graph);
+            var match = presetSystem.match(entity, graph);
 
             if (!counts[match.id]) counts[match.id] = 0;
             counts[match.id] += 1;
@@ -400,7 +403,7 @@ export function uiEntityEditor(context) {
         var matches = Object.keys(counts).sort(function(p1, p2) {
             return counts[p2] - counts[p1];
         }).map(function(pID) {
-            return presetManager.item(pID);
+            return presetSystem.item(pID);
         });
 
         if (!isForNewSelection) {

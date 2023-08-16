@@ -1,5 +1,6 @@
-import { osmEntity } from './entity';
 import { Extent } from '@rapid-sdk/math';
+
+import { osmEntity } from './entity';
 
 
 export function osmChangeset() {

@@ -1,11 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { utilRebind } from '../../util/rebind';
-import { t } from '../../core/localizer';
 import { actionReverse } from '../../actions/reverse';
 import { osmOneWayTags } from '../../osm';
 import { uiIcon } from '../icon';
@@ -14,220 +10,221 @@ export { uiFieldCheck as uiFieldDefaultCheck };
 export { uiFieldCheck as uiFieldOnewayCheck };
 
 
-export function uiFieldCheck(field, context) {
-    var dispatch = d3_dispatch('change');
-    var options = field.options;
-    var values = [];
-    var texts = [];
+export function uiFieldCheck(context, uifield) {
+  const dispatch = d3_dispatch('change');
+  let values = [];
+  let texts = [];
 
-    var _tags;
+  let input = d3_select(null);
+  let text = d3_select(null);
+  let label = d3_select(null);
+  let reverser = d3_select(null);
 
-    var input = d3_select(null);
-    var text = d3_select(null);
-    var label = d3_select(null);
-    var reverser = d3_select(null);
-
-    var _impliedYes;
-    var _entityIDs = [];
-    var _value;
+  let _tags;
+  let _impliedYes;
+  let _entityIDs = [];
+  let _value;
 
 
-    if (options) {
-        for (var i in options) {
-            var v = options[i];
-            values.push(v === 'undefined' ? undefined : v);
-            texts.push(field.t.html('options.' + v, { 'default': v }));
+  // Prepare the values and texts that this checkbox works with
+  const options = uifield.presetField.options;
+  if (Array.isArray(options)) {
+    for (const v of options) {
+      values.push(v === 'undefined' ? undefined : v);
+      texts.push(uifield.tHtml(`options.${v}`, { 'default': v }));
+    }
+  } else {
+    values = [undefined, 'yes'];
+    texts = [context.tHtml('inspector.unknown'), context.tHtml('inspector.check.yes')];
+    if (uifield.type !== 'defaultCheck') {
+      values.push('no');
+      texts.push(context.tHtml('inspector.check.no'));
+    }
+  }
+
+
+  // Checks tags to see whether an undefined value is "Assumed to be Yes"
+  function checkImpliedYes() {
+    _impliedYes = (uifield.id === 'oneway_yes');
+
+    // hack: pretend `oneway` field is a `oneway_yes` field
+    // where implied oneway tag exists (e.g. `junction=roundabout`) iD#2220, iD#1841
+    if (uifield.id === 'oneway' && _entityIDs.length) {
+      const entity = context.entity(_entityIDs[0]);
+      for (let key in entity.tags) {
+        if (key in osmOneWayTags && (entity.tags[key] in osmOneWayTags[key])) {
+          _impliedYes = true;
+          texts[0] = context.tHtml('_tagging.presets.fields.oneway_yes.options.undefined');
+          break;
         }
-    } else {
-        values = [undefined, 'yes'];
-        texts = [t.html('inspector.unknown'), t.html('inspector.check.yes')];
-        if (field.type !== 'defaultCheck') {
-            values.push('no');
-            texts.push(t.html('inspector.check.no'));
-        }
+      }
+    }
+  }
+
+
+  function reverserHidden() {
+    if (!context.container().select('div.inspector-hover').empty()) return true;
+    return !(_value === 'yes' || (_impliedYes && !_value));
+  }
+
+
+  function reverserSetText(selection) {
+    const entity = _entityIDs.length && context.hasEntity(_entityIDs[0]);
+    if (reverserHidden() || !entity) return selection;
+
+    const first = entity.first();
+    const last = entity.isClosed() ? entity.nodes[entity.nodes.length - 2] : entity.last();
+    const pseudoDirection = first < last;
+    const icon = pseudoDirection ? '#rapid-icon-forward' : '#rapid-icon-backward';
+
+    selection.selectAll('.reverser-span')
+      .html(context.tHtml('inspector.check.reverser'))
+      .call(uiIcon(icon, 'inline'));
+
+    return selection;
+  }
+
+
+  let check = function(selection) {
+    checkImpliedYes();
+
+    label = selection.selectAll('.form-field-input-wrap')
+      .data([0]);
+
+    let enter = label.enter()
+      .append('label')
+      .attr('class', 'form-field-input-wrap form-field-input-check');
+
+    enter
+      .append('input')
+      .property('indeterminate', uifield.type !== 'defaultCheck')
+      .attr('type', 'checkbox')
+      .attr('id', uifield.uid);
+
+    enter
+      .append('span')
+      .html(texts[0])
+      .attr('class', 'value');
+
+    if (uifield.type === 'onewayCheck') {
+      enter
+        .append('button')
+        .attr('class', 'reverser' + (reverserHidden() ? ' hide' : ''))
+        .append('span')
+        .attr('class', 'reverser-span');
     }
 
+    label = label.merge(enter);
+    input = label.selectAll('input');
+    text = label.selectAll('span.value');
 
-    // Checks tags to see whether an undefined value is "Assumed to be Yes"
-    function checkImpliedYes() {
-        _impliedYes = (field.id === 'oneway_yes');
+    input
+      .on('click', function(d3_event) {
+        d3_event.stopPropagation();
+        const key = uifield.key;
+        let tagChange = {};
 
-        // hack: pretend `oneway` field is a `oneway_yes` field
-        // where implied oneway tag exists (e.g. `junction=roundabout`) #2220, #1841
-        if (field.id === 'oneway') {
-            var entity = context.entity(_entityIDs[0]);
-            for (var key in entity.tags) {
-                if (key in osmOneWayTags && (entity.tags[key] in osmOneWayTags[key])) {
-                    _impliedYes = true;
-                    texts[0] = t.html('_tagging.presets.fields.oneway_yes.options.undefined');
-                    break;
-                }
-            }
+        if (Array.isArray(_tags[key])) {
+          if (values.indexOf('yes') !== -1) {
+            tagChange[key] = 'yes';
+          } else {
+            tagChange[key] = values[0];
+          }
+        } else {
+          tagChange[key] = values[(values.indexOf(_value) + 1) % values.length];
         }
+
+        // Don't cycle through `alternating` or `reversible` states - iD#4970
+        // (They are supported as translated strings, but should not toggle with clicks)
+        if (tagChange[key] === 'reversible' || tagChange[key] === 'alternating') {
+          tagChange[key] = values[0];
+        }
+
+        dispatch.call('change', this, tagChange);
+      });
+
+
+    if (uifield.type === 'onewayCheck') {
+      reverser = label.selectAll('.reverser');
+
+      reverser
+        .call(reverserSetText)
+        .on('click', function(d3_event) {
+          d3_event.preventDefault();
+          d3_event.stopPropagation();
+          if (!_entityIDs.length) return;
+
+          context.perform(
+            function(graph) {
+              for (const entityID of _entityIDs) {
+                graph = actionReverse(entityID)(graph);
+              }
+              return graph;
+            },
+            context.t('operations.reverse.annotation.line', { n: 1 })
+          );
+
+          // must manually revalidate since no 'change' event was dispatched
+          context.systems.validator.validate();
+
+          d3_select(this)
+            .call(reverserSetText);
+        });
+    }
+  };
+
+
+  check.entityIDs = function(val) {
+    if (!arguments.length) return _entityIDs;
+    _entityIDs = val;
+    return check;
+  };
+
+
+  check.tags = function(tags) {
+    _tags = tags;
+    const key = uifield.key;
+
+    function isChecked(val) {
+      return val !== 'no' && val !== '' && val !== undefined && val !== null;
     }
 
-
-    function reverserHidden() {
-        if (!context.container().select('div.inspector-hover').empty()) return true;
-        return !(_value === 'yes' || (_impliedYes && !_value));
+    function textFor(val) {
+      if (val === '') val = undefined;
+      const index = values.indexOf(val);
+      return index === -1 ? `"${val}"` : texts[index];
     }
 
+    checkImpliedYes();
+    let isMixed = Array.isArray(tags[key]);
+    _value = !isMixed && tags[key] && tags[key].toLowerCase();
 
-    function reverserSetText(selection) {
-        var entity = _entityIDs.length && context.hasEntity(_entityIDs[0]);
-        if (reverserHidden() || !entity) return selection;
-
-        var first = entity.first();
-        var last = entity.isClosed() ? entity.nodes[entity.nodes.length - 2] : entity.last();
-        var pseudoDirection = first < last;
-        var icon = pseudoDirection ? '#rapid-icon-forward' : '#rapid-icon-backward';
-
-        selection.selectAll('.reverser-span')
-            .html(t.html('inspector.check.reverser'))
-            .call(uiIcon(icon, 'inline'));
-
-        return selection;
+    if (uifield.type === 'onewayCheck' && (_value === '1' || _value === '-1')) {
+      _value = 'yes';
     }
 
+    input
+      .property('indeterminate', isMixed || (uifield.type !== 'defaultCheck' && !_value))
+      .property('checked', isChecked(_value));
 
-    var check = function(selection) {
-        checkImpliedYes();
+    text
+      .html(isMixed ? context.tHtml('inspector.multiple_values') : textFor(_value))
+      .classed('mixed', isMixed);
 
-        label = selection.selectAll('.form-field-input-wrap')
-            .data([0]);
+    label
+      .classed('set', !!_value);
 
-        var enter = label.enter()
-            .append('label')
-            .attr('class', 'form-field-input-wrap form-field-input-check');
-
-        enter
-            .append('input')
-            .property('indeterminate', field.type !== 'defaultCheck')
-            .attr('type', 'checkbox')
-            .attr('id', field.domId);
-
-        enter
-            .append('span')
-            .html(texts[0])
-            .attr('class', 'value');
-
-        if (field.type === 'onewayCheck') {
-            enter
-                .append('button')
-                .attr('class', 'reverser' + (reverserHidden() ? ' hide' : ''))
-                .append('span')
-                .attr('class', 'reverser-span');
-        }
-
-        label = label.merge(enter);
-        input = label.selectAll('input');
-        text = label.selectAll('span.value');
-
-        input
-            .on('click', function(d3_event) {
-                d3_event.stopPropagation();
-                var t = {};
-
-                if (Array.isArray(_tags[field.key])) {
-                    if (values.indexOf('yes') !== -1) {
-                        t[field.key] = 'yes';
-                    } else {
-                        t[field.key] = values[0];
-                    }
-                } else {
-                    t[field.key] = values[(values.indexOf(_value) + 1) % values.length];
-                }
-
-                // Don't cycle through `alternating` or `reversible` states - #4970
-                // (They are supported as translated strings, but should not toggle with clicks)
-                if (t[field.key] === 'reversible' || t[field.key] === 'alternating') {
-                    t[field.key] = values[0];
-                }
-
-                dispatch.call('change', this, t);
-            });
-
-        if (field.type === 'onewayCheck') {
-            reverser = label.selectAll('.reverser');
-
-            reverser
-                .call(reverserSetText)
-                .on('click', function(d3_event) {
-                    d3_event.preventDefault();
-                    d3_event.stopPropagation();
-                    context.perform(
-                        function(graph) {
-                            for (var i in _entityIDs) {
-                                graph = actionReverse(_entityIDs[i])(graph);
-                            }
-                            return graph;
-                        },
-                        t('operations.reverse.annotation.line', { n: 1 })
-                    );
-
-                    // must manually revalidate since no 'change' event was called
-                    context.validator().validate();
-
-                    d3_select(this)
-                        .call(reverserSetText);
-                });
-        }
-    };
+    if (uifield.type === 'onewayCheck') {
+      reverser
+        .classed('hide', reverserHidden())
+        .call(reverserSetText);
+    }
+  };
 
 
-    check.entityIDs = function(val) {
-        if (!arguments.length) return _entityIDs;
-        _entityIDs = val;
-        return check;
-    };
+  check.focus = function() {
+    input.node().focus();
+  };
 
-
-    check.tags = function(tags) {
-
-        _tags = tags;
-
-        function isChecked(val) {
-            return val !== 'no' && val !== '' && val !== undefined && val !== null;
-        }
-
-        function textFor(val) {
-            if (val === '') val = undefined;
-            var index = values.indexOf(val);
-            return (index !== -1 ? texts[index] : ('"' + val + '"'));
-        }
-
-        checkImpliedYes();
-
-        var isMixed = Array.isArray(tags[field.key]);
-
-        _value = !isMixed && tags[field.key] && tags[field.key].toLowerCase();
-
-        if (field.type === 'onewayCheck' && (_value === '1' || _value === '-1')) {
-            _value = 'yes';
-        }
-
-        input
-            .property('indeterminate', isMixed || (field.type !== 'defaultCheck' && !_value))
-            .property('checked', isChecked(_value));
-
-        text
-            .html(isMixed ? t.html('inspector.multiple_values') : textFor(_value))
-            .classed('mixed', isMixed);
-
-        label
-            .classed('set', !!_value);
-
-        if (field.type === 'onewayCheck') {
-            reverser
-                .classed('hide', reverserHidden())
-                .call(reverserSetText);
-        }
-    };
-
-
-    check.focus = function() {
-        input.node().focus();
-    };
-
-    return utilRebind(check, dispatch, 'on');
+  return utilRebind(check, dispatch, 'on');
 }

@@ -1,11 +1,7 @@
 import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
-import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
-import { prefs } from '../../core/preferences';
-import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
-import { services } from '../../services';
 import { uiIcon } from '../icon';
 
 import { UiCurtain } from './UiCurtain';
@@ -17,6 +13,9 @@ import { uiIntroLine } from './line';
 import { uiIntroBuilding } from './building';
 import { uiIntroStartEditing } from './start_editing';
 import { uiIntroRapid } from './rapid';
+
+
+const INTRO_IMAGERY = 'EsriWorldImageryClarity';
 
 const chapterUi = {
   welcome: uiIntroWelcome,
@@ -42,76 +41,84 @@ const chapterFlow = [
 
 
 export function uiIntro(context, skipToRapid) {
-  const INTRO_IMAGERY = 'EsriWorldImageryClarity';
   let _introGraph = {};
   let _rapidGraph = {};
   let _currChapter;
 
 
   function intro(selection) {
+    const dataLoaderSystem = context.systems.data;
     Promise.all([
-      fileFetcher.get('intro_rapid_graph'),
-      fileFetcher.get('intro_graph')
+      dataLoaderSystem.getDataAsync('intro_rapid_graph'),
+      dataLoaderSystem.getDataAsync('intro_graph')
     ])
     .then(values => {
       const rapidData = values[0];
       const introData = values[1];
 
-      for (const id in rapidData) {
+      for (const [id, data] of Object.entries(rapidData)) {
         if (!_rapidGraph[id]) {
-          _rapidGraph[id] = osmEntity(localize(rapidData[id]));
+          _rapidGraph[id] = osmEntity(localize(context, data));
         }
       }
-      for (const id in introData) {
+      for (const [id, data] of Object.entries(introData)) {
         if (!_introGraph[id]) {
-          _introGraph[id] = osmEntity(localize(introData[id]));
+          _introGraph[id] = osmEntity(localize(context, data));
         }
       }
 
-      selection.call(startIntro, skipToRapid);
+      selection.call(startIntro);
     });
   }
 
 
   function startIntro(selection) {
-    context.inIntro(true);
-    context.enter('browse');
+    const edits = context.systems.edits;
+    const imagery = context.systems.imagery;
+    const l10n = context.systems.l10n;
+    const mapwithai = context.services.mapwithai;
+    const osm = context.services.osm;
+    const prefs = context.systems.storage;
+    const rapid = context.systems.rapid;
+    const urlhash = context.systems.urlhash;
 
-    const osm = context.connection();
-    const imagery = context.imagery();
-    const history = context.history();
+    urlhash.disable();
+    context.inIntro = true;
+    context.enter('browse');
 
     // Save current state
     const original = {
       hash: window.location.hash,
-      transform: context.map().transform(),
+      transform: context.systems.map.transform(),
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
-      layerEnabled: new Map(),  // Map(layerID -> Boolean)
-      historyJSON: history.toJSON()
+      layersEnabled: new Set(),     // Set(layerID)
+      datasetsEnabled: new Set(),   // Set(datasetID)
+      edits: edits.toJSON()
     };
 
     // Remember which layers were enabled before, enable only certain ones in the walkthrough.
     for (const [layerID, layer] of context.scene().layers) {
-      original.layerEnabled.set(layerID, layer.enabled);
+      if (layer.enabled) {
+        original.layersEnabled.add(layerID);
+      }
     }
-    context.scene().onlyLayers(['background','osm','labels']);
+    context.scene().onlyLayers(['background', 'osm', 'labels']);
 
     // Show sidebar and disable the sidebar resizing button
-    // (this needs to be before `context.inIntro(true)`)
-    context.ui().sidebar.expand();
+    context.systems.ui.sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
     // Disable OSM
     if (osm) {
-      osm.toggle(false).reset();
+      osm.toggle(false);
     }
 
     // Load walkthrough data
-    history.reset();
-    history.merge(Object.values(_introGraph));
-    history.checkpoint('initial');
+    edits.reset();
+    edits.merge(Object.values(_introGraph));
+    edits.setCheckpoint('initial');
 
     // Setup imagery
     const introSource = imagery.findSource(INTRO_IMAGERY) || imagery.findSource('Bing');
@@ -120,36 +127,40 @@ export function uiIntro(context, skipToRapid) {
     imagery.brightness = 1;
 
     // Setup Rapid Walkthrough dataset and disable service
-    let rapidDatasets = context.rapidContext().datasets();
-    const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
-    Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
+    for (const [datasetID, dataset] of rapid.datasets) {
+      if (dataset.enabled) {
+        original.datasetsEnabled.add(datasetID);
+        dataset.enabled = false;
+      }
+    }
 
-    rapidDatasets.rapid_intro_graph = {
+    rapid.datasets.set('rapid_intro_graph', {
       id: 'rapid_intro_graph',
       beta: false,
       added: true,
       enabled: true,
       conflated: false,
-      service: 'fbml',
+      service: 'mapwithai',
       color: '#da26d3',
       label: 'Rapid Walkthrough'
-    };
+    });
 
-    if (services.fbMLRoads) {
-      services.fbMLRoads.toggle(false);    // disable network
-      services.fbMLRoads.merge('rapid_intro_graph', Object.values(_rapidGraph));
+    if (mapwithai) {
+      mapwithai.toggle(false);    // disable network
+      mapwithai.merge('rapid_intro_graph', Object.values(_rapidGraph));
     }
 
     const curtain = new UiCurtain(context);
     selection.call(curtain.enable);
 
     // Store that the user started the walkthrough..
-    prefs('walkthrough_started', 'yes');
+    prefs.setItem('walkthrough_started', 'yes');
 
     // Restore previous walkthrough progress..
-    const storedProgress = prefs('walkthrough_progress') || '';
+    const storedProgress = prefs.getItem('walkthrough_progress') || '';
     let progress = storedProgress.split(';').filter(Boolean);
 
+    // When completing each chapter..
     let chapters = chapterFlow.map((chapter, i) => {
       let s = chapterUi[chapter](context, curtain)
         .on('done', () => {
@@ -165,7 +176,7 @@ export function uiIntro(context, skipToRapid) {
 
           // Store walkthrough progress..
           progress.push(chapter);
-          prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
+          prefs.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
         });
       return s;
     });
@@ -174,22 +185,19 @@ export function uiIntro(context, skipToRapid) {
     chapters[chapters.length - 1].on('startEditing', () => {
       // Store walkthrough progress..
       progress.push('startEditing');
-      prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
+      prefs.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
 
       // Store if walkthrough is completed..
       const incomplete = utilArrayDifference(chapterFlow, progress);
       if (!incomplete.length) {
-        prefs('walkthrough_completed', 'yes');
+        prefs.setItem('walkthrough_completed', 'yes');
       }
 
       // Restore Rapid datasets and service
-      let rapidDatasets = context.rapidContext().datasets();
-      delete rapidDatasets.rapid_intro_graph;
-      Object.keys(rapidDatasetsCopy).forEach(id => rapidDatasets[id].enabled = rapidDatasetsCopy[id].enabled);
-      Object.assign(rapidDatasets, rapidDatasetsCopy);
-      if (services.fbMLRoads) {
-        services.fbMLRoads.toggle(true);
+      for (const [datasetID, dataset] of rapid.datasets) {
+        dataset.enabled = original.datasetsEnabled.has(datasetID);
       }
+      rapid.datasets.delete('rapid_intro_graph');
 
       curtain.disable();
       navwrap.remove();
@@ -197,26 +205,32 @@ export function uiIntro(context, skipToRapid) {
 
       // Restore Map State
       for (const [layerID, layer] of context.scene().layers) {
-        layer.enabled = original.layerEnabled.get(layerID);
+        layer.enabled = original.layersEnabled.has(layerID);
       }
       imagery.baseLayerSource(original.baseLayer);
       original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
       imagery.brightness = original.brightness;
-      context.map().transform(original.transform);
+      context.systems.map.transform(original.transform);
       window.location.replace(original.hash);
 
-      // Restore History and Edits
-      history.reset();
-      if (original.historyJSON) {
-        history.fromJSON(original.historyJSON, true);
-      }
+      // Restore edits and re-enable services.
+      context.resetAsync()
+        .then(() => {
+          if (original.edits) {
+            edits.fromJSON(original.edits, true);
+          }
 
-      // Enable OSM
-      if (osm) {
-        osm.toggle(true).reset();
-      }
+          if (osm) {
+            osm.toggle(true);
+          }
 
-      context.inIntro(false);
+          if (mapwithai) {
+            mapwithai.toggle(true);
+          }
+
+          context.inIntro = false;
+          urlhash.enable();
+        });
     });
 
 
@@ -244,12 +258,12 @@ export function uiIntro(context, skipToRapid) {
 
     buttons
       .append('span')
-      .html(d => t.html(d.title));
+      .html(d => l10n.tHtml(d.title));
 
     buttons
       .append('span')
       .attr('class', 'status')
-      .call(uiIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
+      .call(uiIcon(l10n.isRTL() ? '#rapid-icon-backward' : '#rapid-icon-forward', 'inline'));
 
     _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 

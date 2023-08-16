@@ -18,7 +18,7 @@ cached.locales_index_tagging = { en: { rtl: false, pct: 1 } };
 
 
 // Load the actual data from `dist/locales/` for the 'general' scope
-Rapid.localizer.loadLocale('en', 'general', 'locales');
+Rapid.localizer.loadLocaleAsync('en', 'general', 'locales');
 
 
 // Initializing `coreContext` initializes `_background`, which tries loading:

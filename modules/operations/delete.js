@@ -1,11 +1,8 @@
 import { geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { modeSelect } from '../modes/select';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
 
@@ -21,8 +18,8 @@ export function operationDelete(context, selectedIDs) {
 
 
   let operation = function() {
-    let nextSelectedID;
-    let nextSelectedLoc;
+    let nextNode;
+    let nextLoc;
 
     // If we are deleting a vertex, try to select the next nearest vertex along the way.
     if (entities.length === 1) {
@@ -46,21 +43,19 @@ export function operationDelete(context, selectedIDs) {
           i = a < b ? i - 1 : i + 1;
         }
 
-        nextSelectedID = nodes[i];
-        nextSelectedLoc = context.entity(nextSelectedID).loc;
+        nextNode = context.entity(nodes[i]);
+        nextLoc = nextNode.loc;
       }
     }
 
     context.perform(action, operation.annotation());
-    context.validator().validate();
+    context.systems.validator.validate();
 
-    if (nextSelectedID && nextSelectedLoc) {
-      if (context.hasEntity(nextSelectedID)) {
-        context.enter(modeSelect(context, [nextSelectedID]).follow(true));
-      } else {
-        context.map().centerEase(nextSelectedLoc);
-        context.enter('browse');
-      }
+    if (nextNode && nextLoc) {
+      context.systems.map.centerEase(nextLoc);
+      // Try to select the next node.
+      // It may be deleted and that's ok, we'll fallback to browse mode automatically
+      context.enter('select-osm', { selectedIDs: [nextNode.id] });
     } else {
       context.enter('browse');
     }
@@ -91,14 +86,15 @@ export function operationDelete(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
-      const osm = context.connection();
+      if (context.inIntro) return false;
+      const osm = context.services.osm;
       if (osm) {
         const missing = coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {
@@ -140,22 +136,22 @@ export function operationDelete(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.delete.${disabledReason}.${multi}`) :
-      t(`operations.delete.description.${multi}`);
+      context.t(`operations.delete.${disabledReason}.${multi}`) :
+      context.t(`operations.delete.description.${multi}`);
   };
 
 
   operation.annotation = function() {
     return selectedIDs.length === 1 ?
-      t('operations.delete.annotation.' + context.graph().geometry(selectedIDs[0])) :
-      t('operations.delete.annotation.feature', { n: selectedIDs.length });
+      context.t('operations.delete.annotation.' + context.graph().geometry(selectedIDs[0])) :
+      context.t('operations.delete.annotation.feature', { n: selectedIDs.length });
   };
 
 
   operation.id = 'delete';
   operation.keys = [ uiCmd('⌘⌫'), uiCmd('⌘⌦'), uiCmd('⌦') ];
-  operation.title = t('operations.delete.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.title = context.t('operations.delete.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

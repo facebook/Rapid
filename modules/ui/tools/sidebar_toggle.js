@@ -1,27 +1,27 @@
-import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 
+
 export function uiToolSidebarToggle(context) {
-  const isRTL = (localizer.textDirection() === 'rtl');
+  const l10n = context.systems.l10n;
 
   let tool = {
     id: 'sidebar_toggle',
-    label: t.html('toolbar.inspect')
+    label: l10n.tHtml('toolbar.inspect')
   };
 
   tool.install = function(selection) {
     selection
       .append('button')
       .attr('class', 'bar-button')
-      .on('click', () => context.ui().sidebar.toggle())
-      .call(uiTooltip()
+      .on('click', () => context.systems.ui.sidebar.toggle())
+      .call(uiTooltip(context)
         .placement('bottom')
-        .title(t.html('sidebar.tooltip'))
-        .keys([t('sidebar.key')])
+        .title(l10n.tHtml('sidebar.tooltip'))
+        .keys([ l10n.t('sidebar.key') ])
         .scrollContainer(context.container().select('.top-toolbar'))
       )
-      .call(uiIcon('#rapid-icon-sidebar-' + (isRTL ? 'right' : 'left')));
+      .call(uiIcon('#rapid-icon-sidebar-' + (l10n.isRTL() ? 'right' : 'left')));
   };
 
   return tool;

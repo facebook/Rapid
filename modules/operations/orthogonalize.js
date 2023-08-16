@@ -1,9 +1,7 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionOrthogonalize } from '../actions/orthogonalize';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
 
@@ -59,7 +57,7 @@ export function operationOrthogonalize(context, selectedIDs) {
     combinedAction.transitionable = true;
 
     context.perform(combinedAction, operation.annotation());
-    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
   };
 
 
@@ -89,14 +87,15 @@ export function operationOrthogonalize(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
-      const osm = context.connection();
+      if (context.inIntro) return false;
+      const osm = context.services.osm;
       if (osm) {
         const missing = coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {
@@ -112,20 +111,20 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.orthogonalize.${disabledReason}.${multi}`) :
-      t(`operations.orthogonalize.description.${_type}.${multi}`);
+      context.t(`operations.orthogonalize.${disabledReason}.${multi}`) :
+      context.t(`operations.orthogonalize.description.${_type}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
+    return context.t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
   };
 
 
   operation.id = 'orthogonalize';
-  operation.keys = [ t('operations.orthogonalize.key') ];
-  operation.title = t('operations.orthogonalize.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.orthogonalize.key') ];
+  operation.title = context.t('operations.orthogonalize.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

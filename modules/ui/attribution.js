@@ -1,9 +1,9 @@
 import _throttle from 'lodash-es/throttle';
 import { select as d3_select } from 'd3-selection';
-import { t } from '../core/localizer';
 
 
 export function uiAttribution(context) {
+  const imagerySystem = context.systems.imagery;
   let _selection = d3_select(null);
 
 
@@ -41,7 +41,7 @@ export function uiAttribution(context) {
             .attr('target', '_blank');
         }
 
-        const terms_text = t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
+        const terms_text = context.t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
 
         if (d.icon && !d.overlay) {
           attribution
@@ -60,7 +60,7 @@ export function uiAttribution(context) {
 
     let copyright = attributions.selectAll('.copyright-notice')
       .data(d => {
-        let notice = d.copyrightNotices(context.map().zoom(), context.map().extent());
+        let notice = d.copyrightNotices(context.systems.map.zoom(), context.systems.map.extent());
         return notice ? [notice] : [];
       });
 
@@ -78,12 +78,12 @@ export function uiAttribution(context) {
 
 
   function update() {
-    let baselayer = context.imagery().baseLayerSource();
+    let baselayer = imagerySystem.baseLayerSource();
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
-    const z = context.map().zoom();
-    let overlays = context.imagery().overlayLayerSources() || [];
+    const z = context.systems.map.zoom();
+    let overlays = imagerySystem.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');
   }
@@ -92,10 +92,8 @@ export function uiAttribution(context) {
   return function(selection) {
     _selection = selection;
 
-    context.imagery()
-      .on('change.attribution', update);
-
-    context.map().on('draw', _throttle(update, 400, { leading: false }));
+    imagerySystem.on('imagerychange', update);
+    context.systems.map.on('draw', _throttle(update, 400, { leading: false }));
 
     update();
   };

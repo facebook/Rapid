@@ -1,4 +1,3 @@
-import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
 import { uiRapidSplash } from './rapid_splash';
@@ -18,13 +17,13 @@ export function uiRapidFirstEditDialog(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h3')
-      .html(t('rapid_first_edit.nice', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
+      .html(context.t('rapid_first_edit.nice', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
 
     firstEditModal
       .append('div')
       .attr('class', 'modal-section')
       .append('p')
-      .text(t('rapid_first_edit.text'));
+      .text(context.t('rapid_first_edit.text'));
 
     let buttonWrap = firstEditModal
       .append('div')
@@ -39,21 +38,21 @@ export function uiRapidFirstEditDialog(context) {
 
     exploring
       .append('div')
-      .text(t('rapid_first_edit.exploring'));
+      .text(context.t('rapid_first_edit.exploring'));
 
     let loginToOsm = buttonWrap
       .append('button')
       .attr('class', 'rapid-login-to-osm')
       .on('click', () => {
         modalSelection.close();
-        const osm = context.connection();
+        const osm = context.services.osm;
         if (!osm) return;
         osm.authenticate(() => context.container().call(uiRapidSplash(context)) );
       });
 
     loginToOsm
       .append('div')
-      .text(t('rapid_first_edit.login_with_osm'));
+      .text(context.t('rapid_first_edit.login_with_osm'));
 
     modalSelection.select('button.close')
       .attr('class', 'hide');

@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -19,9 +18,6 @@ export class PixiLayerOsmNotes extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
 
-    this._service = null;
-    this.getService();
-
 // might use these
 //    const markerHighlight = new PIXI.Graphics()
 //      .lineStyle(4, 0xcccccc, 0.6)
@@ -40,18 +36,34 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
+   * supported
+   * Whether the Layer's service exists
    */
-  getService() {
-    if (services.osm && !this._service) {
-      this._service = services.osm;
-      this._service.on('loadedNotes', () => this.context.map().deferredRedraw());
-    } else if (!services.osm && this._service) {
-      this._service = null;
+  get supported() {
+    return !!this.context.services.osm;
+  }
+
+
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
     }
 
-    return this._service;
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.osm.startAsync();
+    }
   }
 
 
@@ -62,8 +74,8 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.getService();
-    if (!service) return;
+    const service = this.context.services.osm;
+    if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
     const items = service.notes(this.context.projection);
@@ -74,20 +86,22 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 
       if (!feature) {
         let color = 0xff3300;  // open (red)
-        // let iconName = '#rapid-icon-close'
+        let iconName = 'rapid-icon-close';
         if (d.status === 'closed') {
           color = 0x55dd00;  // closed (green)
-          // iconName = '#rapid-icon-apply'
+          iconName = 'rapid-icon-apply';
         }
         if (d.isNew()) {
           color = 0xffee00;  // new (yellow)
-          // iconName = '#rapid-icon-plus'
+          iconName = 'rapid-icon-plus';
         }
 
         const style = {
           markerName: 'osmnote',
-          markerTint: color
-          // iconName: iconName
+          markerTint: color,
+          iconName: iconName,
+          // override 'y' for better centering within the note balloon
+          anchor: { y: 0.65 }
         };
 
         feature = new PixiFeaturePoint(this, featureID);
@@ -112,20 +126,11 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
-    if (!this.enabled || !service || zoom < MINZOOM) return;
+    const service = this.context.services.osm;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
     service.loadNotes(this.context.projection);  // note: context.projection !== pixi projection
     this.renderMarkers(frame, projection, zoom);
-  }
-
-
-  /**
-   * supported
-   * Whether the Layer's service exists
-   */
-  get supported() {
-    return !!this.getService();
   }
 
 }

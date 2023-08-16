@@ -2,10 +2,9 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
-
+import { flatCoordsToPoints } from '../util/util';
 import { AbstractFeature } from './AbstractFeature';
 import { lineToPoly } from './helpers';
-import { prefs } from '../core/preferences';
 
 const PARTIALFILLWIDTH = 32;
 
@@ -103,7 +102,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
   update(projection, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    const wireframeMode = this.context.map().wireframeMode;
+    const wireframeMode = this.context.systems.map.wireframeMode;
 
     //
     // GEOMETRY
@@ -178,13 +177,16 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const color = style.fill.color || 0xaaaaaa;
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;
+    const dash = style.stroke.dash || null;
+
     let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
     let shape;
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
 
-    const fillstyle = prefs('area-fill') || 'partial';
+    const prefs = this.context.systems.storage;
+    const fillstyle = prefs.getItem('area-fill') ?? 'partial';
     let doPartialFill = !style.requireFill && (fillstyle === 'partial');
 
     // If this shape is so small that partial filling makes no sense, fill fully (faster?)
@@ -255,22 +257,53 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     // STROKE
     if (shape && this.stroke.visible) {
-      this.stroke
+      const lineWidth = wireframeMode ? 1 : style.fill.width || 2;
+
+      // Solid lines
+      if (!dash) {
+        this.stroke
         .clear()
         .lineStyle({
           alpha: 1,
-          width: wireframeMode ? 1 : style.fill.width || 2,
+          width: lineWidth,
           color: color,
         })
         .drawShape(shape.outer);
 
       shape.holes.forEach(hole => this.stroke.drawShape(hole));
+      } else {
+        //Dashed lines
+        const DASH_STYLE = {
+          alpha: 1.0,
+          dash: dash,
+          width: lineWidth,   // px
+          color: color,
+        };
+        this.stroke.clear();
+        const dl = new DashLine(this.stroke, DASH_STYLE);
+        const coords = flatCoordsToPoints(shape.outer.points);
+        dl.drawPolygon(coords);
+        shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
+      }
     }
 
     // FILL
     if (wireframeMode) {
       this.fill.visible = false;
       this.fill.clear();
+
+      const hitWidth = 2.5;
+      const hitStyle = {
+        alignment: 0.5,  // middle of line
+        color: 0x0,
+        width: hitWidth,
+        alpha: 1.0,
+        join: PIXI.LINE_JOIN.BEVEL,
+        cap: PIXI.LINE_CAP.BUTT
+      };
+
+      this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
+      this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
     }
 
     if (shape && this.fill.visible) {
@@ -339,11 +372,18 @@ if (!this.geometry.flatOuter) return;  // no points?
 
     const showHover = (this.visible && this.hovered);
     const showSelect = (this.visible && this.selected);
+    const showHighlight = (this.visible && this.highlighted);
 
     // Hover
     if (showHover) {
       if (!this.container.filters) {
         const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+        glow.resolution = 2;
+        this.container.filters = [glow];
+      }
+    } else if (showHighlight) {
+      if (!this.container.filters) {
+        const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0x7092ff });
         glow.resolution = 2;
         this.container.filters = [glow];
       }

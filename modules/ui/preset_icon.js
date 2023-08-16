@@ -1,11 +1,9 @@
-import * as PIXI from 'pixi.js';
-
-import { prefs } from '../core/preferences';
+import { Color } from 'pixi.js';
 import { styleMatch } from '../pixi/styles';
 import { uiIcon } from './icon';
 
 
-export function uiPresetIcon() {
+export function uiPresetIcon(context) {
   let _preset;
   let _geometry;
 
@@ -23,7 +21,7 @@ export function uiPresetIcon() {
   //
   function renderCategoryBorder(container, style) {
     const px = 60;
-    const color = PIXI.utils.hex2string(style.fill.color);
+    const color = new Color(style.fill.color).toHex();
     const alpha = style.fill.alpha;
     const FOLDER_PATH = 'M9.5,7.5 L25.5,7.5 L28.5,12.5 L49.5,12.5 C51.709139,12.5 53.5,14.290861 53.5,16.5 L53.5,43.5 C53.5,45.709139 51.709139,47.5 49.5,47.5 L10.5,47.5 C8.290861,47.5 6.5,45.709139 6.5,43.5 L6.5,12.5 L9.5,7.5 Z';
 
@@ -89,7 +87,7 @@ export function uiPresetIcon() {
     const len = px * 2/3;
     const c1 = (px-len) / 2;
     const c2 = c1 + len;
-    const color = PIXI.utils.hex2string(style.fill.color);
+    const color = new Color(style.fill.color).toHex();
     const alpha = style.fill.alpha;
 
     let svg = container
@@ -137,8 +135,8 @@ export function uiPresetIcon() {
     const l = Math.round(px * 0.6);
     const x1 = (px - l) / 2;
     const x2 = x1 + l;
-    const casingColor = PIXI.utils.hex2string(style.casing.color);
-    const strokeColor = PIXI.utils.hex2string(style.stroke.color);
+    const casingColor = new Color(style.casing.color).toHex();
+    const strokeColor = new Color(style.stroke.color).toHex();
     const dash = style.stroke.dash;
     const hasDash = Array.isArray(dash);
 
@@ -247,7 +245,8 @@ export function uiPresetIcon() {
       geom = 'route';
     }
 
-    const showThirdPartyIcons = (prefs('preferences.privacy.thirdpartyicons') ?? 'true') === 'true';
+    const prefs = context.systems.storage;
+    const showThirdPartyIcons = (prefs.getItem('preferences.privacy.thirdpartyicons') ?? 'true') === 'true';
     const imageURL = showThirdPartyIcons && p.imageURL;
     const picon = getIcon(p, geom);
     // const showPoint = isPreset && (geom === 'point');     // not actually used
@@ -282,7 +281,7 @@ export function uiPresetIcon() {
       let color = '#333';
       if (showLine || showRoute) {
         if (isRapidIcon) {
-          color = PIXI.utils.hex2string(style.stroke.color);
+          color = new Color(style.stroke.color).toHex();
         }
       }
 

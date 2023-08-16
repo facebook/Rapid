@@ -1,11 +1,14 @@
 import { select as d3_select } from 'd3-selection';
 
-import { presetManager } from '../presets';
-import { modeSelect } from '../modes/select';
-import { t } from '../core/localizer';
-import { utilDisplayName, utilHighlightEntities } from '../util';
+import { utilHighlightEntities } from '../util';
+
 
 export function uiImproveOsmDetails(context) {
+  const filters = context.systems.filters;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
+
   let _qaItem;
 
 
@@ -13,8 +16,8 @@ export function uiImproveOsmDetails(context) {
     if (d.desc) return d.desc;
     const issueKey = d.issueKey;
     d.replacements = d.replacements || {};
-    d.replacements.default = t.html('inspector.unknown');  // special key `default` works as a fallback string
-    return t.html(`QA.improveOSM.error_types.${issueKey}.description`, d.replacements);
+    d.replacements.default = l10n.tHtml('inspector.unknown');  // special key `default` works as a fallback string
+    return l10n.tHtml(`QA.improveOSM.error_types.${issueKey}.description`, d.replacements);
   }
 
 
@@ -40,7 +43,7 @@ export function uiImproveOsmDetails(context) {
 
     descriptionEnter
       .append('h4')
-        .html(t.html('QA.keepRight.detail_description'));
+        .html(l10n.tHtml('QA.keepRight.detail_description'));
 
     descriptionEnter
       .append('div')
@@ -51,10 +54,11 @@ export function uiImproveOsmDetails(context) {
     let relatedEntities = [];
     descriptionEnter.selectAll('.error_entity_link, .error_object_link')
       .attr('href', '#')
-      .each(function() {
-        const link = d3_select(this);
+      .each((d, i, nodes) => {
+        const node = nodes[i];
+        const link = d3_select(node);
         const isObjectLink = link.classed('error_object_link');
-        const entityID = isObjectLink ? (_qaItem.objectType.charAt(0) + _qaItem.objectId) : this.textContent;
+        const entityID = isObjectLink ? (_qaItem.objectType.charAt(0) + _qaItem.objectId) : node.textContent;
         const entity = context.hasEntity(entityID);
 
         relatedEntities.push(entityID);
@@ -72,40 +76,31 @@ export function uiImproveOsmDetails(context) {
 
             utilHighlightEntities([entityID], false, context);
 
-            context.scene().enableLayers('osm');  // make sure osm layer is even on
-            context.map().centerZoom(_qaItem.loc, 20);
-
-            if (entity) {
-              context.enter(modeSelect(context, [entityID]));
-            } else {
-              context.loadEntity(entityID, (err, result) => {
-                if (err) return;
-                const entity = result.data.find(e => e.id === entityID);
-                if (entity) context.enter(modeSelect(context, [entityID]));
-              });
-            }
+            map.scene.enableLayers('osm');  // make sure osm layer is even on
+            map.centerZoom(_qaItem.loc, 20);
+            map.selectEntityID(entityID);
           });
 
         // Replace with friendly name if possible
         // (The entity may not yet be loaded into the graph)
         if (entity) {
-          let name = utilDisplayName(entity);  // try to use common name
-
+          let name = l10n.displayName(entity.tags);  // try to use common name
           if (!name && !isObjectLink) {
-            const preset = presetManager.match(entity, context.graph());
+            const preset = presets.match(entity, context.graph());
             name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
           }
 
           if (name) {
-            this.innerText = name;
+            node.innerText = name;
           }
         }
       });
 
-    // Don't hide entities related to this error - #5880
-    context.features().forceVisible(relatedEntities);
-    context.map().immediateRedraw();
+    // Don't hide entities related to this error - iD#5880
+    filters.forceVisible(relatedEntities);
+    map.immediateRedraw();
   }
+
 
   improveOsmDetails.issue = function(val) {
     if (!arguments.length) return _qaItem;

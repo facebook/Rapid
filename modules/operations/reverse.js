@@ -1,6 +1,5 @@
-import { t } from '../core/localizer';
 import { actionReverse } from '../actions/reverse';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationReverse(context, selectedIDs) {
@@ -46,7 +45,7 @@ export function operationReverse(context, selectedIDs) {
     };
 
     context.perform(combinedAction, operation.annotation());
-    context.validator().validate();
+    context.systems.validator.validate();
   };
 
 
@@ -61,19 +60,19 @@ export function operationReverse(context, selectedIDs) {
 
 
   operation.tooltip = function() {
-    return t(`operations.reverse.description.${reverseType}`);
+    return context.t(`operations.reverse.description.${reverseType}`);
   };
 
 
   operation.annotation = function() {
-    return t(`operations.reverse.annotation.${reverseType}`, { n: actions.length });
+    return context.t(`operations.reverse.annotation.${reverseType}`, { n: actions.length });
   };
 
 
   operation.id = 'reverse';
-  operation.keys = [ t('operations.reverse.key') ];
-  operation.title = t('operations.reverse.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.reverse.key') ];
+  operation.title = context.t('operations.reverse.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

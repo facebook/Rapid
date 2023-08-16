@@ -1,11 +1,9 @@
 import { utilFunctor } from '../util/util';
-import { t } from '../core/localizer';
 import { uiPopover } from './popover';
 
-export function uiTooltip(klass) {
 
-    var tooltip = uiPopover((klass || '') + ' tooltip')
-        .displayType('hover');
+export function uiTooltip(context) {
+    var tooltip = uiPopover(context, 'tooltip').displayType('hover');
 
     var _title = function() {
         var title = this.getAttribute('data-original-title');
@@ -46,7 +44,6 @@ export function uiTooltip(klass) {
         var keys = _keys.apply(this, arguments);
 
         return function(selection) {
-
             var headingSelect = selection
                 .selectAll('.tooltip-heading')
                 .data(heading ? [heading] :[]);
@@ -86,7 +83,7 @@ export function uiTooltip(klass) {
 
             keyhintWrapEnter
                 .append('span')
-                .html(t.html('tooltip_keyhint'));
+                .html(context.tHtml('tooltip_keyhint'));
 
             keyhintWrap = keyhintWrapEnter.merge(keyhintWrap);
 
@@ -95,9 +92,7 @@ export function uiTooltip(klass) {
                 .enter()
                 .append('kbd')
                 .attr('class', 'shortcut')
-                .html(function(d) {
-                    return d;
-                });
+                .html(d => d);
         };
     });
 

@@ -1,7 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { prefs } from '../../core/preferences';
-import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto } from '../../util';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
@@ -12,16 +10,17 @@ export function uiSectionValidationRules(context) {
   const MAXSQUARE = 20;
   const DEFAULTSQUARE = 5;  // see also unsquare_way.js
 
+  const validator = context.systems.validator;
+  const prefs = context.systems.storage;
   const section = uiSection('issues-rules', context)
     .disclosureContent(renderDisclosureContent)
-    .label(t.html('issues.rules.title'));
+    .label(context.tHtml('issues.rules.title'));
 
 
-  let _ruleKeys = context.validator().getRuleKeys()
-    .filter(key => key !== 'maprules')
+  let _ruleKeys = validator.getRuleKeys()
     .sort((key1, key2) => {
       // alphabetize by localized title
-      return t(`issues.${key1}.title`) < t(`issues.${key2}.title`) ? -1 : 1;
+      return context.t(`issues.${key1}.title`) < context.t(`issues.${key2}.title`) ? -1 : 1;
     });
 
 
@@ -45,20 +44,20 @@ export function uiSectionValidationRules(context) {
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(t.html('issues.disable_all'))
+      .html(context.tHtml('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        context.validator().disableRules(_ruleKeys);
+        validator.disableRules(_ruleKeys);
       });
 
     ruleLinks
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(t.html('issues.enable_all'))
+      .html(context.tHtml('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        context.validator().disableRules([]);
+        validator.disableRules([]);
       });
 
     // Update
@@ -84,8 +83,8 @@ export function uiSectionValidationRules(context) {
 
     if (name === 'rule') {
       enter
-        .call(uiTooltip()
-          .title(d => t.html(`issues.${d}.tip`))
+        .call(uiTooltip(context)
+          .title(d => context.tHtml(`issues.${d}.tip`))
           .placement('top')
         );
     }
@@ -106,7 +105,7 @@ export function uiSectionValidationRules(context) {
         if (d === 'unsquare_way') {
           params.val = '<span class="square-degrees"></span>';
         }
-        return t.html(`issues.${d}.title`, params);
+        return context.tHtml(`issues.${d}.title`, params);
       });
 
     // Update
@@ -121,7 +120,7 @@ export function uiSectionValidationRules(context) {
 
 
     // user-configurable square threshold
-    let degStr = prefs('validate-square-degrees');
+    let degStr = prefs.getItem('validate-square-degrees');
     if (degStr === null) {
       degStr = DEFAULTSQUARE.toString();
     }
@@ -175,20 +174,20 @@ export function uiSectionValidationRules(context) {
     input
       .property('value', degStr);
 
-    prefs('validate-square-degrees', degStr);
-    context.validator().revalidateUnsquare();
+    prefs.setItem('validate-square-degrees', degStr);
+    validator.revalidateUnsquare();
   }
 
   function isRuleEnabled(d) {
-    return context.validator().isRuleEnabled(d);
+    return validator.isRuleEnabled(d);
   }
 
   function toggleRule(d3_event, d) {
-    context.validator().toggleRule(d);
+    validator.toggleRule(d);
   }
 
 
-  context.validator().on(`validated.uiSectionValidationRules`, () => {
+  validator.on('validated', () => {
     window.requestIdleCallback(section.reRender);
   });
 

@@ -31,7 +31,7 @@ function asSet(vals) {
  * The "scene" maintains useful collections of Features.
  *
  * Features are organized into thematic Layers that can be enabled or disabled if needed.
- * Each Layer is responsible for managing its own data and Featuers.
+ * Each Layer is responsible for managing its own data and Features.
  * Features must be added to an appropriate group parent container.
  *
  * Notes on identifiers:

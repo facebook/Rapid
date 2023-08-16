@@ -1,13 +1,13 @@
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 import { geoSphericalDistance } from '@rapid-sdk/math';
 
 import { actionNoop } from '../../actions/noop';
 import { uiIcon } from '../icon';
-import { prefs } from '../../core/preferences';
-import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
+
+const MAX_ISSUES = 1000;
 
 
 /**
@@ -17,6 +17,8 @@ import { uiSection } from '../section';
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
+  const validator = context.systems.validator;
+  const prefs = context.systems.storage;
   const section = uiSection(sectionID, context)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)
@@ -25,9 +27,9 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   let _issues = [];
 
   function sectionLabel() {
-    const countText = _issues.length > 1000 ? '1000+' : String(_issues.length);
-    const titleText = t(`issues.${severity}s.list_title`);
-    return t('inspector.title_count', { title: titleText, count: countText });
+    const countText = _issues.length > MAX_ISSUES ? `${MAX_ISSUES}+` : String(_issues.length);
+    const titleText = context.t(`issues.${severity}s.list_title`);
+    return context.t('inspector.title_count', { title: titleText, count: countText });
   }
 
   function sectionShouldDisplay() {
@@ -36,7 +38,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
-    const center = context.map().center();
+    const center = context.systems.map.center();
     const graph = context.graph();
 
     // sort issues by distance away from the center of the map
@@ -48,8 +50,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       })
       .sort((a, b) => a.dist - b.dist);   // nearest to farthest
 
-    // cut off at 1000
-    toDisplay = toDisplay.slice(0, 1000);
+    toDisplay = toDisplay.slice(0, MAX_ISSUES);
 
     selection
       .call(drawIssuesList, toDisplay);
@@ -60,7 +61,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // Creates the issues list if needed and updates it with the current issues
   //
   function drawIssuesList(selection, issues) {
-    const showAutoFix = (prefs('rapid-internal-feature.showAutoFix') === 'true');
+    const showAutoFix = (prefs.getItem('rapid-internal-feature.showAutoFix') === 'true');
 
     let list = selection.selectAll('.issues-list')
       .data([0]);
@@ -85,7 +86,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     let labelsEnter = itemsEnter
       .append('button')
       .attr('class', 'issue-label')
-      .on('click',     (d3_event, d) => context.validator().focusIssue(d))
+      .on('click',     (d3_event, d) => validator.focusIssue(d))
       .on('mouseover', (d3_event, d) => utilHighlightEntities(d.entityIds, true, context))
       .on('mouseout',  (d3_event, d) => utilHighlightEntities(d.entityIds, false, context));
 
@@ -97,9 +98,9 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .append('span')
       .attr('class', 'issue-icon')
       .each((d, i, nodes) => {
-        const iconName = '#rapid-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
+        const which = (d.severity === 'warning') ? 'alert' : 'error';
         d3_select(nodes[i])
-          .call(uiIcon(iconName));
+          .call(uiIcon(`#rapid-icon-${which}`));
       });
 
     textEnter
@@ -115,7 +116,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
           d3_select(nodes[i])
             .append('button')
-            .attr('title', t('issues.fix_one.title'))
+            .attr('title', context.t('issues.fix_one.title'))
             .datum(d)  // set button datum to the issue
             .attr('class', 'autofix action')
             .on('click', (d3_event, d) => {
@@ -124,7 +125,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
               utilHighlightEntities(d.entityIds, false, context);  // unhighlight
               context.perform.apply(context, d.autoArgs);
-              context.validator().validate();
+              validator.validate();
             })
             .call(uiIcon('#rapid-icon-wrench'));
         });
@@ -159,7 +160,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     linkEnter
       .append('span')
       .attr('class', 'autofix-all-link-text')
-      .html(t.html('issues.fix_all.title'));
+      .html(context.tHtml('issues.fix_all.title'));
 
     linkEnter
       .append('span')
@@ -180,11 +181,11 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
           if (typeof args[args.length - 1] !== 'function') {
             args.pop();
           }
-          args.push(t('issues.fix_all.annotation'));
+          args.push(context.t('issues.fix_all.annotation'));
           context.replace.apply(context, args);  // this does the fix
         });
         context.resumeChangeDispatch();
-        context.validator().validate();
+        validator.validate();
       });
   }
 
@@ -192,15 +193,15 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // get the current display options for the issues lists
   function getOptions() {
     return {
-      what: prefs('validate-what') || 'edited',
-      where: prefs('validate-where') || 'all'
+      what: prefs.getItem('validate-what') || 'edited',
+      where: prefs.getItem('validate-where') || 'all'
     };
   }
 
   // get and cache the issues to display, unordered
   function reloadIssues() {
     const options = getOptions();
-    _issues = context.validator().getIssuesBySeverity(options)[severity];
+    _issues = validator.getIssuesBySeverity(options)[severity];
   }
 
   // only update the contents if the issues pane is actually open
@@ -211,7 +212,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // event handlers to refresh the lists
 
-  context.validator().on(`validated.uiSectionValidationIssues-${sectionID}`, () => {
+  validator.on('validated', () => {
     window.requestIdleCallback(() => {
       if (!isVisible()) return;
       reloadIssues();
@@ -219,8 +220,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     });
   });
 
-  context.map().on('draw',
-    _debounce(() => {
+  context.systems.map.on('draw',
+    debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;
         if (getOptions().where === 'visible') {  // must refetch issues if they are viewport-dependent

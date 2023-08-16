@@ -1,17 +1,18 @@
 import * as PIXI from 'pixi.js';
-import { text as d3_text } from 'd3-fetch';
 import { geoBounds as d3_geoBounds } from 'd3-geo';
-
-import stringify from 'fast-json-stable-stringify';
 import { gpx, kml } from '@tmcw/togeojson';
 import { Extent, geomPolygonIntersectsPolygon } from '@rapid-sdk/math';
 import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '@rapid-sdk/util';
-import { services } from '../services';
-import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import geojsonRewind from '@mapbox/geojson-rewind';
+import stringify from 'fast-json-stable-stringify';
 
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import { utilFetchResponse } from '../util';
+
+const CUSTOM_COLOR = 0x00ffff;
 
 
 /**
@@ -29,13 +30,12 @@ export class PixiLayerCustomData extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+    this.enabled = true;     // this layer should always be enabled
 
-    this._enabled = true;            // this layer should always be enabled
     this._loadedUrlData = false;
     // setup the child containers
     // these only go visible if they have something to show
 
-    this._vtService = null;
     this._geojson = {};
     this._template = null;
     this._fileList = null;
@@ -61,50 +61,12 @@ export class PixiLayerCustomData extends AbstractLayer {
         this.fileList(d3_event.dataTransfer.files);
       });
 
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    this._hashchange = this._hashchange.bind(this);
+
     // hashchange - pick out the 'gpx' param
-    this.context.urlhash()
-      .on('hashchange', q => this.url(q.gpx || '', '.gpx'));
-  }
-
-
-  /**
-   * Services are loosely coupled in Rapid, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
-   */
-  getService() {
-    if (services.vectorTile && !this._vtService) {
-      this._vtService = services.vectorTile;
-    } else if (!services.vectorTile && this._vtService) {
-      this._vtService = null;
-    }
-
-    return this._vtService;
-  }
-
-
-  // Ensure that all geojson features in a collection have IDs
-  ensureIDs(geojson) {
-    if (!geojson) return null;
-
-    if (geojson.type === 'FeatureCollection') {
-      (geojson.features || []).forEach(feature => this.ensureFeatureID(feature));
-    } else {
-      this.ensureFeatureID(geojson);
-    }
-    return geojson;
-  }
-
-  // ensure that each single Feature object has a unique ID
-  ensureFeatureID(feature) {
-    if (!feature) return;
-    feature.__featurehash__ = utilHashcode(stringify(feature));
-
-    // The pixi scene cache relies on each feature having its own id member,
-    // so use the hashcode string as a fallback.
-    if (!feature.id) {
-      feature.id = feature.__featurehash__.toString();
-    }
-    return feature;
+    this.context.systems.urlhash
+      .on('hashchange', this._hashchange);
   }
 
 
@@ -117,11 +79,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     } else {
       return [geojson];
     }
-  }
-
-
-  isPolygon(d) {
-    return d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon';
   }
 
 
@@ -160,7 +117,8 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     gj = gj || {};
     if (Object.keys(gj).length) {
-      this._geojson = this.ensureIDs(gj);
+      this._geojson = this._ensureIDs(gj);
+      geojsonRewind(this._geojson);
       this._src = extension + ' data file';
       this.fitZoom();
     }
@@ -201,12 +159,12 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderCustomData(frame, projection, zoom) {
-    let vtService = this.getService();
+    const vtService = this.context.services.vectortile;
     let geoData, polygons, lines, points;
+
     if (this._template && vtService) {   // fetch data from vector tile service
-      const sourceID = this._template;
-      vtService.loadTiles(sourceID, this._template, this.context.projection);
-      geoData = vtService.data(sourceID, this.context.projection);
+      vtService.loadTiles(this._template);
+      geoData = vtService.getData(this._template).map(d => d.geojson);
     } else {
       geoData = this.getFeatures(this._geojson);
     }
@@ -218,25 +176,27 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       this.renderPolygons(frame, projection, zoom, polygons);
       const gridLines = this.createGridLines(lines);
+      const gridStyle = { stroke: { width: 0.5, color: 0x00ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
 
       this.renderLines(frame, projection, zoom, lines);
-      this.renderLines(frame, projection, zoom, gridLines, { stroke: {width: 0.5, color:0x00ffff, alpha:0.5, cap:PIXI.LINE_CAP.ROUND}});
+      this.renderLines(frame, projection, zoom, gridLines, gridStyle);
       this.renderPoints(frame, projection, zoom, points);
     }
   }
 
 
-  /** createGridLines
+  /**
+   * createGridLines
    * creates interstitial grid lines inside the rectangular bounding box, if specified.
    * @param lines - the line string(s) that may contain a rectangular bounding box
    * @returns a list of linestrings to draw as gridlines.
   */
   createGridLines (lines) {
-    const numSplits = this.context.imagery().numGridSplits;
+    const numSplits = this.context.systems.imagery.numGridSplits;
     let gridLines = [];
 
     //'isTaskRectangular' implies one and only one rectangular linestring.
-    if (this.context.rapidContext().isTaskRectangular && numSplits > 0) {
+    if (this.context.systems.rapid.isTaskRectangular && numSplits > 0) {
       const box = lines[0];
 
       const lats = box.geometry.coordinates.map((f) => f[0]);
@@ -291,33 +251,44 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  polygons     Array of polygon data
    */
   renderPolygons(frame, projection, zoom, polygons) {
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
-    const POLY_STYLE = {
-      fill: { color: 0x00ffff, alpha: 0.3, },
-      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+
+    const polygonStyle = {
+      fill: { color: CUSTOM_COLOR, alpha: 0.3, },
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      labelTint: CUSTOM_COLOR
     };
 
     for (const d of polygons) {
+      const dataID = d.__featurehash__.toString();
+      const version = d.v || 0;
       const parts = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const id = d.id ? d.id : d.__featurehash__.toString();
-        const featureID = `${this.layerID}-${id}-${i}`;
+        const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
-        const version = d.v || 0;
+
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'polygon') {
+          feature.destroy();
+          feature = null;
+        }
 
         if (!feature) {
           feature = new PixiFeaturePolygon(this, featureID);
-          feature.style = POLY_STYLE;
+          feature.style = polygonStyle;
           feature.parentContainer = parentContainer;
         }
 
+        // If data has changed.. Replace it.
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.setData(d.id, d);
+          feature.label = l10n.displayName(d.properties);
+          feature.setData(dataID, d);
         }
 
         this.syncFeatureClasses(feature);
@@ -337,34 +308,43 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param styleOverride Custom style
    */
   renderLines(frame, projection, zoom, lines, styleOverride) {
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
-    const LINE_STYLE = {
-      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+
+    const lineStyle = styleOverride || {
+      stroke: { width: 2, color: CUSTOM_COLOR, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
+      labelTint: CUSTOM_COLOR
     };
 
-    let style = styleOverride || LINE_STYLE;
-
     for (const d of lines) {
+      const dataID = d.__featurehash__.toString();
+      const version = d.v || 0;
       const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiLineString') ? d.geometry.coordinates : [];
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const id = d.id ? d.id : d.__featurehash__.toString();
-        const featureID = `${this.layerID}-${id}-${i}`;
+        const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
-        const version = d.v || 0;
+
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'line') {
+          feature.destroy();
+          feature = null;
+        }
 
         if (!feature) {
           feature = new PixiFeatureLine(this, featureID);
-          feature.style = style;
+          feature.style = lineStyle;
           feature.parentContainer = parentContainer;
         }
 
+        // If data has changed.. Replace it.
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.setData(d.id, d);
+          feature.label = l10n.displayName(d.properties);
+          feature.setData(dataID, d);
         }
 
         this.syncFeatureClasses(feature);
@@ -383,24 +363,45 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of point data
    */
   renderPoints(frame, projection, zoom, points) {
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('points');
-    const POINT_STYLE = { markerTint: 0x00ffff };
+
+    const pointStyle = {
+      markerName: 'largeCircle',
+      markerTint: CUSTOM_COLOR,
+      iconName: 'maki-circle-stroked',
+      labelTint: CUSTOM_COLOR
+    };
 
     for (const d of points) {
+      const dataID = d.__featurehash__.toString();
+      const version = d.v || 0;
       const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const featureID = `${this.layerID}-${d.id}-${i}`;
+        const featureID = `${this.layerID}-${dataID}-${i}`;
         let feature = this.features.get(featureID);
+
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'point') {
+          feature.destroy();
+          feature = null;
+        }
 
         if (!feature) {
           feature = new PixiFeaturePoint(this, featureID);
-          feature.geometry.setCoords(coords);
-          feature.style = POINT_STYLE;
+          feature.style = pointStyle;
           feature.parentContainer = parentContainer;
-          feature.setData(d.id, d);
+        }
+
+        // If data has changed.. Replace it.
+        if (feature.v !== version) {
+          feature.v = version;
+          feature.geometry.setCoords(coords);
+          feature.label = l10n.displayName(d.properties);
+          feature.setData(dataID, d);
         }
 
         this.syncFeatureClasses(feature);
@@ -409,6 +410,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       }
     }
   }
+
 
   /**
    * template
@@ -419,15 +421,14 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (!arguments.length) return this._template;
 
     // test source against OSM imagery blocklists..
-    const osm = this.context.connection();
+    const osm = this.context.services.osm;
     if (osm) {
-      const blocklists = osm.imageryBlocklists();
+      const blocklists = osm.imageryBlocklists ?? [];
       let fail = false;
       let tested = 0;
       let regex;
 
-      for (let i = 0; i < blocklists.length; i++) {
-        regex = blocklists[i];
+      for (regex of blocklists) {
         fail = regex.test(val);
         tested++;
         if (fail) break;
@@ -468,7 +469,8 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     gj = gj || {};
     if (Object.keys(gj).length) {
-      this._geojson = this.ensureIDs(gj);
+      this._geojson = this._ensureIDs(gj);
+      geojsonRewind(this._geojson);
       this._src = src || 'unknown.geojson';
     }
 
@@ -523,12 +525,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (extension) {
       this._template = null;
       const setFile = this.setFile;
-      d3_text(url)
+      fetch(url)
+        .then(utilFetchResponse)
         .then(data => {
           setFile(extension, data);
           const isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
           if (isTaskBoundsUrl) {
-            this.context.rapidContext().setTaskExtentByGpxData(data);
+            this.context.systems.rapid.setTaskExtentByGpxData(data);
           }
         })
         .catch(e => console.error(e));  // eslint-disable-line
@@ -555,7 +558,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     const features = this.getFeatures(this._geojson);
     if (!features.length) return;
 
-    const map = this.context.map();
+    const map = this.context.systems.map;
     const viewport = map.trimmedExtent().polygon();
 
     const coords = features.reduce((coords, feature) => {
@@ -591,6 +594,42 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
 
     return this;
+  }
+
+
+  // Ensure that all geojson features in a collection have IDs
+  _ensureIDs(geojson) {
+    if (!geojson) return null;
+
+    if (geojson.type === 'FeatureCollection') {
+      (geojson.features || []).forEach(feature => this._ensureFeatureID(feature));
+    } else {
+      this._ensureFeatureID(geojson);
+    }
+    return geojson;
+  }
+
+  // ensure that each single Feature object has a unique ID
+  _ensureFeatureID(feature) {
+    if (!feature) return;
+    feature.__featurehash__ = utilHashcode(stringify(feature));
+    return feature;
+  }
+
+
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   */
+  _hashchange(currParams, prevParams) {
+    // gpx
+    const newGpx = currParams.get('gpx');
+    const oldGpx = prevParams.get('gpx');
+    if (newGpx !== oldGpx) {
+      this.url(newGpx || '', '.gpx');
+    }
   }
 
 }

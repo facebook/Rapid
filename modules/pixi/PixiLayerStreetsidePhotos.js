@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
@@ -32,32 +31,46 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-
-    this._service = null;
-    this.getService();
   }
 
 
   /**
-   * Services are loosely coupled, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
+   * supported
+   * Whether the Layer's service exists
    */
-  getService() {
-    if (services.streetside && !this._service) {
-      this._service = services.streetside;
-      this._service.on('loadedImages', () => this.context.map().deferredRedraw());
-    } else if (!services.streetside && this._service) {
-      this._service = null;
+  get supported() {
+    return !!this.context.services.streetside;
+  }
+
+
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
     }
 
-    return this._service;
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.streetside.startAsync();
+    }
   }
 
 
   filterImages(images) {
-    const fromDate = this.context.photos().fromDate;
-    const toDate = this.context.photos().toDate;
-    const usernames = this.context.photos().usernames;
+    const photoSystem = this.context.systems.photos;
+    const fromDate = photoSystem.fromDate;
+    const toDate = photoSystem.toDate;
+    const usernames = photoSystem.usernames;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -68,27 +81,28 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
     }
     if (usernames) {
-      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+      images = images.filter(i => usernames.includes(i.captured_by));
     }
     return images;
   }
 
 
   filterSequences(sequences) {
-    const fromDate = this.context.photos().fromDate;
-    const toDate = this.context.photos().toDate;
-    const usernames = this.context.photos().usernames;
+    const photoSystem = this.context.systems.photos;
+    const fromDate = photoSystem.fromDate;
+    const toDate = photoSystem.toDate;
+    const usernames = photoSystem.usernames;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+      sequences = sequences.filter(s => new Date(s.captured_at).getTime() >= fromTimestamp);
     }
     if (toDate) {
       const toTimestamp = new Date(toDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+      sequences = sequences.filter(s => new Date(s.captured_at).getTime() <= toTimestamp);
     }
     if (usernames) {
-      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+      sequences = sequences.filter(s => usernames.includes(s.captured_by));
     }
     return sequences;
   }
@@ -101,27 +115,36 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.getService();
-    if (!service) return;
+    const service = this.context.services.streetside;
+    if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
-    const images = service.bubbles(this.context.projection);
-    const sequences = service.sequences(this.context.projection);
+    const images = service.getImages();
+    const sequences = service.getSequences();
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
 
-    for (const d of sequenceData) {
-      const featureID = `${this.layerID}-sequence-${d.properties.id}`;
+    for (const sequence of sequenceData) {
+      const dataID =  sequence.id;
+      const featureID = `${this.layerID}-sequence-${dataID}`;
+      const sequenceVersion = sequence.v || 0;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
-        feature.geometry.setCoords(d.coordinates);
         feature.style = LINESTYLE;
         feature.parentContainer = parentContainer;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        feature.setData(d.properties.id, d);
+      }
+
+      // If sequence has changed, update data and coordinates.
+      if (feature.v !== sequenceVersion) {
+        feature.v = sequenceVersion;
+        feature.geometry.setCoords(sequence.coordinates);
+        feature.setData(dataID, sequence);
+        feature.clearChildData(dataID);
+        sequence.bubbleIDs.forEach(bubbleID => feature.addChildData(dataID, bubbleID));
       }
 
       this.syncFeatureClasses(feature);
@@ -130,28 +153,25 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     }
 
 
-    for (const d of photoData) {
-      const featureID = `${this.layerID}-photo-${d.id}`;
+    for (const photo of photoData) {
+      const dataID = photo.id;
+      const featureID = `${this.layerID}-photo-${dataID}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         const style = Object.assign({}, MARKERSTYLE);
-        if (Number.isFinite(d.ca)) {
-          style.viewfieldAngles = [d.ca];   // ca = camera angle
+        if (Number.isFinite(photo.ca)) {
+          style.viewfieldAngles = [photo.ca];   // ca = camera angle
         }
-        if (d.isPano) {
+        if (photo.isPano) {
           style.viewfieldName = 'pano';
         }
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry.setCoords(d.loc);
+        feature.geometry.setCoords(photo.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.setData(d.id, d);
-
-        if (d.sequenceID) {
-          feature.addChildData(d.sequenceID, d.id);
-        }
+        feature.setData(dataID, photo);
       }
 
       this.syncFeatureClasses(feature);
@@ -169,20 +189,11 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
-    if (!this.enabled || !service || zoom < MINZOOM) return;
+    const service = this.context.services.streetside;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    service.loadBubbles(this.context.projection);  // note: context.projection !== pixi projection
+    service.loadTiles();
     this.renderMarkers(frame, projection, zoom);
-  }
-
-
-  /**
-   * supported
-   * Whether the Layer's service exists
-   */
-  get supported() {
-    return !!this.getService();
   }
 
 }

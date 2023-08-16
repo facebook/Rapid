@@ -49,7 +49,7 @@ const timestamp = 1649012524130;
 let content = d3.select('body').append('div');
 let context = Rapid.coreContext().assetPath('../../dist/').init().container(content);
 
-let map = context.map();
+let map = context.systems.map;
 content.call(map);
 
 

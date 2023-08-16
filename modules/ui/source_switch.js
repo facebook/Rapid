@@ -1,53 +1,53 @@
 import { select as d3_select } from 'd3-selection';
-import { t } from '../core/localizer';
 
 
 export function uiSourceSwitch(context) {
-    var keys;
+  let keys;
 
-    function click(d3_event) {
-        d3_event.preventDefault();
+  function click(d3_event) {
+    d3_event.preventDefault();
 
-        var osm = context.connection();
-        if (!osm) return;
+    const osm = context.services.osm;
+    if (!osm) return;
+    if (context.inIntro) return;
+    if (context.mode?.id === 'save') return;
 
-        if (context.inIntro()) return;
+    if (context.systems.edits.hasChanges() && !window.confirm(context.t('source_switch.lose_changes'))) return;
 
-        if (context.history().hasChanges() &&
-            !window.confirm(t('source_switch.lose_changes'))) return;
+    let isLive = d3_select(this)
+      .classed('live');
 
-        var isLive = d3_select(this)
-            .classed('live');
+    isLive = !isLive;
+    context.enter('browse');
+    context.systems.edits.clearSaved();   // remove saved history
 
-        isLive = !isLive;
-        context.enter('browse');
-        context.history().clearSaved();          // remove saved history
-        context.flush();                         // remove stored data
-
+    context.resetAsync()   // remove stored data
+      .then(() => {
         d3_select(this)
-            .html(isLive ? t.html('source_switch.live') : t.html('source_switch.dev'))
-            .classed('live', isLive)
-            .classed('chip', isLive);
+          .html(isLive ? context.tHtml('source_switch.live') : context.tHtml('source_switch.dev'))
+          .classed('live', isLive)
+          .classed('chip', isLive);
 
-        osm.switch(isLive ? keys[0] : keys[1]);  // switch connection (warning: dispatches 'change' event)
-    }
+        return osm.switchAsync(isLive ? keys[0] : keys[1]);  // switch connection (warning: dispatches 'change' event)
+      });
+  }
 
-    var sourceSwitch = function(selection) {
-        selection
-            .append('a')
-            .attr('href', '#')
-            .html(t.html('source_switch.live'))
-            .attr('class', 'live chip')
-            .on('click', click);
-    };
-
-
-    sourceSwitch.keys = function(val) {
-        if (!arguments.length) return keys;
-        keys = val;
-        return sourceSwitch;
-    };
+  let sourceSwitch = function(selection) {
+    selection
+      .append('a')
+      .attr('href', '#')
+      .html(context.tHtml('source_switch.live'))
+      .attr('class', 'live chip')
+      .on('click', click);
+  };
 
 
+  sourceSwitch.keys = function(val) {
+    if (!arguments.length) return keys;
+    keys = val;
     return sourceSwitch;
+  };
+
+
+  return sourceSwitch;
 }

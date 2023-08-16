@@ -1,23 +1,22 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq, utilUniqueString } from '@rapid-sdk/util';
-import * as countryCoder from '@rapideditor/country-coder';
+import { iso1A2Code } from '@rapideditor/country-coder';
 
-import { presetManager } from '../../presets';
-import { fileFetcher } from '../../core/file_fetcher';
-import { t, localizer } from '../../core/localizer';
-import { services } from '../../services';
 import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 import { uiCombobox } from '../combobox';
-import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 var _languagesArray = [];
 
 
-export function uiFieldLocalized(field, context) {
+export function uiFieldLocalized(context, uifield) {
+    const dataLoaderSystem = context.systems.data;
+    const l10n = context.systems.l10n;
+
     var dispatch = d3_dispatch('change', 'input');
-    var wikipedia = services.wikipedia;
+    var wikipedia = context.services.wikipedia;
     var input = d3_select(null);
     var localizedInputs = d3_select(null);
     var _countryCode;
@@ -27,12 +26,13 @@ export function uiFieldLocalized(field, context) {
     // A concern here in switching to async data means that _languagesArray will not
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
-    fileFetcher.get('languages')
+
+    dataLoaderSystem.getDataAsync('languages')
         .then(loadLanguagesArray)
         .catch(e => console.error(e));  // eslint-disable-line
 
     var _territoryLanguages = {};
-    fileFetcher.get('territory_languages')
+    dataLoaderSystem.getDataAsync('territory_languages')
         .then(function(d) { _territoryLanguages = d; })
         .catch(e => console.error(e));  // eslint-disable-line
 
@@ -43,8 +43,8 @@ export function uiFieldLocalized(field, context) {
 
     var _selection = d3_select(null);
     var _multilingual = [];
-    var _buttonTip = uiTooltip()
-        .title(t.html('translate.translate'))
+    var _buttonTip = uiTooltip(context)
+        .title(l10n.tHtml('translate.translate'))
         .placement('left');
     var _wikiTitles;
     var _entityIDs = [];
@@ -65,10 +65,10 @@ export function uiFieldLocalized(field, context) {
             if (replacements[code]) metaCode = replacements[code];
 
             _languagesArray.push({
-                localName: localizer.languageName(metaCode, { localOnly: true }),
+                localName: l10n.languageName(metaCode, { localOnly: true }),
                 nativeName: dataLanguages[metaCode].nativeName,
                 code: code,
-                label: localizer.languageName(metaCode)
+                label: l10n.languageName(metaCode)
             });
         }
     }
@@ -76,7 +76,7 @@ export function uiFieldLocalized(field, context) {
 
     function calcLocked() {
         // Protect name field for suggestion presets that don't display a brand/operator field
-        var isLocked = (field.id === 'name') &&
+        var isLocked = (uifield.id === 'name') &&
             _entityIDs.length &&
             _entityIDs.some(function(entityID) {
                 var entity = context.graph().hasEntity(entityID);
@@ -92,7 +92,7 @@ export function uiFieldLocalized(field, context) {
                 // and the preset does not display a `brand` or `operator` field.
                 // (For presets like hotels, car dealerships, post offices, the `name` should remain editable)
                 // see also similar logic in `outdated_tags.js`
-                var preset = presetManager.match(entity, context.graph());
+                var preset = context.systems.presets.match(entity, context.graph());
                 if (preset) {
                     var isSuggestion = preset.suggestion;
                     var fields = preset.fields();
@@ -111,7 +111,7 @@ export function uiFieldLocalized(field, context) {
                 return false;
             });
 
-        field.locked(isLocked);
+        uifield.locked(isLocked);
     }
 
 
@@ -128,7 +128,7 @@ export function uiFieldLocalized(field, context) {
             // not for languages, e.g. name:left, name:source, etc.
             // https://github.com/openstreetmap/iD/pull/9124
             var m = k.match(/^(.*):([a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-[A-Z]{2})?)$/);
-            if (m && m[1] === field.key && m[2]) {
+            if (m && m[1] === uifield.key && m[2]) {
                 var item = { lang: m[2], value: tags[k] };
                 if (existingLangs.has(item.lang)) {
                     // update the value
@@ -153,7 +153,7 @@ export function uiFieldLocalized(field, context) {
     function localized(selection) {
         _selection = selection;
         calcLocked();
-        var isLocked = field.locked();
+        var isLocked = uifield.locked();
 
         var wrap = selection.selectAll('.form-field-input-wrap')
             .data([0]);
@@ -161,7 +161,7 @@ export function uiFieldLocalized(field, context) {
         // enter/update
         wrap = wrap.enter()
             .append('div')
-            .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
+            .attr('class', 'form-field-input-wrap form-field-input-' + uifield.type)
             .merge(wrap);
 
         input = wrap.selectAll('.localized-main')
@@ -171,7 +171,7 @@ export function uiFieldLocalized(field, context) {
         input = input.enter()
             .append('input')
             .attr('type', 'text')
-            .attr('id', field.domId)
+            .attr('id', uifield.uid)
             .attr('class', 'localized-main')
             .call(utilNoAuto)
             .merge(input);
@@ -222,9 +222,9 @@ export function uiFieldLocalized(field, context) {
 
         function addNew(d3_event) {
             d3_event.preventDefault();
-            if (field.locked()) return;
+            if (uifield.locked()) return;
 
-            var defaultLang = localizer.languageCode().toLowerCase();
+            var defaultLang = l10n.languageCode().toLowerCase();
             var langExists = _multilingual.find(function(datum) { return datum.lang === defaultLang; });
             var isLangEn = defaultLang.indexOf('en') > -1;
             if (isLangEn || langExists) {
@@ -244,7 +244,7 @@ export function uiFieldLocalized(field, context) {
 
         function change(onInput) {
             return function(d3_event) {
-                if (field.locked()) {
+                if (uifield.locked()) {
                     d3_event.preventDefault();
                     return;
                 }
@@ -253,11 +253,11 @@ export function uiFieldLocalized(field, context) {
                 if (!onInput) val = context.cleanTagValue(val);
 
                 // don't override multiple values with blank string
-                if (!val && Array.isArray(_tags[field.key])) return;
+                if (!val && Array.isArray(_tags[uifield.key])) return;
 
                 var t = {};
 
-                t[field.key] = val || undefined;
+                t[uifield.key] = val || undefined;
                 dispatch.call('change', this, t, onInput);
             };
         }
@@ -265,7 +265,7 @@ export function uiFieldLocalized(field, context) {
 
 
     function key(lang) {
-        return field.key + ':' + lang;
+        return uifield.key + ':' + lang;
     }
 
 
@@ -319,7 +319,7 @@ export function uiFieldLocalized(field, context) {
         var v = value.toLowerCase();
 
         // show the user's language first
-        var langCodes = [localizer.localeCode(), localizer.languageCode()];
+        var langCodes = [l10n.localeCode(), l10n.languageCode()];
 
         if (_countryCode && _territoryLanguages[_countryCode]) {
             langCodes = langCodes.concat(_territoryLanguages[_countryCode]);
@@ -363,12 +363,12 @@ export function uiFieldLocalized(field, context) {
             .attr('class', 'entry')
             .each(function(_, index) {
                 var wrap = d3_select(this);
-                var domId = utilUniqueString(index);
+                var uid = utilUniqueString(index);
 
                 var label = wrap
                     .append('label')
                     .attr('class', 'field-label')
-                    .attr('for', domId);
+                    .attr('for', uid);
 
                 var text = label
                     .append('span')
@@ -377,7 +377,7 @@ export function uiFieldLocalized(field, context) {
                 text
                     .append('span')
                     .attr('class', 'label-textvalue')
-                    .html(t.html('translate.localized_translation_label'));
+                    .html(l10n.tHtml('translate.localized_translation_label'));
 
                 text
                     .append('span')
@@ -387,7 +387,7 @@ export function uiFieldLocalized(field, context) {
                     .append('button')
                     .attr('class', 'remove-icon-multilingual')
                     .on('click', function(d3_event, d) {
-                        if (field.locked()) return;
+                        if (uifield.locked()) return;
                         d3_event.preventDefault();
 
                         // remove the UI item manually
@@ -410,9 +410,9 @@ export function uiFieldLocalized(field, context) {
                 wrap
                     .append('input')
                     .attr('class', 'localized-lang')
-                    .attr('id', domId)
+                    .attr('id', uid)
                     .attr('type', 'text')
-                    .attr('placeholder', t('translate.localized_translation_language'))
+                    .attr('placeholder', l10n.t('translate.localized_translation_language'))
                     .on('blur', changeLang)
                     .on('change', changeLang)
                     .call(langCombo);
@@ -462,7 +462,7 @@ export function uiFieldLocalized(field, context) {
                 return Array.isArray(d.value) ? d.value.filter(Boolean).join('\n') : null;
             })
             .attr('placeholder', function(d) {
-                return Array.isArray(d.value) ? t('inspector.multiple_values') : t('translate.localized_translation_name');
+                return Array.isArray(d.value) ? l10n.t('inspector.multiple_values') : l10n.t('translate.localized_translation_name');
             })
             .classed('mixed', function(d) {
                 return Array.isArray(d.value);
@@ -485,11 +485,11 @@ export function uiFieldLocalized(field, context) {
             }
         }
 
-        var isMixed = Array.isArray(tags[field.key]);
+        var isMixed = Array.isArray(tags[uifield.key]);
 
-        utilGetSetValue(input, typeof tags[field.key] === 'string' ? tags[field.key] : '')
-            .attr('title', isMixed ? tags[field.key].filter(Boolean).join('\n') : undefined)
-            .attr('placeholder', isMixed ? t('inspector.multiple_values') : field.placeholder())
+        utilGetSetValue(input, typeof tags[uifield.key] === 'string' ? tags[uifield.key] : '')
+            .attr('title', isMixed ? tags[uifield.key].filter(Boolean).join('\n') : undefined)
+            .attr('placeholder', isMixed ? l10n.t('inspector.multiple_values') : uifield.placeholder)
             .classed('mixed', isMixed);
 
         calcMultilingual(tags);
@@ -513,14 +513,11 @@ export function uiFieldLocalized(field, context) {
     };
 
     function loadCountryCode() {
-        var extent = combinedEntityExtent();
-        var countryCode = extent && countryCoder.iso1A2Code(extent.center());
+        var extent = uifield.entityExtent;
+        var countryCode = extent && iso1A2Code(extent.center());
         _countryCode = countryCode && countryCode.toLowerCase();
     }
 
-    function combinedEntityExtent() {
-        return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
-    }
 
     return utilRebind(localized, dispatch, 'on');
 }

@@ -1,6 +1,3 @@
-import { select as d3_select } from 'd3-selection';
-
-import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { osmChangeset } from '../../osm';
 import { actionDiscardTags } from '../../actions';
@@ -11,11 +8,11 @@ import { uiTooltip } from '../tooltip';
 export function uiToolDownloadOsc(context) {
   let tool = {
     id: 'download_osc',
-    label: t('download_osc.title')
+    label: context.t('download_osc.title')
   };
 
-  let button = d3_select(null);
-  let tooltip = null;
+  let _button = null;
+  let _tooltip = null;
   let _numChanges = 0;
 
   function isDisabled() {
@@ -24,27 +21,35 @@ export function uiToolDownloadOsc(context) {
 
   function downloadOsc(d3_event) {
     d3_event.preventDefault();
-    let history = context.history();
-    if (!context.inIntro() && history.hasChanges()) {
-      const changes = history.changes(actionDiscardTags(history.difference()));
-      let changeset = new osmChangeset();
-      let osc = JXON.stringify(changeset.osmChangeJXON(changes));
-      downloadFile(osc,'change.osc');
+    const editSystem = context.systems.edits;
+    if (!context.inIntro && editSystem.hasChanges()) {
+      const changes = editSystem.changes(actionDiscardTags(editSystem.difference()));
+      const changeset = new osmChangeset();
+      const osc = JXON.stringify(changeset.osmChangeJXON(changes));
+      downloadFile(osc, 'change.osc');
     }
   }
 
   function updateCount() {
-    const val = context.history().difference().summary().size;
+    if (!_tooltip) return;
+
+    const val = context.systems.edits.difference().summary().size;
     if (val === _numChanges) return;   // no change
     _numChanges = val;
 
-    button.classed('disabled', isDisabled());
-    if (tooltip) {
-      tooltip
-        .title(t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
+    if (_tooltip) {
+      _tooltip
+        .title(context.t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
     }
-
+    updateStyle();
   }
+
+
+  function updateStyle() {
+    if (!_button) return;
+    _button.classed('disabled', isDisabled());
+  }
+
 
   function downloadFile(data, fileName) {
     let a = document.createElement('a');   // Create an invisible A element
@@ -67,41 +72,36 @@ export function uiToolDownloadOsc(context) {
 
 
   tool.install = function(selection) {
-    tooltip = uiTooltip()
-      .placement('bottom')
-      .title(t('download_osc.no_changes'));
+    if (_button && _tooltip) return;  // already installed
 
-    button = selection
+    _tooltip = uiTooltip(context)
+      .placement('bottom')
+      .title(context.t('download_osc.no_changes'));
+
+    _button = selection
       .append('button')
       .attr('class', 'downloadOsc disabled bar-button')
       .on('click', downloadOsc)
-      .call(tooltip);
+      .call(_tooltip);
 
-    button
+    _button
       .call(uiIcon('#rapid-icon-download-osc'));
 
     updateCount();
 
-
-    context.history()
-      .on('change.download_osc', updateCount);
-
-    context
-      .on('enter.download_osc', () => {
-        button.classed('disabled', isDisabled());
-      });
+    context.systems.edits.on('change', updateCount);
+    context.on('modechange', updateStyle);
   };
 
 
   tool.uninstall = function() {
-    context.history()
-      .on('change.download_osc', null);
+    if (!_button && !_tooltip) return;  // already uninstalled
 
-    context
-      .on('enter.download_osc', null);
+    context.systems.edits.off('change', updateCount);
+    context.off('modechange', updateStyle);
 
-    button = d3_select(null);
-    tooltip = null;
+    _button = null;
+    _tooltip = null;
   };
 
   return tool;

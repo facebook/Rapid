@@ -29,7 +29,6 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   constructor(scene, layerID, isMinimap) {
     super(scene, layerID);
-
     this.enabled = true;   // background imagery should be enabled by default
     this.isMinimap = isMinimap;
 
@@ -56,7 +55,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    * @param  projection   Pixi projection to use for rendering
    */
   render(frame, projection) {
-    const imagery = this.context.imagery();
+    const imagery = this.context.systems.imagery;
     const groupContainer = this.scene.groups.get('background');
 
     // Collect tile sources - baselayer and overlays
@@ -119,7 +118,12 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
   renderSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
     const textureManager = this.renderer.textures;
-    const osm = context.connection();
+    const osm = context.services.osm;
+
+    // Defensive coding in case nominatim/other reasons cause us to get an invalid projection.
+    if (isNaN(projection._x) || isNaN(projection._y)) {
+      return;
+    }
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
     let showDebug = false;
@@ -207,13 +211,13 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
         tile.loaded = true;
         tile.image = null;  // image is copied to the atlas, we can free it
-        context.map().deferredRedraw();
+        context.systems.map.deferredRedraw();
       };
 
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        context.map().deferredRedraw();
+        context.systems.map.deferredRedraw();
       };
     }
 

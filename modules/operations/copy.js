@@ -1,8 +1,6 @@
 import { utilArrayGroupBy } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
 
@@ -50,12 +48,13 @@ export function operationCopy(context, selectedIDs) {
       }
     }
 
-    context.copyIDs(canCopy);
+    context.copyIDs = canCopy;
+
     if (_point && (canCopy.length !== 1 || graph.entity(canCopy[0]).type !== 'node')) {
       // store the anchor coordinates if copying more than a single node
-      context.copyLoc(context.projection.invert(_point));
+      context.copyLoc = context.projection.invert(_point);
     } else {
-      context.copyLoc(null);
+      context.copyLoc = null;
     }
   };
 
@@ -98,8 +97,9 @@ export function operationCopy(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
   };
 
@@ -114,13 +114,13 @@ export function operationCopy(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.copy.${disabledReason}`, { n: selectedIDs.length }) :
-      t('operations.copy.description', { n: selectedIDs.length });
+      context.t(`operations.copy.${disabledReason}`, { n: selectedIDs.length }) :
+      context.t('operations.copy.description', { n: selectedIDs.length });
   };
 
 
   operation.annotation = function() {
-    return t('operations.copy.annotation', { n: selectedIDs.length });
+    return context.t('operations.copy.annotation', { n: selectedIDs.length });
   };
 
 
@@ -132,8 +132,8 @@ export function operationCopy(context, selectedIDs) {
 
   operation.id = 'copy';
   operation.keys = [ uiCmd('⌘C') ];
-  operation.title = t('operations.copy.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.title = context.t('operations.copy.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

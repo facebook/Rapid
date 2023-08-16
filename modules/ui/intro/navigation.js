@@ -2,8 +2,6 @@ import { Extent, vecEqual } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { presetManager } from '../../presets';
-import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, transitionTime } from './helper';
 
@@ -12,24 +10,27 @@ export function uiIntroNavigation(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.navigation.title' };
   const container = context.container();
-  const history = context.history();
-  const map = context.map();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
+  const presetSystem = context.systems.presets;
 
   const townHallID = 'n2061';
   const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);
   const springStreetID = 'w397';
   const springStreetExtent = new Extent([-85.63588, 41.94155], [-85.63574, 41.94278]);
-  const onewayField = presetManager.field('oneway');
-  const maxspeedField = presetManager.field('maxspeed');
+  const onewayField = presetSystem.field('oneway');
+  const maxspeedField = presetSystem.field('maxspeed');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
+  let _onMapMove = null;
+  let _onModeChange = null;
 
 
   // Helper functions
   function _isTownHallSelected() {
     if (!context.hasEntity(townHallID)) return false;
-    if (context.mode().id !== 'select') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === townHallID;
   }
@@ -40,7 +41,7 @@ export function uiIntroNavigation(context, curtain) {
 
   function _isSpringStreetSelected() {
     if (!context.hasEntity(springStreetID)) return false;
-    if (context.mode().id !== 'select') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === springStreetID;
   }
@@ -80,23 +81,22 @@ export function uiIntroNavigation(context, curtain) {
   // Drag the map to advance
   function dragMapAsync() {
     context.enter('browse');
-    history.reset('initial');
-    let onMove;
+    editSystem.resetToCheckpoint('initial');
 
     const loc = townHallExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        const centerStart = map.center();
-        const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
-        const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
+        const centerStart = mapSystem.center();
+        const textID = context.lastPointerType === 'mouse' ? 'drag' : 'drag_touch';
+        const dragString = helpHtml(context, 'intro.navigation.map_info') + '{br}' + helpHtml(context, `intro.navigation.${textID}`);
 
-        onMove = () => {
-          if (!vecEqual(centerStart, map.center())) {  // map moved
+        _onMapMove = () => {
+          if (!vecEqual(centerStart, mapSystem.center())) {  // map moved
             resolve(zoomMapAsync);
           }
         };
@@ -105,11 +105,9 @@ export function uiIntroNavigation(context, curtain) {
           revealSelector: '.main-map',
           tipHtml: dragString
         });
-
-        map.on('move', onMove);
       }))
       .finally(() => {
-        if (onMove) map.off('move', onMove);
+        _onMapMove = null;
       })
       .then(nextStep => delayAsync(2000).then(nextStep));
   }
@@ -117,16 +115,14 @@ export function uiIntroNavigation(context, curtain) {
 
   // Zoom the map to advance
   function zoomMapAsync() {
-    let onMove;
-
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      const zoomStart = map.zoom();
-      const textID = context.lastPointerType() === 'mouse' ? 'zoom' : 'zoom_touch';
-      const zoomString = helpHtml(`intro.navigation.${textID}`);
+      const zoomStart = mapSystem.zoom();
+      const textID = context.lastPointerType === 'mouse' ? 'zoom' : 'zoom_touch';
+      const zoomString = helpHtml(context, `intro.navigation.${textID}`);
 
-      onMove = () => {
-        if (zoomStart !== map.zoom()) {  // map zoomed
+      _onMapMove = () => {
+        if (zoomStart !== mapSystem.zoom()) {  // map zoomed
           resolve(featuresAsync);
         }
       };
@@ -135,11 +131,9 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.main-map',
         tipHtml: zoomString
       });
-
-      map.on('move', onMove);
     })
     .finally(() => {
-      if (onMove) map.off('move', onMove);
+      _onMapMove = null;
     })
     .then(nextStep => delayAsync(2000).then(nextStep));
   }
@@ -152,8 +146,8 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: helpHtml('intro.navigation.features'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.features'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(pointsLinesAreasAsync)
       });
     });
@@ -167,8 +161,8 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: helpHtml('intro.navigation.points_lines_areas'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.points_lines_areas'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(nodesWaysAsync)
       });
     });
@@ -182,8 +176,8 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: helpHtml('intro.navigation.nodes_ways'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.nodes_ways'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(clickTownHallAsync)
       });
     });
@@ -193,27 +187,28 @@ export function uiIntroNavigation(context, curtain) {
   // Select the town hall to advance
   function clickTownHallAsync() {
     context.enter('browse');
-    history.reset('initial');
+    editSystem.resetToCheckpoint('initial');
 
     const loc = townHallExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
 
-        const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
+        _onModeChange = () => resolve(selectedTownHallAsync);
+
+        const textID = context.lastPointerType === 'mouse' ? 'click_townhall' : 'tap_townhall';
         curtain.reveal({
           revealExtent: townHallExtent,
-          tipHtml: helpHtml(`intro.navigation.${textID}`)
+          tipHtml: helpHtml(context, `intro.navigation.${textID}`)
         });
 
-        context.on('enter.intro', () => resolve(selectedTownHallAsync));
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -225,18 +220,17 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
 
       curtain.reveal({
         revealExtent: townHallExtent,
-        tipHtml: helpHtml('intro.navigation.selected_townhall'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.selected_townhall'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(editorTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -248,20 +242,20 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+
       showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.navigation.editor_townhall'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.editor_townhall'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(presetTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.inspector-wrap').on('wheel.intro', null);
     });
   }
@@ -274,25 +268,25 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+
       showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       // preset match, in case the user happened to change it.
       const entity = context.entity(context.selectedIDs()[0]);
-      const preset = presetManager.match(entity, context.graph());
+      const preset = presetSystem.match(entity, context.graph());
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane .section-feature-type',
         revealPadding: 5,
-        tipHtml: helpHtml('intro.navigation.preset_townhall', { preset: preset.name() }),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.preset_townhall', { preset: preset.name() }),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(fieldsTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.inspector-wrap').on('wheel.intro', null);
     });
   }
@@ -305,21 +299,21 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+
       showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane .section-preset-fields',
         revealPadding: 5,
-        tipHtml: helpHtml('intro.navigation.fields_townhall'),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.navigation.fields_townhall'),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(closeTownHallAsync)
       });
-
-      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.inspector-wrap').on('wheel.intro', null);
     });
   }
@@ -331,6 +325,8 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(searchStreetAsync);
+
       showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
@@ -338,13 +334,11 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipSelector: '.entity-editor-pane button.close',
-        tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
+        tipHtml: helpHtml(context, 'intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
       });
-
-      context.on('enter.intro', () => resolve(searchStreetAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -354,19 +348,19 @@ export function uiIntroNavigation(context, curtain) {
   // Type in the search box to advance
   function searchStreetAsync() {
     context.enter('browse');
-    history.reset('initial');  // ensure spring street exists
+    editSystem.resetToCheckpoint('initial');  // ensure spring street exists
 
     const loc = springStreetExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.search-header input',
-          tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
+          tipHtml: helpHtml(context, 'intro.navigation.search_street', { name: context.t('intro.graph.name.spring-street') })
         });
 
         container.select('.search-header input').on('keyup.intro', () => resolve(checkSearchResultAsync));
@@ -384,19 +378,18 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-
-      context.on('enter.intro', () => resolve(selectedStreetAsync));
+      _onModeChange = () => resolve(selectedStreetAsync);
 
       container.select('.search-header input').on('keyup.intro', () => {
         const first = container.select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
         const firstName = first.select('.entity-name');
-        const name = t('intro.graph.name.spring-street');
+        const name = context.t('intro.graph.name.spring-street');
 
         if (!firstName.empty() && firstName.html() === name) {
           curtain.reveal({
             revealNode: first.node(),
             revealPadding: 5,
-            tipHtml: helpHtml('intro.navigation.choose_street', { name: name })
+            tipHtml: helpHtml(context, 'intro.navigation.choose_street', { name: name })
           });
           // no more typing
           container.select('.search-header input')
@@ -406,7 +399,7 @@ export function uiIntroNavigation(context, curtain) {
       });
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       container.select('.search-header input')
         .on('keydown.intro', null)
         .on('keyup.intro', null);
@@ -423,24 +416,24 @@ export function uiIntroNavigation(context, curtain) {
     // to show only the `springStreetExtent` instead.
     const loc = springStreetExtent.center();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 19, 0 /* asap */)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        _onModeChange = reject;   // disallow mode change
+
         if (!_isSpringStreetSelected()) { resolve(searchStreetAsync); return; }
 
         curtain.reveal({
           revealExtent: springStreetExtent,
           revealPadding: 40,
-          tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
-          buttonText: t.html('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.navigation.selected_street', { name: context.t('intro.graph.name.spring-street') }),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(editorStreetAsync)
         });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -452,11 +445,13 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(playAsync);
+
       showEntityEditor(container);
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
-      const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
-        helpHtml('intro.navigation.editor_street', {
+      const tipHtml = helpHtml(context, 'intro.navigation.street_different_fields') + '{br}' +
+        helpHtml(context, 'intro.navigation.editor_street', {
           button: icon(iconName, 'inline'),
           field1: onewayField.label(),
           field2: maxspeedField.label()
@@ -466,11 +461,9 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.entity-editor-pane',
         tipHtml: tipHtml
       });
-
-      context.on('enter.intro', () => resolve(playAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
     });
   }
 
@@ -482,8 +475,8 @@ export function uiIntroNavigation(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-point',
-      tipHtml: helpHtml('intro.navigation.play', { next: t('intro.points.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.navigation.play', { next: context.t('intro.points.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -493,9 +486,25 @@ export function uiIntroNavigation(context, curtain) {
   chapter.enter = () => {
     _chapterCancelled = false;
     _rejectStep = null;
+    _onMapMove = null;
+    _onModeChange = null;
+
+    context.on('modechange', _modeChangeListener);
+    mapSystem.on('move', _mapMoveListener);
 
     runAsync(dragMapAsync)
-      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
+      .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
+      .finally(() => {
+        context.off('modechange', _modeChangeListener);
+        mapSystem.off('move', _mapMoveListener);
+      });
+
+    function _mapMoveListener() {
+      if (typeof _onMapMove === 'function') _onMapMove();
+    }
+    function _modeChangeListener(mode) {
+      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    }
   };
 
 

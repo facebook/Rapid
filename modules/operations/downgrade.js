@@ -1,9 +1,6 @@
 import { actionChangeTags } from '../actions/change_tags';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { modeSelect } from '../modes/select';
-import { t } from '../core/localizer';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { uiCmd } from '../ui/cmd';
-import { presetManager } from '../presets';
 
 
 export function operationDowngrade(context, selectedIDs) {
@@ -39,7 +36,8 @@ export function operationDowngrade(context, selectedIDs) {
   function downgradeTypeForEntityID(entityID) {
     const graph = context.graph();
     const entity = graph.entity(entityID);
-    const preset = presetManager.match(entity, graph);
+    const presetSystem = context.systems.presets;
+    const preset = presetSystem.match(entity, graph);
 
     if (!preset || preset.isFallback()) return null;
 
@@ -85,10 +83,10 @@ export function operationDowngrade(context, selectedIDs) {
       return graph;
     }, operation.annotation());
 
-    context.validator().validate();
+    context.systems.validator.validate();
 
     // refresh the select mode to enable the delete operation
-    context.enter(modeSelect(context, selectedIDs));
+    context.enter('select-osm', { selectedIDs: selectedIDs });
   };
 
 
@@ -113,8 +111,8 @@ export function operationDowngrade(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.downgrade.${disabledReason}.${multi}`) :
-      t(`operations.downgrade.description.${_downgradeType}`);
+      context.t(`operations.downgrade.${disabledReason}.${multi}`) :
+      context.t(`operations.downgrade.description.${_downgradeType}`);
   };
 
 
@@ -125,14 +123,14 @@ export function operationDowngrade(context, selectedIDs) {
     } else {
       suffix = _downgradeType;
     }
-    return t(`operations.downgrade.annotation.${suffix}`, { n: _affectedFeatureCount});
+    return context.t(`operations.downgrade.annotation.${suffix}`, { n: _affectedFeatureCount});
   };
 
 
   operation.id = 'downgrade';
   operation.keys = [ uiCmd('⌫') ];
-  operation.title = t('operations.downgrade.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.title = context.t('operations.downgrade.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

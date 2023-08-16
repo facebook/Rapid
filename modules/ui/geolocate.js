@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 
-import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { uiIcon } from './icon';
 import { uiLoading } from './loading';
@@ -15,7 +14,7 @@ const GEOLOCATE_OPTIONS = {
 
 
 export function uiGeolocate(context) {
-  let _uiModal = uiLoading(context).message(t.html('geolocate.locating')).blocking(true);
+  let _uiModal = uiLoading(context).message(context.tHtml('geolocate.locating')).blocking(true);
   let _layer = context.scene().layers.get('map-ui');
   let _enabled = false;
   let _timeoutID;
@@ -23,11 +22,12 @@ export function uiGeolocate(context) {
 
 
   function click() {
-    if (context.inIntro()) return;
+    if (context.inIntro) return;
 
     if (!_enabled) {   // start geolocating
       _enabled = true;
       _button.classed('active', true);
+      context.enter('browse'); //Clear any selections only ONCE on click, not subsequently!
 
       // Ensures that we complete even if the success/error callbacks never get called.
       // This can happen if the user declines to share their location.
@@ -39,7 +39,7 @@ export function uiGeolocate(context) {
     } else {   // stop geolocating
       _enabled = false;
       _layer.geolocationData = null;
-      context.map().deferredRedraw();
+      context.systems.map.deferredRedraw();
       finish();
     }
   }
@@ -47,12 +47,11 @@ export function uiGeolocate(context) {
 
   function success(result) {
     if (_enabled) {    // user may have disabled it before the callback fires
-      context.enter('browse');
 
       const coords = result.coords;
       const extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
       _layer.geolocationData = result;
-      context.map().deferredRedraw();
+      context.systems.map.deferredRedraw();
 
       // If `_timeoutID` has a value, this is the first successful result we've received.
       // Recenter the map and clear the timeout.
@@ -60,7 +59,7 @@ export function uiGeolocate(context) {
         window.clearTimeout(_timeoutID);
         _timeoutID = undefined;
 
-        const map = context.map();
+        const map = context.systems.map;
         map.centerZoomEase(extent.center(), Math.min(20, map.extentZoom(extent)));
       }
 
@@ -75,14 +74,14 @@ export function uiGeolocate(context) {
 
   function error() {
     if (_enabled) {    // user may have disabled it before the callback fires
-      context.ui().flash
-        .label(t.html('geolocate.location_unavailable'))
+      context.systems.ui.flash
+        .label(context.tHtml('geolocate.location_unavailable'))
         .iconName('#rapid-icon-geolocate')();
     }
 
     _enabled = false;
     _layer.geolocationData = null;
-    context.map().deferredRedraw();
+    context.systems.map.deferredRedraw();
     finish();
   }
 
@@ -101,13 +100,15 @@ export function uiGeolocate(context) {
   return function(selection) {
     if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) return;
 
+    const isRTL = context.systems.l10n.isRTL();
+
     _button = selection
       .append('button')
       .on('click', click)
       .call(uiIcon('#rapid-icon-geolocate', 'light'))
-      .call(uiTooltip()
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
-        .title(t.html('geolocate.title'))
+      .call(uiTooltip(context)
+        .placement(isRTL ? 'right' : 'left')
+        .title(context.tHtml('geolocate.title'))
       );
   };
 }

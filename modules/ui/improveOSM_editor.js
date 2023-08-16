@@ -1,26 +1,23 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
-
 import { uiImproveOsmComments } from './improveOSM_comments';
 import { uiImproveOsmDetails } from './improveOSM_details';
 import { uiImproveOsmHeader } from './improveOSM_header';
-
 import { utilNoAuto, utilRebind } from '../util';
 
+
 export function uiImproveOsmEditor(context) {
+  const improveosm = context.services.improveOSM;
   const dispatch = d3_dispatch('change');
   const qaDetails = uiImproveOsmDetails(context);
   const qaComments = uiImproveOsmComments(context);
   const qaHeader = uiImproveOsmHeader(context);
-
   let _qaItem;
 
-  function improveOsmEditor(selection) {
 
+  function improveOsmEditor(selection) {
     const headerEnter = selection.selectAll('.header')
       .data([0])
       .enter()
@@ -35,7 +32,7 @@ export function uiImproveOsmEditor(context) {
 
     headerEnter
       .append('h3')
-        .html(t.html('QA.improveOSM.title'));
+        .html(context.tHtml('QA.improveOSM.title'));
 
     let body = selection.selectAll('.body')
       .data([0]);
@@ -80,12 +77,12 @@ export function uiImproveOsmEditor(context) {
     saveSectionEnter
       .append('h4')
         .attr('class', '.qa-save-header')
-        .html(t.html('note.newComment'));
+        .html(context.tHtml('note.newComment'));
 
     saveSectionEnter
       .append('textarea')
         .attr('class', 'new-comment-input')
-        .attr('placeholder', t('QA.keepRight.comment_placeholder'))
+        .attr('placeholder', context.t('QA.keepRight.comment_placeholder'))
         .attr('maxlength', 1000)
         .property('value', d => d.newComment)
         .call(utilNoAuto)
@@ -95,7 +92,7 @@ export function uiImproveOsmEditor(context) {
     // update
     saveSection = saveSectionEnter
       .merge(saveSection)
-        .call(qaSaveButtons);
+      .call(qaSaveButtons);
 
     function changeInput() {
       const input = d3_select(this);
@@ -108,9 +105,8 @@ export function uiImproveOsmEditor(context) {
       // store the unsaved comment with the issue itself
       _qaItem = _qaItem.update({ newComment: val });
 
-      const qaService = services.improveOSM;
-      if (qaService) {
-        qaService.replaceItem(_qaItem);
+      if (improveosm) {
+        improveosm.replaceItem(_qaItem);
       }
 
       saveSection
@@ -136,7 +132,7 @@ export function uiImproveOsmEditor(context) {
     buttonEnter
       .append('button')
         .attr('class', 'button comment-button action')
-        .html(t.html('QA.keepRight.save_comment'));
+        .html(context.tHtml('QA.keepRight.save_comment'));
 
     buttonEnter
       .append('button')
@@ -153,38 +149,35 @@ export function uiImproveOsmEditor(context) {
     buttonSection.select('.comment-button')
       .attr('disabled', d => d.newComment ? null : true)
       .on('click.comment', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.improveOSM;
-        if (qaService) {
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+        this.blur();    // avoid keeping focus on the button - iD#4641
+        if (improveosm) {
+          improveosm.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
     buttonSection.select('.close-button')
       .html(d => {
         const andComment = (d.newComment ? '_comment' : '');
-        return t.html(`QA.keepRight.close${andComment}`);
+        return context.tHtml(`QA.keepRight.close${andComment}`);
       })
       .on('click.close', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.improveOSM;
-        if (qaService) {
+        this.blur();    // avoid keeping focus on the button - iD#4641
+        if (improveosm) {
           d.newStatus = 'SOLVED';
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          improveosm.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
     buttonSection.select('.ignore-button')
       .html(d => {
         const andComment = (d.newComment ? '_comment' : '');
-        return t.html(`QA.keepRight.ignore${andComment}`);
+        return context.tHtml(`QA.keepRight.ignore${andComment}`);
       })
       .on('click.ignore', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.improveOSM;
-        if (qaService) {
+        this.blur();    // avoid keeping focus on the button - iD#4641
+        if (improveosm) {
           d.newStatus = 'INVALID';
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          improveosm.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
   }

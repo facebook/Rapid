@@ -28,6 +28,8 @@
 
   <script>
     var scripts = [
+      'spec/Context.test.js',
+
       'spec/actions/add_entity.js',
       'spec/actions/add_member.js',
       'spec/actions/add_midpoint.js',
@@ -64,19 +66,25 @@
       'spec/actions/extract.js',
       'spec/actions/upgrade_tags.js',
 
-      'spec/core/context.js',
-      'spec/core/Difference.test.js',
-      'spec/core/file_fetcher.js',
-      'spec/core/Graph.test.js',
-      'spec/core/history.js',
-      'spec/core/LocationManager.test.js',
-      'spec/core/Tree.test.js',
-      'spec/core/UrlHash.test.js',
-      'spec/core/validator.js',
+      'spec/core/DataLoaderSystem.test.js',
+      'spec/core/EditSystem.test.js',
+      'spec/core/FilterSystem.test.js',
+      'spec/core/LocalizationSystem.test.js',
+      'spec/core/LocationSystem.test.js',
+      'spec/core/MapSystem.Test.js',
+      'spec/core/PresetSystem.test.js',
+      'spec/core/UrlHashSystem.test.js',
+      'spec/core/ValidationSystem.test.js',
+
+      'spec/core/lib/Category.test.js',
+      'spec/core/lib/Collection.test.js',
+      'spec/core/lib/Difference.test.js',
+      'spec/core/lib/Graph.test.js',
+      'spec/core/lib/ImagerySource.test.js',
+      'spec/core/lib/Preset.test.js',
+      'spec/core/lib/Tree.test.js',
 
       'spec/geo/geom.js',
-
-      'spec/lib/locale.js',
 
       'spec/operations/extract.js',
       'spec/operations/straighten.js',
@@ -91,23 +99,13 @@
       'spec/osm/relation.js',
       'spec/osm/way.js',
 
-      'spec/presets/category.js',
-      'spec/presets/collection.js',
-      'spec/presets/index.js',
-      'spec/presets/preset.js',
-
-      'spec/renderer/RendererImagerySource.js',
-      'spec/renderer/features.js',
-      'spec/renderer/map.js',
-
-      'spec/services/kartaview.js',
-      'spec/services/mapillary.js',
-      'spec/services/maprules.js',
-      'spec/services/nominatim.js',
-      'spec/services/osm.js',
-      'spec/services/osm_wikibase.js',
-      'spec/services/streetside.js',
-      'spec/services/taginfo.js',
+      'spec/services/KartaviewService.test.js',
+      'spec/services/MapillaryService.test.js',
+      'spec/services/NominatimService.test.js',
+      'spec/services/OsmService.test.js',
+      'spec/services/OsmWikibaseService.test.js',
+      'spec/services/StreetsideService.test.js',
+      'spec/services/TaginfoService.test.js',
 
       'spec/svg/tag_classes.js',
 
@@ -116,7 +114,6 @@
       'spec/ui/confirm.js',
       'spec/ui/flash.js',
       'spec/ui/icon.js',
-      'spec/ui/inspector.js',
       'spec/ui/modal.js',
 
       'spec/ui/sections/raw_tag_editor.js',
@@ -126,9 +123,8 @@
       'spec/ui/fields/wikipedia.js',
 
       'spec/util/keybinding.js',
-      'spec/util/util.js',
 
-//      'spec/validations/almost_junction.js',
+      'spec/validations/almost_junction.js',
       'spec/validations/crossing_ways.js',
       'spec/validations/disconnected_way.js',
       'spec/validations/incompatible_source.js',

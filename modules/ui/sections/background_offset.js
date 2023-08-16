@@ -1,14 +1,16 @@
 import { select as d3_select } from 'd3-selection';
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 
-import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundOffset(context) {
+  const l10n = context.systems.l10n;
+  const imagerySystem = context.systems.imagery;
+
   const section = uiSection('background-offset', context)
-    .label(t.html('background.fix_misalignment'))
+    .label(l10n.tHtml('background.fix_misalignment'))
     .disclosureContent(renderDisclosureContent)
     .expandedByDefault(false);
 
@@ -21,7 +23,7 @@ export function uiSectionBackgroundOffset(context) {
 
 
   function updateValue() {
-    const meters = geoOffsetToMeters(context.imagery().offset);
+    const meters = geoOffsetToMeters(imagerySystem.offset);
     const x = +meters[0].toFixed(2);
     const y = +meters[1].toFixed(2);
 
@@ -36,13 +38,13 @@ export function uiSectionBackgroundOffset(context) {
 
 
   function resetOffset() {
-    context.imagery().offset = [0, 0];
+    imagerySystem.offset = [0, 0];
     updateValue();
   }
 
 
   function nudge(d) {
-    context.imagery().nudge(d, context.map().zoom());
+    imagerySystem.nudge(d, context.systems.map.zoom());
     updateValue();
   }
 
@@ -53,7 +55,7 @@ export function uiSectionBackgroundOffset(context) {
 
     if (val === '') return resetOffset();
 
-    val = val.replace(/;/g, ',').split(',').map(function(n) {
+    val = val.replace(/;/g, ',').split(',').map(n => {
       // if n is NaN, it will always get mapped to false.
       return !isNaN(n) && n;
     });
@@ -63,7 +65,7 @@ export function uiSectionBackgroundOffset(context) {
       return;
     }
 
-    context.imagery().offset = geoMetersToOffset(val);
+    imagerySystem.offset = geoMetersToOffset(val);
     updateValue();
   }
 
@@ -121,7 +123,7 @@ export function uiSectionBackgroundOffset(context) {
     containerEnter
       .append('div')
       .attr('class', 'nudge-instructions')
-      .html(t.html('background.offset'));
+      .html(l10n.tHtml('background.offset'));
 
     let nudgeWrapEnter = containerEnter
       .append('div')
@@ -150,18 +152,18 @@ export function uiSectionBackgroundOffset(context) {
 
     nudgeWrapEnter
       .append('button')
-      .attr('title', t('background.reset'))
+      .attr('title', l10n.t('background.reset'))
       .attr('class', 'nudge-reset disabled')
       .on('click', d3_event => {
         d3_event.preventDefault();
         resetOffset();
       })
-      .call(uiIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
+      .call(uiIcon('#rapid-icon-' + (l10n.isRTL() ? 'redo' : 'undo')));
 
     updateValue();
   }
 
-  context.imagery().on('imagerychange', updateValue);
+  imagerySystem.on('imagerychange', updateValue);
 
   return section;
 }

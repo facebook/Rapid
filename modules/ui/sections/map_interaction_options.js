@@ -1,12 +1,11 @@
-import { t } from '../../core/localizer';
-import { prefs } from '../../core/preferences';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
 
 export function uiSectionMapInteractionOptions(context) {
+  const prefs = context.systems.storage;
   const section = uiSection('map-interaction', context)
-    .label(t.html('preferences.map_interaction.title'))
+    .label(context.tHtml('preferences.map_interaction.title'))
     .disclosureContent(renderDisclosureContent)
     .expandedByDefault(true);
 
@@ -25,7 +24,7 @@ export function uiSectionMapInteractionOptions(context) {
     enter
       .append('div')
       .attr('class', 'mouse-wheel-title')
-      .text(t('preferences.map_interaction.mouse_wheel.title'));
+      .text(context.t('preferences.map_interaction.mouse_wheel.title'));
 
     enter
       .append('ul')
@@ -50,8 +49,8 @@ export function uiSectionMapInteractionOptions(context) {
     // Enter
     let enter = items.enter()
       .append('li')
-      .call(uiTooltip()
-        .title(d => t(`preferences.map_interaction.${name}.${d}.tooltip`))
+      .call(uiTooltip(context)
+        .title(d => context.t(`preferences.map_interaction.${name}.${d}.tooltip`))
         .placement('top')
       );
 
@@ -66,7 +65,7 @@ export function uiSectionMapInteractionOptions(context) {
 
     label
       .append('span')
-      .text(d => t(`preferences.map_interaction.${name}.${d}.title`));
+      .text(d => context.t(`preferences.map_interaction.${name}.${d}.title`));
 
     // Update
     items.merge(enter)
@@ -78,12 +77,12 @@ export function uiSectionMapInteractionOptions(context) {
 
 
   function isActiveWheelOption(d) {
-    const curr = prefs('prefs.mouse_wheel.interaction') ?? 'auto';
+    const curr = prefs.getItem('prefs.mouse_wheel.interaction') ?? 'auto';
     return curr === d;
   }
 
   function setWheelOption(d3_event, d) {
-    prefs('prefs.mouse_wheel.interaction', d);
+    prefs.setItem('prefs.mouse_wheel.interaction', d);
     section.reRender();
   }
 

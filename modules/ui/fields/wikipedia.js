@@ -1,19 +1,16 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { fileFetcher } from '../../core/file_fetcher';
-import { t, localizer } from '../../core/localizer';
 import { actionChangeTags } from '../../actions/change_tags';
-import { services } from '../../services/index';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
-export function uiFieldWikipedia(field, context) {
+export function uiFieldWikipedia(context, uifield) {
   const dispatch = d3_dispatch('change');
-  const wikipedia = services.wikipedia;
-  const wikidata = services.wikidata;
+  const wikipedia = context.services.wikipedia;
+  const wikidata = context.services.wikidata;
   let _langInput = d3_select(null);
   let _titleInput = d3_select(null);
   let _wikiURL = '';
@@ -21,7 +18,8 @@ export function uiFieldWikipedia(field, context) {
   let _tags;
 
   let _dataWikipedia = [];
-  fileFetcher.get('wmf_sitematrix')
+  const dataLoaderSystem = context.systems.data;
+  dataLoaderSystem.getDataAsync('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);
@@ -67,7 +65,7 @@ export function uiFieldWikipedia(field, context) {
 
     wrap = wrap.enter()
       .append('div')
-      .attr('class', `form-field-input-wrap form-field-input-${field.type}`)
+      .attr('class', `form-field-input-wrap form-field-input-${uifield.type}`)
       .merge(wrap);
 
 
@@ -87,7 +85,7 @@ export function uiFieldWikipedia(field, context) {
       .append('input')
       .attr('type', 'text')
       .attr('class', 'wiki-lang')
-      .attr('placeholder', t('translate.localized_translation_language'))
+      .attr('placeholder', context.t('translate.localized_translation_language'))
       .call(utilNoAuto)
       .call(langCombo)
       .merge(_langInput);
@@ -112,7 +110,7 @@ export function uiFieldWikipedia(field, context) {
       .append('input')
       .attr('type', 'text')
       .attr('class', 'wiki-title')
-      .attr('id', field.domId)
+      .attr('id', uifield.uid)
       .call(utilNoAuto)
       .call(titleCombo)
       .merge(_titleInput);
@@ -132,7 +130,7 @@ export function uiFieldWikipedia(field, context) {
     link = link.enter()
       .append('button')
       .attr('class', 'form-field-button wiki-link')
-      .attr('title', t('icons.view_on', { domain: 'wikipedia.org' }))
+      .attr('title', context.t('icons.view_on', { domain: 'wikipedia.org' }))
       .call(uiIcon('#rapid-icon-out-link'))
       .merge(link);
 
@@ -145,7 +143,7 @@ export function uiFieldWikipedia(field, context) {
 
 
   function defaultLanguageInfo(skipEnglishFallback) {
-    const langCode = localizer.languageCode().toLowerCase();
+    const langCode = context.systems.l10n.languageCode().toLowerCase();
 
     for (let i in _dataWikipedia) {
       let d = _dataWikipedia[i];
@@ -193,7 +191,7 @@ export function uiFieldWikipedia(field, context) {
       if (m[3]) {
         let anchor;
         // try {
-        // leave this out for now - #6232
+        // leave this out for now - iD#6232
           // Best-effort `anchordecode:` implementation
           // anchor = decodeURIComponent(m[3].replace(/\.([0-9A-F]{2})/g, '%$1'));
         // } catch (e) {
@@ -250,7 +248,7 @@ export function uiFieldWikipedia(field, context) {
           });
           return graph;
         },
-        context.history().undoAnnotation()
+        context.systems.edits.undoAnnotation()
       );
 
       // do not dispatch.call('change') here, because entity_editor
@@ -265,8 +263,8 @@ export function uiFieldWikipedia(field, context) {
   };
 
   function updateForTags(tags) {
-
-    const value = typeof tags[field.key] === 'string' ? tags[field.key] : '';
+    let key = uifield.key;
+    const value = typeof tags[key] === 'string' ? tags[key] : '';
     // Expect tag format of `tagLang:tagArticleTitle`, e.g. `fr:Paris`, with
     // optional suffix of `#anchor`
     const m = value.match(/([^:]+):([^#]+)(?:#(.+))?/);

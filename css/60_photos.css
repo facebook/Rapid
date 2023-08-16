@@ -297,7 +297,7 @@ label.streetside-hires {
 
 
 /* Mapillary viewer */
-#ideditor-mly .domRenderer .TagSymbol {
+#rapideditor-mly .domRenderer .TagSymbol {
     font-size: 10px;
     background-color: rgba(0,0,0,0.4);
     padding: 0 4px;

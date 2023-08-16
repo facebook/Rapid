@@ -1,19 +1,20 @@
-import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
 import { QAItem } from '../osm';
 
-export function uiViewOnOsmose() {
+
+export function uiViewOnOsmose(context) {
+  const osmose = context.services.osmose;
   let _qaItem;
+
 
   function viewOnOsmose(selection) {
     let url;
-    if (services.osmose && (_qaItem instanceof QAItem)) {
-      url = services.osmose.itemURL(_qaItem);
+    if (osmose && (_qaItem instanceof QAItem)) {
+      url = osmose.itemURL(_qaItem);
     }
 
     const link = selection.selectAll('.view-on-osmose')
-      .data(url ? [url] : []);
+      .data(url ? [url] : [], d => d);
 
     // exit
     link.exit()
@@ -22,16 +23,17 @@ export function uiViewOnOsmose() {
     // enter
     const linkEnter = link.enter()
       .append('a')
-        .attr('class', 'view-on-osmose')
-        .attr('target', '_blank')
-        .attr('rel', 'noopener') // security measure
-        .attr('href', d => d)
-        .call(uiIcon('#rapid-icon-out-link', 'inline'));
+      .attr('class', 'view-on-osmose')
+      .attr('target', '_blank')
+      .attr('rel', 'noopener') // security measure
+      .attr('href', d => d)
+      .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
     linkEnter
       .append('span')
-        .html(t.html('inspector.view_on_osmose'));
+      .text(context.t('inspector.view_on_osmose'));
   }
+
 
   viewOnOsmose.what = function(val) {
     if (!arguments.length) return _qaItem;

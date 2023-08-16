@@ -1,9 +1,8 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
+import debounce from 'lodash-es/debounce';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
-import { t } from '../../core/localizer';
 
 const METADATA_KEYS = ['zoom', 'vintage', 'source', 'description', 'resolution', 'accuracy'];
 
@@ -20,8 +19,8 @@ export class UiPanelBackground extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'background';
-    this.label = t.html('info_panels.background.title');
-    this.key = t('info_panels.background.key');
+    this.label = context.tHtml('info_panels.background.title');
+    this.key = context.t('info_panels.background.key');
 
     this._selection = d3_select(null);
     this._currSourceID = null;
@@ -31,9 +30,8 @@ export class UiPanelBackground extends AbstractUiPanel {
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.updateMetadata = this.updateMetadata.bind(this);
-
-    this._deferredRender = _debounce(this.render, 250);
-    this._deferredUpdateMetadata = _debounce(this.updateMetadata, 250);
+    this._deferredRender = debounce(this.render, 250);
+    this._deferredUpdateMetadata = debounce(this.updateMetadata, 250);
   }
 
 
@@ -49,7 +47,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     this._currSourceID = null;
     this._metadata = {};
 
-    this.context.map()
+    this.context.systems.map
       .on('draw', this._deferredRender)
       .on('move', this._deferredUpdateMetadata);
   }
@@ -71,7 +69,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     this._currSourceID = null;
     this._metadata = {};
 
-    this.context.map()
+    this.context.systems.map
       .off('draw', this._deferredRender)
       .off('move', this._deferredUpdateMetadata);
   }
@@ -85,7 +83,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const imagery = context.imagery();
+    const imagery = context.systems.imagery;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -113,7 +111,7 @@ export class UiPanelBackground extends AbstractUiPanel {
         .append('li')
         .attr('class', `background-info-list-${k}`)
         .classed('hide', !this._metadata[k])
-        .html(t.html(`info_panels.background.${k}`) + ':')
+        .html(context.tHtml(`info_panels.background.${k}`) + ':')
         .append('span')
         .attr('class', `background-info-span-${k}`)
         .text(this._metadata[k]);
@@ -126,7 +124,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     selection
       .append('a')
-      .html(t.html(`info_panels.background.${toggleTiles}`))
+      .html(context.tHtml(`info_panels.background.${toggleTiles}`))
       .attr('href', '#')
       .attr('class', 'button button-toggle-tiles')
       .on('click', e => {
@@ -145,7 +143,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const imagery = context.imagery();
+    const imagery = context.systems.imagery;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -157,7 +155,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // Look for a loaded tile that covers the center of the map.
-    const center = context.map().center();
+    const center = context.systems.map.center();
     const centerExtent = new Extent(center);
     const layer = context.scene().layers.get('background');
     const tileMap = layer?._tileMaps.get(source.id);
@@ -175,7 +173,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // update zoom
-    const zoom = tileZoom || Math.floor(context.map().zoom());
+    const zoom = tileZoom || Math.floor(context.systems.map.zoom());
     this._metadata.zoom = String(zoom);
     selection.selectAll('.background-info-list-zoom')
       .classed('hide', false)
@@ -190,7 +188,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
       // update vintage
       const vintage = result.vintage;
-      this._metadata.vintage = (vintage && vintage.range) || t('info_panels.background.unknown');
+      this._metadata.vintage = (vintage && vintage.range) || context.t('info_panels.background.unknown');
       selection.selectAll('.background-info-list-vintage')
         .classed('hide', false)
         .selectAll('.background-info-span-vintage')

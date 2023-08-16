@@ -1,11 +1,8 @@
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionChangePreset } from '../actions';
 import { actionNoop } from '../actions/noop';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { modeSelect } from '../modes/select';
-import { presetManager } from '../presets';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 let _wasSelectedIDs = [];
 let _wasPresetIDs = [];
@@ -30,6 +27,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   // same selection as before?
   const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
   const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
+  const presetSystem = context.systems.presets;
 
   // Gather current entities allowed to be cycled
   const entities = selectedIDs
@@ -37,7 +35,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     .filter(entity => {
       if (entity?.type !== 'way') return false;
 
-      const preset = presetManager.match(entity, context.graph());
+      const preset = presetSystem.match(entity, context.graph());
       if (allowPresetRegex.some(regex => regex.test(preset.id))) {
         if (!presetIDs.has(preset.id)) presetIDs.add(preset.id);  // make sure we can cycle back to the original preset
         return true;
@@ -56,26 +54,26 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     // If this is the same selection as before, and the previous edit was also a cycle-tags,
     // skip this `perform`, then all tag updates will be coalesced into the previous edit.
     const annotation = operation.annotation();
-    if (!isSameSelection || context.history().undoAnnotation() !== annotation) {
+    if (!isSameSelection || context.systems.edits.undoAnnotation() !== annotation) {
       // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
       context.perform(actionNoop(), annotation);
     }
 
     // Pick the next preset..
     const currPresetIDs = Array.from(presetIDs);
-    const currPreset = presetManager.match(entities[0], context.graph());
+    const currPreset = presetSystem.match(entities[0], context.graph());
     const index = currPreset ? currPresetIDs.indexOf(currPreset.id) : -1;
     const newPresetID = currPresetIDs[(index + 1) % currPresetIDs.length];
-    const newPreset = presetManager.item(newPresetID);
+    const newPreset = presetSystem.item(newPresetID);
 
     // Update all selected highways...
     for (const entity of entities) {
-      const oldPreset = presetManager.match(entity, context.graph());
+      const oldPreset = presetSystem.match(entity, context.graph());
       const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
       context.replace(action, annotation);
     }
 
-    context.enter(modeSelect(context, selectedIDs));  // reselect
+    context.enter('select-osm', { selectedIDs: selectedIDs });  // reselect
   };
 
 
@@ -92,20 +90,20 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.cycle_highway_tag.${disabledReason}`) :
-      t('operations.cycle_highway_tag.description');
+      context.t(`operations.cycle_highway_tag.${disabledReason}`) :
+      context.t('operations.cycle_highway_tag.description');
   };
 
 
   operation.annotation = function() {
-    return t('operations.cycle_highway_tag.annotation');
+    return context.t('operations.cycle_highway_tag.annotation');
   };
 
 
   operation.id = 'cycle_highway_tag';
-  operation.keys = [ '⇧' + t('operations.cycle_highway_tag.key') ];
-  operation.title = t('operations.cycle_highway_tag.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ '⇧' + context.t('operations.cycle_highway_tag.key') ];
+  operation.title = context.t('operations.cycle_highway_tag.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

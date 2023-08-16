@@ -1,26 +1,23 @@
-import * as PIXI from 'pixi.js';
-
-import { services } from '../services';
-import { t } from '../core/localizer';
+import { Color } from 'pixi.js';
 
 
-export function uiImproveOsmHeader() {
+export function uiImproveOsmHeader(context) {
   let _qaItem;
 
 
   function issueTitle(d) {
     const issueKey = d.issueKey;
     d.replacements = d.replacements || {};
-    d.replacements.default = t.html('inspector.unknown');  // special key `default` works as a fallback string
-    return t.html(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
+    d.replacements.default = context.tHtml('inspector.unknown');  // special key `default` works as a fallback string
+    return context.tHtml(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
   }
 
 
   function improveOsmHeader(selection) {
     let iconFill = 0xffffff;
-    const service = services.improveOSM;
-    if (service) {
-      iconFill = service.getColor(_qaItem?.itemType);
+    const improveosm = context.services.improveOSM;
+    if (improveosm) {
+      iconFill = improveosm.getColor(_qaItem?.itemType);
     }
 
     const header = selection.selectAll('.qa-header')
@@ -47,7 +44,7 @@ export function uiImproveOsmHeader() {
 
     svgEnter
       .append('polygon')
-      .attr('fill', PIXI.utils.hex2string(iconFill))
+      .attr('fill', new Color(iconFill).toHex())
       .attr('stroke', '#333')
       .attr('points', '16,3 4,3 1,6 1,17 4,20 7,20 10,27 13,20 16,20 19,17.033 19,6');
 

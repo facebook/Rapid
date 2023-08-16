@@ -1,20 +1,18 @@
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
-export function validationIncompatibleSource() {
+export function validationIncompatibleSource(context) {
   const type = 'incompatible_source';
+  const l10n = context.systems.l10n;
+
   const incompatibleRules = [
     {
       id: 'amap',
       regex: /(amap|autonavi|mapabc|高德)/i
-    },
-    {
+    }, {
       id: 'baidu',
       regex: /(baidu|mapbar|百度)/i
-    },
-    {
+    }, {
       id: 'google',
       regex: /google/i,
       exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_Africa_Buildings)/i
@@ -38,13 +36,13 @@ export function validationIncompatibleSource() {
 
         if (!matchRule) return null;
 
-        return new validationIssue({
+        return new ValidationIssue(context, {
           type: type,
           severity: 'warning',
-          message: (context) => {
+          message: () => {
             const entity = context.hasEntity(entityID);
-            return entity ? t.html('issues.incompatible_source.feature.message', {
-              feature: utilDisplayLabel(entity, context.graph(), true /* verbose */),
+            return entity ? l10n.tHtml('issues.incompatible_source.feature.message', {
+              feature: l10n.displayLabel(entity, context.graph(), true /* verbose */),
               value: source
             }) : '';
           },
@@ -53,7 +51,7 @@ export function validationIncompatibleSource() {
           hash: source,
           dynamicFixes: () => {
             return [
-              new validationIssueFix({ title: t.html('issues.fix.remove_proprietary_data.title') })
+              new ValidationFix({ title: l10n.tHtml('issues.fix.remove_proprietary_data.title') })
             ];
           }
         });
@@ -68,7 +66,7 @@ export function validationIncompatibleSource() {
             .enter()
             .append('div')
             .attr('class', 'issue-reference')
-            .html(t.html(`issues.incompatible_source.reference.${id}`));
+            .html(l10n.tHtml(`issues.incompatible_source.reference.${id}`));
         };
       }
     };

@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -18,25 +17,38 @@ export class PixiLayerKeepRight extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-
-    this._service = null;
-    this.getService();
   }
 
 
   /**
-   * Services are loosely coupled, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
+   * supported
+   * Whether the Layer's service exists
    */
-  getService() {
-    if (services.keepRight && !this._service) {
-      this._service = services.keepRight;
-      this._service.on('loaded', () => this.context.map().deferredRedraw());
-    } else if (!services.keepRight && this._service) {
-      this._service = null;
+  get supported() {
+    return !!this.context.services.keepRight;
+  }
+
+
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
     }
 
-    return this._service;
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.keepRight.startAsync();
+    }
   }
 
 
@@ -47,11 +59,11 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.getService();
-    if (!service) return;
+    const service = this.context.services.keepRight;
+    if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
+    const items = service.getData();
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -85,20 +97,11 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
-    if (!this._enabled || !service || zoom < MINZOOM) return;
+    const service = this.context.services.keepRight;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    service.loadIssues(this.context.projection);  // note: context.projection !== pixi projection
+    service.loadTiles();
     this.renderMarkers(frame, projection, zoom);
-  }
-
-
-  /**
-   * supported
-   * Whether the Layer's service exists
-   */
-  get supported() {
-    return !!this.getService();
   }
 
 }

@@ -1,6 +1,5 @@
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { locationManager } from '../core/LocationManager';
 
 const MINZOOM = 4;
 
@@ -18,8 +17,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-
-    this._enabled = true;   // this layer should always be enabled
+    this.enabled = true;   // this layer should always be enabled
     this._oldk = 0;
   }
 
@@ -29,10 +27,10 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * This layer should always be enabled
    */
   get enabled() {
-    return this._enabled;
+    return true;
   }
   set enabled(val) {
-    // noop
+    this._enabled = true;
   }
 
 
@@ -47,8 +45,9 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     let blocks;
 
     if (zoom >= MINZOOM) {
-      const viewport = this.context.map().extent().rectangle();
-      blocks = locationManager.wpblocks().bbox(viewport);
+      const viewport = this.context.systems.map.extent().rectangle();
+      const locationSystem = this.context.systems.locations;
+      blocks = locationSystem.wpblocks().bbox(viewport);
       this.renderEditBlocks(frame, projection, zoom, blocks);
 
     } else {
@@ -89,6 +88,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * @param  blocks       Array of block data visible in the view
    */
   renderEditBlocks(frame, projection, zoom, blocks) {
+    const locationSystem = this.context.systems.locations;
     const parentContainer = this.scene.groups.get('blocks');
     const BLOCK_STYLE = {
       requireFill: true,    // no partial fill option - must fill fully
@@ -96,7 +96,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     };
 
     for (const d of blocks) {
-      const geometry = locationManager.feature(d.locationSetID).geometry;  // get GeoJSON
+      const geometry = locationSystem.feature(d.locationSetID).geometry;  // get GeoJSON
       if (!geometry) continue;
 
       const parts = (geometry.type === 'Polygon') ? [geometry.coordinates]

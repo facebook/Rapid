@@ -1,12 +1,10 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { utilDisplayName } from '../util';
 
 const MINZOOM = 12;
 
@@ -24,14 +22,9 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+    this.enabled = true;     // Rapid features should be enabled by default
 
-    this._enabled = true;     // Rapid features should be enabled by default
-    this._serviceFB = null;
-    this._serviceEsri = null;
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
-
-    this.getServiceFB();
-    this.getServiceEsri();
 
 //// shader experiment:
 //this._uniforms = {
@@ -113,83 +106,98 @@ export class PixiLayerRapid extends AbstractLayer {
     // These features will be filtered out when drawing
     this._acceptedIDs = new Set();
 
-    this.context.history()
-      .on('undone.rapid', onHistoryUndone.bind(this))
-      .on('change.rapid', onHistoryChange.bind(this))
-      .on('restore.rapid', onHistoryRestore.bind(this));
+    // Make sure the event handlers have `this` bound correctly
+    this._onUndone = this._onUndone.bind(this);
+    this._onChange = this._onChange.bind(this);
+    this._onRestore = this._onRestore.bind(this);
+
+    this.context.systems.edits
+      .on('undone', this._onUndone)
+      .on('change', this._onChange)
+      .on('restore', this._onRestore);
+  }
 
 
-    function wasRapidEdit(annotation) {
-      return annotation && annotation.type && /^rapid/.test(annotation.type);
-    }
+
+  _wasRapidEdit(annotation) {
+    return annotation?.type && /^rapid/.test(annotation.type);
+  }
 
 
-    function onHistoryUndone(currentStack, previousStack) {
-      const annotation = previousStack.annotation;
-      if (!wasRapidEdit(annotation)) return;
+  _onUndone(currentStack, previousStack) {
+    const annotation = previousStack.annotation;
+    if (!this._wasRapidEdit(annotation)) return;
 
-      this._acceptedIDs.delete(annotation.id);
-      this.context.map().immediateRedraw();
-    }
+    this._acceptedIDs.delete(annotation.id);
+    this.context.systems.map.immediateRedraw();
+  }
 
 
-    function onHistoryChange() {
-      const annotation = this.context.history().peekAnnotation();
-      if (!wasRapidEdit(annotation)) return;
+  _onChange() {
+    const annotation = this.context.systems.edits.peekAnnotation();
+    if (!this._wasRapidEdit(annotation)) return;
+
+    this._acceptedIDs.add(annotation.id);
+    this.context.systems.map.immediateRedraw();
+  }
+
+
+  _onRestore() {
+    this._acceptedIDs = new Set();
+
+    this.context.systems.edits.peekAllAnnotations().forEach(annotation => {
+      if (!this._wasRapidEdit(annotation)) return;
 
       this._acceptedIDs.add(annotation.id);
-      this.context.map().immediateRedraw();
-    }
 
+      // `origid` (the original entity ID), a.k.a. datum.__origid__,
+      // is a hack used to deal with non-deterministic way-splitting
+      // in the roads service. Each way "split" will have an origid
+      // attribute for the original way it was derived from. In this
+      // particular case, restoring from history on page reload, we
+      // prevent new splits (possibly different from before the page
+      // reload) from being displayed by storing the origid and
+      // checking against it in render().
+      if (annotation.origid) {
+        this._acceptedIDs.add(annotation.origid);
+      }
+    });
 
-    function onHistoryRestore() {
-      this._acceptedIDs = new Set();
-
-      this.context.history().peekAllAnnotations().forEach(annotation => {
-        if (!wasRapidEdit(annotation)) return;
-
-        this._acceptedIDs.add(annotation.id);
-
-        // `origid` (the original entity ID), a.k.a. datum.__origid__,
-        // is a hack used to deal with non-deterministic way-splitting
-        // in the roads service. Each way "split" will have an origid
-        // attribute for the original way it was derived from. In this
-        // particular case, restoring from history on page reload, we
-        // prevent new splits (possibly different from before the page
-        // reload) from being displayed by storing the origid and
-        // checking against it in render().
-        if (annotation.origid) {
-          this._acceptedIDs.add(annotation.origid);
-        }
-      });
-
-      this.context.map().immediateRedraw();
-    }
+    this.context.systems.map.immediateRedraw();
   }
 
 
   /**
-   * Services are loosely coupled, so we use these functions
-   * to gain access to them, and bind any event handlers a single time.
+   * supported
+   * Whether the Layer's service exists
    */
-  getServiceFB() {
-    if (services.fbMLRoads && !this._serviceFB) {
-      this._serviceFB = services.fbMLRoads;
-      this._serviceFB.on('loadedData', () => this.context.map().deferredRedraw());
-    } else if (!services.fbMLRoads && this._serviceFB) {
-      this._serviceFB = null;
-    }
-    return this._serviceFB;
+  get supported() {
+    const service = this.context.services;
+    return !!service.mapwithai || !!service.esri;
   }
 
-  getServiceEsri() {
-    if (services.esriData && !this._serviceEsri) {
-      this._serviceEsri = services.esriData;
-      this._serviceEsri.on('loadedData', () => this.context.map().deferredRedraw());
-    } else if (!services.esriData && this._serviceEsri) {
-      this._serviceEsri = null;
+
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the services first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
     }
-    return this._serviceEsri;
+
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.mapwithai.startAsync();
+      this.context.services.esri.startAsync();
+    }
   }
 
 
@@ -201,9 +209,8 @@ export class PixiLayerRapid extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const rapidContext = this.context.rapidContext();
-    const datasets = Object.values(rapidContext.datasets());
-    if (!this.enabled || !datasets.length || zoom < MINZOOM) return;
+    const rapid = this.context.systems.rapid;
+    if (!this.enabled || !rapid.datasets.size || zoom < MINZOOM) return;
 
 // shader experiment
 //const offset = this.context.pixi.stage.position;
@@ -211,7 +218,7 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.translationMatrix = transform.clone().translate(-offset.x, -offset.y);
 //this._uniforms.u_time = frame/10;
 
-    for (const dataset of datasets) {
+    for (const dataset of rapid.datasets.values()) {
       this.renderDataset(dataset, frame, projection, zoom);
     }
   }
@@ -221,19 +228,18 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderDataset
    * Render any data we have, and schedule fetching more of it to cover the view
    *
-   * @param  dataset
+   * @param  dataset      Object
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    */
   renderDataset(dataset, frame, projection, zoom) {
     const context = this.context;
-    const rapidContext = context.rapidContext();
     const dsEnabled = (dataset.added && dataset.enabled);
     if (!dsEnabled) return;
 
-    const service = dataset.service === 'fbml' ? this.getServiceFB(): this.getServiceEsri();
-    if (!service) return;
+    const service = context.services[dataset.service];  // 'mapwithai' or 'esri'
+    if (!service?.started) return;
 
     // Adjust the dataset id for whether we want the data conflated or not.
     const datasetID = dataset.id + (dataset.conflated ? '-conflated' : '');
@@ -246,16 +252,15 @@ export class PixiLayerRapid extends AbstractLayer {
 
     // Gather data
     let data = { points: [], vertices: new Set(), lines: [], polygons: [] };
-    // let data = { polygons: [], lines: [], points: [], vertices: new Set() };
 
     /* Facebook AI/ML */
-    if (dataset.service === 'fbml') {
+    if (dataset.service === 'mapwithai') {
       if (zoom >= 15) { // avoid firing off too many API requests
-        service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
+        service.loadTiles(datasetID);  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.map().extent())
-        .filter(d => d.type === 'way' && !isAccepted(d));  // see onHistoryRestore()
+      const entities = service.getData(datasetID)
+        .filter(d => d.type === 'way' && !isAccepted(d));  // see this._onRestore()
 
       // fb_ai service gives us roads and buildings together,
       // so filter further according to which dataset we're drawing
@@ -277,13 +282,13 @@ export class PixiLayerRapid extends AbstractLayer {
     /* ESRI ArcGIS */
     } else if (dataset.service === 'esri') {
       if (zoom >= 14) { // avoid firing off too many API requests
-        service.loadTiles(datasetID, context.projection);  // fetch more
+        service.loadTiles(datasetID);  // fetch more
       }
 
-      const entities = service.intersects(datasetID, context.map().extent());
+      const entities = service.getData(datasetID);
 
       for (const entity of entities) {
-        if (isAccepted(entity)) continue;   // skip features already accepted, see onHistoryRestore()
+        if (isAccepted(entity)) continue;   // skip features already accepted, see this._onRestore()
         const geom = entity.geometry(dsGraph);
         if (geom === 'point' && !!entity.__fbid__) {  // standalone points only (not vertices/childnodes)
           data.points.push(entity);
@@ -326,7 +331,8 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderPolygons
    */
   renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
-    const color = PIXI.utils.string2hex(dataset.color);
+    const color = new PIXI.Color(dataset.color);
+    const l10n = this.context.systems.l10n;
 
     for (const entity of data.polygons) {
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
@@ -373,7 +379,7 @@ export class PixiLayerRapid extends AbstractLayer {
             // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
           };
           feature.style = style;
-          feature.label = utilDisplayName(entity);
+          feature.label = l10n.displayName(entity.tags);
           feature.update(projection, zoom);
         }
 
@@ -387,7 +393,8 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderLines
    */
   renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
-    const color = PIXI.utils.string2hex(dataset.color);
+    const color = new PIXI.Color(dataset.color);
+    const l10n = this.context.systems.l10n;
 
     for (const entity of data.lines) {
       const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
@@ -417,7 +424,7 @@ export class PixiLayerRapid extends AbstractLayer {
         };
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
-        feature.label = utilDisplayName(entity);
+        feature.label = l10n.displayName(entity.tags);
         feature.update(projection, zoom);
       }
 
@@ -430,7 +437,8 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderPoints
    */
   renderPoints(parentContainer, dataset, graph, frame, projection, zoom, data) {
-    const color = PIXI.utils.string2hex(dataset.color);
+    const color = new PIXI.Color(dataset.color);
+    const l10n = this.context.systems.l10n;
 
     const pointStyle = {
       markerName: 'largeCircle',
@@ -460,7 +468,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = pointStyle;
-        feature.label = utilDisplayName(entity);
+        feature.label = l10n.displayName(entity.tags);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
         if (!feature.label && housenumber) {
@@ -490,7 +498,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = vertexStyle;
-        feature.label = utilDisplayName(entity);
+        feature.label = l10n.displayName(entity.tags);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
         if (!feature.label && housenumber) {

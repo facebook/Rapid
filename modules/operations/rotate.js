@@ -1,8 +1,6 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/util';
 
 
@@ -44,14 +42,15 @@ export function operationRotate(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
-      const osm = context.connection();
+      if (context.inIntro) return false;
+      const osm = context.services.osm;
       if (osm) {
         const missing = coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {
@@ -72,22 +71,22 @@ export function operationRotate(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.rotate.${disabledReason}.${multi}`) :
-      t(`operations.rotate.description.${multi}`);
+      context.t(`operations.rotate.${disabledReason}.${multi}`) :
+      context.t(`operations.rotate.description.${multi}`);
   };
 
 
   operation.annotation = function() {
     return selectedIDs.length === 1 ?
-      t('operations.rotate.annotation.' + context.graph().geometry(selectedIDs[0])) :
-      t('operations.rotate.annotation.feature', { n: selectedIDs.length });
+      context.t('operations.rotate.annotation.' + context.graph().geometry(selectedIDs[0])) :
+      context.t('operations.rotate.annotation.feature', { n: selectedIDs.length });
   };
 
 
   operation.id = 'rotate';
-  operation.keys = [ t('operations.rotate.key') ];
-  operation.title = t('operations.rotate.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.rotate.key') ];
+  operation.title = context.t('operations.rotate.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   operation.mouseOnly = true;
 

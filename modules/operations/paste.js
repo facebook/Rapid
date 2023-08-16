@@ -2,25 +2,22 @@ import { Extent, vecSubtract } from '@rapid-sdk/math';
 
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
-import { modeSelect } from '../modes/select';
 
-import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
-import { utilDisplayLabel } from '../util/util';
 
 
-// see also `BehaviorPaste`
+// see also `PasteBehavior`
 export function operationPaste(context) {
   let _pastePoint;
 
   let operation = function() {
     if (!_pastePoint) return;
 
-    const oldIDs = context.copyIDs();
+    const oldIDs = context.copyIDs;
     if (!oldIDs.length) return;
 
     const projection = context.projection;
-    const oldGraph = context.copyGraph();
+    const oldGraph = context.copyGraph;
     let extent = new Extent();
     let newIDs = [];
 
@@ -48,13 +45,13 @@ export function operationPaste(context) {
 
     // Use the location of the copy operation to offset the paste location,
     // or else use the center of the pasted extent
-    const copyLoc = context.copyLoc();
+    const copyLoc = context.copyLoc;
     const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
     const delta = vecSubtract(_pastePoint, copyPoint);
 
     // Move the pasted objects to be anchored at the paste location
     context.replace(actionMove(newIDs, delta, projection), operation.annotation());
-    context.enter(modeSelect(context, newIDs));
+    context.enter('select-osm', { selectedIDs: newIDs });
   };
 
 
@@ -65,34 +62,38 @@ export function operationPaste(context) {
 
 
   operation.available = function() {
-    return context.mode().id === 'browse';
+    return context.mode?.id === 'browse';
   };
 
 
   operation.disabled = function() {
-    return !context.copyIDs().length;
+    return !context.copyIDs.length;
   };
 
 
   operation.tooltip = function() {
-    const oldGraph = context.copyGraph();
-    const ids = context.copyIDs();
+    const l10n = context.systems.l10n;
+    const oldGraph = context.copyGraph;
+    const ids = context.copyIDs;
     if (!ids.length) {
-      return t('operations.paste.nothing_copied');
+      return l10n.t('operations.paste.nothing_copied');
     }
-    return t('operations.paste.description', { feature: utilDisplayLabel(oldGraph.entity(ids[0]), oldGraph), n: ids.length });
+    return l10n.t('operations.paste.description', {
+      feature: l10n.displayLabel(oldGraph.entity(ids[0]), oldGraph),
+      n: ids.length
+    });
   };
 
 
   operation.annotation = function() {
-    const ids = context.copyIDs();
-    return t('operations.paste.annotation', { n: ids.length });
+    const ids = context.copyIDs;
+    return context.t('operations.paste.annotation', { n: ids.length });
   };
 
 
   operation.id = 'paste';
   operation.keys = [ uiCmd('⌘V') ];
-  operation.title = t('operations.paste.title');
+  operation.title = context.t('operations.paste.title');
 
   return operation;
 }

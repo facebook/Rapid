@@ -74,7 +74,7 @@ export function uiInspector(context) {
             if (context.graph().parentRelations(entity).length) return false;
 
             // show vertex issues if there are any
-            if (context.validator().getEntityIssues(entityID).length) return false;
+            if (context.systems.validator.getEntityIssues(entityID).length) return false;
 
             // show turn retriction editor for junction vertices
             if (entity.isHighwayIntersection(context.graph())) return false;

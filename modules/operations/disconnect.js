@@ -1,9 +1,7 @@
 import { utilArrayUniq, utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionDisconnect } from '../actions/disconnect';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/util';
 
 
@@ -136,7 +134,7 @@ export function operationDisconnect(context, selectedIDs) {
       return graph;
     };
     context.perform(combinedAction, operation.annotation());
-    context.validator().validate();
+    context.systems.validator.validate();
   };
 
 
@@ -182,14 +180,15 @@ export function operationDisconnect(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
-      const osm = context.connection();
+      if (context.inIntro) return false;
+      const osm = context.services.osm;
       if (osm) {
         const missing = _coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {
@@ -205,20 +204,20 @@ export function operationDisconnect(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.disconnect.${disabledReason}`) :
-      t(`operations.disconnect.description.${_descriptionID}`);
+      context.t(`operations.disconnect.${disabledReason}`) :
+      context.t(`operations.disconnect.description.${_descriptionID}`);
   };
 
 
   operation.annotation = function() {
-    return t(`operations.disconnect.annotation.${_annotationID}`);
+    return context.t(`operations.disconnect.annotation.${_annotationID}`);
   };
 
 
   operation.id = 'disconnect';
-  operation.keys = [ t('operations.disconnect.key') ];
-  operation.title = t('operations.disconnect.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.disconnect.key') ];
+  operation.title = context.t('operations.disconnect.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

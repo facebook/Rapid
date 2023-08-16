@@ -1,5 +1,6 @@
-import { svg as d3_svg } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
+
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -51,8 +52,8 @@ export class UiDefs {
       .each((d, i, nodes) => {
         const group = d3_select(nodes[i]);
         const url = context.asset(`img/${d}-sprite.svg`);
-
-        d3_svg(url)
+        fetch(url)
+          .then(utilFetchResponse)
           .then(svg => group.call(this._spritesheetLoaded, d, svg))
           .catch(e => console.error(e));  // eslint-disable-line
       });
@@ -81,7 +82,7 @@ export class UiDefs {
     // Notify Pixi about the icons so they can be used by WebGL - see Rapid#925
     // Note: We believe that by the time `_spritesheetLoaded` is called,
     // Pixi's textureManager should be set up, throw if we're wrong about this.
-    const textureManager = this.context.map().renderer?.textures;
+    const textureManager = this.context.systems.map.renderer?.textures;
     if (!textureManager) {
       throw new Error(`TextureManager not ready to pack icons for ${spritesheetID}`);
     }

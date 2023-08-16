@@ -1,8 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { marked } from 'marked';
 
-import { t, localizer } from '../core/localizer';
-import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
 import { uiIcon } from './icon';
 import { uiModal } from './modal';
@@ -11,7 +9,8 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
-  const rapidContext = context.rapidContext();
+  const l10n = context.systems.l10n;
+  const rapid = context.systems.rapid;
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
   let _viewManageModal;
@@ -19,19 +18,18 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function datasetEnabled(d) {
-    const dataset = rapidContext.datasets()[d.id];
-    return dataset && dataset.enabled;
+    const dataset = rapid.datasets.get(d.id);
+    return dataset?.enabled;
   }
 
   function toggleDataset(event, d) {
-    let datasets = rapidContext.datasets();
-    let dataset = datasets[d.id];
+    const dataset = rapid.datasets.get(d.id);
     if (dataset) {
       dataset.enabled = !dataset.enabled;
 
       // update url hash
-      const urlhash = context.urlhash();
-      const datasetIDs = Object.values(datasets)
+      const urlhash = context.systems.urlhash;
+      const datasetIDs = [...rapid.datasets.values()]
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)
         .join(',');
@@ -43,18 +41,17 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function changeColor(datasetID, color) {
-    let datasets = rapidContext.datasets();
-    let dataset = datasets[datasetID];
+    const dataset = rapid.datasets.get(datasetID);
     if (dataset) {
       dataset.color = color;
 
       context.scene().dirtyLayers('rapid');
-      context.map().immediateRedraw();
+      context.systems.map.immediateRedraw();
       _content.call(renderModalContent);
 
       // If a Rapid feature is already selected, reselect it to update sidebar too
-      const mode = context.mode();
-      if (mode.id === 'select' && mode.selectedData) {  // new (not legacy) select mode
+      const mode = context.mode;
+      if (mode?.id === 'select') {  // new (not legacy) select mode
         const selection = new Map(mode.selectedData);
         context.enter('select', { selection: selection });
       }
@@ -68,7 +65,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function keyPressHandler(d3_event) {
-    if (d3_event.shiftKey && d3_event.key === t('map_data.layers.ai-features.key')) {
+    if (d3_event.shiftKey && d3_event.key === l10n.t('map_data.layers.ai-features.key')) {
       toggleRapid();
     }
   }
@@ -124,7 +121,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     toggleAllTextEnter
       .append('div')
       .attr('class', 'rapid-feature-label')
-      .html(t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
+      .html(l10n.t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
 
     toggleAllTextEnter
       .append('span')
@@ -181,14 +178,14 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .attr('class', 'rapid-feature-label-container')
       .append('div')
       .attr('class', 'rapid-feature-label')
-      .text(t('rapid_feature_toggle.view_manage_datasets'));
+      .text(l10n.t('rapid_feature_toggle.view_manage_datasets'));
 
     manageDatasetsEnter
       .append('div')
       .attr('class', 'rapid-checkbox-inputs')
       .append('div')
       .attr('class', 'rapid-checkbox-label')
-      .call(uiIcon(localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward', 'icon-30'));
+      .call(uiIcon(l10n.isRTL() ? '#rapid-icon-backward' : '#rapid-icon-forward', 'icon-30'));
 
 
     /* OK Button */
@@ -202,13 +199,14 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('button')
       .attr('class', 'button ok-button action')
       .on('click', () => _modalSelection.remove())
-      .text(t('confirm.okay'));
+      .text(l10n.t('confirm.okay'));
   }
 
 
   function renderDatasets(selection) {
-    const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
-    const datasets = Object.values(rapidContext.datasets())
+    const prefs = context.systems.storage;
+    const showPreview = prefs.getItem('rapid-internal-feature.previewDatasets') === 'true';
+    const datasets = [...rapid.datasets.values()]
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
     const rapidLayer = context.scene().layers.get('rapid');
     if (!rapidLayer) return;
@@ -245,7 +243,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
           labelEnter
             .append('div')
             .attr('class', 'rapid-feature-label-beta beta')
-            .attr('title', t('rapid_poweruser_features.beta'));
+            .attr('title', l10n.t('rapid_poweruser_features.beta'));
         }
 
         if (d.description) {
@@ -285,14 +283,14 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
               selection
                 .append('a')
                 .attr('href', '#')
-                .text(t('rapid_feature_toggle.center_map'))
+                .text(l10n.t('rapid_feature_toggle.center_map'))
                 .on('click', (d3_event) => {
                   d3_event.preventDefault();
-                  context.map().extent(d.extent);
+                  context.systems.map.extent(d.extent);
                 });
             } else {
               selection
-                .text(t('rapid_feature_toggle.worldwide'));
+                .text(l10n.t('rapid_feature_toggle.worldwide'));
             }
           });
       });

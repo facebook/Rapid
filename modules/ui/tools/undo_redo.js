@@ -1,38 +1,60 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
-import { t, localizer } from '../../core/localizer';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
 
 
 export function uiToolUndoRedo(context) {
+  const l10n = context.systems.l10n;
+  const isRTL = l10n.isRTL();
+
+  let _buttons = null;
+  let _tooltip = null;
+  let debouncedUpdate;
+
   let tool = {
     id: 'undo_redo',
-    label: t.html('toolbar.undo_redo')
+    label: l10n.tHtml('toolbar.undo_redo')
   };
 
-  const isRTL = localizer.textDirection() === 'rtl';
   const commands = [{
     id: 'undo',
     key: uiCmd('⌘Z'),
     action: () => context.undo(),
-    annotation: () => context.history().undoAnnotation(),
+    annotation: () => context.systems.edits.undoAnnotation(),
     icon: (isRTL ? 'redo' : 'undo')
   }, {
     id: 'redo',
     key: uiCmd('⌘⇧Z'),
     action: () => context.redo(),
-    annotation: () => context.history().redoAnnotation(),
+    annotation: () => context.systems.edits.redoAnnotation(),
     icon: (isRTL ? 'undo' : 'redo')
   }];
 
 
-  let debouncedUpdate;
+  function changed(difference) {
+    if (difference) update();
+  }
+
+  function update() {
+    if (!_buttons || !_tooltip) return;
+    _buttons
+      .classed('disabled', d => !context.editable() || !d.annotation())
+      .each((d, i, nodes) => {
+        const selection = d3_select(nodes[i]);
+        if (!selection.select('.tooltip.in').empty()) {
+          selection.call(_tooltip.updateContent);
+        }
+      });
+  }
+
 
   tool.install = function(selection) {
-    let tooltipBehavior = uiTooltip()
+    if (_buttons && _tooltip) return;  // already installed
+
+    _tooltip = uiTooltip(context)
       .placement('bottom')
       .title(d => {
         // Handle string- or object-style annotations. Object-style
@@ -43,14 +65,14 @@ export function uiToolUndoRedo(context) {
         if (str && str.description) {
           str = str.description;
         }
-        return str ? t(`${d.id}.tooltip`, { action: str }) : t(`${d.id}.nothing`);
+        return str ? l10n.t(`${d.id}.tooltip`, { action: str }) : l10n.t(`${d.id}.nothing`);
       })
       .keys(d => [d.key])
       .scrollContainer(context.container().select('.top-toolbar'));
 
     // var lastPointerUpType;
 
-    let buttons = selection.selectAll('button')
+    _buttons = selection.selectAll('button')
       .data(commands)
       .enter()
       .append('button')
@@ -76,7 +98,7 @@ export function uiToolUndoRedo(context) {
         //     var text = annotation ?
         //         t(d.id + '.tooltip', { action: annotation }) :
         //         t(d.id + '.nothing');
-        //     context.ui().flash
+        //     context.systems.ui.flash
         //         .duration(2000)
         //         .iconName('#' + d.icon)
         //         .iconClass(annotation ? '' : 'disabled')
@@ -84,60 +106,42 @@ export function uiToolUndoRedo(context) {
         // }
         // lastPointerUpType = null;
       })
-      .call(tooltipBehavior);
+      .call(_tooltip);
 
-    buttons.each((d, i, nodes) => {
+    _buttons.each((d, i, nodes) => {
       d3_select(nodes[i])
         .call(uiIcon(`#rapid-icon-${d.icon}`));
     });
 
-    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
 
-    commands.forEach(command => {
+    debouncedUpdate = debounce(update, 500, { leading: true, trailing: true });
+
+    for (const command of commands) {
       context.keybinding().on(command.key, d3_event => {
         d3_event.preventDefault();
         if (context.editable()) command.action();
       });
-    });
-
-    context.map()
-      .on('draw', debouncedUpdate);
-
-    context.history()
-      .on('change.undo_redo', difference => {
-        if (difference) update();
-      });
-
-    context
-      .on('enter.undo_redo', update);
-
-
-    function update() {
-      buttons
-        .classed('disabled', d => !context.editable() || !d.annotation())
-        .each((d, i, nodes) => {
-          const selection = d3_select(nodes[i]);
-          if (!selection.select('.tooltip.in').empty()) {
-            selection.call(tooltipBehavior.updateContent);
-          }
-        });
     }
+
+    context.systems.map.on('draw', debouncedUpdate);
+    context.systems.edits.on('change', changed);
+    context.on('modechange', update);
   };
 
 
   tool.uninstall = function() {
-    commands.forEach(command => {
+    if (!_buttons && !_tooltip) return;  // already uninstalled
+
+    for (const command of commands) {
       context.keybinding().off(command.key);
-    });
+    }
 
-    context.map()
-      .off('draw', debouncedUpdate);
-
-    context.history()
-      .on('change.undo_redo', null);
-
-    context
-      .on('enter.undo_redo', null);
+    debouncedUpdate.cancel();
+    context.systems.map.off('draw', debouncedUpdate);
+    context.systems.edits.off('change', changed);
+    context.off('modechange', update);
+    _tooltip = null;
+    _buttons = null;
   };
 
   return tool;

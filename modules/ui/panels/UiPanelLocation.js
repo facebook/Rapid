@@ -1,10 +1,7 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
-import { decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
-import { t } from '../../core/localizer';
-import { services } from '../../services';
 
 
 /**
@@ -19,8 +16,8 @@ export class UiPanelLocation extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'location';
-    this.label = t.html('info_panels.location.title');
-    this.key = t('info_panels.location.key');
+    this.label = context.tHtml('info_panels.location.title');
+    this.key = context.t('info_panels.location.key');
 
     this._selection = d3_select(null);
     this._currLocation = null;
@@ -29,8 +26,7 @@ export class UiPanelLocation extends AbstractUiPanel {
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
     this.updateLocation = this.updateLocation.bind(this);
-
-    this._deferredUpdateLocation = _debounce(this.updateLocation, 1000);  // no more than 1/sec
+    this._deferredUpdateLocation = debounce(this.updateLocation, 1000);  // no more than 1/sec
   }
 
 
@@ -75,6 +71,7 @@ export class UiPanelLocation extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
+    const l10n = context.systems.l10n;
 
     // Empty out the DOM content and rebuild from scratch..
     selection.html('');
@@ -83,17 +80,17 @@ export class UiPanelLocation extends AbstractUiPanel {
       .append('ul');
 
     // Mouse coordinates as [lon,lat]
-    let loc = context.map().mouseLoc();
+    let loc = context.systems.map.mouseLoc();
     if (loc.some(isNaN)) {
-      loc = context.map().center();
+      loc = context.systems.map.center();
     }
 
     // Append coordinates of mouse
     list
       .append('li')
-      .text(dmsCoordinatePair(loc))
+      .text(l10n.dmsCoordinatePair(loc))
       .append('li')
-      .text(decimalCoordinatePair(loc));
+      .text(l10n.decimalCoordinatePair(loc));
 
     // Append reverse geolocated placename
     selection
@@ -115,17 +112,19 @@ export class UiPanelLocation extends AbstractUiPanel {
     if (!this._enabled) return;
 
     const selection = this._selection;
+    const context = this.context;
+    const nominatim = context.services.nominatim;
 
-    if (!services.geocoder) {
-      this._currLocation = t('info_panels.location.unknown_location');
-      selection.selectAll('.location-info')
-        .text(this._currLocation);
-    } else {
-      services.geocoder.reverse(loc, (err, result) => {
-        this._currLocation = result ? result.display_name : t('info_panels.location.unknown_location');
+    if (nominatim) {
+      nominatim.reverse(loc, (err, result) => {
+        this._currLocation = result ? result.display_name : context.t('info_panels.location.unknown_location');
         selection.selectAll('.location-info')
           .text(this._currLocation);
       });
+    } else {
+      this._currLocation = context.t('info_panels.location.unknown_location');
+      selection.selectAll('.location-info')
+        .text(this._currLocation);
     }
   }
 

@@ -1,6 +1,6 @@
-export function actionChangeTags(entityId, tags) {
-    return function(graph) {
-        var entity = graph.entity(entityId);
-        return graph.replace(entity.update({tags: tags}));
-    };
+export function actionChangeTags(entityID, tags) {
+  return function(graph) {
+    const entity = graph.entity(entityID);
+    return graph.replace(entity.update({ tags: tags }));
+  };
 }

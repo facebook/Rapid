@@ -1,26 +1,27 @@
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 
 import { uiIcon } from '../icon';
-import { prefs } from '../../core/preferences';
-import { t } from '../../core/localizer';
 import { uiSection } from '../section';
 
 
 export function uiSectionValidationStatus(context) {
+  const validator = context.systems.validator;
+
   const section = uiSection('issues-status', context)
     .shouldDisplay(sectionShouldDisplay)
     .content(renderContent);
 
 
   function sectionShouldDisplay() {
-    let issues = context.validator().getIssues(getOptions());
+    let issues = validator.getIssues(getOptions());
     return issues.length === 0;
   }
 
   function getOptions() {
+    const prefs = context.systems.storage;
     return {
-      what: prefs('validate-what') || 'edited',
-      where: prefs('validate-where') || 'all'
+      what: prefs.getItem('validate-what') || 'edited',
+      where: prefs.getItem('validate-where') || 'all'
     };
   }
 
@@ -57,7 +58,7 @@ export function uiSectionValidationStatus(context) {
 
 
   function renderIgnoredIssuesReset(selection) {
-    let ignoredIssues = context.validator()
+    let ignoredIssues = validator
       .getIssues({ what: 'all', where: 'all', includeDisabledRules: true, includeIgnored: 'only' });
 
     let resetIgnored = selection.selectAll('.reset-ignored')
@@ -81,11 +82,11 @@ export function uiSectionValidationStatus(context) {
       .merge(resetIgnoredEnter);
 
     resetIgnored.select('a')
-      .html(t('inspector.title_count', { title: t.html('issues.reset_ignored'), count: ignoredIssues.length }));
+      .html(context.t('inspector.title_count', { title: context.tHtml('issues.reset_ignored'), count: ignoredIssues.length }));
 
     resetIgnored.on('click', d3_event => {
       d3_event.preventDefault();
-      context.validator().resetIgnoredIssues();
+      validator.resetIgnoredIssues();
     });
   }
 
@@ -97,15 +98,15 @@ export function uiSectionValidationStatus(context) {
     function checkForHiddenIssues(cases) {
       for (let type in cases) {
         let hiddenOpts = cases[type];
-        let hiddenIssues = context.validator().getIssues(hiddenOpts);
+        let hiddenIssues = validator.getIssues(hiddenOpts);
         if (hiddenIssues.length) {
           selection.select('.box .details')
-            .html(t.html('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
+            .html(context.tHtml('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
           return;
         }
       }
       selection.select('.box .details')
-        .html(t.html('issues.no_issues.hidden_issues.none'));
+        .html(context.tHtml('issues.no_issues.hidden_issues.none'));
     }
 
     let messageType;
@@ -152,20 +153,20 @@ export function uiSectionValidationStatus(context) {
       });
     }
 
-    if (opts.what === 'edited' && context.history().difference().summary().size === 0) {
+    if (opts.what === 'edited' && context.systems.edits.difference().summary().size === 0) {
       messageType = 'no_edits';
     }
 
     selection.select('.box .message')
-      .html(t.html(`issues.no_issues.message.${messageType}`));
+      .html(context.tHtml(`issues.no_issues.message.${messageType}`));
   }
 
 
-  context.validator().on('validated.uiSectionValidationStatus', () => {
+  validator.on('validated', () => {
     window.requestIdleCallback(section.reRender);
   });
 
-  context.map().on('draw', _debounce(() => {
+  context.systems.map.on('draw', debounce(() => {
     window.requestIdleCallback(section.reRender);
   }, 1000));
 

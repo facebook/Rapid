@@ -3,7 +3,7 @@ import { utilFunctor } from '../util/util';
 
 var _popoverID = 0;
 
-export function uiPopover(klass) {
+export function uiPopover(context, klass) {
     var _id = _popoverID++;
     var _anchorSelection = d3_select(null);
     var popover = function(selection) {

@@ -1,165 +1,146 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilArrayUnion } from '@rapid-sdk/util';
 
-import { presetManager } from '../../presets';
-import { t, localizer } from '../../core/localizer';
-import { uiField } from '../field';
+import { UiField } from '../UiField';
 import { uiFormFields } from '../form_fields';
 import { uiSection } from '../section';
 import { utilRebind } from '../../util';
 
 
 export function uiSectionPresetFields(context) {
+  let section = uiSection('preset-fields', context)
+    .label(context.tHtml('inspector.fields'))
+    .disclosureContent(renderDisclosureContent);
 
-    var section = uiSection('preset-fields', context)
-        .label(t.html('inspector.fields'))
-        .disclosureContent(renderDisclosureContent);
+  const dispatch = d3_dispatch('change', 'revert');
+  const formFields = uiFormFields(context);
+  let _state;
+  let _uifields;
+  let _presets = [];
+  let _tags;
+  let _entityIDs;
 
-    var dispatch = d3_dispatch('change', 'revert');
-    var formFields = uiFormFields(context);
-    var _state;
-    var _fieldsArr;
-    var _presets = [];
-    var _tags;
-    var _entityIDs;
 
-    function renderDisclosureContent(selection) {
-        if (!_fieldsArr) {
+  function renderDisclosureContent(selection) {
+    if (!_uifields) {
+      const graph = context.graph();
+      const presetSystem = context.systems.presets;
 
-            var graph = context.graph();
+      const geometries = Object.keys(_entityIDs.reduce((geoms, entityID) => {
+        geoms[graph.entity(entityID).geometry(graph)] = true;
+        return geoms;
+      }, {}));
 
-            var geometries = Object.keys(_entityIDs.reduce(function(geoms, entityID) {
-                geoms[graph.entity(entityID).geometry(graph)] = true;
-                return geoms;
-            }, {}));
+      let allFields = [];
+      let allMoreFields = [];
+      let sharedTotalFields;
 
-            var presetsManager = presetManager;
+      for (const preset of _presets) {
+        let fields = preset.fields();
+        let moreFields = preset.moreFields();
 
-            var allFields = [];
-            var allMoreFields = [];
-            var sharedTotalFields;
+        allFields = utilArrayUnion(allFields, fields);
+        allMoreFields = utilArrayUnion(allMoreFields, moreFields);
 
-            _presets.forEach(function(preset) {
-                var fields = preset.fields();
-                var moreFields = preset.moreFields();
-
-                allFields = utilArrayUnion(allFields, fields);
-                allMoreFields = utilArrayUnion(allMoreFields, moreFields);
-
-                if (!sharedTotalFields) {
-                    sharedTotalFields = utilArrayUnion(fields, moreFields);
-                } else {
-                    sharedTotalFields = sharedTotalFields.filter(function(field) {
-                        return fields.indexOf(field) !== -1 || moreFields.indexOf(field) !== -1;
-                    });
-                }
-            });
-
-            var sharedFields = allFields.filter(function(field) {
-                return sharedTotalFields.indexOf(field) !== -1;
-            });
-            var sharedMoreFields = allMoreFields.filter(function(field) {
-                return sharedTotalFields.indexOf(field) !== -1;
-            });
-
-            _fieldsArr = [];
-
-            sharedFields.forEach(function(field) {
-                if (field.matchAllGeometry(geometries)) {
-                    _fieldsArr.push(
-                        uiField(context, field, _entityIDs)
-                    );
-                }
-            });
-
-//            var singularEntity = _entityIDs.length === 1 && graph.hasEntity(_entityIDs[0]);
-//            if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetsManager.field('restrictions')) {
-//                _fieldsArr.push(
-//                    uiField(context, presetsManager.field('restrictions'), _entityIDs)
-//                );
-//            }
-
-            var additionalFields = utilArrayUnion(sharedMoreFields, presetsManager.universal());
-            additionalFields.sort(function(field1, field2) {
-                return field1.label().localeCompare(field2.label(), localizer.localeCode());
-            });
-
-            additionalFields.forEach(function(field) {
-                if (sharedFields.indexOf(field) === -1 &&
-                    field.matchAllGeometry(geometries)) {
-                    _fieldsArr.push(
-                        uiField(context, field, _entityIDs, { show: false })
-                    );
-                }
-            });
-
-            _fieldsArr.forEach(function(field) {
-                field
-                    .on('change', function(t, onInput) {
-                        dispatch.call('change', field, _entityIDs, t, onInput);
-                    })
-                    .on('revert', function(keys) {
-                        dispatch.call('revert', field, keys);
-                    });
-            });
+        if (!sharedTotalFields) {
+          sharedTotalFields = utilArrayUnion(fields, moreFields);
+        } else {
+          sharedTotalFields = sharedTotalFields.filter(field => {
+            return fields.includes(field) || moreFields.includes(field);
+          });
         }
+      }
 
-        _fieldsArr.forEach(function(field) {
-            field
-                .state(_state)
-                .tags(_tags);
+      const sharedFields = allFields.filter(field => sharedTotalFields.includes(field));
+      const sharedMoreFields = allMoreFields.filter(field => sharedTotalFields.includes(field));
+
+      _uifields = [];
+      for (const field of sharedFields) {
+        if (field.matchAllGeometry(geometries)) {
+          _uifields.push(new UiField(context, field, _entityIDs));
+        }
+      }
+
+//    let singularEntity = _entityIDs.length === 1 && graph.hasEntity(_entityIDs[0]);
+//    if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetSystem.field('restrictions')) {
+//      _uifields.push(new UiField(context, presetSystem.field('restrictions'), _entityIDs));
+//    }
+
+      const localeCode = context.systems.l10n.localeCode();
+      let additionalFields = utilArrayUnion(sharedMoreFields, presetSystem.universal());
+      additionalFields.sort((field1, field2) => {
+        return field1.label().localeCompare(field2.label(), localeCode);
+      });
+
+      for (const field of additionalFields) {
+        if (!sharedFields.includes(field) && field.matchAllGeometry(geometries)) {
+          _uifields.push(new UiField(context, field, _entityIDs, { show: false }) );
+        }
+      }
+
+      const ids = _entityIDs.slice();  // make copy (eslint warning)
+      for (const uifield of _uifields) {
+        uifield.on('change', (t, onInput) => {
+          dispatch.call('change', uifield, ids, t, onInput);
         });
-
-
-        selection
-            .call(formFields
-                .fieldsArr(_fieldsArr)
-                .state(_state)
-                .klass('grouped-items-area')
-            );
-
-
-        selection.selectAll('.wrap-form-field input')
-            .on('keydown', function(d3_event) {
-                // if user presses enter, and combobox is not active, accept edits..
-                if (d3_event.keyCode === 13 && // ↩ Return
-                    context.container().select('.combobox').empty()) {
-
-                    context.enter('browse');
-                }
-            });
+        uifield.on('revert', (keys) => {
+          dispatch.call('revert', uifield, keys);
+        });
+      }
     }
 
-    section.presets = function(val) {
-        if (!arguments.length) return _presets;
-        if (!_presets || !val || !utilArrayIdentical(_presets, val)) {
-            _presets = val;
-            _fieldsArr = null;
+    for (const uifield of _uifields) {
+      uifield.state(_state).tags(_tags);
+    }
+
+
+    selection
+      .call(formFields
+        .fieldsArr(_uifields)
+        .state(_state)
+        .klass('grouped-items-area')
+      );
+
+
+    selection.selectAll('.wrap-form-field input')
+      .on('keydown', function(d3_event) {
+        // if user presses enter, and combobox is not active, accept edits..
+        if (d3_event.keyCode === 13 && context.container().select('.combobox').empty()) {   // ↩ Return
+          context.enter('browse');
         }
-        return section;
-    };
+      });
+  }
 
-    section.state = function(val) {
-        if (!arguments.length) return _state;
-        _state = val;
-        return section;
-    };
+  section.presets = function(val) {
+    if (!arguments.length) return _presets;
+    if (!_presets || !val || !utilArrayIdentical(_presets, val)) {
+      _presets = val;
+      _uifields = null;
+    }
+    return section;
+  };
 
-    section.tags = function(val) {
-        if (!arguments.length) return _tags;
-        _tags = val;
-        // Don't reset _fieldsArr here.
-        return section;
-    };
+  section.state = function(val) {
+    if (!arguments.length) return _state;
+    _state = val;
+    return section;
+  };
 
-    section.entityIDs = function(val) {
-        if (!arguments.length) return _entityIDs;
-        if (!val || !_entityIDs || !utilArrayIdentical(_entityIDs, val)) {
-            _entityIDs = val;
-            _fieldsArr = null;
-        }
-        return section;
-    };
+  section.tags = function(val) {
+    if (!arguments.length) return _tags;
+    _tags = val;
+    // Don't reset _uifields here.
+    return section;
+  };
 
-    return utilRebind(section, dispatch, 'on');
+  section.entityIDs = function(val) {
+    if (!arguments.length) return _entityIDs;
+    if (!val || !_entityIDs || !utilArrayIdentical(_entityIDs, val)) {
+      _entityIDs = val;
+      _uifields = null;
+    }
+    return section;
+  };
+
+  return utilRebind(section, dispatch, 'on');
 }

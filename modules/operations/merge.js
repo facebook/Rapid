@@ -1,21 +1,21 @@
-import { t } from '../core/localizer';
-
 import { actionJoin } from '../actions/join';
 import { actionMerge } from '../actions/merge';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionMergePolygon } from '../actions/merge_polygon';
 
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { modeSelect } from '../modes/select';
-import { presetManager } from '../presets';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationMerge(context, selectedIDs) {
   let action = chooseAction();
 
   function chooseAction() {
+    const prefs = context.systems.storage;
+    const tagnosticRoadCombine = prefs.getItem('rapid-internal-feature.tagnosticRoadCombine') === 'true';
+    const options = { tagnosticRoadCombine: tagnosticRoadCombine };
+
     // prefer a non-disabled action first
-    const join = actionJoin(selectedIDs);
+    const join = actionJoin(selectedIDs, options);
     if (!join.disabled(context.graph())) return join;
 
     const merge = actionMerge(selectedIDs);
@@ -40,7 +40,7 @@ export function operationMerge(context, selectedIDs) {
     if (operation.disabled()) return;
 
     context.perform(action, operation.annotation());
-    context.validator().validate();
+    context.systems.validator.validate();
 
     let successorIDs = selectedIDs.filter(entityID => context.hasEntity(entityID));
     if (successorIDs.length > 1) {
@@ -49,7 +49,7 @@ export function operationMerge(context, selectedIDs) {
         successorIDs = interestingIDs;
       }
     }
-    context.enter(modeSelect(context, successorIDs));
+    context.enter('select-osm', { selectedIDs: successorIDs });
   };
 
 
@@ -62,8 +62,8 @@ export function operationMerge(context, selectedIDs) {
     const actionDisabled = action.disabled(context.graph());
     if (actionDisabled) return actionDisabled;
 
-    const osm = context.connection();
-    if (osm && action.resultingWayNodesLength && action.resultingWayNodesLength(context.graph()) > osm.maxWayNodes()) {
+    const osm = context.services.osm;
+    if (osm && action.resultingWayNodesLength && action.resultingWayNodesLength(context.graph()) > osm.maxWayNodes) {
       return 'too_many_vertices';
     }
 
@@ -73,31 +73,32 @@ export function operationMerge(context, selectedIDs) {
 
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
+    const presetSystem = context.systems.presets;
 
     if (disabledReason) {
       if (disabledReason === 'conflicting_relations') {
-        return t('operations.merge.conflicting_relations');
+        return context.t('operations.merge.conflicting_relations');
       } else if (disabledReason === 'restriction' || disabledReason === 'connectivity') {
-        const preset = presetManager.item('type/' + disabledReason);
-        return t('operations.merge.damage_relation', { relation: preset.name() });
+        const preset = presetSystem.item('type/' + disabledReason);
+        return context.t('operations.merge.damage_relation', { relation: preset.name() });
       } else {
-        return t(`operations.merge.${disabledReason}`);
+        return context.t(`operations.merge.${disabledReason}`);
       }
     } else {
-      return t('operations.merge.description');
+      return context.t('operations.merge.description');
     }
   };
 
 
   operation.annotation = function() {
-    return t('operations.merge.annotation', { n: selectedIDs.length });
+    return context.t('operations.merge.annotation', { n: selectedIDs.length });
   };
 
 
   operation.id = 'merge';
-  operation.keys = [ t('operations.merge.key') ];
-  operation.title = t('operations.merge.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.merge.key') ];
+  operation.title = context.t('operations.merge.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

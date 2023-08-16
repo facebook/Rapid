@@ -3,14 +3,12 @@ import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionExtract } from '../actions/extract';
 import { actionMove } from '../actions/move';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { t } from '../core/localizer';
-import { prefs } from '../core/preferences';
-import { presetManager } from '../presets';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
 
 export function operationExtract(context, selectedIDs) {
+  const presetSystem = context.systems.presets;
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -25,9 +23,9 @@ export function operationExtract(context, selectedIDs) {
     if (entity.type === 'node' && graph.parentWays(entity).length === 0) return null;
 
     if (entity.type !== 'node') {
-      const preset = presetManager.match(entity, graph);
+      const preset = presetSystem.match(entity, graph);
       // only allow extraction from ways/relations if the preset supports points
-      if (preset.geometry.indexOf('point') === -1) return null;
+      if (!preset.geometry.includes('point')) return null;
     }
 
     return actionExtract(entity.id, context.projection);
@@ -45,13 +43,13 @@ export function operationExtract(context, selectedIDs) {
     };
 
     context.perform(combinedAction, operation.annotation());
-    context.validator().validate();
+    context.systems.validator.validate();
 
     // Move the extracted nodes to the mouse cursor location
     const projection = context.projection;
     const extractedNodeIDs = actions.map(action => action.getExtractedNodeID());
     const extractPoint = projection.project(extent.center());
-    const delta = vecSubtract(context.map().mouse(), extractPoint);
+    const delta = vecSubtract(context.systems.map.mouse(), extractPoint);
     context.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
 
     // Put the user in move mode so they can place the extracted nodes where they want.
@@ -81,8 +79,9 @@ export function operationExtract(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
   };
 
@@ -90,20 +89,20 @@ export function operationExtract(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.extract.${disabledReason}.${multi}`) :
-      t(`operations.extract.description.${geometryType}.${multi}`);
+      context.t(`operations.extract.${disabledReason}.${multi}`) :
+      context.t(`operations.extract.description.${geometryType}.${multi}`);
   };
 
 
   operation.annotation = function () {
-    return t('operations.extract.annotation', { n: selectedIDs.length });
+    return context.t('operations.extract.annotation', { n: selectedIDs.length });
   };
 
 
   operation.id = 'extract';
-  operation.keys = [ t('operations.extract.key') ];
-  operation.title = t('operations.extract.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.extract.key') ];
+  operation.title = context.t('operations.extract.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

@@ -1,200 +1,174 @@
-describe('uiFieldWikipedia', function() {
-    var entity, context, selection, field;
+describe('uiFieldWikipedia', () => {
+  let graph, entity, selection, field;
 
-    before(function() {
-        Rapid.fileFetcher.cache().wmf_sitematrix = [
-          ['German','Deutsch','de'],
-          ['English','English','en']
-        ];
-        Rapid.services.wikipedia = Rapid.serviceWikipedia;
-        Rapid.services.wikidata = Rapid.serviceWikidata;
-    });
-
-    after(function() {
-        delete Rapid.fileFetcher.cache().wmf_sitematrix;
-        delete Rapid.services.wikipedia;
-        delete Rapid.services.wikidata;
-    });
-
-    beforeEach(function() {
-        entity = Rapid.osmNode({id: 'n12345'});
-        context = Rapid.coreContext().assetPath('../dist/').init();
-        context.history().merge([entity]);
-        selection = d3.select(document.createElement('div'));
-        field = Rapid.presetField('wikipedia', {
-            key: 'wikipedia',
-            keys: ['wikipedia', 'wikidata'],
-            type: 'wikipedia'
-        });
-        fetchMock.reset();
-        fetchMock.mock(new RegExp('\/w\/api\.php.*action=wbgetentities'), {
-            body: '{"entities":{"Q216353":{"id":"Q216353"}}}',
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        });
-    });
-
-    afterEach(function() {
-        fetchMock.reset();
-    });
-
-
-    function changeTags(changed) {
-        var e = context.entity(entity.id);
-        var annotation = 'Changed tags.';
-        var tags = JSON.parse(JSON.stringify(e.tags));   // deep copy
-        var didChange = false;
-
-        for (var k in changed) {
-            if (changed.hasOwnProperty(k)) {
-                var v = changed[k];
-                if (tags[k] !== v && (v !== undefined || tags.hasOwnProperty(k))) {
-                    tags[k] = v;
-                    didChange = true;
-                }
-            }
-        }
-
-        if (didChange) {
-            context.perform(Rapid.actionChangeTags(e.id, tags), annotation);
-        }
+  class MockWikidataService {
+    constructor() { }
+    itemsByTitle(lang, title, callback) {
+      callback({ Q216353: { id: 'Q216353' }} );
     }
+  }
 
-    it('recognizes lang:title format', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context);
-        window.setTimeout(function() {   // async, so data will be available
-            selection.call(wikipedia);
-            wikipedia.tags({wikipedia: 'en:Title'});
+  class MockContext {
+    constructor()   {
+      this.services = {
+        wikidata: new MockWikidataService(this)
+      };
+      this.systems = {
+        data: new Rapid.DataLoaderSystem(this)
+      };
+    }
+    cleanTagKey(val)    { return val; }
+    cleanTagValue(val)  { return val; }
+    container()         { return selection; }
+    entity()            { return entity; }
+    graph()             { return graph; }
+    t()                 { return ''; }
+    tHtml()             { return ''; }
+  }
 
-            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('English');
-            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
-            done();
-        }, 20);
+  const context = new MockContext();
+
+
+  beforeEach(() => {
+    entity = Rapid.osmNode({ id: 'n-1', tags: {} });
+    graph = new Rapid.Graph([entity]);
+
+    selection = d3.select(document.createElement('div'));
+    field = new Rapid.Field(context, 'wikipedia', {
+      key: 'wikipedia',
+      keys: ['wikipedia', 'wikidata'],
+      type: 'wikipedia'
     });
+  });
 
-    it('sets language, value', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
-        window.setTimeout(function() {   // async, so data will be available
-            wikipedia.on('change', changeTags);
-            selection.call(wikipedia);
 
-            var spy = sinon.spy();
-            wikipedia.on('change.spy', spy);
+  function changeTags(changed) {
+    let tags = JSON.parse(JSON.stringify(entity.tags));   // deep copy
+    for (const [k, v] of Object.entries(changed)) {
+      tags[k] = v;
+    }
+    entity = entity.update({ tags: tags });
+    graph = graph.replace(entity);
+  }
 
-            Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
-            happen.once(selection.selectAll('.wiki-lang').node(), { type: 'change' });
-            happen.once(selection.selectAll('.wiki-lang').node(), { type: 'blur' });
 
-            Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
-            happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
-            happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
+  it('recognizes lang:title format', done => {
+    const wikipedia = Rapid.uiFieldWikipedia(context, field);
+    window.setTimeout(() => {   // async, so data will be available
+      selection.call(wikipedia);
+      wikipedia.tags({ wikipedia: 'en:Title' });
 
-            expect(spy.callCount).to.equal(4);
-            expect(spy.getCall(0)).to.have.been.calledWith({ wikipedia: undefined});  // lang on change
-            expect(spy.getCall(1)).to.have.been.calledWith({ wikipedia: undefined});  // lang on blur
-            expect(spy.getCall(2)).to.have.been.calledWith({ wikipedia: 'de:Title' });   // title on change
-            expect(spy.getCall(3)).to.have.been.calledWith({ wikipedia: 'de:Title' });   // title on blur
-            done();
-        }, 20);
-    });
+      expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('English');
+      expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
+      done();
+    }, 20);
+  });
 
-    it('recognizes pasted URLs', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
-        window.setTimeout(function() {   // async, so data will be available
-            wikipedia.on('change', changeTags);
-            selection.call(wikipedia);
 
-            Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'http://de.wikipedia.org/wiki/Title');
-            happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
+  it('sets language, value', done => {
+    const wikipedia = Rapid.uiFieldWikipedia(context, field).entityIDs([entity.id]);
+    window.setTimeout(() => {   // async, so data will be available
+      wikipedia.on('change', changeTags);
+      selection.call(wikipedia);
 
-            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
-            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
-            done();
-        }, 20);
-    });
+      const spy = sinon.spy();
+      wikipedia.on('change.spy', spy);
 
-    // note - currently skipping the tests that use `options` to delay responses
-    it('preserves existing language', function(done) {
-        var wikipedia1 = Rapid.uiFieldWikipedia(field, context);
-        window.setTimeout(function() {   // async, so data will be available
-            selection.call(wikipedia1);
-            Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
+      Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
+      happen.once(selection.selectAll('.wiki-lang').node(), { type: 'change' });
+      happen.once(selection.selectAll('.wiki-lang').node(), { type: 'blur' });
 
-            var wikipedia2 = Rapid.uiFieldWikipedia(field, context);
-            window.setTimeout(function() {   // async, so data will be available
-                selection.call(wikipedia2);
-                wikipedia2.tags({});
-                expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
-                done();
-            }, 20);
-        }, 20);
-    });
+      Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
+      happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
+      happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
 
-    it.skip('does not set delayed wikidata tag if graph has changed', function(done) {
-        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
-        wikipedia.on('change', changeTags);
-        selection.call(wikipedia);
+      expect(spy.callCount).to.equal(4);
+      expect(spy.getCall(0)).to.have.been.calledWith({ wikipedia: undefined});  // lang on change
+      expect(spy.getCall(1)).to.have.been.calledWith({ wikipedia: undefined});  // lang on blur
+      expect(spy.getCall(2)).to.have.been.calledWith({ wikipedia: 'de:Title' });   // title on change
+      expect(spy.getCall(3)).to.have.been.calledWith({ wikipedia: 'de:Title' });   // title on blur
+      done();
+    }, 20);
+  });
 
-        var spy = sinon.spy();
-        wikipedia.on('change.spy', spy);
 
-        // Create an XHR server that will respond after 60ms
-        fetchMock.reset();
-        fetchMock.mock(new RegExp('\/w\/api\.php.*action=wbgetentities'), {
-            body: '{"entities":{"Q216353":{"id":"Q216353"}}}',
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        }, {
-            delay: 60
-        });
+  it('recognizes pasted URLs', done => {
+    const wikipedia = Rapid.uiFieldWikipedia(context, field).entityIDs([entity.id]);
+    window.setTimeout(() => {   // async, so data will be available
+      wikipedia.on('change', changeTags);
+      selection.call(wikipedia);
 
-        // Set title to "Skip"
-        Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
-        Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Skip');
-        happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
-        happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
+      Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'http://de.wikipedia.org/wiki/Title');
+      happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
 
-        // t0
-        expect(context.entity(entity.id).tags.wikidata).to.be.undefined;
+      expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
+      expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
+      done();
+    }, 20);
+  });
 
-        // Create a new XHR server that will respond after 60ms to
-        // separate requests after this point from those before
-        fetchMock.reset();
-        fetchMock.mock(new RegExp('\/w\/api\.php.*action=wbgetentities'), {
-            body: '{"entities":{"Q216353":{"id":"Q216353"}}}',
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        }, {
-            delay: 60
-        });
 
-        // t30:  graph change - Set title to "Title"
-        window.setTimeout(function() {
-            Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
-            happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
-            happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
-        }, 30);
+  it('preserves existing language', done => {
+    const wikipedia1 = Rapid.uiFieldWikipedia(context, field);
+    window.setTimeout(() => {   // async, so data will be available
+      selection.call(wikipedia1);
+      Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
 
-        // t60:  at t0 + 60ms (delay), wikidata SHOULD NOT be set because graph has changed.
+      const wikipedia2 = Rapid.uiFieldWikipedia(context, field);
+      window.setTimeout(() => {   // async, so data will be available
+        selection.call(wikipedia2);
+        wikipedia2.tags({});
+        expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
+        done();
+      }, 20);
+    }, 20);
+  });
 
-        // t70:  check that wikidata unchanged
-        window.setTimeout(function() {
-            expect(context.entity(entity.id).tags.wikidata).to.be.undefined;
-        }, 70);
 
-        // t90:  at t30 + 60ms (delay), wikidata SHOULD be set because graph is unchanged.
+  it.skip('does not set delayed wikidata tag if graph has changed', done => {
+    const wikipedia = Rapid.uiFieldWikipedia(context, field).entityIDs([entity.id]);
+    wikipedia.on('change', changeTags);
+    selection.call(wikipedia);
 
-        // t100:  check that wikidata has changed
-        window.setTimeout(function() {
-            expect(context.entity(entity.id).tags.wikidata).to.equal('Q216353');
+    const spy = sinon.spy();
+    wikipedia.on('change.spy', spy);
 
-            expect(spy.callCount).to.equal(4);
-            expect(spy.getCall(0)).to.have.been.calledWith({ wikipedia: 'de:Skip' });   // 'Skip' on change
-            expect(spy.getCall(1)).to.have.been.calledWith({ wikipedia: 'de:Skip' });   // 'Skip' on blur
-            expect(spy.getCall(2)).to.have.been.calledWith({ wikipedia: 'de:Title' });  // 'Title' on change +10ms
-            expect(spy.getCall(3)).to.have.been.calledWith({ wikipedia: 'de:Title' });  // 'Title' on blur   +10ms
-            done();
-        }, 100);
+    // Set title to "Skip"
+    Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
+    Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Skip');
+    happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
+    happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
 
-    });
+    // t0
+    expect(context.entity(entity.id).tags.wikidata).to.be.undefined;
+
+    // t30:  graph change - Set title to "Title"
+    window.setTimeout(() => {
+      Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
+      happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
+      happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
+    }, 30);
+
+    // t60:  at t0 + 60ms (delay), wikidata SHOULD NOT be set because graph has changed.
+
+    // t70:  check that wikidata unchanged
+    window.setTimeout(() => {
+      expect(context.entity(entity.id).tags.wikidata).to.be.undefined;
+    }, 70);
+
+    // t90:  at t30 + 60ms (delay), wikidata SHOULD be set because graph is unchanged.
+
+    // t100:  check that wikidata has changed
+    window.setTimeout(() => {
+      expect(context.entity(entity.id).tags.wikidata).to.equal('Q216353');
+
+      expect(spy.callCount).to.equal(4);
+      expect(spy.getCall(0)).to.have.been.calledWith({ wikipedia: 'de:Skip' });   // 'Skip' on change
+      expect(spy.getCall(1)).to.have.been.calledWith({ wikipedia: 'de:Skip' });   // 'Skip' on blur
+      expect(spy.getCall(2)).to.have.been.calledWith({ wikipedia: 'de:Title' });  // 'Title' on change +10ms
+      expect(spy.getCall(3)).to.have.been.calledWith({ wikipedia: 'de:Title' });  // 'Title' on blur   +10ms
+      done();
+    }, 100);
+
+  });
 });

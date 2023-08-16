@@ -1,18 +1,19 @@
-import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { uiIcon } from './icon';
 
 
 export function uiZoomToSelection(context) {
-  const KEY = t('inspector.zoom_to.key');
+  const l10n = context.systems.l10n;
+  const shortcutKey = l10n.t('inspector.zoom_to.key');
   let _lastPointerUpType;
   let _lastTransform;
 
-  return function(selection) {
-    let tooltip = uiTooltip()
-      .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
-      .title(() => isDisabled() ? t('inspector.zoom_to.no_selection') : t('inspector.zoom_to.title'))
-      .keys([KEY]);
+
+  return function render(selection) {
+    let tooltip = uiTooltip(context)
+      .placement(l10n.isRTL() ? 'right' : 'left')
+      .title(() => isDisabled() ? l10n.t('inspector.zoom_to.no_selection') : l10n.t('inspector.zoom_to.title'))
+      .keys([shortcutKey]);
 
     let button = selection
       .append('button')
@@ -21,24 +22,22 @@ export function uiZoomToSelection(context) {
       .call(uiIcon('#rapid-icon-framed-dot', 'light'))
       .call(tooltip);
 
-    context.keybinding().on(KEY, onClick);
-    context.on('enter.uiZoomToSelection', onModeChange);
+    context.keybinding().on(shortcutKey, onClick);
+    context.on('modechange', onModeChange);
 
     onModeChange();
 
 
     function isDisabled() {
-      const mode = context.mode();
-      return !_lastTransform && !mode?.extent;
+      return !_lastTransform && !context.mode?.extent;
     }
 
 
     function onClick(e) {
       if (e) e.preventDefault();
 
-      const mode = context.mode();
-      const extent = mode?.extent;
-      const map = context.map();
+      const extent = context.mode?.extent;
+      const map = context.systems.map;
 
       if (_lastTransform) {   // pop back out
         map.transformEase(_lastTransform);
@@ -52,11 +51,11 @@ export function uiZoomToSelection(context) {
 
       } else {   // tool disabled
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          context.ui().flash
+          context.systems.ui.flash
             .duration(2000)
             .iconName('#rapid-icon-framed-dot')
             .iconClass('disabled')
-            .label(t('inspector.zoom_to.no_selection'))();
+            .label(l10n.t('inspector.zoom_to.no_selection'))();
         }
       }
 

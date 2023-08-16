@@ -4,9 +4,7 @@ import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
-import { t, localizer } from '../../core/localizer';
 import { osmNote } from '../../osm';
-import { displayArea, displayLength, decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
 
 
 // using WGS84 authalic radius (6371007.1809 m)
@@ -47,11 +45,11 @@ export class UiPanelMeasurement extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'measurement';
-    this.label = t.html('info_panels.measurement.title');
-    this.key = t('info_panels.measurement.key');
+    this.label = context.tHtml('info_panels.measurement.title');
+    this.key = context.t('info_panels.measurement.key');
 
     this._selection = d3_select(null);
-    this._isImperial = !localizer.usesMetric();
+    this._isImperial = !context.systems.l10n.usesMetric();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -69,8 +67,8 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this._enabled = true;
     this._selection = selection;
 
-    this.context.map().on('draw', this.render);
-    this.context.on('enter.info-measurement', this.render);
+    this.context.systems.map.on('draw', this.render);
+    this.context.on('modechange', this.render);
   }
 
 
@@ -85,8 +83,8 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this._enabled = false;
     this._selection = d3_select(null);
 
-    this.context.map().off('draw', this.render);
-    this.context.on('enter.info-measurement', null);
+    this.context.systems.map.off('draw', this.render);
+    this.context.off('modechange', this.render);
   }
 
 
@@ -99,7 +97,8 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     const selection = this._selection;
     const context = this.context;
     const graph = context.graph();
-    const localeCode = localizer.localeCode();
+    const l10n = context.systems.l10n;
+    const localeCode = l10n.localeCode();
 
     // Empty out the DOM content and rebuild from scratch..
     selection.html('');
@@ -118,7 +117,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
 
     if (selectedData.size === 1 && (selectedItem instanceof osmNote)) {   // selected 1 OSM Note
       const note = selectedItem;
-      heading = t('note.note') + ' ' + note.id;
+      heading = l10n.t('note.note') + ' ' + note.id;
       location = note.loc;
       geometry = 'note';
 
@@ -128,7 +127,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
       if (selected.length === 1) {
         heading = selected[0].id;
       } else {
-        heading = t('info_panels.selected', { n: selected.length });
+        heading = l10n.t('info_panels.selected', { n: selected.length });
       }
 
       if (selected.length > 0) {    // 1…n
@@ -192,15 +191,15 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (geometry) {
       list
         .append('li')
-        .html(t.html('info_panels.measurement.geometry') + ':')
+        .html(l10n.tHtml('info_panels.measurement.geometry') + ':')
         .append('span')
-        .text(closed ? t('info_panels.measurement.closed_' + geometry) : t('geometry.' + geometry));
+        .text(closed ? l10n.t('info_panels.measurement.closed_' + geometry) : l10n.t('geometry.' + geometry));
     }
 
     if (totalNodeCount) {
       list
         .append('li')
-        .html(t.html('info_panels.measurement.node_count') + ':')
+        .html(l10n.tHtml('info_panels.measurement.node_count') + ':')
         .append('span')
         .text(totalNodeCount.toLocaleString(localeCode));
     }
@@ -208,55 +207,55 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (area) {
       list
         .append('li')
-        .html(t.html('info_panels.measurement.area') + ':')
+        .html(l10n.tHtml('info_panels.measurement.area') + ':')
         .append('span')
-        .text(displayArea(area, this._isImperial));
+        .text(l10n.displayArea(area, this._isImperial));
     }
 
     if (length) {
       list
         .append('li')
-        .html(t.html('info_panels.measurement.' + (closed ? 'perimeter' : 'length')) + ':')
+        .html(l10n.tHtml('info_panels.measurement.' + (closed ? 'perimeter' : 'length')) + ':')
         .append('span')
-        .text(displayLength(length, this._isImperial));
+        .text(l10n.displayLength(length, this._isImperial));
     }
 
     if (typeof distance === 'number') {
       list
         .append('li')
-        .html(t.html('info_panels.measurement.distance') + ':')
+        .html(l10n.tHtml('info_panels.measurement.distance') + ':')
         .append('span')
-        .text(displayLength(distance, this._isImperial));
+        .text(l10n.displayLength(distance, this._isImperial));
     }
 
     if (location) {
       coordItem = list
         .append('li')
-        .html(t.html('info_panels.measurement.location') + ':');
+        .html(l10n.tHtml('info_panels.measurement.location') + ':');
       coordItem.append('span')
-        .text(dmsCoordinatePair(location));
+        .text(l10n.dmsCoordinatePair(location));
       coordItem.append('span')
-        .text(decimalCoordinatePair(location));
+        .text(l10n.decimalCoordinatePair(location));
     }
 
     if (centroid) {
       coordItem = list
         .append('li')
-        .html(t.html('info_panels.measurement.centroid') + ':');
+        .html(l10n.tHtml('info_panels.measurement.centroid') + ':');
       coordItem.append('span')
-        .text(dmsCoordinatePair(centroid));
+        .text(l10n.dmsCoordinatePair(centroid));
       coordItem.append('span')
-        .text(decimalCoordinatePair(centroid));
+        .text(l10n.decimalCoordinatePair(centroid));
     }
 
     if (center) {
       coordItem = list
         .append('li')
-        .html(t.html('info_panels.measurement.center') + ':');
+        .html(l10n.tHtml('info_panels.measurement.center') + ':');
       coordItem.append('span')
-        .text(dmsCoordinatePair(center));
+        .text(l10n.dmsCoordinatePair(center));
       coordItem.append('span')
-        .text(decimalCoordinatePair(center));
+        .text(l10n.decimalCoordinatePair(center));
     }
 
     // Add Imperial/Metric toggle
@@ -264,7 +263,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
       const toggle = this._isImperial ? 'imperial' : 'metric';
       selection
         .append('a')
-        .html(t.html(`info_panels.measurement.${toggle}`))
+        .html(l10n.tHtml(`info_panels.measurement.${toggle}`))
         .attr('href', '#')
         .attr('class', 'button button-toggle-units')
         .on('click', e => {

@@ -1,7 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { t } from '../core/localizer';
-import { services } from '../services';
 import { uiIcon } from './icon';
 
 import { uiOsmoseDetails } from './osmose_details';
@@ -11,37 +9,37 @@ import { utilRebind } from '../util';
 
 
 export function uiOsmoseEditor(context) {
+  const osmose = context.services.osmose;
   const dispatch = d3_dispatch('change');
   const qaDetails = uiOsmoseDetails(context);
   const qaHeader = uiOsmoseHeader(context);
-
   let _qaItem;
 
-  function osmoseEditor(selection) {
 
+  function osmoseEditor(selection) {
     const header = selection.selectAll('.header')
       .data([0]);
 
     const headerEnter = header.enter()
       .append('div')
-        .attr('class', 'header fillL');
+      .attr('class', 'header fillL');
 
     headerEnter
       .append('button')
-        .attr('class', 'close')
-        .on('click', () => context.enter('browse'))
-        .call(uiIcon('#rapid-icon-close'));
+      .attr('class', 'close')
+      .on('click', () => context.enter('browse'))
+      .call(uiIcon('#rapid-icon-close'));
 
     headerEnter
       .append('h3')
-        .html(t.html('QA.osmose.title'));
+      .html(context.tHtml('QA.osmose.title'));
 
     let body = selection.selectAll('.body')
       .data([0]);
 
     body = body.enter()
-        .append('div')
-        .attr('class', 'body')
+      .append('div')
+      .attr('class', 'body')
       .merge(body);
 
     let editor = body.selectAll('.qa-editor')
@@ -49,11 +47,11 @@ export function uiOsmoseEditor(context) {
 
     editor.enter()
       .append('div')
-        .attr('class', 'modal-section qa-editor')
+      .attr('class', 'modal-section qa-editor')
       .merge(editor)
-        .call(qaHeader.issue(_qaItem))
-        .call(qaDetails.issue(_qaItem))
-        .call(osmoseSaveSection);
+      .call(qaHeader.issue(_qaItem))
+      .call(qaDetails.issue(_qaItem))
+      .call(osmoseSaveSection);
 
     const footer = selection.selectAll('.footer')
       .data([0]);
@@ -70,10 +68,7 @@ export function uiOsmoseEditor(context) {
     const isSelected = errID && context.selectedData().has(errID);
     const isShown = (_qaItem && isSelected);
     let saveSection = selection.selectAll('.qa-save')
-      .data(
-        (isShown ? [_qaItem] : []),
-        d => `${d.id}-${d.status || 0}`
-      );
+      .data((isShown ? [_qaItem] : []), d => `${d.id}-${d.status || 0}` );
 
     // exit
     saveSection.exit()
@@ -82,12 +77,12 @@ export function uiOsmoseEditor(context) {
     // enter
     const saveSectionEnter = saveSection.enter()
       .append('div')
-        .attr('class', 'qa-save save-section cf');
+      .attr('class', 'qa-save save-section cf');
 
     // update
     saveSection = saveSectionEnter
       .merge(saveSection)
-        .call(qaSaveButtons);
+      .call(qaSaveButtons);
   }
 
   function qaSaveButtons(selection) {
@@ -103,39 +98,37 @@ export function uiOsmoseEditor(context) {
     // enter
     const buttonEnter = buttonSection.enter()
       .append('div')
-        .attr('class', 'buttons');
+      .attr('class', 'buttons');
 
     buttonEnter
       .append('button')
-        .attr('class', 'button close-button action');
+      .attr('class', 'button close-button action');
 
     buttonEnter
       .append('button')
-        .attr('class', 'button ignore-button action');
+      .attr('class', 'button ignore-button action');
 
     // update
     buttonSection = buttonSection
       .merge(buttonEnter);
 
     buttonSection.select('.close-button')
-      .html(t.html('QA.keepRight.close'))
+      .html(context.tHtml('QA.keepRight.close'))
       .on('click.close', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.osmose;
-        if (qaService) {
+        this.blur();    // avoid keeping focus on the button - iD#4641
+        if (osmose) {
           d.newStatus = 'done';
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          osmose.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
     buttonSection.select('.ignore-button')
-      .html(t.html('QA.keepRight.ignore'))
+      .html(context.tHtml('QA.keepRight.ignore'))
       .on('click.ignore', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - #4641
-        const qaService = services.osmose;
-        if (qaService) {
+        this.blur();    // avoid keeping focus on the button - iD#4641
+        if (osmose) {
           d.newStatus = 'false';
-          qaService.postUpdate(d, (err, item) => dispatch.call('change', item));
+          osmose.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
   }

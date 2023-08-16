@@ -2,14 +2,10 @@ import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecAngle, vecLength, vecInterp } from '@rapid-sdk/math';
 
-import { services } from '../services';
-import { presetManager } from '../presets';
-
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { utilDisplayName, utilDisplayPOIName } from '../util';
 import { styleMatch } from './styles';
 
 const MINZOOM = 12;
@@ -28,14 +24,10 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+    this.enabled = true;   // OSM layers should be enabled by default
 
     const basemapContainer = this.scene.groups.get('basemap');
-
-    this._enabled = true;  // OSM layers should be enabled by default
-    this._service = null;
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
-
-    this.getService();
 
 // experiment for benchmarking
 //    this._alreadyDownloaded = false;
@@ -56,26 +48,34 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
-   */
-  getService() {
-    if (services.osm && !this._service) {
-      this._service = services.osm;
-    } else if (!services.osm && this._service) {
-      this._service = null;
-    }
-
-    return this._service;
-  }
-
-
-  /**
    * supported
    * Whether the Layer's service exists
    */
   get supported() {
-    return !!this.getService();
+    return !!this.context.services.osm;
+  }
+
+
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
+    }
+
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.osm.startAsync();
+    }
   }
 
 
@@ -114,17 +114,17 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
-    if (!this._enabled || !service || zoom < MINZOOM) return;
+    const service = this.context.services.osm;
+    if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
     const context = this.context;
     const graph = context.graph();
-    const map = context.map();
+    const map = context.systems.map;
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-    let entities = context.history().intersects(map.extent());             // Gather data in view
-    entities = context.features().filter(entities, this.context.graph());  // Apply feature filters
+    let entities = context.systems.edits.intersects(map.extent());   // Gather data in view
+    entities = context.systems.filters.filter(entities, graph);   // Apply feature filters
 
     const data = {
       polygons: new Map(),
@@ -152,7 +152,7 @@ export class PixiLayerOsm extends AbstractLayer {
 //    // continuing will fire off the download of the data into a file called 'canned_data.json'.
 //    // move the data into the test/spec/renderer directory.
 //    if (this._saveCannedData && !this._alreadyDownloaded) {
-//      const map = context.map();
+//      const map = context.systems.map;
 //      const [lng, lat] = map.center();
 //
 //      let viewData = {
@@ -227,7 +227,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     this.renderVertices(frame, projection, zoom, data, related);
 
-    if (context.mode()?.id === 'select') {
+    if (context.mode?.id === 'select-osm') {
       this.renderMidpoints(frame, projection, zoom, data, related);
     }
   }
@@ -242,9 +242,12 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderPolygons(frame, projection, zoom, data) {
     const entities = data.polygons;
-    const graph = this.context.graph();
+    const context = this.context;
+    const graph = context.graph();
+    const l10n = context.systems.l10n;
+    const presetSystem = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
-    const pointsHidden = this.context.features().hidden('points');
+    const showPoints = context.systems.filters.isEnabled('points');
 
     // For deciding if an unlabeled polygon feature is interesting enough to show a virtual pin.
     // Note that labeled polygon features will always get a virtual pin.
@@ -265,16 +268,16 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
     for (const [entityID, entity] of entities) {
-      const entityVersion = (entity.v || 0);
+      const version = entity.v || 0;
 
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
       let geojson = this._resolved.get(entityID);
-      if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
+      if (geojson?.v !== version) {  // bust cache if the entity has a new verison
         geojson = null;
       }
       if (!geojson) {
         geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-        geojson.v = entityVersion;
+        geojson.v = version;
         this._resolved.set(entityID, geojson);
       }
 
@@ -298,8 +301,8 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         // If data has changed.. Replace data and parent-child links.
-        if (feature.v !== entityVersion) {
-          feature.v = entityVersion;
+        if (feature.v !== version) {
+          feature.v = version;
           feature.geometry.setCoords(coords);
           const area = feature.geometry.origExtent.area();   // estimate area from extent for speed
           feature.container.zIndex = -area;      // sort by area descending (small things above big things)
@@ -317,19 +320,19 @@ export class PixiLayerOsm extends AbstractLayer {
         this.syncFeatureClasses(feature);
 
         if (feature.dirty) {
-          const preset = presetManager.match(entity, graph);
+          const preset = presetSystem.match(entity, graph);
 
           const style = styleMatch(entity.tags);
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
           feature.style = style;
 
-          const label = utilDisplayPOIName(entity);
+          const label = l10n.displayPOIName(entity.tags);
           feature.label = label;
 
           // POI = "Point of Interest" -and- "Pole of Inaccessability"
           // For POIs mapped as polygons, we can create a virtual point feature at the pole of inaccessability.
           // Try to show a virtual pin if there is a label or if the preset is interesting enough..
-          if (!pointsHidden && (label || isInterestingPreset(preset))) {
+          if (showPoints && (label || isInterestingPreset(preset))) {
             feature.poiFeatureID = `${this.layerID}-${entityID}-poi-${i}`;
             feature.poiPreset = preset;
           } else {
@@ -352,8 +355,8 @@ export class PixiLayerOsm extends AbstractLayer {
             poiFeature.parentContainer = pointsContainer;
           }
 
-          if (poiFeature.v !== entityVersion) {
-            poiFeature.v = entityVersion;
+          if (poiFeature.v !== version) {
+            poiFeature.v = version;
             poiFeature.geometry.setCoords(feature.geometry.origPoi);  // pole of inaccessability
             poiFeature.setData(entityID, entity);
           }
@@ -396,23 +399,25 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderLines(frame, projection, zoom, data) {
     const entities = data.lines;
-    const graph = this.context.graph();
+    const context = this.context;
+    const graph = context.graph();
+    const l10n = context.systems.l10n;
     const lineContainer = this.lineContainer;
 
     for (const [entityID, entity] of entities) {
-      const entityVersion = (entity.v || 0);
       const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       const levelContainer = _getLevelContainer(layer.toString());
       const zindex = getzIndex(entity.tags);
+      const version = entity.v || 0;
 
       // Cache GeoJSON resolution, as we expect the asGeoJSON call to be kinda slow.
       let geojson = this._resolved.get(entityID);
-      if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
+      if (geojson?.v !== version) {  // bust cache if the entity has a new verison
         geojson = null;
       }
       if (!geojson) {
         geojson = entity.asGeoJSON(graph);
-        geojson.v = entityVersion;
+        geojson.v = version;
         if (geojson.type === 'LineString' && entity.tags.oneway === '-1') {
           geojson.coordinates.reverse();
         }
@@ -441,8 +446,8 @@ export class PixiLayerOsm extends AbstractLayer {
           }
 
           // If data has changed.. Replace data and parent-child links.
-          if (feature.v !== entityVersion) {
-            feature.v = entityVersion;
+          if (feature.v !== version) {
+            feature.v = version;
             feature.geometry.setCoords(coords);
             feature.parentContainer = levelContainer;    // Change layer stacking if necessary
             feature.container.zIndex = zindex;
@@ -485,7 +490,7 @@ export class PixiLayerOsm extends AbstractLayer {
             }
             feature.style = style;
 
-            feature.label = utilDisplayName(entity);
+            feature.label = l10n.displayName(entity.tags);
           }
 
           feature.update(projection, zoom);
@@ -522,6 +527,8 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.vertices;
     const context = this.context;
     const graph = context.graph();
+    const l10n = context.systems.l10n;
+    const presetSystem = context.systems.presets;
 
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
@@ -550,6 +557,7 @@ export class PixiLayerOsm extends AbstractLayer {
       if (!parentContainer) continue;   // this vertex isn't important enough to render
 
       const featureID = `${this.layerID}-${nodeID}`;
+      const version = node.v || 0;
       let feature = this.features.get(featureID);
 
       // If feature existed before as a different type, recreate it.
@@ -563,9 +571,8 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // If data has changed, replace it.
-      const entityVersion = (node.v || 0);
-      if (feature.v !== entityVersion) {
-        feature.v = entityVersion;
+      if (feature.v !== version) {
+        feature.v = version;
         feature.geometry.setCoords(node.loc);
         feature.setData(nodeID, node);
       }
@@ -574,7 +581,7 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.parentContainer = parentContainer;   // change layer stacking if necessary
 
       if (feature.dirty) {
-        const preset = presetManager.match(node, graph);
+        const preset = presetSystem.match(node, graph);
         const iconName = preset?.icon;
         const directions = node.directions(graph, context.projection);
 
@@ -609,7 +616,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = utilDisplayName(node);
+        feature.label = l10n.displayName(node.tags);
       }
 
       feature.update(projection, zoom);
@@ -627,12 +634,15 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderPoints(frame, projection, zoom, data) {
     const entities = data.points;
-    const graph = this.context.graph();
+    const context = this.context;
+    const graph = context.graph();
+    const l10n = context.systems.l10n;
+    const presetSystem = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
 
     for (const [nodeID, node] of entities) {
-      const entityVersion = (node.v || 0);
       const featureID = `${this.layerID}-${nodeID}`;
+      const version = node.v || 0;
       let feature = this.features.get(featureID);
 
       // If feature existed before as a different type, recreate it.
@@ -647,8 +657,8 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // If data has changed, replace it.
-      if (feature.v !== entityVersion) {
-        feature.v = entityVersion;
+      if (feature.v !== version) {
+        feature.v = version;
         feature.geometry.setCoords(node.loc);
         feature.setData(nodeID, node);
       }
@@ -656,17 +666,17 @@ export class PixiLayerOsm extends AbstractLayer {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
-        let preset = presetManager.match(node, graph);
+        let preset = presetSystem.match(node, graph);
         let iconName = preset?.icon;
 
         // If we matched a generic preset without an icon, try matching it as a 'vertex'
         // This is just to choose a better icon for an otherwise empty-looking pin.
         if (!iconName) {
-          preset = presetManager.matchTags(node.tags, 'vertex');
+          preset = presetSystem.matchTags(node.tags, 'vertex');
           iconName = preset?.icon;
         }
 
-        const directions = node.directions(graph, this.context.projection);
+        const directions = node.directions(graph, context.projection);
 
         // set marker style
         let markerStyle = {
@@ -691,7 +701,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = utilDisplayName(node);
+        feature.label = l10n.displayName(node.tags);
       }
 
       feature.update(projection, zoom);

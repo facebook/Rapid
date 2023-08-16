@@ -1,46 +1,42 @@
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 
 
-export function uiDataHeader() {
-    var _datum;
+export function uiDataHeader(context) {
+  let _datum;
+
+  function dataHeader(selection) {
+    let header = selection.selectAll('.data-header')
+      .data((_datum ? [_datum] : []), d => d.__featurehash__ );
+
+    header.exit()
+      .remove();
+
+    let headerEnter = header.enter()
+      .append('div')
+      .attr('class', 'data-header');
+
+    let iconEnter = headerEnter
+      .append('div')
+      .attr('class', 'data-header-icon');
+
+    iconEnter
+      .append('div')
+      .attr('class', 'preset-icon-28')
+      .call(uiIcon('#rapid-icon-data'));
+
+    headerEnter
+      .append('div')
+      .attr('class', 'data-header-label')
+      .html(context.tHtml('map_data.layers.custom.title'));
+  }
 
 
-    function dataHeader(selection) {
-        var header = selection.selectAll('.data-header')
-            .data(
-                (_datum ? [_datum] : []),
-                function(d) { return d.__featurehash__; }
-            );
-
-        header.exit()
-            .remove();
-
-        var headerEnter = header.enter()
-            .append('div')
-            .attr('class', 'data-header');
-
-        var iconEnter = headerEnter
-            .append('div')
-            .attr('class', 'data-header-icon');
-
-        iconEnter
-            .append('div')
-            .call(uiIcon('#rapid-icon-data', 'note-fill'));
-
-        headerEnter
-            .append('div')
-            .attr('class', 'data-header-label')
-            .html(t.html('map_data.layers.custom.title'));
-    }
+  dataHeader.datum = function(val) {
+      if (!arguments.length) return _datum;
+      _datum = val;
+      return this;
+  };
 
 
-    dataHeader.datum = function(val) {
-        if (!arguments.length) return _datum;
-        _datum = val;
-        return this;
-    };
-
-
-    return dataHeader;
+  return dataHeader;
 }

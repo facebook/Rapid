@@ -1,5 +1,5 @@
 export function uiSpinner(context) {
-    var osm = context.connection();
+    var osm = context.services.osm;
 
 
     return function(selection) {

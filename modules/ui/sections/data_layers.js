@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
@@ -9,8 +8,9 @@ import { uiSettingsCustomData } from '../settings/custom_data';
 
 
 export function uiSectionDataLayers(context) {
+  const l10n = context.systems.l10n;
   const section = uiSection('data-layers', context)
-    .label(t.html('map_data.data_layers'))
+    .label(l10n.tHtml('map_data.data_layers'))
     .disclosureContent(renderDisclosureContent);
 
   const settingsCustomData = uiSettingsCustomData(context)
@@ -41,8 +41,8 @@ export function uiSectionDataLayers(context) {
 
 
   function setLayer(layerID, val) {
-    // Don't allow layer changes while drawing - #6584
-    const mode = context.mode();
+    // Don't allow layer changes while drawing - iD#6584
+    const mode = context.mode;
     if (mode && /^draw/.test(mode.id)) return;
 
     if (val) {
@@ -89,15 +89,15 @@ export function uiSectionDataLayers(context) {
       .each((d, i, nodes) => {
         if (d.id === 'osm') {
           d3_select(nodes[i])
-            .call(uiTooltip()
-              .title(t.html(`map_data.layers.${d.id}.tooltip`))
-              .keys([uiCmd('⌥' + t('area_fill.wireframe.key'))])
+            .call(uiTooltip(context)
+              .title(l10n.tHtml(`map_data.layers.${d.id}.tooltip`))
+              .keys([uiCmd('⌥' + l10n.t('area_fill.wireframe.key'))])
               .placement('bottom')
             );
         } else {
           d3_select(nodes[i])
-            .call(uiTooltip()
-              .title(t.html(`map_data.layers.${d.id}.tooltip`))
+            .call(uiTooltip(context)
+              .title(l10n.tHtml(`map_data.layers.${d.id}.tooltip`))
               .placement('bottom')
             );
         }
@@ -110,7 +110,7 @@ export function uiSectionDataLayers(context) {
 
     labelEnter
       .append('span')
-      .html(d => t.html(`map_data.layers.${d.id}.title`));
+      .html(d => l10n.tHtml(`map_data.layers.${d.id}.title`));
 
     // Update
     li
@@ -148,8 +148,8 @@ export function uiSectionDataLayers(context) {
       .append('label')
       .each((d, i, nodes) => {
         d3_select(nodes[i])
-          .call(uiTooltip()
-            .title(t.html(`map_data.layers.${d.id}.tooltip`))
+          .call(uiTooltip(context)
+            .title(l10n.tHtml(`map_data.layers.${d.id}.tooltip`))
             .placement('bottom')
           );
       });
@@ -161,7 +161,7 @@ export function uiSectionDataLayers(context) {
 
     labelEnter
       .append('span')
-      .html(d => t.html(`map_data.layers.${d.id}.title`));
+      .html(d => l10n.tHtml(`map_data.layers.${d.id}.title`));
 
     // Update
     li
@@ -176,6 +176,7 @@ export function uiSectionDataLayers(context) {
     const dataLayer = scene.layers.get('custom-data');
     const hasData = dataLayer && dataLayer.hasData();
     const showsData = hasData && dataLayer.enabled;
+    const isRTL = l10n.isRTL();
 
     let ul = selection
       .selectAll('.layer-list-data')
@@ -196,8 +197,8 @@ export function uiSectionDataLayers(context) {
 
     let labelEnter = liEnter
       .append('label')
-      .call(uiTooltip()
-        .title(t.html('map_data.layers.custom.tooltip'))
+      .call(uiTooltip(context)
+        .title(l10n.tHtml('map_data.layers.custom.tooltip'))
         .placement('top')
       );
 
@@ -208,14 +209,14 @@ export function uiSectionDataLayers(context) {
 
     labelEnter
       .append('span')
-      .html(t.html('map_data.layers.custom.title'));
+      .html(l10n.tHtml('map_data.layers.custom.title'));
 
     liEnter
       .append('button')
       .attr('class', 'open-data-options')
-      .call(uiTooltip()
-        .title(t.html('settings.custom_data.tooltip'))
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+      .call(uiTooltip(context)
+        .title(l10n.tHtml('settings.custom_data.tooltip'))
+        .placement(isRTL ? 'right' : 'left')
       )
       .on('click', d3_event => {
         d3_event.preventDefault();
@@ -226,9 +227,9 @@ export function uiSectionDataLayers(context) {
     liEnter
       .append('button')
       .attr('class', 'zoom-to-data')
-      .call(uiTooltip()
-        .title(t.html('map_data.layers.custom.zoom'))
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+      .call(uiTooltip(context)
+        .title(l10n.tHtml('map_data.layers.custom.zoom'))
+        .placement(isRTL ? 'right' : 'left')
       )
       .on('click', function(d3_event) {
         if (d3_select(this).classed('disabled')) return;
@@ -284,9 +285,9 @@ export function uiSectionDataLayers(context) {
       .append('li')
       .attr('class', 'history-panel-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t.html('map_data.history_panel.tooltip'))
-        .keys([uiCmd('⌘⇧' + t('info_panels.history.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.tHtml('map_data.history_panel.tooltip'))
+        .keys([uiCmd('⌘⇧' + l10n.t('info_panels.history.key'))])
         .placement('top')
       );
 
@@ -295,20 +296,20 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.ui().info.toggle('history');
+        context.systems.ui.info.toggle('history');
       });
 
     historyPanelLabelEnter
       .append('span')
-      .html(t.html('map_data.history_panel.title'));
+      .html(l10n.tHtml('map_data.history_panel.title'));
 
     let measurementPanelLabelEnter = panelsListEnter
       .append('li')
       .attr('class', 'measurement-panel-toggle-item')
       .append('label')
-      .call(uiTooltip()
-        .title(t.html('map_data.measurement_panel.tooltip'))
-        .keys([uiCmd('⌘⇧' + t('info_panels.measurement.key'))])
+      .call(uiTooltip(context)
+        .title(l10n.tHtml('map_data.measurement_panel.tooltip'))
+        .keys([uiCmd('⌘⇧' + l10n.t('info_panels.measurement.key'))])
         .placement('top')
       );
 
@@ -317,12 +318,12 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.ui().info.toggle('measurement');
+        context.systems.ui.info.toggle('measurement');
       });
 
     measurementPanelLabelEnter
       .append('span')
-      .html(t.html('map_data.measurement_panel.title'));
+      .html(l10n.tHtml('map_data.measurement_panel.title'));
   }
 
 

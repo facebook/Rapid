@@ -78,8 +78,7 @@ export class PixiFeatureLine extends AbstractFeature {
   update(projection, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    const wireframeMode = this.context.map().wireframeMode;
-    const context = this.context;
+    const wireframeMode = this.context.systems.map.wireframeMode;
     const textureManager = this.renderer.textures;
     const container = this.container;
     const style = this._style;
@@ -300,11 +299,17 @@ export class PixiFeatureLine extends AbstractFeature {
   updateHalo() {
     const showHover = (this.visible && this.hovered);
     const showSelect = (this.visible && this.selected);
-
+    const showHighlight = (this.visible && this.highlighted);
     // Hover
     if (showHover) {
       if (!this.container.filters) {
         const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+        glow.resolution = 2;
+        this.container.filters = [glow];
+      }
+    } else if (showHighlight) {
+      if (!this.container.filters) {
+        const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0x7092ff });
         glow.resolution = 2;
         this.container.filters = [glow];
       }

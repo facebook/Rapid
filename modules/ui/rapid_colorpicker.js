@@ -1,13 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { localizer } from '../core/localizer';
 import { uiIcon } from './icon';
 import { utilKeybinding, utilRebind } from '../util';
 
 
 export function uiRapidColorpicker(context, parentModal) {
-  const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('change', 'done');
 
   let _close = () => {};
@@ -74,15 +72,14 @@ export function uiRapidColorpicker(context, parentModal) {
 
 
   function renderPopup(selection, forNode) {
+    const isRTL = context.systems.l10n.isRTL();
     const dataset = forNode.__data__;
     const rect = forNode.getBoundingClientRect();
     const popWidth = 180;
     const popTop = rect.bottom + 15;
-    const popLeft = localizer.textDirection() === 'rtl'
-      ? rect.right - (0.3333 * popWidth)
+    const popLeft = isRTL ? rect.right - (0.3333 * popWidth)
       : rect.left - (0.6666 * popWidth);
-    const arrowLeft = localizer.textDirection() === 'rtl'
-      ? (0.3333 * popWidth) - rect.width + 10
+    const arrowLeft = isRTL ? (0.3333 * popWidth) - rect.width + 10
       : (0.6666 * popWidth) + 10;
 
     const origClose = parentModal.close;
@@ -136,7 +133,7 @@ export function uiRapidColorpicker(context, parentModal) {
       .merge(colorlist);
 
     let colorItems = colorlist.selectAll('.colorpicker-option')
-      .data(rapidContext.colors());
+      .data(context.systems.rapid.colors);
 
     // enter
     let colorItemsEnter = colorItems.enter()

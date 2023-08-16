@@ -1,13 +1,12 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 
 
 export function uiContributors(context) {
-    var osm = context.connection();
-    var debouncedUpdate = _debounce(function() { update(); }, 1000);
+    var osm = context.services.osm;
+    var debouncedUpdate = debounce(function() { update(); }, 1000);
     var limit = 4;
     var hidden = false;
     var wrap = d3_select(null);
@@ -16,15 +15,15 @@ export function uiContributors(context) {
     function update() {
         if (!osm) return;
 
-        var users = {},
-            entities = context.history().intersects(context.map().extent());
+        let users = {};
+        let entities = context.systems.edits.intersects(context.systems.map.extent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;
         });
 
-        var u = Object.keys(users),
-            subset = u.slice(0, u.length > limit ? limit - 1 : limit);
+        let u = Object.keys(users);
+        let subset = u.slice(0, u.length > limit ? limit - 1 : limit);
 
         wrap.html('')
             .call(uiIcon('#rapid-icon-nearby', 'pre-text light'));
@@ -48,16 +47,16 @@ export function uiContributors(context) {
             count.append('a')
                 .attr('target', '_blank')
                 .attr('href', function() {
-                    return osm.changesetsURL(context.map().center(), context.map().zoom());
+                    return osm.changesetsURL(context.systems.map.center(), context.systems.map.zoom());
                 })
                 .html(othersNum);
 
             wrap.append('span')
-                .html(t.html('contributors.truncated_list', { n: othersNum, users: userList.html(), count: count.html() }));
+                .html(context.tHtml('contributors.truncated_list', { n: othersNum, users: userList.html(), count: count.html() }));
 
         } else {
             wrap.append('span')
-                .html(t.html('contributors.list', { users: userList.html() }));
+                .html(context.tHtml('contributors.list', { users: userList.html() }));
         }
 
         if (!u.length) {
@@ -80,6 +79,6 @@ export function uiContributors(context) {
         update();
 
         osm.on('loaded.contributors', debouncedUpdate);
-        context.map().on('draw', debouncedUpdate);
+        context.systems.map.on('draw', debouncedUpdate);
     };
 }

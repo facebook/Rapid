@@ -1,4 +1,3 @@
-import { t } from '../../core/localizer';
 import { uiPane } from '../pane';
 
 import { uiSectionDataLayers } from '../sections/data_layers';
@@ -8,10 +7,10 @@ import { uiSectionPhotoOverlays } from '../sections/photo_overlays';
 
 
 export function uiPaneMapData(context) {
-  let mapDataPane = uiPane('map-data', context)
-    .key(t('map_data.key'))
-    .label(t.html('map_data.title'))
-    .description(t.html('map_data.description'))
+  return uiPane(context, 'map-data')
+    .key(context.t('map_data.key'))
+    .label(context.tHtml('map_data.title'))
+    .description(context.tHtml('map_data.description'))
     .iconName('rapid-icon-data')
     .sections([
       uiSectionDataLayers(context),
@@ -19,6 +18,4 @@ export function uiPaneMapData(context) {
       uiSectionMapStyleOptions(context),
       uiSectionMapFeatures(context)
     ]);
-
-  return mapDataPane;
 }

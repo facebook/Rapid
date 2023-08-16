@@ -1,6 +1,5 @@
 import { geomViewportNudge, vecSubtract } from '@rapid-sdk/math';
 
-import { services } from '../services';
 import { actionNoop } from '../actions/noop';
 
 
@@ -10,7 +9,7 @@ export function modeDragNote(context) {
         button: 'browse'
     };
 
-    const behavior = context.behaviors.get('drag')
+    const behavior = context.behaviors.drag
       .on('start', start)
       .on('move', move)
       .on('end', end);
@@ -23,7 +22,7 @@ export function modeDragNote(context) {
     function startNudge(d3_event, nudge) {
         if (_nudgeInterval) window.clearInterval(_nudgeInterval);
         _nudgeInterval = window.setInterval(function() {
-            context.map().pan(nudge);
+            context.systems.map.pan(nudge);
             doMove(d3_event, nudge);
         }, 50);
     }
@@ -44,7 +43,7 @@ export function modeDragNote(context) {
 
     function start(d3_event, note) {
         _note = note;
-        var osm = services.osm;
+        var osm = context.services.osm;
         if (osm) {
             // Get latest note from cache.. The marker may have a stale datum bound to it
             // and dragging it around can sometimes delete the users note comment.
@@ -66,7 +65,7 @@ export function modeDragNote(context) {
         _lastLoc = context.projection.invert(point);
 
         doMove(d3_event);
-        var nudge = geomViewportNudge(point, context.map().dimensions);
+        var nudge = geomViewportNudge(point, context.systems.map.dimensions);
         if (nudge) {
             startNudge(d3_event, nudge);
         } else {
@@ -84,7 +83,7 @@ export function modeDragNote(context) {
 
         _note = _note.move(loc);
 
-        var osm = services.osm;
+        var osm = context.services.osm;
         if (osm) {
             osm.replaceNote(_note);  // update note cache
         }
@@ -109,7 +108,7 @@ export function modeDragNote(context) {
 
 
     mode.exit = function() {
-        context.ui().sidebar.hover.cancel();
+        context.systems.ui.sidebar.hover.cancel();
 
         context.surface()
             .selectAll('.active')

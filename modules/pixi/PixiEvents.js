@@ -1,7 +1,6 @@
 import { EventEmitter } from '@pixi/utils';
 
 import { utilDetect } from '../util/detect';
-import { prefs } from '../core/preferences';
 
 
 /**
@@ -18,7 +17,7 @@ import { prefs } from '../core/preferences';
  *   `click`             Fires on stage.click, receives a Pixi FederatedPointerEvent
  *   `keydown`           Fires on window.keydown, receives a DOM KeyboardEvent
  *   `keyup`             Fires on window.keyup, receives a DOM KeyboardEvent
- *   `modifierchanged`   Fires when any modifier key is changed, receives the updated modifierKeys Set
+ *   `modifierchange`    Fires when any modifier key is changed, receives the updated modifierKeys Set
  *   `pointercancel`     Fires on stage.pointercancel, receives a Pixi FederatedPointerEvent
  *   `pointerdown`       Fires on stage.pointerdown, receives a Pixi FederatedPointerEvent
  *   `pointermove`       Fires on stage.pointermove, receives a Pixi FederatedPointerEvent
@@ -189,7 +188,7 @@ export class PixiEvents extends EventEmitter {
     }
 
     if (didChange) {
-      this.emit('modifierchanged', modifiers);
+      this.emit('modifierchange', modifiers);
     }
   }
 
@@ -331,7 +330,8 @@ export class PixiEvents extends EventEmitter {
       speed = 3;
 
     } else {  // consider user mouse_wheel preference
-      const wheelPref = prefs('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
+      const prefs = this.context.systems.storage;
+      const wheelPref = prefs.getItem('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
 
       // User wants to 'pan' by default OR
       // We autodetect - either horizontal scroll present or vertical scroll is a round number...

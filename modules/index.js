@@ -5,12 +5,9 @@ export * from './geo/index';
 export * from './modes/index';
 export * from './operations/index';
 export * from './osm/index';
-export * from './presets/index';
-export * from './renderer/index';
 export * from './services/index';
 export * from './svg/index';
 export * from './ui/fields/index';
-export * from './ui/intro/index';
 export * from './ui/panels/index';
 export * from './ui/panes/index';
 export * from './ui/sections/index';
@@ -19,10 +16,11 @@ export * from './ui/index';
 export * from './util/index';
 export * from './validations/index';
 
-// Reexport just what our tests use, see #4379
+export { Context } from './Context';
+
+// Reexport only what our tests use, see iD#4379
 import * as D3 from 'd3';
 export const d3 = {
-  dispatch:  D3.dispatch,
   polygonArea: D3.polygonArea,
   polygonCentroid: D3.polygonCentroid,
   select: D3.select,
@@ -42,3 +40,10 @@ export const sdk = {
   utilQsString: SDKUTIL.utilQsString,
   utilStringQs: SDKUTIL.utilStringQs
 };
+
+// set global `marked` options
+import { marked } from 'marked';
+marked.setOptions({
+  headerIds: false,
+  mangle: false
+});

@@ -1,12 +1,10 @@
 import { actionChangeTags } from '../actions/change_tags';
-import { presetManager } from '../presets';
-import { services } from '../services';
-import { t, localizer } from '../core/localizer';
-import { validationIssue, validationIssueFix } from '../core/validation';
+import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
-export function validationSuspiciousName() {
+export function validationSuspiciousName(context) {
   const type = 'suspicious_name';
+  const l10n = context.systems.l10n;
   const keysToTestForGenericValues = [
     'aerialway', 'aeroway', 'amenity', 'building', 'craft', 'highway',
     'leisure', 'railway', 'man_made', 'office', 'shop', 'tourism', 'waterway'
@@ -16,9 +14,9 @@ export function validationSuspiciousName() {
 
   // Attempt to match a generic record in the name-suggestion-index.
   function isGenericMatchInNsi(tags) {
-    const nsi = services.nsi;
+    const nsi = context.services.nsi;
     if (nsi) {
-      _waitingForNsi = (nsi.status() === 'loading');
+      _waitingForNsi = (nsi.status === 'loading');
       if (!_waitingForNsi) {
         return nsi.isGenericName(tags);
       }
@@ -29,8 +27,7 @@ export function validationSuspiciousName() {
 
   // Test if the name is just the key or tag value (e.g. "park")
   function nameMatchesRawTag(lowercaseName, tags) {
-    for (let i = 0; i < keysToTestForGenericValues.length; i++) {
-      let key = keysToTestForGenericValues[i];
+    for (const key of keysToTestForGenericValues) {
       let val = tags[key];
       if (val) {
         val = val.toLowerCase();
@@ -50,35 +47,35 @@ export function validationSuspiciousName() {
     return nameMatchesRawTag(name, tags) || isGenericMatchInNsi(tags);
   }
 
-  function makeGenericNameIssue(entityId, nameKey, genericName, langCode) {
-    return new validationIssue({
+  function makeGenericNameIssue(entityID, nameKey, genericName, langCode) {
+    return new ValidationIssue(context, {
       type: type,
       subtype: 'generic_name',
       severity: 'warning',
-      message: function(context) {
-        let entity = context.hasEntity(this.entityIds[0]);
+      message: function() {
+        const entity = context.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        let preset = presetManager.match(entity, context.graph());
-        let langName = langCode && localizer.languageName(langCode);
-        return t.html('issues.generic_name.message' + (langName ? '_language' : ''),
+        const preset = context.systems.presets.match(entity, context.graph());
+        const langName = langCode && l10n.languageName(langCode);
+        return l10n.tHtml('issues.generic_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: genericName, language: langName }
         );
       },
       reference: showReference,
-      entityIds: [entityId],
+      entityIds: [entityID],
       hash: `${nameKey}=${genericName}`,
       dynamicFixes: function() {
         return [
-          new validationIssueFix({
+          new ValidationFix({
             icon: 'rapid-operation-delete',
-            title: t.html('issues.fix.remove_the_name.title'),
-            onClick: function(context) {
-              let entityId = this.issue.entityIds[0];
-              let entity = context.entity(entityId);
+            title: l10n.tHtml('issues.fix.remove_the_name.title'),
+            onClick: function() {
+              const entityID = this.issue.entityIds[0];
+              const entity = context.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
               context.perform(
-                actionChangeTags(entityId, tags), t('issues.fix.remove_generic_name.annotation')
+                actionChangeTags(entityID, tags), l10n.t('issues.fix.remove_generic_name.annotation')
               );
             }
           })
@@ -92,39 +89,39 @@ export function validationSuspiciousName() {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(t.html('issues.generic_name.reference'));
+        .html(l10n.tHtml('issues.generic_name.reference'));
     }
   }
 
-  function makeIncorrectNameIssue(entityId, nameKey, incorrectName, langCode) {
-    return new validationIssue({
+  function makeIncorrectNameIssue(entityID, nameKey, incorrectName, langCode) {
+    return new ValidationIssue(context, {
       type: type,
       subtype: 'not_name',
       severity: 'warning',
-      message: function(context) {
+      message: function() {
         const entity = context.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        const preset = presetManager.match(entity, context.graph());
-        const langName = langCode && localizer.languageName(langCode);
-        return t.html('issues.incorrect_name.message' + (langName ? '_language' : ''),
+        const preset = context.systems.presets.match(entity, context.graph());
+        const langName = langCode && l10n.languageName(langCode);
+        return l10n.tHtml('issues.incorrect_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: incorrectName, language: langName }
         );
       },
       reference: showReference,
-      entityIds: [entityId],
+      entityIds: [entityID],
       hash: `${nameKey}=${incorrectName}`,
       dynamicFixes: function() {
         return [
-          new validationIssueFix({
+          new ValidationFix({
             icon: 'rapid-operation-delete',
-            title: t.html('issues.fix.remove_the_name.title'),
-            onClick: function(context) {
-              const entityId = this.issue.entityIds[0];
-              const entity = context.entity(entityId);
+            title: l10n.tHtml('issues.fix.remove_the_name.title'),
+            onClick: function() {
+              const entityID = this.issue.entityIds[0];
+              const entity = context.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
               context.perform(
-                actionChangeTags(entityId, tags), t('issues.fix.remove_mistaken_name.annotation')
+                actionChangeTags(entityID, tags), l10n.t('issues.fix.remove_mistaken_name.annotation')
               );
             }
           })
@@ -138,7 +135,7 @@ export function validationSuspiciousName() {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(t.html('issues.generic_name.reference'));
+        .html(l10n.tHtml('issues.generic_name.reference'));
     }
   }
 
@@ -151,26 +148,20 @@ export function validationSuspiciousName() {
     if (hasWikidata) return [];
 
     let issues = [];
-    const notNames = (tags['not:name'] || '').split(';');
+    const notNames = new Set((tags['not:name'] ?? '').split(';').map(s => s.trim()).filter(Boolean));
 
-    for (let key in tags) {
-      const m = key.match(/^name(?:(?::)([a-zA-Z_-]+))?$/);
-      if (!m) continue;
-
+    for (const [k, v] of Object.entries(tags)) {
+      if (!v) continue;   // no value
+      const m = k.match(/^name(?:(?::)([a-zA-Z_-]+))?$/);
+      if (!m) continue;   // not a namelike tag
       const langCode = m.length >= 2 ? m[1] : null;
-      const value = tags[key];
-      if (notNames.length) {
-        for (let i in notNames) {
-          const notName = notNames[i];
-          if (notName && value === notName) {
-            issues.push(makeIncorrectNameIssue(entity.id, key, value, langCode));
-            continue;
-          }
-        }
+
+      if (notNames.has(v)) {
+        issues.push(makeIncorrectNameIssue(entity.id, k, v, langCode));
       }
-      if (isGenericName(value, tags)) {
+      if (isGenericName(v, tags)) {
         issues.provisional = _waitingForNsi;  // retry later if we are waiting on NSI to finish loading
-        issues.push(makeGenericNameIssue(entity.id, key, value, langCode));
+        issues.push(makeGenericNameIssue(entity.id, k, v, langCode));
       }
     }
 

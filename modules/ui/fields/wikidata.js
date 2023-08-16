@@ -2,15 +2,13 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { actionChangeTags } from '../../actions/change_tags';
-import { services } from '../../services/index';
 import { uiIcon } from '../icon';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { uiCombobox } from '../combobox';
-import { t } from '../../core/localizer';
 
 
-export function uiFieldWikidata(field, context) {
-    var wikidata = services.wikidata;
+export function uiFieldWikidata(context, uifield) {
+    var wikidata = context.services.wikidata;
     var dispatch = d3_dispatch('change');
 
     var _selection = d3_select(null);
@@ -20,12 +18,12 @@ export function uiFieldWikidata(field, context) {
     var _wikiURL = '';
     var _entityIDs = [];
 
-    var _wikipediaKey = field.keys && field.keys.find(function(key) {
+    var _wikipediaKey = uifield.keys && uifield.keys.find(function(key) {
         return key.includes('wikipedia');
     });
-    var _hintKey = field.key === 'wikidata' ? 'name' : field.key.split(':')[0];
+    var _hintKey = uifield.key === 'wikidata' ? 'name' : uifield.key.split(':')[0];
 
-    var combobox = uiCombobox(context, 'combo-' + field.safeid)
+    var combobox = uiCombobox(context, 'combo-' + uifield.safeid)
         .caseSensitive(true)
         .minItems(1);
 
@@ -38,7 +36,7 @@ export function uiFieldWikidata(field, context) {
 
         wrap = wrap.enter()
             .append('div')
-            .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
+            .attr('class', 'form-field-input-wrap form-field-input-' + uifield.type)
             .merge(wrap);
 
 
@@ -60,7 +58,7 @@ export function uiFieldWikidata(field, context) {
         searchRowEnter
             .append('input')
             .attr('type', 'text')
-            .attr('id', field.domId)
+            .attr('id', uifield.uid)
             .style('flex', '1')
             .call(utilNoAuto)
             .on('focus', function() {
@@ -84,7 +82,7 @@ export function uiFieldWikidata(field, context) {
         searchRowEnter
             .append('button')
             .attr('class', 'form-field-button wiki-link')
-            .attr('title', t('icons.view_on', { domain: 'wikidata.org' }))
+            .attr('title', context.t('icons.view_on', { domain: 'wikidata.org' }))
             .call(uiIcon('#rapid-icon-out-link'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
@@ -108,7 +106,7 @@ export function uiFieldWikidata(field, context) {
         enter
             .append('span')
             .attr('class', 'label')
-            .html(function(d) { return t.html('wikidata.' + d); });
+            .html(function(d) { return context.tHtml('wikidata.' + d); });
 
         enter
             .append('input')
@@ -120,7 +118,7 @@ export function uiFieldWikidata(field, context) {
         enter
             .append('button')
             .attr('class', 'form-field-button')
-            .attr('title', t('icons.copy'))
+            .attr('title', context.t('icons.copy'))
             .call(uiIcon('#rapid-operation-copy'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
@@ -163,8 +161,9 @@ export function uiFieldWikidata(field, context) {
 
 
     function change() {
+        let key = uifield.key;
         var syncTags = {};
-        syncTags[field.key] = _qid;
+        syncTags[key] = _qid;
         dispatch.call('change', this, syncTags);
 
         // attempt asynchronous update of wikidata tag..
@@ -259,7 +258,7 @@ export function uiFieldWikidata(field, context) {
                     });
                     return graph;
                 },
-                context.history().undoAnnotation()
+                context.systems.edits.undoAnnotation()
             );
 
             // do not dispatch.call('change') here, because entity_editor
@@ -280,14 +279,14 @@ export function uiFieldWikidata(field, context) {
 
 
     wiki.tags = function(tags) {
-
-        var isMixed = Array.isArray(tags[field.key]);
+        let key = uifield.key;
+        var isMixed = Array.isArray(tags[key]);
         _searchInput
-            .attr('title', isMixed ? tags[field.key].filter(Boolean).join('\n') : null)
-            .attr('placeholder', isMixed ? t('inspector.multiple_values') : '')
+            .attr('title', isMixed ? tags[key].filter(Boolean).join('\n') : null)
+            .attr('placeholder', isMixed ? context.t('inspector.multiple_values') : '')
             .classed('mixed', isMixed);
 
-        _qid = typeof tags[field.key] === 'string' && tags[field.key] || '';
+        _qid = typeof tags[key] === 'string' && tags[key] || '';
 
         if (!/^Q[0-9]*$/.test(_qid)) {   // not a proper QID
             unrecognized();

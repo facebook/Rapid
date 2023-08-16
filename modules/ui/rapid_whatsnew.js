@@ -1,19 +1,17 @@
-import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { prefs } from '../core/preferences';
 import { marked } from 'marked';
 
 
-export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-vars
+export function uiRapidWhatsNew(context) {
+  // If user has not seen this version of the what's new screen, show it again.
+  // Just bump the version to a higher number to get it to come back.
+  const currWhatsNewVersion = 20230323;
   let _dontShowAgain = false;
 
-
-  return function(selection) {
-    // If user has not seen this version of the what's new screen, show it again.
-    // Just bump the version to a higher number to get it to come back.
-    const currWhatsNewVersion = 20230323;
-    const sawWhatsNewVersion = parseInt(prefs('sawWhatsNewVersion'), 10) || 0;
+  return function render(selection) {
+    const prefs = context.systems.storage;
+    const sawWhatsNewVersion = parseInt(prefs.getItem('sawWhatsNewVersion'), 10) || 0;
     if (sawWhatsNewVersion === currWhatsNewVersion) return;
 
     const modalSelection = uiModal(selection);
@@ -26,12 +24,12 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
       .append('div')
       .attr('class', 'modal-section')
       .append('h2')
-      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
+      .html(context.t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
 
     let body = whatsNewModal
       .append('div')
       .attr('class', 'modal-section body')
-      .html(marked.parse(t('rapid_whats_new.text', {
+      .html(marked.parse(context.t('rapid_whats_new.text', {
         rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
         bugicon: icon('#rapid-icon-bug', 'bugnub')
       })));
@@ -66,7 +64,7 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
     checkbox
       .append('span')
       .attr('class', 'rapid-checkbox-text')
-      .text(t('rapid_whats_new.dontshowagain'));
+      .text(context.t('rapid_whats_new.dontshowagain'));
 
     checkbox
       .append('input')
@@ -92,7 +90,7 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
 
     // nothanks
     //   .append('div')
-    //   .text(t('rapid_whats_new.nope'));
+    //   .text(context.t('rapid_whats_new.nope'));
 
     let okayButton = buttonWrap
       .append('button')
@@ -100,10 +98,10 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
 
     okayButton
       .append('div')
-      .text(t('rapid_whats_new.ok'))
+      .text(context.t('rapid_whats_new.ok'))
       .on('click', () => {
         if (_dontShowAgain) {
-          prefs('sawWhatsNewVersion', currWhatsNewVersion);
+          prefs.setItem('sawWhatsNewVersion', currWhatsNewVersion);
         }
         modalSelection.close();
       });

@@ -1,4 +1,4 @@
-import _debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce';
 
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -14,12 +14,12 @@ export function uiSectionReactContainer(context) {
     .disclosureContent(content);
 
   const chooseBackground = (source) => {
-    context.imagery().baseLayerSource(source);
+    context.systems.imagery.baseLayerSource(source);
   };
 
   const content = (selection) => {
-    const sources = context.imagery()
-      .sources(context.map().extent(), context.map().zoom())
+    const sources = context.systems.imagery
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(d => !d.isHidden() && !d.overlay);
 
     selection
@@ -33,8 +33,8 @@ export function uiSectionReactContainer(context) {
   };
 
 
-  context.map()
-    .on('draw', _debounce(() => {
+  context.systems.map
+    .on('draw', debounce(() => {
         reRenderCount++;
         window.requestIdleCallback(section.reRender);
       }, 1000)

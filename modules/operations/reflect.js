@@ -1,9 +1,7 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionReflect } from '../actions/reflect';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/util';
 
 
@@ -31,7 +29,7 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
       .useLongAxis(Boolean(axis === 'long'));
 
     context.perform(action, operation.annotation());
-    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
   };
 
 
@@ -55,14 +53,15 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
-      const osm = context.connection();
+      if (context.inIntro) return false;
+      const osm = context.services.osm;
       if (osm) {
         const missing = coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {
@@ -82,19 +81,19 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.reflect.${disabledReason}.${multi}`) :
-      t(`operations.reflect.description.${axis}.${multi}`);
+      context.t(`operations.reflect.${disabledReason}.${multi}`) :
+      context.t(`operations.reflect.description.${axis}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
+    return context.t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
   };
 
   operation.id = `reflect-${axis}`;
-  operation.keys = [ t(`operations.reflect.key.${axis}`) ];
-  operation.title = t(`operations.reflect.title.${axis}`);
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t(`operations.reflect.key.${axis}`) ];
+  operation.title = context.t(`operations.reflect.title.${axis}`);
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

@@ -2,8 +2,6 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
-import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
@@ -11,20 +9,21 @@ import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helpe
 export function uiIntroRapid(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.rapid.title' };
-  const history = context.history();
-  const map = context.map();
+  const editSystem = context.systems.edits;
+  const mapSystem = context.systems.map;
 
   const tulipLaneID = 'w-516';
   const tulipLaneExtent = new Extent([-85.62991, 41.95568], [-85.62700, 41.95638]);
 
   let _chapterCancelled = false;
   let _rejectStep = null;
+  let _onModeChange = null;
 
 
   // Helper functions
   // (Note that this returns true whether the way lives in the Rapid graph or OSM graph)
   function _isTulipLaneSelected() {
-    if (context.mode().id !== 'select') return false;
+    if (['select', 'select-osm'].includes(context.mode?.id))  return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === tulipLaneID;
   }
@@ -51,20 +50,20 @@ export function uiIntroRapid(context, curtain) {
   // Click Ok to advance
   function welcomeAsync() {
     context.enter('browse');
-    history.reset('initial');
+    editSystem.resetToCheckpoint('initial');
 
     const loc = tulipLaneExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
-          tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-          buttonText: t.html('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+          buttonText: context.tHtml('intro.ok'),
           buttonCallback: () => resolve(showHideRoadsAsync)
         });
       }));
@@ -78,8 +77,8 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: 'button.rapid-features',
-        tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-        buttonText: t.html('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+        buttonText: context.tHtml('intro.ok'),
         buttonCallback: () => resolve(selectRoadAsync)
       });
     });
@@ -90,25 +89,24 @@ export function uiIntroRapid(context, curtain) {
   // Select Tulip Lane to advance
   function selectRoadAsync() {
     context.enter('browse');
-    history.reset('initial');
+    editSystem.resetToCheckpoint('initial');
     context.scene().enableLayers('rapid');
-    context.ui().togglePanes();   // close issue pane
+    context.systems.ui.togglePanes();   // close issue pane
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = () => resolve(acceptRoadAsync);
 
       d3_select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
 
       curtain.reveal({
         revealExtent: tulipLaneExtent,
-        tipHtml: helpHtml('intro.rapid.select_road')
+        tipHtml: helpHtml(context, 'intro.rapid.select_road')
       });
-
-      context.on('enter.intro', () => resolve(acceptRoadAsync));
     })
     .finally(() => {
+      _onModeChange = null;
       d3_select('.inspector-wrap').on('wheel.intro', null);
-      context.on('enter.intro', null);
     });
   }
 
@@ -121,22 +119,21 @@ export function uiIntroRapid(context, curtain) {
         _rejectStep = reject;
         if (!_isTulipLaneSelected()) { resolve(); return; }
 
+        _onModeChange = resolve;
         curtain.reveal({
           revealSelector: '.rapid-inspector-choice-accept',
-          tipHtml: helpHtml('intro.rapid.add_road')
+          tipHtml: helpHtml(context, 'intro.rapid.add_road')
         });
-
-        context.on('enter.intro', resolve);
       }))
       .then(() => {    // check undo annotation to see what the user did
-        if (history.undoAnnotation()?.type === 'rapid_accept_feature') {
+        if (editSystem.undoAnnotation()?.type === 'rapid_accept_feature') {
           return roadAcceptedAsync;
         } else {
           return selectRoadAsync;
         }
       })
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -148,19 +145,19 @@ export function uiIntroRapid(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
-        if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+        if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
+
+        _onModeChange = reject;   // disallow mode change
 
         curtain.reveal({
           revealExtent: tulipLaneExtent,
-          tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-          buttonText: t('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
+          buttonText: context.t('intro.ok'),
           buttonCallback: () => resolve(showIssuesButtonAsync)
         });
-
-        context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -169,21 +166,22 @@ export function uiIntroRapid(context, curtain) {
   // Open Issues panel to advance
   function showIssuesButtonAsync() {
     if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+    if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
 
     const issuesButton = d3_select('div.map-control.issues-control > button');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
+      _onModeChange = reject;   // disallow mode change
+
       curtain.reveal({
         revealNode: issuesButton.node(),
-        tipHtml: helpHtml('intro.rapid.open_issues')
+        tipHtml: helpHtml(context, 'intro.rapid.open_issues')
       });
-      context.on('enter.intro', reject);   // disallow mode change
       issuesButton.on('click.intro', () => resolve(showLintAsync));
     })
     .finally(() => {
-      context.on('enter.intro', null);
+      _onModeChange = null;
       issuesButton.on('click.intro', null);
     });
   }
@@ -196,14 +194,14 @@ export function uiIntroRapid(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
-        if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+        if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
 
         const label = d3_select('li.issue.severity-warning');
         curtain.reveal({
           revealNode: label.node(),   // "connect these features" is expected to be the first child
           revealPadding: 5,
-          tipHtml: helpHtml('intro.rapid.new_lints'),
-          buttonText: t('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.rapid.new_lints'),
+          buttonText: context.t('intro.ok'),
           buttonCallback: () => resolve(undoRoadAddAsync)
         });
       }));
@@ -214,7 +212,7 @@ export function uiIntroRapid(context, curtain) {
   // Click Undo to advance
   function undoRoadAddAsync() {
     if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+    if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
 
     const undoButton = d3_select('.top-toolbar button.undo-button');
 
@@ -222,7 +220,7 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealNode: undoButton.node(),
-        tipHtml: helpHtml('intro.rapid.undo_road_add', { button: icon('#rapid-icon-undo', 'pre-text') })
+        tipHtml: helpHtml(context, 'intro.rapid.undo_road_add', { button: icon('#rapid-icon-undo', 'pre-text') })
       });
       undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
     })
@@ -237,14 +235,14 @@ export function uiIntroRapid(context, curtain) {
   function afterUndoRoadAddAsync() {
     if (_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);  // should be un-accepted now
 
-    context.ui().togglePanes();   // close issue pane
+    context.systems.ui.togglePanes();   // close issue pane
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: tulipLaneExtent,
-        tipHtml: helpHtml('intro.rapid.undo_road_add_aftermath'),
-        buttonText: t('intro.ok'),
+        tipHtml: helpHtml(context, 'intro.rapid.undo_road_add_aftermath'),
+        buttonText: context.t('intro.ok'),
         buttonCallback: () => resolve(selectRoadAgainAsync)
       });
     });
@@ -255,28 +253,29 @@ export function uiIntroRapid(context, curtain) {
   // Select Tulip Lane to advance
   function selectRoadAgainAsync() {
     context.enter('browse');
-    history.reset('initial');
+    editSystem.resetToCheckpoint('initial');
 
     const loc = tulipLaneExtent.center();
-    const msec = transitionTime(loc, map.center());
+    const msec = transitionTime(loc, mapSystem.center());
     if (msec > 0) curtain.hide();
 
-    return map
+    return mapSystem
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+
+        _onModeChange = () => {
+          if (!context.selectedIDs().includes(tulipLaneID)) return;
+          resolve(ignoreRoadAsync);
+        };
+
         curtain.reveal({
           revealExtent: tulipLaneExtent,
-          tipHtml: helpHtml('intro.rapid.select_road_again')
-        });
-
-        context.on('enter.intro', () => {
-          if (context.selectedIDs().indexOf(tulipLaneID) === -1) return;
-          resolve(ignoreRoadAsync);
+          tipHtml: helpHtml(context, 'intro.rapid.select_road_again')
         });
       }))
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -289,22 +288,22 @@ export function uiIntroRapid(context, curtain) {
         _rejectStep = reject;
         if (!_isTulipLaneSelected()) { resolve(); return; }
 
+        _onModeChange = resolve;
+
         curtain.reveal({
           revealSelector: '.rapid-inspector-choice-ignore',
-          tipHtml: helpHtml('intro.rapid.ignore_road')
+          tipHtml: helpHtml(context, 'intro.rapid.ignore_road')
         });
-
-        context.on('enter.intro', resolve);
       }))
       .then(() => {    // check undo annotation to see what the user did
-        if (history.undoAnnotation()?.type === 'rapid_ignore_feature') {
+        if (editSystem.undoAnnotation()?.type === 'rapid_ignore_feature') {
           return showHelpAsync;
         } else {
           return selectRoadAgainAsync;
         }
       })
       .finally(() => {
-        context.on('enter.intro', null);
+        _onModeChange = null;
       });
   }
 
@@ -316,12 +315,12 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.map-control.help-control',
-        tipHtml: helpHtml('intro.rapid.help', {
+        tipHtml: helpHtml(context, 'intro.rapid.help', {
           rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
           button: icon('#rapid-icon-help', 'pre-text'),
-          key: t('help.key')
+          key: context.t('help.key')
         }),
-        buttonText: t('intro.ok'),
+        buttonText: context.t('intro.ok'),
         buttonCallback: () => resolve(playAsync)
       });
     });
@@ -335,8 +334,8 @@ export function uiIntroRapid(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-startEditing',
-      tipHtml: helpHtml('intro.rapid.done', { next: t('intro.startediting.title') }),
-      buttonText: t.html('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.rapid.done', { next: context.t('intro.startediting.title') }),
+      buttonText: context.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -347,9 +346,19 @@ export function uiIntroRapid(context, curtain) {
     context.scene().enableLayers('rapid');
     _chapterCancelled = false;
     _rejectStep = null;
+    _onModeChange = null;
+
+    context.on('modechange', _modeChangeListener);
 
     runAsync(welcomeAsync)
-      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
+      .catch(e => { if (e instanceof Error) console.error(e); })  // eslint-disable-line no-console
+      .finally(() => {
+        context.off('modechange', _modeChangeListener);
+      });
+
+    function _modeChangeListener(mode) {
+      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    }
   };
 
 

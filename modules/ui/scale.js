@@ -1,15 +1,13 @@
 import { geoLonToMeters, geoMetersToLon } from '@rapid-sdk/math';
 
-import { displayLength } from '../util/units';
-import { localizer } from '../core/localizer';
-
 
 export function uiScale(context) {
   const projection = context.projection;
   const MAXLENGTH = 180;
   const TICKHEIGHT = 8;
 
-  let _isImperial = !localizer.usesMetric();
+  const l10n = context.systems.l10n;
+  let _isImperial = !l10n.usesMetric();
 
 
   function scaleDefs(loc1, loc2) {
@@ -38,23 +36,24 @@ export function uiScale(context) {
 
     const dLon = geoMetersToLon(scale.dist / conversion, lat);
     scale.px = Math.round(projection.project([loc1[0] + dLon, loc1[1]])[0]);
-    scale.text = displayLength(scale.dist / conversion, _isImperial);
+    scale.text = l10n.displayLength(scale.dist / conversion, _isImperial);
     return scale;
   }
 
 
   function update(selection) {
     // choose loc1, loc2 along bottom of viewport (near where the scale will be drawn)
-    const dims = context.map().dimensions;
+    const dims = context.systems.map.dimensions;
     const loc1 = projection.invert([0, dims[1]]);
     const loc2 = projection.invert([MAXLENGTH, dims[1]]);
     const scale = scaleDefs(loc1, loc2);
+    const isRTL = l10n.isRTL();
 
     selection.select('.scale-path')
       .attr('d', 'M0.5,0.5v' + TICKHEIGHT + 'h' + scale.px + 'v-' + TICKHEIGHT);
 
     selection.select('.scale-text')
-      .style(localizer.textDirection() === 'ltr' ? 'left' : 'right', (scale.px + 16) + 'px')
+      .style(isRTL ? 'right' : 'left', (scale.px + 16) + 'px')
       .html(scale.text);
   }
 
@@ -79,7 +78,7 @@ export function uiScale(context) {
       .append('div')
       .attr('class', 'scale-text');
 
-    context.map().on('draw', () => {
+    context.systems.map.on('draw', () => {
       window.requestIdleCallback(() => update(selection));
     });
   };

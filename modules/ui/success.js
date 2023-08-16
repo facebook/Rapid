@@ -3,10 +3,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { resolveStrings } from 'osm-community-index';
 
-import { fileFetcher } from '../core/file_fetcher';
-import { locationManager } from '../core/LocationManager';
-import { t, localizer } from '../core/localizer';
-
 import { uiIcon } from './icon';
 import { uiDisclosure } from '../ui/disclosure';
 import { utilRebind } from '../util/rebind';
@@ -19,28 +15,29 @@ export function uiSuccess(context) {
   const dispatch = d3_dispatch('cancel');
   let _changeset;
   let _location;
-  ensureOSMCommunityIndex();   // start fetching the data
+  getCommunityIndexAsync();   // start fetching the data
 
 
-  function ensureOSMCommunityIndex() {
-    const data = fileFetcher;
+  function getCommunityIndexAsync() {
+    const dataLoaderSystem = context.systems.data;
     return Promise.all([
-        data.get('oci_features'),
-        data.get('oci_resources'),
-        data.get('oci_defaults')
+        dataLoaderSystem.getDataAsync('oci_features'),
+        dataLoaderSystem.getDataAsync('oci_resources'),
+        dataLoaderSystem.getDataAsync('oci_defaults')
       ])
       .then(vals => {
         if (_oci) return _oci;
 
         // Merge Custom Features
+        const locationSystem = context.systems.locations;
         if (vals[0] && Array.isArray(vals[0].features)) {
-          locationManager.mergeCustomGeoJSON(vals[0]);
+          locationSystem.mergeCustomGeoJSON(vals[0]);
         }
 
         let ociResources = Object.values(vals[1].resources);
         if (ociResources.length) {
           // Resolve all locationSet features.
-          return locationManager.mergeLocationSets(ociResources)
+          return locationSystem.mergeLocationSets(ociResources)
             .then(() => {
               _oci = {
                 resources: ociResources,
@@ -82,7 +79,7 @@ export function uiSuccess(context) {
 
     header
       .append('h3')
-      .html(t.html('success.just_edited'));
+      .html(context.tHtml('success.just_edited'));
 
     header
       .append('button')
@@ -100,20 +97,20 @@ export function uiSuccess(context) {
 
     summary
       .append('h3')
-      .html(t.html('success.thank_you' + (_location ? '_location' : ''), { where: _location }));
+      .html(context.tHtml('success.thank_you' + (_location ? '_location' : ''), { where: _location }));
 
     summary
       .append('p')
-      .html(t.html('success.help_html'))
+      .html(context.tHtml('success.help_html'))
       .append('a')
       .attr('class', 'link-out')
       .attr('target', '_blank')
-      .attr('href', t('success.help_link_url'))
+      .attr('href', context.t('success.help_link_url'))
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .append('span')
-      .html(t.html('success.help_link_text'));
+      .html(context.tHtml('success.help_link_text'));
 
-    let osm = context.connection();
+    let osm = context.services.osm;
     if (!osm) return;
 
     let changesetURL = osm.changesetURL(_changeset.id);
@@ -146,20 +143,21 @@ export function uiSuccess(context) {
       .attr('class', 'cell-detail summary-view-on-osm')
       .attr('target', '_blank')
       .attr('href', changesetURL)
-      .html(t.html('success.view_on_osm'));
+      .html(context.tHtml('success.view_on_osm'));
 
     summaryDetail
       .append('div')
-      .html(t.html('success.changeset_id', {
+      .html(context.tHtml('success.changeset_id', {
         changeset_id: `<a href="${changesetURL}" target="_blank">${_changeset.id}</a>`
       }));
 
 
     // Get OSM community index features intersecting the map..
-    ensureOSMCommunityIndex()
+    getCommunityIndexAsync()
       .then(oci => {
-        const loc = context.map().center();
-        const validHere = locationManager.locationSetsAt(loc);
+        const loc = context.systems.map.center();
+        const locationSystem = context.systems.locations;
+        const validHere = locationSystem.locationSetsAt(loc);
 
         // Gather the communities
         let communities = [];
@@ -168,8 +166,8 @@ export function uiSuccess(context) {
           if (!area) return;
 
           // Resolve strings
-          const localizer = (stringID) => t.html(`community.${stringID}`);
-          resource.resolved = resolveStrings(resource, oci.defaults, localizer);
+          const localize = (stringID) => context.tHtml(`community.${stringID}`);
+          resource.resolved = resolveStrings(resource, oci.defaults, localize);
 
           communities.push({
             area: area,
@@ -194,7 +192,7 @@ export function uiSuccess(context) {
 
     communityLinks
       .append('h3')
-      .html(t.html('success.like_osm'));
+      .html(context.tHtml('success.like_osm'));
 
     let table = communityLinks
       .append('table')
@@ -228,14 +226,14 @@ export function uiSuccess(context) {
     communityLinks
       .append('div')
       .attr('class', 'community-missing')
-      .html(t.html('success.missing'))
+      .html(context.tHtml('success.missing'))
       .append('a')
       .attr('class', 'link-out')
       .attr('target', '_blank')
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/osmlab/osm-community-index/issues')
       .append('span')
-      .html(t.html('success.tell_us'));
+      .html(context.tHtml('success.tell_us'));
   }
 
 
@@ -260,7 +258,7 @@ export function uiSuccess(context) {
         .call(uiDisclosure(context, `community-more-${d.id}`, false)
           .expanded(false)
           .updatePreference(false)
-          .label(t.html('success.more'))
+          .label(context.tHtml('success.more'))
           .content(showMore)
         );
     }
@@ -286,7 +284,7 @@ export function uiSuccess(context) {
         .call(uiDisclosure(context, `community-events-${d.id}`, false)
           .expanded(false)
           .updatePreference(false)
-          .label(t.html('success.events'))
+          .label(context.tHtml('success.events'))
           .content(showNextEvents)
         )
         .select('.hide-toggle')
@@ -313,13 +311,13 @@ export function uiSuccess(context) {
 
       if (d.languageCodes && d.languageCodes.length) {
         const languageList = d.languageCodes
-          .map(code => localizer.languageName(code))
+          .map(code => context.systems.l10n.languageName(code))
           .join(', ');
 
         moreEnter
           .append('div')
           .attr('class', 'community-languages')
-          .html(t.html('success.languages', { languages: languageList }));
+          .html(context.tHtml('success.languages', { languages: languageList }));
       }
     }
 
@@ -345,7 +343,7 @@ export function uiSuccess(context) {
         .html(d => {
           let name = d.name;
           if (d.i18n && d.id) {
-            name = t(`community.${communityID}.events.${d.id}.name`, { default: name });
+            name = context.t(`community.${communityID}.events.${d.id}.name`, { default: name });
           }
           return name;
         });
@@ -359,7 +357,8 @@ export function uiSuccess(context) {
             options.hour = 'numeric';
             options.minute = 'numeric';
           }
-          return d.date.toLocaleString(localizer.localeCode(), options);
+          const localeCode = context.systems.l10n.localeCode();
+          return d.date.toLocaleString(localeCode, options);
         });
 
       itemEnter
@@ -368,7 +367,7 @@ export function uiSuccess(context) {
         .html(d => {
           let where = d.where;
           if (d.i18n && d.id) {
-            where = t(`community.${communityID}.events.${d.id}.where`, { default: where });
+            where = context.t(`community.${communityID}.events.${d.id}.where`, { default: where });
           }
           return where;
         });
@@ -379,7 +378,7 @@ export function uiSuccess(context) {
         .html(d => {
           let description = d.description;
           if (d.i18n && d.id) {
-            description = t(`community.${communityID}.events.${d.id}.description`, { default: description });
+            description = context.t(`community.${communityID}.events.${d.id}.description`, { default: description });
           }
           return description;
         });

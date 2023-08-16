@@ -3,7 +3,6 @@ import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
-import { localizer } from '../core/localizer';
 import { getLineSegments, getDebugBBox, lineToPoly } from './helpers.js';
 
 const MINZOOM = 12;
@@ -57,7 +56,7 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-    this._enabled = true;   // labels should be enabled by default
+    this.enabled = true;   // labels should be enabled by default
 
     // Items in this layer don't actually need to be interactive
     const groupContainer = this.scene.groups.get('labels');
@@ -177,7 +176,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    if (this._enabled && zoom >= MINZOOM) {
+    if (this.enabled && zoom >= MINZOOM) {
       this.labelContainer.visible = true;
       this.debugContainer.visible = this.context.getDebug('label');
 
@@ -485,8 +484,6 @@ this.placeRopeLabel(feature, labelObj, coords);
     const container = feature.container;
     if (!container.visible || !container.renderable) return;
 
-    const TEXTDIRECTION = localizer.textDirection();
-
     // `f` - feature, these bounds are in "scene" coordinates
     const featureID = feature.id;
     const fRect = feature.sceneBounds.clone().pad(1, 0);
@@ -542,16 +539,9 @@ this.placeRopeLabel(feature, labelObj, coords);
     // Prefer placements that are more "visually attached" to the pin (right,bottom,left,top)
     // over placements that are further away (corners)
     let preferences;
-    if (TEXTDIRECTION === 'ltr') {
-      preferences = [
-        'r3', 'r4', 'r2',
-        'b3', 'b4', 'b2', 'b5', 'b1',
-        'l3', 'l4', 'l2',
-        't3', 't4', 't2', 't5', 't1',
-        'r5', 'r1',
-        'l5', 'l1'
-      ];
-    } else {
+    const isRTL = this.context.systems.l10n.isRTL();
+
+    if (isRTL) {   // right to left
       preferences = [
         'l3', 'l4', 'l2',
         'b3', 'b2', 'b4', 'b1', 'b5',
@@ -559,6 +549,15 @@ this.placeRopeLabel(feature, labelObj, coords);
         'r3', 'r4', 'r2',
         'l5', 'l1',
         'r5', 'r1'
+      ];
+    } else {   // left to right
+      preferences = [
+        'r3', 'r4', 'r2',
+        'b3', 'b4', 'b2', 'b5', 'b1',
+        'l3', 'l4', 'l2',
+        't3', 't4', 't2', 't5', 't1',
+        'r5', 'r1',
+        'l5', 'l1'
       ];
     }
 

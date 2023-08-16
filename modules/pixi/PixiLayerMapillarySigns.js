@@ -1,4 +1,3 @@
-import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -18,31 +17,45 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
-
-    this._service = null;
-    this.getService();
   }
 
 
   /**
-   * Services are loosely coupled, so we use a `getService` function
-   * to gain access to them, and bind any event handlers a single time.
+   * supported
+   * Whether the Layer's service exists
    */
-  getService() {
-    if (services.mapillary && !this._service) {
-      this._service = services.mapillary;
-      this._service.on('loadedSigns', () => this.context.map().deferredRedraw());
-    } else if (!services.mapillary && this._service) {
-      this._service = null;
+  get supported() {
+    return !!this.context.services.mapillary;
+  }
+
+
+  /**
+   * enabled
+   * Whether the user has chosen to see the Layer
+   * Make sure to start the service first.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  set enabled(val) {
+    if (!this.supported) {
+      val = false;
     }
 
-    return this._service;
+    if (val === this._enabled) return;  // no change
+    this._enabled = val;
+
+    if (val) {
+      this.dirtyLayer();
+      this.context.services.mapillary.startAsync();
+    }
   }
 
 
   filterDetections(detections) {
-    const fromDate = this.context.photos().fromDate;
-    const toDate = this.context.photos().toDate;
+    const photoSystem = this.context.systems.photos;
+    const fromDate = photoSystem.fromDate;
+    const toDate = photoSystem.toDate;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -66,12 +79,12 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const service = this.getService();
-    if (!service) return;
+    const service = this.context.services.mapillary;
+    if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('points');
 
-    let items = service.signs(this.context.projection);
+    let items = service.getData('signs');
     items = this.filterDetections(items);
 
     for (const d of items) {
@@ -108,25 +121,16 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const service = this.getService();
+    const service = this.context.services.mapillary;
 
-    if (this._enabled && service && zoom >= MINZOOM) {
-      service.loadSigns(this.context.projection);  // note: context.projection !== pixi projection
+    if (this.enabled && service?.started && zoom >= MINZOOM) {
+      service.loadTiles('signs');
       service.showSignDetections(true);
       this.renderMarkers(frame, projection, zoom);
 
     } else {
       service?.showSignDetections(false);
     }
-  }
-
-
-  /**
-   * supported
-   * Whether the Layer's service exists
-   */
-  get supported() {
-    return !!this.getService();
   }
 
 }

@@ -1,10 +1,8 @@
 import { utilArrayDifference, utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util/index';
 
 
@@ -79,7 +77,7 @@ export function operationStraighten(context, selectedIDs) {
     if (!action) return;
 
     context.perform(action, operation.annotation());
-    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
   };
 
 
@@ -105,14 +103,15 @@ export function operationStraighten(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
-      const osm = context.connection();
+      if (context.inIntro) return false;
+      const osm = context.services.osm;
       if (osm) {
         const missing = coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {
@@ -128,20 +127,20 @@ export function operationStraighten(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.straighten.${disabledReason}.${multi}`) :
-      t(`operations.straighten.description.${geometry}` + (ways.length === 1 ? '' : 's'));
+      context.t(`operations.straighten.${disabledReason}.${multi}`) :
+      context.t(`operations.straighten.description.${geometry}` + (ways.length === 1 ? '' : 's'));
   };
 
 
   operation.annotation = function() {
-    return t(`operations.straighten.annotation.${geometry}`, { n: ways.length ? ways.length : nodes.length });
+    return context.t(`operations.straighten.annotation.${geometry}`, { n: ways.length ? ways.length : nodes.length });
   };
 
 
   operation.id = 'straighten';
-  operation.keys = [ t('operations.straighten.key') ];
-  operation.title = t('operations.straighten.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.straighten.key') ];
+  operation.title = context.t('operations.straighten.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

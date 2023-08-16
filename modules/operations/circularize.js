@@ -1,9 +1,7 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { t } from '../core/localizer';
 import { actionCircularize } from '../actions/circularize';
-import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { prefs } from '../core/preferences';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
 
@@ -36,7 +34,7 @@ export function operationCircularize(context, selectedIDs) {
     combinedAction.transitionable = true;
 
     context.perform(combinedAction, operation.annotation());
-    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
   };
 
 
@@ -67,14 +65,15 @@ export function operationCircularize(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+      const prefs = context.systems.storage;
+      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
     function notDownloaded() {
-      if (context.inIntro()) return false;
-      const osm = context.connection();
+      if (context.inIntro) return false;
+      const osm = context.services.osm;
       if (osm) {
         const missing = coords.filter(loc => !osm.isDataLoaded(loc));
         if (missing.length) {
@@ -90,20 +89,20 @@ export function operationCircularize(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      t(`operations.circularize.${disabledReason}.${multi}`) :
-      t(`operations.circularize.description.${multi}`);
+      context.t(`operations.circularize.${disabledReason}.${multi}`) :
+      context.t(`operations.circularize.description.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return t('operations.circularize.annotation.feature', { n: actions.length });
+    return context.t('operations.circularize.annotation.feature', { n: actions.length });
   };
 
 
   operation.id = 'circularize';
-  operation.keys = [ t('operations.circularize.key') ];
-  operation.title = t('operations.circularize.title');
-  operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.keys = [ context.t('operations.circularize.key') ];
+  operation.title = context.t('operations.circularize.title');
+  operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;
 }

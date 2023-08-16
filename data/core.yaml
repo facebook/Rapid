@@ -556,7 +556,6 @@ en:
     tooltip: "Redo: {action}"
     nothing: Nothing to redo.
   tooltip_keyhint: "Shortcut:"
-  browser_notice: "This editor is supported in Firefox, Chrome, Safari, Opera, and Internet Explorer 11 and above. Please upgrade your browser or use Potlatch 2 to edit the map."
   translate:
     translate: Add multilingual name
     localized_translation_label: Multilingual Name
@@ -569,6 +568,7 @@ en:
   loading_auth: "Connecting to OpenStreetMap..."
   report_a_bug: Report a bug
   help_translate: Help translate
+  example: "Example:"
   sidebar:
     key: '`'
     tooltip: Toggle the sidebar.
@@ -950,18 +950,27 @@ en:
             switch: "`{switch:a,b,c}`: DNS server multiplexing"
             quadtile: "`{u}`: quadtile (Bing) scheme"
             scale_factor: "`{@2x}` or `{r}`: resolution scale factor"
-        example: "Example:"
       template:
         placeholder: Enter a url template
     custom_data:
       tooltip: Edit custom data layer
       header: Custom Map Data Settings
+      instructions: "Custom map data can be added to the map as a reference layer either of two ways:"
       file:
-        instructions: "Choose a local data file. Supported types are:\n   .gpx, .kml, .geojson, .json"
+        heading: "Local Data File"
+        instructions: "Choose a local data file. Supported file types are:"
+        types: "`.gpx`, `.kml`, `.geojson`, `.json`"
+        tip: "Tip:  You can also drag and drop any of these types of files onto the main map."
         label: "Browse files"
       or: "Or"
       url:
-        instructions: "Enter a data file URL or vector tile URL template. Valid tokens are:\n   {zoom} or {z}, {x}, {y} for Z/X/Y tile scheme"
+        heading: "Remote Data URL"
+        instructions: "Enter a URL to any of the above file types, an MVT-style vector tile service, or a .pmtiles archive."
+        tokens: "Supported replacement tokens:"
+        xyz: "`{zoom}` or `{z}`, `{x}`, `{y}` for Z/X/Y tile scheme"
+        example_file:  "https://example.com/custom.gpx"
+        example_xyz: "https://example.com/{z}/{x}/{y}.mvt?access_token=123"
+        example_pmtiles: "https://example.com/buildings.pmtiles"
         placeholder: Enter a url
   preferences:
     title: Preferences

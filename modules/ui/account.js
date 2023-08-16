@@ -1,15 +1,12 @@
-import { t } from '../core/localizer';
 import { uiIcon } from './icon';
 
 
 export function uiAccount(context) {
-  const osm = context.connection();
+  const osm = context.services.osm;
 
 
   function updateUserDetails(selection) {
-    if (!osm) return;
-
-    if (!osm.authenticated()) {  // logged out
+    if (!osm || !osm.authenticated()) {
       render(selection, null);
     } else {
       osm.userDetails((err, user) => render(selection, user));
@@ -18,15 +15,20 @@ export function uiAccount(context) {
 
 
   function render(selection, user) {
-    let userInfo = selection.select('.userInfo');
-    let loginLogout = selection.select('.loginLogout');
+    const userInfo = selection.select('.userInfo');
+    const loginLogout = selection.select('.loginLogout');
 
-    if (user) {
+    if (!user) {
+      userInfo
+        .html('')
+        .classed('hide', true);
+
+    } else {
       userInfo
         .html('')
         .classed('hide', false);
 
-      let userLink = userInfo
+      const userLink = userInfo
         .append('a')
         .attr('href', osm.userURL(user.display_name))
         .attr('target', '_blank');
@@ -45,28 +47,29 @@ export function uiAccount(context) {
       userLink.append('span')
         .attr('class', 'label')
         .html(user.display_name);
+    }
 
-      // show "Log Out"
+
+    if (!osm) {  // show nothing
+      loginLogout
+        .classed('hide', true);
+
+    } else if (osm.authenticated()) {    // show "Log Out"
       loginLogout
         .classed('hide', false)
         .select('a')
-        .text(t('logout'))
+        .text(context.t('logout'))
         .on('click', e => {
           e.preventDefault();
           osm.logout();
           tryLogout();
         });
 
-    } else {    // no user
-      userInfo
-        .html('')
-        .classed('hide', true);
-
-      // show "Log In"
+    } else {   // show "Log In"
       loginLogout
         .classed('hide', false)
         .select('a')
-        .text(t('login'))
+        .text(context.t('login'))
         .on('click', e => {
           e.preventDefault();
           osm.authenticate();
@@ -81,7 +84,7 @@ export function uiAccount(context) {
   function tryLogout()  {
     if (!osm) return;
 
-    const url = osm.getUrlRoot() + '/logout?referer=%2Flogin';
+    const url = osm.urlroot + '/logout?referer=%2Flogin';
     // Create a 600x550 popup window in the center of the screen
     const w = 600;
     const h = 550;
@@ -111,7 +114,7 @@ export function uiAccount(context) {
       .append('a')
       .attr('href', '#');
 
-    osm.on('change.account', () => updateUserDetails(selection));
+    osm.on('authchange', () => updateUserDetails(selection));
     updateUserDetails(selection);
   };
 

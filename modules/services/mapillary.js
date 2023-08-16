@@ -331,16 +331,6 @@ export default {
   },
 
 
-  graph: function () {
-    return _dataset && _dataset.graph;
-  },
-
-  intersects: function (extent) {
-      const ds = _dataset;
-      if (!ds || !ds.tree || !ds.graph) return [];
-      return ds.tree.intersects(extent, ds.graph);
-  },
-
   // Get cached image by id
   cachedImage: function(imageID) {
     return _mlyCache.images.forImageID[imageID];

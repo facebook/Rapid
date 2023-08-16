@@ -6,7 +6,6 @@ import _throttle from 'lodash-es/throttle';
 
 import { utilFastMouse } from '../util';
 import { osmEntity, osmNote, QAItem } from '../osm';
-import { services } from '../services';
 import { uiDataEditor } from './data_editor';
 import { uiFeatureList } from './feature_list';
 import { uiInspector } from './inspector';
@@ -14,8 +13,6 @@ import { uiImproveOsmEditor } from './improveOSM_editor';
 import { uiKeepRightEditor } from './keepRight_editor';
 import { uiOsmoseEditor } from './osmose_editor';
 import { uiNoteEditor } from './note_editor';
-import { localizer } from '../core/localizer';
-
 import { uiRapidFeatureInspector } from './rapid_feature_inspector';
 
 
@@ -87,7 +84,6 @@ export function uiSidebar(context) {
         }
 
         function pointermove(d3_event) {
-
             if (downPointerId !== (d3_event.pointerId || 'mouse')) return;
 
             d3_event.preventDefault();
@@ -96,7 +92,7 @@ export function uiSidebar(context) {
 
             lastClientX = d3_event.clientX;
 
-            var isRTL = (localizer.textDirection() === 'rtl');
+            var isRTL = context.systems.l10n.isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -114,7 +110,7 @@ export function uiSidebar(context) {
                         .style(xMarginProperty, '-400px')
                         .style('width', '400px');
 
-                    context.ui().onResize([(sidebarWidth - dx) * scaleX, 0]);
+                    context.systems.ui.resize([(sidebarWidth - dx) * scaleX, 0]);
                 }
 
             } else {
@@ -124,9 +120,9 @@ export function uiSidebar(context) {
                     .style('width', widthPct + '%');
 
                 if (isCollapsed) {
-                    context.ui().onResize([-sidebarWidth * scaleX, 0]);
+                    context.systems.ui.resize([-sidebarWidth * scaleX, 0]);
                 } else {
-                    context.ui().onResize([-dx * scaleX, 0]);
+                    context.systems.ui.resize([-dx * scaleX, 0]);
                 }
             }
         }
@@ -193,10 +189,10 @@ export function uiSidebar(context) {
 
 
             } else if (datum instanceof osmNote) {
-                if (context.mode().id === 'drag-note') return;
+                if (context.mode?.id === 'drag-note') return;
                 _wasNote = true;
 
-                var osm = services.osm;
+                var osm = context.services.osm;
                 if (osm) {
                     datum = osm.getNote(datum.id); // marker may contain stale data - get latest
                 }
@@ -210,7 +206,7 @@ export function uiSidebar(context) {
             } else if (datum instanceof QAItem) {
                 _wasQaItem = true;
 
-                var errService = services[datum.service];
+                var errService = context.services[datum.service];
                 if (errService) {
                     // marker may contain stale data - get latest
                     datum = errService.getError(datum.id);
@@ -366,13 +362,12 @@ export function uiSidebar(context) {
 
 
         sidebar.toggle = function(moveMap) {
-
             // Don't allow sidebar to toggle when the user is in the walkthrough.
-            if (context.inIntro()) return;
+            if (context.inIntro) return;
 
             var isCollapsed = selection.classed('collapsed');
             var isCollapsing = !isCollapsed;
-            var isRTL = (localizer.textDirection() === 'rtl');
+            var isRTL = context.systems.l10n.isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -403,7 +398,7 @@ export function uiSidebar(context) {
                     return function(t) {
                         var dx = lastMargin - Math.round(i(t));
                         lastMargin = lastMargin - dx;
-                        context.ui().onResize(moveMap ? undefined : [dx * scaleX, 0]);
+                        context.systems.ui.resize(moveMap ? undefined : [dx * scaleX, 0]);
                     };
                 })
                 .on('end', function() {

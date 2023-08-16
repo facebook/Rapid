@@ -2,35 +2,32 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayIdentical, utilTagDiff } from '@rapid-sdk/util';
 
-import { services } from '../../services';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTagReference } from '../tag_reference';
-import { prefs } from '../../core/preferences';
-import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
-export function uiSectionRawTagEditor(id, context) {
-
+export function uiSectionRawTagEditor(context, id) {
+    const prefs = context.systems.storage;
     var section = uiSection(id, context)
         .classes('raw-tag-editor')
         .label(function() {
             var count = Object.keys(_tags).filter(function(d) { return d; }).length;
-            return t('inspector.title_count', { title: t.html('inspector.tags'), count: count });
+            return context.t('inspector.title_count', { title: context.tHtml('inspector.tags'), count: count });
         })
         .expandedByDefault(false)
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = services.taginfo;
+    var taginfo = context.services.taginfo;
     var dispatch = d3_dispatch('change');
     var availableViews = [
         { id: 'list', icon: '#fas-th-list' },
         { id: 'text', icon: '#fas-i-cursor' }
     ];
 
-    var _tagView = (prefs('raw-tag-editor-view') || 'list');   // 'list, 'text'
+    var _tagView = (prefs.getItem('raw-tag-editor-view') || 'list');   // 'list, 'text'
     var _readOnlyTags = [];
     // the keys in the order we want them to display
     var _orderedKeys = [];
@@ -47,7 +44,6 @@ export function uiSectionRawTagEditor(id, context) {
     }
 
     function renderDisclosureContent(wrap) {
-
         // remove deleted keys
         _orderedKeys = _orderedKeys.filter(function(key) {
             return _tags[key] !== undefined;
@@ -95,10 +91,10 @@ export function uiSectionRawTagEditor(id, context) {
             .attr('class', function(d) {
                 return 'raw-tag-option raw-tag-option-' + d.id + (_tagView === d.id ? ' selected' : '');
             })
-            .attr('title', function(d) { return t('icons.' + d.id); })
+            .attr('title', function(d) { return context.t('icons.' + d.id); })
             .on('click', function(d3_event, d) {
                 _tagView = d.id;
-                prefs('raw-tag-editor-view', d.id);
+                prefs.setItem('raw-tag-editor-view', d.id);
 
                 wrap.selectAll('.raw-tag-option')
                     .classed('selected', function(datum) { return datum === d; });
@@ -125,7 +121,7 @@ export function uiSectionRawTagEditor(id, context) {
             .append('textarea')
             .attr('class', 'tag-text' + (_tagView !== 'text' ? ' hide' : ''))
             .call(utilNoAuto)
-            .attr('placeholder', t('inspector.key_value'))
+            .attr('placeholder', context.t('inspector.key_value'))
             .attr('spellcheck', 'false')
             .merge(textarea);
 
@@ -214,7 +210,7 @@ export function uiSectionRawTagEditor(id, context) {
         innerWrap
             .append('button')
             .attr('class', 'form-field-button remove')
-            .attr('title', t('icons.remove'))
+            .attr('title', context.t('icons.remove'))
             .call(uiIcon('#rapid-operation-delete'));
 
 
@@ -237,7 +233,7 @@ export function uiSectionRawTagEditor(id, context) {
                 if (typeof d.value === 'string') {
                     referenceOptions.value = d.value;
                 }
-                var reference = uiTagReference(referenceOptions, context);
+                var reference = uiTagReference(context, referenceOptions);
 
                 if (_state === 'hover') {
                     reference.showing(false);
@@ -266,7 +262,7 @@ export function uiSectionRawTagEditor(id, context) {
                 return Array.isArray(d.value);
             })
             .attr('placeholder', function(d) {
-                return typeof d.value === 'string' ? null : t('inspector.multiple_values');
+                return typeof d.value === 'string' ? null : context.t('inspector.multiple_values');
             })
             .call(utilGetSetValue, function(d) {
                 return typeof d.value === 'string' ? d.value : '';

@@ -1,22 +1,20 @@
-import * as PIXI from 'pixi.js';
+import { Color } from 'pixi.js';
 
-import { services } from '../services';
 import { uiIcon } from './icon';
-import { t } from '../core/localizer';
 
 
-export function uiKeepRightHeader() {
+export function uiKeepRightHeader(context) {
   let _qaItem;
 
 
   function issueTitle(d) {
-    const unknown = t.html('inspector.unknown');
+    const unknown = context.tHtml('inspector.unknown');
     let replacements = d.replacements || {};
     replacements.default = unknown;  // special key `default` works as a fallback string
 
-    let title = t.html(`QA.keepRight.errorTypes.${d.itemType}.title`, replacements);
+    let title = context.tHtml(`QA.keepRight.errorTypes.${d.itemType}.title`, replacements);
     if (title === unknown) {
-      title = t.html(`QA.keepRight.errorTypes.${d.parentIssueType}.title`, replacements);
+      title = context.tHtml(`QA.keepRight.errorTypes.${d.parentIssueType}.title`, replacements);
     }
     return title;
   }
@@ -24,9 +22,9 @@ export function uiKeepRightHeader() {
 
   function keepRightHeader(selection) {
     let iconFill = 0xffffff;
-    const service = services.keepRight;
-    if (service) {
-      iconFill = service.getColor(_qaItem?.parentIssueType);
+    const keepright = context.services.keepRight;
+    if (keepright) {
+      iconFill = keepright.getColor(_qaItem?.parentIssueType);
     }
 
     const header = selection.selectAll('.qa-header')
@@ -57,7 +55,7 @@ export function uiKeepRightHeader() {
     headerEnter.selectAll('.qaItem svg.icon')
       .attr('stroke', '#333')
       .attr('stroke-width', '1.3px')
-      .attr('color', PIXI.utils.hex2string(iconFill));
+      .attr('color', new Color(iconFill).toHex());
   }
 
 

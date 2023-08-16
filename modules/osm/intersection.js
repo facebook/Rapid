@@ -4,7 +4,7 @@ import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { actionReverse } from '../actions/reverse';
 import { actionSplit } from '../actions/split';
-import { Graph } from '../core/Graph';
+import { Graph } from '../core/lib';
 import { osmEntity } from './entity';
 
 

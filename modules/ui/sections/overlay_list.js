@@ -1,15 +1,15 @@
-import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
+import debounce from 'lodash-es/debounce';
 
-import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
 
 export function uiSectionOverlayList(context) {
+  const imagerySystem = context.systems.imagery;
   const section = uiSection('overlay-list', context)
-    .label(t.html('background.overlays'))
+    .label(context.tHtml('background.overlays'))
     .disclosureContent(renderDisclosureContent);
 
   let _overlayList = d3_select(null);
@@ -21,10 +21,10 @@ export function uiSectionOverlayList(context) {
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
       const isOverflowing = (span.property('clientWidth') !== span.property('scrollWidth'));
 
-      item.call(uiTooltip().destroyAny);
+      item.call(uiTooltip(context).destroyAny);
 
       if (d.description || isOverflowing) {
-        item.call(uiTooltip()
+        item.call(uiTooltip(context)
           .placement(placement)
           .title(d.description || d.name)
         );
@@ -35,7 +35,7 @@ export function uiSectionOverlayList(context) {
 
   function updateLayerSelections(selection) {
     function isActive(d) {
-      return context.imagery().showsLayer(d);
+      return imagerySystem.showsLayer(d);
     }
 
     selection.selectAll('li')
@@ -47,8 +47,8 @@ export function uiSectionOverlayList(context) {
 
 
   function drawListItems(layerList, type, change, filter) {
-    let sources = context.imagery()
-      .sources(context.map().extent(), context.map().zoom())
+    let sources = imagerySystem
+      .sources(context.systems.map.extent(), context.systems.map.zoom())
       .filter(filter);
 
     let layerLinks = layerList.selectAll('li')
@@ -91,7 +91,7 @@ export function uiSectionOverlayList(context) {
 
   function chooseOverlay(d3_event, d) {
     d3_event.preventDefault();
-    context.imagery().toggleOverlayLayer(d);
+    imagerySystem.toggleOverlayLayer(d);
     _overlayList.call(updateLayerSelections);
   }
 
@@ -114,11 +114,11 @@ export function uiSectionOverlayList(context) {
   }
 
 
-  context.imagery()
+  imagerySystem
     .on('imagerychange', () => section.reRender);
 
-  context.map()
-    .on('draw', _debounce(() => {
+  context.systems.map
+    .on('draw', debounce(() => {
       // layers in-view may have changed due to map move
       window.requestIdleCallback(section.reRender);
     }, 1000)
