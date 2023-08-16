@@ -7,7 +7,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
   const storageSystem = context.systems.storage;
   const imagerySystem = context.systems.imagery;
 
-  const section = uiSection('background-display-options', context)
+  const section = uiSection(context, 'background-display-options')
     .label(l10n.tHtml('background.display_options'))
     .disclosureContent(renderDisclosureContent);
 

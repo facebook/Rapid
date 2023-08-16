@@ -7,10 +7,9 @@ import { utilGetSetValue, utilNoAuto } from '../../util';
 
 export function uiSectionPhotoOverlays(context) {
   const photoSystem = context.systems.photos;
-  const section = uiSection('photo-overlays', context)
+  const section = uiSection(context, 'photo-overlays')
     .label(context.tHtml('photo_overlays.title'))
-    .disclosureContent(renderDisclosureContent)
-    .expandedByDefault(false);
+    .disclosureContent(renderDisclosureContent);
 
   const scene = context.scene();
 

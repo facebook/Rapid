@@ -3,11 +3,11 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapFeatures(context) {
-  const filterSystem = context.systems.filters;
-  const section = uiSection('map-features', context)
+  const filters = context.systems.filters;
+
+  const section = uiSection(context, 'map-features')
     .label(context.tHtml('map_data.map_features'))
-    .disclosureContent(renderDisclosureContent)
-    .expandedByDefault(false);
+    .disclosureContent(renderDisclosureContent);
 
 
   function renderDisclosureContent(selection) {
@@ -33,7 +33,7 @@ export function uiSectionMapFeatures(context) {
       .html(context.tHtml('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        filterSystem.disableAll();
+        filters.disableAll();
       });
 
     footer
@@ -43,7 +43,7 @@ export function uiSectionMapFeatures(context) {
       .html(context.tHtml('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        filterSystem.enableAll();
+        filters.enableAll();
       });
 
     // Update
@@ -51,13 +51,13 @@ export function uiSectionMapFeatures(context) {
       .merge(containerEnter);
 
     container.selectAll('.layer-feature-list')
-      .call(drawListItems, filterSystem.keys, 'checkbox', 'feature', clickFeature, showsFeature);
+      .call(drawListItems);
   }
 
 
-  function drawListItems(selection, data, type, name, change, active) {
+  function drawListItems(selection) {
     let items = selection.selectAll('li')
-      .data(data);
+      .data(filters.keys);
 
     // Exit
     items.exit()
@@ -67,7 +67,7 @@ export function uiSectionMapFeatures(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => context.tHtml(`${name}.${d}.tooltip`))
+        .title(d => context.tHtml(`feature.${d}.tooltip`))
         .placement('top')
       );
 
@@ -76,39 +76,33 @@ export function uiSectionMapFeatures(context) {
 
     label
       .append('input')
-      .attr('type', type)
-      .attr('name', name)
-      .on('change', change);
+      .attr('type', 'checkbox')
+      .attr('name', 'feature')
+      .on('change', clickFeature);
 
     label
       .append('span')
-      .html(d => context.tHtml(`${name}.${d}.description`));
+      .html(d => context.tHtml(`feature.${d}.description`));
 
     // Update
     items = items
       .merge(enter);
 
     items
-      .classed('active', active)
+      .classed('active', showsFeature)
       .selectAll('input')
-      .property('checked', active);
+      .property('checked', showsFeature);
   }
 
   function showsFeature(d) {
-    return filterSystem.isEnabled(d);
+    return filters.isEnabled(d);
   }
 
   function clickFeature(d3_event, d) {
-    filterSystem.toggle(d);
+    filters.toggle(d);
   }
 
-  function showsLayer(id) {
-    let layer = context.scene().layer(id);
-    return layer && layer.enabled();
-  }
-
-
-  filterSystem.on('filterchange', section.reRender);
+  filters.on('filterchange', section.reRender);
 
   return section;
 }

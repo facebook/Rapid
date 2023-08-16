@@ -10,7 +10,7 @@ export function uiSectionSelectionList(context) {
   const l10n = context.systems.l10n;
   let _selectedIDs = [];
 
-  const section = uiSection('selected-features', context)
+  const section = uiSection(context, 'selected-features')
     .shouldDisplay(sectionShouldDisplay)
     .label(sectionLabel)
     .disclosureContent(renderDisclosureContent);

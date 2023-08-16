@@ -8,18 +8,16 @@ import { uiSection } from '../section';
 
 export function uiSectionEntityIssues(context) {
   const validator = context.systems.validator;
-  // Does the user prefer to expand the active issue?  Useful for viewing tag diff.
-  // Expand by default so first timers see it - iD#6408, iD#8143
-  const prefs = context.systems.storage;
-  let preference = prefs.getItem('entity-issues.reference.expanded') ?? 'true';
-  let _expanded = (preference === 'true');
+  const storage = context.systems.storage;
+  const preference = storage.getItem('entity-issues.reference.expanded') || 'true';
 
+  let _isExpanded = (preference === 'true');
   let _entityIDs = [];
   let _issues = [];
   let _activeIssueID;
 
 
-  let section = uiSection('entity-issues', context)
+  let section = uiSection(context, 'entity-issues')
     .shouldDisplay(() => _issues.length)
     .label(() => {
       return context.t('inspector.title_count', { title: context.tHtml('issues.list_title'), count: _issues.length });
@@ -112,8 +110,8 @@ export function uiSectionEntityIssues(context) {
         const container = d3_select(this.parentNode.parentNode.parentNode);
         const info = container.selectAll('.issue-info');
         const isExpanded = info.classed('expanded');
-        _expanded = !isExpanded;
-        prefs.setItem('entity-issues.reference.expanded', _expanded);  // update preference
+        _isExpanded = !isExpanded;
+        storage.setItem('entity-issues.reference.expanded', _isExpanded);  // update preference
 
         if (isExpanded) {
           info
@@ -139,9 +137,9 @@ export function uiSectionEntityIssues(context) {
 
     containersEnter
       .append('div')
-      .attr('class', 'issue-info' + (_expanded ? ' expanded' : ''))
-      .style('max-height', (_expanded ? null : '0'))
-      .style('opacity', (_expanded ? '1' : '0'))
+      .attr('class', 'issue-info' + (_isExpanded ? ' expanded' : ''))
+      .style('max-height', (_isExpanded ? null : '0'))
+      .style('opacity', (_isExpanded ? '1' : '0'))
       .each((d, i, nodes) => {
         const selection = d3_select(nodes[i]);
         if (typeof d.reference === 'function') {

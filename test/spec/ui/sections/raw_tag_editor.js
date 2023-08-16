@@ -44,8 +44,7 @@ describe('uiSectionRawTagEditor', () => {
     rawTagEditor = Rapid.uiSectionRawTagEditor(context, 'raw-tag-editor')
       .entityIDs([ entity.id ])
       .presets([ { isFallback: () => false } ])
-      .tags(tags)
-      .expandedByDefault(true);
+      .tags(tags);
 
     wrap = d3.select('body')
       .append('div')

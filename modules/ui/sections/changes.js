@@ -19,7 +19,7 @@ export function uiSectionChanges(context) {
     .then(d => _discardTags = d)
     .catch(() => { /* ignore */ });
 
-  let section = uiSection('changes-list', context)
+  let section = uiSection(context, 'changes-list')
     .label(() => {
       const editSystem = context.systems.edits;
       const summary = editSystem.difference().summary();

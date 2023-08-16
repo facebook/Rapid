@@ -17,7 +17,7 @@ const MAX_MEMBERS = 1000;
 export function uiSectionRawMemberEditor(context) {
     const l10n = context.systems.l10n;
 
-    var section = uiSection('raw-member-editor', context)
+    var section = uiSection(context, 'raw-member-editor')
         .shouldDisplay(function() {
             if (!_entityIDs || _entityIDs.length !== 1) return false;
 

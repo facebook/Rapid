@@ -3,10 +3,9 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapStyleOptions(context) {
-  const section = uiSection('fill-area', context)
-      .label(context.tHtml('map_data.style_options'))
-      .disclosureContent(renderDisclosureContent)
-      .expandedByDefault(false);
+  const section = uiSection(context, 'fill-area')
+    .label(context.tHtml('map_data.style_options'))
+    .disclosureContent(renderDisclosureContent);
 
 
   function renderDisclosureContent(selection) {

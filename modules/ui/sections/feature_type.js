@@ -15,7 +15,7 @@ export function uiSectionFeatureType(context) {
   let _presets = [];
   let _tagReference;
 
-  let section = uiSection('feature-type', context)
+  let section = uiSection(context, 'feature-type')
     .label(context.tHtml('inspector.feature_type'))
     .disclosureContent(renderDisclosureContent);
 

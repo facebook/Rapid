@@ -255,9 +255,9 @@ export function uiSuccess(context) {
     if (d.resolved.extendedDescriptionHTML || (d.languageCodes && d.languageCodes.length)) {
       selection
         .append('div')
-        .call(uiDisclosure(context, `community-more-${d.id}`, false)
+        .call(uiDisclosure(context, `community-more-${d.id}`)
           .expanded(false)
-          .updatePreference(false)
+          .checkPreference(false)
           .label(context.tHtml('success.more'))
           .content(showMore)
         );
@@ -281,9 +281,9 @@ export function uiSuccess(context) {
     if (nextEvents.length) {
       selection
         .append('div')
-        .call(uiDisclosure(context, `community-events-${d.id}`, false)
+        .call(uiDisclosure(context, `community-events-${d.id}`)
           .expanded(false)
-          .updatePreference(false)
+          .checkPreference(false)
           .label(context.tHtml('success.events'))
           .content(showNextEvents)
         )

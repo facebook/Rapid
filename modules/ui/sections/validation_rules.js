@@ -6,13 +6,14 @@ import { uiSection } from '../section';
 
 
 export function uiSectionValidationRules(context) {
+  const validator = context.systems.validator;
+  const storage = context.systems.storage;
+
   const MINSQUARE = 0;
   const MAXSQUARE = 20;
   const DEFAULTSQUARE = 5;  // see also unsquare_way.js
 
-  const validator = context.systems.validator;
-  const prefs = context.systems.storage;
-  const section = uiSection('issues-rules', context)
+  const section = uiSection(context, 'issues-rules')
     .disclosureContent(renderDisclosureContent)
     .label(context.tHtml('issues.rules.title'));
 
@@ -65,13 +66,13 @@ export function uiSectionValidationRules(context) {
       .merge(containerEnter);
 
     container.selectAll('.issue-rules-list')
-      .call(drawListItems, _ruleKeys, 'checkbox', 'rule', toggleRule, isRuleEnabled);
+      .call(drawListItems);
   }
 
 
-  function drawListItems(selection, data, type, name, change, active) {
+  function drawListItems(selection) {
     let items = selection.selectAll('li')
-      .data(data);
+      .data(_ruleKeys);
 
     // Exit
     items.exit()
@@ -79,24 +80,20 @@ export function uiSectionValidationRules(context) {
 
     // Enter
     let enter = items.enter()
-      .append('li');
-
-    if (name === 'rule') {
-      enter
-        .call(uiTooltip(context)
-          .title(d => context.tHtml(`issues.${d}.tip`))
-          .placement('top')
-        );
-    }
+      .append('li')
+      .call(uiTooltip(context)
+        .title(d => context.tHtml(`issues.${d}.tip`))
+        .placement('top')
+      );
 
     let label = enter
       .append('label');
 
     label
       .append('input')
-      .attr('type', type)
-      .attr('name', name)
-      .on('change', change);
+      .attr('type', 'checkbox')
+      .attr('name', 'rule')
+      .on('change', toggleRule);
 
     label
       .append('span')
@@ -113,14 +110,14 @@ export function uiSectionValidationRules(context) {
       .merge(enter);
 
     items
-      .classed('active', active)
+      .classed('active', isRuleEnabled)
       .selectAll('input')
-      .property('checked', active)
+      .property('checked', isRuleEnabled)
       .property('indeterminate', false);
 
 
     // user-configurable square threshold
-    let degStr = prefs.getItem('validate-square-degrees');
+    let degStr = storage.getItem('validate-square-degrees');
     if (degStr === null) {
       degStr = DEFAULTSQUARE.toString();
     }
@@ -174,7 +171,7 @@ export function uiSectionValidationRules(context) {
     input
       .property('value', degStr);
 
-    prefs.setItem('validate-square-degrees', degStr);
+    storage.setItem('validate-square-degrees', degStr);
     validator.revalidateUnsquare();
   }
 

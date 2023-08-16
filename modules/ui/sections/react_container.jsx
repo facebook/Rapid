@@ -7,20 +7,22 @@ import { uiSection } from '../section';
 
 
 export function uiSectionReactContainer(context) {
+  const map = context.systems.map;
+  const imagery = context.systems.imagery;
   let reRenderCount = 0;
 
-  const section = uiSection('react-container', context)
+  const section = uiSection(context, 'react-container')
     .label('A React Component')
-    .disclosureContent(content);
+    .disclosureContent(renderContent);
 
   const chooseBackground = (source) => {
-    context.systems.imagery.baseLayerSource(source);
+    imagery.baseLayerSource(source);
   };
 
-  const content = (selection) => {
-    const sources = context.systems.imagery
-      .sources(context.systems.map.extent(), context.systems.map.zoom())
-      .filter(d => !d.isHidden() && !d.overlay);
+  const renderContent = (selection) => {
+    const sources = imagery
+      .sources(map.extent(), map.zoom())
+      .filter(d => !d.overlay);
 
     selection
       .append('div')
@@ -33,7 +35,7 @@ export function uiSectionReactContainer(context) {
   };
 
 
-  context.systems.map
+  map
     .on('draw', debounce(() => {
         reRenderCount++;
         window.requestIdleCallback(section.reRender);

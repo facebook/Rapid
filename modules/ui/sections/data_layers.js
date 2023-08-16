@@ -9,7 +9,7 @@ import { uiSettingsCustomData } from '../settings/custom_data';
 
 export function uiSectionDataLayers(context) {
   const l10n = context.systems.l10n;
-  const section = uiSection('data-layers', context)
+  const section = uiSection(context, 'data-layers')
     .label(l10n.tHtml('map_data.data_layers'))
     .disclosureContent(renderDisclosureContent);
 

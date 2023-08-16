@@ -19,7 +19,7 @@ export function uiSectionRawMembershipEditor(context) {
     const l10n = context.systems.l10n;
 
     var presetSystem = context.systems.presets;
-    var section = uiSection('raw-membership-editor', context)
+    var section = uiSection(context, 'raw-membership-editor')
         .shouldDisplay(function() {
             return _entityIDs && _entityIDs.length;
         })
