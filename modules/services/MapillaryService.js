@@ -2,7 +2,8 @@ import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { VectorTile } from '@mapbox/vector-tile';
 import { osmNode } from '../osm/node';
-import { Graph, Tree } from '../core';import Protobuf from 'pbf';
+import { Graph, Tree } from '../core';
+import Protobuf from 'pbf';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
