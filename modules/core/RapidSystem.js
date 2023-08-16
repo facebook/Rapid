@@ -64,14 +64,20 @@ export class RapidSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const urlHashSystem = context.systems.urlhash;
-    urlHashSystem.on('hashchange', this._hashchange);
-
+    const map = context.systems.map;
     const l10n = context.systems.l10n;
-    const prerequisites = l10n.initAsync();
+    const urlhash = context.systems.urlhash;
+
+    const prerequisites = Promise.all([
+      map.initAsync(),   // RapidSystem should listen for hashchange after MapSystem
+      l10n.initAsync(),
+      urlhash.initAsync()
+    ]);
 
     return this._initPromise = prerequisites
       .then(() => {
+        urlhash.on('hashchange', this._hashchange);
+
         this._datasets.set('fbRoads', {
           id: 'fbRoads',
           beta: false,

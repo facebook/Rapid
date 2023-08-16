@@ -56,10 +56,17 @@ export class PhotoSystem extends AbstractSystem {
       }
     }
 
-    const urlHashSystem = this.context.systems.urlhash;
-    urlHashSystem.on('hashchange', this._hashchange);
+    const context = this.context;
+    const map = context.systems.map;
+    const urlhash = context.systems.urlhash;
 
-    return this._initPromise = Promise.resolve();
+    const prerequisites = Promise.all([
+      map.initAsync(),   // PhotoSystem should listen for hashchange after MapSystem
+      urlhash.initAsync()
+    ]);
+
+    return this._initPromise = prerequisites
+      .then(() => urlhash.on('hashchange', this._hashchange));
   }
 
 
@@ -71,12 +78,12 @@ export class PhotoSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
-    const mapSystem = this.context.systems.map;
-    const prerequisites = mapSystem.startAsync();
+    const map = this.context.systems.map;
+    const prerequisites = map.startAsync();  // PhotoSystem should listen for layerchange after scene exists
 
     return this._startPromise = prerequisites
       .then(() => {
-        mapSystem.scene.on('layerchange', this._updateHash);
+        map.scene.on('layerchange', this._updateHash);
         this._started = true;
       });
   }

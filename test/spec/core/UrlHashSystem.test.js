@@ -1,4 +1,8 @@
 describe.skip('UrlHashSystem', () => {
+
+  // This is all old and needs to be rewritten
+  // The MapSystem is now responsible for the things tested in here
+
   mocha.globals('__onhashchange.hash');
 
   let hash, context;

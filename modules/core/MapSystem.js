@@ -93,6 +93,11 @@ export class MapSystem extends AbstractSystem {
     const storage = context.systems.storage;
     const l10n = context.systems.l10n;
 
+    // Note: We want MapSystem's hashchange listener registered as early as possible
+    // because so many other parts of Rapid rely on the map location being set correctly.
+    // Other systems should register their hashchange listener after MapSystem.initAsync.
+    context.systems.urlhash.on('hashchange', this._hashchange);
+
     const prerequisites = Promise.all([
       storage.initAsync(),
       l10n.initAsync()
@@ -250,18 +255,12 @@ export class MapSystem extends AbstractSystem {
         this.immediateRedraw();
       });
 
-    context.systems.urlhash.on('hashchange', this._hashchange);
-
     const osm = context.services.osm;
     if (osm) {
       osm.on('authchange', this.immediateRedraw);
     }
 
-    scene
-      .on('layerchange', () => {
-        context.systems.imagery.updateImagery();
-        this.immediateRedraw();
-    });
+    scene.on('layerchange', this.immediateRedraw);
   }
 
 
@@ -275,11 +274,7 @@ export class MapSystem extends AbstractSystem {
     // map
     const newMap = currParams.get('map');
     const oldMap = prevParams.get('map');
-    const noMap = oldMap === newMap === undefined;
-
-    if (noMap) {
-      this.centerZoom([0, 0], 2);
-    } else if (newMap !== oldMap) {
+    if (!newMap || newMap !== oldMap) {
       let zoom, lat, lon, rot;
       if (typeof newMap === 'string') {
         [zoom, lat, lon, rot] = newMap.split('/', 4).map(Number);

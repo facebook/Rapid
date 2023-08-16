@@ -112,8 +112,7 @@ export class UrlHashSystem extends AbstractSystem {
 
     const prerequisites = Promise.all([
       this.context.systems.l10n.startAsync(),
-      this.context.systems.edits.startAsync(),
-      this.context.systems.map.startAsync(),
+      this.context.systems.edits.startAsync()
     ]);
 
     return this._startPromise = prerequisites

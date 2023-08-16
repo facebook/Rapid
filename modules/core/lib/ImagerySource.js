@@ -87,11 +87,6 @@ export class ImagerySource {
     return this._id === 'mapbox_locator_overlay';
   }
 
-  // hides a source from the list, but leaves it available for use
-  isHidden() {
-    return this._id === 'DigitalGlobe-Premium-vintage' || this._id === 'DigitalGlobe-Standard-vintage';
-  }
-
   copyrightNotices() {
     /* noop */
   }

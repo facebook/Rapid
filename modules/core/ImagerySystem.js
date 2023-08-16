@@ -45,6 +45,7 @@ export class ImagerySystem extends AbstractSystem {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
+    this.updateImagery = this.updateImagery.bind(this);
   }
 
 
@@ -70,19 +71,21 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const dataLoaderSystem = context.systems.data;
-    const storageSystem = context.systems.storage;
-
-    const urlHashSystem = context.systems.urlhash;
-    urlHashSystem.on('hashchange', this._hashchange);
+    const dataloader = context.systems.data;
+    const map = context.systems.map;
+    const storage = context.systems.storage;
+    const urlhash = context.systems.urlhash;
 
     const prerequisites = Promise.all([
-      dataLoaderSystem.initAsync(),
-      storageSystem.initAsync()
+      map.initAsync(),   // ImagerySystem should listen for hashchange after MapSystem
+      dataloader.initAsync(),
+      storage.initAsync(),
+      urlhash.initAsync()
     ]);
 
     return this._initPromise = prerequisites
-      .then(() => dataLoaderSystem.getDataAsync('imagery'))
+      .then(() => urlhash.on('hashchange', this._hashchange))
+      .then(() => dataloader.getDataAsync('imagery'))
       .then(data => this._initImageryIndex(data));
       // .catch(e => {
         // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
@@ -142,8 +145,8 @@ export class ImagerySystem extends AbstractSystem {
 
     // Add 'Custom' - seed it with whatever template the user has used previously
     const custom = new ImagerySourceCustom(context);
-    const storageSystem = this.context.systems.storage;
-    custom.template = storageSystem.getItem('background-custom-template') || '';
+    const storage = this.context.systems.storage;
+    custom.template = storage.getItem('background-custom-template') || '';
     this._imageryIndex.sources.set(custom.id, custom);
 
     // Default the locator overlay to "on"..
@@ -160,8 +163,16 @@ export class ImagerySystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    this._started = true;
-    return Promise.resolve();
+    if (this._startPromise) return this._startPromise;
+
+    const map = this.context.systems.map;
+    const prerequisites = map.startAsync();  // ImagerySystem should listen for layerchange after scene exists
+
+    return this._startPromise = prerequisites
+      .then(() => {
+        map.scene.on('layerchange', this.updateImagery);
+        this._started = true;
+      });
   }
 
 
@@ -185,9 +196,7 @@ export class ImagerySystem extends AbstractSystem {
     // background
     const newBackground = currParams.get('background');
     const oldBackground = prevParams.get('background');
-    const noBackground = oldBackground === undefined;
-
-    if (newBackground !== oldBackground || noBackground ) {
+    if (!newBackground || newBackground !== oldBackground) {
       let setBaseLayer;
       if (typeof newBackground === 'string') {
         setBaseLayer = this.findSource(newBackground);
@@ -250,7 +259,7 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     // Gather info about overlay imagery (ignore locator)
-    const overlays = this._overlayLayers.filter(d => !d.isLocatorOverlay() && !d.isHidden());
+    const overlays = this._overlayLayers.filter(d => !d.isLocatorOverlay());
     for (const overlay of overlays) {
       overlayIDs.push(overlay.id);
       imageryUsed.push(overlay.imageryUsed);
@@ -350,18 +359,23 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
-   *
+   * chooseDefaultSource
+   * When we haven't been told to use a specific background imagery,
+   * this tries several options to pick an appropriate imagery to use.
    */
   chooseDefaultSource() {
     const map = this.context.systems.map;
     const available = this.sources(map.extent(), map.zoom());
     const first = available[0];
     const best = available.find(s => s.best);
-    const prefs = this.context.systems.storage;
-    const lastUsed = prefs.getItem('background-last-used') || '';
+    const storage = this.context.systems.storage;
+
+    // consider previously chosen imagery unless it was 'none'
+    const prevUsed = storage.getItem('background-last-used') || 'none';
+    const previous = (prevUsed !== 'none') && this.findSource(prevUsed);
 
     return best ||
-      this.findSource(lastUsed) ||
+      previous ||
       this.findSource('Bing') ||
       first ||    // maybe this is a custom Rapid that doesn't include Bing?
       this.findSource('none');
