@@ -106,14 +106,14 @@ export class UiSystem extends AbstractSystem {
               e.stopImmediatePropagation();
               e.preventDefault();
             }
-            const imagerySystem = context.systems.imagery;
-            const storageSystem = context.systems.storage;
-            const previousBackground = imagerySystem.findSource(storageSystem.getItem('background-last-used-toggle'));
+            const imagery = context.systems.imagery;
+            const storage = context.systems.storage;
+            const previousBackground = imagery.getSource(storage.getItem('background-last-used-toggle'));
             if (previousBackground) {
-              const currentBackground = imagerySystem.baseLayerSource();
-              storageSystem.setItem('background-last-used-toggle', currentBackground.id);
-              storageSystem.setItem('background-last-used', previousBackground.id);
-              imagerySystem.baseLayerSource(previousBackground);
+              const currentBackground = imagery.baseLayerSource();
+              storage.setItem('background-last-used-toggle', currentBackground.id);
+              storage.setItem('background-last-used', previousBackground.id);
+              imagery.baseLayerSource(previousBackground);
             }
           });
       });

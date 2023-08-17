@@ -33,7 +33,7 @@ export class ImagerySystem extends AbstractSystem {
     this._initPromise = null;
     this._imageryIndex = null;
     this._baseLayer = null;
-    this._overlayLayers = [];
+    this._overlayLayers = new Map();   // Map (sourceID -> source)
     this._checkedBlocklists = [];
     this._isValid = true;    // todo, find a new way to check this, no d3 enter/update render anymore
 
@@ -52,13 +52,6 @@ export class ImagerySystem extends AbstractSystem {
   /**
    * initAsync
    * Called after all core objects have been constructed.
-   * Set up The imagery index loads after Rapid starts.
-   * It contains these properties:
-   *   {
-   *     features:  Map(id -> GeoJSON feature)
-   *     sources:   Map(id -> ImagerySource)
-   *     query:     A which-polygon index to perform spatial queries against
-   *   }
    * @return {Promise} Promise resolved when this component has completed initialization
    */
   initAsync() {
@@ -93,6 +86,17 @@ export class ImagerySystem extends AbstractSystem {
   }
 
 
+  /**
+   * _initImageryIndex
+   * Set up the imagery index after it has been downloaded
+   * It contains these properties:
+   *   {
+   *     features:  Map(id -> GeoJSON feature)
+   *     sources:   Map(id -> ImagerySource)
+   *     query:     A which-polygon index to perform spatial queries against
+   *   }
+   *  @param  data  {Array}  imagery index data
+   */
   _initImageryIndex(data) {
     const context = this.context;
 
@@ -119,7 +123,7 @@ export class ImagerySystem extends AbstractSystem {
         geometry: { type: 'MultiPolygon', coordinates: rings }
       };
 
-      this._imageryIndex.features.set(d.id, feature);
+      this._imageryIndex.features.set(d.id.toLowerCase(), feature);
       return feature;
     }).filter(Boolean);
 
@@ -136,7 +140,7 @@ export class ImagerySystem extends AbstractSystem {
       } else {
         source = new ImagerySource(context, d);
       }
-      this._imageryIndex.sources.set(d.id, source);
+      this._imageryIndex.sources.set(d.id.toLowerCase(), source);
     }
 
     // Add 'None'
@@ -199,7 +203,7 @@ export class ImagerySystem extends AbstractSystem {
     if (!newBackground || newBackground !== oldBackground) {
       let setBaseLayer;
       if (typeof newBackground === 'string') {
-        setBaseLayer = this.findSource(newBackground);
+        setBaseLayer = this.getSource(newBackground);
       }
       if (!setBaseLayer) {
         setBaseLayer = this.chooseDefaultSource();
@@ -213,13 +217,10 @@ export class ImagerySystem extends AbstractSystem {
     if (newOverlays !== oldOverlays) {
       let toEnableIDs = new Set();
       if (typeof newOverlays === 'string') {
-        toEnableIDs = new Set(newOverlays.split(','));
+        const vals = newOverlays.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        toEnableIDs = new Set(vals);
       }
-      for (const overlayLayer of this.overlayLayerSources()) {  // for each enabled overlay layer
-        if (overlayLayer.isLocatorOverlay()) continue;
-        if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
-        this.toggleOverlayLayer(overlayLayer);           // make disabled
-      }
+      this.enableOverlayLayers(toEnableIDs);
     }
 
     // offset
@@ -228,7 +229,7 @@ export class ImagerySystem extends AbstractSystem {
     if (newOffset !== oldOffset) {
       let x, y;
       if (typeof newOffset === 'string') {
-        [x, y] = newOffset.replace(/;/g, ',').split(',').map(Number);
+        [x, y] = newOffset.replace(/;/g, ',').split(',').map(s => s.trim()).map(Number);
       }
       if (isNaN(x) || !isFinite(x)) x = 0;
       if (isNaN(y) || !isFinite(y)) y = 0;
@@ -258,9 +259,9 @@ export class ImagerySystem extends AbstractSystem {
       baseID = `custom:${baseLayer.template}`;
     }
 
-    // Gather info about overlay imagery (ignore locator)
-    const overlays = this._overlayLayers.filter(d => !d.isLocatorOverlay());
-    for (const overlay of overlays) {
+    // Gather info about enabled overlay imagery (ignore locator)
+    for (const overlay of this._overlayLayers.values()) {
+      if (overlay.isLocatorOverlay()) continue;
       overlayIDs.push(overlay.id);
       imageryUsed.push(overlay.imageryUsed);
     }
@@ -313,7 +314,7 @@ export class ImagerySystem extends AbstractSystem {
 
     return sources.filter(source => {
       if (currSource === source) return true;       // always include the current imagery
-      if (source.isBlocked) return false;           // even bundled sources may be blocked - #7905
+      if (source.isBlocked) return false;           // even bundled sources may be blocked - iD#7905
       if (!source.polygon) return true;             // always include imagery with worldwide coverage
       if (zoom && zoom < 6) return false;           // optionally exclude local imagery at low zooms
       return visible.has(source.id);                // include imagery visible in given extent
@@ -324,7 +325,7 @@ export class ImagerySystem extends AbstractSystem {
   /**
    *
    */
-  baseLayerSource(d) {
+  baseLayerSource(source) {
     if (!arguments.length) return this._baseLayer;
 
     // test source against OSM imagery blocklists..
@@ -332,7 +333,7 @@ export class ImagerySystem extends AbstractSystem {
     if (!osm) return this;
 
     const blocklists = osm?.imageryBlocklists ?? [];
-    const template = d.template;
+    const template = source.template;
     let fail = false;
     let tested = 0;
     let regex;
@@ -349,7 +350,7 @@ export class ImagerySystem extends AbstractSystem {
       fail = regex.test(template);
     }
 
-    this._baseLayer = (!fail ? d : this.findSource('none'));
+    this._baseLayer = (!fail ? source : this.getSource('none'));
 
     this.updateImagery();
     this.emit('imagerychange');
@@ -371,32 +372,32 @@ export class ImagerySystem extends AbstractSystem {
 
     // consider previously chosen imagery unless it was 'none'
     const prevUsed = storage.getItem('background-last-used') || 'none';
-    const previous = (prevUsed !== 'none') && this.findSource(prevUsed);
+    const previous = (prevUsed !== 'none') && this.getSource(prevUsed);
 
     return best ||
       previous ||
-      this.findSource('Bing') ||
+      this.getSource('Bing') ||
       first ||    // maybe this is a custom Rapid that doesn't include Bing?
-      this.findSource('none');
+      this.getSource('none');
   }
 
 
   /**
    *
    */
-  findSource(id) {
+  getSource(sourceID) {
     if (!this._imageryIndex) return null;   // called before init()?
-    return this._imageryIndex.sources.get(id);
+    return this._imageryIndex.sources.get(sourceID.toLowerCase());
   }
 
 
   /**
    *
    */
-  showsLayer(d) {
+  showsLayer(source) {
     const currSource = this._baseLayer;
-    if (!d || !currSource) return false;
-    return d.id === currSource.id || this._overlayLayers.some(layer => d.id === layer.id);
+    if (!source || !currSource) return false;
+    return source.id === currSource.id || this._overlayLayers.has(source.id);
   }
 
 
@@ -404,28 +405,43 @@ export class ImagerySystem extends AbstractSystem {
    *
    */
   overlayLayerSources() {
-    return this._overlayLayers;
+    return [...this._overlayLayers.values()];
   }
 
 
   /**
    *
    */
-  toggleOverlayLayer(d) {
-    let layer;
-    for (let i = 0; i < this._overlayLayers.length; i++) {
-      layer = this._overlayLayers[i];
-      if (layer === d) {
-        this._overlayLayers.splice(i, 1);
-        this.updateImagery();
-        this.emit('imagerychange');
-        return;
+  toggleOverlayLayer(source) {
+    if (this._overlayLayers.has(source.id)) {
+      this._overlayLayers.delete(source.id);
+    } else {
+      this._overlayLayers.set(source.id, source);
+    }
+    this.updateImagery();
+    this.emit('imagerychange');
+  }
+
+
+  /**
+   * enableOverlayLayers
+   * This makes sure that only the overlays identified by `sourceIDs` are in the list
+   *  ignoring the "locator overlay"
+   * @param  {Set|Array}  enableIDs  Iterable Set or Array of sourceIDs to enable
+   */
+  enableOverlayLayers(enableIDs) {
+    for (const [sourceID, source] of this._overlayLayers) {
+      if (source.isLocatorOverlay()) continue;  // ignore this one
+      this._overlayLayers.delete(sourceID);     // remove all others
+    }
+
+    for (const sourceID of enableIDs) {         // add what belongs
+      const source = this.getSource(sourceID);
+      if (source) {
+        this._overlayLayers.set(sourceID, source);
       }
     }
 
-    layer = d;
-
-    this._overlayLayers.push(layer);
     this.updateImagery();
     this.emit('imagerychange');
   }

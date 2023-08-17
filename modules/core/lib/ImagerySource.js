@@ -166,7 +166,7 @@ export class ImagerySource {
           case 'wkid':
             return projection.replace(/^EPSG:/, '');
           case 'bbox':
-            // WMS 1.3 flips x/y for some coordinate systems including EPSG:4326 - #7557
+            // WMS 1.3 flips x/y for some coordinate systems including EPSG:4326 - iD#7557
             // The CRS parameter implies version 1.3 (prior versions use SRS)
             if (projection === 'EPSG:4326' && /VERSION=1.3|CRS={proj}/.test(this._template.toUpperCase())) {
               return maxXminY.y + ',' + minXmaxY.x + ',' + minXmaxY.y + ',' + maxXminY.x;
@@ -186,7 +186,7 @@ export class ImagerySource {
         }
       });
 
-     } else if (this.type === 'tms') {
+    } else if (this.type === 'tms') {
       const isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
       result = result
         .replace('{x}', coord[0])
@@ -290,7 +290,7 @@ export class ImagerySourceCustom extends ImagerySource {
   }
 
   get imageryUsed() {
-    // sanitize personal connection tokens - #6801
+    // sanitize personal connection tokens - iD#6801
     let cleaned = this._template;
 
     // from query string parameters
@@ -353,7 +353,7 @@ export class ImagerySourceEsri extends ImagerySource {
     super(context, src);
 
     // In addition to using the tilemap at zoom level 20, overzoom real tiles
-    //  #4327 (deprecated technique, but it works)
+    //  iD#4327 (deprecated technique, but it works)
     if (!/blankTile/.test(this._template)) {
       this._template += '?blankTile=false';
     }

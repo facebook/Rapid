@@ -25,7 +25,7 @@ export function uiSectionBackgroundList(context) {
 
   let _backgroundList = d3_select(null);
 
-  const customSource = imagery.findSource('custom');
+  const customSource = imagery.getSource('custom');
   const settingsCustomBackground = uiSettingsCustomBackground(context)
     .on('change', customChanged);
 
@@ -328,7 +328,7 @@ export function uiSectionBackgroundList(context) {
       chooseBackground(undefined, customSource);
     } else {
       customSource.template = '';
-      chooseBackground(undefined, imagery.findSource('none'));
+      chooseBackground(undefined, imagery.getSource('none'));
     }
   }
 
