@@ -48,7 +48,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['edits', 'filters', 'imagery', 'storage', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['edits', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash']);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -212,9 +212,14 @@ export class MapSystem extends AbstractSystem {
 
     this.dimensions = utilGetDimensions(selection);
 
-    const scene = this._renderer.scene;
 
     // Setup events that cause the map to redraw...
+    const edits = context.systems.edits;
+    const filters = context.systems.filters;
+    const imagery = context.systems.imagery;
+    const photos = context.systems.photos;
+    const scene = this._renderer.scene;
+
     const _didUndoOrRedo = (targetTransform) => {
       const modeID = context.mode?.id;
       if (modeID !== 'browse' && modeID !== 'select') return;
@@ -223,7 +228,7 @@ export class MapSystem extends AbstractSystem {
       }
     };
 
-    context.systems.edits
+    edits
       .on('merge', entityIDs => {
         if (entityIDs) {
           scene.dirtyData('osm', entityIDs);
@@ -237,7 +242,7 @@ export class MapSystem extends AbstractSystem {
           for (const entity of complete.values()) {
             if (entity) {      // may be undefined if entity was deleted
               entity.touch();  // bump version in place
-              context.systems.filters.clearEntity(entity);  // clear feature filter cache
+              filters.clearEntity(entity);  // clear feature filter cache
             }
           }
           // touching entity will bump .v and the renderer should pick it up as dirty?
@@ -249,18 +254,20 @@ export class MapSystem extends AbstractSystem {
       .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
       .on('redone', (stack) => _didUndoOrRedo(stack.transform));
 
-    context.systems.filters
+    filters
       .on('filterchange', () => {
         scene.dirtyLayers('osm');
         this.immediateRedraw();
       });
 
+    imagery.on('imagerychange', this.immediateRedraw);
+    photos.on('photochange', this.immediateRedraw);
+    scene.on('layerchange', this.immediateRedraw);
+
     const osm = context.services.osm;
     if (osm) {
       osm.on('authchange', this.immediateRedraw);
     }
-
-    scene.on('layerchange', this.immediateRedraw);
   }
 
 

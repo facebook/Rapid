@@ -289,7 +289,6 @@ scene.classData(layerID, photoID, 'selected');
     }
 
     this._updateHash();
-    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
@@ -340,7 +339,6 @@ scene.classData(layerID, photoID, 'selected');
 
     if (didChange) {
       this._updateHash();
-      this.context.immediateRedraw();
       this.emit('photochange');
     }
   }
@@ -363,7 +361,6 @@ scene.classData(layerID, photoID, 'selected');
     }
     this._usernames = val;
     this._updateHash();
-    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
@@ -381,15 +378,13 @@ scene.classData(layerID, photoID, 'selected');
     } else {
       this._shownPhotoTypes.add(which);
     }
-
-    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
 
   _showsLayer(layerID) {
     const layer = this.context.scene().layers.get(layerID);
-    return layer && layer.enabled;
+    return layer?.enabled;
   }
 
   shouldFilterByDate() {
