@@ -40,7 +40,49 @@ export function utilFetchResponse(response) {
     throw new FetchError(response);
   }
 
-  const contentType = response.headers.get('content-type').split(';')[0];
+  let contentType = (response.headers.get('content-type') || '').split(';')[0];
+
+  // Some poorly configured servers might not set a content-type header.
+  // We'll try to infer it from the filename extension, if any.
+  if (!contentType) {
+    const url = new URL(response.url);
+    const filename = url.pathname.split('/').at(-1) || '';
+    const extension = filename.toLowerCase().split('.').at(-1) || '';
+
+    switch (extension) {
+      case 'geojson':
+      case 'json':
+        contentType = 'application/json';
+        break;
+
+      case 'htm':
+      case 'html':
+        contentType = 'text/html';
+        break;
+
+      case 'svg':
+        contentType = 'image/svg+xml';
+        break;
+
+      case 'gpx':
+      case 'kml':
+      case 'xml':
+        contentType = 'application/xml';
+        break;
+
+      case 'mvt':
+      case 'pb':
+      case 'pbf':
+      case 'pmtiles':
+      case 'proto':
+        contentType = 'application/protobuf';
+        break;
+
+      default:
+        contentType = 'text/plain';
+    }
+  }
+
   switch (contentType) {
     case 'application/geo+json':
     case 'application/json':
