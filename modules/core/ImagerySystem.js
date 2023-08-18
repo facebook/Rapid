@@ -425,7 +425,7 @@ export class ImagerySystem extends AbstractSystem {
 
   /**
    * enableOverlayLayers
-   * This makes sure that only the overlays identified by `sourceIDs` are in the list
+   * This makes sure that only the overlays identified by `enableIDs` are in the list
    *  ignoring the "locator overlay"
    * @param  {Set|Array}  enableIDs  Iterable Set or Array of sourceIDs to enable
    */
@@ -435,10 +435,10 @@ export class ImagerySystem extends AbstractSystem {
       this._overlayLayers.delete(sourceID);     // remove all others
     }
 
-    for (const sourceID of enableIDs) {         // add what belongs
-      const source = this.getSource(sourceID);
+    for (const enableID of enableIDs) {         // add what belongs
+      const source = this.getSource(enableID);  // note that enableID is case insensitive
       if (source) {
-        this._overlayLayers.set(sourceID, source);
+        this._overlayLayers.set(source.id, source);
       }
     }
 

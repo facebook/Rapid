@@ -229,7 +229,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
         }
         section.reRender();
       });
-    }, 1000)  // after map has stopped moving for 1sec
+    }, 1000, { leading: false, trailing: true })  // after map has stopped moving for 1sec
   );
 
   return section;

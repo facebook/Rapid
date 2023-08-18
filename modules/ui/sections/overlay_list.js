@@ -124,7 +124,7 @@ export function uiSectionOverlayList(context) {
     .on('draw', debounce(() => {
       // layers in-view may have changed due to map move
       window.requestIdleCallback(section.reRender);
-    }, 1000)
+    }, 1000, { leading: true, trailing: true })
   );
 
   return section;
