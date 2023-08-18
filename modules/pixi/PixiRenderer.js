@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { Projection } from '@rapid-sdk/math';
+import { Projection, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { osmNote, QAItem } from '../osm';
 import { PixiEvents } from './PixiEvents';
@@ -129,7 +129,7 @@ export class PixiRenderer extends EventEmitter {
     stage.sortableChildren = true;
     stage.eventMode = 'static';
     // Add a big hit area to `stage` so that clicks on nothing will generate events
-    stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
+    stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
     this.stage = stage;
 
     // Setup other classes
@@ -412,20 +412,24 @@ export class PixiRenderer extends EventEmitter {
     // Reproject the pixi geometries only whenever zoom changes
     const context = this.context;
     const pixiProjection = this.pixiProjection;
-    const currTransform = context.projection.transform();
     const pixiTransform = pixiProjection.transform();
+    const mapTransform = context.projection.transform();
     const effectiveZoom = context.systems.map.effectiveZoom();
 
+    const pixiXY = [pixiTransform.x, pixiTransform.y];
+    const mapXY = [mapTransform.x, mapTransform.y];
+    const dist = vecLength(pixiXY, mapXY);
     let offset;
-    if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset
+
+    if (pixiTransform.k !== mapTransform.k || dist > 100000) {   // zoom has changed, or map has translated very far
       offset = [0, 0];
-      pixiProjection.transform(currTransform);
-      this.scene.dirtyScene();
+      pixiProjection.transform(mapTransform);  // reset
+      this.scene.dirtyScene();                 // all geometry will be reprojected
     } else {
-      offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
+      offset = vecSubtract(pixiXY, mapXY);
     }
 
-// like this? (offset in stage)
+// like this? (anti-offset in stage)
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 //
@@ -470,9 +474,9 @@ export class PixiRenderer extends EventEmitter {
    * Where it converts Pixi geometries into WebGL instructions.
    */
   _draw() {
-// like this? (offset in stage)
+// like this? (anti-offset in stage)
     this.pixi.render();
-//...or like this (offset in matrix)?
+//...or like this (anti-offset in matrix)?
     // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
     // const options = {
     //   transform: m,
