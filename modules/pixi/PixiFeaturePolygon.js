@@ -91,6 +91,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
       delete this._ssrdata.shapeType;
       this._ssrdata = null;
     }
+
+    if (this._bufferdata) {
+      this._bufferdata = null;
+    }
   }
 
 
@@ -110,7 +114,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (this.geometry.dirty) {
       this.geometry.update(projection, zoom);
 
-      // redo ssr (move more of this into PixiGeometry later)
+      // Redo ssr (move more of this into PixiGeometry later)
       this._ssrdata = null;
 
       // We use the SSR to approximate a low resolution polygon at low zooms
@@ -156,6 +160,24 @@ export class PixiFeaturePolygon extends AbstractFeature {
           origCenter: projection.invert(center),
           shapeType: (cornersInSSR ? 'square' : 'circle')
         };
+      }
+
+      // Redo line buffer
+      this._bufferdata = null;
+
+      // We use the buffer to draw the halo, also as the hit area when in wireframe mode
+      if (this.geometry.flatOuter) {  // no points?
+        // for now, just copy what PixiFeatureLine does
+        const bufferStyle = {
+          alignment: 0.5,  // middle of line
+          color: 0x0,
+          width: 16,  // px
+          alpha: 1.0,
+          join: PIXI.LINE_JOIN.BEVEL,
+          cap: PIXI.LINE_CAP.BUTT
+        };
+
+        this._bufferdata = lineToPoly(this.geometry.flatOuter, bufferStyle);
       }
     }
 
@@ -270,7 +292,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
         })
         .drawShape(shape.outer);
 
-      shape.holes.forEach(hole => this.stroke.drawShape(hole));
+        shape.holes.forEach(hole => this.stroke.drawShape(hole));
+
       } else {
         //Dashed lines
         const DASH_STYLE = {
@@ -283,6 +306,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
         const dl = new DashLine(this.stroke, DASH_STYLE);
         const coords = flatCoordsToPoints(shape.outer.points);
         dl.drawPolygon(coords);
+
         shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
       }
     }
@@ -292,18 +316,13 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.fill.visible = false;
       this.fill.clear();
 
-      const hitWidth = 2.5;
-      const hitStyle = {
-        alignment: 0.5,  // middle of line
-        color: 0x0,
-        width: hitWidth,
-        alpha: 1.0,
-        join: PIXI.LINE_JOIN.BEVEL,
-        cap: PIXI.LINE_CAP.BUTT
-      };
-
-      this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
-      this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+      // No fill - hit test the line buffer
+      if (this._bufferdata) {
+        this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+      }
+    } else {
+      // The fill will be hit tested
+      this.container.hitArea = null;
     }
 
     if (shape && this.fill.visible) {
@@ -368,8 +387,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
    * Show/Hide halo
    */
   updateHalo() {
-if (!this.geometry.flatOuter) return;  // no points?
-
+    const wireframeMode = this.context.systems.map.wireframeMode;
     const showHover = (this.visible && this.hovered);
     const showSelect = (this.visible && this.selected);
     const showHighlight = (this.visible && this.highlighted);
@@ -409,22 +427,15 @@ if (!this.geometry.flatOuter) return;  // no points?
         color: 0xffff00
       };
 
-// for now, just copy what PixiFeatureLine does
-const hitStyle = {
-  alignment: 0.5,  // middle of line
-  color: 0x0,
-  width: 16,
-  alpha: 1.0,
-  join: PIXI.LINE_JOIN.BEVEL,
-  cap: PIXI.LINE_CAP.BUTT
-};
-const bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
-
       this.halo.clear();
       const dl = new DashLine(this.halo, HALO_STYLE);
-      if (bufferdata?.outer) {
-        dl.drawPolygon(bufferdata.outer);
+      if (this._bufferdata) {
+        dl.drawPolygon(this._bufferdata.outer);
+        if (wireframeMode) {
+          dl.drawPolygon(this._bufferdata.inner);
+        }
       }
+
     } else {
       if (this.halo) {
         this.halo.destroy({ children: true });
