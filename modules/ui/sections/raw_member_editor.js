@@ -17,7 +17,7 @@ const MAX_MEMBERS = 1000;
 export function uiSectionRawMemberEditor(context) {
     const l10n = context.systems.l10n;
 
-    var section = uiSection('raw-member-editor', context)
+    var section = uiSection(context, 'raw-member-editor')
         .shouldDisplay(function() {
             if (!_entityIDs || _entityIDs.length !== 1) return false;
 
@@ -51,7 +51,7 @@ export function uiSectionRawMemberEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.id);
-        context.systems.map.zoomToEase(entity);
+        context.systems.map.fitEntitiesEase(entity);
 
         // highlight the feature in case it wasn't previously on-screen
         utilHighlightEntities([d.id], true, context);
@@ -68,7 +68,7 @@ export function uiSectionRawMemberEditor(context) {
         var mapExtent = context.systems.map.extent();
         if (!entity.intersects(mapExtent, context.graph())) {
             // zoom to the entity if its extent is not visible now
-            context.systems.map.zoomToEase(entity);
+            context.systems.map.fitEntitiesEase(entity);
         }
 
         context.enter('select-osm', { selectedIDs: [d.id] });
@@ -186,7 +186,7 @@ export function uiSectionRawMemberEditor(context) {
                     labelLink
                         .append('span')
                         .attr('class', 'member-entity-name')
-                        .html(function(d) { return l10n.displayName(d.member); });
+                        .html(d => (d.member ? l10n.displayName(d.member.tags) : ''));
 
                     label
                         .append('button')

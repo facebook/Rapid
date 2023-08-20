@@ -35,12 +35,13 @@ export class RapidSystem extends AbstractSystem {
     this.id = 'rapid';
     this.dependencies = new Set(['l10n', 'urlhash']);
 
-    this.showPowerUser = context.initialHashParams.poweruser === 'true';
     this.sources = new Set();
 
     this._datasets = new Map();   // Map(datasetID -> dataset)
     this._taskExtent = null;
     this._isTaskBoundsRect = null;
+    this._hadPoweruser = false;   // true if the user had poweruser mode at any point in their editing
+
     this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -63,14 +64,20 @@ export class RapidSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const urlHashSystem = context.systems.urlhash;
-    urlHashSystem.on('hashchange', this._hashchange);
-
+    const map = context.systems.map;
     const l10n = context.systems.l10n;
-    const prerequisites = l10n.initAsync();
+    const urlhash = context.systems.urlhash;
+
+    const prerequisites = Promise.all([
+      map.initAsync(),   // RapidSystem should listen for hashchange after MapSystem
+      l10n.initAsync(),
+      urlhash.initAsync()
+    ]);
 
     return this._initPromise = prerequisites
       .then(() => {
+        urlhash.on('hashchange', this._hashchange);
+
         this._datasets.set('fbRoads', {
           id: 'fbRoads',
           beta: false,
@@ -138,6 +145,16 @@ export class RapidSystem extends AbstractSystem {
 
 
   /**
+   * hadPoweruser
+   * true if the user had poweruser mode at any point in their editing
+   * @readonly
+   */
+  get hadPoweruser() {
+    return this._hadPoweruser;
+  }
+
+
+  /**
    * setTaskExtentByGpxData
    */
   setTaskExtentByGpxData(gpxData) {
@@ -199,24 +216,36 @@ export class RapidSystem extends AbstractSystem {
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  q   Object containing key/value pairs of the current query parameters
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
-  _hashchange(q) {
-    // datasets
-    let toEnable = new Set();
-    if (typeof q.datasets === 'string') {
-      toEnable = new Set(q.datasets.split(','));
+  _hashchange(currParams, prevParams) {
+    // poweruser
+    // remember if the user had poweruser on at any point in their editing
+    if (currParams.get('poweruser') === 'true') {
+      this._hadPoweruser = true;
     }
 
-    // Update all known datasets
-    for (const [datasetID, dataset] of this._datasets) {
-      if (toEnable.has(datasetID)) {
-        dataset.enabled = true;
-        toEnable.delete(datasetID);  // delete marks it as done
-      } else {
-        dataset.enabled = false;
+    // datasets
+    let toEnable = new Set();
+    const newDatasets = currParams.get('datasets');
+    const oldDatasets = prevParams.get('datasets');
+    if (newDatasets !== oldDatasets) {
+      if (typeof newDatasets === 'string') {
+        toEnable = new Set(newDatasets.split(','));
+      }
+
+      // Update all known datasets
+      for (const [datasetID, dataset] of this._datasets) {
+        if (toEnable.has(datasetID)) {
+          dataset.enabled = true;
+          toEnable.delete(datasetID);  // delete marks it as done
+        } else {
+          dataset.enabled = false;
+        }
       }
     }
+
 
     // If there are remaining datasets to enable, try to load them from Esri.
     const esri = this.context.services.esri;

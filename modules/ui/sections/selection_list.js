@@ -10,7 +10,7 @@ export function uiSectionSelectionList(context) {
   const l10n = context.systems.l10n;
   let _selectedIDs = [];
 
-  const section = uiSection('selected-features', context)
+  const section = uiSection(context, 'selected-features')
     .shouldDisplay(sectionShouldDisplay)
     .label(sectionLabel)
     .disclosureContent(renderDisclosureContent);
@@ -114,7 +114,7 @@ export function uiSectionSelectionList(context) {
     items.selectAll('.entity-name')
       .html(d => {
         const entity = context.entity(d.id);  // current version of the entity
-        return l10n.displayName(entity);
+        return l10n.displayName(entity.tags);
       });
   }
 

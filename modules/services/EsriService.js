@@ -1,4 +1,3 @@
-import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
@@ -6,6 +5,7 @@ import { utilQsString } from '@rapid-sdk/util';
 import { AbstractSystem } from '../core/AbstractSystem';
 import { Graph, Tree } from '../core/lib';
 import { osmNode, osmRelation, osmWay } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
@@ -81,26 +81,27 @@ export class EsriService extends AbstractSystem {
   }
 
 
-
-  graph(datasetID)  {
-    const ds = this._datasets[datasetID];
-    return ds?.graph;
-  }
-
-
-  intersects(datasetID, extent) {
+  /**
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @param   {string}  datasetID - datasetID to get data for
+   * @return  {Array}   Array of data (OSM Entities)
+   */
+  getData(datasetID) {
     const ds = this._datasets[datasetID];
     if (!ds || !ds.tree || !ds.graph) return [];
+
+    const extent = this.context.systems.map.extent();
     return ds.tree.intersects(extent, ds.graph);
   }
 
 
-  toggle(val) {
-    this._off = !val;
-  }
-
-
-  loadTiles(datasetID, projection) {
+  /**
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   * @param   {string}  datasetID - datasetID to load tiles for
+   */
+  loadTiles(datasetID) {
     if (this._off) return;
 
     // `loadDatasetsAsync` and `loadLayerAsync` are asynchronous,
@@ -110,6 +111,7 @@ export class EsriService extends AbstractSystem {
 
     const cache = ds.cache;
     const locationSystem = this.context.systems.locations;
+    const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -137,6 +139,17 @@ export class EsriService extends AbstractSystem {
   }
 
 
+  graph(datasetID)  {
+    const ds = this._datasets[datasetID];
+    return ds?.graph;
+  }
+
+
+  toggle(val) {
+    this._off = !val;
+  }
+
+
   loadDatasetsAsync() {
     if (this._gotDatasets) {
       return Promise.resolve(this._datasets);
@@ -148,7 +161,8 @@ export class EsriService extends AbstractSystem {
         fetchMore(start);
 
         function fetchMore(start) {
-          d3_json(thiz._searchURL(start))
+          fetch(thiz._searchURL(start))
+            .then(utilFetchResponse)
             .then(json => {
               for (const ds of json.results ?? []) {
                 thiz._parseDataset(ds);
@@ -179,7 +193,8 @@ export class EsriService extends AbstractSystem {
       return Promise.resolve(ds.layer);
     }
 
-    return d3_json(this._layerURL(ds.url))
+    return fetch(this._layerURL(ds.url))
+      .then(utilFetchResponse)
       .then(json => {
         if (!json.layers || !json.layers.length) {
           throw new Error(`Missing layer info for datasetID: ${datasetID}`);
@@ -294,7 +309,8 @@ export class EsriService extends AbstractSystem {
     const controller = new AbortController();
     const url = this._tileURL(ds, tile.wgs84Extent, page);
 
-    d3_json(url, { signal: controller.signal })
+    fetch(url, { signal: controller.signal })
+      .then(utilFetchResponse)
       .then(geojson => {
         if (!geojson) throw new Error('no geojson');
 

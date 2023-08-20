@@ -160,6 +160,7 @@ export class AbstractLayer {
     feature.hovered = classList.has('hovered');
     feature.drawing = classList.has('drawing');
     feature.active = classList.has('drawing');
+    feature.highlighted = classList.has('highlighted');
   }
 
 
@@ -265,7 +266,10 @@ export class AbstractLayer {
     if (childIDs) {
       childIDs.delete(childID);
       if (!childIDs.size) {
-        this._parentHasChildren.delete(childID);
+        let child = this._parentHasChildren.get(childID);
+        if (!child) {
+          this._parentHasChildren.delete(childID);
+        }
       }
     }
 

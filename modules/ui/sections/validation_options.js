@@ -3,7 +3,7 @@ import { uiSection } from '../section';
 
 export function uiSectionValidationOptions(context) {
   const prefs = context.systems.storage;
-  const section = uiSection('issues-options', context)
+  const section = uiSection(context, 'issues-options')
     .content(renderContent);
 
 

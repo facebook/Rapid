@@ -6,7 +6,7 @@ import { marked } from 'marked';
 export function uiRapidWhatsNew(context) {
   // If user has not seen this version of the what's new screen, show it again.
   // Just bump the version to a higher number to get it to come back.
-  const currWhatsNewVersion = 20230323;
+  const currWhatsNewVersion = 20230818;
   let _dontShowAgain = false;
 
   return function render(selection) {
@@ -41,7 +41,7 @@ export function uiRapidWhatsNew(context) {
     imageSection
       .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/rapid-v2-splash.jpg'));
+      .attr('src', context.asset('img/rapid-v21-splash.png'));
 
 //    imageSection
 //      .append('img')

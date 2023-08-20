@@ -135,8 +135,8 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     // const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
     const parentContainer = this.scene.groups.get('streetview');
-    const sequences = service.sequences(this.context.projection);
-    const images = service.images(this.context.projection);
+    const sequences = service.getSequences();
+    const images = service.getData('images');
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
@@ -208,7 +208,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     const service = this.context.services.mapillary;
     if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    service.loadImages(this.context.projection);  // note: context.projection !== pixi projection
+    service.loadTiles('images');
     this.renderMarkers(frame, projection, zoom);
   }
 

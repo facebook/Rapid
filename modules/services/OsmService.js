@@ -1,6 +1,5 @@
-import { json as d3_json, xml as d3_xml } from 'd3-fetch';
 import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
-import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
+import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle';
 import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';
@@ -8,6 +7,7 @@ import RBush from 'rbush';
 import { AbstractSystem } from '../core/AbstractSystem';
 import { JXON } from '../util/jxon';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -42,6 +42,7 @@ export class OsmService extends AbstractSystem {
     this._userCache = { toLoad: {}, user: {} };
     this._changeset = {};
 
+    this._tiler = new Tiler();
     this._deferred = new Set();
     this._connectionID = 0;
     this._tileZoom = 16;
@@ -64,13 +65,9 @@ export class OsmService extends AbstractSystem {
     this._parseNoteXML = this._parseNoteXML.bind(this);
     this._parseUserXML = this._parseUserXML.bind(this);
 
-    // Auth
-    const q = utilStringQs(window.location.hash);
-    this._credentialsMode = 'omit';
-    if (q.hasOwnProperty('osm_api_url')) {
-      this._urlroot = q.osm_api_url;
-      this._credentialsMode = 'include';
-    }
+    this.reloadApiStatus = this.reloadApiStatus.bind(this);
+    this.throttledReloadApiStatus = _throttle(this.reloadApiStatus, 500);
+
 
     const origin = window.location.origin;
     let pathname = window.location.pathname;
@@ -89,9 +86,6 @@ export class OsmService extends AbstractSystem {
       loading: this._authLoading,
       done: this._authDone
     });
-
-
-    this._tiler = new Tiler();
   }
 
 
@@ -162,7 +156,8 @@ export class OsmService extends AbstractSystem {
 
     return this.resetAsync()
       .then(() => {
-        this.userChangesets(function() {});  // eagerly load user details/changesets
+// causes major issues for the tests
+//        this.userChangesets(function() {});  // eagerly load user details/changesets
         this.emit('authchange');
       });
   }
@@ -243,7 +238,7 @@ export class OsmService extends AbstractSystem {
     const cid = this._connectionID;
 
     const done = (err, results) => {
-      if (this.connectionID !== cid) {
+      if (this._connectionID !== cid) {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
@@ -262,12 +257,12 @@ export class OsmService extends AbstractSystem {
         if (!isAuthenticated && !this._rateLimitError && (err?.status === 509 || err?.status === 429)) {
           this._rateLimitError = err;
           this.emit('authchange');
-          this.reloadApiStatus();
+          this.throttledReloadApiStatus();
 
         } else if ((err && this._cachedApiStatus === 'online') || (!err && this._cachedApiStatus !== 'online')) {
           // If the response's error state doesn't match the status,
           // it's likely we lost or gained the connection so reload the status
-          this.reloadApiStatus();
+          this.throttledReloadApiStatus();
         }
 
         if (callback) {
@@ -284,34 +279,22 @@ export class OsmService extends AbstractSystem {
       }
     };
 
-    if (this.authenticated()) {
-      return this._oauth.xhr({ method: 'GET', path: path }, done);
-    } else {
-      const url = this._urlroot + path;
-      const controller = new AbortController();
-      let fn;
-      if (path.indexOf('.json') !== -1) {
-        fn = d3_json;
-      } else {
-        fn = d3_xml;
-      }
+    const resource = this._urlroot + path;
+    const controller = new AbortController();
+    const _fetch = this.authenticated() ? this._oauth.fetch : window.fetch;
 
-      fn(url, { signal: controller.signal })
-        .then(result => done(null, result))
-        .catch(err => {
-          if (err.name === 'AbortError') return;  // ok
-          // d3-fetch includes status in the error message,
-          // but we can't access the response itself
-          // https://github.com/d3/d3-fetch/issues/27
-          const match = err.message.match(/^\d{3}/);
-          if (match) {
-            done({ status: +match[0], statusText: err.message });
-          } else {
-            done(err.message);
-          }
-        });
-      return controller;
-    }
+    _fetch(resource, { signal: controller.signal })
+      .then(utilFetchResponse)
+      .then(result => done(null, result))
+      .catch(err => {
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          done(err);
+          return;
+        }
+      });
+
+    return controller;
   }
 
 
@@ -369,11 +352,11 @@ export class OsmService extends AbstractSystem {
   // GET /api/0.6/[nodes|ways|relations]?#parameters
   loadMultiple(ids, callback) {
     const groups = utilArrayGroupBy(utilArrayUniq(ids), osmEntity.id.type);
+    const options = { skipSeen: false };
 
     for (const [k, vals] of Object.entries(groups)) {
       const type = k + 's';   // nodes, ways, relations
       const osmIDs = vals.map(id => osmEntity.id.toOSM(id));
-      const options = { skipSeen: false };
 
       for (const arr of utilArrayChunk(osmIDs, 150)) {
         this.loadFromAPI(
@@ -386,74 +369,172 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  // Create, upload, and close a changeset
+  // Create a changeset
   // PUT /api/0.6/changeset/create
-  // POST /api/0.6/changeset/#id/upload
-  // PUT /api/0.6/changeset/#id/close
-  putChangeset(changeset, changes, callback) {
-    const cid = this._connectionID;
-
+  createChangeset(changeset, callback) {
     if (this._changeset.inflight) {
-      return callback({ message: 'Changeset already inflight', status: -2 }, changeset);
-
-    } else if (this._changeset.open) {   // reuse existing open changeset..
-      return createdChangeset.call(this, null, this._changeset.open);
-
-    } else {   // Open a new changeset..
-      const options = {
-        method: 'PUT',
-        path: '/api/0.6/changeset/create',
-        headers: { 'Content-Type': 'text/xml' },
-        content: JXON.stringify(changeset.asJXON())
-      };
-      this._changeset.inflight = this._oauth.xhr(
-        options,
-        this._wrapcb(createdChangeset, cid)
-      );
+      return callback({ message: 'Changeset already inflight', status: -2 });
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 });
     }
 
-
-    function createdChangeset(err, changesetID) {
+    const createdChangeset = (err, changesetID) => {
       this._changeset.inflight = null;
       if (err) { return callback(err, changeset); }
 
-      this._changeset.open = changesetID;
+      this._changeset.openChangesetID = changesetID;
       changeset = changeset.update({ id: changesetID });
+      callback(null, changeset);
+    };
 
-      // Upload the changeset..
-      const options = {
-        method: 'POST',
-        path: `/api/0.6/changeset/${changesetID}/upload`,
-        headers: { 'Content-Type': 'text/xml' },
-        content: JXON.stringify(changeset.osmChangeJXON(changes))
-      };
-      this._changeset.inflight = this._oauth.xhr(
-        options,
-        this._wrapcb(uploadedChangeset, cid)
-      );
+    // try to reuse an existing open changeset
+    if (this._changeset.openChangesetID) {
+      return createdChangeset(null, this._changeset.openChangesetID);
     }
 
+    const errback = this._wrapcb(createdChangeset);
+    const resource = this._urlroot + '/api/0.6/changeset/create';
+    const controller = new AbortController();
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'text/xml' },
+      body: JXON.stringify(changeset.asJXON()),
+      signal: controller.signal
+    };
 
-    function uploadedChangeset(err) {
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._changeset.inflight = controller;
+  }
+
+
+  // Upload changes to a changeset
+  // POST /api/0.6/changeset/#id/upload
+  uploadChangeset(changeset, changes, callback) {
+    if (this._changeset.inflight) {
+      return callback({ message: 'Changeset already inflight', status: -2 });
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 });
+    } else if (changeset.id !== this._changeset.openChangesetID) {
+      // the given changeset is not open, or a different changeset is open?
+      return callback({ message: 'Changeset ID mismatch', status: -4 });
+    }
+
+    const uploadedChangeset = (err, /*result*/) => {
       this._changeset.inflight = null;
-      if (err) return callback(err, changeset);
+      // we do get a changeset diff result, but we don't currently use it for anything
+      callback(err, changeset);
+    };
 
-      // Upload was successful, safe to call the callback.
-      // Add delay to allow for postgres replication iD#1646 iD#2678
-      window.setTimeout(function() { callback(null, changeset); }, 2500);
-      this._changeset.open = null;
+    const errback = this._wrapcb(uploadedChangeset);
+    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/upload`;
+    const controller = new AbortController();
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/xml' },
+      body: JXON.stringify(changeset.osmChangeJXON(changes)),
+      signal: controller.signal
+    };
 
-      // At this point, we don't really care if the connection was switched..
-      // Only try to close the changeset if we're still talking to the same server.
-      if (this.connectionID === cid) {
-        // Still attempt to close changeset, but ignore response because iD#2667
-        this._oauth.xhr({
-          method: 'PUT',
-          path: '/api/0.6/changeset/' + changeset.id + '/close',
-          headers: { 'Content-Type': 'text/xml' }
-        }, function() { return true; });
-      }
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._changeset.inflight = controller;
+  }
+
+
+  // Close a changeset
+  // PUT /api/0.6/changeset/#id/close
+  closeChangeset(changeset, callback) {
+    if (this._changeset.inflight) {
+      return callback({ message: 'Changeset already inflight', status: -2 });
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 });
+    } else if (changeset.id !== this._changeset.openChangesetID) {
+      // the given changeset is not open, or a different changeset is open?
+      return callback({ message: 'Changeset ID mismatch', status: -4 });
     }
+
+    const closedChangeset = (err, /*result*/) => {
+      this._changeset.inflight = null;
+      this._changeset.openChangesetID = null;
+      // there is no result to this call
+      callback(err, changeset);
+    };
+
+    const errback = this._wrapcb(closedChangeset);
+    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/close`;
+    const controller = new AbortController();
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'text/xml' },
+      signal: controller.signal
+    };
+
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._changeset.inflight = controller;
+  }
+
+
+  // Just chains together create, upload, and close a changeset
+  // PUT /api/0.6/changeset/create
+  // POST /api/0.6/changeset/#id/upload
+  // PUT /api/0.6/changeset/#id/close
+  sendChangeset(changeset, changes, callback) {
+    const cid = this._connectionID;
+
+    this.createChangeset(changeset, (err, updated) => {
+      changeset = updated;
+      if (err) { return callback(err, changeset); }
+
+      this.uploadChangeset(changeset, changes, (err, updated) => {
+        changeset = updated;
+        if (err) { return callback(err, changeset); }
+
+        // Upload was successful, it is safe to call the callback.
+        // Add delay to allow for postgres replication iD#1646 iD#2678
+        window.setTimeout(() => {
+          this._changeset.openChangesetID = null;
+          callback(null, changeset);
+        }, 2500);
+
+        // Closing the changeset is optional, and we won't get a result.
+        // Only try to close the changeset if we're still talking to the same server.
+        if (this.connectionID === cid) {
+          this.closeChangeset(changeset, () => {});
+        }
+      });
+    });
   }
 
 
@@ -473,27 +554,23 @@ export class OsmService extends AbstractSystem {
       }
     }
 
-
     if (cached.length || !this.authenticated()) {
       callback(undefined, cached);
       if (!this.authenticated()) return;  // require auth
     }
 
-    for (const arr of utilArrayChunk(toLoad, 150)) {
-      this._oauth.xhr(
-        { method: 'GET', path: '/api/0.6/users.json?users=' + arr.join() },
-        this._wrapcb(done, this._connectionID)
-      );
-    }
-
-    function done(err, payload) {
+    const gotUsers = (err, results) => {
       if (err) return callback(err);
+      callback(undefined, results.data);
+    };
 
-      const options = { skipSeen: true };
-      return this._parseUserJSON(payload, (err, results) => {
-        if (err) return callback(err);
-        return callback(undefined, results.data);
-      }, options);
+    const options = { skipSeen: true };
+    for (const arr of utilArrayChunk(toLoad, 150)) {
+      this.loadFromAPI(
+        '/api/0.6/users.json?users=' + arr.join(),
+        gotUsers,
+        options
+      );
     }
   }
 
@@ -506,20 +583,17 @@ export class OsmService extends AbstractSystem {
       return callback(undefined, this._userCache.user[uid]);
     }
 
-    this._oauth.xhr(
-      { method: 'GET', path: `/api/0.6/user/${uid}.json` },
-      this._wrapcb(done, this._connectionID)
-    );
-
-    function done(err, payload) {
+    const gotUsers = (err, results) => {
       if (err) return callback(err);
+      callback(undefined, results.data[0]);
+    };
 
-      const options = { skipSeen: true };
-      return this._parseUserJSON(payload, (err, results) => {
-        if (err) return callback(err);
-        return callback(undefined, results.data[0]);
-      }, options);
-    }
+    const options = { skipSeen: true };
+    this.loadFromAPI(
+      `/api/0.6/user/${uid}.json`,
+      gotUsers,
+      options
+    );
   }
 
 
@@ -530,21 +604,18 @@ export class OsmService extends AbstractSystem {
       return callback(undefined, this._userDetails);
     }
 
-    this._oauth.xhr(
-      { method: 'GET', path: '/api/0.6/user/details.json' },
-      this._wrapcb(done, this._connectionID)
-    );
-
-    function done(err, payload) {
+    const gotUsers = (err, results) => {
       if (err) return callback(err);
+      this._userDetails = results.data[0];
+      callback(undefined, this._userDetails);
+    };
 
-      const options = { skipSeen: false };
-      return this._parseUserJSON(payload, (err, results) => {
-        if (err) return callback(err);
-        this._userDetails = results.data[0];
-        return callback(undefined, this._userDetails);
-      }, options);
-    }
+    const options = { skipSeen: false };
+    this.loadFromAPI(
+      `/api/0.6/user/details.json`,
+      gotUsers,
+      options
+    );
   }
 
 
@@ -555,51 +626,35 @@ export class OsmService extends AbstractSystem {
       return callback(undefined, this._userChangesets);
     }
 
-    this.userDetails(
-      this._wrapcb(gotDetails, this._connectionID)
-    );
-
-
-    function gotDetails(err, user) {
+    const gotChangesets = (err, results) => {
       if (err) return callback(err);
-
-      this._oauth.xhr(
-        { method: 'GET', path: `/api/0.6/changesets?user=${user.id}` },
-        this._wrapcb(done, this._connectionID)
-      );
-    }
-
-    function done(err, xml) {
-      if (err) return callback(err);
-
-      this._userChangesets = [];
-      for (const changeset of xml.getElementsByTagName('changeset')) {
-        const obj = { tags: this._getTags(changeset) };
-        if (obj.tags.comment) {   // only include changesets with comment
-          this._userChangesets.push(obj);
-        }
-      }
-
+      this._userChangesets = results.data;
       return callback(undefined, this._userChangesets);
-    }
+    };
+
+    const options = { skipSeen: false };
+    const gotUser = (err, user) => {
+      if (err) return callback(err);
+      this.loadFromAPI(
+        `/api/0.6/changesets.json?user=${user.id}`,
+        gotChangesets,
+        options
+      );
+    };
+
+    this.userDetails(gotUser);
   }
 
 
   // Fetch the status of the OSM API
   // GET /api/capabilities
   status(callback) {
-    const url = this._urlroot + '/api/capabilities';
-    const errback = this._wrapcb(done, this._connectionID);
-    d3_xml(url, { credentials: this._credentialsMode })
-      .then(xml => errback(null, xml) )
-      .catch(err => errback(err.message) );
 
-    function done(err, xml) {
+    const gotResult = (err, xml) => {
       if (err) {
         return callback(err, null);   // the status is null if no response could be retrieved
-      }
 
-      if (this._rateLimitError) {
+      } else if (this._rateLimitError) {
         return callback(this._rateLimitError, 'rateLimited');
 
       } else {
@@ -631,26 +686,27 @@ export class OsmService extends AbstractSystem {
         const val = apiStatus[0].getAttribute('api');
         return callback(undefined, val);
       }
-    }
+    };
+
+    const url = this._urlroot + '/api/capabilities';
+    const errback = this._wrapcb(gotResult);
+
+    fetch(url)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => errback(err));
   }
 
 
   // Calls `status` and emits an `apiStatusChange` event if the returned
   // status differs from the cached status.
   reloadApiStatus() {
-    // throttle to avoid unnecessary API calls
-    if (!this.throttledReloadApiStatus) {
-      const that = this;
-      this.throttledReloadApiStatus = _throttle(() => {
-        that.status((err, status) => {
-          if (status !== that._cachedApiStatus) {
-            that._cachedApiStatus = status;
-            that.emit('apiStatusChange', err, status);
-          }
-        });
-      }, 500);
-    }
-    this.throttledReloadApiStatus();
+    this.status((err, status) => {
+      if (status !== this._cachedApiStatus) {
+        this._cachedApiStatus = status;
+        this.emit('apiStatusChange', err, status);
+      }
+    });
   }
 
 
@@ -702,7 +758,7 @@ export class OsmService extends AbstractSystem {
       this.emit('loading');   // start the spinner
     }
 
-    const tileLoaded = (err, result) => {
+    const gotTile = (err, results) => {
       delete cache.inflight[tile.id];
       if (!err) {
         delete cache.toLoad[tile.id];
@@ -712,7 +768,7 @@ export class OsmService extends AbstractSystem {
         cache.rtree.insert(bbox);
       }
       if (callback) {
-        callback(err, Object.assign({}, result, { tile: tile }));
+        callback(err, Object.assign({}, results, { tile: tile }));
       }
       if (!this._hasInflightRequests(cache)) {
         this.emit('loaded');     // stop the spinner
@@ -724,7 +780,7 @@ export class OsmService extends AbstractSystem {
 
     cache.inflight[tile.id] = this.loadFromAPI(
       path + tile.wgs84Extent.toParam(),
-      tileLoaded,
+      gotTile,
       options
     );
   }
@@ -798,14 +854,14 @@ export class OsmService extends AbstractSystem {
       }
 
       const options = { skipSeen: false };
-      cache.inflight[tile.id] = that.loadFromAPI(
+      cache.inflight[tile.id] = this.loadFromAPI(
         path + tile.wgs84Extent.toParam(),
         function(err) {
           delete that._noteCache.inflight[tile.id];
           if (!err) {
             that._noteCache.loaded[tile.id] = true;
           }
-          deferLoadUsers();
+          // deferLoadUsers();
           that.emit('loadedNotes');
         },
         options
@@ -817,28 +873,15 @@ export class OsmService extends AbstractSystem {
   // Create a note
   // POST /api/0.6/notes?params
   postNoteCreate(note, callback) {
-    if (!this.authenticated()) {
-      return callback({ message: 'Not Authenticated', status: -3 }, note);
-    }
     if (this._noteCache.inflightPost[note.id]) {
       return callback({ message: 'Note update already inflight', status: -2 }, note);
+    } else if (!this.authenticated()) {
+      return callback({ message: 'Not Authenticated', status: -3 }, note);
     }
 
     if (!note.loc[0] || !note.loc[1] || !note.newComment) return;  // location & description required
 
-    const path = '/api/0.6/notes?' + utilQsString({
-      lon: note.loc[0],
-      lat: note.loc[1],
-      text: note.newComment
-    });
-
-    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
-      { method: 'POST', path: path },
-      this._wrapcb(done, this._connectionID)
-    );
-
-
-    function done(err, xml) {
+    const createdNote = (err, xml) => {
       delete this._noteCache.inflightPost[note.id];
       if (err) { return callback(err); }
 
@@ -853,7 +896,27 @@ export class OsmService extends AbstractSystem {
           return callback(undefined, results.data[0]);
         }
       }, options);
-    }
+    };
+
+    const errback = this._wrapcb(createdNote);
+    const resource = this._urlroot + '/api/0.6/notes?' +
+      utilQsString({ lon: note.loc[0], lat: note.loc[1], text: note.newComment });
+    const controller = new AbortController();
+    const options = { method: 'POST', signal: controller.signal };
+
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._noteCache.inflightPost[note.id] = controller;
   }
 
 
@@ -879,18 +942,7 @@ export class OsmService extends AbstractSystem {
       if (!note.newComment) return; // when commenting, comment required
     }
 
-    let path = `/api/0.6/notes/${note.id}/${action}`;
-    if (note.newComment) {
-      path += '?' + utilQsString({ text: note.newComment });
-    }
-
-    this._noteCache.inflightPost[note.id] = this._oauth.xhr(
-      { method: 'POST', path: path },
-      this._wrapcb(done, this._connectionID)
-    );
-
-
-    function done(err, xml) {
+    const updatedNote = (err, xml) => {
       delete this._noteCache.inflightPost[note.id];
       if (err) { return callback(err); }
 
@@ -912,7 +964,29 @@ export class OsmService extends AbstractSystem {
           return callback(undefined, results.data[0]);
         }
       }, options);
+    };
+
+    const errback = this._wrapcb(updatedNote);
+    let resource = this._urlroot + `/api/0.6/notes/${note.id}/${action}`;
+    if (note.newComment) {
+      resource += '?' + utilQsString({ text: note.newComment });
     }
+    const controller = new AbortController();
+    const options = { method: 'POST', signal: controller.signal };
+
+    this._oauth.fetch(resource, options)
+      .then(utilFetchResponse)
+      .then(result => errback(null, result))
+      .catch(err => {
+        this._changeset.inflight = null;
+        if (err.name === 'AbortError') return;  // ok
+        if (err.name === 'FetchError') {
+          errback(err);
+          return;
+        }
+      });
+
+    this._noteCache.inflightPost[note.id] = controller;
   }
 
 
@@ -995,7 +1069,7 @@ export class OsmService extends AbstractSystem {
         if (callback) callback(err);
         return;
       }
-      if (this.connectionID !== cid) {
+      if (this._connectionID !== cid) {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
@@ -1061,9 +1135,9 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  _abortRequest(controllerOrXHR) {
-    if (controllerOrXHR) {
-      controllerOrXHR.abort();
+  _abortRequest(controller) {
+    if (controller) {
+      controller.abort();
     }
   }
 
@@ -1198,30 +1272,38 @@ export class OsmService extends AbstractSystem {
     if (typeof json !== 'object') {
       json = JSON.parse(payload);
     }
-    if (!json.elements) {
+
+    // The payload may contain Elements, Users, or Changesets
+    const elements = json.elements ?? [];
+    const users = (json.user ? [json.user] : json.users) ?? [];
+    const changesets = json?.changesets || [];
+
+    if (!elements || !users || !changesets) {
       return callback({ message: 'No JSON', status: -1 });
     }
-    if (json.elements.some(el => el.type === 'error')) {
+    if (elements.some(el => el.type === 'error')) {
       return callback({ message: 'Partial JSON', status: -1 });
     }
 
+    // Defer parsing until later (todo: move all this to a worker)
     const handle = window.requestIdleCallback(() => {
       this._deferred.delete(handle);
 
       let results = { data: [], seenIDs: new Set() };
 
-      for (const child of json.elements) {
+      // Parse elements
+      for (const element of elements) {
         let parser;
-        if (child.type === 'node') {
+        if (element.type === 'node') {
           parser = this._parseNodeJSON;
-        } else if (child.type === 'way') {
+        } else if (element.type === 'way') {
           parser = this._parseWayJSON;
-        } else if (child.type === 'relation') {
+        } else if (element.type === 'relation') {
           parser = this._parseRelationJSON;
         }
         if (!parser) continue;
 
-        const uid = osmEntity.id.fromOSM(child.type, child.id);
+        const uid = osmEntity.id.fromOSM(element.type, element.id);
         results.seenIDs.add(uid);
 
         if (options.skipSeen) {
@@ -1229,72 +1311,41 @@ export class OsmService extends AbstractSystem {
           this._tileCache.seen[uid] = true;
         }
 
-        const parsed = parser(child, uid);
+        const parsed = parser(element, uid);
         if (parsed) {
           results.data.push(parsed);
         }
       }
 
-      callback(null, results);
-    });
-
-    this._deferred.add(handle);
-  }
-
-
-  /**
-   * _parseUserJSON
-   * @param payload
-   * @param callback
-   * @param options
-   */
-  _parseUserJSON(payload, callback, options) {
-    options = Object.assign({ skipSeen: true }, options);
-
-    if (!payload)  {
-      return callback({ message: 'No JSON', status: -1 });
-    }
-
-    let json = payload;
-    if (typeof json !== 'object') {
-      json = JSON.parse(payload);
-    }
-
-    if (!json.users && !json.user) {
-      return callback({ message: 'No JSON', status: -1 });
-    }
-
-    const objects = json.users || [json];
-
-    const handle = window.requestIdleCallback(() => {
-      this._deferred.delete(handle);
-
-      let results = { data: [], seenIDs: new Set() };
-
-      for (const obj of objects) {
-        const u = obj.user;
-        const uid = u.id?.toString();
+      // Parse users
+      for (const user of users) {
+        const uid = user.id?.toString();
         if (!uid) continue;
 
+        delete this._userCache.toLoad[uid];
         results.seenIDs.add(uid);
 
         if (options.skipSeen && this._userCache.user[uid]) {  // avoid reparsing a "seen" entity
-          delete this._userCache.toLoad[uid];
           continue;
         }
 
-        const user = {
+        const parsed = {
           id: uid,
-          display_name: u.display_name,
-          account_created: u.account_created,
-          image_url: u.img?.href,
-          changesets_count: u.changesets?.count?.toString() ?? '0',
-          active_blocks: u.blocks?.received?.active?.toString() ?? '0'
+          display_name: user.display_name,
+          account_created: user.account_created,
+          image_url: user.img?.href,
+          changesets_count: user.changesets?.count?.toString() ?? '0',
+          active_blocks: user.blocks?.received?.active?.toString() ?? '0'
         };
 
-        delete this._userCache.toLoad[uid];
-        this._userCache.user[uid] = user;
-        results.data.push(user);
+        this._userCache.user[uid] = parsed;
+        results.data.push(parsed);
+      }
+
+      // Parse changesets
+      for (const changeset of changesets) {
+        if (!changeset?.tags?.comment) continue;   // only include changesets with comment
+        results.data.push(changeset);
       }
 
       callback(null, results);
@@ -1302,6 +1353,7 @@ export class OsmService extends AbstractSystem {
 
     this._deferred.add(handle);
   }
+
 
 
   /**
@@ -1323,6 +1375,7 @@ export class OsmService extends AbstractSystem {
       return callback({ message: 'Partial XML', status: -1 });
     }
 
+    // Defer parsing until later (todo: move all this to a worker)
     const handle = window.requestIdleCallback(() => {
       this._deferred.delete(handle);
 
@@ -1552,8 +1605,14 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  _wrapcb(callback, cid) {
-    return (err, result) => {
+  // Wraps an API callback in some additional checks.
+  // Logout if we receive 400, 401, 403
+  // Raise an error if the connectionID has switched during the API call.
+  // @param  callback
+  //
+  _wrapcb(callback) {
+    const cid = this._connectionID;
+    return (err, results) => {
       if (err) {
         // 400 Bad Request, 401 Unauthorized, 403 Forbidden..
         if (err.status === 400 || err.status === 401 || err.status === 403) {
@@ -1561,11 +1620,11 @@ export class OsmService extends AbstractSystem {
         }
         return callback.call(this, err);
 
-      } else if (this.connectionID !== cid) {
+      } else if (this._connectionID !== cid) {
         return callback.call(this, { message: 'Connection Switched', status: -1 });
 
       } else {
-        return callback.call(this, err, result);
+        return callback.call(this, err, results);
       }
     };
   }

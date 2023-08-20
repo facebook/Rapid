@@ -5,7 +5,7 @@ import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertex
 import { Category, Collection, Field, Preset } from './lib';
 import { uiFields } from '../ui/fields';
 
-const VERBOSE = true;        // warn about v6 preset featues we don't support currently
+const VERBOSE = true;        // warn about v6 preset features we don't support currently
 const MAXRECENTS = 30;       // how many recents to store in localstorage
 const MAXRECENTS_SHOW = 6;   // how many recents to show on the preset list
 
@@ -22,7 +22,7 @@ export class PresetSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'presets';
-    this.dependencies = new Set(['data', 'l10n', 'locations', 'storage']);
+    this.dependencies = new Set(['data', 'l10n', 'locations', 'storage', 'urlhash']);
     this.geometries = ['point', 'vertex', 'line', 'area', 'relation'];
 
     // Create geometry fallbacks
@@ -74,10 +74,22 @@ export class PresetSystem extends AbstractSystem {
     }
 
     const dataLoaderSystem = this.context.systems.data;
-    const prerequisites = dataLoaderSystem.initAsync();
+    const urlHashSystem = this.context.systems.urlhash;
+    const prerequisites = Promise.all([
+      dataLoaderSystem.initAsync(),
+      urlHashSystem.initAsync()
+    ]);
 
     return this._initPromise = prerequisites
       .then(() => {
+        // If we received a subset of addable presetIDs specified in the url hash, save them.
+        const presetIDs = urlHashSystem.initialHashParams.get('presets');
+        if (presetIDs) {
+          const arr = presetIDs.split(',').map(s => s.trim()).filter(Boolean);
+          this.addablePresetIDs = new Set(arr);
+        }
+
+        // Fetch the preset data
         return Promise.all([
           dataLoaderSystem.getDataAsync('preset_categories'),
           dataLoaderSystem.getDataAsync('preset_defaults'),

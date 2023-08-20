@@ -19,7 +19,7 @@ const MAX_ISSUES = 1000;
 export function uiSectionValidationIssues(context, sectionID, severity) {
   const validator = context.systems.validator;
   const prefs = context.systems.storage;
-  const section = uiSection(sectionID, context)
+  const section = uiSection(context, sectionID)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)
     .disclosureContent(renderDisclosureContent);
@@ -229,7 +229,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
         }
         section.reRender();
       });
-    }, 1000)  // after map has stopped moving for 1sec
+    }, 1000, { leading: false, trailing: true })  // after map has stopped moving for 1sec
   );
 
   return section;

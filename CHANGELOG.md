@@ -35,6 +35,58 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.1.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.0)
+#### 2023-Aug-01
+
+#### :sparkles: new 3D inset Map!
+* [#988], [#991], [#994] Added a mapLibre-powered 3D inset map! :office: :bank:
+
+#### :bug: fixes:
+* [#1007] Places search has been fixed.
+* [#939] Added relation highlighting back!
+* [#983] Wireframe-mode polygons should be interactive once again.
+* [#984] Fixed the stitching of streetside image sequences.
+* [#997], [#1014] 'Find my location' should no longer clear the sidebar more than once.
+* [#1010] Tile Renderer occasionally stacktraces
+* [#1011] Map imagery source stays blank/unfilled
+* [#1009] Ways on different layers will no longer be flagged as :warning:s in the validator
+* [#1012] Default location for map is out-of-bounds
+
+#### :hammer: Development / Code Improvements
+* Renamed many 'core' classes to be Systems adopting a 'ThingCategory' (not 'CategoryThing') naming convention:
+  * coreContext :fast_forward: Context
+  * localizer :fast_forward: LocalizationSystem
+  * fileFetcher :fast_forward: DataLoaderSystem
+  * rendererFeatures :fast_forward: FilterSystem
+  * rendererImagery :fast_forward: ImagerySystem
+  * coreHistory :fast_forward: EditSystem
+  * coreUploader :fast_forward: UploaderSystem
+  * coreRapidContext :fast_forward: RapidSystem
+  * rendererPhotos :fast_forward: PhotoSystem
+  * urlhash :fast_forward: urlHashSystem
+  * rendererMap :fast_forward: MapSystem
+  * 3dMap :fast_forward: Map3dSystem
+  * etc...
+* All services have been renamed with 'Service' prefix- e.g. improveOSM :fast_forward: ServiceImproveOsm
+* Core classes and Services now use promises for ensuring upstream dependencies have already started.
+* Converted several more classes/files to ES6 Syntax.
+* Converted use of xhr and d3_fetch helpers to instead use fetch proper for data downloads
+* Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
+
+
+[#939]: https://github.com/facebook/Rapid/issues/939
+[#983]: https://github.com/facebook/Rapid/issues/983
+[#988]: https://github.com/facebook/Rapid/issues/988
+[#991]: https://github.com/facebook/Rapid/issues/991
+[#994]: https://github.com/facebook/Rapid/issues/994
+[#984]: https://github.com/facebook/Rapid/issues/984
+[#997]: https://github.com/facebook/Rapid/issues/997
+[#1014]: https://github.com/facebook/Rapid/issues/1014
+[#1009]: https://github.com/facebook/Rapid/issues/1009
+[#1010]: https://github.com/facebook/Rapid/issues/1010
+[#1011]: https://github.com/facebook/Rapid/issues/1011
+[#1012]: https://github.com/facebook/Rapid/issues/1012
+[#1007]: https://github.com/facebook/Rapid/issues/1007
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
 #### 2023-May-01

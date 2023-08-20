@@ -3,11 +3,10 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapInteractionOptions(context) {
-  const prefs = context.systems.storage;
-  const section = uiSection('map-interaction', context)
+  const storage = context.systems.storage;
+  const section = uiSection(context, 'map-interaction')
     .label(context.tHtml('preferences.map_interaction.title'))
-    .disclosureContent(renderDisclosureContent)
-    .expandedByDefault(true);
+    .disclosureContent(renderDisclosureContent);
 
   const MOUSE_WHEEL_OPTIONS = ['auto', 'zoom', 'pan'];
 
@@ -34,13 +33,13 @@ export function uiSectionMapInteractionOptions(context) {
     container
       .merge(enter)
       .selectAll('.mouse-wheel-options-list')
-      .call(drawListItems, MOUSE_WHEEL_OPTIONS, 'radio', 'mouse_wheel', setWheelOption, isActiveWheelOption);
+      .call(drawListItems);
   }
 
 
-  function drawListItems(selection, data, type, name, onChangeFn, isActiveFn) {
+  function drawListItems(selection) {
     let items = selection.selectAll('li')
-      .data(data);
+      .data(MOUSE_WHEEL_OPTIONS);
 
     // Exit
     items.exit()
@@ -50,7 +49,7 @@ export function uiSectionMapInteractionOptions(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => context.t(`preferences.map_interaction.${name}.${d}.tooltip`))
+        .title(d => context.t(`preferences.map_interaction.mouse_wheel.${d}.tooltip`))
         .placement('top')
       );
 
@@ -59,30 +58,30 @@ export function uiSectionMapInteractionOptions(context) {
 
     label
       .append('input')
-      .attr('type', type)
-      .attr('name', name)
-      .on('change', onChangeFn);
+      .attr('type', 'radio')
+      .attr('name', 'mouse_wheel')
+      .on('change', setWheelOption);
 
     label
       .append('span')
-      .text(d => context.t(`preferences.map_interaction.${name}.${d}.title`));
+      .text(d => context.t(`preferences.map_interaction.mouse_wheel.${d}.title`));
 
     // Update
     items.merge(enter)
-      .classed('active', isActiveFn)
+      .classed('active', isActiveWheelOption)
       .selectAll('input')
-      .property('checked', isActiveFn)
+      .property('checked', isActiveWheelOption)
       .property('indeterminate', false);
   }
 
 
   function isActiveWheelOption(d) {
-    const curr = prefs.getItem('prefs.mouse_wheel.interaction') ?? 'auto';
+    const curr = storage.getItem('prefs.mouse_wheel.interaction') || 'auto';
     return curr === d;
   }
 
   function setWheelOption(d3_event, d) {
-    prefs.setItem('prefs.mouse_wheel.interaction', d);
+    storage.setItem('prefs.mouse_wheel.interaction', d);
     section.reRender();
   }
 

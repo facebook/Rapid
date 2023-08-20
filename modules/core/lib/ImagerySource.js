@@ -1,7 +1,8 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
-import { json as d3_json } from 'd3-fetch';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import { geoSphericalDistance } from '@rapid-sdk/math';
+
+import { utilFetchResponse } from '../../util';
 
 
 /**
@@ -86,11 +87,6 @@ export class ImagerySource {
     return this._id === 'mapbox_locator_overlay';
   }
 
-  // hides a source from the list, but leaves it available for use
-  isHidden() {
-    return this._id === 'DigitalGlobe-Premium-vintage' || this._id === 'DigitalGlobe-Standard-vintage';
-  }
-
   copyrightNotices() {
     /* noop */
   }
@@ -170,7 +166,7 @@ export class ImagerySource {
           case 'wkid':
             return projection.replace(/^EPSG:/, '');
           case 'bbox':
-            // WMS 1.3 flips x/y for some coordinate systems including EPSG:4326 - #7557
+            // WMS 1.3 flips x/y for some coordinate systems including EPSG:4326 - iD#7557
             // The CRS parameter implies version 1.3 (prior versions use SRS)
             if (projection === 'EPSG:4326' && /VERSION=1.3|CRS={proj}/.test(this._template.toUpperCase())) {
               return maxXminY.y + ',' + minXmaxY.x + ',' + minXmaxY.y + ',' + maxXminY.x;
@@ -190,7 +186,7 @@ export class ImagerySource {
         }
       });
 
-     } else if (this.type === 'tms') {
+    } else if (this.type === 'tms') {
       const isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
       result = result
         .replace('{x}', coord[0])
@@ -294,7 +290,7 @@ export class ImagerySourceCustom extends ImagerySource {
   }
 
   get imageryUsed() {
-    // sanitize personal connection tokens - #6801
+    // sanitize personal connection tokens - iD#6801
     let cleaned = this._template;
 
     // from query string parameters
@@ -357,7 +353,7 @@ export class ImagerySourceEsri extends ImagerySource {
     super(context, src);
 
     // In addition to using the tilemap at zoom level 20, overzoom real tiles
-    //  #4327 (deprecated technique, but it works)
+    //  iD#4327 (deprecated technique, but it works)
     if (!/blankTile/.test(this._template)) {
       this._template += '?blankTile=false';
     }
@@ -388,7 +384,8 @@ export class ImagerySourceEsri extends ImagerySource {
     let tilemapUrl = dummyUrl.replace(/tile\/[0-9]+\/[0-9]+\/[0-9]+\?blankTile=false/, 'tilemap') + '/' + z + '/' + y + '/' + x + '/8/8';
 
     // make the request and inspect the response from the tilemap server
-    d3_json(tilemapUrl)
+    fetch(tilemapUrl)
+      .then(utilFetchResponse)
       .then(tilemap => {
         if (!tilemap) {
           throw new Error('Unknown Error');
@@ -474,7 +471,8 @@ export class ImagerySourceEsri extends ImagerySource {
 
     } else {
       this._inflight[tileID] = true;
-      d3_json(url)
+      fetch(url)
+        .then(utilFetchResponse)
         .then(result => {
           delete this._inflight[tileID];
 

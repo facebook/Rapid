@@ -305,10 +305,11 @@ export class SelectBehavior extends AbstractBehavior {
 
     // Determine what we clicked on and switch modes..
     const target = eventData.target;
-    let datum = target && target.data;
+    let data = target?.data;
+    let dataID = target?.dataID;
 
-    // If we're clicking on something, we want to pause doubleclick zooms
-    if (datum) {
+    // If we're clicking on something real, we want to pause doubleclick zooms
+    if (data) {
       const behavior = this.context.behaviors['map-interaction'];
       behavior.doubleClickEnabled = false;
       window.setTimeout(() => behavior.doubleClickEnabled = true, 500);
@@ -316,16 +317,15 @@ export class SelectBehavior extends AbstractBehavior {
 
     // Clicked a midpoint..
     // Treat a click on a midpoint as if clicking on its parent way
-    if (datum && datum.type === 'midpoint') {
-      datum = datum.way;
+    if (data?.type === 'midpoint') {
+      data = data.way;
+      dataID = data.id;
     }
 
     // Clicked on nothing
-    if (!datum) {
+    if (!data) {
       context.systems.photos.selectPhoto(null);
-
-      const mode = context.mode();
-      if (mode.id !== 'browse' && !this._multiSelection.size) {
+      if (context.mode?.id !== 'browse' && !this._multiSelection.size) {
         context.enter('browse');
       }
       return;
@@ -333,70 +333,63 @@ export class SelectBehavior extends AbstractBehavior {
 
     // Clicked a non-OSM feature..
     if (
-      datum.__fbid__ || // Clicked a Rapid feature..
-      datum.__featurehash__ || // Clicked Custom Data (e.g. gpx track)
-      datum instanceof osmNote || // Clicked an OSM Note...
-      datum instanceof QAItem // Clicked a QA Item (keepright, osmose, improveosm)...
+      data.__fbid__ ||            // Clicked a Rapid feature..
+      data.__featurehash__ ||     // Clicked Custom Data (e.g. gpx track)
+      data instanceof osmNote ||  // Clicked an OSM Note...
+      data instanceof QAItem      // Clicked a QA Item (keepright, osmose, improveosm)...
     ) {
-      const selection = new Map().set(datum.id, datum);
+      const selection = new Map().set(dataID, data);
       context.enter('select', { selection: selection });
       return;
     }
 
     // Clicked an OSM feature..
-    if (datum instanceof osmEntity) {
+    if (data instanceof osmEntity) {
       let selectedIDs = context.selectedIDs();
 
       if (!isMultiselect) {
-        if (
-          !this._showsMenu ||
-          selectedIDs.length <= 1 ||
-          selectedIDs.indexOf(datum.id) === -1
-        ) {
+        if (!this._showsMenu || selectedIDs.length <= 1 || !selectedIDs.includes(dataID)) {
           // Always re-enter select mode even if the entity is already
           // selected since listeners may expect `context.enter` events,
           // e.g. in the walkthrough
-          context.enter('select-osm', { selectedIDs: [datum.id] });
+          context.enter('select-osm', { selectedIDs: [dataID] });
         }
 
       } else {
-        if (selectedIDs.indexOf(datum.id) !== -1) {
-          // clicked entity is already in the selectedIDs list..
+        if (selectedIDs.includes(dataID)) {   // already in the selectedIDs..
           if (!this._showsMenu) {
-            // deselect clicked entity, then reenter select mode or return to browse mode..
-            selectedIDs = selectedIDs.filter(id => id !== datum.id);
+            selectedIDs = selectedIDs.filter(id => id !== dataID);      // deselect it..
             context.enter('select-osm', { selectedIDs: selectedIDs });
           }
-        } else {
-          // clicked entity is not in the selected list, add it..
-          selectedIDs = selectedIDs.concat([datum.id]);
+        } else {                         // not already in selectedIDs...
+          selectedIDs.push(dataID);    // select it..
           context.enter('select-osm', { selectedIDs: selectedIDs });
         }
       }
     }
 
     // Clicked on a photo, so open / refresh the viewer's pic
-    if (datum.captured_at) {
+    if (data.captured_at) {
       // Determine the layer that was clicked on, obtain its service.
-      const layerID = target.layer.id;
-      context.systems.map.centerEase(datum.loc);
-      context.systems.photos.selectPhoto(layerID, datum.id);
+      const layerID = target.layerID;
+      context.systems.map.centerEase(data.loc);
+      context.systems.photos.selectPhoto(layerID, dataID);
 //      // No mode change event here, just manually tell the renderer to select it, for now
 //      const scene = context.scene();
 //      scene.clearClass('selected');
-//      scene.classData(layerID, datum.id, 'selected');
+//      scene.classData(layerID, dataID, 'selected');
     }
 
     // Clicked on a Mapillary object detection or traffic sign..
     // Open the Mapillary viewer with an image showing that object/sign
-    if (datum.first_seen_at) {
+    if (data.first_seen_at) {
       const service = context.services.mapillary;
       if (!service?.started) return;
 
       context.systems.map.centerEase(event.loc);
       const selectedImageID = service.getActiveImage() && service.getActiveImage().id;
 
-      service.getDetectionsAsync(datum.id)
+      service.getDetectionsAsync(dataID)
         .then(detections => {
           if (!detections.length) return;
 
@@ -437,6 +430,7 @@ export class SelectBehavior extends AbstractBehavior {
       this._doContextMenu();
     }
   }
+
 
   /**
    * _doDoubleClick
@@ -504,8 +498,8 @@ export class SelectBehavior extends AbstractBehavior {
 
     } else {                 // menu is off, toggle it on
       // Only attempt to display the context menu if we're focused on a non-Rapid OSM Entity.
-        this._showsMenu = true;
-        context.systems.ui.showEditMenu(eventData.coord);
+      this._showsMenu = true;
+      context.systems.ui.showEditMenu(eventData.coord);
     }
   }
 

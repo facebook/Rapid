@@ -17,8 +17,7 @@ export function uiToolSave(context) {
   let _tooltip = null;
 
   function isSaving() {
-    const mode = context.mode();
-    return mode && mode.id === 'save';
+    return context.mode?.id === 'save';
   }
 
   function isDisabled() {

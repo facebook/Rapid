@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import * as countryCoder from '@rapideditor/country-coder';
+import { iso1A2Code } from '@rapideditor/country-coder';
 
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { uiIcon } from '../icon';
@@ -172,7 +172,7 @@ export function uiFieldText(context, uifield) {
     if (input.empty() || !Object.keys(_phoneFormats).length) return;
 
     const extent = uifield.entityExtent;
-    const countryCode = extent && countryCoder.iso1A2Code(extent.center());
+    const countryCode = extent && iso1A2Code(extent.center());
     const format = countryCode && _phoneFormats[countryCode.toLowerCase()];
     if (format) input.attr('placeholder', format);
   }

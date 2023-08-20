@@ -7,7 +7,7 @@ import { uiSection } from '../section';
 export function uiSectionValidationStatus(context) {
   const validator = context.systems.validator;
 
-  const section = uiSection('issues-status', context)
+  const section = uiSection(context, 'issues-status')
     .shouldDisplay(sectionShouldDisplay)
     .content(renderContent);
 

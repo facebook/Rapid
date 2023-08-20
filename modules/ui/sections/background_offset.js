@@ -9,10 +9,9 @@ export function uiSectionBackgroundOffset(context) {
   const l10n = context.systems.l10n;
   const imagerySystem = context.systems.imagery;
 
-  const section = uiSection('background-offset', context)
+  const section = uiSection(context, 'background-offset')
     .label(l10n.tHtml('background.fix_misalignment'))
-    .disclosureContent(renderDisclosureContent)
-    .expandedByDefault(false);
+    .disclosureContent(renderDisclosureContent);
 
   const DIRECTIONS = [
     ['top', [0, -0.5]],

@@ -33,28 +33,28 @@ export function uiStatus(context) {
               d3_event.preventDefault();
               osm.authenticate();
             });
+
         } else {
+          // don't allow retrying too rapidly
+          const throttledRetry = _throttle(() => {
+            // try loading the visible tiles
+            context.loadTiles(context.projection);
+            // manually reload the status too in case all visible tiles were already loaded
+            osm.reloadApiStatus();
+          }, 2000);
 
-        // don't allow retrying too rapidly
-        const throttledRetry = _throttle(() => {
-          // try loading the visible tiles
-          context.loadTiles(context.projection);
-          // manually reload the status too in case all visible tiles were already loaded
-          osm.reloadApiStatus();
-        }, 2000);
-
-        // eslint-disable-next-line no-warning-comments
-        // TODO: nice messages for different error types
-        selection
-          .html(context.tHtml('osm_api_status.message.error') + ' ')
-          .append('a')
-          .attr('href', '#')
-          // let the user manually retry their connection directly
-          .html(context.tHtml('osm_api_status.retry'))
-          .on('click.retry', d3_event => {
-            d3_event.preventDefault();
-            throttledRetry();
-          });
+          // eslint-disable-next-line no-warning-comments
+          // TODO: nice messages for different error types
+          selection
+            .html(context.tHtml('osm_api_status.message.error') + ' ')
+            .append('a')
+            .attr('href', '#')
+            // let the user manually retry their connection directly
+            .html(context.tHtml('osm_api_status.retry'))
+            .on('click.retry', d3_event => {
+              d3_event.preventDefault();
+              throttledRetry();
+            });
         }
 
       } else if (apiStatus === 'readonly') {

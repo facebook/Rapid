@@ -1,9 +1,9 @@
-import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@rapid-sdk/math';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { Graph, Tree } from '../core/lib';
 import { osmEntity, osmNode, osmWay } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const APIROOT = 'https://mapwith.ai/maps/ml_roads';
@@ -90,34 +90,27 @@ export class MapWithAIService extends AbstractSystem {
   }
 
 
-
-  graph(datasetID) {
-    const ds = this._datasets[datasetID];
-    return ds?.graph;
-  }
-
-
-  intersects(datasetID, extent) {
+  /**
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @param   {string}  datasetID - datasetID to get data for
+   * @return  {Array}   Array of data (OSM Entities)
+   */
+  getData(datasetID) {
     const ds = this._datasets[datasetID];
     if (!ds || !ds.tree || !ds.graph) return [];
+
+    const extent = this.context.systems.map.extent();
     return ds.tree.intersects(extent, ds.graph);
   }
 
 
-  merge(datasetID, entities) {
-    const ds = this._datasets[datasetID];
-    if (!ds || !ds.tree || !ds.graph) return;
-    ds.graph.rebase(entities, [ds.graph], false);
-    ds.tree.rebase(entities, false);
-  }
-
-
-  toggle(val) {
-    this._off = !val;
-  }
-
-
-  loadTiles(datasetID, projection) {
+  /**
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   * @param   {string}  datasetID - datasetID to load tiles for
+   */
+  loadTiles(datasetID) {
     if (this._off) return;
 
     let ds = this._datasets[datasetID];
@@ -136,6 +129,7 @@ export class MapWithAIService extends AbstractSystem {
     }
 
     const locationSystem = this.context.systems.locations;
+    const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -158,8 +152,10 @@ export class MapWithAIService extends AbstractSystem {
         continue;
       }
 
+      const resource = this._tileURL(ds, tile.wgs84Extent);
       const controller = new AbortController();
-      d3_xml(this._tileURL(ds, tile.wgs84Extent), { signal: controller.signal })
+      fetch(resource, { signal: controller.signal })
+        .then(utilFetchResponse)
         .then(xml => {
           delete cache.inflight[tile.id];
           if (!xml) return;
@@ -180,6 +176,25 @@ export class MapWithAIService extends AbstractSystem {
 
       cache.inflight[tile.id] = controller;
     }
+  }
+
+
+  graph(datasetID) {
+    const ds = this._datasets[datasetID];
+    return ds?.graph;
+  }
+
+
+  merge(datasetID, entities) {
+    const ds = this._datasets[datasetID];
+    if (!ds || !ds.tree || !ds.graph) return;
+    ds.graph.rebase(entities, [ds.graph], false);
+    ds.tree.rebase(entities, false);
+  }
+
+
+  toggle(val) {
+    this._off = !val;
   }
 
 

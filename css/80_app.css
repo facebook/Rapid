@@ -2678,229 +2678,207 @@ img.tag-reference-wiki-image {
 }
 
 
-/* OSM Note / QA Editors
+/* OSM Note / QA Editors / Custom Data Editor
 ------------------------------------------------------- */
+.data-header,
 .note-header,
 .qa-header {
-    background-color: #f6f6f6;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
+  background-color: #f6f6f6;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
 }
 
+.data-header-icon,
 .note-header-icon,
 .qa-header-icon {
-    background-color: #fff;
-    padding: 10px;
-    flex: 0 0 auto;
-    position: relative;
-    width: 60px;
-    height: 60px;
-    border-right: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
+  background-color: #fff;
+  padding: 10px;
+  flex: 0 0 auto;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-right: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
 }
+.ideditor[dir='rtl'] .data-header-icon,
 .ideditor[dir='rtl'] .note-header-icon,
 .ideditor[dir='rtl'] .qa-header-icon {
-    border-right: unset;
-    border-left: 1px solid #ccc;
-    border-radius: 0 5px 5px 0;
+  border-right: unset;
+  border-left: 1px solid #ccc;
+  border-radius: 0 5px 5px 0;
 }
 
+.data-header-icon .icon-wrap,
 .note-header-icon .icon-wrap,
 .qa-header-icon .icon-wrap {
-    position: absolute;
-    top: 0px;
+  position: absolute;
+  top: 0px;
 }
 
+.preset-icon-28 {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  margin: auto;
+}
+.preset-icon-28 .icon {
+  width: 28px;
+  height: 28px;
+}
+
+.data-header-label,
 .note-header-label,
 .qa-header-label {
-    background-color: #f6f6f6;
-    padding: 0 15px;
-    flex: 1 1 100%;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 0 5px 5px 0;
+  background-color: #f6f6f6;
+  padding: 0 15px;
+  flex: 1 1 100%;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 0 5px 5px 0;
 }
+.ideditor[dir='rtl'] .data-header-label,
 .ideditor[dir='rtl'] .note-header-label,
 .ideditor[dir='rtl'] .qa-header-label {
-    border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;
 }
 
 .note-category {
-    margin: 20px 0px;
+  margin: 20px 0px;
 }
 
 .comments-container {
-    background: #ececec;
-    padding: 1px 10px;
-    border-radius: 8px;
-    margin-top: 20px;
+  background: #ececec;
+  padding: 1px 10px;
+  border-radius: 8px;
+  margin-top: 20px;
 }
 
 .comment {
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin: 10px auto;
-    display: flex;
-    flex-flow: row nowrap;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: 10px auto;
+  display: flex;
+  flex-flow: row nowrap;
 }
 .comment-avatar {
-    padding: 10px;
-    flex: 0 0 auto;
+  padding: 10px;
+  flex: 0 0 auto;
 }
 .comment-avatar .icon.comment-avatar-icon {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 20px;
 }
 .comment-main {
-    padding: 10px 10px 10px 0;
-    flex: 1 1 100%;
-    flex-flow: column nowrap;
-    overflow: hidden;
-    overflow-wrap: break-word;
+  padding: 10px 10px 10px 0;
+  flex: 1 1 100%;
+  flex-flow: column nowrap;
+  overflow: hidden;
+  overflow-wrap: break-word;
 }
 .ideditor[dir='rtl'] .comment-main {
-    padding: 10px 0 10px 10px;
+  padding: 10px 0 10px 10px;
 }
 
 .comment-metadata {
-    flex-flow: row nowrap;
-    justify-content: space-between;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }
 .comment-author {
-    font-weight: bold;
-    color: #333;
+  font-weight: bold;
+  color: #333;
 }
 .comment-date {
-    color: #aaa;
+  color: #aaa;
 }
 .comment-text {
-    color: #333;
-    margin-top: 10px;
-    overflow-y: auto;
-    max-height: 250px;
+  color: #333;
+  margin-top: 10px;
+  overflow-y: auto;
+  max-height: 250px;
 }
 .comment-text::-webkit-scrollbar {
-    border-left: none;
+  border-left: none;
 }
 
 .note-save,
 .qa-save {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 .qa-details-container {
-    background: #ececec;
-    padding: 10px;
-    margin-top: 20px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
+  background: #ececec;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
 }
 .qa-details-description-text::first-letter {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 .ideditor[dir='rtl'] .qa-details-description-text::first-letter {
-    text-transform: none;  /* #5877 */
+  text-transform: none;  /* iD#5877 */
 }
 .qa-details-subsection h4 {
-    padding-bottom: 2px;
+  padding-bottom: 2px;
 }
 .qa-details-subsection:not(:last-child) {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .qa-details-subsection:empty {
-    display: none;
+  display: none;
 }
 
 .note-save .new-comment-input,
 .qa-save .new-comment-input {
-    width: 100%;
-    height: 100px;
-    max-height: 300px;
-    min-height: 100px;
+  width: 100%;
+  height: 100px;
+  max-height: 300px;
+  min-height: 100px;
 }
 
 .note-save .detail-section,
 .qa-save .detail-section {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .note-report {
-    float: right;
+  float: right;
 }
 
 .qa-header-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .qa-header-icon .qaItem {
   scale: 1.8;
 }
 
+/* data editor contains a custom raw-tag-editor without info/add/delete buttons */
+.data-tag-editor {
+  padding: 20px;
+}
+.data-tag-editor button.add-tag,
+.data-tag-editor .tag-row button {
+  display: none;
+}
+.data-tag-editor .tag-row .key-wrap,
+.data-tag-editor .tag-row .value-wrap {
+  width: 50%;
+}
 
-/* Custom Data Editor
+
+/* Over Map
 ------------------------------------------------------- */
-.data-header {
-    background-color: #f6f6f6;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-}
-
-.data-header-icon {
-    background-color: #fff;
-    padding: 10px;
-    flex: 0 0 auto;
-    position: relative;
-    width: 60px;
-    height: 60px;
-    border-right: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-}
-.ideditor[dir='rtl'] .data-header-icon {
-    border-right: unset;
-    border-left: 1px solid #ccc;
-    border-radius: 0 5px 5px 0;
-}
-
-.data-header-icon .icon-wrap {
-    position: absolute;
-    top: 0px;
-}
-
-.data-header-label {
-    background-color: #f6f6f6;
-    padding: 0 15px;
-    flex: 1 1 100%;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 0 5px 5px 0;
-}
-.ideditor[dir='rtl'] .data-header-label {
-    border-radius: 5px 0 0 5px;
-}
-
-/* custom data editor - no info/delete buttons */
-.data-editor.raw-tag-editor .tag-row button {
-    display: none;
-}
-.data-editor.raw-tag-editor .tag-row .key-wrap,
-.data-editor.raw-tag-editor .tag-row .value-wrap {
-    width: 50%;
-}
-
-
 .over-map {
     position: relative;
     height: 100%;
@@ -4708,7 +4686,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     padding: 20px;
     border-bottom: 1px solid #ccc;
 }
-.modal-section p:not(:last-of-type) {
+.modal-section p:not(:last-child) {
     padding-bottom: 20px;
 }
 .modal-section h4 {
@@ -4974,33 +4952,27 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 
-/* Settings Modals
+/* Settings Modals (custom background, custom data)
 ------------------------------------------------------- */
 .settings-modal textarea {
-    height: 70px;
-    width: 100%;
+  height: 70px;
+  width: 100%;
 }
 
-.settings-custom-background .instructions-template {
-    margin-bottom: 20px;
-}
-.settings-custom-background .instructions-template p {
-    margin-bottom: 0;
-}
-.settings-custom-background .instructions-template ul {
-    padding-bottom: 20px;
-}
-.settings-custom-background .instructions-template ul li {
-    list-style-type: disc;
-    list-style-position: inside;
+.modal-section .instructions-template p {
+  padding-bottom: 0px;
 }
 
-.settings-custom-data .instructions-url {
-    margin-bottom: 10px;
+.modal-section .instructions-template {
+  margin-bottom: 20px;
 }
-.settings-custom-data .field-file,
-.settings-custom-data .instructions-template {
-    margin-bottom: 20px;
+.modal-section .instructions-template li {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.settings-custom-data .field-file {
+  margin-bottom: 20px;
 }
 
 

@@ -1,4 +1,5 @@
 import { AbstractSystem } from './AbstractSystem';
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -127,14 +128,7 @@ export class DataLoaderSystem extends AbstractSystem {
     let prom = this._inflight[url];
     if (!prom) {
       this._inflight[url] = prom = fetch(url)
-        .then(response => {
-          // fetch in PhantomJS tests may return ok=false and status=0 even if it's okay
-          if ((!response.ok && response.status !== 0) || !response.json) {
-            throw new Error(response.status + ' ' + response.statusText);
-          }
-          if (response.status === 204 || response.status === 205) return;  // No Content, Reset Content
-          return response.json();
-        })
+        .then(utilFetchResponse)
         .then(result => {
           delete this._inflight[url];
           if (!result) {

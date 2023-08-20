@@ -121,7 +121,7 @@ export function uiIntro(context, skipToRapid) {
     edits.setCheckpoint('initial');
 
     // Setup imagery
-    const introSource = imagery.findSource(INTRO_IMAGERY) || imagery.findSource('Bing');
+    const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
     imagery.baseLayerSource(introSource);
     original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.brightness = 1;

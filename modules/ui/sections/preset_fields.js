@@ -8,7 +8,7 @@ import { utilRebind } from '../../util';
 
 
 export function uiSectionPresetFields(context) {
-  let section = uiSection('preset-fields', context)
+  let section = uiSection(context, 'preset-fields')
     .label(context.tHtml('inspector.fields'))
     .disclosureContent(renderDisclosureContent);
 

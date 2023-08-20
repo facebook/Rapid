@@ -1,10 +1,10 @@
-import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd} from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { QAItem } from '../osm';
+import { utilFetchResponse } from '../util';
 
 
 const KEEPRIGHT_API = 'https://www.keepright.at';
@@ -115,17 +115,29 @@ export class KeepRightService extends AbstractSystem {
 
 
   /**
-   * loadIssues
-   * KeepRight API:  http://osm.mueschelsoft.de/keepright/interfacing.php
-   * @param  projection
+   * getData
+   * Get already loaded data that appears in the current map view
+   * @return  {Array}  Array of data
    */
-  loadIssues(projection) {
+  getData() {
+    const extent = this.context.systems.map.extent();
+    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+  }
+
+
+  /**
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
+   * KeepRight API:  http://osm.mueschelsoft.de/keepright/interfacing.php
+   */
+  loadTiles() {
     const options = {
       format: 'geojson',
       ch: KR_RULES
     };
 
     // determine the needed tiles to cover the view
+    const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -142,7 +154,8 @@ export class KeepRightService extends AbstractSystem {
 
       this._cache.inflightTile[tile.id] = controller;
 
-      d3_json(url, { signal: controller.signal })
+      fetch(url, { signal: controller.signal })
+        .then(utilFetchResponse)
         .then(data => {
           delete this._cache.inflightTile[tile.id];
           this._cache.loadedTile[tile.id] = true;
@@ -273,7 +286,8 @@ export class KeepRightService extends AbstractSystem {
 
     // Since this is expected to throw an error just continue as if it worked
     // (worst case scenario the request truly fails and issue will show up if Rapid restarts)
-    d3_json(url, { signal: controller.signal })
+    fetch(url, { signal: controller.signal })
+      .then(utilFetchResponse)
       .finally(() => {
         delete this._cache.inflightPost[d.id];
 
@@ -292,22 +306,6 @@ export class KeepRightService extends AbstractSystem {
 
         if (callback) callback(null, d);
       });
-  }
-
-
-  /**
-   * getItems
-   * Get all cached QAItems covering the viewport
-   * @param   projection
-   * @return  Array
-   */
-  getItems(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-
-    return this._cache.rtree.search(bbox).map(d => d.data);
   }
 
 

@@ -6,21 +6,33 @@ import { utilRebind } from '../util/rebind';
 import { uiToggle } from './toggle';
 
 
-export function uiDisclosure(context, key, expandedDefault) {
-  const prefs = context.systems.storage;
+// A Disclosure consists of a toggleable Label and Content
+// Clicking on the label toggles the visibility of the content below it.
+//
+//   > Label     V Label
+//               Content
+//
+export function uiDisclosure(context, key) {
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
   const dispatch = d3_dispatch('toggled');
-  let _expanded;
+
+  let _isExpanded = true;        // by default, disclosures start out expanded
+  let _checkPreference = true;   // by default, consider user's preference for whether it should be expanded
+  let _expandOverride;           // expand can be overrided (for example, raw tag editor when it really needs to be open)
   let _label = utilFunctor('');
-  let _updatePreference = true;
   let _content = function () {};
 
 
-  let disclosure = function(selection) {
-    if (_expanded === undefined || _expanded === null) {
-      // loading _expanded here allows it to be reset by calling `disclosure.expanded(null)`
-      const preference = prefs.getItem(`disclosure.${key}.expanded`);
-      _expanded = preference === null ? !!expandedDefault : (preference === 'true');
+  let disclosure = function render(selection) {
+    if (_checkPreference) {   // does user's preference override _isExpanded
+      const preferExpanded = storage.getItem(`disclosure.${key}.expanded`) || 'true';
+      _isExpanded = (preferExpanded === 'true');
     }
+    if (_expandOverride !== undefined) {
+      _isExpanded = _expandOverride;
+    }
+
 
     let hideToggle = selection.selectAll(`.hide-toggle-${key}`)
       .data([0]);
@@ -41,14 +53,14 @@ export function uiDisclosure(context, key, expandedDefault) {
       .merge(hideToggle);
 
     hideToggle
-      .on('click', toggle)
-      .classed('expanded', _expanded);
+      .on('click', _onClick)
+      .classed('expanded', _isExpanded);
 
     hideToggle.selectAll('.hide-toggle-text')
       .html(_label());
 
-    const isRTL = context.systems.l10n.isRTL();
-    const icon = _expanded ? 'down' : isRTL ? 'backward' : 'forward';
+    const isRTL = l10n.isRTL();
+    const icon = _isExpanded ? 'down' : isRTL ? 'backward' : 'forward';
     hideToggle.selectAll('.hide-toggle-icon > use')
       .attr('xlink:href', `#rapid-icon-${icon}`);
 
@@ -61,59 +73,68 @@ export function uiDisclosure(context, key, expandedDefault) {
       .append('div')
       .attr('class', `disclosure-wrap disclosure-wrap-${key}`)
       .merge(wrap)
-      .classed('hide', !_expanded);
+      .classed('hide', !_isExpanded);
 
-    if (_expanded) {
+    if (_isExpanded) {
       wrap
         .call(_content);
     }
 
 
-    function toggle(d3_event) {
+    function _onClick(d3_event) {
       d3_event.preventDefault();
-      _expanded = !_expanded;
+      _isExpanded = !_isExpanded;
 
-      if (_updatePreference) {
-        prefs.setItem(`disclosure.${key}.expanded`, _expanded);
+      // Only update the expanded preference if it's not been overrided
+      if (_checkPreference && _expandOverride === undefined) {
+        storage.setItem(`disclosure.${key}.expanded`, _isExpanded);
       }
+      _expandOverride = undefined;  // reset this flag here, as the user has interacted with it
 
       hideToggle
-        .classed('expanded', _expanded);
+        .classed('expanded', _isExpanded);
 
-      const icon = _expanded ? 'down' : isRTL ? 'backward' : 'forward';
+      const icon = _isExpanded ? 'down' : isRTL ? 'backward' : 'forward';
       hideToggle.selectAll('.hide-toggle-icon > use')
         .attr('xlink:href', `#rapid-icon-${icon}`);
 
       wrap
-        .call(uiToggle(_expanded));
+        .call(uiToggle(_isExpanded));
 
-      if (_expanded) {
+      if (_isExpanded) {
         wrap
           .call(_content);
       }
 
-      dispatch.call('toggled', this, _expanded);
+      dispatch.call('toggled', this, _isExpanded);
     }
+  };
+
+
+  disclosure.expanded = (val) => {
+    if (!arguments.length) return _isExpanded;
+    _isExpanded = val;
+    return disclosure;
+  };
+
+
+  disclosure.checkPreference = (val) => {
+    if (!arguments.length) return _checkPreference;
+    _checkPreference = val;
+    return disclosure;
+  };
+
+
+  disclosure.expandOverride = (val) => {
+    if (!arguments.length) return _expandOverride;
+    _expandOverride = val;
+    return disclosure;
   };
 
 
   disclosure.label = (val) => {
     if (!arguments.length) return _label;
     _label = utilFunctor(val);
-    return disclosure;
-  };
-
-
-  disclosure.expanded = (val) => {
-    if (!arguments.length) return _expanded;
-    _expanded = val;
-    return disclosure;
-  };
-
-
-  disclosure.updatePreference = (val) => {
-    if (!arguments.length) return _updatePreference;
-    _updatePreference = val;
     return disclosure;
   };
 

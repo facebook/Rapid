@@ -37,7 +37,7 @@ export function uiIntroBuilding(context, curtain) {
   }
 
   function _isHouseSelected() {
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _houseID;
   }
@@ -47,7 +47,7 @@ export function uiIntroBuilding(context, curtain) {
   }
 
   function _isTankSelected() {
-    if (context.mode().id !== 'select-osm') return false;
+    if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _tankID;
   }
@@ -109,7 +109,7 @@ export function uiIntroBuilding(context, curtain) {
       .setCenterZoomAsync(houseExtent.center(), 20, 200)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        if (context.mode().id !== 'draw-area') { resolve(addHouseAsync); return; }
+        if (context.mode?.id !== 'draw-area') { resolve(addHouseAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
         _onEditChange = (difference) => {
@@ -142,7 +142,7 @@ export function uiIntroBuilding(context, curtain) {
   // "Continue placing nodes to trace the outline of the building."
   // Enter Select mode to advance
   function continueHouseAsync() {
-    if (!_doesHouseExist() || context.mode().id !== 'draw-area') return Promise.resolve(addHouseAsync);
+    if (!_doesHouseExist() || context.mode?.id !== 'draw-area') return Promise.resolve(addHouseAsync);
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -288,7 +288,7 @@ export function uiIntroBuilding(context, curtain) {
   // "Right-click to select the building you created and show the edit menu."
   // Open the edit menu to advance
   function rightClickHouseAsync() {
-    if (!['browse', 'select-osm'].includes(context.mode().id)) context.enter('browse');
+    if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
     editSystem.resetToCheckpoint('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
@@ -436,7 +436,7 @@ export function uiIntroBuilding(context, curtain) {
   // "Don't worry, you won't need to draw a perfect circle. Just draw an area inside the tank that touches its edge."
   // Place the first point to advance
   function startTankAsync() {
-    if (context.mode().id !== 'draw-area') return Promise.resolve(addTankAsync);
+    if (context.mode?.id !== 'draw-area') return Promise.resolve(addTankAsync);
     _tankID = null;
 
     return new Promise((resolve, reject) => {
@@ -471,7 +471,7 @@ export function uiIntroBuilding(context, curtain) {
   // "Add a few more nodes around the edge. The circle will be created outside the nodes that you draw."
   // Enter Select mode to advance
   function continueTankAsync() {
-    if (context.mode().id !== 'draw-area') return Promise.resolve(addTankAsync);
+    if (context.mode?.id !== 'draw-area') return Promise.resolve(addTankAsync);
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -577,7 +577,7 @@ export function uiIntroBuilding(context, curtain) {
   // "Right-click to select the storage tank you created and show the edit menu."
   // Open the edit menu to advance
   function rightClickTankAsync() {
-    if (!['browse', 'select-osm'].includes(context.mode().id)) context.enter('browse');
+    if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
     editSystem.resetToCheckpoint('hasTank');
 
     return new Promise((resolve, reject) => {

@@ -1,5 +1,3 @@
-import debounce from 'lodash-es/debounce';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { uiTooltip } from '../tooltip';
 import { uiCmd } from '../cmd';
@@ -8,12 +6,14 @@ import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dial
 
 
 export function uiToolRapidFeatures(context) {
+  const map = context.systems.map;
+  const urlhash = context.systems.urlhash;
+
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
   const rapidFeaturesToggleKey = '⇧' + context.t('map_data.layers.ai-features.key');
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
-  const showPowerUser = context.systems.rapid.showPowerUser;
-  let debouncedUpdate;
+
   let _wrap;
 
   let tool = {
@@ -21,15 +21,16 @@ export function uiToolRapidFeatures(context) {
     label: context.t('toolbar.rapid_features')
   };
 
+
   function layerEnabled() {
     if (!context.scene) return false;
-    let rapidLayer = context.scene().layers.get('rapid');
+    const rapidLayer = map.scene.layers.get('rapid');
     return rapidLayer?.enabled;
   }
 
 
   function toggleFeatures() {
-    context.scene().toggleLayers('rapid');
+    map.scene.toggleLayers('rapid');
     toggleKeyDispatcher.call('ai_feature_toggle');
   }
 
@@ -38,12 +39,20 @@ export function uiToolRapidFeatures(context) {
     context.container().call(datasetDialog);
   }
 
+
   function showPowerUserFeaturesDialog() {
     context.container().call(powerUserDialog);
   }
 
+
   function update() {
     if (!_wrap) return;
+
+    const isPowerUser = urlhash.getParam('poweruser') === 'true';
+
+    _wrap
+      .attr('class', isPowerUser ? 'joined' : null);
+
     let rapidButton = _wrap.selectAll('.rapid-features')
       .data([0]);
 
@@ -71,7 +80,10 @@ export function uiToolRapidFeatures(context) {
 
 
     let powerUserButton = _wrap.selectAll('.rapid-poweruser-features')
-      .data(showPowerUser ? [0] : []);
+      .data(isPowerUser ? [0] : []);
+
+    powerUserButton.exit()
+      .remove();
 
     powerUserButton.enter()
       .append('button')
@@ -89,8 +101,6 @@ export function uiToolRapidFeatures(context) {
 
 
   tool.install = (selection) => {
-    debouncedUpdate = debounce(update, 100, { leading: true, trailing: true });
-
     context.keybinding()
       .on(uiCmd(rapidFeaturesToggleKey), d3_event => {
         d3_event.preventDefault();
@@ -98,12 +108,12 @@ export function uiToolRapidFeatures(context) {
         toggleFeatures();
       });
 
-    context.systems.map.on('draw', debouncedUpdate);
+    urlhash.on('hashchange', update);
+    map.scene.on('layerchange', update);
     context.on('modechange', update);
 
     _wrap = selection
       .append('div')
-      .attr('class', showPowerUser ? 'joined' : null)
       .style('display', 'flex');
 
     update();
@@ -111,9 +121,9 @@ export function uiToolRapidFeatures(context) {
 
 
   tool.uninstall = function () {
-    debouncedUpdate.cancel();
     context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
-    context.systems.map.off('draw', debouncedUpdate);
+    urlhash.off('hashchange', update);
+    map.scene.off('layerchange', update);
     context.off('modechange', update);
     _wrap = null;
   };

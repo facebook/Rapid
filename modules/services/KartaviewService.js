@@ -1,11 +1,10 @@
-import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Extent, Tiler, geoScaleToZoom } from '@rapid-sdk/math';
+import { Tiler, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
-import { utilSetTransform } from '../util';
+import { utilFetchResponse, utilSetTransform } from '../util';
 
 
 const KARTAVIEW_API = 'https://kartaview.org';
@@ -155,36 +154,30 @@ export class KartaviewService extends AbstractSystem {
 
 
   /**
-   * images
-   * Returns an Array of already-loaded images within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * getImages
+   * Get already loaded image data that appears in the current map view
+   * @return  {Array}  Array of image data
    */
-  images(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return this._cache.rtree.search(box).map(d => d.data);
+  getImages() {
+    const extent = this.context.systems.map.extent();
+    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
 
   /**
-   * sequences
-   * Returns an Array of already-loaded sequences within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * getSequences
+   * Get already loaded sequence data that appears in the current map view
+   * @return  {Array}  Array of sequence data
    */
-  sequences(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
+  getSequences() {
+    const extent = this.context.systems.map.extent();
     let sequenceIDs = new Set();
 
     // Gather sequences for images in viewport
-    for (const box of this._cache.rtree.search(bbox)) {
-      if (box.data.sequenceID) sequenceIDs.add(box.data.sequenceID);
+    for (const box of this._cache.rtree.search(extent.bbox())) {
+      if (box.data.sequenceID) {
+        sequenceIDs.add(box.data.sequenceID);
+      }
     }
 
     // Make GeoJSON LineStrings from those sequences..
@@ -196,13 +189,13 @@ export class KartaviewService extends AbstractSystem {
 
       lineStrings.push({
         type: 'LineString',
-        coordinates: images.map(d => d.loc).filter(Boolean),
         properties: {
           id: sequenceID,
           v: sequence.v,
           captured_at: images[0]?.captured_at,
           captured_by: images[0]?.captured_by
-        }
+        },
+        coordinates: images.map(image => image.loc).filter(Boolean)
       });
     }
     return lineStrings;
@@ -210,12 +203,13 @@ export class KartaviewService extends AbstractSystem {
 
 
   /**
-   * loadImages
-   * Loads image data for the given viewport
-   * @param  {Projection}  Projection that defines the current map view
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
    */
-  loadImages(projection) {
+  loadTiles() {
+    const projection = this.context.projection;
     const currZoom = Math.floor(geoScaleToZoom(projection.scale()));
+
     // Determine the needed tiles to cover the view
     const needTiles = this._tiler.getTiles(projection).tiles;
 
@@ -488,7 +482,8 @@ export class KartaviewService extends AbstractSystem {
     };
 
     const url = `${KARTAVIEW_API}/1.0/list/nearby-photos/`;
-    const promise = d3_json(url, options)
+    const promise = fetch(url, options)
+      .then(utilFetchResponse)
       .then(data => {
         this._cache.loaded.add(k);
         if (!data || !data.currentPageItems || !data.currentPageItems.length) {

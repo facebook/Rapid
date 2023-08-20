@@ -37,26 +37,29 @@ export function uiSettingsCustomBackground(context) {
     const tms_switch = context.t(`${prefix}.tms.tokens.switch`);
     const tms_quad = context.t(`${prefix}.tms.tokens.quadtile`);
     const tms_scale = context.t(`${prefix}.tms.tokens.scale_factor`);
-    const example = context.t(`${prefix}.example`);
+    const example = context.t('example');
 
     const instructions = marked.parse(`
 ${info}
-
+&nbsp;<br>
+&nbsp;<br>
 #### ${wms_label}
 * ${wms_proj}
 * ${wms_wkid}
 * ${wms_dims}
 * ${wms_bbox}
-
+&nbsp;<br>
+&nbsp;<br>
 #### ${tms_label}
 * ${tms_xyz}
 * ${tms_flip}
 * ${tms_switch}
 * ${tms_quad}
 * ${tms_scale}
-
+&nbsp;<br>
+&nbsp;<br>
 #### ${example}
-  'https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png'
+* \`https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png\`
 `);
 
 

@@ -14,6 +14,7 @@ export function validationImpossibleOneway(context) {
     if (entity.isClosed()) return [];
     if (!typeForWay(entity)) return [];
     if (!entity.isOneWay()) return [];
+    if (entity.tags.intermittent === 'yes') return [];  // Ignore intermittent waterways - Rapid#1018
 
     const firstIssues = issuesForNode(entity, entity.first());
     const lastIssues = issuesForNode(entity, entity.last());
@@ -186,7 +187,7 @@ export function validationImpossibleOneway(context) {
     // make sure the vertex is actually visible and editable
     let map = context.systems.map;
     if (!context.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
-      map.zoomToEase(vertex);
+      map.fitEntitiesEase(vertex);
     }
 
     context.enter('draw-line', { continueWay: way, continueNode: vertex });

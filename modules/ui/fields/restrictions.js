@@ -605,7 +605,7 @@
 //
 //    function displayName(entityID, graph) {
 //        var entity = graph.entity(entityID);
-//        var name = l10n.displayName(entity) || '';
+//        var name = l10n.displayName(entity.tags) || '';
 //        var matched = context.systems.presets.match(entity, graph);
 //        var type = (matched && matched.name()) || l10n.displayType(entity.id);
 //        return name || type;

@@ -227,7 +227,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     this.renderVertices(frame, projection, zoom, data, related);
 
-    if (context.mode()?.id === 'select-osm') {
+    if (context.mode?.id === 'select-osm') {
       this.renderMidpoints(frame, projection, zoom, data, related);
     }
   }
@@ -268,16 +268,16 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
     for (const [entityID, entity] of entities) {
-      const entityVersion = (entity.v || 0);
+      const version = entity.v || 0;
 
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
       let geojson = this._resolved.get(entityID);
-      if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
+      if (geojson?.v !== version) {  // bust cache if the entity has a new verison
         geojson = null;
       }
       if (!geojson) {
         geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-        geojson.v = entityVersion;
+        geojson.v = version;
         this._resolved.set(entityID, geojson);
       }
 
@@ -301,8 +301,8 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         // If data has changed.. Replace data and parent-child links.
-        if (feature.v !== entityVersion) {
-          feature.v = entityVersion;
+        if (feature.v !== version) {
+          feature.v = version;
           feature.geometry.setCoords(coords);
           const area = feature.geometry.origExtent.area();   // estimate area from extent for speed
           feature.container.zIndex = -area;      // sort by area descending (small things above big things)
@@ -326,7 +326,7 @@ export class PixiLayerOsm extends AbstractLayer {
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
           feature.style = style;
 
-          const label = l10n.displayPOIName(entity);
+          const label = l10n.displayPOIName(entity.tags);
           feature.label = label;
 
           // POI = "Point of Interest" -and- "Pole of Inaccessability"
@@ -355,8 +355,8 @@ export class PixiLayerOsm extends AbstractLayer {
             poiFeature.parentContainer = pointsContainer;
           }
 
-          if (poiFeature.v !== entityVersion) {
-            poiFeature.v = entityVersion;
+          if (poiFeature.v !== version) {
+            poiFeature.v = version;
             poiFeature.geometry.setCoords(feature.geometry.origPoi);  // pole of inaccessability
             poiFeature.setData(entityID, entity);
           }
@@ -405,19 +405,19 @@ export class PixiLayerOsm extends AbstractLayer {
     const lineContainer = this.lineContainer;
 
     for (const [entityID, entity] of entities) {
-      const entityVersion = (entity.v || 0);
       const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       const levelContainer = _getLevelContainer(layer.toString());
       const zindex = getzIndex(entity.tags);
+      const version = entity.v || 0;
 
       // Cache GeoJSON resolution, as we expect the asGeoJSON call to be kinda slow.
       let geojson = this._resolved.get(entityID);
-      if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
+      if (geojson?.v !== version) {  // bust cache if the entity has a new verison
         geojson = null;
       }
       if (!geojson) {
         geojson = entity.asGeoJSON(graph);
-        geojson.v = entityVersion;
+        geojson.v = version;
         if (geojson.type === 'LineString' && entity.tags.oneway === '-1') {
           geojson.coordinates.reverse();
         }
@@ -446,8 +446,8 @@ export class PixiLayerOsm extends AbstractLayer {
           }
 
           // If data has changed.. Replace data and parent-child links.
-          if (feature.v !== entityVersion) {
-            feature.v = entityVersion;
+          if (feature.v !== version) {
+            feature.v = version;
             feature.geometry.setCoords(coords);
             feature.parentContainer = levelContainer;    // Change layer stacking if necessary
             feature.container.zIndex = zindex;
@@ -490,7 +490,7 @@ export class PixiLayerOsm extends AbstractLayer {
             }
             feature.style = style;
 
-            feature.label = l10n.displayName(entity);
+            feature.label = l10n.displayName(entity.tags);
           }
 
           feature.update(projection, zoom);
@@ -557,6 +557,7 @@ export class PixiLayerOsm extends AbstractLayer {
       if (!parentContainer) continue;   // this vertex isn't important enough to render
 
       const featureID = `${this.layerID}-${nodeID}`;
+      const version = node.v || 0;
       let feature = this.features.get(featureID);
 
       // If feature existed before as a different type, recreate it.
@@ -570,9 +571,8 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // If data has changed, replace it.
-      const entityVersion = (node.v || 0);
-      if (feature.v !== entityVersion) {
-        feature.v = entityVersion;
+      if (feature.v !== version) {
+        feature.v = version;
         feature.geometry.setCoords(node.loc);
         feature.setData(nodeID, node);
       }
@@ -616,7 +616,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = l10n.displayName(node);
+        feature.label = l10n.displayName(node.tags);
       }
 
       feature.update(projection, zoom);
@@ -641,8 +641,8 @@ export class PixiLayerOsm extends AbstractLayer {
     const pointsContainer = this.scene.groups.get('points');
 
     for (const [nodeID, node] of entities) {
-      const entityVersion = (node.v || 0);
       const featureID = `${this.layerID}-${nodeID}`;
+      const version = node.v || 0;
       let feature = this.features.get(featureID);
 
       // If feature existed before as a different type, recreate it.
@@ -657,8 +657,8 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // If data has changed, replace it.
-      if (feature.v !== entityVersion) {
-        feature.v = entityVersion;
+      if (feature.v !== version) {
+        feature.v = version;
         feature.geometry.setCoords(node.loc);
         feature.setData(nodeID, node);
       }
@@ -701,7 +701,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         feature.style = markerStyle;
-        feature.label = l10n.displayName(node);
+        feature.label = l10n.displayName(node.tags);
       }
 
       feature.update(projection, zoom);

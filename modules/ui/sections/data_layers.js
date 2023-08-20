@@ -9,7 +9,7 @@ import { uiSettingsCustomData } from '../settings/custom_data';
 
 export function uiSectionDataLayers(context) {
   const l10n = context.systems.l10n;
-  const section = uiSection('data-layers', context)
+  const section = uiSection(context, 'data-layers')
     .label(l10n.tHtml('map_data.data_layers'))
     .disclosureContent(renderDisclosureContent);
 
@@ -41,8 +41,8 @@ export function uiSectionDataLayers(context) {
 
 
   function setLayer(layerID, val) {
-    // Don't allow layer changes while drawing - #6584
-    const mode = context.mode();
+    // Don't allow layer changes while drawing - iD#6584
+    const mode = context.mode;
     if (mode && /^draw/.test(mode.id)) return;
 
     if (val) {

@@ -7,7 +7,7 @@ export function uiSectionGridDisplayOptions(context) {
   const imagerySystem = context.systems.imagery;
   const rapid = context.systems.rapid;
 
-  let section = uiSection('grid-display-options', context)
+  let section = uiSection(context, 'grid-display-options')
     .label(context.t('background.grid.grids'))
     .disclosureContent(gridDisplayOptions);
 

@@ -1,4 +1,3 @@
-import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
 import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@rapid-sdk/math';
@@ -7,6 +6,7 @@ import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { jsonpRequest } from '../util/jsonp_request';
+import { utilFetchResponse } from '../util';
 
 const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
@@ -37,6 +37,7 @@ export class StreetsideService extends AbstractSystem {
     this._currScene = 0;
     this._cache = {};
     this._pannellumViewer = null;
+    this._nextSequenceID = 0;
     this._waitingForPhotoID = null;
     this._startPromise = null;
 
@@ -198,12 +199,13 @@ export class StreetsideService extends AbstractSystem {
     }
 
     this._cache = {
-      inflight:  new Map(),   // Map(tileID -> { Promise, AbortController})
+      rtree:     new RBush(),
+      inflight:  new Map(),   // Map(tileID -> {Promise, AbortController})
       loaded:    new Set(),   // Set(tileID)
       bubbles:   new Map(),   // Map(bubbleID -> bubble data)
       sequences: new Map(),   // Map(sequenceID -> sequence data)
-      rtree:     new RBush(),
-      leaders:   [],
+      unattachedBubbles:   new Set(),  // Set(bubbleID)
+      bubbleHasSequences:  new Map(),  // Map(bubbleID -> Array(sequenceID))
       metadataPromise:  null
     };
 
@@ -212,40 +214,34 @@ export class StreetsideService extends AbstractSystem {
 
 
   /**
-   * bubbles
-   * Returns an Array of already-loaded images within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * getImages
+   * Get already loaded image data that appears in the current map view
+   * @return  {Array}  Array of image data
    */
-  bubbles(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return this._cache.rtree.search(box).map(d => d.data);
+  getImages() {
+    const extent = this.context.systems.map.extent();
+    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
 
-
   /**
-   * sequences
-   * Returns an Array of already-loaded sequences within the viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @return {Array}
+   * getSequences
+   * Get already loaded sequence data that appears in the current map view
+   * @return  {Array}  Array of sequence data
    */
-  sequences(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    let result = new Map();  // Map(sequenceID -> sequence geojson)
+  getSequences() {
+    const cache = this._cache;
+    const extent = this.context.systems.map.extent();
+    const result = new Map();  // Map(sequenceID -> sequence)
 
-    // Gather sequences for bubbles in viewport
-    for (const box of this._cache.rtree.search(bbox)) {
-      const sequenceID = box.data.sequenceID;
-      if (!sequenceID) continue;  // no sequence for this bubble
-      if (!result.has(sequenceID)) {
-        result.set(sequenceID, this._cache.sequences.get(sequenceID).geojson);
+    // Gather sequences for the bubbles in viewport
+    for (const box of cache.rtree.search(extent.bbox())) {
+      const bubbleID = box.data.id;
+      const sequenceIDs = cache.bubbleHasSequences.get(bubbleID) ?? [];
+      for (const sequenceID of sequenceIDs) {
+        if (!result.has(sequenceID)) {
+          result.set(sequenceID, cache.sequences.get(sequenceID));
+        }
       }
     }
     return [...result.values()];
@@ -253,14 +249,37 @@ export class StreetsideService extends AbstractSystem {
 
 
   /**
-   * loadBubbles
-   * Loads image data for the given viewport
-   * By default: request 2 nearby tiles so we can connect sequences.
-   * @param  {Projection}  Projection that defines the current map view
-   * @param  {Number}  margin - number of margin tiles to fetch in addition to the view-covering tiles
+   * loadTiles
+   * Schedule any data requests needed to cover the current map view
    */
-  loadBubbles(projection, margin = 2) {
-    this._loadTiles(projection, margin);
+  loadTiles() {
+    // Determine the needed tiles to cover the view
+    // By default: request 2 nearby tiles so we can connect sequences.
+    const margin = 2;
+    const projection = this.context.projection;
+    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
+
+    // Abort inflight requests that are no longer needed
+    for (const [tileID, inflight] of this._cache.inflight) {
+      const needed = needTiles.find(tile => tile.id === tileID);
+      if (!needed) {
+        inflight.controller.abort();
+      }
+    }
+
+    // Fetch files that are needed
+    for (const tile of needTiles) {
+      const tileID = tile.id;
+      if (this._cache.loaded.has(tileID) || this._cache.inflight.has(tileID)) continue;
+
+      // Promise.all([this._fetchMetadataAsync(tile), this._loadTileAsync(tile)])
+      this._loadTileAsync(tile)
+        .then(results => this._processResults(results))
+        .catch(err => {
+          if (err.name === 'AbortError') return;          // ok
+          if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+        });
+    }
   }
 
 
@@ -655,40 +674,6 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
 
   /**
-   * _loadTiles
-   * Loads tiles of data to cover the given viewport
-   * @param  {Projection}  Projection that defines the current map view
-   * @param  {Number}  margin - number of margin tiles to fetch in addition to the view-covering tiles
-   */
-  _loadTiles(projection, margin) {
-    // Determine the needed tiles to cover the view
-    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
-
-    // Abort inflight requests that are no longer needed
-    for (const [tileID, inflight] of this._cache.inflight) {
-      const needed = needTiles.find(tile => tile.id === tileID);
-      if (!needed) {
-        inflight.controller.abort();
-      }
-    }
-
-    // Fetch files that are needed
-    for (const tile of needTiles) {
-      const tileID = tile.id;
-      if (this._cache.loaded.has(tileID) || this._cache.inflight.has(tileID)) continue;
-
-      // Promise.all([this._fetchMetadataAsync(tile), this._fetchBubblesAsync(tile)])
-      this._fetchBubblesAsync(tile)
-        .then(results => this._processResults(results))
-        .catch(err => {
-          if (err.name === 'AbortError') return;          // ok
-          if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-        });
-    }
-  }
-
-
-  /**
    * _processResults
    * Processes the results of the tile data fetch.
    * @param  {Array}  results
@@ -697,7 +682,9 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     // const metadata = results[0];
     // this._cache.loaded.add(results[1].tile.id);
     // const bubbles = results[1].data;
-    this._cache.loaded.add(results.tile.id);
+    const cache = this._cache;
+
+    cache.loaded.add(results.tile.id);
     const bubbles = results.data;
     if (!bubbles) return;
     if (bubbles.error) throw new Error(bubbles.error);
@@ -707,13 +694,14 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
     let selectBubbleID = null;
     const boxes = bubbles.map(bubble => {
-      const bubbleID = bubble.id.toString();
+      const bubbleNum = bubble.id;
+      const bubbleID = bubbleNum.toString();
       if (this._waitingForPhotoID === bubbleID) {
         selectBubbleID = bubbleID;
         this._waitingForPhotoID = null;
       }
 
-      if (this._cache.bubbles.has(bubbleID)) return null;  // skip duplicates
+      if (cache.bubbles.has(bubbleID)) return null;  // skip duplicates
 
       const loc = [bubble.lo, bubble.la];
       const bubbleData = {
@@ -724,16 +712,11 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
         captured_by: 'microsoft',
         pr: bubble.pr?.toString(),  // previous
         ne: bubble.ne?.toString(),  // next
-        isPano: true,
-        sequenceID: null
+        isPano: true
       };
 
-      this._cache.bubbles.set(bubbleID,  bubbleData);
-
-      // a sequence starts here
-      if (bubble.pr === undefined) {
-        this._cache.leaders.push(bubbleID);
-      }
+      cache.bubbles.set(bubbleID, bubbleData);
+      cache.unattachedBubbles.add(bubbleID);
 
       return {
         minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: bubbleData
@@ -757,59 +740,115 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
   /**
    * _connectSequences
-   * Call this sometimes to connect the bubbles into sequences
-   * Each bubble has "previous" and "next" properties.
-   * The sequence is complete when it starts at a bubble with no "previous"
-   * and ends at a bubble with no "next".
+   * Call this sometimes to connect unattached bubbles into sequences.
+   * Note that this algorithm has changed, as we seem to get different data.
+   * The API we are using is undocumented :(
    */
   _connectSequences() {
-    let keepLeaders = [];
+    const cache = this._cache;
+    const touchedSequenceIDs = new Set();  // sequences that we touched will need recalculation
 
-    for (let i = 0; i < this._cache.leaders.length; i++) {
-      let bubble = this._cache.bubbles.get(this._cache.leaders[i]);
-      let seen = {};
+    // bubbles that haven't been added to a sequence yet.
+    // note: sort numerically to minimize the chance that we'll start assembling mid-sequence.
+    const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+    const toAttach = Array.from(cache.unattachedBubbles).sort(collator.compare);
 
-      // Try to make a sequence.. use the id of the leader bubble.
-      let sequence = { id: bubble.id, bubbles: [] };
-      let complete = false;
+    const _updateCaches = (sequenceID, bubbleID) => {
+      touchedSequenceIDs.add(sequenceID);
+      cache.unattachedBubbles.delete(bubbleID);
 
-      do {
-        sequence.bubbles.push(bubble);
-        seen[bubble.id] = true;
+      let seqs = cache.bubbleHasSequences.get(bubbleID);
+      if (!seqs) {
+        seqs = [];
+        cache.bubbleHasSequences.set(bubbleID, seqs);
+      }
+      seqs.push(sequenceID);
+    };
 
-        if (bubble.ne === undefined) {  // no next
-          complete = true;
-        } else {
-          bubble = this._cache.bubbles.get(bubble.ne);  // advance to next
+
+    for (const currBubbleID of toAttach) {
+      const isUnattached = cache.unattachedBubbles.has(currBubbleID);
+      const currBubble = cache.bubbles.get(currBubbleID);
+      if (!currBubble || !isUnattached) continue;   // done already
+
+      // Look at adjacent bubbles
+      const nextBubbleID = currBubble.ne;
+      const nextBubble = nextBubbleID && cache.bubbles.get(nextBubbleID);
+      const prevBubbleID = currBubble.pr;
+      const prevBubble = prevBubbleID && cache.bubbles.get(prevBubbleID);
+
+      // Try to link next bubble back to current bubble.
+      // Prefer a sequence where next.pr === currentBubbleID
+      // But accept any sequence we can make, they don't always link in both directions.
+      if (nextBubbleID && nextBubble) {
+        let sequenceID, sequence;
+        const trySequenceIDs = (nextBubble && cache.bubbleHasSequences.get(nextBubbleID)) || [];
+        for (sequenceID of trySequenceIDs) {
+          sequence = cache.sequences.get(sequenceID);
+          const firstID = sequence.bubbleIDs.at(0);
+          const lastID = sequence.bubbleIDs.at(-1);
+          if (nextBubbleID === lastID) {
+            sequence.bubbleIDs.push(currBubbleID);   // add current bubble to end of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          } else if (nextBubbleID === firstID) {
+            sequence.bubbleIDs.unshift(currBubbleID);  // add current bubble to beginning of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          }
         }
-      } while (bubble && !seen[bubble.id] && !complete);
+      }
 
-      if (complete) {
-        // assign bubbles to the sequence
-        for (let j = 0; j < sequence.bubbles.length; j++) {
-          sequence.bubbles[j].sequenceID = sequence.id;
+      // Try to link previous bubble forward to current bubble.
+      if (prevBubbleID && prevBubble) {
+        let sequenceID, sequence;
+        const trySequenceIDs = (prevBubble && cache.bubbleHasSequences.get(prevBubbleID)) || [];
+        for (sequenceID of trySequenceIDs) {
+          sequence = cache.sequences.get(sequenceID);
+          const firstID = sequence.bubbleIDs.at(0);
+          const lastID = sequence.bubbleIDs.at(-1);
+          if (prevBubbleID === lastID) {
+            sequence.bubbleIDs.push(currBubbleID);   // add current bubble to end of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          } else if (prevBubbleID === firstID) {
+            sequence.bubbleIDs.unshift(currBubbleID);  // add current bubble to beginning of sequence
+            _updateCaches(sequenceID, currBubbleID);
+            break;
+          }
         }
+      }
 
-        // create a GeoJSON LineString
-        sequence.geojson = {
-          type: 'LineString',
-          properties: {
-            id: sequence.id,
-            captured_at: sequence.bubbles[0] ? sequence.bubbles[0].captured_at : null,
-            captured_by: sequence.bubbles[0] ? sequence.bubbles[0].captured_by : null
-          },
-          coordinates: sequence.bubbles.map(d => d.loc)
-        };
+      // If neither of those worked (current bubble still "unattached"),
+      // Start a new sequence at the current bubble.
+      if (cache.unattachedBubbles.has(currBubbleID)) {
+        const sequenceNum = this._nextSequenceID++;
+        const sequenceID = `s${sequenceNum}`;
+        const sequence = { id: sequenceID, v: 0, bubbleIDs: [currBubbleID] };
+        cache.sequences.set(sequenceID, sequence);
+        _updateCaches(sequenceID, currBubbleID);
 
-        this._cache.sequences.set(sequence.id, sequence);
-
-      } else {
-        keepLeaders.push(this._cache.leaders[i]);
+        // Include previous and next bubbles if we have them loaded
+        if (prevBubbleID && prevBubble) {
+          sequence.bubbleIDs.unshift(prevBubbleID);  // add previous to beginning
+          _updateCaches(sequenceID, prevBubbleID);
+        }
+        if (nextBubbleID && nextBubble) {
+          sequence.bubbleIDs.push(nextBubbleID);  // add next to end
+          _updateCaches(sequenceID, nextBubbleID);
+        }
       }
     }
 
-    // couldn't complete these, save for later
-    this._cache.leaders = keepLeaders;
+    // Any sequences that we touched, bump version number and recompute the coordinate array
+    for (const sequenceID of touchedSequenceIDs) {
+      const sequence = cache.sequences.get(sequenceID);
+      const bubbles = sequence.bubbleIDs.map(bubbleID => cache.bubbles.get(bubbleID));
+      sequence.v++;
+      sequence.captured_at = bubbles[0].captured_at;
+      sequence.captured_by = bubbles[0].captured_by;
+      sequence.coordinates = bubbles.map(bubble => bubble.loc);
+    }
   }
 
 
@@ -826,7 +865,8 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     const metadataKey = 'AoG8TaQvkPo6o8SlpRVmBs7WJwO_NDQklVRcAfpn7P8oiEMYWNY59XHSJU81sP1Y';
     const metadataURL = `${metadataURLBase}/${lat},${lon}?key=${metadataKey}`;
 
-    this._cache.metadataPromise = d3_json(metadataURL)
+    this._cache.metadataPromise = fetch(metadataURL)
+      .then(utilFetchResponse)
       .then(data => {
         if (!data) throw new Error('no data');
         return data;
@@ -835,10 +875,10 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
 
   /**
-   * _fetchBubblesAsync
+   * _loadTileAsync
    * bubbles:   undocumented / unsupported API?
    */
-  _fetchBubblesAsync(tile) {
+  _loadTileAsync(tile) {
     const [w, s, e, n] = tile.wgs84Extent.rectangle();
     const MAXRESULTS = 2000;
 

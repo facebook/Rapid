@@ -31,7 +31,7 @@ export function validationShortRoad(context) {
     // make sure the vertex is actually visible and editable
     const map = context.systems.map;
     if (!map.trimmedExtent().contains(new Extent(vertex.loc))) {
-      map.zoomToEase(vertex);
+      map.fitEntitiesEase(vertex);
     }
 
     context.enter('draw-line', { continueWay: way, continueNode: vertex });

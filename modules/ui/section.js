@@ -4,23 +4,28 @@ import { uiDisclosure } from './disclosure';
 import { utilFunctor } from '../util';
 
 
-// A unit of controls or info to be used in a layout, such as within a pane.
-// Can be labeled and collapsible.
-export function uiSection(sectionID, context) {
+// A Section is a box of content.
+//
+// Use .content() to render the content by itself
+// or  .disclosureContent() to render the content inside a Disclosure (toggle with heading)
+//
+export function uiSection(context, sectionID) {
   let _classes = utilFunctor('');
+  let _container = d3_select(null);
+
   let _shouldDisplay;
   let _content;
-
   let _disclosure;
   let _label;
-  let _expandedByDefault = utilFunctor(true);
   let _disclosureContent;
-  let _disclosureExpanded;
-
-  let _containerSelection = d3_select(null);
+  let _disclosureExpandOverride;
 
   let section = {
     id: sectionID
+  };
+
+  section.selection = function() {
+    return _container;
   };
 
   section.classes = function(val) {
@@ -32,12 +37,6 @@ export function uiSection(sectionID, context) {
   section.label = function(val) {
     if (!arguments.length) return _label;
     _label = utilFunctor(val);
-    return section;
-  };
-
-  section.expandedByDefault = function(val) {
-    if (!arguments.length) return _expandedByDefault;
-    _expandedByDefault = utilFunctor(val);
     return section;
   };
 
@@ -59,47 +58,42 @@ export function uiSection(sectionID, context) {
     return section;
   };
 
-  section.disclosureExpanded = function(val) {
-    if (!arguments.length) return _disclosureExpanded;
-    _disclosureExpanded = val;
+  section.disclosureExpandOverride = function(val) {
+    if (!arguments.length) return _disclosureExpandOverride;
+    _disclosureExpandOverride = val;
     return section;
   };
 
-  // may be called multiple times
-  section.render = function(selection) {
-    _containerSelection = selection
+
+  section.render = function render(selection) {
+    _container = selection
       .selectAll(`.section-${sectionID}`)
       .data([0]);
 
-    let sectionEnter = _containerSelection
+    const containerEnter = _container
       .enter()
       .append('div')
       .attr('class', `section section-${sectionID} ` + (_classes && _classes() || ''));
 
-    _containerSelection = sectionEnter
-      .merge(_containerSelection);
+    _container = containerEnter
+      .merge(_container);
 
-    _containerSelection
+    _container
       .call(renderContent);
   };
+
 
   section.reRender = function() {
-    _containerSelection
+    _container
       .call(renderContent);
   };
 
-  section.selection = function() {
-    return _containerSelection;
-  };
-
-  section.disclosure = function() {
-    return _disclosure;
-  };
 
 
-  // may be called multiple times
   function renderContent(selection) {
-    if (_shouldDisplay) {
+    // The section may be hidden completely if it isn't needed.
+    // If there is a _shouldDisplay() function, we call it to determine this.
+    if (typeof _shouldDisplay === 'function') {
       const shouldDisplay = _shouldDisplay();
       selection.classed('hide', !shouldDisplay);
       if (!shouldDisplay) {
@@ -108,26 +102,22 @@ export function uiSection(sectionID, context) {
       }
     }
 
+    // Render the content inside a Disclosure
     if (_disclosureContent) {
-      if (!_disclosure) {
-        _disclosure = uiDisclosure(context, sectionID.replace(/-/g, '_'), _expandedByDefault())
+      if (!_disclosure) {   // create if needed
+        _disclosure = uiDisclosure(context, sectionID.replace(/-/g, '_'))
           .label(_label || '')
-          /*.on('toggled', function(expanded) {
-              if (expanded) { selection.node().parentNode.scrollTop += 200; }
-          })*/
           .content(_disclosureContent);
       }
-      if (_disclosureExpanded !== undefined) {
-        _disclosure.expanded(_disclosureExpanded);
-        _disclosureExpanded = undefined;
-      }
+
+      _disclosure
+        .expandOverride(_disclosureExpandOverride);
+
       selection
         .call(_disclosure);
 
-      return;
-    }
-
-    if (_content) {
+    // Render the content on its own
+    } else if (_content) {
       selection
         .call(_content);
     }

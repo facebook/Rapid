@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
-
+import { flatCoordsToPoints } from '../util/util';
 import { AbstractFeature } from './AbstractFeature';
 import { lineToPoly } from './helpers';
 
@@ -91,6 +91,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
       delete this._ssrdata.shapeType;
       this._ssrdata = null;
     }
+
+    if (this._bufferdata) {
+      this._bufferdata = null;
+    }
   }
 
 
@@ -110,7 +114,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (this.geometry.dirty) {
       this.geometry.update(projection, zoom);
 
-      // redo ssr (move more of this into PixiGeometry later)
+      // Redo ssr (move more of this into PixiGeometry later)
       this._ssrdata = null;
 
       // We use the SSR to approximate a low resolution polygon at low zooms
@@ -157,6 +161,24 @@ export class PixiFeaturePolygon extends AbstractFeature {
           shapeType: (cornersInSSR ? 'square' : 'circle')
         };
       }
+
+      // Redo line buffer
+      this._bufferdata = null;
+
+      // We use the buffer to draw the halo, also as the hit area when in wireframe mode
+      if (this.geometry.flatOuter) {  // no points?
+        // for now, just copy what PixiFeatureLine does
+        const bufferStyle = {
+          alignment: 0.5,  // middle of line
+          color: 0x0,
+          width: 16,  // px
+          alpha: 1.0,
+          join: PIXI.LINE_JOIN.BEVEL,
+          cap: PIXI.LINE_CAP.BUTT
+        };
+
+        this._bufferdata = lineToPoly(this.geometry.flatOuter, bufferStyle);
+      }
     }
 
     // Calculate bounds
@@ -177,6 +199,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const color = style.fill.color || 0xaaaaaa;
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;
+    const dash = style.stroke.dash || null;
+
     let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
     let shape;
 // bhousel update 5/27/22:
@@ -255,22 +279,50 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     // STROKE
     if (shape && this.stroke.visible) {
-      this.stroke
+      const lineWidth = wireframeMode ? 1 : style.fill.width || 2;
+
+      // Solid lines
+      if (!dash) {
+        this.stroke
         .clear()
         .lineStyle({
           alpha: 1,
-          width: wireframeMode ? 1 : style.fill.width || 2,
+          width: lineWidth,
           color: color,
         })
         .drawShape(shape.outer);
 
-      shape.holes.forEach(hole => this.stroke.drawShape(hole));
+        shape.holes.forEach(hole => this.stroke.drawShape(hole));
+
+      } else {
+        //Dashed lines
+        const DASH_STYLE = {
+          alpha: 1.0,
+          dash: dash,
+          width: lineWidth,   // px
+          color: color,
+        };
+        this.stroke.clear();
+        const dl = new DashLine(this.stroke, DASH_STYLE);
+        const coords = flatCoordsToPoints(shape.outer.points);
+        dl.drawPolygon(coords);
+
+        shape.holes.forEach(hole => dl.drawPolygon(flatCoordsToPoints(hole.points)));
+      }
     }
 
     // FILL
     if (wireframeMode) {
       this.fill.visible = false;
       this.fill.clear();
+
+      // No fill - hit test the line buffer
+      if (this._bufferdata) {
+        this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
+      }
+    } else {
+      // The fill will be hit tested
+      this.container.hitArea = null;
     }
 
     if (shape && this.fill.visible) {
@@ -335,15 +387,21 @@ export class PixiFeaturePolygon extends AbstractFeature {
    * Show/Hide halo
    */
   updateHalo() {
-if (!this.geometry.flatOuter) return;  // no points?
-
+    const wireframeMode = this.context.systems.map.wireframeMode;
     const showHover = (this.visible && this.hovered);
     const showSelect = (this.visible && this.selected);
+    const showHighlight = (this.visible && this.highlighted);
 
     // Hover
     if (showHover) {
       if (!this.container.filters) {
         const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+        glow.resolution = 2;
+        this.container.filters = [glow];
+      }
+    } else if (showHighlight) {
+      if (!this.container.filters) {
+        const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0x7092ff });
         glow.resolution = 2;
         this.container.filters = [glow];
       }
@@ -369,22 +427,15 @@ if (!this.geometry.flatOuter) return;  // no points?
         color: 0xffff00
       };
 
-// for now, just copy what PixiFeatureLine does
-const hitStyle = {
-  alignment: 0.5,  // middle of line
-  color: 0x0,
-  width: 16,
-  alpha: 1.0,
-  join: PIXI.LINE_JOIN.BEVEL,
-  cap: PIXI.LINE_CAP.BUTT
-};
-const bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
-
       this.halo.clear();
       const dl = new DashLine(this.halo, HALO_STYLE);
-      if (bufferdata?.outer) {
-        dl.drawPolygon(bufferdata.outer);
+      if (this._bufferdata) {
+        dl.drawPolygon(this._bufferdata.outer);
+        if (wireframeMode) {
+          dl.drawPolygon(this._bufferdata.inner);
+        }
       }
+
     } else {
       if (this.halo) {
         this.halo.destroy({ children: true });

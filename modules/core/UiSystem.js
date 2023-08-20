@@ -106,14 +106,14 @@ export class UiSystem extends AbstractSystem {
               e.stopImmediatePropagation();
               e.preventDefault();
             }
-            const imagerySystem = context.systems.imagery;
-            const storageSystem = context.systems.storage;
-            const previousBackground = imagerySystem.findSource(storageSystem.getItem('background-last-used-toggle'));
+            const imagery = context.systems.imagery;
+            const storage = context.systems.storage;
+            const previousBackground = imagery.getSource(storage.getItem('background-last-used-toggle'));
             if (previousBackground) {
-              const currentBackground = imagerySystem.baseLayerSource();
-              storageSystem.setItem('background-last-used-toggle', currentBackground.id);
-              storageSystem.setItem('background-last-used', previousBackground.id);
-              imagerySystem.baseLayerSource(previousBackground);
+              const currentBackground = imagery.baseLayerSource();
+              storage.setItem('background-last-used-toggle', currentBackground.id);
+              storage.setItem('background-last-used', previousBackground.id);
+              imagery.baseLayerSource(previousBackground);
             }
           });
       });
@@ -434,8 +434,8 @@ this.didRender = true;
 
     // What to show first?
     const editSystem = context.systems.edits;
-    const urlHash = context.systems.urlhash;
-    const startWalkthrough = urlHash.initialHashParams.get('walkthrough') === 'true';
+    const urlhash = context.systems.urlhash;
+    const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
 
     if (startWalkthrough) {
       container.call(uiIntro(context));   // Jump right into walkthrough..
@@ -592,7 +592,7 @@ this.didRender = true;
     this.editMenu.close();   // remove any displayed menu
 
     const context = this.context;
-    const mode = context.mode();
+    const mode = context.mode;
     //TODO: Remove this after the mode rewrite has completed
     if (!operations && mode.operations) operations = typeof mode.operations === 'function' ? mode.operations() : mode.operations;
     if (!operations || !operations.length) return;

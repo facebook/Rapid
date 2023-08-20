@@ -12,8 +12,10 @@ import { utilHighlightEntities, utilNoAuto } from '../util';
 
 export function uiFeatureList(context) {
   const nominatim = context.services.nominatim;
-  const presetSystem = context.systems.presets;
+  const presets = context.systems.presets;
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
+
   let _geocodeResults;
 
 
@@ -60,9 +62,7 @@ export function uiFeatureList(context) {
 
 
     function focusSearch(d3_event) {
-      let mode = context.mode() && context.mode().id;
-      if (mode !== 'browse') return;
-
+      if (context.mode?.id !== 'browse') return;
       d3_event.preventDefault();
       search.node().focus();
     }
@@ -105,7 +105,7 @@ export function uiFeatureList(context) {
 
     function features() {
       const graph = context.graph();
-      const centerLoc = context.systems.map.centerLoc();
+      const centerLoc = map.centerLoc();
       const q = search.property('value').toLowerCase();
       let result = [];
 
@@ -149,10 +149,10 @@ export function uiFeatureList(context) {
         const entity = graph.hasEntity(id);
         if (!entity) continue;
 
-        const name = l10n.displayName(entity) || '';
+        const name = l10n.displayName(entity.tags) || '';
         if (name.toLowerCase().indexOf(q) < 0) continue;
 
-        const matched = presetSystem.match(entity, graph);
+        const matched = presets.match(entity, graph);
         const type = (matched && matched.name()) || l10n.displayType(entity.id);
         const extent = entity.extent(graph);
         const distance = extent ? geoSphericalDistance(centerLoc, extent.center()) : 0;
@@ -189,7 +189,7 @@ export function uiFeatureList(context) {
 
         const tempEntity = osmEntity(attrs);
         const tempGraph = new Graph([tempEntity]);
-        const preset = presetSystem.match(tempEntity, tempGraph);
+        const preset = presets.match(tempEntity, tempGraph);
         const type = (preset && preset.name()) || l10n.displayType(id);
 
         result.push({
@@ -332,15 +332,15 @@ export function uiFeatureList(context) {
       d3_event.preventDefault();
 
       if (d.location) {
-        context.systems.map.centerZoomEase([d.location[1], d.location[0]], 19);
+        map.centerZoomEase([d.location[1], d.location[0]], 19);
 
       } else if (d.entity) {
         utilHighlightEntities([d.id], false, context);
-        context.systems.map.zoomToEase(d.entity);
+        map.fitEntitiesEase(d.entity);
         context.enter('select-osm', { selectedIDs: [d.entity.id] });
-      } else {
-        // download, zoom to, and select the entity with the given ID
-        context.zoomToEntity(d.id);
+
+      } else {   // not downloaded.. download and select it
+        map.selectEntityID(d.id);
       }
     }
 

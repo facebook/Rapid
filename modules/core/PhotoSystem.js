@@ -56,10 +56,17 @@ export class PhotoSystem extends AbstractSystem {
       }
     }
 
-    const urlHashSystem = this.context.systems.urlhash;
-    urlHashSystem.on('hashchange', this._hashchange);
+    const context = this.context;
+    const map = context.systems.map;
+    const urlhash = context.systems.urlhash;
 
-    return this._initPromise = Promise.resolve();
+    const prerequisites = Promise.all([
+      map.initAsync(),   // PhotoSystem should listen for hashchange after MapSystem
+      urlhash.initAsync()
+    ]);
+
+    return this._initPromise = prerequisites
+      .then(() => urlhash.on('hashchange', this._hashchange));
   }
 
 
@@ -71,12 +78,12 @@ export class PhotoSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
-    const mapSystem = this.context.systems.map;
-    const prerequisites = mapSystem.startAsync();
+    const map = this.context.systems.map;
+    const prerequisites = map.startAsync();  // PhotoSystem should listen for layerchange after scene exists
 
     return this._startPromise = prerequisites
       .then(() => {
-        mapSystem.scene.on('layerchange', this._updateHash);
+        map.scene.on('layerchange', this._updateHash);
         this._started = true;
       });
   }
@@ -95,47 +102,62 @@ export class PhotoSystem extends AbstractSystem {
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
-   * @param  q   Object containing key/value pairs of the current query parameters
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
    */
-  _hashchange(q) {
+  _hashchange(currParams, prevParams) {
     const context = this.context;
     const scene = context.scene();
 
     // photo_overlay
     // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
-    let toEnableIDs = new Set();
-    if (typeof q.photo_overlay === 'string') {
-      toEnableIDs = new Set(q.photo_overlay.replace(/;/g, ',').split(','));
-    }
-    for (const layerID of this._LAYERIDS) {
-      const layer = scene.layers.get(layerID);
-      if (!layer) continue;
-      layer.enabled = toEnableIDs.has(layer.id);
+    const newPhotoOverlay = currParams.get('photo_overlay');
+    const oldPhotoOverlay = prevParams.get('photo_overlay');
+    if (newPhotoOverlay !== oldPhotoOverlay) {
+      let toEnableIDs = new Set();
+      if (typeof newPhotoOverlay === 'string') {
+        toEnableIDs = new Set(newPhotoOverlay.replace(/;/g, ',').split(','));
+      }
+      for (const layerID of this._LAYERIDS) {
+        const layer = scene.layers.get(layerID);
+        if (!layer) continue;
+        layer.enabled = toEnableIDs.has(layer.id);
+      }
     }
 
     // photo_dates
-    if (typeof q.photo_dates === 'string') {
-      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
-      const parts = /^(.*)[–_](.*)$/g.exec(q.photo_dates.trim());
-      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1]);
-      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2]);
-    } else {
-      this._toDate = this._fromDate = null;
+    const newPhotoDates = currParams.get('photo_dates');
+    const oldPhotoDates = prevParams.get('photo_dates');
+    if (newPhotoDates !== oldPhotoDates) {
+      if (typeof newPhotoDates === 'string') {
+        // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
+        const parts = /^(.*)[–_](.*)$/g.exec(newPhotoDates.trim());
+        this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1]);
+        this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2]);
+      } else {
+        this._toDate = this._fromDate = null;
+      }
     }
 
     // photo_username
-    this.setUsernameFilter(q.photo_username);
+    const newPhotoUsername = currParams.get('photo_username');
+    const oldPhotoUsername = prevParams.get('photo_username');
+    if (newPhotoUsername !== oldPhotoUsername) {
+      this.setUsernameFilter(newPhotoUsername);
+    }
 
+    // photo
     // support opening a specific photo via a URL parameter, e.g. `photo=mapillary/fztgSDtLpa08ohPZFZjeRQ`
-    if (typeof q.photo === 'string') {
-      const photoIDs = q.photo.replace(/;/g, ',').split(',');
-      const photoID = photoIDs.length && photoIDs[0].trim();
-      const results = /(.*)\/(.*)/g.exec(photoID);
-
-      if (results && results.length >= 3) {
-        const layerID = results[1];
-        const photoID = results[2];
-        this.selectPhoto(layerID, photoID);
+    const newPhoto = currParams.get('photo');
+    const oldPhoto = prevParams.get('photo');
+    if (newPhoto !== oldPhoto) {
+      if (typeof newPhoto === 'string') {
+        const [layerID, photoID] = newPhoto.split('/', 2).filter(Boolean);
+        if (layerID && photoID) {
+          this.selectPhoto(layerID, photoID);
+        } else {
+          this.selectPhoto();  // deselect it
+        }
       }
     }
   }
@@ -267,7 +289,6 @@ scene.classData(layerID, photoID, 'selected');
     }
 
     this._updateHash();
-    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
@@ -318,7 +339,6 @@ scene.classData(layerID, photoID, 'selected');
 
     if (didChange) {
       this._updateHash();
-      this.context.immediateRedraw();
       this.emit('photochange');
     }
   }
@@ -341,7 +361,6 @@ scene.classData(layerID, photoID, 'selected');
     }
     this._usernames = val;
     this._updateHash();
-    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
@@ -359,15 +378,13 @@ scene.classData(layerID, photoID, 'selected');
     } else {
       this._shownPhotoTypes.add(which);
     }
-
-    this.context.immediateRedraw();
     this.emit('photochange');
   }
 
 
   _showsLayer(layerID) {
     const layer = this.context.scene().layers.get(layerID);
-    return layer && layer.enabled;
+    return layer?.enabled;
   }
 
   shouldFilterByDate() {

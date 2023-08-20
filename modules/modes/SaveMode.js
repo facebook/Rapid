@@ -38,6 +38,7 @@ export class SaveMode extends AbstractMode {
     this._resultErrors = this._resultErrors.bind(this);
     this._resultNoChanges = this._resultNoChanges.bind(this);
     this._resultSuccess = this._resultSuccess.bind(this);
+    this._saveEnded = this._saveEnded.bind(this);
     this._saveStarted = this._saveStarted.bind(this);
     this._showLoading = this._showLoading.bind(this);
 
@@ -93,6 +94,7 @@ export class SaveMode extends AbstractMode {
       .on('resultErrors', this._resultErrors)
       .on('resultNoChanges', this._resultNoChanges)
       .on('resultSuccess', this._resultSuccess)
+      .on('saveEnded', this._saveEnded)
       .on('saveStarted', this._saveStarted)
       .on('willAttemptUpload', this._prepareForSuccess);
 
@@ -120,6 +122,7 @@ export class SaveMode extends AbstractMode {
       .off('resultErrors', this._resultErrors)
       .off('resultNoChanges', this._resultNoChanges)
       .off('resultSuccess', this._resultSuccess)
+      .off('saveEnded', this._saveEnded)
       .off('saveStarted', this._saveStarted)
       .off('willAttemptUpload', this._prepareForSuccess);
 
@@ -305,6 +308,17 @@ export class SaveMode extends AbstractMode {
   _saveStarted() {
     this._keybindingOff();
     this._showLoading();
+  }
+
+
+  /**
+   * _saveEnded handler
+   * At this point, the changeset is no longer inflight and we can unblock the UI
+   * (It may occur after an error condition.)
+   */
+  _saveEnded() {
+    this._keybindingOn();
+    this._hideLoading();
   }
 
 

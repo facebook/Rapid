@@ -86,20 +86,22 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 
       if (!feature) {
         let color = 0xff3300;  // open (red)
-        // let iconName = '#rapid-icon-close'
+        let iconName = 'rapid-icon-close';
         if (d.status === 'closed') {
           color = 0x55dd00;  // closed (green)
-          // iconName = '#rapid-icon-apply'
+          iconName = 'rapid-icon-apply';
         }
         if (d.isNew()) {
           color = 0xffee00;  // new (yellow)
-          // iconName = '#rapid-icon-plus'
+          iconName = 'rapid-icon-plus';
         }
 
         const style = {
           markerName: 'osmnote',
-          markerTint: color
-          // iconName: iconName
+          markerTint: color,
+          iconName: iconName,
+          // override 'y' for better centering within the note balloon
+          anchor: { y: 0.65 }
         };
 
         feature = new PixiFeaturePoint(this, featureID);

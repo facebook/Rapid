@@ -26,7 +26,7 @@ export function uiEntityEditor(context) {
     var _newFeature;
 
     var _sections;
-
+    var _init = false;
 
     // Returns a single object containing the tags of all the given entities.
     // Example:
@@ -196,8 +196,11 @@ export function uiEntityEditor(context) {
             body.call(section.render);
         });
 
-        context.systems.edits
+        if (!_init) {
+            context.systems.edits
             .on('change', _onChange);
+            _init = true;
+        }
 
         function _onChange(difference) {
             if (selection.selectAll('.entity-editor').empty()) return;

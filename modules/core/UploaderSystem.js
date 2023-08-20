@@ -341,7 +341,7 @@ export class UploaderSystem extends AbstractSystem {
     }
 
     function entityName(entity) {
-      return l10n.displayName(entity) || (l10n.displayType(entity.id) + ' ' + entity.id);
+      return l10n.displayName(entity.tags) || (l10n.displayType(entity.id) + ' ' + entity.id);
     }
 
     function sameVersions(local, remote) {
@@ -382,7 +382,7 @@ export class UploaderSystem extends AbstractSystem {
       const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
       if (changes.modified.length || changes.created.length || changes.deleted.length) {
         this.emit('willAttemptUpload');
-        osm.putChangeset(this.changeset, changes, this._uploadCallback);
+        osm.sendChangeset(this.changeset, changes, this._uploadCallback);
       } else {
         // changes were insignificant or reverted by user
         this._didResultInNoChanges();

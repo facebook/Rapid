@@ -7,7 +7,6 @@ import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
 export function uiDataEditor(context) {
   let dataHeader = uiDataHeader(context);
   let rawTagEditor = uiSectionRawTagEditor(context, 'custom-data-tag-editor')
-    .expandedByDefault(true)
     .readOnlyTags([/./]);
   let _datum;
 
@@ -49,13 +48,13 @@ export function uiDataEditor(context) {
       .merge(editor)
       .call(dataHeader.datum(_datum));
 
-    let rte = body.selectAll('.raw-tag-editor')
+    let rte = body.selectAll('.data-tag-editor')
       .data([0]);
 
     // enter/update
     rte.enter()
       .append('div')
-      .attr('class', 'raw-tag-editor data-editor')
+      .attr('class', 'data-tag-editor')
       .merge(rte)
       .call(rawTagEditor
         .tags((_datum && _datum.properties) || {})

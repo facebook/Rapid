@@ -1,8 +1,8 @@
-import { json as d3_json } from 'd3-fetch';
 import { utilQsString } from '@rapid-sdk/util';
 import debounce from 'lodash-es/debounce';
 
 import { AbstractSystem } from '../core/AbstractSystem';
+import { utilFetchResponse } from '../util';
 
 
 /**
@@ -32,7 +32,6 @@ export class OsmWikibaseService extends AbstractSystem {
     this._request = this._request.bind(this);
     this._debouncedRequest = debounce(this._request, 500, { leading: false });
   }
-
 
 
   /**
@@ -375,7 +374,8 @@ export class OsmWikibaseService extends AbstractSystem {
     const controller = new AbortController();
     this._inflight[url] = controller;
 
-    d3_json(url, { signal: controller.signal })
+    fetch(url, { signal: controller.signal })
+      .then(utilFetchResponse)
       .then(result => {
         delete this._inflight[url];
         if (callback) callback(null, result);

@@ -19,7 +19,7 @@ export function uiSectionChanges(context) {
     .then(d => _discardTags = d)
     .catch(() => { /* ignore */ });
 
-  let section = uiSection('changes-list', context)
+  let section = uiSection(context, 'changes-list')
     .label(() => {
       const editSystem = context.systems.edits;
       const summary = editSystem.difference().summary();
@@ -84,7 +84,7 @@ export function uiSectionChanges(context) {
       .append('span')
       .attr('class', 'entity-name')
       .html(d => {
-        const name = l10n.displayName(d.entity) || '';
+        const name = l10n.displayName(d.entity.tags);
         let string = '';
         if (name !== '') {
           string += ':';
@@ -145,7 +145,7 @@ export function uiSectionChanges(context) {
     function click(d3_event, change) {
       if (change.changeType !== 'deleted') {
         let entity = change.entity;
-        context.systems.map.zoomToEase(entity);
+        context.systems.map.fitEntitiesEase(entity);
         context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
           .classed('hover', true);
       }

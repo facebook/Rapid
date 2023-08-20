@@ -220,7 +220,7 @@ export class DrawBehavior extends AbstractBehavior {
    * Handler for pointercancel events.
    * @param  `e`  A Pixi InteractionEvent
    */
-  _pointercancel(e) {
+  _pointercancel() {
     this.lastDown = null;  // prepare for the next `pointerdown`
   }
 
@@ -267,7 +267,7 @@ export class DrawBehavior extends AbstractBehavior {
     // Handle situations where we don't want to hover a target way...
     let isActiveTarget = false;
 //    if (eventData?.target?.layerID === 'osm') {
-//      const mode = context.mode();
+//      const mode = context.mode;
 //      const target = eventData?.target?.data || null;
 //      let activeID;
 //      if (mode?.id === 'draw-line') {
@@ -327,7 +327,7 @@ export class DrawBehavior extends AbstractBehavior {
     // Handle situations where we don't want to hover a target way...
     let isActiveTarget = false;
 //    if (eventData?.target?.layerID === 'osm') {
-//      const mode = context.mode();
+//      const mode = context.mode;
 //      const target = eventData?.target?.data || null;
 //      let activeID;
 //      if (mode?.id === 'draw-line') {

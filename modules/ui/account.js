@@ -6,9 +6,7 @@ export function uiAccount(context) {
 
 
   function updateUserDetails(selection) {
-    if (!osm) return;
-
-    if (!osm.authenticated()) {  // logged out
+    if (!osm || !osm.authenticated()) {
       render(selection, null);
     } else {
       osm.userDetails((err, user) => render(selection, user));
@@ -17,15 +15,20 @@ export function uiAccount(context) {
 
 
   function render(selection, user) {
-    let userInfo = selection.select('.userInfo');
-    let loginLogout = selection.select('.loginLogout');
+    const userInfo = selection.select('.userInfo');
+    const loginLogout = selection.select('.loginLogout');
 
-    if (user) {
+    if (!user) {
+      userInfo
+        .html('')
+        .classed('hide', true);
+
+    } else {
       userInfo
         .html('')
         .classed('hide', false);
 
-      let userLink = userInfo
+      const userLink = userInfo
         .append('a')
         .attr('href', osm.userURL(user.display_name))
         .attr('target', '_blank');
@@ -44,8 +47,14 @@ export function uiAccount(context) {
       userLink.append('span')
         .attr('class', 'label')
         .html(user.display_name);
+    }
 
-      // show "Log Out"
+
+    if (!osm) {  // show nothing
+      loginLogout
+        .classed('hide', true);
+
+    } else if (osm.authenticated()) {    // show "Log Out"
       loginLogout
         .classed('hide', false)
         .select('a')
@@ -56,12 +65,7 @@ export function uiAccount(context) {
           tryLogout();
         });
 
-    } else {    // no user
-      userInfo
-        .html('')
-        .classed('hide', true);
-
-      // show "Log In"
+    } else {   // show "Log In"
       loginLogout
         .classed('hide', false)
         .select('a')

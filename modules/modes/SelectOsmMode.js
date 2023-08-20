@@ -88,6 +88,10 @@ export class SelectOsmMode extends AbstractMode {
     // Compute the total extent of selected items
     this.extent = utilTotalExtent(selectedIDs, context.graph());
 
+    // Put selectedIDs into the url hash
+    context.systems.urlhash.setParam('id', selectedIDs.join(','));
+
+    // Exclude these ids from filtering
     context.systems.filters.forceVisible(selectedIDs);
 
     // setup which operations are valid for this selection
@@ -185,6 +189,7 @@ export class SelectOsmMode extends AbstractMode {
 
     context.systems.ui.closeEditMenu();
     context.systems.ui.sidebar.hide();
+    context.systems.urlhash.setParam('id', null);
     context.systems.filters.forceVisible([]);
 
     if (this.keybinding) {

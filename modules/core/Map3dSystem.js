@@ -59,7 +59,19 @@ export class Map3dSystem extends AbstractSystem {
     this.maplibre = new MapLibre({
       container: this.containerID,
       pitch: 30,
-      style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=5pbVUaiVhKNAxkLf1kts'
+      style: {
+        version: 8, sources: {}, layers: [
+          {
+            'id': 'Background',
+            'type': 'background',
+            'layout': {
+              'visibility': 'visible'
+            },
+            'paint': {
+              'background-color': 'white'
+            }
+          },
+      ]}
     });
 
     return this._startPromise = new Promise(resolve => {
@@ -99,14 +111,6 @@ export class Map3dSystem extends AbstractSystem {
           data: { type: 'FeatureCollection', features: [] },
         });
         this.maplibre.addLayer(this.building3dlayerSpec);
-
-        // Turn off the existing 3d building data and road data that ships with the vector tile-
-        // we don't want to have that data competing with the custom data layer we want to render.
-        // Drawing both is bad!
-        this.maplibre.getLayer('building-3d').visibility = 'none';
-        this.maplibre.getLayer('road_network').visibility = 'none';
-        this.maplibre.getLayer('road_network-casing').visibility = 'none';
-
         this._started = true;
         resolve();
       });
@@ -146,29 +150,11 @@ export class Map3dSystem extends AbstractSystem {
           ['get', 'selected'],
           'true',
           SELECTION_COLOR,
-          /* other */ '#ff26db',
+          /* Regular building 'red' color */ '#ff0000',
         ],
+        'fill-extrusion-height': ['get', 'height'],
+        'fill-extrusion-base': ['get', 'min_height'],
 
-        // use an 'interpolate' expression to add a smooth transition effect to the
-        // buildings as the user zooms in
-        'fill-extrusion-height': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          15,
-          0,
-          15.05,
-          ['get', 'height'],
-        ],
-        'fill-extrusion-base': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          15,
-          0,
-          15.05,
-          ['get', 'min_height'],
-        ],
         'fill-extrusion-opacity': 0.85,
       },
     };

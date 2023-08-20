@@ -7,9 +7,12 @@ import { uiSection } from '../section';
 
 
 export function uiSectionOverlayList(context) {
-  const imagerySystem = context.systems.imagery;
-  const section = uiSection('overlay-list', context)
-    .label(context.tHtml('background.overlays'))
+  const map = context.systems.map;
+  const l10n = context.systems.l10n;
+  const imagery = context.systems.imagery;
+
+  const section = uiSection(context, 'overlay-list')
+    .label(l10n.tHtml('background.overlays'))
     .disclosureContent(renderDisclosureContent);
 
   let _overlayList = d3_select(null);
@@ -35,7 +38,7 @@ export function uiSectionOverlayList(context) {
 
   function updateLayerSelections(selection) {
     function isActive(d) {
-      return imagerySystem.showsLayer(d);
+      return imagery.showsLayer(d);
     }
 
     selection.selectAll('li')
@@ -46,12 +49,12 @@ export function uiSectionOverlayList(context) {
   }
 
 
-  function drawListItems(layerList, type, change, filter) {
-    let sources = imagerySystem
-      .sources(context.systems.map.extent(), context.systems.map.zoom())
-      .filter(filter);
+  function drawListItems(selection) {
+    let sources = imagery
+      .sources(map.extent(), map.zoom())
+      .filter(isOverlay);
 
-    let layerLinks = layerList.selectAll('li')
+    let layerLinks = selection.selectAll('li')
       .data(sources, d => d.name);
 
     layerLinks.exit()
@@ -65,19 +68,19 @@ export function uiSectionOverlayList(context) {
 
     label
       .append('input')
-      .attr('type', type)
+      .attr('type', 'checkbox')
       .attr('name', 'layers')
-      .on('change', change);
+      .on('change', chooseOverlay);
 
     label
       .append('span')
       .html(d => d.label);
 
 
-    layerList.selectAll('li')
+    selection.selectAll('li')
       .sort(sortSources);
 
-    layerList
+    selection
       .call(updateLayerSelections);
 
 
@@ -91,12 +94,12 @@ export function uiSectionOverlayList(context) {
 
   function chooseOverlay(d3_event, d) {
     d3_event.preventDefault();
-    imagerySystem.toggleOverlayLayer(d);
+    imagery.toggleOverlayLayer(d);
     _overlayList.call(updateLayerSelections);
   }
 
-  function filterOverlay(d) {
-    return !d.isHidden() && d.overlay;
+  function isOverlay(d) {
+    return !!d.overlay;
   }
 
   function renderDisclosureContent(selection) {
@@ -110,18 +113,18 @@ export function uiSectionOverlayList(context) {
       .merge(container);
 
     _overlayList
-      .call(drawListItems, 'checkbox', chooseOverlay, filterOverlay);
+      .call(drawListItems);
   }
 
 
-  imagerySystem
+  imagery
     .on('imagerychange', () => section.reRender);
 
-  context.systems.map
+  map
     .on('draw', debounce(() => {
       // layers in-view may have changed due to map move
       window.requestIdleCallback(section.reRender);
-    }, 1000)
+    }, 1000, { leading: true, trailing: true })
   );
 
   return section;

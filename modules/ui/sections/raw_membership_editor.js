@@ -19,7 +19,7 @@ export function uiSectionRawMembershipEditor(context) {
     const l10n = context.systems.l10n;
 
     var presetSystem = context.systems.presets;
-    var section = uiSection('raw-membership-editor', context)
+    var section = uiSection(context, 'raw-membership-editor')
         .shouldDisplay(function() {
             return _entityIDs && _entityIDs.length;
         })
@@ -124,7 +124,7 @@ export function uiSectionRawMembershipEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.relation.id);
-        context.systems.map.zoomToEase(entity);
+        context.systems.map.fitEntitiesEase(entity);
 
         // highlight the relation in case it wasn't previously on-screen
         utilHighlightEntities([d.relation.id], true, context);
@@ -229,7 +229,7 @@ export function uiSectionRawMembershipEditor(context) {
         function baseDisplayLabel(entity) {
             var matched = presetSystem.match(entity, graph);
             var presetName = (matched && matched.name()) || l10n.t('inspector.relation');
-            var entityName = l10n.displayName(entity) || '';
+            var entityName = l10n.displayName(entity.tags) || '';
 
             return presetName + ' ' + entityName;
         }
@@ -336,7 +336,7 @@ export function uiSectionRawMembershipEditor(context) {
             .html(function(d) {
                 const matched = presetSystem.match(d.relation, context.graph());
                 // hide the network from the name if there is NSI match
-                return l10n.displayName(d.relation, matched.suggestion);
+                return l10n.displayName(d.relation.tags, matched.suggestion);
             });
 
         labelEnter
