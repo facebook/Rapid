@@ -98,24 +98,6 @@ export class UiSystem extends AbstractSystem {
             .on('authDone', () => this.authModal.close());
         }
 
-        context.keybinding()
-          .on('⌫', e => e.preventDefault())
-          .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle)   // iD#5663, iD#6864 - common QWERTY, AZERTY
-          .on(uiCmd('⌘' + l10n.t('background.key')), e => {
-            if (e) {
-              e.stopImmediatePropagation();
-              e.preventDefault();
-            }
-            const imagery = context.systems.imagery;
-            const storage = context.systems.storage;
-            const previousBackground = imagery.getSource(storage.getItem('background-last-used-toggle'));
-            if (previousBackground) {
-              const currentBackground = imagery.baseLayerSource();
-              storage.setItem('background-last-used-toggle', currentBackground.id);
-              storage.setItem('background-last-used', previousBackground.id);
-              imagery.baseLayerSource(previousBackground);
-            }
-          });
       });
 
 // not sure what these were for
@@ -219,6 +201,27 @@ this.didRender = true;
       .append('div')
       .attr('class', 'sidebar')
       .call(this.sidebar);
+
+    //Now that the sidebar has been insantiated, it's safe to bind the keypress handlers
+
+    context.keybinding()
+          .on('⌫', e => e.preventDefault())
+          .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle)   // iD#5663, iD#6864 - common QWERTY, AZERTY
+          .on(uiCmd('⌘' + l10n.t('background.key')), e => {
+            if (e) {
+              e.stopImmediatePropagation();
+              e.preventDefault();
+            }
+            const imagery = context.systems.imagery;
+            const storage = context.systems.storage;
+            const previousBackground = imagery.getSource(storage.getItem('background-last-used-toggle'));
+            if (previousBackground) {
+              const currentBackground = imagery.baseLayerSource();
+              storage.setItem('background-last-used-toggle', currentBackground.id);
+              storage.setItem('background-last-used', previousBackground.id);
+              imagery.baseLayerSource(previousBackground);
+            }
+          });
 
     const content = container
       .append('div')
