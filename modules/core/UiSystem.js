@@ -82,7 +82,7 @@ export class UiSystem extends AbstractSystem {
     // Setup event handlers
     window.addEventListener('beforeunload', () => context.save());
     window.addEventListener('unload', () => context.systems.edits.unlock());
-    window.addEventListener('resize', this.resize);
+    window.addEventListener('resize', () =>  this.resize());
 
     const l10n = context.systems.l10n;
     const prerequisites = l10n.initAsync();
