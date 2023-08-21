@@ -59,7 +59,7 @@ export function uiPane(context, id) {
     const shown = !_paneSelection.classed('shown');
     context.systems.ui.togglePanes(shown ? _paneSelection : undefined);
 
-    // iD#655: Since firing the validator is so expensive,
+    // Rapid#655: Since firing the validator is so expensive,
     // only do it when we're right about to open the validation pane.
     if (pane.id === 'issues' && shown) {
       context.systems.validator.validate();

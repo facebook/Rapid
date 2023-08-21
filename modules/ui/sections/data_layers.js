@@ -36,7 +36,7 @@ export function uiSectionDataLayers(context) {
 
   function showsLayer(layerID) {
     const layer = scene.layers.get(layerID);
-    return layer && layer.enabled;
+    return layer?.enabled;
   }
 
 
@@ -173,14 +173,12 @@ export function uiSectionDataLayers(context) {
 
 
   function drawCustomDataItems(selection) {
-    const dataLayer = scene.layers.get('custom-data');
-    const hasData = dataLayer && dataLayer.hasData();
-    const showsData = hasData && dataLayer.enabled;
+    const customLayer = scene.layers.get('custom-data');
     const isRTL = l10n.isRTL();
 
     let ul = selection
       .selectAll('.layer-list-data')
-      .data(dataLayer ? [0] : []);
+      .data(customLayer ? [customLayer] : []);
 
     // Exit
     ul.exit()
@@ -233,10 +231,10 @@ export function uiSectionDataLayers(context) {
       )
       .on('click', function(d3_event) {
         if (d3_select(this).classed('disabled')) return;
-
         d3_event.preventDefault();
         d3_event.stopPropagation();
-        dataLayer.fitZoom();
+        const customLayer = scene.layers.get('custom-data');
+        customLayer?.fitZoom();
       })
       .call(uiIcon('#rapid-icon-framed-dot', 'monochrome'));
 
@@ -245,15 +243,15 @@ export function uiSectionDataLayers(context) {
       .merge(ulEnter);
 
     ul.selectAll('.list-item-data')
-      .classed('active', showsData)
+      .classed('active', d => d.enabled)
       .selectAll('label')
-      .classed('deemphasize', !hasData)
+      .classed('deemphasize', d => !d.hasData)
       .selectAll('input')
-      .property('disabled', !hasData)
-      .property('checked', showsData);
+      .property('disabled', d => !d.hasData)
+      .property('checked', d => d.enabled);
 
     ul.selectAll('button.zoom-to-data')
-      .classed('disabled', !hasData);
+      .classed('disabled', d => !d.hasData);
   }
 
 
@@ -264,12 +262,13 @@ export function uiSectionDataLayers(context) {
 
 
   function customChanged(d) {
-    const dataLayer = scene.layers.get('custom-data');
+    const customLayer = scene.layers.get('custom-data');
+    if (!customLayer) return;
 
-    if (d && d.url) {
-      dataLayer.url(d.url);
-    } else if (d && d.fileList) {
-      dataLayer.fileList(d.fileList);
+    if (d?.url) {
+      customLayer.setUrl(d.url);
+    } else if (d?.fileList) {
+      customLayer.setFileList(d.fileList);
     }
   }
 

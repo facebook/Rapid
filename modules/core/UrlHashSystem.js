@@ -34,7 +34,6 @@ export class UrlHashSystem extends AbstractSystem {
 /**
 * Initial only
 * __`comment`__ - Prefills the changeset comment. Pass a url encoded string.
-* __`gpx`__ - A custom URL for loading a gpx track.
 * __`hashtags`__ - Prefills the changeset hashtags.  Pass a url encoded list of event
 * __`locale`__ - A code specifying the localization to use, affecting the language, layout, and keyboard shortcuts. Multiple codes may be specified in order of preference. The first valid code will be the locale, while the rest will be used as fallbacks if certain text hasn't been translated. The default locale preferences are set by the browser.
 * __`presets`__ - A comma-separated list of preset IDs. These will be the only presets the user may select.
@@ -47,7 +46,9 @@ export class UrlHashSystem extends AbstractSystem {
 *
 * Responsive (user can change)
 * __`background`__ - Imagery sourceID for the background imagery layer
-* __`datasets`__ - A comma-separated list of datasetIDs to enable
+* __`data`__ - A custom data URL for loading a gpx track or connecting to a vector data source
+* __`gpx`__ - Same as `data`, it's just the legacy name for the same thing
+* __`datasets`__ - A comma-separated list of Rapid/Esri datasetIDs to enable
 * __`disable_features`__ - Disables features in the list.
 * __`overlays`__ - A comma-separated list of imagery sourceIDs to display as overlays
 * __`photo`__ - The layerID and photoID of a photo to select, e.g `photo=mapillary/fztgSDtLpa08ohPZFZjeRQ`

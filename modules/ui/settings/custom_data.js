@@ -17,11 +17,11 @@ export function uiSettingsCustomData(context) {
   ];
 
   function render(selection) {
-    let dataLayer = context.scene().layers.get('custom-data');
+    const dataLayer = context.scene().layers.get('custom-data');
 
     // Keep separate copies of original and current settings
     let _origSettings = {
-      fileList: (dataLayer && dataLayer.fileList()) || null,
+      fileList: (dataLayer && dataLayer.getFileList()) || null,
       url: storage.getItem('settings-custom-data-url')
     };
     let _currSettings = Object.assign({}, _origSettings);
