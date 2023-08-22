@@ -61,7 +61,7 @@ def deploy():
                     s.replace("dist/rapid.css", f"/rapid/{distdir}/rapid.css")
                     .replace("'dist/rapid.js'", f"'/rapid/{distdir}/rapid.js'")
                     .replace("'rapid.js'", f"'/rapid/{distdir}/rapid.js'")
-                    .replace(".assetPath('')", f".assetPath('/rapid/{distdir}/')")
+                    .replace(".assetPath = ''", f".assetPath = '/rapid/{distdir}/'")
                     .replace("href='rapid.css'", f"href='/rapid/{distdir}/rapid.css'")
                     .replace("'rapid.min.js'", f"'/rapid/{distdir}/rapid.min.js'")
                 )
