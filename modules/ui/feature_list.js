@@ -340,7 +340,7 @@ export function uiFeatureList(context) {
         context.enter('select-osm', { selectedIDs: [d.entity.id] });
 
       } else {   // not downloaded.. download and select it
-        map.selectEntityID(d.id);
+        map.selectEntityID(d.id, true);
       }
     }
 

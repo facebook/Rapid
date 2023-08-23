@@ -595,8 +595,10 @@ export class MapSystem extends AbstractSystem {
    * selectEntityID
    * Selects an entity by ID, loading it first if needed
    * @param  entityID   entityID to select
+   * @param  fitToEntity  whether to force fit to the entity after loading
    */
-  selectEntityID(entityID) {
+  selectEntityID(entityID, fitToEntity) {
+    const doFit = fitToEntity || false;
     const context = this.context;
 
     const gotEntity = (entity) => {
@@ -606,7 +608,8 @@ export class MapSystem extends AbstractSystem {
       }
 
       const extent = entity.extent(context.graph());
-      if (extent.percentContainedIn(this.extent()) < 0.8) {   // can't see it
+      // Can't see it, or we're forcing the fit.
+      if (extent.percentContainedIn(this.extent()) < 0.8 || doFit) {
         this.fitEntities(entity);
       }
     };
