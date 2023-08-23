@@ -7,6 +7,7 @@ import { utilNoAuto, utilRebind } from '../../util';
 
 export function uiSettingsCustomData(context) {
   const storage = context.systems.storage;
+  const urlhash = context.systems.urlhash;
   const dispatch = d3_dispatch('change');
   const prefix = 'settings.custom_data';  // prefix for text strings
 
@@ -20,12 +21,11 @@ export function uiSettingsCustomData(context) {
     const dataLayer = context.scene().layers.get('custom-data');
 
     // Keep separate copies of original and current settings
-    let _origSettings = {
-      fileList: (dataLayer && dataLayer.getFileList()) || null,
-      url: storage.getItem('settings-custom-data-url')
-    };
-    let _currSettings = Object.assign({}, _origSettings);
-
+    // Take initial values from urlhash first, localstorage second
+    const origUrl = urlhash.getParam('data') || urlhash.getParam('gpx') || storage.getItem('settings-custom-data-url');
+    const origFileList = (dataLayer && dataLayer.getFileList()) || null;
+    let _currUrl = origUrl;
+    let _currFileList = origFileList;
 
     const modal = uiConfirm(context, selection).okButton();
 
@@ -67,15 +67,15 @@ ${file_tip}
       .attr('class', 'field-file')
       .attr('type', 'file')
       .attr('accept', accept.join())
-      .property('files', _currSettings.fileList)  // works for all except IE11
+      .property('files', _currFileList)  // works for all except IE11
       .on('change', d3_event => {
         const files = d3_event.target.files;
         if (files?.length) {
-          _currSettings.url = '';
+          _currFileList = files;
+          _currUrl = '';
           textSection.select('.field-url').property('value', '');
-          _currSettings.fileList = files;
         } else {
-          _currSettings.fileList = null;
+          _currFileList = null;
         }
       });
 
@@ -115,7 +115,7 @@ ${url_tokens}
       .attr('class', 'field-url')
       .attr('placeholder', context.t('settings.custom_data.url.placeholder'))
       .call(utilNoAuto)
-      .property('value', _currSettings.url);
+      .property('value', _currUrl);
 
 
     // Setup Ok/Cancel buttons
@@ -141,24 +141,30 @@ ${url_tokens}
 
     // Restore the original settings
     function clickCancel() {
-      textSection.select('.field-url').property('value', _origSettings.url);
-      storage.setItem('settings-custom-data-url', _origSettings.url);
+      textSection.select('.field-url').property('value', origUrl);
+      storage.setItem('settings-custom-data-url', origUrl);
       this.blur();
       modal.close();
     }
 
+
     // Accept the current settings
     function clickSave() {
-      _currSettings.url = textSection.select('.field-url').property('value').trim();
+      _currUrl = textSection.select('.field-url').property('value').trim();
+
+      let currSettings = {};
 
       // One or the other but not both
-      if (_currSettings.url)       { _currSettings.fileList = null; }
-      if (_currSettings.fileList)  { _currSettings.url = '';        }
+      if (_currUrl) {
+        currSettings = { url: _currUrl, fileList: null };
+        storage.setItem('settings-custom-data-url', _currUrl);
+      } else if (_currFileList)  {
+        currSettings = { url: null, fileList: _currFileList };
+      }
 
-      storage.setItem('settings-custom-data-url', _currSettings.url);
       this.blur();
       modal.close();
-      dispatch.call('change', this, _currSettings);
+      dispatch.call('change', this, currSettings);
     }
   }
 
