@@ -75,42 +75,44 @@ export class Map3dSystem extends AbstractSystem {
     });
 
     return this._startPromise = new Promise(resolve => {
+      const map = this.context.systems.map;
+      const maplibre = this.maplibre;
 
-      this.maplibre.on('load', () => {
-        this.maplibre.setLight({
+      maplibre.on('load', () => {
+        maplibre.setLight({
           anchor: 'viewport',
           color: '#ff00ff',
           position: [1, 200, 30],
           intensity: 0.3,
         });
 
-        this.maplibre.jumpTo({
-          zoom: this.context.systems.map.zoom() - 3,
-          center: this.context.systems.map.extent().center(),
+        maplibre.jumpTo({
+          zoom: map.zoom() - 3,
+          center: map.extent().center(),
         });
 
-        this.maplibre.addSource('osmareas', {
+        maplibre.addSource('osmareas', {
           type: 'geojson',
           data: { type: 'FeatureCollection', features: [] },
         });
 
         // Layers need to be added in 'painter's algorithm' order, so the stuff on the bottom goes first!
-        this.maplibre.addLayer(this.areaLayerSpec);
+        maplibre.addLayer(this.areaLayerSpec);
 
-        this.maplibre.addSource('osmroads', {
+        maplibre.addSource('osmroads', {
           type: 'geojson',
           data: { type: 'FeatureCollection', features: [] },
         });
 
-        this.maplibre.addLayer(this.roadSelectedlayerSpec);
-        this.maplibre.addLayer(this.roadCasinglayerSpec);
-        this.maplibre.addLayer(this.roadStrokelayerSpec);
+        maplibre.addLayer(this.roadSelectedlayerSpec);
+        maplibre.addLayer(this.roadCasinglayerSpec);
+        maplibre.addLayer(this.roadStrokelayerSpec);
 
-        this.maplibre.addSource('osmbuildings', {
+        maplibre.addSource('osmbuildings', {
           type: 'geojson',
           data: { type: 'FeatureCollection', features: [] },
         });
-        this.maplibre.addLayer(this.building3dlayerSpec);
+        maplibre.addLayer(this.building3dlayerSpec);
         this._started = true;
         resolve();
       });
@@ -150,11 +152,10 @@ export class Map3dSystem extends AbstractSystem {
           ['get', 'selected'],
           'true',
           SELECTION_COLOR,
-          /* Regular building 'red' color */ '#ff0000',
+          /* Regular building 'red' color */ '#e06e5f',
         ],
         'fill-extrusion-height': ['get', 'height'],
         'fill-extrusion-base': ['get', 'min_height'],
-
         'fill-extrusion-opacity': 0.85,
       },
     };
