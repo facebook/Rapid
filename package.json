@@ -75,7 +75,7 @@
     "fast-json-stable-stringify": "2.1.0",
     "lodash-es": "~4.17.21",
     "maplibre-gl": "^3.3.0",
-    "marked": "~7.0.3",
+    "marked": "~7.0.4",
     "node-diff3": "~3.1.2",
     "osm-auth": "2.2.0",
     "pannellum": "2.5.6",
