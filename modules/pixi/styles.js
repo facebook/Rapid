@@ -27,7 +27,7 @@ import { osmPavedTags } from '../osm/tags';
 // The fill group also supports:
 //   `pattern` - supported pattern (see dist/img/pattern/* for these)
 //
-//  Anything missing will just be pulled from the DEFAULT style.
+// Anything missing will just be pulled from the DEFAULT style.
 //
 
 export const STYLES = {
@@ -268,6 +268,8 @@ const STYLE_SELECTORS = {
   },
   crossing: {
     marked: 'crossing_marked',
+    traffic_signals: 'crossing_marked',
+    uncontrolled: 'crossing_marked',
     zebra: 'crossing_marked',
     '*': 'crossing_unmarked'
   },
@@ -494,15 +496,13 @@ export function styleMatch(tags) {
   let matched = STYLES.DEFAULT;
   let selectivity = 999;
 
-  for (const k in tags) {
-    const v = tags[k];
+  for (const [k, v] of Object.entries(tags)) {
     const group = STYLE_SELECTORS[k];
     if (!group || !v) continue;
 
     // smaller groups are more selective
-    let groupsize = Object.keys(group).length;
-    let stylename = group[v];
-    if (!stylename) stylename = group['*'];  // fallback value
+    const groupsize = Object.keys(group).length;
+    const stylename = group[v] || group['*'];  // fallback value
 
     if (stylename && groupsize <= selectivity) {
       if (!STYLES[stylename]) {
@@ -532,30 +532,40 @@ export function styleMatch(tags) {
     }
   }
 
-  // overrides
-  if (tags.bridge) {
+  // Apply casing/stroke overrides
+  const bridge = getTag(tags, 'bridge');
+  const building = getTag(tags, 'building');
+  const cutting = getTag(tags, 'cutting');
+  const embankment = getTag(tags, 'embankment');
+  const highway = getTag(tags, 'highway');
+  const tracktype = getTag(tags, 'tracktype');
+  const tunnel = getTag(tags, 'tunnel');
+  let surface = getTag(tags, 'surface');
+  if (highway === 'track' && tracktype !== 'grade1') {
+    surface = surface || 'dirt';   // default unimproved (non-grade1) tracks to 'dirt' surface
+  }
+
+  if (bridge || embankment || cutting) {
     style.casing.width += 7;
     style.casing.color = 0x000000;
     style.casing.cap = PIXI.LINE_CAP.BUTT;
+    if (embankment || cutting) {
+      style.casing.dash = [2, 4];
+    }
   }
-  if (tags.tunnel) {
+  if (tunnel) {
     style.stroke.alpha = 0.5;
   }
 
-  // determine surface for paved/unpaved
-  let surface = tags.surface;
-  let highway = tags.highway;
-  if (highway === 'track' && tags.tracktype !== 'grade1') {
-    surface = surface || 'dirt';
-  }
   if (surface && ROADS[highway] && !osmPavedTags.surface[surface]) {
-    if (!tags.bridge) style.casing.color = 0xcccccc;
+    if (!bridge) style.casing.color = 0xcccccc;
     style.casing.cap = PIXI.LINE_CAP.BUTT;
     style.casing.dash = [4, 4];
   }
 
-  if (style.fill.pattern) return style;  // already has a pattern defined by the style
-  if (tags.building) return style;       // don't apply patterns to buildings
+  // Look for fill pattern
+  if (style.fill.pattern) return style;   // already has a pattern defined by the style
+  if (building) return style;             // don't apply patterns to buildings
 
   // Otherwise, look for a matching fill pattern.
   selectivity = 999;
@@ -577,4 +587,11 @@ export function styleMatch(tags) {
   }
 
   return style;
+
+
+  // This just returns the value of the tag, but ignores 'no' values
+  function getTag(tags, key) {
+    return tags[key] === 'no' ? undefined : tags[key];
+  }
+
 }
