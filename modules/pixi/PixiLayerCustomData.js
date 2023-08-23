@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { geoBounds as d3_geoBounds } from 'd3-geo';
 import { gpx, kml } from '@tmcw/togeojson';
 import { Extent } from '@rapid-sdk/math';
 import geojsonRewind from '@mapbox/geojson-rewind';

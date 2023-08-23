@@ -1,6 +1,5 @@
-import { Extent } from '@rapid-sdk/math';
 import * as PIXI from 'pixi.js';
-import { utilEntityOrDeepMemberSelector } from '@rapid-sdk/util';
+import { Extent } from '@rapid-sdk/math';
 
 
 // Accepts an array of entities -or- entityIDs
@@ -17,6 +16,7 @@ export function utilTotalExtent(array, graph) {
   }, new Extent());
 }
 
+
 export function flatCoordsToPoints(coords) {
   let points = [];
   for (let i = 0; i < coords.length; i += 2){
@@ -24,6 +24,7 @@ export function flatCoordsToPoints(coords) {
   }
   return points;
 }
+
 
 // Adds or removes highlight styling for the specified entities
 export function utilHighlightEntities(ids, highlighted, context) {
@@ -66,26 +67,42 @@ export function utilFastMouse(container) {
 }
 
 
-// wraps an index to an interval [0..length-1]
-export function utilWrap(index, length) {
+/**
+ * utilWrap
+ * Wraps an index to an interval [0..max-1]
+ * (Essentially modulo/remainder that works for negative numbers also)
+ * @param   {number}  index
+ * @param   {number}  max
+ * @return  {number}  result
+ */
+export function utilWrap(index, max) {
   if (index < 0) {
-    index += Math.ceil(-index/length)*length;
+    index += Math.ceil(-index / max) * max;
   }
-  return index % length;
+  return index % max;
 }
 
 
 /**
- * a replacement for functor
- *
- * @param {*} value any value
- * @returns {Function} a function that returns that value or the value if it's a function
+ * utilFunctor
+ * A functor is just a way of turning anything into a function.
+ * This is particulary useful in places where D3 wants a function to be.
+ * If passed a function, it returns that function.
+ * If passed a value, it returns a function that returns that value.
+ * @param   {*} value any value
+ * @return  {Function} a function that returns that value or the value if it's a function
  */
 export function utilFunctor(value) {
   return (typeof value === 'function') ? value : (() => value);
 }
 
 
+/**
+ * utilNoAuto
+ * Sets common attributes on `<input>` or `<textarea>` elements to avoid autocomplete and other annoyances.
+ * @param   {d3-selection} selection - A d3-selection to a `<input>` or `<textarea>`
+ * @return  {d3-selection} same selection but with the attributes set
+ */
 export function utilNoAuto(selection) {
   const isText = (selection.size() && selection.node().tagName.toLowerCase() === 'textarea');
 
