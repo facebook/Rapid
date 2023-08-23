@@ -91,7 +91,8 @@
           {
             "modifiers": ["⌘"],
             "shortcuts": ["background.3dmap.key"],
-            "text": "shortcuts.browsing.display_options.3dmap"
+            "text": "shortcuts.browsing.display_options.3dmap",
+            "rapid": true
           },
           {
             "shortcuts": ["map_data.highlight_edits.key"],
