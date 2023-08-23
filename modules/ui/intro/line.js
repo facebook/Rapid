@@ -8,7 +8,7 @@ import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetLi
 export function uiIntroLine(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.lines.title' };
-  const editMenu = context.systems.ui.editMenu();
+  const editMenu = context.systems.ui.editMenu;
   const container = context.container();
   const dragBehavior = context.behaviors.drag;
   const editSystem = context.systems.edits;

@@ -10,7 +10,7 @@ import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetLi
 export function uiIntroPoint(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.points.title' };
-  const editMenu = context.systems.ui.editMenu();
+  const editMenu = context.systems.ui.editMenu;
   const container = context.container();
   const editSystem = context.systems.edits;
   const mapSystem = context.systems.map;
