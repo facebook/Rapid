@@ -36,12 +36,17 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 # [2.1.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.0)
-#### 2023-Aug-01
+#### 2023-Aug-28
 
-#### :sparkles: new 3D inset Map!
-* [#988], [#991], [#994] Added a mapLibre-powered 3D inset map! :office: :bank:
+#### :tada: New Features
 
-#### :bug: fixes:
+New 3D inset Map!
+* [#988], [#991], [#994] Added a [MapLibre](https://maplibre.org/)-powered 3D inset map! :office: :bank:
+
+Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles) format
+* [#1016] Add support for `.pmtiles` vector tiles custom data sources
+
+#### :bug: Bugfixes:
 * [#1007] Places search has been fixed.
 * [#939] Added relation highlighting back!
 * [#983] Wireframe-mode polygons should be interactive once again.
@@ -53,6 +58,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * [#1012] Default location for map is out-of-bounds
 
 #### :hammer: Development / Code Improvements
+* [#964] Add a `rapid:poweruser` changeset tag if the user has been in "poweruser" mode
 * Renamed many 'core' classes to be Systems adopting a 'ThingCategory' (not 'CategoryThing') naming convention:
   * coreContext :fast_forward: Context
   * localizer :fast_forward: LocalizationSystem
@@ -75,18 +81,21 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 
 [#939]: https://github.com/facebook/Rapid/issues/939
+[#964]: https://github.com/facebook/Rapid/issues/964
 [#983]: https://github.com/facebook/Rapid/issues/983
+[#984]: https://github.com/facebook/Rapid/issues/984
 [#988]: https://github.com/facebook/Rapid/issues/988
 [#991]: https://github.com/facebook/Rapid/issues/991
 [#994]: https://github.com/facebook/Rapid/issues/994
-[#984]: https://github.com/facebook/Rapid/issues/984
 [#997]: https://github.com/facebook/Rapid/issues/997
-[#1014]: https://github.com/facebook/Rapid/issues/1014
+[#1007]: https://github.com/facebook/Rapid/issues/1007
 [#1009]: https://github.com/facebook/Rapid/issues/1009
 [#1010]: https://github.com/facebook/Rapid/issues/1010
 [#1011]: https://github.com/facebook/Rapid/issues/1011
 [#1012]: https://github.com/facebook/Rapid/issues/1012
-[#1007]: https://github.com/facebook/Rapid/issues/1007
+[#1014]: https://github.com/facebook/Rapid/issues/1014
+[#1016]: https://github.com/facebook/Rapid/issues/1016
+
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
 #### 2023-May-01
