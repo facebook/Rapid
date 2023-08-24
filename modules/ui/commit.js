@@ -20,7 +20,7 @@ const readOnlyTags = [
   /^imagery_used$/,
   /^host$/,
   /^locale$/,
-  /^poweruser$/,
+  /^rapid:poweruser$/,
   /^warnings:/,
   /^resolved:/,
   /^closed:note$/,
@@ -134,12 +134,12 @@ export function uiCommit(context) {
     let tags = Object.assign({}, uploader.changeset.tags);   // shallow copy
     let sources = new Set((tags.source || '').split(';'));
 
-    // Sync up the poweruser tag
+    // Sync up the `rapid:poweruser` tag
     // Set to true if the user had poweruser on at any point during their editing
     if (rapid.hadPoweruser) {
-      tags.poweruser = 'true';
+      tags['rapid:poweruser'] = 'true';
     } else {
-      delete tags.poweruser;
+      delete tags['rapid:poweruser'];
     }
 
     // Sync up the used photo sources with `sources`
