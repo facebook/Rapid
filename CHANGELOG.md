@@ -47,15 +47,22 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 * [#1016] Add support for `.pmtiles` vector tiles custom data sources
 
 #### :bug: Bugfixes:
-* [#1007] Places search has been fixed.
+* [#1006], [#1007] Places search has been fixed.
 * [#939] Added relation highlighting back!
-* [#983] Wireframe-mode polygons should be interactive once again.
+* [#955] Mapillary imagery pin date/type filters should work once again.
+* [#983], [#1004] Wireframe-mode polygons should be interactive once again.
+* [#970] Removed the Maxar premium imagery layer.
+* [#971] It is no longer possible to draw a degenerate (single-node) way.
+* [#972] Nodes in ways that were added to relations should now be clickable once again.
 * [#984] Fixed the stitching of streetside image sequences.
+* [#987] Fixed the note inspector header icon (cosmetic issue only)
 * [#997], [#1014] 'Find my location' should no longer clear the sidebar more than once.
-* [#1010] Tile Renderer occasionally stacktraces
-* [#1011] Map imagery source stays blank/unfilled
 * [#1009] Ways on different layers will no longer be flagged as :warning:s in the validator
 * [#1012] Default location for map is out-of-bounds
+* [#1018] Waterways should no longer warn about connectivity and completeness
+* [#1020] Reinstated dashed-line borders for certain features (barriers, walls, fences, etc)
+* [#1025] Overlay imagery now settable in the urlhash
+* [#1036] Reinstated Cutting & Embankment styles
 
 #### :hammer: Development / Code Improvements
 * [#964] Add a `rapid:poweruser` changeset tag if the user has been in "poweruser" mode
@@ -78,23 +85,33 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 * Converted several more classes/files to ES6 Syntax.
 * Converted use of xhr and d3_fetch helpers to instead use fetch proper for data downloads
 * Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
+* Fixed several dozen other bugs we discovered as we refactored all the above
 
-
+#### :hammer: Development / Code Improvements
 [#939]: https://github.com/facebook/Rapid/issues/939
+[#955]: https://github.com/facebook/Rapid/issues/955
 [#964]: https://github.com/facebook/Rapid/issues/964
+[#970]: https://github.com/facebook/Rapid/issues/970
+[#971]: https://github.com/facebook/Rapid/issues/971
+[#972]: https://github.com/facebook/Rapid/issues/972
 [#983]: https://github.com/facebook/Rapid/issues/983
 [#984]: https://github.com/facebook/Rapid/issues/984
+[#987]: https://github.com/facebook/Rapid/issues/987
 [#988]: https://github.com/facebook/Rapid/issues/988
 [#991]: https://github.com/facebook/Rapid/issues/991
 [#994]: https://github.com/facebook/Rapid/issues/994
 [#997]: https://github.com/facebook/Rapid/issues/997
+[#1004]: https://github.com/facebook/Rapid/issues/1004
+[#1006]: https://github.com/facebook/Rapid/issues/1006
 [#1007]: https://github.com/facebook/Rapid/issues/1007
 [#1009]: https://github.com/facebook/Rapid/issues/1009
-[#1010]: https://github.com/facebook/Rapid/issues/1010
-[#1011]: https://github.com/facebook/Rapid/issues/1011
 [#1012]: https://github.com/facebook/Rapid/issues/1012
 [#1014]: https://github.com/facebook/Rapid/issues/1014
 [#1016]: https://github.com/facebook/Rapid/issues/1016
+[#1018]: https://github.com/facebook/Rapid/issues/1018
+[#1020]: https://github.com/facebook/Rapid/issues/1020
+[#1025]: https://github.com/facebook/Rapid/issues/1025
+[#1036]: https://github.com/facebook/Rapid/issues/1036
 
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
