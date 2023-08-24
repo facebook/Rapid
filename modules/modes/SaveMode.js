@@ -46,6 +46,7 @@ export class SaveMode extends AbstractMode {
     this._uiConflicts = null;
     this._uiLoading = null;
     this._uiSuccess = null;
+    this._wasSuccessfulSave = false;
   }
 
 
@@ -65,6 +66,7 @@ export class SaveMode extends AbstractMode {
     if (!osm) return false;  // can't enter save mode
 
     this._active = true;
+    this._wasSuccessfulSave = false;
 
     this._uiCommit = uiCommit(context)
       .on('cancel', this._cancel);
@@ -133,7 +135,10 @@ export class SaveMode extends AbstractMode {
       .classed('active', true)
       .classed('inactive', false);
 
-    // this.context.systems.ui.sidebar.hide();
+    // After a successful save, we want to leave the "thanks" content in the sidebar
+    if (!this._wasSuccessfulSave) {
+      this.context.systems.ui.sidebar.hide();
+    }
   }
 
 
@@ -291,6 +296,7 @@ export class SaveMode extends AbstractMode {
       .location(this._location)
       .on('cancel', () => context.systems.ui.sidebar.hide());
 
+    this._wasSuccessfulSave = true;
     context.systems.ui.sidebar.show(successContent);
 
     // Add delay before resetting to allow for postgres replication iD#1646 iD#2678
