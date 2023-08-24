@@ -33,9 +33,12 @@ export class RapidSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'rapid';
-    this.dependencies = new Set(['l10n', 'urlhash']);
+    this.dependencies = new Set(['edits', 'l10n', 'urlhash']);
 
     this.sources = new Set();
+    // Watch edit history to keep track of which features have been accepted by the user.
+    // These features will be filtered out when drawing
+    this.acceptedIDs = new Set();
 
     this._datasets = new Map();   // Map(datasetID -> dataset)
     this._taskExtent = null;
@@ -44,8 +47,12 @@ export class RapidSystem extends AbstractSystem {
 
     this._initPromise = null;
 
+
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
+    this._onUndone = this._onUndone.bind(this);
+    this._onChange = this._onChange.bind(this);
+    this._onRestore = this._onRestore.bind(this);
   }
 
 
@@ -64,11 +71,13 @@ export class RapidSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const map = context.systems.map;
+    const edits = context.systems.edits;
     const l10n = context.systems.l10n;
+    const map = context.systems.map;
     const urlhash = context.systems.urlhash;
 
     const prerequisites = Promise.all([
+      edits.initAsync(),
       map.initAsync(),   // RapidSystem should listen for hashchange after MapSystem
       l10n.initAsync(),
       urlhash.initAsync()
@@ -76,7 +85,13 @@ export class RapidSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
-        urlhash.on('hashchange', this._hashchange);
+        urlhash
+          .on('hashchange', this._hashchange);
+
+        edits
+          .on('undone', this._onUndone)
+          .on('change', this._onChange)
+          .on('restore', this._onRestore);
 
         this._datasets.set('fbRoads', {
           id: 'fbRoads',
@@ -123,6 +138,7 @@ export class RapidSystem extends AbstractSystem {
    */
   resetAsync() {
     this.sources = new Set();
+    this.acceptedIDs = new Set();
     return Promise.resolve();
   }
 
@@ -210,6 +226,66 @@ export class RapidSystem extends AbstractSystem {
     function distinct(value, index, self) {
       return self.indexOf(value) === index;
     }
+  }
+
+
+  /**
+   *
+   */
+  _wasRapidEdit(annotation) {
+    return annotation?.type && /^rapid/.test(annotation.type);
+  }
+
+
+  /**
+   *
+   */
+  _onUndone(currentStack, previousStack) {
+    const annotation = previousStack.annotation;
+    if (!this._wasRapidEdit(annotation)) return;
+
+    this.acceptedIDs.delete(annotation.id);
+    this.context.systems.map.immediateRedraw();
+  }
+
+
+  /**
+   *
+   */
+  _onChange() {
+    const annotation = this.context.systems.edits.peekAnnotation();
+    if (!this._wasRapidEdit(annotation)) return;
+
+    this.acceptedIDs.add(annotation.id);
+    this.context.systems.map.immediateRedraw();
+  }
+
+
+  /**
+   *
+   */
+  _onRestore() {
+    this.acceptedIDs = new Set();
+
+    this.context.systems.edits.peekAllAnnotations().forEach(annotation => {
+      if (!this._wasRapidEdit(annotation)) return;
+
+      this.acceptedIDs.add(annotation.id);
+
+      // `origid` (the original entity ID), a.k.a. datum.__origid__,
+      // is a hack used to deal with non-deterministic way-splitting
+      // in the roads service. Each way "split" will have an origid
+      // attribute for the original way it was derived from. In this
+      // particular case, restoring from history on page reload, we
+      // prevent new splits (possibly different from before the page
+      // reload) from being displayed by storing the origid and
+      // checking against it in render().
+      if (annotation.origid) {
+        this.acceptedIDs.add(annotation.origid);
+      }
+    });
+
+    this.context.systems.map.immediateRedraw();
   }
 
 

@@ -298,12 +298,10 @@ export function uiFieldCombo(context, uifield) {
     }
 
 
-    function isFbRoadId (entity) {
-        if (entity.id) {
-            return entity.id.startswith('w-');
-        } else {
-            return false;
-       }
+    function _isRapidFeature() {
+        const rapid = context.systems.rapid;
+        const entityID = _entityIDs?.length && _entityIDs[0];
+        return entityID && rapid.acceptedIDs.has(entityID);
     }
 
 
@@ -313,9 +311,9 @@ export function uiFieldCombo(context, uifield) {
 
         const key = uifield.key;
 
-        // don't move source=digitalglobe or source=maxar on ML road
-        // TODO: switch to check on __fbid__
-        if (key === 'source' && _entityIDs[0] && isFbRoadId(_entityIDs[0]) && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
+        // Don't allow user to remove source of a rapid feature
+        if (key === 'source' && _isRapidFeature()) return;
+
         var t = {};
         if (_isMulti) {
             t[d.key] = undefined;
@@ -547,21 +545,19 @@ export function uiFieldCombo(context, uifield) {
             }
 
             chips.select('span')
-                .html(function(d) { return d.value; });
+                .html(d => d.value);
 
-            chips.select('a')
-                .attr('href', '#')
-                .on('click', removeMultikey)
-                .attr('class', 'remove')
-                .text(function(d) {
-                    // don't show 'x' on the digitalglobe/maxar label on ML road
-                    // TODO: switch to check on __fbid__
-                    return _entityIDs[0] && isFbRoadId(_entityIDs[0]) && key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
-                });
+            // Don't show delete '×' on the source chip for rapid features
+            if (!(uifield.key === 'source' && _isRapidFeature())) {
+                chips.select('a')
+                    .attr('href', '#')
+                    .on('click', removeMultikey)
+                    .attr('class', 'remove')
+                    .text('×');
+            }
 
         } else {
             var isMixed = Array.isArray(tags[key]);
-
             var mixedValues = isMixed && tags[key].map(function(val) {
                 return displayValue(val);
             }).filter(Boolean);
@@ -726,7 +722,7 @@ export function uiFieldCombo(context, uifield) {
 
     combo.entityIDs = function(val) {
         if (!arguments.length) return _entityIDs;
-        _entityIDs = val;
+        _entityIDs = val || [];
         return combo;
     };
 

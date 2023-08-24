@@ -101,69 +101,6 @@ export class PixiLayerRapid extends AbstractLayer {
 //`;
 //
 //this._customshader = new PIXI.Shader.from(vert, frag, this._uniforms);
-
-    // Watch history to keep track of which features have been accepted by the user
-    // These features will be filtered out when drawing
-    this._acceptedIDs = new Set();
-
-    // Make sure the event handlers have `this` bound correctly
-    this._onUndone = this._onUndone.bind(this);
-    this._onChange = this._onChange.bind(this);
-    this._onRestore = this._onRestore.bind(this);
-
-    this.context.systems.edits
-      .on('undone', this._onUndone)
-      .on('change', this._onChange)
-      .on('restore', this._onRestore);
-  }
-
-
-
-  _wasRapidEdit(annotation) {
-    return annotation?.type && /^rapid/.test(annotation.type);
-  }
-
-
-  _onUndone(currentStack, previousStack) {
-    const annotation = previousStack.annotation;
-    if (!this._wasRapidEdit(annotation)) return;
-
-    this._acceptedIDs.delete(annotation.id);
-    this.context.systems.map.immediateRedraw();
-  }
-
-
-  _onChange() {
-    const annotation = this.context.systems.edits.peekAnnotation();
-    if (!this._wasRapidEdit(annotation)) return;
-
-    this._acceptedIDs.add(annotation.id);
-    this.context.systems.map.immediateRedraw();
-  }
-
-
-  _onRestore() {
-    this._acceptedIDs = new Set();
-
-    this.context.systems.edits.peekAllAnnotations().forEach(annotation => {
-      if (!this._wasRapidEdit(annotation)) return;
-
-      this._acceptedIDs.add(annotation.id);
-
-      // `origid` (the original entity ID), a.k.a. datum.__origid__,
-      // is a hack used to deal with non-deterministic way-splitting
-      // in the roads service. Each way "split" will have an origid
-      // attribute for the original way it was derived from. In this
-      // particular case, restoring from history on page reload, we
-      // prevent new splits (possibly different from before the page
-      // reload) from being displayed by storing the origid and
-      // checking against it in render().
-      if (annotation.origid) {
-        this._acceptedIDs.add(annotation.origid);
-      }
-    });
-
-    this.context.systems.map.immediateRedraw();
   }
 
 
@@ -235,6 +172,8 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderDataset(dataset, frame, projection, zoom) {
     const context = this.context;
+    const rapid = context.systems.rapid;
+
     const dsEnabled = (dataset.added && dataset.enabled);
     if (!dsEnabled) return;
 
@@ -245,9 +184,9 @@ export class PixiLayerRapid extends AbstractLayer {
     const datasetID = dataset.id + (dataset.conflated ? '-conflated' : '');
     const dsGraph = service.graph(datasetID);
 
-    let acceptedIDs = this._acceptedIDs;
+    // Filter out features that have already been accepted by the user.
     function isAccepted(entity) {
-      return acceptedIDs.has(entity.id) || acceptedIDs.has(entity.__origid__);
+      return rapid.acceptedIDs.has(entity.id) || rapid.acceptedIDs.has(entity.__origid__);
     }
 
     // Gather data
@@ -255,12 +194,12 @@ export class PixiLayerRapid extends AbstractLayer {
 
     /* Facebook AI/ML */
     if (dataset.service === 'mapwithai') {
-      if (zoom >= 15) { // avoid firing off too many API requests
+      if (zoom >= 15) {  // avoid firing off too many API requests
         service.loadTiles(datasetID);  // fetch more
       }
 
       const entities = service.getData(datasetID)
-        .filter(d => d.type === 'way' && !isAccepted(d));  // see this._onRestore()
+        .filter(d => d.type === 'way' && !isAccepted(d));  // skip features already accepted by the user
 
       // fb_ai service gives us roads and buildings together,
       // so filter further according to which dataset we're drawing
@@ -281,14 +220,14 @@ export class PixiLayerRapid extends AbstractLayer {
 
     /* ESRI ArcGIS */
     } else if (dataset.service === 'esri') {
-      if (zoom >= 14) { // avoid firing off too many API requests
+      if (zoom >= 14) {  // avoid firing off too many API requests
         service.loadTiles(datasetID);  // fetch more
       }
 
       const entities = service.getData(datasetID);
 
       for (const entity of entities) {
-        if (isAccepted(entity)) continue;   // skip features already accepted, see this._onRestore()
+        if (isAccepted(entity)) continue;   // skip features already accepted by the user
         const geom = entity.geometry(dsGraph);
         if (geom === 'point' && !!entity.__fbid__) {  // standalone points only (not vertices/childnodes)
           data.points.push(entity);
