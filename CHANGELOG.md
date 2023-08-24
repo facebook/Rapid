@@ -63,6 +63,7 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 * [#1020] Reinstated dashed-line borders for certain features (barriers, walls, fences, etc)
 * [#1025] Overlay imagery now settable in the urlhash
 * [#1036] Reinstated Cutting & Embankment styles
+* [#1038] Fix missing gesture icons on keyboard shortcuts screen
 
 #### :hammer: Development / Code Improvements
 * [#964] Add a `rapid:poweruser` changeset tag if the user has been in "poweruser" mode
@@ -112,6 +113,7 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 [#1020]: https://github.com/facebook/Rapid/issues/1020
 [#1025]: https://github.com/facebook/Rapid/issues/1025
 [#1036]: https://github.com/facebook/Rapid/issues/1036
+[#1038]: https://github.com/facebook/Rapid/issues/1038
 
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
