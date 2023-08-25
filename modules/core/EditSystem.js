@@ -517,8 +517,9 @@ export class EditSystem extends AbstractSystem {
   toJSON() {
     if (!this.hasChanges()) return;
 
+    const baseGraph = this.base();       // The initial unedited graph
     const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
-    const allEntityIDs = new Set();
+    const baseEntities = new Map();      // Map(entityID -> Entity)
     const stackData = [];
 
     // Preserve the users stack of edits..
@@ -529,13 +530,40 @@ export class EditSystem extends AbstractSystem {
 
       // watch out: for modified entities we index on "key" - e.g. "n1v1"
       for (const [entityID, entity] of currGraph.local.entities) {
-        allEntityIDs.add(entityID);
         if (entity) {
           const key = osmEntity.key(entity);
           modifiedEntities.set(key, entity);
           modified.push(key);
         } else {
           deleted.push(entityID);
+        }
+
+        // Collect the original versions of edited Entities.
+        const original = baseGraph.hasEntity(entityID);
+        if (original && !baseEntities.has(entityID)) {
+          baseEntities.set(entityID, original);
+        }
+
+        // For modified ways, collect originals of child nodes also.
+        // (This is needed for situations where we connect a way to an existing node)
+        if (entity && entity.nodes) {
+          for (const childID of entity.nodes) {
+            const child = baseGraph.hasEntity(childID);
+            if (child && !baseEntities.has(child.id)) {
+              baseEntities.set(child.id, child);
+            }
+          }
+        }
+
+        // Collect original parent ways also.
+        // (This is needed for situations where we reshape or move a way -
+        //  behind the scenes, only the nodes were really modified)
+        if (original) {
+          for (const parent of baseGraph.parentWays(original)) {
+            if (!baseEntities.has(parent.id)) {
+              baseEntities.set(parent.id, parent);
+            }
+          }
         }
       }
 
@@ -548,27 +576,6 @@ export class EditSystem extends AbstractSystem {
       if (s.transform)      item.transform = s.transform;
       if (s.selectedIDs)    item.selectedIDs = s.selectedIDs;
       stackData.push(item);
-    }
-
-    // Preserve the originals of edited Entities.
-    // If user restores their edits, we need these Entities to look the same too.
-    const baseGraph = this.base();   // The initial unedited graph
-    let baseEntities = new Map();    // Map(entityID -> entity)
-
-    for (const entityID of allEntityIDs) {
-      const original = baseGraph.hasEntity(entityID);
-      if (!original || baseEntities.has(entityID)) continue;
-
-      baseEntities.set(entityID, original);
-
-      // Preserve originals of child nodes
-      for (const child of baseGraph.childNodes(original)) {
-        baseEntities.set(child.id, child);
-      }
-      // Preserve originals of parent entities too
-      for (const parent of baseGraph.parentWays(original)) {
-        baseEntities.set(parent.id, parent);
-      }
     }
 
     return JSON.stringify({

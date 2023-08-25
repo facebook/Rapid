@@ -77,7 +77,7 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
   * coreUploader :fast_forward: UploaderSystem
   * coreRapidContext :fast_forward: RapidSystem
   * rendererPhotos :fast_forward: PhotoSystem
-  * urlhash :fast_forward: urlHashSystem
+  * urlhash :fast_forward: UrlHashSystem
   * rendererMap :fast_forward: MapSystem
   * 3dMap :fast_forward: Map3dSystem
   * etc...
