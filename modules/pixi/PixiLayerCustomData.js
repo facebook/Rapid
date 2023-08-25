@@ -83,7 +83,9 @@ export class PixiLayerCustomData extends AbstractLayer {
     const vtService = this.context.services.vectortile;
     let geoData = [];
     if (this._template && vtService) {   // fetch data from vector tile service
-      vtService.loadTiles(this._template);
+      if (zoom >= 13) {  // avoid firing off too many API requests
+        vtService.loadTiles(this._template);
+      }
       geoData = vtService.getData(this._template).map(d => d.geojson);
     } else {
       geoData = this._getFeatures(this._geojson);
