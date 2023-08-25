@@ -317,13 +317,13 @@ export function uiFeatureList(context) {
 
 
     function mouseover(d3_event, d) {
-      if (d.id === -1) return;
+      if (!d.id || d.id === -1) return;
       utilHighlightEntities([d.id], true, context);
     }
 
 
     function mouseout(d3_event, d) {
-      if (d.id === -1) return;
+      if (!d.id || d.id === -1) return;
       utilHighlightEntities([d.id], false, context);
     }
 
@@ -334,13 +334,9 @@ export function uiFeatureList(context) {
       if (d.location) {
         map.centerZoomEase([d.location[1], d.location[0]], 19);
 
-      } else if (d.entity) {
+      } else if (d.id !== -1) {
         utilHighlightEntities([d.id], false, context);
-        map.fitEntitiesEase(d.entity);
-        context.enter('select-osm', { selectedIDs: [d.entity.id] });
-
-      } else {   // not downloaded.. download and select it
-        map.selectEntityID(d.id, true);
+        map.selectEntityID(d.id, true);   // select and fit , download first if necessary
       }
     }
 
