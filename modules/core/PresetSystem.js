@@ -177,9 +177,11 @@ export class PresetSystem extends AbstractSystem {
 if (p.icon) p.icon = p.icon.replace(/^iD-/, 'rapid-');
 
 // A few overrides to use better icons than the ones provided by the id-tagging-schema project
-if (presetID === 'address') p.icon ='maki-circle-stroked';
-if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_crosswalk';
-
+if (presetID === 'address')                         p.icon = 'maki-circle-stroked';
+if (presetID === 'natural/tree')                    p.icon = 'maki-park';
+if (/^highway\/crossing/.test(presetID))            p.icon = 'temaki-pedestrian';
+if (/^highway\/footway\/crossing/.test(presetID))   p.icon = 'temaki-pedestrian';
+if (p.icon === 'roentgen-needleleaved_tree')        p.icon = 'maki-park-alt1';
           const preset = new Preset(context, presetID, p, this._fields, this._presets);
           if (preset.locationSet) newLocationSets.push(preset);
           this._presets[presetID] = preset;
