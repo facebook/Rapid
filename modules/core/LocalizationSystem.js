@@ -132,7 +132,7 @@ export class LocalizationSystem extends AbstractSystem {
 
     const scopes = {
       general: 'locales',
-      tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/translations'
+      tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.4/dist/translations'
     };
 
     const dataLoaderSystem = this.context.systems.data;
