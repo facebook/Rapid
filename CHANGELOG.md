@@ -68,6 +68,7 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 
 #### :hammer: Development / Code Improvements
 * [#964] Add a `rapid:poweruser` changeset tag if the user has been in "poweruser" mode
+* [#1053] Include the Rapid favicon in the distribution
 * Renamed many 'core' classes to be Systems adopting a 'ThingCategory' (not 'CategoryThing') naming convention:
   * coreContext :fast_forward: Context
   * localizer :fast_forward: LocalizationSystem
@@ -116,6 +117,7 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 [#1036]: https://github.com/facebook/Rapid/issues/1036
 [#1038]: https://github.com/facebook/Rapid/issues/1038
 [#1050]: https://github.com/facebook/Rapid/issues/1050
+[#1053]: https://github.com/facebook/Rapid/issues/1053
 
 
 # [2.0.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.3)
