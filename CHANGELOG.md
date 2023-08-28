@@ -90,7 +90,6 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 * Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
 * Fixed several dozen other bugs we discovered as we refactored all the above
 
-#### :hammer: Development / Code Improvements
 [#939]: https://github.com/facebook/Rapid/issues/939
 [#955]: https://github.com/facebook/Rapid/issues/955
 [#964]: https://github.com/facebook/Rapid/issues/964
