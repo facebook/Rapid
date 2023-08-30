@@ -39,6 +39,7 @@ $  git add -f dist
 $  git commit -m 'Check in build'
 $  git tag rapid-vA.B.C
 $  git push origin -f release rapid-vA.B.C
+$  npm publish
 ```
 - Open https://github.com/facebook/Rapid/releases
 
