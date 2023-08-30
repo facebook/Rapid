@@ -113,6 +113,7 @@ export class EditSystem extends AbstractSystem {
     this._tree = new Tree(base);
     this._index = 0;
     this._checkpoints = {};
+    this.emit('reset');
   }
 
 
