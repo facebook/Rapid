@@ -56,7 +56,9 @@ export function uiMap3dViewer(context) {
         return tags.length > 0;
       });
 
-      const areaEnts = entities.filter((ent) => {
+      const noRelationEnts = entities.filter((ent) => !ent.id.startsWith('r'));
+
+      const areaEnts = noRelationEnts.filter((ent) => {
         const tags = Object.keys(ent.tags).filter(
           (tagname) =>
             tagname.startsWith('landuse') ||
