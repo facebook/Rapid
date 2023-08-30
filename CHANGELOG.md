@@ -35,6 +35,17 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.1.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.1)
+#### 2023-Aug-31
+
+#### :bug: Bugfixes:
+* [#1070] Fixed an issue preventing catalog data from being returned while running from inside a HOT task.
+* [#1060] Fixed an issue that prevented the 'change count' from restarting at 0 after saving changes.
+
+
+
+[#1070]: https://github.com/facebook/Rapid/issues/1070
+[#1060]: https://github.com/facebook/Rapid/issues/1060
 # [2.1.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.0)
 #### 2023-Aug-28
 
