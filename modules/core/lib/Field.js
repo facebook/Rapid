@@ -61,7 +61,7 @@ export class Field {
   }
 
   increment() {
-    return this.type === 'number' ? this.increment : undefined;
+    return this.type === 'number' ? this.orig.increment : undefined;
   }
 
   title() {
