@@ -173,9 +173,8 @@ export class RapidSystem extends AbstractSystem {
   /**
    * setTaskExtentByGpxData
    */
-  setTaskExtentByGpxData(gpxData) {
-    const dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
-    const gj = gpx(dom);
+  setTaskExtentByGpxData(gpxDomData) {
+    const gj = gpx(gpxDomData);
     const lineStringCount = gj.features.reduce((accumulator, currentValue) =>  {
       return accumulator + (currentValue.geometry.type === 'LineString' ? 1 : 0);
     }, 0);
