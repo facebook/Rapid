@@ -40,11 +40,13 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 #### :bug: Bugfixes:
 * [#1070] Fixed an issue preventing catalog data from being returned while running from inside a HOT task.
+* [#1069] Fixed an issue that caused increment/decrement values in the inspector to be 'NaN'.
 * [#1060] Fixed an issue that prevented the 'change count' from restarting at 0 after saving changes.
 
 
 
 [#1070]: https://github.com/facebook/Rapid/issues/1070
+[#1069]: https://github.com/facebook/Rapid/issues/1069
 [#1060]: https://github.com/facebook/Rapid/issues/1060
 # [2.1.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.0)
 #### 2023-Aug-28
