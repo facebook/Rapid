@@ -3,6 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { styleMatch } from '../pixi/styles';
 import { uiCmd } from './cmd';
+import { geomPolygonContainsPolygon } from '@rapid-sdk/math';
 
 /*
  * uiMap3dViewer is a ui panel containing a maplibre 3D Map for visualizing buildings, roads, and areas.
@@ -41,22 +42,22 @@ export function uiMap3dViewer(context) {
     function featuresToGeoJSON() {
       let mainmap = context.systems.map;
       const entities = context.systems.edits.intersects(mainmap.extent());
+      const noRelationEnts = entities.filter((ent) => !ent.id.startsWith('r'));
 
-      const buildingEnts = entities.filter((ent) => {
+      const buildingEnts = noRelationEnts.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
           tagname.startsWith('building')
         );
         return tags.length > 0;
       });
 
-      const highwayEnts = entities.filter((ent) => {
+      const highwayEnts = noRelationEnts.filter((ent) => {
         const tags = Object.keys(ent.tags).filter((tagname) =>
           tagname.startsWith('highway')
         );
         return tags.length > 0;
       });
 
-      const noRelationEnts = entities.filter((ent) => !ent.id.startsWith('r'));
 
       const areaEnts = noRelationEnts.filter((ent) => {
         const tags = Object.keys(ent.tags).filter(
@@ -79,9 +80,36 @@ export function uiMap3dViewer(context) {
       let buildingFeatures = [];
       const selectedIDs = context.selectedIDs();
 
+      const graph = context.graph();
+
       for (const buildingEnt of buildingEnts) {
-        const gj = buildingEnt.asGeoJSON(context.graph());
+        const gj = buildingEnt.asGeoJSON(graph);
         if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
+
+        // If the building isn't a 'part', check its nodes.
+        // If any of THEM have a 'building part' as a way, and if that part is
+        // wholly contained in the footprint of this building, then we need to
+        // hide this building.
+
+        //Only perform this optiization if there are relatively few buildings to show
+        // As this is a very expensive algorithm to run
+        if (!buildingEnt.tags['building:part'] && buildingEnts.length < 250) {
+          let touchesBuildingPart = false;
+
+          for (let node of buildingEnt.nodes) {
+            const parents = graph.parentWays(graph.hasEntity(node));
+            for (let way of parents) {
+              if (way.tags['building:part'] && geomPolygonContainsPolygon(buildingEnt.nodes.map(n => graph.hasEntity(n).loc ), way.nodes.map(n => graph.hasEntity(n).loc ) )) {
+                touchesBuildingPart = true;
+                break;
+              }
+            }
+          }
+
+          if (touchesBuildingPart) {
+            continue;
+          }
+        }
 
         const newFeature = {
           type: 'Feature',
