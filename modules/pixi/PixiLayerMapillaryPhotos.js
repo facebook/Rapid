@@ -103,6 +103,18 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     const toDate = photoSystem.toDate;
     const usernames = photoSystem.usernames;
 
+
+    const showFlatPhotos = photoSystem.showsPhotoType('flat');
+    const showPanoramicPhotos = photoSystem.showsPhotoType('panoramic');
+
+    if (!showFlatPhotos && !showPanoramicPhotos) {
+      return [];
+    } else if (showPanoramicPhotos && !showFlatPhotos) {
+      sequences = sequences.filter(seq => seq[0].properties.is_pano);
+    } else if (!showPanoramicPhotos && showFlatPhotos){
+      sequences =  sequences.filter(seq => !seq[0].properties.is_pano);
+    }
+
     // note - Sequences now contains an Array of Linestrings, post #776
     // This is because we can get multiple linestrings for sequences that cross a tile boundary.
     // We just look at the first item in the array to determine whether to keep/filter the sequence.
