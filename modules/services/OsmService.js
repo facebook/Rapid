@@ -68,7 +68,6 @@ export class OsmService extends AbstractSystem {
     this.reloadApiStatus = this.reloadApiStatus.bind(this);
     this.throttledReloadApiStatus = _throttle(this.reloadApiStatus, 500);
 
-
     const origin = window.location.origin;
     let pathname = window.location.pathname;
     // We often deploy different builds to other pathnames (e.g. /rapid-test/), but we can always
@@ -77,17 +76,17 @@ export class OsmService extends AbstractSystem {
       pathname = '/rapid/';
     }
 
+    const apiConnection = this.context.apiConnections?.[0];
     this._oauth = osmAuth({
-      url: this._urlroot,
-      client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
-      client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
+      url: apiConnection?.url || this._urlroot,
+      client_id: apiConnection?.client_id || 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
+      client_secret: apiConnection?.client_secret || 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
       scope: 'read_prefs write_prefs write_api read_gpx write_notes',
-      redirect_uri: `${origin}${pathname}land.html`,
+      redirect_uri: apiConnection?.redirect_uri || `${origin}${pathname}land.html`,
       loading: this._authLoading,
-      done: this._authDone
+      done: this._authDone,
     });
   }
-
 
   /**
    * initAsync
@@ -98,7 +97,6 @@ export class OsmService extends AbstractSystem {
     return this.resetAsync();
   }
 
-
   /**
    * startAsync
    * Called after all core objects have been initialized.
@@ -108,7 +106,6 @@ export class OsmService extends AbstractSystem {
     this._started = true;
     return Promise.resolve();
   }
-
 
   /**
    * resetAsync
@@ -536,7 +533,6 @@ export class OsmService extends AbstractSystem {
       });
     });
   }
-
 
   // Load multiple users in chunks
   // (note: callback may be called multiple times)
