@@ -109,8 +109,8 @@ export function uiInspector(context) {
             );
     }
 
-    inspector.showList = function(presets) {
 
+    inspector.showList = function(presets) {
         presetPane.classed('hide', false);
 
         wrap.transition()
@@ -129,8 +129,8 @@ export function uiInspector(context) {
             .call(presetList.autofocus(true));
     };
 
-    inspector.setPreset = function(preset) {
 
+    inspector.setPreset = function(preset) {
         // upon setting multipolygon, go to the area preset list instead of the editor
         if (preset && preset.id === 'type/multipolygon') {
             presetPane
@@ -152,8 +152,8 @@ export function uiInspector(context) {
             editorPane
                 .call(entityEditor);
         }
-
     };
+
 
     inspector.state = function(val) {
         if (!arguments.length) return _state;

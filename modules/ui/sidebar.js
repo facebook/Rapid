@@ -285,7 +285,6 @@ export function uiSidebar(context) {
             sidebar.hide();
 
             if (ids && ids.length) {
-
                 var entity = ids.length === 1 && context.entity(ids[0]);
                 if (entity && newFeature && selection.classed('collapsed')) {
                     // uncollapse the sidebar
