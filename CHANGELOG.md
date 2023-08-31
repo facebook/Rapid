@@ -80,31 +80,33 @@ Support vector tiled custom data in [PMTiles](https://protomaps.com/docs/pmtiles
 * [#1050] Fix issue involving saved changes caused by missing original copies of modified ways
 
 #### :hammer: Development / Code Improvements
-* [#964] Add a `rapid:poweruser` changeset tag if the user has been in "poweruser" mode
 * [#1053] Include the Rapid favicon in the distribution
-* Renamed many 'core' classes to be Systems adopting a 'ThingCategory' (not 'CategoryThing') naming convention:
-  * coreContext :fast_forward: Context
-  * localizer :fast_forward: LocalizationSystem
-  * fileFetcher :fast_forward: DataLoaderSystem
-  * rendererFeatures :fast_forward: FilterSystem
-  * rendererImagery :fast_forward: ImagerySystem
-  * coreHistory :fast_forward: EditSystem
-  * coreUploader :fast_forward: UploaderSystem
-  * coreRapidContext :fast_forward: RapidSystem
-  * rendererPhotos :fast_forward: PhotoSystem
-  * urlhash :fast_forward: UrlHashSystem
-  * rendererMap :fast_forward: MapSystem
-  * 3dMap :fast_forward: Map3dSystem
-  * etc...
-* All services have been renamed with 'Service' prefix- e.g. improveOSM :fast_forward: ServiceImproveOsm
-* Core classes and Services now use promises for ensuring upstream dependencies have already started.
-* Converted several more classes/files to ES6 Syntax.
-* Converted use of xhr and d3_fetch helpers to instead use fetch proper for data downloads
-* Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
-* Fixed several dozen other bugs we discovered as we refactored all the above
+* [#964] Add a `rapid:poweruser` changeset tag if the user has been in "poweruser" mode
+* [#961] Core refactor:
+  * Renamed many 'core' classes to be Systems adopting a 'ThingCategory' (not 'CategoryThing') naming convention:
+    * coreContext :fast_forward: Context
+    * localizer :fast_forward: LocalizationSystem
+    * fileFetcher :fast_forward: DataLoaderSystem
+    * rendererFeatures :fast_forward: FilterSystem
+    * rendererImagery :fast_forward: ImagerySystem
+    * coreHistory :fast_forward: EditSystem
+    * coreUploader :fast_forward: UploaderSystem
+    * coreRapidContext :fast_forward: RapidSystem
+    * rendererPhotos :fast_forward: PhotoSystem
+    * urlhash :fast_forward: UrlHashSystem
+    * rendererMap :fast_forward: MapSystem
+    * 3dMap :fast_forward: Map3dSystem
+    * etc...
+  * All services have been renamed with 'Service' prefix- e.g. improveOSM :fast_forward: ServiceImproveOsm
+  * Core classes and Services now use promises for ensuring dependencies have already started.
+  * Converted several more classes/files to ES6 Syntax.
+  * Converted use of xhr and d3_fetch helpers to instead use fetch proper for data downloads
+  * Refactored tests to keep up with the classes, eventing, download API, and service/systems redo.
+  * Fixed several dozen other bugs we discovered as we refactored all the above
 
 [#939]: https://github.com/facebook/Rapid/issues/939
 [#955]: https://github.com/facebook/Rapid/issues/955
+[#961]: https://github.com/facebook/Rapid/issues/961
 [#964]: https://github.com/facebook/Rapid/issues/964
 [#970]: https://github.com/facebook/Rapid/issues/970
 [#971]: https://github.com/facebook/Rapid/issues/971
