@@ -70,25 +70,26 @@ export class UiSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    this.authModal = uiLoading(context).blocking(true);
-    this.defs = new UiDefs(context);
-    this.flash = uiFlash(context);
-    this.editMenu = uiEditMenu(context);
-    // this.info = uiInfo(context);
-    this.sidebar = uiSidebar(context);
-    this.photoviewer = uiPhotoViewer(context);
-    this.shortcuts = uiShortcuts(context);
-
-    // Setup event handlers
-    window.addEventListener('beforeunload', () => context.save());
-    window.addEventListener('unload', () => context.systems.edits.unlock());
-    window.addEventListener('resize', () =>  this.resize());
-
     const l10n = context.systems.l10n;
     const prerequisites = l10n.initAsync();
 
     return this._initPromise = prerequisites
       .then(() => {
+        // Setup event handlers
+        window.addEventListener('beforeunload', () => context.save());
+        window.addEventListener('unload', () => context.systems.edits.unlock());
+        window.addEventListener('resize', () =>  this.resize());
+
+        // After l10n is ready we can make these
+        this.authModal = uiLoading(context).blocking(true);
+        this.defs = new UiDefs(context);
+        this.flash = uiFlash(context);
+        this.editMenu = uiEditMenu(context);
+        // this.info = uiInfo(context);
+        this.sidebar = uiSidebar(context);
+        this.photoviewer = uiPhotoViewer(context);
+        this.shortcuts = uiShortcuts(context);
+
         this.authModal.message(l10n.tHtml('loading_auth'));
 
         const osm = context.services.osm;
@@ -97,7 +98,6 @@ export class UiSystem extends AbstractSystem {
             .on('authLoading', () => context.container()?.call(this.authModal))
             .on('authDone', () => this.authModal.close());
         }
-
       });
 
 // not sure what these were for
