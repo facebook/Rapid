@@ -106,10 +106,14 @@ export function utilFunctor(value) {
 export function utilNoAuto(selection) {
   const isText = (selection.size() && selection.node().tagName.toLowerCase() === 'textarea');
 
+  // assign 'new-password' even for non-password fields to prevent browsers (Chrome) ignoring 'off'
+  // https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
+
   return selection
-    // assign 'new-password' even for non-password fields to prevent browsers (Chrome) ignoring 'off'
     .attr('autocomplete', 'new-password')
     .attr('autocorrect', 'off')
     .attr('autocapitalize', 'off')
+    .attr('data-1p-ignore', '')      // Rapid#1085
+    .attr('data-lpignore', 'true')   // Rapid#1085
     .attr('spellcheck', isText ? 'true' : 'false');
 }
