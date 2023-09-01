@@ -35,22 +35,28 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+
 # [2.1.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.1)
-#### 2023-Aug-31
+#### 2023-Sep-01
 
 #### :bug: Bugfixes:
-* [#1070] Fixed an issue preventing catalog data from being returned while running from inside a HOT task.
-* [#1069] Fixed an issue that caused increment/decrement values in the inspector to be 'NaN'.
-* [#1067] Fixed an crash bug that allowed long area relations to be considered by the 3D map renderer.
-* [#1062] Added the ability to 'hide' building part borders in the 3D Map.
 * [#1060] Fixed an issue that prevented the 'change count' from restarting at 0 after saving changes.
+* [#1062] Added the ability to 'hide' building part borders in the 3D Map.
+* [#1067] Fixed an crash bug that allowed large area relations to be considered by the 3D map renderer.
+* [#1069] Fixed an issue that caused increment/decrement values in the inspector to be 'NaN'.
+* [#1070] Fixed an issue preventing catalog data from being returned while running from inside a HOT task.
+* [#1084] Fixed issue with data loss when using entity editor after reset / user saves changes
+* [#1085] Prevent password managers from autofilling the fields in the entity editor
 
-
-
-[#1070]: https://github.com/facebook/Rapid/issues/1070
-[#1069]: https://github.com/facebook/Rapid/issues/1069
-[#1067]: https://github.com/facebook/Rapid/issues/1067
 [#1060]: https://github.com/facebook/Rapid/issues/1060
+[#1062]: https://github.com/facebook/Rapid/issues/1062
+[#1067]: https://github.com/facebook/Rapid/issues/1067
+[#1069]: https://github.com/facebook/Rapid/issues/1069
+[#1070]: https://github.com/facebook/Rapid/issues/1070
+[#1084]: https://github.com/facebook/Rapid/issues/1084
+[#1085]: https://github.com/facebook/Rapid/issues/1085
+
+
 # [2.1.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.0)
 #### 2023-Aug-28
 
