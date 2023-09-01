@@ -7,6 +7,9 @@ import RBush from 'rbush';
 import { AbstractSystem } from '../core/AbstractSystem';
 import { utilFetchResponse } from '../util';
 
+const MAPILLARY_JS = 'https://cdn.jsdelivr.net/npm/mapillary-js@4/dist/mapillary.min.js';
+const MAPILLARY_CSS = 'https://cdn.jsdelivr.net/npm/mapillary-js@4/dist/mapillary.min.css';
+
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
 const baseTileUrl = 'https://tiles.mapillary.com/maps/vtp';
@@ -14,8 +17,6 @@ const imageTileUrl = `${baseTileUrl}/mly1_public/2/{z}/{x}/{y}?access_token=${ac
 const mapFeatureTileUrl = `${baseTileUrl}/mly_map_feature_point/2/{z}/{x}/{y}?access_token=${accessToken}`;
 const trafficSignTileUrl = `${baseTileUrl}/mly_map_feature_traffic_sign/2/{z}/{x}/{y}?access_token=${accessToken}`;
 
-const viewercss = 'mapillary-js/mapillary.css';
-const viewerjs = 'mapillary-js/mapillary.js';
 const TILEZOOM = 14;
 
 
@@ -38,10 +39,11 @@ export class MapillaryService extends AbstractSystem {
     super(context);
     this.id = 'mapillary';
 
+    this._loadPromise = null;
     this._startPromise = null;
+
     this._mlyActiveImage = null;
     this._mlyCache = {};
-
     this._mlyIsFallback = false;
     this._mlyHighlightedDetection = null;
     this._mlyShowFeatureDetections = false;
@@ -83,47 +85,13 @@ export class MapillaryService extends AbstractSystem {
       .attr('class', 'photo-wrapper mly-wrapper')
       .classed('hide', true);
 
-    this._startPromise = new Promise((resolve, reject) => {
-      let loadedCount = 0;
-
-      function loaded() {
-        loadedCount += 1;
-        if (loadedCount === 2) resolve();
-      }
-
-      const head = d3_select('head');
-
-      // load mapillary-viewercss
-      head.selectAll('#rapideditor-mapillary-viewercss')
-        .data([0])
-        .enter()
-        .append('link')
-        .attr('id', 'rapideditor-mapillary-viewercss')
-        .attr('rel', 'stylesheet')
-        .attr('crossorigin', 'anonymous')
-        .attr('href', context.asset(viewercss))
-        .on('load', loaded)
-        .on('error', reject);
-
-      // load mapillary-viewerjs
-      head.selectAll('#rapideditor-mapillary-viewerjs')
-        .data([0])
-        .enter()
-        .append('script')
-        .attr('id', 'rapideditor-mapillary-viewerjs')
-        .attr('crossorigin', 'anonymous')
-        .attr('src', context.asset(viewerjs))
-        .on('load', loaded)
-        .on('error', reject);
-    })
-    .then(() => this._initViewer())
-    .then(() => this._started = true)
-    .catch(err => {
-      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-      this._startPromise = null;
-    });
-
-    return this._startPromise;
+    return this._startPromise = this._loadAssetsAsync()
+      .then(() => this._initViewer())
+      .then(() => this._started = true)
+      .catch(err => {
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+        this._startPromise = null;
+      });
   }
 
 
@@ -648,10 +616,50 @@ export class MapillaryService extends AbstractSystem {
   }
 
 
+  /**
+   * _loadAssetsAsync
+   * Load the Mapillary JS and CSS files into the document head
+   * @return {Promise} Promise resolved when both files have been loaded
+   */
+  _loadAssetsAsync() {
+    if (this._loadPromise) return this._loadPromise;
+
+    return this._loadPromise = new Promise((resolve, reject) => {
+      let count = 0;
+      const loaded = () => {
+        if (++count === 2) resolve();
+      };
+
+      const head = d3_select('head');
+
+      head.selectAll('#rapideditor-mapillary-css')
+        .data([0])
+        .enter()
+        .append('link')
+        .attr('id', 'rapideditor-mapillary-css')
+        .attr('rel', 'stylesheet')
+        .attr('crossorigin', 'anonymous')
+        .attr('href', MAPILLARY_CSS)
+        .on('load', loaded)
+        .on('error', reject);
+
+      head.selectAll('#rapideditor-mapillary-js')
+        .data([0])
+        .enter()
+        .append('script')
+        .attr('id', 'rapideditor-mapillary-js')
+        .attr('crossorigin', 'anonymous')
+        .attr('src', MAPILLARY_JS)
+        .on('load', loaded)
+        .on('error', reject);
+    });
+  }
+
+
   // Initialize image viewer (Mapillary JS)
   _initViewer() {
     const mapillary = window.mapillary;
-    if (!mapillary) return;
+    if (!mapillary) throw new Error('mapillary not loaded');
 
     const context = this.context;
 

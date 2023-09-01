@@ -8,8 +8,9 @@ import { AbstractSystem } from '../core/AbstractSystem';
 import { jsonpRequest } from '../util/jsonp_request';
 import { utilFetchResponse } from '../util';
 
-const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
-const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
+const PANNELLUM_JS = 'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.js';
+const PANNELLUM_CSS = 'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.css';
+
 const TILEZOOM = 16.5;
 
 
@@ -32,6 +33,9 @@ export class StreetsideService extends AbstractSystem {
     this.id = 'streetside';
     this.autoStart = false;
 
+    this._loadPromise = null;
+    this._startPromise = null;
+
     this._hires = false;
     this._resolution = 512;    // higher numbers are slower - 512, 1024, 2048, 4096
     this._currScene = 0;
@@ -39,7 +43,6 @@ export class StreetsideService extends AbstractSystem {
     this._pannellumViewer = null;
     this._nextSequenceID = 0;
     this._waitingForPhotoID = null;
-    this._startPromise = null;
 
     this._sceneOptions = {
       showFullscreenCtrl: false,
@@ -143,46 +146,12 @@ export class StreetsideService extends AbstractSystem {
       if (this._pannellumViewer) this._pannellumViewer.resize();
     });
 
-    this._startPromise = new Promise((resolve, reject) => {
-      let loadedCount = 0;
-
-      function loaded() {
-        loadedCount += 1;
-        if (loadedCount === 2) resolve();
-      }
-
-      const head = d3_select('head');
-
-      // load streetside pannellum viewer css
-      head.selectAll('#rapideditor-streetside-viewercss')
-        .data([0])
-        .enter()
-        .append('link')
-        .attr('id', 'rapideditor-streetside-viewercss')
-        .attr('rel', 'stylesheet')
-        .attr('crossorigin', 'anonymous')
-        .attr('href', context.asset(pannellumViewerCSS))
-        .on('load', loaded)
-        .on('error', reject);
-
-      // load streetside pannellum viewer js
-      head.selectAll('#rapideditor-streetside-viewerjs')
-        .data([0])
-        .enter()
-        .append('script')
-        .attr('id', 'rapideditor-streetside-viewerjs')
-        .attr('crossorigin', 'anonymous')
-        .attr('src', context.asset(pannellumViewerJS))
-        .on('load', loaded)
-        .on('error', reject);
-    })
-    .then(() => this._started = true)
-    .catch(err => {
-      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-      this._startPromise = null;
-    });
-
-    return this._startPromise;
+    return this._startPromise = this._loadAssetsAsync()
+      .then(() => this._started = true)
+      .catch(err => {
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+        this._startPromise = null;
+      });
   }
 
 
@@ -561,12 +530,52 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
 
   /**
+   * _loadAssetsAsync
+   * Load the Pannellum JS and CSS files into the document head
+   * @return {Promise} Promise resolved when both files have been loaded
+   */
+  _loadAssetsAsync() {
+    if (this._loadPromise) return this._loadPromise;
+
+    return this._loadPromise = new Promise((resolve, reject) => {
+      let count = 0;
+      const loaded = () => {
+        if (++count === 2) resolve();
+      };
+
+      const head = d3_select('head');
+
+      head.selectAll('#rapideditor-pannellum-css')
+        .data([0])
+        .enter()
+        .append('link')
+        .attr('id', 'rapideditor-pannellum-css')
+        .attr('rel', 'stylesheet')
+        .attr('crossorigin', 'anonymous')
+        .attr('href', PANNELLUM_CSS)
+        .on('load', loaded)
+        .on('error', reject);
+
+      head.selectAll('#rapideditor-pannellum-js')
+        .data([0])
+        .enter()
+        .append('script')
+        .attr('id', 'rapideditor-pannellum-js')
+        .attr('crossorigin', 'anonymous')
+        .attr('src', PANNELLUM_JS)
+        .on('load', loaded)
+        .on('error', reject);
+    });
+  }
+
+
+  /**
    * _initViewer
    * Initializes the Pannellum viewer
    */
   _initViewer() {
-    if (!window.pannellum) return;
-    if (this._pannellumViewer) return;
+    if (!window.pannellum) throw new Error('pannellum not loaded');
+    if (this._pannellumViewer) return;  // already initted
 
     this._currScene++;
     const sceneID = this._currScene.toString();

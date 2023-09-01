@@ -1,7 +1,9 @@
-import { Map as MapLibre } from 'maplibre-gl';
+import { select as d3_select } from 'd3-selection';
 
 import { AbstractSystem } from './AbstractSystem';
 
+const MAPLIBRE_JS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@3/dist/maplibre-gl.min.js';
+const MAPLIBRE_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@3/dist/maplibre-gl.min.css';
 const SELECTION_COLOR = '#01d4fa';
 
 
@@ -23,6 +25,7 @@ export class Map3dSystem extends AbstractSystem {
     this.containerID = '3d-buildings';
     this.maplibre = null;
 
+    this._loadPromise = null;
     this._startPromise = null;
 
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
@@ -56,67 +59,116 @@ export class Map3dSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
-    this.maplibre = new MapLibre({
-      container: this.containerID,
-      pitch: 30,
-      style: {
-        version: 8, sources: {}, layers: [
-          {
-            'id': 'Background',
-            'type': 'background',
-            'layout': {
-              'visibility': 'visible'
-            },
-            'paint': {
-              'background-color': 'white'
-            }
-          },
-      ]}
-    });
+    return this._startPromise = this._loadAssetsAsync()
+      .then(() => {
+        const maplibregl = window.maplibregl;
+        if (!maplibregl) throw new Error('maplibre-gl not loaded');
 
-    return this._startPromise = new Promise(resolve => {
-      const map = this.context.systems.map;
-      const maplibre = this.maplibre;
+        const map = this.context.systems.map;
 
-      maplibre.on('load', () => {
-        maplibre.setLight({
-          anchor: 'viewport',
-          color: '#ff00ff',
-          position: [1, 200, 30],
-          intensity: 0.3,
+        const maplibre = this.maplibre = new maplibregl.Map({
+          container: this.containerID,
+          pitch: 30,
+          style: {
+            version: 8, sources: {}, layers: [
+              {
+                'id': 'Background',
+                'type': 'background',
+                'layout': {
+                  'visibility': 'visible'
+                },
+                'paint': {
+                  'background-color': 'white'
+                }
+              },
+          ]}
         });
 
-        maplibre.jumpTo({
-          zoom: map.zoom() - 3,
-          center: map.extent().center(),
+        return new Promise(resolve => {
+          maplibre.on('load', () => {
+            maplibre.setLight({
+              anchor: 'viewport',
+              color: '#ff00ff',
+              position: [1, 200, 30],
+              intensity: 0.3,
+            });
+
+            maplibre.jumpTo({
+              zoom: map.zoom() - 3,
+              center: map.extent().center(),
+            });
+
+            // sources
+            maplibre.addSource('osmareas', {
+              type: 'geojson',
+              data: { type: 'FeatureCollection', features: [] },
+            });
+
+            maplibre.addSource('osmroads', {
+              type: 'geojson',
+              data: { type: 'FeatureCollection', features: [] },
+            });
+
+            maplibre.addSource('osmbuildings', {
+              type: 'geojson',
+              data: { type: 'FeatureCollection', features: [] },
+            });
+
+            // Layers need to be added in 'painter's algorithm' order, so the stuff on the bottom goes first!
+            maplibre.addLayer(this.areaLayerSpec);
+            maplibre.addLayer(this.roadSelectedlayerSpec);
+            maplibre.addLayer(this.roadCasinglayerSpec);
+            maplibre.addLayer(this.roadStrokelayerSpec);
+            maplibre.addLayer(this.building3dlayerSpec);
+
+            this._started = true;
+            resolve();
+          });
         });
-
-        maplibre.addSource('osmareas', {
-          type: 'geojson',
-          data: { type: 'FeatureCollection', features: [] },
-        });
-
-        // Layers need to be added in 'painter's algorithm' order, so the stuff on the bottom goes first!
-        maplibre.addLayer(this.areaLayerSpec);
-
-        maplibre.addSource('osmroads', {
-          type: 'geojson',
-          data: { type: 'FeatureCollection', features: [] },
-        });
-
-        maplibre.addLayer(this.roadSelectedlayerSpec);
-        maplibre.addLayer(this.roadCasinglayerSpec);
-        maplibre.addLayer(this.roadStrokelayerSpec);
-
-        maplibre.addSource('osmbuildings', {
-          type: 'geojson',
-          data: { type: 'FeatureCollection', features: [] },
-        });
-        maplibre.addLayer(this.building3dlayerSpec);
-        this._started = true;
-        resolve();
+      })
+      .catch(err => {
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+        this._startPromise = null;
       });
+  }
 
+
+  /**
+   * _loadAssetsAsync
+   * Load the MapLibre JS and CSS files into the document head
+   * @return {Promise} Promise resolved when both files have been loaded
+   */
+  _loadAssetsAsync() {
+    if (this._loadPromise) return this._loadPromise;
+
+    return this._loadPromise = new Promise((resolve, reject) => {
+      let count = 0;
+      const loaded = () => {
+        if (++count === 2) resolve();
+      };
+
+      const head = d3_select('head');
+
+      head.selectAll('#rapideditor-maplibre-css')
+        .data([0])
+        .enter()
+        .append('link')
+        .attr('id', 'rapideditor-maplibre-css')
+        .attr('rel', 'stylesheet')
+        .attr('crossorigin', 'anonymous')
+        .attr('href', MAPLIBRE_CSS)
+        .on('load', loaded)
+        .on('error', reject);
+
+      head.selectAll('#rapideditor-maplibre-js')
+        .data([0])
+        .enter()
+        .append('script')
+        .attr('id', 'rapideditor-maplibre-js')
+        .attr('crossorigin', 'anonymous')
+        .attr('src', MAPLIBRE_JS)
+        .on('load', loaded)
+        .on('error', reject);
     });
   }
 
