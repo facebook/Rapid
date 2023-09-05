@@ -298,7 +298,7 @@ export class ImagerySourceCustom extends ImagerySource {
       let parts = cleaned.split('?', 2);
       let qs = utilStringQs(parts[1]);
 
-      ['access_token', 'connectId', 'token'].forEach(param => {
+      ['access_token', 'connectId', 'token', 'key'].forEach(param => {
         if (qs[param]) {
           qs[param] = '{apikey}';
         }
@@ -307,6 +307,8 @@ export class ImagerySourceCustom extends ImagerySource {
     }
 
     // from wms/wmts api path parameters
+    // Ideally this would be a for loop iterating over multiple combinations, but when run under test,
+    // something seems to cast strings to objects ("token" -> "[object Object]") when used in a for of loop.
     cleaned = cleaned
       .replace(/token\/(\w+)/, 'token/{apikey}')
       .replace(/key=(\w+)/, 'key={apikey}');
