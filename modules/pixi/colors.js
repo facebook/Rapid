@@ -1,6 +1,4 @@
-import * as PIXI from 'pixi.js';
-import { osmPavedTags } from '../osm/tags';
-import { COLORS } from './colors.js';
+
 //
 // A "style" is a bundle of properties to say how things should look.
 // Each "style" looks like this:
@@ -30,189 +28,164 @@ import { COLORS } from './colors.js';
 // Anything missing will just be pulled from the DEFAULT style.
 //
 
-export const STYLES = {
-  DEFAULT: {
-    fill:   { width: 2, color: COLORS.fill, alpha: 0.3 },
-    casing: { width: 5, color: COLORS.casing, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
-    stroke: { width: 3, color: COLORS.stroke, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
-  },
+export const COLORS = {
+  fill: 0xf2a65a,
+  casing: 0xc75a48,
+  stroke: 0xf58549,
 
-  red: {
-    fill: { color: COLORS.red, alpha: 0.3 }
-  },
-  green: {
-    fill: { color: COLORS.green, alpha: 0.3 }
-  },
-  blue: {
-    fill: { color: COLORS.blue, alpha: 0.3 }
-  },
-  yellow: {
-    fill: { color: COLORS.yellow, alpha: 0.25 }
-  },
-  gold: {
-    fill: { color: COLORS.gold, alpha: 0.3 }
-  },
-  orange: {
-    fill: { color: COLORS.orange, alpha: 0.3 }
-  },
-  pink: {
-    fill: { color: COLORS.pink, alpha: 0.3 }
-  },
-  teal: {
-    fill: { color: COLORS.teal, alpha: 0.3 }
-  },
-  lightgreen: {
-    fill: { color: COLORS.lightgreen, alpha: 0.3 }
-  },
-  tan: {
-    fill: { color: COLORS.tan, alpha: 0.3 }
-  },
-  darkgray: {
-    fill: { color: COLORS.darkgray, alpha: 0.5 }
-  },
-  lightgray: {
-    fill: { color: COLORS.lightgray, alpha: 0.3 }
-  },
+  red: 0x6e3144,
+  green: 0x8b9216,   // rgb(140, 208, 95)
+  blue: 0x77d4de,   // rgb(119, 211, 222)
+  yellow: 0xfdc534,  // rgb(255, 255, 148)
+  gold: 0xfbab34,   // rgb(196, 189, 25)
+  orange: 0xeb8947,   // rgb(214, 136, 26)
+  pink: 0xe3a4f5,   // rgb(228, 164, 245)
+  teal: 0x99e1aa,   // rgb(153, 225, 170)
+  lightgreen: 0xbee83f,   // rgb(191, 232, 63)
+  tan: 0xf5dcba,   // rgb(245, 220, 186)
+  darkgray: 0x8c8c8c,   // rgb(140, 140, 140)
+  lightgray: 0xaaaaaa,   // rgb(170, 170, 170)
+
 
   motorway: {
-    casing: { width: 10, color: COLORS.motorway.casing },
-    stroke: { width: 8, color: COLORS.motorway.stroke}
+    casing: 0x70372f,
+    stroke: 0xcf2081
   },
   trunk: {
-    casing: { width: 10, color: COLORS.trunk.casing },
-    stroke: { width: 8, color: COLORS.stroke.stroke }
+    casing: 0x70372f,
+    stroke: 0xdd2f22
   },
   primary: {
-    casing: { width: 10, color: COLORS.primary.casing },
-    stroke: { width: 8, color: COLORS.primary.stroke }
+    casing: 0x70372f,
+    stroke: 0xf99806
   },
   secondary: {
-    casing: { width: 10, color: COLORS.secondary.casing },
-    stroke: { width: 8, color: COLORS.secondary.stroke }
+    casing: 0x70372f,
+    stroke: 0xf3f312
   },
   tertiary: {
-    casing: { width: 10, color: COLORS.tertiary.casing },
-    stroke: { width: 8, color: COLORS.tertiary.stroke }
+    casing: 0x70372f,
+    stroke: 0xfff9b3
   },
   unclassified: {
-    casing: { width: 10, color: COLORS.unclassified.casing },
-    stroke: { width: 8, color: COLORS.unclassified.stroke }
+    casing: 0x444444,
+    stroke: 0xddccaa
   },
   residential: {
-    casing: { width: 10, color: COLORS.residential.casing },
-    stroke: { width: 8, color: COLORS.residential.stroke}
+    casing: 0x444444,
+    stroke: 0xffffff
   },
   living_street: {
-    casing: { width: 7, color: COLORS.living_street.casing },
-    stroke: { width: 5, color: COLORS.living_street.stroke }
+    casing: 0xffffff,
+    stroke: 0xcccccc
   },
   service: {
-    casing: { width: 7, color: COLORS.service.casing },
-    stroke: { width: 5, color: COLORS.service.stroke }
+    casing: 0x444444,
+    stroke: 0xffffff
   },
   special_service: {
-    casing: { width: 7, color: COLORS.special_service.casing },
-    stroke: { width: 5, color: COLORS.special_service.stroke }
+    casing: 0x444444,
+    stroke: 0xddccaa
   },
   track: {
-    casing: { width: 7, color: COLORS.track.casing },
-    stroke: { width: 5, color: COLORS.track.stroke }
+    casing: 0x746f6f,
+    stroke: 0xc5b59f
   },
 
   pedestrian: {
-    casing: { width: 7, color: COLORS.pedestrian.casing },
-    stroke: { width: 5, color: COLORS.pedestrian.stroke, dash: [8, 8], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xffffff,
+    stroke: 0x998888
   },
   path: {
-    casing: { width: 5, color: COLORS.path.casing },
-    stroke: { width: 3, color: COLORS.path.stroke, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xddccaa,
+    stroke: 0x998888
   },
   footway: {
-    casing: { width: 5, color: COLORS.footway.casing },
-    stroke: { width: 3, color: COLORS.footway.stroke, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xffffff,
+    stroke: 0x998888
   },
   crossing_marked: {
-    casing: { width: 5, color: COLORS.crossing_marked.casing},
-    stroke: { width: 3, color: COLORS.crossing_marked.stroke, dash: [6, 3], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xddccaa,
+    stroke: 0x4c4444
   },
   crossing_unmarked: {
-    casing: { width: 5, color: COLORS.crossing_unmarked.casing },
-    stroke: { width: 3, color: COLORS.crossing_unmarked.stroke, dash: [6, 4], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xddccaa,
+    stroke: 0x776a6a
   },
   cycleway: {
-    casing: { width: 5, color: COLORS.cycleway.casing },
-    stroke: { width: 3, color: COLORS.cycleway.stroke, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xffffff,
+    stroke: 0x58a9ed
   },
   bridleway: {
-    casing: { width: 5, color: COLORS.bridleway.casing },
-    stroke: { width: 3, color: COLORS.bridleway.stroke, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xffffff,
+    stroke: 0xe06d5f
   },
   corridor: {
-    casing: { width: 5, color: COLORS.corridor.casing },
-    stroke: { width: 3, color: COLORS.corridor.stroke, dash: [2, 8], cap: PIXI.LINE_CAP.ROUND }
+    casing: 0xffffff,
+    stroke: 0x8cd05f
   },
   steps: {
-    casing: { width: 5, color: COLORS.steps.casing },
-    stroke: { width: 3, color: COLORS.steps.stroke, dash: [3, 3], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0xffffff,
+    stroke: 0x81d25c
   },
 
   river: {
-    casing: { width: 10, color: COLORS.river.casing },
-    stroke: { width: 8, color: COLORS.river.stroke }
+    casing: 0x444444,
+    stroke: 0x77dddd
   },
   stream: {
-    casing: { width: 7, color: COLORS.stream.casing },
-    stroke: { width: 5, color: COLORS.stream.stroke }
+    casing: 0x444444,
+    stroke: 0x77dddd
   },
   ridge: {
-    stroke: { width: 2, color: COLORS.ridge.stroke}
+    stroke: {
+      color: 0x8cd05f
+    }
   },
 
   runway: {
-    casing: { width: 10, color: COLORS.runway.casing , cap: PIXI.LINE_CAP.BUTT},
-    stroke: { width: 8, color: COLORS.runway.stroke, dash: [24, 48], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0x000000,
+    stroke: 0xffffff
   },
   taxiway: {
-    casing: { width: 7, color: COLORS.taxiway.casing },
-    stroke: { width: 5, color: COLORS.taxiway.stroke }
+    casing: 0x444444,
+    stroke: 0xffff00
   },
 
   railway: {
-    casing: { width: 7, color: COLORS.railway.casing, cap: PIXI.LINE_CAP.BUTT },
-    stroke: { width: 2, color: COLORS.railway.stroke, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
+    casing: 0x555555,
+    stroke: 0xeeeeee,
   },
 
   ferry: {
-    casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: COLORS.ferry.stroke, dash: [12, 8], cap: PIXI.LINE_CAP.BUTT }
+    stroke: 0x58a9ed
   },
 
   boundary: {
-    casing: { width: 6, color: COLORS.boundary.casing, cap: PIXI.LINE_CAP.BUTT },
-    stroke: { width: 2, color: COLORS.boundary.stroke, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0x82b5fe,
+    stroke: 0xffffff
   },
   boundary_park: {
-    casing: { width: 6, color: COLORS.boundary_park.casing, cap: PIXI.LINE_CAP.BUTT },
-    stroke: { width: 2, color: COLORS.boundary_park.stroke, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+    casing: 0x82b5fe,
+    stroke: 0xb0e298
   },
 
   barrier: {
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: COLORS.barrier.stroke, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+    stroke: 0xdddddd,
   },
   barrier_wall: {
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: COLORS.barrier_wall.stroke, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+    stroke: 0xdddddd,
   },
   barrier_hedge: {
-    fill:   { color: COLORS.barrier_hedge.fill, alpha: 0.3 },
-    casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: COLORS.barrier_hedge.stroke, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+    fill:   0x8cd05f,
+    stroke: 0x8cd05f,
   },
 
   tree_row: {
-    casing: { width: 7, color: COLORS.tree_row.casing },
-    stroke: { width: 5, color: COLORS.tree_row.stroke }
+    casing: 0x444444,
+    stroke: 0x8cd05f
   }
 };
 
