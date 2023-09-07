@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
 
 import { AbstractSystem } from './AbstractSystem';
-import { Difference, Graph, Tree } from './lib';
+import { Difference, Edit, Graph, Tree } from './lib';
 import { osmEntity } from '../osm/entity';
 import { uiLoading } from '../ui/loading';
 
@@ -13,7 +13,13 @@ const DURATION = 150;
 
 /**
  * `EditSystem` maintains the stack of user edits
- *  (it used to be called 'history')
+ * (this used to be called 'history', but that word means something else in browsers)
+ *
+ * Each entry in the stack is an `Edit`.
+ * The base entry in the stack is known as the "base graph".  It contains the base state of all editable map entities.
+ *   (i.e. what the map looks like before the user starts editing it)
+ * As more map is loaded, more features get merged into the base graph.
+ *
  *
  * Events available:
  *   'change'
@@ -108,9 +114,9 @@ export class EditSystem extends AbstractSystem {
    */
   reset() {
     d3_select(document).interrupt('editTransition');
-    const base = new Graph();
-    this._stack = [{ graph: base }];
-    this._tree = new Tree(base);
+    const baseGraph = new Graph();
+    this._stack = [new Edit({ graph: baseGraph })];
+    this._tree = new Tree(baseGraph);
     this._index = 0;
     this._checkpoints = {};
     this.emit('reset');
@@ -677,7 +683,7 @@ export class EditSystem extends AbstractSystem {
 
     // Replace the history stack.
     this._stack = hist.stack.map((s, index) => {
-      // Leave base graph alone, this first entry should have nothing in it.
+      // Leave base graph alone, this first edit should have nothing in it.
       if (index === 0) return this._stack[0];
 
       let entities = {};
@@ -704,14 +710,14 @@ export class EditSystem extends AbstractSystem {
         }
       }
 
-      return {
+      return new Edit({
         graph: new Graph(baseGraph).load(entities),
         annotation: s.annotation,
         imageryUsed: s.imageryUsed,
         photosUsed: s.photosUsed,
         transform: s.transform,
         selectedIDs: s.selectedIDs
-      };
+      });
     });
 
 
@@ -813,14 +819,14 @@ export class EditSystem extends AbstractSystem {
       graph = fn(graph, t);
     }
 
-    return {
+    return new Edit({
       graph: graph,
       annotation: annotation,
       imageryUsed: this._imageryUsed,
       photosUsed: this._photosUsed,
       transform: this.context.projection.transform(),
       selectedIDs: this.context.selectedIDs()
-    };
+    });
   }
 
 

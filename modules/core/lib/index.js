@@ -1,6 +1,7 @@
 export { Category } from './Category';
 export { Collection } from './Collection';
 export { Difference } from './Difference';
+export { Edit } from './Edit';
 
 export {
   ImagerySource,
