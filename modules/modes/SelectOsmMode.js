@@ -157,7 +157,7 @@ export class SelectOsmMode extends AbstractMode {
     const context = this.context;
 
     // If the user added an empty relation, we should clean it up.
-    const entity = this._singularDatum;
+    const entity = context.hasEntity(this._singularDatum?.id);
     if (
       entity && entity.type === 'relation' &&
       // no tags
