@@ -47,10 +47,10 @@ export function uiIntro(context, skipToRapid) {
 
 
   function intro(selection) {
-    const dataLoaderSystem = context.systems.data;
+    const dataloader = context.systems.dataloader;
     Promise.all([
-      dataLoaderSystem.getDataAsync('intro_rapid_graph'),
-      dataLoaderSystem.getDataAsync('intro_graph')
+      dataloader.getDataAsync('intro_rapid_graph'),
+      dataloader.getDataAsync('intro_graph')
     ])
     .then(values => {
       const rapidData = values[0];
@@ -73,7 +73,7 @@ export function uiIntro(context, skipToRapid) {
 
 
   function startIntro(selection) {
-    const edits = context.systems.editor;
+    const editor = context.systems.editor;
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
     const mapwithai = context.services.mapwithai;
@@ -95,7 +95,7 @@ export function uiIntro(context, skipToRapid) {
       overlayLayers: imagery.overlayLayerSources(),
       layersEnabled: new Set(),     // Set(layerID)
       datasetsEnabled: new Set(),   // Set(datasetID)
-      edits: edits.toJSON()
+      edits: editor.toJSON()
     };
 
     // Remember which layers were enabled before, enable only certain ones in the walkthrough.
@@ -116,9 +116,9 @@ export function uiIntro(context, skipToRapid) {
     }
 
     // Load walkthrough data
-    edits.reset();
-    edits.merge(Object.values(_introGraph));
-    edits.setCheckpoint('initial');
+    editor.reset();
+    editor.merge(Object.values(_introGraph));
+    editor.setCheckpoint('initial');
 
     // Setup imagery
     const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
@@ -217,7 +217,7 @@ export function uiIntro(context, skipToRapid) {
       context.resetAsync()
         .then(() => {
           if (original.edits) {
-            edits.fromJSON(original.edits, true);
+            editor.fromJSON(original.edits, true);
           }
 
           if (osm) {

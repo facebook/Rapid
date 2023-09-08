@@ -43,7 +43,7 @@ export const systems = {
   available: new Map()   // Map (id -> System constructor)
 };
 
-systems.available.set('data', DataLoaderSystem);
+systems.available.set('dataloader', DataLoaderSystem);
 systems.available.set('editor', EditSystem);
 systems.available.set('filters', FilterSystem);
 systems.available.set('imagery', ImagerySystem);

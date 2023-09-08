@@ -28,7 +28,7 @@ export class ImagerySystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'imagery';
-    this.dependencies = new Set(['data', 'editor', 'l10n', 'map', 'urlhash']);
+    this.dependencies = new Set(['dataloader', 'editor', 'l10n', 'map', 'urlhash']);
 
     this._initPromise = null;
     this._imageryIndex = null;
@@ -64,7 +64,7 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const dataloader = context.systems.data;
+    const dataloader = context.systems.dataloader;
     const map = context.systems.map;
     const storage = context.systems.storage;
     const urlhash = context.systems.urlhash;

@@ -71,13 +71,13 @@ export class RapidSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const edits = context.systems.editor;
+    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     const map = context.systems.map;
     const urlhash = context.systems.urlhash;
 
     const prerequisites = Promise.all([
-      edits.initAsync(),
+      editor.initAsync(),
       map.initAsync(),   // RapidSystem should listen for hashchange after MapSystem
       l10n.initAsync(),
       urlhash.initAsync()
@@ -88,7 +88,7 @@ export class RapidSystem extends AbstractSystem {
         urlhash
           .on('hashchange', this._hashchange);
 
-        edits
+        editor
           .on('undone', this._onUndone)
           .on('change', this._onChange)
           .on('restore', this._onRestore);

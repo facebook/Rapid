@@ -12,7 +12,7 @@ var _languagesArray = [];
 
 
 export function uiFieldLocalized(context, uifield) {
-    const dataLoaderSystem = context.systems.data;
+    const dataloader = context.systems.dataloader;
     const l10n = context.systems.l10n;
 
     var dispatch = d3_dispatch('change', 'input');
@@ -27,12 +27,12 @@ export function uiFieldLocalized(context, uifield) {
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
 
-    dataLoaderSystem.getDataAsync('languages')
+    dataloader.getDataAsync('languages')
         .then(loadLanguagesArray)
         .catch(e => console.error(e));  // eslint-disable-line
 
     var _territoryLanguages = {};
-    dataLoaderSystem.getDataAsync('territory_languages')
+    dataloader.getDataAsync('territory_languages')
         .then(function(d) { _territoryLanguages = d; })
         .catch(e => console.error(e));  // eslint-disable-line
 

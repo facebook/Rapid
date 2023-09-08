@@ -8,7 +8,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldWikipedia(context, uifield) {
-  const dataLoader = context.systems.data;
+  const dataloader = context.systems.dataloader;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const wikipedia = context.services.wikipedia;
@@ -22,7 +22,7 @@ export function uiFieldWikipedia(context, uifield) {
   let _tags;
 
   let _dataWikipedia = [];
-  dataLoader.getDataAsync('wmf_sitematrix')
+  dataloader.getDataAsync('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);
@@ -226,17 +226,18 @@ export function uiFieldWikipedia(context, uifield) {
       if (err || !data || !Object.keys(data).length) return;
 
       // If graph has changed, we can't apply this update.
-      if (editor.graph() !== initGraph) return;
+      const graph = editor.graph();
+      if (graph !== initGraph) return;
 
       const qids = Object.keys(data);
       const value = qids && qids.find(id => id.match(/^Q\d+$/));
 
       let actions = initEntityIDs.map((entityID) => {
-        let entity = context.entity(entityID).tags;
-        let currTags = Object.assign({}, entity);  // shallow copy
+        const entity = graph.entity(entityID);
+        const currTags = Object.assign({}, entity.tags);  // shallow copy
         if (currTags.wikidata !== value) {
-            currTags.wikidata = value;
-            return actionChangeTags(entityID, currTags);
+          currTags.wikidata = value;
+          return actionChangeTags(entityID, currTags);
         }
         return null;
       }).filter(Boolean);

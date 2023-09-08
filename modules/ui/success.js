@@ -19,11 +19,11 @@ export function uiSuccess(context) {
 
 
   function getCommunityIndexAsync() {
-    const dataLoaderSystem = context.systems.data;
+    const dataloader = context.systems.dataloader;
     return Promise.all([
-        dataLoaderSystem.getDataAsync('oci_features'),
-        dataLoaderSystem.getDataAsync('oci_resources'),
-        dataLoaderSystem.getDataAsync('oci_defaults')
+        dataloader.getDataAsync('oci_features'),
+        dataloader.getDataAsync('oci_resources'),
+        dataloader.getDataAsync('oci_defaults')
       ])
       .then(vals => {
         if (_oci) return _oci;

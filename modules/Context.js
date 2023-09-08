@@ -116,18 +116,18 @@ export class Context extends EventEmitter {
     }
 
     // EditSystem
-    const editSystem = this.systems.editor;
+    const editor = this.systems.editor;
     const withDebouncedSave = (fn) => {
       return (...args) => {
-        const result = fn.apply(editSystem, args);
+        const result = fn.apply(editor, args);
         this.debouncedSave();
         return result;
       };
     };
 
-    this.graph = editSystem.graph;
-    this.hasEntity = (id) => editSystem.graph().hasEntity(id);
-    this.entity = (id) => editSystem.graph().entity(id);
+    this.graph = editor.graph;
+    this.hasEntity = (id) => editor.graph().hasEntity(id);
+    this.entity = (id) => editor.graph().entity(id);
 
     // LocalizationSystem
     const l10n = this.systems.l10n;
@@ -139,11 +139,11 @@ export class Context extends EventEmitter {
     }
 
     // FilterSystem
-    const filterSystem = this.systems.filters;
+    const filters = this.systems.filters;
     this.hasHiddenConnections = (entityID) => {
-      const graph = editSystem.graph();
+      const graph = editor.graph();
       const entity = graph.entity(entityID);
-      return filterSystem.hasHiddenConnections(entity, graph);
+      return filters.hasHiddenConnections(entity, graph);
     };
 
     // MapSystem
@@ -328,7 +328,7 @@ export class Context extends EventEmitter {
   // Immediately save the user's history to localstorage, if possible
   // This is called sometimes, but also on the `window.onbeforeunload` handler
   save() {
-    const edits = this.systems.editor;
+    const editor = this.systems.editor;
     const l10n = this.systems.l10n;
 
     // no history save, no message onbeforeunload
@@ -341,7 +341,7 @@ export class Context extends EventEmitter {
       // Attempt to prevent user from creating duplicate changes - see iD#5200
       const osm = this.services.osm;
       if (osm && osm.isChangesetInflight()) {
-        edits.clearSaved();
+        editor.clearSaved();
         return;
       }
 
@@ -353,9 +353,9 @@ export class Context extends EventEmitter {
     }
 
     if (canSave) {
-      edits.save();
+      editor.save();
     }
-    if (edits.hasChanges()) {
+    if (editor.hasChanges()) {
       return l10n.t('save.unsaved_changes');
     }
   }

@@ -12,12 +12,9 @@ describe('validationDisconnectedWay', () => {
     constructor() {
       this.services = {};
       this.systems = {
-        l10n:  new MockLocalizationSystem()
+        l10n:  new MockLocalizationSystem(this)
       };
     }
-    graph()  { return graph; }
-    t()      { return ''; }
-    tHtml()  { return ''; }
   }
 
   const context = new MockContext();

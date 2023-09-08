@@ -40,14 +40,14 @@ describe('ValidationSystem', () => {
     constructor()   {
       this.projection = new sdk.Projection();
       this.systems = {
-        data:     new Rapid.DataLoaderSystem(this),
-        editor:   new Rapid.EditSystem(this),
-        l10n:     new MockLocalizationSystem(),
-        map:      new MockMapSystem(),
-        presets:  new MockSystem(),
-        rapid:    new MockSystem(),
-        storage:  new MockStorageSystem(),
-        urlhash:  new MockUrlSystem()
+        dataloader: new Rapid.DataLoaderSystem(this),
+        editor:     new Rapid.EditSystem(this),
+        l10n:       new MockLocalizationSystem(),
+        map:        new MockMapSystem(),
+        presets:    new MockSystem(),
+        rapid:      new MockSystem(),
+        storage:    new MockStorageSystem(),
+        urlhash:    new MockUrlSystem()
       };
       this.graph = this.systems.editor.graph;
       this.hasEntity = (id) => this.systems.editor.graph().hasEntity(id);

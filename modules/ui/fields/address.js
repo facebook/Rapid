@@ -11,7 +11,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 export function uiFieldAddress(context, uifield) {
   const editor = context.systems.editor;
-  const dataLoader = context.systems.data;
+  const dataloader = context.systems.dataloader;
 
   const dispatch = d3_dispatch('change');
   let _selection = d3_select(null);
@@ -27,7 +27,7 @@ export function uiFieldAddress(context, uifield) {
     ]
   }];
 
-  dataLoader.getDataAsync('address_formats')
+  dataloader.getDataAsync('address_formats')
     .then(d => {
       _addressFormats = d;
       if (!_selection.empty()) {

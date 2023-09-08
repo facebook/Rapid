@@ -28,8 +28,8 @@ export function uiSplash(context) {
     storage.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // fetch intro graph data now, while user is looking at the splash screen
-    const dataLoaderSystem = context.systems.data;
-    dataLoaderSystem.getDataAsync('intro_graph');
+    const dataloader = context.systems.dataloader;
+    dataloader.getDataAsync('intro_graph');
 
     let modalSelection = uiModal(selection);
 

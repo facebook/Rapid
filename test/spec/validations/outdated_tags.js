@@ -13,10 +13,10 @@ describe('validationOutdatedTags', () => {
     constructor() {
       this.services = {};
       this.systems = {
-        data:       new Rapid.DataLoaderSystem(this),
-        l10n:       new MockLocalizationSystem(),
-        locations:  new MockLocationSystem(),
-        presets:    new Rapid.PresetSystem(this)
+        dataloader:  new Rapid.DataLoaderSystem(this),
+        l10n:        new MockLocalizationSystem(this),
+        locations:   new MockLocationSystem(this),
+        presets:     new Rapid.PresetSystem(this)
       };
     }
   }

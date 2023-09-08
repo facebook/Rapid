@@ -26,18 +26,14 @@ describe('uiFieldWikipedia', () => {
         wikidata: new MockWikidataService(this)
       };
       this.systems = {
-        editor: new MockEditSystem(this),
-        l10n:   new MockLocalizationSystem(this),
-        data:   new Rapid.DataLoaderSystem(this)
+        dataloader:  new Rapid.DataLoaderSystem(this),
+        editor:      new MockEditSystem(this),
+        l10n:        new MockLocalizationSystem(this)
       };
     }
     cleanTagKey(val)    { return val; }
     cleanTagValue(val)  { return val; }
     container()         { return selection; }
-    entity()            { return entity; }
-    graph()             { return graph; }
-    t()                 { return ''; }
-    tHtml()             { return ''; }
   }
 
   const context = new MockContext();

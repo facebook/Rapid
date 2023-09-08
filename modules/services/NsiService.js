@@ -64,16 +64,16 @@ export class NsiService extends AbstractSystem {
       'nsi_trees': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@6.0/dist/trees.min.json'
     };
 
-    const dataLoaderSystem = this.context.systems.data;
-    const fileMap = dataLoaderSystem.fileMap;
+    const dataloader = this.context.systems.dataloader;
+    const fileMap = dataloader.fileMap;
     for (const [k, url] of Object.entries(sources)) {
       if (!fileMap.has(k)) {
         fileMap.set(k, url);
       }
     }
 
-    const presetSystem = this.context.systems.presets;
-    return presetSystem.initAsync()
+    const presets = this.context.systems.presets;
+    return presets.initAsync()
       .then(() => this._loadNsiPresetsAsync())
       .then(() => this._loadNsiDataAsync())
       .then(() => this.status = 'ok')
@@ -343,20 +343,20 @@ export class NsiService extends AbstractSystem {
   // _loadNsiPresetsAsync()
   //  Returns a Promise fulfilled when the presets have been downloaded and merged into Rapid.
   _loadNsiPresetsAsync() {
-    const dataLoaderSystem = this.context.systems.data;
+    const dataloader = this.context.systems.dataloader;
 
     return (
       Promise.all([
-        dataLoaderSystem.getDataAsync('nsi_presets'),
-        dataLoaderSystem.getDataAsync('nsi_features')
+        dataloader.getDataAsync('nsi_presets'),
+        dataloader.getDataAsync('nsi_features')
       ])
       .then(vals => {
         // Add `suggestion=true` to all the nsi presets
         // The preset json schema doesn't include it, but the Rapid code still uses it
         Object.values(vals[0].presets).forEach(preset => preset.suggestion = true);
 
-        const presetSystem = this.context.systems.presets;
-        presetSystem.merge({ presets: vals[0].presets, featureCollection: vals[1] });
+        const presets = this.context.systems.presets;
+        presets.merge({ presets: vals[0].presets, featureCollection: vals[1] });
       })
     );
   }
@@ -366,14 +366,14 @@ export class NsiService extends AbstractSystem {
   //  Returns a Promise fulfilled when the other data have been downloaded and processed
   //
   _loadNsiDataAsync() {
-    const dataLoaderSystem = this.context.systems.data;
+    const dataloader = this.context.systems.dataloader;
 
     return (
       Promise.all([
-        dataLoaderSystem.getDataAsync('nsi_data'),
-        dataLoaderSystem.getDataAsync('nsi_dissolved'),
-        dataLoaderSystem.getDataAsync('nsi_replacements'),
-        dataLoaderSystem.getDataAsync('nsi_trees')
+        dataloader.getDataAsync('nsi_data'),
+        dataloader.getDataAsync('nsi_dissolved'),
+        dataloader.getDataAsync('nsi_replacements'),
+        dataloader.getDataAsync('nsi_trees')
       ])
       .then(vals => {
         this._nsi = {
@@ -521,8 +521,8 @@ matcher.locationIndex = (bbox) => {
     // Only try this if we do a preset match and find nothing else remarkable about that building.
     // For example, a way with `building=yes` + `name=Westfield` may be a Westfield department store.
     // But a way with `building=yes` + `name=Westfield` + `public_transport=station` is a train station for a town named "Westfield"
-    const presetSystem = this.context.systems.presets;
-    const preset = presetSystem.matchTags(tags, 'area');
+    const presets = this.context.systems.presets;
+    const preset = presets.matchTags(tags, 'area');
     if (buildingPreset[preset.id]) {
       alternate.add('building/yes');
     }

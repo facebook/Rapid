@@ -14,8 +14,6 @@ describe('uiFieldAccess', () => {
       };
     }
     container()  { return selection; }
-    t()          { return ''; }
-    tHtml()      { return ''; }
   }
 
 

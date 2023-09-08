@@ -1,5 +1,5 @@
 describe('DataLoaderSystem', () => {
-  let _dataLoader;
+  let _dataloader;
 
   class MockContext {
     constructor() {}
@@ -10,14 +10,14 @@ describe('DataLoaderSystem', () => {
 
 
   beforeEach(() => {
-    _dataLoader = new Rapid.DataLoaderSystem(context);
-    return _dataLoader.initAsync();
+    _dataloader = new Rapid.DataLoaderSystem(context);
+    return _dataloader.initAsync();
   });
 
 
   describe('#fileMap', () => {
     it('gets the fileMap', () => {
-      const fileMap = _dataLoader.fileMap;
+      const fileMap = _dataloader.fileMap;
       expect(fileMap).to.be.an.instanceof(Map);
     });
   });
@@ -25,9 +25,9 @@ describe('DataLoaderSystem', () => {
 
   describe('#getDataAsync', () => {
     it('returns a promise resolved if we already have the data', () => {
-      _dataLoader._cachedData.test = { hello: 'world' };
+      _dataloader._cachedData.test = { hello: 'world' };
 
-      const prom = _dataLoader.getDataAsync('test');
+      const prom = _dataloader.getDataAsync('test');
       expect(prom).to.be.an.instanceof(Promise);
       return prom
         .then(data => {
@@ -37,7 +37,7 @@ describe('DataLoaderSystem', () => {
     });
 
     it('returns a promise rejected if we can not get the data', done => {
-      const prom = _dataLoader.getDataAsync('wat');
+      const prom = _dataloader.getDataAsync('wat');
       expect(prom).to.be.an.instanceof(Promise);
       prom
         .then(data => {
@@ -56,7 +56,7 @@ describe('DataLoaderSystem', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      const prom = _dataLoader.getDataAsync('intro_graph');
+      const prom = _dataloader.getDataAsync('intro_graph');
       expect(prom).to.be.an.instanceof(Promise);
       return prom
         .then(data => {

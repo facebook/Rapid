@@ -18,7 +18,7 @@ export class DataLoaderSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
-    this.id = 'data';
+    this.id = 'dataloader';
     this.dependencies = new Set();
 
     const fileMap  = new Map();

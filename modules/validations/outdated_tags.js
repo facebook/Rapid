@@ -17,8 +17,8 @@ export function validationOutdatedTags(context) {
   let _dataDeprecated;
 
   // fetch deprecated tags
-  const dataLoaderSystem = context.systems.data;
-  dataLoaderSystem.getDataAsync('deprecated')
+  const dataloader = context.systems.dataloader;
+  dataloader.getDataAsync('deprecated')
     .then(d => _dataDeprecated = d)
     .catch(() => { /* ignore */ })
     .finally(() => _waitingForDeprecated = false);

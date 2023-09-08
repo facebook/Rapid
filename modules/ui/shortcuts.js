@@ -27,8 +27,8 @@ export function uiShortcuts(context) {
             .append('h3')
             .html(context.tHtml('shortcuts.title'));
 
-        const dataLoaderSystem = context.systems.data;
-        dataLoaderSystem.getDataAsync('shortcuts')
+        const dataloader = context.systems.dataloader;
+        dataloader.getDataAsync('shortcuts')
           .then(data => {
             _dataShortcuts = data;
             content.call(render);

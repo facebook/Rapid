@@ -7,7 +7,7 @@ describe('validationIncompatibleSource', () => {
   class MockContext {
     constructor() {
       this.systems = {
-        l10n:  new MockLocalizationSystem()
+        l10n:  new MockLocalizationSystem(this)
       };
     }
   }

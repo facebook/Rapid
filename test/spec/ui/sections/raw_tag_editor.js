@@ -23,8 +23,6 @@ describe('uiSectionRawTagEditor', () => {
     }
     cleanTagKey(val)    { return val; }
     cleanTagValue(val)  { return val; }
-    t()                 { return ''; }
-    tHtml()             { return ''; }
   }
 
   const context = new MockContext();
