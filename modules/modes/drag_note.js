@@ -4,6 +4,8 @@ import { actionNoop } from '../actions/noop';
 
 
 export function modeDragNote(context) {
+    const editor = context.systems.editor;
+
     var mode = {
         id: 'drag-note',
         button: 'browse'
@@ -44,6 +46,7 @@ export function modeDragNote(context) {
     function start(d3_event, note) {
         _note = note;
         var osm = context.services.osm;
+
         if (osm) {
             // Get latest note from cache.. The marker may have a stale datum bound to it
             // and dragging it around can sometimes delete the users note comment.
@@ -54,7 +57,7 @@ export function modeDragNote(context) {
         context.surface().selectAll('.note-' + _note.id)
             .classed('active', true);
 
-        context.perform(actionNoop());
+        editor.perform(actionNoop());
         context.enter(mode);
         // context.selectedNoteID(_note.id);
     }
@@ -88,12 +91,12 @@ export function modeDragNote(context) {
             osm.replaceNote(_note);  // update note cache
         }
 
-        context.replace(actionNoop());   // trigger redraw
+        editor.replace(actionNoop());   // trigger redraw
     }
 
 
     function end() {
-        context.replace(actionNoop());   // trigger redraw
+        editor.replace(actionNoop());   // trigger redraw
 
         const selectedData = new Map().set(_note.id, _note);
         context.enter('select', selectedData);

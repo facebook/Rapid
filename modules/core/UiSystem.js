@@ -31,7 +31,7 @@ export class UiSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'ui';
-    this.dependencies = new Set(['edits', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
+    this.dependencies = new Set(['editor', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
 
     this.authModal = null;
     this.defs = null;
@@ -77,7 +77,7 @@ export class UiSystem extends AbstractSystem {
       .then(() => {
         // Setup event handlers
         window.addEventListener('beforeunload', () => context.save());
-        window.addEventListener('unload', () => context.systems.edits.unlock());
+        window.addEventListener('unload', () => context.systems.editor.unlock());
         window.addEventListener('resize', () =>  this.resize());
 
         // After l10n is ready we can make these
@@ -436,14 +436,14 @@ this.didRender = true;
 
 
     // What to show first?
-    const editSystem = context.systems.edits;
+    const editor = context.systems.editor;
     const urlhash = context.systems.urlhash;
     const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
 
     if (startWalkthrough) {
       container.call(uiIntro(context));   // Jump right into walkthrough..
 
-    } else if (editSystem.lock() && editSystem.hasRestorableChanges()) {
+    } else if (editor.lock() && editor.hasRestorableChanges()) {
       container.call(uiRestore(context));   // Offer to restore previous edits..
 
     } else {

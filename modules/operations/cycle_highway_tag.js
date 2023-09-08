@@ -9,6 +9,9 @@ let _wasPresetIDs = [];
 
 
 export function operationCycleHighwayTag(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const presets = context.systems.presets;
+
   // Allow cycling through lines that match these presets
   const allowPresetRegex = [
     /^highway\/(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|track)/,
@@ -27,7 +30,6 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   // same selection as before?
   const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
   const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
-  const presetSystem = context.systems.presets;
 
   // Gather current entities allowed to be cycled
   const entities = selectedIDs
@@ -35,7 +37,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     .filter(entity => {
       if (entity?.type !== 'way') return false;
 
-      const preset = presetSystem.match(entity, context.graph());
+      const preset = presets.match(entity, context.graph());
       if (allowPresetRegex.some(regex => regex.test(preset.id))) {
         if (!presetIDs.has(preset.id)) presetIDs.add(preset.id);  // make sure we can cycle back to the original preset
         return true;
@@ -54,23 +56,23 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     // If this is the same selection as before, and the previous edit was also a cycle-tags,
     // skip this `perform`, then all tag updates will be coalesced into the previous edit.
     const annotation = operation.annotation();
-    if (!isSameSelection || context.systems.edits.undoAnnotation() !== annotation) {
+    if (!isSameSelection || editor.undoAnnotation() !== annotation) {
       // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
-      context.perform(actionNoop(), annotation);
+      editor.perform(actionNoop(), annotation);
     }
 
     // Pick the next preset..
     const currPresetIDs = Array.from(presetIDs);
-    const currPreset = presetSystem.match(entities[0], context.graph());
+    const currPreset = presets.match(entities[0], context.graph());
     const index = currPreset ? currPresetIDs.indexOf(currPreset.id) : -1;
     const newPresetID = currPresetIDs[(index + 1) % currPresetIDs.length];
-    const newPreset = presetSystem.item(newPresetID);
+    const newPreset = presets.item(newPresetID);
 
     // Update all selected highways...
     for (const entity of entities) {
-      const oldPreset = presetSystem.match(entity, context.graph());
+      const oldPreset = presets.match(entity, context.graph());
       const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
-      context.replace(action, annotation);
+      editor.replace(action, annotation);
     }
 
     context.enter('select-osm', { selectedIDs: selectedIDs });  // reselect

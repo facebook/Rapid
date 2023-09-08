@@ -41,7 +41,7 @@ export class AddNoteMode extends AbstractMode {
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
 
-    context.systems.edits
+    context.systems.editor
       .on('undone', this._cancel)
       .on('redone', this._cancel);
 
@@ -68,7 +68,7 @@ export class AddNoteMode extends AbstractMode {
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
 
-    context.systems.edits
+    context.systems.editor
       .off('undone', this._cancel)
       .off('redone', this._cancel);
   }

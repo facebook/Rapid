@@ -2,7 +2,9 @@ import { uiSection } from '../section';
 
 
 export function uiSectionValidationOptions(context) {
-  const prefs = context.systems.storage;
+  const storage = context.systems.storage;
+  const validator = context.systems.validator;
+
   const section = uiSection(context, 'issues-options')
     .content(renderContent);
 
@@ -55,8 +57,8 @@ export function uiSectionValidationOptions(context) {
 
   function getOptions() {
     return {
-      what: prefs.getItem('validate-what') || 'edited',  // 'all', 'edited'
-      where: prefs.getItem('validate-where') || 'all'    // 'all', 'visible'
+      what: storage.getItem('validate-what') || 'edited',  // 'all', 'edited'
+      where: storage.getItem('validate-where') || 'all'    // 'all', 'visible'
     };
   }
 
@@ -65,8 +67,8 @@ export function uiSectionValidationOptions(context) {
       val = d3_event.target.value;
     }
 
-    prefs.setItem(`validate-${d}`, val);
-    context.systems.validator.validate();
+    storage.setItem(`validate-${d}`, val);
+    validator.validate();
   }
 
   return section;

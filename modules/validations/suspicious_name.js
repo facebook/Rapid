@@ -4,7 +4,10 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationSuspiciousName(context) {
   const type = 'suspicious_name';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
+
   const keysToTestForGenericValues = [
     'aerialway', 'aeroway', 'amenity', 'building', 'craft', 'highway',
     'leisure', 'railway', 'man_made', 'office', 'shop', 'tourism', 'waterway'
@@ -53,9 +56,10 @@ export function validationSuspiciousName(context) {
       subtype: 'generic_name',
       severity: 'warning',
       message: function() {
-        const entity = context.hasEntity(this.entityIds[0]);
+        const graph = editor.graph();  // use the current graph
+        const entity = graph.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        const preset = context.systems.presets.match(entity, context.graph());
+        const preset = presets.match(entity, graph);
         const langName = langCode && l10n.languageName(langCode);
         return l10n.tHtml('issues.generic_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: genericName, language: langName }
@@ -70,11 +74,12 @@ export function validationSuspiciousName(context) {
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_the_name.title'),
             onClick: function() {
+              const graph = editor.graph();  // use the current graph
               const entityID = this.issue.entityIds[0];
-              const entity = context.entity(entityID);
+              const entity = graph.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
-              context.perform(
+              editor.perform(
                 actionChangeTags(entityID, tags), l10n.t('issues.fix.remove_generic_name.annotation')
               );
             }
@@ -99,9 +104,10 @@ export function validationSuspiciousName(context) {
       subtype: 'not_name',
       severity: 'warning',
       message: function() {
-        const entity = context.hasEntity(this.entityIds[0]);
+        const graph = editor.graph();  // use the current graph
+        const entity = graph.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        const preset = context.systems.presets.match(entity, context.graph());
+        const preset = presets.match(entity, graph);
         const langName = langCode && l10n.languageName(langCode);
         return l10n.tHtml('issues.incorrect_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: incorrectName, language: langName }
@@ -116,11 +122,12 @@ export function validationSuspiciousName(context) {
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_the_name.title'),
             onClick: function() {
+              const graph = editor.graph();  // use the current graph
               const entityID = this.issue.entityIds[0];
-              const entity = context.entity(entityID);
+              const entity = graph.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
-              context.perform(
+              editor.perform(
                 actionChangeTags(entityID, tags), l10n.t('issues.fix.remove_mistaken_name.annotation')
               );
             }

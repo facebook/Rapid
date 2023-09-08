@@ -7,6 +7,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationImpossibleOneway(context) {
   const type = 'impossible_oneway';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
   let validation = function checkImpossibleOneway(entity, graph) {
@@ -128,14 +129,16 @@ export function validationImpossibleOneway(context) {
         subtype: wayType,
         severity: 'warning',
         message: function() {
-          const entity = context.hasEntity(this.entityIds[0]);
+          const graph = editor.graph();  // use the current graph
+          const entity = graph.hasEntity(this.entityIds[0]);
           return entity ? l10n.tHtml(`issues.impossible_oneway.${messageID}.message`, {
-            feature: l10n.displayLabel(entity, context.graph())
+            feature: l10n.displayLabel(entity, graph)
           }) : '';
         },
         reference: getReference(referenceID),
         entityIds: [way.id, node.id],
         dynamicFixes: function() {
+          const graph = editor.graph();  // use the current graph
           let fixes = [];
           if (attachedOneways.length) {
             fixes.push(new ValidationFix({
@@ -144,7 +147,7 @@ export function validationImpossibleOneway(context) {
               entityIds: [way.id],
               onClick: function() {
                 const id = this.issue.entityIds[0];
-                context.perform(actionReverse(id), l10n.t('operations.reverse.annotation.line', { n: 1 }));
+                editor.perform(actionReverse(id), l10n.t('operations.reverse.annotation.line', { n: 1 }));
               }
             }));
           }
@@ -157,8 +160,8 @@ export function validationImpossibleOneway(context) {
               onClick: function() {
                 const entityID = this.issue.entityIds[0];
                 const vertexID = this.issue.entityIds[1];
-                const way = context.entity(entityID);
-                const vertex = context.entity(vertexID);
+                const way = graph.entity(entityID);
+                const vertex = graph.entity(vertexID);
                 continueDrawing(way, vertex, context);
               }
             }));

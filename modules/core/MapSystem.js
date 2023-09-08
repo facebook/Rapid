@@ -48,7 +48,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['edits', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['editor', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash']);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -214,7 +214,7 @@ export class MapSystem extends AbstractSystem {
 
 
     // Setup events that cause the map to redraw...
-    const edits = context.systems.edits;
+    const edits = context.systems.editor;
     const filters = context.systems.filters;
     const imagery = context.systems.imagery;
     const photos = context.systems.photos;

@@ -10,6 +10,9 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldAddress(context, uifield) {
+  const editor = context.systems.editor;
+  const dataLoader = context.systems.data;
+
   const dispatch = d3_dispatch('change');
   let _selection = d3_select(null);
   let _wrap = d3_select(null);
@@ -24,8 +27,7 @@ export function uiFieldAddress(context, uifield) {
     ]
   }];
 
-  const dataLoaderSystem = context.systems.data;
-  dataLoaderSystem.getDataAsync('address_formats')
+  dataLoader.getDataAsync('address_formats')
     .then(d => {
       _addressFormats = d;
       if (!_selection.empty()) {
@@ -39,11 +41,11 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const streets = context.systems.edits.intersects(box)
+    const streets = editor.intersects(box)
       .filter(isAddressableStreet)
       .map(d => {
         const loc = context.projection.project(center);
-        const choice = geoChooseEdge(context.graph().childNodes(d), loc, context.projection);
+        const choice = geoChooseEdge(editor.graph().childNodes(d), loc, context.projection);
         return {
           title: d.tags.name,
           value: d.tags.name,
@@ -64,13 +66,13 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const cities = context.systems.edits.intersects(box)
+    const cities = editor.intersects(box)
       .filter(isAddressableCity)
       .map(d => {
         return {
           title: d.tags['addr:city'] || d.tags.name,
           value: d.tags['addr:city'] || d.tags.name,
-          dist: geoSphericalDistance(d.extent(context.graph()).center(), center)
+          dist: geoSphericalDistance(d.extent(editor.graph()).center(), center)
         };
       })
       .sort((a, b) => a.dist - b.dist);
@@ -96,13 +98,13 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const results = context.systems.edits.intersects(box)
+    const results = editor.intersects(box)
       .filter(entityHasAddressTag)
       .map(d => {
         return {
           title: d.tags[key],
           value: d.tags[key],
-          dist: geoSphericalDistance(d.extent(context.graph()).center(), center)
+          dist: geoSphericalDistance(d.extent(editor.graph()).center(), center)
         };
       })
       .sort((a, b) => a.dist - b.dist);

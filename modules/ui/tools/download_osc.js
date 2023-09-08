@@ -6,6 +6,8 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolDownloadOsc(context) {
+  const editor = context.systems.editor;
+
   let tool = {
     id: 'download_osc',
     label: context.t('download_osc.title')
@@ -21,9 +23,8 @@ export function uiToolDownloadOsc(context) {
 
   function downloadOsc(d3_event) {
     d3_event.preventDefault();
-    const editSystem = context.systems.edits;
-    if (!context.inIntro && editSystem.hasChanges()) {
-      const changes = editSystem.changes(actionDiscardTags(editSystem.difference()));
+    if (!context.inIntro && editor.hasChanges()) {
+      const changes = editor.changes(actionDiscardTags(editor.difference()));
       const changeset = new osmChangeset();
       const osc = JXON.stringify(changeset.osmChangeJXON(changes));
       downloadFile(osc, 'change.osc');
@@ -33,7 +34,7 @@ export function uiToolDownloadOsc(context) {
   function updateCount() {
     if (!_tooltip) return;
 
-    const val = context.systems.edits.difference().summary().size;
+    const val = editor.difference().summary().size;
     if (val === _numChanges) return;   // no change
     _numChanges = val;
 
@@ -89,7 +90,7 @@ export function uiToolDownloadOsc(context) {
 
     updateCount();
 
-    context.systems.edits.on('change', updateCount);
+    editor.on('change', updateCount);
     context.on('modechange', updateStyle);
   };
 
@@ -97,7 +98,7 @@ export function uiToolDownloadOsc(context) {
   tool.uninstall = function() {
     if (!_button && !_tooltip) return;  // already uninstalled
 
-    context.systems.edits.off('change', updateCount);
+    editor.off('change', updateCount);
     context.off('modechange', updateStyle);
 
     _button = null;

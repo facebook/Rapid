@@ -6,7 +6,10 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolDrawModes(context) {
-  const presetSystem = context.systems.presets;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
+  const ui = context.systems.ui;
+
   let debouncedUpdate;
   let _wrap;
 
@@ -21,7 +24,7 @@ export function uiToolDrawModes(context) {
       title: context.tHtml('modes.add_point.title'),
       button: 'point',
       description: context.tHtml('modes.add_point.description'),
-      preset: presetSystem.item('point'),
+      preset: presets.item('point'),
       key: '1'
     },
     {
@@ -29,7 +32,7 @@ export function uiToolDrawModes(context) {
       title: context.tHtml('modes.add_line.title'),
       button: 'line',
       description: context.tHtml('modes.add_line.description'),
-      preset: presetSystem.item('line'),
+      preset: presets.item('line'),
       key: '2'
     },
     {
@@ -37,7 +40,7 @@ export function uiToolDrawModes(context) {
       title: context.tHtml('modes.add_area.title'),
       button: 'area',
       description: context.tHtml('modes.add_area.description'),
-      preset: presetSystem.item('area'),
+      preset: presets.item('area'),
       key: '3'
     }
   ];
@@ -90,7 +93,7 @@ export function uiToolDrawModes(context) {
 
     // if we are adding/removing the buttons, check if toolbar has overflowed
     if (buttons.enter().size() || buttons.exit().size()) {
-      context.systems.ui.checkOverflow('.top-toolbar', true);
+      ui.checkOverflow('.top-toolbar', true);
     }
 
     // update
@@ -121,7 +124,7 @@ export function uiToolDrawModes(context) {
       });
     });
 
-    context.systems.map.on('draw', debouncedUpdate);
+    map.on('draw', debouncedUpdate);
     context.on('modechange', update);
     update();
   };
@@ -133,7 +136,7 @@ export function uiToolDrawModes(context) {
     });
 
     debouncedUpdate.cancel();
-    context.systems.map.off('draw', debouncedUpdate);
+    map.off('draw', debouncedUpdate);
     context.off('modechange', update);
     _wrap = null;
   };

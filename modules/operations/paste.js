@@ -8,6 +8,8 @@ import { uiCmd } from '../ui/cmd';
 
 // see also `PasteBehavior`
 export function operationPaste(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   let _pastePoint;
 
   let operation = function() {
@@ -18,11 +20,12 @@ export function operationPaste(context) {
 
     const projection = context.projection;
     const oldGraph = context.copyGraph;
+
     let extent = new Extent();
     let newIDs = [];
 
     const action = actionCopyEntities(oldIDs, oldGraph);
-    context.perform(action);
+    editor.perform(action);
 
     let copies = action.copies();
     let originals = new Set();
@@ -50,7 +53,7 @@ export function operationPaste(context) {
     const delta = vecSubtract(_pastePoint, copyPoint);
 
     // Move the pasted objects to be anchored at the paste location
-    context.replace(actionMove(newIDs, delta, projection), operation.annotation());
+    editor.replace(actionMove(newIDs, delta, projection), operation.annotation());
     context.enter('select-osm', { selectedIDs: newIDs });
   };
 
@@ -72,7 +75,6 @@ export function operationPaste(context) {
 
 
   operation.tooltip = function() {
-    const l10n = context.systems.l10n;
     const oldGraph = context.copyGraph;
     const ids = context.copyIDs;
     if (!ids.length) {

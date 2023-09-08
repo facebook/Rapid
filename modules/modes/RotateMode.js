@@ -49,21 +49,24 @@ export class RotateMode extends AbstractMode {
     this._active = true;
 
     const context = this.context;
-    context.systems.filters.forceVisible(this._entityIDs);
+    const editor = context.systems.editor;
+    const filterSystem = context.systems.filters;
+    const eventManager = context.systems.map.renderer.events;
+
+    filterSystem.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction']);
 
     this._prevGraph = null;
     this._lastPoint = null;
     this._pivotLoc = null;
 
-    const eventManager = context.systems.map.renderer.events;
     eventManager
       .on('click', this._finish)
       .on('keydown', this._keydown)
       .on('pointercancel', this._cancel)
       .on('pointermove', this._pointermove);
 
-    context.systems.edits
+    editor
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -83,16 +86,19 @@ export class RotateMode extends AbstractMode {
     this._pivotLoc = null;
 
     const context = this.context;
-    context.systems.filters.forceVisible([]);
+    const editor = context.systems.editor;
+    const filterSystem = context.systems.filters;
+    const eventManager = context.systems.map.renderer.events;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    filterSystem.forceVisible([]);
+
     eventManager
       .off('click', this._finish)
       .off('keydown', this._keydown)
       .off('pointercancel', this._cancel)
       .off('pointermove', this._pointermove);
 
-    context.systems.edits
+    editor
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
   }
@@ -122,6 +128,7 @@ export class RotateMode extends AbstractMode {
    */
   _pointermove() {
     const context = this.context;
+    const editor = context.systems.editor;
     const eventManager = context.systems.map.renderer.events;
     const currPoint = eventManager.coord;
 
@@ -130,9 +137,9 @@ export class RotateMode extends AbstractMode {
     // occurred during the rotate that interrupted it, so reset pivot and start a new rotation
     if (this._prevGraph !== context.graph()) {
       this._pivotLoc = this._calcPivotLoc();
-      fn = context.perform;   // start a rotation
+      fn = editor.perform;   // start a rotation
     } else {
-      fn = context.replace;   // continue rotating
+      fn = editor.replace;   // continue rotating
     }
 
     // Some notes!
@@ -225,12 +232,14 @@ export class RotateMode extends AbstractMode {
    */
   _finish() {
     const context = this.context;
+    const editor = context.systems.editor;
+
     if (this._prevGraph) {
       const annotation = (this._entityIDs.length === 1) ?
-        context.t('operations.rotate.annotation.' + context.graph().geometry(this._entityIDs[0])) :
+        context.t('operations.rotate.annotation.' + editor.graph().geometry(this._entityIDs[0])) :
         context.t('operations.rotate.annotation.feature', { n: this._entityIDs.length });
 
-      context.replace(actionNoop(), annotation);   // annotate the rotation
+      editor.replace(actionNoop(), annotation);   // annotate the rotation
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
@@ -242,8 +251,10 @@ export class RotateMode extends AbstractMode {
    */
   _cancel() {
     const context = this.context;
+    const editor = context.systems.editor;
+
     if (this._prevGraph) {
-      context.pop();   // remove the rotate
+      editor.pop();   // remove the rotate
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }

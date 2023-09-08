@@ -16,7 +16,7 @@ export function uiContributors(context) {
         if (!osm) return;
 
         let users = {};
-        let entities = context.systems.edits.intersects(context.systems.map.extent());
+        let entities = context.systems.editor.intersects(context.systems.map.extent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;

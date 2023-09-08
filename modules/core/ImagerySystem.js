@@ -28,7 +28,7 @@ export class ImagerySystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'imagery';
-    this.dependencies = new Set(['data', 'edits', 'l10n', 'map', 'urlhash']);
+    this.dependencies = new Set(['data', 'editor', 'l10n', 'map', 'urlhash']);
 
     this._initPromise = null;
     this._imageryIndex = null;
@@ -267,7 +267,7 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     // Update history "imagery used" property
-    this.context.systems.edits.imageryUsed(imageryUsed);
+    this.context.systems.editor.imageryUsed(imageryUsed);
 
     // Update hash params: 'background', 'overlays', 'offset'
     const urlhash = this.context.systems.urlhash;

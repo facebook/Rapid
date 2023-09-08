@@ -16,6 +16,10 @@ import { uiSectionSelectionList } from './sections/selection_list';
 
 
 export function uiEntityEditor(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
+  const validator = context.systems.validator;
   const dispatch = d3_dispatch('choose');
 
   const sections = [
@@ -39,7 +43,7 @@ export function uiEntityEditor(context) {
   let _activePresets = [];
   let _newFeature;
 
-  context.systems.edits.on('change', _onChange);
+  editor.on('change', _onChange);
 
 
   /**
@@ -49,8 +53,8 @@ export function uiEntityEditor(context) {
   function entityEditor(selection) {
     _selection = selection;
 
-    const combinedTags = _getCombinedTags(_entityIDs, context.graph());
-    const isRTL = context.systems.l10n.isRTL();
+    const combinedTags = _getCombinedTags(_entityIDs, editor.graph());
+    const isRTL = l10n.isRTL();
 
     // Header
     let header = selection.selectAll('.header')
@@ -80,7 +84,7 @@ export function uiEntityEditor(context) {
       .merge(headerEnter);
 
     header.selectAll('h3')
-      .html(_entityIDs.length === 1 ? context.tHtml('inspector.edit') : context.tHtml('rapid_multiselect'));
+      .html(_entityIDs.length === 1 ? l10n.tHtml('inspector.edit') : l10n.tHtml('rapid_multiselect'));
 
     header.selectAll('.preset-reset')
       .on('click', function() {
@@ -139,7 +143,7 @@ export function uiEntityEditor(context) {
 
     // always reload these even if the entityIDs are unchanged, since we
     // could be reselecting after something like dragging a node
-    _startGraph = context.graph();
+    _startGraph = editor.graph();
     _coalesceChanges = false;
 
     if (val && _entityIDs && utilArrayIdentical(_entityIDs, val)) return entityEditor;  // exit early if no change
@@ -194,7 +198,7 @@ export function uiEntityEditor(context) {
     _loadActivePresets();
     const currPreset = _activePresets.length === 1 && _activePresets[0];
 
-    const currGraph = context.graph();
+    const currGraph = editor.graph();
     entityEditor.modified(_startGraph !== currGraph);
     _selection.call(entityEditor);  // rerender
 
@@ -252,19 +256,19 @@ export function uiEntityEditor(context) {
         return graph;
       };
 
-      const annotation = context.t('operations.change_tags.annotation');
+      const annotation = l10n.t('operations.change_tags.annotation');
 
       if (_coalesceChanges) {
-        context.overwrite(combinedAction, annotation);
+        editor.overwrite(combinedAction, annotation);
       } else {
-        context.perform(combinedAction, annotation);
+        editor.perform(combinedAction, annotation);
         _coalesceChanges = !!onInput;
       }
     }
 
     // only rerun validation when leaving the field (on blur event)
     if (!onInput) {
-      context.systems.validator.validate();
+      validator.validate();
     }
   }
 
@@ -279,7 +283,7 @@ export function uiEntityEditor(context) {
       const entity = context.entity(entityID);
       let tags = Object.assign({}, entity.tags);   // shallow copy
 
-      const original = context.graph().base.entities.get(entityID);
+      const original = editor.graph().base.entities.get(entityID);
       let changed = {};
       for (const key of keys) {
         changed[key] = original?.tags[key] ?? undefined;
@@ -307,17 +311,17 @@ export function uiEntityEditor(context) {
         return graph;
       };
 
-      const annotation = context.t('operations.change_tags.annotation');
+      const annotation = l10n.t('operations.change_tags.annotation');
 
       if (_coalesceChanges) {
-        context.overwrite(combinedAction, annotation);
+        editor.overwrite(combinedAction, annotation);
       } else {
-        context.perform(combinedAction, annotation);
+        editor.perform(combinedAction, annotation);
         _coalesceChanges = false;
       }
     }
 
-    context.systems.validator.validate();
+    validator.validate();
   }
 
 
@@ -325,8 +329,7 @@ export function uiEntityEditor(context) {
    *
    */
   function _loadActivePresets(isForNewSelection) {
-    const presetSystem = context.systems.presets;
-    const graph = context.graph();
+    const graph = editor.graph();
 
     // If multiple entities, try to pick a preset that matches most of them
     const counts = {};
@@ -334,13 +337,13 @@ export function uiEntityEditor(context) {
       const entity = graph.hasEntity(entityID);
       if (!entity) return;
 
-      const preset = presetSystem.match(entity, graph);
+      const preset = presets.match(entity, graph);
       counts[preset.id] = (counts[preset.id] || 0) + 1;
     }
 
     const matches = Object.keys(counts)
       .sort((p1, p2) => counts[p2] - counts[p1])
-      .map(presetID => presetSystem.item(presetID));
+      .map(presetID => presets.item(presetID));
 
     if (!isForNewSelection) {
       // A "weak" preset doesn't set any tags. (e.g. "Address")

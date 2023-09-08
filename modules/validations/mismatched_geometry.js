@@ -14,8 +14,9 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationMismatchedGeometry(context) {
     const type = 'mismatched_geometry';
+    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
-    const presetSystem = context.systems.presets;
+    const presets = context.systems.presets;
 
     function tagSuggestingLineIsArea(entity) {
         if (entity.type !== 'way' || entity.isClosed()) return null;
@@ -25,8 +26,8 @@ export function validationMismatchedGeometry(context) {
             return null;
         }
 
-        var asLine = presetSystem.matchTags(tagSuggestingArea, 'line');
-        var asArea = presetSystem.matchTags(tagSuggestingArea, 'area');
+        var asLine = presets.matchTags(tagSuggestingArea, 'line');
+        var asArea = presets.matchTags(tagSuggestingArea, 'area');
         if (asLine && asArea && (asLine === asArea)) {
             // these tags also allow lines and making this an area wouldn't matter
             return null;
@@ -52,7 +53,7 @@ export function validationMismatchedGeometry(context) {
             if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
                 return function() {
                     var way = context.entity(this.issue.entityIds[0]);
-                    context.perform(
+                    editor.perform(
                         actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc),
                         l10n.t('issues.fix.connect_endpoints.annotation')
                     );
@@ -70,7 +71,7 @@ export function validationMismatchedGeometry(context) {
                 var way = context.entity(wayId);
                 var nodeId = way.nodes[0];
                 var index = way.nodes.length;
-                context.perform(
+                editor.perform(
                     actionAddVertex(wayId, nodeId, index),
                     l10n.t('issues.fix.connect_endpoints.annotation')
                 );
@@ -87,9 +88,10 @@ export function validationMismatchedGeometry(context) {
             subtype: 'area_as_line',
             severity: 'warning',
             message: function() {
-                var entity = context.hasEntity(this.entityIds[0]);
+                const graph = editor.graph();  // use the current graph
+                const entity = graph.hasEntity(this.entityIds[0]);
                 return entity ? l10n.tHtml('issues.tag_suggests_area.message', {
-                    feature: l10n.displayLabel(entity, 'area', true /* verbose */),
+                    feature: l10n.displayLabel(entity, 'area', true),   // true = verbose
                     tag: utilTagText({ tags: tagSuggestingArea })
                 }) : '';
             },
@@ -97,9 +99,10 @@ export function validationMismatchedGeometry(context) {
             entityIds: [entity.id],
             hash: JSON.stringify(tagSuggestingArea),
             dynamicFixes: function() {
+                const graph = editor.graph();  // use the current graph
                 var fixes = [];
-                var entity = context.entity(this.entityIds[0]);
-                var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, context.graph());
+                var entity = graph.entity(this.entityIds[0]);
+                var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, graph);
 
                 fixes.push(new ValidationFix({
                     title: l10n.tHtml('issues.fix.connect_endpoints.title'),
@@ -111,12 +114,12 @@ export function validationMismatchedGeometry(context) {
                     title: l10n.tHtml('issues.fix.remove_tag.title'),
                     onClick: function() {
                         var entityId = this.issue.entityIds[0];
-                        var entity = context.entity(entityId);
+                        var entity = graph.entity(entityId);
                         var tags = Object.assign({}, entity.tags);  // shallow copy
                         for (var key in tagSuggestingArea) {
                             delete tags[key];
                         }
-                        context.perform(
+                        editor.perform(
                             actionChangeTags(entityId, tags),
                             l10n.t('issues.fix.remove_tag.annotation')
                         );
@@ -218,14 +221,12 @@ export function validationMismatchedGeometry(context) {
 
         if (sourceGeom === 'area') targetGeoms.unshift('line');
 
-        var asSource = presetSystem.match(entity, graph);
+        var asSource = presets.match(entity, graph);
 
         var targetGeom = targetGeoms.find(nodeGeom => {
-            var asTarget = presetSystem.matchTags(entity.tags, nodeGeom);
-            if (!asSource || !asTarget ||
-                asSource === asTarget ||
-                // sometimes there are two presets with the same tags for different geometries
-                deepEqual(asSource.tags, asTarget.tags)) return false;
+            var asTarget = presets.matchTags(entity.tags, nodeGeom);
+            // sometimes there are two presets with the same tags for different geometries
+            if (!asSource || !asTarget || asSource === asTarget || deepEqual(asSource.tags, asTarget.tags)) return false;
 
             if (asTarget.isFallback()) return false;
 
@@ -294,7 +295,7 @@ export function validationMismatchedGeometry(context) {
                 if (tags.area) {
                     delete tags.area;
                 }
-                context.perform(
+                editor.perform(
                     actionChangeTags(entityId, tags),
                     l10n.t('issues.fix.convert_to_line.annotation')
                 );
@@ -318,7 +319,7 @@ export function validationMismatchedGeometry(context) {
             extractOnClick = function() {
                 var entityId = this.issue.entityIds[0];
                 var action = actionExtract(entityId, context.projection);
-                context.perform(
+                editor.perform(
                     action,
                     l10n.t('operations.extract.annotation', { n: 1 })
                 );

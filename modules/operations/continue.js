@@ -4,6 +4,8 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationContinue(context, selectedIDs) {
+  const filters = context.systems.filters;
+
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const geometries = Object.assign(
     { line: [], vertex: [] },
@@ -39,7 +41,7 @@ export function operationContinue(context, selectedIDs) {
 
   operation.available = function() {
     return geometries.vertex.length === 1 && geometries.line.length <= 1 &&
-      !context.systems.filters.hasHiddenConnections(continueFromNode, context.graph());
+      !filters.hasHiddenConnections(continueFromNode, context.graph());
   };
 
 

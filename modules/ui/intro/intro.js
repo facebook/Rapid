@@ -73,7 +73,7 @@ export function uiIntro(context, skipToRapid) {
 
 
   function startIntro(selection) {
-    const edits = context.systems.edits;
+    const edits = context.systems.editor;
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
     const mapwithai = context.services.mapwithai;

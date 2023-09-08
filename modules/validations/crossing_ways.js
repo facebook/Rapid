@@ -18,6 +18,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationCrossingWays(context) {
     const type = 'crossing_ways';
+    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
 
     // returns the way or its parent relation, whichever has a useful feature type
@@ -361,7 +362,7 @@ export function validationCrossingWays(context) {
 
 
     var validation = function checkCrossingWays(entity, graph) {
-        var tree = context.systems.edits.tree();
+        var tree = context.systems.editor.tree();
         var ways = waysToCheck(entity, graph);
         var issues = [];
         // declare these here to reduce garbage collection
@@ -430,9 +431,9 @@ export function validationCrossingWays(context) {
             subtype: subtype,
             severity: 'warning',
             message: function() {
-                var graph = context.graph();
-                var entity1 = graph.hasEntity(this.entityIds[0]);
-                var entity2 = graph.hasEntity(this.entityIds[1]);
+                const graph = editor.graph();  // use the current graph
+                const entity1 = graph.hasEntity(this.entityIds[0]);
+                const entity2 = graph.hasEntity(this.entityIds[1]);
                 return (entity1 && entity2) ? l10n.tHtml('issues.crossing_ways.message', {
                     feature: l10n.displayLabel(entity1, graph),
                     feature2: l10n.displayLabel(entity2, graph)
@@ -451,13 +452,13 @@ export function validationCrossingWays(context) {
             loc: crossing.crossPoint,
             autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function() {
+                const graph = editor.graph();  // use the current graph
                 var selectedIDs = context.selectedIDs();
                 if (context.mode?.id !== 'select-osm' || selectedIDs.length !== 1) return [];
 
                 var selectedIndex = this.entityIds[0] === selectedIDs[0] ? 0 : 1;
                 var selectedFeatureType = this.data.featureTypes[selectedIndex];
                 var otherFeatureType = this.data.featureTypes[selectedIndex === 0 ? 1 : 0];
-
                 var fixes = [];
 
                 if (connectionTags) {
@@ -474,8 +475,8 @@ export function validationCrossingWays(context) {
                     fixes.push(makeChangeLayerFix('lower'));
 
                 // can only add bridge/tunnel if both features are lines
-                } else if (context.graph().geometry(this.entityIds[0]) === 'line' &&
-                    context.graph().geometry(this.entityIds[1]) === 'line') {
+                } else if (graph.geometry(this.entityIds[0]) === 'line' &&
+                    graph.geometry(this.entityIds[1]) === 'line') {
 
                     // don't recommend adding bridges to waterways since they're uncommon
                     if (allowsBridge(selectedFeatureType) && selectedFeatureType !== 'waterway') {
@@ -704,7 +705,7 @@ export function validationCrossingWays(context) {
                     return graph;
                 };
 
-                context.perform(action, l10n.t(`issues.fix.${fixTitleID}.annotation`));
+                editor.perform(action, l10n.t(`issues.fix.${fixTitleID}.annotation`));
                 context.enter('select-osm', { selectedIDs: resultWayIDs });
             }
         });
@@ -733,7 +734,7 @@ export function validationCrossingWays(context) {
                 var closest = geoSphericalClosestPoint([n0.loc, n1.loc], loc);
                 if (closest && closest.distance < mergeThresholdInMeters) {
                     var closeNode = edgeNodes[closest.index];
-                    // Reuse the close node if it has no interesting tags or if it is already a crossing - #8326
+                    // Reuse the close node if it has no interesting tags or if it is already a crossing - iD#8326
                     if (!closeNode.hasInterestingTags() || closeNode.isCrossing()) {
                         canReuse = true;
                         nodesToMerge.push(closeNode.id);
@@ -771,7 +772,7 @@ export function validationCrossingWays(context) {
                 var connectionTags = this.issue.data.connectionTags;
                 var action = getConnectWaysAction(loc, edges, connectionTags);
 
-                context.perform(action[0], action[1]);  // function, annotation
+                editor.perform(action[0], action[1]);  // function, annotation
             }
         });
     }
@@ -810,7 +811,7 @@ export function validationCrossingWays(context) {
                     }
                 }
                 tags.layer = layer.toString();
-                context.perform(
+                editor.perform(
                     actionChangeTags(entity.id, tags),
                     l10n.t('operations.change_tags.annotation')
                 );

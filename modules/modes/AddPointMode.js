@@ -41,6 +41,7 @@ export class AddPointMode extends AbstractMode {
 
     this._active = true;
     const context = this.context;
+
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
 
     context.behaviors.draw
@@ -48,7 +49,7 @@ export class AddPointMode extends AbstractMode {
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
 
-    context.systems.edits
+    context.systems.editor
       .on('undone', this._cancel)
       .on('redone', this._cancel);
 
@@ -69,12 +70,13 @@ export class AddPointMode extends AbstractMode {
     this._active = false;
 
     const context = this.context;
+
     context.behaviors.draw
       .off('click', this._click)
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
 
-    context.systems.edits
+    context.systems.editor
       .off('undone', this._cancel)
       .off('redone', this._cancel);
   }
@@ -86,13 +88,14 @@ export class AddPointMode extends AbstractMode {
    */
   _click(eventData) {
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const locations = context.systems.locations;
+
+    const graph = editor.graph();
     const projection = context.projection;
     const coord = eventData.coord;
     const loc = projection.invert(coord);
-
-    const locationSystem = context.systems.locations;
-    if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
+    if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -131,9 +134,10 @@ export class AddPointMode extends AbstractMode {
    */
   _clickNothing(loc) {
     const context = this.context;
+    const editor = context.systems.editor;
     const node = osmNode({ loc: loc, tags: this.defaultTags });
     const annotation = context.t('operations.add.annotation.point');
-    context.perform(actionAddEntity(node), annotation);
+    editor.perform(actionAddEntity(node), annotation);
     context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
@@ -144,9 +148,10 @@ export class AddPointMode extends AbstractMode {
    */
   _clickWay(loc, edge) {
     const context = this.context;
+    const editor = context.systems.editor;
     const node = osmNode({ tags: this.defaultTags });
     const annotation = context.t('operations.add.annotation.vertex');
-    context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
+    editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
     context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
@@ -157,6 +162,7 @@ export class AddPointMode extends AbstractMode {
    */
   _clickNode(loc, node) {
     const context = this.context;
+    const editor = context.systems.editor;
 
     if (Object.keys(this.defaultTags).length === 0) {
       context.enter('select-osm', { selectedIDs: [node.id] });
@@ -169,7 +175,7 @@ export class AddPointMode extends AbstractMode {
     }
 
     const annotation = context.t('operations.add.annotation.point');
-    context.perform(actionChangeTags(node.id, tags), annotation);
+    editor.perform(actionChangeTags(node.id, tags), annotation);
     context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 

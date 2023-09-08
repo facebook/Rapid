@@ -3,6 +3,9 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationSplit(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const validator = context.systems.validator;
+
   const graph = context.graph();
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
 
@@ -44,8 +47,8 @@ export function operationSplit(context, selectedIDs) {
 
 
   let operation = function() {
-    const difference = context.perform(action, operation.annotation());
-    context.systems.validator.validate();
+    const difference = editor.perform(action, operation.annotation());
+    validator.validate();
 
     let idsToSelect = vertexIDs.slice();  // copy
 

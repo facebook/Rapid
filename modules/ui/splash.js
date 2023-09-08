@@ -3,26 +3,29 @@ import { uiModal } from './modal';
 
 
 export function uiSplash(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
+
   return (selection) => {
     // Exception - if there are restorable changes, skip this splash screen.
     // This is because we currently only support one `uiModal` at a time
     //  and we need to show them `uiRestore`` instead of this one.
-    const prefs = context.systems.storage;
-    if (context.systems.edits.hasRestorableChanges()) return;
+    if (editor.hasRestorableChanges()) return;
 
     // If user has not seen this version of the privacy policy, show the splash again.
     let updateMessage = '';
-    const sawPrivacyVersion = prefs('sawPrivacyVersion');
-    let showSplash = !prefs('sawSplash');
+    const sawPrivacyVersion = storage.getItem('sawPrivacyVersion');
+    let showSplash = !storage.getItem('sawSplash');
     if (sawPrivacyVersion !== context.privacyVersion) {
-      updateMessage = context.t('splash.privacy_update');
+      updateMessage = l10n.t('splash.privacy_update');
       showSplash = true;
     }
 
     if (!showSplash) return;
 
-    prefs.setItem('sawSplash', true);
-    prefs.setItem('sawPrivacyVersion', context.privacyVersion);
+    storage.setItem('sawSplash', true);
+    storage.setItem('sawPrivacyVersion', context.privacyVersion);
 
     // fetch intro graph data now, while user is looking at the splash screen
     const dataLoaderSystem = context.systems.data;
@@ -41,7 +44,7 @@ export function uiSplash(context) {
       .append('div')
       .attr('class','modal-section')
       .append('h3')
-      .text(context.t('splash.welcome'));
+      .text(l10n.t('splash.welcome'));
 
     let modalSection = introModal
       .append('div')
@@ -49,7 +52,7 @@ export function uiSplash(context) {
 
     modalSection
       .append('p')
-      .html(context.tHtml('splash.text', {
+      .html(l10n.tHtml('splash.text', {
         version: context.version,
         website: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#whats-new">changelog</a>',
         github: '<a target="_blank" href="https://github.com/openstreetmap/iD/issues">github.com</a>'
@@ -57,10 +60,10 @@ export function uiSplash(context) {
 
     modalSection
       .append('p')
-      .html(context.tHtml('splash.privacy', {
+      .html(l10n.tHtml('splash.privacy', {
         updateMessage: updateMessage,
         privacyLink: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/release/PRIVACY.md">' +
-          context.t('splash.privacy_policy') + '</a>'
+          l10n.t('splash.privacy_policy') + '</a>'
       }));
 
     let buttonWrap = introModal
@@ -83,7 +86,7 @@ export function uiSplash(context) {
 
     walkthrough
       .append('div')
-      .html(context.tHtml('splash.walkthrough'));
+      .html(l10n.tHtml('splash.walkthrough'));
 
     let startEditing = buttonWrap
       .append('button')
@@ -98,7 +101,7 @@ export function uiSplash(context) {
 
     startEditing
       .append('div')
-      .html(context.tHtml('splash.start'));
+      .html(l10n.tHtml('splash.start'));
 
     modalSelection.select('button.close')
       .attr('class','hide');

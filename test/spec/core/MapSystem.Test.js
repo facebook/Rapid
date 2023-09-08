@@ -39,7 +39,7 @@ describe('MapSystem', () => {
     constructor()   {
       this.services = {};
       this.systems = {
-        edits:   new MockSystem(),
+        editor:  new MockSystem(),
         filters: new MockSystem(),
         imagery: new MockSystem(),
         photos:  new MockSystem(),

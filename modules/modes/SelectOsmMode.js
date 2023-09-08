@@ -61,7 +61,7 @@ export class SelectOsmMode extends AbstractMode {
     if (!entityIDs.length) return false;
 
     const context = this.context;
-    const locationSystem = context.systems.locations;
+    const locations = context.systems.locations;
 
     // For this mode, keep only the OSM data
     let selectedIDs = [];
@@ -71,7 +71,7 @@ export class SelectOsmMode extends AbstractMode {
     for (const entityID of entityIDs) {
       const entity = context.hasEntity(entityID);
       if (!entity) continue;   // not osm
-      if (entity.type === 'node' && locationSystem.blocksAt(entity.loc).length) continue;  // editing is blocked
+      if (entity.type === 'node' && locations.blocksAt(entity.loc).length) continue;  // editing is blocked
 
       this._selectedData.set(entityID, entity);   // otherwise keep it
       selectedIDs.push(entityID);
@@ -137,7 +137,7 @@ export class SelectOsmMode extends AbstractMode {
     context.systems.ui.sidebar
       .select(selectedIDs, this._newFeature);
 
-    context.systems.edits
+    context.systems.editor
       // this was probably to style the elements
       // .on('change', this._selectElements)    // reselect, in case relation members were removed or added
       .on('undone', this._undoOrRedo)
@@ -155,6 +155,7 @@ export class SelectOsmMode extends AbstractMode {
     this._active = false;
 
     const context = this.context;
+    const editor = context.systems.editor;
 
     // If the user added an empty relation, we should clean it up.
     const entity = context.hasEntity(this._singularDatum?.id);
@@ -169,7 +170,8 @@ export class SelectOsmMode extends AbstractMode {
     ) {
       // The user added this relation but didn't edit it at all, so just delete it
       const deleteAction = actionDeleteRelation(entity.id, true /* don't delete untagged members */);
-      context.perform(deleteAction, context.t('operations.delete.annotation.relation'));
+
+      editor.perform(deleteAction, context.t('operations.delete.annotation.relation'));
       context.systems.validator.validate();
     }
 
@@ -197,7 +199,7 @@ export class SelectOsmMode extends AbstractMode {
       this.keybinding = null;
     }
 
-    context.systems.edits
+    editor
       // .off('change', this._selectElements)
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
@@ -221,12 +223,12 @@ export class SelectOsmMode extends AbstractMode {
    */
   _undoOrRedo() {
     const context = this.context;
-    const locationSystem = context.systems.locations;
+    const locations = context.systems.locations;
     let selectedIDs = [];
 
     for (const [datumID, datum] of this._selectedData) {
       if (!context.hasEntity(datumID)) continue;   // was deleted
-      if (datum.type === 'node' && locationSystem.blocksAt(datum.loc).length) continue;  // editing is blocked
+      if (datum.type === 'node' && locations.blocksAt(datum.loc).length) continue;  // editing is blocked
       selectedIDs.push(datumID);  // keep it selected
     }
 

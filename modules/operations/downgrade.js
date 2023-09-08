@@ -4,6 +4,10 @@ import { uiCmd } from '../ui/cmd';
 
 
 export function operationDowngrade(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const presets = context.systems.presets;
+  const validator = context.systems.validator;
+
   let _affectedFeatureCount = 0;
   let _downgradeType = downgradeTypeForEntityIDs(selectedIDs);
   const multi = _affectedFeatureCount === 1 ? 'single' : 'multiple';
@@ -36,8 +40,7 @@ export function operationDowngrade(context, selectedIDs) {
   function downgradeTypeForEntityID(entityID) {
     const graph = context.graph();
     const entity = graph.entity(entityID);
-    const presetSystem = context.systems.presets;
-    const preset = presetSystem.match(entity, graph);
+    const preset = presets.match(entity, graph);
 
     if (!preset || preset.isFallback()) return null;
 
@@ -63,7 +66,7 @@ export function operationDowngrade(context, selectedIDs) {
   let addressKeysToKeep = ['source'];
 
   let operation = function() {
-    context.perform(function(graph) {
+    editor.perform(function(graph) {
       for (let i in selectedIDs) {
         let entityID = selectedIDs[i];
         let type = downgradeTypeForEntityID(entityID);
@@ -83,7 +86,7 @@ export function operationDowngrade(context, selectedIDs) {
       return graph;
     }, operation.annotation());
 
-    context.systems.validator.validate();
+    validator.validate();
 
     // refresh the select mode to enable the delete operation
     context.enter('select-osm', { selectedIDs: selectedIDs });

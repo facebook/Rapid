@@ -7,7 +7,10 @@ import { utilHighlightEntities } from '../../util';
 
 
 export function uiSectionSelectionList(context) {
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
+
   let _selectedIDs = [];
 
   const section = uiSection(context, 'selected-features')
@@ -105,11 +108,11 @@ export function uiSectionSelectionList(context) {
       .attr('href', (d, i, nodes) => {
         const thiz = d3_select(nodes[i]);
         const entity = thiz._groups[0][0].parentNode.parentNode.__data__;
-        return '#rapid-icon-' + entity.geometry(context.graph());
+        return '#rapid-icon-' + entity.geometry(editor.graph());
       });
 
     items.selectAll('.entity-type')
-      .html(entity => context.systems.presets.match(entity, context.graph()).name());
+      .html(entity => presets.match(entity, editor.graph()).name());
 
     items.selectAll('.entity-name')
       .html(d => {
@@ -119,7 +122,7 @@ export function uiSectionSelectionList(context) {
   }
 
 
-  context.systems.edits
+  editor
     .on('change', difference => {
       if (difference) {
         section.reRender();

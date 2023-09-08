@@ -8,6 +8,11 @@ import { utilTotalExtent } from '../util';
 
 
 export function operationDelete(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+  const validator = context.systems.validator;
+
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -48,11 +53,11 @@ export function operationDelete(context, selectedIDs) {
       }
     }
 
-    context.perform(action, operation.annotation());
-    context.systems.validator.validate();
+    editor.perform(action, operation.annotation());
+    validator.validate();
 
     if (nextNode && nextLoc) {
-      context.systems.map.centerEase(nextLoc);
+      map.centerEase(nextLoc);
       // Try to select the next node.
       // It may be deleted and that's ok, we'll fallback to browse mode automatically
       context.enter('select-osm', { selectedIDs: [nextNode.id] });
@@ -86,9 +91,8 @@ export function operationDelete(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet

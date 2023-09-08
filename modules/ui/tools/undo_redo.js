@@ -7,7 +7,9 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolUndoRedo(context) {
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
   const isRTL = l10n.isRTL();
 
   let _buttons = null;
@@ -22,14 +24,14 @@ export function uiToolUndoRedo(context) {
   const commands = [{
     id: 'undo',
     key: uiCmd('⌘Z'),
-    action: () => context.undo(),
-    annotation: () => context.systems.edits.undoAnnotation(),
+    action: () => editor.undo(),
+    annotation: () => editor.undoAnnotation(),
     icon: (isRTL ? 'redo' : 'undo')
   }, {
     id: 'redo',
     key: uiCmd('⌘⇧Z'),
-    action: () => context.redo(),
-    annotation: () => context.systems.edits.redoAnnotation(),
+    action: () => editor.redo(),
+    annotation: () => editor.redoAnnotation(),
     icon: (isRTL ? 'undo' : 'redo')
   }];
 
@@ -123,8 +125,8 @@ export function uiToolUndoRedo(context) {
       });
     }
 
-    context.systems.map.on('draw', debouncedUpdate);
-    context.systems.edits.on('change', changed);
+    map.on('draw', debouncedUpdate);
+    editor.on('change', changed);
     context.on('modechange', update);
   };
 
@@ -137,8 +139,8 @@ export function uiToolUndoRedo(context) {
     }
 
     debouncedUpdate.cancel();
-    context.systems.map.off('draw', debouncedUpdate);
-    context.systems.edits.off('change', changed);
+    map.off('draw', debouncedUpdate);
+    editor.off('change', changed);
     context.off('modechange', update);
     _tooltip = null;
     _buttons = null;

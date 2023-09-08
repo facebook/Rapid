@@ -8,6 +8,7 @@ import { uiCombobox } from '../combobox';
 
 
 export function uiFieldWikidata(context, uifield) {
+    var editor = context.systems.editor;
     var wikidata = context.services.wikidata;
     var dispatch = d3_dispatch('change');
 
@@ -167,14 +168,14 @@ export function uiFieldWikidata(context, uifield) {
         dispatch.call('change', this, syncTags);
 
         // attempt asynchronous update of wikidata tag..
-        var initGraph = context.graph();
+        var initGraph = editor.graph();
         var initEntityIDs = _entityIDs;
 
         wikidata.entityByQID(_qid, function(err, entity) {
             if (err) return;
 
             // If graph has changed, we can't apply this update.
-            if (context.graph() !== initGraph) return;
+            if (editor.graph() !== initGraph) return;
 
             if (!entity.sitelinks) return;
 
@@ -251,14 +252,14 @@ export function uiFieldWikidata(context, uifield) {
             if (!actions.length) return;
 
             // Coalesce the update of wikidata tag into the previous tag change
-            context.overwrite(
+            editor.overwrite(
                 function actionUpdateWikipediaTags(graph) {
                     actions.forEach(function(action) {
                         graph = action(graph);
                     });
                     return graph;
                 },
-                context.systems.edits.undoAnnotation()
+                editor.undoAnnotation()
             );
 
             // do not dispatch.call('change') here, because entity_editor

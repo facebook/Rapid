@@ -6,6 +6,11 @@ import { utilTotalExtent } from '../util/util';
 
 
 export function operationDisconnect(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+  const validator = context.systems.validator;
+
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
 
@@ -133,8 +138,8 @@ export function operationDisconnect(context, selectedIDs) {
       });
       return graph;
     };
-    context.perform(combinedAction, operation.annotation());
-    context.systems.validator.validate();
+    editor.perform(combinedAction, operation.annotation());
+    validator.validate();
   };
 
 
@@ -180,9 +185,8 @@ export function operationDisconnect(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet

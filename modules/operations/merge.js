@@ -7,11 +7,15 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationMerge(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const presets = context.systems.presets;
+  const storage = context.systems.storage;
+  const validator = context.systems.validator;
+
   let action = chooseAction();
 
   function chooseAction() {
-    const prefs = context.systems.storage;
-    const tagnosticRoadCombine = prefs.getItem('rapid-internal-feature.tagnosticRoadCombine') === 'true';
+    const tagnosticRoadCombine = storage.getItem('rapid-internal-feature.tagnosticRoadCombine') === 'true';
     const options = { tagnosticRoadCombine: tagnosticRoadCombine };
 
     // prefer a non-disabled action first
@@ -39,8 +43,8 @@ export function operationMerge(context, selectedIDs) {
   let operation = function() {
     if (operation.disabled()) return;
 
-    context.perform(action, operation.annotation());
-    context.systems.validator.validate();
+    editor.perform(action, operation.annotation());
+    validator.validate();
 
     let successorIDs = selectedIDs.filter(entityID => context.hasEntity(entityID));
     if (successorIDs.length > 1) {
@@ -73,13 +77,12 @@ export function operationMerge(context, selectedIDs) {
 
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
-    const presetSystem = context.systems.presets;
 
     if (disabledReason) {
       if (disabledReason === 'conflicting_relations') {
         return context.t('operations.merge.conflicting_relations');
       } else if (disabledReason === 'restriction' || disabledReason === 'connectivity') {
-        const preset = presetSystem.item('type/' + disabledReason);
+        const preset = presets.item('type/' + disabledReason);
         return context.t('operations.merge.damage_relation', { relation: preset.name() });
       } else {
         return context.t(`operations.merge.${disabledReason}`);

@@ -13,12 +13,13 @@
 //
 //export function uiFieldRestrictions(context, uifield) {
 //    const dispatch = d3_dispatch('change');
+//    const editor = context.systems.editor;
 //    const l10n = context.systems.l10n;
-//    const prefs = context.systems.storage;
+//    const storage = context.systems.storage;
 //
-//    prefs.removeItem('turn-restriction-via-way');                    // remove old key
-//    var storedViaWay = prefs.getItem('turn-restriction-via-way0');   // use new key #6922
-//    var storedDistance = prefs.getItem('turn-restriction-distance');
+//    storage.removeItem('turn-restriction-via-way');                    // remove old key
+//    var storedViaWay = storage.getItem('turn-restriction-via-way0');   // use new key #6922
+//    var storedDistance = storage.getItem('turn-restriction-distance');
 //
 //    var _maxViaWay = storedViaWay !== null ? (+storedViaWay) : 0;
 //    var _maxDistance = storedDistance ? (+storedDistance) : 30;
@@ -144,7 +145,7 @@
 //                _maxDistance = +val;
 //                _intersection = null;
 //                _container.selectAll('.layer-osm .layer-turns *').remove();
-//                prefs.setItem('turn-restriction-distance', _maxDistance);
+//                storage.setItem('turn-restriction-distance', _maxDistance);
 //                _parent.call(restrictions);
 //            });
 //
@@ -186,7 +187,7 @@
 //                var val = d3_select(this).property('value');
 //                _maxViaWay = +val;
 //                _container.selectAll('.layer-osm .layer-turns *').remove();
-//                prefs.setItem('turn-restriction-via-way0', _maxViaWay);
+//                storage.setItem('turn-restriction-via-way0', _maxViaWay);
 //                _parent.call(restrictions);
 //            });
 //
@@ -375,7 +376,7 @@
 //                    ]);
 //                }
 //
-//                context.perform.apply(context, actions);
+//                editor.perform.apply(context, actions);
 //
 //                // At this point the datum will be changed, but will have same key..
 //                // Refresh it and update the help..

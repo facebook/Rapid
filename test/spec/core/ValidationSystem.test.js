@@ -41,7 +41,7 @@ describe('ValidationSystem', () => {
       this.projection = new sdk.Projection();
       this.systems = {
         data:     new Rapid.DataLoaderSystem(this),
-        edits:    new Rapid.EditSystem(this),
+        editor:   new Rapid.EditSystem(this),
         l10n:     new MockLocalizationSystem(),
         map:      new MockMapSystem(),
         presets:  new MockSystem(),
@@ -49,8 +49,8 @@ describe('ValidationSystem', () => {
         storage:  new MockStorageSystem(),
         urlhash:  new MockUrlSystem()
       };
-      this.graph = this.systems.edits.graph;
-      this.hasEntity = (id) => this.systems.edits.graph().hasEntity(id);
+      this.graph = this.systems.editor.graph;
+      this.hasEntity = (id) => this.systems.editor.graph().hasEntity(id);
      }
     selectedIDs() { return []; }
     on() {}
@@ -59,7 +59,7 @@ describe('ValidationSystem', () => {
   const context = new MockContext();
 
   before(() => {
-    const editSystem = context.systems.edits;
+    const editSystem = context.systems.editor;
     _validator = new Rapid.ValidationSystem(context);
 
     return editSystem.initAsync()
@@ -84,7 +84,7 @@ describe('ValidationSystem', () => {
 
   it('validateAsync returns a Promise, fulfilled when the validation has completed', () => {
     const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, 0], tags: { building: 'house', phone: '555-1212' } });
-    context.systems.edits.perform( Rapid.actionAddEntity(n1) );
+    context.systems.editor.perform( Rapid.actionAddEntity(n1) );
 
     const prom = _validator.validateAsync();
     expect(prom).to.be.a('promise');

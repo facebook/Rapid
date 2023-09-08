@@ -34,7 +34,7 @@ export class ValidationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'validator';
-    this.dependencies = new Set(['edits', 'storage', 'map', 'urlhash']);
+    this.dependencies = new Set(['editor', 'storage', 'map', 'urlhash']);
 
     this._rules = new Map();    // Map(ruleID -> validator)
     this._base = new ValidationCache('base');   // issues before any user edits
@@ -81,44 +81,12 @@ export class ValidationSystem extends AbstractSystem {
       this._rules.set(fn.type, fn);
     });
 
-    // register event handlers:
-    const editSystem = context.systems.edits;
-
-    // WHEN TO RUN VALIDATION:
-    context
-      .on('modechange', this.validate);
-
-    editSystem
-      .on('restore', this.validate)   // on restore saved history
-      .on('undone', this.validate)    // on undo
-      .on('redone', this.validate);   // on redo
-
-// todo: find another way to reset this
-//      .on('reset', () => {            // on reset - happens after save, or enter/exit walkthrough
-//        this.reset(false);   // cached issues aren't valid any longer if the history has been reset
-//        this.validateAsync();
-//      });
-      // but not on 'change' (e.g. while drawing)
-
-    // When merging fetched data, validate base graph:
-    editSystem
-      .on('merge', entityIDs => {
-        if (!entityIDs) return;
-
-        // Make sure the caches have graphs assigned to them.
-        // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
-        const baseGraph = editSystem.base();
-        if (!this._head.graph) this._head.graph = baseGraph;
-        if (!this._base.graph) this._base.graph = baseGraph;
-
-        entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
-        this._validateEntitiesAsync(entityIDs, this._base);
-      });
-
-
+    // Init prerequisites
+    const editor = context.systems.editor;
     const storage = context.systems.storage;
     const urlhash = context.systems.urlhash;
     const prerequisites = Promise.all([
+      editor.initAsync(),
       storage.initAsync(),
       urlhash.initAsync()
     ]);
@@ -144,6 +112,40 @@ export class ValidationSystem extends AbstractSystem {
           const ruleIDs = disabledRules.split(',').map(s => s.trim()).filter(Boolean);
           this._disabledRuleIDs = new Set(ruleIDs);
         }
+
+        // register event handlers:
+
+        // WHEN TO RUN VALIDATION:
+        context
+          .on('modechange', this.validate);
+
+        editor
+          .on('restore', this.validate)   // on restore saved history
+          .on('undone', this.validate)    // on undo
+          .on('redone', this.validate);   // on redo
+
+    // todo: find another way to reset this
+    //      .on('reset', () => {            // on reset - happens after save, or enter/exit walkthrough
+    //        this.reset(false);   // cached issues aren't valid any longer if the history has been reset
+    //        this.validateAsync();
+    //      });
+          // but not on 'change' (e.g. while drawing)
+
+        // When merging fetched data, validate base graph:
+        editor
+          .on('merge', entityIDs => {
+            if (!entityIDs) return;
+
+            // Make sure the caches have graphs assigned to them.
+            // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
+            const baseGraph = editor.base();
+            if (!this._head.graph) this._head.graph = baseGraph;
+            if (!this._base.graph) this._base.graph = baseGraph;
+
+            entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
+            this._validateEntitiesAsync(entityIDs, this._base);
+          });
+
       });
   }
 
@@ -255,7 +257,7 @@ export class ValidationSystem extends AbstractSystem {
       cache.uncacheIssuesOfType('unsquare_way');   // uncache existing
 
       // rerun for all buildings
-      const tree = this.context.systems.edits.tree();
+      const tree = this.context.systems.editor.tree();
       const buildings = tree.intersects(new Extent([-180,-90],[180, 90]), cache.graph)  // everywhere
         .filter(entity => (entity.type === 'way' && entity.tags.building && entity.tags.building !== 'no'));
 
@@ -569,7 +571,7 @@ export class ValidationSystem extends AbstractSystem {
     // Make sure the caches have graphs assigned to them.
     // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
     const context = this.context;
-    const baseGraph = context.systems.edits.base();
+    const baseGraph = context.systems.editor.base();
     if (!this._head.graph) this._head.graph = baseGraph;
     if (!this._base.graph) this._base.graph = baseGraph;
 
@@ -589,7 +591,7 @@ export class ValidationSystem extends AbstractSystem {
 
     // If we get here, its time to start validating stuff.
     this._head.graph = currGraph;  // take snapshot
-    this._completeDiff = context.systems.edits.difference().complete();
+    this._completeDiff = context.systems.editor.difference().complete();
     const incrementalDiff = new Difference(prevGraph, currGraph);
     let entityIDs = [...incrementalDiff.complete().keys()];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set

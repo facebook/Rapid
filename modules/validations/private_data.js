@@ -6,6 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationPrivateData(context) {
   const type = 'private_data';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
   // assume that some buildings are private
@@ -53,7 +54,7 @@ export function validationPrivateData(context) {
             icon: 'rapid-operation-delete',
             title: l10n.tHtml(`issues.fix.${fixID}.title`),
             onClick: function() {
-              context.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
+              editor.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
             }
           })
         ];
@@ -79,11 +80,12 @@ export function validationPrivateData(context) {
 
 
     function showMessage() {
-      const currEntity = context.hasEntity(this.entityIds[0]);
+      const graph = editor.graph();  // use the current graph
+      const currEntity = graph.hasEntity(this.entityIds[0]);
       if (!currEntity) return '';
 
       return l10n.tHtml('issues.private_data.contact.message',
-        { feature: l10n.displayLabel(currEntity, context.graph()) }
+        { feature: l10n.displayLabel(currEntity, graph) }
       );
     }
 

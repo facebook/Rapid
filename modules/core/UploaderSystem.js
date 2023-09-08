@@ -35,7 +35,7 @@ export class UploaderSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'uploader';
-    this.dependencies = new Set(['data', 'edits', 'l10n']);
+    this.dependencies = new Set(['data', 'editor', 'l10n']);
 
     this.changeset = null;    // uiCommit will create it
 
@@ -149,14 +149,14 @@ export class UploaderSystem extends AbstractSystem {
     this._errors = [];
 
     // Store original changes, in case user wants to download them as an .osc file
-    const editSystem = context.systems.edits;
-    this._origChanges = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
+    const editor = context.systems.editor;
+    this._origChanges = editor.changes(actionDiscardTags(editor.difference(), this._discardTags));
 
     // First time, `perform` a no-op action.
     // Any conflict resolutions will be done as `replace`
     // Remember to pop this later if needed
     if (!tryAgain) {
-      editSystem.perform(actionNoop());
+      editor.perform(actionNoop());
     }
 
     // Attempt a fast upload first.. If there are conflicts, re-enter with `checkConflicts = true`
@@ -174,12 +174,12 @@ export class UploaderSystem extends AbstractSystem {
   _startConflictCheck() {
     const context = this.context;
     const osm = context.services.osm;
-    const editSystem = context.systems.edits;
-    const summary = editSystem.difference().summary();
+    const editor = context.systems.editor;
+    const summary = editor.difference().summary();
     const graph = context.graph();
 
     this._localGraph = graph;
-    this._remoteGraph = new Graph(editSystem.base(), true);
+    this._remoteGraph = new Graph(editor.base(), true);
 
     // Gather entityIDs to check
     // We will load these from the OSM API into the `remoteGraph`
@@ -273,7 +273,7 @@ export class UploaderSystem extends AbstractSystem {
   // Test everything in `_toCheckIDs` for conflicts
   _detectConflicts() {
     const l10n = this.context.systems.l10n;
-    const editSystem = this.context.systems.edits;
+    const editor = this.context.systems.editor;
     const osm = this.context.services.osm;
     if (!osm) return;
 
@@ -296,7 +296,7 @@ export class UploaderSystem extends AbstractSystem {
         strategy: 'safe'
       });
 
-      editSystem.replace(actionSafe);
+      editor.replace(actionSafe);
 
       const mergeConflicts = actionSafe.conflicts();
       if (!mergeConflicts.length) continue;  // merged safely
@@ -329,8 +329,8 @@ export class UploaderSystem extends AbstractSystem {
         details: mergeConflicts,
         chosen: 1,
         choices: [
-          { id: entityID, text: keepMine, action: () => editSystem.replace(actionForceLocal) },
-          { id: entityID, text: keepTheirs, action: () => editSystem.replace(actionForceRemote) }
+          { id: entityID, text: keepMine, action: () => editor.replace(actionForceLocal) },
+          { id: entityID, text: keepTheirs, action: () => editor.replace(actionForceRemote) }
         ]
       });
     }
@@ -378,8 +378,8 @@ export class UploaderSystem extends AbstractSystem {
       this._didResultInErrors();
 
     } else {
-      const editSystem = context.systems.edits;
-      const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
+      const editor = context.systems.editor;
+      const changes = editor.changes(actionDiscardTags(editor.difference(), this._discardTags));
       if (changes.modified.length || changes.created.length || changes.deleted.length) {
         this.emit('willAttemptUpload');
         osm.sendChangeset(this.changeset, changes, this._uploadCallback);
@@ -421,7 +421,7 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInErrors() {
-    this.context.systems.edits.pop();
+    this.context.systems.editor.pop();
     this.emit('resultErrors', this._errors);
     this._endSave();
   }
@@ -435,7 +435,7 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInSuccess() {
-    this.context.systems.edits.clearSaved();   // clear edits saved in localstorage
+    this.context.systems.editor.clearSaved();   // clear edits saved in localstorage
     this.emit('resultSuccess', this.changeset);
     this._endSave();
   }
@@ -448,22 +448,22 @@ export class UploaderSystem extends AbstractSystem {
 
 
   cancelConflictResolution() {
-    this.context.systems.edits.pop();
+    this.context.systems.editor.pop();
   }
 
 
   processResolvedConflicts() {
-    const editSystem = this.context.systems.edits;
+    const editor = this.context.systems.editor;
 
     for (const conflict of this._conflicts) {
       if (conflict.chosen === 1) {   // user chose "use theirs"
         const entity = this.context.hasEntity(conflict.id);
         if (entity?.type === 'way') {
           for (const child of utilArrayUniq(entity.nodes)) {
-            editSystem.replace(actionRevert(child));
+            editor.replace(actionRevert(child));
           }
         }
-        editSystem.replace(actionRevert(conflict.id));
+        editor.replace(actionRevert(conflict.id));
       }
     }
 

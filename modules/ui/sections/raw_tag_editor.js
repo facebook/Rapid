@@ -14,6 +14,7 @@ export function uiSectionRawTagEditor(context, id) {
   const storage = context.systems.storage;
   const taginfo = context.services.taginfo;
   const dispatch = d3_dispatch('change');
+
   const availableViews = [
     { id: 'list', icon: '#fas-th-list' },
     { id: 'text', icon: '#fas-i-cursor' }

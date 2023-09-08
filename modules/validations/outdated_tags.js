@@ -9,8 +9,10 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationOutdatedTags(context) {
   const type = 'outdated_tags';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
-  const presetSystem = context.systems.presets;
+  const presets = context.systems.presets;
+
   let _waitingForDeprecated = true;
   let _dataDeprecated;
 
@@ -25,7 +27,7 @@ export function validationOutdatedTags(context) {
   function oldTagIssues(entity, graph) {
     if (!entity.hasInterestingTags()) return [];
 
-    let preset = presetSystem.match(entity, graph);
+    let preset = presets.match(entity, graph);
     if (!preset) return [];
 
     const oldTags = Object.assign({}, entity.tags);  // shallow copy
@@ -33,7 +35,7 @@ export function validationOutdatedTags(context) {
 
     // Upgrade preset, if a replacement is available..
     if (preset.replacement) {
-      const newPreset = presetSystem.item(preset.replacement);
+      const newPreset = presets.item(preset.replacement);
       graph = actionChangePreset(entity.id, preset, newPreset, true /* skip field defaults */)(graph);
       entity = graph.entity(entity.id);
       preset = newPreset;
@@ -114,7 +116,7 @@ export function validationOutdatedTags(context) {
             autoArgs: autoArgs,
             title: l10n.tHtml('issues.fix.upgrade_tags.title'),
             onClick: () => {
-              context.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
+              editor.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
             }
           })
         ];
@@ -125,7 +127,7 @@ export function validationOutdatedTags(context) {
             new ValidationFix({
               title: l10n.tHtml('issues.fix.tag_as_not.title', { name: item.displayName }),
               onClick: () => {
-                context.perform(addNotTag, l10n.t('issues.fix.tag_as_not.annotation'));
+                editor.perform(addNotTag, l10n.t('issues.fix.tag_as_not.annotation'));
               }
             })
           );
@@ -251,7 +253,7 @@ export function validationOutdatedTags(context) {
             // autoArgs: [doUpgrade, l10n.t('issues.fix.move_tags.annotation')],
             title: l10n.t('issues.fix.move_tags.title'),
             onClick: () => {
-              context.perform(doUpgrade, l10n.t('issues.fix.move_tags.annotation'));
+              editor.perform(doUpgrade, l10n.t('issues.fix.move_tags.annotation'));
             }
           })
         ];
@@ -271,11 +273,12 @@ export function validationOutdatedTags(context) {
 
 
     function showMessage() {
-      let currMultipolygon = context.hasEntity(multipolygon.id);
+      const graph = editor.graph();  // use the current graph
+      let currMultipolygon = graph.hasEntity(multipolygon.id);
       if (!currMultipolygon) return '';
 
       return l10n.tHtml('issues.old_multipolygon.message',
-          { multipolygon: l10n.displayLabel(currMultipolygon, context.graph(), true /* verbose */) }
+          { multipolygon: l10n.displayLabel(currMultipolygon, graph, true) }   // true = verbose
       );
     }
 

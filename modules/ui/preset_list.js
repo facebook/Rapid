@@ -12,11 +12,13 @@ import { utilKeybinding, utilNoAuto, utilRebind, utilTotalExtent } from '../util
 
 
 export function uiPresetList(context) {
-    var l10n = context.systems.l10n;
-    var filterSystem = context.systems.filters;
-    var presetSystem = context.systems.presets;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+    const filters = context.systems.filters;
+    const presetSystem = context.systems.presets;
+    const validator = context.systems.validator;
+    const dispatch = d3_dispatch('cancel', 'choose');
 
-    var dispatch = d3_dispatch('cancel', 'choose');
     var _entityIDs;
     var _currLoc;
     var _currentPresets;
@@ -82,7 +84,7 @@ export function uiPresetList(context) {
             .attr('class', 'preset-list')
             .call(drawList, presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro, _currLoc));
 
-        filterSystem.on('filterchange', updateForFeatureHiddenState);
+        filters.on('filterchange', updateForFeatureHiddenState);
 
 
         function initialKeydown(d3_event) {
@@ -94,13 +96,13 @@ export function uiPresetList(context) {
                 d3_event.stopPropagation();
                 operationDelete(context, _entityIDs)();
 
-            // hack to let undo work when search is autofocused
-            } else if (search.property('value').length === 0 &&
-                (d3_event.ctrlKey || d3_event.metaKey) &&
-                d3_event.keyCode === utilKeybinding.keyCodes.z) {
-                d3_event.preventDefault();
-                d3_event.stopPropagation();
-                context.undo();
+//            // hack to let undo work when search is autofocused
+//            } else if (search.property('value').length === 0 &&
+//                (d3_event.ctrlKey || d3_event.metaKey) &&
+//                d3_event.keyCode === utilKeybinding.keyCodes.z) {
+//                d3_event.preventDefault();
+//                d3_event.stopPropagation();
+//                context.undo();
             } else if (!d3_event.ctrlKey && !d3_event.metaKey) {
                 // don't check for delete/undo hack on future keydown events
                 d3_select(this).on('keydown', keydown);
@@ -412,7 +414,7 @@ export function uiPresetList(context) {
             if (!context.inIntro) {
                 presetSystem.setMostRecent(preset);
             }
-            context.perform(
+            editor.perform(
                 function(graph) {
                     for (var i in _entityIDs) {
                         var entityID = _entityIDs[i];
@@ -424,7 +426,7 @@ export function uiPresetList(context) {
                 l10n.t('operations.change_tags.annotation')
             );
 
-            context.systems.validator.validate();  // rerun validation
+            validator.validate();
             dispatch.call('choose', this, preset);
         };
 
@@ -452,7 +454,7 @@ export function uiPresetList(context) {
         button.each(function(item, index) {
             let hiddenPresetFeaturesId;
             for (var i in geometries) {
-                hiddenPresetFeaturesId = filterSystem.isHiddenPreset(item.preset, geometries[i]);
+                hiddenPresetFeaturesId = filters.isHiddenPreset(item.preset, geometries[i]);
                 if (hiddenPresetFeaturesId) break;
             }
             var isHiddenPreset = !context.inIntro &&
@@ -486,13 +488,13 @@ export function uiPresetList(context) {
         _currLoc = null;
 
         if (_entityIDs && _entityIDs.length) {
+            const graph = editor.graph();  // use the current graph
+
             // calculate current location
-            _currLoc = utilTotalExtent(_entityIDs, context.graph()).center();
+            _currLoc = utilTotalExtent(_entityIDs, graph).center();
 
             // match presets
-            var presets = _entityIDs.map(function(entityID) {
-                return presetSystem.match(context.entity(entityID), context.graph());
-            });
+            var presets = _entityIDs.map(entityID => presetSystem.match(graph.entity(entityID), graph));
             presetList.presets(presets);
         }
 
@@ -505,26 +507,25 @@ export function uiPresetList(context) {
         return presetList;
     };
 
+
     function entityGeometries() {
-        var counts = {};
+      var counts = {};
+      const graph = editor.graph();  // use the current graph
 
-        for (var i in _entityIDs) {
-            var entityID = _entityIDs[i];
-            var entity = context.entity(entityID);
-            var geometry = entity.geometry(context.graph());
+      for (const entityID of _entityIDs) {
+        var entity = graph.entity(entityID);
+        var geometry = entity.geometry(graph);
 
-            // Treat entities on addr:interpolation lines as points, not vertices (#3241)
-            if (geometry === 'vertex' && entity.isOnAddressLine(context.graph())) {
-                geometry = 'point';
-            }
-
-            if (!counts[geometry]) counts[geometry] = 0;
-            counts[geometry] += 1;
+        // Treat entities on addr:interpolation lines as points, not vertices (iD#3241)
+        if (geometry === 'vertex' && entity.isOnAddressLine(graph)) {
+          geometry = 'point';
         }
 
-        return Object.keys(counts).sort(function(geom1, geom2) {
-            return counts[geom2] - counts[geom1];
-        });
+        if (!counts[geometry]) counts[geometry] = 0;
+        counts[geometry] += 1;
+      }
+
+      return Object.keys(counts).sort((geom1, geom2) => counts[geom2] - counts[geom1]);
     }
 
     return utilRebind(presetList, dispatch, 'on');

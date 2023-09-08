@@ -136,7 +136,7 @@ export class FilterSystem extends AbstractSystem {
 
 
 //    // warm up the feature matching cache upon merging fetched data
-//    this.context.systems.edits.on('merge.features', function(newEntities) {
+//    this.context.systems.editor.on('merge.features', function(newEntities) {
 //        if (!newEntities) return;
 //        var handle = window.requestIdleCallback(function() {
 //            var graph = this.context.graph();

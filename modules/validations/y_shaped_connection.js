@@ -29,6 +29,7 @@ export function validationYShapedConnection(context) {
 
   const type = 'y_shaped_connection';
   const l10n = context.systems.l10n;
+
   const SHORT_EDGE_THD_METERS = 12;       // (THD means "threshold")
   const NON_FLAT_ANGLE_THD_DEGREES = 5;
   const relatedHighways = new Set([

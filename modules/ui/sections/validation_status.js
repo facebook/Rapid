@@ -13,15 +13,15 @@ export function uiSectionValidationStatus(context) {
 
 
   function sectionShouldDisplay() {
-    let issues = validator.getIssues(getOptions());
+    const issues = validator.getIssues(getOptions());
     return issues.length === 0;
   }
 
   function getOptions() {
-    const prefs = context.systems.storage;
+    const storage = context.systems.storage;
     return {
-      what: prefs.getItem('validate-what') || 'edited',
-      where: prefs.getItem('validate-where') || 'all'
+      what: storage.getItem('validate-what') || 'edited',
+      where: storage.getItem('validate-where') || 'all'
     };
   }
 
@@ -97,8 +97,8 @@ export function uiSectionValidationStatus(context) {
 
     function checkForHiddenIssues(cases) {
       for (let type in cases) {
-        let hiddenOpts = cases[type];
-        let hiddenIssues = validator.getIssues(hiddenOpts);
+        const hiddenOpts = cases[type];
+        const hiddenIssues = validator.getIssues(hiddenOpts);
         if (hiddenIssues.length) {
           selection.select('.box .details')
             .html(context.tHtml('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
@@ -113,7 +113,6 @@ export function uiSectionValidationStatus(context) {
 
     if (opts.what === 'edited' && opts.where === 'visible') {
       messageType = 'edits_in_view';
-
       checkForHiddenIssues({
         elsewhere: { what: 'edited', where: 'all' },
         everything_else: { what: 'all', where: 'visible' },
@@ -126,7 +125,6 @@ export function uiSectionValidationStatus(context) {
 
     } else if (opts.what === 'edited' && opts.where === 'all') {
       messageType = 'edits';
-
       checkForHiddenIssues({
         everything_else: { what: 'all', where: 'all' },
         disabled_rules: { what: 'edited', where: 'all', includeDisabledRules: 'only' },
@@ -135,7 +133,6 @@ export function uiSectionValidationStatus(context) {
 
     } else if (opts.what === 'all' && opts.where === 'visible') {
       messageType = 'everything_in_view';
-
       checkForHiddenIssues({
         elsewhere: { what: 'all', where: 'all' },
         disabled_rules: { what: 'all', where: 'visible', includeDisabledRules: 'only' },
@@ -146,14 +143,13 @@ export function uiSectionValidationStatus(context) {
 
     } else if (opts.what === 'all' && opts.where === 'all') {
       messageType = 'everything';
-
       checkForHiddenIssues({
         disabled_rules: { what: 'all', where: 'all', includeDisabledRules: 'only' },
         ignored_issues: { what: 'all', where: 'all', includeIgnored: 'only' }
       });
     }
 
-    if (opts.what === 'edited' && context.systems.edits.difference().summary().size === 0) {
+    if (opts.what === 'edited' && context.systems.editor.difference().summary().size === 0) {
       messageType = 'no_edits';
     }
 

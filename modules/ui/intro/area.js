@@ -10,7 +10,7 @@ export function uiIntroArea(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.areas.title' };
   const container = context.container();
-  const editSystem = context.systems.edits;
+  const editSystem = context.systems.editor;
   const mapSystem = context.systems.map;
   const presetSystem = context.systems.presets;
 

@@ -10,21 +10,22 @@ const ACCEPT_FEATURES_LIMIT = 50;
 
 
 export function uiRapidFeatureInspector(context, keybinding) {
+  const editor = context.systems.editor;
   const rapid = context.systems.rapid;
+  const l10n = context.systems.l10n;
   const urlhash = context.systems.urlhash;
   let _datum;
 
 
   function isAddFeatureDisabled() {
-    // When task GPX appears in URL, "add roads" is always enabled
-    const hasTask = urlhash.initialHashParams.has('gpx');
-    if (hasTask) return false;
+    // If Rapid is working with on a task, "add roads" is always enabled
+    if (rapid.taskExtent) return false;
 
     // Power users aren't limited by the max features limit
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
     if (isPowerUser) return false;
 
-    const annotations = context.systems.edits.peekAllAnnotations();
+    const annotations = editor.peekAllAnnotations();
     const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');
     return aiFeatureAccepts.length >= ACCEPT_FEATURES_LIMIT;
   }
@@ -36,7 +37,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (isAddFeatureDisabled()) {
       const flash = uiFlash(context)
         .duration(5000)
-        .label(context.t(
+        .label(l10n.t(
           'rapid_feature_inspector.option_accept.disabled_flash',
           { n: ACCEPT_FEATURES_LIMIT }
         ));
@@ -47,10 +48,10 @@ export function uiRapidFeatureInspector(context, keybinding) {
     // In place of a string annotation, this introduces an "object-style"
     // annotation, where "type" and "description" are standard keys,
     // and there may be additional properties. Note that this will be
-    // serialized to JSON while saving undo/redo state in editSystem.save().
+    // serialized to JSON while saving undo/redo state in editor.save().
     let annotation = {
       type: 'rapid_accept_feature',
-      description: context.t('rapid_feature_inspector.option_accept.annotation'),
+      description: l10n.t('rapid_feature_inspector.option_accept.annotation'),
       id: _datum.id,
       origid: _datum.__origid__
     };
@@ -60,7 +61,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const sourceTag = _datum.tags && _datum.tags.source;
     if (sourceTag) annotation.source = sourceTag;
 
-    context.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
+    editor.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
     context.enter('select-osm', { selectedIDs: [_datum.id] });
 
     if (context.inIntro) return;
@@ -87,11 +88,11 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     const annotation = {
       type: 'rapid_ignore_feature',
-      description: context.t('rapid_feature_inspector.option_ignore.annotation'),
+      description: l10n.t('rapid_feature_inspector.option_ignore.annotation'),
       id: _datum.id,
       origid: _datum.__origid__
     };
-    context.perform(actionNoop(), annotation);
+    editor.perform(actionNoop(), annotation);
     context.enter('browse');
   }
 
@@ -133,7 +134,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       featureInfoEnter
         .append('div')
         .attr('class', 'dataset-beta beta')
-        .attr('title', context.t('rapid_poweruser_features.beta'));
+        .attr('title', l10n.t('rapid_poweruser_features.beta'));
     }
 
     // update
@@ -161,7 +162,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     tagBagEnter
       .append('div')
       .attr('class', 'tag-heading')
-      .text(context.t('rapid_feature_inspector.tags'));
+      .text(l10n.t('rapid_feature_inspector.tags'));
 
     const tagEntries = Object.keys(tags).map(k => ({ key: k, value: tags[k] }) );
 
@@ -232,14 +233,14 @@ export function uiRapidFeatureInspector(context, keybinding) {
       {
         key: 'accept',
         iconName: '#rapid-icon-rapid-plus-circle',
-        label: context.t('rapid_feature_inspector.option_accept.label'),
-        description: context.t('rapid_feature_inspector.option_accept.description'),
+        label: l10n.t('rapid_feature_inspector.option_accept.label'),
+        description: l10n.t('rapid_feature_inspector.option_accept.description'),
         onClick: onAcceptFeature
       }, {
         key: 'ignore',
         iconName: '#rapid-icon-rapid-minus-circle',
-        label: context.t('rapid_feature_inspector.option_ignore.label'),
-        description: context.t('rapid_feature_inspector.option_ignore.description'),
+        label: l10n.t('rapid_feature_inspector.option_ignore.label'),
+        description: l10n.t('rapid_feature_inspector.option_ignore.description'),
         onClick: onIgnoreFeature
       }
     ];
@@ -254,7 +255,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     choicesEnter
       .append('p')
-      .text(context.t('rapid_feature_inspector.prompt'));
+      .text(l10n.t('rapid_feature_inspector.prompt'));
 
     choicesEnter.selectAll('.rapid-inspector-choice')
       .data(choiceData, d => d.key)
@@ -290,15 +291,15 @@ export function uiRapidFeatureInspector(context, keybinding) {
     let title, keys;
     if (d.key === 'accept') {
       if (isAddFeatureDisabled()) {
-        title = context.t('rapid_feature_inspector.option_accept.disabled', { n: ACCEPT_FEATURES_LIMIT } );
+        title = l10n.t('rapid_feature_inspector.option_accept.disabled', { n: ACCEPT_FEATURES_LIMIT } );
         keys = [];
       } else {
-        title = context.t('rapid_feature_inspector.option_accept.tooltip');
-        keys = [context.t('rapid_feature_inspector.option_accept.key')];
+        title = l10n.t('rapid_feature_inspector.option_accept.tooltip');
+        keys = [l10n.t('rapid_feature_inspector.option_accept.key')];
       }
     } else if (d.key === 'ignore') {
-      title = context.t('rapid_feature_inspector.option_ignore.tooltip');
-      keys = [context.t('rapid_feature_inspector.option_ignore.key')];
+      title = l10n.t('rapid_feature_inspector.option_ignore.tooltip');
+      keys = [l10n.t('rapid_feature_inspector.option_ignore.key')];
     }
 
     if (title && keys) {
@@ -337,8 +338,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
   if (keybinding) {
     keybinding()
-      .on(context.t('rapid_feature_inspector.option_accept.key'), onAcceptFeature)
-      .on(context.t('rapid_feature_inspector.option_ignore.key'), onIgnoreFeature);
+      .on(l10n.t('rapid_feature_inspector.option_accept.key'), onAcceptFeature)
+      .on(l10n.t('rapid_feature_inspector.option_ignore.key'), onIgnoreFeature);
   }
 
   return rapidInspector;

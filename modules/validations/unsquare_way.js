@@ -6,6 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationUnsquareWay(context) {
   const type = 'unsquare_way';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const DEFAULT_DEG_THRESHOLD = 5;   // see also issues.js
 
@@ -74,9 +75,10 @@ export function validationUnsquareWay(context) {
       subtype: 'building',
       severity: 'warning',
       message: function() {
-        const entity = context.hasEntity(this.entityIds[0]);
+        const graph = editor.graph();  // use the current graph
+        const entity = graph.hasEntity(this.entityIds[0]);
         return entity ? l10n.tHtml('issues.unsquare_way.message', {
-          feature: l10n.displayLabel(entity, context.graph())
+          feature: l10n.displayLabel(entity, graph)
         }) : '';
       },
       reference: showReference,
@@ -92,7 +94,7 @@ export function validationUnsquareWay(context) {
             onClick: function(context, completionHandler) {
               const entityID = this.issue.entityIds[0];
               // use same degree threshold as for detection
-              context.perform(
+              editor.perform(
                 actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold),
                 l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })
               );
@@ -104,11 +106,12 @@ export function validationUnsquareWay(context) {
           new ValidationFix({     // Tag as unnsquare
             title: l10n.tHtml('issues.fix.tag_as_unsquare.title'),
             onClick: function() {
+              const graph = editor.graph();  // use the current graph
               const entityID = this.issue.entityIds[0];
-              const entity = context.entity(entityID);
+              const entity = graph.entity(entityID);
               const tags = Object.assign({}, entity.tags);  // shallow copy
               tags.nonsquare = 'yes';
-              context.perform(
+              editor.perform(
                 actionChangeTags(entityID, tags),
                 l10n.t('issues.fix.tag_as_unsquare.annotation')
               );

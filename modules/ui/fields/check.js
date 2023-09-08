@@ -11,7 +11,10 @@ export { uiFieldCheck as uiFieldOnewayCheck };
 
 
 export function uiFieldCheck(context, uifield) {
+  const editor = context.systems.editor;
+  const validator = context.systems.validator;
   const dispatch = d3_dispatch('change');
+
   let values = [];
   let texts = [];
 
@@ -154,7 +157,7 @@ export function uiFieldCheck(context, uifield) {
           d3_event.stopPropagation();
           if (!_entityIDs.length) return;
 
-          context.perform(
+          editor.perform(
             function(graph) {
               for (const entityID of _entityIDs) {
                 graph = actionReverse(entityID)(graph);
@@ -165,7 +168,7 @@ export function uiFieldCheck(context, uifield) {
           );
 
           // must manually revalidate since no 'change' event was dispatched
-          context.systems.validator.validate();
+          validator.validate();
 
           d3_select(this)
             .call(reverserSetText);

@@ -7,6 +7,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationDisconnectedWay(context) {
   const type = 'disconnected_way';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
   function isTaggedAsHighway(entity) {
@@ -23,8 +24,9 @@ export function validationDisconnectedWay(context) {
       subtype: 'highway',
       severity: 'warning',
       message: function() {
-        const entity = this.entityIds.length && context.hasEntity(this.entityIds[0]);
-        const label = entity && l10n.displayLabel(entity, context.graph());
+        const graph = editor.graph();  // use the current graph
+        const entity = this.entityIds.length && graph.hasEntity(this.entityIds[0]);
+        const label = entity && l10n.displayLabel(entity, graph);
         return l10n.tHtml('issues.disconnected_way.routable.message', { count: this.entityIds.length, highway: label });
       },
       reference: showReference,
@@ -34,7 +36,8 @@ export function validationDisconnectedWay(context) {
 
 
     function makeFixes() {
-      const singleEntity = this.entityIds.length === 1 && context.hasEntity(this.entityIds[0]);
+      const graph = editor.graph();  // use the current graph
+      const singleEntity = this.entityIds.length === 1 && graph.hasEntity(this.entityIds[0]);
       let fixes = [];
 
       if (singleEntity) {
@@ -54,7 +57,7 @@ export function validationDisconnectedWay(context) {
         fixes.push(new ValidationFix({
           icon: 'rapid-operation-delete',
           title: l10n.tHtml('issues.fix.delete_feature.title'),
-          entityIds: [singleEntity.id],
+          entityIds: [ singleEntity.id ],
           onClick: function() {
             const id = this.issue.entityIds[0];
             const operation = operationDelete(context, [id]);

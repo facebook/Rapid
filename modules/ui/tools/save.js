@@ -6,6 +6,8 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolSave(context) {
+  const editor = context.systems.editor;
+
   let tool = {
     id: 'save',
     label: context.tHtml('save.title')
@@ -26,7 +28,7 @@ export function uiToolSave(context) {
 
   function save(d3_event) {
     d3_event.preventDefault();
-    if (!context.inIntro && !isSaving() && context.systems.edits.hasChanges()) {
+    if (!context.inIntro && !isSaving() && editor.hasChanges()) {
       context.enter('save');
     }
   }
@@ -47,7 +49,7 @@ export function uiToolSave(context) {
   function updateCount() {
     if (!_button || !_tooltip) return;
 
-    const val = context.systems.edits.difference().summary().size;
+    const val = editor.difference().summary().size;
     if (val === _numChanges) return;  // no change
 
     _numChanges = val;
@@ -122,8 +124,8 @@ export function uiToolSave(context) {
     updateCount();
 
     context.keybinding().on(key, save, true /* capture */);
-    context.systems.edits.on('change', updateCount);
-    context.systems.edits.on('reset', updateCount);
+    editor.on('change', updateCount);
+    editor.on('reset', updateCount);
     context.on('modechange', updateDisabled);
   };
 
@@ -132,8 +134,8 @@ export function uiToolSave(context) {
     if (!_button && !_tooltip) return;  // already uninstalled
 
     context.keybinding().off(key, true /* capture */);
-    context.systems.edits.off('change', updateCount);
-    context.systems.edits.off('reset', updateCount);
+    editor.off('change', updateCount);
+    editor.off('reset', updateCount);
     context.off('modechange', updateDisabled);
     _button = null;
     _tooltip = null;

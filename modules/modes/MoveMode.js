@@ -47,7 +47,11 @@ export class MoveMode extends AbstractMode {
     this._active = true;
 
     const context = this.context;
-    context.systems.filters.forceVisible(this._entityIDs);
+    const editor = context.systems.editor;
+    const filterSystem = context.systems.filters;
+    const eventManager = context.systems.map.renderer.events;
+
+    filterSystem.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction', 'map-nudging']);
     context.behaviors['map-nudging'].allow();
 
@@ -55,14 +59,13 @@ export class MoveMode extends AbstractMode {
     this._startLoc = null;
     this._movementCache = null;
 
-    const eventManager = context.systems.map.renderer.events;
     eventManager
       .on('click', this._finish)
       .on('keydown', this._keydown)
       .on('pointercancel', this._cancel)
       .on('pointermove', this._pointermove);
 
-    context.systems.edits
+    editor
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -82,16 +85,19 @@ export class MoveMode extends AbstractMode {
     this._movementCache = null;
 
     const context = this.context;
-    context.systems.filters.forceVisible([]);
+    const editor = context.systems.editor;
+    const filterSystem = context.systems.filters;
+    const eventManager = context.systems.map.renderer.events;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    filterSystem.forceVisible([]);
+
     eventManager
       .off('click', this._finish)
       .off('keydown', this._keydown)
       .off('pointercancel', this._cancel)
       .off('pointermove', this._pointermove);
 
-    context.systems.edits
+    editor
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
   }
@@ -121,21 +127,23 @@ export class MoveMode extends AbstractMode {
    */
   _pointermove() {
     const context = this.context;
+    const editor = context.systems.editor;
+    const mapSystem = context.systems.map;
+    const locations = context.systems.locations;
 
     let fn;
     // If prevGraph doesn't match, either we haven't started moving, or something has
     // occurred during the move that interrupted it, so reset vars and start a new move
     if (this._prevGraph !== context.graph()) {
-      this._startLoc = context.systems.map.mouseLoc();
+      this._startLoc = mapSystem.mouseLoc();
       this._movementCache = {};
-      fn = context.perform;     // start moving
+      fn = editor.perform;     // start moving
     } else {
-      fn = context.overwrite;   // continue moving
+      fn = editor.overwrite;   // continue moving
     }
 
-    const currLoc = context.systems.map.mouseLoc();
-    const locationSystem = context.systems.locations;
-    if (locationSystem.blocksAt(currLoc).length) {  // editing is blocked here
+    const currLoc = mapSystem.mouseLoc();
+    if (locations.blocksAt(currLoc).length) {  // editing is blocked here
       this._cancel();
       return;
     }
@@ -161,12 +169,14 @@ export class MoveMode extends AbstractMode {
    */
   _finish() {
     const context = this.context;
+    const editor = context.systems.editor;
+
     if (this._prevGraph) {
       const annotation = (this._entityIDs.length === 1) ?
-        context.t('operations.move.annotation.' + context.graph().geometry(this._entityIDs[0])) :
+        context.t('operations.move.annotation.' + editor.graph().geometry(this._entityIDs[0])) :
         context.t('operations.move.annotation.feature', { n: this._entityIDs.length });
 
-      context.replace(actionNoop(), annotation);   // annotate the move
+      editor.replace(actionNoop(), annotation);   // annotate the move
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
@@ -178,8 +188,10 @@ export class MoveMode extends AbstractMode {
    */
   _cancel() {
     const context = this.context;
+    const editor = context.systems.editor;
+
     if (this._prevGraph) {
-      context.pop();   // remove the move
+      editor.pop();   // remove the move
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }

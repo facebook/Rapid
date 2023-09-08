@@ -16,6 +16,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
  */
 export function validationAlmostJunction(context) {
   const type = 'almost_junction';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
   const EXTEND_TH_METERS = 5;
@@ -41,8 +42,8 @@ export function validationAlmostJunction(context) {
     if (!isHighway(entity)) return [];
     if (entity.isDegenerate()) return [];
 
-    const tree = context.systems.edits.tree();
-    const extendableNodeInfos = findConnectableEndNodesByExtension(entity);
+    const tree = editor.tree();
+    const extendableNodeInfos = findConnectableEndNodesByExtension(entity, graph);
 
     let issues = [];
 
@@ -52,16 +53,17 @@ export function validationAlmostJunction(context) {
         subtype: 'highway-highway',
         severity: 'warning',
         message: function() {
-          const entity1 = context.hasEntity(this.entityIds[0]);
+          const graph = editor.graph();  // use the current graph
+          const entity1 = graph.hasEntity(this.entityIds[0]);
           if (this.entityIds[0] === this.entityIds[2]) {
             return entity1 ? l10n.tHtml('issues.almost_junction.self.message', {
-              feature: l10n.displayLabel(entity1, context.graph())
+              feature: l10n.displayLabel(entity1, graph)
             }) : '';
           } else {
-            const entity2 = context.hasEntity(this.entityIds[2]);
+            const entity2 = graph.hasEntity(this.entityIds[2]);
             return (entity1 && entity2) ? l10n.tHtml('issues.almost_junction.message', {
-              feature: l10n.displayLabel(entity1, context.graph()),
-              feature2: l10n.displayLabel(entity2, context.graph())
+              feature: l10n.displayLabel(entity1, graph),
+              feature2: l10n.displayLabel(entity2, graph)
             }) : '';
           }
         },
@@ -84,23 +86,26 @@ export function validationAlmostJunction(context) {
 
     return issues;
 
+
     function makeFixes() {
+      const graph = editor.graph();  // use the current graph
+
       let fixes = [new ValidationFix({
         icon: 'rapid-icon-abutment',
         title: l10n.tHtml('issues.fix.connect_features.title'),
         onClick: function() {
           const annotation = l10n.t('issues.fix.connect_almost_junction.annotation');
           const [, endNodeId, crossWayId] = this.issue.entityIds;
-          const midNode = context.entity(this.issue.data.midId);
-          const endNode = context.entity(endNodeId);
-          const crossWay = context.entity(crossWayId);
+          const midNode = graph.entity(this.issue.data.midId);
+          const endNode = graph.entity(endNodeId);
+          const crossWay = graph.entity(crossWayId);
 
-          // When endpoints are close, just join if resulting small change in angle (#7201)
-          const nearEndNodes = findNearbyEndNodes(endNode, crossWay);
+          // When endpoints are close, just join if resulting small change in angle (iD#7201)
+          const nearEndNodes = findNearbyEndNodes(endNode, crossWay, graph);
           if (nearEndNodes.length > 0) {
             const collinear = findSmallJoinAngle(midNode, endNode, nearEndNodes);
             if (collinear) {
-              context.perform(
+              editor.perform(
                 actionMergeNodes([collinear.id, endNode.id], collinear.loc),
                 annotation
               );
@@ -110,28 +115,27 @@ export function validationAlmostJunction(context) {
 
           const targetEdge = this.issue.data.edge;
           const crossLoc = this.issue.data.cross_loc;
-          const edgeNodes = [context.entity(targetEdge[0]), context.entity(targetEdge[1])];
+          const edgeNodes = [ graph.entity(targetEdge[0]), graph.entity(targetEdge[1]) ];
           const points = edgeNodes.map(node => node.loc);
-
           const closestPointInfo = geoSphericalClosestPoint(points, crossLoc);
 
           // already a point nearby, just connect to that
           if (closestPointInfo.distance < WELD_TH_METERS) {
-            context.perform(
-              actionMergeNodes([closestPointInfo.id, endNode.id], closestPointInfo.loc),
+            editor.perform(
+              actionMergeNodes([ closestPointInfo.id, endNode.id ], closestPointInfo.loc),
               annotation
             );
           // else add the end node to the edge way
           } else {
-            context.perform(
-              actionAddMidpoint({loc: crossLoc, edge: targetEdge}, endNode),
+            editor.perform(
+              actionAddMidpoint({ loc: crossLoc, edge: targetEdge }, endNode),
               annotation
             );
           }
         }
       })];
 
-      const node = context.hasEntity(this.entityIds[1]);
+      const node = graph.hasEntity(this.entityIds[1]);
       if (node && !node.hasInterestingTags()) {
         // node has no descriptive tags, suggest noexit fix
         fixes.push(new ValidationFix({
@@ -139,9 +143,9 @@ export function validationAlmostJunction(context) {
           title: l10n.tHtml('issues.fix.tag_as_disconnected.title'),
           onClick: function() {
             const nodeID = this.issue.entityIds[1];
-            const tags = Object.assign({}, context.entity(nodeID).tags);
+            const tags = Object.assign({}, graph.entity(nodeID).tags);
             tags.noexit = 'yes';
-            context.perform(
+            editor.perform(
               actionChangeTags(nodeID, tags),
               l10n.t('issues.fix.tag_as_disconnected.annotation')
             );
@@ -183,7 +187,7 @@ export function validationAlmostJunction(context) {
       return true;
     }
 
-    function findConnectableEndNodesByExtension(way) {
+    function findConnectableEndNodesByExtension(way, graph) {
       let results = [];
       if (way.isClosed()) return results;
 
@@ -210,7 +214,8 @@ export function validationAlmostJunction(context) {
       return results;
     }
 
-    function findNearbyEndNodes(node, way) {
+
+    function findNearbyEndNodes(node, way, graph) {
       return [
         way.nodes[0],
         way.nodes[way.nodes.length - 1]
@@ -221,6 +226,7 @@ export function validationAlmostJunction(context) {
           && geoSphericalDistance(node.loc, d.loc) <= CLOSE_NODE_TH;
       });
     }
+
 
     function findSmallJoinAngle(midNode, tipNode, endNodes) {
       // Both nodes could be close, so want to join whichever is closest to collinear

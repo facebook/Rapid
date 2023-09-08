@@ -16,9 +16,13 @@ const MAX_MEMBERSHIPS = 1000;
 
 
 export function uiSectionRawMembershipEditor(context) {
+    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
+    const map = context.systems.map;
+    const presets = context.systems.presets;
+    const taginfo = context.services.taginfo;
+    const validator = context.systems.validator;
 
-    var presetSystem = context.systems.presets;
     var section = uiSection(context, 'raw-membership-editor')
         .shouldDisplay(function() {
             return _entityIDs && _entityIDs.length;
@@ -31,7 +35,6 @@ export function uiSectionRawMembershipEditor(context) {
         })
         .disclosureContent(renderDisclosureContent);
 
-    var taginfo = context.services.taginfo;
     var nearbyCombo = uiCombobox(context, 'parent-relation')
         .minItems(1)
         .fetcher(fetchNearbyRelations)
@@ -48,13 +51,13 @@ export function uiSectionRawMembershipEditor(context) {
     function getSharedParentRelations() {
         var parents = [];
         for (var i = 0; i < _entityIDs.length; i++) {
-            var entity = context.graph().hasEntity(_entityIDs[i]);
+            var entity = editor.graph().hasEntity(_entityIDs[i]);
             if (!entity) continue;
 
             if (i === 0) {
-                parents = context.graph().parentRelations(entity);
+                parents = editor.graph().parentRelations(entity);
             } else {
-                parents = utilArrayIntersection(parents, context.graph().parentRelations(entity));
+                parents = utilArrayIntersection(parents, editor.graph().parentRelations(entity));
             }
             if (!parents.length) break;
         }
@@ -62,7 +65,6 @@ export function uiSectionRawMembershipEditor(context) {
     }
 
     function getMemberships() {
-
         var memberships = [];
         var relations = getSharedParentRelations().slice(0, MAX_MEMBERSHIPS);
 
@@ -124,7 +126,7 @@ export function uiSectionRawMembershipEditor(context) {
         d3_event.preventDefault();
 
         var entity = context.entity(d.relation.id);
-        context.systems.map.fitEntitiesEase(entity);
+        map.fitEntitiesEase(entity);
 
         // highlight the relation in case it wasn't previously on-screen
         utilHighlightEntities([d.relation.id], true, context);
@@ -145,7 +147,7 @@ export function uiSectionRawMembershipEditor(context) {
 
         if (membersToUpdate.length) {
             _inChange = true;
-            context.perform(
+            editor.perform(
                 function actionChangeMemberRoles(graph) {
                     membersToUpdate.forEach(function(member) {
                         var newMember = Object.assign({}, member, { role: newRole });
@@ -156,7 +158,7 @@ export function uiSectionRawMembershipEditor(context) {
                 },
                 l10n.t('operations.change_role.annotation', { n: membersToUpdate.length })
             );
-            context.systems.validator.validate();
+            validator.validate();
         }
         _inChange = false;
     }
@@ -177,15 +179,15 @@ export function uiSectionRawMembershipEditor(context) {
         }
 
         if (d.relation) {
-            context.perform(
+            editor.perform(
                 actionAddMembers(d.relation.id, _entityIDs, role),
                 l10n.t('operations.add_member.annotation', { n: _entityIDs.length })
             );
-            context.systems.validator.validate();
+            validator.validate();
 
         } else {
             var relation = osmRelation();
-            context.perform(
+            editor.perform(
                 actionAddEntity(relation),
                 actionAddMembers(relation.id, _entityIDs, role),
                 l10n.t('operations.add.annotation.relation')
@@ -207,11 +209,11 @@ export function uiSectionRawMembershipEditor(context) {
             return member.index;
         });
 
-        context.perform(
+        editor.perform(
             actionDeleteMembers(d.relation.id, indexes),
             l10n.t('operations.delete_member.annotation', { n: _entityIDs.length })
         );
-        context.systems.validator.validate();
+        validator.validate();
     }
 
 
@@ -224,10 +226,10 @@ export function uiSectionRawMembershipEditor(context) {
 
         var entityID = _entityIDs[0];
         var result = [];
-        var graph = context.graph();
+        var graph = editor.graph();
 
         function baseDisplayLabel(entity) {
-            var matched = presetSystem.match(entity, graph);
+            var matched = presets.match(entity, graph);
             var presetName = (matched && matched.name()) || l10n.t('inspector.relation');
             var entityName = l10n.displayName(entity.tags) || '';
 
@@ -243,7 +245,7 @@ export function uiSectionRawMembershipEditor(context) {
             });
 
         } else {
-            context.systems.edits.intersects(context.systems.map.extent()).forEach(function(entity) {
+            editor.intersects(map.extent()).forEach(function(entity) {
                 if (entity.type !== 'relation' || entity.id === entityID) return;
 
                 var value = baseDisplayLabel(entity);
@@ -326,7 +328,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('span')
             .attr('class', 'member-entity-type')
             .html(function(d) {
-                var matched = presetSystem.match(d.relation, context.graph());
+                var matched = presets.match(d.relation, editor.graph());
                 return (matched && matched.name()) || l10n.t('inspector.relation');
             });
 
@@ -334,7 +336,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('span')
             .attr('class', 'member-entity-name')
             .html(function(d) {
-                const matched = presetSystem.match(d.relation, context.graph());
+                const matched = presets.match(d.relation, editor.graph());
                 // hide the network from the name if there is NSI match
                 return l10n.displayName(d.relation.tags, matched.suggestion);
             });
@@ -526,7 +528,7 @@ export function uiSectionRawMembershipEditor(context) {
                     taginfo.roles({
                         debounce: true,
                         rtype: rtype || '',
-                        geometry: context.graph().geometry(_entityIDs[0]),
+                        geometry: editor.graph().geometry(_entityIDs[0]),
                         query: role
                     }, function(err, data) {
                         if (!err) callback(sort(role, data));

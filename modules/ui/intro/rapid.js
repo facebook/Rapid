@@ -9,7 +9,7 @@ import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helpe
 export function uiIntroRapid(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.rapid.title' };
-  const editSystem = context.systems.edits;
+  const editSystem = context.systems.editor;
   const mapSystem = context.systems.map;
 
   const tulipLaneID = 'w-516';

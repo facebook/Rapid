@@ -8,7 +8,12 @@ import { utilTotalExtent } from '../util';
 
 
 export function operationExtract(context, selectedIDs) {
-  const presetSystem = context.systems.presets;
+  const editor = context.systems.editor;
+  const presets = context.systems.presets;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+  const validator = context.systems.validator;
+
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -23,7 +28,7 @@ export function operationExtract(context, selectedIDs) {
     if (entity.type === 'node' && graph.parentWays(entity).length === 0) return null;
 
     if (entity.type !== 'node') {
-      const preset = presetSystem.match(entity, graph);
+      const preset = presets.match(entity, graph);
       // only allow extraction from ways/relations if the preset supports points
       if (!preset.geometry.includes('point')) return null;
     }
@@ -42,15 +47,15 @@ export function operationExtract(context, selectedIDs) {
       return graph;
     };
 
-    context.perform(combinedAction, operation.annotation());
-    context.systems.validator.validate();
+    editor.perform(combinedAction, operation.annotation());
+    validator.validate();
 
     // Move the extracted nodes to the mouse cursor location
     const projection = context.projection;
     const extractedNodeIDs = actions.map(action => action.getExtractedNodeID());
     const extractPoint = projection.project(extent.center());
-    const delta = vecSubtract(context.systems.map.mouse(), extractPoint);
-    context.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
+    const delta = vecSubtract(map.mouse(), extractPoint);
+    editor.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
 
     // Put the user in move mode so they can place the extracted nodes where they want.
     // We use the latest entities from the graph (because they were just moved).
@@ -79,9 +84,8 @@ export function operationExtract(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
   };
 

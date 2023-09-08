@@ -6,6 +6,9 @@ import { utilTotalExtent } from '../util';
 
 
 export function operationCopy(context, selectedIDs) {
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+
   const entities = selectedIDs
     .map(entityID => context.hasEntity(entityID))
     .filter(entity => {
@@ -97,9 +100,8 @@ export function operationCopy(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
   };
 

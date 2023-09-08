@@ -17,8 +17,11 @@ const MAX_ISSUES = 1000;
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
+  const editor = context.systems.editor;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
   const validator = context.systems.validator;
-  const prefs = context.systems.storage;
+
   const section = uiSection(context, sectionID)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)
@@ -38,8 +41,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
-    const center = context.systems.map.center();
-    const graph = context.graph();
+    const center = map.center();
+    const graph = editor.graph();
 
     // sort issues by distance away from the center of the map
     let toDisplay = _issues
@@ -61,7 +64,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // Creates the issues list if needed and updates it with the current issues
   //
   function drawIssuesList(selection, issues) {
-    const showAutoFix = (prefs.getItem('rapid-internal-feature.showAutoFix') === 'true');
+    const showAutoFix = (storage.getItem('rapid-internal-feature.showAutoFix') === 'true');
 
     let list = selection.selectAll('.issues-list')
       .data([0]);
@@ -124,7 +127,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
               d3_event.stopPropagation();
 
               utilHighlightEntities(d.entityIds, false, context);  // unhighlight
-              context.perform.apply(context, d.autoArgs);
+              editor.perform.apply(editor, d.autoArgs);
               validator.validate();
             })
             .call(uiIcon('#rapid-icon-wrench'));
@@ -173,8 +176,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
     autoFixAll.selectAll('.autofix-all-link')
       .on('click', () => {
-        context.pauseChangeDispatch();
-        context.perform(actionNoop());   // perform a noop edit that will be replaced by the fixes
+        editor.beginTransaction();
+        editor.perform(actionNoop());   // perform a noop edit that will be replaced by the fixes
 
         autofixable.forEach(issue => {
           let args = issue.autoArgs.slice();  // copy
@@ -182,9 +185,9 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
             args.pop();
           }
           args.push(context.t('issues.fix_all.annotation'));
-          context.replace.apply(context, args);  // this does the fix
+          editor.replace.apply(editor, args);  // this does the fix
         });
-        context.resumeChangeDispatch();
+        editor.endTransaction();
         validator.validate();
       });
   }
@@ -193,8 +196,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // get the current display options for the issues lists
   function getOptions() {
     return {
-      what: prefs.getItem('validate-what') || 'edited',
-      where: prefs.getItem('validate-where') || 'all'
+      what: storage.getItem('validate-what') || 'edited',
+      where: storage.getItem('validate-where') || 'all'
     };
   }
 
@@ -220,7 +223,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     });
   });
 
-  context.systems.map.on('draw',
+  map.on('draw',
     debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;

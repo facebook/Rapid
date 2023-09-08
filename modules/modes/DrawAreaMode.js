@@ -59,6 +59,8 @@ export class DrawAreaMode extends AbstractMode {
     }
 
     const context = this.context;
+    const editor = context.systems.editor;
+
     this._active = true;
     this.defaultTags = { area: 'yes' };
     this.drawWay = null;
@@ -77,7 +79,7 @@ export class DrawAreaMode extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
-    context.systems.edits
+    editor
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -99,11 +101,13 @@ export class DrawAreaMode extends AbstractMode {
     }
 
     const context = this.context;
-    context.pauseChangeDispatch();
+    const editor = context.systems.editor;
+
+    editor.beginTransaction();
 
     // If there is a temporary draw node, remove it.
     if (this.drawNode) {
-      context.pop();
+      editor.pop();
       if (this.drawWay) {
         this.drawWay = context.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
       }
@@ -115,8 +119,8 @@ export class DrawAreaMode extends AbstractMode {
       if (DEBUG) {
         console.log('DrawAreaMode: draw way invalid, rolling back');  // eslint-disable-line no-console
       }
-      while (context.graph() !== this._startGraph) {  // rollback to initial state
-        context.pop();
+      while (editor.graph() !== this._startGraph) {  // rollback to initial state
+        editor.pop();
       }
     }
 
@@ -137,11 +141,11 @@ export class DrawAreaMode extends AbstractMode {
       .off('finish', this._finish)
       .off('cancel', this._cancel);
 
-    context.systems.edits
+    editor
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
 
-    context.resumeChangeDispatch();
+    editor.endTransaction();
   }
 
 
@@ -153,8 +157,9 @@ export class DrawAreaMode extends AbstractMode {
    */
   _refreshEntities() {
     const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.graph();
     const scene = context.scene();
-    const graph = context.graph();
 
     this._selectedData.clear();
     scene.clearClass('drawing');
@@ -199,7 +204,8 @@ export class DrawAreaMode extends AbstractMode {
     if (!this.drawNode) return;
 
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const graph = editor.graph();
     const projection = context.projection;
     const coord = eventData.coord;
     let loc = projection.invert(coord);
@@ -225,7 +231,7 @@ export class DrawAreaMode extends AbstractMode {
       }
     }
 
-    context.replace(actionMoveNode(this.drawNode.id, loc));
+    editor.replace(actionMoveNode(this.drawNode.id, loc));
     this.drawNode = context.entity(this.drawNode.id);  // refresh draw node
   }
 
@@ -236,13 +242,14 @@ export class DrawAreaMode extends AbstractMode {
    */
   _click(eventData) {
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const locations = context.systems.locations;
+
+    const graph = editor.graph();
     const projection = context.projection;
     const coord = eventData.coord;
     const loc = projection.invert(coord);
-
-    const locationSystem = context.systems.locations;
-    if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
+    if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.
     context.behaviors['map-nudging'].allow();
@@ -285,7 +292,9 @@ export class DrawAreaMode extends AbstractMode {
   _clickLoc(loc) {
     const EPSILON = 1e-6;
     const context = this.context;
-    context.pauseChangeDispatch();
+    const editor = context.systems.editor;
+
+    editor.beginTransaction();
 
     // Extend area by adding vertex at 'loc'...
     if (this.drawWay) {
@@ -300,12 +309,12 @@ export class DrawAreaMode extends AbstractMode {
         console.log(`DrawAreaMode: _clickLoc, extending area to ${loc}`);  // eslint-disable-line no-console
       }
 
-      context.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
+      editor.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
 
       // Replace draw node
       this.lastNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
-      context.perform(
+      editor.perform(
         actionAddEntity(this.drawNode),  // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id)  // Add new draw node to draw way
       );
@@ -323,7 +332,7 @@ export class DrawAreaMode extends AbstractMode {
         nodes: [ this.firstNode.id, this.drawNode.id, this.firstNode.id ]
       });
 
-      context.perform(
+      editor.perform(
         actionAddEntity(this.drawNode),
         actionAddEntity(this.firstNode),
         actionAddEntity(this.drawWay)
@@ -331,7 +340,7 @@ export class DrawAreaMode extends AbstractMode {
     }
 
     this._refreshEntities();
-    context.resumeChangeDispatch();
+    editor.endTransaction();
   }
 
 
@@ -342,8 +351,10 @@ export class DrawAreaMode extends AbstractMode {
   _clickWay(loc, edge) {
     const EPSILON = 1e-6;
     const context = this.context;
+    const editor = context.systems.editor;
     const midpoint = { loc: loc, edge: edge };
-    context.pauseChangeDispatch();
+
+    editor.beginTransaction();
 
     // Extend area by adding vertex as midpoint along target edge...
     if (this.drawWay) {
@@ -358,7 +369,7 @@ export class DrawAreaMode extends AbstractMode {
         console.log(`DrawAreaMode: _clickWay, extending area to edge ${edge}`);  // eslint-disable-line no-console
       }
 
-      context.replace(
+      editor.replace(
         actionMoveNode(this.drawNode.id, loc),       // Finalize position of old draw node at `loc`
         actionAddMidpoint(midpoint, this.drawNode),  // Add old draw node as a midpoint on target edge
         this._getAnnotation()                        // Add annotation so we can undo to here
@@ -367,7 +378,7 @@ export class DrawAreaMode extends AbstractMode {
       // Replace draw node
       this.lastNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
-      context.perform(
+      editor.perform(
         actionAddEntity(this.drawNode),                       // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id)    // Add new draw node to draw way
       );
@@ -385,7 +396,7 @@ export class DrawAreaMode extends AbstractMode {
         nodes: [ this.firstNode.id, this.drawNode.id, this.firstNode.id ]
       });
 
-      context.perform(
+      editor.perform(
         actionAddEntity(this.firstNode),              // Create first node
         actionAddEntity(this.drawNode),               // Create new draw node (end)
         actionAddEntity(this.drawWay),                // Create new draw way
@@ -394,7 +405,7 @@ export class DrawAreaMode extends AbstractMode {
     }
 
     this._refreshEntities();
-    context.resumeChangeDispatch();
+    editor.endTransaction();
   }
 
 
@@ -405,7 +416,9 @@ export class DrawAreaMode extends AbstractMode {
   _clickNode(loc, targetNode) {
     const EPSILON = 1e-6;
     const context = this.context;
-    context.pauseChangeDispatch();
+    const editor = context.systems.editor;
+
+    editor.beginTransaction();
 
     // Extend line by reusing target node as a vertex...
     // (Note that we don't need to replace the draw node in this scenario)
@@ -423,7 +436,7 @@ export class DrawAreaMode extends AbstractMode {
       }
 
       // Time for a switcheroo- replace the 'draw' node with the target node, and annotate it for undo/redo
-      context.replace(
+      editor.replace(
         this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),   // Remove the draw node
         actionAddVertex(this.drawWay.id, targetNode.id),              // Add target node to draw way
         this._getAnnotation()
@@ -431,7 +444,7 @@ export class DrawAreaMode extends AbstractMode {
 
       // Now put the draw node back where it was and continue drawing
       this.lastNode = targetNode;
-      context.perform(
+      editor.perform(
         actionAddEntity(this.drawNode),
         actionAddVertex(this.drawWay.id, this.drawNode.id)
       );
@@ -450,14 +463,14 @@ export class DrawAreaMode extends AbstractMode {
         nodes: [ this.firstNode.id, this.drawNode.id, this.firstNode.id ]
       });
 
-      context.perform(
+      editor.perform(
         actionAddEntity(this.drawNode),
         actionAddEntity(this.drawWay)
       );
     }
 
     this._refreshEntities();
-    context.resumeChangeDispatch();
+    editor.endTransaction();
   }
 
 
@@ -481,8 +494,7 @@ export class DrawAreaMode extends AbstractMode {
       if (DEBUG) {
         console.log(`DrawAreaMode: _finish, drawWay.id = ${this.drawWay.id}`);  // eslint-disable-line no-console
       }
-      const context = this.context;
-      context.enter('select-osm', { selectedIDs: [this.drawWay.id], newFeature: true });
+      this.context.enter('select-osm', { selectedIDs: [this.drawWay.id], newFeature: true });
     } else {
       this._cancel();
     }

@@ -40,6 +40,7 @@ export class ValidationIssue {
 
   fixes() {
     // sometimes the fixes are generated dynamically
+    // (bhousel - why is this?  so they can use the latest graph?)
     let fixes = (typeof this.dynamicFixes === 'function') ? this.dynamicFixes() : [];
 
     // For warnings, create an "ignore" option

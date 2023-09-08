@@ -3,6 +3,9 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationReverse(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const validator = context.systems.validator;
+
   const actions = selectedIDs.map(getAction).filter(Boolean);
   const reverseType = getReverseType();
 
@@ -44,8 +47,8 @@ export function operationReverse(context, selectedIDs) {
       return graph;
     };
 
-    context.perform(combinedAction, operation.annotation());
-    context.systems.validator.validate();
+    editor.perform(combinedAction, operation.annotation());
+    validator.validate();
   };
 
 

@@ -6,6 +6,9 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolNotes(context) {
+  const map = context.systems.map;
+  const ui = context.systems.ui;
+
   let tool = {
     id: 'notes',
     label: context.tHtml('modes.add_note.label')
@@ -75,7 +78,7 @@ export function uiToolNotes(context) {
 
     // if we are adding/removing the buttons, check if toolbar has overflowed
     if (buttons.enter().size() || buttons.exit().size()) {
-      context.systems.ui.checkOverflow('.top-toolbar', true);
+      ui.checkOverflow('.top-toolbar', true);
     }
 
     // update
@@ -100,7 +103,7 @@ export function uiToolNotes(context) {
       }
     });
 
-    context.systems.map.on('draw', debouncedUpdate);
+    map.on('draw', debouncedUpdate);
     context.on('modechange', update);
 
     update();
@@ -111,7 +114,7 @@ export function uiToolNotes(context) {
     debouncedUpdate.cancel();
     context.keybinding().off(mode.key);
     context.off('modechange', update);
-    context.systems.map.off('draw', debouncedUpdate);
+    map.off('draw', debouncedUpdate);
     _selection = null;
   };
 

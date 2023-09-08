@@ -155,7 +155,7 @@ export class LassoBehavior extends AbstractBehavior {
 
     if (!this.context.editable()) return [];
 
-    let intersects = this.context.systems.edits
+    let intersects = this.context.systems.editor
       .intersects(this._extent)
       .filter(entity => {
         return (

@@ -116,7 +116,7 @@ export class Context extends EventEmitter {
     }
 
     // EditSystem
-    const editSystem = this.systems.edits;
+    const editSystem = this.systems.editor;
     const withDebouncedSave = (fn) => {
       return (...args) => {
         const result = fn.apply(editSystem, args);
@@ -128,14 +128,6 @@ export class Context extends EventEmitter {
     this.graph = editSystem.graph;
     this.hasEntity = (id) => editSystem.graph().hasEntity(id);
     this.entity = (id) => editSystem.graph().entity(id);
-    this.pauseChangeDispatch = editSystem.pauseChangeDispatch;
-    this.resumeChangeDispatch = editSystem.resumeChangeDispatch;
-    this.perform = withDebouncedSave(editSystem.perform);
-    this.replace = withDebouncedSave(editSystem.replace);
-    this.pop = withDebouncedSave(editSystem.pop);
-    this.overwrite = withDebouncedSave(editSystem.overwrite);
-    this.undo = withDebouncedSave(editSystem.undo);
-    this.redo = withDebouncedSave(editSystem.redo);
 
     // LocalizationSystem
     const l10n = this.systems.l10n;
@@ -263,7 +255,7 @@ export class Context extends EventEmitter {
         return;
 
       } else {
-        this.systems.edits.merge(result.data, result.seenIDs);
+        this.systems.editor.merge(result.data, result.seenIDs);
         if (typeof callback === 'function') {
           callback(err, result);
         }
@@ -336,7 +328,7 @@ export class Context extends EventEmitter {
   // Immediately save the user's history to localstorage, if possible
   // This is called sometimes, but also on the `window.onbeforeunload` handler
   save() {
-    const edits = this.systems.edits;
+    const edits = this.systems.editor;
     const l10n = this.systems.l10n;
 
     // no history save, no message onbeforeunload
@@ -484,7 +476,7 @@ export class Context extends EventEmitter {
   get copyIDs() { return this._copyIDs; }
   set copyIDs(val) {
     this._copyIDs = val;
-    this._copyGraph = this.systems.edits.graph();
+    this._copyGraph = this.systems.editor.graph();
   }
 
   get copyLoc()     { return this._copyLoc; }

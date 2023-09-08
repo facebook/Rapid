@@ -8,9 +8,13 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldWikipedia(context, uifield) {
-  const dispatch = d3_dispatch('change');
+  const dataLoader = context.systems.data;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const wikipedia = context.services.wikipedia;
   const wikidata = context.services.wikidata;
+  const dispatch = d3_dispatch('change');
+
   let _langInput = d3_select(null);
   let _titleInput = d3_select(null);
   let _wikiURL = '';
@@ -18,8 +22,7 @@ export function uiFieldWikipedia(context, uifield) {
   let _tags;
 
   let _dataWikipedia = [];
-  const dataLoaderSystem = context.systems.data;
-  dataLoaderSystem.getDataAsync('wmf_sitematrix')
+  dataLoader.getDataAsync('wmf_sitematrix')
     .then(d => {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);
@@ -85,7 +88,7 @@ export function uiFieldWikipedia(context, uifield) {
       .append('input')
       .attr('type', 'text')
       .attr('class', 'wiki-lang')
-      .attr('placeholder', context.t('translate.localized_translation_language'))
+      .attr('placeholder', l10n.t('translate.localized_translation_language'))
       .call(utilNoAuto)
       .call(langCombo)
       .merge(_langInput);
@@ -130,7 +133,7 @@ export function uiFieldWikipedia(context, uifield) {
     link = link.enter()
       .append('button')
       .attr('class', 'form-field-button wiki-link')
-      .attr('title', context.t('icons.view_on', { domain: 'wikipedia.org' }))
+      .attr('title', l10n.t('icons.view_on', { domain: 'wikipedia.org' }))
       .call(uiIcon('#rapid-icon-out-link'))
       .merge(link);
 
@@ -143,7 +146,7 @@ export function uiFieldWikipedia(context, uifield) {
 
 
   function defaultLanguageInfo(skipEnglishFallback) {
-    const langCode = context.systems.l10n.languageCode().toLowerCase();
+    const langCode = l10n.languageCode().toLowerCase();
 
     for (let i in _dataWikipedia) {
       let d = _dataWikipedia[i];
@@ -216,14 +219,14 @@ export function uiFieldWikipedia(context, uifield) {
     if (skipWikidata || !value || !language()[2]) return;
 
     // attempt asynchronous update of wikidata tag..
-    const initGraph = context.graph();
+    const initGraph = editor.graph();
     const initEntityIDs = _entityIDs;
 
     wikidata.itemsByTitle(language()[2], value, (err, data) => {
       if (err || !data || !Object.keys(data).length) return;
 
       // If graph has changed, we can't apply this update.
-      if (context.graph() !== initGraph) return;
+      if (editor.graph() !== initGraph) return;
 
       const qids = Object.keys(data);
       const value = qids && qids.find(id => id.match(/^Q\d+$/));
@@ -241,14 +244,14 @@ export function uiFieldWikipedia(context, uifield) {
       if (!actions.length) return;
 
       // Coalesce the update of wikidata tag into the previous tag change
-      context.overwrite(
+      editor.overwrite(
         function actionUpdateWikidataTags(graph) {
           actions.forEach(function(action) {
             graph = action(graph);
           });
           return graph;
         },
-        context.systems.edits.undoAnnotation()
+        editor.undoAnnotation()
       );
 
       // do not dispatch.call('change') here, because entity_editor

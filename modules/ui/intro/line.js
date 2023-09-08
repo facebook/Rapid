@@ -11,7 +11,7 @@ export function uiIntroLine(context, curtain) {
   const editMenu = context.systems.ui.editMenu;
   const container = context.container();
   const dragBehavior = context.behaviors.drag;
-  const editSystem = context.systems.edits;
+  const editSystem = context.systems.editor;
   const mapSystem = context.systems.map;
   const presetSystem = context.systems.presets;
 

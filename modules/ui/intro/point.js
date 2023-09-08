@@ -12,7 +12,7 @@ export function uiIntroPoint(context, curtain) {
   const chapter = { title: 'intro.points.title' };
   const editMenu = context.systems.ui.editMenu;
   const container = context.container();
-  const editSystem = context.systems.edits;
+  const editSystem = context.systems.editor;
   const mapSystem = context.systems.map;
   const presetSystem = context.systems.presets;
 
@@ -280,7 +280,7 @@ export function uiIntroPoint(context, curtain) {
     // Make sure it's still a cafe, in case user somehow changed it..
     const entity = context.entity(_pointID);
     const oldPreset = presetSystem.match(entity, context.graph());
-    context.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
+    editSystem.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
 
     editSystem.setCheckpoint('hasPoint');
     return Promise.resolve(reselectPointAsync);  // advance

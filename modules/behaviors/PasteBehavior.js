@@ -72,6 +72,7 @@ export class PasteBehavior extends AbstractBehavior {
    */
   _doPaste(e) {
     const context = this.context;
+    const editor = context.systems.editor;
 
     // Nothing to copy..
     const copyIDs = context.copyIDs;
@@ -89,7 +90,7 @@ export class PasteBehavior extends AbstractBehavior {
     const projection = context.projection;
 
     const action = actionCopyEntities(copyIDs, copyGraph);
-    context.perform(action);
+    editor.perform(action);
     const copies = action.copies();
 
     let extent = new Extent();
@@ -119,7 +120,7 @@ export class PasteBehavior extends AbstractBehavior {
     const delta = vecSubtract(mousePoint, copyPoint);
 
     const annotation = context.t('operations.paste.annotation', { n: pasteIDs.size });
-    context.perform(actionMove(Array.from(pasteIDs), delta, projection), annotation);
+    editor.perform(actionMove(Array.from(pasteIDs), delta, projection), annotation);
 
     // Put the user in move mode so they can place the pasted features
     // Grab the current versions from the graph (because they were just moved).

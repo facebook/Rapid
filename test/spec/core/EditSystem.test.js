@@ -321,12 +321,12 @@ describe('EditSystem', () => {
   });
 
 
-  describe('#pauseChangeDispatch / #resumeChangeDispatch', () => {
+  describe('#beginTransaction / #endTransaction', () => {
     it('prevents change events from getting dispatched', () => {
       _editSystem.perform(actionNoop(), 'base');
       _editSystem.on('change', spy);
 
-      _editSystem.pauseChangeDispatch();
+      _editSystem.beginTransaction();
 
       _editSystem.perform(actionNoop(), 'perform');
       expect(spy).to.have.not.been.called;
@@ -341,7 +341,7 @@ describe('EditSystem', () => {
       _editSystem.pop();
       expect(spy).to.have.not.been.called;
 
-      const diff = _editSystem.resumeChangeDispatch();
+      const diff = _editSystem.endTransaction();
       expect(spy).to.have.been.calledOnceWith(diff);
     });
 
@@ -349,7 +349,7 @@ describe('EditSystem', () => {
       _editSystem.perform(actionNoop(), 'base');
       _editSystem.on('change', spy);
 
-      _editSystem.resumeChangeDispatch();
+      _editSystem.endTransaction();
       expect(spy).to.have.not.been.called;
     });
 
@@ -357,13 +357,13 @@ describe('EditSystem', () => {
       _editSystem.perform(actionNoop(), 'base');
       _editSystem.on('change', spy);
 
-      _editSystem.pauseChangeDispatch();
+      _editSystem.beginTransaction();
       _editSystem.perform(actionAddNode('a'), 'perform');
 
-      _editSystem.pauseChangeDispatch();
+      _editSystem.beginTransaction();
       _editSystem.perform(actionAddNode('b'), 'perform');
 
-      const diff = _editSystem.resumeChangeDispatch();
+      const diff = _editSystem.endTransaction();
       expect(spy).to.have.been.calledOnceWith(diff);
       expect(diff.changes).to.have.all.keys('a', 'b');
     });

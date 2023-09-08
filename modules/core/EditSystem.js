@@ -37,7 +37,7 @@ export class EditSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
-    this.id = 'edits';   // was: 'history'
+    this.id = 'editor';   // was: 'history'
     this.dependencies = new Set(['storage', 'map', 'rapid']);
 
     this._mutex = utilSessionMutex('lock');
@@ -52,10 +52,11 @@ export class EditSystem extends AbstractSystem {
     this._index = 0;
     this._initPromise = null;
 
-    // When called like `context.graph`, don't lose `this`
+    // Make sure the event handlers have `this` bound correctly
     this.graph = this.graph.bind(this);
-    this.pauseChangeDispatch = this.pauseChangeDispatch.bind(this);
-    this.resumeChangeDispatch = this.resumeChangeDispatch.bind(this);
+    this.perform = this.perform.bind(this);
+    this.replace = this.replace.bind(this);
+    this.overwrite = this.overwrite.bind(this);
   }
 
 
@@ -141,6 +142,7 @@ export class EditSystem extends AbstractSystem {
   peekAnnotation() {
     return this._stack[this._index].annotation;
   }
+
 
   peekAllAnnotations() {
     let result = [];
@@ -299,14 +301,14 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  pauseChangeDispatch() {
+  beginTransaction() {
     if (!this._pausedGraph) {
       this._pausedGraph = this._stack[this._index].graph;
     }
   }
 
 
-  resumeChangeDispatch() {
+  endTransaction() {
     if (this._pausedGraph) {
       const previous = this._pausedGraph;
       this._pausedGraph = null;
@@ -443,7 +445,7 @@ export class EditSystem extends AbstractSystem {
   //  1. Start the walkthrough.
   //  2. Get to a "free editing" tutorial step
   //  3. Make your edits to the walkthrough map
-  //  4. In your browser dev console run:  `context.systems.edits.toIntroGraph()`
+  //  4. In your browser dev console run:  `context.systems.editor.toIntroGraph()`
   //  5. This outputs stringified JSON to the browser console
   //  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
   toIntroGraph() {

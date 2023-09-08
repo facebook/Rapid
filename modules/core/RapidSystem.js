@@ -33,7 +33,7 @@ export class RapidSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'rapid';
-    this.dependencies = new Set(['edits', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['editor', 'l10n', 'urlhash']);
 
     this.sources = new Set();
     // Watch edit history to keep track of which features have been accepted by the user.
@@ -71,7 +71,7 @@ export class RapidSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const edits = context.systems.edits;
+    const edits = context.systems.editor;
     const l10n = context.systems.l10n;
     const map = context.systems.map;
     const urlhash = context.systems.urlhash;
@@ -252,7 +252,7 @@ export class RapidSystem extends AbstractSystem {
    *
    */
   _onChange() {
-    const annotation = this.context.systems.edits.peekAnnotation();
+    const annotation = this.context.systems.editor.peekAnnotation();
     if (!this._wasRapidEdit(annotation)) return;
 
     this.acceptedIDs.add(annotation.id);
@@ -266,7 +266,7 @@ export class RapidSystem extends AbstractSystem {
   _onRestore() {
     this.acceptedIDs = new Set();
 
-    this.context.systems.edits.peekAllAnnotations().forEach(annotation => {
+    this.context.systems.editor.peekAllAnnotations().forEach(annotation => {
       if (!this._wasRapidEdit(annotation)) return;
 
       this.acceptedIDs.add(annotation.id);

@@ -16,6 +16,11 @@ export function operationReflectLong(context, selectedIDs) {
 
 
 export function operationReflect(context, selectedIDs, axis = 'long') {
+  const editor = context.systems.editor;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+  const validator = context.systems.validator;
+
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -28,8 +33,8 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
     const action = actionReflect(selectedIDs, context.projection)
       .useLongAxis(Boolean(axis === 'long'));
 
-    context.perform(action, operation.annotation());
-    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
+    editor.perform(action, operation.annotation());
+    window.setTimeout(() => validator.validate(), 300);  // after any transition
   };
 
 
@@ -53,9 +58,8 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet

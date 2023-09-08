@@ -18,8 +18,8 @@ describe('validationCrossingWays', () => {
     constructor() {
       this.services = {};
       this.systems = {
-        edits: new MockEditSystem(),
-        l10n:  new MockLocalizationSystem()
+        editor: new MockEditSystem(),
+        l10n:   new MockLocalizationSystem()
       };
     }
     graph()  { return graph; }

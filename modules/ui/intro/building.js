@@ -12,7 +12,7 @@ export function uiIntroBuilding(context, curtain) {
   const chapter = { title: 'intro.buildings.title' };
   const editMenu = context.systems.ui.editMenu;
   const container = context.container();
-  const editSystem = context.systems.edits;
+  const editSystem = context.systems.editor;
   const mapSystem = context.systems.map;
   const presetSystem = context.systems.presets;
 
@@ -278,7 +278,7 @@ export function uiIntroBuilding(context, curtain) {
     // Make sure it's still a house, in case user somehow changed it..
     const entity = context.entity(_houseID);
     const oldPreset = presetSystem.match(entity, context.graph());
-    context.replace(actionChangePreset(_houseID, oldPreset, housePreset));
+    editSystem.replace(actionChangePreset(_houseID, oldPreset, housePreset));
 
     editSystem.setCheckpoint('hasHouse');
     return Promise.resolve(rightClickHouseAsync);  // advance
@@ -567,7 +567,7 @@ export function uiIntroBuilding(context, curtain) {
     // Make sure it's still a tank, in case user somehow changed it..
     const entity = context.entity(_tankID);
     const oldPreset = presetSystem.match(entity, context.graph());
-    context.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
+    editSystem.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
 
     editSystem.setCheckpoint('hasTank');
     return Promise.resolve(rightClickTankAsync);  // advance

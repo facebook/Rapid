@@ -8,13 +8,27 @@ describe('uiFieldWikipedia', () => {
     }
   }
 
+  class MockEditSystem {
+    constructor() {}
+    graph()  { return graph; }
+  }
+
+  class MockLocalizationSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    t()           { return ''; }
+    tHtml()       { return ''; }
+  }
+
   class MockContext {
     constructor()   {
       this.services = {
         wikidata: new MockWikidataService(this)
       };
       this.systems = {
-        data: new Rapid.DataLoaderSystem(this)
+        editor: new MockEditSystem(this),
+        l10n:   new MockLocalizationSystem(this),
+        data:   new Rapid.DataLoaderSystem(this)
       };
     }
     cleanTagKey(val)    { return val; }
