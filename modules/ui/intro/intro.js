@@ -142,6 +142,7 @@ export function uiIntro(context, skipToRapid) {
       conflated: false,
       service: 'mapwithai',
       color: '#da26d3',
+      dataUsed: 'Rapid Walkthrough',
       label: 'Rapid Walkthrough'
     });
 

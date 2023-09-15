@@ -239,6 +239,7 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
+   *  updateImagery
    *  Called whenever the imagery changes
    *  Also used to push changes in imagery state to the urlhash
    */
@@ -246,28 +247,18 @@ export class ImagerySystem extends AbstractSystem {
     const baseLayer = this._baseLayer;
     if (this.context.inIntro || !baseLayer) return;
 
-    let imageryUsed = [];
-    let overlayIDs = [];
-
-    // gather info about base imagery
-    const baseUsed = baseLayer.imageryUsed;
-    if (baseUsed && this._isValid) {
-      imageryUsed.push(baseUsed);
-    }
+    // Gather info about enabled base imagery
     let baseID = baseLayer.id;
     if (baseID === 'custom') {
       baseID = `custom:${baseLayer.template}`;
     }
 
     // Gather info about enabled overlay imagery (ignore locator)
+    let overlayIDs = [];
     for (const overlay of this._overlayLayers.values()) {
       if (overlay.isLocatorOverlay()) continue;
       overlayIDs.push(overlay.id);
-      imageryUsed.push(overlay.imageryUsed);
     }
-
-    // Update history "imagery used" property
-    this.context.systems.editor.imageryUsed(imageryUsed);
 
     // Update hash params: 'background', 'overlays', 'offset'
     const urlhash = this.context.systems.urlhash;
@@ -279,6 +270,31 @@ export class ImagerySystem extends AbstractSystem {
     const x = +meters[0].toFixed(2);
     const y = +meters[1].toFixed(2);
     urlhash.setParam('offset', (Math.abs(x) > EPSILON || Math.abs(y) > EPSILON) ? `${x},${y}` : null);
+  }
+
+
+  /**
+   *  imageryUsed
+   *  @return  {Array}  Array of imagery layers currently enabled
+   */
+  imageryUsed() {
+    const result = new Set();
+
+    // Gather info about enabled base imagery
+    const baseUsed = this._baseLayer?.imageryUsed;
+    if (baseUsed && this._isValid) {
+      result.add(baseUsed);
+    }
+
+    // Gather info about enabled overlay imagery (ignore locator)
+    for (const overlay of this._overlayLayers.values()) {
+      if (overlay.isLocatorOverlay()) continue;
+      if (overlay.imageryUsed) {
+        result.add(overlay.imageryUsed);
+      }
+    }
+
+    return Array.from(result);
   }
 
 

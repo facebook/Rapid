@@ -35,7 +35,6 @@ export class RapidSystem extends AbstractSystem {
     this.id = 'rapid';
     this.dependencies = new Set(['editor', 'l10n', 'urlhash']);
 
-    this.sources = new Set();
     // Watch edit history to keep track of which features have been accepted by the user.
     // These features will be filtered out when drawing
     this.acceptedIDs = new Set();
@@ -46,7 +45,6 @@ export class RapidSystem extends AbstractSystem {
     this._hadPoweruser = false;   // true if the user had poweruser mode at any point in their editing
 
     this._initPromise = null;
-
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
@@ -101,6 +99,7 @@ export class RapidSystem extends AbstractSystem {
           conflated: true,
           service: 'mapwithai',
           color: RAPID_MAGENTA,
+          dataUsed: ['mapwithai', 'Facebook Roads'],
           label: l10n.t('rapid_feature_toggle.fbRoads.label'),
           license_markdown: l10n.t('rapid_feature_toggle.fbRoads.license_markdown')
         });
@@ -111,8 +110,8 @@ export class RapidSystem extends AbstractSystem {
           added: true,         // whether it should appear in the list
           enabled: false,      // whether the user has checked it on
           conflated: true,
-          service: 'mapwithai',
           color: RAPID_MAGENTA,
+          dataUsed: ['mapwithai', 'Microsoft Buildings'],
           label: l10n.t('rapid_feature_toggle.msBuildings.label'),
           license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown')
         });
@@ -137,7 +136,6 @@ export class RapidSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    this.sources = new Set();
     this.acceptedIDs = new Set();
     return Promise.resolve();
   }
@@ -350,6 +348,7 @@ export class RapidSystem extends AbstractSystem {
             conflated: false,
             service: 'esri',
             color: RAPID_COLORS[nextColor],
+            dataUsed: ['esri', d.title],
             label: d.title,
             license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown')
           };

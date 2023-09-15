@@ -45,32 +45,27 @@ export function uiRapidFeatureInspector(context, keybinding) {
       return;
     }
 
+    const service = context.services[_datum.__service__];
+    const datasetID = _datum.__datasetid__;
+    const dataset = rapid.datasets.get(datasetID);
+    const graph = service.graph(datasetID);
+
     // In place of a string annotation, this introduces an "object-style"
     // annotation, where "type" and "description" are standard keys,
     // and there may be additional properties. Note that this will be
     // serialized to JSON while saving undo/redo state in editor.save().
-    let annotation = {
+    const annotation = {
       type: 'rapid_accept_feature',
       description: l10n.t('rapid_feature_inspector.option_accept.annotation'),
       id: _datum.id,
-      origid: _datum.__origid__
+      origid: _datum.__origid__,
+      dataUsed: dataset?.dataUsed || [datasetID]
     };
-
-    const service = context.services[_datum.__service__];
-    const graph = service.graph(_datum.__datasetid__);
-    const sourceTag = _datum.tags && _datum.tags.source;
-    if (sourceTag) annotation.source = sourceTag;
 
     editor.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
     context.enter('select-osm', { selectedIDs: [_datum.id] });
 
     if (context.inIntro) return;
-
-    // remember sources for later when we prepare the changeset
-    rapid.sources.add('mapwithai');    // always add 'mapwithai'
-    if (sourceTag && /^esri/.test(sourceTag)) {
-      rapid.sources.add('esri');       // add 'esri' for esri sources
-    }
 
     if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
     window.sessionStorage.setItem('acknowledgedLogin', 'true');

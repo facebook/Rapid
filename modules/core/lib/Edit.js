@@ -4,11 +4,10 @@
  */
 export class Edit {
   constructor(props) {
-    this.graph       = props.graph;
     this.annotation  = props.annotation;
-    this.imageryUsed = props.imageryUsed;
-    this.photosUsed  = props.photosUsed;
-    this.transform   = props.transform;
+    this.graph       = props.graph;
     this.selectedIDs = props.selectedIDs;
+    this.sources     = props.sources || {};
+    this.transform   = props.transform;
   }
 }

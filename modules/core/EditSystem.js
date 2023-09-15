@@ -38,13 +38,11 @@ export class EditSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'editor';   // was: 'history'
-    this.dependencies = new Set(['storage', 'map', 'rapid']);
+    this.dependencies = new Set(['imagery', 'map', 'photos', 'storage']);
 
     this._mutex = utilSessionMutex('lock');
     this._hasRestorableChanges = false;
 
-    this._imageryUsed = [];
-    this._photosUsed = [];
     this._checkpoints = {};
     this._pausedGraph = false;
     this._stack = [];
@@ -372,41 +370,27 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  imageryUsed(sources) {
-    if (sources !== undefined) {
-      this._imageryUsed = sources;
-      return this;
+  /**
+   * sourcesUsed
+   * @return {Object}  Object of all sources used during the user's editing session
+   */
+  sourcesUsed() {
+    const result = {
+      imagery: new Set(),
+      photos:  new Set(),
+      data:    new Set()
+    };
 
-    } else {
-      let results = new Set();
-      this._stack.slice(1, this._index + 1).forEach(function(edit) {
-        for (const source of edit.imageryUsed ?? []) {
-          if (source !== 'Custom') {
-            results.add(source);
-          }
+    for (let i = 0; i <= this._index; i++) {  // up to current edit (skip redo stack)
+      const edit = this._stack[i];
+      for (const which of ['imagery', 'photos', 'data']) {
+        for (const val of edit.sources[which] || []) {
+          result[which].add(val);
         }
-      });
-
-      return Array.from(results);
+      }
     }
-  }
 
-
-  photosUsed(sources) {
-    if (sources !== undefined) {
-      this._photosUsed = sources;
-      return this;
-
-    } else {
-      let results = new Set();
-      this._stack.slice(1, this._index + 1).forEach(function(edit) {
-        for (const source of edit.photosUsed ?? []) {
-          results.add(source);
-        }
-      });
-
-      return Array.from(results);
-    }
+    return result;
   }
 
 
@@ -532,8 +516,8 @@ export class EditSystem extends AbstractSystem {
     const stackData = [];
 
     // Preserve the users stack of edits..
-    for (const s of this._stack) {
-      const currGraph = s.graph;   // edit done at this point in time
+    for (const edit of this._stack) {
+      const currGraph = edit.graph;   // edit done at this point in time
       let modified = [];
       let deleted = [];
 
@@ -576,14 +560,17 @@ export class EditSystem extends AbstractSystem {
         }
       }
 
+      const sources = edit.sources || {};
+
       const item = {};
-      if (modified.length)  item.modified = modified;
-      if (deleted.length)   item.deleted = deleted;
-      if (s.imageryUsed)    item.imageryUsed = s.imageryUsed;
-      if (s.photosUsed)     item.photosUsed = s.photosUsed;
-      if (s.annotation)     item.annotation = s.annotation;
-      if (s.transform)      item.transform = s.transform;
-      if (s.selectedIDs)    item.selectedIDs = s.selectedIDs;
+      if (modified.length)   item.modified = modified;
+      if (deleted.length)    item.deleted = deleted;
+      if (edit.annotation)   item.annotation = edit.annotation;
+      if (edit.selectedIDs)  item.selectedIDs = edit.selectedIDs;
+      if (edit.transform)    item.transform = edit.transform;
+      if (sources.imagery)   item.imageryUsed = sources.imagery;
+      if (sources.photos)    item.photosUsed = sources.photos;
+      if (sources.data)      item.dataUsed = sources.data;
       stackData.push(item);
     }
 
@@ -604,8 +591,7 @@ export class EditSystem extends AbstractSystem {
   //
   fromJSON(json, loadChildNodes) {
     const context = this.context;
-    const rapidSystem = context.systems.rapid;
-    const mapSystem = context.systems.map;
+    const map = context.systems.map;
 
     const baseGraph = this.base();   // The initial unedited graph
     const hist = JSON.parse(json);
@@ -644,7 +630,7 @@ export class EditSystem extends AbstractSystem {
 
         if (missing.length && osm) {
           loadComplete = false;
-          mapSystem.redrawEnabled = false;
+          map.redrawEnabled = false;
 
           const loading = uiLoading(context).blocking(true);
           context.container().call(loading);
@@ -671,7 +657,7 @@ export class EditSystem extends AbstractSystem {
 
             if (err || !missing.length) {
               loading.close();
-              mapSystem.redrawEnabled = true;
+              map.redrawEnabled = true;
               this.emit('change');
               this.emit('restore');
             }
@@ -684,48 +670,41 @@ export class EditSystem extends AbstractSystem {
 
 
     // Replace the history stack.
-    this._stack = hist.stack.map((s, index) => {
+    this._stack = hist.stack.map((item, index) => {
       // Leave base graph alone, this first edit should have nothing in it.
       if (index === 0) return this._stack[0];
 
-      let entities = {};
-
-      if (Array.isArray(s.modified)) {
-        s.modified.forEach(key => {
+      const entities = {};
+      if (Array.isArray(item.modified)) {
+        item.modified.forEach(key => {
           const entity = modifiedEntities.get(key);
           entities[entity.id] = entity;
         });
       }
-
-      if (Array.isArray(s.deleted)) {
-        s.deleted.forEach(entityID => {
+      if (Array.isArray(item.deleted)) {
+        item.deleted.forEach(entityID => {
           entities[entityID] = undefined;
         });
       }
 
-      // restore Rapid sources
-      if (rapidSystem && s.annotation?.type === 'rapid_accept_feature') {
-        const sourceTag = s.annotation.source;
-        rapidSystem.sources.add('mapwithai');      // always add 'mapwithai'
-        if (sourceTag && /^esri/.test(sourceTag)) {
-          rapidSystem.sources.add('esri');       // add 'esri' for esri sources
-        }
-      }
+      const sources = {};
+      if (Array.isArray(item.imageryUsed))  sources.imagery = item.imageryUsed;
+      if (Array.isArray(item.photosUsed))   sources.photos = item.photosUsed;
+      if (Array.isArray(item.dataUsed))     sources.data = item.dataUsed;
 
       return new Edit({
-        graph: new Graph(baseGraph).load(entities),
-        annotation: s.annotation,
-        imageryUsed: s.imageryUsed,
-        photosUsed: s.photosUsed,
-        transform: s.transform,
-        selectedIDs: s.selectedIDs
+        annotation:  item.annotation,
+        graph:       new Graph(baseGraph).load(entities),
+        selectedIDs: item.selectedIDs,
+        sources:     sources,
+        transform:   item.transform
       });
     });
 
 
     const transform = this._stack[this._index].transform;
     if (transform) {
-      mapSystem.transform(transform);
+      map.transform(transform);
     }
 
     if (loadComplete) {
@@ -808,7 +787,9 @@ export class EditSystem extends AbstractSystem {
 
 
   // internal _act, accepts Array of actions and eased time
-  _act(args, t) {
+  _act(args, t = 1) {
+    const context = this.context;
+
     let actions = args.slice();  // copy
 
     let annotation;
@@ -821,13 +802,35 @@ export class EditSystem extends AbstractSystem {
       graph = fn(graph, t);
     }
 
+    // Gather sources used to make this edit
+    // (only bother with this if it's a final edit, t === 1)
+    const sources = {};
+    if (t === 1) {
+      const imageryUsed = context.systems.imagery.imageryUsed();
+      if (imageryUsed.length)  {
+        sources.imagery = imageryUsed;
+      }
+
+      const photosUsed = context.systems.photos.photosUsed();
+      if (photosUsed.length) {
+        sources.photos = photosUsed;
+      }
+
+      const customLayer = context.scene().layers.get('custom-data');
+      const customDataUsed = customLayer?.dataUsed() || [];
+      const rapidDataUsed = annotation?.dataUsed || [];
+      const dataUsed = [...rapidDataUsed, ...customDataUsed];
+      if (dataUsed.length) {
+        sources.data = dataUsed;
+      }
+    }
+
     return new Edit({
-      graph: graph,
-      annotation: annotation,
-      imageryUsed: this._imageryUsed,
-      photosUsed: this._photosUsed,
-      transform: this.context.projection.transform(),
-      selectedIDs: this.context.selectedIDs()
+      annotation:   annotation,
+      graph:        graph,
+      selectedIDs:  context.selectedIDs(),
+      sources:      sources,
+      transform:    context.projection.transform()
     });
   }
 

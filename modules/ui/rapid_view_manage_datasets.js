@@ -452,6 +452,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         conflated: false,
         service: 'esri',
         color: colors[colorIndex],
+        dataUsed: ['esri', d.title],
         label: d.title,
         license_markdown: context.t('rapid_feature_toggle.esri.license_markdown')
       };
