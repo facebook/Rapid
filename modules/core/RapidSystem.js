@@ -110,6 +110,7 @@ export class RapidSystem extends AbstractSystem {
           added: true,         // whether it should appear in the list
           enabled: false,      // whether the user has checked it on
           conflated: true,
+          service: 'mapwithai',
           color: RAPID_MAGENTA,
           dataUsed: ['mapwithai', 'Microsoft Buildings'],
           label: l10n.t('rapid_feature_toggle.msBuildings.label'),
@@ -340,7 +341,7 @@ export class RapidSystem extends AbstractSystem {
           const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
           const nextColor = this._datasets.size % RAPID_COLORS.length;
 
-          let dataset = {
+          const dataset = {
             id: d.id,
             beta: isBeta,
             added: true,       // whether it should appear in the list

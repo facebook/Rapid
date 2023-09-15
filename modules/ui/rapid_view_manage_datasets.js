@@ -444,7 +444,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       const colors = rapid.colors;
       const colorIndex = datasets.size % colors.length;
 
-      let dataset = {
+      const dataset = {
         id: d.id,
         beta: isBeta,
         added: true,         // whether it should appear in the list

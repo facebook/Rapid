@@ -46,9 +46,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
     }
 
     const service = context.services[_datum.__service__];
-    const datasetID = _datum.__datasetid__;
+    const graph = service.graph(_datum.__datasetid__);
+    const datasetID = _datum.__datasetid__.replace('-conflated', '');
     const dataset = rapid.datasets.get(datasetID);
-    const graph = service.graph(datasetID);
 
     // In place of a string annotation, this introduces an "object-style"
     // annotation, where "type" and "description" are standard keys,
