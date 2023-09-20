@@ -3,8 +3,8 @@ describe('ImagerySource', () => {
   class MockLocalizationSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    t()           { return ''; }
-    tHtml()       { return ''; }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
   }
 
   class MockContext {

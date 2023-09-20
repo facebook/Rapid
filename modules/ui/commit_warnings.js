@@ -5,9 +5,13 @@ import { uiTooltip } from './tooltip';
 
 
 export function uiCommitWarnings(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const validator = context.systems.validator;
+
 
   function commitWarnings(selection) {
-    const issuesBySeverity = context.systems.validator
+    const issuesBySeverity = validator
       .getIssuesBySeverity({ what: 'edited', where: 'all', includeDisabledRules: true });
 
     for (let severity in issuesBySeverity) {
@@ -32,7 +36,7 @@ export function uiCommitWarnings(context) {
 
       containerEnter
         .append('h3')
-        .html(severity === 'warning' ? context.tHtml('commit.warnings') : context.tHtml('commit.errors'));
+        .html(severity === 'warning' ? l10n.tHtml('commit.warnings') : l10n.tHtml('commit.errors'));
 
       containerEnter
         .append('ul')
@@ -55,17 +59,20 @@ export function uiCommitWarnings(context) {
       let buttons = itemsEnter
         .append('button')
         .on('mouseover', (d3_event, d) => {
+// todo replace legacy surface css class .hover
           if (d.entityIds) {
-            context.surface().selectAll(utilEntityOrMemberSelector(d.entityIds, context.graph() ) )
+            const graph = editor.current.graph;
+            context.surface().selectAll(utilEntityOrMemberSelector(d.entityIds, graph) )
               .classed('hover', true);
           }
         })
         .on('mouseout', () => {
+// todo replace legacy surface css class .hover
           context.surface().selectAll('.hover')
             .classed('hover', false);
         })
         .on('click', (d3_event, d) => {
-          context.systems.validator.focusIssue(d);
+          validator.focusIssue(d);
         });
 
       buttons

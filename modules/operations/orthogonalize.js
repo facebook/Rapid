@@ -7,22 +7,24 @@ import { utilTotalExtent } from '../util';
 
 export function operationOrthogonalize(context, selectedIDs) {
   const editor = context.systems.editor;
+  const graph = editor.current.graph;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
   const validator = context.systems.validator;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
+  const extent = utilTotalExtent(entities, graph);
 
   let _type;   // 'feature' or 'corner'
   const actions = entities.map(getAction).filter(Boolean);
-  const coords = utilGetAllNodes(selectedIDs, context.graph()).map(node => node.loc);
+  const coords = utilGetAllNodes(selectedIDs, graph).map(node => node.loc);
 
 
   function getAction(entity) {
-    const graph = context.graph();
+    const graph = editor.current.graph;
     const geometry = entity.geometry(graph);
 
     // square a line/area
@@ -74,7 +76,8 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.disabled = function() {
     if (!actions.length) return '';
 
-    const disabledReasons = actions.map(action => action.disabled(context.graph())).filter(Boolean);
+    const graph = editor.current.graph;
+    const disabledReasons = actions.map(action => action.disabled(graph)).filter(Boolean);
     if (disabledReasons.length === actions.length) {   // none of the features can be squared
       if (new Set(disabledReasons).size > 1) {
         return 'multiple_blockers';
@@ -115,19 +118,19 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.orthogonalize.${disabledReason}.${multi}`) :
-      context.t(`operations.orthogonalize.description.${_type}.${multi}`);
+      l10n.t(`operations.orthogonalize.${disabledReason}.${multi}`) :
+      l10n.t(`operations.orthogonalize.description.${_type}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return context.t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
+    return l10n.t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
   };
 
 
   operation.id = 'orthogonalize';
-  operation.keys = [ context.t('operations.orthogonalize.key') ];
-  operation.title = context.t('operations.orthogonalize.title');
+  operation.keys = [ l10n.t('operations.orthogonalize.key') ];
+  operation.title = l10n.t('operations.orthogonalize.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

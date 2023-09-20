@@ -8,9 +8,10 @@ import { uiCombobox } from '../combobox';
 
 
 export function uiFieldWikidata(context, uifield) {
-    var editor = context.systems.editor;
-    var wikidata = context.services.wikidata;
-    var dispatch = d3_dispatch('change');
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+    const wikidata = context.services.wikidata;
+    const dispatch = d3_dispatch('change');
 
     var _selection = d3_select(null);
     var _searchInput = d3_select(null);
@@ -83,7 +84,7 @@ export function uiFieldWikidata(context, uifield) {
         searchRowEnter
             .append('button')
             .attr('class', 'form-field-button wiki-link')
-            .attr('title', context.t('icons.view_on', { domain: 'wikidata.org' }))
+            .attr('title', l10n.t('icons.view_on', { domain: 'wikidata.org' }))
             .call(uiIcon('#rapid-icon-out-link'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
@@ -107,7 +108,7 @@ export function uiFieldWikidata(context, uifield) {
         enter
             .append('span')
             .attr('class', 'label')
-            .html(function(d) { return context.tHtml('wikidata.' + d); });
+            .html(function(d) { return l10n.tHtml('wikidata.' + d); });
 
         enter
             .append('input')
@@ -119,7 +120,7 @@ export function uiFieldWikidata(context, uifield) {
         enter
             .append('button')
             .attr('class', 'form-field-button')
-            .attr('title', context.t('icons.copy'))
+            .attr('title', l10n.t('icons.copy'))
             .call(uiIcon('#rapid-operation-copy'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
@@ -135,8 +136,9 @@ export function uiFieldWikidata(context, uifield) {
     function fetchWikidataItems(q, callback) {
         if (!q && _hintKey) {
             // other tags may be good search terms
+            const graph = editor.current.graph;
             for (var i in _entityIDs) {
-                var entity = context.hasEntity(_entityIDs[i]);
+                const entity = graph.hasEntity(_entityIDs[i]);
                 if (entity.tags[_hintKey]) {
                     q = entity.tags[_hintKey];
                     break;
@@ -147,7 +149,7 @@ export function uiFieldWikidata(context, uifield) {
         wikidata.itemsForSearchQuery(q, function(err, data) {
             if (err) return;
 
-            var result = data.map(function (item) {
+            var result = data.map(function(item) {
                 return {
                     id:    item.id,
                     value: item.label + ' (' + item.id + ')',
@@ -168,14 +170,14 @@ export function uiFieldWikidata(context, uifield) {
         dispatch.call('change', this, syncTags);
 
         // attempt asynchronous update of wikidata tag..
-        var initGraph = editor.graph();
+        var initGraph = editor.current.graph;
         var initEntityIDs = _entityIDs;
 
         wikidata.entityByQID(_qid, function(err, entity) {
             if (err) return;
 
             // If graph has changed, we can't apply this update.
-            if (editor.graph() !== initGraph) return;
+            if (editor.current.graph !== initGraph) return;
 
             if (!entity.sitelinks) return;
 
@@ -234,7 +236,7 @@ export function uiFieldWikidata(context, uifield) {
             if (typeof newWikipediaValue === 'undefined') return;
 
             var actions = initEntityIDs.map(function(entityID) {
-                var entity = context.hasEntity(entityID);
+                var entity = initGraph.hasEntity(entityID);
                 if (!entity) return null;
 
                 var currTags = Object.assign({}, entity.tags);  // shallow copy
@@ -284,7 +286,7 @@ export function uiFieldWikidata(context, uifield) {
         var isMixed = Array.isArray(tags[key]);
         _searchInput
             .attr('title', isMixed ? tags[key].filter(Boolean).join('\n') : null)
-            .attr('placeholder', isMixed ? context.t('inspector.multiple_values') : '')
+            .attr('placeholder', isMixed ? l10n.t('inspector.multiple_values') : '')
             .classed('mixed', isMixed);
 
         _qid = typeof tags[key] === 'string' && tags[key] || '';

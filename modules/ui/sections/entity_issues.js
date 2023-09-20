@@ -7,8 +7,11 @@ import { uiSection } from '../section';
 
 
 export function uiSectionEntityIssues(context) {
-  const validator = context.systems.validator;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
   const storage = context.systems.storage;
+  const validator = context.systems.validator;
   const preference = storage.getItem('entity-issues.reference.expanded') || 'true';
 
   let _isExpanded = (preference === 'true');
@@ -20,7 +23,7 @@ export function uiSectionEntityIssues(context) {
   let section = uiSection(context, 'entity-issues')
     .shouldDisplay(() => _issues.length)
     .label(() => {
-      return context.t('inspector.title_count', { title: context.tHtml('issues.list_title'), count: _issues.length });
+      return l10n.t('inspector.title_count', { title: l10n.tHtml('issues.list_title'), count: _issues.length });
     })
     .disclosureContent(renderDisclosureContent);
 
@@ -76,10 +79,11 @@ export function uiSectionEntityIssues(context) {
       .attr('class', 'issue-text')
       .on('click', function(d3_event, d) {
         makeActiveIssue(d.id);    // expand only the clicked item
-        const extent = d.extent(context.graph());
+        const graph = editor.current.graph;
+        const extent = d.extent(graph);
         if (extent) {
-          const setZoom = Math.max(context.systems.map.zoom(), 19);
-          context.systems.map.centerZoomEase(extent.center(), setZoom);
+          const setZoom = Math.max(map.zoom(), 19);
+          map.centerZoomEase(extent.center(), setZoom);
         }
       });
 
@@ -98,7 +102,7 @@ export function uiSectionEntityIssues(context) {
     let infoButton = labelsEnter
       .append('button')
       .attr('class', 'issue-info-button')
-      .attr('title', context.t('icons.information'))
+      .attr('title', l10n.t('icons.information'))
       .call(uiIcon('#rapid-icon-inspect'));
 
     infoButton
@@ -145,7 +149,7 @@ export function uiSectionEntityIssues(context) {
         if (typeof d.reference === 'function') {
           selection.call(d.reference);
         } else {
-          selection.html(context.tHtml('inspector.no_documentation_key'));
+          selection.html(l10n.tHtml('inspector.no_documentation_key'));
         }
       });
 

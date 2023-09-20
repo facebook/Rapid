@@ -12,15 +12,16 @@ export function uiIntroBuilding(context, curtain) {
   const chapter = { title: 'intro.buildings.title' };
   const editMenu = context.systems.ui.editMenu;
   const container = context.container();
-  const editSystem = context.systems.editor;
-  const mapSystem = context.systems.map;
-  const presetSystem = context.systems.presets;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
   const tankExtent = new Extent([-85.62766, 41.95324], [-85.62695, 41.95372]);
-  const buildingCatetory = presetSystem.item('category-building');
-  const housePreset = presetSystem.item('building/house');
-  const tankPreset = presetSystem.item('man_made/storage_tank');
+  const buildingCatetory = presets.item('category-building');
+  const housePreset = presets.item('building/house');
+  const tankPreset = presets.item('man_made/storage_tank');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -33,7 +34,8 @@ export function uiIntroBuilding(context, curtain) {
 
   // Helper functions
   function _doesHouseExist() {
-    return _houseID && context.hasEntity(_houseID);
+    const graph = editor.current.graph;
+    return _houseID && graph.hasEntity(_houseID);
   }
 
   function _isHouseSelected() {
@@ -43,7 +45,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
   function _doesTankExist() {
-    return _tankID && context.hasEntity(_tankID);
+    const graph = editor.current.graph;
+    return _tankID && graph.hasEntity(_tankID);
   }
 
   function _isTankSelected() {
@@ -70,14 +73,14 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addHouseAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('initial');
+    editor.resetToCheckpoint('initial');
     _houseID = null;
 
     const loc = houseExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -105,7 +108,7 @@ export function uiIntroBuilding(context, curtain) {
   function startHouseAsync() {
     _houseID = null;
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(houseExtent.center(), 20, 200)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -148,8 +151,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => {
         if (_doesHouseExist() && _isHouseSelected()) {
-          const graph = context.graph();
-          const way = context.entity(_houseID);
+          const graph = editor.current.graph;
+          const way = graph.entity(_houseID);
           const nodes = graph.childNodes(way);
           const points = utilArrayUniq(nodes).map(n => context.projection.project(n.loc));
 
@@ -189,7 +192,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_building'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(addHouseAsync)
       });
     });
@@ -243,7 +246,8 @@ export function uiIntroBuilding(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === housePreset) {
+            const graph = editor.current.graph;
+            if (presets.match(modified[0], graph) === housePreset) {
               resolve(hasHouseAsync);
             } else {
               resolve(chooseCategoryBuildingAsync);  // didn't pick house, retry
@@ -276,11 +280,12 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
 
     // Make sure it's still a house, in case user somehow changed it..
-    const entity = context.entity(_houseID);
-    const oldPreset = presetSystem.match(entity, context.graph());
-    editSystem.replace(actionChangePreset(_houseID, oldPreset, housePreset));
+    const graph = editor.current.graph;
+    const entity = graph.entity(_houseID);
+    const oldPreset = presets.match(entity, graph);
+    editor.replace(actionChangePreset(_houseID, oldPreset, housePreset));
 
-    editSystem.setCheckpoint('hasHouse');
+    editor.setCheckpoint('hasHouse');
     return Promise.resolve(rightClickHouseAsync);  // advance
   }
 
@@ -289,12 +294,12 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickHouseAsync() {
     if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
-    editSystem.resetToCheckpoint('hasHouse');
+    editor.resetToCheckpoint('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
-    const setZoom = Math.max(mapSystem.zoom(), 20);
+    const setZoom = Math.max(map.zoom(), 20);
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(houseExtent.center(), setZoom, 100)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -357,7 +362,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for orthogonalize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (editSystem.undoAnnotation() === context.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
+        if (editor.undoAnnotation() === l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
           return doneSquareAsync;
         } else {
           return retryClickSquareAsync;
@@ -381,7 +386,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_square'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(rightClickHouseAsync)
       });
     });
@@ -391,14 +396,14 @@ export function uiIntroBuilding(context, curtain) {
   // "See how the corners of the building moved into place? Let's learn another useful trick."
   // Click Ok to advance
   function doneSquareAsync() {
-    editSystem.setCheckpoint('doneSquare');
+    editor.setCheckpoint('doneSquare');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.done_square'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(addTankAsync)
       });
     });
@@ -409,14 +414,14 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addTankAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('doneSquare');
+    editor.resetToCheckpoint('doneSquare');
     _tankID = null;
 
     const loc = tankExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -513,7 +518,8 @@ export function uiIntroBuilding(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === tankPreset) {
+            const graph = editor.current.graph;
+            if (presets.match(modified[0], graph) === tankPreset) {
               resolve(hasTankAsync);
             } else {
               reject();  // didn't pick tank
@@ -565,11 +571,12 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesTankExist()) return Promise.resolve(addTankAsync);
 
     // Make sure it's still a tank, in case user somehow changed it..
-    const entity = context.entity(_tankID);
-    const oldPreset = presetSystem.match(entity, context.graph());
-    editSystem.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
+    const graph = editor.current.graph;
+    const entity = graph.entity(_tankID);
+    const oldPreset = presets.match(entity, graph);
+    editor.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
 
-    editSystem.setCheckpoint('hasTank');
+    editor.setCheckpoint('hasTank');
     return Promise.resolve(rightClickTankAsync);  // advance
   }
 
@@ -578,7 +585,7 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickTankAsync() {
     if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
-    editSystem.resetToCheckpoint('hasTank');
+    editor.resetToCheckpoint('hasTank');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -641,7 +648,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for circularize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (editSystem.undoAnnotation() === context.t('operations.circularize.annotation.feature', { n: 1 })) {
+        if (editor.undoAnnotation() === l10n.t('operations.circularize.annotation.feature', { n: 1 })) {
           return playAsync;
         } else {
           return retryClickCircleAsync;
@@ -665,7 +672,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: tankExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_circle'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(rightClickTankAsync)
       });
     });
@@ -679,8 +686,8 @@ export function uiIntroBuilding(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-rapid',
-      tipHtml: helpHtml(context, 'intro.buildings.play', { next: context.t('intro.rapid.title') }),
-      buttonText: context.tHtml('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.buildings.play', { next: l10n.t('intro.rapid.title') }),
+      buttonText: l10n.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -695,15 +702,15 @@ export function uiIntroBuilding(context, curtain) {
     _onEditChange = null;
 
     context.on('modechange', _modeChangeListener);
-    mapSystem.on('move', _mapMoveListener);
-    editSystem.on('change', _editChangeListener);
+    map.on('move', _mapMoveListener);
+    editor.on('change', _editChangeListener);
 
     runAsync(addHouseAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        mapSystem.off('move', _mapMoveListener);
-        editSystem.off('change', _editChangeListener);
+        map.off('move', _mapMoveListener);
+        editor.off('change', _editChangeListener);
       });
 
     function _mapMoveListener() {

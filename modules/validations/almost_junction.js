@@ -42,7 +42,8 @@ export function validationAlmostJunction(context) {
     if (!isHighway(entity)) return [];
     if (entity.isDegenerate()) return [];
 
-    const tree = editor.tree();
+//todo: using tree like this may be problematic - it may not reflect the graph we are validating
+    const tree = editor.tree;
     const extendableNodeInfos = findConnectableEndNodesByExtension(entity, graph);
 
     let issues = [];
@@ -53,7 +54,7 @@ export function validationAlmostJunction(context) {
         subtype: 'highway-highway',
         severity: 'warning',
         message: function() {
-          const graph = editor.graph();  // use the current graph
+          const graph = editor.current.graph;
           const entity1 = graph.hasEntity(this.entityIds[0]);
           if (this.entityIds[0] === this.entityIds[2]) {
             return entity1 ? l10n.tHtml('issues.almost_junction.self.message', {
@@ -88,7 +89,7 @@ export function validationAlmostJunction(context) {
 
 
     function makeFixes() {
-      const graph = editor.graph();  // use the current graph
+      const graph = editor.current.graph;
 
       let fixes = [new ValidationFix({
         icon: 'rapid-icon-abutment',

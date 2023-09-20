@@ -79,7 +79,7 @@ export function validationMissingTag(context) {
         subtype: subtype,
         severity: severity,
         message: function() {
-          const graph = editor.graph();  // use the current graph
+          const graph = editor.current.graph;
           const entity = graph.hasEntity(this.entityIds[0]);
           return entity ? l10n.tHtml(`issues.${messageID}.message`, {
             feature: l10n.displayLabel(entity, graph)

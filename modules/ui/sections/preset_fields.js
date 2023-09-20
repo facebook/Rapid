@@ -8,8 +8,12 @@ import { utilRebind } from '../../util';
 
 
 export function uiSectionPresetFields(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const presetSystem = context.systems.presets;
+
   let section = uiSection(context, 'preset-fields')
-    .label(context.tHtml('inspector.fields'))
+    .label(l10n.tHtml('inspector.fields'))
     .disclosureContent(renderDisclosureContent);
 
   const dispatch = d3_dispatch('change', 'revert');
@@ -23,8 +27,7 @@ export function uiSectionPresetFields(context) {
 
   function renderDisclosureContent(selection) {
     if (!_uifields) {
-      const graph = context.graph();
-      const presetSystem = context.systems.presets;
+      const graph = editor.current.graph;
 
       const geometries = Object.keys(_entityIDs.reduce((geoms, entityID) => {
         geoms[graph.entity(entityID).geometry(graph)] = true;

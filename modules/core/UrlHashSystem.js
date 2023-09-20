@@ -244,15 +244,16 @@ export class UrlHashSystem extends AbstractSystem {
     if (!this.doUpdateTitle) return;
 
     const context = this.context;
-    const l10n = context.systems.l10n;
     const editor = context.systems.editor;
+    const graph = editor.current.graph;
+    const l10n = context.systems.l10n;
     const changeCount = editor.difference().summary().size;
 
     // Currently only support OSM ids
     let selected;
-    const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
+    const selectedIDs = context.selectedIDs().filter(id => graph.hasEntity(id));
     if (selectedIDs.length) {
-      const firstLabel = l10n.displayLabel(context.entity(selectedIDs[0]), context.graph());
+      const firstLabel = l10n.displayLabel(graph.entity(selectedIDs[0]), graph);
       if (selectedIDs.length > 1) {
         selected = l10n.t('title.labeled_and_more', { labeled: firstLabel, count: selectedIDs.length - 1 });
       } else {

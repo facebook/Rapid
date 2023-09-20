@@ -125,10 +125,6 @@ export class Context extends EventEmitter {
       };
     };
 
-    this.graph = editor.graph;
-    this.hasEntity = (id) => editor.graph().hasEntity(id);
-    this.entity = (id) => editor.graph().entity(id);
-
     // LocalizationSystem
     const l10n = this.systems.l10n;
     this.t = l10n.t;
@@ -141,7 +137,7 @@ export class Context extends EventEmitter {
     // FilterSystem
     const filters = this.systems.filters;
     this.hasHiddenConnections = (entityID) => {
-      const graph = editor.graph();
+      const graph = editor.current.graph;
       const entity = graph.entity(entityID);
       return filters.hasHiddenConnections(entity, graph);
     };
@@ -347,7 +343,8 @@ export class Context extends EventEmitter {
 
     } else {
       canSave = this.selectedIDs().every(id => {
-        const entity = this.hasEntity(id);
+        const graph = editor.current.graph;
+        const entity = graph.hasEntity(id);
         return entity && !entity.isDegenerate();
       });
     }
@@ -476,7 +473,7 @@ export class Context extends EventEmitter {
   get copyIDs() { return this._copyIDs; }
   set copyIDs(val) {
     this._copyIDs = val;
-    this._copyGraph = this.systems.editor.graph();
+    this._copyGraph = this.systems.editor.current.graph;
   }
 
   get copyLoc()     { return this._copyLoc; }

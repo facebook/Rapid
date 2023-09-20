@@ -51,13 +51,13 @@ export function uiSectionRawMembershipEditor(context) {
     function getSharedParentRelations() {
         var parents = [];
         for (var i = 0; i < _entityIDs.length; i++) {
-            var entity = editor.graph().hasEntity(_entityIDs[i]);
+            var entity = editor.current.graph.hasEntity(_entityIDs[i]);
             if (!entity) continue;
 
             if (i === 0) {
-                parents = editor.graph().parentRelations(entity);
+                parents = editor.current.graph.parentRelations(entity);
             } else {
-                parents = utilArrayIntersection(parents, editor.graph().parentRelations(entity));
+                parents = utilArrayIntersection(parents, editor.current.graph.parentRelations(entity));
             }
             if (!parents.length) break;
         }
@@ -122,10 +122,12 @@ export function uiSectionRawMembershipEditor(context) {
         context.enter('select-osm', { selectedIDs: [d.relation.id] });
     }
 
+
     function zoomToRelation(d3_event, d) {
         d3_event.preventDefault();
 
-        var entity = context.entity(d.relation.id);
+        const graph = editor.current.graph;
+        const entity = graph.entity(d.relation.id);
         map.fitEntitiesEase(entity);
 
         // highlight the relation in case it wasn't previously on-screen
@@ -226,7 +228,7 @@ export function uiSectionRawMembershipEditor(context) {
 
         var entityID = _entityIDs[0];
         var result = [];
-        var graph = editor.graph();
+        var graph = editor.current.graph;
 
         function baseDisplayLabel(entity) {
             var matched = presets.match(entity, graph);
@@ -236,7 +238,7 @@ export function uiSectionRawMembershipEditor(context) {
             return presetName + ' ' + entityName;
         }
 
-        var explicitRelation = q && context.hasEntity(q.toLowerCase());
+        var explicitRelation = q && graph.hasEntity(q.toLowerCase());
         if (explicitRelation && explicitRelation.type === 'relation' && explicitRelation.id !== entityID) {
             // loaded relation is specified explicitly, only show that
             result.push({
@@ -328,7 +330,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('span')
             .attr('class', 'member-entity-type')
             .html(function(d) {
-                var matched = presets.match(d.relation, editor.graph());
+                var matched = presets.match(d.relation, editor.current.graph);
                 return (matched && matched.name()) || l10n.t('inspector.relation');
             });
 
@@ -336,7 +338,7 @@ export function uiSectionRawMembershipEditor(context) {
             .append('span')
             .attr('class', 'member-entity-name')
             .html(function(d) {
-                const matched = presets.match(d.relation, editor.graph());
+                const matched = presets.match(d.relation, editor.current.graph);
                 // hide the network from the name if there is NSI match
                 return l10n.displayName(d.relation.tags, matched.suggestion);
             });
@@ -528,7 +530,7 @@ export function uiSectionRawMembershipEditor(context) {
                     taginfo.roles({
                         debounce: true,
                         rtype: rtype || '',
-                        geometry: editor.graph().geometry(_entityIDs[0]),
+                        geometry: editor.current.graph.geometry(_entityIDs[0]),
                         query: role
                     }, function(err, data) {
                         if (!err) callback(sort(role, data));

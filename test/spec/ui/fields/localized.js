@@ -1,12 +1,17 @@
 describe('uiFieldLocalized', () => {
   let selection, field;
 
+  class MockEditSystem {
+    constructor() {}
+    get current() { return { graph: new Rapid.Graph() }; }
+  }
+
   class MockLocalizationSystem {
     constructor() { }
     localeCode()     { return 'en-US'; }
     languageCode()   { return 'en'; }
-    t()              { return ''; }
-    tHtml()          { return ''; }
+    t(id)            { return id; }
+    tHtml(id)        { return id; }
     languageName(code) {
       const langs = {
         de: { nativeName: 'Deutsch' },
@@ -21,6 +26,7 @@ describe('uiFieldLocalized', () => {
       this.services = {};
       this.systems = {
         dataloader:  new Rapid.DataLoaderSystem(this),
+        editor:      new MockEditSystem(this),
         l10n:        new MockLocalizationSystem(this)
       };
     }

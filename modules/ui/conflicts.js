@@ -10,337 +10,339 @@ import { utilDetect, utilKeybinding, utilRebind, utilWrap } from '../util';
 
 
 export function uiConflicts(context) {
-    var dispatch = d3_dispatch('cancel', 'save');
-    var keybinding = utilKeybinding('conflicts');
-    var _origChanges;
-    var _conflictList;
-    var _shownConflictIndex;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+
+  const dispatch = d3_dispatch('cancel', 'save');
+  const keybinding = utilKeybinding('conflicts');
+  let _origChanges;
+  let _conflictList;
+  let _shownConflictIndex;
 
 
-    function keybindingOn() {
-        d3_select(document)
-            .call(keybinding.on('⎋', cancel, true));
+  function keybindingOn() {
+    d3_select(document)
+      .call(keybinding.on('⎋', cancel, true));
+  }
+
+  function keybindingOff() {
+    d3_select(document)
+      .call(keybinding.unbind);
+  }
+
+  function tryAgain() {
+    keybindingOff();
+    dispatch.call('save');
+  }
+
+  function cancel() {
+    keybindingOff();
+    dispatch.call('cancel');
+  }
+
+
+  function conflicts(selection) {
+    keybindingOn();
+
+    let headerEnter = selection.selectAll('.header')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'header fillL');
+
+    headerEnter
+      .append('button')
+      .attr('class', 'fr')
+      .on('click', cancel)
+      .call(uiIcon('#rapid-icon-close'));
+
+    headerEnter
+      .append('h3')
+      .html(l10n.tHtml('save.conflict.header'));
+
+    let bodyEnter = selection.selectAll('.body')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'body fillL');
+
+    let conflictsHelpEnter = bodyEnter
+      .append('div')
+      .attr('class', 'conflicts-help')
+      .html(l10n.tHtml('save.conflict.help'));
+
+
+    // Download changes link
+    const detected = utilDetect();
+    let changeset = new osmChangeset();
+    delete changeset.id;  // Export without changeset_id
+
+    const data = JXON.stringify(changeset.osmChangeJXON(_origChanges));
+    const blob = new Blob([data], { type: 'text/xml;charset=utf-8;' });
+    const fileName = 'changes.osc';
+
+    let linkEnter = conflictsHelpEnter.selectAll('.download-changes')
+      .append('a')
+      .attr('class', 'download-changes');
+
+    if (detected.download) {   // All except IE11 and Edge
+      linkEnter                // download the data as a file
+        .attr('href', window.URL.createObjectURL(blob))
+        .attr('download', fileName);
+    } else {                   // IE11 and Edge
+      linkEnter                // open data uri in a new tab
+        .attr('target', '_blank')
+        .on('click.download', () => navigator.msSaveBlob(blob, fileName));
     }
 
-    function keybindingOff() {
-        d3_select(document)
-            .call(keybinding.unbind);
+    linkEnter
+      .call(uiIcon('#rapid-icon-load', 'inline'))
+      .append('span')
+      .html(l10n.tHtml('save.conflict.download_changes'));
+
+    bodyEnter
+      .append('div')
+      .attr('class', 'conflict-container fillL3')
+      .call(showConflict, 0);
+
+    bodyEnter
+      .append('div')
+      .attr('class', 'conflicts-done')
+      .attr('opacity', 0)
+      .style('display', 'none')
+      .html(l10n.tHtml('save.conflict.done'));
+
+    let buttonsEnter = bodyEnter
+      .append('div')
+      .attr('class','buttons col12 joined conflicts-buttons');
+
+    buttonsEnter
+      .append('button')
+      .attr('disabled', _conflictList.length > 1)
+      .attr('class', 'action conflicts-button col6')
+      .html(l10n.tHtml('save.title'))
+      .on('click.try_again', tryAgain);
+
+    buttonsEnter
+      .append('button')
+      .attr('class', 'secondary-action conflicts-button col6')
+      .html(l10n.tHtml('confirm.cancel'))
+      .on('click.cancel', cancel);
+  }
+
+
+  function showConflict(selection, index) {
+    index = utilWrap(index, _conflictList.length);
+    _shownConflictIndex = index;
+
+    const parent = d3_select(selection.node().parentNode);
+
+    // enable save button if this is the last conflict being reviewed..
+    if (index === _conflictList.length - 1) {
+      window.setTimeout(() => {
+        parent.select('.conflicts-button')
+          .attr('disabled', null);
+
+        parent.select('.conflicts-done')
+          .transition()
+          .attr('opacity', 1)
+          .style('display', 'block');
+      }, 250);
     }
 
-    function tryAgain() {
-        keybindingOff();
-        dispatch.call('save');
-    }
+    let conflict = selection
+      .selectAll('.conflict')
+      .data([_conflictList[index]]);
 
-    function cancel() {
-        keybindingOff();
-        dispatch.call('cancel');
-    }
+    conflict.exit()
+      .remove();
+
+    let conflictEnter = conflict.enter()
+      .append('div')
+      .attr('class', 'conflict');
+
+    conflictEnter
+      .append('h4')
+      .attr('class', 'conflict-count')
+      .html(l10n.tHtml('save.conflict.count', { num: index + 1, total: _conflictList.length }));
+
+    conflictEnter
+      .append('a')
+      .attr('class', 'conflict-description')
+      .attr('href', '#')
+      .html(d => d.name)
+      .on('click', (d3_event, d) => {
+        d3_event.preventDefault();
+        showEntityID(d.id);
+      });
+
+    let details = conflictEnter
+      .append('div')
+      .attr('class', 'conflict-detail-container');
+
+    details
+      .append('ul')
+      .attr('class', 'conflict-detail-list')
+      .selectAll('li')
+      .data(d => d.details || [])
+      .enter()
+      .append('li')
+      .attr('class', 'conflict-detail-item')
+      .html(d => d);
+
+    details
+      .append('div')
+      .attr('class', 'conflict-choices')
+      .call(addChoices);
+
+    details
+      .append('div')
+      .attr('class', 'conflict-nav-buttons joined cf')
+      .selectAll('button')
+      .data(['previous', 'next'])
+      .enter()
+      .append('button')
+      .html(d => l10n.tHtml(`save.conflict.${d}`))
+      .attr('class', 'conflict-nav-button action col6')
+      .attr('disabled', (d, i) => {
+        return (i === 0 && index === 0) || (i === 1 && index === _conflictList.length - 1) || null;
+      })
+      .on('click', (d3_event, d) => {
+        d3_event.preventDefault();
+
+        const container = parent.selectAll('.conflict-container');
+        const sign = (d === 'previous') ? -1 : 1;
+
+        container
+          .selectAll('.conflict')
+          .remove();
+
+        container
+          .call(showConflict, index + sign);
+      });
+  }
 
 
-    function conflicts(selection) {
-        keybindingOn();
+  function addChoices(selection) {
+    let choices = selection
+      .append('ul')
+      .attr('class', 'layer-list')
+      .selectAll('li')
+      .data(d => d.choices || []);
 
-        var headerEnter = selection.selectAll('.header')
-            .data([0])
-            .enter()
-            .append('div')
-            .attr('class', 'header fillL');
+    // enter
+    let choicesEnter = choices.enter()
+      .append('li')
+      .attr('class', 'layer');
 
-        headerEnter
-            .append('button')
-            .attr('class', 'fr')
-            .on('click', cancel)
-            .call(uiIcon('#rapid-icon-close'));
+    let labelEnter = choicesEnter
+      .append('label');
 
-        headerEnter
-            .append('h3')
-            .html(context.tHtml('save.conflict.header'));
+    labelEnter
+      .append('input')
+      .attr('type', 'radio')
+      .attr('name', d => d.id)
+      .on('change', function(d3_event, d) {
+        const ul = this.parentNode.parentNode.parentNode;
+        ul.__data__.chosen = d.id;
+        choose(d3_event, ul, d);
+      });
 
-        var bodyEnter = selection.selectAll('.body')
-            .data([0])
-            .enter()
-            .append('div')
-            .attr('class', 'body fillL');
+    labelEnter
+      .append('span')
+      .html(d => d.text);
 
-        var conflictsHelpEnter = bodyEnter
-            .append('div')
-            .attr('class', 'conflicts-help')
-            .html(context.tHtml('save.conflict.help'));
-
-
-        // Download changes link
-        var detected = utilDetect();
-        var changeset = new osmChangeset();
-
-        delete changeset.id;  // Export without changeset_id
-
-        var data = JXON.stringify(changeset.osmChangeJXON(_origChanges));
-        var blob = new Blob([data], { type: 'text/xml;charset=utf-8;' });
-        var fileName = 'changes.osc';
-
-        var linkEnter = conflictsHelpEnter.selectAll('.download-changes')
-            .append('a')
-            .attr('class', 'download-changes');
-
-        if (detected.download) {      // All except IE11 and Edge
-            linkEnter                 // download the data as a file
-                .attr('href', window.URL.createObjectURL(blob))
-                .attr('download', fileName);
-
-        } else {                      // IE11 and Edge
-            linkEnter                 // open data uri in a new tab
-                .attr('target', '_blank')
-                .on('click.download', function() {
-                    navigator.msSaveBlob(blob, fileName);
-                });
+    // update
+    choicesEnter
+      .merge(choices)
+      .each((d, i, nodes) => {
+        const ul = nodes[i].parentNode;
+        if (ul.__data__.chosen === d.id) {
+          choose(null, ul, d);
         }
-
-        linkEnter
-            .call(uiIcon('#rapid-icon-load', 'inline'))
-            .append('span')
-            .html(context.tHtml('save.conflict.download_changes'));
+      });
+  }
 
 
-        bodyEnter
-            .append('div')
-            .attr('class', 'conflict-container fillL3')
-            .call(showConflict, 0);
+  function choose(d3_event, ul, datum) {
+    if (d3_event) d3_event.preventDefault();
 
-        bodyEnter
-            .append('div')
-            .attr('class', 'conflicts-done')
-            .attr('opacity', 0)
-            .style('display', 'none')
-            .html(context.tHtml('save.conflict.done'));
+    d3_select(ul)
+      .selectAll('li')
+      .classed('active', d => d === datum)
+      .selectAll('input')
+      .property('checked', d => d === datum);
 
-        var buttonsEnter = bodyEnter
-            .append('div')
-            .attr('class','buttons col12 joined conflicts-buttons');
+    let extent = new Extent();
+    let graph, entity;
 
-        buttonsEnter
-            .append('button')
-            .attr('disabled', _conflictList.length > 1)
-            .attr('class', 'action conflicts-button col6')
-            .html(context.tHtml('save.title'))
-            .on('click.try_again', tryAgain);
+    graph = editor.current.graph;
+    entity = graph.hasEntity(datum.id);
+    if (entity) extent = extent.extend(entity.extent(graph));
 
-        buttonsEnter
-            .append('button')
-            .attr('class', 'secondary-action conflicts-button col6')
-            .html(context.tHtml('confirm.cancel'))
-            .on('click.cancel', cancel);
+    datum.action();
+
+    graph = editor.current.graph;
+    entity = graph.hasEntity(datum.id);
+    if (entity) extent = extent.extend(entity.extent(graph));
+
+    showEntityID(datum.id, extent);
+  }
+
+
+  function showEntityID(id, extent) {
+// todo replace legacy surface css class .hover
+//    context.surface().selectAll('.hover')
+//      .classed('hover', false);
+
+    const graph = editor.current.graph;
+    const entity = graph.hasEntity(id);
+    if (entity) {
+      if (extent) {
+          map.trimmedExtent(extent);
+      } else {
+          map.fitEntitiesEase(entity);
+      }
+// todo replace legacy surface css class .hover
+//      context.surface().selectAll(utilEntityOrMemberSelector([entity.id], graph))
+//        .classed('hover', true);
     }
+  }
 
 
-    function showConflict(selection, index) {
-        index = utilWrap(index, _conflictList.length);
-        _shownConflictIndex = index;
+  // The conflict list should be an Array of Objects like:
+  // {
+  //   id: id,
+  //   name: entityName(local),
+  //   details: merge.conflicts(),
+  //   chosen: 1,
+  //   choices: [
+  //     choice(id, keepMine, forceLocal),
+  //     choice(id, keepTheirs, forceRemote)
+  //   ]
+  // }
+  conflicts.conflictList = function(val) {
+    if (!arguments.length) return _conflictList;
+    _conflictList = val;
+    return conflicts;
+  };
 
-        var parent = d3_select(selection.node().parentNode);
 
-        // enable save button if this is the last conflict being reviewed..
-        if (index === _conflictList.length - 1) {
-            window.setTimeout(function() {
-                parent.select('.conflicts-button')
-                    .attr('disabled', null);
+  conflicts.origChanges = function(val) {
+    if (!arguments.length) return _origChanges;
+    _origChanges = val;
+    return conflicts;
+  };
 
-                parent.select('.conflicts-done')
-                    .transition()
-                    .attr('opacity', 1)
-                    .style('display', 'block');
-            }, 250);
-        }
 
-        var conflict = selection
-            .selectAll('.conflict')
-            .data([_conflictList[index]]);
-
-        conflict.exit()
-            .remove();
-
-        var conflictEnter = conflict.enter()
-            .append('div')
-            .attr('class', 'conflict');
-
-        conflictEnter
-            .append('h4')
-            .attr('class', 'conflict-count')
-            .html(context.tHtml('save.conflict.count', { num: index + 1, total: _conflictList.length }));
-
-        conflictEnter
-            .append('a')
-            .attr('class', 'conflict-description')
-            .attr('href', '#')
-            .html(function(d) { return d.name; })
-            .on('click', function(d3_event, d) {
-                d3_event.preventDefault();
-                showEntityID(d.id);
-            });
-
-        var details = conflictEnter
-            .append('div')
-            .attr('class', 'conflict-detail-container');
-
-        details
-            .append('ul')
-            .attr('class', 'conflict-detail-list')
-            .selectAll('li')
-            .data(function(d) { return d.details || []; })
-            .enter()
-            .append('li')
-            .attr('class', 'conflict-detail-item')
-            .html(function(d) { return d; });
-
-        details
-            .append('div')
-            .attr('class', 'conflict-choices')
-            .call(addChoices);
-
-        details
-            .append('div')
-            .attr('class', 'conflict-nav-buttons joined cf')
-            .selectAll('button')
-            .data(['previous', 'next'])
-            .enter()
-            .append('button')
-            .html(function(d) { return context.tHtml('save.conflict.' + d); })
-            .attr('class', 'conflict-nav-button action col6')
-            .attr('disabled', function(d, i) {
-                return (i === 0 && index === 0) ||
-                    (i === 1 && index === _conflictList.length - 1) || null;
-            })
-            .on('click', function(d3_event, d) {
-                d3_event.preventDefault();
-
-                var container = parent.selectAll('.conflict-container');
-                var sign = (d === 'previous' ? -1 : 1);
-
-                container
-                    .selectAll('.conflict')
-                    .remove();
-
-                container
-                    .call(showConflict, index + sign);
-            });
-
+  conflicts.shownEntityIds = function() {
+    if (_conflictList && typeof _shownConflictIndex === 'number') {
+      return [_conflictList[_shownConflictIndex].id];
     }
+    return [];
+  };
 
 
-    function addChoices(selection) {
-        var choices = selection
-            .append('ul')
-            .attr('class', 'layer-list')
-            .selectAll('li')
-            .data(function(d) { return d.choices || []; });
-
-        // enter
-        var choicesEnter = choices.enter()
-            .append('li')
-            .attr('class', 'layer');
-
-        var labelEnter = choicesEnter
-            .append('label');
-
-        labelEnter
-            .append('input')
-            .attr('type', 'radio')
-            .attr('name', function(d) { return d.id; })
-            .on('change', function(d3_event, d) {
-                var ul = this.parentNode.parentNode.parentNode;
-                ul.__data__.chosen = d.id;
-                choose(d3_event, ul, d);
-            });
-
-        labelEnter
-            .append('span')
-            .html(function(d) { return d.text; });
-
-        // update
-        choicesEnter
-            .merge(choices)
-            .each(function(d) {
-                var ul = this.parentNode;
-                if (ul.__data__.chosen === d.id) {
-                    choose(null, ul, d);
-                }
-            });
-    }
-
-
-    function choose(d3_event, ul, datum) {
-        if (d3_event) d3_event.preventDefault();
-
-        d3_select(ul)
-            .selectAll('li')
-            .classed('active', function(d) { return d === datum; })
-            .selectAll('input')
-            .property('checked', function(d) { return d === datum; });
-
-        var extent = new Extent();
-        var entity;
-
-        entity = context.graph().hasEntity(datum.id);
-        if (entity) extent = extent.extend(entity.extent(context.graph()));
-
-        datum.action();
-
-        entity = context.graph().hasEntity(datum.id);
-        if (entity) extent = extent.extend(entity.extent(context.graph()));
-
-        showEntityID(datum.id, extent);
-    }
-
-
-    function showEntityID(id, extent) {
-        context.surface().selectAll('.hover')
-            .classed('hover', false);
-
-        var entity = context.graph().hasEntity(id);
-        if (entity) {
-            if (extent) {
-                context.systems.map.trimmedExtent(extent);
-            } else {
-                context.systems.map.fitEntitiesEase(entity);
-            }
-            context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
-                .classed('hover', true);
-        }
-    }
-
-
-    // The conflict list should be an array of objects like:
-    // {
-    //     id: id,
-    //     name: entityName(local),
-    //     details: merge.conflicts(),
-    //     chosen: 1,
-    //     choices: [
-    //         choice(id, keepMine, forceLocal),
-    //         choice(id, keepTheirs, forceRemote)
-    //     ]
-    // }
-    conflicts.conflictList = function(_) {
-        if (!arguments.length) return _conflictList;
-        _conflictList = _;
-        return conflicts;
-    };
-
-
-    conflicts.origChanges = function(_) {
-        if (!arguments.length) return _origChanges;
-        _origChanges = _;
-        return conflicts;
-    };
-
-
-    conflicts.shownEntityIds = function() {
-        if (_conflictList && typeof _shownConflictIndex === 'number') {
-            return [_conflictList[_shownConflictIndex].id];
-        }
-        return [];
-    };
-
-
-    return utilRebind(conflicts, dispatch, 'on');
+  return utilRebind(conflicts, dispatch, 'on');
 }

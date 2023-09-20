@@ -10,14 +10,15 @@ export function uiIntroArea(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.areas.title' };
   const container = context.container();
-  const editSystem = context.systems.editor;
-  const mapSystem = context.systems.map;
-  const presetSystem = context.systems.presets;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
 
   const playgroundExtent = new Extent([-85.63575, 41.94137], [-85.63526, 41.94180]);
-  const playgroundPreset = presetSystem.item('leisure/playground');
-  const nameField = presetSystem.field('name');
-  const descriptionField = presetSystem.field('description');
+  const playgroundPreset = presets.item('leisure/playground');
+  const nameField = presets.field('name');
+  const descriptionField = presets.field('description');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -28,7 +29,8 @@ export function uiIntroArea(context, curtain) {
 
   // Helper functions
   function _doesAreaExist() {
-    return _areaID && context.hasEntity(_areaID);
+    const graph = editor.current.graph;
+    return _areaID && graph.hasEntity(_areaID);
   }
 
   function _isAreaSelected() {
@@ -55,14 +57,14 @@ export function uiIntroArea(context, curtain) {
   // Click "Add Area" button to advance
   function addAreaAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('initial');
+    editor.resetToCheckpoint('initial');
     _areaID = null;
 
     const loc = playgroundExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -186,7 +188,8 @@ export function uiIntroArea(context, curtain) {
           if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === playgroundPreset) {
+            const graph = editor.current.graph;
+            if (presets.match(modified[0], graph) === playgroundPreset) {
               resolve(clickAddFieldAsync);
             } else {
               reject();  // didn't pick playground
@@ -249,7 +252,8 @@ export function uiIntroArea(context, curtain) {
 
         // It's possible for the user to add a description in a previous step..
         // If they did this already, just complete this chapter
-        const entity = context.entity(_areaID);
+        const graph = editor.current.graph;
+        const entity = graph.entity(_areaID);
         if (entity.tags.description) {
           resolve(playAsync);
           return;
@@ -401,7 +405,7 @@ export function uiIntroArea(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml(context, 'intro.areas.retry_add_field', { field: descriptionField.label() }),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(clickAddFieldAsync)
       });
     })
@@ -418,8 +422,8 @@ export function uiIntroArea(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-line',
-      tipHtml: helpHtml(context, 'intro.areas.play', { next: context.t('intro.lines.title') }),
-      buttonText: context.tHtml('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.areas.play', { next: l10n.t('intro.lines.title') }),
+      buttonText: l10n.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -433,13 +437,13 @@ export function uiIntroArea(context, curtain) {
     _onEditChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editSystem.on('change', _editChangeListener);
+    editor.on('change', _editChangeListener);
 
     runAsync(addAreaAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editSystem.off('change', _editChangeListener);
+        editor.off('change', _editChangeListener);
       });
 
     function _modeChangeListener(mode) {

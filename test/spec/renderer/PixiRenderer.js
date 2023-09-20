@@ -57,7 +57,8 @@ describe('PixiRenderer', () => {
     content = d3.select('body').append('div');
     context = Rapid.coreContext().assetPath('../dist/').init().container(content);
 
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const graph = editor.current.graph;
     graph.rebase(graphEntities, [graph], false);
     map = context.systems.map;
     content.call(map);

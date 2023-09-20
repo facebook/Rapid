@@ -27,6 +27,7 @@ export function operationPaste(context) {
     const action = actionCopyEntities(oldIDs, oldGraph);
     editor.perform(action);
 
+    const currGraph = editor.current.graph;
     let copies = action.copies();
     let originals = new Set();
     Object.values(copies).forEach(function(entity) { originals.add(entity.id); });
@@ -38,7 +39,7 @@ export function operationPaste(context) {
       extent = extent.extend(oldEntity.extent(oldGraph));
 
       // Exclude child nodes from newIDs if their parent way was also copied.
-      const parents = context.graph().parentWays(newEntity);
+      const parents = currGraph.parentWays(newEntity);
       const parentCopied = parents.some(parent => originals.has(parent.id));
 
       if (!parentCopied) {
@@ -89,13 +90,13 @@ export function operationPaste(context) {
 
   operation.annotation = function() {
     const ids = context.copyIDs;
-    return context.t('operations.paste.annotation', { n: ids.length });
+    return l10n.t('operations.paste.annotation', { n: ids.length });
   };
 
 
   operation.id = 'paste';
   operation.keys = [ uiCmd('⌘V') ];
-  operation.title = context.t('operations.paste.title');
+  operation.title = l10n.t('operations.paste.title');
 
   return operation;
 }

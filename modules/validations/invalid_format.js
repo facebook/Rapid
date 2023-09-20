@@ -57,9 +57,10 @@ export function validationFormatting(context) {
           subtype: 'website',
           severity: 'warning',
           message: function() {
-            const entity = context.hasEntity(this.entityIds[0]);
+            const graph = editor.current.graph;
+            const entity = graph.hasEntity(this.entityIds[0]);
             return entity ? l10n.tHtml('issues.invalid_format.website.message' + this.data,
-              { feature: l10n.displayLabel(entity, context.graph()), site: websites.join(', ') }) : '';
+              { feature: l10n.displayLabel(entity, graph), site: websites.join(', ') }) : '';
           },
           reference: showReferenceWebsite,
           entityIds: [entity.id],
@@ -83,7 +84,7 @@ export function validationFormatting(context) {
           subtype: 'email',
           severity: 'warning',
           message: function() {
-            const graph = editor.graph();  // use the current graph
+            const graph = editor.current.graph;
             const entity = graph.hasEntity(this.entityIds[0]);
             return entity ? l10n.tHtml('issues.invalid_format.email.message' + this.data,
                 { feature: l10n.displayLabel(entity, graph), email: emails.join(', ') }) : '';

@@ -53,7 +53,7 @@ export function uiEntityEditor(context) {
   function entityEditor(selection) {
     _selection = selection;
 
-    const combinedTags = _getCombinedTags(_entityIDs, editor.graph());
+    const combinedTags = _getCombinedTags(_entityIDs, editor.current.graph);
     const isRTL = l10n.isRTL();
 
     // Header
@@ -143,7 +143,7 @@ export function uiEntityEditor(context) {
 
     // always reload these even if the entityIDs are unchanged, since we
     // could be reselecting after something like dragging a node
-    _startGraph = editor.graph();
+    _startGraph = editor.current.graph;
     _coalesceChanges = false;
 
     if (val && _entityIDs && utilArrayIdentical(_entityIDs, val)) return entityEditor;  // exit early if no change
@@ -188,17 +188,18 @@ export function uiEntityEditor(context) {
     if (_selection.selectAll('.entity-editor').empty()) return;
     if (_state === 'hide') return;
 
+    const currGraph = editor.current.graph;
+
     const significant = !difference || difference.didChange.properties || difference.didChange.addition || difference.didChange.deletion;
     if (!significant) return;
 
-    _entityIDs = _entityIDs.filter(context.hasEntity);
+    _entityIDs = _entityIDs.filter(entityID => currGraph.hasEntity(entityID));
     if (!_entityIDs.length) return;
 
     const prevPreset = _activePresets.length === 1 && _activePresets[0];
     _loadActivePresets();
     const currPreset = _activePresets.length === 1 && _activePresets[0];
 
-    const currGraph = editor.graph();
     entityEditor.modified(_startGraph !== currGraph);
     _selection.call(entityEditor);  // rerender
 
@@ -221,8 +222,9 @@ export function uiEntityEditor(context) {
   function _changeTags(entityIDs, changed, onInput) {
     let actions = [];
 
+    const graph = editor.current.graph;
     for (const entityID of entityIDs) {
-      const entity = context.hasEntity(entityID);
+      const entity = graph.hasEntity(entityID);
       if (!entity) continue;
 
       let tags = Object.assign({}, entity.tags);   // shallow copy
@@ -279,11 +281,14 @@ export function uiEntityEditor(context) {
   function _revertTags(keys) {
     let actions = [];
 
-    for (const entityID of _entityIDs) {
-      const entity = context.entity(entityID);
-      let tags = Object.assign({}, entity.tags);   // shallow copy
+    const currGraph = editor.current.graph;
+    const baseGraph = editor.base.graph;
 
-      const original = editor.graph().base.entities.get(entityID);
+    for (const entityID of _entityIDs) {
+      const original = baseGraph.hasEntity(entityID);
+      const current = currGraph.entity(entityID);
+      let tags = Object.assign({}, current.tags);   // shallow copy
+
       let changed = {};
       for (const key of keys) {
         changed[key] = original?.tags[key] ?? undefined;
@@ -298,7 +303,7 @@ export function uiEntityEditor(context) {
 
       tags = utilCleanTags(tags);
 
-      if (!deepEqual(entity.tags, tags)) {
+      if (!deepEqual(current.tags, tags)) {
         actions.push(actionChangeTags(entityID, tags));
       }
     }
@@ -329,7 +334,7 @@ export function uiEntityEditor(context) {
    *
    */
   function _loadActivePresets(isForNewSelection) {
-    const graph = editor.graph();
+    const graph = editor.current.graph;
 
     // If multiple entities, try to pick a preset that matches most of them
     const counts = {};

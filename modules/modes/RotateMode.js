@@ -135,7 +135,7 @@ export class RotateMode extends AbstractMode {
     let fn;
     // If prevGraph doesn't match, either we haven't started rotating, or something has
     // occurred during the rotate that interrupted it, so reset pivot and start a new rotation
-    if (this._prevGraph !== context.graph()) {
+    if (this._prevGraph !== editor.current.graph) {
       this._pivotLoc = this._calcPivotLoc();
       fn = editor.perform;   // start a rotation
     } else {
@@ -172,7 +172,7 @@ export class RotateMode extends AbstractMode {
       const SPEED = 0.3;
       const angle = degrees * (Math.PI / 180) * SPEED;
       fn(actionRotate(this._entityIDs, pivotPoint, angle, context.projection));
-      this._prevGraph = context.graph();
+      this._prevGraph = editor.current.graph;
     }
     this._lastPoint = currPoint.slice();  // copy
 
@@ -182,15 +182,16 @@ export class RotateMode extends AbstractMode {
     // if (this._lastAngle !== null) {
     //   const angle = currAngle - this._lastAngle;
     //   fn(actionRotate(entityIDs, pivotPoint, angle, context.projection));
-    //   this._prevGraph = context.graph();
+    //   this._prevGraph = editor.current.graph;
     // }
     // this._lastAngle = currAngle;
 
 
-    // Update selected/active collections to contain the moved entities
+    // Update selected/active collections to contain the current moved entities
     this._selectedData.clear();
+    const currGraph = editor.current.graph;
     for (const entityID of this._entityIDs) {
-      this._selectedData.set(entityID, context.entity(entityID));
+      this._selectedData.set(entityID, currGraph.entity(entityID));
     }
   }
 
@@ -201,8 +202,10 @@ export class RotateMode extends AbstractMode {
    * @return  Array [lon,lat]
    */
   _calcPivotLoc() {
-    const projection = this.context.projection;
-    const nodes = utilGetAllNodes(this._entityIDs, this.context.graph());
+    const context = this.context;
+    const projection = context.projection;
+    const graph = context.systems.editor.current.graph;
+    const nodes = utilGetAllNodes(this._entityIDs, graph);
     const points = nodes.map(node => projection.project(node.loc));
 
     // Calculate in projected coordinates [x,y]
@@ -233,11 +236,13 @@ export class RotateMode extends AbstractMode {
   _finish() {
     const context = this.context;
     const editor = context.systems.editor;
+    const graph = editor.current.graph;
+    const l10n = context.systems.l10n;
 
     if (this._prevGraph) {
       const annotation = (this._entityIDs.length === 1) ?
-        context.t('operations.rotate.annotation.' + editor.graph().geometry(this._entityIDs[0])) :
-        context.t('operations.rotate.annotation.feature', { n: this._entityIDs.length });
+        l10n.t('operations.rotate.annotation.' + graph.geometry(this._entityIDs[0])) :
+        l10n.t('operations.rotate.annotation.feature', { n: this._entityIDs.length });
 
       editor.replace(actionNoop(), annotation);   // annotate the rotation
     }

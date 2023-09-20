@@ -19,8 +19,10 @@ export {
 
 
 export function uiFieldCombo(context, uifield) {
-    const dispatch = d3_dispatch('change');
-    const presetField = uifield.presetField;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const dispatch = d3_dispatch('change');
+  const presetField = uifield.presetField;
 
     var _isMulti = (uifield.type === 'multiCombo' || uifield.type === 'manyCombo');
     var _isNetwork = (uifield.type === 'networkCombo');
@@ -150,6 +152,8 @@ export function uiFieldCombo(context, uifield) {
 
     function setTaginfoValues(q, callback) {
         const taginfo = context.services.taginfo;
+        const graph = editor.current.graph;
+
         if (!taginfo) {
           _comboData = [];
           if (callback) callback(_comboData);
@@ -170,7 +174,7 @@ export function uiFieldCombo(context, uifield) {
         };
 
         if (_entityIDs.length) {
-            params.geometry = context.graph().geometry(_entityIDs[0]);
+            params.geometry = graph.geometry(_entityIDs[0]);
         }
 
         fn(params, function(err, data) {
@@ -224,7 +228,7 @@ export function uiFieldCombo(context, uifield) {
 
     function setPlaceholder(values) {
         if (_isMulti || _isSemi) {
-            _staticPlaceholder = uifield.placeholder || context.t('inspector.add');
+            _staticPlaceholder = uifield.placeholder || l10n.t('inspector.add');
         } else {
             var vals = values
                 .map(function(d) { return d.value; })
@@ -240,7 +244,7 @@ export function uiFieldCombo(context, uifield) {
 
         var ph;
         if (!_isMulti && !_isSemi && _tags && Array.isArray(_tags[uifield.key])) {
-            ph = context.t('inspector.multiple_values');
+            ph = l10n.t('inspector.multiple_values');
         } else {
             ph =  _staticPlaceholder;
         }
@@ -537,7 +541,7 @@ export function uiFieldCombo(context, uifield) {
                     return d.isMixed;
                 })
                 .attr('title', function(d) {
-                    return d.isMixed ? context.t('inspector.unshared_value_tooltip') : null;
+                    return d.isMixed ? l10n.t('inspector.unshared_value_tooltip') : null;
                 });
 
             if (allowDragAndDrop) {
@@ -572,7 +576,7 @@ export function uiFieldCombo(context, uifield) {
                 .classed('known-value', isKnownValue)
                 .attr('readonly', isReadOnly ? 'readonly' : undefined)
                 .attr('title', isMixed ? mixedValues.join('\n') : undefined)
-                .attr('placeholder', isMixed ? context.t('inspector.multiple_values') : _staticPlaceholder || '')
+                .attr('placeholder', isMixed ? l10n.t('inspector.multiple_values') : _staticPlaceholder || '')
                 .classed('mixed', isMixed)
                 .on('keydown.deleteCapture', function(d3_event) {
                     if (isReadOnly &&

@@ -19,8 +19,10 @@ export class UiPanelBackground extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'background';
-    this.label = context.tHtml('info_panels.background.title');
-    this.key = context.t('info_panels.background.key');
+
+    const l10n = context.systems.l10n;
+    this.label = l10n.tHtml('info_panels.background.title');
+    this.key = l10n.t('info_panels.background.key');
 
     this._selection = d3_select(null);
     this._currSourceID = null;
@@ -84,6 +86,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     const context = this.context;
     const selection = this._selection;
     const imagery = context.systems.imagery;
+    const l10n = context.systems.l10n;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -111,7 +114,7 @@ export class UiPanelBackground extends AbstractUiPanel {
         .append('li')
         .attr('class', `background-info-list-${k}`)
         .classed('hide', !this._metadata[k])
-        .html(context.tHtml(`info_panels.background.${k}`) + ':')
+        .html(l10n.tHtml(`info_panels.background.${k}`) + ':')
         .append('span')
         .attr('class', `background-info-span-${k}`)
         .text(this._metadata[k]);
@@ -124,7 +127,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     selection
       .append('a')
-      .html(context.tHtml(`info_panels.background.${toggleTiles}`))
+      .html(l10n.tHtml(`info_panels.background.${toggleTiles}`))
       .attr('href', '#')
       .attr('class', 'button button-toggle-tiles')
       .on('click', e => {
@@ -144,6 +147,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     const context = this.context;
     const selection = this._selection;
     const imagery = context.systems.imagery;
+    const l10n = context.systems.l10n;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -188,7 +192,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
       // update vintage
       const vintage = result.vintage;
-      this._metadata.vintage = (vintage && vintage.range) || context.t('info_panels.background.unknown');
+      this._metadata.vintage = (vintage && vintage.range) || l10n.t('info_panels.background.unknown');
       selection.selectAll('.background-info-list-vintage')
         .classed('hide', false)
         .selectAll('.background-info-span-vintage')

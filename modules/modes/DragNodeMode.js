@@ -49,6 +49,7 @@ export class DragNodeMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const filters = context.systems.filters;
+    const l10n = context.systems.l10n;
     const ui = context.systems.ui;
 
     const selection = options.selection;
@@ -68,12 +69,12 @@ export class DragNodeMode extends AbstractMode {
 
     if (!this._wasMidpoint) {
       // Bail out if the node is connected to something hidden.
-      const hasHidden = filters.hasHiddenConnections(entity, context.graph());
+      const hasHidden = filters.hasHiddenConnections(entity, editor.current.graph);
       if (hasHidden) {
         ui.flash
           .duration(4000)
           .iconName('#rapid-icon-no')
-          .label(context.t('modes.drag_node.connected_to_hidden'))();
+          .label(l10n.t('modes.drag_node.connected_to_hidden'))();
         return false;
       }
     }
@@ -85,7 +86,7 @@ export class DragNodeMode extends AbstractMode {
       const midpoint = { loc: entity.loc, edge: [ entity.a.id, entity.b.id ] };
       entity = osmNode();
       editor.perform(actionAddMidpoint(midpoint, entity));
-      entity = context.entity(entity.id);   // refresh with post-action entity
+      entity = editor.current.graph.entity(entity.id);  // refresh with post-action entity
     } else {
       editor.perform(actionNoop());
     }
@@ -96,7 +97,7 @@ export class DragNodeMode extends AbstractMode {
     // Set the 'drawing' class so that the dragNode and any parent ways won't emit events
     const scene = context.scene();
     scene.classData('osm', this.dragNode.id, 'drawing');
-    for (const parent of editor.graph().parentWays(this.dragNode)) {
+    for (const parent of editor.current.graph.parentWays(this.dragNode)) {
       scene.classData('osm', parent.id, 'drawing');
     }
 
@@ -157,7 +158,7 @@ export class DragNodeMode extends AbstractMode {
   _refreshEntities() {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.graph();
+    const graph = editor.current.graph;
 
     this._selectedData.clear();
     this.dragNode = this.dragNode && graph.hasEntity(this.dragNode.id);
@@ -184,7 +185,7 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const locations = context.systems.locations;
 
-    const graph = editor.graph();
+    const graph = editor.current.graph;
     const projection = context.projection;
     const coord = eventData.coord;
 
@@ -245,7 +246,8 @@ export class DragNodeMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.graph();
+    const l10n = context.systems.l10n;
+    let graph = editor.current.graph;
     const isPoint = this.dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
@@ -281,14 +283,15 @@ export class DragNodeMode extends AbstractMode {
       }
 
     } else if (this._wasMidpoint) {
-      editor.replace(actionNoop(), context.t('operations.add.annotation.vertex'));
+      editor.replace(actionNoop(), l10n.t('operations.add.annotation.vertex'));
 
     } else {
       editor.replace(actionNoop(), this._moveAnnotation());
     }
 
     // Choose next mode
-    if (isPoint && context.hasEntity(this.dragNode.id)) {
+    graph = editor.current.graph;  // post-action
+    if (isPoint && graph.hasEntity(this.dragNode.id)) {
       context.enter('select-osm', { selectedIDs: [this.dragNode.id] });
     } else if (this._reselectIDs.length) {
       context.enter('select-osm', { selectedIDs: this._reselectIDs });
@@ -305,8 +308,10 @@ export class DragNodeMode extends AbstractMode {
     if (!this.dragNode) return undefined;
 
     const context = this.context;
-    const geometry = this.dragNode.geometry(context.graph());
-    return context.t(`operations.move.annotation.${geometry}`);
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+    const geometry = this.dragNode.geometry(editor.current.graph);
+    return l10n.t(`operations.move.annotation.${geometry}`);
   }
 
 
@@ -318,7 +323,8 @@ export class DragNodeMode extends AbstractMode {
     if (!this.dragNode || !target) return undefined;
 
     const context = this.context;
-    const graph = context.graph();
+    const graph = context.systems.editor.current.graph;
+    const l10n = context.systems.l10n;
     const nodeGeometry = this.dragNode.geometry(graph);
     const targetGeometry = target.geometry(graph);
 
@@ -330,12 +336,12 @@ export class DragNodeMode extends AbstractMode {
       if (sharedParentWays.length !== 0) {
         // if the nodes are next to each other, they are merged
         if (sharedParentWays[0].areAdjacent(this.dragNode.id, target.id)) {
-          return context.t('operations.connect.annotation.from_vertex.to_adjacent_vertex');
+          return l10n.t('operations.connect.annotation.from_vertex.to_adjacent_vertex');
         }
-        return context.t('operations.connect.annotation.from_vertex.to_sibling_vertex');
+        return l10n.t('operations.connect.annotation.from_vertex.to_sibling_vertex');
       }
     }
-    return context.t(`operations.connect.annotation.from_${nodeGeometry}.to_${targetGeometry}`);
+    return l10n.t(`operations.connect.annotation.from_${nodeGeometry}.to_${targetGeometry}`);
   }
 
 
@@ -346,10 +352,12 @@ export class DragNodeMode extends AbstractMode {
   _canSnapToNode(target) {
     if (!this.dragNode) return false;
 
-    const graph = this.context.graph();
-    const presetSystem = this.context.systems.presets;
+    const context = this.context;
+    const graph = context.systems.editor.current.graph;
+    const presets = context.systems.presets;
+
     return this.dragNode.geometry(graph) !== 'vertex' ||
-      (target.geometry(graph) === 'vertex' || presetSystem.allowsVertex(target, graph));
+      (target.geometry(graph) === 'vertex' || presets.allowsVertex(target, graph));
   }
 
 
@@ -363,4 +371,3 @@ export class DragNodeMode extends AbstractMode {
   }
 
 }
-

@@ -43,15 +43,14 @@ export class EditSystem extends AbstractSystem {
     this._mutex = utilSessionMutex('lock');
     this._hasRestorableChanges = false;
 
+    this._stack = [];          // stack of edits
+    this._index = 0;           // index of the current edit
     this._checkpoints = {};
     this._pausedGraph = false;
-    this._stack = [];
     this._tree = null;
-    this._index = 0;
     this._initPromise = null;
 
     // Make sure the event handlers have `this` bound correctly
-    this.graph = this.graph.bind(this);
     this.perform = this.perform.bind(this);
     this.replace = this.replace.bind(this);
     this.overwrite = this.overwrite.bind(this);
@@ -122,18 +121,28 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  graph() {
-    return this._stack[this._index].graph;
+  /**
+   * base
+   * @return {Edit} The base Edit in the stack
+   */
+  get base() {
+    return this._stack[0];
   }
 
+  /**
+   * current
+   * @return {Edit} The current Edit in the stack
+   */
+  get current() {
+    return this._stack[this._index];
+  }
 
-  tree() {
+  /**
+   * tree
+   * @return {Tree} The Tree (spatial index)
+   */
+  get tree() {
     return this._tree;
-  }
-
-
-  base() {
-    return this._stack[0].graph;
   }
 
 
@@ -165,8 +174,8 @@ export class EditSystem extends AbstractSystem {
    *  @param  seenIDs?   Optional - All entity IDs on the tile (including previously seen ones)
    */
   merge(entities, seenIDs) {
-    const baseGraph = this.base();
-    const headGraph = this.graph();
+    const baseGraph = this.base.graph;
+    const headGraph = this.current.graph;
 
     if (!(seenIDs instanceof Set)) {
       seenIDs = new Set(entities.map(entity => entity.id));
@@ -435,7 +444,7 @@ export class EditSystem extends AbstractSystem {
   toIntroGraph() {
     let nextID = { n: 0, r: 0, w: 0 };
     let permIDs = {};
-    let graph = this.graph();
+    let graph = this.current.graph;
     let result = new Map();   // Map(entityID -> Entity)
 
     // Copy base entities..
@@ -510,7 +519,7 @@ export class EditSystem extends AbstractSystem {
   toJSON() {
     if (!this.hasChanges()) return;
 
-    const baseGraph = this.base();       // The initial unedited graph
+    const baseGraph = this.base.graph;   // The initial unedited graph
     const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
     const baseEntities = new Map();      // Map(entityID -> Entity)
     const stackData = [];
@@ -593,7 +602,7 @@ export class EditSystem extends AbstractSystem {
     const context = this.context;
     const map = context.systems.map;
 
-    const baseGraph = this.base();   // The initial unedited graph
+    const baseGraph = this.base.graph;   // The initial unedited graph
     const hist = JSON.parse(json);
     let loadComplete = true;
 
@@ -872,7 +881,7 @@ export class EditSystem extends AbstractSystem {
 
   // determine difference and dispatch a change event
   _change(previous) {
-    const difference = new Difference(previous, this.graph());
+    const difference = new Difference(previous, this.current.graph);
     if (!this._pausedGraph) {
       this.emit('change', difference);
     }

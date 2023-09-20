@@ -56,7 +56,7 @@ export function validationSuspiciousName(context) {
       subtype: 'generic_name',
       severity: 'warning',
       message: function() {
-        const graph = editor.graph();  // use the current graph
+        const graph = editor.current.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
         if (!entity) return '';
         const preset = presets.match(entity, graph);
@@ -74,7 +74,7 @@ export function validationSuspiciousName(context) {
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_the_name.title'),
             onClick: function() {
-              const graph = editor.graph();  // use the current graph
+              const graph = editor.current.graph;
               const entityID = this.issue.entityIds[0];
               const entity = graph.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy
@@ -104,7 +104,7 @@ export function validationSuspiciousName(context) {
       subtype: 'not_name',
       severity: 'warning',
       message: function() {
-        const graph = editor.graph();  // use the current graph
+        const graph = editor.current.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
         if (!entity) return '';
         const preset = presets.match(entity, graph);
@@ -122,7 +122,7 @@ export function validationSuspiciousName(context) {
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_the_name.title'),
             onClick: function() {
-              const graph = editor.graph();  // use the current graph
+              const graph = editor.current.graph;
               const entityID = this.issue.entityIds[0];
               const entity = graph.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy

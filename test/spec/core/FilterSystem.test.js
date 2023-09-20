@@ -16,14 +16,19 @@ describe('FilterSystem', () => {
     on()          { return this; }
   }
 
+  class MockEditSystem {
+    constructor() {}
+    get current() { return { graph: new Rapid.Graph() }; }
+  }
+
   class MockContext {
     constructor()   {
       this.systems = {
+        editor:  new MockEditSystem(),
         storage: new MockStorageSystem(),
         urlhash: new MockUrlHashSystem()
       };
-     }
-    hasEntity()  { return null; }
+    }
   }
 
 

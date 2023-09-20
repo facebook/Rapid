@@ -5,21 +5,25 @@ import { utilTotalExtent } from '../util/util';
 
 
 export function operationRotate(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const graph = editor.current.graph;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
-  const nodes = utilGetAllNodes(selectedIDs, context.graph());
+  const extent = utilTotalExtent(entities, graph);
+  const nodes = utilGetAllNodes(selectedIDs, graph);
   const coords = nodes.map(node => node.loc);
 
 
   let operation = function() {
+    const graph = editor.current.graph;
     const selection = new Map();
     for (const entityID of selectedIDs) {
-      selection.set(entityID, context.entity(entityID));
+      selection.set(entityID, graph.entity(entityID));
     }
     context.enter('rotate', { selection: selection });
   };
@@ -31,6 +35,8 @@ export function operationRotate(context, selectedIDs) {
 
 
   operation.disabled = function() {
+    const graph = editor.current.graph;
+
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (!isNew && notDownloaded()) {
@@ -65,7 +71,7 @@ export function operationRotate(context, selectedIDs) {
 
     // If fhe selection involves a relation that has not been completely downloaded
     function incompleteRelation(entity) {
-      return entity.type === 'relation' && !entity.isComplete(context.graph());
+      return entity.type === 'relation' && !entity.isComplete(graph);
     }
   };
 
@@ -73,21 +79,22 @@ export function operationRotate(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.rotate.${disabledReason}.${multi}`) :
-      context.t(`operations.rotate.description.${multi}`);
+      l10n.t(`operations.rotate.${disabledReason}.${multi}`) :
+      l10n.t(`operations.rotate.description.${multi}`);
   };
 
 
   operation.annotation = function() {
+    const graph = editor.current.graph;
     return selectedIDs.length === 1 ?
-      context.t('operations.rotate.annotation.' + context.graph().geometry(selectedIDs[0])) :
-      context.t('operations.rotate.annotation.feature', { n: selectedIDs.length });
+      l10n.t('operations.rotate.annotation.' + graph.geometry(selectedIDs[0])) :
+      l10n.t('operations.rotate.annotation.feature', { n: selectedIDs.length });
   };
 
 
   operation.id = 'rotate';
-  operation.keys = [ context.t('operations.rotate.key') ];
-  operation.title = context.t('operations.rotate.title');
+  operation.keys = [ l10n.t('operations.rotate.key') ];
+  operation.title = l10n.t('operations.rotate.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   operation.mouseOnly = true;

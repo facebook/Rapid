@@ -3,14 +3,14 @@ describe('uiSectionRawTagEditor', () => {
 
   class MockLocalizationSystem {
     constructor() { }
-    isRTL()  { return false; }
-    t()      { return ''; }
-    tHtml()  { return ''; }
+    isRTL()       { return false; }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
   }
 
   class MockStorageSystem {
     constructor() { }
-    getItem() { return null; }
+    getItem()     { return null; }
   }
 
   class MockContext {

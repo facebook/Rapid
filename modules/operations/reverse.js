@@ -4,6 +4,7 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 export function operationReverse(context, selectedIDs) {
   const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const validator = context.systems.validator;
 
   const actions = selectedIDs.map(getAction).filter(Boolean);
@@ -11,22 +12,24 @@ export function operationReverse(context, selectedIDs) {
 
 
   function getAction(entityID) {
-    const entity = context.hasEntity(entityID);
+    const graph = editor.current.graph;
+    const entity = graph.hasEntity(entityID);
     if (!entity) return null;
 
-    const geometry = entity.geometry(context.graph());
+    const geometry = entity.geometry(graph);
     if (entity.type !== 'node' && geometry !== 'line') return null;
 
     const action = actionReverse(entityID);
-    if (action.disabled(context.graph())) return null;
+    if (action.disabled(graph)) return null;
 
     return action;
   }
 
 
   function getReverseType() {
+    const graph = editor.current.graph;
     const nodeActionCount = actions.filter(action => {
-      const entity = context.hasEntity(action.entityID());
+      const entity = graph.hasEntity(action.entityID());
       return entity?.type === 'node';
     }).length;
 
@@ -63,18 +66,18 @@ export function operationReverse(context, selectedIDs) {
 
 
   operation.tooltip = function() {
-    return context.t(`operations.reverse.description.${reverseType}`);
+    return l10n.t(`operations.reverse.description.${reverseType}`);
   };
 
 
   operation.annotation = function() {
-    return context.t(`operations.reverse.annotation.${reverseType}`, { n: actions.length });
+    return l10n.t(`operations.reverse.annotation.${reverseType}`, { n: actions.length });
   };
 
 
   operation.id = 'reverse';
-  operation.keys = [ context.t('operations.reverse.key') ];
-  operation.title = context.t('operations.reverse.title');
+  operation.keys = [ l10n.t('operations.reverse.key') ];
+  operation.title = l10n.t('operations.reverse.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

@@ -17,18 +17,23 @@ import { uiRapidFeatureInspector } from './rapid_feature_inspector';
 
 
 export function uiSidebar(context) {
-    var inspector = uiInspector(context);
-    var rapidInspector = uiRapidFeatureInspector(context);
-    var dataEditor = uiDataEditor(context);
-    var noteEditor = uiNoteEditor(context);
-    var improveOsmEditor = uiImproveOsmEditor(context);
-    var keepRightEditor = uiKeepRightEditor(context);
-    var osmoseEditor = uiOsmoseEditor(context);
-    var _current;
-    var _wasRapid = false;
-    var _wasData = false;
-    var _wasNote = false;
-    var _wasQaItem = false;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const ui = context.systems.ui;
+
+  const inspector = uiInspector(context);
+  const rapidInspector = uiRapidFeatureInspector(context);
+  const dataEditor = uiDataEditor(context);
+  const noteEditor = uiNoteEditor(context);
+  const improveOsmEditor = uiImproveOsmEditor(context);
+  const keepRightEditor = uiKeepRightEditor(context);
+  const osmoseEditor = uiOsmoseEditor(context);
+
+  let _current;
+  let _wasRapid = false;
+  let _wasData = false;
+  let _wasNote = false;
+  let _wasQaItem = false;
 
 
     function sidebar(selection) {
@@ -92,7 +97,7 @@ export function uiSidebar(context) {
 
             lastClientX = d3_event.clientX;
 
-            var isRTL = context.systems.l10n.isRTL();
+            var isRTL = l10n.isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -110,7 +115,7 @@ export function uiSidebar(context) {
                         .style(xMarginProperty, '-400px')
                         .style('width', '400px');
 
-                    context.systems.ui.resize([(sidebarWidth - dx) * scaleX, 0]);
+                    ui.resize([(sidebarWidth - dx) * scaleX, 0]);
                 }
 
             } else {
@@ -120,9 +125,9 @@ export function uiSidebar(context) {
                     .style('width', widthPct + '%');
 
                 if (isCollapsed) {
-                    context.systems.ui.resize([-sidebarWidth * scaleX, 0]);
+                    ui.resize([-sidebarWidth * scaleX, 0]);
                 } else {
-                    context.systems.ui.resize([-dx * scaleX, 0]);
+                    ui.resize([-dx * scaleX, 0]);
                 }
             }
         }
@@ -169,7 +174,9 @@ export function uiSidebar(context) {
         sidebar.hoverModeSelect = _throttle(hoverModeSelect, 200);
 
         function hover(targets) {
-            var datum = targets && targets.length && targets[0];
+            const graph = editor.current.graph;
+            let datum = targets && targets.length && targets[0];
+
             if (datum && datum.__featurehash__) { // hovering on data
                 _wasData = true;
                 sidebar
@@ -231,7 +238,7 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
-            } else if (!_current && (datum instanceof osmEntity) && context.hasEntity(datum)) {
+            } else if (!_current && (datum instanceof osmEntity) && graph.hasEntity(datum)) {
                 featureListWrap
                     .classed('inspector-hidden', true);
 
@@ -285,10 +292,11 @@ export function uiSidebar(context) {
             sidebar.hide();
 
             if (ids && ids.length) {
-                var entity = ids.length === 1 && context.entity(ids[0]);
+                const graph = editor.current.graph;
+                const entity = ids.length === 1 && graph.entity(ids[0]);
                 if (entity && newFeature && selection.classed('collapsed')) {
                     // uncollapse the sidebar
-                    var extent = entity.extent(context.graph());
+                    var extent = entity.extent(graph);
                     sidebar.expand(sidebar.intersects(extent));
                 }
 
@@ -366,7 +374,7 @@ export function uiSidebar(context) {
 
             var isCollapsed = selection.classed('collapsed');
             var isCollapsing = !isCollapsed;
-            var isRTL = context.systems.l10n.isRTL();
+            var isRTL = l10n.isRTL();
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -397,7 +405,7 @@ export function uiSidebar(context) {
                     return function(t) {
                         var dx = lastMargin - Math.round(i(t));
                         lastMargin = lastMargin - dx;
-                        context.systems.ui.resize(moveMap ? undefined : [dx * scaleX, 0]);
+                        ui.resize(moveMap ? undefined : [dx * scaleX, 0]);
                     };
                 })
                 .on('end', function() {

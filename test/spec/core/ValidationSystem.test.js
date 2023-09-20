@@ -15,17 +15,29 @@ describe('ValidationSystem', () => {
     setItem()     { }
   }
 
+  class MockImagerySystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    imageryUsed() { return ''; }
+  }
+
   class MockLocalizationSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    t()           { return ''; }
-    tHtml()       { return ''; }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
   }
 
   class MockMapSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     extent()      { return new sdk.Extent(); }
+  }
+
+  class MockPhotoSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    photosUsed()  { return ''; }
   }
 
   class MockUrlSystem {
@@ -42,16 +54,17 @@ describe('ValidationSystem', () => {
       this.systems = {
         dataloader: new Rapid.DataLoaderSystem(this),
         editor:     new Rapid.EditSystem(this),
+        imagery:    new MockImagerySystem(),
         l10n:       new MockLocalizationSystem(),
         map:        new MockMapSystem(),
+        photos:     new MockPhotoSystem(),
         presets:    new MockSystem(),
         rapid:      new MockSystem(),
         storage:    new MockStorageSystem(),
         urlhash:    new MockUrlSystem()
       };
-      this.graph = this.systems.editor.graph;
-      this.hasEntity = (id) => this.systems.editor.graph().hasEntity(id);
-     }
+    }
+    scene()       { return { layers: new Map() }; }
     selectedIDs() { return []; }
     on() {}
   }

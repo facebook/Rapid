@@ -134,7 +134,7 @@ export class MoveMode extends AbstractMode {
     let fn;
     // If prevGraph doesn't match, either we haven't started moving, or something has
     // occurred during the move that interrupted it, so reset vars and start a new move
-    if (this._prevGraph !== context.graph()) {
+    if (this._prevGraph !== editor.current.graph) {
       this._startLoc = mapSystem.mouseLoc();
       this._movementCache = {};
       fn = editor.perform;     // start moving
@@ -153,12 +153,12 @@ export class MoveMode extends AbstractMode {
     const delta = vecSubtract(currPoint, startPoint);
 
     fn(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
-    this._prevGraph = context.graph();
+    const currGraph = this._prevGraph = editor.current.graph;  // after move
 
     // Update selected/active collections to contain the moved entities
     this._selectedData.clear();
     for (const entityID of this._entityIDs) {
-      this._selectedData.set(entityID, context.entity(entityID));
+      this._selectedData.set(entityID, currGraph.entity(entityID));
     }
   }
 
@@ -170,11 +170,12 @@ export class MoveMode extends AbstractMode {
   _finish() {
     const context = this.context;
     const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
 
     if (this._prevGraph) {
       const annotation = (this._entityIDs.length === 1) ?
-        context.t('operations.move.annotation.' + editor.graph().geometry(this._entityIDs[0])) :
-        context.t('operations.move.annotation.feature', { n: this._entityIDs.length });
+        l10n.t('operations.move.annotation.' + editor.current.graph.geometry(this._entityIDs[0])) :
+        l10n.t('operations.move.annotation.feature', { n: this._entityIDs.length });
 
       editor.replace(actionNoop(), annotation);   // annotate the move
     }

@@ -6,24 +6,27 @@ import { utilTotalExtent } from '../util';
 
 
 export function operationCopy(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const graph = editor.current.graph;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
 
   const entities = selectedIDs
-    .map(entityID => context.hasEntity(entityID))
+    .map(entityID => graph.hasEntity(entityID))
     .filter(entity => {
       // don't copy untagged vertices separately from ways
-      return entity && (entity.hasInterestingTags() || entity.geometry(context.graph()) !== 'vertex');
+      return entity && (entity.hasInterestingTags() || entity.geometry(graph) !== 'vertex');
     });
 
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
+  const extent = utilTotalExtent(entities, graph);
 
 
   let _point;
 
   let operation = function() {
-    const graph = context.graph();
+    const graph = editor.current.graph;
     let selected = Object.assign({ relation: [], way: [], node: [] }, utilArrayGroupBy(entities, 'type'));
     let canCopy = [];
     let skip = {};
@@ -116,13 +119,13 @@ export function operationCopy(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.copy.${disabledReason}`, { n: selectedIDs.length }) :
-      context.t('operations.copy.description', { n: selectedIDs.length });
+      l10n.t(`operations.copy.${disabledReason}`, { n: selectedIDs.length }) :
+      l10n.t('operations.copy.description', { n: selectedIDs.length });
   };
 
 
   operation.annotation = function() {
-    return context.t('operations.copy.annotation', { n: selectedIDs.length });
+    return l10n.t('operations.copy.annotation', { n: selectedIDs.length });
   };
 
 
@@ -134,7 +137,7 @@ export function operationCopy(context, selectedIDs) {
 
   operation.id = 'copy';
   operation.keys = [ uiCmd('⌘C') ];
-  operation.title = context.t('operations.copy.title');
+  operation.title = l10n.t('operations.copy.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

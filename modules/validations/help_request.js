@@ -14,7 +14,7 @@ export function validationHelpRequest(context) {
     if (entity.version === undefined) return [];
 
     if (entity.v !== undefined) {
-      const baseEntity = editor.base().hasEntity(entity.id);
+      const baseEntity = editor.base.graph.hasEntity(entity.id);
       // don't flag fixmes added by the user on existing features
       if (!baseEntity || !baseEntity.tags.fixme) return [];
     }
@@ -24,7 +24,7 @@ export function validationHelpRequest(context) {
       subtype: 'fixme_tag',
       severity: 'warning',
       message: function() {
-        const graph = editor.graph();  // use the current graph
+        const graph = editor.current.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
         return entity ? l10n.tHtml('issues.fixme_tag.message', {
           feature: l10n.displayLabel(entity, graph, true)    // true = verbose

@@ -4,22 +4,22 @@ describe('validationCrossingWays', () => {
   class MockLocalizationSystem {
     constructor() {}
     displayLabel(entity)  { return entity.id; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockEditSystem {
     constructor() {}
-    graph()  { return graph; }
-    tree()   { return tree; }
+    get current() { return { graph: graph }; }
+    get tree()    { return tree; }
   }
 
   class MockContext {
     constructor() {
       this.services = {};
       this.systems = {
-        editor: new MockEditSystem(this),
-        l10n:   new MockLocalizationSystem(this)
+        editor: new MockEditSystem(),
+        l10n:   new MockLocalizationSystem()
       };
     }
   }

@@ -8,11 +8,13 @@ import { utilTotalExtent } from '../util/index';
 
 export function operationStraighten(context, selectedIDs) {
   const editor = context.systems.editor;
+  const graph = editor.current.graph;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
   const validator = context.systems.validator;
 
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
 
   const ways = entities.filter(entity => entity.type === 'way');
@@ -21,14 +23,16 @@ export function operationStraighten(context, selectedIDs) {
   const nodeIDs = nodes.map(entity => entity.id);
   const multi = ((ways.length ? ways : nodes).length === 1 ? 'single' : 'multiple');
 
-  const coords = utilGetAllNodes(selectedIDs, context.graph()).map(node => node.loc);
-  let extent = utilTotalExtent(selectedIDs, context.graph());
+  const coords = utilGetAllNodes(selectedIDs, graph).map(node => node.loc);
+  let extent = utilTotalExtent(selectedIDs, graph);
   let geometry;  // 'point' or 'line'
 
   const action = chooseAction();
 
 
   function chooseAction() {
+    const graph = editor.current.graph;
+
     // straighten selected nodes
     if (ways.length === 0 && nodes.length > 2) {
       geometry = 'point';
@@ -57,7 +61,7 @@ export function operationStraighten(context, selectedIDs) {
         utilArrayDifference(endNodeIDs, startNodeIDs).length !== 2) return null;
 
       // Ensure path contains at least 3 unique nodes
-      const wayNodeIDs = utilGetAllNodes(wayIDs, context.graph()).map(node => node.id);
+      const wayNodeIDs = utilGetAllNodes(wayIDs, graph).map(node => node.id);
       if (wayNodeIDs.length <= 2) return null;
 
       // If range of 2 selected nodes is supplied, ensure nodes lie on the selected path
@@ -67,7 +71,7 @@ export function operationStraighten(context, selectedIDs) {
 
       if (nodeIDs.length) {
         // If we're only straightenting between two points, we only need that extent visible
-        extent = utilTotalExtent(nodeIDs, context.graph());
+        extent = utilTotalExtent(nodeIDs, graph);
       }
 
       geometry = 'line';
@@ -92,7 +96,8 @@ export function operationStraighten(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const disabledReason = action.disabled(context.graph());
+    const graph = editor.current.graph;
+    const disabledReason = action.disabled(graph);
 
     if (disabledReason) {
       return disabledReason;
@@ -131,19 +136,19 @@ export function operationStraighten(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.straighten.${disabledReason}.${multi}`) :
-      context.t(`operations.straighten.description.${geometry}` + (ways.length === 1 ? '' : 's'));
+      l10n.t(`operations.straighten.${disabledReason}.${multi}`) :
+      l10n.t(`operations.straighten.description.${geometry}` + (ways.length === 1 ? '' : 's'));
   };
 
 
   operation.annotation = function() {
-    return context.t(`operations.straighten.annotation.${geometry}`, { n: ways.length ? ways.length : nodes.length });
+    return l10n.t(`operations.straighten.annotation.${geometry}`, { n: ways.length ? ways.length : nodes.length });
   };
 
 
   operation.id = 'straighten';
-  operation.keys = [ context.t('operations.straighten.key') ];
-  operation.title = context.t('operations.straighten.title');
+  operation.keys = [ l10n.t('operations.straighten.key') ];
+  operation.title = l10n.t('operations.straighten.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

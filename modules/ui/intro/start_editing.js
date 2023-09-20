@@ -9,6 +9,7 @@ export function uiIntroStartEditing(context, curtain) {
   const dispatch = d3_dispatch('done', 'startEditing');
   const chapter = { title: 'intro.startediting.title' };
   const container = context.container();
+  const l10n = context.systems.l10n;
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -36,7 +37,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml(context, 'intro.startediting.help'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(shortcutsAsync)
       });
     });
@@ -51,7 +52,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml(context, 'intro.startediting.shortcuts'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(showSaveAsync)
       });
     });
@@ -68,7 +69,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.top-toolbar button.save',
         tipHtml: helpHtml(context, 'intro.startediting.save'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(showStartMappingAsync)
       });
     });
@@ -102,7 +103,7 @@ export function uiIntroStartEditing(context, curtain) {
 
       startbutton
         .append('h2')
-        .html(context.tHtml('intro.startediting.start'));
+        .html(l10n.tHtml('intro.startediting.start'));
     })
     .finally(() => {
       modalSelection.remove();

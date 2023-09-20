@@ -10,6 +10,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSectionRawTagEditor(context, id) {
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
   const taginfo = context.services.taginfo;
@@ -395,7 +396,8 @@ export function uiSectionRawTagEditor(context, id) {
       return;
     }
 
-    const geometry = context.graph().geometry(_entityIDs[0]);
+    const graph = editor.current.graph;
+    const geometry = graph.geometry(_entityIDs[0]);
 
     key.call(uiCombobox(context, 'tag-key')
       .fetcher(function(value, callback) {

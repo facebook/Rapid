@@ -2,12 +2,15 @@ describe('validationPrivateData', () => {
 
   class MockLocalizationSystem {
     constructor() {}
+    displayLabel(entity)  { return entity.id; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockContext {
     constructor() {
       this.systems = {
-        l10n:  new MockLocalizationSystem(this)
+        l10n:  new MockLocalizationSystem()
       };
     }
   }

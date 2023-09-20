@@ -83,7 +83,7 @@ export function uiMap3dViewer(context) {
       let buildingFeatures = [];
       const selectedIDs = context.selectedIDs();
 
-      const graph = editor.graph();
+      const graph = editor.current.graph;
 
       for (const buildingEnt of buildingEnts) {
         const gj = buildingEnt.asGeoJSON(graph);
@@ -151,7 +151,7 @@ export function uiMap3dViewer(context) {
       const selectedIDs = context.selectedIDs();
 
       for (const areaEnt of areaEnts) {
-        let gj = areaEnt.asGeoJSON(editor.graph());
+        let gj = areaEnt.asGeoJSON(editor.current.graph);
         if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
 
         const style = styleMatch(areaEnt.tags);
@@ -188,7 +188,7 @@ export function uiMap3dViewer(context) {
       const selectedIDs = context.selectedIDs();
 
       for (const roadEnt of roadEnts) {
-        const gj = roadEnt.asGeoJSON(editor.graph());
+        const gj = roadEnt.asGeoJSON(editor.current.graph);
         if (gj.type !== 'LineString') continue;
 
         const style = styleMatch(roadEnt.tags);

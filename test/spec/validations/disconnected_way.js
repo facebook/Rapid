@@ -4,15 +4,15 @@ describe('validationDisconnectedWay', () => {
   class MockLocalizationSystem {
     constructor() {}
     displayLabel(entity)  { return entity.id; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockContext {
     constructor() {
       this.services = {};
       this.systems = {
-        l10n:  new MockLocalizationSystem(this)
+        l10n:  new MockLocalizationSystem()
       };
     }
   }

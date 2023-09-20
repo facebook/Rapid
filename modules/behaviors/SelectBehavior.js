@@ -444,6 +444,9 @@ export class SelectBehavior extends AbstractBehavior {
 
     const context = this.context;
     const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+    const validator = context.systems.validator;
+
     const coord = this.lastUp.coord;
     const data = this.lastUp.target?.data;
 
@@ -451,24 +454,24 @@ export class SelectBehavior extends AbstractBehavior {
     const isMidpoint = data.type === 'midpoint';
 
     if (isOSMWay) {
-      const graph = editor.graph();
+      const graph = editor.current.graph;
       const projection = context.projection;
       const loc = projection.invert(coord);
       const choice = geoChooseEdge(graph.childNodes(data), coord, projection);
       const edge = [data.nodes[choice.index - 1], data.nodes[choice.index]];
       editor.perform(
         actionAddMidpoint({ loc: loc, edge: edge }, osmNode()),
-        context.t('operations.add.annotation.vertex')
+        l10n.t('operations.add.annotation.vertex')
       );
-      context.systems.validator.validate();
+      validator.validate();
 
     } else if (isMidpoint) {
       const edge = [data.a.id, data.b.id];
       editor.perform(
         actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
-        context.t('operations.add.annotation.vertex')
+        l10n.t('operations.add.annotation.vertex')
       );
-      context.systems.validator.validate();
+      validator.validate();
     }
   }
 

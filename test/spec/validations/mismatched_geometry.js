@@ -4,8 +4,8 @@ describe('validationMismatchedGeometry', () => {
   class MockLocalizationSystem {
     constructor() {}
     displayLabel(entity)  { return entity.id; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockLocationSystem {
@@ -15,8 +15,8 @@ describe('validationMismatchedGeometry', () => {
   class MockContext {
     constructor() {
       this.systems = {
-        l10n:       new MockLocalizationSystem(this),
-        locations:  new MockLocationSystem(this),
+        l10n:       new MockLocalizationSystem(),
+        locations:  new MockLocationSystem(),
         presets:    new Rapid.PresetSystem(this)
       };
     }

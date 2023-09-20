@@ -7,11 +7,13 @@ import { utilTotalExtent } from '../util/util';
 
 export function operationDisconnect(context, selectedIDs) {
   const editor = context.systems.editor;
+  const graph = editor.current.graph;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
   const validator = context.systems.validator;
 
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
 
   let _vertexIDs = [];
@@ -19,23 +21,21 @@ export function operationDisconnect(context, selectedIDs) {
   let _otherIDs = [];
   let _actions = [];
 
-  entities.forEach(entity => {
+  for (const entity of entities) {
     if (entity.type === 'way'){
       _wayIDs.push(entity.id);
-    } else if (entity.geometry(context.graph()) === 'vertex') {
+    } else if (entity.geometry(graph) === 'vertex') {
       _vertexIDs.push(entity.id);
     } else {
       _otherIDs.push(entity.id);
     }
-  });
+  }
 
   let _coords;
   let _descriptionID = '';
   let _annotationID = 'features';
   let _disconnectingVertexIDs = [];
   let _disconnectingWayIDs = [];
-
-  const graph = context.graph();
 
   if (_vertexIDs.length > 0) {
     // At the selected vertices, disconnect the selected ways, if any, else
@@ -155,9 +155,10 @@ export function operationDisconnect(context, selectedIDs) {
     if (_actions.length === 0) return false;
     if (_otherIDs.length !== 0) return false;
 
+    const graph = editor.current.graph;
     if (_vertexIDs.length !== 0 && _wayIDs.length !== 0 && !_wayIDs.every(function(wayID) {
       return _vertexIDs.some(vertexID => {
-        const way = context.entity(wayID);
+        const way = graph.entity(wayID);
         return way.nodes.indexOf(vertexID) !== -1;
       });
     })) return false;
@@ -167,9 +168,11 @@ export function operationDisconnect(context, selectedIDs) {
 
 
   operation.disabled = function() {
+    const graph = editor.current.graph;
     let disabledReason;
+
     for (const action of _actions) {
-      disabledReason = action.disabled(context.graph());
+      disabledReason = action.disabled(graph);
       if (disabledReason) return disabledReason;
     }
 
@@ -208,19 +211,19 @@ export function operationDisconnect(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.disconnect.${disabledReason}`) :
-      context.t(`operations.disconnect.description.${_descriptionID}`);
+      l10n.t(`operations.disconnect.${disabledReason}`) :
+      l10n.t(`operations.disconnect.description.${_descriptionID}`);
   };
 
 
   operation.annotation = function() {
-    return context.t(`operations.disconnect.annotation.${_annotationID}`);
+    return l10n.t(`operations.disconnect.annotation.${_annotationID}`);
   };
 
 
   operation.id = 'disconnect';
-  operation.keys = [ context.t('operations.disconnect.key') ];
-  operation.title = context.t('operations.disconnect.title');
+  operation.keys = [ l10n.t('operations.disconnect.key') ];
+  operation.title = l10n.t('operations.disconnect.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

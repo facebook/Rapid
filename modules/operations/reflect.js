@@ -17,15 +17,17 @@ export function operationReflectLong(context, selectedIDs) {
 
 export function operationReflect(context, selectedIDs, axis = 'long') {
   const editor = context.systems.editor;
+  const graph = editor.current.graph;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
   const validator = context.systems.validator;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
-  const nodes = utilGetAllNodes(selectedIDs, context.graph());
+  const extent = utilTotalExtent(entities, graph);
+  const nodes = utilGetAllNodes(selectedIDs, graph);
   const coords = nodes.map(node => node.loc);
 
 
@@ -44,6 +46,8 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
 
 
   operation.disabled = function() {
+    const graph = editor.current.graph;
+
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (!isNew && notDownloaded()) {
@@ -77,7 +81,7 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
     }
 
     function incompleteRelation(entity) {
-      return entity.type === 'relation' && !entity.isComplete(context.graph());
+      return entity.type === 'relation' && !entity.isComplete(graph);
     }
   };
 
@@ -85,18 +89,18 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.reflect.${disabledReason}.${multi}`) :
-      context.t(`operations.reflect.description.${axis}.${multi}`);
+      l10n.t(`operations.reflect.${disabledReason}.${multi}`) :
+      l10n.t(`operations.reflect.description.${axis}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return context.t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
+    return l10n.t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
   };
 
   operation.id = `reflect-${axis}`;
-  operation.keys = [ context.t(`operations.reflect.key.${axis}`) ];
-  operation.title = context.t(`operations.reflect.title.${axis}`);
+  operation.keys = [ l10n.t(`operations.reflect.key.${axis}`) ];
+  operation.title = l10n.t(`operations.reflect.title.${axis}`);
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

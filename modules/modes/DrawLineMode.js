@@ -91,7 +91,7 @@ export class DrawLineMode extends AbstractMode {
     this.firstNode = null;
 
     this._insertIndex = undefined;
-    this._startGraph = editor.graph();
+    this._startGraph = editor.current.graph;
     this._selectedData.clear();
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
@@ -151,7 +151,8 @@ export class DrawLineMode extends AbstractMode {
     if (this.drawNode) {
       editor.pop();
       if (this.drawWay) {
-        this.drawWay = context.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
+        const graph = editor.current.graph;
+        this.drawWay = graph.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
       }
     }
 
@@ -161,7 +162,7 @@ export class DrawLineMode extends AbstractMode {
       if (DEBUG) {
         console.log('DrawLineMode: draw way invalid, rolling back');  // eslint-disable-line no-console
       }
-      while (editor.graph() !== this._startGraph) {  // rollback to initial state
+      while (editor.current.graph !== this._startGraph) {  // rollback to initial state
         editor.pop();
       }
     }
@@ -201,7 +202,7 @@ export class DrawLineMode extends AbstractMode {
   _refreshEntities() {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.graph();
+    const graph = editor.current.graph;
     const scene = context.scene();
 
     this._selectedData.clear();
@@ -233,11 +234,14 @@ export class DrawLineMode extends AbstractMode {
    * The edits on the history stack with annotations are the ones we can undo/redo back to.
    */
   _getAnnotation() {
+    const context = this.context;
+    const l10n = context.systems.l10n;
+
     const length = this.drawWay?.nodes?.length || 0;
     if (length < 2) return undefined;
 
     const which = length > 2 ? 'continue' : 'start';
-    return this.context.t(`operations.${which}.annotation.line`);
+    return l10n.t(`operations.${which}.annotation.line`);
   }
 
 
@@ -250,9 +254,10 @@ export class DrawLineMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.graph();
+
     const projection = context.projection;
     const coord = eventData.coord;
+    let graph = editor.current.graph;
     let loc = projection.invert(coord);
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
@@ -277,7 +282,8 @@ export class DrawLineMode extends AbstractMode {
     }
 
     editor.replace(actionMoveNode(this.drawNode.id, loc));
-    this.drawNode = context.entity(this.drawNode.id);  // refresh draw node
+    graph = editor.current.graph;
+    this.drawNode = graph.entity(this.drawNode.id);  // refresh draw node
   }
 
 
@@ -290,7 +296,7 @@ export class DrawLineMode extends AbstractMode {
     const editor = context.systems.editor;
     const locations = context.systems.locations;
 
-    const graph = editor.graph();
+    const graph = editor.current.graph;
     const projection = context.projection;
     const coord = eventData.coord;
     const loc = projection.invert(coord);

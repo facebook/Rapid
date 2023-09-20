@@ -42,7 +42,8 @@ export class LassoBehavior extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const map = this.context.systems.map;
+    const eventManager = map.renderer.events;
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -60,7 +61,8 @@ export class LassoBehavior extends AbstractBehavior {
     this._lassoing = false;
     this._extent = null;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const map = this.context.systems.map;
+    const eventManager = map.renderer.events;
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
@@ -72,21 +74,22 @@ export class LassoBehavior extends AbstractBehavior {
    * Handler for pointerdown events.
    * @param  `e`  A Pixi FederatedPointerEvent
    */
-   _pointerdown() {
+  _pointerdown() {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-     const eventManager = this.context.systems.map.renderer.events;
-     if (!eventManager.pointerOverRenderer) return;
+    const map = this.context.systems.map;
+    const eventManager = map.renderer.events;
+    if (!eventManager.pointerOverRenderer) return;
 
-     const modifiers = eventManager.modifierKeys;
-     const drawLasso = modifiers.has('Shift');
+    const modifiers = eventManager.modifierKeys;
+    const drawLasso = modifiers.has('Shift');
 
-     if (drawLasso) {
-       this._lassoing = true;
-       const coord = this.context.systems.map.mouseLoc();
-       this._extent = new Extent(coord);
-       this._coords.push(coord);
-     }
+    if (drawLasso) {
+      this._lassoing = true;
+      const coord = map.mouseLoc();
+      this._extent = new Extent(coord);
+      this._coords.push(coord);
+    }
   }
 
 
@@ -98,19 +101,20 @@ export class LassoBehavior extends AbstractBehavior {
   _pointermove() {
     if (!this._lassoing) return;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    const map = this.context.systems.map;
+    const eventManager = map.renderer.events;
     if (!eventManager.pointerOverRenderer) return;
 
-    const coord = this.context.systems.map.mouseLoc();
+    const coord = map.mouseLoc();
 
     // Update geometry and extent
     this._extent = this._extent.extend(new Extent(coord));
     this._coords.push(coord);
 
     // Push the polygon data to the map UI for rendering.
-    const mapUILayer = this.context.scene().layers.get('map-ui');
+    const mapUILayer = map.scene.layers.get('map-ui');
     mapUILayer.lassoPolygonData = this._coords;
-    this.context.systems.map.immediateRedraw();
+    map.immediateRedraw();
   }
 
 
@@ -123,7 +127,8 @@ export class LassoBehavior extends AbstractBehavior {
     if (!this._lassoing) return;
 
     this._lassoing = false;
-    const mapUILayer = this.context.scene().layers.get('map-ui');
+    const map = this.context.systems.map;
+    const mapUILayer = map.scene.layers.get('map-ui');
 
     const ids = this._lassoed();
     this._coords = [];
@@ -148,21 +153,23 @@ export class LassoBehavior extends AbstractBehavior {
 
 
   _lassoed() {
-    const graph = this.context.graph();
     const context = this.context;
-    const polygonLocs = this._coords;
-    const locationSystem = context.systems.locations;
+    const editor = context.systems.editor;
+    const locations = context.systems.locations;
+    const filters = context.systems.filters;
+    const graph = editor.current.graph;
 
     if (!this.context.editable()) return [];
 
-    let intersects = this.context.systems.editor
+    const polygonLocs = this._coords;
+    let intersects = editor
       .intersects(this._extent)
       .filter(entity => {
         return (
           entity.type === 'node' &&
           geomPointInPolygon(entity.loc, polygonLocs) &&
-          !context.systems.filters.isHidden(entity, graph, entity.geometry(graph)) &&
-          !locationSystem.blocksAt(entity.loc).length
+          !filters.isHidden(entity, graph, entity.geometry(graph)) &&
+          !locations.blocksAt(entity.loc).length
         );
       });
 

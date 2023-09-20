@@ -138,7 +138,7 @@ export class ValidationSystem extends AbstractSystem {
 
             // Make sure the caches have graphs assigned to them.
             // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
-            const baseGraph = editor.base();
+            const baseGraph = editor.base.graph;
             if (!this._head.graph) this._head.graph = baseGraph;
             if (!this._base.graph) this._base.graph = baseGraph;
 
@@ -257,7 +257,7 @@ export class ValidationSystem extends AbstractSystem {
       cache.uncacheIssuesOfType('unsquare_way');   // uncache existing
 
       // rerun for all buildings
-      const tree = this.context.systems.editor.tree();
+      const tree = this.context.systems.editor.tree;
       const buildings = tree.intersects(new Extent([-180,-90],[180, 90]), cache.graph)  // everywhere
         .filter(entity => (entity.type === 'way' && entity.tags.building && entity.tags.building !== 'no'));
 
@@ -290,15 +290,16 @@ export class ValidationSystem extends AbstractSystem {
    * @return  An Array containing the issues
    */
   getIssues(options) {
+    // Note that we use `current.graph` here, not `cache.graph`,
+    // because that is the graph that the calling code will be using.
     const opts = Object.assign({ what: 'all', where: 'all', includeIgnored: false, includeDisabledRules: false }, options);
     const context = this.context;
     const view = context.systems.map.extent();
+    const graph = context.systems.editor.current.graph;
     let seen = new Set();
     let results = [];
 
     // Filter the issue set to include only what the calling code wants to see.
-    // Note that we use `context.graph()`/`context.hasEntity()` here, not `cache.graph`,
-    // because that is the graph that the calling code will be using.
     const filter = (issue) => {
       if (!issue) return false;
       if (seen.has(issue.id)) return false;
@@ -309,12 +310,12 @@ export class ValidationSystem extends AbstractSystem {
       if (opts.includeIgnored === 'only' && !this._ignoredIssueIDs.has(issue.id)) return false;
       if (!opts.includeIgnored && this._ignoredIssueIDs.has(issue.id)) return false;
 
-      // This issue may involve an entity that doesn't exist in context.graph()
+      // This issue may involve an entity that doesn't exist in `current.graph`.
       // This can happen because validation is async and rendering the issue lists is async.
-      if ((issue.entityIds || []).some(id => !context.hasEntity(id))) return false;
+      if ((issue.entityIds || []).some(id => !graph.hasEntity(id))) return false;
 
       if (opts.where === 'visible') {
-        const extent = issue.extent(context.graph());
+        const extent = issue.extent(graph);
         if (!view.intersects(extent)) return false;
       }
 
@@ -374,10 +375,10 @@ export class ValidationSystem extends AbstractSystem {
    * @param   The Issue to focus on
    */
   focusIssue(issue) {
-    // Note that we use `context.graph()`/`context.hasEntity()` here, not `cache.graph`,
+    // Note that we use `current.graph` here, not `cache.graph`,
     // because that is the graph that the calling code will be using.
     const context = this.context;
-    const graph = context.graph();
+    const graph = context.systems.editor.current.graph;
     let selectID;
     let focusCenter;
 
@@ -571,12 +572,12 @@ export class ValidationSystem extends AbstractSystem {
     // Make sure the caches have graphs assigned to them.
     // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
     const context = this.context;
-    const baseGraph = context.systems.editor.base();
+    const baseGraph = context.systems.editor.base.graph;
     if (!this._head.graph) this._head.graph = baseGraph;
     if (!this._base.graph) this._base.graph = baseGraph;
 
     const prevGraph = this._head.graph;
-    const currGraph = context.graph();
+    const currGraph = context.systems.editor.current.graph;
 
     if (currGraph === prevGraph) {   // this._head.graph is current - we are caught up
       this._headIsCurrent = true;
@@ -632,7 +633,7 @@ export class ValidationSystem extends AbstractSystem {
    * Runs all validation rules on a single entity.
    * Some things to note:
    *  - Graph is passed in from whenever the validation was started.  Validators shouldn't use
-   *   `context.graph()` because this all happens async, and the graph might have changed
+   *    the current graph because this all happens async, and the graph might have changed
    *   (for example, nodes getting deleted before the validation can run)
    *  - Validator functions may still be waiting on something and return a "provisional" result.
    *    In this situation, we will schedule to revalidate the entity sometime later.

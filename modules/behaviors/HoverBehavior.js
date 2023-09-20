@@ -124,7 +124,7 @@ export class HoverBehavior extends AbstractBehavior {
 //        const activeIndex = target.nodes.indexOf(activeID);
 //        if (activeIndex !== -1) {
 //          isActiveTarget = true;
-//          const graph = context.graph();
+//          const graph = context.systems.editor.current.graph;
 //          const projection = context.projection;
 //          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, projection, activeID);
 //

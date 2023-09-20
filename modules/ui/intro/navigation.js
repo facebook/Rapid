@@ -10,16 +10,17 @@ export function uiIntroNavigation(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.navigation.title' };
   const container = context.container();
-  const editSystem = context.systems.editor;
-  const mapSystem = context.systems.map;
-  const presetSystem = context.systems.presets;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
 
   const townHallID = 'n2061';
   const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);
   const springStreetID = 'w397';
   const springStreetExtent = new Extent([-85.63588, 41.94155], [-85.63574, 41.94278]);
-  const onewayField = presetSystem.field('oneway');
-  const maxspeedField = presetSystem.field('maxspeed');
+  const onewayField = presets.field('oneway');
+  const maxspeedField = presets.field('maxspeed');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -29,18 +30,21 @@ export function uiIntroNavigation(context, curtain) {
 
   // Helper functions
   function _isTownHallSelected() {
-    if (!context.hasEntity(townHallID)) return false;
+    const graph = editor.current.graph;
+    if (!graph.hasEntity(townHallID)) return false;
     if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === townHallID;
   }
 
   function _doesSpringStreetExist() {
-    return context.hasEntity(springStreetID);
+    const graph = editor.current.graph;
+    return graph.hasEntity(springStreetID);
   }
 
   function _isSpringStreetSelected() {
-    if (!context.hasEntity(springStreetID)) return false;
+    const graph = editor.current.graph;
+    if (!graph.hasEntity(springStreetID)) return false;
     if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === springStreetID;
@@ -81,22 +85,22 @@ export function uiIntroNavigation(context, curtain) {
   // Drag the map to advance
   function dragMapAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('initial');
+    editor.resetToCheckpoint('initial');
 
     const loc = townHallExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        const centerStart = mapSystem.center();
+        const centerStart = map.center();
         const textID = context.lastPointerType === 'mouse' ? 'drag' : 'drag_touch';
         const dragString = helpHtml(context, 'intro.navigation.map_info') + '{br}' + helpHtml(context, `intro.navigation.${textID}`);
 
         _onMapMove = () => {
-          if (!vecEqual(centerStart, mapSystem.center())) {  // map moved
+          if (!vecEqual(centerStart, map.center())) {  // map moved
             resolve(zoomMapAsync);
           }
         };
@@ -117,12 +121,12 @@ export function uiIntroNavigation(context, curtain) {
   function zoomMapAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      const zoomStart = mapSystem.zoom();
+      const zoomStart = map.zoom();
       const textID = context.lastPointerType === 'mouse' ? 'zoom' : 'zoom_touch';
       const zoomString = helpHtml(context, `intro.navigation.${textID}`);
 
       _onMapMove = () => {
-        if (zoomStart !== mapSystem.zoom()) {  // map zoomed
+        if (zoomStart !== map.zoom()) {  // map zoomed
           resolve(featuresAsync);
         }
       };
@@ -147,7 +151,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.main-map',
         tipHtml: helpHtml(context, 'intro.navigation.features'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(pointsLinesAreasAsync)
       });
     });
@@ -162,7 +166,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.main-map',
         tipHtml: helpHtml(context, 'intro.navigation.points_lines_areas'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(nodesWaysAsync)
       });
     });
@@ -177,7 +181,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.main-map',
         tipHtml: helpHtml(context, 'intro.navigation.nodes_ways'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(clickTownHallAsync)
       });
     });
@@ -187,13 +191,13 @@ export function uiIntroNavigation(context, curtain) {
   // Select the town hall to advance
   function clickTownHallAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('initial');
+    editor.resetToCheckpoint('initial');
 
     const loc = townHallExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -225,7 +229,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealExtent: townHallExtent,
         tipHtml: helpHtml(context, 'intro.navigation.selected_townhall'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(editorTownHallAsync)
       });
     })
@@ -250,7 +254,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml(context, 'intro.navigation.editor_townhall'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(presetTownHallAsync)
       });
     })
@@ -274,14 +278,15 @@ export function uiIntroNavigation(context, curtain) {
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       // preset match, in case the user happened to change it.
-      const entity = context.entity(context.selectedIDs()[0]);
-      const preset = presetSystem.match(entity, context.graph());
+      const graph = editor.current.graph;
+      const entity = graph.entity(context.selectedIDs()[0]);
+      const preset = presets.match(entity, graph);
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane .section-feature-type',
         revealPadding: 5,
         tipHtml: helpHtml(context, 'intro.navigation.preset_townhall', { preset: preset.name() }),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(fieldsTownHallAsync)
       });
     })
@@ -308,7 +313,7 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.entity-editor-pane .section-preset-fields',
         revealPadding: 5,
         tipHtml: helpHtml(context, 'intro.navigation.fields_townhall'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(closeTownHallAsync)
       });
     })
@@ -348,19 +353,19 @@ export function uiIntroNavigation(context, curtain) {
   // Type in the search box to advance
   function searchStreetAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('initial');  // ensure spring street exists
+    editor.resetToCheckpoint('initial');  // ensure spring street exists
 
     const loc = springStreetExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.search-header input',
-          tipHtml: helpHtml(context, 'intro.navigation.search_street', { name: context.t('intro.graph.name.spring-street') })
+          tipHtml: helpHtml(context, 'intro.navigation.search_street', { name: l10n.t('intro.graph.name.spring-street') })
         });
 
         container.select('.search-header input').on('keyup.intro', () => resolve(checkSearchResultAsync));
@@ -383,7 +388,7 @@ export function uiIntroNavigation(context, curtain) {
       container.select('.search-header input').on('keyup.intro', () => {
         const first = container.select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
         const firstName = first.select('.entity-name');
-        const name = context.t('intro.graph.name.spring-street');
+        const name = l10n.t('intro.graph.name.spring-street');
 
         if (!firstName.empty() && firstName.html() === name) {
           curtain.reveal({
@@ -416,7 +421,7 @@ export function uiIntroNavigation(context, curtain) {
     // to show only the `springStreetExtent` instead.
     const loc = springStreetExtent.center();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19, 0 /* asap */)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -427,8 +432,8 @@ export function uiIntroNavigation(context, curtain) {
         curtain.reveal({
           revealExtent: springStreetExtent,
           revealPadding: 40,
-          tipHtml: helpHtml(context, 'intro.navigation.selected_street', { name: context.t('intro.graph.name.spring-street') }),
-          buttonText: context.tHtml('intro.ok'),
+          tipHtml: helpHtml(context, 'intro.navigation.selected_street', { name: l10n.t('intro.graph.name.spring-street') }),
+          buttonText: l10n.tHtml('intro.ok'),
           buttonCallback: () => resolve(editorStreetAsync)
         });
       }))
@@ -475,8 +480,8 @@ export function uiIntroNavigation(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-point',
-      tipHtml: helpHtml(context, 'intro.navigation.play', { next: context.t('intro.points.title') }),
-      buttonText: context.tHtml('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.navigation.play', { next: l10n.t('intro.points.title') }),
+      buttonText: l10n.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -490,13 +495,13 @@ export function uiIntroNavigation(context, curtain) {
     _onModeChange = null;
 
     context.on('modechange', _modeChangeListener);
-    mapSystem.on('move', _mapMoveListener);
+    map.on('move', _mapMoveListener);
 
     runAsync(dragMapAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        mapSystem.off('move', _mapMoveListener);
+        map.off('move', _mapMoveListener);
       });
 
     function _mapMoveListener() {

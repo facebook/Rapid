@@ -48,6 +48,8 @@ export function uiSectionSelectionList(context) {
 
 
   function renderDisclosureContent(selection) {
+    const graph = editor.current.graph;
+
     let list = selection.selectAll('.feature-list')
       .data([0]);
 
@@ -57,7 +59,7 @@ export function uiSectionSelectionList(context) {
       .merge(list);
 
     const entities = _selectedIDs
-      .map(d => context.hasEntity(d))
+      .map(d => graph.hasEntity(d))
       .filter(Boolean);
 
     let items = list.selectAll('.feature-list-item')
@@ -108,15 +110,15 @@ export function uiSectionSelectionList(context) {
       .attr('href', (d, i, nodes) => {
         const thiz = d3_select(nodes[i]);
         const entity = thiz._groups[0][0].parentNode.parentNode.__data__;
-        return '#rapid-icon-' + entity.geometry(editor.graph());
+        return '#rapid-icon-' + entity.geometry(graph);
       });
 
     items.selectAll('.entity-type')
-      .html(entity => presets.match(entity, editor.graph()).name());
+      .html(entity => presets.match(entity, graph).name());
 
     items.selectAll('.entity-name')
       .html(d => {
-        const entity = context.entity(d.id);  // current version of the entity
+        const entity = graph.entity(d.id);
         return l10n.displayName(entity.tags);
       });
   }

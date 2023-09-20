@@ -9,6 +9,7 @@ export function validationDisconnectedWay(context) {
   const type = 'disconnected_way';
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
 
   function isTaggedAsHighway(entity) {
     return osmRoutableHighwayTagValues[entity.tags.highway];
@@ -24,7 +25,7 @@ export function validationDisconnectedWay(context) {
       subtype: 'highway',
       severity: 'warning',
       message: function() {
-        const graph = editor.graph();  // use the current graph
+        const graph = editor.current.graph;
         const entity = this.entityIds.length && graph.hasEntity(this.entityIds[0]);
         const label = entity && l10n.displayLabel(entity, graph);
         return l10n.tHtml('issues.disconnected_way.routable.message', { count: this.entityIds.length, highway: label });
@@ -36,7 +37,7 @@ export function validationDisconnectedWay(context) {
 
 
     function makeFixes() {
-      const graph = editor.graph();  // use the current graph
+      const graph = editor.current.graph;
       const singleEntity = this.entityIds.length === 1 && graph.hasEntity(this.entityIds[0]);
       let fixes = [];
 
@@ -180,15 +181,14 @@ export function validationDisconnectedWay(context) {
         title: l10n.tHtml(`issues.fix.continue_from_${whichEnd}.title`),
         entityIds: [vertexID],
         onClick: function() {
+          const graph = editor.current.graph;
           const wayID = this.issue.entityIds[0];
-          const way = context.hasEntity(wayID);
+          const way = graph.hasEntity(wayID);
           const vertexID = this.entityIds[0];
-          const vertex = context.hasEntity(vertexID);
-
+          const vertex = graph.hasEntity(vertexID);
           if (!way || !vertex) return;
 
           // make sure the vertex is actually visible and editable
-          const map = context.systems.map;
           if (!context.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
             map.fitEntitiesEase(vertex);
           }

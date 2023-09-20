@@ -9,6 +9,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationOutdatedTags(context) {
   const type = 'outdated_tags';
+  const dataloader = context.systems.dataloader;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
@@ -17,13 +18,15 @@ export function validationOutdatedTags(context) {
   let _dataDeprecated;
 
   // fetch deprecated tags
-  const dataloader = context.systems.dataloader;
   dataloader.getDataAsync('deprecated')
     .then(d => _dataDeprecated = d)
     .catch(() => { /* ignore */ })
     .finally(() => _waitingForDeprecated = false);
 
 
+  /**
+   * oldTagIssues
+   */
   function oldTagIssues(entity, graph) {
     if (!entity.hasInterestingTags()) return [];
 
@@ -99,14 +102,14 @@ export function validationOutdatedTags(context) {
       prefix = 'incomplete.';
     }
 
-    let autoArgs = [doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')];
+    let autoArgs = [doTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')];
 
     issues.push(new ValidationIssue(context, {
       type: type,
       subtype: subtype,
       severity: 'warning',
-      message: showMessage,
-      reference: showReference,
+      message: showUpgradeMessage,
+      reference: showUpgradeReference,
       entityIds: [entity.id],
       hash: utilHashcode(JSON.stringify(tagDiff)),
       autoArgs: autoArgs,
@@ -116,7 +119,7 @@ export function validationOutdatedTags(context) {
             autoArgs: autoArgs,
             title: l10n.tHtml('issues.fix.upgrade_tags.title'),
             onClick: () => {
-              editor.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
+              editor.perform(doTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
             }
           })
         ];
@@ -139,11 +142,11 @@ export function validationOutdatedTags(context) {
     return issues;
 
 
-    function doUpgrade(graph) {
+    function doTagUpgrade(graph) {
       const currEntity = graph.hasEntity(entity.id);
       if (!currEntity) return graph;
 
-      let newTags = Object.assign({}, currEntity.tags);  // shallow copy
+      const newTags = Object.assign({}, currEntity.tags);  // shallow copy
       tagDiff.forEach(diff => {
         if (diff.type === '-') {
           delete newTags[diff.key];
@@ -163,7 +166,7 @@ export function validationOutdatedTags(context) {
       const item = nsiResult?.matched;
       if (!item) return graph;
 
-      let newTags = Object.assign({}, currEntity.tags);  // shallow copy
+      const newTags = Object.assign({}, currEntity.tags);  // shallow copy
       const wd = item.mainTag;     // e.g. `brand:wikidata`
       const notwd = `not:${wd}`;   // e.g. `not:brand:wikidata`
       const qid = item.tags[wd];
@@ -179,8 +182,9 @@ export function validationOutdatedTags(context) {
     }
 
 
-    function showMessage() {
-      const currEntity = context.hasEntity(entity.id);
+    function showUpgradeMessage() {
+      const graph = editor.current.graph;
+      const currEntity = graph.hasEntity(entity.id);
       if (!currEntity) return '';
 
       let messageID = `issues.outdated_tags.${prefix}message`;
@@ -188,12 +192,12 @@ export function validationOutdatedTags(context) {
         messageID += '_incomplete';
       }
       return l10n.tHtml(messageID, {
-        feature: l10n.displayLabel(currEntity, context.graph(), true /* verbose */)
+        feature: l10n.displayLabel(currEntity, graph, true /* verbose */)
       });
     }
 
 
-    function showReference(selection) {
+    function showUpgradeReference(selection) {
       let enter = selection.selectAll('.issue-reference')
         .data([0])
         .enter();
@@ -217,7 +221,7 @@ export function validationOutdatedTags(context) {
         .attr('class', 'tagDiff-row')
         .append('td')
         .attr('class', d => {
-          let klass = d.type === '+' ? 'add' : 'remove';
+          const klass = (d.type === '+') ? 'add' : 'remove';
           return `tagDiff-cell tagDiff-cell-${klass}`;
         })
         .html(d => d.display);
@@ -225,6 +229,9 @@ export function validationOutdatedTags(context) {
   }
 
 
+  /**
+   * oldMultipolygonIssues
+   */
   function oldMultipolygonIssues(entity, graph) {
     let multipolygon, outerWay;
     if (entity.type === 'relation') {
@@ -243,17 +250,17 @@ export function validationOutdatedTags(context) {
       type: type,
       subtype: 'old_multipolygon',
       severity: 'warning',
-      message: showMessage,
-      reference: showReference,
+      message: showMultipolygonMessage,
+      reference: showMultipolygonReference,
       entityIds: [outerWay.id, multipolygon.id],
-      autoArgs: [doUpgrade, l10n.t('issues.fix.move_tags.annotation')],
+      autoArgs: [doMultipolygonUpgrade, l10n.t('issues.fix.move_tags.annotation')],
       dynamicFixes: () => {
         return [
           new ValidationFix({
-            // autoArgs: [doUpgrade, l10n.t('issues.fix.move_tags.annotation')],
+            // autoArgs: [doMultipolygonUpgrade, l10n.t('issues.fix.move_tags.annotation')],
             title: l10n.t('issues.fix.move_tags.title'),
             onClick: () => {
-              editor.perform(doUpgrade, l10n.t('issues.fix.move_tags.annotation'));
+              editor.perform(doMultipolygonUpgrade, l10n.t('issues.fix.move_tags.annotation'));
             }
           })
         ];
@@ -261,7 +268,7 @@ export function validationOutdatedTags(context) {
     })];
 
 
-    function doUpgrade(graph) {
+    function doMultipolygonUpgrade(graph) {
       let currMultipolygon = graph.hasEntity(multipolygon.id);
       let currOuterWay = graph.hasEntity(outerWay.id);
       if (!currMultipolygon || !currOuterWay) return graph;
@@ -272,8 +279,8 @@ export function validationOutdatedTags(context) {
     }
 
 
-    function showMessage() {
-      const graph = editor.graph();  // use the current graph
+    function showMultipolygonMessage() {
+      const graph = editor.current.graph;
       let currMultipolygon = graph.hasEntity(multipolygon.id);
       if (!currMultipolygon) return '';
 
@@ -283,7 +290,7 @@ export function validationOutdatedTags(context) {
     }
 
 
-    function showReference(selection) {
+    function showMultipolygonReference(selection) {
       selection.selectAll('.issue-reference')
         .data([0])
         .enter()
@@ -296,7 +303,9 @@ export function validationOutdatedTags(context) {
 
   let validation = function checkOutdatedTags(entity, graph) {
     let issues = oldMultipolygonIssues(entity, graph);
-    if (!issues.length) issues = oldTagIssues(entity, graph);
+    if (!issues.length) {
+      issues = oldTagIssues(entity, graph);
+    }
     return issues;
   };
 

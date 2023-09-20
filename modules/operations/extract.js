@@ -9,22 +9,22 @@ import { utilTotalExtent } from '../util';
 
 export function operationExtract(context, selectedIDs) {
   const editor = context.systems.editor;
-  const presets = context.systems.presets;
+  const graph = editor.current.graph;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const presets = context.systems.presets;
   const storage = context.systems.storage;
   const validator = context.systems.validator;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
-  const geometries = utilArrayUniq(entities.map(entity => entity.geometry(context.graph())));
+  const extent = utilTotalExtent(entities, graph);
+  const geometries = utilArrayUniq(entities.map(entity => entity.geometry(graph)));
   const geometryType = geometries.length === 1 ? geometries[0] : 'feature';
 
   const actions = entities.map(entity => {
     if (!entity.hasInterestingTags()) return null;
-
-    const graph = context.graph();
     if (entity.type === 'node' && graph.parentWays(entity).length === 0) return null;
 
     if (entity.type !== 'node') {
@@ -58,10 +58,11 @@ export function operationExtract(context, selectedIDs) {
     editor.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
 
     // Put the user in move mode so they can place the extracted nodes where they want.
-    // We use the latest entities from the graph (because they were just moved).
+    // Get the latest graph (because they were just moved).
     const selection = new Map();    // Map (entityID -> Entity)
+    const graph = editor.current.graph;  // post edit
     for (const extractedNodeID of extractedNodeIDs) {
-      selection.set(extractedNodeID, context.entity(extractedNodeID));
+      selection.set(extractedNodeID, graph.entity(extractedNodeID));
     }
     context.enter('move', { selection: selection });
   };
@@ -73,10 +74,11 @@ export function operationExtract(context, selectedIDs) {
 
 
   operation.disabled = function () {
+    const graph = editor.current.graph;
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (selectedIDs.some(entityID => {
-      return context.graph().geometry(entityID) === 'vertex' && context.hasHiddenConnections(entityID);
+      return graph.geometry(entityID) === 'vertex' && context.hasHiddenConnections(entityID);
     })) {
       return 'connected_to_hidden';
     }
@@ -93,19 +95,19 @@ export function operationExtract(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.extract.${disabledReason}.${multi}`) :
-      context.t(`operations.extract.description.${geometryType}.${multi}`);
+      l10n.t(`operations.extract.${disabledReason}.${multi}`) :
+      l10n.t(`operations.extract.description.${geometryType}.${multi}`);
   };
 
 
   operation.annotation = function () {
-    return context.t('operations.extract.annotation', { n: selectedIDs.length });
+    return l10n.t('operations.extract.annotation', { n: selectedIDs.length });
   };
 
 
   operation.id = 'extract';
-  operation.keys = [ context.t('operations.extract.key') ];
-  operation.title = context.t('operations.extract.title');
+  operation.keys = [ l10n.t('operations.extract.key') ];
+  operation.title = l10n.t('operations.extract.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

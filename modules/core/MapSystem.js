@@ -579,10 +579,14 @@ export class MapSystem extends AbstractSystem {
    */
   fitEntities(entities, duration = 0) {
     let extent;
+
+    const editor = this.context.systems.editor;
+    const graph = editor.current.graph;
+
     if (Array.isArray(entities)) {
-      extent = utilTotalExtent(entities, this.context.graph());
+      extent = utilTotalExtent(entities, graph);
     } else {
-      extent = entities.extent(this.context.graph());
+      extent = entities.extent(graph);
     }
     if (!isFinite(extent.area())) return this;
 
@@ -600,6 +604,7 @@ export class MapSystem extends AbstractSystem {
   selectEntityID(entityID, fitToEntity) {
     const doFit = fitToEntity || false;
     const context = this.context;
+    const editor = context.systems.editor;
 
     const gotEntity = (entity) => {
       const selectedIDs = context.selectedIDs();
@@ -607,14 +612,16 @@ export class MapSystem extends AbstractSystem {
         context.enter('select-osm', { selectedIDs: [entity.id] });
       }
 
-      const extent = entity.extent(context.graph());
+      const currGraph = editor.current.graph;  // may have changed by the time we get in here
+      const extent = entity.extent(currGraph);
       // Can't see it, or we're forcing the fit.
       if (extent.percentContainedIn(this.extent()) < 0.8 || doFit) {
         this.fitEntities(entity);
       }
     };
 
-    let entity = context.hasEntity(entityID);
+    const currGraph = editor.current.graph;
+    let entity = currGraph.hasEntity(entityID);
     if (entity) {   // have it already
       gotEntity(entity);
 

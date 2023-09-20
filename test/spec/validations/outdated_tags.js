@@ -2,7 +2,9 @@ describe('validationOutdatedTags', () => {
 
   class MockLocalizationSystem {
     constructor() {}
-    t(id) { return id; }
+    displayLabel(entity)  { return entity.id; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockLocationSystem {
@@ -14,8 +16,8 @@ describe('validationOutdatedTags', () => {
       this.services = {};
       this.systems = {
         dataloader:  new Rapid.DataLoaderSystem(this),
-        l10n:        new MockLocalizationSystem(this),
-        locations:   new MockLocationSystem(this),
+        l10n:        new MockLocalizationSystem(),
+        locations:   new MockLocationSystem(),
         presets:     new Rapid.PresetSystem(this)
       };
     }

@@ -68,7 +68,7 @@ export class DrawAreaMode extends AbstractMode {
     this.lastNode = null;
     this.firstNode = null;
 
-    this._startGraph = context.graph();
+    this._startGraph = editor.current.graph;
     this._selectedData.clear();
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
@@ -102,6 +102,7 @@ export class DrawAreaMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
+    const scene = context.systems.map.scene;
 
     editor.beginTransaction();
 
@@ -109,7 +110,7 @@ export class DrawAreaMode extends AbstractMode {
     if (this.drawNode) {
       editor.pop();
       if (this.drawWay) {
-        this.drawWay = context.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
+        this.drawWay = editor.current.graph.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
       }
     }
 
@@ -119,7 +120,7 @@ export class DrawAreaMode extends AbstractMode {
       if (DEBUG) {
         console.log('DrawAreaMode: draw way invalid, rolling back');  // eslint-disable-line no-console
       }
-      while (editor.graph() !== this._startGraph) {  // rollback to initial state
+      while (editor.current.graph !== this._startGraph) {  // rollback to initial state
         editor.pop();
       }
     }
@@ -129,7 +130,7 @@ export class DrawAreaMode extends AbstractMode {
     this.lastNode = null;
     this.firstNode = null;
     this._selectedData.clear();
-    context.scene().clearClass('drawing');
+    scene.clearClass('drawing');
 
     window.setTimeout(() => {
       context.behaviors['map-interaction'].doubleClickEnabled = true;
@@ -151,15 +152,14 @@ export class DrawAreaMode extends AbstractMode {
 
   /**
    * _refreshEntities
-   *  Gets the latest version of all the entities from the graph after any modifications
+   *  Gets updated versions of all the entities from the current graph after any modifications
    *  Updates `selectedData` collection to include the draw way
    *  Updates `drawing` class for items that need it
    */
   _refreshEntities() {
     const context = this.context;
-    const editor = context.systems.editor;
-    const graph = editor.graph();
-    const scene = context.scene();
+    const graph = context.systems.editor.current.graph;
+    const scene = context.systems.map.scene;
 
     this._selectedData.clear();
     scene.clearClass('drawing');
@@ -192,7 +192,8 @@ export class DrawAreaMode extends AbstractMode {
     if (length < 4) return undefined;
 
     const which = length > 4 ? 'continue' : 'start';
-    return this.context.t(`operations.${which}.annotation.area`);
+    const l10n = this.context.systems.l10n;
+    return l10n.t(`operations.${which}.annotation.area`);
   }
 
 
@@ -205,9 +206,9 @@ export class DrawAreaMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.graph();
     const projection = context.projection;
     const coord = eventData.coord;
+    let graph = editor.current.graph;
     let loc = projection.invert(coord);
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
@@ -232,7 +233,9 @@ export class DrawAreaMode extends AbstractMode {
     }
 
     editor.replace(actionMoveNode(this.drawNode.id, loc));
-    this.drawNode = context.entity(this.drawNode.id);  // refresh draw node
+
+    graph = editor.current.graph;
+    this.drawNode = graph.entity(this.drawNode.id);  // refresh draw node
   }
 
 
@@ -245,7 +248,7 @@ export class DrawAreaMode extends AbstractMode {
     const editor = context.systems.editor;
     const locations = context.systems.locations;
 
-    const graph = editor.graph();
+    const graph = editor.current.graph;
     const projection = context.projection;
     const coord = eventData.coord;
     const loc = projection.invert(coord);

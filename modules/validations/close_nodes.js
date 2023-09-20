@@ -135,7 +135,8 @@ export function validationCloseNodes(context) {
                 [lon + lon_range, lat + lat_range]
             );
 
-            var intersected = context.systems.editor.tree().intersects(queryExtent, graph);
+//todo: using tree like this may be problematic - it may not reflect the graph we are validating
+            var intersected = context.systems.editor.tree.intersects(queryExtent, graph);
             for (var j = 0; j < intersected.length; j++) {
                 var nearby = intersected[j];
 
@@ -167,12 +168,12 @@ export function validationCloseNodes(context) {
                         subtype: 'detached',
                         severity: 'warning',
                         message: function() {
-                            const graph = editor.graph();  // use the current graph
+                            const graph = editor.current.graph;
                             const entity = graph.hasEntity(this.entityIds[0]);
                             const entity2 = graph.hasEntity(this.entityIds[1]);
                             return (entity && entity2) ? l10n.tHtml('issues.close_nodes.detached.message', {
-                                feature: l10n.displayLabel(entity, context.graph()),
-                                feature2: l10n.displayLabel(entity2, context.graph())
+                                feature: l10n.displayLabel(entity, graph),
+                                feature2: l10n.displayLabel(entity2, graph)
                             }) : '';
                         },
                         reference: showReference,
@@ -234,8 +235,9 @@ export function validationCloseNodes(context) {
                 subtype: 'vertices',
                 severity: 'warning',
                 message: function() {
-                    var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? l10n.tHtml('issues.close_nodes.message', { way: l10n.displayLabel(entity, context.graph()) }) : '';
+                  const graph = editor.current.graph;
+                  const entity = graph.hasEntity(this.entityIds[0]);
+                  return entity ? l10n.tHtml('issues.close_nodes.message', { way: l10n.displayLabel(entity, graph) }) : '';
                 },
                 reference: showReference,
                 entityIds: [way.id, node1.id, node2.id],

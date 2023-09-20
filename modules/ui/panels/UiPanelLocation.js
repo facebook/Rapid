@@ -16,8 +16,10 @@ export class UiPanelLocation extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'location';
-    this.label = context.tHtml('info_panels.location.title');
-    this.key = context.t('info_panels.location.key');
+
+    const l10n = context.systems.l10n;
+    this.label = l10n.tHtml('info_panels.location.title');
+    this.key = l10n.t('info_panels.location.key');
 
     this._selection = d3_select(null);
     this._currLocation = null;
@@ -113,16 +115,17 @@ export class UiPanelLocation extends AbstractUiPanel {
 
     const selection = this._selection;
     const context = this.context;
+    const l10n = context.systems.l10n;
     const nominatim = context.services.nominatim;
 
     if (nominatim) {
       nominatim.reverse(loc, (err, result) => {
-        this._currLocation = result ? result.display_name : context.t('info_panels.location.unknown_location');
+        this._currLocation = result ? result.display_name : l10n.t('info_panels.location.unknown_location');
         selection.selectAll('.location-info')
           .text(this._currLocation);
       });
     } else {
-      this._currLocation = context.t('info_panels.location.unknown_location');
+      this._currLocation = l10n.t('info_panels.location.unknown_location');
       selection.selectAll('.location-info')
         .text(this._currLocation);
     }

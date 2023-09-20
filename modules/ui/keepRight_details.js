@@ -4,6 +4,7 @@ import { utilHighlightEntities } from '../util';
 
 
 export function uiKeepRightDetails(context) {
+  const editor = context.systems.editor;
   const filters = context.systems.filters;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
@@ -63,7 +64,8 @@ export function uiKeepRightDetails(context) {
         const link = d3_select(node);
         const isObjectLink = link.classed('error_object_link');
         const entityID = isObjectLink ? (_qaItem.objectType.charAt(0) + _qaItem.objectId) : node.textContent;
-        const entity = context.hasEntity(entityID);
+        const graph = editor.current.graph;
+        const entity = graph.hasEntity(entityID);
 
         relatedEntities.push(entityID);
 
@@ -90,7 +92,7 @@ export function uiKeepRightDetails(context) {
         if (entity) {
           let name = l10n.displayName(entity.tags);  // try to use common name
           if (!name && !isObjectLink) {
-            const preset = presets.match(entity, context.graph());
+            const preset = presets.match(entity, graph);
             name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
           }
 

@@ -176,10 +176,10 @@ export class UploaderSystem extends AbstractSystem {
     const osm = context.services.osm;
     const editor = context.systems.editor;
     const summary = editor.difference().summary();
-    const graph = context.graph();
+    const graph = editor.current.graph;
 
     this._localGraph = graph;
-    this._remoteGraph = new Graph(editor.base(), true);
+    this._remoteGraph = new Graph(editor.base.graph, true);
 
     // Gather entityIDs to check
     // We will load these from the OSM API into the `remoteGraph`
@@ -457,7 +457,8 @@ export class UploaderSystem extends AbstractSystem {
 
     for (const conflict of this._conflicts) {
       if (conflict.chosen === 1) {   // user chose "use theirs"
-        const entity = this.context.hasEntity(conflict.id);
+        const graph = editor.current.graph;
+        const entity = graph.hasEntity(conflict.id);
         if (entity?.type === 'way') {
           for (const child of utilArrayUniq(entity.nodes)) {
             editor.replace(actionRevert(child));
