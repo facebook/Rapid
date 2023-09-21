@@ -128,7 +128,7 @@ export class Context extends EventEmitter {
     // LocalizationSystem
     const l10n = this.systems.l10n;
     if (this._prelocale) {   // set preferred locale codes, if we have them
-      this.systems.l10n.preferredLocaleCodes = this._prelocale;
+      l10n.preferredLocaleCodes = this._prelocale;
     }
 
     // FilterSystem
@@ -486,9 +486,7 @@ export class Context extends EventEmitter {
   }
   setDebug(flag, val = true) {
     this._debugFlags[flag] = val;
-    if (this.systems.map?.renderer) {
-      this.systems.map.immediateRedraw();
-    }
+    this.systems.map.immediateRedraw();
   }
 
 
