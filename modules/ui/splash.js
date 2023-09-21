@@ -8,10 +8,10 @@ export function uiSplash(context) {
   const storage = context.systems.storage;
 
   return (selection) => {
-    // Exception - if there are restorable changes, skip this splash screen.
+    // Exception - if there are restorable changes, skip the splash screen.
     // This is because we currently only support one `uiModal` at a time
-    //  and we need to show them `uiRestore`` instead of this one.
-    if (editor.hasRestorableChanges()) return;
+    //  and we need to show them `uiRestore` instead of this one.
+    if (editor.canRestoreBackup) return;
 
     // If user has not seen this version of the privacy policy, show the splash again.
     let updateMessage = '';

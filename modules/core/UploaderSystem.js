@@ -435,7 +435,6 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInSuccess() {
-    this.context.systems.editor.clearSaved();   // clear edits saved in localstorage
     this.emit('resultSuccess', this.changeset);
     this._endSave();
   }

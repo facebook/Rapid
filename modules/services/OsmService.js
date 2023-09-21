@@ -168,10 +168,6 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  isChangesetInflight() {
-    return !!this._changeset.inflight;
-  }
-
   get connectionID() {
     return this._connectionID;
   }
@@ -445,6 +441,12 @@ export class OsmService extends AbstractSystem {
       body: JXON.stringify(changeset.osmChangeJXON(changes)),
       signal: controller.signal
     };
+
+    // Attempt to prevent user from creating duplicate changes - see iD#5200
+    // Some users will refresh their tab as soon as the changeset is inflight.
+    // We don't want to offer to restore these same changes when their browser refreshes.
+    const editor = this.context.systems.editor;
+    editor.clearBackup();
 
     this._oauth.fetch(resource, options)
       .then(utilFetchResponse)

@@ -70,18 +70,13 @@ export class UiSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     const prerequisites = Promise.all([
       l10n.initAsync(),
-      editor.initAsync()
     ]);
 
     return this._initPromise = prerequisites
       .then(() => {
-        // Setup event handlers
-        window.addEventListener('beforeunload', () => context.save());
-        window.addEventListener('unload', () => editor.unlock());
         window.addEventListener('resize', () =>  this.resize());
 
         // After l10n is ready we can make these
@@ -446,10 +441,8 @@ this.didRender = true;
 
     if (startWalkthrough) {
       container.call(uiIntro(context));   // Jump right into walkthrough..
-
-    } else if (editor.lock() && editor.hasRestorableChanges()) {
-      container.call(uiRestore(context));   // Offer to restore previous edits..
-
+    } else if (editor.canRestoreBackup) {
+      container.call(uiRestore(context));   // Offer to restore backup edits..
     } else {
 // uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew
 //      if (context.systems.storage.getItem('sawRapidSplash')) {

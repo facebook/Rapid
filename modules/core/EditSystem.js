@@ -1,6 +1,7 @@
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
+import debounce from 'lodash-es/debounce';
 
 import { AbstractSystem } from './AbstractSystem';
 import { Difference, Edit, Graph, Tree } from './lib';
@@ -41,12 +42,13 @@ export class EditSystem extends AbstractSystem {
     this.dependencies = new Set(['imagery', 'map', 'photos', 'storage']);
 
     this._mutex = utilSessionMutex('lock');
-    this._hasRestorableChanges = false;
+    this._canRestoreBackup = false;
 
     this._stack = [];          // stack of edits
     this._index = 0;           // index of the current edit
     this._checkpoints = {};
-    this._pausedGraph = false;
+    this._pausedGraph = null;
+    this._inTransition = false;
     this._tree = null;
     this._initPromise = null;
 
@@ -54,6 +56,8 @@ export class EditSystem extends AbstractSystem {
     this.perform = this.perform.bind(this);
     this.replace = this.replace.bind(this);
     this.overwrite = this.overwrite.bind(this);
+    this.saveBackup = this.saveBackup.bind(this);
+    this.deferredBackup = debounce(this.saveBackup, 1000, { leading: false, trailing: true });
   }
 
 
@@ -78,8 +82,18 @@ export class EditSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
-        // changes are restorable if Rapid is not open in another window/tab and a saved history exists in localStorage
-        this._hasRestorableChanges = this._mutex.lock() && storage.hasItem(this._historyKey());
+        // Setup event handlers
+        window.addEventListener('beforeunload', e => {
+          if (this._index !== 0) {  // user did something
+            e.preventDefault();
+            this.saveBackup();
+            return (e.returnValue = '');  // show browser prompt
+          }
+        });
+        window.addEventListener('unload', () => this._mutex.unlock());
+
+        // changes are restorable if Rapid is not open in another window/tab and a backup exists in localStorage
+        this._canRestoreBackup = this._mutex.lock() && storage.hasItem(this._historyKey());
       });
   }
 
@@ -112,11 +126,14 @@ export class EditSystem extends AbstractSystem {
    */
   reset() {
     d3_select(document).interrupt('editTransition');
+    this.deferredBackup.cancel();
+
     const baseGraph = new Graph();
     this._stack = [new Edit({ graph: baseGraph })];
     this._tree = new Tree(baseGraph);
     this._index = 0;
     this._checkpoints = {};
+    this._pausedGraph = null;
     this.emit('reset');
   }
 
@@ -147,7 +164,7 @@ export class EditSystem extends AbstractSystem {
 
 
   peekAnnotation() {
-    return this._stack[this._index].annotation;
+    return this.current.annotation;
   }
 
 
@@ -233,9 +250,11 @@ export class EditSystem extends AbstractSystem {
           };
         })
         .on('start', () => {
+          this._inTransition = true;
           this._perform([action0], 0);
         })
         .on('end interrupt', () => {
+          this._inTransition = false;
           this._overwrite(args, 1);
         });
 
@@ -261,7 +280,7 @@ export class EditSystem extends AbstractSystem {
   pop(n) {
     d3_select(document).interrupt('editTransition');
 
-    const previous = this._stack[this._index].graph;
+    const previous = this.current.graph;
     if (isNaN(+n) || +n < 0) {
       n = 1;
     }
@@ -277,7 +296,7 @@ export class EditSystem extends AbstractSystem {
   undo() {
     d3_select(document).interrupt('editTransition');
 
-    const previousEdit = this._stack[this._index];
+    const previousEdit = this.current;
     while (this._index > 0) {
       this._index--;
       if (this._stack[this._index].annotation) break;
@@ -292,7 +311,7 @@ export class EditSystem extends AbstractSystem {
   redo() {
     d3_select(document).interrupt('editTransition');
 
-    const previousEdit = this._stack[this._index];
+    const previousEdit = this.current;
 
     let tryIndex = this._index;
     while (tryIndex < this._stack.length - 1) {
@@ -308,13 +327,24 @@ export class EditSystem extends AbstractSystem {
   }
 
 
+  /**
+   * beginTransaction
+   * This saves the current graph and starts a transaction.
+   * During a transaction, edits can be performed but no `change` events will be disptached.
+   * This is to prevent other parts of the code from rendering/validating partial or incomplete edits.
+   */
   beginTransaction() {
     if (!this._pausedGraph) {
-      this._pausedGraph = this._stack[this._index].graph;
+      this._pausedGraph = this.current.graph;
     }
   }
 
 
+  /**
+   * endTransaction
+   * This marks the current transaction as complete.
+   * A `change` event will be emitted that covers the difference from the beginning-end of the transaction.
+   */
   endTransaction() {
     if (this._pausedGraph) {
       const previous = this._pausedGraph;
@@ -342,23 +372,40 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // Returns the entities from the active graph with bounding boxes
-  // overlapping the given `extent`.
+  /**
+   * intersects
+   * Returns the entities from the active graph with bounding boxes
+   * overlapping the given `extent`.
+   * @prarm   {Extent}  extent - the extent to test
+   * @return  {Array}   Entities intersecting the given Extent
+   */
   intersects(extent) {
-    return this._tree.intersects(extent, this._stack[this._index].graph);
+    return this._tree.intersects(extent, this.current.graph);
   }
 
 
+  /**
+   * difference
+   * Returns a `Difference` containing all edits from base -> current
+   * @return {Difference} The total changes made by the user during their edit session
+   */
   difference() {
-    const base = this._stack[0].graph;
-    const head = this._stack[this._index].graph;
+    const base = this.base.graph;
+    const head = this.current.graph;
     return new Difference(base, head);
   }
 
 
+  /**
+   * changes
+   * This returns a summery of all changes made from base -> current
+   * Optionally including a given action to apply to the current graph.
+   * @param  {Function?}  action - Optional action to apply to the current graph
+   * @return {Object}     Object containing `modified`, `created`, `deleted` summary of changes
+   */
   changes(action) {
-    const base = this._stack[0].graph;
-    let head = this._stack[this._index].graph;
+    const base = this.base.graph;
+    let head = this.current.graph;
 
     if (action) {
       head = action(head);
@@ -374,6 +421,12 @@ export class EditSystem extends AbstractSystem {
   }
 
 
+  /**
+   * hasChanges
+   * This counts meangful edits only (modified, created, deleted)
+   * For example, we could perform a bunch of no-op edits and it would still return false
+   * @return `true` if the user has made any meaningful edits
+   */
   hasChanges() {
     return this.difference().changes.size > 0;
   }
@@ -403,7 +456,11 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // save the current history state
+  /**
+   * setCheckpoint
+   * This saves the current edit as a checkpoint that we can return to later.
+   * @param  {string}  key - the name of the checkpoint
+   */
   setCheckpoint(key) {
     d3_select(document).interrupt('editTransition');
 
@@ -415,12 +472,16 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // restore history state to a given checkpoint
+  /**
+   * resetToCheckpoint
+   * This returns the state back to the edit identified by the given checkpoint key.
+   * @param  {string}  key - the name of the checkpoint
+   */
   resetToCheckpoint(key) {
     d3_select(document).interrupt('editTransition');
 
     if (key !== undefined && this._checkpoints.hasOwnProperty(key)) {  // reset to given key
-      const fromGraph = this._stack[this._index].graph;
+      const fromGraph = this.current.graph;
 
       this._stack = this._checkpoints[key].stack;
       this._index = this._checkpoints[key].index;
@@ -432,15 +493,20 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // `toIntroGraph()` is used to export the intro graph used by the walkthrough.
-  //
-  // To use it:
-  //  1. Start the walkthrough.
-  //  2. Get to a "free editing" tutorial step
-  //  3. Make your edits to the walkthrough map
-  //  4. In your browser dev console run:  `context.systems.editor.toIntroGraph()`
-  //  5. This outputs stringified JSON to the browser console
-  //  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
+  /**
+   * toIntroGraph
+   * Used to export the intro graph used by the walkthrough.
+   * This function is indended to be called manually by developers.
+   * We only use this on very rare occasions to change the walkthrough data.
+   *
+   * To use it:
+   *  1. Start the walkthrough.
+   *  2. Get to a "free editing" tutorial step
+   *  3. Make your edits to the walkthrough map
+   *  4. In your browser dev console run:  `context.systems.editor.toIntroGraph()`
+   *  5. This outputs stringified JSON to the browser console
+   *  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
+   */
   toIntroGraph() {
     let nextID = { n: 0, r: 0, w: 0 };
     let permIDs = {};
@@ -513,9 +579,11 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  //
-  //
-  //
+  /**
+   * toJSON
+   * Save the edit history to JSON
+   * @return {String?}  A String containing the JSON, or `undefined` if nothing to save
+   */
   toJSON() {
     if (!this.hasChanges()) return;
 
@@ -595,9 +663,15 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  //
-  //
-  //
+  /**
+   * fromJSON
+   * Restore the edit history from a JSON string.
+   * Optionally fetch missing child nodes from OSM
+   *   (bhousel - not clear to me under what circumstances we would have a `false` here?)
+   * @param  {String}   json - Stringified JSON to parse
+   * @param  {boolean}  loadChildNodes - if `true` also attempt to fetch child nodes from OSM
+   * @return {String?}  A String containing the JSON, or `undefined` if nothing to save
+   */
   fromJSON(json, loadChildNodes) {
     const context = this.context;
     const map = context.systems.map;
@@ -606,12 +680,12 @@ export class EditSystem extends AbstractSystem {
     const hist = JSON.parse(json);
     let loadComplete = true;
 
-    osmEntity.id.next = hist.nextIDs;
-    this._index = hist.index;
-
     if (hist.version !== 2 && hist.version !== 3) {
       throw new Error(`History version ${hist.version} not supported.`);
     }
+
+    osmEntity.id.next = hist.nextIDs;
+    this._index = hist.index;
 
     // Instantiate the modified entities
     const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
@@ -681,7 +755,7 @@ export class EditSystem extends AbstractSystem {
     // Replace the history stack.
     this._stack = hist.stack.map((item, index) => {
       // Leave base graph alone, this first edit should have nothing in it.
-      if (index === 0) return this._stack[0];
+      if (index === 0) return this.base;
 
       const entities = {};
       if (Array.isArray(item.modified)) {
@@ -711,7 +785,7 @@ export class EditSystem extends AbstractSystem {
     });
 
 
-    const transform = this._stack[this._index].transform;
+    const transform = this.current.transform;
     if (transform) {
       map.transform(transform);
     }
@@ -725,39 +799,79 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  lock() {
-    return this._mutex.lock();
-  }
+  /**
+   * saveBackup
+   * Backup the user's edits to a JSON string in localStorage.
+   * This code runs occasionally as the user edits.
+   * @return  `true` if a backup was saved
+   */
+  saveBackup() {
+    const context = this.context;
+    if (context.inIntro) return;               // don't backup edits made in the walkthrough
+    if (context.mode?.id === 'save') return;   // edits made in save mode may be conflict resolutions
+    if (this._canRestoreBackup) return;        // waiting to see if the user wants to restore other edits
+    if (this._pausedGraph) return;             // don't backup edits mid-transaction
+    if (this._inTransition) return;            // don't backup edits mid-transition
+    if (!this._mutex.locked()) return;         // another browser tab owns the history
 
-
-  unlock() {
-    return this._mutex.unlock();
-  }
-
-
-  save() {
-    // bail out if another browser tab has locked the mutex, or changes exist that the user may want to restore.
-    if (!this._mutex.locked() || this._hasRestorableChanges) return;
-
-    const storage = this.context.systems.storage;
+    const storage = context.systems.storage;
     const json = this.toJSON();
     if (json) {
       const success = storage.setItem(this._historyKey(), json);
-      if (!success) this.emit('storage_error');
-    } else {
-      storage.removeItem(this._historyKey());
+      if (success) {
+        return true;
+      } else {
+        this.emit('storage_error');
+      }
     }
   }
 
 
-  // delete the history version saved in localStorage
-  clearSaved() {
-    this.context.debouncedSave.cancel();
+  /**
+   * canRestoreBackup
+   * This flag will be `true` if `initAsync` has determined that there is a restorable
+   *  backup, and we are waiting on the user to make a decision about what to do with it.
+   * @return `true` if there is a backup to restore
+   * @readonly
+   */
+  get canRestoreBackup() {
+    return this._canRestoreBackup;
+  }
 
-    // bail out if another browser tab has locked the mutex
-    if (!this._mutex.locked()) return;
 
-    this._hasRestorableChanges = false;
+  /**
+   * restoreBackup
+   * Restore the user's backup from localStorage
+   * This happens when:
+   * - The user chooses to "Restore my changes" from the restore screen
+   */
+  restoreBackup() {
+    this._canRestoreBackup = false;
+
+    if (!this._mutex.locked()) return;  // another browser tab owns the history
+
+    const storage = this.context.systems.storage;
+    const json = storage.getItem(this._historyKey());
+    if (json) {
+      this.fromJSON(json, true);
+    }
+  }
+
+
+  /**
+   * clearBackup
+   * Remove any backup stored in localStorage
+   * This happens when:
+   * - The user chooses to "Discard my changes" from the restore screen
+   * - The user switches sources with the source switcher
+   * - A changeset is inflight, we remove it to prevent the user from restoring duplicate edits
+   */
+  clearBackup() {
+    this._canRestoreBackup = false;
+    this.deferredBackup.cancel();
+
+    if (!this._mutex.locked()) return;  // another browser tab owns the history
+
     const storage = this.context.systems.storage;
     storage.removeItem(this._historyKey());
 
@@ -765,27 +879,6 @@ export class EditSystem extends AbstractSystem {
     storage.removeItem('comment');
     storage.removeItem('hashtags');
     storage.removeItem('source');
-  }
-
-
-  savedHistoryJSON() {
-    const storage = this.context.systems.storage;
-    return storage.getItem(this._historyKey());
-  }
-
-
-  hasRestorableChanges() {
-    return this._hasRestorableChanges;
-  }
-
-
-  // load history from a version stored in localStorage
-  restore() {
-    if (this._mutex.locked()) {
-      this._hasRestorableChanges = false;
-      const json = this.savedHistoryJSON();
-      if (json) this.fromJSON(json, true);
-    }
   }
 
 
@@ -806,7 +899,7 @@ export class EditSystem extends AbstractSystem {
       annotation = actions.pop();
     }
 
-    let graph = this._stack[this._index].graph;
+    let graph = this.current.graph;
     for (const fn of actions) {
       graph = fn(graph, t);
     }
@@ -846,7 +939,7 @@ export class EditSystem extends AbstractSystem {
 
   // internal _perform with eased time
   _perform(args, t) {
-    const previous = this._stack[this._index].graph;
+    const previous = this.current.graph;
     this._stack = this._stack.slice(0, this._index + 1);
     const edit = this._act(args, t);
     this._stack.push(edit);
@@ -857,7 +950,7 @@ export class EditSystem extends AbstractSystem {
 
   // internal _replace with eased time
   _replace(args, t) {
-    const previous = this._stack[this._index].graph;
+    const previous = this.current.graph;
     const edit = this._act(args, t);
     this._stack[this._index] = edit;
     return this._change(previous);
@@ -866,7 +959,7 @@ export class EditSystem extends AbstractSystem {
 
   // internal this._overwrite with eased time
   _overwrite(args, t) {
-    const previous = this._stack[this._index].graph;
+    const previous = this.current.graph;
     if (this._index > 0) {
       this._index--;
       this._stack.pop();
@@ -883,6 +976,7 @@ export class EditSystem extends AbstractSystem {
   _change(previous) {
     const difference = new Difference(previous, this.current.graph);
     if (!this._pausedGraph) {
+      this.deferredBackup();
       this.emit('change', difference);
     }
     return difference;

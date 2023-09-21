@@ -6,7 +6,7 @@ export function uiRestore(context) {
   const l10n = context.systems.l10n;
 
   return function(selection) {
-    if (!editor.hasRestorableChanges()) return;
+    if (!editor.canRestoreBackup) return;
 
     let modalSelection = uiModal(selection, true);
 
@@ -35,7 +35,7 @@ export function uiRestore(context) {
       .append('button')
       .attr('class', 'restore')
       .on('click', () => {
-        editor.restore();
+        editor.restoreBackup();
         modalSelection.remove();
       });
 
@@ -53,7 +53,7 @@ export function uiRestore(context) {
       .append('button')
       .attr('class', 'reset')
       .on('click', () => {
-        editor.clearSaved();
+        editor.clearBackup();
         modalSelection.remove();
       });
 
