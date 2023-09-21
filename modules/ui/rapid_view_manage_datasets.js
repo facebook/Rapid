@@ -9,6 +9,7 @@ import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
+  const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
   const dispatch = d3_dispatch('done');
   const categoryCombo = uiCombobox(context, 'dataset-categories');
@@ -105,7 +106,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     line1
       .append('div')
       .attr('class', 'rapid-view-manage-header-text')
-      .text(context.t('rapid_feature_toggle.esri.title'));
+      .text(l10n.t('rapid_feature_toggle.esri.title'));
 
     let line2 = headerEnter
       .append('div');
@@ -113,7 +114,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     line2
       .append('div')
       .attr('class', 'rapid-view-manage-header-about')
-      .html(marked.parse(context.t('rapid_feature_toggle.esri.about')));
+      .html(marked.parse(l10n.t('rapid_feature_toggle.esri.about')));
 
     line2.selectAll('a')
       .attr('target', '_blank');
@@ -137,7 +138,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     filterSearchEnter
       .append('input')
       .attr('class', 'rapid-view-manage-filter-search')
-      .attr('placeholder', context.t('rapid_feature_toggle.esri.filter_datasets'))
+      .attr('placeholder', l10n.t('rapid_feature_toggle.esri.filter_datasets'))
       .call(utilNoAuto)
       .on('input', d3_event => {
         const element = d3_event.currentTarget;
@@ -154,7 +155,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     filterTypeEnter
       .append('input')
       .attr('class', 'rapid-view-manage-filter-type')
-      .attr('placeholder', context.t('rapid_feature_toggle.esri.any_type'))
+      .attr('placeholder', l10n.t('rapid_feature_toggle.esri.any_type'))
       .call(utilNoAuto)
       .call(categoryCombo)
       .on('blur change', d3_event => {
@@ -175,7 +176,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-filter-clear')
       .append('a')
       .attr('href', '#')
-      .text(context.t('rapid_feature_toggle.esri.clear_filters'))
+      .text(l10n.t('rapid_feature_toggle.esri.clear_filters'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         const element = d3_event.currentTarget;
@@ -225,7 +226,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('button')
       .attr('class', 'button ok-button action')
       .on('click', _myClose)
-      .text(context.t('confirm.okay'));
+      .text(l10n.t('confirm.okay'));
   }
 
 
@@ -239,14 +240,14 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     if (!esri || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
       results.classed('hide', true);
-      status.classed('hide', false).text(context.t('rapid_feature_toggle.esri.no_datasets'));
+      status.classed('hide', false).text(l10n.t('rapid_feature_toggle.esri.no_datasets'));
       return;
     }
 
     if (!_datasetInfo) {
       results.classed('hide', true);
       status.classed('hide', false)
-        .text(context.t('rapid_feature_toggle.esri.fetching_datasets'));
+        .text(l10n.t('rapid_feature_toggle.esri.fetching_datasets'));
 
       status
         .append('br');
@@ -341,7 +342,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-dataset-link')
       .attr('target', '_blank')
       .attr('href', d => d.itemURL)
-      .text(context.t('rapid_feature_toggle.esri.more_info'))
+      .text(l10n.t('rapid_feature_toggle.esri.more_info'))
       .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
     let featuredEnter = labelsEnter.selectAll('.rapid-view-manage-dataset-featured')
@@ -356,14 +357,14 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     featuredEnter
       .append('span')
-      .text(context.t('rapid_feature_toggle.esri.featured'));
+      .text(l10n.t('rapid_feature_toggle.esri.featured'));
 
     labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
       .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/preview'))
       .enter()
       .append('div')
       .attr('class', 'rapid-view-manage-dataset-beta beta')
-      .attr('title', context.t('rapid_poweruser_features.beta'));
+      .attr('title', l10n.t('rapid_poweruser_features.beta'));
 
     labelsEnter
       .append('div')
@@ -397,12 +398,12 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     datasets.selectAll('.rapid-view-manage-dataset-action')
       .classed('secondary', d => datasetAdded(d))
-      .text(d => datasetAdded(d) ? context.t('rapid_feature_toggle.esri.remove') : context.t('rapid_feature_toggle.esri.add_to_map'));
+      .text(d => datasetAdded(d) ? l10n.t('rapid_feature_toggle.esri.remove') : l10n.t('rapid_feature_toggle.esri.add_to_map'));
 
     const numShown = _datasetInfo.filter(d => !d.filtered).length;
     const gt = (count > MAXRESULTS && numShown === MAXRESULTS) ? '>' : '';
     _content.selectAll('.rapid-view-manage-filter-results')
-      .text(context.t('rapid_feature_toggle.esri.datasets_found', { num: `${gt}${numShown}` }));
+      .text(l10n.t('rapid_feature_toggle.esri.datasets_found', { num: `${gt}${numShown}` }));
   }
 
 
@@ -454,7 +455,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         color: colors[colorIndex],
         dataUsed: ['esri', d.title],
         label: d.title,
-        license_markdown: context.t('rapid_feature_toggle.esri.license_markdown')
+        license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown')
       };
 
       if (d.extent) {

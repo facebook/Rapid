@@ -6,6 +6,7 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolDrawModes(context) {
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
   const ui = context.systems.ui;
@@ -15,31 +16,31 @@ export function uiToolDrawModes(context) {
 
   let tool = {
     id: 'draw_modes',
-    label: context.tHtml('toolbar.add_feature')
+    label: l10n.tHtml('toolbar.add_feature')
   };
 
   const modes = [
     {
       id: 'add-point',
-      title: context.tHtml('modes.add_point.title'),
+      title: l10n.tHtml('modes.add_point.title'),
       button: 'point',
-      description: context.tHtml('modes.add_point.description'),
+      description: l10n.tHtml('modes.add_point.description'),
       preset: presets.item('point'),
       key: '1'
     },
     {
       id: 'draw-line',
-      title: context.tHtml('modes.add_line.title'),
+      title: l10n.tHtml('modes.add_line.title'),
       button: 'line',
-      description: context.tHtml('modes.add_line.description'),
+      description: l10n.tHtml('modes.add_line.description'),
       preset: presets.item('line'),
       key: '2'
     },
     {
       id: 'draw-area',
-      title: context.tHtml('modes.add_area.title'),
+      title: l10n.tHtml('modes.add_area.title'),
       button: 'area',
-      description: context.tHtml('modes.add_area.description'),
+      description: l10n.tHtml('modes.add_area.description'),
       preset: presets.item('area'),
       key: '3'
     }

@@ -3,8 +3,10 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapStyleOptions(context) {
+  const l10n = context.systems.l10n;
+
   const section = uiSection(context, 'fill-area')
-    .label(context.tHtml('map_data.style_options'))
+    .label(l10n.tHtml('map_data.style_options'))
     .disclosureContent(renderDisclosureContent);
 
 
@@ -41,11 +43,11 @@ export function uiSectionMapStyleOptions(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => context.tHtml(`${name}.${d}.tooltip`))
+        .title(d => l10n.tHtml(`${name}.${d}.tooltip`))
         .keys(d => {
-          let key = (d === 'wireframe' ? context.t('area_fill.wireframe.key') : null);
+          let key = (d === 'wireframe' ? l10n.t('area_fill.wireframe.key') : null);
           if (d === 'highlight_edits') {
-            key = context.t('map_data.highlight_edits.key');
+            key = l10n.t('map_data.highlight_edits.key');
           }
           return key ? [key] : null;
         })
@@ -63,7 +65,7 @@ export function uiSectionMapStyleOptions(context) {
 
     label
       .append('span')
-      .html(d => context.tHtml(`${name}.${d}.description`));
+      .html(d => l10n.tHtml(`${name}.${d}.description`));
 
     // Update
     items = items

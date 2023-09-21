@@ -7,10 +7,11 @@ import { uiTooltip } from '../tooltip';
 
 export function uiToolSave(context) {
   const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
 
   let tool = {
     id: 'save',
-    label: context.tHtml('save.title')
+    label: l10n.tHtml('save.title')
   };
 
   let key = uiCmd('⌘S');
@@ -56,7 +57,7 @@ export function uiToolSave(context) {
 
     if (_tooltip) {
       _tooltip
-        .title(context.tHtml(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
+        .title(l10n.tHtml(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
         .keys([key]);
     }
 
@@ -84,7 +85,7 @@ export function uiToolSave(context) {
 
     _tooltip = uiTooltip(context)
       .placement('bottom')
-      .title(context.tHtml('save.no_changes'))
+      .title(l10n.tHtml('save.no_changes'))
       .keys([key])
       .scrollContainer(context.container().select('.top-toolbar'));
 
@@ -106,7 +107,7 @@ export function uiToolSave(context) {
         //         .duration(2000)
         //         .iconName('#rapid-icon-save')
         //         .iconClass('disabled')
-        //         .label(context.tHtml('save.no_changes'))();
+        //         .label(l10n.tHtml('save.no_changes'))();
         // }
         // lastPointerUpType = null;
       })

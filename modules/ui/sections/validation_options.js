@@ -2,6 +2,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionValidationOptions(context) {
+  const l10n = context.systems.l10n;
   const storage = context.systems.storage;
   const validator = context.systems.validator;
 
@@ -33,7 +34,7 @@ export function uiSectionValidationOptions(context) {
     optionsEnter
       .append('div')
       .attr('class', 'issues-option-title')
-      .html(d => context.tHtml(`issues.options.${d.key}.title`));
+      .html(d => l10n.tHtml(`issues.options.${d.key}.title`));
 
     let valuesEnter = optionsEnter.selectAll('label')
       .data(d => {
@@ -52,7 +53,7 @@ export function uiSectionValidationOptions(context) {
 
     valuesEnter
       .append('span')
-      .html(d => context.tHtml(`issues.options.${d.key}.${d.value}`));
+      .html(d => l10n.tHtml(`issues.options.${d.key}.${d.value}`));
   }
 
   function getOptions() {

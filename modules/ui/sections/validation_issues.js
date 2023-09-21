@@ -18,6 +18,7 @@ const MAX_ISSUES = 1000;
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
   const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
   const validator = context.systems.validator;
@@ -31,8 +32,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   function sectionLabel() {
     const countText = _issues.length > MAX_ISSUES ? `${MAX_ISSUES}+` : String(_issues.length);
-    const titleText = context.t(`issues.${severity}s.list_title`);
-    return context.t('inspector.title_count', { title: titleText, count: countText });
+    const titleText = l10n.t(`issues.${severity}s.list_title`);
+    return l10n.t('inspector.title_count', { title: titleText, count: countText });
   }
 
   function sectionShouldDisplay() {
@@ -119,7 +120,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
           d3_select(nodes[i])
             .append('button')
-            .attr('title', context.t('issues.fix_one.title'))
+            .attr('title', l10n.t('issues.fix_one.title'))
             .datum(d)  // set button datum to the issue
             .attr('class', 'autofix action')
             .on('click', (d3_event, d) => {
@@ -163,7 +164,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     linkEnter
       .append('span')
       .attr('class', 'autofix-all-link-text')
-      .html(context.tHtml('issues.fix_all.title'));
+      .html(l10n.tHtml('issues.fix_all.title'));
 
     linkEnter
       .append('span')
@@ -184,7 +185,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
           if (typeof args[args.length - 1] !== 'function') {
             args.pop();
           }
-          args.push(context.t('issues.fix_all.annotation'));
+          args.push(l10n.t('issues.fix_all.annotation'));
           editor.replace.apply(editor, args);  // this does the fix
         });
         editor.endTransaction();

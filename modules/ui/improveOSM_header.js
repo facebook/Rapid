@@ -2,14 +2,15 @@ import { Color } from 'pixi.js';
 
 
 export function uiImproveOsmHeader(context) {
+  const l10n = context.systems.l10n;
   let _qaItem;
 
 
   function issueTitle(d) {
     const issueKey = d.issueKey;
     d.replacements = d.replacements || {};
-    d.replacements.default = context.tHtml('inspector.unknown');  // special key `default` works as a fallback string
-    return context.tHtml(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
+    d.replacements.default = l10n.tHtml('inspector.unknown');  // special key `default` works as a fallback string
+    return l10n.tHtml(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
   }
 
 

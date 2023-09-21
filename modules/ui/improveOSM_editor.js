@@ -9,6 +9,7 @@ import { utilNoAuto, utilRebind } from '../util';
 
 
 export function uiImproveOsmEditor(context) {
+  const l10n = context.systems.l10n;
   const improveosm = context.services.improveOSM;
   const dispatch = d3_dispatch('change');
   const qaDetails = uiImproveOsmDetails(context);
@@ -32,7 +33,7 @@ export function uiImproveOsmEditor(context) {
 
     headerEnter
       .append('h3')
-        .html(context.tHtml('QA.improveOSM.title'));
+        .html(l10n.tHtml('QA.improveOSM.title'));
 
     let body = selection.selectAll('.body')
       .data([0]);
@@ -77,12 +78,12 @@ export function uiImproveOsmEditor(context) {
     saveSectionEnter
       .append('h4')
         .attr('class', '.qa-save-header')
-        .html(context.tHtml('note.newComment'));
+        .html(l10n.tHtml('note.newComment'));
 
     saveSectionEnter
       .append('textarea')
         .attr('class', 'new-comment-input')
-        .attr('placeholder', context.t('QA.keepRight.comment_placeholder'))
+        .attr('placeholder', l10n.t('QA.keepRight.comment_placeholder'))
         .attr('maxlength', 1000)
         .property('value', d => d.newComment)
         .call(utilNoAuto)
@@ -132,7 +133,7 @@ export function uiImproveOsmEditor(context) {
     buttonEnter
       .append('button')
         .attr('class', 'button comment-button action')
-        .html(context.tHtml('QA.keepRight.save_comment'));
+        .html(l10n.tHtml('QA.keepRight.save_comment'));
 
     buttonEnter
       .append('button')
@@ -158,7 +159,7 @@ export function uiImproveOsmEditor(context) {
     buttonSection.select('.close-button')
       .html(d => {
         const andComment = (d.newComment ? '_comment' : '');
-        return context.tHtml(`QA.keepRight.close${andComment}`);
+        return l10n.tHtml(`QA.keepRight.close${andComment}`);
       })
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
@@ -171,7 +172,7 @@ export function uiImproveOsmEditor(context) {
     buttonSection.select('.ignore-button')
       .html(d => {
         const andComment = (d.newComment ? '_comment' : '');
-        return context.tHtml(`QA.keepRight.ignore${andComment}`);
+        return l10n.tHtml(`QA.keepRight.ignore${andComment}`);
       })
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641

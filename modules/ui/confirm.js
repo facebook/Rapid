@@ -2,6 +2,7 @@ import { uiModal } from './modal';
 
 
 export function uiConfirm(context, selection) {
+  const l10n = context.systems.l10n;
   let modalSelection = uiModal(selection);
 
   modalSelection.select('.modal')
@@ -24,7 +25,7 @@ export function uiConfirm(context, selection) {
       .append('button')
       .attr('class', 'button ok-button action')
       .on('click.confirm', () => modalSelection.remove())
-      .text(context.t('confirm.okay'))
+      .text(l10n.t('confirm.okay'))
       .node()
       .focus();
 

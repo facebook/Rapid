@@ -45,11 +45,14 @@ export class ValidationIssue {
 
     // For warnings, create an "ignore" option
     if (this.severity === 'warning') {
+      const l10n = this.context.systems.l10n;
+      const validator = this.context.systems.validator;
+
       fixes.push(new ValidationFix({
-        title: this.context.tHtml('issues.fix.ignore_issue.title'),
+        title: l10n.tHtml('issues.fix.ignore_issue.title'),
         icon: 'rapid-icon-close',
         onClick: () => {
-          this.context.systems.validator.ignoreIssue(this.id);
+          validator.ignoreIssue(this.id);
         }
       }));
     }

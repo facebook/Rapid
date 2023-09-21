@@ -6,8 +6,9 @@ import { uiSection } from '../section';
 
 
 export function uiSectionValidationRules(context) {
-  const validator = context.systems.validator;
+  const l10n = context.systems.l10n;
   const storage = context.systems.storage;
+  const validator = context.systems.validator;
 
   const MINSQUARE = 0;
   const MAXSQUARE = 20;
@@ -15,13 +16,13 @@ export function uiSectionValidationRules(context) {
 
   const section = uiSection(context, 'issues-rules')
     .disclosureContent(renderDisclosureContent)
-    .label(context.tHtml('issues.rules.title'));
+    .label(l10n.tHtml('issues.rules.title'));
 
 
   let _ruleKeys = validator.getRuleKeys()
     .sort((key1, key2) => {
       // alphabetize by localized title
-      return context.t(`issues.${key1}.title`) < context.t(`issues.${key2}.title`) ? -1 : 1;
+      return l10n.t(`issues.${key1}.title`) < l10n.t(`issues.${key2}.title`) ? -1 : 1;
     });
 
 
@@ -45,7 +46,7 @@ export function uiSectionValidationRules(context) {
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(context.tHtml('issues.disable_all'))
+      .html(l10n.tHtml('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         validator.disableRules(_ruleKeys);
@@ -55,7 +56,7 @@ export function uiSectionValidationRules(context) {
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(context.tHtml('issues.enable_all'))
+      .html(l10n.tHtml('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         validator.disableRules([]);
@@ -82,7 +83,7 @@ export function uiSectionValidationRules(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => context.tHtml(`issues.${d}.tip`))
+        .title(d => l10n.tHtml(`issues.${d}.tip`))
         .placement('top')
       );
 
@@ -102,7 +103,7 @@ export function uiSectionValidationRules(context) {
         if (d === 'unsquare_way') {
           params.val = '<span class="square-degrees"></span>';
         }
-        return context.tHtml(`issues.${d}.title`, params);
+        return l10n.tHtml(`issues.${d}.title`, params);
       });
 
     // Update

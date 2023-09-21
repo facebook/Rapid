@@ -9,7 +9,9 @@ import { utilRebind, utilTriggerEvent } from '../util';
 
 
 export function uiChangesetEditor(context) {
-    var dispatch = d3_dispatch('change');
+    const l10n = context.systems.l10n;
+    const dispatch = d3_dispatch('change');
+
     var formFields = uiFormFields(context);
     var commentCombo = uiCombobox(context, 'comment').caseSensitive(true);
     var _uifields;
@@ -104,9 +106,9 @@ export function uiChangesetEditor(context) {
             .append('a')
             .attr('target', '_blank')
             .call(uiIcon('#rapid-icon-alert', 'inline'))
-            .attr('href', context.t('commit.google_warning_link'))
+            .attr('href', l10n.t('commit.google_warning_link'))
             .append('span')
-            .text(context.t('commit.google_warning'));
+            .text(l10n.t('commit.google_warning'));
 
         commentEnter
             .transition()

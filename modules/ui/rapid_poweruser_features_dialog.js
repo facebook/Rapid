@@ -4,6 +4,7 @@ import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
+  const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
   const storage = context.systems.storage;
   const urlhash = context.systems.urlhash;
@@ -108,12 +109,12 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     headerEnter
       .append('h3')
       .attr('class', 'modal-heading')
-      .html(context.t('rapid_poweruser_features.heading.label'));
+      .html(l10n.t('rapid_poweruser_features.heading.label'));
 
     headerEnter
       .append('div')
       .attr('class', 'modal-heading-desc')
-      .text(context.t('rapid_poweruser_features.heading.description'))
+      .text(l10n.t('rapid_poweruser_features.heading.description'))
       .append('span')
       .attr('class', 'smile')
       .text('😎');
@@ -143,7 +144,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
       .append('button')
       .attr('class', 'button ok-button action')
       .on('click', () => _modalSelection.remove())
-      .text(context.t('confirm.okay'));
+      .text(l10n.t('confirm.okay'));
   }
 
 
@@ -166,13 +167,13 @@ export function uiRapidPowerUserFeaturesDialog(context) {
         selection
           .append('div')
           .attr('class', 'rapid-feature-label')
-          .text(d => context.t(`rapid_poweruser_features.${d}.label`));
+          .text(d => l10n.t(`rapid_poweruser_features.${d}.label`));
 
         // line2: description
         selection
           .append('div')
           .attr('class', 'rapid-feature-description')
-          .text(d => context.t(`rapid_poweruser_features.${d}.description`));
+          .text(d => l10n.t(`rapid_poweruser_features.${d}.description`));
       });
 
     let inputsEnter = rowsEnter

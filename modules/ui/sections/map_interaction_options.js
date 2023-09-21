@@ -4,8 +4,10 @@ import { uiSection } from '../section';
 
 export function uiSectionMapInteractionOptions(context) {
   const storage = context.systems.storage;
+  const l10n = context.systems.l10n;
+
   const section = uiSection(context, 'map-interaction')
-    .label(context.tHtml('preferences.map_interaction.title'))
+    .label(l10n.tHtml('preferences.map_interaction.title'))
     .disclosureContent(renderDisclosureContent);
 
   const MOUSE_WHEEL_OPTIONS = ['auto', 'zoom', 'pan'];
@@ -23,7 +25,7 @@ export function uiSectionMapInteractionOptions(context) {
     enter
       .append('div')
       .attr('class', 'mouse-wheel-title')
-      .text(context.t('preferences.map_interaction.mouse_wheel.title'));
+      .text(l10n.t('preferences.map_interaction.mouse_wheel.title'));
 
     enter
       .append('ul')
@@ -49,7 +51,7 @@ export function uiSectionMapInteractionOptions(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => context.t(`preferences.map_interaction.mouse_wheel.${d}.tooltip`))
+        .title(d => l10n.t(`preferences.map_interaction.mouse_wheel.${d}.tooltip`))
         .placement('top')
       );
 
@@ -64,7 +66,7 @@ export function uiSectionMapInteractionOptions(context) {
 
     label
       .append('span')
-      .text(d => context.t(`preferences.map_interaction.mouse_wheel.${d}.title`));
+      .text(d => l10n.t(`preferences.map_interaction.mouse_wheel.${d}.title`));
 
     // Update
     items.merge(enter)

@@ -7,10 +7,11 @@ import { uiTooltip } from '../tooltip';
 
 export function uiToolDownloadOsc(context) {
   const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
 
   let tool = {
     id: 'download_osc',
-    label: context.t('download_osc.title')
+    label: l10n.t('download_osc.title')
   };
 
   let _button = null;
@@ -40,7 +41,7 @@ export function uiToolDownloadOsc(context) {
 
     if (_tooltip) {
       _tooltip
-        .title(context.t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
+        .title(l10n.t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
     }
     updateStyle();
   }
@@ -77,7 +78,7 @@ export function uiToolDownloadOsc(context) {
 
     _tooltip = uiTooltip(context)
       .placement('bottom')
-      .title(context.t('download_osc.no_changes'));
+      .title(l10n.t('download_osc.no_changes'));
 
     _button = selection
       .append('button')

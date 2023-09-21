@@ -4,11 +4,12 @@ import { uiModal } from './modal';
 
 
 export function uiRapidSplash(context) {
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
 
   return function render(selection) {
-    const prefs = context.systems.storage;
-    if (prefs.getItem('sawRapidSplash')) return;
-    prefs.setItem('sawRapidSplash', true);
+    if (storage.getItem('sawRapidSplash')) return;
+    storage.setItem('sawRapidSplash', true);
 
     const modalSelection = uiModal(selection);
 
@@ -20,13 +21,13 @@ export function uiRapidSplash(context) {
     introModal
       .append('div')
       .attr('class','modal-section')
-      .append('h3').text(context.t('rapid_splash.welcome'));
+      .append('h3').text(l10n.t('rapid_splash.welcome'));
 
     introModal
       .append('div')
       .attr('class','modal-section')
       .append('p')
-      .html(context.t('rapid_splash.text', {
+      .html(l10n.t('rapid_splash.text', {
         rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid'),
         walkthrough: icon('#rapid-logo-walkthrough', 'logo-walkthrough'),
         edit: icon('#rapid-logo-features', 'logo-features')
@@ -52,7 +53,7 @@ export function uiRapidSplash(context) {
 
     walkthrough
       .append('div')
-      .text(context.t('rapid_splash.walkthrough'));
+      .text(l10n.t('rapid_splash.walkthrough'));
 
     let rapidWalkthrough = buttonWrap
       .append('button')
@@ -70,7 +71,7 @@ export function uiRapidSplash(context) {
 
     rapidWalkthrough
       .append('div')
-      .text(context.t('rapid_splash.skip_to_rapid'));
+      .text(l10n.t('rapid_splash.skip_to_rapid'));
 
     let startEditing = buttonWrap
       .append('button')
@@ -87,7 +88,7 @@ export function uiRapidSplash(context) {
 
     startEditing
       .append('div')
-      .text(context.t('rapid_splash.start'));
+      .text(l10n.t('rapid_splash.start'));
 
     modalSelection.select('button.close')
       .attr('class', 'hide');

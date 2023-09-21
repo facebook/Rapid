@@ -6,11 +6,12 @@ import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dial
 
 
 export function uiToolRapidFeatures(context) {
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const urlhash = context.systems.urlhash;
 
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
-  const rapidFeaturesToggleKey = '⇧' + context.t('map_data.layers.ai-features.key');
+  const rapidFeaturesToggleKey = '⇧' + l10n.t('map_data.layers.ai-features.key');
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
 
@@ -18,7 +19,7 @@ export function uiToolRapidFeatures(context) {
 
   let tool = {
     id: 'rapid_features',
-    label: context.t('toolbar.rapid_features')
+    label: l10n.t('toolbar.rapid_features')
   };
 
 
@@ -64,7 +65,7 @@ export function uiToolRapidFeatures(context) {
       .on('click', showFeatureToggleDialog)
       .call(uiTooltip(context)
         .placement('bottom')
-        .title(context.t('shortcuts.browsing.display_options.rapid_features_data'))
+        .title(l10n.t('shortcuts.browsing.display_options.rapid_features_data'))
         .keys(rapidFeaturesToggleKey)
       );
 
@@ -92,7 +93,7 @@ export function uiToolRapidFeatures(context) {
       .on('click', showPowerUserFeaturesDialog)
       .call(uiTooltip(context)
         .placement('bottom')
-        .title(context.t('rapid_poweruser_features.heading.label'))
+        .title(l10n.t('rapid_poweruser_features.heading.label'))
       )
       .append('div')
       .attr('class', 'beta');

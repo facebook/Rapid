@@ -127,9 +127,6 @@ export class Context extends EventEmitter {
 
     // LocalizationSystem
     const l10n = this.systems.l10n;
-    this.t = l10n.t;
-    this.tHtml = l10n.tHtml;
-    this.tAppend = l10n.tAppend;
     if (this._prelocale) {   // set preferred locale codes, if we have them
       this.systems.l10n.preferredLocaleCodes = this._prelocale;
     }

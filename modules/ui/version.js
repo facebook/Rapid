@@ -9,19 +9,20 @@ let isNewUser = false;
 
 
 export function uiVersion(context) {
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
   const currVersion = context.version;
   const matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
-  const prefs = context.systems.storage;
 
   if (sawVersion === null && matchedVersion !== null) {
-    if (prefs.getItem('sawVersion')) {
+    if (storage.getItem('sawVersion')) {
       isNewUser = false;
-      isNewVersion = prefs.getItem('sawVersion') !== currVersion && currVersion.indexOf('-') === -1;
+      isNewVersion = storage.getItem('sawVersion') !== currVersion && currVersion.indexOf('-') === -1;
     } else {
       isNewUser = true;
       isNewVersion = true;
     }
-    prefs.setItem('sawVersion', currVersion);
+    storage.setItem('sawVersion', currVersion);
     sawVersion = currVersion;
   }
 
@@ -43,7 +44,7 @@ export function uiVersion(context) {
         .attr('href', 'https://github.com/facebook/Rapid/blob/main/CHANGELOG.md')
         .call(uiIcon('#maki-gift'))
         .call(uiTooltip(context)
-          .title(context.tHtml('version.whats_new', { version: currVersion }))
+          .title(l10n.tHtml('version.whats_new', { version: currVersion }))
           .placement('top')
           .scrollContainer(context.container().select('.main-footer-wrap'))
         );

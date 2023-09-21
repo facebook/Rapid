@@ -3,6 +3,7 @@ import { uiIcon } from './icon';
 
 
 export function uiViewOnOSM(context) {
+  const l10n = context.systems.l10n;
   const osm = context.services.osm;
   let _what;   // an osmEntity or osmNote
 
@@ -32,7 +33,7 @@ export function uiViewOnOSM(context) {
 
     linkEnter
       .append('span')
-      .text(context.t('inspector.view_on_osm'));
+      .text(l10n.t('inspector.view_on_osm'));
   }
 
 

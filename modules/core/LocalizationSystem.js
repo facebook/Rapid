@@ -80,7 +80,7 @@ export class LocalizationSystem extends AbstractSystem {
     this._languageNames = {};
     this._scriptNames = {};
 
-    // When called like `context.t`, don't lose `this`
+    // Ensure methods used as callbacks always have `this` bound correctly.
     this.t = this.t.bind(this);
     this.tHtml = this.tHtml.bind(this);
     this.tAppend = this.tAppend.bind(this);

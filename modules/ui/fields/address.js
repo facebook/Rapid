@@ -10,10 +10,11 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldAddress(context, uifield) {
-  const editor = context.systems.editor;
   const dataloader = context.systems.dataloader;
-
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('change');
+
   let _selection = d3_select(null);
   let _wrap = d3_select(null);
 
@@ -220,7 +221,7 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     let countryCode;
     if (context.inIntro) {  // localize the address format for the walkthrough
-      countryCode = context.t('intro.graph.countrycode');
+      countryCode = l10n.t('intro.graph.countrycode');
     } else {
       countryCode = iso1A2Code(center);
     }
@@ -255,7 +256,7 @@ export function uiFieldAddress(context, uifield) {
     return inputSelection.attr('placeholder', function(subfield) {
       const key = uifield.key + ':' + subfield.id;
       if (_tags && Array.isArray(_tags[key])) {
-        return context.t('inspector.multiple_values');
+        return l10n.t('inspector.multiple_values');
       }
       if (_countryCode) {
         const localkey = subfield.id + '!' + _countryCode;

@@ -3,6 +3,7 @@ import { uiPopover } from './popover';
 
 
 export function uiTooltip(context) {
+    const l10n = context.systems.l10n;
     var tooltip = uiPopover(context, 'tooltip').displayType('hover');
 
     var _title = function() {
@@ -83,7 +84,7 @@ export function uiTooltip(context) {
 
             keyhintWrapEnter
                 .append('span')
-                .html(context.tHtml('tooltip_keyhint'));
+                .html(l10n.tHtml('tooltip_keyhint'));
 
             keyhintWrap = keyhintWrapEnter.merge(keyhintWrap);
 

@@ -6,20 +6,21 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolNotes(context) {
+  const l10n = context.systems.l10n;
   const map = context.systems.map;
   const ui = context.systems.ui;
 
   let tool = {
     id: 'notes',
-    label: context.tHtml('modes.add_note.label')
+    label: l10n.tHtml('modes.add_note.label')
   };
 
   const mode = {
     id: 'add-note',
-    title: context.tHtml('modes.add_note.title'),
+    title: l10n.tHtml('modes.add_note.title'),
     button: 'note',
-    description: context.tHtml('modes.add_note.description'),
-    key: context.t('modes.add_note.key')
+    description: l10n.tHtml('modes.add_note.description'),
+    key: l10n.t('modes.add_note.key')
   };
 
 
