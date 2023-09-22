@@ -485,7 +485,7 @@ describe('EditSystem', () => {
       _editor.perform(Rapid.actionAddEntity(node_1));           // add n-1
       _editor.perform(Rapid.actionChangeTags('n2', {k: 'v'}));  // update n2
       const node2upd = _editor.current.graph.entity('n2');
-      const node2upd_json = { id: 'n2', tags: { k: 'v'}, v: 0 };
+      const node2upd_json = { id: 'n2', tags: { k: 'v'}, v: node2upd.v };
       _editor.perform(Rapid.actionDeleteNode('n3'));            // delete n3
 
       const json = JSON.parse(_editor.toJSON());
