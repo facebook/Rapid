@@ -84,7 +84,7 @@ export class EditSystem extends AbstractSystem {
       .then(() => {
         // Setup event handlers
         window.addEventListener('beforeunload', e => {
-          if (this._index !== 0) {  // user did something
+          if (this._index !== 0 && !window.mocha) {  // user did something
             e.preventDefault();
             this.saveBackup();
             return (e.returnValue = '');  // show browser prompt
