@@ -702,7 +702,7 @@ export class EditSystem extends AbstractSystem {
     const hist = JSON.parse(json);
     let loadComplete = true;
 
-    if (hist.version !== 2 && hist.version !== 3) {
+    if (hist.version !== 3) {
       throw new Error(`History version ${hist.version} not supported.`);
     }
 
@@ -715,63 +715,60 @@ export class EditSystem extends AbstractSystem {
       modifiedEntities.set(osmEntity.key(e), osmEntity(e));
     }
 
-    if (hist.version >= 3) {
-      // If v3+, instantiate base entities too.
-      const baseEntities = hist.baseEntities.map(e => osmEntity(e));
+    const baseEntities = hist.baseEntities.map(e => osmEntity(e));
 
-      // Merge originals into base graph, note that the force parameter is `true` here
-      // to replace any that might have been loaded from the API.
-      const graphs = this._stack.map(s => s.graph);
-      baseGraph.rebase(baseEntities, graphs, true);
-      this._tree.rebase(baseEntities, true);
+    // Merge originals into base graph, note that the force parameter is `true` here
+    // to replace any that might have been loaded from the API.
+    const graphs = this._stack.map(s => s.graph);
+    baseGraph.rebase(baseEntities, graphs, true);
+    this._tree.rebase(baseEntities, true);
 
-      // When we restore a modified way, we also need to fetch any missing
-      // childnodes that would normally have been downloaded with it.. iD#2142
-      if (loadChildNodes) {
-        const osm = context.services.osm;
-        const baseWays = baseEntities.filter(entity => entity.type === 'way');
-        const nodeIDs = baseWays.reduce(function(acc, way) { return utilArrayUnion(acc, way.nodes); }, []);
-        let missing = nodeIDs.filter(nodeID => !baseGraph.hasEntity(nodeID));
+    // When we restore a modified way, we also need to fetch any missing
+    // childnodes that would normally have been downloaded with it.. iD#2142
+    if (loadChildNodes) {
+      const osm = context.services.osm;
+      const baseWays = baseEntities.filter(entity => entity.type === 'way');
+      const nodeIDs = baseWays.reduce(function(acc, way) { return utilArrayUnion(acc, way.nodes); }, []);
+      let missing = nodeIDs.filter(nodeID => !baseGraph.hasEntity(nodeID));
 
-        if (missing.length && osm) {
-          loadComplete = false;
-          map.redrawEnabled = false;
+      if (missing.length && osm) {
+        loadComplete = false;
+        map.redrawEnabled = false;
 
-          const loading = uiLoading(context).blocking(true);
-          context.container().call(loading);
+        const loading = uiLoading(context).blocking(true);
+        context.container().call(loading);
 
-          const _childNodesLoaded = function(err, result) {
-            if (!err) {
-              const visibleGroups = utilArrayGroupBy(result.data, 'visible');
-              const visibles = visibleGroups.true || [];      // alive nodes
-              const invisibles = visibleGroups.false || [];   // deleted nodes
+        const _childNodesLoaded = function(err, result) {
+          if (!err) {
+            const visibleGroups = utilArrayGroupBy(result.data, 'visible');
+            const visibles = visibleGroups.true || [];      // alive nodes
+            const invisibles = visibleGroups.false || [];   // deleted nodes
 
-              if (visibles.length) {
-                const visibleIDs = visibles.map(entity => entity.id);
-                const graphs = this._stack.map(s => s.graph);
-                missing = utilArrayDifference(missing, visibleIDs);
-                baseGraph.rebase(visibles, graphs, true);   // force = true
-                this._tree.rebase(visibles, true);          // force = true
-              }
-
-              // Fetch older versions of nodes that were deleted..
-              for (const entity of invisibles) {
-                osm.loadEntityVersion(entity.id, +entity.version - 1, _childNodesLoaded);
-              }
+            if (visibles.length) {
+              const visibleIDs = visibles.map(entity => entity.id);
+              const graphs = this._stack.map(s => s.graph);
+              missing = utilArrayDifference(missing, visibleIDs);
+              baseGraph.rebase(visibles, graphs, true);   // force = true
+              this._tree.rebase(visibles, true);          // force = true
             }
 
-            if (err || !missing.length) {
-              loading.close();
-              map.redrawEnabled = true;
-              this.emit('change');
-              this.emit('restore');
+            // Fetch older versions of nodes that were deleted..
+            for (const entity of invisibles) {
+              osm.loadEntityVersion(entity.id, +entity.version - 1, _childNodesLoaded);
             }
-          };
+          }
 
-          osm.loadMultiple(missing, _childNodesLoaded);
-        }
+          if (err || !missing.length) {
+            loading.close();
+            map.redrawEnabled = true;
+            this.emit('change');
+            this.emit('restore');
+          }
+        };
+
+        osm.loadMultiple(missing, _childNodesLoaded);
       }
-    }   // end v3+
+    }
 
 
     // Reconstruct the history stack..

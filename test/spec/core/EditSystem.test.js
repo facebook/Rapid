@@ -471,21 +471,21 @@ describe('EditSystem', () => {
     });
 
     it('generates v3 JSON', () => {
-      const node_1 = Rapid.osmNode({id: 'n-1'});
-      const node1 = Rapid.osmNode({id: 'n1'});
-      const node2 = Rapid.osmNode({id: 'n2'});
-      const node3 = Rapid.osmNode({id: 'n3'});
+      const node_1 = Rapid.osmNode({ id: 'n-1' });
+      const node1 = Rapid.osmNode({ id: 'n1' });
+      const node2 = Rapid.osmNode({ id: 'n2' });
+      const node3 = Rapid.osmNode({ id: 'n3' });
 
-      const node_1_json = JSON.parse(JSON.stringify(node_1));
-      const node1_json = JSON.parse(JSON.stringify(node1));
-      const node2_json = JSON.parse(JSON.stringify(node2));
-      const node3_json = JSON.parse(JSON.stringify(node3));
+      const node_1_json = { id: 'n-1' };  // without `visible: true`
+      const node1_json = { id: 'n1' };
+      const node2_json = { id: 'n2' };
+      const node3_json = { id: 'n3' };
 
-      _editor.merge([node1, node2, node3]);                  // merge base entities
+      _editor.merge([node1, node2, node3]);                     // merge base entities
       _editor.perform(Rapid.actionAddEntity(node_1));           // add n-1
       _editor.perform(Rapid.actionChangeTags('n2', {k: 'v'}));  // update n2
       const node2upd = _editor.current.graph.entity('n2');
-      const node2upd_json = JSON.parse(JSON.stringify(node2upd));
+      const node2upd_json = { id: 'n2', tags: { k: 'v'}, v: 0 };
       _editor.perform(Rapid.actionDeleteNode('n3'));            // delete n3
 
       const json = JSON.parse(_editor.toJSON());
@@ -508,65 +508,6 @@ describe('EditSystem', () => {
 
 
   describe('#fromJSON', () => {
-    it('restores from v2 JSON (creation)', () => {
-      const json = {
-        version: 2,
-        entities: [{ loc: [1, 2], id: 'n-1' }],
-        stack: [
-          { },
-          { modified: ['n-1v0'], imageryUsed: ['Bing'], annotation: 'Added a point.' }
-        ],
-        nextIDs: { node: -2, way: -1, relation: -1 },
-        index: 1
-      };
-      _editor.fromJSON(JSON.stringify(json));
-      expect(_editor.current.graph.entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
-      expect(_editor.undoAnnotation()).to.eql('Added a point.');
-      expect(_editor.sourcesUsed().imagery).to.include('Bing');
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editor.difference().created().length).to.eql(1);
-    });
-
-    it('restores from v2 JSON (modification)', () => {
-      const json = {
-        version: 2,
-        entities: [ { loc: [2, 3], id: 'n1', v: 1 }],
-        stack: [
-          { },
-          { modified: ['n1v1'], imageryUsed: ['Bing'], annotation: 'Moved a point.' }
-        ],
-        nextIDs: { node: -2, way: -1, relation: -1 },
-        index: 1
-      };
-      _editor.fromJSON(JSON.stringify(json));
-      _editor.merge([Rapid.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see iD#2135)
-      expect(_editor.current.graph.entity('n1')).to.eql(Rapid.osmNode({ id: 'n1', loc: [2, 3], v: 1 }));
-      expect(_editor.undoAnnotation()).to.eql('Moved a point.');
-      expect(_editor.sourcesUsed().imagery).to.include('Bing');
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editor.difference().modified().length).to.eql(1);
-    });
-
-    it('restores from v2 JSON (deletion)', () => {
-      const json = {
-        version: 2,
-        entities: [],
-        stack: [
-          { },
-          { deleted: ['n1'], imageryUsed: ['Bing'], annotation: 'Deleted a point.' }
-        ],
-        nextIDs: { node: -1, way: -2, relation: -3 },
-        index: 1
-      };
-      _editor.fromJSON(JSON.stringify(json));
-      _editor.merge([Rapid.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see iD#2135)
-      expect(_editor.current.graph.hasEntity('n1')).to.be.undefined;
-      expect(_editor.undoAnnotation()).to.eql('Deleted a point.');
-      expect(_editor.sourcesUsed().imagery).to.include('Bing');
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -1, way: -2, relation: -3 });
-      expect(_editor.difference().deleted().length).to.eql(1);
-    });
-
     it('restores from v3 JSON (creation)', () => {
       const json = {
         version: 3,
