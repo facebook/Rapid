@@ -82,14 +82,17 @@ export class EditSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
+        if (window.mocha) return;
+
         // Setup event handlers
         window.addEventListener('beforeunload', e => {
-          if (this._index !== 0 && !window.mocha) {  // user did something
+          if (this._index !== 0) {  // user did something
             e.preventDefault();
             this.saveBackup();
             return (e.returnValue = '');  // show browser prompt
           }
         });
+
         window.addEventListener('unload', () => this._mutex.unlock());
 
         // changes are restorable if Rapid is not open in another window/tab and a backup exists in localStorage
