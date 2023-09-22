@@ -508,21 +508,21 @@ export class EditSystem extends AbstractSystem {
    *  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
    */
   toIntroGraph() {
-    let nextID = { n: 0, r: 0, w: 0 };
-    let permIDs = {};
-    let graph = this.current.graph;
-    let result = new Map();   // Map(entityID -> Entity)
+    const nextID = { n: 0, r: 0, w: 0 };
+    const permIDs = {};
+    const graph = this.current.graph;
+    const result = new Map();   // Map(entityID -> Entity)
 
     // Copy base entities..
     for (const entity of graph.base.entities.values()) {
-      const copy = _copyIntroEntity(entity);
+      const copy = _copyEntity(entity);
       result.set(copy.id, copy);
     }
 
     // Replace base entities with head entities..
     for (const [entityID, entity] of graph.local.entities) {
       if (entity) {
-        const copy = _copyIntroEntity(entity);
+        const copy = _copyEntity(entity);
         result.set(copy.id, copy);
       } else {
         result.delete(entityID);
@@ -545,16 +545,17 @@ export class EditSystem extends AbstractSystem {
     }
 
     // Convert to Object so we can stringify it.
-    let obj = {};
+    const obj = {};
     for (const [k, v] of result) { obj[k] = v; }
     return JSON.stringify({ dataIntroGraph: obj });
 
 
-    function _copyIntroEntity(entity) {
-      let copy = utilObjectOmit(entity, ['type', 'user', 'v', 'version', 'visible']);
+    // Return a simplified copy of the Entity to save space.
+    function _copyEntity(entity) {
+      const copy = utilObjectOmit(entity, ['type', 'user', 'v', 'version', 'visible']);
 
       // Note: the copy is no longer an osmEntity, so it might not have `tags`
-      if (copy.tags && !Object.keys(copy.tags)) {
+      if (copy.tags && Object.keys(copy.tags).length === 0) {
         delete copy.tags;
       }
 
@@ -587,6 +588,7 @@ export class EditSystem extends AbstractSystem {
   toJSON() {
     if (!this.hasChanges()) return;
 
+    const OSM_PRECISION = 7;
     const baseGraph = this.base.graph;   // The initial unedited graph
     const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
     const baseEntities = new Map();      // Map(entityID -> Entity)
@@ -595,14 +597,14 @@ export class EditSystem extends AbstractSystem {
     // Preserve the users stack of edits..
     for (const edit of this._stack) {
       const currGraph = edit.graph;   // edit done at this point in time
-      let modified = [];
-      let deleted = [];
+      const modified = [];
+      const deleted = [];
 
       // watch out: for modified entities we index on "key" - e.g. "n1v1"
       for (const [entityID, entity] of currGraph.local.entities) {
         if (entity) {
           const key = osmEntity.key(entity);
-          modifiedEntities.set(key, entity);
+          modifiedEntities.set(key, _copyEntity(entity));
           modified.push(key);
         } else {
           deleted.push(entityID);
@@ -611,7 +613,7 @@ export class EditSystem extends AbstractSystem {
         // Collect the original versions of edited Entities.
         const original = baseGraph.hasEntity(entityID);
         if (original && !baseEntities.has(entityID)) {
-          baseEntities.set(entityID, original);
+          baseEntities.set(entityID, _copyEntity(original));
         }
 
         // For modified ways, collect originals of child nodes also.
@@ -620,7 +622,7 @@ export class EditSystem extends AbstractSystem {
           for (const childID of entity.nodes) {
             const child = baseGraph.hasEntity(childID);
             if (child && !baseEntities.has(child.id)) {
-              baseEntities.set(child.id, child);
+              baseEntities.set(child.id, _copyEntity(child));
             }
           }
         }
@@ -631,7 +633,7 @@ export class EditSystem extends AbstractSystem {
         if (original) {
           for (const parent of baseGraph.parentWays(original)) {
             if (!baseEntities.has(parent.id)) {
-              baseEntities.set(parent.id, parent);
+              baseEntities.set(parent.id, _copyEntity(parent));
             }
           }
         }
@@ -660,6 +662,26 @@ export class EditSystem extends AbstractSystem {
       index: this._index,
       timestamp: (new Date()).getTime()
     });
+
+
+    // Return a simplified copy of the Entity to save space.
+    function _copyEntity(entity) {
+      // omit 'visible'
+      const copy = utilObjectOmit(entity, ['visible']);
+
+      // omit 'tags' if empty
+      if (copy.tags && Object.keys(copy.tags).length === 0) {
+        delete copy.tags;
+      }
+
+      // simplify float precision
+      if (Array.isArray(copy.loc)) {
+        copy.loc[0] = +copy.loc[0].toFixed(OSM_PRECISION);
+        copy.loc[1] = +copy.loc[1].toFixed(OSM_PRECISION);
+      }
+      return copy;
+    }
+
   }
 
 
@@ -732,10 +754,10 @@ export class EditSystem extends AbstractSystem {
                 this._tree.rebase(visibles, true);          // force = true
               }
 
-              // fetch older versions of nodes that were deleted..
-              invisibles.forEach(function(entity) {
+              // Fetch older versions of nodes that were deleted..
+              for (const entity of invisibles) {
                 osm.loadEntityVersion(entity.id, +entity.version - 1, _childNodesLoaded);
-              });
+              }
             }
 
             if (err || !missing.length) {
@@ -752,7 +774,7 @@ export class EditSystem extends AbstractSystem {
     }   // end v3+
 
 
-    // Replace the history stack.
+    // Reconstruct the history stack..
     this._stack = hist.stack.map((item, index) => {
       // Leave base graph alone, this first edit should have nothing in it.
       if (index === 0) return this.base;
