@@ -703,7 +703,7 @@ export class EditSystem extends AbstractSystem {
 
     const baseGraph = this.base.graph;   // The initial unedited graph
     const missingIDs = new Set();
-    const loading = uiLoading(context).blocking(true);  // Only shown if we are lookking for missingIDs
+    const loading = uiLoading(context).blocking(true);  // Only shown if we are looking for missingIDs
     const backup = JSON.parse(json);
 
     if (backup.version !== 3) {
