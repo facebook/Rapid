@@ -134,6 +134,7 @@ export class ValidationSystem extends AbstractSystem {
         // When merging fetched data, validate base graph:
         editor
           .on('merge', entityIDs => {
+            if (editor.canRestoreBackup) return;   // Wait to see if the user wants to restore their backup
             if (!entityIDs) return;
 
             // Make sure the caches have graphs assigned to them.
@@ -572,12 +573,15 @@ export class ValidationSystem extends AbstractSystem {
     // Make sure the caches have graphs assigned to them.
     // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
     const context = this.context;
-    const baseGraph = context.systems.editor.base.graph;
+    const editor = context.systems.editor;
+    if (editor.canRestoreBackup) return Promise.resolve();   // wait to see if the user wants to restore their backup
+
+    const baseGraph = editor.base.graph;
     if (!this._head.graph) this._head.graph = baseGraph;
     if (!this._base.graph) this._base.graph = baseGraph;
 
     const prevGraph = this._head.graph;
-    const currGraph = context.systems.editor.current.graph;
+    const currGraph = editor.current.graph;
 
     if (currGraph === prevGraph) {   // this._head.graph is current - we are caught up
       this._headIsCurrent = true;
@@ -592,7 +596,7 @@ export class ValidationSystem extends AbstractSystem {
 
     // If we get here, its time to start validating stuff.
     this._head.graph = currGraph;  // take snapshot
-    this._completeDiff = context.systems.editor.difference().complete();
+    this._completeDiff = editor.difference().complete();
     const incrementalDiff = new Difference(prevGraph, currGraph);
     let entityIDs = [...incrementalDiff.complete().keys()];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set
