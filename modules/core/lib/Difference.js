@@ -23,7 +23,9 @@ export class Difference {
     this._base = base;
     this._head = head;
     this._changes = new Map();   // Map(entityID -> Object)
-    this.didChange = {};  // 'addition', 'deletion', 'geometry', 'properties'
+    this.didChange = {};         // 'addition', 'deletion', 'geometry', 'properties'
+
+    if (base === head) return;   // same Graph, no difference
 
     // Gather affected ids
     const ids = new Set([...head.local.entities.keys(), ...base.local.entities.keys()]);

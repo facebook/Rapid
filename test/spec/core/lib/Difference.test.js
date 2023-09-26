@@ -1,4 +1,22 @@
 describe('Difference', () => {
+  describe('constructor', () => {
+    it('constructs a Difference between 2 Graphs', () => {
+      const node = Rapid.osmNode({ id: 'n' });
+      const base = new Rapid.Graph();
+      const head = new Rapid.Graph([node]);
+      const diff = new Rapid.Difference(base, head);
+      expect(diff).to.be.an.instanceof(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+    });
+
+    it('constructs an empty Difference if base and head are the same', () => {
+      const base = new Rapid.Graph();
+      const diff = new Rapid.Difference(base, base);
+      expect(diff).to.be.an.instanceof(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceof(Map).that.is.empty;
+    });
+  });
+
   describe('#changes', () => {
     it('includes created entities', () => {
       const node = Rapid.osmNode({ id: 'n' });
