@@ -14,13 +14,33 @@ const DURATION = 150;
 
 /**
  * `EditSystem` maintains the stack of user edits
- * (this used to be called 'history', but that word means something else in browsers)
+ * (This used to be called 'history', but that word means something else in browsers)
  *
- * Each entry in the stack is an `Edit`.
- * The base entry in the stack is known as the "base graph".  It contains the base state of all editable map entities.
- *   (i.e. what the map looks like before the user starts editing it)
- * As more map is loaded, more features get merged into the base graph.
+ * This system maintains a Base Graph and a stack of Edits.
  *
+ * The Base Graph contains the base map state - all map entities that have been loaded
+ *   and what they look like before any edits have occurred.
+ * As more map is loaded, more map features get merged into the Base Graph.
+ *
+ * Each entry in the stack is an `Edit`.  Each Edit contains:
+ *  - `annotation`  - "undo" annotation, a String saying what the Edit did. e.g. "Started a Line".
+ *  - `graph`       - Graph at the time of the Edit
+ *  - `selectedIDs` - ids that the user had selected at tht time
+ *  - `sources`     - sources being used to make the Edit (imagery, photos, data)
+ *  - `transform`   - map transform at the time of the Edit
+ *
+ * Edits with an `annotation` represent states that we can undo or redo into.
+ *
+ * Special named edits:
+ *  - `base`    - The first Edit, stack[0].
+ *     The base edit contains the Base Graph and nothing else.
+ *  - `stable`  - The latest stable Edit, stack[index].
+ *     The stable Edit is suitable for validation, backups, saving.
+ *  - `current` - A work-in-progress Edit, not yet added to the stack.
+ *     The current Edit is used throughout the application to determine the current state of the map.
+ *
+ * When code calls `setAnnotation()`, we set the `annotation`,
+ *   add the current edit to the stack, and create a new current Edit.
  *
  * Events available:
  *   'change'
@@ -44,8 +64,9 @@ export class EditSystem extends AbstractSystem {
     this._mutex = utilSessionMutex('lock');
     this._canRestoreBackup = false;
 
-    this._stack = [];          // stack of edits
-    this._index = 0;           // index of the current edit
+    this._stack = [];          // history stack of accepted edits (both undo and redo)
+    this._index = 0;           // index of the latest "stable" edit
+    this._current = null;      // work in progress edit, not yet added to the stack
     this._checkpoints = {};
     this._pausedGraph = null;
     this._inTransition = false;
@@ -96,7 +117,7 @@ export class EditSystem extends AbstractSystem {
         window.addEventListener('unload', () => this._mutex.unlock());
 
         // changes are restorable if Rapid is not open in another window/tab and a backup exists in localStorage
-        this._canRestoreBackup = this._mutex.lock() && storage.hasItem(this._historyKey());
+        this._canRestoreBackup = this._mutex.lock() && storage.hasItem(this._backupKey());
       });
   }
 
@@ -131,10 +152,16 @@ export class EditSystem extends AbstractSystem {
     d3_select(document).interrupt('editTransition');
     this.deferredBackup.cancel();
 
-    const baseGraph = new Graph();
-    this._stack = [new Edit({ graph: baseGraph })];
-    this._tree = new Tree(baseGraph);
+    // Create a new Base Graph / Base Edit.
+    const base = new Graph();
+    this._stack = [ new Edit({ graph: base }) ];
     this._index = 0;
+
+    // Create a work-in-progress Edit derived from the base edit.
+    const current = new Graph(base);
+    this._current = new Edit({ graph: current });
+
+    this._tree = new Tree(current);
     this._checkpoints = {};
     this._pausedGraph = null;
     this.emit('reset');
@@ -143,19 +170,38 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * base
-   * @return {Edit} The base Edit in the stack
+   * The "base" edit is the initial edit in the stack.  It contains the Base Graph.
+   * It will not contain any actual user edits, sources, annotation.
+   * @return {Edit} The initial Edit containing the Base Graph
    */
   get base() {
     return this._stack[0];
   }
 
+
   /**
-   * current
-   * @return {Edit} The current Edit in the stack
+   * stable
+   * The "stable" edit is the latest accepted edit in the stack, as indicated by _index.
+   * This edit is considered stable / settled and is suitable for validation or backups.
+   * Before the user edits anything, `_index === 0`, so the `stable === base`.
+   * @return {Edit} The latest accepted Edit in the stack
    */
-  get current() {
+  get stable() {
     return this._stack[this._index];
   }
+
+
+  /**
+   * current
+   * The "current" edit will be a placeholder work-in-progress edit in the chain immediately
+   * following the stable edit.  The user may be drawing the feature or editing the tags.
+   * The current edit has not been added to the stack yet.
+   * @return {Edit} The current work-in-progress Edit
+   */
+  get current() {
+    return this._current;
+  }
+
 
   /**
    * tree
@@ -166,11 +212,18 @@ export class EditSystem extends AbstractSystem {
   }
 
 
+
+  /**
+   * peekAnnotation
+   */
   peekAnnotation() {
-    return this.current.annotation;
+    return this.stable.annotation;
   }
 
 
+  /**
+   * peekAllAnnotations
+   */
   peekAllAnnotations() {
     let result = [];
     for (let i = 0; i <= this._index; i++) {
@@ -201,7 +254,7 @@ export class EditSystem extends AbstractSystem {
       seenIDs = new Set(entities.map(entity => entity.id));
     }
 
-    // Which ones are really new (not in the base graph)?
+    // Which ones are really new (not in the Base Graph)?
     const newIDs = new Set();
     for (const entity of entities) {
       if (!baseGraph.hasEntity(entity.id)) {  // not merged in yet.
@@ -229,6 +282,9 @@ export class EditSystem extends AbstractSystem {
   }
 
 
+  /**
+   * perform
+   */
   perform(...args) {
     // complete any transition already in progress
     d3_select(document).interrupt('editTransition');
@@ -267,19 +323,28 @@ export class EditSystem extends AbstractSystem {
   }
 
 
+  /**
+   * replace
+   */
   replace(...args) {
     d3_select(document).interrupt('editTransition');
     return this._replace(args, 1);
   }
 
 
-  // Same as calling pop and then perform
+  /**
+   * overwrite
+   * Same as calling pop and then perform
+   */
   overwrite(...args) {
     d3_select(document).interrupt('editTransition');
     return this._overwrite(args, 1);
   }
 
 
+  /**
+   * replace
+   */
   pop(n) {
     d3_select(document).interrupt('editTransition');
 
@@ -295,7 +360,10 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // Go back to the previous annotated edit or _index = 0.
+  /**
+   * undo
+   * Go back to the previous annotated edit or _index = 0.
+   */
   undo() {
     d3_select(document).interrupt('editTransition');
 
@@ -310,7 +378,10 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // Go forward to the next annotated state.
+  /**
+   * redo
+   * Go forward to the next annotated state.
+   */
   redo() {
     d3_select(document).interrupt('editTransition');
 
@@ -394,21 +465,21 @@ export class EditSystem extends AbstractSystem {
    */
   difference() {
     const base = this.base.graph;
-    const head = this.current.graph;
+    const head = this.stable.graph;
     return new Difference(base, head);
   }
 
 
   /**
    * changes
-   * This returns a summery of all changes made from base -> current
-   * Optionally including a given action to apply to the current graph.
-   * @param  {Function?}  action - Optional action to apply to the current graph
+   * This returns a summery of all changes made from base -> stable
+   * Optionally including a given action to apply to the stable graph.
+   * @param  {Function?}  action - Optional action to apply to the stable graph
    * @return {Object}     Object containing `modified`, `created`, `deleted` summary of changes
    */
   changes(action) {
     const base = this.base.graph;
-    let head = this.current.graph;
+    let head = this.stable.graph;
 
     if (action) {
       head = action(head);
@@ -427,7 +498,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * hasChanges
    * This counts meangful edits only (modified, created, deleted)
-   * For example, we could perform a bunch of no-op edits and it would still return false
+   * For example, we could perform a bunch of no-op edits and it would still return false.
    * @return `true` if the user has made any meaningful edits
    */
   hasChanges() {
@@ -446,10 +517,12 @@ export class EditSystem extends AbstractSystem {
       data:    new Set()
     };
 
-    for (let i = 0; i <= this._index; i++) {  // up to current edit (skip redo stack)
+    // Start at 1 - there won't be sources on the base edit..
+    // End at `_index` - don't continue into the redo part of the stack..
+    for (let i = 1; i <= this._index; i++) {
       const edit = this._stack[i];
       for (const which of ['imagery', 'photos', 'data']) {
-        for (const val of edit.sources[which] || []) {
+        for (const val of edit.sources[which] ?? []) {
           result[which].add(val);
         }
       }
@@ -461,7 +534,7 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * setCheckpoint
-   * This saves the current edit as a checkpoint that we can return to later.
+   * This saves the `stack` and `index` as a checkpoint that we can return to later.
    * @param  {string}  key - the name of the checkpoint
    */
   setCheckpoint(key) {
@@ -471,7 +544,6 @@ export class EditSystem extends AbstractSystem {
       stack: this._stack,
       index: this._index
     };
-    return this;
   }
 
 
@@ -513,7 +585,7 @@ export class EditSystem extends AbstractSystem {
   toIntroGraph() {
     const nextID = { n: 0, r: 0, w: 0 };
     const permIDs = {};
-    const graph = this.current.graph;
+    const graph = this.stable.graph;
     const result = new Map();   // Map(entityID -> Entity)
 
     // Copy base entities..
@@ -541,7 +613,7 @@ export class EditSystem extends AbstractSystem {
       }
       if (Array.isArray(entity.members)) {
         entity.members = entity.members.map(member => {
-          member.id = permIDs[member.id] || member.id;
+          member.id = permIDs[member.id] ?? member.id;
           return member;
         });
       }
@@ -599,12 +671,11 @@ export class EditSystem extends AbstractSystem {
 
     // Preserve the users stack of edits..
     for (const edit of this._stack) {
-      const currGraph = edit.graph;   // edit done at this point in time
       const modified = [];
       const deleted = [];
 
       // watch out: for modified entities we index on "key" - e.g. "n1v1"
-      for (const [entityID, entity] of currGraph.local.entities) {
+      for (const [entityID, entity] of edit.graph.local.entities) {
         if (entity) {
           const key = osmEntity.key(entity);
           modifiedEntities.set(key, _copyEntity(entity));
@@ -642,7 +713,7 @@ export class EditSystem extends AbstractSystem {
         }
       }
 
-      const sources = edit.sources || {};
+      const sources = edit.sources ?? {};
 
       const item = {};
       if (modified.length)   item.modified = modified;
@@ -701,8 +772,7 @@ export class EditSystem extends AbstractSystem {
     const context = this.context;
     const map = context.systems.map;
 
-    const baseGraph = this.base.graph;   // The initial unedited graph
-    const missingIDs = new Set();
+    const baseGraph = this.base.graph;   // The initial unedited Graph
     const loading = uiLoading(context).blocking(true);  // Only shown if we are looking for missingIDs
     const backup = JSON.parse(json);
 
@@ -725,16 +795,12 @@ export class EditSystem extends AbstractSystem {
       if (index === 0) return this.base;
 
       const entities = {};
-      if (Array.isArray(item.modified)) {
-        item.modified.forEach(key => {
-          const entity = modifiedEntities.get(key);
-          entities[entity.id] = entity;
-        });
+      for (const key of item.modified ?? []) {
+        const entity = modifiedEntities.get(key);
+        entities[entity.id] = entity;
       }
-      if (Array.isArray(item.deleted)) {
-        item.deleted.forEach(entityID => {
-          entities[entityID] = undefined;
-        });
+      for (const entityID of item.deleted ?? []) {
+        entities[entityID] = undefined;
       }
 
       const sources = {};
@@ -755,7 +821,7 @@ export class EditSystem extends AbstractSystem {
     osmEntity.id.next = backup.nextIDs;
     this._index = backup.index;
 
-    // Merge originals into base graph.
+    // Merge originals into Base Graph.
     // Note that the force parameter is `true` here to replace anything that might
     // have been loaded from the API while the user was waiting to press "restore".
     const graphs = this._stack.map(s => s.graph);
@@ -764,9 +830,23 @@ export class EditSystem extends AbstractSystem {
 
     // Call _finish when we believe we have everything.
     const _finish = () => {
-      const transform = this.current.transform;
+      const graph       = this.stable.graph;
+      const selectedIDs = this.stable.selectedIDs;
+      const transform   = this.stable.transform;
+
+      // Create work-in-progress edit
+      this._current = new Edit({
+        graph:        graph,
+        selectedIDs:  selectedIDs,
+        transform:    transform
+      });
+
       if (transform) {
-        map.transform(transform);  // position the map
+        map.transform(transform);
+      }
+
+      if (selectedIDs) {
+        context.enter('select-osm', { selectedIDs: selectedIDs });
       }
 
       loading.close();             // unblock ui
@@ -779,13 +859,14 @@ export class EditSystem extends AbstractSystem {
     // When we restore modified ways, we also need to fetch any missing childNodes
     // that would normally have been downloaded with those ways.. see iD#2142
     // As added challenges:
-    //  - We have to keep the UI blocked while this is happening, because it's destructive to the graph/history.
+    //  - We have to keep the UI blocked while this is happening, because it's destructive to the graphs/edits.
     //  - Callback can be called multiple times, so we have to keep track of how many of the missing nodes we got.
     //  - The child nodes may have been deleted, so we may have to fetch older non-deleted copies
     //
-    // A thought I'm having is - if we need to do all this anyway, it might make more sense to just store
-    // base versions rather than base entities, then use loadEntityVersion to fetch exactly what we need.
+    // A thought I'm having is - if we need to do all this anyway, it might make more sense to just store the
+    // base version numbers rather than base entities, then use loadEntityVersion to fetch exactly what we need.
     //
+    const missingIDs = new Set();
     const osm = context.services.osm;
     if (loadMissing && osm) {
       const baseWays = baseEntities.filter(entity => entity.type === 'way');
@@ -805,8 +886,8 @@ export class EditSystem extends AbstractSystem {
         const _missingEntitiesLoaded = (err, result) => {
           if (!err) {
             const visibleGroups = utilArrayGroupBy(result.data, 'visible');
-            const visibles = visibleGroups.true || [];      // alive nodes
-            const invisibles = visibleGroups.false || [];   // deleted nodes
+            const visibles = visibleGroups.true ?? [];      // alive nodes
+            const invisibles = visibleGroups.false ?? [];   // deleted nodes
 
             // Visible (not deleted) entities can be merged directly in..
             if (visibles.length) {
@@ -823,7 +904,7 @@ export class EditSystem extends AbstractSystem {
             }
           }
 
-          if (err || !missingIDs.size) {
+          if (err ?? !missingIDs.size) {
             _finish();
           }
         };
@@ -857,7 +938,7 @@ export class EditSystem extends AbstractSystem {
     const storage = context.systems.storage;
     const json = this.toJSON();
     if (json) {
-      const success = storage.setItem(this._historyKey(), json);
+      const success = storage.setItem(this._backupKey(), json);
       if (success) {
         return true;
       } else {
@@ -891,7 +972,7 @@ export class EditSystem extends AbstractSystem {
     if (!this._mutex.locked()) return;  // another browser tab owns the history
 
     const storage = this.context.systems.storage;
-    const json = storage.getItem(this._historyKey());
+    const json = storage.getItem(this._backupKey());
     if (json) {
       this.fromJSON(json, true);
     }
@@ -913,7 +994,7 @@ export class EditSystem extends AbstractSystem {
     if (!this._mutex.locked()) return;  // another browser tab owns the history
 
     const storage = this.context.systems.storage;
-    storage.removeItem(this._historyKey());
+    storage.removeItem(this._backupKey());
 
     // clear the changeset metadata associated with the saved history
     storage.removeItem('comment');
@@ -922,8 +1003,12 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // Rapid uses namespaced keys so multiple installations do not conflict
-  _historyKey() {
+  /**
+   * _backupKey
+   * Generate a key used to store/retrieve backup edits
+   * It uses `window.location.origin` avoid conflicts with other instances of Rapid.
+   */
+  _backupKey() {
     return 'Rapid_' + window.location.origin + '_saved_history';
   }
 
@@ -959,8 +1044,8 @@ export class EditSystem extends AbstractSystem {
       }
 
       const customLayer = context.scene().layers.get('custom-data');
-      const customDataUsed = customLayer?.dataUsed() || [];
-      const rapidDataUsed = annotation?.dataUsed || [];
+      const customDataUsed = customLayer?.dataUsed() ?? [];
+      const rapidDataUsed = annotation?.dataUsed ?? [];
       const dataUsed = [...rapidDataUsed, ...customDataUsed];
       if (dataUsed.length) {
         sources.data = dataUsed;

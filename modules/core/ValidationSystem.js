@@ -581,9 +581,9 @@ export class ValidationSystem extends AbstractSystem {
     if (!this._base.graph) this._base.graph = baseGraph;
 
     const prevGraph = this._head.graph;
-    const currGraph = editor.current.graph;
+    const headGraph = editor.stable.graph;
 
-    if (currGraph === prevGraph) {   // this._head.graph is current - we are caught up
+    if (headGraph === prevGraph) {   // this._head.graph is current - we are caught up
       this._headIsCurrent = true;
       this.emit('validated');
       return Promise.resolve();
@@ -595,9 +595,9 @@ export class ValidationSystem extends AbstractSystem {
     }
 
     // If we get here, its time to start validating stuff.
-    this._head.graph = currGraph;  // take snapshot
+    this._head.graph = headGraph;  // take snapshot
     this._completeDiff = editor.difference().complete();
-    const incrementalDiff = new Difference(prevGraph, currGraph);
+    const incrementalDiff = new Difference(prevGraph, headGraph);
     let entityIDs = [...incrementalDiff.complete().keys()];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set
 
