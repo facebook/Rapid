@@ -52,13 +52,12 @@ export function validationMismatchedGeometry(context) {
             testNodes.push(testNodes[0]);
             // make sure this will not create a self-intersection
             if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
-                return function() {
-                    var way = graph.entity(this.issue.entityIds[0]);
-                    editor.perform(
-                        actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc),
-                        l10n.t('issues.fix.connect_endpoints.annotation')
-                    );
-                };
+              return function() {
+                const graph = editor.current.graph;
+                const way = graph.entity(this.issue.entityIds[0]);
+                editor.perform(actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc));
+                editor.commit(l10n.t('issues.fix.connect_endpoints.annotation'));
+              };
             }
         }
 
@@ -73,10 +72,8 @@ export function validationMismatchedGeometry(context) {
                 const way = graph.entity(wayID);
                 const nodeID = way.nodes[0];
                 const index = way.nodes.length;
-                editor.perform(
-                    actionAddVertex(wayID, nodeID, index),
-                    l10n.t('issues.fix.connect_endpoints.annotation')
-                );
+                editor.perform(actionAddVertex(wayID, nodeID, index));
+                editor.commit(l10n.t('issues.fix.connect_endpoints.annotation'));
             };
         }
     }
@@ -122,10 +119,8 @@ export function validationMismatchedGeometry(context) {
                         for (var key in tagSuggestingArea) {
                             delete tags[key];
                         }
-                        editor.perform(
-                            actionChangeTags(entityID, tags),
-                            l10n.t('issues.fix.remove_tag.annotation')
-                        );
+                        editor.perform(actionChangeTags(entityID, tags));
+                        editor.commit(l10n.t('issues.fix.remove_tag.annotation'));
                     }
                 }));
 
@@ -308,10 +303,8 @@ export function validationMismatchedGeometry(context) {
           if (tags.area) {
             delete tags.area;
           }
-          editor.perform(
-            actionChangeTags(entityID, tags),
-            l10n.t('issues.fix.convert_to_line.annotation')
-          );
+          editor.perform(actionChangeTags(entityID, tags));
+          editor.commit(l10n.t('issues.fix.convert_to_line.annotation'));
         };
       }
 
@@ -336,10 +329,8 @@ export function validationMismatchedGeometry(context) {
         extractOnClick = function() {
           const entityID = this.issue.entityIds[0];
           const action = actionExtract(entityID, context.projection);
-          editor.perform(
-            action,
-            l10n.t('operations.extract.annotation', { n: 1 })
-          );
+          editor.perform(action);
+          editor.commit(l10n.t('operations.extract.annotation', { n: 1 }));
           // re-enter mode to trigger updates
           context.enter('select-osm', { selectedIDs: [ action.getExtractedNodeID() ] });
         };

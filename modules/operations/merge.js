@@ -45,7 +45,8 @@ export function operationMerge(context, selectedIDs) {
   let operation = function() {
     if (operation.disabled()) return;
 
-    editor.perform(action, operation.annotation());
+    editor.perform(action);
+    editor.commit(operation.annotation());
     validator.validate();
 
     const graph = editor.current.graph;  // after edit

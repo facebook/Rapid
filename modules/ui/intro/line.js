@@ -760,7 +760,7 @@ export function uiIntroLine(context, curtain) {
       }))
       .then(delayAsync)   // wait for any transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (editor.undoAnnotation() === l10n.t('operations.split.annotation.line', { n: 1 })) {
+        if (editor.getUndoAnnotation() === l10n.t('operations.split.annotation.line', { n: 1 })) {
           return didSplitAsync;
         } else {
           return retrySplitAsync;
@@ -1021,14 +1021,14 @@ export function uiIntroLine(context, curtain) {
 
     context.on('modechange', _modeChangeListener);
     map.on('move', _mapMoveListener);
-    editor.on('change', _editChangeListener);
+    editor.on('historychange', _editChangeListener);
 
     runAsync(addLineAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
         map.off('move', _mapMoveListener);
-        editor.off('change', _editChangeListener);
+        editor.off('historychange', _editChangeListener);
       });
 
     function _mapMoveListener() {

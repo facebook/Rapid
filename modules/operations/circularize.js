@@ -40,7 +40,8 @@ export function operationCircularize(context, selectedIDs) {
     };
     combinedAction.transitionable = true;
 
-    editor.perform(combinedAction, operation.annotation());
+    editor.perform(combinedAction);
+    editor.commit(operation.annotation());
     window.setTimeout(() => validator.validate(), 300);  // after any transition
   };
 

@@ -125,7 +125,7 @@ export function uiToolSave(context) {
     updateCount();
 
     context.keybinding().on(key, save, true /* capture */);
-    editor.on('change', updateCount);
+    editor.on('historychange', updateCount);
     editor.on('reset', updateCount);
     context.on('modechange', updateDisabled);
   };
@@ -135,7 +135,7 @@ export function uiToolSave(context) {
     if (!_button && !_tooltip) return;  // already uninstalled
 
     context.keybinding().off(key, true /* capture */);
-    editor.off('change', updateCount);
+    editor.off('historychange', updateCount);
     editor.off('reset', updateCount);
     context.off('modechange', updateDisabled);
     _button = null;

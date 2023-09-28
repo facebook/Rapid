@@ -233,29 +233,14 @@ export function uiFieldWikipedia(context, uifield) {
       const qids = Object.keys(data);
       const value = qids && qids.find(id => id.match(/^Q\d+$/));
 
-      let actions = initEntityIDs.map((entityID) => {
+      for (const entityID of initEntityIDs) {
         const entity = graph.entity(entityID);
-        const currTags = Object.assign({}, entity.tags);  // shallow copy
-        if (currTags.wikidata !== value) {
-          currTags.wikidata = value;
-          return actionChangeTags(entityID, currTags);
+        const asyncTags = Object.assign({}, entity.tags);  // shallow copy
+        if (asyncTags.wikidata !== value) {
+          asyncTags.wikidata = value;
+          editor.perform(actionChangeTags(entityID, asyncTags));
         }
-        return null;
-      }).filter(Boolean);
-
-      if (!actions.length) return;
-
-      // Coalesce the update of wikidata tag into the previous tag change
-      editor.overwrite(
-        function actionUpdateWikidataTags(graph) {
-          actions.forEach(function(action) {
-            graph = action(graph);
-          });
-          return graph;
-        },
-        editor.undoAnnotation()
-      );
-
+      }
       // do not dispatch.call('change') here, because entity_editor
       // changeTags() is not intended to be called asynchronously
     });

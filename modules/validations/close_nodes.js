@@ -248,9 +248,9 @@ export function validationCloseNodes(context) {
                             icon: 'rapid-icon-plus',
                             title: l10n.tHtml('issues.fix.merge_points.title'),
                             onClick: function() {
-                                var entityIds = this.issue.entityIds;
-                                var action = actionMergeNodes([entityIds[1], entityIds[2]]);
-                                editor.perform(action, l10n.t('issues.fix.merge_close_vertices.annotation'));
+                              const entityIds = this.issue.entityIds;
+                              editor.perform(actionMergeNodes([entityIds[1], entityIds[2]]));
+                              editor.commit(l10n.t('issues.fix.merge_close_vertices.annotation'));
                             }
                         }),
                         new ValidationFix({

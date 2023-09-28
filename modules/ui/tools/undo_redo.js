@@ -25,13 +25,13 @@ export function uiToolUndoRedo(context) {
     id: 'undo',
     key: uiCmd('⌘Z'),
     action: () => editor.undo(),
-    annotation: () => editor.undoAnnotation(),
+    annotation: () => editor.getUndoAnnotation(),
     icon: (isRTL ? 'redo' : 'undo')
   }, {
     id: 'redo',
     key: uiCmd('⌘⇧Z'),
     action: () => editor.redo(),
-    annotation: () => editor.redoAnnotation(),
+    annotation: () => editor.getRedoAnnotation(),
     icon: (isRTL ? 'undo' : 'redo')
   }];
 
@@ -126,7 +126,7 @@ export function uiToolUndoRedo(context) {
     }
 
     map.on('draw', debouncedUpdate);
-    editor.on('change', changed);
+    editor.on('historychange', changed);
     context.on('modechange', update);
   };
 
@@ -140,7 +140,7 @@ export function uiToolUndoRedo(context) {
 
     debouncedUpdate.cancel();
     map.off('draw', debouncedUpdate);
-    editor.off('change', changed);
+    editor.off('historychange', changed);
     context.off('modechange', update);
     _tooltip = null;
     _buttons = null;

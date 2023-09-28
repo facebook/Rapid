@@ -119,7 +119,8 @@ export function validationOutdatedTags(context) {
             autoArgs: autoArgs,
             title: l10n.tHtml('issues.fix.upgrade_tags.title'),
             onClick: () => {
-              editor.perform(doTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
+              editor.perform(doTagUpgrade);
+              editor.commit(l10n.t('issues.fix.upgrade_tags.annotation'));
             }
           })
         ];
@@ -130,7 +131,8 @@ export function validationOutdatedTags(context) {
             new ValidationFix({
               title: l10n.tHtml('issues.fix.tag_as_not.title', { name: item.displayName }),
               onClick: () => {
-                editor.perform(addNotTag, l10n.t('issues.fix.tag_as_not.annotation'));
+                editor.perform(addNotTag);
+                editor.commit(l10n.t('issues.fix.tag_as_not.annotation'));
               }
             })
           );
@@ -260,7 +262,8 @@ export function validationOutdatedTags(context) {
             // autoArgs: [doMultipolygonUpgrade, l10n.t('issues.fix.move_tags.annotation')],
             title: l10n.t('issues.fix.move_tags.title'),
             onClick: () => {
-              editor.perform(doMultipolygonUpgrade, l10n.t('issues.fix.move_tags.annotation'));
+              editor.perform(doMultipolygonUpgrade);
+              editor.commit(l10n.t('issues.fix.move_tags.annotation'));
             }
           })
         ];

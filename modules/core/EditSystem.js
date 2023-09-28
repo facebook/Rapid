@@ -13,17 +13,17 @@ const DURATION = 150;
 
 
 /**
- * `EditSystem` maintains the stack of user edits
+ * `EditSystem` maintains the history of user edits
  * (This used to be called 'history', but that word means something else in browsers)
  *
- * This system maintains a Base Graph and a stack of Edits.
+ * This system maintains a Base Graph and an stack of Edits.
  *
  * The Base Graph contains the base map state - all map entities that have been loaded
  *   and what they look like before any edits have occurred.
  * As more map is loaded, more map features get merged into the Base Graph.
  *
- * Each entry in the stack is an `Edit`.  Each Edit contains:
- *  - `annotation`  - "undo" annotation, a String saying what the Edit did. e.g. "Started a Line".
+ * Each entry in the stack is an `Edit`.  An Edit may contain:
+ *  - `annotation`  - undo/redo annotation, a String saying what the Edit did. e.g. "Started a Line".
  *  - `graph`       - Graph at the time of the Edit
  *  - `selectedIDs` - ids that the user had selected at tht time
  *  - `sources`     - sources being used to make the Edit (imagery, photos, data)
@@ -32,18 +32,27 @@ const DURATION = 150;
  * Edits with an `annotation` represent states that we can undo or redo into.
  *
  * Special named edits:
- *  - `base`    - The first Edit, stack[0].
+ *  - `base`    - The first Edit, history[0].
  *     The base edit contains the Base Graph and nothing else.
- *  - `stable`  - The latest stable Edit, stack[index].
+ *  - `stable`  - The latest stable Edit, history[index].
  *     The stable Edit is suitable for validation, backups, saving.
- *  - `current` - A work-in-progress Edit, not yet added to the stack.
+ *  - `current` - A work-in-progress Edit, not yet added to the history.
  *     The current Edit is used throughout the application to determine the current state of the map.
  *
- * When code calls `setAnnotation()`, we set the `annotation`,
- *   add the current edit to the stack, and create a new current Edit.
+ *  The history might look like this:
+ *
+ *    `base`            ...undo    `stable`   redo...
+ *  [ Edit0 --> Edit1 --> Edit2 --> Edit3 --> Edit4 ]
+ *                                      \
+ *                                       \-->  Edit
+ *                                           `current`  (WIP branch off stable)
+ *
+ * When code calls `commit()`, we set an `annotation` (e.g. "Started a line"),
+ * append the current edit to the history, and create a new current Edit.
  *
  * Events available:
- *   'change'
+ *   'editchange'     - Fires on every edit performed (i.e. when 'current' changes)
+ *   'historychange'  - Fires when the history changes (i.e. when 'stable' changes)
  *   'merge'
  *   'restore'
  *   'undone'
@@ -64,19 +73,19 @@ export class EditSystem extends AbstractSystem {
     this._mutex = utilSessionMutex('lock');
     this._canRestoreBackup = false;
 
-    this._stack = [];          // history stack of accepted edits (both undo and redo)
+    this._history = [];        // history of accepted edits (both undo and redo) (was called "stack")
     this._index = 0;           // index of the latest "stable" edit
-    this._current = null;      // work in progress edit, not yet added to the stack
+    this._current = null;      // work in progress edit, not yet added to the history
     this._checkpoints = {};
-    this._pausedGraph = null;
     this._inTransition = false;
+    this._inTransaction = false;
     this._tree = null;
+    this._lastStable = null;
+    this._lastCurrent = null;
+
     this._initPromise = null;
 
     // Make sure the event handlers have `this` bound correctly
-    this.perform = this.perform.bind(this);
-    this.replace = this.replace.bind(this);
-    this.overwrite = this.overwrite.bind(this);
     this.saveBackup = this.saveBackup.bind(this);
     this.deferredBackup = debounce(this.saveBackup, 1000, { leading: false, trailing: true });
   }
@@ -154,40 +163,45 @@ export class EditSystem extends AbstractSystem {
 
     // Create a new Base Graph / Base Edit.
     const base = new Graph();
-    this._stack = [ new Edit({ graph: base }) ];
+    this._history = [ new Edit({ graph: base }) ];
     this._index = 0;
 
     // Create a work-in-progress Edit derived from the base edit.
     const current = new Graph(base);
     this._current = new Edit({ graph: current });
 
+    this._lastStable = base;
+    this._lastCurrent = current;
+
     this._tree = new Tree(current);
     this._checkpoints = {};
-    this._pausedGraph = null;
+    this._inTransition = false;
+    this._inTransaction = false;
     this.emit('reset');
   }
 
 
   /**
    * base
-   * The "base" edit is the initial edit in the stack.  It contains the Base Graph.
+   * The "base" edit is the initial edit in the history.  It contains the Base Graph.
    * It will not contain any actual user edits, sources, annotation.
    * @return {Edit} The initial Edit containing the Base Graph
    */
   get base() {
-    return this._stack[0];
+    return this._history[0];
   }
 
 
   /**
    * stable
-   * The "stable" edit is the latest accepted edit in the stack, as indicated by _index.
+   * The "stable" edit is the latest accepted edit in the history, as indicated by _index.
    * This edit is considered stable / settled and is suitable for validation or backups.
    * Before the user edits anything, `_index === 0`, so the `stable === base`.
-   * @return {Edit} The latest accepted Edit in the stack
+   * Note that "future" redo history can continue past the stable edit, if the user has undone.
+   * @return {Edit} The latest accepted Edit in the history
    */
   get stable() {
-    return this._stack[this._index];
+    return this._history[this._index];
   }
 
 
@@ -195,7 +209,7 @@ export class EditSystem extends AbstractSystem {
    * current
    * The "current" edit will be a placeholder work-in-progress edit in the chain immediately
    * following the stable edit.  The user may be drawing the feature or editing the tags.
-   * The current edit has not been added to the stack yet.
+   * The current edit has not been added to the history yet.
    * @return {Edit} The current work-in-progress Edit
    */
   get current() {
@@ -227,8 +241,8 @@ export class EditSystem extends AbstractSystem {
   peekAllAnnotations() {
     let result = [];
     for (let i = 0; i <= this._index; i++) {
-      if (this._stack[i].annotation) {
-        result.push(this._stack[i].annotation);
+      if (this._history[i].annotation) {
+        result.push(this._history[i].annotation);
       }
     }
     return result;
@@ -274,7 +288,7 @@ export class EditSystem extends AbstractSystem {
       }
     }
 
-    const graphs = this._stack.map(state => state.graph);
+    const graphs = this._history.map(state => state.graph);
     baseGraph.rebase(entities, graphs, false);  // force = false
     this._tree.rebase(entities, false);         // force = false
 
@@ -289,37 +303,52 @@ export class EditSystem extends AbstractSystem {
     // complete any transition already in progress
     d3_select(document).interrupt('editTransition');
 
-    // We can perform a eased edit in a transition if we have:
-    // - a single action (or single action + annotation)
-    // - and that action is 'transitionable' (i.e. accepts eased time parameter)
-    const action0 = args[0];
-    let transitionable = false;
-    if (args.length === 1 || (args.length === 2 && typeof args[1] !== 'function')) {
-      transitionable = !!action0.transitionable;
-    }
+//    // We can perform a eased edit in a transition if we have:
+//    // - a single action (or single action + annotation)
+//    // - and that action is 'transitionable' (i.e. accepts eased time parameter)
+//    const action0 = args[0];
+//    let transitionable = false;
+//    if (args.length === 1 || (args.length === 2 && typeof args[1] !== 'function')) {
+//      transitionable = !!action0.transitionable;
+//    }
+//
+//    if (transitionable) {
+//      d3_select(document)
+//        .transition('editTransition')
+//        .duration(DURATION)
+//        .ease(d3_easeLinear)
+//        .tween('history.tween', () => {
+//          return (t) => {
+//            if (t < 1) this._overwrite([action0], t);
+//          };
+//        })
+//        .on('start', () => {
+//          this._inTransition = true;
+//          this._perform([action0], 0);
+//        })
+//        .on('end interrupt', () => {
+//          this._inTransition = false;
+//          this._overwrite(args, 1);
+//        });
+//
+//    } else {
+      return this._perform(args, 1);
+//    }
+  }
 
-    if (transitionable) {
-      d3_select(document)
-        .transition('editTransition')
-        .duration(DURATION)
-        .ease(d3_easeLinear)
-        .tween('history.tween', () => {
-          return (t) => {
-            if (t < 1) this._overwrite([action0], t);
-          };
-        })
-        .on('start', () => {
-          this._inTransition = true;
-          this._perform([action0], 0);
-        })
-        .on('end interrupt', () => {
-          this._inTransition = false;
-          this._overwrite(args, 1);
-        });
 
-    } else {
-      return this._perform(args);
-    }
+
+  /**
+   * rollback
+   * Replace current work-in-progress edit with a fresh copy from stable
+   */
+  rollback() {
+    d3_select(document).interrupt('editTransition');
+
+    // Create a new work-in-progress Edit.
+    this._current = new Edit({ graph: new Graph(this.stable.graph) });
+
+    return this._emitChangeEvents();
   }
 
 
@@ -328,7 +357,8 @@ export class EditSystem extends AbstractSystem {
    */
   replace(...args) {
     d3_select(document).interrupt('editTransition');
-    return this._replace(args, 1);
+    console.error('deprecated: do not call EditSystem.replace anymore');   // eslint-disable-line no-console
+//    return this._replace(args, 1);
   }
 
 
@@ -338,25 +368,31 @@ export class EditSystem extends AbstractSystem {
    */
   overwrite(...args) {
     d3_select(document).interrupt('editTransition');
-    return this._overwrite(args, 1);
+    console.error('deprecated: do not call EditSystem.overwrite anymore');   // eslint-disable-line no-console
+//    return this._overwrite(args, 1);
   }
 
 
   /**
-   * replace
+   * pop
    */
   pop(n) {
     d3_select(document).interrupt('editTransition');
-
-    const previous = this.current.graph;
-    if (isNaN(+n) || +n < 0) {
-      n = 1;
-    }
-    while (n-- > 0 && this._index > 0) {
-      this._index--;
-      this._stack.pop();
-    }
-    return this._change(previous);
+    console.error('deprecated: do not call EditSystem.pop anymore');   // eslint-disable-line no-console
+//
+//    const previous = this.current;
+//    if (isNaN(+n) || +n < 0) {
+//      n = 1;
+//    }
+//    while (n-- > 0 && this._index > 0) {
+//      this._index--;
+//      this._history.pop();
+//    }
+//
+//// Create a new work-in-progress Edit.
+//this._current = new Edit({ graph: new Graph(this.stable.graph) });
+//
+//    return this._emitChangeEvents(previous.graph);
   }
 
 
@@ -367,14 +403,17 @@ export class EditSystem extends AbstractSystem {
   undo() {
     d3_select(document).interrupt('editTransition');
 
-    const previousEdit = this.current;
+    const previous = this.current;
     while (this._index > 0) {
       this._index--;
-      if (this._stack[this._index].annotation) break;
+      if (this._history[this._index].annotation) break;
     }
 
-    this.emit('undone', this._stack[this._index], previousEdit);
-    return this._change(previousEdit.graph);
+// Create a new work-in-progress Edit.
+this._current = new Edit({ graph: new Graph(this.stable.graph) });
+
+    this.emit('undone', this.stable, previous);
+    return this._emitChangeEvents();
   }
 
 
@@ -385,19 +424,21 @@ export class EditSystem extends AbstractSystem {
   redo() {
     d3_select(document).interrupt('editTransition');
 
-    const previousEdit = this.current;
+    const previous = this.current;
 
     let tryIndex = this._index;
-    while (tryIndex < this._stack.length - 1) {
+    while (tryIndex < this._history.length - 1) {
       tryIndex++;
-      if (this._stack[tryIndex].annotation) {
+      if (this._history[tryIndex].annotation) {
         this._index = tryIndex;
-        this.emit('redone', this._stack[this._index], previousEdit);
+// Create a new work-in-progress Edit.
+this._current = new Edit({ graph: new Graph(this.stable.graph) });
+        this.emit('redone', this.stable, previous);
         break;
       }
     }
 
-    return this._change(previousEdit.graph);
+    return this._emitChangeEvents();
   }
 
 
@@ -408,9 +449,7 @@ export class EditSystem extends AbstractSystem {
    * This is to prevent other parts of the code from rendering/validating partial or incomplete edits.
    */
   beginTransaction() {
-    if (!this._pausedGraph) {
-      this._pausedGraph = this.current.graph;
-    }
+    this._inTransaction = true;
   }
 
 
@@ -420,27 +459,86 @@ export class EditSystem extends AbstractSystem {
    * A `change` event will be emitted that covers the difference from the beginning-end of the transaction.
    */
   endTransaction() {
-    if (this._pausedGraph) {
-      const previous = this._pausedGraph;
-      this._pausedGraph = null;
-      return this._change(previous);
-    }
+    this._inTransaction = false;
+    return this._emitChangeEvents();
   }
 
 
-  undoAnnotation() {
+  /**
+   * commit
+   * This finalizes the current work-in-progress edit.
+   *  - add annotation and sources
+   *  - append the current edit to the history (at this point 'current' becomes 'stable')
+   *  - and create a new 'current' Edit
+   * @param  {String} annotation - A String saying what the Edit did. e.g. "Started a Line".
+   * @return {Difference} Difference between 'stable' and 'current'
+   */
+  commit(annotation = '') {
+    const context = this.context;
+
+    const previous = this.stable;
+    const current = this.current;
+    const difference = new Difference(previous.graph, current.graph);
+
+    // Gather sources used to make this edit
+    const sources = {};
+    const imageryUsed = context.systems.imagery.imageryUsed();
+    if (imageryUsed.length)  {
+      sources.imagery = imageryUsed;
+    }
+
+    const photosUsed = context.systems.photos.photosUsed();
+    if (photosUsed.length) {
+      sources.photos = photosUsed;
+    }
+
+    const customLayer = context.scene().layers.get('custom-data');
+    const customDataUsed = customLayer?.dataUsed() ?? [];
+    const rapidDataUsed = annotation?.dataUsed ?? [];
+    const dataUsed = [...rapidDataUsed, ...customDataUsed];
+    if (dataUsed.length) {
+      sources.data = dataUsed;
+    }
+
+    current.annotation  = annotation;
+    current.selectedIDs = context.selectedIDs();
+    current.sources     = sources;
+    current.transform   = context.projection.transform();
+
+    // Discard forward/redo history if any, and append the current edit to the history
+    this._history.splice(this._index + 1, Infinity, current);
+    this._index++;
+
+    // Create a new work-in-progress Edit.
+    this._current = new Edit({ graph: new Graph(current.graph) });
+
+    this.deferredBackup();
+    this._emitChangeEvents();
+    return difference;
+  }
+
+
+  /**
+   * getUndoAnnotation
+   * @return {String?} The previous undo annotation, or undefined if none
+   */
+  getUndoAnnotation() {
     let i = this._index;
     while (i >= 0) {
-      if (this._stack[i].annotation) return this._stack[i].annotation;
+      if (this._history[i].annotation) return this._history[i].annotation;
       i--;
     }
   }
 
 
-  redoAnnotation() {
+  /**
+   * getRedoAnnotation
+   * @return {String?} The next redo annotation, or undefined if none
+   */
+  getRedoAnnotation() {
     let i = this._index + 1;
-    while (i <= this._stack.length - 1) {
-      if (this._stack[i].annotation) return this._stack[i].annotation;
+    while (i <= this._history.length - 1) {
+      if (this._history[i].annotation) return this._history[i].annotation;
       i++;
     }
   }
@@ -448,8 +546,7 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * intersects
-   * Returns the entities from the active graph with bounding boxes
-   * overlapping the given `extent`.
+   * Returns the entities from the current graph with bounding boxes overlapping the given `extent`.
    * @prarm   {Extent}  extent - the extent to test
    * @return  {Array}   Entities intersecting the given Extent
    */
@@ -518,9 +615,9 @@ export class EditSystem extends AbstractSystem {
     };
 
     // Start at 1 - there won't be sources on the base edit..
-    // End at `_index` - don't continue into the redo part of the stack..
+    // End at `_index` - don't continue into the redo part of the history..
     for (let i = 1; i <= this._index; i++) {
-      const edit = this._stack[i];
+      const edit = this._history[i];
       for (const which of ['imagery', 'photos', 'data']) {
         for (const val of edit.sources[which] ?? []) {
           result[which].add(val);
@@ -534,14 +631,14 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * setCheckpoint
-   * This saves the `stack` and `index` as a checkpoint that we can return to later.
+   * This saves the `history` and `index` as a checkpoint that we can return to later.
    * @param  {string}  key - the name of the checkpoint
    */
   setCheckpoint(key) {
     d3_select(document).interrupt('editTransition');
 
     this._checkpoints[key] = {
-      stack: this._stack,
+      history: this._history,
       index: this._index
     };
   }
@@ -555,15 +652,10 @@ export class EditSystem extends AbstractSystem {
   resetToCheckpoint(key) {
     d3_select(document).interrupt('editTransition');
 
-    if (key !== undefined && this._checkpoints.hasOwnProperty(key)) {  // reset to given key
-      const fromGraph = this.current.graph;
-
-      this._stack = this._checkpoints[key].stack;
+    if (key && this._checkpoints.hasOwnProperty(key)) {  // reset to given key
+      this._history = this._checkpoints[key].history;
       this._index = this._checkpoints[key].index;
-
-      const toGraph = this._stack[this._index].graph;
-      const difference = new Difference(fromGraph, toGraph);
-      this.emit('change', difference);
+      this._emitChangeEvents();
     }
   }
 
@@ -667,10 +759,10 @@ export class EditSystem extends AbstractSystem {
     const baseGraph = this.base.graph;   // The initial unedited graph
     const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
     const baseEntities = new Map();      // Map(entityID -> Entity)
-    const stackData = [];
+    const historyData = [];
 
-    // Preserve the users stack of edits..
-    for (const edit of this._stack) {
+    // Preserve the users history of edits..
+    for (const edit of this._history) {
       const modified = [];
       const deleted = [];
 
@@ -724,14 +816,14 @@ export class EditSystem extends AbstractSystem {
       if (sources.imagery)   item.imageryUsed = sources.imagery;
       if (sources.photos)    item.photosUsed = sources.photos;
       if (sources.data)      item.dataUsed = sources.data;
-      stackData.push(item);
+      historyData.push(item);
     }
 
     return JSON.stringify({
       version: 3,
       entities: [...modifiedEntities.values()],
       baseEntities: [...baseEntities.values()],
-      stack: stackData,
+      stack: historyData,
       nextIDs: osmEntity.id.next,
       index: this._index,
       timestamp: (new Date()).getTime()
@@ -789,8 +881,8 @@ export class EditSystem extends AbstractSystem {
     // Restore base entities
     const baseEntities = backup.baseEntities.map(e => osmEntity(e));
 
-    // Reconstruct the stack of edits..
-    this._stack = backup.stack.map((item, index) => {
+    // Reconstruct the history of edits..
+    this._history = backup.stack.map((item, index) => {
       // Leave base graph alone, this first edit should have nothing in it.
       if (index === 0) return this.base;
 
@@ -824,7 +916,7 @@ export class EditSystem extends AbstractSystem {
     // Merge originals into Base Graph.
     // Note that the force parameter is `true` here to replace anything that might
     // have been loaded from the API while the user was waiting to press "restore".
-    const graphs = this._stack.map(s => s.graph);
+    const graphs = this._history.map(s => s.graph);
     baseGraph.rebase(baseEntities, graphs, true);   // force = true
     this._tree.rebase(baseEntities, true);          // force = true
 
@@ -851,8 +943,8 @@ export class EditSystem extends AbstractSystem {
 
       loading.close();             // unblock ui
       map.redrawEnabled = true;    // unbock drawing
-      this.emit('change');
       this.emit('restore');
+      this._emitChangeEvents();
     };
 
 
@@ -931,8 +1023,8 @@ export class EditSystem extends AbstractSystem {
     if (context.inIntro) return;               // Don't backup edits made in the walkthrough
     if (context.mode?.id === 'save') return;   // Edits made in save mode may be conflict resolutions
     if (this._canRestoreBackup) return;        // Wait to see if the user wants to restore other edits
-    if (this._pausedGraph) return;             // Don't backup edits mid-transaction
     if (this._inTransition) return;            // Don't backup edits mid-transition
+    if (this._inTransaction) return;           // Don't backup edits mid-transaction
     if (!this._mutex.locked()) return;         // Another browser tab owns the history
 
     const storage = context.systems.storage;
@@ -1013,97 +1105,43 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  // internal _act, accepts Array of actions and eased time
-  _act(args, t = 1) {
-    const context = this.context;
-
-    let actions = args.slice();  // copy
-
-    let annotation;
-    if (typeof actions.at(-1) !== 'function') {
-      annotation = actions.pop();
-    }
-
-    let graph = this.current.graph;
-    for (const fn of actions) {
-      graph = fn(graph, t);
-    }
-
-    // Gather sources used to make this edit
-    // (only bother with this if it's a final edit, t === 1)
-    const sources = {};
-    if (t === 1) {
-      const imageryUsed = context.systems.imagery.imageryUsed();
-      if (imageryUsed.length)  {
-        sources.imagery = imageryUsed;
-      }
-
-      const photosUsed = context.systems.photos.photosUsed();
-      if (photosUsed.length) {
-        sources.photos = photosUsed;
-      }
-
-      const customLayer = context.scene().layers.get('custom-data');
-      const customDataUsed = customLayer?.dataUsed() ?? [];
-      const rapidDataUsed = annotation?.dataUsed ?? [];
-      const dataUsed = [...rapidDataUsed, ...customDataUsed];
-      if (dataUsed.length) {
-        sources.data = dataUsed;
-      }
-    }
-
-    return new Edit({
-      annotation:   annotation,
-      graph:        graph,
-      selectedIDs:  context.selectedIDs(),
-      sources:      sources,
-      transform:    context.projection.transform()
-    });
-  }
-
-
   // internal _perform with eased time
   _perform(args, t) {
-    const previous = this.current.graph;
-    this._stack = this._stack.slice(0, this._index + 1);
-    const edit = this._act(args, t);
-    this._stack.push(edit);
-    this._index++;
-    return this._change(previous);
-  }
+    const previous = this._current.graph;
 
-
-  // internal _replace with eased time
-  _replace(args, t) {
-    const previous = this.current.graph;
-    const edit = this._act(args, t);
-    this._stack[this._index] = edit;
-    return this._change(previous);
-  }
-
-
-  // internal this._overwrite with eased time
-  _overwrite(args, t) {
-    const previous = this.current.graph;
-    if (this._index > 0) {
-      this._index--;
-      this._stack.pop();
+    let graph = this._current.graph;
+    for (const fn of args) {
+      if (typeof fn === 'function') {
+        graph = fn(graph, t);
+      }
     }
-    this._stack = this._stack.slice(0, this._index + 1);
-    const edit = this._act(args, t);
-    this._stack.push(edit);
-    this._index++;
-    return this._change(previous);
+
+    this._current.graph = graph;
+
+    return this._emitChangeEvents();
   }
 
 
   // determine difference and dispatch a change event
-  _change(previous) {
-    const difference = new Difference(previous, this.current.graph);
-    if (!this._pausedGraph) {
-      this.deferredBackup();
-      this.emit('change', difference);
+  _emitChangeEvents() {
+    if (this._inTransaction) return;
+
+    const stable = this.stable.graph;
+    const current = this.current.graph;
+    let difference;
+
+    if (this._lastStable !== stable) {
+      difference = new Difference(this._lastStable, stable);
+      this._lastStable = stable;
+      this.emit('historychange', difference);
     }
-    return difference;
+
+    if (this._lastCurrent !== current) {
+      difference = new Difference(this._lastCurrent, current);
+      this._lastCurrent = current;
+      this.emit('editchange', difference);
+    }
+
+    return difference;  // only one place in the code uses this return - split operation?
   }
 }

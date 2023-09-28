@@ -164,110 +164,89 @@ export function uiFieldWikidata(context, uifield) {
 
 
     function change() {
-        let key = uifield.key;
-        var syncTags = {};
-        syncTags[key] = _qid;
-        dispatch.call('change', this, syncTags);
+      const key = uifield.key;
+      const syncTags = {};
+      syncTags[key] = _qid;
+      dispatch.call('change', this, syncTags);
 
-        // attempt asynchronous update of wikidata tag..
-        var initGraph = editor.current.graph;
-        var initEntityIDs = _entityIDs;
+      if (!_wikipediaKey) return;
 
-        wikidata.entityByQID(_qid, function(err, entity) {
-            if (err) return;
+      // attempt asynchronous update of wikipedia tag..
+      const initGraph = editor.current.graph;
+      const initEntityIDs = _entityIDs;
 
-            // If graph has changed, we can't apply this update.
-            if (editor.current.graph !== initGraph) return;
+      wikidata.entityByQID(_qid, (err, result) => {
+        if (err || !result?.sitelinks) return;
 
-            if (!entity.sitelinks) return;
+        // If graph has changed, we can't apply this update.
+        const graph = editor.current.graph;
+        if (graph !== initGraph) return;
 
-            var langs = wikidata.languagesToQuery();
-            // use the label and description languages as fallbacks
-            ['labels', 'descriptions'].forEach(function(key) {
-                if (!entity[key]) return;
+        // Wikipedia sites can be in a bunch of languages.
+        // We'll try to match the user's preferred languages first.
+        const langs = new Set(wikidata.languagesToQuery());
 
-                var valueLangs = Object.keys(entity[key]);
-                if (valueLangs.length === 0) return;
-                var valueLang = valueLangs[0];
+        // use the label and description languages as fallbacks
+        for (const key of ['labels', 'descriptions']) {
+          if (!result[key]) continue;
+          const moreLangs = Object.keys(result[key]);
+          if (moreLangs.length === 0) continue;
+          langs.add(moreLangs[0]);
+        }
 
-                if (langs.indexOf(valueLang) === -1) {
-                    langs.push(valueLang);
-                }
-            });
+        let newValue;
+        let foundPreferred = false;
 
-            var newWikipediaValue;
+        for (const lang of langs) {
+          const siteID = lang.replace('-', '_') + 'wiki';
+          if (result.sitelinks[siteID]) {
+            foundPreferred = true;
+            newValue = lang + ':' + result.sitelinks[siteID].title;
+            break;
+          }
+        }
 
-            if (_wikipediaKey) {
-                var foundPreferred;
-                for (var i in langs) {
-                    var lang = langs[i];
-                    var siteID = lang.replace('-', '_') + 'wiki';
-                    if (entity.sitelinks[siteID]) {
-                        foundPreferred = true;
-                        newWikipediaValue = lang + ':' + entity.sitelinks[siteID].title;
-                        // use the first match
-                        break;
-                    }
-                }
+        // No wikipedia sites available in the user's language or the fallback languages,
+        // default to any wikipedia sitelink
+        if (!foundPreferred) {
+          const wikiSiteKeys = Object.keys(result.sitelinks).filter(site => site.endsWith('wiki'));
 
-                if (!foundPreferred) {
-                    // No wikipedia sites available in the user's language or the fallback languages,
-                    // default to any wikipedia sitelink
+          if (wikiSiteKeys.length === 0) {  // if no wikipedia pages are linked to this wikidata entity, delete the tag
+            newValue = null;
+          } else {
+            const key = wikiSiteKeys[0];
+            const lang = key.slice(0, -4).replace('_', '-');
+            newValue = lang + ':' + result.sitelinks[key].title;
+          }
+        }
 
-                    var wikiSiteKeys = Object.keys(entity.sitelinks).filter(function(site) {
-                        return site.endsWith('wiki');
-                    });
+        if (newValue) {
+          newValue = context.cleanTagValue(newValue);
+        }
 
-                    if (wikiSiteKeys.length === 0) {
-                        // if no wikipedia pages are linked to this wikidata entity, delete that tag
-                        newWikipediaValue = null;
-                    } else {
-                        var wikiLang = wikiSiteKeys[0].slice(0, -4).replace('_', '-');
-                        var wikiTitle = entity.sitelinks[wikiSiteKeys[0]].title;
-                        newWikipediaValue = wikiLang + ':' + wikiTitle;
-                    }
-                }
-            }
+        if (typeof newValue === 'undefined') return;
 
-            if (newWikipediaValue) {
-                newWikipediaValue = context.cleanTagValue(newWikipediaValue);
-            }
+        for (const entityID of initEntityIDs) {
+          const entity = graph.entity(entityID);
+          const asyncTags = Object.assign({}, entity.tags);  // shallow copy
 
-            if (typeof newWikipediaValue === 'undefined') return;
+          if (newValue === null) {  // remove wikipedia tag
+            if (!asyncTags[_wikipediaKey]) continue;  // no change
+            delete asyncTags[_wikipediaKey];
 
-            var actions = initEntityIDs.map(function(entityID) {
-                var entity = initGraph.hasEntity(entityID);
-                if (!entity) return null;
+          } else {   // replace wikipedia tag
+            if (asyncTags[_wikipediaKey] === newValue) continue;  // no change
+            asyncTags[_wikipediaKey] = newValue;
+          }
 
-                var currTags = Object.assign({}, entity.tags);  // shallow copy
-                if (newWikipediaValue === null) {
-                    if (!currTags[_wikipediaKey]) return null;
+          editor.perform(actionChangeTags(entityID, asyncTags));
+        }
 
-                    delete currTags[_wikipediaKey];
-                } else {
-                    currTags[_wikipediaKey] = newWikipediaValue;
-                }
-
-                return actionChangeTags(entityID, currTags);
-            }).filter(Boolean);
-
-            if (!actions.length) return;
-
-            // Coalesce the update of wikidata tag into the previous tag change
-            editor.overwrite(
-                function actionUpdateWikipediaTags(graph) {
-                    actions.forEach(function(action) {
-                        graph = action(graph);
-                    });
-                    return graph;
-                },
-                editor.undoAnnotation()
-            );
-
-            // do not dispatch.call('change') here, because entity_editor
-            // changeTags() is not intended to be called asynchronously
-        });
+        // do not dispatch.call('change') here, because entity_editor
+        // changeTags() is not intended to be called asynchronously
+      });
     }
+
 
     function setLabelForEntity() {
         var label = '';

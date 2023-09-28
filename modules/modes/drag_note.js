@@ -4,7 +4,7 @@ import { actionNoop } from '../actions/noop';
 
 
 export function modeDragNote(context) {
-    const editor = context.systems.editor;
+    const map = context.systems.map;
 
     var mode = {
         id: 'drag-note',
@@ -57,7 +57,6 @@ export function modeDragNote(context) {
         context.surface().selectAll('.note-' + _note.id)
             .classed('active', true);
 
-        editor.perform(actionNoop());
         context.enter(mode);
         // context.selectedNoteID(_note.id);
     }
@@ -91,12 +90,12 @@ export function modeDragNote(context) {
             osm.replaceNote(_note);  // update note cache
         }
 
-        editor.replace(actionNoop());   // trigger redraw
+        map.immediateRedraw();
     }
 
 
     function end() {
-        editor.replace(actionNoop());   // trigger redraw
+        map.immediateRedraw();
 
         const selectedData = new Map().set(_note.id, _note);
         context.enter('select', selectedData);

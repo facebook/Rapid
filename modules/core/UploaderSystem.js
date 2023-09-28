@@ -152,13 +152,6 @@ export class UploaderSystem extends AbstractSystem {
     const editor = context.systems.editor;
     this._origChanges = editor.changes(actionDiscardTags(editor.difference(), this._discardTags));
 
-    // First time, `perform` a no-op action.
-    // Any conflict resolutions will be done as `replace`
-    // Remember to pop this later if needed
-    if (!tryAgain) {
-      editor.perform(actionNoop());
-    }
-
     // Attempt a fast upload first.. If there are conflicts, re-enter with `checkConflicts = true`
     if (!checkConflicts) {
       this._tryUpload();
@@ -272,9 +265,10 @@ export class UploaderSystem extends AbstractSystem {
 
   // Test everything in `_toCheckIDs` for conflicts
   _detectConflicts() {
-    const l10n = this.context.systems.l10n;
-    const editor = this.context.systems.editor;
-    const osm = this.context.services.osm;
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const editor = context.systems.editor;
+    const osm = context.services.osm;
     if (!osm) return;
 
     const localGraph = this._localGraph;
@@ -296,7 +290,7 @@ export class UploaderSystem extends AbstractSystem {
         strategy: 'safe'
       });
 
-      editor.replace(actionSafe);
+      editor.perform(actionSafe);
 
       const mergeConflicts = actionSafe.conflicts();
       if (!mergeConflicts.length) continue;  // merged safely
@@ -329,8 +323,8 @@ export class UploaderSystem extends AbstractSystem {
         details: mergeConflicts,
         chosen: 1,
         choices: [
-          { id: entityID, text: keepMine, action: () => editor.replace(actionForceLocal) },
-          { id: entityID, text: keepTheirs, action: () => editor.replace(actionForceRemote) }
+          { id: entityID, text: keepMine, action: () => editor.perform(actionForceLocal) },
+          { id: entityID, text: keepTheirs, action: () => editor.perform(actionForceRemote) }
         ]
       });
     }
@@ -421,7 +415,9 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInErrors() {
-    this.context.systems.editor.pop();
+    // this.context.systems.editor.pop();
+    const editor = this.context.systems.editor;
+    editor.rollback();
     this.emit('resultErrors', this._errors);
     this._endSave();
   }
@@ -447,7 +443,9 @@ export class UploaderSystem extends AbstractSystem {
 
 
   cancelConflictResolution() {
-    this.context.systems.editor.pop();
+    // this.context.systems.editor.pop();
+    const editor = this.context.systems.editor;
+    editor.rollback();
   }
 
 
@@ -460,10 +458,10 @@ export class UploaderSystem extends AbstractSystem {
         const entity = graph.hasEntity(conflict.id);
         if (entity?.type === 'way') {
           for (const child of utilArrayUniq(entity.nodes)) {
-            editor.replace(actionRevert(child));
+            editor.perform(actionRevert(child));
           }
         }
-        editor.replace(actionRevert(conflict.id));
+        editor.perform(actionRevert(conflict.id));
       }
     }
 

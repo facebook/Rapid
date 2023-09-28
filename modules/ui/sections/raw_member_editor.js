@@ -93,10 +93,8 @@ export function uiSectionRawMemberEditor(context) {
 
     if (oldRole !== newRole) {
       const member = { id: d.id, type: d.type, role: newRole };
-      editor.perform(
-        actionChangeMember(d.relation.id, member, d.index),
-        l10n.t('operations.change_role.annotation', { n: 1 })
-      );
+      editor.perform(actionChangeMember(d.relation.id, member, d.index));
+      editor.commit(l10n.t('operations.change_role.annotation', { n: 1 }));
       validator.validate();
     }
   }
@@ -105,10 +103,8 @@ export function uiSectionRawMemberEditor(context) {
   function deleteMember(d3_event, d) {
     utilHighlightEntities([d.id], false, context);  // remove the hover-highlight styling
 
-    editor.perform(
-      actionDeleteMember(d.relation.id, d.index),
-      l10n.t('operations.delete_member.annotation', { n: 1 })
-    );
+    editor.perform(actionDeleteMember(d.relation.id, d.index));
+    editor.commit(l10n.t('operations.delete_member.annotation', { n: 1 }));
 
     const graph = editor.current.graph;  // the current graph, after the edit was performed
 
@@ -318,10 +314,8 @@ export function uiSectionRawMemberEditor(context) {
           .style('transform', null);
 
         if (targetIndex !== null) {   // dragged to a new position, reorder
-          editor.perform(
-            actionMoveMember(d.relation.id, index, targetIndex),
-            l10n.t('operations.reorder_members.annotation')
-          );
+          editor.perform(actionMoveMember(d.relation.id, index, targetIndex));
+          editor.commit(l10n.t('operations.reorder_members.annotation'));
           validator.validate();
         }
       })

@@ -453,26 +453,25 @@ export class SelectBehavior extends AbstractBehavior {
     const isOSMWay = data instanceof osmWay && !data.__fbid__;
     const isMidpoint = data.type === 'midpoint';
 
+    let loc, edge;
     if (isOSMWay) {
       const graph = editor.current.graph;
       const projection = context.projection;
-      const loc = projection.invert(coord);
       const choice = geoChooseEdge(graph.childNodes(data), coord, projection);
-      const edge = [data.nodes[choice.index - 1], data.nodes[choice.index]];
-      editor.perform(
-        actionAddMidpoint({ loc: loc, edge: edge }, osmNode()),
-        l10n.t('operations.add.annotation.vertex')
-      );
-      validator.validate();
+      loc = projection.invert(coord);
+      edge = [ data.nodes[choice.index - 1], data.nodes[choice.index] ];
 
     } else if (isMidpoint) {
-      const edge = [data.a.id, data.b.id];
-      editor.perform(
-        actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
-        l10n.t('operations.add.annotation.vertex')
-      );
+      loc = data.loc;
+      edge = [data.a.id, data.b.id];
+    }
+
+    if (loc && edge) {
+      editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, osmNode()));
+      editor.commit(l10n.t('operations.add.annotation.vertex'));
       validator.validate();
     }
+
   }
 
   /**

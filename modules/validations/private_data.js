@@ -53,8 +53,9 @@ export function validationPrivateData(context) {
           new ValidationFix({
             icon: 'rapid-operation-delete',
             title: l10n.tHtml(`issues.fix.${fixID}.title`),
-            onClick: function() {
-              editor.perform(doUpgrade, l10n.t('issues.fix.upgrade_tags.annotation'));
+            onClick: () => {
+              editor.perform(doUpgrade);
+              editor.commit(l10n.t('issues.fix.upgrade_tags.annotation'));
             }
           })
         ];

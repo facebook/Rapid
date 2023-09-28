@@ -214,7 +214,7 @@ export class MapSystem extends AbstractSystem {
 
 
     // Setup events that cause the map to redraw...
-    const edits = context.systems.editor;
+    const editor = context.systems.editor;
     const filters = context.systems.filters;
     const imagery = context.systems.imagery;
     const photos = context.systems.photos;
@@ -228,14 +228,14 @@ export class MapSystem extends AbstractSystem {
       }
     };
 
-    edits
+    editor
       .on('merge', entityIDs => {
         if (entityIDs) {
           scene.dirtyData('osm', entityIDs);
         }
         this.deferredRedraw();
       })
-      .on('change', difference => {
+      .on('editchange', difference => {
         if (difference) {
           // todo - maybe only do this if difference.didChange.geometry?
           const complete = difference.complete();

@@ -36,14 +36,13 @@ export function uiEntityEditor(context) {
 
   let _selection = null;
   let _state = 'select';
-  let _coalesceChanges = false;
   let _modified = false;
   let _startGraph;
   let _entityIDs = [];
   let _activePresets = [];
   let _newFeature;
 
-  editor.on('change', _onChange);
+  editor.on('editchange', _onChange);
 
 
   /**
@@ -144,7 +143,6 @@ export function uiEntityEditor(context) {
     // always reload these even if the entityIDs are unchanged, since we
     // could be reselecting after something like dragging a node
     _startGraph = editor.current.graph;
-    _coalesceChanges = false;
 
     if (val && _entityIDs && utilArrayIdentical(_entityIDs, val)) return entityEditor;  // exit early if no change
 
@@ -220,10 +218,10 @@ export function uiEntityEditor(context) {
    * Use explicit entityIDs in case the selection changes before the event is fired.
    */
   function _changeTags(entityIDs, changed, onInput) {
-    let actions = [];
+    editor.beginTransaction();
 
-    const graph = editor.current.graph;
     for (const entityID of entityIDs) {
+      const graph = editor.current.graph;
       const entity = graph.hasEntity(entityID);
       if (!entity) continue;
 
@@ -246,30 +244,15 @@ export function uiEntityEditor(context) {
       }
 
       if (!deepEqual(entity.tags, tags)) {
-        actions.push(actionChangeTags(entityID, tags));
+        editor.perform(actionChangeTags(entityID, tags));
       }
     }
 
-    if (actions.length) {
-      const combinedAction = (graph) => {
-        for (const action of actions) {
-          graph = action(graph);
-        }
-        return graph;
-      };
+    editor.endTransaction();
 
-      const annotation = l10n.t('operations.change_tags.annotation');
-
-      if (_coalesceChanges) {
-        editor.overwrite(combinedAction, annotation);
-      } else {
-        editor.perform(combinedAction, annotation);
-        _coalesceChanges = !!onInput;
-      }
-    }
-
-    // only rerun validation when leaving the field (on blur event)
+    // Only commit changes when leaving the field (i.e. on blur event)
     if (!onInput) {
+      editor.commit(l10n.t('operations.change_tags.annotation'));
       validator.validate();
     }
   }
@@ -279,12 +262,11 @@ export function uiEntityEditor(context) {
    *
    */
   function _revertTags(keys) {
-    let actions = [];
-
-    const currGraph = editor.current.graph;
     const baseGraph = editor.base.graph;
+    editor.beginTransaction();
 
     for (const entityID of _entityIDs) {
+      const currGraph = editor.current.graph;
       const original = baseGraph.hasEntity(entityID);
       const current = currGraph.entity(entityID);
       let tags = Object.assign({}, current.tags);   // shallow copy
@@ -304,28 +286,12 @@ export function uiEntityEditor(context) {
       tags = utilCleanTags(tags);
 
       if (!deepEqual(current.tags, tags)) {
-        actions.push(actionChangeTags(entityID, tags));
+        editor.perform(actionChangeTags(entityID, tags));
       }
     }
 
-    if (actions.length) {
-      const combinedAction = (graph) => {
-        for (const action of actions) {
-          graph = action(graph);
-        }
-        return graph;
-      };
-
-      const annotation = l10n.t('operations.change_tags.annotation');
-
-      if (_coalesceChanges) {
-        editor.overwrite(combinedAction, annotation);
-      } else {
-        editor.perform(combinedAction, annotation);
-        _coalesceChanges = false;
-      }
-    }
-
+    editor.endTransaction();
+    editor.commit(l10n.t('operations.change_tags.annotation'));
     validator.validate();
   }
 

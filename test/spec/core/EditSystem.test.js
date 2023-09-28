@@ -66,8 +66,8 @@ describe('EditSystem', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.undo();
       _editor.reset();
-      expect(_editor.undoAnnotation()).to.be.undefined;
-      expect(_editor.redoAnnotation()).to.be.undefined;
+      expect(_editor.getUndoAnnotation()).to.be.undefined;
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
     });
   });
 
@@ -114,7 +114,7 @@ describe('EditSystem', () => {
 
     it('pushes an undo annotation', () => {
       _editor.perform(actionNoop(), 'annotation1');
-      expect(_editor.undoAnnotation()).to.equal('annotation1');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
     });
 
     it('emits a change event', () => {
@@ -130,7 +130,7 @@ describe('EditSystem', () => {
       _editor.perform(action1, action2, 'annotation1');
       expect(action1).to.have.been.called;
       expect(action2).to.have.been.called;
-      expect(_editor.undoAnnotation()).to.equal('annotation1');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
     });
 
     it('performs transitionable actions in a transition', done => {
@@ -161,7 +161,7 @@ describe('EditSystem', () => {
     it('replaces the undo annotation', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.replace(actionNoop(), 'annotation2');
-      expect(_editor.undoAnnotation()).to.equal('annotation2');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
     });
 
     it('emits a change event', () => {
@@ -176,7 +176,7 @@ describe('EditSystem', () => {
       _editor.replace(action1, action2, 'annotation1');
       expect(action1).to.have.been.called;
       expect(action2).to.have.been.called;
-      expect(_editor.undoAnnotation()).to.equal('annotation1');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
     });
   });
 
@@ -190,13 +190,13 @@ describe('EditSystem', () => {
     it('updates the graph', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.pop();
-      expect(_editor.undoAnnotation()).to.be.undefined;
+      expect(_editor.getUndoAnnotation()).to.be.undefined;
     });
 
     it('does not push the redo stack', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.pop();
-      expect(_editor.redoAnnotation()).to.be.undefined;
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
     });
 
     it('emits a change event', () => {
@@ -211,7 +211,7 @@ describe('EditSystem', () => {
       _editor.perform(actionNoop(), 'annotation2');
       _editor.perform(actionNoop(), 'annotation3');
       _editor.pop(2);
-      expect(_editor.undoAnnotation()).to.equal('annotation1');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
     });
 
     it('pops 0 times', () => {
@@ -219,7 +219,7 @@ describe('EditSystem', () => {
       _editor.perform(actionNoop(), 'annotation2');
       _editor.perform(actionNoop(), 'annotation3');
       _editor.pop(0);
-      expect(_editor.undoAnnotation()).to.equal('annotation3');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation3');
     });
 
     it('pops 1 time if argument is invalid', () => {
@@ -227,9 +227,9 @@ describe('EditSystem', () => {
       _editor.perform(actionNoop(), 'annotation2');
       _editor.perform(actionNoop(), 'annotation3');
       _editor.pop('foo');
-      expect(_editor.undoAnnotation()).to.equal('annotation2');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
       _editor.pop(-1);
-      expect(_editor.undoAnnotation()).to.equal('annotation1');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
     });
   });
 
@@ -250,13 +250,13 @@ describe('EditSystem', () => {
     it('replaces the undo annotation', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.overwrite(actionNoop(), 'annotation2');
-      expect(_editor.undoAnnotation()).to.equal('annotation2');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
     });
 
     it('does not push the redo stack', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.overwrite(actionNoop(), 'annotation2');
-      expect(_editor.redoAnnotation()).to.be.undefined;
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
     });
 
     it('emits a change event', () => {
@@ -273,7 +273,7 @@ describe('EditSystem', () => {
       _editor.overwrite(action1, action2, 'annotation2');
       expect(action1).to.have.been.called;
       expect(action2).to.have.been.called;
-      expect(_editor.undoAnnotation()).to.equal('annotation2');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
     });
   });
 
@@ -286,13 +286,13 @@ describe('EditSystem', () => {
     it('pops the undo stack', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.undo();
-      expect(_editor.undoAnnotation()).to.be.undefined;
+      expect(_editor.getUndoAnnotation()).to.be.undefined;
     });
 
     it('pushes the redo stack', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.undo();
-      expect(_editor.redoAnnotation()).to.equal('annotation1');
+      expect(_editor.getRedoAnnotation()).to.equal('annotation1');
     });
 
     it('emits an undone event', () => {
@@ -320,7 +320,7 @@ describe('EditSystem', () => {
       _editor.on('redone', spy);
       _editor.undo();
       _editor.redo();
-      expect(_editor.undoAnnotation()).to.equal('annotation1');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
       expect(spy).to.have.been.called;
     });
 
@@ -442,13 +442,13 @@ describe('EditSystem', () => {
       _editor.perform(actionNoop(), 'annotation8');
 
       _editor.resetToCheckpoint('check1');
-      expect(_editor.undoAnnotation()).to.equal('annotation3');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation3');
 
       _editor.resetToCheckpoint('check2');
-      expect(_editor.undoAnnotation()).to.equal('annotation5');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation5');
 
       _editor.resetToCheckpoint('check1');
-      expect(_editor.undoAnnotation()).to.equal('annotation3');
+      expect(_editor.getUndoAnnotation()).to.equal('annotation3');
     });
 
     it('emits a change event', () => {
@@ -522,7 +522,7 @@ describe('EditSystem', () => {
       };
       _editor.fromJSON(JSON.stringify(json));
       expect(_editor.current.graph.entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
-      expect(_editor.undoAnnotation()).to.eql('Added a point.');
+      expect(_editor.getUndoAnnotation()).to.eql('Added a point.');
       expect(_editor.sourcesUsed().imagery).to.include('Bing');
       expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
       expect(_editor.difference().created().length).to.eql(1);
@@ -542,7 +542,7 @@ describe('EditSystem', () => {
       };
       _editor.fromJSON(JSON.stringify(json));
       expect(_editor.current.graph.entity('n1')).to.eql(Rapid.osmNode({ id: 'n1', loc: [2, 3], v: 1 }));
-      expect(_editor.undoAnnotation()).to.eql('Moved a point.');
+      expect(_editor.getUndoAnnotation()).to.eql('Moved a point.');
       expect(_editor.sourcesUsed().imagery).to.include('Bing');
       expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
       expect(_editor.difference().modified().length).to.eql(1);
@@ -562,7 +562,7 @@ describe('EditSystem', () => {
       };
       _editor.fromJSON(JSON.stringify(json));
       expect(_editor.current.graph.hasEntity('n1')).to.be.undefined;
-      expect(_editor.undoAnnotation()).to.eql('Deleted a point.');
+      expect(_editor.getUndoAnnotation()).to.eql('Deleted a point.');
       expect(_editor.sourcesUsed().imagery).to.include('Bing');
       expect(Rapid.osmEntity.id.next).to.eql({ node: -1, way: -2, relation: -3 });
       expect(_editor.difference().deleted().length).to.eql(1);

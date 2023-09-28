@@ -282,8 +282,11 @@ export function uiIntroBuilding(context, curtain) {
     // Make sure it's still a house, in case user somehow changed it..
     const graph = editor.current.graph;
     const entity = graph.entity(_houseID);
-    const oldPreset = presets.match(entity, graph);
-    editor.replace(actionChangePreset(_houseID, oldPreset, housePreset));
+    const preset = presets.match(entity, graph);
+    if (preset !== housePreset) {
+      editor.perform(actionChangePreset(_houseID, preset, housePreset));
+      editor.commit(l10n.t('operations.change_tags.annotation'));
+    }
 
     editor.setCheckpoint('hasHouse');
     return Promise.resolve(rightClickHouseAsync);  // advance
@@ -362,7 +365,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for orthogonalize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (editor.undoAnnotation() === l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
+        if (editor.getUndoAnnotation() === l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
           return doneSquareAsync;
         } else {
           return retryClickSquareAsync;
@@ -573,8 +576,11 @@ export function uiIntroBuilding(context, curtain) {
     // Make sure it's still a tank, in case user somehow changed it..
     const graph = editor.current.graph;
     const entity = graph.entity(_tankID);
-    const oldPreset = presets.match(entity, graph);
-    editor.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
+    const preset = presets.match(entity, graph);
+    if (preset !== tankPreset) {
+      editor.perform(actionChangePreset(_tankID, preset, tankPreset));
+      editor.commit(l10n.t('operations.change_tags.annotation'));
+    }
 
     editor.setCheckpoint('hasTank');
     return Promise.resolve(rightClickTankAsync);  // advance
@@ -648,7 +654,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for circularize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (editor.undoAnnotation() === l10n.t('operations.circularize.annotation.feature', { n: 1 })) {
+        if (editor.getUndoAnnotation() === l10n.t('operations.circularize.annotation.feature', { n: 1 })) {
           return playAsync;
         } else {
           return retryClickCircleAsync;
@@ -703,14 +709,14 @@ export function uiIntroBuilding(context, curtain) {
 
     context.on('modechange', _modeChangeListener);
     map.on('move', _mapMoveListener);
-    editor.on('change', _editChangeListener);
+    editor.on('historychange', _editChangeListener);
 
     runAsync(addHouseAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
         map.off('move', _mapMoveListener);
-        editor.off('change', _editChangeListener);
+        editor.off('historychange', _editChangeListener);
       });
 
     function _mapMoveListener() {

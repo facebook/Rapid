@@ -144,7 +144,7 @@ export class SelectOsmMode extends AbstractMode {
 
     editor
       // this was probably to style the elements
-      // .on('change', this._selectElements)    // reselect, in case relation members were removed or added
+      // .on('editchange', this._selectElements)    // reselect, in case relation members were removed or added
       .on('undone', this._undoOrRedo)
       .on('redone', this._undoOrRedo);
 
@@ -180,8 +180,8 @@ export class SelectOsmMode extends AbstractMode {
       (entity.members.length === 0 || (entity.members.length === 1 && !entity.members[0].role))
     ) {
       // The user added this relation but didn't edit it at all, so just delete it
-      const deleteAction = actionDeleteRelation(entity.id, true /* don't delete untagged members */);
-      editor.perform(deleteAction, l10n.t('operations.delete.annotation.relation'));
+      editor.perform(actionDeleteRelation(entity.id, true));  // true = don't delete untagged members
+      editor.commit(l10n.t('operations.delete.annotation.relation'));
       validator.validate();
     }
 
@@ -210,7 +210,7 @@ export class SelectOsmMode extends AbstractMode {
     }
 
     editor
-      // .off('change', this._selectElements)
+      // .off('editchange', this._selectElements)
       .off('undone', this._undoOrRedo)
       .off('redone', this._undoOrRedo);
   }

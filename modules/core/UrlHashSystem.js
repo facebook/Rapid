@@ -144,7 +144,7 @@ export class UrlHashSystem extends AbstractSystem {
 
     this._currHash = null;
 
-    this.context.systems.editor.on('change', this.deferredUpdateTitle);
+    this.context.systems.editor.on('historychange', this.deferredUpdateTitle);
     this.context.on('modechange', this.deferredUpdateTitle);
     window.addEventListener('hashchange', this._hashchange);
 
@@ -166,7 +166,7 @@ export class UrlHashSystem extends AbstractSystem {
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
 
-    this.context.systems.editor.off('change', this.deferredUpdateTitle);
+    this.context.systems.editor.off('historychange', this.deferredUpdateTitle);
     this.context.off('modechange', this.deferredUpdateTitle);
     window.removeEventListener('hashchange', this._hashchange);
   }

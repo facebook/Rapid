@@ -120,16 +120,17 @@ export class ValidationSystem extends AbstractSystem {
           .on('modechange', this.validate);
 
         editor
-          .on('restore', this.validate)   // on restore saved history
-          .on('undone', this.validate)    // on undo
-          .on('redone', this.validate);   // on redo
+          .on('historychange', this.validate)   // after edit has been accepted
+          .on('restore', this.validate)         // on restore saved history
+          .on('undone', this.validate)          // on undo
+          .on('redone', this.validate);         // on redo
+         // but not on 'editchange' (e.g. while drawing)
 
     // todo: find another way to reset this
     //      .on('reset', () => {            // on reset - happens after save, or enter/exit walkthrough
     //        this.reset(false);   // cached issues aren't valid any longer if the history has been reset
     //        this.validateAsync();
     //      });
-          // but not on 'change' (e.g. while drawing)
 
         // When merging fetched data, validate base graph:
         editor

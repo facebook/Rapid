@@ -53,7 +53,7 @@ export function operationOrthogonalize(context, selectedIDs) {
   let operation = function() {
     if (!actions.length) return;
 
-    let combinedAction = function(graph, t) {
+    const combinedAction = function(graph, t) {
       actions.forEach(action => {
         if (!action.disabled(graph)) {
           graph = action(graph, t);
@@ -63,7 +63,8 @@ export function operationOrthogonalize(context, selectedIDs) {
     };
     combinedAction.transitionable = true;
 
-    editor.perform(combinedAction, operation.annotation());
+    editor.perform(combinedAction);
+    editor.commit(operation.annotation());
     window.setTimeout(() => validator.validate(), 300);  // after any transition
   };
 

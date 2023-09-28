@@ -88,7 +88,7 @@ export class RapidSystem extends AbstractSystem {
 
         editor
           .on('undone', this._onUndone)
-          .on('change', this._onChange)
+          .on('historychange', this._onChange)
           .on('restore', this._onRestore);
 
         this._datasets.set('fbRoads', {

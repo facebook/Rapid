@@ -160,18 +160,16 @@ export function uiFieldCheck(context, uifield) {
           d3_event.stopPropagation();
           if (!_entityIDs.length) return;
 
-          editor.perform(
-            function(graph) {
-              for (const entityID of _entityIDs) {
-                graph = actionReverse(entityID)(graph);
-              }
-              return graph;
-            },
-            l10n.t('operations.reverse.annotation.line', { n: 1 })
-          );
+          const combinedAction = (graph) => {
+            for (const entityID of _entityIDs) {
+              graph = actionReverse(entityID)(graph);
+            }
+            return graph;
+          };
 
-          // must manually revalidate since no 'change' event was dispatched
-          validator.validate();
+          editor.perform(combinedAction);
+          editor.commit(l10n.t('operations.reverse.annotation.line', { n: 1 }));
+          validator.validate();   // must manually revalidate since no 'change' event was dispatched
 
           d3_select(this)
             .call(reverserSetText);

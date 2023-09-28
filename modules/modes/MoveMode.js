@@ -20,8 +20,8 @@ export class MoveMode extends AbstractMode {
     this.id = 'move';
 
     this._entityIDs = [];
-    this._prevGraph = null;
     this._startLoc = null;
+    this._startGraph = null;
     this._movementCache = null;  // used by the move action
 
     // Make sure the event handlers have `this` bound correctly
@@ -48,16 +48,17 @@ export class MoveMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const filterSystem = context.systems.filters;
-    const eventManager = context.systems.map.renderer.events;
+    const filters = context.systems.filters;
+    const map = context.systems.map;
+    const eventManager = map.renderer.events;
 
-    filterSystem.forceVisible(this._entityIDs);
+    filters.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction', 'map-nudging']);
     context.behaviors['map-nudging'].allow();
 
-    this._prevGraph = null;
-    this._startLoc = null;
-    this._movementCache = null;
+    this._startLoc = map.mouseLoc();
+    this._startGraph = editor.current.graph;
+    this._movementCache = {};
 
     eventManager
       .on('click', this._finish)
@@ -80,16 +81,16 @@ export class MoveMode extends AbstractMode {
     if (!this._active) return;
     this._active = false;
 
-    this._prevGraph = null;
     this._startLoc = null;
+    this._startGraph = null;
     this._movementCache = null;
 
     const context = this.context;
     const editor = context.systems.editor;
-    const filterSystem = context.systems.filters;
+    const filters = context.systems.filters;
     const eventManager = context.systems.map.renderer.events;
 
-    filterSystem.forceVisible([]);
+    filters.forceVisible([]);
 
     eventManager
       .off('click', this._finish)
@@ -128,21 +129,10 @@ export class MoveMode extends AbstractMode {
   _pointermove() {
     const context = this.context;
     const editor = context.systems.editor;
-    const mapSystem = context.systems.map;
     const locations = context.systems.locations;
+    const map = context.systems.map;
 
-    let fn;
-    // If prevGraph doesn't match, either we haven't started moving, or something has
-    // occurred during the move that interrupted it, so reset vars and start a new move
-    if (this._prevGraph !== editor.current.graph) {
-      this._startLoc = mapSystem.mouseLoc();
-      this._movementCache = {};
-      fn = editor.perform;     // start moving
-    } else {
-      fn = editor.overwrite;   // continue moving
-    }
-
-    const currLoc = mapSystem.mouseLoc();
+    const currLoc = map.mouseLoc();
     if (locations.blocksAt(currLoc).length) {  // editing is blocked here
       this._cancel();
       return;
@@ -152,13 +142,14 @@ export class MoveMode extends AbstractMode {
     const currPoint = context.projection.project(currLoc);
     const delta = vecSubtract(currPoint, startPoint);
 
-    fn(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
-    const currGraph = this._prevGraph = editor.current.graph;  // after move
+    editor.rollback();  // moves are relative to the start location, so rollback before applying movement
+    editor.perform(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
+    const graph = editor.current.graph;  // after move
 
     // Update selected/active collections to contain the moved entities
     this._selectedData.clear();
     for (const entityID of this._entityIDs) {
-      this._selectedData.set(entityID, currGraph.entity(entityID));
+      this._selectedData.set(entityID, graph.entity(entityID));
     }
   }
 
@@ -170,14 +161,15 @@ export class MoveMode extends AbstractMode {
   _finish() {
     const context = this.context;
     const editor = context.systems.editor;
+    const graph = editor.current.graph;
     const l10n = context.systems.l10n;
 
-    if (this._prevGraph) {
+    if (graph !== this._startGraph) {
       const annotation = (this._entityIDs.length === 1) ?
-        l10n.t('operations.move.annotation.' + editor.current.graph.geometry(this._entityIDs[0])) :
+        l10n.t('operations.move.annotation.' + graph.geometry(this._entityIDs[0])) :
         l10n.t('operations.move.annotation.feature', { n: this._entityIDs.length });
 
-      editor.replace(actionNoop(), annotation);   // annotate the move
+      editor.commit(annotation);
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
@@ -190,9 +182,10 @@ export class MoveMode extends AbstractMode {
   _cancel() {
     const context = this.context;
     const editor = context.systems.editor;
+    const graph = editor.current.graph;
 
-    if (this._prevGraph) {
-      editor.pop();   // remove the move
+    if (graph !== this._startGraph) {
+      editor.rollback();
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }

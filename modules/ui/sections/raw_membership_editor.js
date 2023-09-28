@@ -149,17 +149,18 @@ export function uiSectionRawMembershipEditor(context) {
 
         if (membersToUpdate.length) {
             _inChange = true;
-            editor.perform(
-                function actionChangeMemberRoles(graph) {
-                    membersToUpdate.forEach(function(member) {
-                        var newMember = Object.assign({}, member, { role: newRole });
-                        delete newMember.index;
-                        graph = actionChangeMember(d.relation.id, newMember, member.index)(graph);
-                    });
-                    return graph;
-                },
-                l10n.t('operations.change_role.annotation', { n: membersToUpdate.length })
-            );
+
+            const changeMemberRoles = (graph) => {
+              for (const member of membersToUpdate) {
+                const newMember = Object.assign({}, member, { role: newRole });
+                delete newMember.index;
+                graph = actionChangeMember(d.relation.id, newMember, member.index)(graph);
+              }
+              return graph;
+            };
+
+            editor.perform(changeMemberRoles);
+            editor.commit(l10n.t('operations.change_role.annotation', { n: membersToUpdate.length }));
             validator.validate();
         }
         _inChange = false;
@@ -181,19 +182,17 @@ export function uiSectionRawMembershipEditor(context) {
         }
 
         if (d.relation) {
-            editor.perform(
-                actionAddMembers(d.relation.id, _entityIDs, role),
-                l10n.t('operations.add_member.annotation', { n: _entityIDs.length })
-            );
+            editor.perform(actionAddMembers(d.relation.id, _entityIDs, role));
+            editor.commit(l10n.t('operations.add_member.annotation', { n: _entityIDs.length }));
             validator.validate();
 
         } else {
             var relation = osmRelation();
             editor.perform(
-                actionAddEntity(relation),
-                actionAddMembers(relation.id, _entityIDs, role),
-                l10n.t('operations.add.annotation.relation')
+              actionAddEntity(relation),
+              actionAddMembers(relation.id, _entityIDs, role)
             );
+            editor.commit(l10n.t('operations.add.annotation.relation'));
             // changing the mode also runs `validate`
             context.enter('select-osm', { selectedIDs: [relation.id], newFeature: true });
         }
@@ -211,10 +210,8 @@ export function uiSectionRawMembershipEditor(context) {
             return member.index;
         });
 
-        editor.perform(
-            actionDeleteMembers(d.relation.id, indexes),
-            l10n.t('operations.delete_member.annotation', { n: _entityIDs.length })
-        );
+        editor.perform(actionDeleteMembers(d.relation.id, indexes));
+        editor.commit(l10n.t('operations.delete_member.annotation', { n: _entityIDs.length }));
         validator.validate();
     }
 

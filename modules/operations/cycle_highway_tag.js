@@ -55,14 +55,6 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   let operation = function() {
     if (!entities.length) return;
 
-    // If this is the same selection as before, and the previous edit was also a cycle-tags,
-    // skip this `perform`, then all tag updates will be coalesced into the previous edit.
-    const annotation = operation.annotation();
-    if (!isSameSelection || editor.undoAnnotation() !== annotation) {
-      // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
-      editor.perform(actionNoop(), annotation);
-    }
-
     // Pick the next preset..
     const currPresetIDs = Array.from(presetIDs);
     const currPreset = presets.match(entities[0], editor.current.graph);
@@ -70,12 +62,24 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     const newPresetID = currPresetIDs[(index + 1) % currPresetIDs.length];
     const newPreset = presets.item(newPresetID);
 
+    editor.beginTransaction();
+
+    // If this is the same selection as before, and the previous edit was also a cycle-tags,
+    // undo that edit and replace it with a new one.
+    const annotation = operation.annotation();
+    if (!isSameSelection || editor.getUndoAnnotation() !== annotation) {
+      editor.undo();   // or editor.pop if we keep it?
+    }
+
     // Update all selected highways...
     for (const entity of entities) {
       const oldPreset = presets.match(entity, editor.current.graph);
       const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
-      editor.replace(action, annotation);
+      editor.perform(action);
     }
+
+    editor.endTransaction();
+    editor.commit(annotation);
 
     context.enter('select-osm', { selectedIDs: selectedIDs });  // reselect
   };

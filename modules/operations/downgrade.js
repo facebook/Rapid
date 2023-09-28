@@ -67,7 +67,8 @@ export function operationDowngrade(context, selectedIDs) {
   let addressKeysToKeep = ['source'];
 
   let operation = function() {
-    editor.perform(function(graph) {
+
+    const combinedAction = (graph) => {
       for (let i in selectedIDs) {
         let entityID = selectedIDs[i];
         let type = downgradeTypeForEntityID(entityID);
@@ -85,8 +86,10 @@ export function operationDowngrade(context, selectedIDs) {
         graph = actionChangeTags(entityID, tags)(graph);
       }
       return graph;
-    }, operation.annotation());
+    };
 
+    editor.perform(combinedAction);
+    editor.commit(operation.annotation());
     validator.validate();
 
     // refresh the select mode to enable the delete operation

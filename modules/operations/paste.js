@@ -24,17 +24,20 @@ export function operationPaste(context) {
     let extent = new Extent();
     let newIDs = [];
 
+    editor.beginTransaction();
     const action = actionCopyEntities(oldIDs, oldGraph);
     editor.perform(action);
 
     const currGraph = editor.current.graph;
-    let copies = action.copies();
-    let originals = new Set();
-    Object.values(copies).forEach(function(entity) { originals.add(entity.id); });
+    const copies = action.copies();
 
-    for (let id in copies) {
-      const oldEntity = oldGraph.entity(id);
-      const newEntity = copies[id];
+    const originals = new Set();
+    for (const entity of Object.values(copies)) {
+      originals.add(entity.id);
+    }
+
+    for (const [entityID, newEntity] of Object.entries(copies)) {
+      const oldEntity = oldGraph.entity(entityID);
 
       extent = extent.extend(oldEntity.extent(oldGraph));
 
@@ -54,7 +57,10 @@ export function operationPaste(context) {
     const delta = vecSubtract(_pastePoint, copyPoint);
 
     // Move the pasted objects to be anchored at the paste location
-    editor.replace(actionMove(newIDs, delta, projection), operation.annotation());
+    editor.perform(actionMove(newIDs, delta, projection));
+    editor.endTransaction();
+    editor.commit(operation.annotation());
+
     context.enter('select-osm', { selectedIDs: newIDs });
   };
 

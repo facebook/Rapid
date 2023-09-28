@@ -94,10 +94,8 @@ export function validationUnsquareWay(context) {
             onClick: function(context, completionHandler) {
               const entityID = this.issue.entityIds[0];
               // use same degree threshold as for detection
-              editor.perform(
-                actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold),
-                l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })
-              );
+              editor.perform(actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold));
+              editor.commit(l10n.t('operations.orthogonalize.annotation.feature', { n: 1 }));
               // run after the squaring transition (currently 150ms)
               window.setTimeout(function() { completionHandler(); }, 175);
             }
@@ -111,10 +109,8 @@ export function validationUnsquareWay(context) {
               const entity = graph.entity(entityID);
               const tags = Object.assign({}, entity.tags);  // shallow copy
               tags.nonsquare = 'yes';
-              editor.perform(
-                actionChangeTags(entityID, tags),
-                l10n.t('issues.fix.tag_as_unsquare.annotation')
-              );
+              editor.perform(actionChangeTags(entityID, tags));
+              editor.commit(l10n.t('issues.fix.tag_as_unsquare.annotation'));
             }
           })
 */

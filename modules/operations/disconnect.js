@@ -138,7 +138,8 @@ export function operationDisconnect(context, selectedIDs) {
       });
       return graph;
     };
-    editor.perform(combinedAction, operation.annotation());
+    editor.perform(combinedAction);
+    editor.commit(operation.annotation());
     validator.validate();
   };
 

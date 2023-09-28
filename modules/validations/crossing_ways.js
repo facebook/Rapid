@@ -705,7 +705,8 @@ export function validationCrossingWays(context) {
                     return graph;
                 };
 
-                editor.perform(action, l10n.t(`issues.fix.${fixTitleID}.annotation`));
+                editor.perform(action);
+                editor.commit(l10n.t(`issues.fix.${fixTitleID}.annotation`));
                 context.enter('select-osm', { selectedIDs: resultWayIDs });
             }
         });
@@ -773,9 +774,11 @@ export function validationCrossingWays(context) {
           const loc = this.issue.loc;
           const edges = this.issue.data.edges;
           const connectionTags = this.issue.data.connectionTags;
-          const action = getConnectWaysAction(loc, edges, connectionTags);
+          const result = getConnectWaysAction(loc, edges, connectionTags);
 
-          editor.perform(action[0], action[1]);  // function, annotation
+          // result contains [function, annotation]
+          editor.perform(result[0]);
+          editor.commit(result[1]);
         }
       });
     }
@@ -817,10 +820,8 @@ export function validationCrossingWays(context) {
             }
           }
           tags.layer = layer.toString();
-          editor.perform(
-            actionChangeTags(entity.id, tags),
-            l10n.t('operations.change_tags.annotation')
-          );
+          editor.perform(actionChangeTags(entity.id, tags));
+          editor.commit(l10n.t('operations.change_tags.annotation'));
         }
       });
     }

@@ -437,13 +437,13 @@ export function uiIntroArea(context, curtain) {
     _onEditChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editor.on('change', _editChangeListener);
+    editor.on('historychange', _editChangeListener);
 
     runAsync(addAreaAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editor.off('change', _editChangeListener);
+        editor.off('historychange', _editChangeListener);
       });
 
     function _modeChangeListener(mode) {

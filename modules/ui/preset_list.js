@@ -414,18 +414,17 @@ export function uiPresetList(context) {
             if (!context.inIntro) {
                 presetSystem.setMostRecent(preset);
             }
-            editor.perform(
-                function(graph) {
-                    for (var i in _entityIDs) {
-                        var entityID = _entityIDs[i];
-                        var oldPreset = presetSystem.match(graph.entity(entityID), graph);
-                        graph = actionChangePreset(entityID, oldPreset, preset)(graph);
-                    }
-                    return graph;
-                },
-                l10n.t('operations.change_tags.annotation')
-            );
 
+            const combinedAction = (graph) => {
+              for (const entityID of _entityIDs) {
+                const oldPreset = presetSystem.match(graph.entity(entityID), graph);
+                graph = actionChangePreset(entityID, oldPreset, preset)(graph);
+              }
+              return graph;
+            };
+
+            editor.perform(combinedAction);
+            editor.commit(l10n.t('operations.change_tags.annotation'));
             validator.validate();
             dispatch.call('choose', this, preset);
         };

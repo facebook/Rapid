@@ -79,9 +79,8 @@ export function validationSuspiciousName(context) {
               const entity = graph.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
-              editor.perform(
-                actionChangeTags(entityID, tags), l10n.t('issues.fix.remove_generic_name.annotation')
-              );
+              editor.perform(actionChangeTags(entityID, tags));
+              editor.commit(l10n.t('issues.fix.remove_generic_name.annotation'));
             }
           })
         ];
@@ -127,9 +126,8 @@ export function validationSuspiciousName(context) {
               const entity = graph.entity(entityID);
               let tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
-              editor.perform(
-                actionChangeTags(entityID, tags), l10n.t('issues.fix.remove_mistaken_name.annotation')
-              );
+              editor.perform(actionChangeTags(entityID, tags));
+              editor.commit(l10n.t('issues.fix.remove_mistaken_name.annotation'));
             }
           })
         ];

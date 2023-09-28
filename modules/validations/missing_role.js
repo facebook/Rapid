@@ -65,10 +65,8 @@ export function validationMissingRole(context) {
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_from_relation.title'),
             onClick: () => {
-              editor.perform(
-                actionDeleteMember(this.issue.entityIds[0], this.issue.data.member.index),
-                l10n.t('operations.delete_member.annotation', { n: 1 })
-              );
+              editor.perform(actionDeleteMember(this.issue.entityIds[0], this.issue.data.member.index));
+              editor.commit(l10n.t('operations.delete_member.annotation', { n: 1 }));
             }
           })
         ];
@@ -93,10 +91,8 @@ export function validationMissingRole(context) {
       onClick: () => {
         const oldMember = this.issue.data.member;
         const member = { id: this.issue.entityIds[1], type: oldMember.type, role: role };
-        editor.perform(
-          actionChangeMember(this.issue.entityIds[0], member, oldMember.index),
-          l10n.t('operations.change_role.annotation', { n: 1 })
-        );
+        editor.perform(actionChangeMember(this.issue.entityIds[0], member, oldMember.index));
+        editor.commit(l10n.t('operations.change_role.annotation', { n: 1 }));
       }
     });
   }

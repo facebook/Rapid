@@ -146,8 +146,9 @@ export function validationImpossibleOneway(context) {
               title: l10n.tHtml('issues.fix.reverse_feature.title'),
               entityIds: [way.id],
               onClick: function() {
-                const id = this.issue.entityIds[0];
-                editor.perform(actionReverse(id), l10n.t('operations.reverse.annotation.line', { n: 1 }));
+                const entityID = this.issue.entityIds[0];
+                editor.perform(actionReverse(entityID));
+                editor.commit(l10n.t('operations.reverse.annotation.line', { n: 1 }));
               }
             }));
           }

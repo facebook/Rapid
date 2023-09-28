@@ -22,7 +22,7 @@ export class RotateMode extends AbstractMode {
     this.id = 'rotate';
 
     this._entityIDs = [];
-    this._prevGraph = null;
+    this._startGraph = null;
     this._lastPoint = null;
     this._pivotLoc = null;
 
@@ -50,15 +50,16 @@ export class RotateMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const filterSystem = context.systems.filters;
-    const eventManager = context.systems.map.renderer.events;
+    const filters = context.systems.filters;
+    const map = context.systems.map;
+    const eventManager = map.renderer.events;
 
-    filterSystem.forceVisible(this._entityIDs);
+    filters.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction']);
 
-    this._prevGraph = null;
+    this._startGraph = null;
     this._lastPoint = null;
-    this._pivotLoc = null;
+    this._pivotLoc = this._calcPivotLoc();
 
     eventManager
       .on('click', this._finish)
@@ -81,16 +82,16 @@ export class RotateMode extends AbstractMode {
     if (!this._active) return;
     this._active = false;
 
-    this._prevGraph = null;
+    this._startGraph = null;
     this._lastPoint = null;
     this._pivotLoc = null;
 
     const context = this.context;
     const editor = context.systems.editor;
-    const filterSystem = context.systems.filters;
+    const filters = context.systems.filters;
     const eventManager = context.systems.map.renderer.events;
 
-    filterSystem.forceVisible([]);
+    filters.forceVisible([]);
 
     eventManager
       .off('click', this._finish)
@@ -132,16 +133,6 @@ export class RotateMode extends AbstractMode {
     const eventManager = context.systems.map.renderer.events;
     const currPoint = eventManager.coord;
 
-    let fn;
-    // If prevGraph doesn't match, either we haven't started rotating, or something has
-    // occurred during the rotate that interrupted it, so reset pivot and start a new rotation
-    if (this._prevGraph !== editor.current.graph) {
-      this._pivotLoc = this._calcPivotLoc();
-      fn = editor.perform;   // start a rotation
-    } else {
-      fn = editor.replace;   // continue rotating
-    }
-
     // Some notes!
     // There are 2 approaches to converting user's pointer movement into a rotation.
     //
@@ -171,8 +162,7 @@ export class RotateMode extends AbstractMode {
       const degrees = (sY * dX) + (sX * dY);   // Degrees rotation to apply: + clockwise, - counterclockwise
       const SPEED = 0.3;
       const angle = degrees * (Math.PI / 180) * SPEED;
-      fn(actionRotate(this._entityIDs, pivotPoint, angle, context.projection));
-      this._prevGraph = editor.current.graph;
+      editor.perform(actionRotate(this._entityIDs, pivotPoint, angle, context.projection));
     }
     this._lastPoint = currPoint.slice();  // copy
 
@@ -181,8 +171,7 @@ export class RotateMode extends AbstractMode {
     // const currAngle = Math.atan2(currPoint[1] - pivotPoint[1], currPoint[0] - pivotPoint[0]);
     // if (this._lastAngle !== null) {
     //   const angle = currAngle - this._lastAngle;
-    //   fn(actionRotate(entityIDs, pivotPoint, angle, context.projection));
-    //   this._prevGraph = editor.current.graph;
+    //   editor.perform(actionRotate(entityIDs, pivotPoint, angle, context.projection));
     // }
     // this._lastAngle = currAngle;
 
@@ -231,7 +220,7 @@ export class RotateMode extends AbstractMode {
 
   /**
    * _finish
-   * Finalize the move edit
+   * Finalize the rotate edit
    */
   _finish() {
     const context = this.context;
@@ -239,12 +228,12 @@ export class RotateMode extends AbstractMode {
     const graph = editor.current.graph;
     const l10n = context.systems.l10n;
 
-    if (this._prevGraph) {
+    if (graph !== this._startGraph) {
       const annotation = (this._entityIDs.length === 1) ?
         l10n.t('operations.rotate.annotation.' + graph.geometry(this._entityIDs[0])) :
         l10n.t('operations.rotate.annotation.feature', { n: this._entityIDs.length });
 
-      editor.replace(actionNoop(), annotation);   // annotate the rotation
+      editor.commit(annotation);
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
@@ -257,9 +246,10 @@ export class RotateMode extends AbstractMode {
   _cancel() {
     const context = this.context;
     const editor = context.systems.editor;
+    const graph = editor.current.graph;
 
-    if (this._prevGraph) {
-      editor.pop();   // remove the rotate
+    if (graph !== this._startGraph) {
+      editor.rollback();
     }
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }

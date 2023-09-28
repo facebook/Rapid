@@ -35,7 +35,8 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
     const action = actionReflect(selectedIDs, context.projection)
       .useLongAxis(Boolean(axis === 'long'));
 
-    editor.perform(action, operation.annotation());
+    editor.perform(action);
+    editor.commit(operation.annotation());
     window.setTimeout(() => validator.validate(), 300);  // after any transition
   };
 

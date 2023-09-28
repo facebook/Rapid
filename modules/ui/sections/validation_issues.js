@@ -178,17 +178,14 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     autoFixAll.selectAll('.autofix-all-link')
       .on('click', () => {
         editor.beginTransaction();
-        editor.perform(actionNoop());   // perform a noop edit that will be replaced by the fixes
 
-        autofixable.forEach(issue => {
-          let args = issue.autoArgs.slice();  // copy
-          if (typeof args[args.length - 1] !== 'function') {
-            args.pop();
-          }
-          args.push(l10n.t('issues.fix_all.annotation'));
-          editor.replace.apply(editor, args);  // this does the fix
-        });
+        for (const issue of autofixable) {
+          const action = issue.autoArgs[0];  // [action, annotation]
+          editor.perform(action);
+        }
+
         editor.endTransaction();
+        editor.commit(l10n.t('issues.fix_all.annotation'));
         validator.validate();
       });
   }

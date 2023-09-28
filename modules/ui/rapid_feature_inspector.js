@@ -62,7 +62,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
       dataUsed: dataset?.dataUsed || [datasetID]
     };
 
-    editor.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
+    editor.perform(actionRapidAcceptFeature(_datum.id, graph));
+    editor.commit(annotation);
     context.enter('select-osm', { selectedIDs: [_datum.id] });
 
     if (context.inIntro) return;
@@ -87,7 +88,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
       id: _datum.id,
       origid: _datum.__origid__
     };
-    editor.perform(actionNoop(), annotation);
+    editor.perform(actionNoop());
+    editor.commit(annotation);
     context.enter('browse');
   }
 

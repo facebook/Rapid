@@ -32,17 +32,16 @@ export class DrawLineMode extends AbstractMode {
     this.firstNode = null;  // The first real node in the draw way
     this.lastNode = null;   // The last real node in the draw way (the draw node is after/before this one)
 
-    // So for a draw way like
+    // So for a draw way like:
     // A -> B -> C -> D
     // A is the firstNode
     // C is the lastNode
-    // D is the drawNode, temporary and will be popped off in exit()
+    // D is the drawNode, temporary and will be rolled back in exit()
     // A and C can be clicked on to finish the way
 
     // _insertIndex determines where new nodes get added (see `osmWay.addNode()`)
     // `0` = beginning, `undefined` = end
     this._insertIndex = undefined;
-    this._startGraph = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._move = this._move.bind(this);
@@ -82,7 +81,8 @@ export class DrawLineMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const mapSystem = context.systems.map;
+    const graph = editor.current.graph;
+    const map = context.systems.map;
     this._active = true;
 
     this.drawWay = null;
@@ -91,7 +91,6 @@ export class DrawLineMode extends AbstractMode {
     this.firstNode = null;
 
     this._insertIndex = undefined;
-    this._startGraph = editor.current.graph;
     this._selectedData.clear();
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
@@ -108,6 +107,7 @@ export class DrawLineMode extends AbstractMode {
 
     context.behaviors['map-interaction'].doubleClickEnabled = false;
 
+    editor.setCheckpoint('beginDraw');
 
     // If we are continuing, perform initial actions to create the drawWay and drawNode..
     if (continueNode && continueWay) {
@@ -115,11 +115,11 @@ export class DrawLineMode extends AbstractMode {
       const oppositeNodeID = (continueFromStart ? continueWay.last() : continueWay.first());
       this._insertIndex = (continueFromStart ? 0 : undefined);
       this.lastNode = continueNode;
-      this.firstNode = this._startGraph.entity(oppositeNodeID);
+      this.firstNode = graph.entity(oppositeNodeID);
       this.drawWay = continueWay;
 
       // Create draw node where we think the poitner is, and extend continue way to it
-      this.drawNode = osmNode({ loc: mapSystem.mouseLoc() });
+      this.drawNode = osmNode({ loc: map.mouseLoc() });
       editor.perform(
         actionAddEntity(this.drawNode),                                          // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex)    // Add draw node to draw way
@@ -147,14 +147,15 @@ export class DrawLineMode extends AbstractMode {
 
     editor.beginTransaction();
 
-    // If there is a temporary draw node, remove it.
-    if (this.drawNode) {
-      editor.pop();
-      if (this.drawWay) {
-        const graph = editor.current.graph;
-        this.drawWay = graph.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
-      }
-    }
+//    // If there is a temporary draw node, remove it.
+    editor.rollback();
+//    if (this.drawNode) {
+//      editor.pop();
+//      if (this.drawWay) {
+//        const graph = editor.current.graph;
+//        this.drawWay = graph.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
+//      }
+//    }
 
     // Confirm that the draw way exists and is valid..
     const length = this.drawWay?.nodes?.length || 0;
@@ -162,9 +163,10 @@ export class DrawLineMode extends AbstractMode {
       if (DEBUG) {
         console.log('DrawLineMode: draw way invalid, rolling back');  // eslint-disable-line no-console
       }
-      while (editor.current.graph !== this._startGraph) {  // rollback to initial state
-        editor.pop();
-      }
+//      while (editor.current.graph !== this._startGraph) {  // rollback to initial state
+//        editor.pop();
+//      }
+      editor.resetToCheckpoint('beginDraw');
     }
 
     this.drawWay = null;
@@ -281,8 +283,8 @@ export class DrawLineMode extends AbstractMode {
       }
     }
 
-    editor.replace(actionMoveNode(this.drawNode.id, loc));
-    graph = editor.current.graph;
+    editor.perform(actionMoveNode(this.drawNode.id, loc));
+    graph = editor.current.graph;   // post-action
     this.drawNode = graph.entity(this.drawNode.id);  // refresh draw node
   }
 
@@ -295,10 +297,10 @@ export class DrawLineMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const locations = context.systems.locations;
-
     const graph = editor.current.graph;
     const projection = context.projection;
     const coord = eventData.coord;
+
     const loc = projection.invert(coord);
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
@@ -360,7 +362,7 @@ export class DrawLineMode extends AbstractMode {
         console.log(`DrawLineMode: _clickLoc, extending line to ${loc}`);  // eslint-disable-line no-console
       }
 
-      editor.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
+      editor.commit(this._getAnnotation());  // Add annotation so we can undo to here
 
       // Replace draw node
       this.lastNode = this.drawNode;
@@ -417,11 +419,11 @@ export class DrawLineMode extends AbstractMode {
         console.log(`DrawLineMode: _clickWay, extending line to edge ${edge}`);  // eslint-disable-line no-console
       }
 
-      editor.replace(
+      editor.perform(
         actionMoveNode(this.drawNode.id, loc),       // Finalize position of old draw node at `loc`
-        actionAddMidpoint(midpoint, this.drawNode),  // Add old draw node as a midpoint on target edge
-        this._getAnnotation()                        // Add annotation so we can undo to here
+        actionAddMidpoint(midpoint, this.drawNode)   // Add old draw node as a midpoint on target edge
       );
+      editor.commit(this._getAnnotation());   // Add annotation so we can undo to here
 
       // Replace draw node
       this.lastNode = this.drawNode;
@@ -473,11 +475,11 @@ export class DrawLineMode extends AbstractMode {
         vecEqual(loc, this.lastNode.loc, EPSILON) || vecEqual(loc, this.firstNode.loc, EPSILON)
       ) {
         if (targetNode === this.firstNode) {   // if clicked on first node, close the way
-          editor.replace(
-            this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),          // Remove the draw node, we dont need it
-            actionAddVertex(this.drawWay.id, targetNode.id, this._insertIndex),  // Add target node to draw way
-            this._getAnnotation()
+          editor.perform(
+            this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),         // Remove the draw node, we dont need it
+            actionAddVertex(this.drawWay.id, targetNode.id, this._insertIndex)  // Add target node to draw way
           );
+          editor.commit(this._getAnnotation());
           this.drawNode = null;   // the draw node is removed, this prevents exit() from popping this edit we just did
         }
 
@@ -490,11 +492,11 @@ export class DrawLineMode extends AbstractMode {
       }
 
       // Time for a switcheroo- replace the 'draw' node with the target node, and annotate it for undo/redo
-      editor.replace(
+      editor.perform(
         this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),           // Remove the draw node
-        actionAddVertex(this.drawWay.id, targetNode.id, this._insertIndex),   // Add target node to draw way
-        this._getAnnotation()
+        actionAddVertex(this.drawWay.id, targetNode.id, this._insertIndex)    // Add target node to draw way
       );
+      editor.commit(this._getAnnotation());
 
       // Now put the draw node back where it was and continue drawing
       this.lastNode = targetNode;

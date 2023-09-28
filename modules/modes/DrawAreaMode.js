@@ -32,14 +32,12 @@ export class DrawAreaMode extends AbstractMode {
     this.firstNode = null;  // The first real node in the draw way (this is also the last node that closes the area)
     this.lastNode = null;   // The last real node in the draw way (technically it's the node before the draw node)
 
-    // So for a closed draw way like
+    // So for a closed draw way like:
     // A -> B -> C -> D -> A
     // A is the firstNode
     // C is the lastNode
     // D is the drawNode, temporary and will be popped off in exit()
     // A and C can be clicked on to finish the way
-
-    this._startGraph = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._move = this._move.bind(this);
@@ -68,7 +66,6 @@ export class DrawAreaMode extends AbstractMode {
     this.lastNode = null;
     this.firstNode = null;
 
-    this._startGraph = editor.current.graph;
     this._selectedData.clear();
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
@@ -84,6 +81,8 @@ export class DrawAreaMode extends AbstractMode {
       .on('redone', this._undoOrRedo);
 
     context.behaviors['map-interaction'].doubleClickEnabled = false;
+
+    editor.setCheckpoint('beginDraw');
 
     return true;
   }
@@ -107,12 +106,13 @@ export class DrawAreaMode extends AbstractMode {
     editor.beginTransaction();
 
     // If there is a temporary draw node, remove it.
-    if (this.drawNode) {
-      editor.pop();
-      if (this.drawWay) {
-        this.drawWay = editor.current.graph.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
-      }
-    }
+    editor.rollback();
+//    if (this.drawNode) {
+//      editor.pop();
+//      if (this.drawWay) {
+//        this.drawWay = editor.current.graph.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
+//      }
+//    }
 
     // Confirm that the draw way exists and is valid..
     const length = this.drawWay?.nodes?.length || 0;
@@ -120,9 +120,10 @@ export class DrawAreaMode extends AbstractMode {
       if (DEBUG) {
         console.log('DrawAreaMode: draw way invalid, rolling back');  // eslint-disable-line no-console
       }
-      while (editor.current.graph !== this._startGraph) {  // rollback to initial state
-        editor.pop();
-      }
+//      while (editor.current.graph !== this._startGraph) {  // rollback to initial state
+//        editor.pop();
+//      }
+      editor.resetToCheckpoint('beginDraw');
     }
 
     this.drawWay = null;
@@ -158,7 +159,8 @@ export class DrawAreaMode extends AbstractMode {
    */
   _refreshEntities() {
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const editor = context.systems.editor;
+    const graph = editor.current.graph;
     const scene = context.systems.map.scene;
 
     this._selectedData.clear();
@@ -232,9 +234,8 @@ export class DrawAreaMode extends AbstractMode {
       }
     }
 
-    editor.replace(actionMoveNode(this.drawNode.id, loc));
-
-    graph = editor.current.graph;
+    editor.perform(actionMoveNode(this.drawNode.id, loc));
+    graph = editor.current.graph;   // post-action
     this.drawNode = graph.entity(this.drawNode.id);  // refresh draw node
   }
 
@@ -247,10 +248,10 @@ export class DrawAreaMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const locations = context.systems.locations;
-
     const graph = editor.current.graph;
     const projection = context.projection;
     const coord = eventData.coord;
+
     const loc = projection.invert(coord);
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
@@ -312,7 +313,7 @@ export class DrawAreaMode extends AbstractMode {
         console.log(`DrawAreaMode: _clickLoc, extending area to ${loc}`);  // eslint-disable-line no-console
       }
 
-      editor.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
+      editor.commit(this._getAnnotation());   // Add annotation so we can undo to here
 
       // Replace draw node
       this.lastNode = this.drawNode;
@@ -372,11 +373,11 @@ export class DrawAreaMode extends AbstractMode {
         console.log(`DrawAreaMode: _clickWay, extending area to edge ${edge}`);  // eslint-disable-line no-console
       }
 
-      editor.replace(
+      editor.perform(
         actionMoveNode(this.drawNode.id, loc),       // Finalize position of old draw node at `loc`
-        actionAddMidpoint(midpoint, this.drawNode),  // Add old draw node as a midpoint on target edge
-        this._getAnnotation()                        // Add annotation so we can undo to here
+        actionAddMidpoint(midpoint, this.drawNode)   // Add old draw node as a midpoint on target edge
       );
+      editor.commit(this._getAnnotation());   // Add annotation so we can undo to here
 
       // Replace draw node
       this.lastNode = this.drawNode;
@@ -439,11 +440,11 @@ export class DrawAreaMode extends AbstractMode {
       }
 
       // Time for a switcheroo- replace the 'draw' node with the target node, and annotate it for undo/redo
-      editor.replace(
+      editor.perform(
         this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),   // Remove the draw node
-        actionAddVertex(this.drawWay.id, targetNode.id),              // Add target node to draw way
-        this._getAnnotation()
+        actionAddVertex(this.drawWay.id, targetNode.id)               // Add target node to draw way
       );
+      editor.commit(this._getAnnotation());
 
       // Now put the draw node back where it was and continue drawing
       this.lastNode = targetNode;

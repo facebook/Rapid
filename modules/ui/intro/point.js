@@ -284,8 +284,11 @@ export function uiIntroPoint(context, curtain) {
     // Make sure it's still a cafe, in case user somehow changed it..
     const graph = editor.current.graph;
     const entity = graph.entity(_pointID);
-    const oldPreset = presets.match(entity, graph);
-    editor.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
+    const preset = presets.match(entity, graph);
+    if (preset !== cafePreset) {
+      editor.perform(actionChangePreset(_pointID, preset, cafePreset));
+      editor.commit(l10n.t('operations.change_tags.annotation'));
+    }
 
     editor.setCheckpoint('hasPoint');
     return Promise.resolve(reselectPointAsync);  // advance
@@ -468,13 +471,13 @@ export function uiIntroPoint(context, curtain) {
     _onEditChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editor.on('change', _editChangeListener);
+    editor.on('historychange', _editChangeListener);
 
     runAsync(addPointAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editor.off('change', _editChangeListener);
+        editor.off('historychange', _editChangeListener);
       });
 
     function _modeChangeListener(mode) {

@@ -89,11 +89,11 @@ export class AddPointMode extends AbstractMode {
   _click(eventData) {
     const context = this.context;
     const editor = context.systems.editor;
-    const locations = context.systems.locations;
-
     const graph = editor.current.graph;
+    const locations = context.systems.locations;
     const projection = context.projection;
     const coord = eventData.coord;
+
     const loc = projection.invert(coord);
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
@@ -138,8 +138,8 @@ export class AddPointMode extends AbstractMode {
     const l10n = context.systems.l10n;
 
     const node = osmNode({ loc: loc, tags: this.defaultTags });
-    const annotation = l10n.t('operations.add.annotation.point');
-    editor.perform(actionAddEntity(node), annotation);
+    editor.perform(actionAddEntity(node));
+    editor.commit(l10n.t('operations.add.annotation.point'));
     context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
@@ -154,8 +154,8 @@ export class AddPointMode extends AbstractMode {
     const l10n = context.systems.l10n;
 
     const node = osmNode({ tags: this.defaultTags });
-    const annotation = l10n.t('operations.add.annotation.vertex');
-    editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
+    editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node));
+    editor.commit(l10n.t('operations.add.annotation.vertex'));
     context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
@@ -174,13 +174,13 @@ export class AddPointMode extends AbstractMode {
       return;
     }
 
-    let tags = Object.assign({}, node.tags);  // shallow copy
+    const tags = Object.assign({}, node.tags);  // shallow copy
     for (const k in this.defaultTags) {
       tags[k] = this.defaultTags[k];
     }
 
-    const annotation = l10n.t('operations.add.annotation.point');
-    editor.perform(actionChangeTags(node.id, tags), annotation);
+    editor.perform(actionChangeTags(node.id, tags));
+    editor.commit(l10n.t('operations.add.annotation.point'));
     context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 

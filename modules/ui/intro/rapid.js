@@ -128,7 +128,7 @@ export function uiIntroRapid(context, curtain) {
         });
       }))
       .then(() => {    // check undo annotation to see what the user did
-        if (editor.undoAnnotation()?.type === 'rapid_accept_feature') {
+        if (editor.getUndoAnnotation()?.type === 'rapid_accept_feature') {
           return roadAcceptedAsync;
         } else {
           return selectRoadAsync;
@@ -298,7 +298,7 @@ export function uiIntroRapid(context, curtain) {
         });
       }))
       .then(() => {    // check undo annotation to see what the user did
-        if (editor.undoAnnotation()?.type === 'rapid_ignore_feature') {
+        if (editor.getUndoAnnotation()?.type === 'rapid_ignore_feature') {
           return showHelpAsync;
         } else {
           return selectRoadAgainAsync;

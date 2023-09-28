@@ -47,7 +47,8 @@ export function operationExtract(context, selectedIDs) {
       return graph;
     };
 
-    editor.perform(combinedAction, operation.annotation());
+    editor.perform(combinedAction);
+    editor.commit(operation.annotation());
     validator.validate();
 
     // Move the extracted nodes to the mouse cursor location

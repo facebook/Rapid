@@ -56,7 +56,8 @@ export function operationDelete(context, selectedIDs) {
       }
     }
 
-    editor.perform(action, operation.annotation());
+    editor.perform(action);
+    editor.commit(operation.annotation());
     validator.validate();
 
     if (nextNode && nextLoc) {

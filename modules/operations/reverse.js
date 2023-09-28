@@ -43,14 +43,15 @@ export function operationReverse(context, selectedIDs) {
   let operation = function() {
     if (!actions.length) return;
 
-    let combinedAction = function(graph) {
+    const combinedAction = function(graph) {
       for (const action of actions) {
         graph = action(graph);
       }
       return graph;
     };
 
-    editor.perform(combinedAction, operation.annotation());
+    editor.perform(combinedAction);
+    editor.commit(operation.annotation());
     validator.validate();
   };
 
