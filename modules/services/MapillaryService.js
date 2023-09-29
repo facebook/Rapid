@@ -525,7 +525,7 @@ export class MapillaryService extends AbstractSystem {
 
         const loc = feature.geometry.coordinates;
         const d = {
-          id: feature.properties.id,
+          id: feature.properties.id.toString(),
           loc: loc,
           captured_at: feature.properties.captured_at,
           ca: feature.properties.compass_angle,
