@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Checkout 📥
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Use Node.js 16.14 ⚙️
       uses: actions/setup-node@v3
@@ -48,7 +48,7 @@ jobs:
 
     steps:
     - name: Checkout 📥
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Download artifacts 📥
       uses: actions/download-artifact@v3
