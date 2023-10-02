@@ -102,6 +102,7 @@ export class StreetsideService extends AbstractSystem {
         d3_select(window)
           .on('pointermove.streetside', () => {
             this.emit('viewerChanged');
+            this.context.systems.map.immediateRedraw();
           }, true);
       })
       .on('pointerup.streetside pointercancel.streetside', () => {

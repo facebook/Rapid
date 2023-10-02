@@ -31,6 +31,27 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+
+    this._handleBearingChange = this._handleBearingChange.bind(this);
+    this._viewerYawAngle = 0;
+
+    if (this.supported) {
+      const service = this.context.services.streetside;
+
+      service.on('viewerChanged', this._handleBearingChange);
+    }
+  }
+
+
+
+  /**
+   * _handleBearingCHange
+   * Handle the user dragging inside of a panoramic photo.
+   */
+  _handleBearingChange() {
+    const service = this.context.services.streetside;
+
+    this._viewerYawAngle = service._pannellumViewer.getYaw();
   }
 
 
@@ -116,6 +137,10 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    */
   renderMarkers(frame, projection, zoom) {
     const service = this.context.services.streetside;
+
+    //We want the active image, which may or may not be the selected image.
+    const activeIDs = this._classHasData.get('active') ?? new Set();
+
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('streetview');
@@ -173,7 +198,14 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         feature.parentContainer = parentContainer;
         feature.setData(dataID, photo);
       }
-
+      if (activeIDs.has(photo.id)) {
+        feature.drawing = true;
+        feature.style.viewfieldAngles = [photo.ca + this._viewerYawAngle];
+        feature.style.viewfieldName = 'viewfield';
+      } else  {
+        feature.drawing = false;
+        feature.style.viewfieldName = photo.isPano ? 'pano' : 'viewfield';
+      }
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
