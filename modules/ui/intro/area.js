@@ -57,7 +57,7 @@ export function uiIntroArea(context, curtain) {
   // Click "Add Area" button to advance
   function addAreaAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
     _areaID = null;
 
     const loc = playgroundExtent.center();

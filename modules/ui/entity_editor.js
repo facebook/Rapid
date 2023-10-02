@@ -15,6 +15,8 @@ import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
 import { uiSectionSelectionList } from './sections/selection_list';
 
 
+let _wasSelectedIDs = [];
+
 export function uiEntityEditor(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
@@ -218,9 +220,13 @@ export function uiEntityEditor(context) {
    * Use explicit entityIDs in case the selection changes before the event is fired.
    */
   function _changeTags(entityIDs, changed, onInput) {
+    // same selection as before?
+    const isSameSelection = utilArrayIdentical(_entityIDs, _wasSelectedIDs);
+    _wasSelectedIDs = _entityIDs.slice();  // copy
+
     editor.beginTransaction();
 
-    for (const entityID of entityIDs) {
+    for (const entityID of _entityIDs) {
       const graph = editor.current.graph;
       const entity = graph.hasEntity(entityID);
       if (!entity) continue;
@@ -248,13 +254,20 @@ export function uiEntityEditor(context) {
       }
     }
 
-    editor.endTransaction();
-
     // Only commit changes when leaving the field (i.e. on blur event)
     if (!onInput) {
-      editor.commit(l10n.t('operations.change_tags.annotation'));
-      validator.validate();
+      // If this is the same selection as before, and the previous edit was also a change_tags,
+      // we can just replace the previous edit with this one.
+      const annotation = l10n.t('operations.change_tags.annotation');
+      if (isSameSelection && editor.getUndoAnnotation() === annotation) {
+        editor.commitAppend(annotation);
+      } else {
+        editor.commit(annotation);
+      }
     }
+
+    editor.endTransaction();
+      // validator.validate();
   }
 
 
@@ -262,6 +275,10 @@ export function uiEntityEditor(context) {
    *
    */
   function _revertTags(keys) {
+    // same selection as before?
+    const isSameSelection = utilArrayIdentical(_entityIDs, _wasSelectedIDs);
+    _wasSelectedIDs = _entityIDs.slice();  // copy
+
     const baseGraph = editor.base.graph;
     editor.beginTransaction();
 
@@ -290,9 +307,17 @@ export function uiEntityEditor(context) {
       }
     }
 
+    // If this is the same selection as before, and the previous edit was also a change_tags,
+    // we can just replace the previous edit with this one.
+    const annotation = l10n.t('operations.change_tags.annotation');
+    if (isSameSelection && editor.getUndoAnnotation() === annotation) {
+      editor.commitAppend(annotation);
+    } else {
+      editor.commit(annotation);
+    }
+
     editor.endTransaction();
-    editor.commit(l10n.t('operations.change_tags.annotation'));
-    validator.validate();
+//    validator.validate();
   }
 
 

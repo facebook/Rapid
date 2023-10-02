@@ -85,7 +85,7 @@ export function uiIntroNavigation(context, curtain) {
   // Drag the map to advance
   function dragMapAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
 
     const loc = townHallExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -191,7 +191,7 @@ export function uiIntroNavigation(context, curtain) {
   // Select the town hall to advance
   function clickTownHallAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
 
     const loc = townHallExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -353,7 +353,7 @@ export function uiIntroNavigation(context, curtain) {
   // Type in the search box to advance
   function searchStreetAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');  // ensure spring street exists
+    editor.restoreCheckpoint('initial');  // ensure spring street exists
 
     const loc = springStreetExtent.center();
     const msec = transitionTime(loc, map.center());

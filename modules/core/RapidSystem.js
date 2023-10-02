@@ -239,11 +239,14 @@ export class RapidSystem extends AbstractSystem {
    *
    */
   _onUndone(currentStack, previousStack) {
+    const context = this.context;
+    const map = context.systems.map;
+
     const annotation = previousStack.annotation;
     if (!this._wasRapidEdit(annotation)) return;
 
     this.acceptedIDs.delete(annotation.id);
-    this.context.systems.map.immediateRedraw();
+    map.immediateRedraw();
   }
 
 
@@ -251,22 +254,36 @@ export class RapidSystem extends AbstractSystem {
    *
    */
   _onChange() {
-    const annotation = this.context.systems.editor.peekAnnotation();
+    const context = this.context;
+    const editor = context.systems.editor;
+    const map = context.systems.map;
+
+    const annotation = editor.stable.annotation;
     if (!this._wasRapidEdit(annotation)) return;
 
     this.acceptedIDs.add(annotation.id);
-    this.context.systems.map.immediateRedraw();
+    map.immediateRedraw();
   }
 
 
   /**
-   *
+   *  When restoring history, determine which edits were Rapid edits,
+   *  and restore the `acceptedIDs` Set.
    */
   _onRestore() {
+    const context = this.context;
+    const editor = context.systems.editor;
+    const map = context.systems.map;
+
     this.acceptedIDs = new Set();
 
-    this.context.systems.editor.peekAllAnnotations().forEach(annotation => {
-      if (!this._wasRapidEdit(annotation)) return;
+    const history = editor.history;
+    const index = editor.index;
+
+    for (let i = 0; i <= index; i++) {
+      const edit = history[i];
+      const annotation = edit.annotation;
+      if (!this._wasRapidEdit(annotation)) continue;
 
       this.acceptedIDs.add(annotation.id);
 
@@ -281,9 +298,9 @@ export class RapidSystem extends AbstractSystem {
       if (annotation.origid) {
         this.acceptedIDs.add(annotation.origid);
       }
-    });
+    }
 
-    this.context.systems.map.immediateRedraw();
+    map.immediateRedraw();
   }
 
 

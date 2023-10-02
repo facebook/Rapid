@@ -13,16 +13,16 @@ const DURATION = 150;
 
 
 /**
- * `EditSystem` maintains the history of user edits
+ * `EditSystem` maintains the history of user edits.
  * (This used to be called 'history', but that word means something else in browsers)
  *
- * This system maintains a Base Graph and an stack of Edits.
+ * This system maintains a Base Graph, a stack of Edit history, and a `current` Edit.
  *
  * The Base Graph contains the base map state - all map entities that have been loaded
  *   and what they look like before any edits have occurred.
  * As more map is loaded, more map features get merged into the Base Graph.
  *
- * Each entry in the stack is an `Edit`.  An Edit may contain:
+ * Each entry in the history stack is an `Edit`.  An Edit may contain:
  *  - `annotation`  - undo/redo annotation, a String saying what the Edit did. e.g. "Started a Line".
  *  - `graph`       - Graph at the time of the Edit
  *  - `selectedIDs` - ids that the user had selected at tht time
@@ -31,28 +31,41 @@ const DURATION = 150;
  *
  * Edits with an `annotation` represent states that we can undo or redo into.
  *
- * Special named edits:
- *  - `base`    - The first Edit, history[0].
- *     The base edit contains the Base Graph and nothing else.
- *  - `stable`  - The latest stable Edit, history[index].
- *     The stable Edit is suitable for validation, backups, saving.
+ * Special named Edits:
+ *  - `base` - The initial Edit, `history[0]`.
+ *     The `base` Edit contains the Base Graph and nothing else.
+ *  - `stable` - The latest accepted Edit, `history[index]`.
+ *     The `stable` Edit is suitable for validation, backups, saving.
  *  - `current` - A work-in-progress Edit, not yet added to the history.
- *     The current Edit is used throughout the application to determine the current state of the map.
+ *     The `current` Edit is used throughout the application to determine the current map state
  *
  *  The history might look like this:
  *
- *    `base`            ...undo    `stable`   redo...
- *  [ Edit0 --> Edit1 --> Edit2 --> Edit3 --> Edit4 ]
- *                                      \
- *                                       \-->  Edit
- *                                           `current`  (WIP branch off stable)
+ *   `base`           …undo    `stable`   redo…
+ *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+ *                                 \
+ *                                  \-->  EditN
+ *                                       `current` (WIP after `stable`)
  *
- * When code calls `commit()`, we set an `annotation` (e.g. "Started a line"),
- * append the current edit to the history, and create a new current Edit.
+ * Code elsewhere in the application can use these methods to record edits and manipulate the history:
+ *
+ * - `perform(action)` - This performs a bit of work.  Perform accepts a varible number of
+ *     "action" arguments. Actions are functions that accept a Graph and return a modified Graph.
+ *     All work is performed against the `current` edit.
+ * - `rollback()` - This rolls back all work in progress by replacing `current`
+ *     with a fresh copy of `stable`.
+ * - `commit(annotation)` - This accepts the `current` work-in-progress edit by adding
+ *      it to the end of the history (removing any forward redo history, if any)
+ *      Commit accepts an `annotation` (e.g. "Started a line") to say what the edit does.
+ * - `commitAppend(annotation)` - This is just like `commit` but instead of
+ *      adding `current` after `stable`, `current` replaces `stable`.
+ * - `undo()` - Move the `stable` index back to the previous Edit (or `_index = 0`).
+ * - `redo()`  -Move the `stable` index forward to the next Edit (if any)
+ *
  *
  * Events available:
- *   'editchange'     - Fires on every edit performed (i.e. when 'current' changes)
- *   'historychange'  - Fires when the history changes (i.e. when 'stable' changes)
+ *   'editchange'     - Fires on every edit performed (i.e. when `current` changes)
+ *   'historychange'  - Fires when the history changes (i.e. when `stable` changes)
  *   'merge'
  *   'restore'
  *   'undone'
@@ -74,14 +87,16 @@ export class EditSystem extends AbstractSystem {
     this._canRestoreBackup = false;
 
     this._history = [];        // history of accepted edits (both undo and redo) (was called "stack")
-    this._index = 0;           // index of the latest "stable" edit
+    this._index = 0;           // index of the latest `stable` edit
     this._current = null;      // work in progress edit, not yet added to the history
     this._checkpoints = {};
     this._inTransition = false;
     this._inTransaction = false;
     this._tree = null;
+
     this._lastStable = null;
     this._lastCurrent = null;
+    this._fullDifference = null;
 
     this._initPromise = null;
 
@@ -172,6 +187,7 @@ export class EditSystem extends AbstractSystem {
 
     this._lastStable = base;
     this._lastCurrent = current;
+    this._fullDifference = new Difference(base, base);
 
     this._tree = new Tree(current);
     this._checkpoints = {};
@@ -183,7 +199,7 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * base
-   * The "base" edit is the initial edit in the history.  It contains the Base Graph.
+   * The `base` edit is the initial edit in the history.  It contains the Base Graph.
    * It will not contain any actual user edits, sources, annotation.
    * @return {Edit} The initial Edit containing the Base Graph
    */
@@ -191,31 +207,28 @@ export class EditSystem extends AbstractSystem {
     return this._history[0];
   }
 
-
   /**
    * stable
-   * The "stable" edit is the latest accepted edit in the history, as indicated by _index.
-   * This edit is considered stable / settled and is suitable for validation or backups.
+   * The `stable` edit is the latest accepted edit in the history, as indicated by `_index`.
+   * The `stable` edit is suitable for validation or backups.
    * Before the user edits anything, `_index === 0`, so the `stable === base`.
-   * Note that "future" redo history can continue past the stable edit, if the user has undone.
+   * Note that "future" redo history can continue past the `stable` edit, if the user has undone.
    * @return {Edit} The latest accepted Edit in the history
    */
   get stable() {
     return this._history[this._index];
   }
 
-
   /**
    * current
-   * The "current" edit will be a placeholder work-in-progress edit in the chain immediately
-   * following the stable edit.  The user may be drawing the feature or editing the tags.
-   * The current edit has not been added to the history yet.
-   * @return {Edit} The current work-in-progress Edit
+   * The `current` edit will be a placeholder work-in-progress edit in the chain immediately
+   * following the `stable` edit.  The user may be drawing the feature or editing the tags.
+   * The `current` edit has not been added to the history yet.
+   * @return {Edit} The `current` work-in-progress Edit
    */
   get current() {
     return this._current;
   }
-
 
   /**
    * tree
@@ -225,40 +238,279 @@ export class EditSystem extends AbstractSystem {
     return this._tree;
   }
 
-
+  /**
+   * history
+   * A shallow copy of the history.
+   * @return {Array} A shallow copy of the history
+   */
+  get history() {
+    return this._history.slice();
+  }
 
   /**
-   * peekAnnotation
+   * index
+   * Index pointing to the current `stable` Edit
+   * @return {number} Index pointing to the current `stable` Edit
    */
-  peekAnnotation() {
-    return this.stable.annotation;
+  get index() {
+    return this._index;
   }
 
 
   /**
-   * peekAllAnnotations
+   * perform
+   * This performs a bit of work.  Perform accepts a variable number of "action" arguments.
+   * Actions are functions that accept a Graph and return a modified Graph.
+   * All work is performed against the `current` edit.
+   * If multiple functions are passed, they will be performed in order,
+   *   and change events will dispatch after they have all completed.
+   * @param   {...Function}  args - Variable number of Action functions to peform
+   * @return  {Difference}   Difference between before and after of `current` Edit
    */
-  peekAllAnnotations() {
-    let result = [];
-    for (let i = 0; i <= this._index; i++) {
-      if (this._history[i].annotation) {
-        result.push(this._history[i].annotation);
+  perform(...args) {
+    // complete any transition already in progress
+    d3_select(document).interrupt('editTransition');
+
+//    // We can perform a eased edit in a transition if we have:
+//    // - a single action
+//    // - and that action is 'transitionable' (i.e. accepts eased time parameter)
+//    const action0 = args[0];
+//    let isTransitionable = false;
+//    if (args.length === 1) {
+//      isTransitionable = !!action0.transitionable;
+//    }
+//
+//    if (isTransitionable) {
+//      d3_select(document)
+//        .transition('editTransition')
+//        .duration(DURATION)
+//        .ease(d3_easeLinear)
+//        .tween('history.tween', () => {
+//          return (t) => {
+//            if (t < 1) this._perform(args, t);
+//          };
+//        })
+//        .on('start', () => {
+//          this._inTransition = true;
+//          this._perform(args, 0);
+//        })
+//        .on('end interrupt', () => {
+//          this._perform(args, 1);
+//          this._inTransition = false;
+//        });
+//
+//    } else {
+      return this._perform(args, 1);
+//    }
+  }
+
+
+  /**
+   * rollback
+   * This rolls back the `current` work-in-progress
+   * by replacing `current` with a fresh copy of `stable`.
+   */
+  rollback() {
+    d3_select(document).interrupt('editTransition');
+
+    // Create a new `current` work-in-progress Edit
+    this._current = new Edit({ graph: new Graph(this.stable.graph) });
+
+    return this._emitChangeEvents();
+  }
+
+
+  /**
+   * commit
+   * This finalizes the `current` work-in-progress edit.
+   * (It's somewhat like what `git commit` does.)
+   *  - Set annotation, sources, and other edit metadata properties
+   *  - Add the `current` edit to the end of the history (at this point `current` becomes `stable`)
+   *  - Finally, create a new empty `current` work-in-progress Edit
+   *
+   * Before calling `commit()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `current` (WIP after Edit2)
+   * After calling `commit()`:
+   *
+   *   `base`                     …undo    `stable`
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> EditN0 ]
+   *                                           \
+   *                                            \-->  EditN1
+   *                                                 `current` (WIP after EditN0)
+   *
+   * @param {string|Object} annotation - A String saying what the Edit did. e.g. "Started a Line".
+   *   Note that Rapid edits pass an Object as the annotation including more info about the edit.
+   */
+  commit(annotation = '') {
+    const context = this.context;
+    const current = this.current;
+
+    current.annotation  = annotation;
+    current.selectedIDs = context.selectedIDs();
+    current.sources     = this._gatherSources(annotation);
+    current.transform   = context.projection.transform();
+
+    // Discard forward/redo history if any, and add `current` after `stable`
+    this._history.splice(this._index + 1, Infinity, current);
+    this._index++;
+    // (At this point `stable` === `current`)
+
+    // Create a new `current` work-in-progress Edit
+    this._current = new Edit({ graph: new Graph(this.stable.graph) });
+
+    this.deferredBackup();
+    this._emitChangeEvents();
+  }
+
+
+  /**
+   * commitAppend
+   * This is like `commit`, but instead of adding `current` after stable,
+   *   it replaces `stable` with `current` and does not advance the history.
+   * (It's somewhat like what `git commit --append` does.)
+   *  - Set annotation, sources, and other edit metadata properties
+   *  - Replace the `stable` edit with the `current` edit (at this point `current` becomes `stable`)
+   *  - Finally, create a new empty `current` work-in-progress Edit
+   *
+   * Note:  You can't do this if there are no edits yet - it will throw if you try to append to the `base` edit.
+   *
+   * Before calling `commitAppend()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `current` (WIP after Edit2)
+   * After calling `commitAppend()`:
+   *
+   *   `base`           …undo    `stable`
+   *  [ Edit0 --> … --> Edit1 --> EditN0 ]
+   *                                 \
+   *                                  \-->  EditN1
+   *                                       `current` (WIP after EditN0)
+   *
+   * @param {string|Object} annotation - A String saying what the Edit did. e.g. "Started a Line".
+   *   Note that Rapid edits pass an Object as the annotation including more info about the edit.
+   * @throws  Will throw if you try to append to the `base` edit
+   */
+  commitAppend(annotation = '') {
+    const context = this.context;
+    const current = this.current;
+
+    if (this._index === 0) {
+      throw new Error(`Can not commitAppend to the base edit!`);
+    }
+
+    current.annotation  = annotation;
+    current.selectedIDs = context.selectedIDs();
+    current.sources     = this._gatherSources(annotation);
+    current.transform   = context.projection.transform();
+
+    // Discard forward/redo history if any, and replace `stable` with `current`.
+    this._history.splice(this._index, Infinity, current);
+    // (At this point `stable` === `current`)
+
+    // Create a new `current` work-in-progress Edit
+    this._current = new Edit({ graph: new Graph(this.stable.graph) });
+
+    this.deferredBackup();
+    this._emitChangeEvents();
+  }
+
+
+  /**
+   * undo
+   * Move the `stable` index back to the previous Edit (or `_index = 0`).
+   * Note that all work-in-progress in the `current` Edit is lost when calling `undo()`.
+   *
+   * Before calling `undo()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `current` (WIP after Edit2)
+   * After calling `undo()`:
+   *
+   *   `base`  …undo   `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                       \
+   *                        \-->  EditN1
+   *                             `current` (WIP after Edit1)
+   */
+  undo() {
+    d3_select(document).interrupt('editTransition');
+
+    const previous = this.current;
+    while (this._index > 0) {
+      this._index--;
+      if (this._history[this._index].annotation) break;
+    }
+
+    // Create a new `current` work-in-progress Edit
+    this._current = new Edit({ graph: new Graph(this.stable.graph) });
+    this.emit('undone', this.stable, previous);
+    return this._emitChangeEvents();
+  }
+
+
+  /**
+   * redo
+   * Move the `stable` index forward to the next Edit (if any)
+   * Note that all work-in-progress in the `current` Edit is lost when calling `redo()`.
+   *
+   * Before calling `redo()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `current` (WIP after Edit2)
+   * After calling `redo()`:
+   *
+   *   `base`                     …undo    `stable`
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                           \
+   *                                            \-->  EditN1
+   *                                                 `current` (WIP after Edit3)
+   */
+  redo() {
+    d3_select(document).interrupt('editTransition');
+
+    const previous = this.current;
+
+    let tryIndex = this._index;
+    while (tryIndex < this._history.length - 1) {
+      tryIndex++;
+      if (this._history[tryIndex].annotation) {
+        this._index = tryIndex;
+        // Create a new `current` work-in-progress Edit
+        this._current = new Edit({ graph: new Graph(this.stable.graph) });
+        this.emit('redone', this.stable, previous);
+        break;
       }
     }
-    return result;
+
+    return this._emitChangeEvents();
   }
 
 
   /**
    *  merge
-   *  Merge new entities into the history.  This function is called
-   *  when we have parsed a new tile of OSM data, we will receive the
-   *  new entities and a list of all entity ids that the tile contains.
+   *  Merge new entities into the Base Graph.
+   *  This function is called when we have parsed a new tile of OSM data, we will
+   *   receive the new entities and a list of all entity ids that the tile contains.
    *  Can also be called in other situations, like restoring history from
    *  storage, or loading specific entities from the OSM API.
+   *  (Sorry, but this one is not like what `git merge` does.)
    *
-   *  @param  entities   Entities to merge into the history (usually only the new ones)
-   *  @param  seenIDs?   Optional - All entity IDs on the tile (including previously seen ones)
+   *  @param  entities  Entities to merge into the history (usually only the new ones)
+   *  @param  seenIDs?  Optional - All entity IDs on the tile (including previously seen ones)
    */
   merge(entities, seenIDs) {
     const baseGraph = this.base.graph;
@@ -297,154 +549,8 @@ export class EditSystem extends AbstractSystem {
 
 
   /**
-   * perform
-   */
-  perform(...args) {
-    // complete any transition already in progress
-    d3_select(document).interrupt('editTransition');
-
-//    // We can perform a eased edit in a transition if we have:
-//    // - a single action (or single action + annotation)
-//    // - and that action is 'transitionable' (i.e. accepts eased time parameter)
-//    const action0 = args[0];
-//    let transitionable = false;
-//    if (args.length === 1 || (args.length === 2 && typeof args[1] !== 'function')) {
-//      transitionable = !!action0.transitionable;
-//    }
-//
-//    if (transitionable) {
-//      d3_select(document)
-//        .transition('editTransition')
-//        .duration(DURATION)
-//        .ease(d3_easeLinear)
-//        .tween('history.tween', () => {
-//          return (t) => {
-//            if (t < 1) this._overwrite([action0], t);
-//          };
-//        })
-//        .on('start', () => {
-//          this._inTransition = true;
-//          this._perform([action0], 0);
-//        })
-//        .on('end interrupt', () => {
-//          this._inTransition = false;
-//          this._overwrite(args, 1);
-//        });
-//
-//    } else {
-      return this._perform(args, 1);
-//    }
-  }
-
-
-
-  /**
-   * rollback
-   * Replace current work-in-progress edit with a fresh copy from stable
-   */
-  rollback() {
-    d3_select(document).interrupt('editTransition');
-
-    // Create a new work-in-progress Edit.
-    this._current = new Edit({ graph: new Graph(this.stable.graph) });
-
-    return this._emitChangeEvents();
-  }
-
-
-  /**
-   * replace
-   */
-  replace(...args) {
-    d3_select(document).interrupt('editTransition');
-    console.error('deprecated: do not call EditSystem.replace anymore');   // eslint-disable-line no-console
-//    return this._replace(args, 1);
-  }
-
-
-  /**
-   * overwrite
-   * Same as calling pop and then perform
-   */
-  overwrite(...args) {
-    d3_select(document).interrupt('editTransition');
-    console.error('deprecated: do not call EditSystem.overwrite anymore');   // eslint-disable-line no-console
-//    return this._overwrite(args, 1);
-  }
-
-
-  /**
-   * pop
-   */
-  pop(n) {
-    d3_select(document).interrupt('editTransition');
-    console.error('deprecated: do not call EditSystem.pop anymore');   // eslint-disable-line no-console
-//
-//    const previous = this.current;
-//    if (isNaN(+n) || +n < 0) {
-//      n = 1;
-//    }
-//    while (n-- > 0 && this._index > 0) {
-//      this._index--;
-//      this._history.pop();
-//    }
-//
-//// Create a new work-in-progress Edit.
-//this._current = new Edit({ graph: new Graph(this.stable.graph) });
-//
-//    return this._emitChangeEvents(previous.graph);
-  }
-
-
-  /**
-   * undo
-   * Go back to the previous annotated edit or _index = 0.
-   */
-  undo() {
-    d3_select(document).interrupt('editTransition');
-
-    const previous = this.current;
-    while (this._index > 0) {
-      this._index--;
-      if (this._history[this._index].annotation) break;
-    }
-
-// Create a new work-in-progress Edit.
-this._current = new Edit({ graph: new Graph(this.stable.graph) });
-
-    this.emit('undone', this.stable, previous);
-    return this._emitChangeEvents();
-  }
-
-
-  /**
-   * redo
-   * Go forward to the next annotated state.
-   */
-  redo() {
-    d3_select(document).interrupt('editTransition');
-
-    const previous = this.current;
-
-    let tryIndex = this._index;
-    while (tryIndex < this._history.length - 1) {
-      tryIndex++;
-      if (this._history[tryIndex].annotation) {
-        this._index = tryIndex;
-// Create a new work-in-progress Edit.
-this._current = new Edit({ graph: new Graph(this.stable.graph) });
-        this.emit('redone', this.stable, previous);
-        break;
-      }
-    }
-
-    return this._emitChangeEvents();
-  }
-
-
-  /**
    * beginTransaction
-   * This saves the current graph and starts a transaction.
+   * Prevents events from being dispatched.
    * During a transaction, edits can be performed but no `change` events will be disptached.
    * This is to prevent other parts of the code from rendering/validating partial or incomplete edits.
    */
@@ -455,8 +561,9 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * endTransaction
-   * This marks the current transaction as complete.
-   * A `change` event will be emitted that covers the difference from the beginning-end of the transaction.
+   * This marks the transaction as complete, and allows events to be dispatched again.
+   * Any `editchange` and `historychange` events will be emitted that cover
+   * the difference from the beginning -> end of the transaction.
    */
   endTransaction() {
     this._inTransaction = false;
@@ -465,67 +572,14 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
 
   /**
-   * commit
-   * This finalizes the current work-in-progress edit.
-   *  - add annotation and sources
-   *  - append the current edit to the history (at this point 'current' becomes 'stable')
-   *  - and create a new 'current' Edit
-   * @param  {String} annotation - A String saying what the Edit did. e.g. "Started a Line".
-   * @return {Difference} Difference between 'stable' and 'current'
-   */
-  commit(annotation = '') {
-    const context = this.context;
-
-    const previous = this.stable;
-    const current = this.current;
-    const difference = new Difference(previous.graph, current.graph);
-
-    // Gather sources used to make this edit
-    const sources = {};
-    const imageryUsed = context.systems.imagery.imageryUsed();
-    if (imageryUsed.length)  {
-      sources.imagery = imageryUsed;
-    }
-
-    const photosUsed = context.systems.photos.photosUsed();
-    if (photosUsed.length) {
-      sources.photos = photosUsed;
-    }
-
-    const customLayer = context.scene().layers.get('custom-data');
-    const customDataUsed = customLayer?.dataUsed() ?? [];
-    const rapidDataUsed = annotation?.dataUsed ?? [];
-    const dataUsed = [...rapidDataUsed, ...customDataUsed];
-    if (dataUsed.length) {
-      sources.data = dataUsed;
-    }
-
-    current.annotation  = annotation;
-    current.selectedIDs = context.selectedIDs();
-    current.sources     = sources;
-    current.transform   = context.projection.transform();
-
-    // Discard forward/redo history if any, and append the current edit to the history
-    this._history.splice(this._index + 1, Infinity, current);
-    this._index++;
-
-    // Create a new work-in-progress Edit.
-    this._current = new Edit({ graph: new Graph(current.graph) });
-
-    this.deferredBackup();
-    this._emitChangeEvents();
-    return difference;
-  }
-
-
-  /**
    * getUndoAnnotation
-   * @return {String?} The previous undo annotation, or undefined if none
+   * @return  {string?}  The previous undo annotation, or `undefined` if none
    */
   getUndoAnnotation() {
     let i = this._index;
     while (i >= 0) {
-      if (this._history[i].annotation) return this._history[i].annotation;
+      const edit = this._history[i];
+      if (edit.annotation) return edit.annotation;
       i--;
     }
   }
@@ -533,12 +587,13 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * getRedoAnnotation
-   * @return {String?} The next redo annotation, or undefined if none
+   * @return  {string?}  The next redo annotation, or `undefined` if none
    */
   getRedoAnnotation() {
     let i = this._index + 1;
     while (i <= this._history.length - 1) {
-      if (this._history[i].annotation) return this._history[i].annotation;
+      const edit = this._history[i];
+      if (edit.annotation) return edit.annotation;
       i++;
     }
   }
@@ -546,7 +601,7 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * intersects
-   * Returns the entities from the current graph with bounding boxes overlapping the given `extent`.
+   * Returns the entities from the `current` graph with bounding boxes overlapping the given `extent`.
    * @prarm   {Extent}  extent - the extent to test
    * @return  {Array}   Entities intersecting the given Extent
    */
@@ -557,32 +612,31 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * difference
-   * Returns a `Difference` containing all edits from base -> current
+   * Returns a `Difference` containing all edits from `base` -> `stable`
+   * We use this pretty frequently, so it's cached in `this._fullDifference`
+   *  and recomputed by the `_emitChangeEvents` function only when `stable` changes.
    * @return {Difference} The total changes made by the user during their edit session
    */
   difference() {
-    const base = this.base.graph;
-    const head = this.stable.graph;
-    return new Difference(base, head);
+    return this._fullDifference;
   }
 
 
   /**
    * changes
-   * This returns a summery of all changes made from base -> stable
-   * Optionally including a given action to apply to the stable graph.
-   * @param  {Function?}  action - Optional action to apply to the stable graph
+   * This returns a summery of all changes made from `base` -> `stable`
+   * Optionally includes a given action function to apply to the `stable` graph.
+   * @param  {Function?}  action - Optional action to apply to the `stable` graph
    * @return {Object}     Object containing `modified`, `created`, `deleted` summary of changes
    */
   changes(action) {
-    const base = this.base.graph;
-    let head = this.stable.graph;
+    let difference = this._fullDifference;
 
     if (action) {
-      head = action(head);
+      const base = this.base.graph;
+      const head = action(this.stable.graph);
+      difference = new Difference(base, head);
     }
-
-    const difference = new Difference(base, head);
 
     return {
       modified: difference.modified(),
@@ -594,17 +648,19 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * hasChanges
-   * This counts meangful edits only (modified, created, deleted)
+   * This counts meangful edits only (modified, created, deleted).
    * For example, we could perform a bunch of no-op edits and it would still return false.
    * @return `true` if the user has made any meaningful edits
    */
   hasChanges() {
-    return this.difference().changes.size > 0;
+    return this._fullDifference.changes.size > 0;
   }
 
 
   /**
    * sourcesUsed
+   * This prepares the list of all sources used during the user's editing session.
+   * This is called by `commit.js` when preparing the changeset before uploading.
    * @return {Object}  Object of all sources used during the user's editing session
    */
   sourcesUsed() {
@@ -614,7 +670,7 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
       data:    new Set()
     };
 
-    // Start at 1 - there won't be sources on the base edit..
+    // Start at `1` - there won't be sources on the `base` edit..
     // End at `_index` - don't continue into the redo part of the history..
     for (let i = 1; i <= this._index; i++) {
       const edit = this._history[i];
@@ -637,19 +693,20 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
   setCheckpoint(key) {
     d3_select(document).interrupt('editTransition');
 
+    // Save a shallow copy of history, in case user undos away the edit that index points to.
     this._checkpoints[key] = {
-      history: this._history,
+      history: this._history.slice(),  // shallow copy
       index: this._index
     };
   }
 
 
   /**
-   * resetToCheckpoint
-   * This returns the state back to the edit identified by the given checkpoint key.
+   * restoreCheckpoint
+   * This returns the `history` and `index` back to the edit identified by the given checkpoint key.
    * @param  {string}  key - the name of the checkpoint
    */
-  resetToCheckpoint(key) {
+  restoreCheckpoint(key) {
     d3_select(document).interrupt('editTransition');
 
     if (key && this._checkpoints.hasOwnProperty(key)) {  // reset to given key
@@ -662,7 +719,7 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * toIntroGraph
-   * Used to export the intro graph used by the walkthrough.
+   * This is used to export the intro graph used by the walkthrough.
    * This function is indended to be called manually by developers.
    * We only use this on very rare occasions to change the walkthrough data.
    *
@@ -671,8 +728,10 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
    *  2. Get to a "free editing" tutorial step
    *  3. Make your edits to the walkthrough map
    *  4. In your browser dev console run:  `context.systems.editor.toIntroGraph()`
-   *  5. This outputs stringified JSON to the browser console
+   *  5. This outputs stringified JSON to the browser console (it will be a lot!)
    *  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
+   *
+   * @returns {string} The stringified walkthrough data
    */
   toIntroGraph() {
     const nextID = { n: 0, r: 0, w: 0 };
@@ -749,8 +808,8 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * toJSON
-   * Save the edit history to JSON
-   * @return {String?}  A String containing the JSON, or `undefined` if nothing to save
+   * Save the edit history to JSON.
+   * @return  {string?}  A String containing the JSON, or `undefined` if nothing to save
    */
   toJSON() {
     if (!this.hasChanges()) return;
@@ -856,9 +915,9 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
    * Restore the edit history from a JSON string.
    * Optionally fetch missing child nodes from OSM
    *   (bhousel - not clear to me under what circumstances we would have a `false` here? Test environment?)
-   * @param  {String}   json - Stringified JSON to parse
+   * @param  {string}   json - Stringified JSON to parse
    * @param  {boolean}  loadMissing - if `true` also attempt to fetch missing child nodes from OSM API
-   * @return {String?}  A String containing the JSON, or `undefined` if nothing to save
+   * @return {string?}  A String containing the JSON, or `undefined` if nothing to save
    */
   fromJSON(json, loadMissing) {
     const context = this.context;
@@ -878,12 +937,13 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
       modifiedEntities.set(osmEntity.key(e), osmEntity(e));
     }
 
-    // Restore base entities
+    // Restore base entities..
     const baseEntities = backup.baseEntities.map(e => osmEntity(e));
 
-    // Reconstruct the history of edits..
+    // Reconstruct the edit history..
+    let prevGraph = baseGraph;
     this._history = backup.stack.map((item, index) => {
-      // Leave base graph alone, this first edit should have nothing in it.
+      // Leave the base edit alone, this first edit should have nothing in it.
       if (index === 0) return this.base;
 
       const entities = {};
@@ -895,6 +955,9 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
         entities[entityID] = undefined;
       }
 
+      const graph = new Graph(prevGraph).load(entities);
+      prevGraph = graph;
+
       const sources = {};
       if (Array.isArray(item.imageryUsed))  sources.imagery = item.imageryUsed;
       if (Array.isArray(item.photosUsed))   sources.photos = item.photosUsed;
@@ -902,41 +965,35 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
       return new Edit({
         annotation:  item.annotation,
-        graph:       new Graph(baseGraph).load(entities),
+        graph:       graph,
         selectedIDs: item.selectedIDs,
         sources:     sources,
         transform:   item.transform
       });
     });
 
-    // Restore some other properties
+    // Restore some other properties..
     osmEntity.id.next = backup.nextIDs;
     this._index = backup.index;
 
     // Merge originals into Base Graph.
     // Note that the force parameter is `true` here to replace anything that might
     // have been loaded from the API while the user was waiting to press "restore".
-    const graphs = this._history.map(s => s.graph);
+    const graphs = this._history.map(edit => edit.graph);
     baseGraph.rebase(baseEntities, graphs, true);   // force = true
     this._tree.rebase(baseEntities, true);          // force = true
 
     // Call _finish when we believe we have everything.
     const _finish = () => {
-      const graph       = this.stable.graph;
-      const selectedIDs = this.stable.selectedIDs;
-      const transform   = this.stable.transform;
+      // Create a new `current` work-in-progress Edit
+      this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
-      // Create work-in-progress edit
-      this._current = new Edit({
-        graph:        graph,
-        selectedIDs:  selectedIDs,
-        transform:    transform
-      });
-
+      const transform = this.stable.transform;
       if (transform) {
         map.transform(transform);
       }
 
+      const selectedIDs = this.stable.selectedIDs;
       if (selectedIDs) {
         context.enter('select-osm', { selectedIDs: selectedIDs });
       }
@@ -1054,7 +1111,7 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * restoreBackup
-   * Restore the user's backup from localStorage
+   * Restore the user's backup from localStorage.
    * This happens when:
    * - The user chooses to "Restore my changes" from the restore screen
    */
@@ -1073,7 +1130,7 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * clearBackup
-   * Remove any backup stored in localStorage
+   * Remove any backup stored in localStorage.
    * This happens when:
    * - The user chooses to "Discard my changes" from the restore screen
    * - The user switches sources with the source switcher
@@ -1097,7 +1154,7 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
   /**
    * _backupKey
-   * Generate a key used to store/retrieve backup edits
+   * Generate a key used to store/retrieve backup edits.
    * It uses `window.location.origin` avoid conflicts with other instances of Rapid.
    */
   _backupKey() {
@@ -1105,43 +1162,84 @@ this._current = new Edit({ graph: new Graph(this.stable.graph) });
   }
 
 
-  // internal _perform with eased time
-  _perform(args, t) {
-    const previous = this._current.graph;
-
+  /**
+   * _perform
+   * Internal _perform that accepts both actions and eased time.
+   * @param  {Array}       Array of Action functions to perform
+   * @param  {number?}     Eased time, should be in the range [0..1]
+   * @return {Difference}  Difference between before and after of `current` Edit
+   */
+  _perform(actions, t) {
     let graph = this._current.graph;
-    for (const fn of args) {
+    for (const fn of actions) {
       if (typeof fn === 'function') {
         graph = fn(graph, t);
       }
     }
 
     this._current.graph = graph;
-
     return this._emitChangeEvents();
   }
 
 
-  // determine difference and dispatch a change event
+  /**
+   * _gatherSources
+   * Get the sources used to make the `current` edit.
+   * @param   {string|Object?} annotation - Rapid edits may optionally use an annotation that includes the data source used
+   * @return  {Object}  sources Object containing `imagery`, `photos`, `data` properties
+   */
+  _gatherSources(annotation) {
+    const context = this.context;
+
+    const sources = {};
+    const imageryUsed = context.systems.imagery.imageryUsed();
+    if (imageryUsed.length)  {
+      sources.imagery = imageryUsed;
+    }
+
+    const photosUsed = context.systems.photos.photosUsed();
+    if (photosUsed.length) {
+      sources.photos = photosUsed;
+    }
+
+    const customLayer = context.scene().layers.get('custom-data');
+    const customDataUsed = customLayer?.dataUsed() ?? [];
+    const rapidDataUsed = annotation?.dataUsed ?? [];
+    const dataUsed = [...rapidDataUsed, ...customDataUsed];
+    if (dataUsed.length) {
+      sources.data = dataUsed;
+    }
+
+    return sources;
+  }
+
+
+  /**
+   * _emitChangeEvents
+   * Recalculate the differences and dispatch change events.
+   * @return {Difference}  Difference between before and after of `current` Edit
+   */
   _emitChangeEvents() {
     if (this._inTransaction) return;
 
+    const base = this.base.graph;
     const stable = this.stable.graph;
     const current = this.current.graph;
-    let difference;
 
     if (this._lastStable !== stable) {
-      difference = new Difference(this._lastStable, stable);
+      const stableDifference = new Difference(this._lastStable, stable);
       this._lastStable = stable;
-      this.emit('historychange', difference);
+      this._fullDifference = new Difference(base, stable);
+      this.emit('historychange', stableDifference);
     }
 
+    let currentDifference;
     if (this._lastCurrent !== current) {
-      difference = new Difference(this._lastCurrent, current);
+      currentDifference = new Difference(this._lastCurrent, current);
       this._lastCurrent = current;
-      this.emit('editchange', difference);
+      this.emit('editchange', currentDifference);
     }
 
-    return difference;  // only one place in the code uses this return - split operation?
+    return currentDifference;  // only one place in the code uses this return - split operation?
   }
 }

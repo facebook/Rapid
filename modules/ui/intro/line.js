@@ -116,7 +116,7 @@ export function uiIntroLine(context, curtain) {
   // Click "Add Line" button to advance
   function addLineAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
     _lineID = null;
 
     const loc = tulipRoadStartExtent.center();
@@ -460,11 +460,11 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function updateLineAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('doneAddLine');
+    editor.restoreCheckpoint('doneAddLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_hasWoodStreetParts()) editor.resetToCheckpoint('initial');
+    if (!_hasWoodStreetParts()) editor.restoreCheckpoint('initial');
 
     const loc = woodStreetExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -652,11 +652,11 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function deleteLinesAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('doneUpdateLine');
+    editor.restoreCheckpoint('doneUpdateLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_has12thAvenueParts()) editor.resetToCheckpoint('initial');
+    if (!_has12thAvenueParts()) editor.restoreCheckpoint('initial');
 
     const loc = deleteLinesExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -680,11 +680,11 @@ export function uiIntroLine(context, curtain) {
   // Select point with edit menu open to advance
   function rightClickIntersectionAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('doneUpdateLine');
+    editor.restoreCheckpoint('doneUpdateLine');
 
     // It's remotely possible that in an earlier step,
     // the user scrolled over here and deleted some stuff we need.
-    if (!_has12thAvenueParts()) editor.resetToCheckpoint('initial');
+    if (!_has12thAvenueParts()) editor.restoreCheckpoint('initial');
 
     _washingtonSegmentID = null;
 

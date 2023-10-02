@@ -184,8 +184,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
           editor.perform(action);
         }
 
-        editor.endTransaction();
         editor.commit(l10n.t('issues.fix_all.annotation'));
+        editor.endTransaction();
         validator.validate();
       });
   }

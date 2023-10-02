@@ -58,8 +58,8 @@ export function operationPaste(context) {
 
     // Move the pasted objects to be anchored at the paste location
     editor.perform(actionMove(newIDs, delta, projection));
-    editor.endTransaction();
     editor.commit(operation.annotation());
+    editor.endTransaction();
 
     context.enter('select-osm', { selectedIDs: newIDs });
   };

@@ -64,13 +64,6 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
     editor.beginTransaction();
 
-    // If this is the same selection as before, and the previous edit was also a cycle-tags,
-    // undo that edit and replace it with a new one.
-    const annotation = operation.annotation();
-    if (!isSameSelection || editor.getUndoAnnotation() !== annotation) {
-      editor.undo();   // or editor.pop if we keep it?
-    }
-
     // Update all selected highways...
     for (const entity of entities) {
       const oldPreset = presets.match(entity, editor.current.graph);
@@ -78,9 +71,16 @@ export function operationCycleHighwayTag(context, selectedIDs) {
       editor.perform(action);
     }
 
-    editor.endTransaction();
-    editor.commit(annotation);
+    // If this is the same selection as before, and the previous edit was also a cycle-tags,
+    // we can just replace the previous edit with this one.
+    const annotation = operation.annotation();
+    if (isSameSelection && editor.getUndoAnnotation() === annotation) {
+      editor.commitAppend(annotation);  // Replace the previous cycle-tags edit
+    } else {
+      editor.commit(annotation);
+    }
 
+    editor.endTransaction();
     context.enter('select-osm', { selectedIDs: selectedIDs });  // reselect
   };
 

@@ -146,138 +146,6 @@ describe('EditSystem', () => {
   });
 
 
-  describe('#replace', () => {
-    it('returns a difference', () => {
-      expect(_editor.replace(actionNoop()).changes).to.be.empty;
-    });
-
-    it('updates the graph', () => {
-      const node = Rapid.osmNode();
-      const action = (graph) => graph.replace(node);
-      _editor.replace(action);
-      expect(_editor.current.graph.entity(node.id)).to.equal(node);
-    });
-
-    it('replaces the undo annotation', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.replace(actionNoop(), 'annotation2');
-      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
-    });
-
-    it('emits a change event', () => {
-      _editor.on('change', spy);
-      const difference = _editor.replace(actionNoop());
-      expect(spy).to.have.been.calledWith(difference);
-    });
-
-    it('performs multiple actions', () => {
-      const action1 = sinon.stub().returns(new Rapid.Graph());
-      const action2 = sinon.stub().returns(new Rapid.Graph());
-      _editor.replace(action1, action2, 'annotation1');
-      expect(action1).to.have.been.called;
-      expect(action2).to.have.been.called;
-      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
-    });
-  });
-
-
-  describe('#pop', () => {
-    it('returns a difference', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      expect(_editor.pop().changes).to.be.empty;
-    });
-
-    it('updates the graph', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.pop();
-      expect(_editor.getUndoAnnotation()).to.be.undefined;
-    });
-
-    it('does not push the redo stack', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.pop();
-      expect(_editor.getRedoAnnotation()).to.be.undefined;
-    });
-
-    it('emits a change event', () => {
-      _editor.perform(actionNoop());
-      _editor.on('change', spy);
-      const difference = _editor.pop();
-      expect(spy).to.have.been.calledWith(difference);
-    });
-
-    it('pops n times', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.perform(actionNoop(), 'annotation2');
-      _editor.perform(actionNoop(), 'annotation3');
-      _editor.pop(2);
-      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
-    });
-
-    it('pops 0 times', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.perform(actionNoop(), 'annotation2');
-      _editor.perform(actionNoop(), 'annotation3');
-      _editor.pop(0);
-      expect(_editor.getUndoAnnotation()).to.equal('annotation3');
-    });
-
-    it('pops 1 time if argument is invalid', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.perform(actionNoop(), 'annotation2');
-      _editor.perform(actionNoop(), 'annotation3');
-      _editor.pop('foo');
-      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
-      _editor.pop(-1);
-      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
-    });
-  });
-
-
-  describe('#overwrite', () => {
-    it('returns a difference', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      expect(_editor.overwrite(actionNoop()).changes).to.be.empty;
-    });
-
-    it('updates the graph', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      const node = Rapid.osmNode();
-      _editor.overwrite(graph => { return graph.replace(node); });
-      expect(_editor.current.graph.entity(node.id)).to.equal(node);
-    });
-
-    it('replaces the undo annotation', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.overwrite(actionNoop(), 'annotation2');
-      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
-    });
-
-    it('does not push the redo stack', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.overwrite(actionNoop(), 'annotation2');
-      expect(_editor.getRedoAnnotation()).to.be.undefined;
-    });
-
-    it('emits a change event', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.on('change', spy);
-      const difference = _editor.overwrite(actionNoop(), 'annotation2');
-      expect(spy).to.have.been.calledWith(difference);
-    });
-
-    it('performs multiple actions', () => {
-      const action1 = sinon.stub().returns(new Rapid.Graph());
-      const action2 = sinon.stub().returns(new Rapid.Graph());
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.overwrite(action1, action2, 'annotation2');
-      expect(action1).to.have.been.called;
-      expect(action2).to.have.been.called;
-      expect(_editor.getUndoAnnotation()).to.equal('annotation2');
-    });
-  });
-
-
   describe('#undo', () => {
     it('returns a difference', () => {
       expect(_editor.undo().changes).to.be.empty;
@@ -441,13 +309,13 @@ describe('EditSystem', () => {
       _editor.perform(actionNoop(), 'annotation7');
       _editor.perform(actionNoop(), 'annotation8');
 
-      _editor.resetToCheckpoint('check1');
+      _editor.restoreCheckpoint('check1');
       expect(_editor.getUndoAnnotation()).to.equal('annotation3');
 
-      _editor.resetToCheckpoint('check2');
+      _editor.restoreCheckpoint('check2');
       expect(_editor.getUndoAnnotation()).to.equal('annotation5');
 
-      _editor.resetToCheckpoint('check1');
+      _editor.restoreCheckpoint('check1');
       expect(_editor.getUndoAnnotation()).to.equal('annotation3');
     });
 
@@ -457,7 +325,7 @@ describe('EditSystem', () => {
       _editor.perform(actionNoop(), 'annotation2');
 
       _editor.on('change', spy);
-      _editor.resetToCheckpoint('check1');
+      _editor.restoreCheckpoint('check1');
       expect(spy).to.have.been.called;
     });
   });

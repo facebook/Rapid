@@ -52,7 +52,7 @@ export function uiIntroRapid(context, curtain) {
   // Click Ok to advance
   function welcomeAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
 
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -91,7 +91,7 @@ export function uiIntroRapid(context, curtain) {
   // Select Tulip Lane to advance
   function selectRoadAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
     context.scene().enableLayers('rapid');
     context.systems.ui.togglePanes();   // close issue pane
 
@@ -255,7 +255,7 @@ export function uiIntroRapid(context, curtain) {
   // Select Tulip Lane to advance
   function selectRoadAgainAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
 
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());

@@ -166,7 +166,7 @@ export class DrawLineMode extends AbstractMode {
 //      while (editor.current.graph !== this._startGraph) {  // rollback to initial state
 //        editor.pop();
 //      }
-      editor.resetToCheckpoint('beginDraw');
+      editor.restoreCheckpoint('beginDraw');
     }
 
     this.drawWay = null;

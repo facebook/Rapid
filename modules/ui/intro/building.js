@@ -73,7 +73,7 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addHouseAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
     _houseID = null;
 
     const loc = houseExtent.center();
@@ -297,7 +297,7 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickHouseAsync() {
     if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
-    editor.resetToCheckpoint('hasHouse');
+    editor.restoreCheckpoint('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
     const setZoom = Math.max(map.zoom(), 20);
@@ -417,7 +417,7 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addTankAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('doneSquare');
+    editor.restoreCheckpoint('doneSquare');
     _tankID = null;
 
     const loc = tankExtent.center();
@@ -591,7 +591,7 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickTankAsync() {
     if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
-    editor.resetToCheckpoint('hasTank');
+    editor.restoreCheckpoint('hasTank');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;

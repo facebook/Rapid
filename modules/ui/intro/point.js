@@ -57,7 +57,7 @@ export function uiIntroPoint(context, curtain) {
   // Click "Add Point" button to advance
   function addPointAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
     _pointID = null;
 
     const loc = buildingExtent.center();
@@ -299,7 +299,7 @@ export function uiIntroPoint(context, curtain) {
   // Reselect the point to advance
   function reselectPointAsync() {
     context.enter('browse');
-    editor.resetToCheckpoint('hasPoint');
+    editor.restoreCheckpoint('hasPoint');
 
     const loc = buildingExtent.center();
     const msec = transitionTime(loc, map.center());
