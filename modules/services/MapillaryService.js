@@ -707,7 +707,8 @@ export class MapillaryService extends AbstractSystem {
 
     // bearingChanged: called when the bearing changes in the image viewer.
     const bearingChanged = (e) => {
-      this.emit('bearingChanged', undefined, e);
+      this.emit('bearingChanged', e);
+      this.context.systems.map.immediateRedraw();
     };
 
     this._mlyViewer = new mapillary.Viewer(opts);

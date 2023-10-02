@@ -30,6 +30,8 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     this.type = 'point';
     this._viewfieldCount = 0;   // to watch for change in # of viewfield sprites
+    this._viewfieldName = null;   // to watch for change in viewfield texture
+
     this._isCircular = false;   // set true to use a circular halo and hit area
 
     const marker = new PIXI.Sprite();
@@ -168,8 +170,8 @@ export class PixiFeaturePoint extends AbstractFeature {
         this.container.addChildAt(this.viewfields, 0);
       }
 
-      // # of viewfields has changed, recreate them
-      if (this._viewfieldCount !== vfAngles.length) {
+      // # of viewfields has changed, or if the texture name has changed, recreate them
+      if (this._viewfieldCount !== vfAngles.length || this._viewfieldName !== style.viewfieldName) {
         this.viewfields.removeChildren();
         for (let i = 0; i < vfAngles.length; i++) {
           const vfSprite = new PIXI.Sprite(vfTexture);

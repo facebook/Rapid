@@ -31,6 +31,24 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    */
   constructor(scene, layerID) {
     super(scene, layerID);
+
+    this._handleBearingChange = this._handleBearingChange.bind(this);
+    this._viewerCompassAngle = null;
+
+    if (this.supported) {
+      const service = this.context.services.mapillary;
+
+      service.on('bearingChanged', this._handleBearingChange);
+    }
+  }
+
+
+  /**
+   * _handleBearingCHange
+   * Handle the user dragging inside of a panoramic photo.
+   */
+  _handleBearingChange(event) {
+    this._viewerCompassAngle = event.bearing;
   }
 
 
@@ -141,6 +159,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    */
   renderMarkers(frame, projection, zoom) {
     const service = this.context.services.mapillary;
+
+    //We want the active image, which may or may not be the selected image.
+    const activeIDs = this._classHasData.get('active') ?? new Set();
+
     if (!service?.started) return;
 
     // const showMarkers = (zoom >= MINMARKERZOOM);
@@ -200,6 +222,16 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
           feature.addChildData(d.sequenceID, d.id);
         }
       }
+      if (activeIDs.has(d.id)) {
+        feature.drawing = true;
+        feature.style.viewfieldAngles = [this._viewerCompassAngle];
+        feature.style.viewfieldName = 'viewfield';
+      } else  {
+        feature.drawing = false;
+        feature.style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
+      }
+
+
 
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);

@@ -269,8 +269,11 @@ export class PhotoSystem extends AbstractSystem {
     const context = this.context;
     const scene = context.scene();
 
-// renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
-scene.clearClass('selected');
+    // renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
+    // 'Active' may stay resident if the user clicks off the image onto an OSM entity
+    // in which case we still may want to draw the image point differently.
+    scene.clearClass('selected');
+    scene.clearClass('active');
 
     if (layerID && photoID) {
       const service = context.services[layerID];
@@ -279,8 +282,9 @@ scene.clearClass('selected');
       // If we're selecting a photo then make sure its layer is enabled too.
       scene.enableLayers(layerID);
 
-// renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
-scene.classData(layerID, photoID, 'selected');
+    // renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
+    scene.classData(layerID, photoID, 'selected');
+    scene.classData(layerID, photoID, 'active');
 
       // Try to show the viewer with the image selected..
       service.startAsync()
