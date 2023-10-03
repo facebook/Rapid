@@ -21,7 +21,6 @@ export function uiEntityEditor(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
-  const validator = context.systems.validator;
   const dispatch = d3_dispatch('choose');
 
   const sections = [
@@ -267,7 +266,6 @@ export function uiEntityEditor(context) {
     }
 
     editor.endTransaction();
-      // validator.validate();
   }
 
 
@@ -317,7 +315,6 @@ export function uiEntityEditor(context) {
     }
 
     editor.endTransaction();
-//    validator.validate();
   }
 
 

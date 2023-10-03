@@ -186,24 +186,11 @@ export function uiSectionEntityIssues(context) {
         if (d.issue.dateLastRanFix && new Date() - d.issue.dateLastRanFix < 1000) return;
         d.issue.dateLastRanFix = new Date();
 
-        // remove hover-highlighting
-        utilHighlightEntities(d.issue.entityIds.concat(d.entityIds), false, context);
-
-        new Promise(function(resolve, reject) {
-          d.onClick(context, resolve, reject);
-          if (d.onClick.length <= 1) {
-            // if the fix doesn't take any completion parameters then consider it resolved
-            resolve();
-          }
-        })
-        .then(() => validator.validate());   // revalidate after the fix has finished running
+        utilHighlightEntities(d.issue.entityIds.concat(d.entityIds), false, context);  // remove hover-highlighting
+        d.onClick();
       })
-      .on('mouseover.highlight', function(d3_event, d) {
-          utilHighlightEntities(d.issue.entityIds, true, context);
-      })
-      .on('mouseout.highlight', function(d3_event, d) {
-          utilHighlightEntities(d.issue.entityIds, false, context);
-      });
+      .on('mouseover.highlight', (d3_event, d) => utilHighlightEntities(d.issue.entityIds, true, context))
+      .on('mouseout.highlight', (d3_event, d) => utilHighlightEntities(d.issue.entityIds, false, context));
 
     buttons
       .each((d, i, nodes) => {

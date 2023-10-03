@@ -60,7 +60,7 @@ const DURATION = 150;
  * - `commitAppend(annotation)` - This is just like `commit` but instead of
  *      adding `current` after `stable`, `current` replaces `stable`.
  * - `undo()` - Move the `stable` index back to the previous Edit (or `_index = 0`).
- * - `redo()`  -Move the `stable` index forward to the next Edit (if any)
+ * - `redo()` - Move the `stable` index forward to the next Edit (if any)
  *
  *
  * Events available:

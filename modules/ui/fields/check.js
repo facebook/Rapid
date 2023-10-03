@@ -13,7 +13,6 @@ export { uiFieldCheck as uiFieldOnewayCheck };
 export function uiFieldCheck(context, uifield) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
-  const validator = context.systems.validator;
   const dispatch = d3_dispatch('change');
 
   let values = [];
@@ -169,7 +168,6 @@ export function uiFieldCheck(context, uifield) {
 
           editor.perform(combinedAction);
           editor.commit(l10n.t('operations.reverse.annotation.line', { n: 1 }));
-          validator.validate();   // must manually revalidate since no 'change' event was dispatched
 
           d3_select(this)
             .call(reverserSetText);

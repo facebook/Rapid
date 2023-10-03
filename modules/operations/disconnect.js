@@ -11,7 +11,6 @@ export function operationDisconnect(context, selectedIDs) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
-  const validator = context.systems.validator;
 
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -140,7 +139,6 @@ export function operationDisconnect(context, selectedIDs) {
     };
     editor.perform(combinedAction);
     editor.commit(operation.annotation());
-    validator.validate();
   };
 
 

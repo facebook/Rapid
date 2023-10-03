@@ -1,7 +1,6 @@
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { actionChangePreset } from '../actions';
-import { actionNoop } from '../actions/noop';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 let _wasSelectedIDs = [];

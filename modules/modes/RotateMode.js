@@ -4,7 +4,6 @@ import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { AbstractMode } from './AbstractMode';
 import { actionRotate } from '../actions/rotate';
-import { actionNoop } from '../actions/noop';
 
 
 /**

@@ -14,7 +14,6 @@ export function operationExtract(context, selectedIDs) {
   const map = context.systems.map;
   const presets = context.systems.presets;
   const storage = context.systems.storage;
-  const validator = context.systems.validator;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
@@ -49,7 +48,6 @@ export function operationExtract(context, selectedIDs) {
 
     editor.perform(combinedAction);
     editor.commit(operation.annotation());
-    validator.validate();
 
     // Move the extracted nodes to the mouse cursor location
     const projection = context.projection;

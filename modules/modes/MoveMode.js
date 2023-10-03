@@ -2,7 +2,6 @@ import { vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode';
 import { actionMove } from '../actions/move';
-import { actionNoop } from '../actions/noop';
 
 
 /**

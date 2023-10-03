@@ -21,7 +21,6 @@ export function uiSectionRawMemberEditor(context) {
   const map = context.systems.map;
   const presets = context.systems.presets;
   const taginfo = context.services.taginfo;
-  const validator = context.systems.validator;
 
   let _entityIDs = [];
 
@@ -95,7 +94,6 @@ export function uiSectionRawMemberEditor(context) {
       const member = { id: d.id, type: d.type, role: newRole };
       editor.perform(actionChangeMember(d.relation.id, member, d.index));
       editor.commit(l10n.t('operations.change_role.annotation', { n: 1 }));
-      validator.validate();
     }
   }
 
@@ -111,9 +109,6 @@ export function uiSectionRawMemberEditor(context) {
     // Removing the last member will also delete the relation. If this happens we need to exit select mode
     if (!graph.hasEntity(d.relation.id)) {
       context.enter('browse');
-    } else {
-      // Changing the mode also runs `validate`, but otherwise we need to rerun it manually
-      validator.validate();
     }
   }
 
@@ -316,7 +311,6 @@ export function uiSectionRawMemberEditor(context) {
         if (targetIndex !== null) {   // dragged to a new position, reorder
           editor.perform(actionMoveMember(d.relation.id, index, targetIndex));
           editor.commit(l10n.t('operations.reorder_members.annotation'));
-          validator.validate();
         }
       })
     );

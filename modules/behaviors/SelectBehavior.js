@@ -445,7 +445,6 @@ export class SelectBehavior extends AbstractBehavior {
     const context = this.context;
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
-    const validator = context.systems.validator;
 
     const coord = this.lastUp.coord;
     const data = this.lastUp.target?.data;
@@ -469,7 +468,6 @@ export class SelectBehavior extends AbstractBehavior {
     if (loc && edge) {
       editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, osmNode()));
       editor.commit(l10n.t('operations.add.annotation.vertex'));
-      validator.validate();
     }
 
   }

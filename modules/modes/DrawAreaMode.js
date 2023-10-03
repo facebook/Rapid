@@ -5,7 +5,6 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 import { actionMoveNode } from '../actions/move_node';
-import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { osmNode, osmWay } from '../osm';
 

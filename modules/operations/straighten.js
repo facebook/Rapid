@@ -12,7 +12,6 @@ export function operationStraighten(context, selectedIDs) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
-  const validator = context.systems.validator;
 
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -86,8 +85,7 @@ export function operationStraighten(context, selectedIDs) {
     if (!action) return;
 
     editor.perform(action);
-    editor.commit(operation.annotation());
-    window.setTimeout(() => validator.validate(), 300);  // after any transition
+    window.setTimeout(() => editor.commit(operation.annotation()), 300);  // after any transition
   };
 
 

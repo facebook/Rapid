@@ -11,7 +11,6 @@ export function operationCircularize(context, selectedIDs) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
-  const validator = context.systems.validator;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
@@ -41,8 +40,7 @@ export function operationCircularize(context, selectedIDs) {
     combinedAction.transitionable = true;
 
     editor.perform(combinedAction);
-    editor.commit(operation.annotation());
-    window.setTimeout(() => validator.validate(), 300);  // after any transition
+    window.setTimeout(() => editor.commit(operation.annotation()), 300);  // after any transition
   };
 
 

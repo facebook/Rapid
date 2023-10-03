@@ -91,13 +91,11 @@ export function validationUnsquareWay(context) {
             icon: 'rapid-operation-orthogonalize',
             title: l10n.t('issues.fix.square_feature.title'),
 //          autoArgs: autoArgs,
-            onClick: function(context, completionHandler) {
+            onClick: function() {
               const entityID = this.issue.entityIds[0];
               // use same degree threshold as for detection
               editor.perform(actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold));
-              editor.commit(l10n.t('operations.orthogonalize.annotation.feature', { n: 1 }));
-              // run after the squaring transition (currently 150ms)
-              window.setTimeout(function() { completionHandler(); }, 175);
+              window.setTimeout(() => editor.commit(l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })), 300);  // after any transition
             }
           }),
 /*

@@ -110,11 +110,11 @@ export class SelectOsmMode extends AbstractMode {
       .map(o => o(context, selectedIDs))
       .filter(o => (o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'))
       .concat([
-          // group copy/downgrade/delete operation together at the end of the list
-          Operations.operationCopy(context, selectedIDs),
-          Operations.operationDowngrade(context, selectedIDs),
-          Operations.operationDelete(context, selectedIDs)
-        ])
+        // group copy/downgrade/delete operation together at the end of the list
+        Operations.operationCopy(context, selectedIDs),
+        Operations.operationDowngrade(context, selectedIDs),
+        Operations.operationDelete(context, selectedIDs)
+      ])
       .filter(o => o.available());
 
     this.operations.forEach(o => {
@@ -165,24 +165,20 @@ export class SelectOsmMode extends AbstractMode {
     const l10n = context.systems.l10n;
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
-    const validator = context.systems.validator;
 
     // If the user added an empty relation, we should clean it up.
     const graph = editor.current.graph;
     const entity = graph.hasEntity(this._singularDatum?.id);
     if (
       entity?.type === 'relation' &&
-      // no tags
-      Object.keys(entity.tags).length === 0 &&
-      // no parent relations
-      graph.parentRelations(entity).length === 0 &&
+      Object.keys(entity.tags).length === 0 &&        // no tags
+      graph.parentRelations(entity).length === 0 &&   // no parent relations
       // no members or one member with no role
       (entity.members.length === 0 || (entity.members.length === 1 && !entity.members[0].role))
     ) {
       // The user added this relation but didn't edit it at all, so just delete it
       editor.perform(actionDeleteRelation(entity.id, true));  // true = don't delete untagged members
       editor.commit(l10n.t('operations.delete.annotation.relation'));
-      validator.validate();
     }
 
 

@@ -21,7 +21,6 @@ export function uiSectionRawMembershipEditor(context) {
     const map = context.systems.map;
     const presets = context.systems.presets;
     const taginfo = context.services.taginfo;
-    const validator = context.systems.validator;
 
     var section = uiSection(context, 'raw-membership-editor')
         .shouldDisplay(function() {
@@ -161,7 +160,6 @@ export function uiSectionRawMembershipEditor(context) {
 
             editor.perform(changeMemberRoles);
             editor.commit(l10n.t('operations.change_role.annotation', { n: membersToUpdate.length }));
-            validator.validate();
         }
         _inChange = false;
     }
@@ -184,7 +182,6 @@ export function uiSectionRawMembershipEditor(context) {
         if (d.relation) {
             editor.perform(actionAddMembers(d.relation.id, _entityIDs, role));
             editor.commit(l10n.t('operations.add_member.annotation', { n: _entityIDs.length }));
-            validator.validate();
 
         } else {
             var relation = osmRelation();
@@ -212,7 +209,6 @@ export function uiSectionRawMembershipEditor(context) {
 
         editor.perform(actionDeleteMembers(d.relation.id, indexes));
         editor.commit(l10n.t('operations.delete_member.annotation', { n: _entityIDs.length }));
-        validator.validate();
     }
 
 

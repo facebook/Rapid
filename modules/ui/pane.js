@@ -5,6 +5,10 @@ import { uiTooltip } from './tooltip';
 
 
 export function uiPane(context, id) {
+  const l10n = context.systems.l10n;
+  const ui = context.systems.ui;
+  const validator = context.systems.validator;
+
   let _key;
   let _label = '';
   let _description = '';
@@ -50,25 +54,25 @@ export function uiPane(context, id) {
   };
 
   function hidePane() {
-    context.systems.ui.togglePanes();
+    ui.togglePanes();
   }
 
   pane.togglePane = function(d3_event) {
     if (d3_event) d3_event.preventDefault();
     _paneTooltip.hide();
     const shown = !_paneSelection.classed('shown');
-    context.systems.ui.togglePanes(shown ? _paneSelection : undefined);
+    ui.togglePanes(shown ? _paneSelection : undefined);
 
     // Rapid#655: Since firing the validator is so expensive,
     // only do it when we're right about to open the validation pane.
     if (pane.id === 'issues' && shown) {
-      context.systems.validator.validate();
+      validator.validate();
     }
   };
 
   pane.renderToggleButton = function(selection) {
     if (!_paneTooltip) {
-      const isRTL = context.systems.l10n.isRTL();
+      const isRTL = l10n.isRTL();
       _paneTooltip = uiTooltip(context)
         .placement(isRTL ? 'right' : 'left')
         .title(_description)

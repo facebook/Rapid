@@ -11,7 +11,6 @@ export function operationMerge(context, selectedIDs) {
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
   const storage = context.systems.storage;
-  const validator = context.systems.validator;
 
   let action = chooseAction();
 
@@ -47,7 +46,6 @@ export function operationMerge(context, selectedIDs) {
 
     editor.perform(action);
     editor.commit(operation.annotation());
-    validator.validate();
 
     const graph = editor.current.graph;  // after edit
     let successorIDs = selectedIDs.filter(entityID => graph.hasEntity(entityID));

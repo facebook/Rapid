@@ -5,7 +5,6 @@ import { AbstractMode } from './AbstractMode';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
-import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { osmNode } from '../osm';
 

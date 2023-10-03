@@ -6,7 +6,6 @@ export function operationSplit(context, selectedIDs) {
   const editor = context.systems.editor;
   const graph = editor.current.graph;
   const l10n = context.systems.l10n;
-  const validator = context.systems.validator;
 
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const vertices = entities.filter(entity => entity.type === 'node' && entity.geometry(graph) === 'vertex');
@@ -47,7 +46,6 @@ export function operationSplit(context, selectedIDs) {
   let operation = function() {
     const difference = editor.perform(action);
     editor.commit(operation.annotation());
-    validator.validate();
 
     let idsToSelect = vertexIDs.slice();  // copy
 

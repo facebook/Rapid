@@ -16,7 +16,6 @@ export function uiPresetList(context) {
     const l10n = context.systems.l10n;
     const filters = context.systems.filters;
     const presetSystem = context.systems.presets;
-    const validator = context.systems.validator;
     const dispatch = d3_dispatch('cancel', 'choose');
 
     var _entityIDs;
@@ -425,7 +424,6 @@ export function uiPresetList(context) {
 
             editor.perform(combinedAction);
             editor.commit(l10n.t('operations.change_tags.annotation'));
-            validator.validate();
             dispatch.call('choose', this, preset);
         };
 

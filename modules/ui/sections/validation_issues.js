@@ -2,7 +2,6 @@ import debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 import { geoSphericalDistance } from '@rapid-sdk/math';
 
-import { actionNoop } from '../../actions/noop';
 import { uiIcon } from '../icon';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
@@ -128,8 +127,9 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
               d3_event.stopPropagation();
 
               utilHighlightEntities(d.entityIds, false, context);  // unhighlight
-              editor.perform.apply(editor, d.autoArgs);
-              validator.validate();
+
+              editor.perform(d.autoArgs[0]);   // autoArgs[0] = action
+              editor.commit(d.autoArgs[1]);    // autoArgs[1] = annotation
             })
             .call(uiIcon('#rapid-icon-wrench'));
         });
@@ -186,7 +186,6 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
         editor.commit(l10n.t('issues.fix_all.annotation'));
         editor.endTransaction();
-        validator.validate();
       });
   }
 

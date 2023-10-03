@@ -7,7 +7,6 @@ export function operationDowngrade(context, selectedIDs) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
-  const validator = context.systems.validator;
 
   let _affectedFeatureCount = 0;
   let _downgradeType = downgradeTypeForEntityIDs(selectedIDs);
@@ -90,7 +89,6 @@ export function operationDowngrade(context, selectedIDs) {
 
     editor.perform(combinedAction);
     editor.commit(operation.annotation());
-    validator.validate();
 
     // refresh the select mode to enable the delete operation
     context.enter('select-osm', { selectedIDs: selectedIDs });

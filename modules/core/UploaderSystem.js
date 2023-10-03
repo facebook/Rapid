@@ -3,7 +3,6 @@ import { utilArrayUnion, utilArrayUniq } from '@rapid-sdk/util';
 import { AbstractSystem } from './AbstractSystem';
 import { actionDiscardTags } from '../actions/discard_tags';
 import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
-import { actionNoop } from '../actions/noop';
 import { actionRevert } from '../actions/revert';
 import { Graph } from './lib';
 

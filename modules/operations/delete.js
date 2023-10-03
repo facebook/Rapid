@@ -13,7 +13,6 @@ export function operationDelete(context, selectedIDs) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
-  const validator = context.systems.validator;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
@@ -56,9 +55,9 @@ export function operationDelete(context, selectedIDs) {
       }
     }
 
+    const annotation = operation.annotation();  // watch out! calculate this _before_ we delete the stuff.
     editor.perform(action);
-    editor.commit(operation.annotation());
-    validator.validate();
+    editor.commit(annotation);
 
     if (nextNode && nextLoc) {
       map.centerEase(nextLoc);
