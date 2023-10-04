@@ -32,6 +32,20 @@
             "separator": ","
           },
           {
+            "section": "navigation",
+            "text": "shortcuts.browsing.photo_navigation.title"
+          },
+          {
+            "shortcuts": ["↑", "→"],
+            "text": "shortcuts.browsing.photo_navigation.forward",
+            "rapid": true
+          },
+          {
+            "shortcuts": ["↓", "←"],
+            "text": "shortcuts.browsing.photo_navigation.backward",
+            "rapid": true
+          },
+          {
             "section": "display_options",
             "text": "shortcuts.browsing.display_options.title"
           },

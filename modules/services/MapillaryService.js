@@ -50,9 +50,31 @@ export class MapillaryService extends AbstractSystem {
     this._mlyShowSignDetections = false;
     this._mlyViewer = null;
     this._mlyViewerFilter = ['all'];
+    this._keydown = this._keydown.bind(this);
+    this.navigateForward = this.navigateForward.bind(this);
+    this.navigateBackward = this.navigateBackward.bind(this);
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
+
+  /**
+   * _keydown
+   * Handler for keydown events on the window, but only if the photo viewer is visible.
+   * @param  `e`  A DOM KeyboardEvent
+   */
+  _keydown(e) {
+    // Only allow key navigation if the user doesn't have something
+    // more important focused - like a input, textarea, menu, etc.
+    // and only allow key nav if we're showing the viewer!
+    const activeElement = document.activeElement?.tagName ?? 'BODY';
+    if (activeElement !== 'BODY' || !this.viewerShowing || !this.context.systems.photos._currLayerID.startsWith('mapillary')) return;
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+        this.navigateBackward();
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+        this.navigateForward();
+      }
+  }
 
   /**
    * initAsync
@@ -84,6 +106,9 @@ export class MapillaryService extends AbstractSystem {
       .attr('id', 'rapideditor-mly')
       .attr('class', 'photo-wrapper mly-wrapper')
       .classed('hide', true);
+
+    const eventManager = this.context.systems.map.renderer.events;
+    eventManager.on('keydown', this._keydown);
 
     return this._startPromise = this._loadAssetsAsync()
       .then(() => this._initViewer())
@@ -242,6 +267,25 @@ export class MapillaryService extends AbstractSystem {
     return filter;
   }
 
+navigateForward() {
+  const next = window.mapillary.NavigationDirection.Next;
+  this._navigate(next);
+}
+
+navigateBackward() {
+  const prev = window.mapillary.NavigationDirection.Prev;
+  this._navigate(prev);
+}
+
+  _navigate(dir) {
+    this._mlyViewer.moveDir(dir).catch(
+      error => { //errs out if end of sequence reached, just don't print anything
+      },
+    );
+}
+
+get viewerShowing()         { return this._showing; }
+
 
   /**
    * showViewer
@@ -261,6 +305,8 @@ export class MapillaryService extends AbstractSystem {
       wrap
         .selectAll('.photo-wrapper.mly-wrapper')
         .classed('hide', false);
+
+      this._showing = true;
 
       this._mlyViewer.resize();
     }
@@ -287,6 +333,8 @@ export class MapillaryService extends AbstractSystem {
       .classed('hide', true)
       .selectAll('.photo-wrapper')
       .classed('hide', true);
+
+    this._showing = false;
 
     this.setStyles(context, null);
     this.emit('imageChanged');

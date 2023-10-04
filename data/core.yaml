@@ -2465,6 +2465,10 @@ en:
         zoom: "Zoom in / Zoom out"
         zoom_more: "Zoom in / Zoom out by a lot"
         geolocate: "Zoom to my location"
+      photo_navigation:
+        title: "Navigation (while photo viewer is open)"
+        forward: "Go to next image in sequence"
+        backward: "Go to previous image in sequence"
       help:
         title: "Help"
         help: "Show help/documentation"

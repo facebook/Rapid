@@ -103,6 +103,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const activeElement = document.activeElement?.tagName ?? 'BODY';
     if (activeElement !== 'BODY') return;
 
+    // IF the mapillary image viewer is showing, don't do this handler.
+    if (this.context.services.mapillary.viewerShowing) return;
+
     const context = this.context;
     const map = context.systems.map;
     const EASE = 100;  // milliseconds

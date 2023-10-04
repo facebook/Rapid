@@ -214,7 +214,7 @@ export function uiShortcuts(context) {
                         .html(d.suffix);
                 }
 
-                if (d.rapid){
+                if (d.rapid && i === 0){
                     selection
                         .append('svg')
                         .lower()
