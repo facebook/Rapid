@@ -66,7 +66,7 @@ export function uiPane(context, id) {
     // Rapid#655: Since firing the validator is so expensive,
     // only do it when we're right about to open the validation pane.
     if (pane.id === 'issues' && shown) {
-      validator.validate();
+      validator.validateAsync();
     }
   };
 

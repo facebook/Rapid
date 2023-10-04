@@ -72,7 +72,7 @@ export function uiSectionValidationOptions(context) {
 
     // I think this is just to get the list to update?
     // Maybe we can have an `optionchanged` event to do this without interrupting the validator
-    validator.validate();
+    validator.validateAsync();
   }
 
   return section;
