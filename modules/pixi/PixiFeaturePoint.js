@@ -177,6 +177,11 @@ export class PixiFeaturePoint extends AbstractFeature {
           const vfSprite = new PIXI.Sprite(vfTexture);
           vfSprite.eventMode = 'none';
           vfSprite.anchor.set(0.5, 0.5);  // middle, middle
+
+          // Make the active photo image pop out at the user
+          if (this.active)
+            this.container.zIndex = 99000;
+
           this.viewfields.addChild(vfSprite);
         }
         this._viewfieldCount = vfAngles.length;
@@ -186,6 +191,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       for (let i = 0; i < vfAngles.length; i++) {
         const vfSprite = this.viewfields.getChildAt(i);
         vfSprite.tint = style.viewfieldTint || 0x333333;
+        vfSprite.scale.set(style.scale || 1, style.scale || 1);
         vfSprite.angle = vfAngles[i];
       }
 

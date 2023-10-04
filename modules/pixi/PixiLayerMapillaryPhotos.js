@@ -4,6 +4,7 @@ import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const MINZOOM = 12;
 const MAPILLARY_GREEN = 0x05CB63;
+const MAPILLARY_SELECTED = 0xffee00;
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -222,18 +223,28 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
           feature.addChildData(d.sequenceID, d.id);
         }
       }
+
+      this.syncFeatureClasses(feature);
+
       if (activeIDs.has(d.id)) {
-        feature.drawing = true;
+        feature.active = true;
         feature.style.viewfieldAngles = [this._viewerCompassAngle];
         feature.style.viewfieldName = 'viewfield';
+        //Change highlight color and make the point/viewfield larger so the mapper can see it.
+        feature.style.viewfieldTint = MAPILLARY_SELECTED;
+        feature.style.markerTint = MAPILLARY_SELECTED;
+        feature.style.scale = 2.0;
+
       } else  {
-        feature.drawing = false;
+        feature.active = false;
         feature.style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
+        feature.style.viewfieldTint = MAPILLARY_GREEN;
+        feature.style.markerTint = MAPILLARY_GREEN;
+        feature.style.scale = 1.0;
       }
 
 
 
-      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     }
