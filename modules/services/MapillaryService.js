@@ -42,6 +42,7 @@ export class MapillaryService extends AbstractSystem {
     this._loadPromise = null;
     this._startPromise = null;
 
+    this._showing = null;
     this._mlyActiveImage = null;
     this._mlyCache = {};
     this._mlyIsFallback = false;

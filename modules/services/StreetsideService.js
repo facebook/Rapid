@@ -56,6 +56,8 @@ export class StreetsideService extends AbstractSystem {
       cubeMap: []
     };
 
+    this._keydown = this._keydown.bind(this);
+
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this._setupCanvas = this._setupCanvas.bind(this);
@@ -63,6 +65,25 @@ export class StreetsideService extends AbstractSystem {
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
+
+  /**
+   * _keydown
+   * Handler for keydown events on the window, but only if the photo viewer is visible.
+   * @param  `e`  A DOM KeyboardEvent
+   */
+  _keydown(e) {
+    // Only allow key navigation if the user doesn't have something
+    // more important focused - like a input, textarea, menu, etc.
+    // and only allow key nav if we're showing the viewer!
+    const activeElement = document.activeElement?.tagName ?? 'BODY';
+    if (activeElement !== 'BODY' || !this.viewerShowing || !this.context.systems.photos._currLayerID.startsWith('streetside')) return;
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+        this._step(-1);
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+        this._step(1);
+      }
+  }
 
   /**
    * initAsync
@@ -146,6 +167,9 @@ export class StreetsideService extends AbstractSystem {
     context.systems.ui.photoviewer.on('resize.streetside', () => {
       if (this._pannellumViewer) this._pannellumViewer.resize();
     });
+
+    const eventManager = this.context.systems.map.renderer.events;
+    eventManager.on('keydown', this._keydown);
 
     return this._startPromise = this._loadAssetsAsync()
       .then(() => this._started = true)
@@ -252,6 +276,9 @@ export class StreetsideService extends AbstractSystem {
     }
   }
 
+  get viewerShowing()         { return this._showing; }
+
+
 
   /**
    * showViewer
@@ -265,6 +292,8 @@ export class StreetsideService extends AbstractSystem {
       wrap
         .selectAll('.photo-wrapper:not(.ms-wrapper)')
         .classed('hide', true);
+
+      this._showing = true;
 
       wrap
         .selectAll('.photo-wrapper.ms-wrapper')
@@ -288,6 +317,8 @@ export class StreetsideService extends AbstractSystem {
       .classed('hide', true)
       .selectAll('.photo-wrapper')
       .classed('hide', true);
+
+    this._showing = false;
 
     context.container().selectAll('.viewfield-group, .sequence, .icon-sign')
       .classed('currentView', false);
