@@ -68,7 +68,7 @@ export class MapillaryService extends AbstractSystem {
     // more important focused - like a input, textarea, menu, etc.
     // and only allow key nav if we're showing the viewer!
     const activeElement = document.activeElement?.tagName ?? 'BODY';
-    if (activeElement !== 'BODY' || !this.viewerShowing || !this.context.systems.photos._currLayerID.startsWith('mapillary')) return;
+    if (activeElement !== 'BODY' || !this.viewerShowing || !this.context.systems.photos._currLayerID?.startsWith('mapillary')) return;
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
         this.navigateBackward();
