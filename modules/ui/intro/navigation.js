@@ -504,11 +504,11 @@ export function uiIntroNavigation(context, curtain) {
         map.off('move', _mapMoveListener);
       });
 
-    function _mapMoveListener() {
-      if (typeof _onMapMove === 'function') _onMapMove();
+    function _mapMoveListener(...args) {
+      if (typeof _onMapMove === 'function') _onMapMove(...args);
     }
-    function _modeChangeListener(mode) {
-      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    function _modeChangeListener(...args) {
+      if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
   };
 

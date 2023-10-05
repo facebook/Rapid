@@ -97,7 +97,6 @@ export function uiIntroArea(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;  // disallow mode change
       _onEditChange = (difference) => {
-        if (!difference) return;
         for (const entity of difference.created()) {  // created a node and a way
           if (entity.type === 'way') {
             _areaID = entity.id;
@@ -131,7 +130,6 @@ export function uiIntroArea(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;  // disallow mode change
       _onEditChange = (difference) => {
-        if (!difference) return;
         for (const entity of difference.modified()) {  // modified the way
           if (entity.id === _areaID && entity.nodes.length > 5) {
             resolve(finishPlaygroundAsync);
@@ -185,7 +183,6 @@ export function uiIntroArea(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change;
         _onEditChange = (difference) => {
-          if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
             const graph = editor.current.graph;
@@ -437,20 +434,20 @@ export function uiIntroArea(context, curtain) {
     _onEditChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editor.on('historychange', _editChangeListener);
+    editor.on('editchange', _editChangeListener);
 
     runAsync(addAreaAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editor.off('historychange', _editChangeListener);
+        editor.off('editchange', _editChangeListener);
       });
 
-    function _modeChangeListener(mode) {
-      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    function _modeChangeListener(...args) {
+      if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(difference) {
-      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    function _editChangeListener(...args) {
+      if (typeof _onEditChange === 'function') _onEditChange(...args);
     }
   };
 

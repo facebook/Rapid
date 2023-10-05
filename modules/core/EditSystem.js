@@ -48,12 +48,11 @@ const DURATION = 150;
  *                                       `current` (WIP after `stable`)
  *
  * Code elsewhere in the application can use these methods to record edits and manipulate the history:
- *
  * - `perform(action)` - This performs a bit of work.  Perform accepts a varible number of
- *     "action" arguments. Actions are functions that accept a Graph and return a modified Graph.
- *     All work is performed against the `current` edit.
+ *      "action" arguments. Actions are functions that accept a Graph and return a modified Graph.
+ *      All work is performed against the `current` edit.
  * - `rollback()` - This rolls back all work in progress by replacing `current`
- *     with a fresh copy of `stable`.
+ *      with a fresh copy of `stable`.
  * - `commit(annotation)` - This accepts the `current` work-in-progress edit by adding
  *      it to the end of the history (removing any forward redo history, if any)
  *      Commit accepts an `annotation` (e.g. "Started a line") to say what the edit does.
@@ -61,13 +60,20 @@ const DURATION = 150;
  *      adding `current` after `stable`, `current` replaces `stable`.
  * - `undo()` - Move the `stable` index back to the previous Edit (or `_index = 0`).
  * - `redo()` - Move the `stable` index forward to the next Edit (if any)
+ * - `setCheckpoint(checkpointID)` - Save `history` and `index` as a checkpoint to return to later.
+ * - `restoreCheckpoint(checkpointID)` - Restore `history` and `index` identified by checkpointID.
  *
+ * Code can also wrap calls in a "transaction", which will prevent events from being emitted.
+ * - `beginTransaction()` - Prevents `editchange` and `historychange` events from being emitted.
+ * - `endTransaction()` - Marks transaction as complete.  Any `editchange` and `historychange`
+ *      events will be emitted that cover the difference from the beginning -> end of the transaction.
  *
  * Events available:
- *   'editchange'     - Fires on every edit performed (i.e. when `current` changes)
- *   'historychange'  - Fires when the history changes (i.e. when `stable` changes)
+ *   'editchange' - Fires on every edit performed (i.e. when `current` changes),
+ *      Receives Difference between old `current` Graph and new `current` Graph.
+ *   'historychange' - Fires when the history changes (i.e. when `stable` changes)
+ *      Receives Difference between old `stable` Graph and new `stable` Graph.
  *   'merge'
- *   'restore'
  *   'undone'
  *   'redone'
  *   'storage_error'
@@ -86,16 +92,16 @@ export class EditSystem extends AbstractSystem {
     this._mutex = utilSessionMutex('lock');
     this._canRestoreBackup = false;
 
-    this._history = [];        // history of accepted edits (both undo and redo) (was called "stack")
-    this._index = 0;           // index of the latest `stable` edit
-    this._current = null;      // work in progress edit, not yet added to the history
-    this._checkpoints = {};
+    this._history = [];     // history of accepted edits (both undo and redo) (was called "stack")
+    this._index = 0;        // index of the latest `stable` edit
+    this._current = null;   // work in progress edit, not yet added to the history
+    this._checkpoints = new Map();
     this._inTransition = false;
     this._inTransaction = false;
     this._tree = null;
 
-    this._lastStable = null;
-    this._lastCurrent = null;
+    this._lastStableGraph = null;
+    this._lastCurrentGraph = null;
     this._fullDifference = null;
 
     this._initPromise = null;
@@ -177,20 +183,22 @@ export class EditSystem extends AbstractSystem {
     this.deferredBackup.cancel();
 
     // Create a new Base Graph / Base Edit.
-    const base = new Graph();
-    this._history = [ new Edit({ graph: base }) ];
+    const baseGraph = new Graph();
+    const base = new Edit({ graph: baseGraph });
+    this._history = [ base ];
     this._index = 0;
 
     // Create a work-in-progress Edit derived from the base edit.
-    const current = new Graph(base);
-    this._current = new Edit({ graph: current });
+    const currGraph = new Graph(baseGraph);
+    const current = new Edit({ graph: currGraph });
+    this._current = current;
+    this._tree = new Tree(currGraph);
 
-    this._lastStable = base;
-    this._lastCurrent = current;
-    this._fullDifference = new Difference(base, base);
+    this._lastStableGraph = baseGraph;
+    this._lastCurrentGraph = currGraph;
+    this._fullDifference = new Difference(baseGraph, baseGraph);
 
-    this._tree = new Tree(current);
-    this._checkpoints = {};
+    this._checkpoints.clear();
     this._inTransition = false;
     this._inTransaction = false;
     this.emit('reset');
@@ -232,6 +240,7 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * tree
+   * The tree is a spatial index that keeps itself in sync with the `current` graph.
    * @return {Tree} The Tree (spatial index)
    */
   get tree() {
@@ -263,7 +272,7 @@ export class EditSystem extends AbstractSystem {
    * Actions are functions that accept a Graph and return a modified Graph.
    * All work is performed against the `current` edit.
    * If multiple functions are passed, they will be performed in order,
-   *   and change events will dispatch after they have all completed.
+   *   and an `editchange` event will be emitted after they have all completed.
    * @param   {...Function}  args - Variable number of Action functions to peform
    * @return  {Difference}   Difference between before and after of `current` Edit
    */
@@ -363,7 +372,6 @@ export class EditSystem extends AbstractSystem {
     // Create a new `current` work-in-progress Edit
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
-    this.deferredBackup();
     this._emitChangeEvents();
   }
 
@@ -418,7 +426,6 @@ export class EditSystem extends AbstractSystem {
     // Create a new `current` work-in-progress Edit
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
-    this.deferredBackup();
     this._emitChangeEvents();
   }
 
@@ -501,6 +508,57 @@ export class EditSystem extends AbstractSystem {
 
 
   /**
+   * setCheckpoint
+   * This saves the `history` and `index` as a "checkpoint" that we can return to later.
+   * If the given checkpointID exists, it will be overwritten.
+   * @param  {string}  checkpointID - A string to identify the checkpoint
+   */
+  setCheckpoint(checkpointID) {
+    if (!checkpointID) return;
+    d3_select(document).interrupt('editTransition');
+
+    // Save a shallow copy of history, in case user undos away the edit that `_index` points to.
+    this._checkpoints.set(checkpointID, {
+      history: this._history.slice(),  // shallow copy
+      index: this._index
+    });
+  }
+
+
+  /**
+   * restoreCheckpoint
+   * This returns the `history` and `index` back to the edit identified by the given checkpointID.
+   * Note that all work-in-progress in the `current` Edit is lost when calling `restoreCheckpoint()`.
+   * @param  {string}  checkpointID - A string to identify the checkpoint
+   */
+  restoreCheckpoint(checkpointID) {
+    if (!checkpointID) return;
+    d3_select(document).interrupt('editTransition');
+
+    const checkpoint = this._checkpoints.get(checkpointID);
+    if (checkpoint) {
+      this._history = checkpoint.history.slice();   // shallow copy
+      this._index = checkpoint.index;
+
+      // Create a new `current` work-in-progress Edit
+      this._current = new Edit({ graph: new Graph(this.stable.graph) });
+      this._emitChangeEvents();
+    }
+  }
+
+
+  /**
+   * deleteCheckpoint
+   * This removes the checkpoint identified by the given checkpointID.
+   * @param  {string}  checkpointID - A string to identify the checkpoint
+   */
+  deleteCheckpoint(checkpointID) {
+    if (!checkpointID) return;
+    this._checkpoints.delete(checkpointID);
+  }
+
+
+  /**
    *  merge
    *  Merge new entities into the Base Graph.
    *  This function is called when we have parsed a new tile of OSM data, we will
@@ -550,8 +608,8 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * beginTransaction
-   * Prevents events from being dispatched.
-   * During a transaction, edits can be performed but no `change` events will be disptached.
+   * Prevents `editchange` and `historychange` events from being emitted.
+   * During a transaction, edits can be performed but no `change` events will be emitted.
    * This is to prevent other parts of the code from rendering/validating partial or incomplete edits.
    */
   beginTransaction() {
@@ -561,9 +619,9 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * endTransaction
-   * This marks the transaction as complete, and allows events to be dispatched again.
+   * This marks the transaction as complete, and allows events to be emitted again.
    * Any `editchange` and `historychange` events will be emitted that cover
-   * the difference from the beginning -> end of the transaction.
+   *   the difference from the beginning -> end of the transaction.
    */
   endTransaction() {
     this._inTransaction = false;
@@ -640,8 +698,8 @@ export class EditSystem extends AbstractSystem {
 
     return {
       modified: difference.modified(),
-      created: difference.created(),
-      deleted: difference.deleted()
+      created:  difference.created(),
+      deleted:  difference.deleted()
     };
   }
 
@@ -682,38 +740,6 @@ export class EditSystem extends AbstractSystem {
     }
 
     return result;
-  }
-
-
-  /**
-   * setCheckpoint
-   * This saves the `history` and `index` as a checkpoint that we can return to later.
-   * @param  {string}  key - the name of the checkpoint
-   */
-  setCheckpoint(key) {
-    d3_select(document).interrupt('editTransition');
-
-    // Save a shallow copy of history, in case user undos away the edit that index points to.
-    this._checkpoints[key] = {
-      history: this._history.slice(),  // shallow copy
-      index: this._index
-    };
-  }
-
-
-  /**
-   * restoreCheckpoint
-   * This returns the `history` and `index` back to the edit identified by the given checkpoint key.
-   * @param  {string}  key - the name of the checkpoint
-   */
-  restoreCheckpoint(key) {
-    d3_select(document).interrupt('editTransition');
-
-    if (key && this._checkpoints.hasOwnProperty(key)) {  // reset to given key
-      this._history = this._checkpoints[key].history;
-      this._index = this._checkpoints[key].index;
-      this._emitChangeEvents();
-    }
   }
 
 
@@ -1000,7 +1026,6 @@ export class EditSystem extends AbstractSystem {
 
       loading.close();             // unblock ui
       map.redrawEnabled = true;    // unbock drawing
-      this.emit('restore');
       this._emitChangeEvents();
     };
 
@@ -1216,28 +1241,29 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * _emitChangeEvents
-   * Recalculate the differences and dispatch change events.
+   * Recalculate the differences and emit `historychange` and `editchange` events.
    * @return {Difference}  Difference between before and after of `current` Edit
    */
   _emitChangeEvents() {
     if (this._inTransaction) return;
 
-    const base = this.base.graph;
-    const stable = this.stable.graph;
-    const current = this.current.graph;
+    const baseGraph = this.base.graph;
+    const stableGraph = this.stable.graph;
+    const currentGraph = this.current.graph;
 
-    if (this._lastStable !== stable) {
-      const stableDifference = new Difference(this._lastStable, stable);
-      this._lastStable = stable;
-      this._fullDifference = new Difference(base, stable);
+    if (this._lastStableGraph !== stableGraph) {
+      this._fullDifference = new Difference(baseGraph, stableGraph);
+      const stableDifference = new Difference(this._lastStableGraph, stableGraph);
       this.emit('historychange', stableDifference);
+      this._lastStableGraph = stableGraph;
+      this.deferredBackup();
     }
 
     let currentDifference;
-    if (this._lastCurrent !== current) {
-      currentDifference = new Difference(this._lastCurrent, current);
-      this._lastCurrent = current;
+    if (this._lastCurrentGraph !== currentGraph) {
+      currentDifference = new Difference(this._lastCurrentGraph, currentGraph);
       this.emit('editchange', currentDifference);
+      this._lastCurrentGraph = currentGraph;
     }
 
     return currentDifference;  // only one place in the code uses this return - split operation?

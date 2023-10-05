@@ -27,7 +27,7 @@ export function uiIntroBuilding(context, curtain) {
   let _rejectStep = null;
   let _onMapMove = null;
   let _onModeChange = null;
-  let _onEditChange = null;
+  let _onHistoryChange = null;
   let _houseID = null;
   let _tankID = null;
 
@@ -115,8 +115,7 @@ export function uiIntroBuilding(context, curtain) {
         if (context.mode?.id !== 'draw-area') { resolve(addHouseAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onHistoryChange = (difference) => {
           for (const entity of difference.created()) {  // created a node and a way
             if (entity.type === 'way') {
               _houseID = entity.id;
@@ -137,7 +136,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
       });
   }
 
@@ -242,8 +241,7 @@ export function uiIntroBuilding(context, curtain) {
         if (!_isHouseSelected()) context.enter('select-osm', { selectedIDs: [_houseID] });
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onHistoryChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
             const graph = editor.current.graph;
@@ -268,7 +266,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-list-button').on('click.intro', null);
       });
@@ -306,7 +304,7 @@ export function uiIntroBuilding(context, curtain) {
       .setCenterZoomAsync(houseExtent.center(), setZoom, 100)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        _onEditChange = reject;  // disallow doing anything else
+        _onHistoryChange = reject;  // disallow doing anything else
 
         const textID = (context.lastPointerType === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
@@ -319,7 +317,7 @@ export function uiIntroBuilding(context, curtain) {
         });
       }))
       .finally(() => {
-        _onEditChange = null;
+        _onHistoryChange = null;
         editMenu.on('toggled.intro', null);
       });
   }
@@ -352,8 +350,8 @@ export function uiIntroBuilding(context, curtain) {
         };
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = () => {
-          _onEditChange = null;
+        _onHistoryChange = () => {
+          _onHistoryChange = null;
           _onMapMove = null;
           curtain.reveal({ revealExtent: houseExtent });  // watch it change
           resolve();
@@ -374,7 +372,7 @@ export function uiIntroBuilding(context, curtain) {
       .finally(() => {
         _onMapMove = null;
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
       });
   }
 
@@ -450,8 +448,7 @@ export function uiIntroBuilding(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
-      _onEditChange = (difference) => {
-        if (!difference) return;
+      _onHistoryChange = (difference) => {
         for (const entity of difference.created()) {  // created a node and a way
           if (entity.type === 'way') {
             _tankID = entity.id;
@@ -471,7 +468,7 @@ export function uiIntroBuilding(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onHistoryChange = null;
     });
   }
 
@@ -517,8 +514,7 @@ export function uiIntroBuilding(context, curtain) {
         if (!_isTankSelected()) context.enter('select-osm', { selectedIDs: [_tankID] });
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onHistoryChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
             const graph = editor.current.graph;
@@ -562,7 +558,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -595,7 +591,7 @@ export function uiIntroBuilding(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onEditChange = reject;  // disallow doing anything else
+      _onHistoryChange = reject;  // disallow doing anything else
 
       const textID = (context.lastPointerType === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
       curtain.reveal({
@@ -608,7 +604,7 @@ export function uiIntroBuilding(context, curtain) {
       });
     })
     .finally(() => {
-      _onEditChange = null;
+      _onHistoryChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -641,9 +637,9 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        _onEditChange = () => {
+        _onHistoryChange = () => {
           _onMapMove = null;
-          _onEditChange = null;
+          _onHistoryChange = null;
           curtain.reveal({ revealExtent: tankExtent });  // watch it change
           resolve();
         };
@@ -663,7 +659,7 @@ export function uiIntroBuilding(context, curtain) {
       .finally(() => {
         _onMapMove = null;
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
       });
   }
 
@@ -705,28 +701,28 @@ export function uiIntroBuilding(context, curtain) {
     _rejectStep = null;
     _onMapMove = null;
     _onModeChange = null;
-    _onEditChange = null;
+    _onHistoryChange = null;
 
     context.on('modechange', _modeChangeListener);
     map.on('move', _mapMoveListener);
-    editor.on('historychange', _editChangeListener);
+    editor.on('historychange', _historyChangeListener);
 
     runAsync(addHouseAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
         map.off('move', _mapMoveListener);
-        editor.off('historychange', _editChangeListener);
+        editor.off('historychange', _historyChangeListener);
       });
 
-    function _mapMoveListener() {
-      if (typeof _onMapMove === 'function') _onMapMove();
+    function _mapMoveListener(...args) {
+      if (typeof _onMapMove === 'function') _onMapMove(...args);
     }
-    function _modeChangeListener(mode) {
-      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    function _modeChangeListener(...args) {
+      if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(difference) {
-      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    function _historyChangeListener(...args) {
+      if (typeof _onHistoryChange === 'function') _onHistoryChange(...args);
     }
   };
 

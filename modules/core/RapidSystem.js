@@ -48,9 +48,7 @@ export class RapidSystem extends AbstractSystem {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
-    this._onUndone = this._onUndone.bind(this);
-    this._onChange = this._onChange.bind(this);
-    this._onRestore = this._onRestore.bind(this);
+    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -87,9 +85,7 @@ export class RapidSystem extends AbstractSystem {
           .on('hashchange', this._hashchange);
 
         editor
-          .on('undone', this._onUndone)
-          .on('historychange', this._onChange)
-          .on('restore', this._onRestore);
+          .on('historychange', this._historychange);
 
         this._datasets.set('fbRoads', {
           id: 'fbRoads',
@@ -137,7 +133,7 @@ export class RapidSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    this.acceptedIDs = new Set();
+    this.acceptedIDs.clear();
     return Promise.resolve();
   }
 
@@ -236,54 +232,26 @@ export class RapidSystem extends AbstractSystem {
 
 
   /**
-   *
+   * _historychange
+   * This is called anytime the history changes, we recompute the acceptedIDs set.
+   * This can run on history change, undo, redo, or history restore.
    */
-  _onUndone(currentStack, previousStack) {
-    const context = this.context;
-    const map = context.systems.map;
-
-    const annotation = previousStack.annotation;
-    if (!this._wasRapidEdit(annotation)) return;
-
-    this.acceptedIDs.delete(annotation.id);
-    map.immediateRedraw();
-  }
-
-
-  /**
-   *
-   */
-  _onChange() {
+  _historychange() {
     const context = this.context;
     const editor = context.systems.editor;
     const map = context.systems.map;
 
-    const annotation = editor.stable.annotation;
-    if (!this._wasRapidEdit(annotation)) return;
-
-    this.acceptedIDs.add(annotation.id);
-    map.immediateRedraw();
-  }
-
-
-  /**
-   *  When restoring history, determine which edits were Rapid edits,
-   *  and restore the `acceptedIDs` Set.
-   */
-  _onRestore() {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const map = context.systems.map;
-
-    this.acceptedIDs = new Set();
+    this.acceptedIDs.clear();
 
     const history = editor.history;
     const index = editor.index;
 
-    for (let i = 0; i <= index; i++) {
+    // Start at `1` - there won't be sources on the `base` edit..
+    // End at `index` - don't continue into the redo part of the history..
+    for (let i = 1; i <= index; i++) {
       const edit = history[i];
       const annotation = edit.annotation;
-      if (!this._wasRapidEdit(annotation)) continue;
+      if (!annotation?.type || !/^rapid/.test(annotation.type)) continue;  // not a rapid edit?
 
       this.acceptedIDs.add(annotation.id);
 
@@ -300,7 +268,8 @@ export class RapidSystem extends AbstractSystem {
       }
     }
 
-    map.immediateRedraw();
+    // maybe not needed?
+    // map.immediateRedraw();
   }
 
 

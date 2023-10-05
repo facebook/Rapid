@@ -156,7 +156,6 @@ export function uiIntroLine(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
       _onEditChange = (difference) => {
-        if (!difference) return;
         for (const entity of difference.created()) {  // created a node and a way
           if (entity.type === 'way') {
             _lineID = entity.id;
@@ -328,7 +327,6 @@ export function uiIntroLine(context, curtain) {
         _onModeChange = reject;   // disallow mode change
 
         _onEditChange = (difference) => {
-          if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
             const graph = editor.current.graph;
@@ -385,7 +383,6 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
         _onEditChange = (difference) => {
-          if (!difference) return;
           const modified = difference.modified();
           if (modified.length === 1) {
             const graph = editor.current.graph;
@@ -1021,24 +1018,24 @@ export function uiIntroLine(context, curtain) {
 
     context.on('modechange', _modeChangeListener);
     map.on('move', _mapMoveListener);
-    editor.on('historychange', _editChangeListener);
+    editor.on('editchange', _editChangeListener);
 
     runAsync(addLineAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
         map.off('move', _mapMoveListener);
-        editor.off('historychange', _editChangeListener);
+        editor.off('editchange', _editChangeListener);
       });
 
-    function _mapMoveListener() {
-      if (typeof _onMapMove === 'function') _onMapMove();
+    function _mapMoveListener(...args) {
+      if (typeof _onMapMove === 'function') _onMapMove(...args);
     }
-    function _modeChangeListener(mode) {
-      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    function _modeChangeListener(...args) {
+      if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(difference) {
-      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    function _editChangeListener(...args) {
+      if (typeof _onEditChange === 'function') _onEditChange(...args);
     }
   };
 

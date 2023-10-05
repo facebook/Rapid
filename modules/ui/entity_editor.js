@@ -43,7 +43,9 @@ export function uiEntityEditor(context) {
   let _activePresets = [];
   let _newFeature;
 
-  editor.on('editchange', _onChange);
+  // reset listener
+  editor.off('editchange', _onEditChange);
+  editor.on('editchange', _onEditChange);
 
 
   /**
@@ -182,24 +184,23 @@ export function uiEntityEditor(context) {
   /**
    *
    */
-  function _onChange(difference) {
+  function _onEditChange(difference) {
     if (!_selection) return;     // called before first render
     if (_selection.selectAll('.entity-editor').empty()) return;
     if (_state === 'hide') return;
 
-    const currGraph = editor.current.graph;
-
-    const significant = !difference || difference.didChange.properties || difference.didChange.addition || difference.didChange.deletion;
+    const significant = difference.didChange.properties || difference.didChange.addition || difference.didChange.deletion;
     if (!significant) return;
 
-    _entityIDs = _entityIDs.filter(entityID => currGraph.hasEntity(entityID));
+    const graph = editor.current.graph;
+    _entityIDs = _entityIDs.filter(entityID => graph.hasEntity(entityID));
     if (!_entityIDs.length) return;
 
     const prevPreset = _activePresets.length === 1 && _activePresets[0];
     _loadActivePresets();
     const currPreset = _activePresets.length === 1 && _activePresets[0];
 
-    entityEditor.modified(_startGraph !== currGraph);
+    entityEditor.modified(_startGraph !== graph);
     _selection.call(entityEditor);  // rerender
 
     // If this difference caused the preset to change, flash the button.

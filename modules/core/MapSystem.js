@@ -220,14 +220,6 @@ export class MapSystem extends AbstractSystem {
     const photos = context.systems.photos;
     const scene = this._renderer.scene;
 
-    const _didUndoOrRedo = (targetTransform) => {
-      const modeID = context.mode?.id;
-      if (modeID !== 'browse' && modeID !== 'select') return;
-      if (targetTransform) {
-        this.transformEase(targetTransform);
-      }
-    };
-
     editor
       .on('merge', entityIDs => {
         if (entityIDs) {
@@ -236,23 +228,28 @@ export class MapSystem extends AbstractSystem {
         this.deferredRedraw();
       })
       .on('editchange', difference => {
-        if (difference) {
-          // todo - maybe only do this if difference.didChange.geometry?
-          const complete = difference.complete();
-          for (const entity of complete.values()) {
-            if (entity) {      // may be undefined if entity was deleted
-              entity.touch();  // bump version in place
-              filters.clearEntity(entity);  // clear feature filter cache
-            }
+        // todo - maybe only do this if difference.didChange.geometry?
+        const complete = difference.complete();
+        for (const entity of complete.values()) {
+          if (entity) {      // may be undefined if entity was deleted
+            entity.touch();  // bump .v in place, rendering code will pick it up as dirty
+            filters.clearEntity(entity);  // clear feature filter cache
           }
-          // touching entity will bump .v and the renderer should pick it up as dirty?
-//         const entityIDs = [...complete.keys()];
-//         scene.dirtyData('osm', entityIDs);
         }
         this.immediateRedraw();
       })
-      .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
-      .on('redone', (stack) => _didUndoOrRedo(stack.transform));
+      .on('historychange', difference => {
+        const modeID = context.mode?.id;
+        if (!['browse', 'select', 'select-osm'].includes(context.mode?.id)) return;
+
+        // Recenter the map if we've jumped to a different place,
+        // (because of a undo, redo, restore, etc)
+        const t0 = this.transform();
+        const t1 = editor.stable.transform;
+        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
+          this.transformEase(t1);
+        }
+      });
 
     filters
       .on('filterchange', () => {

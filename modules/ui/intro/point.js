@@ -23,7 +23,7 @@ export function uiIntroPoint(context, curtain) {
   let _chapterCancelled = false;
   let _rejectStep = null;
   let _onModeChange = null;
-  let _onEditChange = null;
+  let _onHistoryChange = null;
   let _pointID = null;
 
 
@@ -95,8 +95,7 @@ export function uiIntroPoint(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = () => resolve(searchPresetAsync);
-      _onEditChange = (difference) => {
-        if (!difference) return;
+      _onHistoryChange = (difference) => {
         const created = difference.created();
         if (created.length === 1) {
           _pointID = created[0].id;
@@ -111,7 +110,7 @@ export function uiIntroPoint(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onHistoryChange = null;
     });
   }
 
@@ -126,8 +125,7 @@ export function uiIntroPoint(context, curtain) {
         if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
 
         _onModeChange = reject;  // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onHistoryChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
             const graph = editor.current.graph;
@@ -171,7 +169,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -217,7 +215,7 @@ export function uiIntroPoint(context, curtain) {
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(hasPointAsync);
-        _onEditChange = () => resolve(addCloseEditorAsync);
+        _onHistoryChange = () => resolve(addCloseEditorAsync);
 
         showEntityEditor(container);
 
@@ -246,7 +244,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
       });
   }
 
@@ -331,7 +329,7 @@ export function uiIntroPoint(context, curtain) {
         if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = () => resolve(updateCloseEditorAsync);
+        _onHistoryChange = () => resolve(updateCloseEditorAsync);
 
         showEntityEditor(container);
 
@@ -343,7 +341,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
       });
  }
 
@@ -378,7 +376,7 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onEditChange = reject;  // disallow doing anything else
+      _onHistoryChange = reject;  // disallow doing anything else
 
       const textID = context.lastPointerType === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       curtain.reveal({
@@ -391,7 +389,7 @@ export function uiIntroPoint(context, curtain) {
       });
     })
     .finally(() => {
-      _onEditChange = null;
+      _onHistoryChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -409,8 +407,7 @@ export function uiIntroPoint(context, curtain) {
         _onModeChange = () => {
           if (_doesPointExist()) reject();  // point still exists, try again
         };
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onHistoryChange = (difference) => {
           const deleted = difference.deleted();
           if (deleted.length === 1 && deleted[0].id === _pointID) {
             resolve(undoAsync);
@@ -427,7 +424,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onHistoryChange = null;
       });
   }
 
@@ -437,14 +434,14 @@ export function uiIntroPoint(context, curtain) {
   function undoAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onEditChange = () => resolve(playAsync);
+      _onHistoryChange = () => resolve(playAsync);
       curtain.reveal({
         revealSelector: '.top-toolbar button.undo-button',
         tipHtml: helpHtml(context, 'intro.points.undo')
       });
     })
     .finally(() => {
-      _onEditChange = null;
+      _onHistoryChange = null;
     });
   }
 
@@ -468,23 +465,23 @@ export function uiIntroPoint(context, curtain) {
     _chapterCancelled = false;
     _rejectStep = null;
     _onModeChange = null;
-    _onEditChange = null;
+    _onHistoryChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editor.on('historychange', _editChangeListener);
+    editor.on('historychange', _historyChangeListener);
 
     runAsync(addPointAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editor.off('historychange', _editChangeListener);
+        editor.off('historychange', _historyChangeListener);
       });
 
-    function _modeChangeListener(mode) {
-      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    function _modeChangeListener(...args) {
+      if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(difference) {
-      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    function _historyChangeListener(...args) {
+      if (typeof _onHistoryChange === 'function') _onHistoryChange(...args);
     }
   };
 

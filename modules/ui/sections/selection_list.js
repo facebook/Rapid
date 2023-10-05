@@ -124,12 +124,7 @@ export function uiSectionSelectionList(context) {
   }
 
 
-  editor
-    .on('historychange', difference => {
-      if (difference) {
-        section.reRender();
-      }
-    });
+  editor.on('historychange', () => section.reRender());
 
   return section;
 }

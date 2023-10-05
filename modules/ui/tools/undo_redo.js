@@ -36,10 +36,6 @@ export function uiToolUndoRedo(context) {
   }];
 
 
-  function changed(difference) {
-    if (difference) update();
-  }
-
   function update() {
     if (!_buttons || !_tooltip) return;
     _buttons
@@ -126,7 +122,7 @@ export function uiToolUndoRedo(context) {
     }
 
     map.on('draw', debouncedUpdate);
-    editor.on('historychange', changed);
+    editor.on('historychange', update);
     context.on('modechange', update);
   };
 
@@ -140,7 +136,7 @@ export function uiToolUndoRedo(context) {
 
     debouncedUpdate.cancel();
     map.off('draw', debouncedUpdate);
-    editor.off('historychange', changed);
+    editor.off('historychange', update);
     context.off('modechange', update);
     _tooltip = null;
     _buttons = null;
