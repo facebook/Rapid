@@ -332,6 +332,8 @@ export class EditSystem extends AbstractSystem {
    * by replacing `current` with a fresh copy of `stable`.
    */
   rollback() {
+    if (!this._hasWorkInProgress) return;
+
     d3_select(document).interrupt('editTransition');
 
     // Create a new `current` work-in-progress Edit
