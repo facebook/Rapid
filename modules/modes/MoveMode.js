@@ -20,15 +20,14 @@ export class MoveMode extends AbstractMode {
 
     this._entityIDs = [];
     this._startLoc = null;
-    this._startGraph = null;
     this._movementCache = null;  // used by the move action
 
     // Make sure the event handlers have `this` bound correctly
     this._cancel = this._cancel.bind(this);
     this._finish = this._finish.bind(this);
+    this._historychange = this._historychange.bind(this);
     this._keydown = this._keydown.bind(this);
     this._pointermove = this._pointermove.bind(this);
-    this._undoOrRedo = this._undoOrRedo.bind(this);
   }
 
 
@@ -56,7 +55,6 @@ export class MoveMode extends AbstractMode {
     context.behaviors['map-nudging'].allow();
 
     this._startLoc = map.mouseLoc();
-    this._startGraph = editor.current.graph;
     this._movementCache = {};
 
     eventManager
@@ -66,8 +64,7 @@ export class MoveMode extends AbstractMode {
       .on('pointermove', this._pointermove);
 
     editor
-      .on('undone', this._undoOrRedo)
-      .on('redone', this._undoOrRedo);
+      .on('historychange', this._historychange);
 
     return true;
   }
@@ -81,12 +78,12 @@ export class MoveMode extends AbstractMode {
     this._active = false;
 
     this._startLoc = null;
-    this._startGraph = null;
     this._movementCache = null;
 
     const context = this.context;
     const editor = context.systems.editor;
     const filters = context.systems.filters;
+    const l10n = context.systems.l10n;
     const eventManager = context.systems.map.renderer.events;
 
     filters.forceVisible([]);
@@ -98,8 +95,17 @@ export class MoveMode extends AbstractMode {
       .off('pointermove', this._pointermove);
 
     editor
-      .off('undone', this._undoOrRedo)
-      .off('redone', this._undoOrRedo);
+      .off('historychange', this._historychange);
+
+    // If there is work in progress, finalize it.
+    if (editor.hasWorkInProgress) {
+      const graph = editor.current.graph;
+      const annotation = (this._entityIDs.length === 1) ?
+        l10n.t('operations.move.annotation.' + graph.geometry(this._entityIDs[0])) :
+        l10n.t('operations.move.annotation.feature', { n: this._entityIDs.length });
+
+      editor.commit(annotation);
+    }
   }
 
 
@@ -155,22 +161,10 @@ export class MoveMode extends AbstractMode {
 
   /**
    * _finish
-   * Finalize the move edit
+   * Return to select mode - `exit()` will finalize the work in progress.
    */
   _finish() {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const graph = editor.current.graph;
-    const l10n = context.systems.l10n;
-
-    if (graph !== this._startGraph) {
-      const annotation = (this._entityIDs.length === 1) ?
-        l10n.t('operations.move.annotation.' + graph.geometry(this._entityIDs[0])) :
-        l10n.t('operations.move.annotation.feature', { n: this._entityIDs.length });
-
-      editor.commit(annotation);
-    }
-    context.enter('select-osm', { selectedIDs: this._entityIDs });
+    this.context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
 
 
@@ -181,20 +175,20 @@ export class MoveMode extends AbstractMode {
   _cancel() {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
 
-    if (graph !== this._startGraph) {
-      editor.rollback();
-    }
+    editor.rollback();
     context.enter('select-osm', { selectedIDs: this._entityIDs });
   }
 
 
   /**
-   * _undoOrRedo
+   * _historychange
+   * Something has interrupted the edit we are doing (undo/redo/restore/etc)
    * Return to browse mode without doing anything
+   * (There will be no work in progress if we are receiving a `historychange`)
    */
-  _undoOrRedo() {
+  _historychange() {
     this.context.enter('browse');
   }
+
 }

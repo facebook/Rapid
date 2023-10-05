@@ -91,10 +91,12 @@ export class EditSystem extends AbstractSystem {
 
     this._mutex = utilSessionMutex('lock');
     this._canRestoreBackup = false;
+    this._hasWorkInProgress = false;
 
     this._history = [];     // history of accepted edits (both undo and redo) (was called "stack")
     this._index = 0;        // index of the latest `stable` edit
     this._current = null;   // work in progress edit, not yet added to the history
+
     this._checkpoints = new Map();
     this._inTransition = false;
     this._inTransaction = false;
@@ -192,6 +194,7 @@ export class EditSystem extends AbstractSystem {
     const currGraph = new Graph(baseGraph);
     const current = new Edit({ graph: currGraph });
     this._current = current;
+    this._hasWorkInProgress = false;
     this._tree = new Tree(currGraph);
 
     this._lastStableGraph = baseGraph;
@@ -265,6 +268,15 @@ export class EditSystem extends AbstractSystem {
     return this._index;
   }
 
+  /**
+   * hasWorkInProgress
+   * Is there work in progress in the `current` edit?
+   * @return {boolean}  `true` if there is work in progress in the `current` edit.
+   */
+  get hasWorkInProgress() {
+    return this._hasWorkInProgress;
+  }
+
 
   /**
    * perform
@@ -324,6 +336,7 @@ export class EditSystem extends AbstractSystem {
 
     // Create a new `current` work-in-progress Edit
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
+    this._hasWorkInProgress = false;
 
     return this._emitChangeEvents();
   }
@@ -371,6 +384,7 @@ export class EditSystem extends AbstractSystem {
 
     // Create a new `current` work-in-progress Edit
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
+    this._hasWorkInProgress = false;
 
     this._emitChangeEvents();
   }
@@ -425,6 +439,7 @@ export class EditSystem extends AbstractSystem {
 
     // Create a new `current` work-in-progress Edit
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
+    this._hasWorkInProgress = false;
 
     this._emitChangeEvents();
   }
@@ -432,7 +447,8 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * undo
-   * Move the `stable` index back to the previous Edit (or `_index = 0`).
+   * If there is work-in-progress on the `current` edit, rollback to `stable`
+   * Otherwise, move the `stable` index back to the previous Edit (or `_index = 0`).
    * Note that all work-in-progress in the `current` Edit is lost when calling `undo()`.
    *
    * Before calling `undo()`:
@@ -453,6 +469,10 @@ export class EditSystem extends AbstractSystem {
   undo() {
     d3_select(document).interrupt('editTransition');
 
+    if (this._hasWorkInProgress) {
+      return this.rollback();
+    }
+
     const previous = this.current;
     while (this._index > 0) {
       this._index--;
@@ -461,6 +481,8 @@ export class EditSystem extends AbstractSystem {
 
     // Create a new `current` work-in-progress Edit
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
+    this._hasWorkInProgress = false;
+
     this.emit('undone', this.stable, previous);
     return this._emitChangeEvents();
   }
@@ -498,6 +520,8 @@ export class EditSystem extends AbstractSystem {
         this._index = tryIndex;
         // Create a new `current` work-in-progress Edit
         this._current = new Edit({ graph: new Graph(this.stable.graph) });
+        this._hasWorkInProgress = false;
+
         this.emit('redone', this.stable, previous);
         break;
       }
@@ -1203,6 +1227,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     this._current.graph = graph;
+    this._hasWorkInProgress = true;
     return this._emitChangeEvents();
   }
 
@@ -1254,16 +1279,16 @@ export class EditSystem extends AbstractSystem {
     if (this._lastStableGraph !== stableGraph) {
       this._fullDifference = new Difference(baseGraph, stableGraph);
       const stableDifference = new Difference(this._lastStableGraph, stableGraph);
-      this.emit('historychange', stableDifference);
       this._lastStableGraph = stableGraph;
+      this.emit('historychange', stableDifference);
       this.deferredBackup();
     }
 
     let currentDifference;
     if (this._lastCurrentGraph !== currentGraph) {
       currentDifference = new Difference(this._lastCurrentGraph, currentGraph);
-      this.emit('editchange', currentDifference);
       this._lastCurrentGraph = currentGraph;
+      this.emit('editchange', currentDifference);
     }
 
     return currentDifference;  // only one place in the code uses this return - split operation?
