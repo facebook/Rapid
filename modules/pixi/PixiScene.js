@@ -239,7 +239,7 @@ export class PixiScene extends EventEmitter {
    * @param  classID  `String` classID (e.g. 'hovered')
    */
   unclassData(layerID, dataID, classID) {
-    this.layers.get(layerID)?.unclassData(layerID, dataID, classID);
+    this.layers.get(layerID)?.unclassData(dataID, classID);
   }
 
 
