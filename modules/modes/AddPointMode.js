@@ -24,10 +24,12 @@ export class AddPointMode extends AbstractMode {
     this.id = 'add-point';
 
     this.defaultTags = {};
+    this.nodeID = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
     this._cancel = this._cancel.bind(this);
+    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -42,6 +44,8 @@ export class AddPointMode extends AbstractMode {
     this._active = true;
     const context = this.context;
 
+    this.nodeID = null;
+
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
 
     context.behaviors.draw
@@ -50,8 +54,7 @@ export class AddPointMode extends AbstractMode {
       .on('finish', this._cancel);
 
     context.systems.editor
-      .on('undone', this._cancel)
-      .on('redone', this._cancel);
+      .on('historychange', this._historychange);
 
     return true;
   }
@@ -62,14 +65,14 @@ export class AddPointMode extends AbstractMode {
    */
   exit() {
     if (!this._active) return;
+    this._active = false;
 
     if (DEBUG) {
       console.log('AddPointMode: exiting');  // eslint-disable-line no-console
     }
 
-    this._active = false;
-
     const context = this.context;
+    this.nodeID = null;
 
     context.behaviors.draw
       .off('click', this._click)
@@ -77,8 +80,7 @@ export class AddPointMode extends AbstractMode {
       .off('finish', this._cancel);
 
     context.systems.editor
-      .off('undone', this._cancel)
-      .off('redone', this._cancel);
+      .off('historychange', this._historychange);
   }
 
 
@@ -138,9 +140,9 @@ export class AddPointMode extends AbstractMode {
     const l10n = context.systems.l10n;
 
     const node = osmNode({ loc: loc, tags: this.defaultTags });
+    this.nodeID = node.id;
     editor.perform(actionAddEntity(node));
     editor.commit(l10n.t('operations.add.annotation.point'));
-    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
 
@@ -154,9 +156,9 @@ export class AddPointMode extends AbstractMode {
     const l10n = context.systems.l10n;
 
     const node = osmNode({ tags: this.defaultTags });
+    this.nodeID = node.id;
     editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node));
     editor.commit(l10n.t('operations.add.annotation.vertex'));
-    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
   }
 
 
@@ -168,6 +170,8 @@ export class AddPointMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
+
+    this.nodeID = node.id;
 
     if (Object.keys(this.defaultTags).length === 0) {
       context.enter('select-osm', { selectedIDs: [node.id] });
@@ -181,7 +185,25 @@ export class AddPointMode extends AbstractMode {
 
     editor.perform(actionChangeTags(node.id, tags));
     editor.commit(l10n.t('operations.add.annotation.point'));
-    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
+  }
+
+
+  /**
+   * _historychange
+   * A change has happened, so we need to decide what mode to switch to next.
+   */
+  _historychange(difference) {
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.current.graph;
+    const nodeID = this.nodeID;
+
+    if (nodeID && graph.hasEntity(nodeID)) {
+      const isNew = difference.created().includes(nodeID);
+      context.enter('select-osm', { selectedIDs: [nodeID], newFeature: isNew });
+    } else {
+      context.enter('browse');
+    }
   }
 
 

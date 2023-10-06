@@ -35,6 +35,7 @@ export class DragNodeMode extends AbstractMode {
     this._move = this._move.bind(this);
     this._end = this._end.bind(this);
     this._cancel = this._cancel.bind(this);
+    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -111,8 +112,7 @@ export class DragNodeMode extends AbstractMode {
       .on('cancel', this._cancel);
 
     editor
-      .on('undone', this._cancel)
-      .on('redone', this._cancel);
+      .on('historychange', this._historychange);
 
     return true;
   }
@@ -142,8 +142,7 @@ export class DragNodeMode extends AbstractMode {
       .off('cancel', this._cancel);
 
     editor
-      .off('undone', this._cancel)
-      .off('redone', this._cancel);
+      .off('historychange', this._historychange);
   }
 
 
@@ -233,8 +232,8 @@ export class DragNodeMode extends AbstractMode {
   /**
    * _end
    * Complete the drag.
-   * This calls `commit` to finalize the graph state with an annotation so that we can undo/redo to here.
-   * Note that `exit()` will be called immediately after this to perform cleanup.
+   * This calls `commit` to finalize the current edit with an annotation so that we can undo/redo to here.
+   * Note that `historychanged()` will be called immediately after this to choose the next mode.
    * @param  eventData  `Object` data received from the drag behavior
    */
   _end(eventData) {
@@ -244,7 +243,6 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     let graph = editor.current.graph;
-    const isPoint = this.dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -280,17 +278,7 @@ export class DragNodeMode extends AbstractMode {
       annotation = this._moveAnnotation();
     }
 
-    editor.commit(annotation);
-
-    // Choose next mode
-    graph = editor.current.graph;  // post-action
-    if (isPoint && graph.hasEntity(this.dragNode.id)) {
-      context.enter('select-osm', { selectedIDs: [this.dragNode.id] });
-    } else if (this._reselectIDs.length) {
-      context.enter('select-osm', { selectedIDs: this._reselectIDs });
-    } else {
-      context.enter('browse');
-    }
+    editor.commit(annotation);  // We will receive historychange event
   }
 
 
@@ -370,6 +358,30 @@ export class DragNodeMode extends AbstractMode {
 
     editor.rollback();
     this.context.enter('browse');
+  }
+
+
+  /**
+   * _historychange
+   * A change has happened, so we need to decide what mode to switch to next.
+   * If possible select the dragged node.
+   */
+  _historychange() {
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.current.graph;
+
+    const dragNode = this.dragNode && graph.hasEntity(this.dragNode.id);
+    const isPoint = dragNode && dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
+
+    // Choose next mode
+    if (dragNode && isPoint) {
+      context.enter('select-osm', { selectedIDs: [dragNode.id] });
+    } else if (this._reselectIDs.length) {
+      context.enter('select-osm', { selectedIDs: this._reselectIDs });
+    } else {
+      context.enter('browse');
+    }
   }
 
 }

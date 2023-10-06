@@ -44,7 +44,7 @@ export class SelectOsmMode extends AbstractMode {
     this._lastVertex = this._lastVertex.bind(this);
     this._nextVertex = this._nextVertex.bind(this);
     this._previousVertex = this._previousVertex.bind(this);
-    this._undoOrRedo = this._undoOrRedo.bind(this);
+    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -143,10 +143,9 @@ export class SelectOsmMode extends AbstractMode {
       .select(selectedIDs, this._newFeature);
 
     editor
+      .on('historychange', this._historychange);
       // this was probably to style the elements
       // .on('editchange', this._selectElements)    // reselect, in case relation members were removed or added
-      .on('undone', this._undoOrRedo)
-      .on('redone', this._undoOrRedo);
 
     return true;
   }
@@ -206,9 +205,9 @@ export class SelectOsmMode extends AbstractMode {
     }
 
     editor
-      // .off('editchange', this._selectElements)
-      .off('undone', this._undoOrRedo)
-      .off('redone', this._undoOrRedo);
+      .off('historychange', this._historychange);
+      // this was probably to style the elements
+      // .off('editchange', this._selectElements)    // reselect, in case relation members were removed or added
   }
 
 
@@ -224,10 +223,10 @@ export class SelectOsmMode extends AbstractMode {
 
 
   /**
-   * _undoOrRedo
+   * _historychange
    *  on undo or redo, see whether we can stay in this mode
    */
-  _undoOrRedo() {
+  _historychange() {
     const context = this.context;
     const graph = context.systems.editor.current.graph;
     const locations = context.systems.locations;

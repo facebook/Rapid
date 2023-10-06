@@ -42,8 +42,7 @@ export class AddNoteMode extends AbstractMode {
       .on('finish', this._cancel);
 
     context.systems.editor
-      .on('undone', this._cancel)
-      .on('redone', this._cancel);
+      .on('historychange', this._cancel);
 
     context.behaviors['map-nudging'].allow();
 
@@ -69,8 +68,7 @@ export class AddNoteMode extends AbstractMode {
       .off('finish', this._cancel);
 
     context.systems.editor
-      .off('undone', this._cancel)
-      .off('redone', this._cancel);
+      .off('historychange', this._cancel);
   }
 
 

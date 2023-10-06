@@ -525,11 +525,9 @@ export class EditSystem extends AbstractSystem {
         this._hasWorkInProgress = false;
 
         this.emit('redone', this.stable, previous);
-        break;
+        return this._emitChangeEvents();
       }
     }
-
-    return this._emitChangeEvents();
   }
 
 
