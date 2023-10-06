@@ -271,6 +271,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.style.markerTint = MAPILLARY_GREEN;
         feature.style.scale = 1.0;
         feature.style.fovWidth = 1;
+        feature.style.fovLength = 1;
       }
 
 
