@@ -263,7 +263,11 @@ export class PhotoSystem extends AbstractSystem {
    */
   selectPhoto(layerID = null, photoID = null) {
     if (layerID === this._currLayerID && photoID === this._currPhotoID) return;  // nothing to do
-    this._currLayerID = layerID;
+
+    if (layerID !== null) {
+      this._currLayerID = layerID;
+    }
+    const oldPhotoID = this._currPhotoID;
     this._currPhotoID = photoID;
 
     const context = this.context;
@@ -272,8 +276,14 @@ export class PhotoSystem extends AbstractSystem {
     // renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
     // 'Active' may stay resident if the user clicks off the image onto an OSM entity
     // in which case we still may want to draw the image point differently.
-    scene.clearClass('selected');
-    scene.clearClass('active');
+//    scene.clearClass('selected');
+    scene.unclassData(layerID, oldPhotoID, 'selected');
+    scene.unclassData(layerID, oldPhotoID, 'active');
+
+    // Leave the 'active' class on the photo in the case where we clicked on something besides a photo.
+    if (layerID !== null && photoID !== null) {
+      scene.clearClass('active');
+    }
 
     if (layerID && photoID) {
       const service = context.services[layerID];

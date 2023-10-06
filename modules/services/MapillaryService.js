@@ -66,9 +66,17 @@ export class MapillaryService extends AbstractSystem {
   _keydown(e) {
     // Only allow key navigation if the user doesn't have something
     // more important focused - like a input, textarea, menu, etc.
-    // and only allow key nav if we're showing the viewer!
+    // and only allow key nav if we're showing the viewer and have the body or the map clicked
     const activeElement = document.activeElement?.tagName ?? 'BODY';
-    if (activeElement !== 'BODY' || !this.viewerShowing || !this.context.systems.photos._currLayerID?.startsWith('mapillary')) return;
+    const mapillaryViewerClass = document.activeElement?.className.startsWith('mapillary');
+
+    if (
+      (activeElement !== 'BODY' && !mapillaryViewerClass) ||
+      !this.viewerShowing      ||
+      !this.context.systems.photos._currLayerID?.startsWith('mapillary')
+    ) {
+      return;
+    }
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
         this.navigateBackward();
@@ -760,11 +768,17 @@ get viewerShowing()         { return this._showing; }
       this.context.systems.map.immediateRedraw();
     };
 
+    const fovChange = (e) => {
+      this.emit('fovChanged', e);
+    };
+
     this._mlyViewer = new mapillary.Viewer(opts);
     this._mlyViewer.on('image', imageChanged);
     this._mlyViewer.on('bearing', bearingChanged);
+    this._mlyViewer.on('fov', fovChange);
 
-    if (this._mlyViewerFilter) {
+
+      if (this._mlyViewerFilter) {
       this._mlyViewer.setFilter(this._mlyViewerFilter);
     }
 

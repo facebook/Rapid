@@ -1,10 +1,18 @@
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
+import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 
 const MINZOOM = 12;
 const MAPILLARY_GREEN = 0x05CB63;
 const MAPILLARY_SELECTED = 0xffee00;
+
+//3: most zoomed- 0: no zoom
+const MAPILLARY_ZOOM = { min: 0, max: 3 };
+
+//Fully zoomed in = FOV width of 0.5 and length of 2
+const fovWidthInterp = d3_scaleLinear([MAPILLARY_ZOOM.min, MAPILLARY_ZOOM.max], [1, 0.5], );
+const fovLengthInterp = d3_scaleLinear([MAPILLARY_ZOOM.min, MAPILLARY_ZOOM.max],[1, 2]);
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
@@ -34,12 +42,16 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     super(scene, layerID);
 
     this._handleBearingChange = this._handleBearingChange.bind(this);
+    this._handleFovChange = this._handleFovChange.bind(this);
+    this._handleZoomRetrieval = this._handleZoomRetrieval.bind(this);
     this._viewerCompassAngle = null;
+    this._viewerZoom = MAPILLARY_ZOOM.min; //no zoom
 
     if (this.supported) {
       const service = this.context.services.mapillary;
 
       service.on('bearingChanged', this._handleBearingChange);
+      service.on('fovChanged', this._handleFovChange);
     }
   }
 
@@ -52,6 +64,20 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     this._viewerCompassAngle = event.bearing;
   }
 
+
+  /**
+   * _handleBearingCHange
+   * Handle the user dragging inside of a panoramic photo.
+   */
+  _handleFovChange() {
+    this.context.services.mapillary._mlyViewer.getZoom().then(this._handleZoomRetrieval);
+  }
+
+
+  // MLY 4.0 viewer will vary zoom from 0 (no zoom) to 3 (most zoomed)
+  _handleZoomRetrieval(zoom) {
+      this._viewerZoom = zoom;
+  }
 
   /**
    * supported
@@ -235,12 +261,16 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.style.markerTint = MAPILLARY_SELECTED;
         feature.style.scale = 2.0;
 
+        //Vary the length and width of the viewfield as we zoom in.
+        feature.style.fovWidth = fovWidthInterp(this._viewerZoom);
+        feature.style.fovLength = fovLengthInterp(this._viewerZoom);
       } else  {
         feature.active = false;
         feature.style.viewfieldName = d.isPano ? 'pano' : 'viewfield';
         feature.style.viewfieldTint = MAPILLARY_GREEN;
         feature.style.markerTint = MAPILLARY_GREEN;
         feature.style.scale = 1.0;
+        feature.style.fovWidth = 1;
       }
 
 
