@@ -724,6 +724,7 @@ get viewerShowing()         { return this._showing; }
       accessToken: accessToken,
       component: {
         cover: false,
+        bearing: {size: mapillary.ComponentSize.Standard},
         keyboard: false,
         tag: true
       },
