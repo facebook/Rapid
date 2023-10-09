@@ -25,7 +25,7 @@ const DURATION = 150;
  * Each entry in the history stack is an `Edit`.  An Edit may contain:
  *  - `annotation`  - undo/redo annotation, a String saying what the Edit did. e.g. "Started a Line".
  *  - `graph`       - Graph at the time of the Edit
- *  - `selectedIDs` - ids that the user had selected at tht time
+ *  - `selectedIDs` - ids that the user had selected at the time (assumed to be OSM)
  *  - `sources`     - sources being used to make the Edit (imagery, photos, data)
  *  - `transform`   - map transform at the time of the Edit
  *
@@ -1032,6 +1032,8 @@ export class EditSystem extends AbstractSystem {
     const graphs = this._history.map(edit => edit.graph);
     baseGraph.rebase(baseEntities, graphs, true);   // force = true
     this._tree.rebase(baseEntities, true);          // force = true
+    const seenIDs = new Set(baseEntities.map(entity => entity.id));
+    this.emit('merge', seenIDs);
 
     // Call _finish when we believe we have everything.
     const _finish = () => {
@@ -1045,7 +1047,7 @@ export class EditSystem extends AbstractSystem {
 
       const selectedIDs = this.stable.selectedIDs;
       if (selectedIDs) {
-        context.enter('select-osm', { selectedIDs: selectedIDs });
+        context.enter('select-osm', { selection: { osm: selectedIDs }} );
       }
 
       loading.close();             // unblock ui
@@ -1094,6 +1096,8 @@ export class EditSystem extends AbstractSystem {
               }
               baseGraph.rebase(visibles, graphs, true);   // force = true
               this._tree.rebase(visibles, true);          // force = true
+              const seenIDs = new Set(visibles.map(entity => entity.id));
+              this.emit('merge', seenIDs);
             }
 
             // Invisible (deleted) entities, need to go back a version to find them..
