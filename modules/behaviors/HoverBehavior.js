@@ -1,4 +1,5 @@
 import { AbstractBehavior } from './AbstractBehavior';
+import * as PIXI from 'pixi.js';
 // import { geoChooseEdge } from '../geo';
 
 
@@ -153,6 +154,42 @@ export class HoverBehavior extends AbstractBehavior {
     if (prevID !== currID) {
       this.hoverTarget = Object.assign({}, eventData.target);  // shallow copy
       this.emit('hoverchange', eventData);
+    }
+    //  Cursor changes on Hover
+    const graph = context.graph();
+    const { target } = eventData;
+    const datum = target?.data;
+    const entity = datum && graph.hasEntity(datum.id);
+    const geom = entity?.geometry(graph) ?? 'grab';
+    const mode = context.mode;
+    if (geom) {
+      switch (geom) {
+        case 'line':
+          document.body.style.cursor = 'url(/img/cursor-select-line.png), pointer';
+          break;
+        case 'vertex':
+          document.body.style.cursor = 'url(/img/cursor-select-vertex.png), pointer';
+          break;
+        case 'point':
+          document.body.style.cursor = 'url(/img/cursor-select-point.png), pointer';
+          break;
+        case 'area':
+          document.body.style.cursor = 'url(/img/cursor-select-area.png), pointer';
+          break;
+        default:
+            document.body.style.cursor = 'url(/img/cursor-grab.png), auto';
+      }
+    }
+    if (mode?.id === 'draw-line' || mode?.id === 'draw-area') {
+      if (geom === 'line') {
+        document.body.style.cursor = 'url(/img/cursor-draw-connect-line.png) 9 9, crosshair';
+      } else if (geom === 'vertex') {
+        document.body.style.cursor = 'url(/img/cursor-draw-connect-vertex.png) 9 9, crosshair';
+      } else {
+        document.body.style.cursor = 'url(/img/cursor-draw.png) 9 9, crosshair';
+      }
+    } else if (mode?.id === 'add-point') {
+      document.body.style.cursor = 'url(/img/cursor-draw.png) 9 9, auto';
     }
   }
 }
