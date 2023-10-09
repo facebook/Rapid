@@ -33,22 +33,40 @@ export class MoveMode extends AbstractMode {
 
   /**
    * enter
-   * Expects a `selection` property in the options argument as a `Map(datumID -> datum)`
-   * @param  `options`  Optional `Object` of options passed to the new mode
+   * Enters the mode.
+   * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {Object}   options.selection - An object where the keys are layerIDs
+   *    and the values are Arrays of dataIDs:  Example:  `{ 'osm': ['w1', 'w2', 'w3'] }`
+   * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
-    const selection = options.selection;
-    if (!(selection instanceof Map)) return false;
-    if (!selection.size) return false;
-    this._entityIDs = [...selection.keys()];
-
-    this._active = true;
-
     const context = this.context;
     const editor = context.systems.editor;
+    const graph = editor.current.graph;
     const filters = context.systems.filters;
+    const locations = context.systems.locations;
     const map = context.systems.map;
     const eventManager = map.renderer.events;
+
+    const selection = options.selection ?? {};
+    let entityIDs = selection.osm ?? [];
+
+    // Gather valid entities and entityIDs from selection.
+    // For this mode, keep only the OSM data.
+    this._selectedData = new Map();
+
+    for (const entityID of entityIDs) {
+      const entity = graph.hasEntity(entityID);
+      if (!entity) continue;   // not in the osm graph
+      if (entity.type === 'node' && locations.blocksAt(entity.loc).length) continue;  // editing is blocked
+
+      this._selectedData.set(entityID, entity);
+    }
+
+    if (!this._selectedData.size) return false;  // nothing to select
+
+    this._entityIDs = [...this._selectedData.keys()];  // the ones we ended up keeping
+    this._active = true;
 
     filters.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction', 'map-nudging']);
@@ -164,7 +182,7 @@ export class MoveMode extends AbstractMode {
    * Return to select mode - `exit()` will finalize the work in progress.
    */
   _finish() {
-    this.context.enter('select-osm', { selectedIDs: this._entityIDs });
+    this.context.enter('select-osm', { selection: { osm: this._entityIDs }} );
   }
 
 
@@ -177,7 +195,7 @@ export class MoveMode extends AbstractMode {
     const editor = context.systems.editor;
 
     editor.rollback();
-    context.enter('select-osm', { selectedIDs: this._entityIDs });
+    context.enter('select-osm', { selection: { osm: this._entityIDs }} );
   }
 
 

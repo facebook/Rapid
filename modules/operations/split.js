@@ -56,7 +56,7 @@ export function operationSplit(context, selectedIDs) {
         idsToSelect.push(entityID);
       }
     }
-    context.enter('select-osm', { selectedIDs: idsToSelect });
+    context.enter('select-osm', { selection: { osm: idsToSelect }} );
   };
 
 

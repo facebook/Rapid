@@ -118,7 +118,7 @@ export function uiSectionRawMembershipEditor(context) {
         // remove the hover-highlight styling
         utilHighlightEntities([d.relation.id], false, context);
 
-        context.enter('select-osm', { selectedIDs: [d.relation.id] });
+        context.enter('select-osm', { selection: { osm: [d.relation.id] }} );
     }
 
 
@@ -191,7 +191,7 @@ export function uiSectionRawMembershipEditor(context) {
             );
             editor.commit(l10n.t('operations.add.annotation.relation'));
             // changing the mode also runs `validate`
-            context.enter('select-osm', { selectedIDs: [relation.id], newFeature: true });
+            context.enter('select-osm', { selection: { osm: [relation.id] }, newFeature: true });
         }
     }
 

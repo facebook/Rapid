@@ -20,12 +20,7 @@ export function operationRotate(context, selectedIDs) {
 
 
   let operation = function() {
-    const graph = editor.current.graph;
-    const selection = new Map();
-    for (const entityID of selectedIDs) {
-      selection.set(entityID, graph.entity(entityID));
-    }
-    context.enter('rotate', { selection: selection });
+    context.enter('rotate', { selection: { osm: selectedIDs }} );
   };
 
 

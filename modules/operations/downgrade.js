@@ -91,7 +91,7 @@ export function operationDowngrade(context, selectedIDs) {
     editor.commit(operation.annotation());
 
     // refresh the select mode to enable the delete operation
-    context.enter('select-osm', { selectedIDs: selectedIDs });
+    context.enter('select-osm', { selection: { osm: selectedIDs }} );
   };
 
 

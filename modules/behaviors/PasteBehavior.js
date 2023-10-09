@@ -127,12 +127,7 @@ export class PasteBehavior extends AbstractBehavior {
 
     // Put the user in move mode so they can place the pasted features
     // Grab the current versions from the graph (because they were just moved).
-    const pasted = new Map();    // Map (entityID -> Entity)
-    currGraph = editor.current.graph;
-    for (const pasteID of pasteIDs) {
-      pasted.set(pasteID, currGraph.entity(pasteID));
-    }
-    context.enter('move', { selection: pasted });
+    context.enter('move', { selection: { osm: pasteIDs }} );
   }
 
 }

@@ -32,7 +32,7 @@ export function operationContinue(context, selectedIDs) {
   let operation = function() {
     if (!candidates.length) return;
 
-    context.enter('draw-line', { continueWay: candidates[0], continueNode: continueFromNode });
+    context.enter('draw-line', { continueWayID: candidates[0].id, continueNodeID: continueFromNode.id });
   };
 
 

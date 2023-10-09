@@ -34,7 +34,7 @@ export function uiSectionSelectionList(context) {
   }
 
   function selectEntity(d3_event, entity) {
-    context.enter('select-osm', { selectedIDs: [entity.id] });
+    context.enter('select-osm', { selection: { osm: [entity.id] }} );
   }
 
   function deselectEntity(d3_event, entity) {
@@ -42,7 +42,7 @@ export function uiSectionSelectionList(context) {
     const index = selectedIDs.indexOf(entity.id);
     if (index > -1) {
       selectedIDs.splice(index, 1);
-      context.enter('select-osm', { selectedIDs: selectedIDs });
+      context.enter('select-osm', { selection: { osm: selectedIDs }} );
     }
   }
 

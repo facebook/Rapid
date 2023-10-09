@@ -398,7 +398,7 @@ export class ValidationSystem extends AbstractSystem {
 
     if (selectID) {  // Enter select mode
       window.setTimeout(() => {
-        context.enter('select-osm', { selectedIDs: [selectID] });
+        context.enter('select-osm', { selection: { osm: [selectID] }} );
         this.emit('focusedIssue', issue);
       }, 250);  // after ease
     }

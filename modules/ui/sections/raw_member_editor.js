@@ -82,7 +82,7 @@ export function uiSectionRawMemberEditor(context) {
       map.fitEntitiesEase(entity);
     }
 
-    context.enter('select-osm', { selectedIDs: [d.id] });
+    context.enter('select-osm', { selection: { osm: [d.id] }} );
   }
 
 

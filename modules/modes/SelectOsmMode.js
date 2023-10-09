@@ -50,16 +50,14 @@ export class SelectOsmMode extends AbstractMode {
 
   /**
    * enter
-   * Expects a `selectedIDs` Array property in the options
-   * @param  `options`  Optional `Object` of options passed to the new mode
+   * Enters the mode.
+   * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {Object}   options.selection - An object where the keys are layerIDs
+   *    and the values are Arrays of dataIDs:  Example:  `{ 'osm': ['w1', 'w2', 'w3'] }`
+   * @param  {boolean}  options.newFeature - `true` if this is a new feature
+   * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
-    const entityIDs = options.selectedIDs;
-    this._newFeature = options.newFeature;
-
-    if (!Array.isArray(entityIDs)) return false;
-    if (!entityIDs.length) return false;
-
     const context = this.context;
     const editor = context.systems.editor;
     const graph = editor.current.graph;
@@ -68,60 +66,65 @@ export class SelectOsmMode extends AbstractMode {
     const ui = context.systems.ui;
     const urlhash = context.systems.urlhash;
 
-    // For this mode, keep only the OSM data
-    let selectedIDs = [];
+    const selection = options.selection ?? {};
+    let entityIDs = selection.osm ?? [];
+    this._newFeature = options.newFeature;
+
+    // Gather valid entities and entityIDs from selection.
+    // For this mode, keep only the OSM data.
     this._selectedData = new Map();
     this._singularDatum = null;
 
     for (const entityID of entityIDs) {
       const entity = graph.hasEntity(entityID);
-      if (!entity) continue;   // not osm
+      if (!entity) continue;   // not in the osm graph
       if (entity.type === 'node' && locations.blocksAt(entity.loc).length) continue;  // editing is blocked
 
-      this._selectedData.set(entityID, entity);   // otherwise keep it
-      selectedIDs.push(entityID);
+      this._selectedData.set(entityID, entity);
+
       if (entityIDs.length === 1) {
-        this._singularDatum = entity;   // a single thing is selected
+        this._singularDatum = entity;  // if a single thing is selected
       }
     }
 
-    if (!this._selectedData.size) return false;  // nothing to select
+    if (!this._selectedData.size) return false;  // found nothing to select
+    entityIDs = [...this._selectedData.keys()];  // the ones we ended up keeping
 
     this._active = true;
     context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'lasso', 'paste']);
 
     // Compute the total extent of selected items
-    this.extent = utilTotalExtent(selectedIDs, graph);
+    this.extent = utilTotalExtent(entityIDs, graph);
 
-    // Put selectedIDs into the url hash
-    urlhash.setParam('id', selectedIDs.join(','));
+    // Put entityIDs into the url hash
+    urlhash.setParam('id', entityIDs.join(','));
 
     // Exclude these ids from filtering
-    filters.forceVisible(selectedIDs);
+    filters.forceVisible(entityIDs);
 
     // setup which operations are valid for this selection
-    this.operations.forEach(o => {
-      if (o.behavior) {
-        o.behavior.disable();
+    for (const operation of this.operations) {
+      if (operation.behavior) {
+        operation.behavior.disable();
       }
-    });
+    }
 
     this.operations = Object.values(Operations)
-      .map(o => o(context, selectedIDs))
+      .map(o => o(context, entityIDs))
       .filter(o => (o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'))
       .concat([
         // group copy/downgrade/delete operation together at the end of the list
-        Operations.operationCopy(context, selectedIDs),
-        Operations.operationDowngrade(context, selectedIDs),
-        Operations.operationDelete(context, selectedIDs)
+        Operations.operationCopy(context, entityIDs),
+        Operations.operationDowngrade(context, entityIDs),
+        Operations.operationDelete(context, entityIDs)
       ])
       .filter(o => o.available());
 
-    this.operations.forEach(o => {
-      if (o.behavior) {
-        o.behavior.enable();
+    for (const operation of this.operations) {
+      if (operation.behavior) {
+        operation.behavior.enable();
       }
-    });
+    }
 
     ui.closeEditMenu();   // remove any displayed menu
 
@@ -140,7 +143,7 @@ export class SelectOsmMode extends AbstractMode {
       .call(this.keybinding);
 
     ui.sidebar
-      .select(selectedIDs, this._newFeature);
+      .select(entityIDs, this._newFeature);
 
     editor
       .on('historychange', this._historychange);
@@ -187,11 +190,11 @@ export class SelectOsmMode extends AbstractMode {
     this._selectedData.clear();
 
     // disable operations
-    this.operations.forEach(o => {
-      if (o.behavior) {
-        o.behavior.disable();
+    for (const operation of this.operations) {
+      if (operation.behavior) {
+        operation.behavior.disable();
       }
-    });
+    }
     this.operations = [];
 
     ui.closeEditMenu();
@@ -241,7 +244,7 @@ export class SelectOsmMode extends AbstractMode {
     if (!selectedIDs.length) {
       context.enter('browse');
     } else {
-      context.enter('select-osm', { selectedIDs: selectedIDs });   // reselect whatever remains
+      context.enter('select-osm', { selection: { osm: selectedIDs }} );   // reselect whatever remains
     }
   }
 
@@ -292,7 +295,7 @@ export class SelectOsmMode extends AbstractMode {
     const graph = context.systems.editor.current.graph;
     const node = graph.entity(way.first());
 
-    context.enter('select-osm', { selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }} );
     context.systems.map.centerEase(node.loc);
   }
 
@@ -311,7 +314,7 @@ export class SelectOsmMode extends AbstractMode {
     const graph = context.systems.editor.current.graph;
     const node = graph.entity(way.last());
 
-    context.enter('select-osm', { selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }} );
     context.systems.map.centerEase(node.loc);
   }
 
@@ -342,7 +345,7 @@ export class SelectOsmMode extends AbstractMode {
       const context = this.context;
       const graph = context.systems.editor.current.graph;
       const node = graph.entity(way.nodes[nextIndex]);
-      context.enter('select-osm', { selectedIDs: [node.id] });
+      context.enter('select-osm', { selection: { osm: [node.id] }} );
       context.systems.map.centerEase(node.loc);
     }
   }
@@ -374,7 +377,7 @@ export class SelectOsmMode extends AbstractMode {
       const context = this.context;
       const graph = context.systems.editor.current.graph;
       const node = graph.entity(way.nodes[nextIndex]);
-      context.enter('select-osm', { selectedIDs: [node.id] });
+      context.enter('select-osm', { selection: { osm: [node.id] }} );
       context.systems.map.centerEase(node.loc);
     }
   }

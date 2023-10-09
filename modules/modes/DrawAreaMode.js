@@ -49,6 +49,7 @@ export class DrawAreaMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    */
   enter() {
     if (DEBUG) {
@@ -497,7 +498,7 @@ export class DrawAreaMode extends AbstractMode {
       if (DEBUG) {
         console.log(`DrawAreaMode: _finish, drawWay.id = ${this.drawWay.id}`);  // eslint-disable-line no-console
       }
-      this.context.enter('select-osm', { selectedIDs: [this.drawWay.id], newFeature: true });
+      this.context.enter('select-osm', { selection: { osm: [this.drawWay.id], newFeature: true }});
     } else {
       this._cancel();
     }

@@ -20,12 +20,7 @@ export function operationMove(context, selectedIDs) {
 
 
   let operation = function() {
-    const graph = editor.current.graph;
-    const selection = new Map();
-    for (const entityID of selectedIDs) {
-      selection.set(entityID, graph.entity(entityID));
-    }
-    context.enter('move', { selection: selection });
+    context.enter('move', { selection: { osm: selectedIDs }} );
   };
 
 

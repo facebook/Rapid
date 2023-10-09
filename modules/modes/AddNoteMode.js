@@ -26,6 +26,7 @@ export class AddNoteMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    */
   enter() {
     if (DEBUG) {

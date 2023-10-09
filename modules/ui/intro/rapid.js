@@ -147,7 +147,7 @@ export function uiIntroRapid(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
-        if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
+        if (!_isTulipLaneSelected()) context.enter('select-osm', { selection: { osm: [tulipLaneID] }});
 
         _onModeChange = reject;   // disallow mode change
 
@@ -168,7 +168,7 @@ export function uiIntroRapid(context, curtain) {
   // Open Issues panel to advance
   function showIssuesButtonAsync() {
     if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
+    if (!_isTulipLaneSelected()) context.enter('select-osm', { selection: { osm: [tulipLaneID] }});
 
     const issuesButton = d3_select('div.map-control.issues-control > button');
 
@@ -196,7 +196,7 @@ export function uiIntroRapid(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
-        if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
+        if (!_isTulipLaneSelected()) context.enter('select-osm', { selection: { osm: [tulipLaneID] }});
 
         const label = d3_select('li.issue.severity-warning');
         curtain.reveal({
@@ -214,7 +214,7 @@ export function uiIntroRapid(context, curtain) {
   // Click Undo to advance
   function undoRoadAddAsync() {
     if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter('select-osm', { selectedIDs: [tulipLaneID] });
+    if (!_isTulipLaneSelected()) context.enter('select-osm', { selection: { osm: [tulipLaneID] }});
 
     const undoButton = d3_select('.top-toolbar button.undo-button');
 

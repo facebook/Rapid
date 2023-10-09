@@ -137,7 +137,7 @@ export class LassoBehavior extends AbstractBehavior {
     this._extent = null;
 
     if (ids.length) {
-      this.context.enter('select-osm', { selectedIDs: ids });
+      this.context.enter('select-osm', { selection: { osm: ids }} );
     }
   }
 

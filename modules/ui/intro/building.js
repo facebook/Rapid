@@ -206,7 +206,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
 
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
-        if (!_isHouseSelected()) context.enter('select-osm', { selectedIDs: [_houseID] });
+        if (!_isHouseSelected()) context.enter('select-osm', { selection: { osm: [_houseID] }} );
 
         _onModeChange = reject;   // disallow mode change
 
@@ -238,7 +238,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
 
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
-        if (!_isHouseSelected()) context.enter('select-osm', { selectedIDs: [_houseID] });
+        if (!_isHouseSelected()) context.enter('select-osm', { selection: { osm: [_houseID] }} );
 
         _onModeChange = reject;   // disallow mode change
         _onHistoryChange = (difference) => {
@@ -511,7 +511,7 @@ export function uiIntroBuilding(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesTankExist()) { resolve(addTankAsync); return; }
-        if (!_isTankSelected()) context.enter('select-osm', { selectedIDs: [_tankID] });
+        if (!_isTankSelected()) context.enter('select-osm', { selection: { osm: [_tankID] }} );
 
         _onModeChange = reject;   // disallow mode change
         _onHistoryChange = (difference) => {

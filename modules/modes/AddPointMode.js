@@ -35,6 +35,7 @@ export class AddPointMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    */
   enter() {
     if (DEBUG) {
@@ -174,7 +175,7 @@ export class AddPointMode extends AbstractMode {
     this.nodeID = node.id;
 
     if (Object.keys(this.defaultTags).length === 0) {
-      context.enter('select-osm', { selectedIDs: [node.id] });
+      context.enter('select-osm', { selection: { osm: [node.id] }} );
       return;
     }
 
@@ -200,7 +201,7 @@ export class AddPointMode extends AbstractMode {
 
     if (nodeID && graph.hasEntity(nodeID)) {
       const isNew = difference.created().includes(nodeID);
-      context.enter('select-osm', { selectedIDs: [nodeID], newFeature: isNew });
+      context.enter('select-osm', { selection: { osm: [nodeID] }, newFeature: isNew });
     } else {
       context.enter('browse');
     }

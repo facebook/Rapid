@@ -332,7 +332,7 @@ export function validationMismatchedGeometry(context) {
           editor.perform(action);
           editor.commit(l10n.t('operations.extract.annotation', { n: 1 }));
           // re-enter mode to trigger updates
-          context.enter('select-osm', { selectedIDs: [ action.getExtractedNodeID() ] });
+          context.enter('select-osm', { selection: { osm: [ action.getExtractedNodeID() ] }} );
         };
       }
 

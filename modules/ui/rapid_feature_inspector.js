@@ -64,7 +64,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     editor.perform(actionRapidAcceptFeature(_datum.id, graph));
     editor.commit(annotation);
-    context.enter('select-osm', { selectedIDs: [_datum.id] });
+    context.enter('select-osm', { selection: { osm: [_datum.id] }} );
 
     if (context.inIntro) return;
 

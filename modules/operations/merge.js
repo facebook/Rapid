@@ -55,7 +55,7 @@ export function operationMerge(context, selectedIDs) {
         successorIDs = interestingIDs;
       }
     }
-    context.enter('select-osm', { selectedIDs: successorIDs });
+    context.enter('select-osm', { selection: { osm: successorIDs }} );
   };
 
 

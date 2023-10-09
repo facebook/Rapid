@@ -41,35 +41,51 @@ export class DragNodeMode extends AbstractMode {
 
   /**
    * enter
-   * Expects a `selection` property in the options argument as a `Map(datumID -> datum)`
-   * @param  `options`  Optional `Object` of options passed to the new mode
-   * @return `true` if the mode can be entered, `false` if not
+   * Enters the mode.
+   * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {string}   options.nodeID - if set, drag the node for the given id
+   * @param  {Object}   options.midpoint - if set, create a node from the given midpoint
+   *                      for example `{ loc: entity.loc, edge: [ entity.a.id, entity.b.id ] }`
+   * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
     const context = this.context;
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const l10n = context.systems.l10n;
+    const locations = context.systems.locations;
     const ui = context.systems.ui;
 
-    const selection = options.selection;
-    if (!(selection instanceof Map)) return false;
-    if (!selection.size) return false;
-
-    // When exiting mode, we'll try to restore the selection to what it was when we entered this mode.
     this._reselectIDs = options.reselectIDs ?? [];
+    const midpoint = options.midpoint;
+    const nodeID = options.nodeID;
 
-    let [entity] = selection.values();   // the first thing in the selection
+    let graph = editor.current.graph;
+    let entity;
 
-    // This check was in start() before to prevent user from entering the mode.
-    // It's an odd check, not sure if still needed or why?  (low zooms?)
-    if (!context.editable()) return false;
+    if (midpoint) {
+      if (!graph.hasEntity(midpoint.edge[0])) return;
+      if (!graph.hasEntity(midpoint.edge[1])) return;
+      entity = osmNode();
+      editor.perform(actionAddMidpoint(midpoint, entity));
+      graph = editor.current.graph;         // refresh with post-action graph
+      entity = graph.hasEntity(entity.id);  // refresh with post-action entity
+      if (!entity) {  // somehow the midpoint did not convert to a node
+        editor.rollback();
+        return;
+      }
+      this._wasMidpoint = true;
 
-    this._wasMidpoint = (entity.type === 'midpoint');
+    } else if (nodeID) {
+      entity = graph.hasEntity(nodeID);
+      this._wasMidpoint = false;
+    }
+
+    if (!entity) return;
 
     if (!this._wasMidpoint) {
       // Bail out if the node is connected to something hidden.
-      const hasHidden = filters.hasHiddenConnections(entity, editor.current.graph);
+      const hasHidden = filters.hasHiddenConnections(entity, graph);
       if (hasHidden) {
         ui.flash
           .duration(4000)
@@ -80,14 +96,6 @@ export class DragNodeMode extends AbstractMode {
     }
 
     this._active = true;
-
-    // Convert a midpoint to a node..
-    if (this._wasMidpoint) {
-      const midpoint = { loc: entity.loc, edge: [ entity.a.id, entity.b.id ] };
-      entity = osmNode();
-      editor.perform(actionAddMidpoint(midpoint, entity));
-      entity = editor.current.graph.entity(entity.id);  // refresh with post-action entity
-    }
 
     this.dragNode = entity;
     this._startLoc = entity.loc;
@@ -376,9 +384,9 @@ export class DragNodeMode extends AbstractMode {
 
     // Choose next mode
     if (dragNode && isPoint) {
-      context.enter('select-osm', { selectedIDs: [dragNode.id] });
+      context.enter('select-osm', { selection: { osm: [dragNode.id] }} );
     } else if (this._reselectIDs.length) {
-      context.enter('select-osm', { selectedIDs: this._reselectIDs });
+      context.enter('select-osm', { selection: { osm: this._reselectIDs }} );
     } else {
       context.enter('browse');
     }

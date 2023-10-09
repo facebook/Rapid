@@ -352,18 +352,18 @@ export class SelectBehavior extends AbstractBehavior {
           // Always re-enter select mode even if the entity is already
           // selected since listeners may expect `context.enter` events,
           // e.g. in the walkthrough
-          context.enter('select-osm', { selectedIDs: [dataID] });
+          context.enter('select-osm', { selection: { osm: [dataID] }} );
         }
 
       } else {
         if (selectedIDs.includes(dataID)) {   // already in the selectedIDs..
           if (!this._showsMenu) {
             selectedIDs = selectedIDs.filter(id => id !== dataID);      // deselect it..
-            context.enter('select-osm', { selectedIDs: selectedIDs });
+            context.enter('select-osm', { selection: { osm: selectedIDs }} );
           }
-        } else {                         // not already in selectedIDs...
+        } else {                       // not already in selectedIDs...
           selectedIDs.push(dataID);    // select it..
-          context.enter('select-osm', { selectedIDs: selectedIDs });
+          context.enter('select-osm', { selection: { osm: selectedIDs }} );
         }
       }
     }

@@ -263,7 +263,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
+        if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
         _onModeChange = reject;   // disallow mode change
 
@@ -303,7 +303,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
+        if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -360,7 +360,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
+        if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
         showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -415,7 +415,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
-        if (!_isLineSelected()) context.enter('select-osm', { selectedIDs: [_lineID] });
+        if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
         _onModeChange = () => resolve(didNameRoadAsync);
 
@@ -598,7 +598,7 @@ export function uiIntroLine(context, curtain) {
   // Create a node on Wood Street to advance
   function startDragMidpointAsync() {
     if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
-    if (!_isWoodStreetSelected()) context.enter('select-osm', { selectedIDs: [woodStreetID] });
+    if (!_isWoodStreetSelected()) context.enter('select-osm', { selection: { osm: [woodStreetID] }} );
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -723,7 +723,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_has12thAvenueParts()) { resolve(deleteLinesAsync); return; }
-        if (!_is11thAveEndSelected()) context.enter('select-osm', { selectedIDs: [eleventhAvenueEndID] });
+        if (!_is11thAveEndSelected()) context.enter('select-osm', { selection: { osm: [eleventhAvenueEndID] }} );
 
         const revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();

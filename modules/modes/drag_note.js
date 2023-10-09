@@ -95,8 +95,8 @@ export function modeDragNote(context) {
     function end() {
         map.immediateRedraw();
 
-        const selectedData = new Map().set(_note.id, _note);
-        context.enter('select', selectedData);
+        const selection = new Map().set(_note.id, _note);
+        context.enter('select', { selection: selection });
     }
 
 

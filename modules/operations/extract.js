@@ -57,13 +57,7 @@ export function operationExtract(context, selectedIDs) {
     editor.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
 
     // Put the user in move mode so they can place the extracted nodes where they want.
-    // Get the latest graph (because they were just moved).
-    const selection = new Map();    // Map (entityID -> Entity)
-    const graph = editor.current.graph;  // post edit
-    for (const extractedNodeID of extractedNodeIDs) {
-      selection.set(extractedNodeID, graph.entity(extractedNodeID));
-    }
-    context.enter('move', { selection: selection });
+    context.enter('move', { selection: { osm: extractedNodeIDs }} );
   };
 
 

@@ -239,7 +239,6 @@ export class RapidSystem extends AbstractSystem {
   _historychange() {
     const context = this.context;
     const editor = context.systems.editor;
-    const map = context.systems.map;
 
     this.acceptedIDs.clear();
 
@@ -267,9 +266,6 @@ export class RapidSystem extends AbstractSystem {
         this.acceptedIDs.add(annotation.origid);
       }
     }
-
-    // maybe not needed?
-    // map.immediateRedraw();
   }
 
 

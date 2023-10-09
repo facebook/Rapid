@@ -61,7 +61,7 @@ export function operationPaste(context) {
     editor.commit(operation.annotation());
     editor.endTransaction();
 
-    context.enter('select-osm', { selectedIDs: newIDs });
+    context.enter('select-osm', { selection: { osm: newIDs }} );
   };
 
 

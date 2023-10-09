@@ -606,7 +606,7 @@ export class MapSystem extends AbstractSystem {
     const gotEntity = (entity) => {
       const selectedIDs = context.selectedIDs();
       if (context.mode?.id !== 'select-osm' || !selectedIDs.includes(entityID)) {
-        context.enter('select-osm', { selectedIDs: [entity.id] });
+        context.enter('select-osm', { selection: { osm: [entity.id] }} );
       }
 
       const currGraph = editor.current.graph;  // may have changed by the time we get in here

@@ -127,7 +127,8 @@ export class DragBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
-    const map = this.context.systems.map;
+    const context = this.context;
+    const map = context.systems.map;
 
     // If we detect the edit (right-click) menu, we should cease any dragging behavior.
     const hasEditmenu = map.supersurface.select('.edit-menu').size();
@@ -163,10 +164,15 @@ export class DragBehavior extends AbstractBehavior {
         this.dragTarget = target;
         target.feature.active = true;
 
+
         // Enter Drag Node mode
-        const selection = new Map().set(target.data.id, target.data);
-        const reselectIDs = this.context.selectedIDs();
-        this.context.enter('drag-node', { selection: selection, reselectIDs: reselectIDs });
+        const reselectIDs = context.selectedIDs();
+        if (target.data.type === 'midpoint') {
+          const midpoint = { loc: target.data.loc, edge: [ target.data.a.id, target.data.b.id ] };
+          context.enter('drag-node', { midpoint: midpoint, reselectIDs: reselectIDs });
+        } else {
+          context.enter('drag-node', { nodeID: target.data.id, reselectIDs: reselectIDs });
+        }
 
         this.emit('start', down);
       }

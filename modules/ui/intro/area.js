@@ -179,7 +179,7 @@ export function uiIntroArea(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
-        if (!_isAreaSelected()) context.enter('select-osm', { selectedIDs: [_areaID] });
+        if (!_isAreaSelected()) context.enter('select-osm', { selection: { osm: [_areaID] }} );
 
         _onModeChange = reject;   // disallow mode change;
         _onEditChange = (difference) => {
@@ -240,7 +240,7 @@ export function uiIntroArea(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
-        if (!_isAreaSelected()) context.enter('select-osm', { selectedIDs: [_areaID] });
+        if (!_isAreaSelected()) context.enter('select-osm', { selection: { osm: [_areaID] }} );
 
         if (!container.select('.form-field-description').empty()) {  // has description field already
           resolve(describePlaygroundAsync);

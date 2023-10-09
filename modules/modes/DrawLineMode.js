@@ -53,15 +53,23 @@ export class DrawLineMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    * Draw a new line, or optionally continue an existing line.
-   * To continue a line, the `options` argument must contain
-   * `continueNode` and `continueWay` properties
-   *
-   * @param  `options`  Optional `Object` of options passed to the new mode
+   * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {Object}   options.continueNodeID - an OSM node to continue from
+   * @param  {Object}   options.continueWayID - an OSM way to continue from
+   * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
-    const continueNode = options.continueNode;
-    const continueWay = options.continueWay;
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.current.graph;
+    const map = context.systems.map;
+
+    const continueNodeID = options.continueNodeID;
+    const continueWayID = options.continueWayID;
+    const continueNode = continueNodeID ?? graph.hasEntity(continueNodeID);
+    const continueWay = continueWayID ?? graph.hasEntity(continueWayID);
 
     // If either parameter is present, make sure they are both valid
     if (continueNode || continueWay) {
@@ -78,10 +86,6 @@ export class DrawLineMode extends AbstractMode {
       }
     }
 
-    const context = this.context;
-    const editor = context.systems.editor;
-    const graph = editor.current.graph;
-    const map = context.systems.map;
     this._active = true;
 
     this.drawWay = null;
@@ -546,7 +550,7 @@ export class DrawLineMode extends AbstractMode {
       if (DEBUG) {
         console.log(`DrawLineMode: _finish, drawWay.id = ${this.drawWay.id}`);  // eslint-disable-line no-console
       }
-      this.context.enter('select-osm', { selectedIDs: [this.drawWay.id], newFeature: true });
+      this.context.enter('select-osm', { selection: { osm: [this.drawWay.id] }, newFeature: true });
     } else {
       this._cancel();
     }

@@ -122,7 +122,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+        if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
         _onModeChange = reject;  // disallow mode change
         _onHistoryChange = (difference) => {
@@ -183,7 +183,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+        if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(addNameAsync);
@@ -211,7 +211,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+        if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(hasPointAsync);
@@ -253,7 +253,7 @@ export function uiIntroPoint(context, curtain) {
   // Close entity editor / leave select mode to advance
   function addCloseEditorAsync() {
     if (!_doesPointExist()) return Promise.resolve(addPointAsync);
-    if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+    if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;

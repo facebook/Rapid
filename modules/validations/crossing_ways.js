@@ -707,7 +707,7 @@ export function validationCrossingWays(context) {
 
                 editor.perform(action);
                 editor.commit(l10n.t(`issues.fix.${fixTitleID}.annotation`));
-                context.enter('select-osm', { selectedIDs: resultWayIDs });
+                context.enter('select-osm', { selection: { osm: resultWayIDs }} );
             }
         });
     }

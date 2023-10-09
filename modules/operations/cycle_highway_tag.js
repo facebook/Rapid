@@ -80,7 +80,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     }
 
     editor.endTransaction();
-    context.enter('select-osm', { selectedIDs: selectedIDs });  // reselect
+    context.enter('select-osm', { selection: { osm: selectedIDs }} );  // reselect
   };
 
 

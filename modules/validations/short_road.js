@@ -35,7 +35,7 @@ export function validationShortRoad(context) {
       map.fitEntitiesEase(vertex);
     }
 
-    context.enter('draw-line', { continueWay: way, continueNode: vertex });
+    context.enter('draw-line', { continueWayID: way.id, continueNodeID: vertex.id });
   }
 
 
