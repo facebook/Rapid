@@ -259,10 +259,14 @@ export function uiEntityEditor(context) {
       // If this is the same selection as before, and the previous edit was also a change_tags,
       // we can just replace the previous edit with this one.
       const annotation = l10n.t('operations.change_tags.annotation');
+      const options = {
+        annotation: annotation,
+        selectedIDs: _entityIDs
+      };
       if (isSameSelection && editor.getUndoAnnotation() === annotation) {
-        editor.commitAppend(annotation);
+        editor.commitAppend(options);
       } else {
-        editor.commit(annotation);
+        editor.commit(options);
       }
     }
 
@@ -309,10 +313,14 @@ export function uiEntityEditor(context) {
     // If this is the same selection as before, and the previous edit was also a change_tags,
     // we can just replace the previous edit with this one.
     const annotation = l10n.t('operations.change_tags.annotation');
+    const options = {
+      annotation: annotation,
+      selectedIDs: _entityIDs
+    };
     if (isSameSelection && editor.getUndoAnnotation() === annotation) {
-      editor.commitAppend(annotation);
+      editor.commitAppend(options);
     } else {
-      editor.commit(annotation);
+      editor.commit(options);
     }
 
     editor.endTransaction();

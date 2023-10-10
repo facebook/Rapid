@@ -250,7 +250,10 @@ export function validationCloseNodes(context) {
                             onClick: function() {
                               const entityIds = this.issue.entityIds;
                               editor.perform(actionMergeNodes([entityIds[1], entityIds[2]]));
-                              editor.commit(l10n.t('issues.fix.merge_close_vertices.annotation'));
+                              editor.commit({
+                                annotation: l10n.t('issues.fix.merge_close_vertices.annotation'),
+                                selectedIDs: [entityIds[1], entityIds[2]]
+                              });
                             }
                         }),
                         new ValidationFix({

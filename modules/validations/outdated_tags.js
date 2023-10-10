@@ -120,7 +120,10 @@ export function validationOutdatedTags(context) {
             title: l10n.tHtml('issues.fix.upgrade_tags.title'),
             onClick: () => {
               editor.perform(doTagUpgrade);
-              editor.commit(l10n.t('issues.fix.upgrade_tags.annotation'));
+              editor.commit({
+                annotation: l10n.t('issues.fix.upgrade_tags.annotation'),
+                selectedIDs: [entity.id]
+              });
             }
           })
         ];
@@ -132,7 +135,10 @@ export function validationOutdatedTags(context) {
               title: l10n.tHtml('issues.fix.tag_as_not.title', { name: item.displayName }),
               onClick: () => {
                 editor.perform(addNotTag);
-                editor.commit(l10n.t('issues.fix.tag_as_not.annotation'));
+                editor.commit({
+                  annotation: l10n.t('issues.fix.tag_as_not.annotation'),
+                  selectedIDs: [entity.id]
+                });
               }
             })
           );
@@ -263,7 +269,10 @@ export function validationOutdatedTags(context) {
             title: l10n.t('issues.fix.move_tags.title'),
             onClick: () => {
               editor.perform(doMultipolygonUpgrade);
-              editor.commit(l10n.t('issues.fix.move_tags.annotation'));
+              editor.commit({
+                annotation: l10n.t('issues.fix.move_tags.annotation'),
+                selectedIDs: [entity.id]
+              });
             }
           })
         ];

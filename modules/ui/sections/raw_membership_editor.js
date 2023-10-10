@@ -136,7 +136,7 @@ export function uiSectionRawMembershipEditor(context) {
 
     function changeRole(d3_event, d) {
         if (d === 0) return;    // called on newrow (shouldn't happen)
-        if (_inChange) return;  // avoid accidental recursive call #5731
+        if (_inChange) return;  // avoid accidental recursive call iD#5731
 
         var newRole = context.cleanRelationRole(d3_select(this).property('value'));
 
@@ -159,7 +159,10 @@ export function uiSectionRawMembershipEditor(context) {
             };
 
             editor.perform(changeMemberRoles);
-            editor.commit(l10n.t('operations.change_role.annotation', { n: membersToUpdate.length }));
+            editor.commit({
+              annotation: l10n.t('operations.change_role.annotation', { n: membersToUpdate.length }),
+              selectedIDs: [d.relation.id]
+            });
         }
         _inChange = false;
     }
@@ -181,7 +184,10 @@ export function uiSectionRawMembershipEditor(context) {
 
         if (d.relation) {
             editor.perform(actionAddMembers(d.relation.id, _entityIDs, role));
-            editor.commit(l10n.t('operations.add_member.annotation', { n: _entityIDs.length }));
+            editor.commit({
+              annotation: l10n.t('operations.add_member.annotation', { n: _entityIDs.length }),
+              selectedIDs: [d.relation.id]
+            });
 
         } else {
             var relation = osmRelation();
@@ -189,8 +195,10 @@ export function uiSectionRawMembershipEditor(context) {
               actionAddEntity(relation),
               actionAddMembers(relation.id, _entityIDs, role)
             );
-            editor.commit(l10n.t('operations.add.annotation.relation'));
-            // changing the mode also runs `validate`
+            editor.commit({
+              annotation: l10n.t('operations.add.annotation.relation'),
+              selectedIDs: [relation.id]
+            });
             context.enter('select-osm', { selection: { osm: [relation.id] }, newFeature: true });
         }
     }
@@ -208,7 +216,10 @@ export function uiSectionRawMembershipEditor(context) {
         });
 
         editor.perform(actionDeleteMembers(d.relation.id, indexes));
-        editor.commit(l10n.t('operations.delete_member.annotation', { n: _entityIDs.length }));
+        editor.commit({
+          annotation: l10n.t('operations.delete_member.annotation', { n: _entityIDs.length }),
+          selectedIDs: [d.relation.id]
+        });
     }
 
 
@@ -253,7 +264,7 @@ export function uiSectionRawMembershipEditor(context) {
                 return osmRelation.creationOrder(a.relation, b.relation);
             });
 
-            // Dedupe identical names by appending relation id - see #2891
+            // Dedupe identical names by appending relation id - see iD#2891
             var dupeGroups = Object.values(utilArrayGroupBy(result, 'value'))
                 .filter(function(v) { return v.length > 1; });
 

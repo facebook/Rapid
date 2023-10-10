@@ -285,7 +285,10 @@ export function uiIntroPoint(context, curtain) {
     const preset = presets.match(entity, graph);
     if (preset !== cafePreset) {
       editor.perform(actionChangePreset(_pointID, preset, cafePreset));
-      editor.commit(l10n.t('operations.change_tags.annotation'));
+      editor.commit({
+        annotation: l10n.t('operations.change_tags.annotation'),
+        selectedIDs: [_pointID]
+      });
     }
 
     editor.setCheckpoint('hasPoint');

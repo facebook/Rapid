@@ -56,7 +56,10 @@ export function validationMismatchedGeometry(context) {
                 const graph = editor.current.graph;
                 const way = graph.entity(this.issue.entityIds[0]);
                 editor.perform(actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc));
-                editor.commit(l10n.t('issues.fix.connect_endpoints.annotation'));
+                editor.commit({
+                  annotation: l10n.t('issues.fix.connect_endpoints.annotation'),
+                  selectedIDs: [way.id]
+                });
               };
             }
         }
@@ -73,7 +76,10 @@ export function validationMismatchedGeometry(context) {
                 const nodeID = way.nodes[0];
                 const index = way.nodes.length;
                 editor.perform(actionAddVertex(wayID, nodeID, index));
-                editor.commit(l10n.t('issues.fix.connect_endpoints.annotation'));
+                editor.commit({
+                  annotation: l10n.t('issues.fix.connect_endpoints.annotation'),
+                  selectedIDs: [wayID]
+                });
             };
         }
     }
@@ -120,7 +126,10 @@ export function validationMismatchedGeometry(context) {
                             delete tags[key];
                         }
                         editor.perform(actionChangeTags(entityID, tags));
-                        editor.commit(l10n.t('issues.fix.remove_tag.annotation'));
+                        editor.commit({
+                          annotation: l10n.t('issues.fix.remove_tag.annotation'),
+                          selectedIDs: [entityID]
+                        });
                     }
                 }));
 
@@ -304,7 +313,10 @@ export function validationMismatchedGeometry(context) {
             delete tags.area;
           }
           editor.perform(actionChangeTags(entityID, tags));
-          editor.commit(l10n.t('issues.fix.convert_to_line.annotation'));
+          editor.commit({
+            annotation: l10n.t('issues.fix.convert_to_line.annotation'),
+            selectedIDs: [entityID]
+          });
         };
       }
 
@@ -330,7 +342,10 @@ export function validationMismatchedGeometry(context) {
           const entityID = this.issue.entityIds[0];
           const action = actionExtract(entityID, context.projection);
           editor.perform(action);
-          editor.commit(l10n.t('operations.extract.annotation', { n: 1 }));
+          editor.commit({
+            annotation: l10n.t('operations.extract.annotation', { n: 1 }),
+            selectedIDs: [entityID]
+          });
           // re-enter mode to trigger updates
           context.enter('select-osm', { selection: { osm: [ action.getExtractedNodeID() ] }} );
         };

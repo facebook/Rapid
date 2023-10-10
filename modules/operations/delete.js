@@ -57,7 +57,10 @@ export function operationDelete(context, selectedIDs) {
 
     const annotation = operation.annotation();  // watch out! calculate this _before_ we delete the stuff.
     editor.perform(action);
-    editor.commit(annotation);
+    editor.commit({
+      annotation: annotation,
+      selectedIDs: selectedIDs
+    });
 
     if (nextNode && nextLoc) {
       map.centerEase(nextLoc);

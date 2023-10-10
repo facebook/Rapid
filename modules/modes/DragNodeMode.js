@@ -35,7 +35,7 @@ export class DragNodeMode extends AbstractMode {
     this._move = this._move.bind(this);
     this._end = this._end.bind(this);
     this._cancel = this._cancel.bind(this);
-    this._historychange = this._historychange.bind(this);
+//    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -119,8 +119,8 @@ export class DragNodeMode extends AbstractMode {
       .on('end', this._end)
       .on('cancel', this._cancel);
 
-    editor
-      .on('historychange', this._historychange);
+//    editor
+//      .on('historychange', this._historychange);
 
     return true;
   }
@@ -149,8 +149,8 @@ export class DragNodeMode extends AbstractMode {
       .off('end', this._end)
       .off('cancel', this._cancel);
 
-    editor
-      .off('historychange', this._historychange);
+//    editor
+//      .off('historychange', this._historychange);
   }
 
 
@@ -241,7 +241,6 @@ export class DragNodeMode extends AbstractMode {
    * _end
    * Complete the drag.
    * This calls `commit` to finalize the current edit with an annotation so that we can undo/redo to here.
-   * Note that `historychanged()` will be called immediately after this to choose the next mode.
    * @param  eventData  `Object` data received from the drag behavior
    */
   _end(eventData) {
@@ -286,7 +285,22 @@ export class DragNodeMode extends AbstractMode {
       annotation = this._moveAnnotation();
     }
 
-    editor.commit(annotation);  // We will receive historychange event
+    editor.commit({
+      annotation: annotation,
+      selectedIDs: [this.dragNode.id]
+    });
+
+    // Choose next mode
+    graph = editor.current.graph;
+    const dragNode = graph.hasEntity(this.dragNode.id);
+    const isPoint = dragNode && dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
+    if (dragNode && isPoint) {
+      context.enter('select-osm', { selection: { osm: [dragNode.id] }} );
+    } else if (this._reselectIDs.length) {
+      context.enter('select-osm', { selection: { osm: this._reselectIDs }} );
+    } else {
+      context.enter('browse');
+    }
   }
 
 
@@ -369,27 +383,27 @@ export class DragNodeMode extends AbstractMode {
   }
 
 
-  /**
-   * _historychange
-   * A change has happened, so we need to decide what mode to switch to next.
-   * If possible select the dragged node.
-   */
-  _historychange() {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const graph = editor.current.graph;
-
-    const dragNode = this.dragNode && graph.hasEntity(this.dragNode.id);
-    const isPoint = dragNode && dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
-
-    // Choose next mode
-    if (dragNode && isPoint) {
-      context.enter('select-osm', { selection: { osm: [dragNode.id] }} );
-    } else if (this._reselectIDs.length) {
-      context.enter('select-osm', { selection: { osm: this._reselectIDs }} );
-    } else {
-      context.enter('browse');
-    }
-  }
+//  /**
+//   * _historychange
+//   * A change has happened, so we need to decide what mode to switch to next.
+//   * If possible select the dragged node.
+//   */
+//  _historychange() {
+//    const context = this.context;
+//    const editor = context.systems.editor;
+//    const graph = editor.current.graph;
+//
+//    const dragNode = this.dragNode && graph.hasEntity(this.dragNode.id);
+//    const isPoint = dragNode && dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
+//
+//    // Choose next mode
+//    if (dragNode && isPoint) {
+//      context.enter('select-osm', { selection: { osm: [dragNode.id] }} );
+//    } else if (this._reselectIDs.length) {
+//      context.enter('select-osm', { selection: { osm: this._reselectIDs }} );
+//    } else {
+//      context.enter('browse');
+//    }
+//  }
 
 }

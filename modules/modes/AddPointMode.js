@@ -24,12 +24,12 @@ export class AddPointMode extends AbstractMode {
     this.id = 'add-point';
 
     this.defaultTags = {};
-    this.nodeID = null;
+//    this.nodeID = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
     this._cancel = this._cancel.bind(this);
-    this._historychange = this._historychange.bind(this);
+//    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -45,7 +45,7 @@ export class AddPointMode extends AbstractMode {
     this._active = true;
     const context = this.context;
 
-    this.nodeID = null;
+//    this.nodeID = null;
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
 
@@ -54,8 +54,8 @@ export class AddPointMode extends AbstractMode {
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
 
-    context.systems.editor
-      .on('historychange', this._historychange);
+//    context.systems.editor
+//      .on('historychange', this._historychange);
 
     return true;
   }
@@ -73,15 +73,15 @@ export class AddPointMode extends AbstractMode {
     }
 
     const context = this.context;
-    this.nodeID = null;
+//    this.nodeID = null;
 
     context.behaviors.draw
       .off('click', this._click)
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
 
-    context.systems.editor
-      .off('historychange', this._historychange);
+//    context.systems.editor
+//      .off('historychange', this._historychange);
   }
 
 
@@ -141,9 +141,16 @@ export class AddPointMode extends AbstractMode {
     const l10n = context.systems.l10n;
 
     const node = osmNode({ loc: loc, tags: this.defaultTags });
-    this.nodeID = node.id;
+//    this.nodeID = node.id;
     editor.perform(actionAddEntity(node));
-    editor.commit(l10n.t('operations.add.annotation.point'));
+    editor.commit({
+      annotation: l10n.t('operations.add.annotation.point'),
+      selectedIDs: [node.id]
+    });
+    context.enter('select-osm', {
+      selection: { osm: [node.id] },
+      newFeature: true
+    });
   }
 
 
@@ -157,9 +164,16 @@ export class AddPointMode extends AbstractMode {
     const l10n = context.systems.l10n;
 
     const node = osmNode({ tags: this.defaultTags });
-    this.nodeID = node.id;
+//    this.nodeID = node.id;
     editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node));
-    editor.commit(l10n.t('operations.add.annotation.vertex'));
+    editor.commit({
+      annotation: l10n.t('operations.add.annotation.vertex'),
+      selectedIDs: [node.id]
+    });
+    context.enter('select-osm', {
+      selection: { osm: [node.id] },
+      newFeature: true
+    });
   }
 
 
@@ -172,10 +186,10 @@ export class AddPointMode extends AbstractMode {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
 
-    this.nodeID = node.id;
+//    this.nodeID = node.id;
 
     if (Object.keys(this.defaultTags).length === 0) {
-      context.enter('select-osm', { selection: { osm: [node.id] }} );
+      context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: false });
       return;
     }
 
@@ -185,27 +199,34 @@ export class AddPointMode extends AbstractMode {
     }
 
     editor.perform(actionChangeTags(node.id, tags));
-    editor.commit(l10n.t('operations.add.annotation.point'));
+    editor.commit({
+      annotation: l10n.t('operations.add.annotation.point'),
+      selectedIDs: [node.id]
+    });
+    context.enter('select-osm', {
+      selection: { osm: [node.id] },
+      newFeature: false
+    });
   }
 
 
-  /**
-   * _historychange
-   * A change has happened, so we need to decide what mode to switch to next.
-   */
-  _historychange(difference) {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const graph = editor.current.graph;
-    const nodeID = this.nodeID;
-
-    if (nodeID && graph.hasEntity(nodeID)) {
-      const isNew = difference.created().includes(nodeID);
-      context.enter('select-osm', { selection: { osm: [nodeID] }, newFeature: isNew });
-    } else {
-      context.enter('browse');
-    }
-  }
+//  /**
+//   * _historychange
+//   * A change has happened, so we need to decide what mode to switch to next.
+//   */
+//  _historychange(difference) {
+//    const context = this.context;
+//    const editor = context.systems.editor;
+//    const graph = editor.current.graph;
+//    const nodeID = this.nodeID;
+//
+//    if (nodeID && graph.hasEntity(nodeID)) {
+//      const isNew = difference.created().includes(nodeID);
+//      context.enter('select-osm', { selection: { osm: [nodeID] }, newFeature: isNew });
+//    } else {
+//      context.enter('browse');
+//    }
+//  }
 
 
   /**

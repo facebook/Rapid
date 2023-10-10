@@ -81,11 +81,8 @@ export class RapidSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
-        urlhash
-          .on('hashchange', this._hashchange);
-
-        editor
-          .on('historychange', this._historychange);
+        urlhash.on('hashchange', this._hashchange);
+        editor.on('historychange', this._historychange);
 
         this._datasets.set('fbRoads', {
           id: 'fbRoads',

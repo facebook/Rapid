@@ -47,7 +47,10 @@ export function operationExtract(context, selectedIDs) {
     };
 
     editor.perform(combinedAction);
-    editor.commit(operation.annotation());
+    editor.commit({
+      annotation: operation.annotation(),
+      selectedIDs: selectedIDs
+    });
 
     // Move the extracted nodes to the mouse cursor location
     const projection = context.projection;

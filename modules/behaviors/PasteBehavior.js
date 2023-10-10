@@ -123,11 +123,16 @@ export class PasteBehavior extends AbstractBehavior {
     const delta = vecSubtract(mousePoint, copyPoint);
 
     editor.perform(actionMove(Array.from(pasteIDs), delta, projection));
-    editor.commit(l10n.t('operations.paste.annotation', { n: pasteIDs.size }));
+    editor.commit({
+      annotation: l10n.t('operations.paste.annotation', { n: pasteIDs.size }),
+      selectedIDs: pasteIDs
+    });
 
     // Put the user in move mode so they can place the pasted features
     // Grab the current versions from the graph (because they were just moved).
-    context.enter('move', { selection: { osm: pasteIDs }} );
+    context.enter('move', {
+      selection: { osm: pasteIDs }
+    });
   }
 
 }

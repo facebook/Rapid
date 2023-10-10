@@ -95,7 +95,12 @@ export function validationUnsquareWay(context) {
               const entityID = this.issue.entityIds[0];
               // use same degree threshold as for detection
               editor.perform(actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold));
-              window.setTimeout(() => editor.commit(l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })), 300);  // after any transition
+              window.setTimeout(() => {
+                editor.commit({
+                  annotation: l10n.t('operations.orthogonalize.annotation.feature', { n: 1 }),
+                  selectedIDs: [entityID]
+                });
+              }, 300);  // after any transition
             }
           }),
 /*
@@ -108,7 +113,10 @@ export function validationUnsquareWay(context) {
               const tags = Object.assign({}, entity.tags);  // shallow copy
               tags.nonsquare = 'yes';
               editor.perform(actionChangeTags(entityID, tags));
-              editor.commit(l10n.t('issues.fix.tag_as_unsquare.annotation'));
+              editor.commit({
+                annotation: l10n.t('issues.fix.tag_as_unsquare.annotation'),
+                selectedIDs: [entityID]
+              });
             }
           })
 */

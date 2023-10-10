@@ -73,10 +73,11 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     // If this is the same selection as before, and the previous edit was also a cycle-tags,
     // we can just replace the previous edit with this one.
     const annotation = operation.annotation();
+    const options = { annotation: annotation, selectedIDs: selectedIDs };
     if (isSameSelection && editor.getUndoAnnotation() === annotation) {
-      editor.commitAppend(annotation);  // Replace the previous cycle-tags edit
+      editor.commitAppend(options);  // Replace the previous cycle-tags edit
     } else {
-      editor.commit(annotation);
+      editor.commit(options);
     }
 
     editor.endTransaction();

@@ -25,7 +25,7 @@ export class MoveMode extends AbstractMode {
     // Make sure the event handlers have `this` bound correctly
     this._cancel = this._cancel.bind(this);
     this._finish = this._finish.bind(this);
-    this._historychange = this._historychange.bind(this);
+//    this._historychange = this._historychange.bind(this);
     this._keydown = this._keydown.bind(this);
     this._pointermove = this._pointermove.bind(this);
   }
@@ -81,8 +81,8 @@ export class MoveMode extends AbstractMode {
       .on('pointercancel', this._cancel)
       .on('pointermove', this._pointermove);
 
-    editor
-      .on('historychange', this._historychange);
+//    editor
+//      .on('historychange', this._historychange);
 
     return true;
   }
@@ -112,8 +112,8 @@ export class MoveMode extends AbstractMode {
       .off('pointercancel', this._cancel)
       .off('pointermove', this._pointermove);
 
-    editor
-      .off('historychange', this._historychange);
+//    editor
+//      .off('historychange', this._historychange);
 
     // If there is work in progress, finalize it.
     if (editor.hasWorkInProgress) {
@@ -122,7 +122,10 @@ export class MoveMode extends AbstractMode {
         l10n.t('operations.move.annotation.' + graph.geometry(this._entityIDs[0])) :
         l10n.t('operations.move.annotation.feature', { n: this._entityIDs.length });
 
-      editor.commit(annotation);
+      editor.commit({
+        annotation: annotation,
+        selectedIDs: this._entityIDs
+      });
     }
   }
 
@@ -198,15 +201,15 @@ export class MoveMode extends AbstractMode {
     context.enter('select-osm', { selection: { osm: this._entityIDs }} );
   }
 
-
-  /**
-   * _historychange
-   * Something has interrupted the edit we are doing (undo/redo/restore/etc)
-   * Return to browse mode without doing anything
-   * (There will be no work in progress if we are receiving a `historychange`)
-   */
-  _historychange() {
-    this.context.enter('browse');
-  }
+//
+//  /**
+//   * _historychange
+//   * Something has interrupted the edit we are doing (undo/redo/restore/etc)
+//   * Return to browse mode without doing anything
+//   * (There will be no work in progress if we are receiving a `historychange`)
+//   */
+//  _historychange() {
+//    this.context.enter('browse');
+//  }
 
 }

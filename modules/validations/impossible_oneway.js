@@ -148,7 +148,10 @@ export function validationImpossibleOneway(context) {
               onClick: function() {
                 const entityID = this.issue.entityIds[0];
                 editor.perform(actionReverse(entityID));
-                editor.commit(l10n.t('operations.reverse.annotation.line', { n: 1 }));
+                editor.commit({
+                  annotation: l10n.t('operations.reverse.annotation.line', { n: 1 }),
+                  selectedIDs: [entityID]
+                });
               }
             }));
           }

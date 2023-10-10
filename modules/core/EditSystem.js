@@ -53,10 +53,10 @@ const DURATION = 150;
  *      All work is performed against the `current` edit.
  * - `rollback()` - This rolls back all work in progress by replacing `current`
  *      with a fresh copy of `stable`.
- * - `commit(annotation)` - This accepts the `current` work-in-progress edit by adding
+ * - `commit(options)` - This accepts the `current` work-in-progress edit by adding
  *      it to the end of the history (removing any forward redo history, if any)
  *      Commit accepts an `annotation` (e.g. "Started a line") to say what the edit does.
- * - `commitAppend(annotation)` - This is just like `commit` but instead of
+ * - `commitAppend(options)` - This is just like `commit` but instead of
  *      adding `current` after `stable`, `current` replaces `stable`.
  * - `undo()` - Move the `stable` index back to the previous Edit (or `_index = 0`).
  * - `redo()` - Move the `stable` index forward to the next Edit (if any)
@@ -73,9 +73,8 @@ const DURATION = 150;
  *      Receives Difference between old `current` Graph and new `current` Graph.
  *   'historychange' - Fires when the history changes (i.e. when `stable` changes)
  *      Receives Difference between old `stable` Graph and new `stable` Graph.
+ *   'statechange' - Fires when we want to jump to a new history state - undo/redo/restore
  *   'merge'
- *   'undone'
- *   'redone'
  *   'storage_error'
  */
 export class EditSystem extends AbstractSystem {
@@ -321,7 +320,7 @@ export class EditSystem extends AbstractSystem {
 //        });
 //
 //    } else {
-      return this._perform(args, 1);
+      return this._perform(args, 1);     // only one place in the code uses this return - split operation?
 //    }
   }
 
@@ -340,7 +339,7 @@ export class EditSystem extends AbstractSystem {
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
     this._hasWorkInProgress = false;
 
-    return this._emitChangeEvents();
+    return this._updateChanges();
   }
 
 
@@ -367,15 +366,20 @@ export class EditSystem extends AbstractSystem {
    *                                            \-->  EditN1
    *                                                 `current` (WIP after EditN0)
    *
-   * @param {string|Object} annotation - A String saying what the Edit did. e.g. "Started a Line".
+   * @param  {Object?}        options - Optional `Object` of options passed
+   * @param  {Object|string}  options.annotation - A String saying what the Edit did. e.g. "Started a Line".
    *   Note that Rapid edits pass an Object as the annotation including more info about the edit.
+   * @param  {Array}          options.selectedIDs - Array of selectedIDs
    */
-  commit(annotation = '') {
+  commit(options = {}) {
     const context = this.context;
     const current = this.current;
 
+    const annotation = options.annotation ?? '';
+    const selectedIDs = options.selectedIDs;
+
     current.annotation  = annotation;
-    current.selectedIDs = context.selectedIDs();
+    current.selectedIDs = selectedIDs;
     current.sources     = this._gatherSources(annotation);
     current.transform   = context.projection.transform();
 
@@ -388,7 +392,7 @@ export class EditSystem extends AbstractSystem {
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
     this._hasWorkInProgress = false;
 
-    this._emitChangeEvents();
+    this._updateChanges();
   }
 
 
@@ -418,11 +422,13 @@ export class EditSystem extends AbstractSystem {
    *                                  \-->  EditN1
    *                                       `current` (WIP after EditN0)
    *
-   * @param {string|Object} annotation - A String saying what the Edit did. e.g. "Started a Line".
+   * @param  {Object?}        options - Optional `Object` of options passed
+   * @param  {Object|string}  options.annotation - A String saying what the Edit did. e.g. "Started a Line".
    *   Note that Rapid edits pass an Object as the annotation including more info about the edit.
+   * @param  {Array}          options.selectedIDs - Array of selectedIDs
    * @throws  Will throw if you try to append to the `base` edit
    */
-  commitAppend(annotation = '') {
+  commitAppend(options = {}) {
     const context = this.context;
     const current = this.current;
 
@@ -430,8 +436,11 @@ export class EditSystem extends AbstractSystem {
       throw new Error(`Can not commitAppend to the base edit!`);
     }
 
+    const annotation = options.annotation ?? '';
+    const selectedIDs = options.selectedIDs;
+
     current.annotation  = annotation;
-    current.selectedIDs = context.selectedIDs();
+    current.selectedIDs = selectedIDs;
     current.sources     = this._gatherSources(annotation);
     current.transform   = context.projection.transform();
 
@@ -443,7 +452,7 @@ export class EditSystem extends AbstractSystem {
     this._current = new Edit({ graph: new Graph(this.stable.graph) });
     this._hasWorkInProgress = false;
 
-    this._emitChangeEvents();
+    this._updateChanges();
   }
 
 
@@ -472,21 +481,25 @@ export class EditSystem extends AbstractSystem {
     d3_select(document).interrupt('editTransition');
 
     if (this._hasWorkInProgress) {
-      return this.rollback();
+      this.rollback();
+      this._updateMapState();
+      return;
     }
 
-    const previous = this.current;
-    while (this._index > 0) {
+    const prevIndex = this._index;
+    if (this._index > 0) {
       this._index--;
-      if (this._history[this._index].annotation) break;
     }
 
-    // Create a new `current` work-in-progress Edit
-    this._current = new Edit({ graph: new Graph(this.stable.graph) });
-    this._hasWorkInProgress = false;
+    if (this._index !== prevIndex) {
+      // Create a new `current` work-in-progress Edit
+      this._current = new Edit({ graph: new Graph(this.stable.graph) });
+      this._hasWorkInProgress = false;
 
-    this.emit('undone', this.stable, previous);
-    return this._emitChangeEvents();
+      this.emit('undone');  // old
+      this._updateChanges();
+      this._updateMapState();
+    }
   }
 
 
@@ -513,20 +526,19 @@ export class EditSystem extends AbstractSystem {
   redo() {
     d3_select(document).interrupt('editTransition');
 
-    const previous = this.current;
+    const prevIndex = this._index;
+    if (this._index < this._history.length - 1) {
+      this._index++;
+    }
 
-    let tryIndex = this._index;
-    while (tryIndex < this._history.length - 1) {
-      tryIndex++;
-      if (this._history[tryIndex].annotation) {
-        this._index = tryIndex;
-        // Create a new `current` work-in-progress Edit
-        this._current = new Edit({ graph: new Graph(this.stable.graph) });
-        this._hasWorkInProgress = false;
+    if (this._index !== prevIndex) {
+      // Create a new `current` work-in-progress Edit
+      this._current = new Edit({ graph: new Graph(this.stable.graph) });
+      this._hasWorkInProgress = false;
 
-        this.emit('redone', this.stable, previous);
-        return this._emitChangeEvents();
-      }
+      this.emit('redone');  // old
+      this._updateChanges();
+      this._updateMapState();
     }
   }
 
@@ -566,7 +578,8 @@ export class EditSystem extends AbstractSystem {
 
       // Create a new `current` work-in-progress Edit
       this._current = new Edit({ graph: new Graph(this.stable.graph) });
-      this._emitChangeEvents();
+      this._updateChanges();
+      this._updateMapState();
     }
   }
 
@@ -591,8 +604,8 @@ export class EditSystem extends AbstractSystem {
    *  storage, or loading specific entities from the OSM API.
    *  (Sorry, but this one is not like what `git merge` does.)
    *
-   *  @param  entities  Entities to merge into the history (usually only the new ones)
-   *  @param  seenIDs?  Optional - All entity IDs on the tile (including previously seen ones)
+   *  @param  {Array}  entities - Entities to merge into the history (usually only the new ones)
+   *  @param  {Set}    seenIDs? - Optional set of all entity IDs on the tile (including previously seen ones)
    */
   merge(entities, seenIDs) {
     const baseGraph = this.base.graph;
@@ -649,7 +662,7 @@ export class EditSystem extends AbstractSystem {
    */
   endTransaction() {
     this._inTransaction = false;
-    return this._emitChangeEvents();
+    return this._updateChanges();
   }
 
 
@@ -696,7 +709,7 @@ export class EditSystem extends AbstractSystem {
    * difference
    * Returns a `Difference` containing all edits from `base` -> `stable`
    * We use this pretty frequently, so it's cached in `this._fullDifference`
-   *  and recomputed by the `_emitChangeEvents` function only when `stable` changes.
+   *  and recomputed by the `_updateChanges` function only when `stable` changes.
    * @return {Difference} The total changes made by the user during their edit session
    */
   difference() {
@@ -1040,19 +1053,10 @@ export class EditSystem extends AbstractSystem {
       // Create a new `current` work-in-progress Edit
       this._current = new Edit({ graph: new Graph(this.stable.graph) });
 
-      const transform = this.stable.transform;
-      if (transform) {
-        map.transform(transform);
-      }
-
-      const selectedIDs = this.stable.selectedIDs;
-      if (selectedIDs) {
-        context.enter('select-osm', { selection: { osm: selectedIDs }} );
-      }
-
       loading.close();             // unblock ui
       map.redrawEnabled = true;    // unbock drawing
-      this._emitChangeEvents();
+      this._updateChanges();
+      this._updateMapState();
     };
 
 
@@ -1232,7 +1236,7 @@ export class EditSystem extends AbstractSystem {
 
     this._current.graph = graph;
     this._hasWorkInProgress = true;
-    return this._emitChangeEvents();
+    return this._updateChanges();
   }
 
 
@@ -1269,16 +1273,23 @@ export class EditSystem extends AbstractSystem {
 
 
   /**
-   * _emitChangeEvents
+   * _updateChanges
    * Recalculate the differences and emit `historychange` and `editchange` events.
    * @return {Difference}  Difference between before and after of `current` Edit
    */
-  _emitChangeEvents() {
+  _updateChanges() {
     if (this._inTransaction) return;
 
     const baseGraph = this.base.graph;
     const stableGraph = this.stable.graph;
     const currentGraph = this.current.graph;
+    let currentDifference;
+
+    if (this._lastCurrentGraph !== currentGraph) {
+      currentDifference = new Difference(this._lastCurrentGraph, currentGraph);
+      this._lastCurrentGraph = currentGraph;
+      this.emit('editchange', currentDifference);
+    }
 
     if (this._lastStableGraph !== stableGraph) {
       this._fullDifference = new Difference(baseGraph, stableGraph);
@@ -1288,13 +1299,44 @@ export class EditSystem extends AbstractSystem {
       this.deferredBackup();
     }
 
-    let currentDifference;
-    if (this._lastCurrentGraph !== currentGraph) {
-      currentDifference = new Difference(this._lastCurrentGraph, currentGraph);
-      this._lastCurrentGraph = currentGraph;
-      this.emit('editchange', currentDifference);
-    }
-
     return currentDifference;  // only one place in the code uses this return - split operation?
   }
+
+
+  /**
+   * _updateMapState
+   * Called whenever we want to jump to a new history state - undo/redo/restore
+   * This is for situations when we need to jump the user somewhere else.
+   * This moves the map and adjusts the mode to select something new.
+   * Should be called after `_updateChanges`, but only if needed.
+   */
+  _updateMapState() {
+// MapSystem has a listener that does these things.
+//    const context = this.context;
+//    const map = context.systems.map;
+//
+//    // This recenters the map on whatever the user was looking at at the time.
+//    // It might be better to calculate the extent of the selectedIDs and recenter on that?
+//    const transform = this.stable.transform;
+//    if (transform) {
+//      map.transform(transform);
+//    }
+//
+//    // For now these IDs are assumed to be OSM ids.
+//    // Check that they are actually in the stable graph.
+//    const graph = this.stable.graph;
+//    const checkIDs = this.stable.selectedIDs ?? [];
+//    const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
+//    if (selectedIDs.length) {
+//      context.enter('select-osm', { selection: { osm: selectedIDs }} );
+//    } else {
+//      context.enter('browse');
+//    }
+
+//console.log(`this._index = ${this._index}`);
+//console.log(`selectedIDs = ${this.stable.selectedIDs}`);
+//console.log(`annotation = ${this.stable.annotation}`);
+    this.emit('statechange');
+  }
+
 }

@@ -423,7 +423,10 @@ export function uiPresetList(context) {
             };
 
             editor.perform(combinedAction);
-            editor.commit(l10n.t('operations.change_tags.annotation'));
+            editor.commit({
+              annotation: l10n.t('operations.change_tags.annotation'),
+              selectedIDs: _entityIDs
+            });
             dispatch.call('choose', this, preset);
         };
 

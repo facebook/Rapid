@@ -138,7 +138,10 @@ export function operationDisconnect(context, selectedIDs) {
       return graph;
     };
     editor.perform(combinedAction);
-    editor.commit(operation.annotation());
+    editor.commit({
+      annotation: operation.annotation(),
+      selectedIDs: selectedIDs
+    });
   };
 
 

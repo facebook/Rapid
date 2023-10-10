@@ -313,7 +313,10 @@ export class DrawAreaMode extends AbstractMode {
         console.log(`DrawAreaMode: _clickLoc, extending area to ${loc}`);  // eslint-disable-line no-console
       }
 
-      editor.commit(this._getAnnotation());   // Add annotation so we can undo to here
+      editor.commit({
+        annotation: this._getAnnotation(),   // Add annotation so we can undo to here
+        selectedIDs: [this.drawWay.id]
+      });
 
       // Replace draw node
       this.lastNode = this.drawNode;
@@ -377,7 +380,10 @@ export class DrawAreaMode extends AbstractMode {
         actionMoveNode(this.drawNode.id, loc),       // Finalize position of old draw node at `loc`
         actionAddMidpoint(midpoint, this.drawNode)   // Add old draw node as a midpoint on target edge
       );
-      editor.commit(this._getAnnotation());   // Add annotation so we can undo to here
+      editor.commit({
+        annotation: this._getAnnotation(),   // Add annotation so we can undo to here
+        selectedIDs: [this.drawWay.id]
+      });
 
       // Replace draw node
       this.lastNode = this.drawNode;
@@ -444,7 +450,10 @@ export class DrawAreaMode extends AbstractMode {
         this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),   // Remove the draw node
         actionAddVertex(this.drawWay.id, targetNode.id)               // Add target node to draw way
       );
-      editor.commit(this._getAnnotation());
+      editor.commit({
+        annotation: this._getAnnotation(),   // Add annotation so we can undo to here
+        selectedIDs: [this.drawWay.id]
+      });
 
       // Now put the draw node back where it was and continue drawing
       this.lastNode = targetNode;

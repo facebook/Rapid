@@ -77,10 +77,13 @@ export function validationSuspiciousName(context) {
               const graph = editor.current.graph;
               const entityID = this.issue.entityIds[0];
               const entity = graph.entity(entityID);
-              let tags = Object.assign({}, entity.tags);   // shallow copy
+              const tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
               editor.perform(actionChangeTags(entityID, tags));
-              editor.commit(l10n.t('issues.fix.remove_generic_name.annotation'));
+              editor.commit({
+                annotation: l10n.t('issues.fix.remove_generic_name.annotation'),
+                selectedIDs: [entityID]
+              });
             }
           })
         ];
@@ -124,10 +127,13 @@ export function validationSuspiciousName(context) {
               const graph = editor.current.graph;
               const entityID = this.issue.entityIds[0];
               const entity = graph.entity(entityID);
-              let tags = Object.assign({}, entity.tags);   // shallow copy
+              const tags = Object.assign({}, entity.tags);   // shallow copy
               delete tags[nameKey];
               editor.perform(actionChangeTags(entityID, tags));
-              editor.commit(l10n.t('issues.fix.remove_mistaken_name.annotation'));
+              editor.commit({
+                annotation: l10n.t('issues.fix.remove_mistaken_name.annotation'),
+                selectedIDs: [entityID]
+              });
             }
           })
         ];

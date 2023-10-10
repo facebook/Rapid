@@ -238,16 +238,32 @@ export class MapSystem extends AbstractSystem {
         }
         this.immediateRedraw();
       })
-      .on('historychange', difference => {
-        const modeID = context.mode?.id;
-        if (!['browse', 'select', 'select-osm'].includes(context.mode?.id)) return;
+      .on('statechange', () => {
+        // const modeID = context.mode?.id;
+        // if (!['browse', 'select', 'select-osm'].includes(context.mode?.id)) return;
+        const stable = editor.stable;
 
         // Recenter the map if we've jumped to a different place,
         // (because of a undo, redo, restore, etc)
         const t0 = this.transform();
-        const t1 = editor.stable.transform;
+        const t1 = stable.transform;
         if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
           this.transformEase(t1);
+        }
+
+        // For now these IDs are assumed to be OSM ids.
+        // Check that they are actually in the stable graph.
+        const graph = stable.graph;
+        const checkIDs = stable.selectedIDs ?? [];
+        const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
+
+// maybe: check this too  (it was in select-osm mode historychange and it makes sense)
+// if (datum.type === 'node' && locations.blocksAt(datum.loc).length) continue;  // editing is blocked
+
+        if (selectedIDs.length) {
+          context.enter('select-osm', { selection: { osm: selectedIDs }} );
+        } else {
+          context.enter('browse');
         }
       });
 

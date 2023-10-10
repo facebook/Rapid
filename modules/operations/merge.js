@@ -45,7 +45,10 @@ export function operationMerge(context, selectedIDs) {
     if (operation.disabled()) return;
 
     editor.perform(action);
-    editor.commit(operation.annotation());
+    editor.commit({
+      annotation: operation.annotation(),
+      selectedIDs: selectedIDs
+    });
 
     const graph = editor.current.graph;  // after edit
     let successorIDs = selectedIDs.filter(entityID => graph.hasEntity(entityID));

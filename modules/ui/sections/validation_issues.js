@@ -129,7 +129,10 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
               utilHighlightEntities(d.entityIds, false, context);  // unhighlight
 
               editor.perform(d.autoArgs[0]);   // autoArgs[0] = action
-              editor.commit(d.autoArgs[1]);    // autoArgs[1] = annotation
+              editor.commit({
+                annotation: d.autoArgs[1],      // autoArgs[1] = annotation
+                selectedIDs: d.entityIds
+              });
             })
             .call(uiIcon('#rapid-icon-wrench'));
         });
@@ -184,7 +187,9 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
           editor.perform(action);
         }
 
-        editor.commit(l10n.t('issues.fix_all.annotation'));
+        editor.commit({
+          annotation: l10n.t('issues.fix_all.annotation')
+        });
         editor.endTransaction();
       });
   }

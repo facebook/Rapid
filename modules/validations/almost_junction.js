@@ -107,7 +107,10 @@ export function validationAlmostJunction(context) {
             const collinear = findSmallJoinAngle(midNode, endNode, nearEndNodes);
             if (collinear) {
               editor.perform(actionMergeNodes([collinear.id, endNode.id], collinear.loc));
-              editor.commit(annotation);
+              editor.commit({
+                annotation: annotation,
+                selectedIDs: [collinear.id, endNode.id]
+              });
               return;
             }
           }
@@ -121,11 +124,17 @@ export function validationAlmostJunction(context) {
           // already a point nearby, just connect to that
           if (closestPointInfo.distance < WELD_TH_METERS) {
             editor.perform(actionMergeNodes([ closestPointInfo.id, endNode.id ], closestPointInfo.loc));
-            editor.commit(annotation);
+            editor.commit({
+              annotation: annotation,
+              selectedIDs: [closestPointInfo.id, endNode.id]
+            });
           // else add the end node to the edge way
           } else {
             editor.perform(actionAddMidpoint({ loc: crossLoc, edge: targetEdge }, endNode));
-            editor.commit(annotation);
+            editor.commit({
+              annotation: annotation,
+              selectedIDs: [endNode.id]
+            });
           }
         }
       })];
@@ -141,7 +150,10 @@ export function validationAlmostJunction(context) {
             const tags = Object.assign({}, graph.entity(nodeID).tags);
             tags.noexit = 'yes';
             editor.perform(actionChangeTags(nodeID, tags));
-            editor.commit(l10n.t('issues.fix.tag_as_disconnected.annotation'));
+            editor.commit({
+              annotation: l10n.t('issues.fix.tag_as_disconnected.annotation'),
+              selectedIDs: [nodeID]
+            });
           }
         }));
       }

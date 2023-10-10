@@ -63,7 +63,10 @@ export function uiRapidFeatureInspector(context, keybinding) {
     };
 
     editor.perform(actionRapidAcceptFeature(_datum.id, graph));
-    editor.commit(annotation);
+    editor.commit({
+      annotation: annotation,
+      selectedIDs: [_datum.id]
+    });
     context.enter('select-osm', { selection: { osm: [_datum.id] }} );
 
     if (context.inIntro) return;
@@ -89,7 +92,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
       origid: _datum.__origid__
     };
     editor.perform(actionNoop());
-    editor.commit(annotation);
+    editor.commit({
+      annotation: annotation
+    });
     context.enter('browse');
   }
 

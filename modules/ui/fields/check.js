@@ -167,7 +167,10 @@ export function uiFieldCheck(context, uifield) {
           };
 
           editor.perform(combinedAction);
-          editor.commit(l10n.t('operations.reverse.annotation.line', { n: 1 }));
+          editor.commit({
+            annotation: l10n.t('operations.reverse.annotation.line', { n: 1 }),
+            selectedIDs: _entityIDs
+          });
 
           d3_select(this)
             .call(reverserSetText);

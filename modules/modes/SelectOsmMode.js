@@ -44,7 +44,7 @@ export class SelectOsmMode extends AbstractMode {
     this._lastVertex = this._lastVertex.bind(this);
     this._nextVertex = this._nextVertex.bind(this);
     this._previousVertex = this._previousVertex.bind(this);
-    this._historychange = this._historychange.bind(this);
+//    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -145,10 +145,10 @@ export class SelectOsmMode extends AbstractMode {
     ui.sidebar
       .select(entityIDs, this._newFeature);
 
-    editor
-      .on('historychange', this._historychange);
-      // this was probably to style the elements
-      // .on('editchange', this._selectElements)    // reselect, in case relation members were removed or added
+//    editor
+//      // .on('historychange', this._historychange);
+//      this was probably to style the elements
+//      .on('editchange', this._selectElements)    // reselect, in case relation members were removed or added
 
     return true;
   }
@@ -180,7 +180,10 @@ export class SelectOsmMode extends AbstractMode {
     ) {
       // The user added this relation but didn't edit it at all, so just delete it
       editor.perform(actionDeleteRelation(entity.id, true));  // true = don't delete untagged members
-      editor.commit(l10n.t('operations.delete.annotation.relation'));
+      editor.commit({
+        annotation: l10n.t('operations.delete.annotation.relation'),
+        selectedIDs: [entity.id]
+      });
     }
 
 
@@ -207,10 +210,10 @@ export class SelectOsmMode extends AbstractMode {
       this.keybinding = null;
     }
 
-    editor
-      .off('historychange', this._historychange);
-      // this was probably to style the elements
-      // .off('editchange', this._selectElements)    // reselect, in case relation members were removed or added
+//    editor
+//      .off('historychange', this._historychange);
+//      // this was probably to style the elements
+//      // .off('editchange', this._selectElements)    // reselect, in case relation members were removed or added
   }
 
 
@@ -225,28 +228,28 @@ export class SelectOsmMode extends AbstractMode {
   }
 
 
-  /**
-   * _historychange
-   *  on undo or redo, see whether we can stay in this mode
-   */
-  _historychange() {
-    const context = this.context;
-    const graph = context.systems.editor.current.graph;
-    const locations = context.systems.locations;
-    let selectedIDs = [];
-
-    for (const [datumID, datum] of this._selectedData) {
-      if (!graph.hasEntity(datumID)) continue;   // was deleted
-      if (datum.type === 'node' && locations.blocksAt(datum.loc).length) continue;  // editing is blocked
-      selectedIDs.push(datumID);  // keep it selected
-    }
-
-    if (!selectedIDs.length) {
-      context.enter('browse');
-    } else {
-      context.enter('select-osm', { selection: { osm: selectedIDs }} );   // reselect whatever remains
-    }
-  }
+//  /**
+//   * _historychange
+//   *  on undo or redo, see whether we can stay in this mode
+//   */
+//  _historychange() {
+//    const context = this.context;
+//    const graph = context.systems.editor.current.graph;
+//    const locations = context.systems.locations;
+//    let selectedIDs = [];
+//
+//    for (const [datumID, datum] of this._selectedData) {
+//      if (!graph.hasEntity(datumID)) continue;   // was deleted
+//      if (datum.type === 'node' && locations.blocksAt(datum.loc).length) continue;  // editing is blocked
+//      selectedIDs.push(datumID);  // keep it selected
+//    }
+//
+//    if (!selectedIDs.length) {
+//      context.enter('browse');
+//    } else {
+//      context.enter('select-osm', { selection: { osm: selectedIDs }} );   // reselect whatever remains
+//    }
+//  }
 
 
   /**

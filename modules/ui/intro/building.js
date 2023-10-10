@@ -283,7 +283,10 @@ export function uiIntroBuilding(context, curtain) {
     const preset = presets.match(entity, graph);
     if (preset !== housePreset) {
       editor.perform(actionChangePreset(_houseID, preset, housePreset));
-      editor.commit(l10n.t('operations.change_tags.annotation'));
+      editor.commit({
+        annotation: l10n.t('operations.change_tags.annotation'),
+        selectedIDs: [_houseID]
+      });
     }
 
     editor.setCheckpoint('hasHouse');
@@ -575,7 +578,10 @@ export function uiIntroBuilding(context, curtain) {
     const preset = presets.match(entity, graph);
     if (preset !== tankPreset) {
       editor.perform(actionChangePreset(_tankID, preset, tankPreset));
-      editor.commit(l10n.t('operations.change_tags.annotation'));
+      editor.commit({
+        annotation: l10n.t('operations.change_tags.annotation'),
+        selectedIDs: [_tankID]
+      });
     }
 
     editor.setCheckpoint('hasTank');

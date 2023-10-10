@@ -50,7 +50,10 @@ export function operationReverse(context, selectedIDs) {
     };
 
     editor.perform(combinedAction);
-    editor.commit(operation.annotation());
+    editor.commit({
+      annotation: operation.annotation(),
+      selectedIDs: selectedIDs
+    });
   };
 
 

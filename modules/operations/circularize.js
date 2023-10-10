@@ -39,8 +39,15 @@ export function operationCircularize(context, selectedIDs) {
     };
     combinedAction.transitionable = true;
 
+    const annotation = operation.annotation();
     editor.perform(combinedAction);
-    window.setTimeout(() => editor.commit(operation.annotation()), 300);  // after any transition
+
+    window.setTimeout(() => {
+      editor.commit({
+        annotation: annotation,
+        selectedIDs: selectedIDs
+      });
+    }, 300);  // after any transition
   };
 
 

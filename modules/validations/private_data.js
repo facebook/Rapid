@@ -55,7 +55,10 @@ export function validationPrivateData(context) {
             title: l10n.tHtml(`issues.fix.${fixID}.title`),
             onClick: () => {
               editor.perform(doUpgrade);
-              editor.commit(l10n.t('issues.fix.upgrade_tags.annotation'));
+              editor.commit({
+                annotation: l10n.t('issues.fix.upgrade_tags.annotation'),
+                selectedIDs: [entity.id]
+              });
             }
           })
         ];
