@@ -196,17 +196,18 @@ export function validationCrossingWays(context) {
                     //and suggest that the nodes use the newer 'crossing:markings' tag structure.
                     const markings = pathFeature.tags['crossing:markings'];
                     const crossing = pathFeature.tags.crossing;
-                    let suggestedMarkingValue = 'no';
 
                     if (!!markings && markings !== 'no') {
                         // Marking tag exists, and annotated as marked somehow? reuse the tag!
-                        suggestedMarkingValue = markings;
-                    } else if (!!crossing && crossing !== 'unmarked') {
+                        suggestion['crossing:markings'] = markings;
+                    } else if (crossing) {
                         //Annotated in the old way as anything but unmarked? suggest 'yes'.
-                        suggestedMarkingValue= 'yes';
+                        if (crossing !== 'unmarked') {
+                            suggestion['crossing:markings'] = 'yes';
+                        } else {
+                            suggestion['crossing:markings'] = 'no';
+                        }
                     }
-
-                    suggestion['crossing:markings'] = suggestedMarkingValue;
 
                     return suggestion;
                 }
@@ -753,8 +754,15 @@ export function validationCrossingWays(context) {
                     // Reuse the close node if it has no interesting tags or if it is already a crossing - #8326
                     if (!closeNode.hasInterestingTags() || closeNode.isCrossing()) {
                         canReuse = true;
+                        const existingNode = newGraph.hasEntity(closeNode.id);
                         //Don't overwrite the existing node's tags.
-                        delete newNode.tags;
+                        if (existingNode.tags?.crossing && newNode.tags?.crossing) {
+                            delete newNode.tags.crossing;
+                        }
+
+                        if (existingNode.tags['crossing:markings'] && newNode.tags['crossing:markings']) {
+                            delete newNode.tags['crossing:markings'];
+                        }
                         newGraph = newGraph.replace(newNode);
                         nodesToMerge.push(closeNode.id);
                     }
