@@ -191,6 +191,23 @@ export function validationCrossingWays(context) {
                             suggestion[k] = pathFeature.tags[k];
                         }
                     }
+
+                    //Many features are marked the 'old way' with 'crossing=yes|no'. We should consider these ways
+                    //and suggest that the nodes use the newer 'crossing:markings' tag structure.
+                    const markings = pathFeature.tags['crossing:markings'];
+                    const crossing = pathFeature.tags.crossing;
+                    let suggestedMarkingValue = 'no';
+
+                    if (!!markings && markings !== 'no') {
+                        // Marking tag exists, and annotated as marked somehow? reuse the tag!
+                        suggestedMarkingValue = markings;
+                    } else if (!!crossing && crossing !== 'unmarked') {
+                        //Annotated in the old way as anything but unmarked? suggest 'yes'.
+                        suggestedMarkingValue= 'yes';
+                    }
+
+                    suggestion['crossing:markings'] = suggestedMarkingValue;
+
                     return suggestion;
                 }
                 return {};
@@ -736,6 +753,9 @@ export function validationCrossingWays(context) {
                     // Reuse the close node if it has no interesting tags or if it is already a crossing - #8326
                     if (!closeNode.hasInterestingTags() || closeNode.isCrossing()) {
                         canReuse = true;
+                        //Don't overwrite the existing node's tags.
+                        delete newNode.tags;
+                        newGraph = newGraph.replace(newNode);
                         nodesToMerge.push(closeNode.id);
                     }
                 }
@@ -745,7 +765,8 @@ export function validationCrossingWays(context) {
                 }
             });
 
-            if (nodesToMerge.length > 1) {   // If we're reusing nearby nodes, merge them with the new node
+            // If we're reusing nearby nodes, merge them with the new node
+            if (nodesToMerge.length > 1) {
                 newGraph = actionMergeNodes(nodesToMerge, loc)(newGraph);
                 didSomething = true;
             }
