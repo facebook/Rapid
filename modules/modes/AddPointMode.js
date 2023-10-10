@@ -7,8 +7,6 @@ import { geoChooseEdge } from '../geo';
 import { osmNode } from '../osm/node';
 
 const DEBUG = false;
-
-
 /**
  * `AddPointMode`
  * In this mode, we are waiting for the user to place a point somewhere
@@ -41,8 +39,9 @@ export class AddPointMode extends AbstractMode {
 
     this._active = true;
     const context = this.context;
+    const eventManager = context.systems.map.renderer.events;
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
-
+    eventManager.setCursor('crosshair');
     context.behaviors.draw
       .on('click', this._click)
       .on('cancel', this._cancel)
@@ -67,7 +66,6 @@ export class AddPointMode extends AbstractMode {
     }
 
     this._active = false;
-
     const context = this.context;
     context.behaviors.draw
       .off('click', this._click)
@@ -77,6 +75,8 @@ export class AddPointMode extends AbstractMode {
     context.systems.edits
       .off('undone', this._cancel)
       .off('redone', this._cancel);
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('grab');
   }
 
 
@@ -181,5 +181,4 @@ export class AddPointMode extends AbstractMode {
   _cancel() {
     this.context.enter('browse');
   }
-
 }

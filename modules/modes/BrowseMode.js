@@ -1,8 +1,7 @@
 import { AbstractMode } from './AbstractMode';
 import { operationPaste } from '../operations/paste';
-
+import {cursors} from './index';
 const DEBUG = false;
-
 
 /**
  * `BrowseMode` is the default mode that the editor is in.
@@ -29,11 +28,12 @@ export class BrowseMode extends AbstractMode {
     if (DEBUG) {
       console.log('BrowseMode: entering');  // eslint-disable-line no-console
     }
-
+    const context = this.context;
     this.operations = [ operationPaste(this.context) ];
     this._active = true;
-    this.context.enableBehaviors(['hover', 'select', 'drag', 'paste', 'lasso', 'map-interaction']);
-
+    context.enableBehaviors(['hover', 'select', 'drag', 'paste', 'lasso', 'map-interaction']);
+    context.behaviors.hover
+      .on('hoverchange', this._hover);
     // Get focus on the body.
     // I think this was done to remove focus from whatever
     // field the user was using in the sidebar/inspector?
@@ -54,6 +54,7 @@ export class BrowseMode extends AbstractMode {
     if (DEBUG) {
       console.log('BrowseMode: exiting');  // eslint-disable-line no-console
     }
+    this.context.behaviors.hover.off('hoverchange', this._hover);
   }
 
 
@@ -61,5 +62,37 @@ export class BrowseMode extends AbstractMode {
     console.error('error: do not call BrowseMode.sidebar anymore');   // eslint-disable-line no-console
   }
 
+  /**
+   * _hover
+   * Changes the cursor styling based on what geometry is hovered
+   */
+  _hover(eventData) {
+    const context = this.context;
+    const graph = context.graph();
+    const { target } = eventData;
+    const datum = target?.data;
+    const entity = datum && graph.hasEntity(datum.id);
+    const geom = entity?.geometry(graph) ?? 'grab';
+    const eventManager = context.systems.map.renderer.events;
+    if (geom) {
+      switch (geom) {
+        case 'line':
+          eventManager.setCursor(cursors.lineCursor);
+          break;
+        case 'vertex':
+          eventManager.setCursor(cursors.vertexCursor);
+          break;
+        case 'point':
+          eventManager.setCursor(cursors.pointCursor);
+          break;
+        case 'area':
+          eventManager.setCursor(cursors.areaCursor);
+          break;
+        default:
+            eventManager.setCursor('grab');
+          break;
+      }
+    }
+  }
 }
 

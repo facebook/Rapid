@@ -8,10 +8,8 @@ import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { osmNode, osmWay } from '../osm';
-
+import {cursors} from './index';
 const DEBUG = false;
-
-
 /**
  * `DrawLineMode`
  * In this mode we are drawing a new line or continuing an existing line
@@ -93,7 +91,9 @@ export class DrawLineMode extends AbstractMode {
     this._selectedData.clear();
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
-
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('crosshair');
+    context.behaviors.hover.on('hoverchange', this._hover);
     context.behaviors.draw
       .on('move', this._move)
       .on('click', this._click)
@@ -150,7 +150,6 @@ export class DrawLineMode extends AbstractMode {
         this.drawWay = context.hasEntity(this.drawWay.id);  // Refresh draw way, so we can count its nodes
       }
     }
-
     // Confirm that the draw way exists and is valid..
     const length = this.drawWay?.nodes?.length || 0;
     if (length < 2 || this.firstNode.id === this.lastNode.id) {
@@ -185,6 +184,8 @@ export class DrawLineMode extends AbstractMode {
       .off('redone', this._undoOrRedo);
 
     context.resumeChangeDispatch();
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('grab');
   }
 
 
@@ -558,5 +559,31 @@ export class DrawLineMode extends AbstractMode {
    */
   _undoOrRedo() {
     this._cancel();
+  }
+
+  /**
+   * _hover
+   * Changes the cursor styling based on what geometry is hovered
+   */
+  _hover(eventData) {
+    const context = this.context;
+    const graph = context.graph();
+    const { target } = eventData;
+    const datum = target?.data;
+    const entity = datum && graph.hasEntity(datum.id);
+    const geom = entity?.geometry(graph) ?? 'grab';
+    const eventManager = this.context.systems.map.renderer.events;
+    if (geom) {
+      switch (geom) {
+        case 'line':
+          eventManager.setCursor(cursors.connectLineCursor);
+          break;
+        case 'vertex':
+          eventManager.setCursor(cursors.connectVertexCursor);
+          break;
+        default:
+            eventManager.setCursor('crosshair');
+      }
+    }
   }
 }

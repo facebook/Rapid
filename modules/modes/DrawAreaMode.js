@@ -8,7 +8,7 @@ import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { osmNode, osmWay } from '../osm';
-
+import {cursors} from './index';
 const DEBUG = false;
 
 
@@ -70,7 +70,9 @@ export class DrawAreaMode extends AbstractMode {
     this._selectedData.clear();
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
-
+    context.behaviors.hover.on('hoverchange', this._hover);
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('crosshair');
     context.behaviors.draw
       .on('move', this._move)
       .on('click', this._click)
@@ -142,6 +144,9 @@ export class DrawAreaMode extends AbstractMode {
       .off('redone', this._undoOrRedo);
 
     context.resumeChangeDispatch();
+    context.behaviors.hover.off('hoverchange', this._hover);
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('grab');
   }
 
 
@@ -273,7 +278,8 @@ export class DrawAreaMode extends AbstractMode {
         return;
       }
     }
-
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('crosshair');
     this._clickLoc(loc);
   }
 
@@ -515,4 +521,29 @@ export class DrawAreaMode extends AbstractMode {
     this._cancel();
   }
 
+  /**
+   * _hover
+   * Changes the cursor styling based on what geometry is hovered
+   */
+  _hover(eventData) {
+    const context = this.context;
+    const graph = context.graph();
+    const { target } = eventData;
+    const datum = target?.data;
+    const entity = datum && graph.hasEntity(datum.id);
+    const geom = entity?.geometry(graph) ?? 'grab';
+    const eventManager = this.context.systems.map.renderer.events;
+    if (geom) {
+      switch (geom) {
+        case 'line':
+          eventManager.setCursor(cursors.connectLineCursor);
+          break;
+        case 'vertex':
+          eventManager.setCursor(cursors.connectVertexCursor);
+          break;
+        default:
+            eventManager.setCursor('crosshair');
+      }
+    }
+  }
 }

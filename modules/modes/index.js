@@ -34,6 +34,16 @@ export const modes = {
   available: new Map()   // Map (id -> Mode constructor)
 };
 
+export const cursors = {
+  connectLineCursor: 'url(/img/cursor-draw-connect-line.png) 9 9, crosshair',
+  connectVertexCursor: 'url(/img/cursor-draw-connect-vertex.png) 9 9, crosshair',
+  lineCursor:'url(/img/cursor-select-line.png), auto',
+  vertexCursor: 'url(/img/cursor-select-vertex.png), auto',
+  pointCursor:'url(/img/cursor-select-point.png), auto',
+  areaCursor:'url(/img/cursor-select-area.png), auto',
+};
+
+
 modes.available.set('add-note', AddNoteMode);
 modes.available.set('add-point', AddPointMode);
 modes.available.set('browse', BrowseMode);

@@ -241,7 +241,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.gesture = null;
 
     const eventManager = this.context.systems.map.renderer.events;
-    eventManager.setCursor('inherit');
+    eventManager.setCursor('grab');
   }
 
 
@@ -255,9 +255,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
     this.lastDown = null;
     this.gesture = null;
-
-    const eventManager = this.context.systems.map.renderer.events;
-    eventManager.setCursor('inherit');
   }
 
 
