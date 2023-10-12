@@ -1828,6 +1828,12 @@ en:
         message: "{feature} ends very close to itself but does not reconnect"
       highway-highway:
         reference: Intersecting highways should share a junction vertex.
+    conflicting_crossing_tags:
+      title: Conflicting Crossing Tags
+      message: "{feature} crossing info conflicts with {feature2}"
+      incomplete_message: "{feature2} has crossing info, but one or more of its nodes does not."
+      tip: "Crossing way markings conflict with crossing nodes"
+      reference: Crossing way markings should not conflict with its crossing node.
     area_as_point:
       message: '{feature} should be an area, not a point'
     close_nodes:
@@ -2041,6 +2047,12 @@ en:
         annotation: Added a tunnel.
       address_the_concern:
         title: Address the concern
+      use_crossing_tags_from_node:
+        title: Use the crossing node's tags
+        annotation: Updated parent way's crossing tag info from a node.
+      use_crossing_tags_from_way:
+        title: Use the crossing way's tags
+        annotation: Updated child node's crossing tag info from a parent way.
       connect_almost_junction:
         annotation: Connected very close features.
       connect_crossing_features:

@@ -1,5 +1,6 @@
 export { validationAlmostJunction } from './almost_junction';
 export { validationCloseNodes } from './close_nodes';
+export { validationAmbiguousCrossingTags } from './ambiguous_crossing_tags';
 export { validationCrossingWays } from './crossing_ways';
 export { validationDisconnectedWay } from './disconnected_way';
 export { validationDuplicateWaySegments } from './duplicate_way_segments';
