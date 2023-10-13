@@ -1,5 +1,6 @@
 import { AbstractBehavior } from './AbstractBehavior';
 // import { geoChooseEdge } from '../geo';
+import {cursors} from './index';
 
 
 /**
@@ -154,5 +155,41 @@ export class HoverBehavior extends AbstractBehavior {
       this.hoverTarget = Object.assign({}, eventData.target);  // shallow copy
       this.emit('hoverchange', eventData);
     }
+    //  Cursor changes on Hover
+    // const graph = context.graph();
+    // const { target } = eventData;
+    // const datum = target?.data;
+    // const entity = datum && graph.hasEntity(datum.id);
+    // const geom = entity?.geometry(graph) ?? 'grab';
+    // const mode = context.mode;
+    // if (geom) {
+    //   switch (geom) {
+    //     case 'line':
+    //       eventManager.setCursor(cursors.lineCursor);
+    //       break;
+    //     case 'vertex':
+    //       eventManager.setCursor(cursors.vertexCursor);
+    //       break;
+    //     case 'point':
+    //       eventManager.setCursor(cursors.pointCursor);
+    //       break;
+    //     case 'area':
+    //       eventManager.setCursor(cursors.areaCursor);
+    //       break;
+    //     default:
+    //         eventManager.setCursor('grab');
+    //   }
+    // }
+    // if (mode?.id === 'draw-line' || mode?.id === 'draw-area') {
+    //   if (geom === 'line') {
+    //     eventManager.setCursor(cursors.connectLineCursor);
+    //   } else if (geom === 'vertex') {
+    //     eventManager.setCursor(cursors.connectVertexCursor);
+    //   } else {
+    //     eventManager.setCursor('crosshair');
+    //   }
+    // } else if (mode?.id === 'add-point') {
+    //   eventManager.setCursor('crosshair');
+    // }
   }
 }

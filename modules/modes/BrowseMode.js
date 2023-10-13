@@ -1,6 +1,7 @@
 import { AbstractMode } from './AbstractMode';
 import { operationPaste } from '../operations/paste';
 import {cursors} from './index';
+import { style } from 'd3';
 const DEBUG = false;
 
 /**
@@ -18,6 +19,8 @@ export class BrowseMode extends AbstractMode {
     super(context);
     this.context = context;
     this.id = 'browse';
+    // Make sure the event handlers have `this` bound correctly
+    this._hover = this._hover.bind(this);
   }
 
 
@@ -73,14 +76,18 @@ export class BrowseMode extends AbstractMode {
     const datum = target?.data;
     const entity = datum && graph.hasEntity(datum.id);
     const geom = entity?.geometry(graph) ?? 'grab';
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = this.context.systems.map.renderer.events;
+    // console.log(eventManager);
     if (geom) {
       switch (geom) {
         case 'line':
           eventManager.setCursor(cursors.lineCursor);
+          // document.body.style.cursor = 'url(/img/cursor-select-line.png), pointer';
+          // console.log();
           break;
         case 'vertex':
           eventManager.setCursor(cursors.vertexCursor);
+          // console.log(eventManager.setCursor(cursors.vertexCursor));
           break;
         case 'point':
           eventManager.setCursor(cursors.pointCursor);
