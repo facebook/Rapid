@@ -128,6 +128,8 @@ export class DragBehavior extends AbstractBehavior {
    */
   _pointermove(e) {
     const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.current.graph;
     const map = context.systems.map;
 
     // If we detect the edit (right-click) menu, we should cease any dragging behavior.
@@ -157,6 +159,7 @@ export class DragBehavior extends AbstractBehavior {
     } else if (down.target) {  // start dragging if we've moved enough
       const dist = vecLength(down.coord, move.coord);
       const tolerance = (e.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
+
       if (dist >= tolerance) {
         // Save the target, *and set it to be non-interactive*.
         // This lets us catch events for what other objects it passes over as the user drags it.
@@ -164,14 +167,33 @@ export class DragBehavior extends AbstractBehavior {
         this.dragTarget = target;
         target.feature.active = true;
 
+        const data = target.data;
+        const isMidpoint = (data.type === 'midpoint');
+
+        // If the current selection includes a parent of the dragged item,
+        //  reselect those same feature(s) after the drag completes.
+        // (The user is reshaping a line or area by dragging vertices or midpoints.)
+        const parentWays = (isMidpoint ? [data.way] : graph.parentWays(data));
+
+        // Gather all parentIDs - include both ways and relations (such as multipolygons)
+        const parentIDs = new Set();
+        for (const way of parentWays) {
+          parentIDs.add(way.id);
+          for (const relation of graph.parentRelations(way)) {
+            parentIDs.add(relation.id);
+          }
+        }
+
+        const selectedIDs = context.selectedIDs();
+        const selectionIncludesParent = selectedIDs.some(selectedID => parentIDs.has(selectedID));
+        const reselectIDs = selectionIncludesParent ? selectedIDs.slice() : [];
 
         // Enter Drag Node mode
-        const reselectIDs = context.selectedIDs();
-        if (target.data.type === 'midpoint') {
-          const midpoint = { loc: target.data.loc, edge: [ target.data.a.id, target.data.b.id ] };
+        if (isMidpoint) {
+          const midpoint = { loc: data.loc, edge: [ data.a.id, data.b.id ] };
           context.enter('drag-node', { midpoint: midpoint, reselectIDs: reselectIDs });
         } else {
-          context.enter('drag-node', { nodeID: target.data.id, reselectIDs: reselectIDs });
+          context.enter('drag-node', { nodeID: data.id, reselectIDs: reselectIDs });
         }
 
         this.emit('start', down);
