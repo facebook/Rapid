@@ -71,10 +71,11 @@ const DURATION = 150;
  * Events available:
  *   'editchange' - Fires on every edit performed (i.e. when `current` changes),
  *      Receives Difference between old `current` Graph and new `current` Graph.
- *   'historychange' - Fires when the history changes (i.e. when `stable` changes)
+ *   'historychange' - Fires only when the history actually changes (i.e. when `stable` changes)
  *      Receives Difference between old `stable` Graph and new `stable` Graph.
- *   'statechange' - Fires when we want to jump to a new history state - undo/redo/restore
- *   'merge'
+ *   'historyjump' - Fires on undo/redo/restore.  This is for situations when we may need to
+ *      jump the user to a different part of the map and restore a different selection.
+ *   'merge'  - Fires when new base entities are merged into the base graph
  *   'storage_error'
  */
 export class EditSystem extends AbstractSystem {
@@ -280,8 +281,8 @@ export class EditSystem extends AbstractSystem {
   /**
    * perform
    * This performs a bit of work.  Perform accepts a variable number of "action" arguments.
-   * Actions are functions that accept a Graph and return a modified Graph.
-   * All work is performed against the `current` edit.
+   * "Actions" are functions that accept a Graph and return a modified Graph.
+   * All work is performed against the `current` work-in-progress edit.
    * If multiple functions are passed, they will be performed in order,
    *   and an `editchange` event will be emitted after they have all completed.
    * @param   {...Function}  args - Variable number of Action functions to peform
@@ -376,10 +377,8 @@ export class EditSystem extends AbstractSystem {
     const current = this.current;
 
     const annotation = options.annotation ?? '';
-    const selectedIDs = options.selectedIDs;
-
     current.annotation  = annotation;
-    current.selectedIDs = selectedIDs;
+    current.selectedIDs = options.selectedIDs ?? [];
     current.sources     = this._gatherSources(annotation);
     current.transform   = context.projection.transform();
 
@@ -437,10 +436,8 @@ export class EditSystem extends AbstractSystem {
     }
 
     const annotation = options.annotation ?? '';
-    const selectedIDs = options.selectedIDs;
-
     current.annotation  = annotation;
-    current.selectedIDs = selectedIDs;
+    current.selectedIDs = options.selectedIDs ?? [];
     current.sources     = this._gatherSources(annotation);
     current.transform   = context.projection.transform();
 
@@ -482,7 +479,7 @@ export class EditSystem extends AbstractSystem {
 
     if (this._hasWorkInProgress) {
       this.rollback();
-      this._updateMapState();
+      this.emit('historyjump');
       return;
     }
 
@@ -496,9 +493,8 @@ export class EditSystem extends AbstractSystem {
       this._current = new Edit({ graph: new Graph(this.stable.graph) });
       this._hasWorkInProgress = false;
 
-      this.emit('undone');  // old
       this._updateChanges();
-      this._updateMapState();
+      this.emit('historyjump');
     }
   }
 
@@ -536,9 +532,8 @@ export class EditSystem extends AbstractSystem {
       this._current = new Edit({ graph: new Graph(this.stable.graph) });
       this._hasWorkInProgress = false;
 
-      this.emit('redone');  // old
       this._updateChanges();
-      this._updateMapState();
+      this.emit('historyjump');
     }
   }
 
@@ -579,7 +574,7 @@ export class EditSystem extends AbstractSystem {
       // Create a new `current` work-in-progress Edit
       this._current = new Edit({ graph: new Graph(this.stable.graph) });
       this._updateChanges();
-      this._updateMapState();
+      this.emit('historyjump');
     }
   }
 
@@ -1056,7 +1051,7 @@ export class EditSystem extends AbstractSystem {
       loading.close();             // unblock ui
       map.redrawEnabled = true;    // unbock drawing
       this._updateChanges();
-      this._updateMapState();
+      this.emit('historyjump');
     };
 
 
@@ -1300,43 +1295,6 @@ export class EditSystem extends AbstractSystem {
     }
 
     return currentDifference;  // only one place in the code uses this return - split operation?
-  }
-
-
-  /**
-   * _updateMapState
-   * Called whenever we want to jump to a new history state - undo/redo/restore
-   * This is for situations when we need to jump the user somewhere else.
-   * This moves the map and adjusts the mode to select something new.
-   * Should be called after `_updateChanges`, but only if needed.
-   */
-  _updateMapState() {
-// MapSystem has a listener that does these things.
-//    const context = this.context;
-//    const map = context.systems.map;
-//
-//    // This recenters the map on whatever the user was looking at at the time.
-//    // It might be better to calculate the extent of the selectedIDs and recenter on that?
-//    const transform = this.stable.transform;
-//    if (transform) {
-//      map.transform(transform);
-//    }
-//
-//    // For now these IDs are assumed to be OSM ids.
-//    // Check that they are actually in the stable graph.
-//    const graph = this.stable.graph;
-//    const checkIDs = this.stable.selectedIDs ?? [];
-//    const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
-//    if (selectedIDs.length) {
-//      context.enter('select-osm', { selection: { osm: selectedIDs }} );
-//    } else {
-//      context.enter('browse');
-//    }
-
-//console.log(`this._index = ${this._index}`);
-//console.log(`selectedIDs = ${this.stable.selectedIDs}`);
-//console.log(`annotation = ${this.stable.annotation}`);
-    this.emit('statechange');
   }
 
 }

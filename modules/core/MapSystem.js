@@ -238,28 +238,28 @@ export class MapSystem extends AbstractSystem {
         }
         this.immediateRedraw();
       })
-      .on('statechange', () => {
-        // const modeID = context.mode?.id;
-        // if (!['browse', 'select', 'select-osm'].includes(context.mode?.id)) return;
+      .on('historyjump', () => {
+        // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
         const stable = editor.stable;
 
-        // Recenter the map if we've jumped to a different place,
-        // (because of a undo, redo, restore, etc)
+        // Reposition the map if we've jumped to a different place.
         const t0 = this.transform();
         const t1 = stable.transform;
         if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
           this.transformEase(t1);
         }
 
+        // Switch to select mode if the edit contains selected ids.
+        // Note: draw modes need to do a little extra work to survive this,
+        //  so they have their own `historyjump` listeners.
+        const modeID = context.mode?.id;
+        if (/^draw/.test(modeID)) return;
+
         // For now these IDs are assumed to be OSM ids.
         // Check that they are actually in the stable graph.
         const graph = stable.graph;
         const checkIDs = stable.selectedIDs ?? [];
         const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
-
-// maybe: check this too  (it was in select-osm mode historychange and it makes sense)
-// if (datum.type === 'node' && locations.blocksAt(datum.loc).length) continue;  // editing is blocked
-
         if (selectedIDs.length) {
           context.enter('select-osm', { selection: { osm: selectedIDs }} );
         } else {

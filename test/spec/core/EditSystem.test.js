@@ -157,15 +157,15 @@ describe('EditSystem', () => {
       expect(_editor.getUndoAnnotation()).to.be.undefined;
     });
 
-    it('pushes the redo stack', () => {
+    it('preserves the redo stack', () => {
       _editor.perform(actionNoop(), 'annotation1');
       _editor.undo();
       expect(_editor.getRedoAnnotation()).to.equal('annotation1');
     });
 
-    it('emits an undone event', () => {
+    it('emits a historyjump event', () => {
       _editor.perform(actionNoop());
-      _editor.on('undone', spy);
+      _editor.on('historyjump', spy);
       _editor.undo();
       expect(spy).to.have.been.called;
     });
@@ -185,7 +185,7 @@ describe('EditSystem', () => {
 
     it('does redo into an annotated state', () => {
       _editor.perform(actionNoop(), 'annotation1');
-      _editor.on('redone', spy);
+      _editor.on('historyjump', spy);
       _editor.undo();
       _editor.redo();
       expect(_editor.getUndoAnnotation()).to.equal('annotation1');
@@ -194,7 +194,7 @@ describe('EditSystem', () => {
 
     it('does not redo into a non-annotated state', () => {
       _editor.perform(actionNoop());
-      _editor.on('redone', spy);
+      _editor.on('historyjump', spy);
       _editor.undo();
       _editor.redo();
       expect(spy).not.to.have.been.called;

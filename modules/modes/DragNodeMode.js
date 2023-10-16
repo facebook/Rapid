@@ -35,7 +35,6 @@ export class DragNodeMode extends AbstractMode {
     this._move = this._move.bind(this);
     this._end = this._end.bind(this);
     this._cancel = this._cancel.bind(this);
-//    this._historychange = this._historychange.bind(this);
   }
 
 
@@ -43,9 +42,11 @@ export class DragNodeMode extends AbstractMode {
    * enter
    * Enters the mode.
    * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {Array}    options.reselectIDs - If set, reselect these IDs when finished dragging
+   *                      Mostly used when a line is selected and user is adjusting its shape.
    * @param  {string}   options.nodeID - if set, drag the node for the given id
    * @param  {Object}   options.midpoint - if set, create a node from the given midpoint
-   *                      for example `{ loc: entity.loc, edge: [ entity.a.id, entity.b.id ] }`
+   *                      For example `{ loc: entity.loc, edge: [ entity.a.id, entity.b.id ] }`
    * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
@@ -53,7 +54,6 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const l10n = context.systems.l10n;
-    const locations = context.systems.locations;
     const ui = context.systems.ui;
 
     this._reselectIDs = options.reselectIDs ?? [];
@@ -103,7 +103,7 @@ export class DragNodeMode extends AbstractMode {
     // Set the 'drawing' class so that the dragNode and any parent ways won't emit events
     const scene = context.scene();
     scene.classData('osm', this.dragNode.id, 'drawing');
-    for (const parent of editor.current.graph.parentWays(this.dragNode)) {
+    for (const parent of graph.parentWays(this.dragNode)) {
       scene.classData('osm', parent.id, 'drawing');
     }
 
@@ -119,9 +119,6 @@ export class DragNodeMode extends AbstractMode {
       .on('end', this._end)
       .on('cancel', this._cancel);
 
-//    editor
-//      .on('historychange', this._historychange);
-
     return true;
   }
 
@@ -134,13 +131,14 @@ export class DragNodeMode extends AbstractMode {
     this._active = false;
 
     this.dragNode = null;
+    this._reselectIDs = [];
+    this._wasMidpoint = false;
     this._startLoc = null;
     this._clickLoc = null;
-    this._wasMidpoint = false;
+
     this._selectedData.clear();
 
     const context = this.context;
-    const editor = context.systems.editor;
 
     context.scene().clearClass('drawing');
 
@@ -148,9 +146,6 @@ export class DragNodeMode extends AbstractMode {
       .off('move', this._move)
       .off('end', this._end)
       .off('cancel', this._cancel);
-
-//    editor
-//      .off('historychange', this._historychange);
   }
 
 
@@ -291,15 +286,11 @@ export class DragNodeMode extends AbstractMode {
     });
 
     // Choose next mode
-    graph = editor.current.graph;
-    const dragNode = graph.hasEntity(this.dragNode.id);
-    const isPoint = dragNode && dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
-    if (dragNode && isPoint) {
-      context.enter('select-osm', { selection: { osm: [dragNode.id] }} );
-    } else if (this._reselectIDs.length) {
+    // (Note that if the drag node is gone, select mode will fallback to browse mode)
+    if (this._reselectIDs.length) {
       context.enter('select-osm', { selection: { osm: this._reselectIDs }} );
     } else {
-      context.enter('browse');
+      context.enter('select-osm', { selection: { osm: [this.dragNode.id] }} );
     }
   }
 
@@ -381,29 +372,5 @@ export class DragNodeMode extends AbstractMode {
     editor.rollback();
     this.context.enter('browse');
   }
-
-
-//  /**
-//   * _historychange
-//   * A change has happened, so we need to decide what mode to switch to next.
-//   * If possible select the dragged node.
-//   */
-//  _historychange() {
-//    const context = this.context;
-//    const editor = context.systems.editor;
-//    const graph = editor.current.graph;
-//
-//    const dragNode = this.dragNode && graph.hasEntity(this.dragNode.id);
-//    const isPoint = dragNode && dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
-//
-//    // Choose next mode
-//    if (dragNode && isPoint) {
-//      context.enter('select-osm', { selection: { osm: [dragNode.id] }} );
-//    } else if (this._reselectIDs.length) {
-//      context.enter('select-osm', { selection: { osm: this._reselectIDs }} );
-//    } else {
-//      context.enter('browse');
-//    }
-//  }
 
 }
