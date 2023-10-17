@@ -419,21 +419,22 @@ export class MapSystem extends AbstractSystem {
   /**
    * mouse
    * Gets the current [x,y] pixel location of the pointer
-   * @return  Array [x,y] pixel location
+   * (or center of map if there is no readily available pointer coordinate)
+   * @return  Array [x,y] pixel location of pointer (or center of the map)
    */
   mouse() {
-    return this._renderer.events.coord;
+    return this._renderer.events.coord || this.centerPoint();
   }
 
 
   /**
    * mouseLoc
    * Gets the current [lon,lat] location of the pointer
-   * @return  Array [lon,lat] (or location at the center of the map)
+   * (or center of map if there is no readily available pointer coordinate)
+   * @return  Array [lon,lat] location of pointer (or center of the map)
    */
   mouseLoc() {
-    const coord = this.mouse() || this.centerPoint();
-    return this.context.projection.invert(coord);
+    return this.context.projection.invert(this.mouse());
   }
 
 
