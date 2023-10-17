@@ -1828,10 +1828,10 @@ en:
         message: "{feature} ends very close to itself but does not reconnect"
       highway-highway:
         reference: Intersecting highways should share a junction vertex.
-    conflicting_crossing_tags:
-      title: Conflicting Crossing Tags
+    ambiguous_crossing_tags:
+      title: Ambiguous Crossing Tags
       message: "{feature} crossing info conflicts with {feature2}"
-      incomplete_message: "{feature2} has crossing info, but one or more of its nodes does not."
+      incomplete_message: "{feature} has crossing info, but one or more of its nodes does not."
       tip: "Crossing way markings conflict with crossing nodes"
       reference: Crossing way markings should not conflict with its crossing node.
     area_as_point:

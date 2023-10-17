@@ -77,7 +77,7 @@ export function validationAmbiguousCrossingTags(context) {
         message: function () {
           const node = context.hasEntity(this.entityIds[0]);
           const way = context.hasEntity(this.entityIds[1]);
-          return l10n.tHtml('issues.conflicting_crossing_tags.message', {
+          return l10n.tHtml('issues.ambiguous_crossing_tags.message', {
             feature: l10n.displayLabel(node, context.graph()),
             feature2: l10n.displayLabel(way, context.graph())
           });
@@ -115,11 +115,9 @@ export function validationAmbiguousCrossingTags(context) {
         subtype: 'fixme_tag',
         severity: 'warning',
         message: function () {
-          const node = context.hasEntity(this.entityIds[0]);
           const way = context.hasEntity(this.entityIds[1]);
-          return l10n.tHtml('issues.conflicting_crossing_tags.incomplete_message', {
-            feature: l10n.displayLabel(node, context.graph()),
-            feature2: l10n.displayLabel(way, context.graph())
+          return l10n.tHtml('issues.ambiguous_crossing_tags.incomplete_message', {
+            feature: l10n.displayLabel(way, context.graph())
           });
         },
         reference: showReference,
@@ -247,7 +245,7 @@ export function validationAmbiguousCrossingTags(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.conflicting_crossing_tags.reference'));
+        .html(l10n.tHtml('issues.ambiguous_crossing_tags.reference'));
     }
 
     /**
