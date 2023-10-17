@@ -27,8 +27,9 @@ export function validationAmbiguousCrossingTags(context) {
     //Can't be a crossing candidate... if it's already marked as crossing.
     if (node.tags.highway === 'crossing') return false;
 
-    const crossings = parentWays.filter(way => way.tags?.crossing);
-    return (crossings && parentWays.length > 0);
+    // We should only consider node candidates with at least one parent highway that is not a footway.
+    const crossings = parentWays.filter(way => way.tags?.highway && !way.tags?.footway);
+    return (crossings.length > 0 && parentWays.length > 0);
   }
 
   const validation = function checkAmbiguousCrossingTags(entity, graph) {
@@ -38,7 +39,7 @@ export function validationAmbiguousCrossingTags(context) {
     //First obtain all the nodes marked as a crossing.
     const crossingNodes = findCrossingNodes(entity);
 
-    //Now, find all the nodes that aren't marked as crossings, but are *actually* crossings of at least onefootway.
+    //Now, find all the nodes that aren't marked as crossings, but are *actually* crossings of at least one footway.
     const crossingNodeCandidates = findCrossingNodeCandidates(entity);
 
     let issues = [];
@@ -270,7 +271,7 @@ export function validationAmbiguousCrossingTags(context) {
     /**
      *
      * @param {*} way
-     * @returns a list of nodes in that way that don't have crossing markings, but have multiple parent nodes, one of which is a crossing way
+     * @returns a list of nodes in that way that don't have crossing markings, but have multiple parent ways, one of which is a crossing way
      */
     function findCrossingNodeCandidates(way) {
       let results = [];
