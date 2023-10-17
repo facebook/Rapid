@@ -1277,7 +1277,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * _replaceCurrent
    * This replaces (aka rollback) the `current` work-in-progress edit with a fresh copy of `stable`.
-   * Rolls backk the edits and emits no events.
+   * Rolls back the edits and emits no events.
    */
   _replaceCurrent() {
     this._current = new Edit({ graph: new Graph(this.stable.graph) });

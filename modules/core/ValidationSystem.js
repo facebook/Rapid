@@ -17,7 +17,7 @@ const RETRY = 5000;    // wait 5 sec before revalidating provisional entities
  * We do both because that's the only way to know whether to credit a user with
  * fixing something (or breaking it).  This means that every feaature downloaded
  * from OSM gets validated.  This system maintains a work queue so that validation
- * is performed in the backkground during browser idle times.
+ * is performed in the background during browser idle times.
  *
  * It would be even better to do this in a worker process, but workers don't
  * have easy access to things like the Graph or Edits/History.
