@@ -10,67 +10,56 @@ import { uiCmd } from '../ui/cmd';
 export function operationPaste(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
-  let _pastePoint;
+  const map = context.systems.map;
 
   let operation = function() {
-    if (!_pastePoint) return;
+    // Note: nearly the same code appears in both PasteBehavior and PasteOperation
+    const copyGraph = context.copyGraph;
+    const copyIDs = context.copyIDs;
+    if (!copyIDs.length) return;   // Nothing to copy..
 
-    const oldIDs = context.copyIDs;
-    if (!oldIDs.length) return;
-
-    const projection = context.projection;
-    const oldGraph = context.copyGraph;
-
-    let extent = new Extent();
-    let newIDs = [];
-
+    const action = actionCopyEntities(copyIDs, copyGraph);
     editor.beginTransaction();
-    const action = actionCopyEntities(oldIDs, oldGraph);
     editor.perform(action);
 
     const currGraph = editor.current.graph;
     const copies = action.copies();
 
-    const originals = new Set();
+    const originalIDs = new Set();
     for (const entity of Object.values(copies)) {
-      originals.add(entity.id);
+      originalIDs.add(entity.id);
     }
 
+    let extent = new Extent();
+    let newIDs = [];
     for (const [entityID, newEntity] of Object.entries(copies)) {
-      const oldEntity = oldGraph.entity(entityID);
+      const oldEntity = copyGraph.entity(entityID);
 
-      extent = extent.extend(oldEntity.extent(oldGraph));
+      extent = extent.extend(oldEntity.extent(copyGraph));
 
       // Exclude child nodes from newIDs if their parent way was also copied.
       const parents = currGraph.parentWays(newEntity);
-      const parentCopied = parents.some(parent => originals.has(parent.id));
+      const parentCopied = parents.some(parent => originalIDs.has(parent.id));
 
       if (!parentCopied) {
         newIDs.push(newEntity.id);
       }
     }
 
-    // Use the location of the copy operation to offset the paste location,
-    // or else use the center of the pasted extent
+    // Move pasted features to where mouse pointer is..
+    // (or center of map if there is no readily available pointer coordinate)
+    const projection = context.projection;
     const copyLoc = context.copyLoc;
     const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
-    const delta = vecSubtract(_pastePoint, copyPoint);
+    const delta = vecSubtract(map.mouse(), copyPoint);
+    const annotation = l10n.t('operations.paste.annotation', { n: newIDs.length });
 
-    // Move the pasted objects to be anchored at the paste location
     editor.perform(actionMove(newIDs, delta, projection));
-    editor.commit({
-      annotation: operation.annotation(),
-      selectedIDs: newIDs
-    });
+    editor.commit({ annotation: annotation, selectedIDs: newIDs });
     editor.endTransaction();
 
-    context.enter('select-osm', { selection: { osm: newIDs }} );
-  };
-
-
-  operation.point = function(val) {
-    _pastePoint = val;
-    return operation;
+    // Put the user in move mode so they can place the pasted features
+    context.enter('move', { selection: { osm: newIDs }} );
   };
 
 

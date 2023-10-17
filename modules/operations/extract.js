@@ -1,8 +1,6 @@
-import { vecSubtract } from '@rapid-sdk/math';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionExtract } from '../actions/extract';
-import { actionMove } from '../actions/move';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
@@ -39,28 +37,39 @@ export function operationExtract(context, selectedIDs) {
   let operation = function() {
     if (!actions.length) return;
 
+    const extractedNodeIDs = [];
     const combinedAction = (graph) => {
       for (const action of actions) {
         graph = action(graph);
+        extractedNodeIDs.push(action.getExtractedNodeID());
       }
       return graph;
     };
 
+    const annotation = operation.annotation();
+    editor.beginTransaction();
     editor.perform(combinedAction);
-    editor.commit({
-      annotation: operation.annotation(),
-      selectedIDs: selectedIDs
-    });
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
-    // Move the extracted nodes to the mouse cursor location
-    const projection = context.projection;
-    const extractedNodeIDs = actions.map(action => action.getExtractedNodeID());
-    const extractPoint = projection.project(extent.center());
-    const delta = vecSubtract(map.mouse(), extractPoint);
-    editor.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
+//    // Consider:  Move to mouse pointer?  (Like how paste works)
+//    let extent = new Extent();
+//    const graph = editor.current.graph;
+//    for (const entityID of extractedNodeIDs) {
+//      const entity = graph.entity(entityID);
+//      extent = extent.extend(entity.extent(graph));
+//    }
+//
+//    // Move extracted features to where mouse pointer is..
+//    // (or center of map if there is no readily available pointer coordinate)
+//    const projection = context.projection;
+//    const extractPoint = projection.project(extent.center());
+//    const delta = vecSubtract(map.mouse(), extractPoint);
+//    editor.perform(actionMove(extractedNodeIDs, delta, projection));
+//    editor.endTransaction();
+//    context.enter('move', { selection: { osm: extractedNodeIDs }} );
 
-    // Put the user in move mode so they can place the extracted nodes where they want.
-    context.enter('move', { selection: { osm: extractedNodeIDs }} );
+    editor.endTransaction();
+    context.enter('select-osm', { selection: { osm: extractedNodeIDs }} );
   };
 
 
