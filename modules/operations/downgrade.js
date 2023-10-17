@@ -17,8 +17,7 @@ export function operationDowngrade(context, selectedIDs) {
     let downgradeType;
     _affectedFeatureCount = 0;
 
-    for (let i in entityIDs) {
-      let entityID = entityIDs[i];
+    for (const entityID of entityIDs) {
       let type = downgradeTypeForEntityID(entityID);
       if (type) {
         _affectedFeatureCount += 1;
@@ -68,12 +67,11 @@ export function operationDowngrade(context, selectedIDs) {
   let operation = function() {
 
     const combinedAction = (graph) => {
-      for (let i in selectedIDs) {
-        let entityID = selectedIDs[i];
-        let type = downgradeTypeForEntityID(entityID);
+      for (const entityID of selectedIDs) {
+        const type = downgradeTypeForEntityID(entityID);
         if (!type) continue;
 
-        let tags = Object.assign({}, graph.entity(entityID).tags);  // shallow copy
+        const tags = Object.assign({}, graph.entity(entityID).tags);  // shallow copy
         for (let key in tags) {
           if (type === 'address' && addressKeysToKeep.indexOf(key) !== -1) continue;
           if (type === 'building' && buildingKeysToRetain.test(key)) continue;
@@ -87,11 +85,9 @@ export function operationDowngrade(context, selectedIDs) {
       return graph;
     };
 
+    const annotation = operation.annotation();
     editor.perform(combinedAction);
-    editor.commit({
-      annotation: operation.annotation(),
-      selectedIDs: selectedIDs
-    });
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
     // refresh the select mode to enable the delete operation
     context.enter('select-osm', { selection: { osm: selectedIDs }} );

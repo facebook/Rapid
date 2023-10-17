@@ -31,17 +31,13 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
 
 
   let operation = function() {
+    const annotation = operation.annotation();
     const action = actionReflect(selectedIDs, context.projection)
       .useLongAxis(Boolean(axis === 'long'));
 
-    const annotation = operation.annotation();
-    editor.perform(action);
-    window.setTimeout(() => {
-      editor.commit({
-        annotation: annotation,
-        selectedIDs: selectedIDs
-      });
-    }, 300);  // after any transition
+    editor
+      .performAsync(action)
+      .then(() => editor.commit({ annotation: annotation, selectedIDs: selectedIDs }));
   };
 
 

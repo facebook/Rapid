@@ -85,13 +85,9 @@ export function operationStraighten(context, selectedIDs) {
     if (!action) return;
 
     const annotation = operation.annotation();
-    editor.perform(action);
-    window.setTimeout(() => {
-      editor.commit({
-        annotation: annotation,
-        selectedIDs: selectedIDs
-      });
-    }, 300);  // after any transition
+    editor
+      .performAsync(action)
+      .then(() => editor.commit({ annotation: annotation, selectedIDs: selectedIDs }));
   };
 
 

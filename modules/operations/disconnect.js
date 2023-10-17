@@ -129,19 +129,18 @@ export function operationDisconnect(context, selectedIDs) {
 
 
   let operation = function() {
-    const combinedAction = function(graph) {
-      _actions.forEach(action => {
+
+    const combinedAction = (graph) => {
+      for (const action of _actions) {
         if (!action.disabled(graph)) {
           graph = action(graph);
         }
-      });
+      }
       return graph;
     };
+
     editor.perform(combinedAction);
-    editor.commit({
-      annotation: operation.annotation(),
-      selectedIDs: selectedIDs
-    });
+    editor.commit({ annotation: operation.annotation(), selectedIDs: selectedIDs });
   };
 
 

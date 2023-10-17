@@ -9,8 +9,6 @@ import { osmEntity } from '../osm/entity';
 import { uiLoading } from '../ui/loading';
 
 
-const DURATION = 150;
-
 
 /**
  * `EditSystem` maintains the history of user edits.
@@ -51,8 +49,7 @@ const DURATION = 150;
  * - `perform(action)` - This performs a bit of work.  Perform accepts a varible number of
  *      "action" arguments. Actions are functions that accept a Graph and return a modified Graph.
  *      All work is performed against the `current` edit.
- * - `rollback()` - This rolls back all work in progress by replacing `current`
- *      with a fresh copy of `stable`.
+ * - `rollback()` - This rolls back all work in progress by replacing `current` with a fresh copy of `stable`.
  * - `commit(options)` - This accepts the `current` work-in-progress edit by adding
  *      it to the end of the history (removing any forward redo history, if any)
  *      Commit accepts an `annotation` (e.g. "Started a line") to say what the edit does.
@@ -181,7 +178,7 @@ export class EditSystem extends AbstractSystem {
    * Called after completing an edit session to reset any internal state
    */
   reset() {
-    d3_select(document).interrupt('editTransition');
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
     this.deferredBackup.cancel();
 
     // Create a new Base Graph / Base Edit.
@@ -289,57 +286,79 @@ export class EditSystem extends AbstractSystem {
    * @return  {Difference}   Difference between before and after of `current` Edit
    */
   perform(...args) {
-    // complete any transition already in progress
-    d3_select(document).interrupt('editTransition');
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+    this._perform(args, 1);
+    return this._updateChanges();   // only one place in the code uses this return - split operation?
+  }
 
-//    // We can perform a eased edit in a transition if we have:
-//    // - a single action
-//    // - and that action is 'transitionable' (i.e. accepts eased time parameter)
-//    const action0 = args[0];
-//    let isTransitionable = false;
-//    if (args.length === 1) {
-//      isTransitionable = !!action0.transitionable;
-//    }
-//
-//    if (isTransitionable) {
-//      d3_select(document)
-//        .transition('editTransition')
-//        .duration(DURATION)
-//        .ease(d3_easeLinear)
-//        .tween('history.tween', () => {
-//          return (t) => {
-//            if (t < 1) this._perform(args, t);
-//          };
-//        })
-//        .on('start', () => {
-//          this._inTransition = true;
-//          this._perform(args, 0);
-//        })
-//        .on('end interrupt', () => {
-//          this._perform(args, 1);
-//          this._inTransition = false;
-//        });
-//
-//    } else {
-      return this._perform(args, 1);     // only one place in the code uses this return - split operation?
-//    }
+
+  /**
+   * performAsync
+   * Promisified version of `perform` that can support eased edits in a transition.
+   * This version of `perform` accepts a single Action function argument.
+   * If the Action is marked as being "transitionable", run it multiple times with
+   *   eased time parameter from 0..1 to create a smooth transition effect.
+   * If the Action is not marked as being "transitionable" just run it one time
+   *   with `time = 1` and return a resolved promise.
+   *
+   * @param   {Function}  action - single Action function to perform
+   * @return  {Promise}   Promise fulfilled when the transition is completed
+   */
+  performAsync(action) {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    if (typeof action !== 'function') {
+      return Promise.reject();
+    }
+
+    if (!action.transitionable) {
+      this._perform([action], 1);
+      this._updateChanges();
+      return Promise.resolve();
+    }
+
+    const DURATION = 150;
+
+    return new Promise(resolve => {
+      d3_select(document)
+        .transition('editTransition')
+        .duration(DURATION)
+        .ease(d3_easeLinear)
+        .tween('edit.tween', () => {
+          return (t) => {
+            if (t < 1) {
+              this._replaceCurrent();
+              this._perform([action], t);
+              this._updateChanges();
+            }
+          };
+        })
+        .on('start', () => {
+          this._inTransition = true;
+          this._replaceCurrent();
+          this._perform([action], 0);
+          this._updateChanges();
+        })
+        .on('end interrupt', () => {
+          this._replaceCurrent();
+          this._perform([action], 1);
+          this._updateChanges();
+          this._inTransition = false;
+          resolve();
+        });
+    });
   }
 
 
   /**
    * rollback
-   * This rolls back the `current` work-in-progress
-   * by replacing `current` with a fresh copy of `stable`.
+   * This rolls back the `current` work-in-progress by replacing `current` with a fresh copy of `stable`.
    */
   rollback() {
     if (!this._hasWorkInProgress) return;
 
-    d3_select(document).interrupt('editTransition');
-
-    // Create a new `current` work-in-progress Edit
-    this._current = new Edit({ graph: new Graph(this.stable.graph) });
-    this._hasWorkInProgress = false;
-
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+    this._replaceCurrent();
     return this._updateChanges();
   }
 
@@ -373,6 +392,8 @@ export class EditSystem extends AbstractSystem {
    * @param  {Array}          options.selectedIDs - Array of selectedIDs
    */
   commit(options = {}) {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
     const context = this.context;
     const current = this.current;
 
@@ -387,10 +408,7 @@ export class EditSystem extends AbstractSystem {
     this._index++;
     // (At this point `stable` === `current`)
 
-    // Create a new `current` work-in-progress Edit
-    this._current = new Edit({ graph: new Graph(this.stable.graph) });
-    this._hasWorkInProgress = false;
-
+    this._replaceCurrent();
     this._updateChanges();
   }
 
@@ -428,6 +446,8 @@ export class EditSystem extends AbstractSystem {
    * @throws  Will throw if you try to append to the `base` edit
    */
   commitAppend(options = {}) {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
     const context = this.context;
     const current = this.current;
 
@@ -445,10 +465,7 @@ export class EditSystem extends AbstractSystem {
     this._history.splice(this._index, Infinity, current);
     // (At this point `stable` === `current`)
 
-    // Create a new `current` work-in-progress Edit
-    this._current = new Edit({ graph: new Graph(this.stable.graph) });
-    this._hasWorkInProgress = false;
-
+    this._replaceCurrent();
     this._updateChanges();
   }
 
@@ -475,7 +492,7 @@ export class EditSystem extends AbstractSystem {
    *                             `current` (WIP after Edit1)
    */
   undo() {
-    d3_select(document).interrupt('editTransition');
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
     if (this._hasWorkInProgress) {
       this.rollback();
@@ -489,10 +506,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     if (this._index !== prevIndex) {
-      // Create a new `current` work-in-progress Edit
-      this._current = new Edit({ graph: new Graph(this.stable.graph) });
-      this._hasWorkInProgress = false;
-
+      this._replaceCurrent();
       this._updateChanges();
       this.emit('historyjump');
     }
@@ -520,7 +534,7 @@ export class EditSystem extends AbstractSystem {
    *                                                 `current` (WIP after Edit3)
    */
   redo() {
-    d3_select(document).interrupt('editTransition');
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
     const prevIndex = this._index;
     if (this._index < this._history.length - 1) {
@@ -528,10 +542,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     if (this._index !== prevIndex) {
-      // Create a new `current` work-in-progress Edit
-      this._current = new Edit({ graph: new Graph(this.stable.graph) });
-      this._hasWorkInProgress = false;
-
+      this._replaceCurrent();
       this._updateChanges();
       this.emit('historyjump');
     }
@@ -546,7 +557,7 @@ export class EditSystem extends AbstractSystem {
    */
   setCheckpoint(checkpointID) {
     if (!checkpointID) return;
-    d3_select(document).interrupt('editTransition');
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
     // Save a shallow copy of history, in case user undos away the edit that `_index` points to.
     this._checkpoints.set(checkpointID, {
@@ -564,15 +575,14 @@ export class EditSystem extends AbstractSystem {
    */
   restoreCheckpoint(checkpointID) {
     if (!checkpointID) return;
-    d3_select(document).interrupt('editTransition');
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
     const checkpoint = this._checkpoints.get(checkpointID);
     if (checkpoint) {
       this._history = checkpoint.history.slice();   // shallow copy
       this._index = checkpoint.index;
 
-      // Create a new `current` work-in-progress Edit
-      this._current = new Edit({ graph: new Graph(this.stable.graph) });
+      this._replaceCurrent();
       this._updateChanges();
       this.emit('historyjump');
     }
@@ -1045,11 +1055,9 @@ export class EditSystem extends AbstractSystem {
 
     // Call _finish when we believe we have everything.
     const _finish = () => {
-      // Create a new `current` work-in-progress Edit
-      this._current = new Edit({ graph: new Graph(this.stable.graph) });
-
-      loading.close();             // unblock ui
-      map.redrawEnabled = true;    // unbock drawing
+      loading.close();            // unblock ui
+      map.redrawEnabled = true;   // unbock drawing
+      this._replaceCurrent();
       this._updateChanges();
       this.emit('historyjump');
     };
@@ -1215,27 +1223,6 @@ export class EditSystem extends AbstractSystem {
 
 
   /**
-   * _perform
-   * Internal _perform that accepts both actions and eased time.
-   * @param  {Array}       Array of Action functions to perform
-   * @param  {number?}     Eased time, should be in the range [0..1]
-   * @return {Difference}  Difference between before and after of `current` Edit
-   */
-  _perform(actions, t) {
-    let graph = this._current.graph;
-    for (const fn of actions) {
-      if (typeof fn === 'function') {
-        graph = fn(graph, t);
-      }
-    }
-
-    this._current.graph = graph;
-    this._hasWorkInProgress = true;
-    return this._updateChanges();
-  }
-
-
-  /**
    * _gatherSources
    * Get the sources used to make the `current` edit.
    * @param   {string|Object?} annotation - Rapid edits may optionally use an annotation that includes the data source used
@@ -1264,6 +1251,37 @@ export class EditSystem extends AbstractSystem {
     }
 
     return sources;
+  }
+
+
+  /**
+   * _perform
+   * Internal `_perform`, accepts both Actions array and eased time,
+   * Performs the edits and emits no events.
+   * @param  {Array}    Array of Action functions to perform
+   * @param  {number?}  Eased time, should be in the range [0..1]
+   */
+  _perform(actions, t = 1) {
+    let graph = this._current.graph;
+    for (const fn of actions) {
+      if (typeof fn === 'function') {
+        graph = fn(graph, t);
+      }
+    }
+
+    this._current.graph = graph;
+    this._hasWorkInProgress = true;
+  }
+
+
+  /**
+   * _replaceCurrent
+   * This replaces (aka rollback) the `current` work-in-progress edit with a fresh copy of `stable`.
+   * Rolls backk the edits and emits no events.
+   */
+  _replaceCurrent() {
+    this._current = new Edit({ graph: new Graph(this.stable.graph) });
+    this._hasWorkInProgress = false;
   }
 
 

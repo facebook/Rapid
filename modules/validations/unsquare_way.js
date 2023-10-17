@@ -64,10 +64,10 @@ export function validationUnsquareWay(context) {
     let autoArgs;
     // don't allow autosquaring features linked to wikidata
     if (!entity.tags.wikidata) {
-      // use same degree threshold as for detection
-      let autoAction = actionOrthogonalize(entity.id, context.projection, undefined, degreeThreshold);
-      autoAction.transitionable = false;  // when autofixing, do it instantly
-      autoArgs = [autoAction, l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })];
+      // important to use the same `degreeThreshold` as for detection:
+      const action = actionOrthogonalize(entity.id, context.projection, undefined, degreeThreshold);
+      const annotation = l10n.t('operations.orthogonalize.annotation.feature', { n: 1 });
+      autoArgs = [ action, annotation ];
     }
 
     return [new ValidationIssue(context, {
@@ -93,14 +93,13 @@ export function validationUnsquareWay(context) {
 //          autoArgs: autoArgs,
             onClick: function() {
               const entityID = this.issue.entityIds[0];
-              // use same degree threshold as for detection
-              editor.perform(actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold));
-              window.setTimeout(() => {
-                editor.commit({
-                  annotation: l10n.t('operations.orthogonalize.annotation.feature', { n: 1 }),
-                  selectedIDs: [entityID]
-                });
-              }, 300);  // after any transition
+              // important to use the same `degreeThreshold` as for detection:
+              const action = actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold);
+              const annotation = l10n.t('operations.orthogonalize.annotation.feature', { n: 1 });
+
+              editor
+                .performAsync(action)
+                .then(() => editor.commit({ annotation: annotation, selectedIDs: [entityID] }));
             }
           }),
 /*

@@ -44,11 +44,9 @@ export function operationSplit(context, selectedIDs) {
 
 
   let operation = function() {
+    const annotation = operation.annotation();
     const difference = editor.perform(action);
-    editor.commit({
-      annotation: operation.annotation(),
-      selectedIDs: selectedIDs
-    });
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
     let idsToSelect = vertexIDs.slice();  // copy
 

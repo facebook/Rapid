@@ -44,11 +44,9 @@ export function operationMerge(context, selectedIDs) {
   let operation = function() {
     if (operation.disabled()) return;
 
+    const annotation = operation.annotation();
     editor.perform(action);
-    editor.commit({
-      annotation: operation.annotation(),
-      selectedIDs: selectedIDs
-    });
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
     const graph = editor.current.graph;  // after edit
     let successorIDs = selectedIDs.filter(entityID => graph.hasEntity(entityID));

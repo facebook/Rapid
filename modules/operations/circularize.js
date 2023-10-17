@@ -29,25 +29,20 @@ export function operationCircularize(context, selectedIDs) {
   let operation = function() {
     if (!actions.length) return;
 
-    let combinedAction = function(graph, t) {
-      actions.forEach(action => {
+    const combinedAction = (graph, t) => {
+      for (const action of actions) {
         if (!action.disabled(graph)) {
           graph = action(graph, t);
         }
-      });
+      }
       return graph;
     };
     combinedAction.transitionable = true;
 
     const annotation = operation.annotation();
-    editor.perform(combinedAction);
-
-    window.setTimeout(() => {
-      editor.commit({
-        annotation: annotation,
-        selectedIDs: selectedIDs
-      });
-    }, 300);  // after any transition
+    editor
+      .performAsync(combinedAction)
+      .then(() => editor.commit({ annotation: annotation, selectedIDs: selectedIDs }));
   };
 
 

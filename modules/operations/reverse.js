@@ -49,11 +49,9 @@ export function operationReverse(context, selectedIDs) {
       return graph;
     };
 
+    const annotation = operation.annotation();
     editor.perform(combinedAction);
-    editor.commit({
-      annotation: operation.annotation(),
-      selectedIDs: selectedIDs
-    });
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
   };
 
 
