@@ -37,7 +37,7 @@ export function uiContributors(context) {
             .attr('class', 'user-link')
             .attr('href', function(d) { return osm.userURL(d); })
             .attr('target', '_blank')
-            .text(String);
+            .html(String);
 
         if (u.length > limit) {
             var count = d3_select(document.createElement('span'));
@@ -49,15 +49,14 @@ export function uiContributors(context) {
                 .attr('href', function() {
                     return osm.changesetsURL(context.systems.map.center(), context.systems.map.zoom());
                 })
-                .text(othersNum);
+                .html(othersNum);
 
             wrap.append('span')
-                .html(context.tHtml('contributors.truncated_list', { n: othersNum, users: { html: userList.html() },
-                count: { html: count.html() } }));
+                .text(context.tHtml('contributors.truncated_list', { n: othersNum, users: userList.text(), count: count.text() }));
 
         } else {
             wrap.append('span')
-                .html(context.tHtml('contributors.list', { users: { html: userList.html() } }));
+                .text(context.tHtml('contributors.list', { users: userList.text() }));
         }
 
         if (!u.length) {
