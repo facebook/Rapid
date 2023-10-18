@@ -46,7 +46,7 @@ export function uiAccount(context) {
       // Add user name
       userLink.append('span')
         .attr('class', 'label')
-        .html(user.display_name);
+        .text(user.display_name);
     }
 
 
