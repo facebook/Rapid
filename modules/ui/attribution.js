@@ -73,7 +73,7 @@ export function uiAttribution(context) {
       .merge(copyright);
 
     copyright
-      .html(String);
+      .text(String);
   }
 
 
