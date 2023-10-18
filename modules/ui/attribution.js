@@ -53,7 +53,7 @@ export function uiAttribution(context) {
         attribution
           .append('span')
           .attr('class', 'attribution-text')
-          .html(terms_text);
+          .text(terms_text);
       })
       .merge(attributions);
 
