@@ -297,12 +297,12 @@ export function uiFeatureList(context) {
       label
         .append('span')
         .attr('class', 'entity-type')
-        .html(d => d.type);
+        .text(d => d.type);
 
       label
         .append('span')
         .attr('class', 'entity-name')
-        .html(d => d.name);
+        .text(d => d.name);
 
       enter
         .style('opacity', 0)
