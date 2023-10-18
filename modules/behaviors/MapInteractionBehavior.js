@@ -189,7 +189,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     this.lastDown = down;
     this.gesture = null;
-    eventManager.setCursor('grabbing');
+    const mode = this.context.mode.id;
+    if (mode === 'draw-area' || mode === 'draw-line') {
+      eventManager.setCursor('crosshair');
+    } else eventManager.setCursor('grabbing');
   }
 
 
@@ -241,7 +244,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.gesture = null;
 
     const eventManager = this.context.systems.map.renderer.events;
-    eventManager.setCursor('grab');
+    const mode = this.context.mode.id;
+    if (mode === 'draw-area' || mode === 'draw-line') {
+      eventManager.setCursor('crosshair');
+    } else eventManager.setCursor('grab');
   }
 
 

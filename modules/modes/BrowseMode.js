@@ -77,17 +77,13 @@ export class BrowseMode extends AbstractMode {
     const entity = datum && graph.hasEntity(datum.id);
     const geom = entity?.geometry(graph) ?? 'grab';
     const eventManager = this.context.systems.map.renderer.events;
-    // console.log(eventManager);
     if (geom) {
       switch (geom) {
         case 'line':
           eventManager.setCursor(cursors.lineCursor);
-          // document.body.style.cursor = 'url(/img/cursor-select-line.png), pointer';
-          // console.log();
           break;
         case 'vertex':
           eventManager.setCursor(cursors.vertexCursor);
-          // console.log(eventManager.setCursor(cursors.vertexCursor));
           break;
         case 'point':
           eventManager.setCursor(cursors.pointCursor);
