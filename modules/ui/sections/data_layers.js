@@ -6,6 +6,8 @@ import { uiCmd } from '../cmd';
 import { uiSection } from '../section';
 import { uiSettingsCustomData } from '../settings/custom_data';
 
+import { uiRapidColorpicker } from '../rapid_colorpicker';
+
 
 export function uiSectionDataLayers(context) {
   const l10n = context.systems.l10n;
@@ -211,9 +213,9 @@ export function uiSectionDataLayers(context) {
 
     // add color picker here
     liEnter
-    .append('div')
-    .attr('class', 'rapid-colorpicker-fill')
-    .call(uiIcon('#fas-palette'));
+      .append('div')
+      .attr('class', 'rapid-colorpicker-fill')
+      .call(uiIcon('#fas-palette'));
 
     liEnter
       .append('button')
