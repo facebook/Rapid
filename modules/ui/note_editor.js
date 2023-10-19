@@ -256,7 +256,7 @@ export function uiNoteEditor(context) {
                 .attr('target', '_blank');
 
             prose
-                .html(context.tHtml('note.upload_explanation_with_user', { user: { html: userLink.html() } }));
+                .html(context.tHtml('note.upload_explanation_with_user', { user: userLink.html() }));
         });
     }
 
