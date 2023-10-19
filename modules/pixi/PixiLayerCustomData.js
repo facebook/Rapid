@@ -9,7 +9,7 @@ import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 import { utilFetchResponse } from '../util';
 
-const CUSTOM_COLOR = 0x00ffff;
+const CUSTOM_COLOR = '#9edb2c';
 
 
 /**
