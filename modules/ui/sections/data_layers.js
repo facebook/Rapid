@@ -209,6 +209,12 @@ export function uiSectionDataLayers(context) {
       .append('span')
       .html(l10n.tHtml('map_data.layers.custom.title'));
 
+    // add color picker here
+    liEnter
+    .append('div')
+    .attr('class', 'rapid-colorpicker-fill')
+    .call(uiIcon('#fas-palette'));
+
     liEnter
       .append('button')
       .attr('class', 'open-data-options')
