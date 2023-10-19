@@ -75,7 +75,7 @@ export function uiSectionChanges(context) {
     buttons
       .append('strong')
       .attr('class', 'entity-type')
-      .html(d => {
+      .text(d => {
         const matched = context.systems.presets.match(d.entity, d.graph);
         return (matched && matched.name()) || l10n.displayType(d.entity.id);
       });
@@ -83,7 +83,7 @@ export function uiSectionChanges(context) {
     buttons
       .append('span')
       .attr('class', 'entity-name')
-      .html(d => {
+      .text(d => {
         const name = l10n.displayName(d.entity.tags);
         let string = '';
         if (name !== '') {

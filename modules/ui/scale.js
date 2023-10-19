@@ -54,7 +54,7 @@ export function uiScale(context) {
 
     selection.select('.scale-text')
       .style(isRTL ? 'right' : 'left', (scale.px + 16) + 'px')
-      .html(scale.text);
+      .text(scale.text);
   }
 
 

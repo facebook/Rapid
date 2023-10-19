@@ -265,7 +265,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     selection
       .append('span')
       .attr('class', 'user-name')
-      .html(userName);
+      .text(userName);
 
     let links = selection
       .append('div')

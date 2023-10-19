@@ -545,7 +545,7 @@ export function uiFieldCombo(context, uifield) {
             }
 
             chips.select('span')
-                .html(d => d.value);
+                .text(d => d.value);
 
             // Don't show delete '×' on the source chip for rapid features
             if (!(uifield.key === 'source' && _isRapidFeature())) {
