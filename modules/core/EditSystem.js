@@ -739,8 +739,8 @@ export class EditSystem extends AbstractSystem {
     }
 
     return {
-      modified: difference.modified(),
       created:  difference.created(),
+      modified: difference.modified(),
       deleted:  difference.deleted()
     };
   }
@@ -1298,7 +1298,10 @@ export class EditSystem extends AbstractSystem {
     const currentGraph = this.current.graph;
     let currentDifference;
 
-    if (this._lastCurrentGraph !== currentGraph) {
+    // note: `this._hasWorkInProgress` is included here because in some cases the graph
+    // won't actually change.. for example an Action that exits early or "performs" a no-op.
+    // We still want to generate an empty Difference and emit 'editchange' in these situations.
+    if (this._lastCurrentGraph !== currentGraph || this._hasWorkInProgress) {
       currentDifference = new Difference(this._lastCurrentGraph, currentGraph);
       this._lastCurrentGraph = currentGraph;
       this.emit('editchange', currentDifference);

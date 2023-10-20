@@ -1,12 +1,43 @@
 describe('EditSystem', () => {
-  let _editor, spy;
+  let _editor;
 
-  const actionNoop = function() {
+  function actionNoop() {
     return (graph) => graph;
-  };
-  const actionAddNode = function (nodeID) {
+  }
+
+  function actionAddNode(nodeID) {
     return (graph) => graph.replace(Rapid.osmNode({ id: nodeID }));
-  };
+  }
+
+  function actionTransitionNoop() {
+    const action = (graph, t) => graph;
+    action.transitionable = true;
+    return action;
+  }
+
+  // Some tests use this to prepare the EditSystem for testing add, update, remove, differences.
+  // After calling this, the history will contain:
+  //   Base graph contains "n1", "n2", "n3"
+  //   Edit1:  "added n-1"
+  //   Edit2:  "updated n2"
+  //   Edit3:  "deleted n3"
+  function prepareTestHistory() {
+    const node_1 = Rapid.osmNode({ id: 'n-1' });
+    const node1 = Rapid.osmNode({ id: 'n1' });
+    const node2 = Rapid.osmNode({ id: 'n2' });
+    const node3 = Rapid.osmNode({ id: 'n3' });
+
+    _editor.merge([node1, node2, node3]);   // merge base entities
+
+    _editor.perform(Rapid.actionAddEntity(node_1));
+    _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+
+    _editor.perform(Rapid.actionChangeTags('n2', { natural: 'tree' } ));
+    _editor.commit({ annotation: 'updated n2', selectedIDs: ['n2'] });
+
+    _editor.perform(Rapid.actionDeleteNode('n3'));
+    _editor.commit({ annotation: 'deleted n3', selectedIDs: [] });
+  }
 
 
   class MockSystem {
@@ -45,6 +76,7 @@ describe('EditSystem', () => {
         rapid:    new MockSystem(),
         storage:  new MockStorageSystem()
       };
+      this.services = {};
     }
     selectedIDs() { return []; }
     scene()       { return { layers: new Map() }; }
@@ -54,279 +86,636 @@ describe('EditSystem', () => {
 
 
   beforeEach(() => {
-    spy = sinon.spy();
     _editor = new Rapid.EditSystem(context);
     return _editor.initAsync();
   });
 
 
   describe('#reset', () => {
-    it('clears the version stack', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.perform(actionNoop(), 'annotation1');
+    it('clears the history stack', () => {
+      _editor.commit({ annotation: 'one' });
+      _editor.commit({ annotation: 'two' });
       _editor.undo();
       _editor.reset();
-      expect(_editor.getUndoAnnotation()).to.be.undefined;
-      expect(_editor.getRedoAnnotation()).to.be.undefined;
-    });
-  });
-
-
-  describe('#current', () => {
-    it('returns the current edit', () => {
-      expect(_editor.current.graph).to.be.an.instanceOf(Rapid.Graph);
+      expect(_editor._history).to.be.an.instanceOf(Array).with.lengthOf(1);
+      expect(_editor._index).to.eql(0);
     });
   });
 
   describe('#base', () => {
     it('returns the base edit', () => {
-      expect(_editor.current.graph).to.be.an.instanceOf(Rapid.Graph);
+      expect(_editor.base).to.be.an.instanceOf(Rapid.Edit);
+      expect(_editor.base).to.equal(_editor._history[0]);
+    });
+  });
+
+  describe('#stable', () => {
+    it('returns the stable edit', () => {
+      _editor.commit({ annotation: 'one' });
+      expect(_editor.stable).to.be.an.instanceOf(Rapid.Edit);
+      expect(_editor.stable).to.equal(_editor._history[1]);
+    });
+  });
+
+  describe('#current', () => {
+    it('returns the current edit', () => {
+      _editor.commit({ annotation: 'one' });
+      expect(_editor.current).to.be.an.instanceOf(Rapid.Edit);
+      expect(_editor.current).to.not.equal(_editor.stable);
+      expect(_editor.current).to.not.equal(_editor.base);
+    });
+  });
+
+  describe('#history', () => {
+    it('returns the history', () => {
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(1);
+    });
+  });
+
+  describe('#index', () => {
+    it('returns the index', () => {
+      expect(_editor.index).to.eql(0);
+    });
+  });
+
+  describe('#hasWorkInProgress', () => {
+    it('returns true when work has been performed on the current edit', () => {
+      expect(_editor.hasWorkInProgress).to.be.false;
+      _editor.perform(actionNoop());
+      expect(_editor.hasWorkInProgress).to.be.true;
     });
   });
 
 
   describe('#merge', () => {
     it('merges the entities into all graph versions', () => {
-      const n = Rapid.osmNode({id: 'n'});
+      const n = Rapid.osmNode({ id: 'n1' });
       _editor.merge([n]);
-      expect(_editor.current.graph.entity('n')).to.equal(n);
+      expect(_editor.base.graph.entity('n1')).to.equal(n);
+      expect(_editor.stable.graph.entity('n1')).to.equal(n);
+      expect(_editor.current.graph.entity('n1')).to.equal(n);
     });
 
     it('emits a merge event with the new entities', () => {
-      const n = Rapid.osmNode({id: 'n'});
-      _editor.on('merge', spy);
+      const n = Rapid.osmNode({ id: 'n1' });
+      const onMerge = sinon.spy();
+      _editor.on('merge', onMerge);
       _editor.merge([n]);
-      expect(spy).to.have.been.calledWith(new Set([n.id]));
+      expect(onMerge).to.have.been.calledOnceWith(new Set([n.id]));
     });
   });
 
 
   describe('#perform', () => {
-    it('returns a difference', () => {
-      expect(_editor.perform(actionNoop()).changes).to.be.empty;
+    it('returns a Difference', () => {
+      const diff = _editor.perform(actionNoop());
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.is.empty;
     });
 
-    it('updates the graph', () => {
-      const node = Rapid.osmNode();
-      _editor.perform(graph => { return graph.replace(node); });
-      expect(_editor.current.graph.entity(node.id)).to.equal(node);
+    it('returns an empty Difference when passed no args', () => {
+      const diff = _editor.perform();
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.is.empty;
     });
 
-    it('pushes an undo annotation', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
+    it('updates the current graph only', () => {
+      const current = _editor.current.graph;
+      const stable = _editor.stable.graph;
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(_editor.base.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.stable.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.current.graph).to.not.equal(current);  // new current
+      expect(_editor.stable.graph).to.equal(stable);        // same stable
     });
 
-    it('emits a change event', () => {
-      _editor.on('change', spy);
-      const difference = _editor.perform(actionNoop());
-      expect(spy).to.have.been.calledWith(difference);
-      expect(spy.callCount).to.eql(1);
+    it('emits an editchange event only', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+
+      const action = actionNoop();
+      const difference = _editor.perform(action);
+      expect(onEditChange).to.have.been.calledOnceWith(difference);
+      expect(onHistoryChange).to.have.been.not.called;
     });
 
-    it('performs multiple actions', () => {
-      const action1 = sinon.stub().returns(new Rapid.Graph());
-      const action2 = sinon.stub().returns(new Rapid.Graph());
-      _editor.perform(action1, action2, 'annotation1');
-      expect(action1).to.have.been.called;
-      expect(action2).to.have.been.called;
-      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
+    it('performs multiple actions, emits a single editchange event', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+
+      const action1 = actionAddNode('n-1');
+      const action2 = actionAddNode('n-2');
+      const difference = _editor.perform(action1, action2);
+      expect(onEditChange).to.have.been.calledOnceWith(difference);
+      expect(onHistoryChange).to.have.been.not.called;
+    });
+  });
+
+
+  describe('#performAsync', () => {
+    it('returns a rejected Promise when passed no args', () => {
+      const prom = _editor.performAsync();
+      expect(prom).to.be.an.instanceOf(Promise);
+      return prom.then(
+        () => {
+          expect.fail('Promise was fulfilled but should have been rejected');
+        },
+        () => {
+          expect(true).to.be.true;
+        }
+      );
     });
 
-    it('performs transitionable actions in a transition', done => {
-      const action1 = () => { return new Rapid.Graph(); };
-      action1.transitionable = true;
-      _editor.on('change', spy);
-      _editor.perform(action1);
-      window.setTimeout(() => {
-        expect(spy.callCount).to.be.above(2);
-        done();
-      }, 300);
+    it('returns a resolved Promise when passed a non-transitionable action', () => {
+      const action = actionAddNode('n-1');
+      const prom = _editor.performAsync(action);
+      expect(prom).to.be.an.instanceOf(Promise);
+      return prom.then(
+        () => {
+          expect(_editor.current.graph.hasEntity('n-1')).to.be.ok;
+        },
+        () => {
+          expect.fail('Promise was rejected but should have been fulfilled');
+        }
+      );
+    });
+
+    it('returns a Promise to perform transitionable action, emits editchange events only', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+
+      const action = actionTransitionNoop();
+      const prom = _editor.performAsync(action);
+      expect(prom).to.be.an.instanceOf(Promise);
+      return prom.then(
+        () => {
+          expect(onEditChange.callCount).to.be.above(2);
+          expect(onHistoryChange).to.have.been.not.called;
+        },
+        () => {
+          expect.fail('Promise was rejected but should have been fulfilled');
+        }
+      );
     });
   });
 
 
-  describe('#undo', () => {
-    it('returns a difference', () => {
-      expect(_editor.undo().changes).to.be.empty;
+  describe('#rollback', () => {
+    it('rolls back current to stable', () => {
+      _editor.perform(actionAddNode('n-1'));
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.hasWorkInProgress).to.be.true;
+
+      const current = _editor.current;
+      const stable = _editor.stable;
+
+      _editor.rollback();
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.hasWorkInProgress).to.be.false;
+      expect(_editor.current).to.not.equal(current);  // new current
+      expect(_editor.stable).to.equal(stable);        // same stable
     });
 
-    it('pops the undo stack', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.undo();
-      expect(_editor.getUndoAnnotation()).to.be.undefined;
+    it('emits editchange and historychange events', () => {
+      _editor.perform(actionAddNode('n-1'));
+
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+
+      _editor.rollback();
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(0);
     });
 
-    it('preserves the redo stack', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.undo();
-      expect(_editor.getRedoAnnotation()).to.equal('annotation1');
-    });
+    it('does nothing if no work in progress', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
 
-    it('emits a historyjump event', () => {
-      _editor.perform(actionNoop());
-      _editor.on('historyjump', spy);
-      _editor.undo();
-      expect(spy).to.have.been.called;
-    });
+      const current = _editor.current;
+      const stable = _editor.stable;
 
-    it('emits a change event', () => {
-      _editor.perform(actionNoop());
-      _editor.on('change', spy);
-      const difference = _editor.undo();
-      expect(spy).to.have.been.calledWith(difference);
+      _editor.rollback();
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+      expect(_editor.current).to.equal(current);   // same current
+      expect(_editor.stable).to.equal(stable);     // same stable
     });
   });
 
-  describe('#redo', () => {
-    it('returns a difference', () => {
-      expect(_editor.redo().changes).to.be.empty;
+
+  describe('#commit', () => {
+    it('commit work in progress to history', () => {
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(1);
+      expect(_editor.index).to.eql(0);
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.current.graph.hasEntity('n-2')).to.be.not.ok;
+
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
+
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(2);
+      expect(_editor.index).to.eql(1);
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.current.graph.hasEntity('n-2')).to.be.not.ok;
+
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-2'] });
+
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(3);
+      expect(_editor.index).to.eql(2);
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.current.graph.hasEntity('n-2')).to.be.ok;
     });
 
-    it('does redo into an annotated state', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.on('historyjump', spy);
+    it('emits editchange and historychange events', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
+      expect(onEditChange.callCount).to.eql(2);
+      expect(onHistoryChange.callCount).to.eql(1);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onEditChange.callCount).to.eql(3);
+      expect(onHistoryChange.callCount).to.eql(1);
+
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-2'] });
+      expect(onEditChange.callCount).to.eql(4);
+      expect(onHistoryChange.callCount).to.eql(2);
+    });
+  });
+
+
+  describe('#commitAppend', () => {
+    it('throws if you try to commitAppend to the base edit', () => {
+      _editor.perform(actionAddNode('n-1'));
+      const fn = () => _editor.commitAppend('added a node');
+      expect(fn).to.throw();
+    });
+
+    it('commitAppend work in progress to history', () => {
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(1);
+      expect(_editor.index).to.eql(0);
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.current.graph.hasEntity('n-2')).to.be.not.ok;
+
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
+
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(2);
+      expect(_editor.index).to.eql(1);
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.current.graph.hasEntity('n-2')).to.be.not.ok;
+
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commitAppend({ annotation: 'added a node', selectedIDs: ['n-2'] });  // commitAppend
+
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(2);         // still 2
+      expect(_editor.index).to.eql(1);                                             // still 1
+      expect(_editor.current.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.current.graph.hasEntity('n-2')).to.be.ok;
+    });
+
+    it('emits editchange and historychange events', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
+      expect(onEditChange.callCount).to.eql(2);
+      expect(onHistoryChange.callCount).to.eql(1);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onEditChange.callCount).to.eql(3);
+      expect(onHistoryChange.callCount).to.eql(1);
+
+      _editor.commitAppend({ annotation: 'added a node', selectedIDs: ['n-2'] });  // commitAppend
+      expect(onEditChange.callCount).to.eql(4);
+      expect(onHistoryChange.callCount).to.eql(2);
+    });
+  });
+
+
+  describe('#undo / #redo', () => {
+    it('can undo and redo edits', () => {
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      _editor.perform(actionAddNode('n-3'));
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
+
+      expect(_editor.getUndoAnnotation()).to.eql('added n-3');
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.ok;
+
       _editor.undo();
+
+      expect(_editor.getUndoAnnotation()).to.eql('added n-2');
+      expect(_editor.getRedoAnnotation()).to.eql('added n-3');
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.not.ok;
+
       _editor.redo();
-      expect(_editor.getUndoAnnotation()).to.equal('annotation1');
-      expect(spy).to.have.been.called;
+
+      expect(_editor.getUndoAnnotation()).to.eql('added n-3');
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.ok;
     });
 
-    it('does not redo into a non-annotated state', () => {
-      _editor.perform(actionNoop());
-      _editor.on('historyjump', spy);
+    it('emits editchange, historychange, and historyjump events', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onEditChange.callCount).to.eql(2);
+      expect(onHistoryChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onEditChange.callCount).to.eql(3);
+      expect(onHistoryChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onEditChange.callCount).to.eql(4);
+      expect(onHistoryChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-3'));
+      expect(onEditChange.callCount).to.eql(5);
+      expect(onHistoryChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
+      expect(onEditChange.callCount).to.eql(6);
+      expect(onHistoryChange.callCount).to.eql(3);
+      expect(onHistoryJump.callCount).to.eql(0);
+
       _editor.undo();
+      expect(onEditChange.callCount).to.eql(7);
+      expect(onHistoryChange.callCount).to.eql(4);
+      expect(onHistoryJump.callCount).to.eql(1);
+
       _editor.redo();
-      expect(spy).not.to.have.been.called;
+      expect(onEditChange.callCount).to.eql(8);
+      expect(onHistoryChange.callCount).to.eql(5);
+      expect(onHistoryJump.callCount).to.eql(2);
     });
 
-    it('emits a change event', () => {
-      _editor.perform(actionNoop());
+    it('does nothing if nothing to undo', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+      _editor.on('historyjump', onHistoryJump);
+
       _editor.undo();
-      _editor.on('change', spy);
-      const difference = _editor.redo();
-      expect(spy).to.have.been.calledWith(difference);
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+    });
+
+    it('does nothing if nothing to redo', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.redo();
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+    });
+  });
+
+
+  describe('#setCheckpoint / #restoreCheckpoint', () => {
+    it('can set and restore checkpoints', () => {
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+
+      _editor.setCheckpoint('checkpoint');
+
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      _editor.perform(actionAddNode('n-3'));
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
+
+      _editor.restoreCheckpoint('checkpoint');
+
+      expect(_editor.getUndoAnnotation()).to.eql('added n-1');
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
+      expect(_editor.stable.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.stable.graph.hasEntity('n-2')).to.be.not.ok;
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.not.ok;
+    });
+
+    it('emits editchange, historychange, and historyjump events', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      _editor.setCheckpoint('checkpoint');
+      expect(onEditChange.callCount).to.eql(2);
+      expect(onHistoryChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onEditChange.callCount).to.eql(3);
+      expect(onHistoryChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onEditChange.callCount).to.eql(4);
+      expect(onHistoryChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-3'));
+      expect(onEditChange.callCount).to.eql(5);
+      expect(onHistoryChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
+      expect(onEditChange.callCount).to.eql(6);
+      expect(onHistoryChange.callCount).to.eql(3);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.restoreCheckpoint('checkpoint');
+      expect(onEditChange.callCount).to.eql(7);
+      expect(onHistoryChange.callCount).to.eql(4);
+      expect(onHistoryJump.callCount).to.eql(1);
+    });
+
+    it('does nothing if checkpointID is missing or invalid', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.restoreCheckpoint();
+      _editor.restoreCheckpoint('fake');
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
     });
   });
 
 
   describe('#beginTransaction / #endTransaction', () => {
-    it('prevents change events from getting dispatched', () => {
-      _editor.perform(actionNoop(), 'base');
-      _editor.on('change', spy);
+    it('prevents change events from getting dispatched in a transaction', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
 
       _editor.beginTransaction();
 
-      _editor.perform(actionNoop(), 'perform');
-      expect(spy).to.have.not.been.called;
-      _editor.replace(actionNoop(), 'replace');
-      expect(spy).to.have.not.been.called;
-      _editor.overwrite(actionNoop(), 'replace');
-      expect(spy).to.have.not.been.called;
-      _editor.undo();
-      expect(spy).to.have.not.been.called;
-      _editor.redo();
-      expect(spy).to.have.not.been.called;
-      _editor.pop();
-      expect(spy).to.have.not.been.called;
+      _editor.perform(actionAddNode('n-1'));
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
 
-      const diff = _editor.endTransaction();
-      expect(spy).to.have.been.calledOnceWith(diff);
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.endTransaction();   // events emit here
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(1);
+
+      // diff should contain all things changed during the transaction
+      const diff = onEditChange.lastCall.firstArg;
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys(['n-1', 'n-2']);
     });
 
-    it('does nothing if resume called before pause', () => {
-      _editor.perform(actionNoop(), 'base');
-      _editor.on('change', spy);
+    it('does nothing if endTransaction called without beginTransaction', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
 
       _editor.endTransaction();
-      expect(spy).to.have.not.been.called;
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onEditChange.callCount).to.eql(2);
+      expect(onHistoryChange.callCount).to.eql(1);
     });
 
-    it('uses earliest difference if pause called multiple times', () => {
-      _editor.perform(actionNoop(), 'base');
-      _editor.on('change', spy);
+    it('uses earliest difference if beginTransaction called multiple times', () => {
+      const onEditChange = sinon.spy();
+      const onHistoryChange = sinon.spy();
+      _editor.on('editchange', onEditChange);
+      _editor.on('historychange', onHistoryChange);
 
       _editor.beginTransaction();
-      _editor.perform(actionAddNode('a'), 'perform');
 
+      _editor.perform(actionAddNode('n-1'));
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      // This beginTransaction has no effect - we are already in a transaction
       _editor.beginTransaction();
-      _editor.perform(actionAddNode('b'), 'perform');
 
-      const diff = _editor.endTransaction();
-      expect(spy).to.have.been.calledOnceWith(diff);
-      expect(diff.changes).to.have.all.keys('a', 'b');
+      _editor.perform(actionAddNode('n-2'));
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onEditChange.callCount).to.eql(0);
+      expect(onHistoryChange.callCount).to.eql(0);
+
+      _editor.endTransaction();   // events emit here
+      expect(onEditChange.callCount).to.eql(1);
+      expect(onHistoryChange.callCount).to.eql(1);
+
+      // diff should contain all things changed during the transaction
+      const diff = onEditChange.lastCall.firstArg;
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys(['n-1', 'n-2']);
     });
   });
 
 
-  describe('#changes', () => {
-    it('includes created entities', () => {
-      const node = Rapid.osmNode();
-      _editor.perform(graph => { return graph.replace(node); });
-      expect(_editor.changes().created).to.eql([node]);
-    });
+  describe('#difference / #hasChanges / #changes', () => {
+    it('returns the difference between base -> stable', () => {
+      prepareTestHistory();
 
-    it('includes modified entities', () => {
-      const node1 = Rapid.osmNode({id: 'n1'});
-      const node2 = node1.update({ tags: { yes: 'no' } });
-      _editor.merge([node1]);
-      _editor.perform(graph => { return graph.replace(node2); });
-      expect(_editor.changes().modified).to.eql([node2]);
-    });
+      expect(_editor.hasChanges()).to.be.true;
 
-    it('includes deleted entities', () => {
-      const node = Rapid.osmNode({id: 'n1'});
-      _editor.merge([node]);
-      _editor.perform(graph => { return graph.remove(node); });
-      expect(_editor.changes().deleted).to.eql([node]);
-    });
-  });
+      const diff = _editor.difference();
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys(['n-1', 'n2', 'n3']);
 
+      const detail = _editor.changes();
+      expect(detail).to.be.an.instanceOf(Object).that.has.all.keys(['created', 'modified', 'deleted']);
 
-  describe('#hasChanges', () => {
-    it('is true when any of change\'s values are nonempty', () => {
-      const node = Rapid.osmNode();
-      _editor.perform(graph => { return graph.replace(node); });
-      expect(_editor.hasChanges()).to.eql(true);
-    });
-
-    it('is false when all of change\'s values are empty', () => {
-      expect(_editor.hasChanges()).to.eql(false);
-    });
-  });
-
-
-  describe('checkpoints', () => {
-    it('saves and resets to checkpoints', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.perform(actionNoop(), 'annotation2');
-      _editor.perform(actionNoop(), 'annotation3');
-      _editor.setCheckpoint('check1');
-      _editor.perform(actionNoop(), 'annotation4');
-      _editor.perform(actionNoop(), 'annotation5');
-      _editor.setCheckpoint('check2');
-      _editor.perform(actionNoop(), 'annotation6');
-      _editor.perform(actionNoop(), 'annotation7');
-      _editor.perform(actionNoop(), 'annotation8');
-
-      _editor.restoreCheckpoint('check1');
-      expect(_editor.getUndoAnnotation()).to.equal('annotation3');
-
-      _editor.restoreCheckpoint('check2');
-      expect(_editor.getUndoAnnotation()).to.equal('annotation5');
-
-      _editor.restoreCheckpoint('check1');
-      expect(_editor.getUndoAnnotation()).to.equal('annotation3');
-    });
-
-    it('emits a change event', () => {
-      _editor.perform(actionNoop(), 'annotation1');
-      _editor.setCheckpoint('check1');
-      _editor.perform(actionNoop(), 'annotation2');
-
-      _editor.on('change', spy);
-      _editor.restoreCheckpoint('check1');
-      expect(spy).to.have.been.called;
+      const stable = _editor.stable.graph;
+      const base = _editor.base.graph;
+      expect(detail.created).to.eql([ stable.entity('n-1') ]);
+      expect(detail.modified).to.eql([ stable.entity('n2') ]);
+      expect(detail.deleted).to.eql([ base.entity('n3') ]);
     });
   });
 
@@ -334,43 +723,39 @@ describe('EditSystem', () => {
   describe('#toJSON', () => {
     it('doesn\'t generate unsaveable changes', () => {
       _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
       _editor.perform(Rapid.actionDeleteNode('n-1'));
-      expect(_editor.toJSON()).to.be.not.ok;
+      _editor.commit({ annotation: 'deleted n-1', selectedIDs: [] });
+
+      expect(_editor.toJSON()).to.be.undefined;
     });
 
     it('generates v3 JSON', () => {
-      const node_1 = Rapid.osmNode({ id: 'n-1' });
-      const node1 = Rapid.osmNode({ id: 'n1' });
-      const node2 = Rapid.osmNode({ id: 'n2' });
-      const node3 = Rapid.osmNode({ id: 'n3' });
+      prepareTestHistory();
 
       const node_1_json = { id: 'n-1' };  // without `visible: true`
       const node1_json = { id: 'n1' };
       const node2_json = { id: 'n2' };
       const node3_json = { id: 'n3' };
-
-      _editor.merge([node1, node2, node3]);                     // merge base entities
-      _editor.perform(Rapid.actionAddEntity(node_1));           // add n-1
-      _editor.perform(Rapid.actionChangeTags('n2', {k: 'v'}));  // update n2
-      const node2upd = _editor.current.graph.entity('n2');
-      const node2upd_json = { id: 'n2', tags: { k: 'v'}, v: node2upd.v };
-      _editor.perform(Rapid.actionDeleteNode('n3'));            // delete n3
+      const node2upd = _editor.stable.graph.entity('n2');
+      const node2upd_json = { id: 'n2', tags: { natural: 'tree' }, v: node2upd.v };
 
       const json = JSON.parse(_editor.toJSON());
       expect(json.version).to.eql(3);
 
+      // base entities - before all edits
+      expect(json.baseEntities).to.not.include(node_1_json);    // n-1 was not in the base
+      expect(json.baseEntities).to.not.include(node1_json);     // n1 was never edited
+      expect(json.baseEntities).to.deep.include(node2_json);    // n2 is in base and was edited
+      expect(json.baseEntities).to.deep.include(node3_json);    // n3 is in base and was edited
+      expect(json.baseEntities).to.not.include(node2upd_json);
+
+      // edited entities
       expect(json.entities).to.deep.include(node_1_json);     // n-1 was added
       expect(json.entities).to.deep.include(node2upd_json);   // n2 was updated
       expect(json.entities).to.not.include(node1_json);       // n1 was never updated
-      expect(json.entities).to.not.include(node2_json);       // n2?
+      expect(json.entities).to.not.include(node2_json);       // n2 is in the base, not here
       expect(json.entities).to.not.include(node3_json);       // n3 is now deleted
-
-      // base entities - before all edits
-      expect(json.baseEntities).to.not.include(node_1_json);
-      expect(json.baseEntities).to.not.include(node1_json);     // n1 was never updated
-      expect(json.baseEntities).to.deep.include(node2_json);    // n2 is in base
-      expect(json.baseEntities).to.deep.include(node3_json);    // n3 is in base
-      expect(json.baseEntities).to.not.include(node2upd_json);
     });
   });
 
