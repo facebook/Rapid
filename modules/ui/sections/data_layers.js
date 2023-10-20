@@ -6,6 +6,7 @@ import { uiCmd } from '../cmd';
 import { uiSection } from '../section';
 import { uiSettingsCustomData } from '../settings/custom_data';
 
+// import color picker function
 import { uiRapidColorpicker } from '../rapid_colorpicker';
 
 
@@ -211,11 +212,16 @@ export function uiSectionDataLayers(context) {
       .append('span')
       .html(l10n.tHtml('map_data.layers.custom.title'));
 
-    // add color picker here
+    /////////// add color picker here //////////////
+
+    uiRapidColorpicker(context, 'section-data-layers')
+      .on('change', changeColor);
+
     liEnter
       .append('div')
       .attr('class', 'rapid-colorpicker-fill')
       .call(uiIcon('#fas-palette'));
+
 
     liEnter
       .append('button')
@@ -262,6 +268,18 @@ export function uiSectionDataLayers(context) {
       .classed('disabled', d => !d.hasData);
   }
 
+  // color picker change color function
+
+  function changeColor(datasetID, color) {
+    const rapid = context.systems.rapid;
+    const dataset = rapid.datasets.get(datasetID);
+    if (dataset) {
+      dataset.color = color;
+
+      context.scene().dirtyLayers('custom-data');
+      context.systems.map.immediateRedraw();
+   }
+  }
 
   function editCustom() {
     context.container()
