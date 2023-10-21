@@ -5,9 +5,11 @@ import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
 
 
 export function uiDataEditor(context) {
-  let dataHeader = uiDataHeader(context);
-  let rawTagEditor = uiSectionRawTagEditor(context, 'custom-data-tag-editor')
+  const l10n = context.systems.l10n;
+  const dataHeader = uiDataHeader(context);
+  const rawTagEditor = uiSectionRawTagEditor(context, 'custom-data-tag-editor')
     .readOnlyTags([/./]);
+
   let _datum;
 
 
@@ -27,7 +29,7 @@ export function uiDataEditor(context) {
 
     headerEnter
       .append('h3')
-      .html(context.tHtml('map_data.title'));
+      .html(l10n.tHtml('map_data.title'));
 
 
     let body = selection.selectAll('.body')

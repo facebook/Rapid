@@ -41,16 +41,32 @@ const chapterFlow = [
 
 
 export function uiIntro(context, skipToRapid) {
+  const dataloader = context.systems.dataloader;
+  const editor = context.systems.editor;
+  const imagery = context.systems.imagery;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const mapwithai = context.services.mapwithai;
+  const osm = context.services.osm;
+  const rapid = context.systems.rapid;
+  const storage = context.systems.storage;
+  const urlhash = context.systems.urlhash;
+  const ui = context.systems.ui;
+
   let _introGraph = {};
   let _rapidGraph = {};
   let _currChapter;
 
 
+  /**
+   * intro
+   * Call this to start the intro walkthrough
+   * @param  selection  D3-selection to render the walkthrough content into (the root container)
+   */
   function intro(selection) {
-    const dataLoaderSystem = context.systems.data;
     Promise.all([
-      dataLoaderSystem.getDataAsync('intro_rapid_graph'),
-      dataLoaderSystem.getDataAsync('intro_graph')
+      dataloader.getDataAsync('intro_rapid_graph'),
+      dataloader.getDataAsync('intro_graph')
     ])
     .then(values => {
       const rapidData = values[0];
@@ -67,21 +83,17 @@ export function uiIntro(context, skipToRapid) {
         }
       }
 
-      selection.call(startIntro);
+      selection.call(_startIntro);
     });
   }
 
 
-  function startIntro(selection) {
-    const edits = context.systems.edits;
-    const imagery = context.systems.imagery;
-    const l10n = context.systems.l10n;
-    const mapwithai = context.services.mapwithai;
-    const osm = context.services.osm;
-    const prefs = context.systems.storage;
-    const rapid = context.systems.rapid;
-    const urlhash = context.systems.urlhash;
-
+  /**
+   * _startIntro
+   * Call this to render the intro walkthrough
+   * @param  selection  D3-selection to render the walkthrough content into (the root container)
+   */
+  function _startIntro(selection) {
     urlhash.disable();
     context.inIntro = true;
     context.enter('browse');
@@ -89,13 +101,13 @@ export function uiIntro(context, skipToRapid) {
     // Save current state
     const original = {
       hash: window.location.hash,
-      transform: context.systems.map.transform(),
+      transform: map.transform(),
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
       layersEnabled: new Set(),     // Set(layerID)
       datasetsEnabled: new Set(),   // Set(datasetID)
-      edits: edits.toJSON()
+      edits: editor.toJSON()
     };
 
     // Remember which layers were enabled before, enable only certain ones in the walkthrough.
@@ -107,7 +119,7 @@ export function uiIntro(context, skipToRapid) {
     context.scene().onlyLayers(['background', 'osm', 'labels']);
 
     // Show sidebar and disable the sidebar resizing button
-    context.systems.ui.sidebar.expand();
+    ui.sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
     // Disable OSM
@@ -116,9 +128,9 @@ export function uiIntro(context, skipToRapid) {
     }
 
     // Load walkthrough data
-    edits.reset();
-    edits.merge(Object.values(_introGraph));
-    edits.setCheckpoint('initial');
+    editor.reset();
+    editor.merge(Object.values(_introGraph));
+    editor.setCheckpoint('initial');
 
     // Setup imagery
     const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
@@ -142,6 +154,7 @@ export function uiIntro(context, skipToRapid) {
       conflated: false,
       service: 'mapwithai',
       color: '#da26d3',
+      dataUsed: [],
       label: 'Rapid Walkthrough'
     });
 
@@ -154,83 +167,33 @@ export function uiIntro(context, skipToRapid) {
     selection.call(curtain.enable);
 
     // Store that the user started the walkthrough..
-    prefs.setItem('walkthrough_started', 'yes');
+    storage.setItem('walkthrough_started', 'yes');
 
     // Restore previous walkthrough progress..
-    const storedProgress = prefs.getItem('walkthrough_progress') || '';
-    let progress = storedProgress.split(';').filter(Boolean);
+    const storedProgress = storage.getItem('walkthrough_progress') || '';
+    const progress = storedProgress.split(';').filter(Boolean);
 
-    // When completing each chapter..
-    let chapters = chapterFlow.map((chapter, i) => {
-      let s = chapterUi[chapter](context, curtain)
-        .on('done', () => {
+    // Create the chapters
+    const chapters = chapterFlow.map((chapterID, i) => {
+      const s = chapterUi[chapterID](context, curtain)
+        .on('done', () => {    // When completing each chapter..
           buttons
             .filter(d => d.title === s.title)
             .classed('finished', true);
 
-          if (i < chapterFlow.length - 1) {
-            const next = chapterFlow[i + 1];
-            context.container().select(`button.chapter-${next}`)
-              .classed('next', true);
-          }
-
           // Store walkthrough progress..
-          progress.push(chapter);
-          prefs.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
+          progress.push(chapterID);
+          storage.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
+
+          if (i < chapterFlow.length - 1) {
+            const nextID = chapterFlow[i + 1];
+            context.container().select(`button.chapter-${nextID}`)
+              .classed('next', true);
+          } else {
+            _finish();
+          }
         });
       return s;
-    });
-
-    // When leaving walkthrough...
-    chapters[chapters.length - 1].on('startEditing', () => {
-      // Store walkthrough progress..
-      progress.push('startEditing');
-      prefs.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
-
-      // Store if walkthrough is completed..
-      const incomplete = utilArrayDifference(chapterFlow, progress);
-      if (!incomplete.length) {
-        prefs.setItem('walkthrough_completed', 'yes');
-      }
-
-      // Restore Rapid datasets and service
-      for (const [datasetID, dataset] of rapid.datasets) {
-        dataset.enabled = original.datasetsEnabled.has(datasetID);
-      }
-      rapid.datasets.delete('rapid_intro_graph');
-
-      curtain.disable();
-      navwrap.remove();
-      context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
-
-      // Restore Map State
-      for (const [layerID, layer] of context.scene().layers) {
-        layer.enabled = original.layersEnabled.has(layerID);
-      }
-      imagery.baseLayerSource(original.baseLayer);
-      original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
-      imagery.brightness = original.brightness;
-      context.systems.map.transform(original.transform);
-      window.location.replace(original.hash);
-
-      // Restore edits and re-enable services.
-      context.resetAsync()
-        .then(() => {
-          if (original.edits) {
-            edits.fromJSON(original.edits, true);
-          }
-
-          if (osm) {
-            osm.toggle(true);
-          }
-
-          if (mapwithai) {
-            mapwithai.toggle(true);
-          }
-
-          context.inIntro = false;
-          urlhash.enable();
-        });
     });
 
 
@@ -268,6 +231,13 @@ export function uiIntro(context, skipToRapid) {
     _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 
 
+    /**
+     * _enterChapter
+     * Call this to enter a new chapter.
+     * Either called explicitly or by clicking a button the chapter navigation bar.
+     * @param  d3_event    If clicked on a button, the click event (not used)
+     * @param  newChapter  The chapter to enter
+     */
     function _enterChapter(d3_event, newChapter) {
       if (_currChapter) _currChapter.exit();
       context.enter('browse');
@@ -279,8 +249,60 @@ export function uiIntro(context, skipToRapid) {
         .classed('next', false)
         .classed('active', d => d.title === _currChapter.title);
     }
-  }
 
+
+    /**
+     * _finish
+     * Cleanup, restore state, and leave the walkthrough
+     */
+    function _finish() {
+      // Store if walkthrough is completed..
+      const incomplete = utilArrayDifference(chapterFlow, progress);
+      if (!incomplete.length) {
+        storage.setItem('walkthrough_completed', 'yes');
+      }
+
+      // Restore Rapid datasets and service
+      for (const [datasetID, dataset] of rapid.datasets) {
+        dataset.enabled = original.datasetsEnabled.has(datasetID);
+      }
+      rapid.datasets.delete('rapid_intro_graph');
+
+      curtain.disable();
+      navwrap.remove();
+      context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
+
+      // Restore Map State
+      for (const [layerID, layer] of context.scene().layers) {
+        layer.enabled = original.layersEnabled.has(layerID);
+      }
+      imagery.baseLayerSource(original.baseLayer);
+      original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
+      imagery.brightness = original.brightness;
+      map.transform(original.transform);
+      window.location.replace(original.hash);
+
+      // Restore edits and re-enable services.
+      context.resetAsync()
+        .then(() => {
+          if (osm) {
+            osm.toggle(true);
+          }
+
+          if (mapwithai) {
+            mapwithai.toggle(true);
+          }
+
+          if (original.edits) {
+            editor.fromJSON(original.edits, true);
+          }
+
+          context.inIntro = false;
+          urlhash.enable();
+        });
+    }
+
+  }
 
   return intro;
 }

@@ -2,7 +2,10 @@ import { uiSection } from '../section';
 
 
 export function uiSectionValidationOptions(context) {
-  const prefs = context.systems.storage;
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
+  const validator = context.systems.validator;
+
   const section = uiSection(context, 'issues-options')
     .content(renderContent);
 
@@ -31,7 +34,7 @@ export function uiSectionValidationOptions(context) {
     optionsEnter
       .append('div')
       .attr('class', 'issues-option-title')
-      .html(d => context.tHtml(`issues.options.${d.key}.title`));
+      .html(d => l10n.tHtml(`issues.options.${d.key}.title`));
 
     let valuesEnter = optionsEnter.selectAll('label')
       .data(d => {
@@ -50,13 +53,13 @@ export function uiSectionValidationOptions(context) {
 
     valuesEnter
       .append('span')
-      .html(d => context.tHtml(`issues.options.${d.key}.${d.value}`));
+      .html(d => l10n.tHtml(`issues.options.${d.key}.${d.value}`));
   }
 
   function getOptions() {
     return {
-      what: prefs.getItem('validate-what') || 'edited',  // 'all', 'edited'
-      where: prefs.getItem('validate-where') || 'all'    // 'all', 'visible'
+      what: storage.getItem('validate-what') || 'edited',  // 'all', 'edited'
+      where: storage.getItem('validate-where') || 'all'    // 'all', 'visible'
     };
   }
 
@@ -65,8 +68,11 @@ export function uiSectionValidationOptions(context) {
       val = d3_event.target.value;
     }
 
-    prefs.setItem(`validate-${d}`, val);
-    context.systems.validator.validate();
+    storage.setItem(`validate-${d}`, val);
+
+    // I think this is just to get the list to update?
+    // Maybe we can have an `optionchanged` event to do this without interrupting the validator
+    validator.validateAsync();
   }
 
   return section;

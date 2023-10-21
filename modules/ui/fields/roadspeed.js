@@ -7,7 +7,9 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldRoadspeed(context, uifield) {
-    var dispatch = d3_dispatch('change');
+    const l10n = context.systems.l10n;
+    const dispatch = d3_dispatch('change');
+
     var unitInput = d3_select(null);
     var input = d3_select(null);
     var _tags;
@@ -128,7 +130,7 @@ export function uiFieldRoadspeed(context, uifield) {
 
         utilGetSetValue(input, typeof value === 'string' ? value : '')
             .attr('title', isMixed ? value.filter(Boolean).join('\n') : null)
-            .attr('placeholder', isMixed ? context.t('inspector.multiple_values') : uifield.placeholder)
+            .attr('placeholder', isMixed ? l10n.t('inspector.multiple_values') : uifield.placeholder)
             .classed('mixed', isMixed);
     };
 

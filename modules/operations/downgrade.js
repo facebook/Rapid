@@ -4,6 +4,10 @@ import { uiCmd } from '../ui/cmd';
 
 
 export function operationDowngrade(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
+
   let _affectedFeatureCount = 0;
   let _downgradeType = downgradeTypeForEntityIDs(selectedIDs);
   const multi = _affectedFeatureCount === 1 ? 'single' : 'multiple';
@@ -13,8 +17,7 @@ export function operationDowngrade(context, selectedIDs) {
     let downgradeType;
     _affectedFeatureCount = 0;
 
-    for (let i in entityIDs) {
-      let entityID = entityIDs[i];
+    for (const entityID of entityIDs) {
       let type = downgradeTypeForEntityID(entityID);
       if (type) {
         _affectedFeatureCount += 1;
@@ -34,10 +37,9 @@ export function operationDowngrade(context, selectedIDs) {
 
 
   function downgradeTypeForEntityID(entityID) {
-    const graph = context.graph();
+    const graph = editor.staging.graph;
     const entity = graph.entity(entityID);
-    const presetSystem = context.systems.presets;
-    const preset = presetSystem.match(entity, graph);
+    const preset = presets.match(entity, graph);
 
     if (!preset || preset.isFallback()) return null;
 
@@ -48,7 +50,7 @@ export function operationDowngrade(context, selectedIDs) {
       return 'address';
     }
 
-    let geometry = entity.geometry(graph);
+    const geometry = entity.geometry(graph);
     if (geometry === 'area' && entity.tags.building && !preset.tags.building) {
       return 'building';
     } else if (geometry === 'vertex' && Object.keys(entity.tags).length) {
@@ -63,13 +65,13 @@ export function operationDowngrade(context, selectedIDs) {
   let addressKeysToKeep = ['source'];
 
   let operation = function() {
-    context.perform(function(graph) {
-      for (let i in selectedIDs) {
-        let entityID = selectedIDs[i];
-        let type = downgradeTypeForEntityID(entityID);
+
+    const combinedAction = (graph) => {
+      for (const entityID of selectedIDs) {
+        const type = downgradeTypeForEntityID(entityID);
         if (!type) continue;
 
-        let tags = Object.assign({}, graph.entity(entityID).tags);  // shallow copy
+        const tags = Object.assign({}, graph.entity(entityID).tags);  // shallow copy
         for (let key in tags) {
           if (type === 'address' && addressKeysToKeep.indexOf(key) !== -1) continue;
           if (type === 'building' && buildingKeysToRetain.test(key)) continue;
@@ -81,12 +83,14 @@ export function operationDowngrade(context, selectedIDs) {
         graph = actionChangeTags(entityID, tags)(graph);
       }
       return graph;
-    }, operation.annotation());
+    };
 
-    context.systems.validator.validate();
+    const annotation = operation.annotation();
+    editor.perform(combinedAction);
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
     // refresh the select mode to enable the delete operation
-    context.enter('select-osm', { selectedIDs: selectedIDs });
+    context.enter('select-osm', { selection: { osm: selectedIDs }} );
   };
 
 
@@ -96,13 +100,15 @@ export function operationDowngrade(context, selectedIDs) {
 
 
   operation.disabled = function() {
+    const graph = editor.staging.graph;
+
     if (selectedIDs.some(hasWikidataTag)) {
       return 'has_wikidata_tag';
     }
     return false;
 
     function hasWikidataTag(id) {
-      const entity = context.entity(id);
+      const entity = graph.entity(id);
       return entity.tags.wikidata && entity.tags.wikidata.trim().length > 0;
     }
   };
@@ -111,8 +117,8 @@ export function operationDowngrade(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.downgrade.${disabledReason}.${multi}`) :
-      context.t(`operations.downgrade.description.${_downgradeType}`);
+      l10n.t(`operations.downgrade.${disabledReason}.${multi}`) :
+      l10n.t(`operations.downgrade.description.${_downgradeType}`);
   };
 
 
@@ -123,13 +129,13 @@ export function operationDowngrade(context, selectedIDs) {
     } else {
       suffix = _downgradeType;
     }
-    return context.t(`operations.downgrade.annotation.${suffix}`, { n: _affectedFeatureCount});
+    return l10n.t(`operations.downgrade.annotation.${suffix}`, { n: _affectedFeatureCount});
   };
 
 
   operation.id = 'downgrade';
   operation.keys = [ uiCmd('⌫') ];
-  operation.title = context.t('operations.downgrade.title');
+  operation.title = l10n.t('operations.downgrade.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

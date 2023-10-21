@@ -3,16 +3,16 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationSplit(context, selectedIDs) {
-  const graph = context.graph();
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const editor = context.systems.editor;
+  const graph = editor.staging.graph;
+  const l10n = context.systems.l10n;
 
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const vertices = entities.filter(entity => entity.type === 'node' && entity.geometry(graph) === 'vertex');
   const vertexIDs = vertices.map(entity => entity.id);
   const vertexMulti = vertexIDs.length === 1 ? 'single' : 'multiple';
-
   const ways = entities.filter(entity => entity.type === 'way');
   const wayIDs = ways.map(entity => entity.id);
-
   const isAvailable = vertices.length > 0 && (vertices.length + ways.length === selectedIDs.length);
   const action = actionSplit(vertexIDs);
 
@@ -44,8 +44,9 @@ export function operationSplit(context, selectedIDs) {
 
 
   let operation = function() {
-    const difference = context.perform(action, operation.annotation());
-    context.systems.validator.validate();
+    const annotation = operation.annotation();
+    const difference = editor.perform(action);
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
     let idsToSelect = vertexIDs.slice();  // copy
 
@@ -56,7 +57,7 @@ export function operationSplit(context, selectedIDs) {
         idsToSelect.push(entityID);
       }
     }
-    context.enter('select-osm', { selectedIDs: idsToSelect });
+    context.enter('select-osm', { selection: { osm: idsToSelect }} );
   };
 
 
@@ -71,7 +72,8 @@ export function operationSplit(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const disabledReason = action.disabled(context.graph());
+    const graph = editor.staging.graph;
+    const disabledReason = action.disabled(graph);
     if (disabledReason) {
       return disabledReason;
     } else if (selectedIDs.some(context.hasHiddenConnections)) {
@@ -84,19 +86,19 @@ export function operationSplit(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.split.${disabledReason}`) :
-      context.t(`operations.split.description.${_geometry}.${_waysMulti}.${vertexMulti}_node`);
+      l10n.t(`operations.split.${disabledReason}`) :
+      l10n.t(`operations.split.description.${_geometry}.${_waysMulti}.${vertexMulti}_node`);
   };
 
 
   operation.annotation = function() {
-    return context.t(`operations.split.annotation.${_geometry}`, { n: _splittable.length });
+    return l10n.t(`operations.split.annotation.${_geometry}`, { n: _splittable.length });
   };
 
 
   operation.id = 'split';
-  operation.keys = [ context.t('operations.split.key') ];
-  operation.title = context.t('operations.split.title');
+  operation.keys = [ l10n.t('operations.split.key') ];
+  operation.title = l10n.t('operations.split.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

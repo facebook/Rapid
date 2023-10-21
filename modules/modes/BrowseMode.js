@@ -24,14 +24,15 @@ export class BrowseMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    */
   enter() {
     if (DEBUG) {
       console.log('BrowseMode: entering');  // eslint-disable-line no-console
     }
 
-    this.operations = [ operationPaste(this.context) ];
     this._active = true;
+    this.operations = [ operationPaste(this.context) ];
     this.context.enableBehaviors(['hover', 'select', 'drag', 'paste', 'lasso', 'map-interaction']);
 
     // Get focus on the body.
@@ -51,6 +52,9 @@ export class BrowseMode extends AbstractMode {
   exit() {
     if (!this._active) return;
     this._active = false;
+
+    this.operations = [];
+
     if (DEBUG) {
       console.log('BrowseMode: exiting');  // eslint-disable-line no-console
     }

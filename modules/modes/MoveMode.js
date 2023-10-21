@@ -2,7 +2,6 @@ import { vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode';
 import { actionMove } from '../actions/move';
-import { actionNoop } from '../actions/noop';
 
 
 /**
@@ -20,7 +19,6 @@ export class MoveMode extends AbstractMode {
     this.id = 'move';
 
     this._entityIDs = [];
-    this._prevGraph = null;
     this._startLoc = null;
     this._movementCache = null;  // used by the move action
 
@@ -29,42 +27,58 @@ export class MoveMode extends AbstractMode {
     this._finish = this._finish.bind(this);
     this._keydown = this._keydown.bind(this);
     this._pointermove = this._pointermove.bind(this);
-    this._undoOrRedo = this._undoOrRedo.bind(this);
   }
 
 
   /**
    * enter
-   * Expects a `selection` property in the options argument as a `Map(datumID -> datum)`
-   * @param  `options`  Optional `Object` of options passed to the new mode
+   * Enters the mode.
+   * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {Object}   options.selection - An object where the keys are layerIDs
+   *    and the values are Arrays of dataIDs:  Example:  `{ 'osm': ['w1', 'w2', 'w3'] }`
+   * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
-    const selection = options.selection;
-    if (!(selection instanceof Map)) return false;
-    if (!selection.size) return false;
-    this._entityIDs = [...selection.keys()];
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const filters = context.systems.filters;
+    const locations = context.systems.locations;
+    const map = context.systems.map;
+    const eventManager = map.renderer.events;
 
+    const selection = options.selection ?? {};
+    let entityIDs = selection.osm ?? [];
+
+    // Gather valid entities and entityIDs from selection.
+    // For this mode, keep only the OSM data.
+    this._selectedData = new Map();
+
+    for (const entityID of entityIDs) {
+      const entity = graph.hasEntity(entityID);
+      if (!entity) continue;   // not in the osm graph
+      if (entity.type === 'node' && locations.blocksAt(entity.loc).length) continue;  // editing is blocked
+
+      this._selectedData.set(entityID, entity);
+    }
+
+    if (!this._selectedData.size) return false;  // nothing to select
+
+    this._entityIDs = [...this._selectedData.keys()];  // the ones we ended up keeping
     this._active = true;
 
-    const context = this.context;
-    context.systems.filters.forceVisible(this._entityIDs);
+    filters.forceVisible(this._entityIDs);
     context.enableBehaviors(['map-interaction', 'map-nudging']);
     context.behaviors['map-nudging'].allow();
 
-    this._prevGraph = null;
-    this._startLoc = null;
-    this._movementCache = null;
+    this._startLoc = map.mouseLoc();
+    this._movementCache = {};
 
-    const eventManager = context.systems.map.renderer.events;
     eventManager
       .on('click', this._finish)
       .on('keydown', this._keydown)
       .on('pointercancel', this._cancel)
       .on('pointermove', this._pointermove);
-
-    context.systems.edits
-      .on('undone', this._undoOrRedo)
-      .on('redone', this._undoOrRedo);
 
     return true;
   }
@@ -77,23 +91,35 @@ export class MoveMode extends AbstractMode {
     if (!this._active) return;
     this._active = false;
 
-    this._prevGraph = null;
     this._startLoc = null;
     this._movementCache = null;
 
     const context = this.context;
-    context.systems.filters.forceVisible([]);
+    const editor = context.systems.editor;
+    const filters = context.systems.filters;
+    const l10n = context.systems.l10n;
+    const eventManager = context.systems.map.renderer.events;
 
-    const eventManager = this.context.systems.map.renderer.events;
+    filters.forceVisible([]);
+
     eventManager
       .off('click', this._finish)
       .off('keydown', this._keydown)
       .off('pointercancel', this._cancel)
       .off('pointermove', this._pointermove);
 
-    context.systems.edits
-      .off('undone', this._undoOrRedo)
-      .off('redone', this._undoOrRedo);
+    // If there is work in progress, finalize it.
+    if (editor.hasWorkInProgress) {
+      const graph = editor.staging.graph;
+      const annotation = (this._entityIDs.length === 1) ?
+        l10n.t('operations.move.annotation.' + graph.geometry(this._entityIDs[0])) :
+        l10n.t('operations.move.annotation.feature', { n: this._entityIDs.length });
+
+      editor.commit({
+        annotation: annotation,
+        selectedIDs: this._entityIDs
+      });
+    }
   }
 
 
@@ -121,21 +147,12 @@ export class MoveMode extends AbstractMode {
    */
   _pointermove() {
     const context = this.context;
+    const editor = context.systems.editor;
+    const locations = context.systems.locations;
+    const map = context.systems.map;
 
-    let fn;
-    // If prevGraph doesn't match, either we haven't started moving, or something has
-    // occurred during the move that interrupted it, so reset vars and start a new move
-    if (this._prevGraph !== context.graph()) {
-      this._startLoc = context.systems.map.mouseLoc();
-      this._movementCache = {};
-      fn = context.perform;     // start moving
-    } else {
-      fn = context.overwrite;   // continue moving
-    }
-
-    const currLoc = context.systems.map.mouseLoc();
-    const locationSystem = context.systems.locations;
-    if (locationSystem.blocksAt(currLoc).length) {  // editing is blocked here
+    const currLoc = map.mouseLoc();
+    if (locations.blocksAt(currLoc).length) {  // editing is blocked here
       this._cancel();
       return;
     }
@@ -144,31 +161,24 @@ export class MoveMode extends AbstractMode {
     const currPoint = context.projection.project(currLoc);
     const delta = vecSubtract(currPoint, startPoint);
 
-    fn(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
-    this._prevGraph = context.graph();
+    editor.revert();  // moves are relative to the start location, so revert before applying movement
+    editor.perform(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
+    const graph = editor.staging.graph;  // after move
 
     // Update selected/active collections to contain the moved entities
     this._selectedData.clear();
     for (const entityID of this._entityIDs) {
-      this._selectedData.set(entityID, context.entity(entityID));
+      this._selectedData.set(entityID, graph.entity(entityID));
     }
   }
 
 
   /**
    * _finish
-   * Finalize the move edit
+   * Return to select mode - `exit()` will finalize the work in progress.
    */
   _finish() {
-    const context = this.context;
-    if (this._prevGraph) {
-      const annotation = (this._entityIDs.length === 1) ?
-        context.t('operations.move.annotation.' + context.graph().geometry(this._entityIDs[0])) :
-        context.t('operations.move.annotation.feature', { n: this._entityIDs.length });
-
-      context.replace(actionNoop(), annotation);   // annotate the move
-    }
-    context.enter('select-osm', { selectedIDs: this._entityIDs });
+    this.context.enter('select-osm', { selection: { osm: this._entityIDs }} );
   }
 
 
@@ -178,18 +188,10 @@ export class MoveMode extends AbstractMode {
    */
   _cancel() {
     const context = this.context;
-    if (this._prevGraph) {
-      context.pop();   // remove the move
-    }
-    context.enter('select-osm', { selectedIDs: this._entityIDs });
+    const editor = context.systems.editor;
+
+    editor.revert();
+    context.enter('select-osm', { selection: { osm: this._entityIDs }} );
   }
 
-
-  /**
-   * _undoOrRedo
-   * Return to browse mode without doing anything
-   */
-  _undoOrRedo() {
-    this.context.enter('browse');
-  }
 }

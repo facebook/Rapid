@@ -45,11 +45,13 @@ export class UiPanelMeasurement extends AbstractUiPanel {
   constructor(context) {
     super(context);
     this.id = 'measurement';
-    this.label = context.tHtml('info_panels.measurement.title');
-    this.key = context.t('info_panels.measurement.key');
+
+    const l10n = context.systems.l10n;
+    this.label = l10n.tHtml('info_panels.measurement.title');
+    this.key = l10n.t('info_panels.measurement.key');
 
     this._selection = d3_select(null);
-    this._isImperial = !context.systems.l10n.usesMetric();
+    this._isImperial = !l10n.usesMetric();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
@@ -96,8 +98,8 @@ export class UiPanelMeasurement extends AbstractUiPanel {
 
     const selection = this._selection;
     const context = this.context;
-    const graph = context.graph();
     const l10n = context.systems.l10n;
+    const graph = context.systems.editor.staging.graph;
     const localeCode = l10n.localeCode();
 
     // Empty out the DOM content and rebuild from scratch..
@@ -122,7 +124,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
       geometry = 'note';
 
     } else {  // selected 0…n OSM Entities
-      const selected = selectedIDs.map(id => context.hasEntity(id)).filter(Boolean);
+      const selected = selectedIDs.map(id => graph.hasEntity(id)).filter(Boolean);
 
       if (selected.length === 1) {
         heading = selected[0].id;
@@ -168,7 +170,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
         if (selected.length === 1 && selected[0].type === 'node') {
           location = selected[0].loc;
         } else {
-          totalNodeCount = utilGetAllNodes(selectedIDs, context.graph()).length;
+          totalNodeCount = utilGetAllNodes(selectedIDs, graph).length;
         }
 
         if (!location && !centroid) {

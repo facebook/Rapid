@@ -8,6 +8,8 @@ import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles';
 
 
 export function uiMapInMap(context) {
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
 
   function mapInMap(selection) {
     let projection = new Projection();
@@ -119,7 +121,7 @@ export function uiMapInMap(context) {
 
       updateProjection();
       _gesture = null;
-      context.systems.map.center(projection.invert(_cMini)); // recenter main map..
+      map.center(projection.invert(_cMini)); // recenter main map..
     }
 
 
@@ -128,7 +130,7 @@ export function uiMapInMap(context) {
      * Update the minimap projection and d3-zoom transform
      */
     function updateProjection() {
-      const loc = context.systems.map.center();
+      const loc = map.center();
       const tMain = context.projection.transform();
       const zMain = geoScaleToZoom(tMain.k);
       const zMini = Math.max(zMain - _zDiff, 0.5);
@@ -165,7 +167,7 @@ export function uiMapInMap(context) {
      * Recalculates the position and size of the bounding box rectangle on the minimap
      */
     function updateBoundingBox() {
-      const bbox = context.systems.map.extent().bbox();
+      const bbox = map.extent().bbox();
       const topLeftPoint = projection.project([bbox.minX, bbox.maxY]);
       const bottomRightPoint = projection.project([bbox.maxX, bbox.minY]);
       const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
@@ -308,7 +310,7 @@ export function uiMapInMap(context) {
       stage.eventMode = 'none';
       stage.sortableChildren = false;
 
-      const mainRenderer = context.systems.map.renderer;
+      const mainRenderer = map.renderer;
 
       // Construct the scene..
       const miniRenderer = {    // Mock Renderer
@@ -340,7 +342,7 @@ export function uiMapInMap(context) {
       _dMini = [width, height];
       _cMini = vecScale(_dMini, 0.5);
 
-      context.systems.map.on('draw', () => updateMinimap());
+      map.on('draw', () => updateMinimap());
     }
 
     wrapEnter
@@ -356,7 +358,7 @@ export function uiMapInMap(context) {
 
     updateMinimap();
 
-    context.keybinding().on(context.t('background.minimap.key'), toggle);
+    context.keybinding().on(l10n.t('background.minimap.key'), toggle);
   }
 
   return mapInMap;

@@ -2,7 +2,6 @@ import debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 import { geoSphericalDistance } from '@rapid-sdk/math';
 
-import { actionNoop } from '../../actions/noop';
 import { uiIcon } from '../icon';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
@@ -17,8 +16,12 @@ const MAX_ISSUES = 1000;
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
   const validator = context.systems.validator;
-  const prefs = context.systems.storage;
+
   const section = uiSection(context, sectionID)
     .label(sectionLabel)
     .shouldDisplay(sectionShouldDisplay)
@@ -28,8 +31,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   function sectionLabel() {
     const countText = _issues.length > MAX_ISSUES ? `${MAX_ISSUES}+` : String(_issues.length);
-    const titleText = context.t(`issues.${severity}s.list_title`);
-    return context.t('inspector.title_count', { title: titleText, count: countText });
+    const titleText = l10n.t(`issues.${severity}s.list_title`);
+    return l10n.t('inspector.title_count', { title: titleText, count: countText });
   }
 
   function sectionShouldDisplay() {
@@ -38,8 +41,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
-    const center = context.systems.map.center();
-    const graph = context.graph();
+    const center = map.center();
+    const graph = editor.staging.graph;
 
     // sort issues by distance away from the center of the map
     let toDisplay = _issues
@@ -61,7 +64,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // Creates the issues list if needed and updates it with the current issues
   //
   function drawIssuesList(selection, issues) {
-    const showAutoFix = (prefs.getItem('rapid-internal-feature.showAutoFix') === 'true');
+    const showAutoFix = (storage.getItem('rapid-internal-feature.showAutoFix') === 'true');
 
     let list = selection.selectAll('.issues-list')
       .data([0]);
@@ -116,7 +119,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
           d3_select(nodes[i])
             .append('button')
-            .attr('title', context.t('issues.fix_one.title'))
+            .attr('title', l10n.t('issues.fix_one.title'))
             .datum(d)  // set button datum to the issue
             .attr('class', 'autofix action')
             .on('click', (d3_event, d) => {
@@ -124,8 +127,12 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
               d3_event.stopPropagation();
 
               utilHighlightEntities(d.entityIds, false, context);  // unhighlight
-              context.perform.apply(context, d.autoArgs);
-              validator.validate();
+
+              editor.perform(d.autoArgs[0]);   // autoArgs[0] = action
+              editor.commit({
+                annotation: d.autoArgs[1],      // autoArgs[1] = annotation
+                selectedIDs: d.entityIds
+              });
             })
             .call(uiIcon('#rapid-icon-wrench'));
         });
@@ -160,7 +167,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     linkEnter
       .append('span')
       .attr('class', 'autofix-all-link-text')
-      .html(context.tHtml('issues.fix_all.title'));
+      .html(l10n.tHtml('issues.fix_all.title'));
 
     linkEnter
       .append('span')
@@ -173,19 +180,17 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
     autoFixAll.selectAll('.autofix-all-link')
       .on('click', () => {
-        context.pauseChangeDispatch();
-        context.perform(actionNoop());   // perform a noop edit that will be replaced by the fixes
+        editor.beginTransaction();
 
-        autofixable.forEach(issue => {
-          let args = issue.autoArgs.slice();  // copy
-          if (typeof args[args.length - 1] !== 'function') {
-            args.pop();
-          }
-          args.push(context.t('issues.fix_all.annotation'));
-          context.replace.apply(context, args);  // this does the fix
+        for (const issue of autofixable) {
+          const action = issue.autoArgs[0];  // [action, annotation]
+          editor.perform(action);
+        }
+
+        editor.commit({
+          annotation: l10n.t('issues.fix_all.annotation')
         });
-        context.resumeChangeDispatch();
-        validator.validate();
+        editor.endTransaction();
       });
   }
 
@@ -193,8 +198,8 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // get the current display options for the issues lists
   function getOptions() {
     return {
-      what: prefs.getItem('validate-what') || 'edited',
-      where: prefs.getItem('validate-where') || 'all'
+      what: storage.getItem('validate-what') || 'edited',
+      where: storage.getItem('validate-where') || 'all'
     };
   }
 
@@ -220,7 +225,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     });
   });
 
-  context.systems.map.on('draw',
+  map.on('draw',
     debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;

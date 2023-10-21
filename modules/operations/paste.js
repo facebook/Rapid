@@ -8,56 +8,58 @@ import { uiCmd } from '../ui/cmd';
 
 // see also `PasteBehavior`
 export function operationPaste(context) {
-  let _pastePoint;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
 
   let operation = function() {
-    if (!_pastePoint) return;
+    // Note: nearly the same code appears in both PasteBehavior and PasteOperation
+    const copyGraph = context.copyGraph;
+    const copyIDs = context.copyIDs;
+    if (!copyIDs.length) return;   // Nothing to copy..
 
-    const oldIDs = context.copyIDs;
-    if (!oldIDs.length) return;
+    const action = actionCopyEntities(copyIDs, copyGraph);
+    editor.beginTransaction();
+    editor.perform(action);
 
-    const projection = context.projection;
-    const oldGraph = context.copyGraph;
+    const currGraph = editor.staging.graph;
+    const copies = action.copies();
+
+    const originalIDs = new Set();
+    for (const entity of Object.values(copies)) {
+      originalIDs.add(entity.id);
+    }
+
     let extent = new Extent();
     let newIDs = [];
+    for (const [entityID, newEntity] of Object.entries(copies)) {
+      const oldEntity = copyGraph.entity(entityID);
 
-    const action = actionCopyEntities(oldIDs, oldGraph);
-    context.perform(action);
-
-    let copies = action.copies();
-    let originals = new Set();
-    Object.values(copies).forEach(function(entity) { originals.add(entity.id); });
-
-    for (let id in copies) {
-      const oldEntity = oldGraph.entity(id);
-      const newEntity = copies[id];
-
-      extent = extent.extend(oldEntity.extent(oldGraph));
+      extent = extent.extend(oldEntity.extent(copyGraph));
 
       // Exclude child nodes from newIDs if their parent way was also copied.
-      const parents = context.graph().parentWays(newEntity);
-      const parentCopied = parents.some(parent => originals.has(parent.id));
+      const parents = currGraph.parentWays(newEntity);
+      const parentCopied = parents.some(parent => originalIDs.has(parent.id));
 
       if (!parentCopied) {
         newIDs.push(newEntity.id);
       }
     }
 
-    // Use the location of the copy operation to offset the paste location,
-    // or else use the center of the pasted extent
+    // Move pasted features to where mouse pointer is..
+    // (or center of map if there is no readily available pointer coordinate)
+    const projection = context.projection;
     const copyLoc = context.copyLoc;
     const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
-    const delta = vecSubtract(_pastePoint, copyPoint);
+    const delta = vecSubtract(map.mouse(), copyPoint);
+    const annotation = l10n.t('operations.paste.annotation', { n: newIDs.length });
 
-    // Move the pasted objects to be anchored at the paste location
-    context.replace(actionMove(newIDs, delta, projection), operation.annotation());
-    context.enter('select-osm', { selectedIDs: newIDs });
-  };
+    editor.perform(actionMove(newIDs, delta, projection));
+    editor.commit({ annotation: annotation, selectedIDs: newIDs });
+    editor.endTransaction();
 
-
-  operation.point = function(val) {
-    _pastePoint = val;
-    return operation;
+    // Put the user in move mode so they can place the pasted features
+    context.enter('move', { selection: { osm: newIDs }} );
   };
 
 
@@ -72,7 +74,6 @@ export function operationPaste(context) {
 
 
   operation.tooltip = function() {
-    const l10n = context.systems.l10n;
     const oldGraph = context.copyGraph;
     const ids = context.copyIDs;
     if (!ids.length) {
@@ -87,13 +88,13 @@ export function operationPaste(context) {
 
   operation.annotation = function() {
     const ids = context.copyIDs;
-    return context.t('operations.paste.annotation', { n: ids.length });
+    return l10n.t('operations.paste.annotation', { n: ids.length });
   };
 
 
   operation.id = 'paste';
   operation.keys = [ uiCmd('⌘V') ];
-  operation.title = context.t('operations.paste.title');
+  operation.title = l10n.t('operations.paste.title');
 
   return operation;
 }

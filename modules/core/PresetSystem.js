@@ -22,7 +22,7 @@ export class PresetSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'presets';
-    this.dependencies = new Set(['data', 'l10n', 'locations', 'storage', 'urlhash']);
+    this.dependencies = new Set(['dataloader', 'l10n', 'locations', 'storage', 'urlhash']);
     this.geometries = ['point', 'vertex', 'line', 'area', 'relation'];
 
     // Create geometry fallbacks
@@ -73,17 +73,17 @@ export class PresetSystem extends AbstractSystem {
       }
     }
 
-    const dataLoaderSystem = this.context.systems.data;
-    const urlHashSystem = this.context.systems.urlhash;
+    const dataloader = this.context.systems.dataloader;
+    const urlhash = this.context.systems.urlhash;
     const prerequisites = Promise.all([
-      dataLoaderSystem.initAsync(),
-      urlHashSystem.initAsync()
+      dataloader.initAsync(),
+      urlhash.initAsync()
     ]);
 
     return this._initPromise = prerequisites
       .then(() => {
         // If we received a subset of addable presetIDs specified in the url hash, save them.
-        const presetIDs = urlHashSystem.initialHashParams.get('presets');
+        const presetIDs = urlhash.initialHashParams.get('presets');
         if (presetIDs) {
           const arr = presetIDs.split(',').map(s => s.trim()).filter(Boolean);
           this.addablePresetIDs = new Set(arr);
@@ -91,10 +91,10 @@ export class PresetSystem extends AbstractSystem {
 
         // Fetch the preset data
         return Promise.all([
-          dataLoaderSystem.getDataAsync('preset_categories'),
-          dataLoaderSystem.getDataAsync('preset_defaults'),
-          dataLoaderSystem.getDataAsync('preset_presets'),
-          dataLoaderSystem.getDataAsync('preset_fields')
+          dataloader.getDataAsync('preset_categories'),
+          dataloader.getDataAsync('preset_defaults'),
+          dataloader.getDataAsync('preset_presets'),
+          dataloader.getDataAsync('preset_fields')
         ]);
       })
       .then(vals => {
@@ -544,8 +544,8 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
   getRecents() {
     let presetIDs = this._recentIDs;
     if (!presetIDs) {  // first time, try to get them from localStorage
-      const prefs = this.context.systems.storage;
-      presetIDs = JSON.parse(prefs.getItem('preset_recents')) || [];
+      const storage = this.context.systems.storage;
+      presetIDs = JSON.parse(storage.getItem('preset_recents')) || [];
     }
 
     const presets = presetIDs
@@ -574,8 +574,8 @@ if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
     this._recentIDs.unshift(preset.id);   // prepend array
     this._recentIDs = utilArrayUniq(this._recentIDs).slice(0, MAXRECENTS);
 
-    const prefs = this.context.systems.storage;
-    prefs.setItem('preset_recents', JSON.stringify(this._recentIDs));
+    const storage = this.context.systems.storage;
+    storage.setItem('preset_recents', JSON.stringify(this._recentIDs));
   }
 
 }

@@ -352,18 +352,18 @@ export class SelectBehavior extends AbstractBehavior {
           // Always re-enter select mode even if the entity is already
           // selected since listeners may expect `context.enter` events,
           // e.g. in the walkthrough
-          context.enter('select-osm', { selectedIDs: [dataID] });
+          context.enter('select-osm', { selection: { osm: [dataID] }} );
         }
 
       } else {
         if (selectedIDs.includes(dataID)) {   // already in the selectedIDs..
           if (!this._showsMenu) {
             selectedIDs = selectedIDs.filter(id => id !== dataID);      // deselect it..
-            context.enter('select-osm', { selectedIDs: selectedIDs });
+            context.enter('select-osm', { selection: { osm: selectedIDs }} );
           }
-        } else {                         // not already in selectedIDs...
+        } else {                       // not already in selectedIDs...
           selectedIDs.push(dataID);    // select it..
-          context.enter('select-osm', { selectedIDs: selectedIDs });
+          context.enter('select-osm', { selection: { osm: selectedIDs }} );
         }
       }
     }
@@ -443,32 +443,36 @@ export class SelectBehavior extends AbstractBehavior {
     if (!this._enabled || !this.lastUp) return;
 
     const context = this.context;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+
     const coord = this.lastUp.coord;
     const data = this.lastUp.target?.data;
 
     const isOSMWay = data instanceof osmWay && !data.__fbid__;
     const isMidpoint = data.type === 'midpoint';
 
+    let loc, edge;
     if (isOSMWay) {
-      const graph = context.graph();
+      const graph = editor.staging.graph;
       const projection = context.projection;
-      const loc = projection.invert(coord);
       const choice = geoChooseEdge(graph.childNodes(data), coord, projection);
-      const edge = [data.nodes[choice.index - 1], data.nodes[choice.index]];
-      context.perform(
-        actionAddMidpoint({ loc: loc, edge: edge }, osmNode()),
-        context.t('operations.add.annotation.vertex')
-      );
-      context.systems.validator.validate();
+      loc = projection.invert(coord);
+      edge = [ data.nodes[choice.index - 1], data.nodes[choice.index] ];
 
     } else if (isMidpoint) {
-      const edge = [data.a.id, data.b.id];
-      context.perform(
-        actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
-        context.t('operations.add.annotation.vertex')
-      );
-      context.systems.validator.validate();
+      loc = data.loc;
+      edge = [data.a.id, data.b.id];
     }
+
+    if (loc && edge) {
+      editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, osmNode()));
+      editor.commit({
+        annotation: l10n.t('operations.add.annotation.vertex'),
+        selectedIDs: context.selectedIDs()   // keep the parent way selected
+      });
+    }
+
   }
 
   /**

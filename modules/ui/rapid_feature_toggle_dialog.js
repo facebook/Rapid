@@ -11,6 +11,7 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
+
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
   let _viewManageModal;

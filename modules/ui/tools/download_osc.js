@@ -6,9 +6,12 @@ import { uiTooltip } from '../tooltip';
 
 
 export function uiToolDownloadOsc(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+
   let tool = {
     id: 'download_osc',
-    label: context.t('download_osc.title')
+    label: l10n.t('download_osc.title')
   };
 
   let _button = null;
@@ -21,9 +24,8 @@ export function uiToolDownloadOsc(context) {
 
   function downloadOsc(d3_event) {
     d3_event.preventDefault();
-    const editSystem = context.systems.edits;
-    if (!context.inIntro && editSystem.hasChanges()) {
-      const changes = editSystem.changes(actionDiscardTags(editSystem.difference()));
+    if (!context.inIntro && editor.hasChanges()) {
+      const changes = editor.changes(actionDiscardTags(editor.difference()));
       const changeset = new osmChangeset();
       const osc = JXON.stringify(changeset.osmChangeJXON(changes));
       downloadFile(osc, 'change.osc');
@@ -33,13 +35,13 @@ export function uiToolDownloadOsc(context) {
   function updateCount() {
     if (!_tooltip) return;
 
-    const val = context.systems.edits.difference().summary().size;
+    const val = editor.difference().summary().size;
     if (val === _numChanges) return;   // no change
     _numChanges = val;
 
     if (_tooltip) {
       _tooltip
-        .title(context.t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
+        .title(l10n.t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'));
     }
     updateStyle();
   }
@@ -76,7 +78,7 @@ export function uiToolDownloadOsc(context) {
 
     _tooltip = uiTooltip(context)
       .placement('bottom')
-      .title(context.t('download_osc.no_changes'));
+      .title(l10n.t('download_osc.no_changes'));
 
     _button = selection
       .append('button')
@@ -89,7 +91,7 @@ export function uiToolDownloadOsc(context) {
 
     updateCount();
 
-    context.systems.edits.on('change', updateCount);
+    editor.on('stablechange', updateCount);
     context.on('modechange', updateStyle);
   };
 
@@ -97,7 +99,7 @@ export function uiToolDownloadOsc(context) {
   tool.uninstall = function() {
     if (!_button && !_tooltip) return;  // already uninstalled
 
-    context.systems.edits.off('change', updateCount);
+    editor.off('stablechange', updateCount);
     context.off('modechange', updateStyle);
 
     _button = null;

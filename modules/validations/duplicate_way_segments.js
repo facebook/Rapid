@@ -6,6 +6,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 // one another, so they are not visible ever).
 export function validationDuplicateWaySegments(context) {
   const type = 'duplicate_way_segments';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
 
@@ -77,15 +78,16 @@ export function validationDuplicateWaySegments(context) {
         subtype: 'vertices',
         severity: 'warning',
         message: function() {
-          const entity = context.hasEntity(this.entityIds[0]);
+          const graph = editor.staging.graph;
+          const entity = graph.hasEntity(this.entityIds[0]);
           return entity ? l10n.tHtml('issues.duplicate_way_segments.message', {
-            way: l10n.displayLabel(entity, context.graph())
+            way: l10n.displayLabel(entity, graph)
           }) : '';
         },
         reference: showReference,
-        entityIds: [way.id, node1.id, node2.id],
+        entityIds: [ way.id, node1.id, node2.id ],
         loc: node1.loc,
-        dynamicFixes: function() {
+        dynamicFixes: () => {
           return [
             new ValidationFix({
               icon: 'rapid-icon-plus',

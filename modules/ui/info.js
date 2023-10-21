@@ -16,6 +16,7 @@ import { UiPanelMeasurement } from './panels/UiPanelMeasurement';
  * and provide extra information about the map or the selection.
  */
 export function uiInfo(context) {
+  const l10n = context.systems.l10n;
   const panels = {
     background:   new UiPanelBackground(context),
     history:      new UiPanelHistory(context),
@@ -137,7 +138,7 @@ export function uiInfo(context) {
 
     // bind ⌘I to show/hide all panels
     context.keybinding()
-      .on(uiCmd('⌘' + context.t('info_panels.key')), e => {
+      .on(uiCmd('⌘' + l10n.t('info_panels.key')), e => {
         e.stopImmediatePropagation();
         e.preventDefault();
         info.toggle();
@@ -145,7 +146,7 @@ export function uiInfo(context) {
 
     // bind keys to show/hide individual panels
     panelIDs.forEach(k => {
-      const key = context.t(`info_panels.${k}.key`, { default: null });
+      const key = l10n.t(`info_panels.${k}.key`, { default: null });
       if (!key) return;
 
       context.keybinding()

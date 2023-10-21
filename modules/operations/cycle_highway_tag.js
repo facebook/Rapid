@@ -1,7 +1,6 @@
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { actionChangePreset } from '../actions';
-import { actionNoop } from '../actions/noop';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 let _wasSelectedIDs = [];
@@ -9,6 +8,11 @@ let _wasPresetIDs = [];
 
 
 export function operationCycleHighwayTag(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const graph = editor.staging.graph;
+  const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
+
   // Allow cycling through lines that match these presets
   const allowPresetRegex = [
     /^highway\/(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|track)/,
@@ -27,15 +31,14 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   // same selection as before?
   const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
   const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
-  const presetSystem = context.systems.presets;
 
-  // Gather current entities allowed to be cycled
+  // Gather selected entities allowed to be cycled
   const entities = selectedIDs
-    .map(entityID => context.hasEntity(entityID))
+    .map(entityID => graph.hasEntity(entityID))
     .filter(entity => {
       if (entity?.type !== 'way') return false;
 
-      const preset = presetSystem.match(entity, context.graph());
+      const preset = presets.match(entity, graph);
       if (allowPresetRegex.some(regex => regex.test(preset.id))) {
         if (!presetIDs.has(preset.id)) presetIDs.add(preset.id);  // make sure we can cycle back to the original preset
         return true;
@@ -51,29 +54,34 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   let operation = function() {
     if (!entities.length) return;
 
-    // If this is the same selection as before, and the previous edit was also a cycle-tags,
-    // skip this `perform`, then all tag updates will be coalesced into the previous edit.
-    const annotation = operation.annotation();
-    if (!isSameSelection || context.systems.edits.undoAnnotation() !== annotation) {
-      // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
-      context.perform(actionNoop(), annotation);
-    }
-
     // Pick the next preset..
     const currPresetIDs = Array.from(presetIDs);
-    const currPreset = presetSystem.match(entities[0], context.graph());
+    const currPreset = presets.match(entities[0], editor.staging.graph);
     const index = currPreset ? currPresetIDs.indexOf(currPreset.id) : -1;
     const newPresetID = currPresetIDs[(index + 1) % currPresetIDs.length];
-    const newPreset = presetSystem.item(newPresetID);
+    const newPreset = presets.item(newPresetID);
+
+    editor.beginTransaction();
 
     // Update all selected highways...
     for (const entity of entities) {
-      const oldPreset = presetSystem.match(entity, context.graph());
+      const oldPreset = presets.match(entity, editor.staging.graph);
       const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
-      context.replace(action, annotation);
+      editor.perform(action);
     }
 
-    context.enter('select-osm', { selectedIDs: selectedIDs });  // reselect
+    // If this is the same selection as before, and the previous edit was also a cycle-tags,
+    // we can just replace the previous edit with this one.
+    const annotation = operation.annotation();
+    const options = { annotation: annotation, selectedIDs: selectedIDs };
+    if (isSameSelection && editor.getUndoAnnotation() === annotation) {
+      editor.commitAppend(options);  // Replace the previous cycle-tags edit
+    } else {
+      editor.commit(options);
+    }
+
+    editor.endTransaction();
+    context.enter('select-osm', { selection: { osm: selectedIDs }} );  // reselect
   };
 
 
@@ -90,19 +98,19 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.cycle_highway_tag.${disabledReason}`) :
-      context.t('operations.cycle_highway_tag.description');
+      l10n.t(`operations.cycle_highway_tag.${disabledReason}`) :
+      l10n.t('operations.cycle_highway_tag.description');
   };
 
 
   operation.annotation = function() {
-    return context.t('operations.cycle_highway_tag.annotation');
+    return l10n.t('operations.cycle_highway_tag.annotation');
   };
 
 
   operation.id = 'cycle_highway_tag';
-  operation.keys = [ '⇧' + context.t('operations.cycle_highway_tag.key') ];
-  operation.title = context.t('operations.cycle_highway_tag.title');
+  operation.keys = [ '⇧' + l10n.t('operations.cycle_highway_tag.key') ];
+  operation.title = l10n.t('operations.cycle_highway_tag.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

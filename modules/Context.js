@@ -2,7 +2,6 @@ import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilUnicodeCharsTruncated } from '@rapid-sdk/util';
-import debounce from 'lodash-es/debounce';
 
 import { behaviors } from './behaviors';
 import { modes } from './modes';
@@ -92,13 +91,6 @@ export class Context extends EventEmitter {
 
     // true/false whether we are in the intro walkthrough
     this.inIntro = false;
-
-    // Ensure methods used as callbacks always have `this` bound correctly.
-    this.save = this.save.bind(this);
-
-    // Debounce save, since it's a synchronous localStorage write,
-    // and history changes can happen frequently (e.g. when dragging).
-    this.debouncedSave = debounce(this.save, 350);
   }
 
 
@@ -115,43 +107,19 @@ export class Context extends EventEmitter {
       this.systems[id] = new System(this);
     }
 
-    // EditSystem
-    const editSystem = this.systems.edits;
-    const withDebouncedSave = (fn) => {
-      return (...args) => {
-        const result = fn.apply(editSystem, args);
-        this.debouncedSave();
-        return result;
-      };
-    };
-
-    this.graph = editSystem.graph;
-    this.hasEntity = (id) => editSystem.graph().hasEntity(id);
-    this.entity = (id) => editSystem.graph().entity(id);
-    this.pauseChangeDispatch = editSystem.pauseChangeDispatch;
-    this.resumeChangeDispatch = editSystem.resumeChangeDispatch;
-    this.perform = withDebouncedSave(editSystem.perform);
-    this.replace = withDebouncedSave(editSystem.replace);
-    this.pop = withDebouncedSave(editSystem.pop);
-    this.overwrite = withDebouncedSave(editSystem.overwrite);
-    this.undo = withDebouncedSave(editSystem.undo);
-    this.redo = withDebouncedSave(editSystem.redo);
-
     // LocalizationSystem
     const l10n = this.systems.l10n;
-    this.t = l10n.t;
-    this.tHtml = l10n.tHtml;
-    this.tAppend = l10n.tAppend;
     if (this._prelocale) {   // set preferred locale codes, if we have them
-      this.systems.l10n.preferredLocaleCodes = this._prelocale;
+      l10n.preferredLocaleCodes = this._prelocale;
     }
 
     // FilterSystem
-    const filterSystem = this.systems.filters;
+    const filters = this.systems.filters;
     this.hasHiddenConnections = (entityID) => {
-      const graph = editSystem.graph();
+      const editor = this.systems.editor;
+      const graph = editor.staging.graph;
       const entity = graph.entity(entityID);
-      return filterSystem.hasHiddenConnections(entity, graph);
+      return filters.hasHiddenConnections(entity, graph);
     };
 
     // MapSystem
@@ -208,8 +176,6 @@ export class Context extends EventEmitter {
    * @return {Promise} Promise resolved when Rapid is finished resetting
    */
   resetAsync() {
-    this.debouncedSave.cancel();
-
     const allSystems = Object.values(this.systems);
     const allServices = Object.values(this.services);
 
@@ -263,7 +229,7 @@ export class Context extends EventEmitter {
         return;
 
       } else {
-        this.systems.edits.merge(result.data, result.seenIDs);
+        this.systems.editor.merge(result.data, result.seenIDs);
         if (typeof callback === 'function') {
           callback(err, result);
         }
@@ -331,42 +297,6 @@ export class Context extends EventEmitter {
   cleanTagKey(val)       { return this._cleanOsmString(val, this.maxCharsForTagKey); }
   cleanTagValue(val)     { return this._cleanOsmString(val, this.maxCharsForTagValue); }
   cleanRelationRole(val) { return this._cleanOsmString(val, this.maxCharsForRelationRole); }
-
-
-  // Immediately save the user's history to localstorage, if possible
-  // This is called sometimes, but also on the `window.onbeforeunload` handler
-  save() {
-    const edits = this.systems.edits;
-    const l10n = this.systems.l10n;
-
-    // no history save, no message onbeforeunload
-    if (this.inIntro || this._container.select('.modal').size()) return;
-
-    let canSave;
-    if (this._currMode?.id === 'save') {
-      canSave = false;
-
-      // Attempt to prevent user from creating duplicate changes - see iD#5200
-      const osm = this.services.osm;
-      if (osm && osm.isChangesetInflight()) {
-        edits.clearSaved();
-        return;
-      }
-
-    } else {
-      canSave = this.selectedIDs().every(id => {
-        const entity = this.hasEntity(id);
-        return entity && !entity.isDegenerate();
-      });
-    }
-
-    if (canSave) {
-      edits.save();
-    }
-    if (edits.hasChanges()) {
-      return l10n.t('save.unsaved_changes');
-    }
-  }
 
 
   /**
@@ -484,7 +414,7 @@ export class Context extends EventEmitter {
   get copyIDs() { return this._copyIDs; }
   set copyIDs(val) {
     this._copyIDs = val;
-    this._copyGraph = this.systems.edits.graph();
+    this._copyGraph = this.systems.editor.staging.graph;
   }
 
   get copyLoc()     { return this._copyLoc; }
@@ -500,9 +430,7 @@ export class Context extends EventEmitter {
   }
   setDebug(flag, val = true) {
     this._debugFlags[flag] = val;
-    if (this.systems.map?.renderer) {
-      this.systems.map.immediateRedraw();
-    }
+    this.systems.map?.immediateRedraw();
   }
 
 

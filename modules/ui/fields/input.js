@@ -15,7 +15,10 @@ export {
 
 
 export function uiFieldText(context, uifield) {
+  const dataloader = context.systems.dataloader;
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
   const dispatch = d3_dispatch('change');
 
   let input = d3_select(null);
@@ -25,8 +28,7 @@ export function uiFieldText(context, uifield) {
   let _phoneFormats = {};
 
   if (uifield.type === 'tel') {
-    const dataLoaderSystem = context.systems.data;
-    dataLoaderSystem.getDataAsync('phone_formats')
+    dataloader.getDataAsync('phone_formats')
       .then(d => {
         _phoneFormats = d;
         updatePhonePlaceholder();
@@ -36,16 +38,17 @@ export function uiFieldText(context, uifield) {
 
 
   function calcLocked() {
+    const graph = editor.staging.graph;
     // Protect certain fields that have a companion `*:wikidata` value
     const lockable = ['brand', 'network', 'operator', 'flag'];
     const isLocked = lockable.includes(uifield.id) && _entityIDs.length && _entityIDs.some(entityID => {
-      const entity = context.graph().hasEntity(entityID);
+      const entity = graph.hasEntity(entityID);
       if (!entity) return false;
 
       // Features linked to Wikidata are likely important and should be protected
       if (entity.tags.wikidata) return true;
 
-      const preset = context.systems.presets.match(entity, context.graph());
+      const preset = presets.match(entity, graph);
       const isSuggestion = preset?.suggestion;
 
       // Lock the field if there is a value and a companion `*:wikidata` value

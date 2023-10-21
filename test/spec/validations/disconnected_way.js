@@ -4,8 +4,8 @@ describe('validationDisconnectedWay', () => {
   class MockLocalizationSystem {
     constructor() {}
     displayLabel(entity)  { return entity.id; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockContext {
@@ -15,9 +15,6 @@ describe('validationDisconnectedWay', () => {
         l10n:  new MockLocalizationSystem()
       };
     }
-    graph()  { return graph; }
-    t()      { return ''; }
-    tHtml()  { return ''; }
   }
 
   const context = new MockContext();

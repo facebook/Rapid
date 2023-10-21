@@ -1,12 +1,17 @@
 describe('uiFieldLocalized', () => {
   let selection, field;
 
+  class MockEditSystem {
+    constructor() {}
+    get staging() { return { graph: new Rapid.Graph() }; }
+  }
+
   class MockLocalizationSystem {
     constructor() { }
     localeCode()     { return 'en-US'; }
     languageCode()   { return 'en'; }
-    t()              { return ''; }
-    tHtml()          { return ''; }
+    t(id)            { return id; }
+    tHtml(id)        { return id; }
     languageName(code) {
       const langs = {
         de: { nativeName: 'Deutsch' },
@@ -20,15 +25,14 @@ describe('uiFieldLocalized', () => {
     constructor()   {
       this.services = {};
       this.systems = {
-        data: new Rapid.DataLoaderSystem(this),
-        l10n: new MockLocalizationSystem(this)
+        dataloader:  new Rapid.DataLoaderSystem(this),
+        editor:      new MockEditSystem(this),
+        l10n:        new MockLocalizationSystem(this)
       };
     }
-    cleanTagKey(val)      { return val; }
-    cleanTagValue(val)    { return val; }
-    container()  { return selection; }
-    t()          { return ''; }
-    tHtml()      { return ''; }
+    cleanTagKey(val)   { return val; }
+    cleanTagValue(val) { return val; }
+    container()        { return selection; }
   }
 
   const context = new MockContext();
@@ -49,7 +53,7 @@ describe('uiFieldLocalized', () => {
       expect(selection.selectAll('.localized-lang').nodes().length).to.equal(1);
       expect(selection.selectAll('.localized-value').nodes().length).to.equal(1);
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -67,7 +71,7 @@ describe('uiFieldLocalized', () => {
       happen.once(selection.selectAll('.localized-lang').node(), { type: 'change' });
       happen.once(selection.selectAll('.localized-lang').node(), { type: 'blur' });
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -85,7 +89,7 @@ describe('uiFieldLocalized', () => {
       happen.once(selection.selectAll('.localized-value').node(), { type: 'change' });
       happen.once(selection.selectAll('.localized-value').node(), { type: 'blur' });
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -105,7 +109,7 @@ describe('uiFieldLocalized', () => {
       Rapid.utilGetSetValue(selection.selectAll('.localized-value'), 'Value');
       happen.once(selection.selectAll('.localized-value').node(), { type: 'change' });
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -125,7 +129,7 @@ describe('uiFieldLocalized', () => {
       Rapid.utilGetSetValue(selection.selectAll('.localized-lang'), 'Deutsch');
       happen.once(selection.selectAll('.localized-lang').node(), { type: 'change' });
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -142,7 +146,7 @@ describe('uiFieldLocalized', () => {
       Rapid.utilGetSetValue(selection.selectAll('.localized-lang'), 'English');
       happen.once(selection.selectAll('.localized-lang').node(), { type: 'change' });
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -155,7 +159,7 @@ describe('uiFieldLocalized', () => {
       expect(selection.selectAll('.localized-lang').empty()).to.be.ok;
       expect(selection.selectAll('.localized-value').empty()).to.be.ok;
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -172,7 +176,7 @@ describe('uiFieldLocalized', () => {
       Rapid.utilGetSetValue(selection.selectAll('.localized-lang'), '');
       happen.once(selection.selectAll('.localized-lang').node(), { type: 'change' });
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 
 
@@ -189,6 +193,6 @@ describe('uiFieldLocalized', () => {
       Rapid.utilGetSetValue(selection.selectAll('.localized-value'), '');
       happen.once(selection.selectAll('.localized-value').node(), { type: 'change' });
       done();
-    }, 1);  // async, so dataLoaderSystem promise will have settled
+    }, 1);  // async, so DataLoaderSystem promise will have settled
   });
 });

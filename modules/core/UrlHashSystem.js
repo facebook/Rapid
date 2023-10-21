@@ -26,7 +26,7 @@ export class UrlHashSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'urlhash';
-    this.dependencies = new Set(['edits', 'l10n', 'map']);
+    this.dependencies = new Set(['editor', 'l10n', 'map']);
 
     this.doUpdateTitle = true;
     this.titleBase = 'Rapid';
@@ -113,7 +113,7 @@ export class UrlHashSystem extends AbstractSystem {
 
     const prerequisites = Promise.all([
       this.context.systems.l10n.startAsync(),
-      this.context.systems.edits.startAsync()
+      this.context.systems.editor.startAsync()
     ]);
 
     return this._startPromise = prerequisites
@@ -144,7 +144,7 @@ export class UrlHashSystem extends AbstractSystem {
 
     this._currHash = null;
 
-    this.context.systems.edits.on('change', this.deferredUpdateTitle);
+    this.context.systems.editor.on('stablechange', this.deferredUpdateTitle);
     this.context.on('modechange', this.deferredUpdateTitle);
     window.addEventListener('hashchange', this._hashchange);
 
@@ -166,7 +166,7 @@ export class UrlHashSystem extends AbstractSystem {
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
 
-    this.context.systems.edits.off('change', this.deferredUpdateTitle);
+    this.context.systems.editor.off('stablechange', this.deferredUpdateTitle);
     this.context.off('modechange', this.deferredUpdateTitle);
     window.removeEventListener('hashchange', this._hashchange);
   }
@@ -244,15 +244,16 @@ export class UrlHashSystem extends AbstractSystem {
     if (!this.doUpdateTitle) return;
 
     const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
     const l10n = context.systems.l10n;
-    const editSystem = context.systems.edits;
-    const changeCount = editSystem.difference().summary().size;
+    const changeCount = editor.difference().summary().size;
 
     // Currently only support OSM ids
     let selected;
-    const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
+    const selectedIDs = context.selectedIDs().filter(id => graph.hasEntity(id));
     if (selectedIDs.length) {
-      const firstLabel = l10n.displayLabel(context.entity(selectedIDs[0]), context.graph());
+      const firstLabel = l10n.displayLabel(graph.entity(selectedIDs[0]), graph);
       if (selectedIDs.length > 1) {
         selected = l10n.t('title.labeled_and_more', { labeled: firstLabel, count: selectedIDs.length - 1 });
       } else {

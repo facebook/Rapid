@@ -339,6 +339,8 @@ export class StreetsideService extends AbstractSystem {
     let d = this._cache.bubbles.get(bubbleID);
 
     const context = this.context;
+    const l10n = context.systems.l10n;
+
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) {
       viewer.datum(d);
@@ -399,7 +401,7 @@ export class StreetsideService extends AbstractSystem {
 
     label
       .append('span')
-      .text(this.context.t('streetside.hires'));
+      .text(l10n.t('streetside.hires'));
 
 
     let captureInfo = line1
@@ -440,7 +442,7 @@ export class StreetsideService extends AbstractSystem {
       .attr('target', '_blank')
       .attr('href', 'https://www.bing.com/maps?cp=' + d.loc[1] + '~' + d.loc[0] +
         '&lvl=17&dir=' + d.ca + '&style=x&v=2&sV=1')
-      .text(this.context.t('streetside.view_on_bing'));
+      .text(l10n.t('streetside.view_on_bing'));
 
     line2
       .append('a')
@@ -448,7 +450,7 @@ export class StreetsideService extends AbstractSystem {
       .attr('target', '_blank')
       .attr('href', 'https://www.bing.com/maps/privacyreport/streetsideprivacyreport?bubbleid=' +
         encodeURIComponent(d.id) + '&focus=photo&lat=' + d.loc[1] + '&lng=' + d.loc[0] + '&z=17')
-      .text(this.context.t('streetside.report'));
+      .text(l10n.t('streetside.report'));
 
 
 // const streetsideImagesApi = 'https://t.ssl.ak.tiles.virtualearth.net/tiles/';

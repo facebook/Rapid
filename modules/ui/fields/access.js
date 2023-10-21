@@ -6,6 +6,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldAccess(context, uifield) {
+  const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('change');
   let items = d3_select(null);
   let _tags;
@@ -217,7 +218,7 @@ export function uiFieldAccess(context, uifield) {
       })
       .attr('placeholder', d => {
         if (tags[d] && Array.isArray(tags[d])) {
-          return context.t('inspector.multiple_values');
+          return l10n.t('inspector.multiple_values');
         }
         if (d === 'access') {
           return 'yes';

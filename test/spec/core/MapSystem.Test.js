@@ -16,8 +16,8 @@ describe('MapSystem', () => {
   class MockLocalizationSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    t()           { return ''; }
-    tHtml()       { return ''; }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
   }
 
   class MockRenderer {
@@ -39,7 +39,7 @@ describe('MapSystem', () => {
     constructor()   {
       this.services = {};
       this.systems = {
-        edits:   new MockSystem(),
+        editor:  new MockSystem(),
         filters: new MockSystem(),
         imagery: new MockSystem(),
         photos:  new MockSystem(),

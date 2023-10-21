@@ -2,8 +2,8 @@ describe('KartaviewService', () => {
   let _kartaview;
 
   class MockMapSystem {
-    constructor(context) { this.context = context; }
-    initAsync() { return Promise.resolve(); }
+    constructor(context)   { this.context = context; }
+    initAsync()            { return Promise.resolve(); }
     extent() {
       return new sdk.Extent(
         this.context.projection.invert([0, 64]), // bottom left
@@ -23,8 +23,8 @@ describe('KartaviewService', () => {
         .translate([-116508, 0])  // 10,0
         .dimensions([[0,0], [64, 64]]);
     }
-    container() { return null; }
-    deferredRedraw() { }
+    container()       { return null; }
+    deferredRedraw()  { }
   }
 
 

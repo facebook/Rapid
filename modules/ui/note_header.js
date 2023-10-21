@@ -2,6 +2,7 @@ import { uiIcon } from './icon';
 
 
 export function uiNoteHeader(context) {
+  const l10n = context.systems.l10n;
   let _note;
 
 
@@ -47,10 +48,10 @@ export function uiNoteHeader(context) {
       .attr('class', 'note-header-label')
       .text(d => {
         if (_note.isNew()) {
-          return context.t('note.new');
+          return l10n.t('note.new');
         } else {
-          return context.t('note.note') + ' ' + d.id + ' ' +
-            (d.status === 'closed' ? context.t('note.closed') : '');
+          return l10n.t('note.note') + ' ' + d.id + ' ' +
+            (d.status === 'closed' ? l10n.t('note.closed') : '');
         }
       });
   }

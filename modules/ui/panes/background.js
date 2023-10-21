@@ -8,10 +8,12 @@ import { uiSectionOverlayList } from '../sections/overlay_list';
 
 
 export function uiPaneBackground(context) {
-  var backgroundPane = uiPane(context, 'background')
-    .key(context.t('background.key'))
-    .label(context.tHtml('background.title'))
-    .description(context.tHtml('background.description'))
+  const l10n = context.systems.l10n;
+
+  return uiPane(context, 'background')
+    .key(l10n.t('background.key'))
+    .label(l10n.tHtml('background.title'))
+    .description(l10n.tHtml('background.description'))
     .iconName('rapid-icon-layers')
     .sections([
       uiSectionBackgroundList(context),
@@ -21,6 +23,4 @@ export function uiPaneBackground(context) {
       uiSectionBackgroundDisplayOptions(context),
       uiSectionBackgroundOffset(context)
     ]);
-
-  return backgroundPane;
 }

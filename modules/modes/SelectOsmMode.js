@@ -44,81 +44,88 @@ export class SelectOsmMode extends AbstractMode {
     this._lastVertex = this._lastVertex.bind(this);
     this._nextVertex = this._nextVertex.bind(this);
     this._previousVertex = this._previousVertex.bind(this);
-    this._undoOrRedo = this._undoOrRedo.bind(this);
   }
 
 
   /**
    * enter
-   * Expects a `selectedIDs` Array property in the options
-   * @param  `options`  Optional `Object` of options passed to the new mode
+   * Enters the mode.
+   * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {Object}   options.selection - An object where the keys are layerIDs
+   *    and the values are Arrays of dataIDs:  Example:  `{ 'osm': ['w1', 'w2', 'w3'] }`
+   * @param  {boolean}  options.newFeature - `true` if this is a new feature
+   * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
-    const entityIDs = options.selectedIDs;
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const filters = context.systems.filters;
+    const locations = context.systems.locations;
+    const ui = context.systems.ui;
+    const urlhash = context.systems.urlhash;
+
+    const selection = options.selection ?? {};
+    let entityIDs = selection.osm ?? [];
     this._newFeature = options.newFeature;
 
-    if (!Array.isArray(entityIDs)) return false;
-    if (!entityIDs.length) return false;
-
-    const context = this.context;
-    const locationSystem = context.systems.locations;
-
-    // For this mode, keep only the OSM data
-    let selectedIDs = [];
+    // Gather valid entities and entityIDs from selection.
+    // For this mode, keep only the OSM data.
     this._selectedData = new Map();
     this._singularDatum = null;
 
     for (const entityID of entityIDs) {
-      const entity = context.hasEntity(entityID);
-      if (!entity) continue;   // not osm
-      if (entity.type === 'node' && locationSystem.blocksAt(entity.loc).length) continue;  // editing is blocked
+      const entity = graph.hasEntity(entityID);
+      if (!entity) continue;   // not in the osm graph
+      if (entity.type === 'node' && locations.blocksAt(entity.loc).length) continue;  // editing is blocked
 
-      this._selectedData.set(entityID, entity);   // otherwise keep it
-      selectedIDs.push(entityID);
+      this._selectedData.set(entityID, entity);
+
       if (entityIDs.length === 1) {
-        this._singularDatum = entity;   // a single thing is selected
+        this._singularDatum = entity;  // if a single thing is selected
       }
     }
 
-    if (!this._selectedData.size) return false;  // nothing to select
+    if (!this._selectedData.size) return false;  // found nothing to select
+    entityIDs = [...this._selectedData.keys()];  // the ones we ended up keeping
 
     this._active = true;
     context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'lasso', 'paste']);
 
     // Compute the total extent of selected items
-    this.extent = utilTotalExtent(selectedIDs, context.graph());
+    this.extent = utilTotalExtent(entityIDs, graph);
 
-    // Put selectedIDs into the url hash
-    context.systems.urlhash.setParam('id', selectedIDs.join(','));
+    // Put entityIDs into the url hash
+    urlhash.setParam('id', entityIDs.join(','));
 
     // Exclude these ids from filtering
-    context.systems.filters.forceVisible(selectedIDs);
+    filters.forceVisible(entityIDs);
 
     // setup which operations are valid for this selection
-    this.operations.forEach(o => {
-      if (o.behavior) {
-        o.behavior.disable();
+    for (const operation of this.operations) {
+      if (operation.behavior) {
+        operation.behavior.disable();
       }
-    });
+    }
 
     this.operations = Object.values(Operations)
-      .map(o => o(context, selectedIDs))
+      .map(o => o(context, entityIDs))
       .filter(o => (o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'))
       .concat([
-          // group copy/downgrade/delete operation together at the end of the list
-          Operations.operationCopy(context, selectedIDs),
-          Operations.operationDowngrade(context, selectedIDs),
-          Operations.operationDelete(context, selectedIDs)
-        ])
+        // group copy/downgrade/delete operation together at the end of the list
+        Operations.operationCopy(context, entityIDs),
+        Operations.operationDowngrade(context, entityIDs),
+        Operations.operationDelete(context, entityIDs)
+      ])
       .filter(o => o.available());
 
-    this.operations.forEach(o => {
-      if (o.behavior) {
-        o.behavior.enable();
+    for (const operation of this.operations) {
+      if (operation.behavior) {
+        operation.behavior.enable();
       }
-    });
+    }
 
-    context.systems.ui.closeEditMenu();   // remove any displayed menu
+    ui.closeEditMenu();   // remove any displayed menu
 
     this.keybinding = utilKeybinding('select');
     this.keybinding
@@ -134,14 +141,8 @@ export class SelectOsmMode extends AbstractMode {
     d3_select(document)
       .call(this.keybinding);
 
-    context.systems.ui.sidebar
-      .select(selectedIDs, this._newFeature);
-
-    context.systems.edits
-      // this was probably to style the elements
-      // .on('change', this._selectElements)    // reselect, in case relation members were removed or added
-      .on('undone', this._undoOrRedo)
-      .on('redone', this._undoOrRedo);
+    ui.sidebar
+      .select(entityIDs, this._newFeature);
 
     return true;
   }
@@ -155,22 +156,28 @@ export class SelectOsmMode extends AbstractMode {
     this._active = false;
 
     const context = this.context;
+    const editor = context.systems.editor;
+    const filters = context.systems.filters;
+    const l10n = context.systems.l10n;
+    const ui = context.systems.ui;
+    const urlhash = context.systems.urlhash;
 
     // If the user added an empty relation, we should clean it up.
-    const entity = context.hasEntity(this._singularDatum?.id);
+    const graph = editor.staging.graph;
+    const entity = graph.hasEntity(this._singularDatum?.id);
     if (
-      entity && entity.type === 'relation' &&
-      // no tags
-      Object.keys(entity.tags).length === 0 &&
-      // no parent relations
-      context.graph().parentRelations(entity).length === 0 &&
+      entity?.type === 'relation' &&
+      Object.keys(entity.tags).length === 0 &&        // no tags
+      graph.parentRelations(entity).length === 0 &&   // no parent relations
       // no members or one member with no role
       (entity.members.length === 0 || (entity.members.length === 1 && !entity.members[0].role))
     ) {
       // The user added this relation but didn't edit it at all, so just delete it
-      const deleteAction = actionDeleteRelation(entity.id, true /* don't delete untagged members */);
-      context.perform(deleteAction, context.t('operations.delete.annotation.relation'));
-      context.systems.validator.validate();
+      editor.perform(actionDeleteRelation(entity.id, true));  // true = don't delete untagged members
+      editor.commit({
+        annotation: l10n.t('operations.delete.annotation.relation'),
+        selectedIDs: [entity.id]
+      });
     }
 
 
@@ -180,27 +187,22 @@ export class SelectOsmMode extends AbstractMode {
     this._selectedData.clear();
 
     // disable operations
-    this.operations.forEach(o => {
-      if (o.behavior) {
-        o.behavior.disable();
+    for (const operation of this.operations) {
+      if (operation.behavior) {
+        operation.behavior.disable();
       }
-    });
+    }
     this.operations = [];
 
-    context.systems.ui.closeEditMenu();
-    context.systems.ui.sidebar.hide();
-    context.systems.urlhash.setParam('id', null);
-    context.systems.filters.forceVisible([]);
+    ui.closeEditMenu();
+    ui.sidebar.hide();
+    urlhash.setParam('id', null);
+    filters.forceVisible([]);
 
     if (this.keybinding) {
       d3_select(document).call(this.keybinding.unbind);
       this.keybinding = null;
     }
-
-    context.systems.edits
-      // .off('change', this._selectElements)
-      .off('undone', this._undoOrRedo)
-      .off('redone', this._undoOrRedo);
   }
 
 
@@ -216,36 +218,14 @@ export class SelectOsmMode extends AbstractMode {
 
 
   /**
-   * _undoOrRedo
-   *  on undo or redo, see whether we can stay in this mode
-   */
-  _undoOrRedo() {
-    const context = this.context;
-    const locationSystem = context.systems.locations;
-    let selectedIDs = [];
-
-    for (const [datumID, datum] of this._selectedData) {
-      if (!context.hasEntity(datumID)) continue;   // was deleted
-      if (datum.type === 'node' && locationSystem.blocksAt(datum.loc).length) continue;  // editing is blocked
-      selectedIDs.push(datumID);  // keep it selected
-    }
-
-    if (!selectedIDs.length) {
-      context.enter('browse');
-    } else {
-      context.enter('select-osm', { selectedIDs: selectedIDs });   // reselect whatever remains
-    }
-  }
-
-
-  /**
    * _chooseParentWay
    *  when using keyboard navigation, try to stay with the previously focused parent way
    */
   _chooseParentWay(entity) {
     if (!entity) return null;
 
-    const graph = this.context.graph();
+    const context = this.context;
+    const graph = context.systems.editor.staging.graph;
 
     if (entity.type === 'way') {     // selected entity already is a way, so just use it.
       this._focusedParentID = entity.id;
@@ -268,7 +248,6 @@ export class SelectOsmMode extends AbstractMode {
   }
 
 
-
   /**
    * _firstVertex
    *  jump to the first vertex along a way
@@ -276,12 +255,14 @@ export class SelectOsmMode extends AbstractMode {
   _firstVertex(d3_event) {
     d3_event.preventDefault();
 
-    const context = this.context;
     const way = this._chooseParentWay(this._singularDatum);
     if (!way) return;
 
-    const node = context.entity(way.first());
-    context.enter('select-osm', { selectedIDs: [node.id] });
+    const context = this.context;
+    const graph = context.systems.editor.staging.graph;
+    const node = graph.entity(way.first());
+
+    context.enter('select-osm', { selection: { osm: [node.id] }} );
     context.systems.map.centerEase(node.loc);
   }
 
@@ -293,12 +274,14 @@ export class SelectOsmMode extends AbstractMode {
   _lastVertex(d3_event) {
     d3_event.preventDefault();
 
-    const context = this.context;
     const way = this._chooseParentWay(this._singularDatum);
     if (!way) return;
 
-    const node = context.entity(way.last());
-    context.enter('select-osm', { selectedIDs: [node.id] });
+    const context = this.context;
+    const graph = context.systems.editor.staging.graph;
+    const node = graph.entity(way.last());
+
+    context.enter('select-osm', { selection: { osm: [node.id] }} );
     context.systems.map.centerEase(node.loc);
   }
 
@@ -310,7 +293,6 @@ export class SelectOsmMode extends AbstractMode {
   _previousVertex(d3_event) {
     d3_event.preventDefault();
 
-    const context = this.context;
     const entity = this._singularDatum;
     if (entity?.type !== 'node') return;
 
@@ -327,8 +309,10 @@ export class SelectOsmMode extends AbstractMode {
     }
 
     if (nextIndex !== -1) {
-      const node = context.entity(way.nodes[nextIndex]);
-      context.enter('select-osm', { selectedIDs: [node.id] });
+      const context = this.context;
+      const graph = context.systems.editor.staging.graph;
+      const node = graph.entity(way.nodes[nextIndex]);
+      context.enter('select-osm', { selection: { osm: [node.id] }} );
       context.systems.map.centerEase(node.loc);
     }
   }
@@ -341,7 +325,6 @@ export class SelectOsmMode extends AbstractMode {
   _nextVertex(d3_event) {
     d3_event.preventDefault();
 
-    const context = this.context;
     const entity = this._singularDatum;
     if (entity?.type !== 'node') return;
 
@@ -358,8 +341,10 @@ export class SelectOsmMode extends AbstractMode {
     }
 
     if (nextIndex !== -1) {
-      const node = context.entity(way.nodes[nextIndex]);
-      context.enter('select-osm', { selectedIDs: [node.id] });
+      const context = this.context;
+      const graph = context.systems.editor.staging.graph;
+      const node = graph.entity(way.nodes[nextIndex]);
+      context.enter('select-osm', { selection: { osm: [node.id] }} );
       context.systems.map.centerEase(node.loc);
     }
   }
@@ -375,7 +360,7 @@ export class SelectOsmMode extends AbstractMode {
     const entity = this._singularDatum;
     if (entity?.type !== 'node') return;
 
-    const graph = this.context.graph();
+    const graph = this.context.editor.staging.graph;
     const parentIDs = graph.parentWays(entity).map(way => way.id);
 
     if (parentIDs.length) {
@@ -419,8 +404,9 @@ export class SelectOsmMode extends AbstractMode {
 //      d3_event.preventDefault();
 //
 //      var currentSelectedIds = mode.selectedIDs();
-//
-//      var childIds = this._focusedVertexIDs ? this._focusedVertexIDs.filter(id => context.hasEntity(id)) : childNodeIdsOfSelection(true);
+//      const context = this.context;
+//      const graph = context.systems.editor.staging.graph;
+//      var childIds = this._focusedVertexIDs ? this._focusedVertexIDs.filter(id => graph.hasEntity(id)) : childNodeIdsOfSelection(true);
 //      if (!childIds || !childIds.length) return;
 //
 //      if (currentSelectedIds.length === 1) this._focusedParentID = currentSelectedIds[0];
@@ -432,11 +418,12 @@ export class SelectOsmMode extends AbstractMode {
 //
 //  // find the child nodes for selected ways
 //  function childNodeIdsOfSelection(onlyCommon) {
-//      var graph = context.graph();
+//      const context = this.context;
+//      const graph = context.systems.editor.staging.graph;
 //      var childs = [];
 //
 //      for (var i = 0; i < selectedIDs.length; i++) {
-//          var entity = context.hasEntity(selectedIDs[i]);
+//          var entity = graph.hasEntity(selectedIDs[i]);
 //
 //          if (!entity || !['area', 'line'].includes(entity.geometry(graph))){
 //              return [];  // selection includes non-area/non-line

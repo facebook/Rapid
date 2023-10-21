@@ -26,6 +26,7 @@ export class AddNoteMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    */
   enter() {
     if (DEBUG) {
@@ -40,10 +41,6 @@ export class AddNoteMode extends AbstractMode {
       .on('click', this._click)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
-
-    context.systems.edits
-      .on('undone', this._cancel)
-      .on('redone', this._cancel);
 
     context.behaviors['map-nudging'].allow();
 
@@ -67,10 +64,6 @@ export class AddNoteMode extends AbstractMode {
       .off('click', this._click)
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
-
-    context.systems.edits
-      .off('undone', this._cancel)
-      .off('redone', this._cancel);
   }
 
 

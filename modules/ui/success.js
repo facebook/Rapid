@@ -11,33 +11,36 @@ import { utilRebind } from '../util/rebind';
 let _oci = null;
 
 export function uiSuccess(context) {
-  const MAXEVENTS = 2;
+  const dataloader = context.systems.dataloader;
+  const locations = context.systems.locations;
+  const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('cancel');
+  const MAXEVENTS = 2;
+
   let _changeset;
   let _location;
+
   getCommunityIndexAsync();   // start fetching the data
 
 
   function getCommunityIndexAsync() {
-    const dataLoaderSystem = context.systems.data;
     return Promise.all([
-        dataLoaderSystem.getDataAsync('oci_features'),
-        dataLoaderSystem.getDataAsync('oci_resources'),
-        dataLoaderSystem.getDataAsync('oci_defaults')
+        dataloader.getDataAsync('oci_features'),
+        dataloader.getDataAsync('oci_resources'),
+        dataloader.getDataAsync('oci_defaults')
       ])
       .then(vals => {
         if (_oci) return _oci;
 
         // Merge Custom Features
-        const locationSystem = context.systems.locations;
         if (vals[0] && Array.isArray(vals[0].features)) {
-          locationSystem.mergeCustomGeoJSON(vals[0]);
+          locations.mergeCustomGeoJSON(vals[0]);
         }
 
         let ociResources = Object.values(vals[1].resources);
         if (ociResources.length) {
           // Resolve all locationSet features.
-          return locationSystem.mergeLocationSets(ociResources)
+          return locations.mergeLocationSets(ociResources)
             .then(() => {
               _oci = {
                 resources: ociResources,
@@ -79,7 +82,7 @@ export function uiSuccess(context) {
 
     header
       .append('h3')
-      .html(context.tHtml('success.just_edited'));
+      .html(l10n.tHtml('success.just_edited'));
 
     header
       .append('button')
@@ -97,18 +100,18 @@ export function uiSuccess(context) {
 
     summary
       .append('h3')
-      .html(context.tHtml('success.thank_you' + (_location ? '_location' : ''), { where: _location }));
+      .html(l10n.tHtml('success.thank_you' + (_location ? '_location' : ''), { where: _location }));
 
     summary
       .append('p')
-      .html(context.tHtml('success.help_html'))
+      .html(l10n.tHtml('success.help_html'))
       .append('a')
       .attr('class', 'link-out')
       .attr('target', '_blank')
-      .attr('href', context.t('success.help_link_url'))
+      .attr('href', l10n.t('success.help_link_url'))
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .append('span')
-      .html(context.tHtml('success.help_link_text'));
+      .html(l10n.tHtml('success.help_link_text'));
 
     let osm = context.services.osm;
     if (!osm) return;
@@ -143,11 +146,11 @@ export function uiSuccess(context) {
       .attr('class', 'cell-detail summary-view-on-osm')
       .attr('target', '_blank')
       .attr('href', changesetURL)
-      .html(context.tHtml('success.view_on_osm'));
+      .html(l10n.tHtml('success.view_on_osm'));
 
     summaryDetail
       .append('div')
-      .html(context.tHtml('success.changeset_id', {
+      .html(l10n.tHtml('success.changeset_id', {
         changeset_id: `<a href="${changesetURL}" target="_blank">${_changeset.id}</a>`
       }));
 
@@ -156,8 +159,8 @@ export function uiSuccess(context) {
     getCommunityIndexAsync()
       .then(oci => {
         const loc = context.systems.map.center();
-        const locationSystem = context.systems.locations;
-        const validHere = locationSystem.locationSetsAt(loc);
+        const locations = context.systems.locations;
+        const validHere = locations.locationSetsAt(loc);
 
         // Gather the communities
         let communities = [];
@@ -166,7 +169,7 @@ export function uiSuccess(context) {
           if (!area) return;
 
           // Resolve strings
-          const localize = (stringID) => context.tHtml(`community.${stringID}`);
+          const localize = (stringID) => l10n.tHtml(`community.${stringID}`);
           resource.resolved = resolveStrings(resource, oci.defaults, localize);
 
           communities.push({
@@ -192,7 +195,7 @@ export function uiSuccess(context) {
 
     communityLinks
       .append('h3')
-      .html(context.tHtml('success.like_osm'));
+      .html(l10n.tHtml('success.like_osm'));
 
     let table = communityLinks
       .append('table')
@@ -226,14 +229,14 @@ export function uiSuccess(context) {
     communityLinks
       .append('div')
       .attr('class', 'community-missing')
-      .html(context.tHtml('success.missing'))
+      .html(l10n.tHtml('success.missing'))
       .append('a')
       .attr('class', 'link-out')
       .attr('target', '_blank')
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/osmlab/osm-community-index/issues')
       .append('span')
-      .html(context.tHtml('success.tell_us'));
+      .html(l10n.tHtml('success.tell_us'));
   }
 
 
@@ -258,7 +261,7 @@ export function uiSuccess(context) {
         .call(uiDisclosure(context, `community-more-${d.id}`)
           .expanded(false)
           .checkPreference(false)
-          .label(context.tHtml('success.more'))
+          .label(l10n.tHtml('success.more'))
           .content(showMore)
         );
     }
@@ -284,7 +287,7 @@ export function uiSuccess(context) {
         .call(uiDisclosure(context, `community-events-${d.id}`)
           .expanded(false)
           .checkPreference(false)
-          .label(context.tHtml('success.events'))
+          .label(l10n.tHtml('success.events'))
           .content(showNextEvents)
         )
         .select('.hide-toggle')
@@ -317,7 +320,7 @@ export function uiSuccess(context) {
         moreEnter
           .append('div')
           .attr('class', 'community-languages')
-          .html(context.tHtml('success.languages', { languages: languageList }));
+          .html(l10n.tHtml('success.languages', { languages: languageList }));
       }
     }
 
@@ -343,7 +346,7 @@ export function uiSuccess(context) {
         .html(d => {
           let name = d.name;
           if (d.i18n && d.id) {
-            name = context.t(`community.${communityID}.events.${d.id}.name`, { default: name });
+            name = l10n.t(`community.${communityID}.events.${d.id}.name`, { default: name });
           }
           return name;
         });
@@ -367,7 +370,7 @@ export function uiSuccess(context) {
         .html(d => {
           let where = d.where;
           if (d.i18n && d.id) {
-            where = context.t(`community.${communityID}.events.${d.id}.where`, { default: where });
+            where = l10n.t(`community.${communityID}.events.${d.id}.where`, { default: where });
           }
           return where;
         });
@@ -378,7 +381,7 @@ export function uiSuccess(context) {
         .html(d => {
           let description = d.description;
           if (d.i18n && d.id) {
-            description = context.t(`community.${communityID}.events.${d.id}.description`, { default: description });
+            description = l10n.t(`community.${communityID}.events.${d.id}.description`, { default: description });
           }
           return description;
         });

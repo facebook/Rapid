@@ -4,25 +4,26 @@ import { uiSection } from '../section';
 
 
 export function uiSectionGridDisplayOptions(context) {
-  const imagerySystem = context.systems.imagery;
+  const imagery = context.systems.imagery;
+  const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
 
   let section = uiSection(context, 'grid-display-options')
-    .label(context.t('background.grid.grids'))
+    .label(l10n.t('background.grid.grids'))
     .disclosureContent(gridDisplayOptions);
 
   const gridData = [
-    { numSplit: 0, name: context.t('background.grid.no_grid')},
-    { numSplit: 2, name: context.t('background.grid.n_by_n', { num: 2 }) },
-    { numSplit: 3, name: context.t('background.grid.n_by_n', { num: 3 }) },
-    { numSplit: 4, name: context.t('background.grid.n_by_n', { num: 4 }) },
-    { numSplit: 5, name: context.t('background.grid.n_by_n', { num: 5 }) },
-    { numSplit: 6, name: context.t('background.grid.n_by_n', { num: 6 }) }
+    { numSplit: 0, name: l10n.t('background.grid.no_grid')},
+    { numSplit: 2, name: l10n.t('background.grid.n_by_n', { num: 2 }) },
+    { numSplit: 3, name: l10n.t('background.grid.n_by_n', { num: 3 }) },
+    { numSplit: 4, name: l10n.t('background.grid.n_by_n', { num: 4 }) },
+    { numSplit: 5, name: l10n.t('background.grid.n_by_n', { num: 5 }) },
+    { numSplit: 6, name: l10n.t('background.grid.n_by_n', { num: 6 }) }
   ];
 
   function chooseGrid(d3_event, d) {
     d3_event.preventDefault();
-    imagerySystem.numGridSplits = d.numSplit;
+    imagery.numGridSplits = d.numSplit;
   }
 
 
@@ -48,7 +49,7 @@ export function uiSectionGridDisplayOptions(context) {
     label.append('input')
       .attr('type', 'radio')
       .attr('name', 'grids')
-      .property('checked', d => d.numSplit === imagerySystem.numGridSplits)
+      .property('checked', d => d.numSplit === imagery.numGridSplits)
       .on('change', chooseGrid);
 
     label.append('span')

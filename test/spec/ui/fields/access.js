@@ -3,8 +3,8 @@ describe('uiFieldAccess', () => {
 
   class MockLocalizationSystem {
     constructor() { }
-    t()           { return ''; }
-    tHtml()       { return ''; }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
   }
 
   class MockContext {
@@ -14,8 +14,6 @@ describe('uiFieldAccess', () => {
       };
     }
     container()  { return selection; }
-    t()          { return ''; }
-    tHtml()      { return ''; }
   }
 
 

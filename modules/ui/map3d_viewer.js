@@ -11,6 +11,10 @@ import { geomPolygonContainsPolygon } from '@rapid-sdk/math';
  * @returns
  */
 export function uiMap3dViewer(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const map3d = context.systems.map3d;
 
   function render(selection) {
     let wrap = d3_select(null);
@@ -27,21 +31,20 @@ export function uiMap3dViewer(context) {
     function updateProjection() {
       // Since the bounds are intended to wrap a box around a perfectly orthogonal view,
       // for a pitched, isometric view we need to enlarge the box a bit to display more buildings.
-      let extent = context.systems.map.extent();
-      let center = extent.center();
+      const extent = map.extent();
+      const center = extent.center();
       extent.padByMeters(100);
 
-      context.systems.map3d.maplibre.jumpTo({
+      map3d.maplibre.jumpTo({
         center: center,
         bearing: 0,
-        zoom: context.systems.map.zoom() - 3,
+        zoom: map.zoom() - 3,
       });
     }
 
 
     function featuresToGeoJSON() {
-      let mainmap = context.systems.map;
-      const entities = context.systems.edits.intersects(mainmap.extent());
+      const entities = editor.intersects(map.extent());
       const noRelationEnts = entities.filter((ent) => !ent.id.startsWith('r'));
 
       const buildingEnts = noRelationEnts.filter((ent) => {
@@ -80,7 +83,7 @@ export function uiMap3dViewer(context) {
       let buildingFeatures = [];
       const selectedIDs = context.selectedIDs();
 
-      const graph = context.graph();
+      const graph = editor.staging.graph;
 
       for (const buildingEnt of buildingEnts) {
         const gj = buildingEnt.asGeoJSON(graph);
@@ -131,7 +134,7 @@ export function uiMap3dViewer(context) {
         buildingFeatures.push(newFeature);
       }
 
-      const maplibre = context.systems.map3d.maplibre;
+      const maplibre = map3d.maplibre;
       const buildingSource = maplibre?.getSource('osmbuildings');
 
       if (buildingSource) {
@@ -148,7 +151,7 @@ export function uiMap3dViewer(context) {
       const selectedIDs = context.selectedIDs();
 
       for (const areaEnt of areaEnts) {
-        let gj = areaEnt.asGeoJSON(context.graph());
+        let gj = areaEnt.asGeoJSON(editor.staging.graph);
         if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
 
         const style = styleMatch(areaEnt.tags);
@@ -168,7 +171,7 @@ export function uiMap3dViewer(context) {
         areaFeatures.push(newFeature);
       }
 
-      const maplibre = context.systems.map3d.maplibre;
+      const maplibre = map3d.maplibre;
       const areaSource = maplibre?.getSource('osmareas');
 
       if (areaSource) {
@@ -185,7 +188,7 @@ export function uiMap3dViewer(context) {
       const selectedIDs = context.selectedIDs();
 
       for (const roadEnt of roadEnts) {
-        const gj = roadEnt.asGeoJSON(context.graph());
+        const gj = roadEnt.asGeoJSON(editor.staging.graph);
         if (gj.type !== 'LineString') continue;
 
         const style = styleMatch(roadEnt.tags);
@@ -206,7 +209,7 @@ export function uiMap3dViewer(context) {
         roadFeatures.push(newFeature);
       }
 
-      const maplibre = context.systems.map3d.maplibre;
+      const maplibre = map3d.maplibre;
       const roadSource = maplibre?.getSource('osmroads');
 
       if (roadSource) {
@@ -264,11 +267,11 @@ export function uiMap3dViewer(context) {
       .style('display', _isHidden ? 'none' : 'block');
 
     wrap = wrapEnter.merge(wrap);
-    context.systems.map3d.startAsync();
+    map3d.startAsync();
 
-    context.systems.map.on('draw', () => redraw());
-    context.systems.map.on('move', () => redraw());
-    context.keybinding().on([uiCmd('⌘' + context.t('background.3dmap.key'))], toggle);
+    map.on('draw', () => redraw());
+    map.on('move', () => redraw());
+    context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
 
     redraw();
   }

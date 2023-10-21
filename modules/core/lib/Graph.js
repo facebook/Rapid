@@ -257,9 +257,8 @@ export class Graph {
    * rebase
    * Rebase merges new Entities into the base graph.
    * Unlike other Graph methods that return a new Graph, rebase mutates in place.
-   * This is because it is used during the history operation that merges newly
-   * downloaded data into the existing stack of edits. To external consumers of the Graph,
-   * it should appear as if the Graph always contained the newly downloaded data.
+   * This is because it is used during to merge newly downloaded data into an existing stack of edits.
+   * To external consumers of the Graph, it should appear as if the Graph always contained the newly downloaded data.
    * @param  entities  Entities to add to the base Graph
    * @param  stack     Stack of graphs that need updates after this rebase
    * @param  force     If `true`, always update, if `false` skip entities that we've seen already

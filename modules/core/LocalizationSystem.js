@@ -24,7 +24,7 @@ export class LocalizationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'l10n';
-    this.dependencies = new Set(['data', 'presets', 'urlhash']);
+    this.dependencies = new Set(['dataloader', 'presets', 'urlhash']);
 
     // `_supportedLanguages`
     // All known language codes and their local name. This is used for the language pickers.
@@ -80,7 +80,7 @@ export class LocalizationSystem extends AbstractSystem {
     this._languageNames = {};
     this._scriptNames = {};
 
-    // When called like `context.t`, don't lose `this`
+    // Ensure methods used as callbacks always have `this` bound correctly.
     this.t = this.t.bind(this);
     this.tHtml = this.tHtml.bind(this);
     this.tAppend = this.tAppend.bind(this);
@@ -135,18 +135,18 @@ export class LocalizationSystem extends AbstractSystem {
       tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.4/dist/translations'
     };
 
-    const dataLoaderSystem = this.context.systems.data;
-    const urlHashSystem = this.context.systems.urlhash;
+    const dataloader = this.context.systems.dataloader;
+    const urlhash = this.context.systems.urlhash;
     const prerequisites = Promise.all([
-      dataLoaderSystem.initAsync(),
-      urlHashSystem.initAsync()
+      dataloader.initAsync(),
+      urlhash.initAsync()
     ]);
 
     return this._initPromise = prerequisites
       .then(() => {
         let filesToFetch = ['languages', 'locales'];
 
-        const fileMap = dataLoaderSystem.fileMap;
+        const fileMap = dataloader.fileMap;
         for (let scope in scopes) {
           const key = `locales_index_${scope}`;
           if (!fileMap.has(key)) {
@@ -155,14 +155,14 @@ export class LocalizationSystem extends AbstractSystem {
           filesToFetch.push(key);
         }
 
-        return Promise.all(filesToFetch.map(key => dataLoaderSystem.getDataAsync(key)));
+        return Promise.all(filesToFetch.map(key => dataloader.getDataAsync(key)));
       })
       .then(results => {
         this._supportedLanguages = results[0];
         this._supportedLocales = results[1];
 
         // If a `locale` param was included in the url hash, use that instead..
-        const urlLocale = urlHashSystem.initialHashParams.get('locale');
+        const urlLocale = urlhash.initialHashParams.get('locale');
         if (urlLocale) {
           this._preferredLocaleCodes = urlLocale.split(',').map(s => s.trim()).filter(Boolean);
         }
@@ -241,14 +241,14 @@ export class LocalizationSystem extends AbstractSystem {
       return Promise.resolve(locale);
     }
 
-    const dataLoaderSystem = this.context.systems.data;
-    const fileMap = dataLoaderSystem.fileMap;
+    const dataloader = this.context.systems.dataloader;
+    const fileMap = dataloader.fileMap;
     const key = `locale_${scope}_${locale}`;
     if (!fileMap.has(key)) {
       fileMap.set(key, `${directory}/${locale}.min.json`);
     }
 
-    return dataLoaderSystem.getDataAsync(key)
+    return dataloader.getDataAsync(key)
       .then(d => {
         if (!this._cache[scope]) {
           this._cache[scope] = {};
@@ -822,8 +822,8 @@ export class LocalizationSystem extends AbstractSystem {
     this._currIsMetric = (culture !== 'us');
 
     // If an `rtl` param was included in the url hash, use that instead..
-    const urlHashSystem = this.context.systems.urlhash;
-    const urlRTL = urlHashSystem.initialHashParams.get('rtl');
+    const urlhash = this.context.systems.urlhash;
+    const urlRTL = urlhash.initialHashParams.get('rtl');
 
     if (urlRTL === 'true') {
       this._currTextDirection = 'rtl';

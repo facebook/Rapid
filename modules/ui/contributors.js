@@ -5,7 +5,11 @@ import { uiIcon } from './icon';
 
 
 export function uiContributors(context) {
-    var osm = context.services.osm;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+    const map = context.systems.map;
+    const osm = context.services.osm;
+
     var debouncedUpdate = debounce(function() { update(); }, 1000);
     var limit = 4;
     var hidden = false;
@@ -16,7 +20,7 @@ export function uiContributors(context) {
         if (!osm) return;
 
         let users = {};
-        let entities = context.systems.edits.intersects(context.systems.map.extent());
+        let entities = editor.intersects(map.extent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;
@@ -47,16 +51,16 @@ export function uiContributors(context) {
             count.append('a')
                 .attr('target', '_blank')
                 .attr('href', function() {
-                    return osm.changesetsURL(context.systems.map.center(), context.systems.map.zoom());
+                    return osm.changesetsURL(map.center(), map.zoom());
                 })
                 .html(othersNum);
 
             wrap.append('span')
-                .html(context.tHtml('contributors.truncated_list', { n: othersNum, users: userList.html(), count: count.html() }));
+                .html(l10n.tHtml('contributors.truncated_list', { n: othersNum, users: userList.html(), count: count.html() }));
 
         } else {
             wrap.append('span')
-                .html(context.tHtml('contributors.list', { users: userList.html() }));
+                .html(l10n.tHtml('contributors.list', { users: userList.html() }));
         }
 
         if (!u.length) {
@@ -79,6 +83,6 @@ export function uiContributors(context) {
         update();
 
         osm.on('loaded.contributors', debouncedUpdate);
-        context.systems.map.on('draw', debouncedUpdate);
+        map.on('draw', debouncedUpdate);
     };
 }

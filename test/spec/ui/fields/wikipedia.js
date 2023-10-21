@@ -8,22 +8,32 @@ describe('uiFieldWikipedia', () => {
     }
   }
 
+  class MockEditSystem {
+    constructor() {}
+    get staging() { return { graph: graph }; }
+  }
+
+  class MockLocalizationSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
+  }
+
   class MockContext {
     constructor()   {
       this.services = {
-        wikidata: new MockWikidataService(this)
+        wikidata:    new MockWikidataService(this)
       };
       this.systems = {
-        data: new Rapid.DataLoaderSystem(this)
+        dataloader:  new Rapid.DataLoaderSystem(this),
+        editor:      new MockEditSystem(this),
+        l10n:        new MockLocalizationSystem(this)
       };
     }
     cleanTagKey(val)    { return val; }
     cleanTagValue(val)  { return val; }
     container()         { return selection; }
-    entity()            { return entity; }
-    graph()             { return graph; }
-    t()                 { return ''; }
-    tHtml()             { return ''; }
   }
 
   const context = new MockContext();
@@ -127,6 +137,7 @@ describe('uiFieldWikipedia', () => {
 
   it.skip('does not set delayed wikidata tag if graph has changed', done => {
     const wikipedia = Rapid.uiFieldWikipedia(context, field).entityIDs([entity.id]);
+    const editor = context.systems.editor;
     wikipedia.on('change', changeTags);
     selection.call(wikipedia);
 
@@ -140,7 +151,8 @@ describe('uiFieldWikipedia', () => {
     happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
 
     // t0
-    expect(context.entity(entity.id).tags.wikidata).to.be.undefined;
+    const graph = editor.staging.graph;
+    expect(graph.entity(entity.id).tags.wikidata).to.be.undefined;
 
     // t30:  graph change - Set title to "Title"
     window.setTimeout(() => {
@@ -153,14 +165,16 @@ describe('uiFieldWikipedia', () => {
 
     // t70:  check that wikidata unchanged
     window.setTimeout(() => {
-      expect(context.entity(entity.id).tags.wikidata).to.be.undefined;
+      const graph = editor.staging.graph;
+      expect(graph.entity(entity.id).tags.wikidata).to.be.undefined;
     }, 70);
 
     // t90:  at t30 + 60ms (delay), wikidata SHOULD be set because graph is unchanged.
 
     // t100:  check that wikidata has changed
     window.setTimeout(() => {
-      expect(context.entity(entity.id).tags.wikidata).to.equal('Q216353');
+      const graph = editor.staging.graph;
+      expect(graph.entity(entity.id).tags.wikidata).to.equal('Q216353');
 
       expect(spy.callCount).to.equal(4);
       expect(spy.getCall(0)).to.have.been.calledWith({ wikipedia: 'de:Skip' });   // 'Skip' on change

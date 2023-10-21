@@ -16,15 +16,18 @@ describe('validationSuspiciousName', () => {
 
   class MockLocalizationSystem {
     constructor() {}
+    displayLabel(entity)  { return entity.id; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockContext {
     constructor() {
       this.services = {
-        nsi: new MockNsi(this)
+        nsi: new MockNsi()
       };
       this.systems = {
-        l10n: new MockLocalizationSystem(this)
+        l10n: new MockLocalizationSystem()
       };
     }
   }

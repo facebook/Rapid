@@ -64,7 +64,7 @@ export class FilterSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'filters';
-    this.dependencies = new Set(['storage', 'urlhash']);
+    this.dependencies = new Set(['editor', 'storage', 'urlhash']);
 
     this._rules = new Map();          // Map(rulekey -> rule)
     this._hidden = new Set();         // Set(rulekey) to hide
@@ -136,19 +136,20 @@ export class FilterSystem extends AbstractSystem {
 
 
 //    // warm up the feature matching cache upon merging fetched data
-//    this.context.systems.edits.on('merge.features', function(newEntities) {
-//        if (!newEntities) return;
-//        var handle = window.requestIdleCallback(function() {
-//            var graph = this.context.graph();
-//            var types = utilArrayGroupBy(newEntities, 'type');
-//            // ensure that getMatches is called on relations before ways
-//            var entities = [].concat(types.relation || [], types.way || [], types.node || []);
-//            for (var i = 0; i < entities.length; i++) {
-//                var geometry = entities[i].geometry(graph);
-//                this.getMatches(entities[i], graph, geometry);
-//            }
-//        });
-//        this._deferred.add(handle);
+//    const editor = this.context.systems.editor;
+//    editor.on('merge.features', function(newEntities) {
+//      if (!newEntities) return;
+//      var handle = window.requestIdleCallback(function() {
+//        var graph = editor.staging.graph;
+//        var types = utilArrayGroupBy(newEntities, 'type');
+//        // ensure that getMatches is called on relations before ways
+//        var entities = [].concat(types.relation || [], types.way || [], types.node || []);
+//        for (var i = 0; i < entities.length; i++) {
+//          var geometry = entities[i].geometry(graph);
+//          this.getMatches(entities[i], graph, geometry);
+//        }
+//      });
+//      this._deferred.add(handle);
 //    });
   }
 
@@ -595,10 +596,13 @@ export class FilterSystem extends AbstractSystem {
   forceVisible(entityIDs) {
     this._forceVisible = new Set();
 
+    const editor = this.context.systems.editor;
+    const graph = editor.staging.graph;
+
     for (const entityID of entityIDs) {
       this._forceVisible.add(entityID);
 
-      const entity = this.context.hasEntity(entityID);
+      const entity = graph.hasEntity(entityID);
       if (entity?.type === 'relation') {  // include relation members (one level deep)
         for (const member of entity.members) {
           this._forceVisible.add(member.id);

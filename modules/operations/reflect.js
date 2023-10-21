@@ -16,20 +16,28 @@ export function operationReflectLong(context, selectedIDs) {
 
 
 export function operationReflect(context, selectedIDs, axis = 'long') {
+  const editor = context.systems.editor;
+  const graph = editor.staging.graph;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
-  const nodes = utilGetAllNodes(selectedIDs, context.graph());
+  const extent = utilTotalExtent(entities, graph);
+  const nodes = utilGetAllNodes(selectedIDs, graph);
   const coords = nodes.map(node => node.loc);
 
 
   let operation = function() {
+    const annotation = operation.annotation();
     const action = actionReflect(selectedIDs, context.projection)
       .useLongAxis(Boolean(axis === 'long'));
 
-    context.perform(action, operation.annotation());
-    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
+    editor
+      .performAsync(action)
+      .then(() => editor.commit({ annotation: annotation, selectedIDs: selectedIDs }));
   };
 
 
@@ -39,6 +47,8 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
 
 
   operation.disabled = function() {
+    const graph = editor.staging.graph;
+
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (!isNew && notDownloaded()) {
@@ -53,9 +63,8 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
@@ -73,7 +82,7 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
     }
 
     function incompleteRelation(entity) {
-      return entity.type === 'relation' && !entity.isComplete(context.graph());
+      return entity.type === 'relation' && !entity.isComplete(graph);
     }
   };
 
@@ -81,18 +90,18 @@ export function operationReflect(context, selectedIDs, axis = 'long') {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.reflect.${disabledReason}.${multi}`) :
-      context.t(`operations.reflect.description.${axis}.${multi}`);
+      l10n.t(`operations.reflect.${disabledReason}.${multi}`) :
+      l10n.t(`operations.reflect.description.${axis}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return context.t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
+    return l10n.t(`operations.reflect.annotation.${axis}.feature`, { n: selectedIDs.length });
   };
 
   operation.id = `reflect-${axis}`;
-  operation.keys = [ context.t(`operations.reflect.key.${axis}`) ];
-  operation.title = context.t(`operations.reflect.title.${axis}`);
+  operation.keys = [ l10n.t(`operations.reflect.key.${axis}`) ];
+  operation.title = l10n.t(`operations.reflect.title.${axis}`);
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

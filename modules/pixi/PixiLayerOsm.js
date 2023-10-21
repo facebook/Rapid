@@ -118,13 +118,15 @@ export class PixiLayerOsm extends AbstractLayer {
     if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const filters = context.systems.filters;
     const map = context.systems.map;
+    const graph = editor.staging.graph;
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-    let entities = context.systems.edits.intersects(map.extent());   // Gather data in view
-    entities = context.systems.filters.filter(entities, graph);   // Apply feature filters
+    let entities = editor.intersects(map.extent());   // Gather data in view
+    entities = filters.filter(entities, graph);   // Apply feature filters
 
     const data = {
       polygons: new Map(),
@@ -152,7 +154,6 @@ export class PixiLayerOsm extends AbstractLayer {
 //    // continuing will fire off the download of the data into a file called 'canned_data.json'.
 //    // move the data into the test/spec/renderer directory.
 //    if (this._saveCannedData && !this._alreadyDownloaded) {
-//      const map = context.systems.map;
 //      const [lng, lat] = map.center();
 //
 //      let viewData = {
@@ -163,7 +164,7 @@ export class PixiLayerOsm extends AbstractLayer {
 //        'height': window.innerHeight,
 //        'projection': projection,
 //        'data': data,
-//        'entities': context.graph().base.entities   // TODO convert from Map to Object if we are keeping this)
+//        'entities': graph.base.entities   // TODO convert from Map to Object if we are keeping this)
 //      };
 //
 //      let cannedData = JSON.stringify(viewData);
@@ -186,7 +187,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
     // Experiment: avoid showing child vertices/midpoints for too small parents
     for (const dataID of dataIDs) {
-      const entity = context.hasEntity(dataID);
+      const entity = graph.hasEntity(dataID);
       if (entity?.type === 'node') continue;  // ways, relations only
 
       const renderedFeatureIDs = this._dataHasFeature.get(dataID) ?? new Set();
@@ -207,7 +208,7 @@ export class PixiLayerOsm extends AbstractLayer {
     // Expand set to include parent ways for selected/hovered/drawing nodes too..
     const interestingIDs = new Set(dataIDs);
     for (const dataID of dataIDs) {
-      const entity = context.hasEntity(dataID);
+      const entity = graph.hasEntity(dataID);
       if (entity?.type !== 'node') continue;   // nodes only
       for (const parent of graph.parentWays(entity)) {
         interestingIDs.add(parent.id);
@@ -243,9 +244,9 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPolygons(frame, projection, zoom, data) {
     const entities = data.polygons;
     const context = this.context;
-    const graph = context.graph();
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
-    const presetSystem = context.systems.presets;
+    const presets = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
     const showPoints = context.systems.filters.isEnabled('points');
 
@@ -320,7 +321,7 @@ export class PixiLayerOsm extends AbstractLayer {
         this.syncFeatureClasses(feature);
 
         if (feature.dirty) {
-          const preset = presetSystem.match(entity, graph);
+          const preset = presets.match(entity, graph);
 
           const style = styleMatch(entity.tags);
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
@@ -400,7 +401,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderLines(frame, projection, zoom, data) {
     const entities = data.lines;
     const context = this.context;
-    const graph = context.graph();
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
     const lineContainer = this.lineContainer;
 
@@ -526,9 +527,9 @@ export class PixiLayerOsm extends AbstractLayer {
   renderVertices(frame, projection, zoom, data, related) {
     const entities = data.vertices;
     const context = this.context;
-    const graph = context.graph();
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
-    const presetSystem = context.systems.presets;
+    const presets = context.systems.presets;
 
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
@@ -581,7 +582,7 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.parentContainer = parentContainer;   // change layer stacking if necessary
 
       if (feature.dirty) {
-        const preset = presetSystem.match(node, graph);
+        const preset = presets.match(node, graph);
         const iconName = preset?.icon;
         const directions = node.directions(graph, context.projection);
 
@@ -635,9 +636,9 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPoints(frame, projection, zoom, data) {
     const entities = data.points;
     const context = this.context;
-    const graph = context.graph();
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
-    const presetSystem = context.systems.presets;
+    const presets = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
 
     for (const [nodeID, node] of entities) {
@@ -666,13 +667,13 @@ export class PixiLayerOsm extends AbstractLayer {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
-        let preset = presetSystem.match(node, graph);
+        let preset = presets.match(node, graph);
         let iconName = preset?.icon;
 
         // If we matched a generic preset without an icon, try matching it as a 'vertex'
         // This is just to choose a better icon for an otherwise empty-looking pin.
         if (!iconName) {
-          preset = presetSystem.matchTags(node.tags, 'vertex');
+          preset = presets.matchTags(node.tags, 'vertex');
           iconName = preset?.icon;
         }
 
@@ -720,9 +721,10 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderMidpoints(frame, projection, zoom, data, related) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
-    const graph = this.context.graph();
+    const context = this.context;
+    const graph = context.systems.editor.staging.graph;
 
-    //Need to consider both lines and polygons for drawing our midpoints
+    // Need to consider both lines and polygons for drawing our midpoints
     const entities = new Map([...data.lines, ...data.polygons]);
 
     // Midpoints should be drawn above everything

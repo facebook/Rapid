@@ -9,6 +9,8 @@ import { uiTagReference } from '../tag_reference';
 
 
 export function uiSectionFeatureType(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('choose');
 
   let _entityIDs = [];
@@ -16,7 +18,7 @@ export function uiSectionFeatureType(context) {
   let _tagReference;
 
   let section = uiSection(context, 'feature-type')
-    .label(context.tHtml('inspector.feature_type'))
+    .label(l10n.tHtml('inspector.feature_type'))
     .disclosureContent(renderDisclosureContent);
 
 
@@ -35,7 +37,7 @@ export function uiSectionFeatureType(context) {
       .append('button')
       .attr('class', 'preset-list-button preset-reset')
       .call(uiTooltip(context)
-        .title(context.tHtml('inspector.back_tooltip'))
+        .title(l10n.tHtml('inspector.back_tooltip'))
         .placement('bottom')
       );
 
@@ -91,7 +93,7 @@ export function uiSectionFeatureType(context) {
     let names = _presets.length === 1 ? [
       _presets[0].nameLabel(),
       _presets[0].subtitleLabel()
-    ].filter(Boolean) : [context.t('inspector.multiple_types')];
+    ].filter(Boolean) : [l10n.t('inspector.multiple_types')];
 
     let label = selection.select('.label-inner');
     let nameparts = label.selectAll('.namepart')
@@ -132,8 +134,9 @@ export function uiSectionFeatureType(context) {
   function entityGeometries() {
     let counts = {};
 
+    const graph = editor.staging.graph;
     for (const entityID of _entityIDs) {
-      const geometry = context.graph().geometry(entityID);
+      const geometry = graph.geometry(entityID);
       if (!counts[geometry]) counts[geometry] = 0;
       counts[geometry] += 1;
     }

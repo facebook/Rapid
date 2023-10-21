@@ -3,6 +3,7 @@ import { QAItem } from '../osm';
 
 
 export function uiViewOnOsmose(context) {
+  const l10n = context.systems.l10n;
   const osmose = context.services.osmose;
   let _qaItem;
 
@@ -31,7 +32,7 @@ export function uiViewOnOsmose(context) {
 
     linkEnter
       .append('span')
-      .text(context.t('inspector.view_on_osmose'));
+      .text(l10n.t('inspector.view_on_osmose'));
   }
 
 

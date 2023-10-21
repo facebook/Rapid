@@ -4,14 +4,16 @@ import { marked } from 'marked';
 
 
 export function uiRapidWhatsNew(context) {
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
+
   // If user has not seen this version of the what's new screen, show it again.
   // Just bump the version to a higher number to get it to come back.
   const currWhatsNewVersion = 20230823;
   let _dontShowAgain = false;
 
   return function render(selection) {
-    const prefs = context.systems.storage;
-    const sawWhatsNewVersion = parseInt(prefs.getItem('sawWhatsNewVersion'), 10) || 0;
+    const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
     if (sawWhatsNewVersion === currWhatsNewVersion) return;
 
     const modalSelection = uiModal(selection);
@@ -24,12 +26,12 @@ export function uiRapidWhatsNew(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h2')
-      .html(context.t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
+      .html(l10n.t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
 
     let body = whatsNewModal
       .append('div')
       .attr('class', 'modal-section body')
-      .html(marked.parse(context.t('rapid_whats_new.text', {
+      .html(marked.parse(l10n.t('rapid_whats_new.text', {
         rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
         bugicon: icon('#rapid-icon-bug', 'bugnub')
       })));
@@ -59,7 +61,7 @@ export function uiRapidWhatsNew(context) {
     checkbox
       .append('span')
       .attr('class', 'rapid-checkbox-text')
-      .text(context.t('rapid_whats_new.dontshowagain'));
+      .text(l10n.t('rapid_whats_new.dontshowagain'));
 
     checkbox
       .append('input')
@@ -85,7 +87,7 @@ export function uiRapidWhatsNew(context) {
 
     // nothanks
     //   .append('div')
-    //   .text(context.t('rapid_whats_new.nope'));
+    //   .text(l10n.t('rapid_whats_new.nope'));
 
     let okayButton = buttonWrap
       .append('button')
@@ -93,10 +95,10 @@ export function uiRapidWhatsNew(context) {
 
     okayButton
       .append('div')
-      .text(context.t('rapid_whats_new.ok'))
+      .text(l10n.t('rapid_whats_new.ok'))
       .on('click', () => {
         if (_dontShowAgain) {
-          prefs.setItem('sawWhatsNewVersion', currWhatsNewVersion);
+          storage.setItem('sawWhatsNewVersion', currWhatsNewVersion);
         }
         modalSelection.close();
       });

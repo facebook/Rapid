@@ -25,6 +25,13 @@ export class PhotoSystem extends AbstractSystem {
     this.dependencies = new Set(['map', 'urlhash']);
 
     this._LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
+    this._LAYERNAMES = {
+      'streetside': 'Bing Streetside',
+      'mapillary': 'Mapillary',
+      'mapillary-map-features': 'Mapillary Map Features',
+      'mapillary-signs': 'Mapillary Street Signs',
+      'kartaview': 'KartaView'
+    };
     this._PHOTOTYPES = ['flat', 'panoramic'];
     this._DATEFILTERS = ['fromDate', 'toDate'];
     this._shownPhotoTypes = new Set(this._PHOTOTYPES);
@@ -197,6 +204,16 @@ export class PhotoSystem extends AbstractSystem {
 
     // photo_username
     urlhash.setParam('photo_username', this._usernames ? this._usernames.join(',') : null);
+  }
+
+
+  /**
+   * photosUsed
+   * @return  {Array}  Array of single element for the photo layer currently enabled
+   */
+  photosUsed() {
+    const layerID = this._currLayerID;
+    return layerID ? [ this._LAYERNAMES[layerID] ] : [];
   }
 
 

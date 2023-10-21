@@ -48,7 +48,7 @@ const timestamp = 1649012524130;
 //Benchmark.js doesn't have the concept of a 'before all' or 'before each', so we just do it all here at a single go.
 let content = d3.select('body').append('div');
 let context = Rapid.coreContext().assetPath('../../dist/').init().container(content);
-
+let editor = context.systems.editor;
 let map = context.systems.map;
 content.call(map);
 
@@ -69,7 +69,7 @@ function setup(dataBlob) {
   graphEntities = instantiateEntities(dataBlob.entities);
   projection = new Rapid.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
   zoom = dataBlob.zoom;
-  let graph = context.graph();
+  const graph = editor.staging.graph;
   graph.rebase(graphEntities, [graph], false);
 }
 

@@ -1,12 +1,43 @@
 describe('EditSystem', () => {
-  let _editSystem, spy;
+  let _editor;
 
-  const actionNoop = function() {
+  function actionNoop() {
     return (graph) => graph;
-  };
-  const actionAddNode = function (nodeID) {
+  }
+
+  function actionAddNode(nodeID) {
     return (graph) => graph.replace(Rapid.osmNode({ id: nodeID }));
-  };
+  }
+
+  function actionTransitionNoop() {
+    const action = (graph, t) => graph;
+    action.transitionable = true;
+    return action;
+  }
+
+  // Some tests use this to prepare the EditSystem for testing add, update, remove, differences.
+  // After calling this, the history will contain:
+  //   Base graph contains "n1", "n2", "n3"
+  //   Edit1:  "added n-1"
+  //   Edit2:  "updated n2"
+  //   Edit3:  "deleted n3"
+  function prepareTestHistory() {
+    const node_1 = Rapid.osmNode({ id: 'n-1' });
+    const node1 = Rapid.osmNode({ id: 'n1' });
+    const node2 = Rapid.osmNode({ id: 'n2' });
+    const node3 = Rapid.osmNode({ id: 'n3' });
+
+    _editor.merge([node1, node2, node3]);   // merge base entities
+
+    _editor.perform(Rapid.actionAddEntity(node_1));
+    _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+
+    _editor.perform(Rapid.actionChangeTags('n2', { natural: 'tree' } ));
+    _editor.commit({ annotation: 'updated n2', selectedIDs: ['n2'] });
+
+    _editor.perform(Rapid.actionDeleteNode('n3'));
+    _editor.commit({ annotation: 'deleted n3', selectedIDs: [] });
+  }
 
 
   class MockSystem {
@@ -15,537 +46,721 @@ describe('EditSystem', () => {
     on()          { return this; }
   }
 
+  class MockImagerySystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    imageryUsed() { return ''; }
+  }
+
+  class MockPhotoSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    photosUsed()  { return ''; }
+  }
+
   class MockStorageSystem {
     constructor() { }
-    initAsync() { return Promise.resolve(); }
-    getItem()   { return ''; }
-    hasItem()   { return false; }
-    setItem()   { }
+    initAsync()   { return Promise.resolve(); }
+    getItem()     { return ''; }
+    hasItem()     { return false; }
+    setItem()     { }
   }
 
   class MockContext {
     constructor()   {
       this.projection = new sdk.Projection();
       this.systems = {
-        storage: new MockStorageSystem(),
-        map:     new MockSystem(),
-        rapid:   new MockSystem()
+        imagery:  new MockImagerySystem(),
+        map:      new MockSystem(),
+        photos:   new MockPhotoSystem(),
+        rapid:    new MockSystem(),
+        storage:  new MockStorageSystem()
       };
+      this.services = {};
     }
     selectedIDs() { return []; }
+    scene()       { return { layers: new Map() }; }
   }
 
   const context = new MockContext();
 
 
   beforeEach(() => {
-    spy = sinon.spy();
-    _editSystem = new Rapid.EditSystem(context);
-    return _editSystem.initAsync();
+    _editor = new Rapid.EditSystem(context);
+    return _editor.initAsync();
   });
 
 
   describe('#reset', () => {
-    it('clears the version stack', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.undo();
-      _editSystem.reset();
-      expect(_editSystem.undoAnnotation()).to.be.undefined;
-      expect(_editSystem.redoAnnotation()).to.be.undefined;
+    it('clears the history stack', () => {
+      _editor.commit({ annotation: 'one' });
+      _editor.commit({ annotation: 'two' });
+      _editor.undo();
+      _editor.reset();
+      expect(_editor._history).to.be.an.instanceOf(Array).with.lengthOf(1);
+      expect(_editor._index).to.eql(0);
     });
   });
 
+  describe('#base', () => {
+    it('returns the base edit', () => {
+      expect(_editor.base).to.be.an.instanceOf(Rapid.Edit);
+      expect(_editor.base).to.equal(_editor._history[0]);
+    });
+  });
 
-  describe('#graph', () => {
-    it('returns the current graph', () => {
-      expect(_editSystem.graph()).to.be.an.instanceOf(Rapid.Graph);
+  describe('#stable', () => {
+    it('returns the stable edit', () => {
+      _editor.commit({ annotation: 'one' });
+      expect(_editor.stable).to.be.an.instanceOf(Rapid.Edit);
+      expect(_editor.stable).to.equal(_editor._history[1]);
+    });
+  });
+
+  describe('#staging', () => {
+    it('returns the staging edit', () => {
+      _editor.commit({ annotation: 'one' });
+      expect(_editor.staging).to.be.an.instanceOf(Rapid.Edit);
+      expect(_editor.staging).to.not.equal(_editor.stable);
+      expect(_editor.staging).to.not.equal(_editor.base);
+    });
+  });
+
+  describe('#history', () => {
+    it('returns the history', () => {
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(1);
+    });
+  });
+
+  describe('#index', () => {
+    it('returns the index', () => {
+      expect(_editor.index).to.eql(0);
+    });
+  });
+
+  describe('#hasWorkInProgress', () => {
+    it('returns true when work has been performed on the staging edit', () => {
+      expect(_editor.hasWorkInProgress).to.be.false;
+      _editor.perform(actionNoop());
+      expect(_editor.hasWorkInProgress).to.be.true;
     });
   });
 
 
   describe('#merge', () => {
     it('merges the entities into all graph versions', () => {
-      const n = Rapid.osmNode({id: 'n'});
-      _editSystem.merge([n]);
-      expect(_editSystem.graph().entity('n')).to.equal(n);
+      const n = Rapid.osmNode({ id: 'n1' });
+      _editor.merge([n]);
+      expect(_editor.base.graph.entity('n1')).to.equal(n);
+      expect(_editor.stable.graph.entity('n1')).to.equal(n);
+      expect(_editor.staging.graph.entity('n1')).to.equal(n);
     });
 
     it('emits a merge event with the new entities', () => {
-      const n = Rapid.osmNode({id: 'n'});
-      _editSystem.on('merge', spy);
-      _editSystem.merge([n]);
-      expect(spy).to.have.been.calledWith(new Set([n.id]));
+      const n = Rapid.osmNode({ id: 'n1' });
+      const onMerge = sinon.spy();
+      _editor.on('merge', onMerge);
+      _editor.merge([n]);
+      expect(onMerge).to.have.been.calledOnceWith(new Set([n.id]));
     });
   });
 
 
   describe('#perform', () => {
-    it('returns a difference', () => {
-      expect(_editSystem.perform(actionNoop()).changes).to.be.empty;
+    it('returns a Difference', () => {
+      const diff = _editor.perform(actionNoop());
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.is.empty;
     });
 
-    it('updates the graph', () => {
-      const node = Rapid.osmNode();
-      _editSystem.perform(graph => { return graph.replace(node); });
-      expect(_editSystem.graph().entity(node.id)).to.equal(node);
+    it('returns an empty Difference when passed no args', () => {
+      const diff = _editor.perform();
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.is.empty;
     });
 
-    it('pushes an undo annotation', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      expect(_editSystem.undoAnnotation()).to.equal('annotation1');
+    it('updates the staging graph only', () => {
+      const staging = _editor.staging.graph;
+      const stable = _editor.stable.graph;
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(_editor.base.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.stable.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.staging.graph).to.not.equal(staging);  // new staging
+      expect(_editor.stable.graph).to.equal(stable);        // same stable
     });
 
-    it('emits a change event', () => {
-      _editSystem.on('change', spy);
-      const difference = _editSystem.perform(actionNoop());
-      expect(spy).to.have.been.calledWith(difference);
-      expect(spy.callCount).to.eql(1);
+    it('emits an stagingchange event only', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+
+      const action = actionNoop();
+      const difference = _editor.perform(action);
+      expect(onStagingChange).to.have.been.calledOnceWith(difference);
+      expect(onStableChange).to.have.been.not.called;
     });
 
-    it('performs multiple actions', () => {
-      const action1 = sinon.stub().returns(new Rapid.Graph());
-      const action2 = sinon.stub().returns(new Rapid.Graph());
-      _editSystem.perform(action1, action2, 'annotation1');
-      expect(action1).to.have.been.called;
-      expect(action2).to.have.been.called;
-      expect(_editSystem.undoAnnotation()).to.equal('annotation1');
-    });
+    it('performs multiple actions, emits a single stagingchange event', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
 
-    it('performs transitionable actions in a transition', done => {
-      const action1 = () => { return new Rapid.Graph(); };
-      action1.transitionable = true;
-      _editSystem.on('change', spy);
-      _editSystem.perform(action1);
-      window.setTimeout(() => {
-        expect(spy.callCount).to.be.above(2);
-        done();
-      }, 300);
-    });
-  });
-
-
-  describe('#replace', () => {
-    it('returns a difference', () => {
-      expect(_editSystem.replace(actionNoop()).changes).to.be.empty;
-    });
-
-    it('updates the graph', () => {
-      const node = Rapid.osmNode();
-      const action = (graph) => graph.replace(node);
-      _editSystem.replace(action);
-      expect(_editSystem.graph().entity(node.id)).to.equal(node);
-    });
-
-    it('replaces the undo annotation', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.replace(actionNoop(), 'annotation2');
-      expect(_editSystem.undoAnnotation()).to.equal('annotation2');
-    });
-
-    it('emits a change event', () => {
-      _editSystem.on('change', spy);
-      const difference = _editSystem.replace(actionNoop());
-      expect(spy).to.have.been.calledWith(difference);
-    });
-
-    it('performs multiple actions', () => {
-      const action1 = sinon.stub().returns(new Rapid.Graph());
-      const action2 = sinon.stub().returns(new Rapid.Graph());
-      _editSystem.replace(action1, action2, 'annotation1');
-      expect(action1).to.have.been.called;
-      expect(action2).to.have.been.called;
-      expect(_editSystem.undoAnnotation()).to.equal('annotation1');
+      const action1 = actionAddNode('n-1');
+      const action2 = actionAddNode('n-2');
+      const difference = _editor.perform(action1, action2);
+      expect(onStagingChange).to.have.been.calledOnceWith(difference);
+      expect(onStableChange).to.have.been.not.called;
     });
   });
 
 
-  describe('#pop', () => {
-    it('returns a difference', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      expect(_editSystem.pop().changes).to.be.empty;
+  describe('#performAsync', () => {
+    it('returns a rejected Promise when passed no args', () => {
+      const prom = _editor.performAsync();
+      expect(prom).to.be.an.instanceOf(Promise);
+      return prom.then(
+        () => {
+          expect.fail('Promise was fulfilled but should have been rejected');
+        },
+        () => {
+          expect(true).to.be.true;
+        }
+      );
     });
 
-    it('updates the graph', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.pop();
-      expect(_editSystem.undoAnnotation()).to.be.undefined;
+    it('returns a resolved Promise when passed a non-transitionable action', () => {
+      const action = actionAddNode('n-1');
+      const prom = _editor.performAsync(action);
+      expect(prom).to.be.an.instanceOf(Promise);
+      return prom.then(
+        () => {
+          expect(_editor.staging.graph.hasEntity('n-1')).to.be.ok;
+        },
+        () => {
+          expect.fail('Promise was rejected but should have been fulfilled');
+        }
+      );
     });
 
-    it('does not push the redo stack', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.pop();
-      expect(_editSystem.redoAnnotation()).to.be.undefined;
-    });
+    it('returns a Promise to perform transitionable action, emits stagingchange events only', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
 
-    it('emits a change event', () => {
-      _editSystem.perform(actionNoop());
-      _editSystem.on('change', spy);
-      const difference = _editSystem.pop();
-      expect(spy).to.have.been.calledWith(difference);
-    });
-
-    it('pops n times', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.perform(actionNoop(), 'annotation2');
-      _editSystem.perform(actionNoop(), 'annotation3');
-      _editSystem.pop(2);
-      expect(_editSystem.undoAnnotation()).to.equal('annotation1');
-    });
-
-    it('pops 0 times', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.perform(actionNoop(), 'annotation2');
-      _editSystem.perform(actionNoop(), 'annotation3');
-      _editSystem.pop(0);
-      expect(_editSystem.undoAnnotation()).to.equal('annotation3');
-    });
-
-    it('pops 1 time if argument is invalid', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.perform(actionNoop(), 'annotation2');
-      _editSystem.perform(actionNoop(), 'annotation3');
-      _editSystem.pop('foo');
-      expect(_editSystem.undoAnnotation()).to.equal('annotation2');
-      _editSystem.pop(-1);
-      expect(_editSystem.undoAnnotation()).to.equal('annotation1');
+      const action = actionTransitionNoop();
+      const prom = _editor.performAsync(action);
+      expect(prom).to.be.an.instanceOf(Promise);
+      return prom.then(
+        () => {
+          expect(onStagingChange.callCount).to.be.above(2);
+          expect(onStableChange).to.have.been.not.called;
+        },
+        () => {
+          expect.fail('Promise was rejected but should have been fulfilled');
+        }
+      );
     });
   });
 
 
-  describe('#overwrite', () => {
-    it('returns a difference', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      expect(_editSystem.overwrite(actionNoop()).changes).to.be.empty;
+  describe('#revert', () => {
+    it('replaces staging with a fresh copy of stable', () => {
+      _editor.perform(actionAddNode('n-1'));
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.hasWorkInProgress).to.be.true;
+
+      const staging = _editor.staging;
+      const stable = _editor.stable;
+
+      _editor.revert();
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.hasWorkInProgress).to.be.false;
+      expect(_editor.staging).to.not.equal(staging);  // new staging
+      expect(_editor.stable).to.equal(stable);        // same stable
     });
 
-    it('updates the graph', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      const node = Rapid.osmNode();
-      _editSystem.overwrite(graph => { return graph.replace(node); });
-      expect(_editSystem.graph().entity(node.id)).to.equal(node);
+    it('emits stagingchange and stablechange events', () => {
+      _editor.perform(actionAddNode('n-1'));
+
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+
+      _editor.revert();
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(0);
     });
 
-    it('replaces the undo annotation', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.overwrite(actionNoop(), 'annotation2');
-      expect(_editSystem.undoAnnotation()).to.equal('annotation2');
-    });
+    it('does nothing if no work in progress', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
 
-    it('does not push the redo stack', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.overwrite(actionNoop(), 'annotation2');
-      expect(_editSystem.redoAnnotation()).to.be.undefined;
-    });
+      const staging = _editor.staging;
+      const stable = _editor.stable;
 
-    it('emits a change event', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.on('change', spy);
-      const difference = _editSystem.overwrite(actionNoop(), 'annotation2');
-      expect(spy).to.have.been.calledWith(difference);
-    });
-
-    it('performs multiple actions', () => {
-      const action1 = sinon.stub().returns(new Rapid.Graph());
-      const action2 = sinon.stub().returns(new Rapid.Graph());
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.overwrite(action1, action2, 'annotation2');
-      expect(action1).to.have.been.called;
-      expect(action2).to.have.been.called;
-      expect(_editSystem.undoAnnotation()).to.equal('annotation2');
-    });
-  });
-
-
-  describe('#undo', () => {
-    it('returns a difference', () => {
-      expect(_editSystem.undo().changes).to.be.empty;
-    });
-
-    it('pops the undo stack', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.undo();
-      expect(_editSystem.undoAnnotation()).to.be.undefined;
-    });
-
-    it('pushes the redo stack', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.undo();
-      expect(_editSystem.redoAnnotation()).to.equal('annotation1');
-    });
-
-    it('emits an undone event', () => {
-      _editSystem.perform(actionNoop());
-      _editSystem.on('undone', spy);
-      _editSystem.undo();
-      expect(spy).to.have.been.called;
-    });
-
-    it('emits a change event', () => {
-      _editSystem.perform(actionNoop());
-      _editSystem.on('change', spy);
-      const difference = _editSystem.undo();
-      expect(spy).to.have.been.calledWith(difference);
-    });
-  });
-
-  describe('#redo', () => {
-    it('returns a difference', () => {
-      expect(_editSystem.redo().changes).to.be.empty;
-    });
-
-    it('does redo into an annotated state', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.on('redone', spy);
-      _editSystem.undo();
-      _editSystem.redo();
-      expect(_editSystem.undoAnnotation()).to.equal('annotation1');
-      expect(spy).to.have.been.called;
-    });
-
-    it('does not redo into a non-annotated state', () => {
-      _editSystem.perform(actionNoop());
-      _editSystem.on('redone', spy);
-      _editSystem.undo();
-      _editSystem.redo();
-      expect(spy).not.to.have.been.called;
-    });
-
-    it('emits a change event', () => {
-      _editSystem.perform(actionNoop());
-      _editSystem.undo();
-      _editSystem.on('change', spy);
-      const difference = _editSystem.redo();
-      expect(spy).to.have.been.calledWith(difference);
+      _editor.revert();
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+      expect(_editor.staging).to.equal(staging);   // same staging
+      expect(_editor.stable).to.equal(stable);     // same stable
     });
   });
 
 
-  describe('#pauseChangeDispatch / #resumeChangeDispatch', () => {
-    it('prevents change events from getting dispatched', () => {
-      _editSystem.perform(actionNoop(), 'base');
-      _editSystem.on('change', spy);
+  describe('#commit', () => {
+    it('commit work in progress to history', () => {
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(1);
+      expect(_editor.index).to.eql(0);
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.staging.graph.hasEntity('n-2')).to.be.not.ok;
 
-      _editSystem.pauseChangeDispatch();
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
 
-      _editSystem.perform(actionNoop(), 'perform');
-      expect(spy).to.have.not.been.called;
-      _editSystem.replace(actionNoop(), 'replace');
-      expect(spy).to.have.not.been.called;
-      _editSystem.overwrite(actionNoop(), 'replace');
-      expect(spy).to.have.not.been.called;
-      _editSystem.undo();
-      expect(spy).to.have.not.been.called;
-      _editSystem.redo();
-      expect(spy).to.have.not.been.called;
-      _editSystem.pop();
-      expect(spy).to.have.not.been.called;
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(2);
+      expect(_editor.index).to.eql(1);
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.staging.graph.hasEntity('n-2')).to.be.not.ok;
 
-      const diff = _editSystem.resumeChangeDispatch();
-      expect(spy).to.have.been.calledOnceWith(diff);
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-2'] });
+
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(3);
+      expect(_editor.index).to.eql(2);
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.staging.graph.hasEntity('n-2')).to.be.ok;
     });
 
-    it('does nothing if resume called before pause', () => {
-      _editSystem.perform(actionNoop(), 'base');
-      _editSystem.on('change', spy);
+    it('emits stagingchange and stablechange events', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
 
-      _editSystem.resumeChangeDispatch();
-      expect(spy).to.have.not.been.called;
-    });
+      _editor.perform(actionAddNode('n-1'));
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(0);
 
-    it('uses earliest difference if pause called multiple times', () => {
-      _editSystem.perform(actionNoop(), 'base');
-      _editSystem.on('change', spy);
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
+      expect(onStagingChange.callCount).to.eql(2);
+      expect(onStableChange.callCount).to.eql(1);
 
-      _editSystem.pauseChangeDispatch();
-      _editSystem.perform(actionAddNode('a'), 'perform');
+      _editor.perform(actionAddNode('n-2'));
+      expect(onStagingChange.callCount).to.eql(3);
+      expect(onStableChange.callCount).to.eql(1);
 
-      _editSystem.pauseChangeDispatch();
-      _editSystem.perform(actionAddNode('b'), 'perform');
-
-      const diff = _editSystem.resumeChangeDispatch();
-      expect(spy).to.have.been.calledOnceWith(diff);
-      expect(diff.changes).to.have.all.keys('a', 'b');
-    });
-  });
-
-
-  describe('#changes', () => {
-    it('includes created entities', () => {
-      const node = Rapid.osmNode();
-      _editSystem.perform(graph => { return graph.replace(node); });
-      expect(_editSystem.changes().created).to.eql([node]);
-    });
-
-    it('includes modified entities', () => {
-      const node1 = Rapid.osmNode({id: 'n1'});
-      const node2 = node1.update({ tags: { yes: 'no' } });
-      _editSystem.merge([node1]);
-      _editSystem.perform(graph => { return graph.replace(node2); });
-      expect(_editSystem.changes().modified).to.eql([node2]);
-    });
-
-    it('includes deleted entities', () => {
-      const node = Rapid.osmNode({id: 'n1'});
-      _editSystem.merge([node]);
-      _editSystem.perform(graph => { return graph.remove(node); });
-      expect(_editSystem.changes().deleted).to.eql([node]);
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-2'] });
+      expect(onStagingChange.callCount).to.eql(4);
+      expect(onStableChange.callCount).to.eql(2);
     });
   });
 
 
-  describe('#hasChanges', () => {
-    it('is true when any of change\'s values are nonempty', () => {
-      const node = Rapid.osmNode();
-      _editSystem.perform(graph => { return graph.replace(node); });
-      expect(_editSystem.hasChanges()).to.eql(true);
+  describe('#commitAppend', () => {
+    it('throws if you try to commitAppend to the base edit', () => {
+      _editor.perform(actionAddNode('n-1'));
+      const fn = () => _editor.commitAppend('added a node');
+      expect(fn).to.throw();
     });
 
-    it('is false when all of change\'s values are empty', () => {
-      expect(_editSystem.hasChanges()).to.eql(false);
+    it('commitAppend work in progress to history', () => {
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(1);
+      expect(_editor.index).to.eql(0);
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.not.ok;
+      expect(_editor.staging.graph.hasEntity('n-2')).to.be.not.ok;
+
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
+
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(2);
+      expect(_editor.index).to.eql(1);
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.staging.graph.hasEntity('n-2')).to.be.not.ok;
+
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commitAppend({ annotation: 'added a node', selectedIDs: ['n-2'] });  // commitAppend
+
+      expect(_editor.history).to.be.an.instanceOf(Array).with.lengthOf(2);         // still 2
+      expect(_editor.index).to.eql(1);                                             // still 1
+      expect(_editor.staging.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.staging.graph.hasEntity('n-2')).to.be.ok;
+    });
+
+    it('emits stagingchange and stablechange events', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added a node', selectedIDs: ['n-1'] });
+      expect(onStagingChange.callCount).to.eql(2);
+      expect(onStableChange.callCount).to.eql(1);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onStagingChange.callCount).to.eql(3);
+      expect(onStableChange.callCount).to.eql(1);
+
+      _editor.commitAppend({ annotation: 'added a node', selectedIDs: ['n-2'] });  // commitAppend
+      expect(onStagingChange.callCount).to.eql(4);
+      expect(onStableChange.callCount).to.eql(2);
     });
   });
 
 
-  describe('checkpoints', () => {
-    it('saves and resets to checkpoints', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.perform(actionNoop(), 'annotation2');
-      _editSystem.perform(actionNoop(), 'annotation3');
-      _editSystem.setCheckpoint('check1');
-      _editSystem.perform(actionNoop(), 'annotation4');
-      _editSystem.perform(actionNoop(), 'annotation5');
-      _editSystem.setCheckpoint('check2');
-      _editSystem.perform(actionNoop(), 'annotation6');
-      _editSystem.perform(actionNoop(), 'annotation7');
-      _editSystem.perform(actionNoop(), 'annotation8');
+  describe('#undo / #redo', () => {
+    it('can undo and redo edits', () => {
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      _editor.perform(actionAddNode('n-3'));
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
 
-      _editSystem.resetToCheckpoint('check1');
-      expect(_editSystem.undoAnnotation()).to.equal('annotation3');
+      expect(_editor.getUndoAnnotation()).to.eql('added n-3');
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.ok;
 
-      _editSystem.resetToCheckpoint('check2');
-      expect(_editSystem.undoAnnotation()).to.equal('annotation5');
+      _editor.undo();
 
-      _editSystem.resetToCheckpoint('check1');
-      expect(_editSystem.undoAnnotation()).to.equal('annotation3');
+      expect(_editor.getUndoAnnotation()).to.eql('added n-2');
+      expect(_editor.getRedoAnnotation()).to.eql('added n-3');
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.not.ok;
+
+      _editor.redo();
+
+      expect(_editor.getUndoAnnotation()).to.eql('added n-3');
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.ok;
     });
 
-    it('emits a change event', () => {
-      _editSystem.perform(actionNoop(), 'annotation1');
-      _editSystem.setCheckpoint('check1');
-      _editSystem.perform(actionNoop(), 'annotation2');
+    it('emits stagingchange, stablechange, and historyjump events', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+      _editor.on('historyjump', onHistoryJump);
 
-      _editSystem.on('change', spy);
-      _editSystem.resetToCheckpoint('check1');
-      expect(spy).to.have.been.called;
+      _editor.perform(actionAddNode('n-1'));
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onStagingChange.callCount).to.eql(2);
+      expect(onStableChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onStagingChange.callCount).to.eql(3);
+      expect(onStableChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onStagingChange.callCount).to.eql(4);
+      expect(onStableChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-3'));
+      expect(onStagingChange.callCount).to.eql(5);
+      expect(onStableChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
+      expect(onStagingChange.callCount).to.eql(6);
+      expect(onStableChange.callCount).to.eql(3);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.undo();
+      expect(onStagingChange.callCount).to.eql(7);
+      expect(onStableChange.callCount).to.eql(4);
+      expect(onHistoryJump.callCount).to.eql(1);
+
+      _editor.redo();
+      expect(onStagingChange.callCount).to.eql(8);
+      expect(onStableChange.callCount).to.eql(5);
+      expect(onHistoryJump.callCount).to.eql(2);
+    });
+
+    it('does nothing if nothing to undo', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.undo();
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+    });
+
+    it('does nothing if nothing to redo', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.redo();
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+    });
+  });
+
+
+  describe('#setCheckpoint / #restoreCheckpoint', () => {
+    it('can set and restore checkpoints', () => {
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+
+      _editor.setCheckpoint('checkpoint');
+
+      _editor.perform(actionAddNode('n-2'));
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      _editor.perform(actionAddNode('n-3'));
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
+
+      _editor.restoreCheckpoint('checkpoint');
+
+      expect(_editor.getUndoAnnotation()).to.eql('added n-1');
+      expect(_editor.getRedoAnnotation()).to.be.undefined;
+      expect(_editor.stable.graph.hasEntity('n-1')).to.be.ok;
+      expect(_editor.stable.graph.hasEntity('n-2')).to.be.not.ok;
+      expect(_editor.stable.graph.hasEntity('n-3')).to.be.not.ok;
+    });
+
+    it('emits stagingchange, stablechange, and historyjump events', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      _editor.setCheckpoint('checkpoint');
+      expect(onStagingChange.callCount).to.eql(2);
+      expect(onStableChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onStagingChange.callCount).to.eql(3);
+      expect(onStableChange.callCount).to.eql(1);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onStagingChange.callCount).to.eql(4);
+      expect(onStableChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-3'));
+      expect(onStagingChange.callCount).to.eql(5);
+      expect(onStableChange.callCount).to.eql(2);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-3', selectedIDs: ['n-3'] });
+      expect(onStagingChange.callCount).to.eql(6);
+      expect(onStableChange.callCount).to.eql(3);
+      expect(onHistoryJump.callCount).to.eql(0);
+
+      _editor.restoreCheckpoint('checkpoint');
+      expect(onStagingChange.callCount).to.eql(7);
+      expect(onStableChange.callCount).to.eql(4);
+      expect(onHistoryJump.callCount).to.eql(1);
+    });
+
+    it('does nothing if checkpointID is missing or invalid', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+      _editor.on('historyjump', onHistoryJump);
+
+      _editor.restoreCheckpoint();
+      _editor.restoreCheckpoint('fake');
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+      expect(onHistoryJump.callCount).to.eql(0);
+    });
+  });
+
+
+  describe('#beginTransaction / #endTransaction', () => {
+    it('prevents change events from getting dispatched in a transaction', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+
+      _editor.beginTransaction();
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.endTransaction();   // events emit here
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(1);
+
+      // diff should contain all things changed during the transaction
+      const diff = onStagingChange.lastCall.firstArg;
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys(['n-1', 'n-2']);
+    });
+
+    it('does nothing if endTransaction called without beginTransaction', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+
+      _editor.endTransaction();
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onStagingChange.callCount).to.eql(2);
+      expect(onStableChange.callCount).to.eql(1);
+    });
+
+    it('uses earliest difference if beginTransaction called multiple times', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+
+      _editor.beginTransaction();
+
+      _editor.perform(actionAddNode('n-1'));
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      // This beginTransaction has no effect - we are already in a transaction
+      _editor.beginTransaction();
+
+      _editor.perform(actionAddNode('n-2'));
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.commit({ annotation: 'added n-2', selectedIDs: ['n-2'] });
+      expect(onStagingChange.callCount).to.eql(0);
+      expect(onStableChange.callCount).to.eql(0);
+
+      _editor.endTransaction();   // events emit here
+      expect(onStagingChange.callCount).to.eql(1);
+      expect(onStableChange.callCount).to.eql(1);
+
+      // diff should contain all things changed during the transaction
+      const diff = onStagingChange.lastCall.firstArg;
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys(['n-1', 'n-2']);
+    });
+  });
+
+
+  describe('#difference / #hasChanges / #changes', () => {
+    it('returns the difference between base -> stable', () => {
+      prepareTestHistory();
+
+      expect(_editor.hasChanges()).to.be.true;
+
+      const diff = _editor.difference();
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys(['n-1', 'n2', 'n3']);
+
+      const detail = _editor.changes();
+      expect(detail).to.be.an.instanceOf(Object).that.has.all.keys(['created', 'modified', 'deleted']);
+
+      const stable = _editor.stable.graph;
+      const base = _editor.base.graph;
+      expect(detail.created).to.eql([ stable.entity('n-1') ]);
+      expect(detail.modified).to.eql([ stable.entity('n2') ]);
+      expect(detail.deleted).to.eql([ base.entity('n3') ]);
     });
   });
 
 
   describe('#toJSON', () => {
     it('doesn\'t generate unsaveable changes', () => {
-      _editSystem.perform(actionAddNode('n-1'));
-      _editSystem.perform(Rapid.actionDeleteNode('n-1'));
-      expect(_editSystem.toJSON()).to.be.not.ok;
+      _editor.perform(actionAddNode('n-1'));
+      _editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
+      _editor.perform(Rapid.actionDeleteNode('n-1'));
+      _editor.commit({ annotation: 'deleted n-1', selectedIDs: [] });
+
+      expect(_editor.toJSON()).to.be.undefined;
     });
 
     it('generates v3 JSON', () => {
-      const node_1 = Rapid.osmNode({id: 'n-1'});
-      const node1 = Rapid.osmNode({id: 'n1'});
-      const node2 = Rapid.osmNode({id: 'n2'});
-      const node3 = Rapid.osmNode({id: 'n3'});
+      prepareTestHistory();
 
-      const node_1_json = JSON.parse(JSON.stringify(node_1));
-      const node1_json = JSON.parse(JSON.stringify(node1));
-      const node2_json = JSON.parse(JSON.stringify(node2));
-      const node3_json = JSON.parse(JSON.stringify(node3));
+      const node_1_json = { id: 'n-1' };  // without `visible: true`
+      const node1_json = { id: 'n1' };
+      const node2_json = { id: 'n2' };
+      const node3_json = { id: 'n3' };
+      const node2upd = _editor.stable.graph.entity('n2');
+      const node2upd_json = { id: 'n2', tags: { natural: 'tree' }, v: node2upd.v };
 
-      _editSystem.merge([node1, node2, node3]);                  // merge base entities
-      _editSystem.perform(Rapid.actionAddEntity(node_1));           // add n-1
-      _editSystem.perform(Rapid.actionChangeTags('n2', {k: 'v'}));  // update n2
-      const node2upd = _editSystem.graph().entity('n2');
-      const node2upd_json = JSON.parse(JSON.stringify(node2upd));
-      _editSystem.perform(Rapid.actionDeleteNode('n3'));            // delete n3
-
-      const json = JSON.parse(_editSystem.toJSON());
+      const json = JSON.parse(_editor.toJSON());
       expect(json.version).to.eql(3);
 
+      // base entities - before all edits
+      expect(json.baseEntities).to.not.include(node_1_json);    // n-1 was not in the base
+      expect(json.baseEntities).to.not.include(node1_json);     // n1 was never edited
+      expect(json.baseEntities).to.deep.include(node2_json);    // n2 is in base and was edited
+      expect(json.baseEntities).to.deep.include(node3_json);    // n3 is in base and was edited
+      expect(json.baseEntities).to.not.include(node2upd_json);
+
+      // edited entities
       expect(json.entities).to.deep.include(node_1_json);     // n-1 was added
       expect(json.entities).to.deep.include(node2upd_json);   // n2 was updated
       expect(json.entities).to.not.include(node1_json);       // n1 was never updated
-      expect(json.entities).to.not.include(node2_json);       // n2?
+      expect(json.entities).to.not.include(node2_json);       // n2 is in the base, not here
       expect(json.entities).to.not.include(node3_json);       // n3 is now deleted
-
-      // base entities - before all edits
-      expect(json.baseEntities).to.not.include(node_1_json);
-      expect(json.baseEntities).to.not.include(node1_json);     // n1 was never updated
-      expect(json.baseEntities).to.deep.include(node2_json);    // n2 is in base
-      expect(json.baseEntities).to.deep.include(node3_json);    // n3 is in base
-      expect(json.baseEntities).to.not.include(node2upd_json);
     });
   });
 
 
   describe('#fromJSON', () => {
-    it('restores from v2 JSON (creation)', () => {
-      const json = {
-        version: 2,
-        entities: [{ loc: [1, 2], id: 'n-1' }],
-        stack: [
-          { },
-          { modified: ['n-1v0'], imageryUsed: ['Bing'], annotation: 'Added a point.' }
-        ],
-        nextIDs: { node: -2, way: -1, relation: -1 },
-        index: 1
-      };
-      _editSystem.fromJSON(JSON.stringify(json));
-      expect(_editSystem.graph().entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
-      expect(_editSystem.undoAnnotation()).to.eql('Added a point.');
-      expect(_editSystem.imageryUsed()).to.eql(['Bing']);
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editSystem.difference().created().length).to.eql(1);
-    });
-
-    it('restores from v2 JSON (modification)', () => {
-      const json = {
-        version: 2,
-        entities: [ { loc: [2, 3], id: 'n1', v: 1 }],
-        stack: [
-          { },
-          { modified: ['n1v1'], imageryUsed: ['Bing'], annotation: 'Moved a point.' }
-        ],
-        nextIDs: { node: -2, way: -1, relation: -1 },
-        index: 1
-      };
-      _editSystem.fromJSON(JSON.stringify(json));
-      _editSystem.merge([Rapid.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see iD#2135)
-      expect(_editSystem.graph().entity('n1')).to.eql(Rapid.osmNode({ id: 'n1', loc: [2, 3], v: 1 }));
-      expect(_editSystem.undoAnnotation()).to.eql('Moved a point.');
-      expect(_editSystem.imageryUsed()).to.eql(['Bing']);
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editSystem.difference().modified().length).to.eql(1);
-    });
-
-    it('restores from v2 JSON (deletion)', () => {
-      const json = {
-        version: 2,
-        entities: [],
-        stack: [
-          { },
-          { deleted: ['n1'], imageryUsed: ['Bing'], annotation: 'Deleted a point.' }
-        ],
-        nextIDs: { node: -1, way: -2, relation: -3 },
-        index: 1
-      };
-      _editSystem.fromJSON(JSON.stringify(json));
-      _editSystem.merge([Rapid.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see iD#2135)
-      expect(_editSystem.graph().hasEntity('n1')).to.be.undefined;
-      expect(_editSystem.undoAnnotation()).to.eql('Deleted a point.');
-      expect(_editSystem.imageryUsed()).to.eql(['Bing']);
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -1, way: -2, relation: -3 });
-      expect(_editSystem.difference().deleted().length).to.eql(1);
-    });
-
     it('restores from v3 JSON (creation)', () => {
       const json = {
         version: 3,
@@ -558,12 +773,12 @@ describe('EditSystem', () => {
         nextIDs: { node: -2, way: -1, relation: -1 },
         index: 1
       };
-      _editSystem.fromJSON(JSON.stringify(json));
-      expect(_editSystem.graph().entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
-      expect(_editSystem.undoAnnotation()).to.eql('Added a point.');
-      expect(_editSystem.imageryUsed()).to.eql(['Bing']);
+      _editor.fromJSON(JSON.stringify(json));
+      expect(_editor.staging.graph.entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
+      expect(_editor.getUndoAnnotation()).to.eql('Added a point.');
+      expect(_editor.sourcesUsed().imagery).to.include('Bing');
       expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editSystem.difference().created().length).to.eql(1);
+      expect(_editor.difference().created().length).to.eql(1);
     });
 
     it('restores from v3 JSON (modification)', () => {
@@ -578,12 +793,12 @@ describe('EditSystem', () => {
         nextIDs: { node: -2, way: -1, relation: -1 },
         index: 1
       };
-      _editSystem.fromJSON(JSON.stringify(json));
-      expect(_editSystem.graph().entity('n1')).to.eql(Rapid.osmNode({ id: 'n1', loc: [2, 3], v: 1 }));
-      expect(_editSystem.undoAnnotation()).to.eql('Moved a point.');
-      expect(_editSystem.imageryUsed()).to.eql(['Bing']);
+      _editor.fromJSON(JSON.stringify(json));
+      expect(_editor.staging.graph.entity('n1')).to.eql(Rapid.osmNode({ id: 'n1', loc: [2, 3], v: 1 }));
+      expect(_editor.getUndoAnnotation()).to.eql('Moved a point.');
+      expect(_editor.sourcesUsed().imagery).to.include('Bing');
       expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editSystem.difference().modified().length).to.eql(1);
+      expect(_editor.difference().modified().length).to.eql(1);
     });
 
     it('restores from v3 JSON (deletion)', () => {
@@ -598,12 +813,12 @@ describe('EditSystem', () => {
         nextIDs: { node: -1, way: -2, relation: -3 },
         index: 1
       };
-      _editSystem.fromJSON(JSON.stringify(json));
-      expect(_editSystem.graph().hasEntity('n1')).to.be.undefined;
-      expect(_editSystem.undoAnnotation()).to.eql('Deleted a point.');
-      expect(_editSystem.imageryUsed()).to.eql(['Bing']);
+      _editor.fromJSON(JSON.stringify(json));
+      expect(_editor.staging.graph.hasEntity('n1')).to.be.undefined;
+      expect(_editor.getUndoAnnotation()).to.eql('Deleted a point.');
+      expect(_editor.sourcesUsed().imagery).to.include('Bing');
       expect(Rapid.osmEntity.id.next).to.eql({ node: -1, way: -2, relation: -3 });
-      expect(_editSystem.difference().deleted().length).to.eql(1);
+      expect(_editor.difference().deleted().length).to.eql(1);
     });
   });
 });

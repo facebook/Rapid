@@ -1,7 +1,19 @@
 describe('operationExtract', () => {
   let _graph;
 
-  class MockMap {
+  class MockEditSystem {
+    constructor() {}
+    get staging() { return { graph: _graph }; }
+  }
+
+  class MockLocalizationSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
+  }
+
+  class MockMapSystem {
     constructor() { }
     extent() { return new sdk.Extent([-180, -90], [180, 90]); }
   }
@@ -9,19 +21,15 @@ describe('operationExtract', () => {
   class MockContext {
     constructor() {
       this.systems = {
-        map:      new MockMap(),
+        editor:   new MockEditSystem(),
+        l10n:     new MockLocalizationSystem(),
+        map:      new MockMapSystem(),
         presets:  new Rapid.PresetSystem(this),
         storage:  new Rapid.StorageSystem(this)
       };
     }
-    graph()                 { return _graph; }
-    entity(id)              { return _graph.entity(id); }
-    hasEntity(id)           { return _graph.hasEntity(id); }
     hasHiddenConnections()  { return false; }
-    inIntro()               { return false; }
     keyBinding()            { return false; }
-    t(id)                   { return id; }
-    tHtml(id)               { return id; }
   }
 
   const context = new MockContext();

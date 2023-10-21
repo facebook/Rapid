@@ -63,14 +63,18 @@ export class UiField {
     this._state = '';
     this._tags = {};
 
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const l10n = context.systems.l10n;
+
     this.entityExtent = null;
     if (entityIDs?.length) {
-      this.entityExtent = utilTotalExtent(entityIDs, context.graph());
+      this.entityExtent = utilTotalExtent(entityIDs, graph);
     }
 
     this._locked = false;
     this._lockedTip = uiTooltip(context)
-      .title(context.tHtml('inspector.lock.suggestion', { label: this.label }))
+      .title(l10n.tHtml('inspector.lock.suggestion', { label: this.label }))
       .placement('bottom');
 
 
@@ -114,12 +118,15 @@ export class UiField {
   isModified() {
     if (!this.entityIDs?.length) return false;
 
+    const editor = this.context.systems.editor;
+    const baseGraph = editor.base.graph;
+    const currGraph = editor.staging.graph;
+
     return this.entityIDs.some(entityID => {
-      const graph = this.context.graph();
-      const original = graph.base.entities.get(entityID);
-      const latest = graph.entity(entityID);
+      const original = baseGraph.hasEntity(entityID);
+      const current = currGraph.hasEntity(entityID);
       return this.keys.some(key => {
-        return original ? latest.tags[key] !== original.tags[key] : latest.tags[key];
+        return original ? current.tags[key] !== original.tags[key] : current.tags[key];
       });
     });
   }
@@ -155,7 +162,7 @@ export class UiField {
     d3_event.preventDefault();
     if (this._locked) return;
 
-    let tagChange = {};
+    const tagChange = {};
     this.keys.forEach(k => tagChange[k] = undefined);
     this.dispatch.call('change', this, tagChange);
   }
@@ -360,12 +367,13 @@ export class UiField {
    *   - the user has selected multiple things and they don't all apply to the field
    *   - the field is not available in the location where the user is editing
    *
-   * @return    `true` if the field can be shown, `false` if the field should be hidden
+   * @return `true` if the field can be shown, `false` if the field should be hidden
    */
   isAllowed() {
     const context = this.context;
+    const graph = context.systems.editor.staging.graph;
+    const locations = context.systems.locations;
     const presetField = this.presetField;
-    const locationSystem = context.systems.locations;
 
     // Most of the time we have entityIDs to consider, but if not, just return `true`.
     // For example: the fields on the upload dialog that set the changeset tags.
@@ -378,14 +386,14 @@ export class UiField {
 
     // Does this field work with all the geometries of the entities selected?
     if (presetField.geometry && !this.entityIDs.every(entityID => {
-      return presetField.matchGeometry(context.graph().geometry(entityID));
+      return presetField.matchGeometry(graph.geometry(entityID));
     })) {
       return false;
     }
 
     // Is this field allowed in this location?
     if (this.entityExtent && presetField.locationSetID) {
-      const validHere = locationSystem.locationSetsAt(this.entityExtent.center());
+      const validHere = locations.locationSetsAt(this.entityExtent.center());
       if (!validHere[presetField.locationSetID]) return false;
     }
 
@@ -394,7 +402,7 @@ export class UiField {
     const prerequisiteTag = presetField.prerequisiteTag;
     if (prerequisiteTag && !this.tagsContainFieldKey()) {
       const isPrerequisiteSatisfied = this.entityIDs.every(entityID => {
-        const entity = context.graph().entity(entityID);
+        const entity = graph.entity(entityID);
         if (prerequisiteTag.key) {
           const value = entity.tags[prerequisiteTag.key];
           if (!value) return false;

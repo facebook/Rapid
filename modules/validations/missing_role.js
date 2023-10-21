@@ -5,6 +5,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationMissingRole(context) {
   const type = 'missing_role';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
 
@@ -44,11 +45,12 @@ export function validationMissingRole(context) {
       type: type,
       severity: 'warning',
       message: function() {
-        const member = context.hasEntity(this.entityIds[1]);
-        const relation = context.hasEntity(this.entityIds[0]);
+        const graph = editor.staging.graph;
+        const member = graph.hasEntity(this.entityIds[1]);
+        const relation = graph.hasEntity(this.entityIds[0]);
         return (member && relation) ? l10n.tHtml('issues.missing_role.message', {
-          member: l10n.displayLabel(member, context.graph()),
-          relation: l10n.displayLabel(relation, context.graph())
+          member: l10n.displayLabel(member, graph),
+          relation: l10n.displayLabel(relation, graph)
         }) : '';
       },
       reference: showReference,
@@ -63,10 +65,12 @@ export function validationMissingRole(context) {
             icon: 'rapid-operation-delete',
             title: l10n.tHtml('issues.fix.remove_from_relation.title'),
             onClick: () => {
-              context.perform(
-                actionDeleteMember(this.issue.entityIds[0], this.issue.data.member.index),
-                l10n.t('operations.delete_member.annotation', { n: 1 })
-              );
+              const parentID = this.issue.entityIds[0];
+              editor.perform(actionDeleteMember(parentID, this.issue.data.member.index));
+              editor.commit({
+                annotation: l10n.t('operations.delete_member.annotation', { n: 1 }),
+                selectedIDs: [parentID]
+              });
             }
           })
         ];
@@ -91,10 +95,11 @@ export function validationMissingRole(context) {
       onClick: () => {
         const oldMember = this.issue.data.member;
         const member = { id: this.issue.entityIds[1], type: oldMember.type, role: role };
-        context.perform(
-          actionChangeMember(this.issue.entityIds[0], member, oldMember.index),
-          l10n.t('operations.change_role.annotation', { n: 1 })
-        );
+        editor.perform(actionChangeMember(this.issue.entityIds[0], member, oldMember.index));
+        editor.commit({
+          annotation: l10n.t('operations.change_role.annotation', { n: 1 }),
+          selectedIDs: [member.id]
+        });
       }
     });
   }

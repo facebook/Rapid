@@ -12,8 +12,10 @@ var _languagesArray = [];
 
 
 export function uiFieldLocalized(context, uifield) {
-    const dataLoaderSystem = context.systems.data;
-    const l10n = context.systems.l10n;
+  const dataloader = context.systems.dataloader;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
 
     var dispatch = d3_dispatch('change', 'input');
     var wikipedia = context.services.wikipedia;
@@ -27,12 +29,12 @@ export function uiFieldLocalized(context, uifield) {
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
 
-    dataLoaderSystem.getDataAsync('languages')
+    dataloader.getDataAsync('languages')
         .then(loadLanguagesArray)
         .catch(e => console.error(e));  // eslint-disable-line
 
     var _territoryLanguages = {};
-    dataLoaderSystem.getDataAsync('territory_languages')
+    dataloader.getDataAsync('territory_languages')
         .then(function(d) { _territoryLanguages = d; })
         .catch(e => console.error(e));  // eslint-disable-line
 
@@ -75,11 +77,12 @@ export function uiFieldLocalized(context, uifield) {
 
 
     function calcLocked() {
+        const graph = editor.staging.graph;
         // Protect name field for suggestion presets that don't display a brand/operator field
         var isLocked = (uifield.id === 'name') &&
             _entityIDs.length &&
             _entityIDs.some(function(entityID) {
-                var entity = context.graph().hasEntity(entityID);
+                var entity = graph.hasEntity(entityID);
                 if (!entity) return false;
 
                 // Features linked to Wikidata are likely important and should be protected
@@ -92,7 +95,7 @@ export function uiFieldLocalized(context, uifield) {
                 // and the preset does not display a `brand` or `operator` field.
                 // (For presets like hotels, car dealerships, post offices, the `name` should remain editable)
                 // see also similar logic in `outdated_tags.js`
-                var preset = context.systems.presets.match(entity, context.graph());
+                var preset = presets.match(entity, graph);
                 if (preset) {
                     var isSuggestion = preset.suggestion;
                     var fields = preset.fields();

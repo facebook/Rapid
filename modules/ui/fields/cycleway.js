@@ -6,7 +6,9 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldCycleway(context, uifield) {
-    var dispatch = d3_dispatch('change');
+    const l10n = context.systems.l10n;
+    const dispatch = d3_dispatch('change');
+
     var items = d3_select(null);
     var wrap = d3_select(null);
     var _tags;
@@ -147,7 +149,7 @@ export function uiFieldCycleway(context, uifield) {
             })
             .attr('placeholder', function(d) {
                 if (Array.isArray(tags.cycleway) || Array.isArray(tags[d])) {
-                    return context.t('inspector.multiple_values');
+                    return l10n.t('inspector.multiple_values');
                 }
                 return uifield.placeholder;
             })

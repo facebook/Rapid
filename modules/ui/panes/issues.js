@@ -7,10 +7,12 @@ import { uiSectionValidationStatus } from '../sections/validation_status';
 
 
 export function uiPaneIssues(context) {
+  const l10n = context.systems.l10n;
+
   return uiPane(context, 'issues')
-    .key(context.t('issues.key'))
-    .label(context.tHtml('issues.title'))
-    .description(context.tHtml('issues.title'))
+    .key(l10n.t('issues.key'))
+    .label(l10n.tHtml('issues.title'))
+    .description(l10n.tHtml('issues.title'))
     .iconName('rapid-icon-alert')
     .sections([
       uiSectionValidationOptions(context),

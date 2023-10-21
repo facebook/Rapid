@@ -120,31 +120,36 @@ export class Preset {
 
 
   t(scope, options) {
-    return this.context.t(`_tagging.presets.presets.${this.id}.${scope}`, options);
+    const l10n = this.context.systems.l10n;
+    return l10n.t(`_tagging.presets.presets.${this.id}.${scope}`, options);
   }
 
   tHtml(scope, options) {
-    return this.context.tHtml(`_tagging.presets.presets.${this.id}.${scope}`, options);
+    const l10n = this.context.systems.l10n;
+    return l10n.tHtml(`_tagging.presets.presets.${this.id}.${scope}`, options);
   }
 
   tAppend (scope, options) {
-    return this.context.tAppend(`_tagging.presets.presets.${this.id}.${scope}`, options);
+    const l10n = this.context.systems.l10n;
+    return l10n.tAppend(`_tagging.presets.presets.${this.id}.${scope}`, options);
   }
 
   subtitle() {
     if (this.suggestion) {
+      const l10n = this.context.systems.l10n;
       let path = this.id.split('/');
       path.pop();  // remove brand name
-      return this.context.t('_tagging.presets.presets.' + path.join('/') + '.name');
+      return l10n.t('_tagging.presets.presets.' + path.join('/') + '.name');
     }
     return null;
   }
 
   subtitleLabel() {
     if (this.suggestion) {
+      const l10n = this.context.systems.l10n;
       let path = this.id.split('/');
       path.pop();  // remove brand name
-      return this.context.tHtml('_tagging.presets.presets.' + path.join('/') + '.name');
+      return l10n.tHtml('_tagging.presets.presets.' + path.join('/') + '.name');
     }
     return null;
   }

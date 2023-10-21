@@ -10,7 +10,11 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldAddress(context, uifield) {
+  const dataloader = context.systems.dataloader;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('change');
+
   let _selection = d3_select(null);
   let _wrap = d3_select(null);
 
@@ -24,8 +28,7 @@ export function uiFieldAddress(context, uifield) {
     ]
   }];
 
-  const dataLoaderSystem = context.systems.data;
-  dataLoaderSystem.getDataAsync('address_formats')
+  dataloader.getDataAsync('address_formats')
     .then(d => {
       _addressFormats = d;
       if (!_selection.empty()) {
@@ -39,11 +42,11 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const streets = context.systems.edits.intersects(box)
+    const streets = editor.intersects(box)
       .filter(isAddressableStreet)
       .map(d => {
         const loc = context.projection.project(center);
-        const choice = geoChooseEdge(context.graph().childNodes(d), loc, context.projection);
+        const choice = geoChooseEdge(editor.staging.graph.childNodes(d), loc, context.projection);
         return {
           title: d.tags.name,
           value: d.tags.name,
@@ -64,13 +67,13 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const cities = context.systems.edits.intersects(box)
+    const cities = editor.intersects(box)
       .filter(isAddressableCity)
       .map(d => {
         return {
           title: d.tags['addr:city'] || d.tags.name,
           value: d.tags['addr:city'] || d.tags.name,
-          dist: geoSphericalDistance(d.extent(context.graph()).center(), center)
+          dist: geoSphericalDistance(d.extent(editor.staging.graph).center(), center)
         };
       })
       .sort((a, b) => a.dist - b.dist);
@@ -96,13 +99,13 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     const box = new Extent(center).padByMeters(200);
 
-    const results = context.systems.edits.intersects(box)
+    const results = editor.intersects(box)
       .filter(entityHasAddressTag)
       .map(d => {
         return {
           title: d.tags[key],
           value: d.tags[key],
-          dist: geoSphericalDistance(d.extent(context.graph()).center(), center)
+          dist: geoSphericalDistance(d.extent(editor.staging.graph).center(), center)
         };
       })
       .sort((a, b) => a.dist - b.dist);
@@ -218,7 +221,7 @@ export function uiFieldAddress(context, uifield) {
     const center = uifield.entityExtent.center();
     let countryCode;
     if (context.inIntro) {  // localize the address format for the walkthrough
-      countryCode = context.t('intro.graph.countrycode');
+      countryCode = l10n.t('intro.graph.countrycode');
     } else {
       countryCode = iso1A2Code(center);
     }
@@ -253,7 +256,7 @@ export function uiFieldAddress(context, uifield) {
     return inputSelection.attr('placeholder', function(subfield) {
       const key = uifield.key + ':' + subfield.id;
       if (_tags && Array.isArray(_tags[key])) {
-        return context.t('inspector.multiple_values');
+        return l10n.t('inspector.multiple_values');
       }
       if (_countryCode) {
         const localkey = subfield.id + '!' + _countryCode;

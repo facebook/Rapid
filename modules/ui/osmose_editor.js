@@ -9,6 +9,7 @@ import { utilRebind } from '../util';
 
 
 export function uiOsmoseEditor(context) {
+  const l10n = context.systems.l10n;
   const osmose = context.services.osmose;
   const dispatch = d3_dispatch('change');
   const qaDetails = uiOsmoseDetails(context);
@@ -32,7 +33,7 @@ export function uiOsmoseEditor(context) {
 
     headerEnter
       .append('h3')
-      .html(context.tHtml('QA.osmose.title'));
+      .html(l10n.tHtml('QA.osmose.title'));
 
     let body = selection.selectAll('.body')
       .data([0]);
@@ -113,7 +114,7 @@ export function uiOsmoseEditor(context) {
       .merge(buttonEnter);
 
     buttonSection.select('.close-button')
-      .html(context.tHtml('QA.keepRight.close'))
+      .html(l10n.tHtml('QA.keepRight.close'))
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (osmose) {
@@ -123,7 +124,7 @@ export function uiOsmoseEditor(context) {
       });
 
     buttonSection.select('.ignore-button')
-      .html(context.tHtml('QA.keepRight.ignore'))
+      .html(l10n.tHtml('QA.keepRight.ignore'))
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (osmose) {

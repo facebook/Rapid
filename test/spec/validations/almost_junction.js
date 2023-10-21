@@ -4,27 +4,24 @@ describe('validationAlmostJunction', () => {
   class MockLocalizationSystem {
     constructor() {}
     displayLabel(entity)  { return entity.id; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockEditSystem {
     constructor() {}
-    graph()  { return graph; }
-    tree()   { return tree; }
+    get staging() { return { graph: graph }; }
+    get tree()    { return tree; }
   }
 
   class MockContext {
     constructor() {
       this.services = {};
       this.systems = {
-        edits: new MockEditSystem(),
-        l10n:  new MockLocalizationSystem()
+        editor: new MockEditSystem(),
+        l10n:   new MockLocalizationSystem()
       };
     }
-    graph()  { return graph; }
-    t()      { return ''; }
-    tHtml()  { return ''; }
   }
 
   const context = new MockContext();

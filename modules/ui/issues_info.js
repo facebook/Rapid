@@ -5,8 +5,9 @@ import { uiTooltip } from './tooltip';
 
 
 export function uiIssuesInfo(context) {
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
   const validator = context.systems.validator;
-  const prefs = context.systems.storage;
 
   let warningsItem = {
     id: 'warnings',
@@ -26,15 +27,15 @@ export function uiIssuesInfo(context) {
   function update(selection) {
     let shownItems = [];
     let liveIssues = validator.getIssues({
-      what: prefs.getItem('validate-what') ?? 'edited',
-      where: prefs.getItem('validate-where') ?? 'all'
+      what: storage.getItem('validate-what') ?? 'edited',
+      where: storage.getItem('validate-where') ?? 'all'
     });
     if (liveIssues.length) {
       warningsItem.count = liveIssues.length;
       shownItems.push(warningsItem);
     }
 
-    if (prefs.getItem('validate-what') === 'all') {
+    if (storage.getItem('validate-what') === 'all') {
       let resolvedIssues = validator.getResolvedIssues();
       if (resolvedIssues.length) {
         resolvedItem.count = resolvedIssues.length;
@@ -56,7 +57,7 @@ export function uiIssuesInfo(context) {
 
         let tooltip = uiTooltip(context)
           .placement('top')
-          .title(context.tHtml(d.descriptionID));
+          .title(l10n.tHtml(d.descriptionID));
 
         chipSelection
           .call(tooltip)

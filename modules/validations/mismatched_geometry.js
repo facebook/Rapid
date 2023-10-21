@@ -14,8 +14,9 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationMismatchedGeometry(context) {
     const type = 'mismatched_geometry';
+    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
-    const presetSystem = context.systems.presets;
+    const presets = context.systems.presets;
 
     function tagSuggestingLineIsArea(entity) {
         if (entity.type !== 'way' || entity.isClosed()) return null;
@@ -25,8 +26,8 @@ export function validationMismatchedGeometry(context) {
             return null;
         }
 
-        var asLine = presetSystem.matchTags(tagSuggestingArea, 'line');
-        var asArea = presetSystem.matchTags(tagSuggestingArea, 'area');
+        var asLine = presets.matchTags(tagSuggestingArea, 'line');
+        var asArea = presets.matchTags(tagSuggestingArea, 'area');
         if (asLine && asArea && (asLine === asArea)) {
             // these tags also allow lines and making this an area wouldn't matter
             return null;
@@ -40,7 +41,8 @@ export function validationMismatchedGeometry(context) {
         // must have at least three nodes to close this automatically
         if (way.nodes.length < 3) return null;
 
-        var nodes = graph.childNodes(way), testNodes;
+        var nodes = graph.childNodes(way);
+        var testNodes;
         var firstToLastDistanceMeters = geoSphericalDistance(nodes[0].loc, nodes[nodes.length-1].loc);
 
         // if the distance is very small, attempt to merge the endpoints
@@ -50,13 +52,15 @@ export function validationMismatchedGeometry(context) {
             testNodes.push(testNodes[0]);
             // make sure this will not create a self-intersection
             if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
-                return function() {
-                    var way = context.entity(this.issue.entityIds[0]);
-                    context.perform(
-                        actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc),
-                        l10n.t('issues.fix.connect_endpoints.annotation')
-                    );
-                };
+              return function() {
+                const graph = editor.staging.graph;
+                const way = graph.entity(this.issue.entityIds[0]);
+                editor.perform(actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc));
+                editor.commit({
+                  annotation: l10n.t('issues.fix.connect_endpoints.annotation'),
+                  selectedIDs: [way.id]
+                });
+              };
             }
         }
 
@@ -66,14 +70,16 @@ export function validationMismatchedGeometry(context) {
         // make sure this will not create a self-intersection
         if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
             return function() {
-                var wayId = this.issue.entityIds[0];
-                var way = context.entity(wayId);
-                var nodeId = way.nodes[0];
-                var index = way.nodes.length;
-                context.perform(
-                    actionAddVertex(wayId, nodeId, index),
-                    l10n.t('issues.fix.connect_endpoints.annotation')
-                );
+                const wayID = this.issue.entityIds[0];
+                const graph = editor.staging.graph;
+                const way = graph.entity(wayID);
+                const nodeID = way.nodes[0];
+                const index = way.nodes.length;
+                editor.perform(actionAddVertex(wayID, nodeID, index));
+                editor.commit({
+                  annotation: l10n.t('issues.fix.connect_endpoints.annotation'),
+                  selectedIDs: [wayID]
+                });
             };
         }
     }
@@ -87,9 +93,10 @@ export function validationMismatchedGeometry(context) {
             subtype: 'area_as_line',
             severity: 'warning',
             message: function() {
-                var entity = context.hasEntity(this.entityIds[0]);
+                const graph = editor.staging.graph;
+                const entity = graph.hasEntity(this.entityIds[0]);
                 return entity ? l10n.tHtml('issues.tag_suggests_area.message', {
-                    feature: l10n.displayLabel(entity, 'area', true /* verbose */),
+                    feature: l10n.displayLabel(entity, 'area', true),   // true = verbose
                     tag: utilTagText({ tags: tagSuggestingArea })
                 }) : '';
             },
@@ -97,9 +104,10 @@ export function validationMismatchedGeometry(context) {
             entityIds: [entity.id],
             hash: JSON.stringify(tagSuggestingArea),
             dynamicFixes: function() {
+                const graph = editor.staging.graph;
                 var fixes = [];
-                var entity = context.entity(this.entityIds[0]);
-                var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, context.graph());
+                var entity = graph.entity(this.entityIds[0]);
+                var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, graph);
 
                 fixes.push(new ValidationFix({
                     title: l10n.tHtml('issues.fix.connect_endpoints.title'),
@@ -110,16 +118,18 @@ export function validationMismatchedGeometry(context) {
                     icon: 'rapid-operation-delete',
                     title: l10n.tHtml('issues.fix.remove_tag.title'),
                     onClick: function() {
-                        var entityId = this.issue.entityIds[0];
-                        var entity = context.entity(entityId);
-                        var tags = Object.assign({}, entity.tags);  // shallow copy
+                        const entityID = this.issue.entityIds[0];
+                        const graph = editor.staging.graph;
+                        const entity = graph.entity(entityID);
+                        const tags = Object.assign({}, entity.tags);  // shallow copy
                         for (var key in tagSuggestingArea) {
                             delete tags[key];
                         }
-                        context.perform(
-                            actionChangeTags(entityId, tags),
-                            l10n.t('issues.fix.remove_tag.annotation')
-                        );
+                        editor.perform(actionChangeTags(entityID, tags));
+                        editor.commit({
+                          annotation: l10n.t('issues.fix.remove_tag.annotation'),
+                          selectedIDs: [entityID]
+                        });
                     }
                 }));
 
@@ -158,7 +168,8 @@ export function validationMismatchedGeometry(context) {
                 subtype: 'vertex_as_point',
                 severity: 'warning',
                 message: function() {
-                    var entity = context.hasEntity(this.entityIds[0]);
+                    const graph = editor.staging.graph;
+                    const entity = graph.hasEntity(this.entityIds[0]);
                     return entity ? l10n.tHtml('issues.vertex_as_point.message', {
                         feature: l10n.displayLabel(entity, 'vertex', true /* verbose */)
                     }) : '';
@@ -181,7 +192,8 @@ export function validationMismatchedGeometry(context) {
                 subtype: 'point_as_vertex',
                 severity: 'warning',
                 message: function() {
-                    var entity = context.hasEntity(this.entityIds[0]);
+                    const graph = editor.staging.graph;
+                    const entity = graph.hasEntity(this.entityIds[0]);
                     return entity ? l10n.tHtml('issues.point_as_vertex.message', {
                         feature: l10n.displayLabel(entity, 'point', true /* verbose */)
                     }) : '';
@@ -218,14 +230,12 @@ export function validationMismatchedGeometry(context) {
 
         if (sourceGeom === 'area') targetGeoms.unshift('line');
 
-        var asSource = presetSystem.match(entity, graph);
+        var asSource = presets.match(entity, graph);
 
         var targetGeom = targetGeoms.find(nodeGeom => {
-            var asTarget = presetSystem.matchTags(entity.tags, nodeGeom);
-            if (!asSource || !asTarget ||
-                asSource === asTarget ||
-                // sometimes there are two presets with the same tags for different geometries
-                deepEqual(asSource.tags, asTarget.tags)) return false;
+            var asTarget = presets.matchTags(entity.tags, nodeGeom);
+            // sometimes there are two presets with the same tags for different geometries
+            if (!asSource || !asTarget || asSource === asTarget || deepEqual(asSource.tags, asTarget.tags)) return false;
 
             if (asTarget.isFallback()) return false;
 
@@ -261,7 +271,8 @@ export function validationMismatchedGeometry(context) {
             subtype: subtype,
             severity: 'warning',
             message: function() {
-                var entity = context.hasEntity(this.entityIds[0]);
+                const graph = editor.staging.graph;
+                const entity = graph.hasEntity(this.entityIds[0]);
                 return entity ? l10n.tHtml('issues.' + referenceId + '.message', {
                     feature: l10n.displayLabel(entity, targetGeom, true /* verbose */)
                 }) : '';
@@ -279,62 +290,76 @@ export function validationMismatchedGeometry(context) {
         });
     }
 
+
+    /**
+     * lineToAreaDynamicFixes
+     */
     function lineToAreaDynamicFixes() {
-        var convertOnClick;
-        var entityId = this.entityIds[0];
-        var entity = context.entity(entityId);
-        var tags = Object.assign({}, entity.tags);  // shallow copy
-        delete tags.area;
-        if (!osmTagSuggestingArea(tags)) {
-            // if removing the area tag would make this a line, offer that as a quick fix
-            convertOnClick = function() {
-                var entityId = this.issue.entityIds[0];
-                var entity = context.entity(entityId);
-                var tags = Object.assign({}, entity.tags);  // shallow copy
-                if (tags.area) {
-                    delete tags.area;
-                }
-                context.perform(
-                    actionChangeTags(entityId, tags),
-                    l10n.t('issues.fix.convert_to_line.annotation')
-                );
-            };
-        }
+      let convertOnClick = null;
+      const entityID = this.entityIds[0];
+      const graph = editor.staging.graph;
+      const entity = graph.entity(entityID);
+      const tags = Object.assign({}, entity.tags);  // shallow copy
+      delete tags.area;
 
-        return [
-            new ValidationFix({
-                icon: 'rapid-icon-line',
-                title: l10n.tHtml('issues.fix.convert_to_line.title'),
-                onClick: convertOnClick
-            })
-        ];
+      if (!osmTagSuggestingArea(tags)) {
+        // if removing the area tag would make this a line, offer that as a quick fix
+        convertOnClick = function() {
+          const entityID = this.issue.entityIds[0];
+          const graph = editor.staging.graph;
+          const entity = graph.entity(entityID);
+          const tags = Object.assign({}, entity.tags);  // shallow copy
+          if (tags.area) {
+            delete tags.area;
+          }
+          editor.perform(actionChangeTags(entityID, tags));
+          editor.commit({
+            annotation: l10n.t('issues.fix.convert_to_line.annotation'),
+            selectedIDs: [entityID]
+          });
+        };
+      }
+
+      return [
+        new ValidationFix({
+          icon: 'rapid-icon-line',
+          title: l10n.tHtml('issues.fix.convert_to_line.title'),
+          onClick: convertOnClick
+        })
+      ];
     }
 
+
+    /**
+     * extractPointDynamicFixes
+     */
     function extractPointDynamicFixes() {
-        var entityId = this.entityIds[0];
-        var extractOnClick = null;
+      let extractOnClick = null;
+      const entityID = this.entityIds[0];
 
-        if (!context.hasHiddenConnections(entityId)) {
-            extractOnClick = function() {
-                var entityId = this.issue.entityIds[0];
-                var action = actionExtract(entityId, context.projection);
-                context.perform(
-                    action,
-                    l10n.t('operations.extract.annotation', { n: 1 })
-                );
-                // re-enter mode to trigger updates
-                context.enter('select-osm', { selectedIDs: [ action.getExtractedNodeID() ] });
-            };
-        }
+      if (!context.hasHiddenConnections(entityID)) {
+        extractOnClick = function() {
+          const entityID = this.issue.entityIds[0];
+          const action = actionExtract(entityID, context.projection);
+          editor.perform(action);
+          editor.commit({
+            annotation: l10n.t('operations.extract.annotation', { n: 1 }),
+            selectedIDs: [entityID]
+          });
+          // re-enter mode to trigger updates
+          context.enter('select-osm', { selection: { osm: [ action.getExtractedNodeID() ] }} );
+        };
+      }
 
-        return [
-            new ValidationFix({
-                icon: 'rapid-operation-extract',
-                title: l10n.tHtml('issues.fix.extract_point.title'),
-                onClick: extractOnClick
-            })
-        ];
+      return [
+        new ValidationFix({
+          icon: 'rapid-operation-extract',
+          title: l10n.tHtml('issues.fix.extract_point.title'),
+          onClick: extractOnClick
+        })
+      ];
     }
+
 
     function unclosedMultipolygonPartIssues(entity, graph) {
         if (entity.type !== 'relation' ||
@@ -362,9 +387,10 @@ export function validationMismatchedGeometry(context) {
                 subtype: 'unclosed_multipolygon_part',
                 severity: 'warning',
                 message: function() {
-                    var entity = context.hasEntity(this.entityIds[0]);
+                    const graph = editor.staging.graph;
+                    const entity = graph.hasEntity(this.entityIds[0]);
                     return entity ? l10n.tHtml('issues.unclosed_multipolygon_part.message', {
-                        feature: l10n.displayLabel(entity, context.graph(), true /* verbose */)
+                        feature: l10n.displayLabel(entity, graph, true /* verbose */)
                     }) : '';
                 },
                 reference: showReference,

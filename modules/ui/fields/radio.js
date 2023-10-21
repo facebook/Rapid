@@ -9,7 +9,9 @@ export { uiFieldRadio as uiFieldStructureRadio };
 
 
 export function uiFieldRadio(context, uifield) {
-    var dispatch = d3_dispatch('change');
+    const l10n = context.systems.l10n;
+    const dispatch = d3_dispatch('change');
+
     var placeholder = d3_select(null);
     var wrap = d3_select(null);
     var labels = d3_select(null);
@@ -127,7 +129,7 @@ export function uiFieldRadio(context, uifield) {
             .append('span')
             .attr('class', 'label structure-label-type')
             .attr('for', 'preset-input-' + selected)
-            .html(context.tHtml('inspector.radio.structure.type'));
+            .html(l10n.tHtml('inspector.radio.structure.type'));
 
         typeEnter
             .append('div')
@@ -172,7 +174,7 @@ export function uiFieldRadio(context, uifield) {
             .append('span')
             .attr('class', 'label structure-label-layer')
             .attr('for', 'preset-input-layer')
-            .html(context.tHtml('inspector.radio.structure.layer'));
+            .html(l10n.tHtml('inspector.radio.structure.layer'));
 
         layerEnter
             .append('div')
@@ -288,14 +290,14 @@ export function uiFieldRadio(context, uifield) {
             })
             .classed('mixed', isMixed)
             .attr('title', function(d) {
-                return isMixed(d) ? context.t('inspector.unshared_value_tooltip') : null;
+                return isMixed(d) ? l10n.t('inspector.unshared_value_tooltip') : null;
             });
 
 
         var selection = radios.filter(function() { return this.checked; });
 
         if (selection.empty()) {
-            placeholder.html(context.tHtml('inspector.none'));
+            placeholder.html(l10n.tHtml('inspector.none'));
         } else {
             placeholder.html(selection.attr('value'));
             _oldType[selection.datum()] = tags[selection.datum()];
