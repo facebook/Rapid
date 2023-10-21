@@ -101,7 +101,7 @@
     "chalk": "^5.3.0",
     "cldr-core": "43.1.0",
     "cldr-localenames-full": "43.1.0",
-    "cloc": "^1.96.0-cloc",
+    "cloc": "^1.98.0-cloc",
     "concat-files": "^0.1.1",
     "editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
     "esbuild": "^0.19.5",
