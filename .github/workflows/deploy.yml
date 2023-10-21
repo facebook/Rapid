@@ -20,10 +20,10 @@ jobs:
     - name: Checkout 📥
       uses: actions/checkout@v4
 
-    - name: Use Node.js 16.14 ⚙️
+    - name: Use Node.js 18 ⚙️
       uses: actions/setup-node@v3
       with:
-        node-version: 16.14
+        node-version: 18
 
     - name: Install 🎯
       run: npm install
