@@ -10,7 +10,7 @@ describe('validationCrossingWays', () => {
 
   class MockEditSystem {
     constructor() {}
-    get current() { return { graph: graph }; }
+    get staging() { return { graph: graph }; }
     get tree()    { return tree; }
   }
 

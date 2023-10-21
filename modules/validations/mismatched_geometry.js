@@ -53,7 +53,7 @@ export function validationMismatchedGeometry(context) {
             // make sure this will not create a self-intersection
             if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
               return function() {
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 const way = graph.entity(this.issue.entityIds[0]);
                 editor.perform(actionMergeNodes([way.nodes[0], way.nodes[way.nodes.length-1]], nodes[0].loc));
                 editor.commit({
@@ -71,7 +71,7 @@ export function validationMismatchedGeometry(context) {
         if (!geoHasSelfIntersections(testNodes, testNodes[0].id)) {
             return function() {
                 const wayID = this.issue.entityIds[0];
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 const way = graph.entity(wayID);
                 const nodeID = way.nodes[0];
                 const index = way.nodes.length;
@@ -93,7 +93,7 @@ export function validationMismatchedGeometry(context) {
             subtype: 'area_as_line',
             severity: 'warning',
             message: function() {
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 const entity = graph.hasEntity(this.entityIds[0]);
                 return entity ? l10n.tHtml('issues.tag_suggests_area.message', {
                     feature: l10n.displayLabel(entity, 'area', true),   // true = verbose
@@ -104,7 +104,7 @@ export function validationMismatchedGeometry(context) {
             entityIds: [entity.id],
             hash: JSON.stringify(tagSuggestingArea),
             dynamicFixes: function() {
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 var fixes = [];
                 var entity = graph.entity(this.entityIds[0]);
                 var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, graph);
@@ -119,7 +119,7 @@ export function validationMismatchedGeometry(context) {
                     title: l10n.tHtml('issues.fix.remove_tag.title'),
                     onClick: function() {
                         const entityID = this.issue.entityIds[0];
-                        const graph = editor.current.graph;
+                        const graph = editor.staging.graph;
                         const entity = graph.entity(entityID);
                         const tags = Object.assign({}, entity.tags);  // shallow copy
                         for (var key in tagSuggestingArea) {
@@ -168,7 +168,7 @@ export function validationMismatchedGeometry(context) {
                 subtype: 'vertex_as_point',
                 severity: 'warning',
                 message: function() {
-                    const graph = editor.current.graph;
+                    const graph = editor.staging.graph;
                     const entity = graph.hasEntity(this.entityIds[0]);
                     return entity ? l10n.tHtml('issues.vertex_as_point.message', {
                         feature: l10n.displayLabel(entity, 'vertex', true /* verbose */)
@@ -192,7 +192,7 @@ export function validationMismatchedGeometry(context) {
                 subtype: 'point_as_vertex',
                 severity: 'warning',
                 message: function() {
-                    const graph = editor.current.graph;
+                    const graph = editor.staging.graph;
                     const entity = graph.hasEntity(this.entityIds[0]);
                     return entity ? l10n.tHtml('issues.point_as_vertex.message', {
                         feature: l10n.displayLabel(entity, 'point', true /* verbose */)
@@ -271,7 +271,7 @@ export function validationMismatchedGeometry(context) {
             subtype: subtype,
             severity: 'warning',
             message: function() {
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 const entity = graph.hasEntity(this.entityIds[0]);
                 return entity ? l10n.tHtml('issues.' + referenceId + '.message', {
                     feature: l10n.displayLabel(entity, targetGeom, true /* verbose */)
@@ -297,7 +297,7 @@ export function validationMismatchedGeometry(context) {
     function lineToAreaDynamicFixes() {
       let convertOnClick = null;
       const entityID = this.entityIds[0];
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const entity = graph.entity(entityID);
       const tags = Object.assign({}, entity.tags);  // shallow copy
       delete tags.area;
@@ -306,7 +306,7 @@ export function validationMismatchedGeometry(context) {
         // if removing the area tag would make this a line, offer that as a quick fix
         convertOnClick = function() {
           const entityID = this.issue.entityIds[0];
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const entity = graph.entity(entityID);
           const tags = Object.assign({}, entity.tags);  // shallow copy
           if (tags.area) {
@@ -387,7 +387,7 @@ export function validationMismatchedGeometry(context) {
                 subtype: 'unclosed_multipolygon_part',
                 severity: 'warning',
                 message: function() {
-                    const graph = editor.current.graph;
+                    const graph = editor.staging.graph;
                     const entity = graph.hasEntity(this.entityIds[0]);
                     return entity ? l10n.tHtml('issues.unclosed_multipolygon_part.message', {
                         feature: l10n.displayLabel(entity, graph, true /* verbose */)

@@ -3,17 +3,17 @@ describe('Difference', () => {
     it('constructs a Difference between 2 Graphs', () => {
       const node = Rapid.osmNode({ id: 'n' });
       const base = new Rapid.Graph();
-      const head = new Rapid.Graph([node]);
+      const head = base.replace(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff).to.be.an.instanceof(Rapid.Difference);
-      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
     });
 
     it('constructs an empty Difference if base and head are the same', () => {
       const base = new Rapid.Graph();
       const diff = new Rapid.Difference(base, base);
-      expect(diff).to.be.an.instanceof(Rapid.Difference);
-      expect(diff.changes).to.be.an.instanceof(Map).that.is.empty;
+      expect(diff).to.be.an.instanceOf(Rapid.Difference);
+      expect(diff.changes).to.be.an.instanceOf(Map).that.is.empty;
     });
   });
 
@@ -23,7 +23,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(diff.changes.get('n')).to.eql({ base: undefined, head: node });
     });
 
@@ -32,7 +32,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node);
       const diff = new Rapid.Difference(head, base);
-      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(diff.changes.get('n')).to.eql({ base: node, head: undefined });
     });
 
@@ -42,7 +42,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph([n1]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(diff.changes.get('n')).to.eql({ base: n1, head: n2 });
     });
 
@@ -52,7 +52,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph([n1]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(head, base);
-      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(diff.changes.get('n')).to.eql({ base: n2, head: n1 });
     });
 
@@ -70,7 +70,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph([node]);
       const head = base.remove(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(diff.changes.get('n')).to.eql({ base: node, head: undefined });
     });
 
@@ -79,7 +79,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph([node]);
       const head = base.remove(node);
       const diff = new Rapid.Difference(head, base);
-      expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(diff.changes.get('n')).to.eql({ base: undefined, head: node });
     });
 
@@ -162,7 +162,7 @@ describe('Difference', () => {
       const head = base.replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('+');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('+');
       expect(summary.get('+')).to.eql({ changeType: 'created', entity: way, graph: head });
     });
 
@@ -171,7 +171,7 @@ describe('Difference', () => {
       const head = base.remove(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
       expect(summary.get('-')).to.eql({ changeType: 'deleted', entity: way, graph: base });
     });
 
@@ -180,7 +180,7 @@ describe('Difference', () => {
       const head = base.replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
     });
 
@@ -189,7 +189,7 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
     });
 
@@ -199,7 +199,7 @@ describe('Difference', () => {
       const head = base.replace(vertex).replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
     });
 
@@ -208,7 +208,7 @@ describe('Difference', () => {
       const head = base.replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
     });
 
@@ -218,7 +218,7 @@ describe('Difference', () => {
       const head = base.replace(way).replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('+', '-');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('+', '-');
       expect(summary.get('+')).to.eql({ changeType: 'created', entity: way, graph: head });
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
     });
@@ -229,7 +229,7 @@ describe('Difference', () => {
       const head = base.replace(vertex).replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('+');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('+');
       expect(summary.get('+')).to.eql({ changeType: 'created', entity: way, graph: head });
     });
 
@@ -238,7 +238,7 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('a');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('a');
       expect(summary.get('a')).to.eql({ changeType: 'modified', entity: vertex, graph: head });
     });
 
@@ -247,7 +247,7 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-', 'a');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-', 'a');
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
       expect(summary.get('a')).to.eql({ changeType: 'modified', entity: vertex, graph: head });
     });
@@ -257,7 +257,7 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
     });
 
@@ -266,7 +266,7 @@ describe('Difference', () => {
       const head = base.remove(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('v');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('v');
       expect(summary.get('v')).to.eql({ changeType: 'deleted', entity: vertex, graph: base });
     });
 
@@ -276,7 +276,7 @@ describe('Difference', () => {
       const head = base.replace(way).replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceof(Map).that.has.all.keys('-', 'c');
+      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-', 'c');
       expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
       expect(summary.get('c')).to.eql({ changeType: 'created', entity: vertex, graph: head });
     });
@@ -289,7 +289,7 @@ describe('Difference', () => {
       const head = base.replace(node);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(complete.get('n')).to.equal(node);
     });
 
@@ -300,7 +300,7 @@ describe('Difference', () => {
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(complete.get('n')).to.equal(n2);
     });
 
@@ -310,7 +310,7 @@ describe('Difference', () => {
       const head = base.remove(node);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n');
       expect(complete.get('n')).to.be.undefined;
     });
 
@@ -323,7 +323,7 @@ describe('Difference', () => {
       const head = base.replace(w2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('w', 'n1', 'n2');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('w', 'n1', 'n2');
       expect(complete.get('n2')).to.equal(n2);
     });
 
@@ -336,7 +336,7 @@ describe('Difference', () => {
       const head = base.replace(w2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('w', 'n1', 'n2');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('w', 'n1', 'n2');
       expect(complete.get('n2')).to.equal(n2);
     });
 
@@ -353,7 +353,7 @@ describe('Difference', () => {
       const head = base.replace(r2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('r', 'w1', 'w2');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('r', 'w1', 'w2');
       expect(complete.get('w2')).to.equal(w2);
     });
 
@@ -365,7 +365,7 @@ describe('Difference', () => {
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n', 'w');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'w');
       expect(complete.get('w')).to.equal(way);
     });
 
@@ -377,7 +377,7 @@ describe('Difference', () => {
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n', 'r');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'r');
       expect(complete.get('r')).to.equal(rel);
     });
 
@@ -390,7 +390,7 @@ describe('Difference', () => {
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n', 'r1', 'r2');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'r1', 'r2');
       expect(complete.get('r2')).to.equal(rel2);
     });
 
@@ -403,7 +403,7 @@ describe('Difference', () => {
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n', 'w', 'r');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'w', 'r');
       expect(complete.get('r')).to.equal(rel);
     });
 
@@ -415,7 +415,7 @@ describe('Difference', () => {
       const head = base.replace(node.move([1, 2]));
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('n', 'r1', 'r2');
+      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'r1', 'r2');
     });
 
   });

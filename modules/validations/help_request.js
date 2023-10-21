@@ -24,7 +24,7 @@ export function validationHelpRequest(context) {
       subtype: 'fixme_tag',
       severity: 'warning',
       message: function() {
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
         return entity ? l10n.tHtml('issues.fixme_tag.message', {
           feature: l10n.displayLabel(entity, graph, true)    // true = verbose

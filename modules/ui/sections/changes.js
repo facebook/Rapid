@@ -131,7 +131,7 @@ export function uiSectionChanges(context) {
     function mouseover(d) {
       if (d.entity) {
         context.surface().selectAll(
-          utilEntityOrMemberSelector([d.entity.id], editor.current.graph)
+          utilEntityOrMemberSelector([d.entity.id], editor.staging.graph)
         ).classed('hover', true);
       }
     }
@@ -145,7 +145,7 @@ export function uiSectionChanges(context) {
       if (change.changeType !== 'deleted') {
         let entity = change.entity;
         context.systems.map.fitEntitiesEase(entity);
-        context.surface().selectAll(utilEntityOrMemberSelector([entity.id], editor.current.graph))
+        context.surface().selectAll(utilEntityOrMemberSelector([entity.id], editor.staging.graph))
           .classed('hover', true);
       }
     }

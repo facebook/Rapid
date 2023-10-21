@@ -4,7 +4,7 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 export function operationSplit(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
 
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
@@ -72,7 +72,7 @@ export function operationSplit(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const disabledReason = action.disabled(graph);
     if (disabledReason) {
       return disabledReason;

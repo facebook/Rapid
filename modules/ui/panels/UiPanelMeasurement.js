@@ -99,7 +99,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     const selection = this._selection;
     const context = this.context;
     const l10n = context.systems.l10n;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const localeCode = l10n.localeCode();
 
     // Empty out the DOM content and rebuild from scratch..

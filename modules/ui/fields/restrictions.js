@@ -39,8 +39,8 @@
 //        _parent = selection;
 //
 //        // try to reuse the intersection, but always rebuild it if the graph has changed
-//        if (_vertexID && (editor.current.graph !== _graph || !_intersection)) {
-//            _graph = editor.current.graph;
+//        if (_vertexID && (editor.staging.graph !== _graph || !_intersection)) {
+//            _graph = editor.staging.graph;
 //            _intersection = osmIntersection(_graph, _vertexID, _maxDistance);
 //        }
 //
@@ -406,7 +406,7 @@
 //                xPos = utilGetDimensions(context.container().select('.sidebar'))[0];
 //            }
 //
-//            const graph = editor.current.graph;
+//            const graph = editor.staging.graph;
 //            if (!minChange || (minChange && Math.abs(xPos - _lastXPos) >= minChange)) {
 //                if (graph.hasEntity(_vertexID)) {
 //                    _lastXPos = xPos;

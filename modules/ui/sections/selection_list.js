@@ -48,7 +48,7 @@ export function uiSectionSelectionList(context) {
 
 
   function renderDisclosureContent(selection) {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     let list = selection.selectAll('.feature-list')
       .data([0]);
@@ -124,7 +124,7 @@ export function uiSectionSelectionList(context) {
   }
 
 
-  editor.on('historychange', () => section.reRender());
+  editor.on('stablechange', () => section.reRender());
 
   return section;
 }

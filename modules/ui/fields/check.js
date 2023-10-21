@@ -53,7 +53,7 @@ export function uiFieldCheck(context, uifield) {
     // hack: pretend `oneway` field is a `oneway_yes` field
     // where implied oneway tag exists (e.g. `junction=roundabout`) iD#2220, iD#1841
     if (uifield.id === 'oneway' && _entityIDs.length) {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const entity = graph.entity(_entityIDs[0]);
       for (let key in entity.tags) {
         if (key in osmOneWayTags && (entity.tags[key] in osmOneWayTags[key])) {
@@ -73,7 +73,7 @@ export function uiFieldCheck(context, uifield) {
 
 
   function reverserSetText(selection) {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = _entityIDs.length && graph.hasEntity(_entityIDs[0]);
     if (reverserHidden() || !entity) return selection;
 

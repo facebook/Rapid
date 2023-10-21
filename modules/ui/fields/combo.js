@@ -152,7 +152,7 @@ export function uiFieldCombo(context, uifield) {
 
     function setTaginfoValues(q, callback) {
         const taginfo = context.services.taginfo;
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
 
         if (!taginfo) {
           _comboData = [];

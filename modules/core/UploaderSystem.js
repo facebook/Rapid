@@ -168,7 +168,7 @@ export class UploaderSystem extends AbstractSystem {
     const osm = context.services.osm;
     const editor = context.systems.editor;
     const summary = editor.difference().summary();
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     this._localGraph = graph;
     this._remoteGraph = new Graph(editor.base.graph, true);
@@ -416,7 +416,7 @@ export class UploaderSystem extends AbstractSystem {
   _didResultInErrors() {
     // this.context.systems.editor.pop();
     const editor = this.context.systems.editor;
-    editor.rollback();
+    editor.revert();
     this.emit('resultErrors', this._errors);
     this._endSave();
   }
@@ -444,7 +444,7 @@ export class UploaderSystem extends AbstractSystem {
   cancelConflictResolution() {
     // this.context.systems.editor.pop();
     const editor = this.context.systems.editor;
-    editor.rollback();
+    editor.revert();
   }
 
 
@@ -453,7 +453,7 @@ export class UploaderSystem extends AbstractSystem {
 
     for (const conflict of this._conflicts) {
       if (conflict.chosen === 1) {   // user chose "use theirs"
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = graph.hasEntity(conflict.id);
         if (entity?.type === 'way') {
           for (const child of utilArrayUniq(entity.nodes)) {

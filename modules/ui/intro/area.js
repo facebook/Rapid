@@ -23,13 +23,13 @@ export function uiIntroArea(context, curtain) {
   let _chapterCancelled = false;
   let _rejectStep = null;
   let _onModeChange = null;
-  let _onEditChange = null;
+  let _onStagingChange = null;
   let _areaID = null;
 
 
   // Helper functions
   function _doesAreaExist() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return _areaID && graph.hasEntity(_areaID);
   }
 
@@ -96,7 +96,7 @@ export function uiIntroArea(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;  // disallow mode change
-      _onEditChange = (difference) => {
+      _onStagingChange = (difference) => {
         for (const entity of difference.created()) {  // created a node and a way
           if (entity.type === 'way') {
             _areaID = entity.id;
@@ -116,7 +116,7 @@ export function uiIntroArea(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
     });
   }
 
@@ -129,7 +129,7 @@ export function uiIntroArea(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;  // disallow mode change
-      _onEditChange = (difference) => {
+      _onStagingChange = (difference) => {
         for (const entity of difference.modified()) {  // modified the way
           if (entity.id === _areaID && entity.nodes.length > 5) {
             resolve(finishPlaygroundAsync);
@@ -144,7 +144,7 @@ export function uiIntroArea(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
     });
   }
 
@@ -182,10 +182,10 @@ export function uiIntroArea(context, curtain) {
         if (!_isAreaSelected()) context.enter('select-osm', { selection: { osm: [_areaID] }} );
 
         _onModeChange = reject;   // disallow mode change;
-        _onEditChange = (difference) => {
+        _onStagingChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             if (presets.match(modified[0], graph) === playgroundPreset) {
               resolve(clickAddFieldAsync);
             } else {
@@ -225,7 +225,7 @@ export function uiIntroArea(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStagingChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -249,7 +249,7 @@ export function uiIntroArea(context, curtain) {
 
         // It's possible for the user to add a description in a previous step..
         // If they did this already, just complete this chapter
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = graph.entity(_areaID);
         if (entity.tags.description) {
           resolve(playAsync);
@@ -431,23 +431,23 @@ export function uiIntroArea(context, curtain) {
     _chapterCancelled = false;
     _rejectStep = null;
     _onModeChange = null;
-    _onEditChange = null;
+    _onStagingChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editor.on('editchange', _editChangeListener);
+    editor.on('stagingchange', _stagingChangeListener);
 
     runAsync(addAreaAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editor.off('editchange', _editChangeListener);
+        editor.off('stagingchange', _stagingChangeListener);
       });
 
     function _modeChangeListener(...args) {
       if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(...args) {
-      if (typeof _onEditChange === 'function') _onEditChange(...args);
+    function _stagingChangeListener(...args) {
+      if (typeof _onStagingChange === 'function') _onStagingChange(...args);
     }
   };
 

@@ -41,7 +41,7 @@ export class MoveMode extends AbstractMode {
   enter(options = {}) {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const filters = context.systems.filters;
     const locations = context.systems.locations;
     const map = context.systems.map;
@@ -110,7 +110,7 @@ export class MoveMode extends AbstractMode {
 
     // If there is work in progress, finalize it.
     if (editor.hasWorkInProgress) {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const annotation = (this._entityIDs.length === 1) ?
         l10n.t('operations.move.annotation.' + graph.geometry(this._entityIDs[0])) :
         l10n.t('operations.move.annotation.feature', { n: this._entityIDs.length });
@@ -161,9 +161,9 @@ export class MoveMode extends AbstractMode {
     const currPoint = context.projection.project(currLoc);
     const delta = vecSubtract(currPoint, startPoint);
 
-    editor.rollback();  // moves are relative to the start location, so rollback before applying movement
+    editor.revert();  // moves are relative to the start location, so revert before applying movement
     editor.perform(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
-    const graph = editor.current.graph;  // after move
+    const graph = editor.staging.graph;  // after move
 
     // Update selected/active collections to contain the moved entities
     this._selectedData.clear();
@@ -190,7 +190,7 @@ export class MoveMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
 
-    editor.rollback();
+    editor.revert();
     context.enter('select-osm', { selection: { osm: this._entityIDs }} );
   }
 

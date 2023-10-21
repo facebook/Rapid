@@ -7,7 +7,7 @@ import { utilTotalExtent } from '../util';
 
 export function operationCircularize(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
@@ -55,7 +55,7 @@ export function operationCircularize(context, selectedIDs) {
   operation.disabled = function() {
     if (!actions.length) return '';
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const disabledReasons = actions.map(action => action.disabled(graph)).filter(Boolean);
     if (disabledReasons.length === actions.length) {  // none of the features can be circularized
       if (new Set(disabledReasons).size > 1) {

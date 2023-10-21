@@ -396,7 +396,7 @@ export function uiSectionRawTagEditor(context, id) {
       return;
     }
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const geometry = graph.geometry(_entityIDs[0]);
 
     key.call(uiCombobox(context, 'tag-key')

@@ -37,7 +37,7 @@ export function operationDowngrade(context, selectedIDs) {
 
 
   function downgradeTypeForEntityID(entityID) {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.entity(entityID);
     const preset = presets.match(entity, graph);
 
@@ -100,7 +100,7 @@ export function operationDowngrade(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     if (selectedIDs.some(hasWikidataTag)) {
       return 'has_wikidata_tag';

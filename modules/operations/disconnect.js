@@ -7,7 +7,7 @@ import { utilTotalExtent } from '../util/util';
 
 export function operationDisconnect(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
@@ -156,7 +156,7 @@ export function operationDisconnect(context, selectedIDs) {
     if (_actions.length === 0) return false;
     if (_otherIDs.length !== 0) return false;
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     if (_vertexIDs.length !== 0 && _wayIDs.length !== 0 && !_wayIDs.every(function(wayID) {
       return _vertexIDs.some(vertexID => {
         const way = graph.entity(wayID);
@@ -169,7 +169,7 @@ export function operationDisconnect(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     let disabledReason;
 
     for (const action of _actions) {

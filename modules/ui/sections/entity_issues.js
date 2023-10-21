@@ -79,7 +79,7 @@ export function uiSectionEntityIssues(context) {
       .attr('class', 'issue-text')
       .on('click', function(d3_event, d) {
         makeActiveIssue(d.id);    // expand only the clicked item
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const extent = d.extent(graph);
         if (extent) {
           const setZoom = Math.max(map.zoom(), 19);

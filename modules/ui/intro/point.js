@@ -23,13 +23,13 @@ export function uiIntroPoint(context, curtain) {
   let _chapterCancelled = false;
   let _rejectStep = null;
   let _onModeChange = null;
-  let _onHistoryChange = null;
+  let _onStableChange = null;
   let _pointID = null;
 
 
   // Helper functions
   function _doesPointExist() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return _pointID && graph.hasEntity(_pointID);
   }
 
@@ -95,7 +95,7 @@ export function uiIntroPoint(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = () => resolve(searchPresetAsync);
-      _onHistoryChange = (difference) => {
+      _onStableChange = (difference) => {
         const created = difference.created();
         if (created.length === 1) {
           _pointID = created[0].id;
@@ -110,7 +110,7 @@ export function uiIntroPoint(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onHistoryChange = null;
+      _onStableChange = null;
     });
   }
 
@@ -125,10 +125,10 @@ export function uiIntroPoint(context, curtain) {
         if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
         _onModeChange = reject;  // disallow mode change
-        _onHistoryChange = (difference) => {
+        _onStableChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             if (presets.match(modified[0], graph) === cafePreset) {
               resolve(aboutFeatureEditorAsync);
             } else {
@@ -169,7 +169,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -215,14 +215,14 @@ export function uiIntroPoint(context, curtain) {
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(hasPointAsync);
-        _onHistoryChange = () => resolve(addCloseEditorAsync);
+        _onStableChange = () => resolve(addCloseEditorAsync);
 
         showEntityEditor(container);
 
         // It's possible for the user to add a name in a previous step..
         // If so, don't tell them to add the name in this step.
         // Give them an OK button instead.
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = graph.hasEntity(_pointID);
         if (entity.tags.name) {
           const tooltip = curtain.reveal({
@@ -244,7 +244,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -280,7 +280,7 @@ export function uiIntroPoint(context, curtain) {
     if (!_doesPointExist()) return Promise.resolve(addPointAsync);
 
     // Make sure it's still a cafe, in case user somehow changed it..
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.entity(_pointID);
     const preset = presets.match(entity, graph);
     if (preset !== cafePreset) {
@@ -332,7 +332,7 @@ export function uiIntroPoint(context, curtain) {
         if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
-        _onHistoryChange = () => resolve(updateCloseEditorAsync);
+        _onStableChange = () => resolve(updateCloseEditorAsync);
 
         showEntityEditor(container);
 
@@ -344,7 +344,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
       });
  }
 
@@ -379,7 +379,7 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onHistoryChange = reject;  // disallow doing anything else
+      _onStableChange = reject;  // disallow doing anything else
 
       const textID = context.lastPointerType === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       curtain.reveal({
@@ -392,7 +392,7 @@ export function uiIntroPoint(context, curtain) {
       });
     })
     .finally(() => {
-      _onHistoryChange = null;
+      _onStableChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -410,7 +410,7 @@ export function uiIntroPoint(context, curtain) {
         _onModeChange = () => {
           if (_doesPointExist()) reject();  // point still exists, try again
         };
-        _onHistoryChange = (difference) => {
+        _onStableChange = (difference) => {
           const deleted = difference.deleted();
           if (deleted.length === 1 && deleted[0].id === _pointID) {
             resolve(undoAsync);
@@ -427,7 +427,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -437,14 +437,14 @@ export function uiIntroPoint(context, curtain) {
   function undoAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onHistoryChange = () => resolve(playAsync);
+      _onStableChange = () => resolve(playAsync);
       curtain.reveal({
         revealSelector: '.top-toolbar button.undo-button',
         tipHtml: helpHtml(context, 'intro.points.undo')
       });
     })
     .finally(() => {
-      _onHistoryChange = null;
+      _onStableChange = null;
     });
   }
 
@@ -468,23 +468,23 @@ export function uiIntroPoint(context, curtain) {
     _chapterCancelled = false;
     _rejectStep = null;
     _onModeChange = null;
-    _onHistoryChange = null;
+    _onStableChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editor.on('historychange', _historyChangeListener);
+    editor.on('stablechange', _stableChangeListener);
 
     runAsync(addPointAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editor.off('historychange', _historyChangeListener);
+        editor.off('stablechange', _stableChangeListener);
       });
 
     function _modeChangeListener(...args) {
       if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _historyChangeListener(...args) {
-      if (typeof _onHistoryChange === 'function') _onHistoryChange(...args);
+    function _stableChangeListener(...args) {
+      if (typeof _onStableChange === 'function') _onStableChange(...args);
     }
   };
 

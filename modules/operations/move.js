@@ -6,7 +6,7 @@ import { utilTotalExtent } from '../util/util';
 
 export function operationMove(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
@@ -30,7 +30,7 @@ export function operationMove(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (!isNew && notDownloaded()) {
@@ -78,7 +78,7 @@ export function operationMove(context, selectedIDs) {
 
 
   operation.annotation = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return selectedIDs.length === 1 ?
       l10n.t('operations.move.annotation.' + graph.geometry(selectedIDs[0])) :
       l10n.t('operations.move.annotation.feature', { n: selectedIDs.length });

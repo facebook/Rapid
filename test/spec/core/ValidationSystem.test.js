@@ -91,16 +91,19 @@ describe('ValidationSystem', () => {
 
   it('has no issues on init', () => {
     const issues = _validator.getIssues({ what: 'all', where: 'all' });
-    expect(issues).to.have.lengthOf(0);
+    expect(issues).to.be.an.instanceOf(Array).with.lengthOf(0);
   });
 
 
   it('validateAsync returns a Promise, fulfilled when the validation has completed', () => {
-    const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, 0], tags: { building: 'house', phone: '555-1212' } });
-    context.systems.editor.perform( Rapid.actionAddEntity(n1) );
+    const n_1 = Rapid.osmNode({ id: 'n-1', loc: [0, 0], tags: { building: 'house', phone: '555-1212' } });
+
+    const editor = context.systems.editor;
+    editor.perform(Rapid.actionAddEntity(n_1));
+    editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
 
     const prom = _validator.validateAsync();
-    expect(prom).to.be.a('promise');
+    expect(prom).to.be.an.instanceOf(Promise);
 
     return prom
       .then(() => {

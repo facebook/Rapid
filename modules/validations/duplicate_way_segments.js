@@ -78,7 +78,7 @@ export function validationDuplicateWaySegments(context) {
         subtype: 'vertices',
         severity: 'warning',
         message: function() {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const entity = graph.hasEntity(this.entityIds[0]);
           return entity ? l10n.tHtml('issues.duplicate_way_segments.message', {
             way: l10n.displayLabel(entity, graph)

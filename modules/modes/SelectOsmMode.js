@@ -59,7 +59,7 @@ export class SelectOsmMode extends AbstractMode {
   enter(options = {}) {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const filters = context.systems.filters;
     const locations = context.systems.locations;
     const ui = context.systems.ui;
@@ -163,7 +163,7 @@ export class SelectOsmMode extends AbstractMode {
     const urlhash = context.systems.urlhash;
 
     // If the user added an empty relation, we should clean it up.
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.hasEntity(this._singularDatum?.id);
     if (
       entity?.type === 'relation' &&
@@ -225,7 +225,7 @@ export class SelectOsmMode extends AbstractMode {
     if (!entity) return null;
 
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
 
     if (entity.type === 'way') {     // selected entity already is a way, so just use it.
       this._focusedParentID = entity.id;
@@ -259,7 +259,7 @@ export class SelectOsmMode extends AbstractMode {
     if (!way) return;
 
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const node = graph.entity(way.first());
 
     context.enter('select-osm', { selection: { osm: [node.id] }} );
@@ -278,7 +278,7 @@ export class SelectOsmMode extends AbstractMode {
     if (!way) return;
 
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const node = graph.entity(way.last());
 
     context.enter('select-osm', { selection: { osm: [node.id] }} );
@@ -310,7 +310,7 @@ export class SelectOsmMode extends AbstractMode {
 
     if (nextIndex !== -1) {
       const context = this.context;
-      const graph = context.systems.editor.current.graph;
+      const graph = context.systems.editor.staging.graph;
       const node = graph.entity(way.nodes[nextIndex]);
       context.enter('select-osm', { selection: { osm: [node.id] }} );
       context.systems.map.centerEase(node.loc);
@@ -342,7 +342,7 @@ export class SelectOsmMode extends AbstractMode {
 
     if (nextIndex !== -1) {
       const context = this.context;
-      const graph = context.systems.editor.current.graph;
+      const graph = context.systems.editor.staging.graph;
       const node = graph.entity(way.nodes[nextIndex]);
       context.enter('select-osm', { selection: { osm: [node.id] }} );
       context.systems.map.centerEase(node.loc);
@@ -360,7 +360,7 @@ export class SelectOsmMode extends AbstractMode {
     const entity = this._singularDatum;
     if (entity?.type !== 'node') return;
 
-    const graph = this.context.editor.current.graph;
+    const graph = this.context.editor.staging.graph;
     const parentIDs = graph.parentWays(entity).map(way => way.id);
 
     if (parentIDs.length) {
@@ -405,7 +405,7 @@ export class SelectOsmMode extends AbstractMode {
 //
 //      var currentSelectedIds = mode.selectedIDs();
 //      const context = this.context;
-//      const graph = context.systems.editor.current.graph;
+//      const graph = context.systems.editor.staging.graph;
 //      var childIds = this._focusedVertexIDs ? this._focusedVertexIDs.filter(id => graph.hasEntity(id)) : childNodeIdsOfSelection(true);
 //      if (!childIds || !childIds.length) return;
 //
@@ -419,7 +419,7 @@ export class SelectOsmMode extends AbstractMode {
 //  // find the child nodes for selected ways
 //  function childNodeIdsOfSelection(onlyCommon) {
 //      const context = this.context;
-//      const graph = context.systems.editor.current.graph;
+//      const graph = context.systems.editor.staging.graph;
 //      var childs = [];
 //
 //      for (var i = 0; i < selectedIDs.length; i++) {

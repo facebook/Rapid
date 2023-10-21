@@ -136,7 +136,7 @@ export function uiFieldWikidata(context, uifield) {
     function fetchWikidataItems(q, callback) {
         if (!q && _hintKey) {
             // other tags may be good search terms
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             for (var i in _entityIDs) {
                 const entity = graph.hasEntity(_entityIDs[i]);
                 if (entity.tags[_hintKey]) {
@@ -172,14 +172,14 @@ export function uiFieldWikidata(context, uifield) {
       if (!_wikipediaKey) return;
 
       // attempt asynchronous update of wikipedia tag..
-      const initGraph = editor.current.graph;
+      const initGraph = editor.staging.graph;
       const initEntityIDs = _entityIDs;
 
       wikidata.entityByQID(_qid, (err, result) => {
         if (err || !result?.sitelinks) return;
 
         // If graph has changed, we can't apply this update.
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         if (graph !== initGraph) return;
 
         // Wikipedia sites can be in a bunch of languages.

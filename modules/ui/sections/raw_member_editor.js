@@ -29,12 +29,12 @@ export function uiSectionRawMemberEditor(context) {
     .shouldDisplay(function() {
       if (!_entityIDs || _entityIDs.length !== 1) return false;
 
-      const graph = editor.current.graph;  // the current graph
+      const graph = editor.staging.graph;  // the current graph
       const entity = graph.hasEntity(_entityIDs[0]);
       return entity?.type === 'relation';
     })
     .label(function() {
-      const graph = editor.current.graph;  // the current graph
+      const graph = editor.staging.graph;  // the current graph
       const entity = graph.hasEntity(_entityIDs[0]);
       if (!entity) return '';
 
@@ -59,7 +59,7 @@ export function uiSectionRawMemberEditor(context) {
   function zoomToMember(d3_event, d) {
     d3_event.preventDefault();
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.entity(d.id);
     map.fitEntitiesEase(entity);
 
@@ -74,7 +74,7 @@ export function uiSectionRawMemberEditor(context) {
     // remove the hover-highlight styling
     utilHighlightEntities([d.id], false, context);
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.entity(d.id);
     const mapExtent = map.extent();
     if (!entity.intersects(mapExtent, graph)) {
@@ -110,7 +110,7 @@ export function uiSectionRawMemberEditor(context) {
       selectedIDs: [d.relation.id]
     });
 
-    const graph = editor.current.graph;  // the current graph, after the edit was performed
+    const graph = editor.staging.graph;  // the current graph, after the edit was performed
 
     // Removing the last member will also delete the relation. If this happens we need to exit select mode
     if (!graph.hasEntity(d.relation.id)) {
@@ -120,7 +120,7 @@ export function uiSectionRawMemberEditor(context) {
 
 
   function renderDisclosureContent(selection) {
-    const graph = editor.current.graph;  // the current graph
+    const graph = editor.staging.graph;  // the current graph
     const entityID = _entityIDs[0];
     const entity = graph.entity(entityID);
     let memberships = [];
@@ -187,7 +187,7 @@ export function uiSectionRawMemberEditor(context) {
             .append('span')
             .attr('class', 'member-entity-type')
             .html(d => {
-              const matched = presets.match(d.member, editor.current.graph);
+              const matched = presets.match(d.member, editor.staging.graph);
               return (matched && matched.name()) || l10n.displayType(d.member.id);
             });
 
@@ -359,7 +359,7 @@ export function uiSectionRawMemberEditor(context) {
         // not yet downloaded, it's ok to guess based on type.
         let geometry;
         if (d.member) {
-          const graph = editor.current.graph;  // the current graph
+          const graph = editor.staging.graph;  // the current graph
           geometry = graph.geometry(d.member.id);
         } else if (d.type === 'relation') {
           geometry = 'relation';

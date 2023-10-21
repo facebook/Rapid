@@ -9,7 +9,7 @@ let _wasPresetIDs = [];
 
 export function operationCycleHighwayTag(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
 
@@ -32,7 +32,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
   const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
 
-  // Gather current entities allowed to be cycled
+  // Gather selected entities allowed to be cycled
   const entities = selectedIDs
     .map(entityID => graph.hasEntity(entityID))
     .filter(entity => {
@@ -56,7 +56,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
     // Pick the next preset..
     const currPresetIDs = Array.from(presetIDs);
-    const currPreset = presets.match(entities[0], editor.current.graph);
+    const currPreset = presets.match(entities[0], editor.staging.graph);
     const index = currPreset ? currPresetIDs.indexOf(currPreset.id) : -1;
     const newPresetID = currPresetIDs[(index + 1) % currPresetIDs.length];
     const newPreset = presets.item(newPresetID);
@@ -65,7 +65,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
     // Update all selected highways...
     for (const entity of entities) {
-      const oldPreset = presets.match(entity, editor.current.graph);
+      const oldPreset = presets.match(entity, editor.staging.graph);
       const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
       editor.perform(action);
     }

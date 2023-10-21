@@ -121,7 +121,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const editor = context.systems.editor;
     const filters = context.systems.filters;
     const map = context.systems.map;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
@@ -244,7 +244,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPolygons(frame, projection, zoom, data) {
     const entities = data.polygons;
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
     const presets = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
@@ -401,7 +401,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderLines(frame, projection, zoom, data) {
     const entities = data.lines;
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
     const lineContainer = this.lineContainer;
 
@@ -527,7 +527,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderVertices(frame, projection, zoom, data, related) {
     const entities = data.vertices;
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
     const presets = context.systems.presets;
 
@@ -636,7 +636,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPoints(frame, projection, zoom, data) {
     const entities = data.points;
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
     const presets = context.systems.presets;
     const pointsContainer = this.scene.groups.get('points');
@@ -722,7 +722,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderMidpoints(frame, projection, zoom, data, related) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
 
     // Need to consider both lines and polygons for drawing our midpoints
     const entities = new Map([...data.lines, ...data.polygons]);

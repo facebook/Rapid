@@ -91,7 +91,7 @@ export function uiToolDownloadOsc(context) {
 
     updateCount();
 
-    editor.on('historychange', updateCount);
+    editor.on('stablechange', updateCount);
     context.on('modechange', updateStyle);
   };
 
@@ -99,7 +99,7 @@ export function uiToolDownloadOsc(context) {
   tool.uninstall = function() {
     if (!_button && !_tooltip) return;  // already uninstalled
 
-    editor.off('historychange', updateCount);
+    editor.off('stablechange', updateCount);
     context.off('modechange', updateStyle);
 
     _button = null;

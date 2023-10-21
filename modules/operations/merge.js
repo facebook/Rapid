@@ -15,7 +15,7 @@ export function operationMerge(context, selectedIDs) {
   let action = chooseAction();
 
   function chooseAction() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const tagnosticRoadCombine = storage.getItem('rapid-internal-feature.tagnosticRoadCombine') === 'true';
     const options = { tagnosticRoadCombine: tagnosticRoadCombine };
 
@@ -48,7 +48,7 @@ export function operationMerge(context, selectedIDs) {
     editor.perform(action);
     editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
-    const graph = editor.current.graph;  // after edit
+    const graph = editor.staging.graph;  // after edit
     let successorIDs = selectedIDs.filter(entityID => graph.hasEntity(entityID));
     if (successorIDs.length > 1) {
       const interestingIDs = successorIDs.filter(entityID => graph.entity(entityID).hasInterestingTags());
@@ -66,7 +66,7 @@ export function operationMerge(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const actionDisabled = action.disabled(graph);
     if (actionDisabled) return actionDisabled;
 

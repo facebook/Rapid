@@ -157,7 +157,7 @@ export class LassoBehavior extends AbstractBehavior {
     const editor = context.systems.editor;
     const locations = context.systems.locations;
     const filters = context.systems.filters;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     if (!this.context.editable()) return [];
 

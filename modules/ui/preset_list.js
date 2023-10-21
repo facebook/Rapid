@@ -434,7 +434,7 @@ export function uiPresetList(context) {
 
 
   function updateForFeatureHiddenState() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     if (!_entityIDs.every(entityID => graph.hasEntity(entityID))) return;
 
     const geometries = entityGeometries();
@@ -481,7 +481,7 @@ export function uiPresetList(context) {
     _currLoc = null;
 
     if (_entityIDs && _entityIDs.length) {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
 
       // calculate current location
       _currLoc = utilTotalExtent(_entityIDs, graph).center();
@@ -503,7 +503,7 @@ export function uiPresetList(context) {
 
 
   function entityGeometries() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     let counts = {};
 
     for (const entityID of _entityIDs) {

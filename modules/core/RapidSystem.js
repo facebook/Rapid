@@ -48,7 +48,7 @@ export class RapidSystem extends AbstractSystem {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
-    this._historychange = this._historychange.bind(this);
+    this._stablechange = this._stablechange.bind(this);
   }
 
 
@@ -82,7 +82,7 @@ export class RapidSystem extends AbstractSystem {
     return this._initPromise = prerequisites
       .then(() => {
         urlhash.on('hashchange', this._hashchange);
-        editor.on('historychange', this._historychange);
+        editor.on('stablechange', this._stablechange);
 
         this._datasets.set('fbRoads', {
           id: 'fbRoads',
@@ -229,11 +229,11 @@ export class RapidSystem extends AbstractSystem {
 
 
   /**
-   * _historychange
+   * _stablechange
    * This is called anytime the history changes, we recompute the acceptedIDs set.
    * This can run on history change, undo, redo, or history restore.
    */
-  _historychange() {
+  _stablechange() {
     const context = this.context;
     const editor = context.systems.editor;
 

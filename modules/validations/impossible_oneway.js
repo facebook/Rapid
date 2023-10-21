@@ -129,7 +129,7 @@ export function validationImpossibleOneway(context) {
         subtype: wayType,
         severity: 'warning',
         message: function() {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const entity = graph.hasEntity(this.entityIds[0]);
           return entity ? l10n.tHtml(`issues.impossible_oneway.${messageID}.message`, {
             feature: l10n.displayLabel(entity, graph)
@@ -138,7 +138,7 @@ export function validationImpossibleOneway(context) {
         reference: getReference(referenceID),
         entityIds: [way.id, node.id],
         dynamicFixes: function() {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           let fixes = [];
           if (attachedOneways.length) {
             fixes.push(new ValidationFix({

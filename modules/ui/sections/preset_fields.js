@@ -27,7 +27,7 @@ export function uiSectionPresetFields(context) {
 
   function renderDisclosureContent(selection) {
     if (!_uifields) {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
 
       const geometries = Object.keys(_entityIDs.reduce((geoms, entityID) => {
         geoms[graph.entity(entityID).geometry(graph)] = true;

@@ -61,7 +61,7 @@ export function uiCommitWarnings(context) {
         .on('mouseover', (d3_event, d) => {
 // todo replace legacy surface css class .hover
           if (d.entityIds) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             context.surface().selectAll(utilEntityOrMemberSelector(d.entityIds, graph) )
               .classed('hover', true);
           }

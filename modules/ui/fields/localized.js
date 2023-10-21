@@ -77,7 +77,7 @@ export function uiFieldLocalized(context, uifield) {
 
 
     function calcLocked() {
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         // Protect name field for suggestion presets that don't display a brand/operator field
         var isLocked = (uifield.id === 'name') &&
             _entityIDs.length &&

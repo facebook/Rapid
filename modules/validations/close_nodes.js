@@ -168,7 +168,7 @@ export function validationCloseNodes(context) {
                         subtype: 'detached',
                         severity: 'warning',
                         message: function() {
-                            const graph = editor.current.graph;
+                            const graph = editor.staging.graph;
                             const entity = graph.hasEntity(this.entityIds[0]);
                             const entity2 = graph.hasEntity(this.entityIds[1]);
                             return (entity && entity2) ? l10n.tHtml('issues.close_nodes.detached.message', {
@@ -235,7 +235,7 @@ export function validationCloseNodes(context) {
                 subtype: 'vertices',
                 severity: 'warning',
                 message: function() {
-                  const graph = editor.current.graph;
+                  const graph = editor.staging.graph;
                   const entity = graph.hasEntity(this.entityIds[0]);
                   return entity ? l10n.tHtml('issues.close_nodes.message', { way: l10n.displayLabel(entity, graph) }) : '';
                 },

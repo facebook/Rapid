@@ -46,7 +46,7 @@ export function uiFieldAddress(context, uifield) {
       .filter(isAddressableStreet)
       .map(d => {
         const loc = context.projection.project(center);
-        const choice = geoChooseEdge(editor.current.graph.childNodes(d), loc, context.projection);
+        const choice = geoChooseEdge(editor.staging.graph.childNodes(d), loc, context.projection);
         return {
           title: d.tags.name,
           value: d.tags.name,
@@ -73,7 +73,7 @@ export function uiFieldAddress(context, uifield) {
         return {
           title: d.tags['addr:city'] || d.tags.name,
           value: d.tags['addr:city'] || d.tags.name,
-          dist: geoSphericalDistance(d.extent(editor.current.graph).center(), center)
+          dist: geoSphericalDistance(d.extent(editor.staging.graph).center(), center)
         };
       })
       .sort((a, b) => a.dist - b.dist);
@@ -105,7 +105,7 @@ export function uiFieldAddress(context, uifield) {
         return {
           title: d.tags[key],
           value: d.tags[key],
-          dist: geoSphericalDistance(d.extent(editor.current.graph).center(), center)
+          dist: geoSphericalDistance(d.extent(editor.staging.graph).center(), center)
         };
       })
       .sort((a, b) => a.dist - b.dist);

@@ -41,7 +41,7 @@ export function validationIncompatibleSource(context) {
           type: type,
           severity: 'warning',
           message: () => {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             const entity = graph.hasEntity(entityID);
             return entity ? l10n.tHtml('issues.incompatible_source.feature.message', {
               feature: l10n.displayLabel(entity, graph, true),  // true = verbose

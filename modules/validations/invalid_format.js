@@ -57,7 +57,7 @@ export function validationFormatting(context) {
           subtype: 'website',
           severity: 'warning',
           message: function() {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             const entity = graph.hasEntity(this.entityIds[0]);
             return entity ? l10n.tHtml('issues.invalid_format.website.message' + this.data,
               { feature: l10n.displayLabel(entity, graph), site: websites.join(', ') }) : '';
@@ -84,7 +84,7 @@ export function validationFormatting(context) {
           subtype: 'email',
           severity: 'warning',
           message: function() {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             const entity = graph.hasEntity(this.entityIds[0]);
             return entity ? l10n.tHtml('issues.invalid_format.email.message' + this.data,
                 { feature: l10n.displayLabel(entity, graph), email: emails.join(', ') }) : '';

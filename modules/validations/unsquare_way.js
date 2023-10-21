@@ -75,7 +75,7 @@ export function validationUnsquareWay(context) {
       subtype: 'building',
       severity: 'warning',
       message: function() {
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
         return entity ? l10n.tHtml('issues.unsquare_way.message', {
           feature: l10n.displayLabel(entity, graph)
@@ -106,7 +106,7 @@ export function validationUnsquareWay(context) {
           new ValidationFix({     // Tag as unnsquare
             title: l10n.tHtml('issues.fix.tag_as_unsquare.title'),
             onClick: function() {
-              const graph = editor.current.graph;
+              const graph = editor.staging.graph;
               const entityID = this.issue.entityIds[0];
               const entity = graph.entity(entityID);
               const tags = Object.assign({}, entity.tags);  // shallow copy

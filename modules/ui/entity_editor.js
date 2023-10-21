@@ -44,8 +44,8 @@ export function uiEntityEditor(context) {
   let _newFeature;
 
   // reset listener
-  editor.off('editchange', _onEditChange);
-  editor.on('editchange', _onEditChange);
+  editor.off('stagingchange', _onStagingChange);
+  editor.on('stagingchange', _onStagingChange);
 
 
   /**
@@ -55,7 +55,7 @@ export function uiEntityEditor(context) {
   function entityEditor(selection) {
     _selection = selection;
 
-    const combinedTags = _getCombinedTags(_entityIDs, editor.current.graph);
+    const combinedTags = _getCombinedTags(_entityIDs, editor.staging.graph);
     const isRTL = l10n.isRTL();
 
     // Header
@@ -145,7 +145,7 @@ export function uiEntityEditor(context) {
 
     // always reload these even if the entityIDs are unchanged, since we
     // could be reselecting after something like dragging a node
-    _startGraph = editor.current.graph;
+    _startGraph = editor.staging.graph;
 
     if (val && _entityIDs && utilArrayIdentical(_entityIDs, val)) return entityEditor;  // exit early if no change
 
@@ -184,7 +184,7 @@ export function uiEntityEditor(context) {
   /**
    *
    */
-  function _onEditChange(difference) {
+  function _onStagingChange(difference) {
     if (!_selection) return;     // called before first render
     if (_selection.selectAll('.entity-editor').empty()) return;
     if (_state === 'hide') return;
@@ -192,7 +192,7 @@ export function uiEntityEditor(context) {
     const significant = difference.didChange.properties || difference.didChange.addition || difference.didChange.deletion;
     if (!significant) return;
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     _entityIDs = _entityIDs.filter(entityID => graph.hasEntity(entityID));
     if (!_entityIDs.length) return;
 
@@ -227,7 +227,7 @@ export function uiEntityEditor(context) {
     editor.beginTransaction();
 
     for (const entityID of _entityIDs) {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const entity = graph.hasEntity(entityID);
       if (!entity) continue;
 
@@ -286,7 +286,7 @@ export function uiEntityEditor(context) {
     editor.beginTransaction();
 
     for (const entityID of _entityIDs) {
-      const currGraph = editor.current.graph;
+      const currGraph = editor.staging.graph;
       const original = baseGraph.hasEntity(entityID);
       const current = currGraph.entity(entityID);
       let tags = Object.assign({}, current.tags);   // shallow copy
@@ -331,7 +331,7 @@ export function uiEntityEditor(context) {
    *
    */
   function _loadActivePresets(isForNewSelection) {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     // If multiple entities, try to pick a preset that matches most of them
     const counts = {};

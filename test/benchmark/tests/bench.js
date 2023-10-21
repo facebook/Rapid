@@ -69,7 +69,7 @@ function setup(dataBlob) {
   graphEntities = instantiateEntities(dataBlob.entities);
   projection = new Rapid.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
   zoom = dataBlob.zoom;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   graph.rebase(graphEntities, [graph], false);
 }
 

@@ -22,7 +22,7 @@ export function operationPaste(context) {
     editor.beginTransaction();
     editor.perform(action);
 
-    const currGraph = editor.current.graph;
+    const currGraph = editor.staging.graph;
     const copies = action.copies();
 
     const originalIDs = new Set();

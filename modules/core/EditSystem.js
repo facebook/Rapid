@@ -14,7 +14,7 @@ import { uiLoading } from '../ui/loading';
  * `EditSystem` maintains the history of user edits.
  * (This used to be called 'history', but that word means something else in browsers)
  *
- * This system maintains a Base Graph, a stack of Edit history, and a `current` Edit.
+ * This system maintains a Base Graph, a stack of Edit history, and a `staging` Edit.
  *
  * The Base Graph contains the base map state - all map entities that have been loaded
  *   and what they look like before any edits have occurred.
@@ -27,15 +27,13 @@ import { uiLoading } from '../ui/loading';
  *  - `sources`     - sources being used to make the Edit (imagery, photos, data)
  *  - `transform`   - map transform at the time of the Edit
  *
- * Edits with an `annotation` represent states that we can undo or redo into.
- *
  * Special named Edits:
  *  - `base` - The initial Edit, `history[0]`.
  *     The `base` Edit contains the Base Graph and nothing else.
  *  - `stable` - The latest accepted Edit, `history[index]`.
  *     The `stable` Edit is suitable for validation, backups, saving.
- *  - `current` - A work-in-progress Edit, not yet added to the history.
- *     The `current` Edit is used throughout the application to determine the current map state
+ *  - `staging` - A work-in-progress Edit, not yet added to the history.
+ *     The `staging` Edit is used throughout the application to determine the current map state.
  *
  *  The history might look like this:
  *
@@ -43,32 +41,32 @@ import { uiLoading } from '../ui/loading';
  *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
  *                                 \
  *                                  \-->  EditN
- *                                       `current` (WIP after `stable`)
+ *                                       `staging` (WIP after `stable`)
  *
- * Code elsewhere in the application can use these methods to record edits and manipulate the history:
+ * Code elsewhere in the application can use these methods to make edits and manipulate the history:
  * - `perform(action)` - This performs a bit of work.  Perform accepts a varible number of
  *      "action" arguments. Actions are functions that accept a Graph and return a modified Graph.
- *      All work is performed against the `current` edit.
- * - `rollback()` - This rolls back all work in progress by replacing `current` with a fresh copy of `stable`.
- * - `commit(options)` - This accepts the `current` work-in-progress edit by adding
+ *      All work is performed against the `staging` edit.
+ * - `revert()` - This reverts all work in progress by replacing `staging` with a fresh copy of `stable`.
+ * - `commit(options)` - This accepts the `staging` work-in-progress edit by adding
  *      it to the end of the history (removing any forward redo history, if any)
  *      Commit accepts an `annotation` (e.g. "Started a line") to say what the edit does.
  * - `commitAppend(options)` - This is just like `commit` but instead of
- *      adding `current` after `stable`, `current` replaces `stable`.
+ *      adding `staging` after `stable`, `staging` replaces `stable`.
  * - `undo()` - Move the `stable` index back to the previous Edit (or `_index = 0`).
  * - `redo()` - Move the `stable` index forward to the next Edit (if any)
  * - `setCheckpoint(checkpointID)` - Save `history` and `index` as a checkpoint to return to later.
  * - `restoreCheckpoint(checkpointID)` - Restore `history` and `index` identified by checkpointID.
  *
- * Code can also wrap calls in a "transaction", which will prevent events from being emitted.
- * - `beginTransaction()` - Prevents `editchange` and `historychange` events from being emitted.
- * - `endTransaction()` - Marks transaction as complete.  Any `editchange` and `historychange`
+ * Code can also wrap calls in a "transaction", which will prevent change events from being emitted.
+ * - `beginTransaction()` - Prevents `stagingchange` and `stablechange` events from being emitted.
+ * - `endTransaction()` - Marks transaction as complete.  Any `stagingchange` and `stablechange`
  *      events will be emitted that cover the difference from the beginning -> end of the transaction.
  *
  * Events available:
- *   'editchange' - Fires on every edit performed (i.e. when `current` changes),
- *      Receives Difference between old `current` Graph and new `current` Graph.
- *   'historychange' - Fires only when the history actually changes (i.e. when `stable` changes)
+ *   'stagingchange' - Fires on every edit performed (i.e. when `staging` changes),
+ *      Receives Difference between old `staging` Graph and new `staging` Graph.
+ *   'stablechange' - Fires only when the history actually changes (i.e. when `stable` changes)
  *      Receives Difference between old `stable` Graph and new `stable` Graph.
  *   'historyjump' - Fires on undo/redo/restore.  This is for situations when we may need to
  *      jump the user to a different part of the map and restore a different selection.
@@ -92,7 +90,7 @@ export class EditSystem extends AbstractSystem {
 
     this._history = [];     // history of accepted edits (both undo and redo) (was called "stack")
     this._index = 0;        // index of the latest `stable` edit
-    this._current = null;   // work in progress edit, not yet added to the history
+    this._staging = null;   // work in progress edit, not yet added to the history
 
     this._checkpoints = new Map();
     this._inTransition = false;
@@ -100,7 +98,7 @@ export class EditSystem extends AbstractSystem {
     this._tree = null;
 
     this._lastStableGraph = null;
-    this._lastCurrentGraph = null;
+    this._lastStagingGraph = null;
     this._fullDifference = null;
 
     this._initPromise = null;
@@ -189,13 +187,13 @@ export class EditSystem extends AbstractSystem {
 
     // Create a work-in-progress Edit derived from the base edit.
     const currGraph = new Graph(baseGraph);
-    const current = new Edit({ graph: currGraph });
-    this._current = current;
+    const staging = new Edit({ graph: currGraph });
+    this._staging = staging;
     this._hasWorkInProgress = false;
     this._tree = new Tree(currGraph);
 
     this._lastStableGraph = baseGraph;
-    this._lastCurrentGraph = currGraph;
+    this._lastStagingGraph = currGraph;
     this._fullDifference = new Difference(baseGraph, baseGraph);
 
     this._checkpoints.clear();
@@ -228,19 +226,19 @@ export class EditSystem extends AbstractSystem {
   }
 
   /**
-   * current
-   * The `current` edit will be a placeholder work-in-progress edit in the chain immediately
-   * following the `stable` edit.  The user may be drawing the feature or editing the tags.
-   * The `current` edit has not been added to the history yet.
-   * @return {Edit} The `current` work-in-progress Edit
+   * staging
+   * The `staging` edit will be a placeholder work-in-progress edit in the chain immediately
+   * following the `stable` edit.  The user may be drawing a feature or editing tags.
+   * The `staging` edit has not been added to the history yet.
+   * @return {Edit} The `staging` work-in-progress Edit
    */
-  get current() {
-    return this._current;
+  get staging() {
+    return this._staging;
   }
 
   /**
    * tree
-   * The tree is a spatial index that keeps itself in sync with the `current` graph.
+   * The tree is a spatial index that keeps itself in sync with the `staging` graph.
    * @return {Tree} The Tree (spatial index)
    */
   get tree() {
@@ -267,8 +265,8 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * hasWorkInProgress
-   * Is there work in progress in the `current` edit?
-   * @return {boolean}  `true` if there is work in progress in the `current` edit.
+   * Is there work in progress in the `staging` edit?
+   * @return {boolean}  `true` if there is work in progress in the `staging` edit.
    */
   get hasWorkInProgress() {
     return this._hasWorkInProgress;
@@ -279,11 +277,11 @@ export class EditSystem extends AbstractSystem {
    * perform
    * This performs a bit of work.  Perform accepts a variable number of "action" arguments.
    * "Actions" are functions that accept a Graph and return a modified Graph.
-   * All work is performed against the `current` work-in-progress edit.
+   * All work is performed against the `staging` work-in-progress edit.
    * If multiple functions are passed, they will be performed in order,
-   *   and an `editchange` event will be emitted after they have all completed.
+   *   and an `stagingchange` event will be emitted after they have all completed.
    * @param   {...Function}  args - Variable number of Action functions to peform
-   * @return  {Difference}   Difference between before and after of `current` Edit
+   * @return  {Difference}   Difference between before and after of `staging` Edit
    */
   perform(...args) {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
@@ -327,7 +325,7 @@ export class EditSystem extends AbstractSystem {
         .tween('edit.tween', () => {
           return (t) => {
             if (t < 1) {
-              this._replaceCurrent();
+              this._replaceStaging();
               this._perform([action], t);
               this._updateChanges();
             }
@@ -335,12 +333,12 @@ export class EditSystem extends AbstractSystem {
         })
         .on('start', () => {
           this._inTransition = true;
-          this._replaceCurrent();
+          this._replaceStaging();
           this._perform([action], 0);
           this._updateChanges();
         })
         .on('end interrupt', () => {
-          this._replaceCurrent();
+          this._replaceStaging();
           this._perform([action], 1);
           this._updateChanges();
           this._inTransition = false;
@@ -351,25 +349,26 @@ export class EditSystem extends AbstractSystem {
 
 
   /**
-   * rollback
-   * This rolls back the `current` work-in-progress by replacing `current` with a fresh copy of `stable`.
+   * revert
+   * This reverts the `staging` work-in-progress by replacing `staging` with a fresh copy of `stable`.
+   * (It's more like what `git reset --hard` does, but we can't call it "reset")
    */
-  rollback() {
+  revert() {
     if (!this._hasWorkInProgress) return;
 
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
-    this._replaceCurrent();
+    this._replaceStaging();
     return this._updateChanges();
   }
 
 
   /**
    * commit
-   * This finalizes the `current` work-in-progress edit.
+   * This finalizes the `staging` work-in-progress edit.
    * (It's somewhat like what `git commit` does.)
    *  - Set annotation, sources, and other edit metadata properties
-   *  - Add the `current` edit to the end of the history (at this point `current` becomes `stable`)
-   *  - Finally, create a new empty `current` work-in-progress Edit
+   *  - Add the `staging` edit to the end of the history (at this point `staging` becomes `stable`)
+   *  - Finally, create a new empty `staging` work-in-progress Edit
    *
    * Before calling `commit()`:
    *
@@ -377,14 +376,14 @@ export class EditSystem extends AbstractSystem {
    *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
    *                                 \
    *                                  \-->  EditN0
-   *                                       `current` (WIP after Edit2)
+   *                                       `staging` (WIP after Edit2)
    * After calling `commit()`:
    *
    *   `base`                     …undo    `stable`
    *  [ Edit0 --> … --> Edit1 --> Edit2 --> EditN0 ]
    *                                           \
    *                                            \-->  EditN1
-   *                                                 `current` (WIP after EditN0)
+   *                                                 `staging` (WIP after EditN0)
    *
    * @param  {Object?}        options - Optional `Object` of options passed
    * @param  {Object|string}  options.annotation - A String saying what the Edit did. e.g. "Started a Line".
@@ -395,32 +394,32 @@ export class EditSystem extends AbstractSystem {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
     const context = this.context;
-    const current = this.current;
+    const staging = this.staging;
 
     const annotation = options.annotation ?? '';
-    current.annotation  = annotation;
-    current.selectedIDs = options.selectedIDs ?? [];
-    current.sources     = this._gatherSources(annotation);
-    current.transform   = context.projection.transform();
+    staging.annotation  = annotation;
+    staging.selectedIDs = options.selectedIDs ?? [];
+    staging.sources     = this._gatherSources(annotation);
+    staging.transform   = context.projection.transform();
 
-    // Discard forward/redo history if any, and add `current` after `stable`
-    this._history.splice(this._index + 1, Infinity, current);
+    // Discard forward/redo history if any, and add `staging` after `stable`
+    this._history.splice(this._index + 1, Infinity, staging);
     this._index++;
-    // (At this point `stable` === `current`)
+    // (At this point `stable` === `staging`)
 
-    this._replaceCurrent();
+    this._replaceStaging();
     this._updateChanges();
   }
 
 
   /**
    * commitAppend
-   * This is like `commit`, but instead of adding `current` after stable,
-   *   it replaces `stable` with `current` and does not advance the history.
+   * This is like `commit`, but instead of adding `staging` after stable,
+   *   it replaces `stable` with `staging` and does not advance the history.
    * (It's somewhat like what `git commit --append` does.)
    *  - Set annotation, sources, and other edit metadata properties
-   *  - Replace the `stable` edit with the `current` edit (at this point `current` becomes `stable`)
-   *  - Finally, create a new empty `current` work-in-progress Edit
+   *  - Replace the `stable` edit with the `staging` edit (at this point `staging` becomes `stable`)
+   *  - Finally, create a new empty `staging` work-in-progress Edit
    *
    * Note:  You can't do this if there are no edits yet - it will throw if you try to append to the `base` edit.
    *
@@ -430,14 +429,14 @@ export class EditSystem extends AbstractSystem {
    *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
    *                                 \
    *                                  \-->  EditN0
-   *                                       `current` (WIP after Edit2)
+   *                                       `staging` (WIP after Edit2)
    * After calling `commitAppend()`:
    *
    *   `base`           …undo    `stable`
    *  [ Edit0 --> … --> Edit1 --> EditN0 ]
    *                                 \
    *                                  \-->  EditN1
-   *                                       `current` (WIP after EditN0)
+   *                                       `staging` (WIP after EditN0)
    *
    * @param  {Object?}        options - Optional `Object` of options passed
    * @param  {Object|string}  options.annotation - A String saying what the Edit did. e.g. "Started a Line".
@@ -449,32 +448,32 @@ export class EditSystem extends AbstractSystem {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
     const context = this.context;
-    const current = this.current;
+    const staging = this.staging;
 
     if (this._index === 0) {
       throw new Error(`Can not commitAppend to the base edit!`);
     }
 
     const annotation = options.annotation ?? '';
-    current.annotation  = annotation;
-    current.selectedIDs = options.selectedIDs ?? [];
-    current.sources     = this._gatherSources(annotation);
-    current.transform   = context.projection.transform();
+    staging.annotation  = annotation;
+    staging.selectedIDs = options.selectedIDs ?? [];
+    staging.sources     = this._gatherSources(annotation);
+    staging.transform   = context.projection.transform();
 
-    // Discard forward/redo history if any, and replace `stable` with `current`.
-    this._history.splice(this._index, Infinity, current);
-    // (At this point `stable` === `current`)
+    // Discard forward/redo history if any, and replace `stable` with `staging`.
+    this._history.splice(this._index, Infinity, staging);
+    // (At this point `stable` === `staging`)
 
-    this._replaceCurrent();
+    this._replaceStaging();
     this._updateChanges();
   }
 
 
   /**
    * undo
-   * If there is work-in-progress on the `current` edit, rollback to `stable`
+   * If there is work-in-progress on the `staging` edit, revert to `stable`
    * Otherwise, move the `stable` index back to the previous Edit (or `_index = 0`).
-   * Note that all work-in-progress in the `current` Edit is lost when calling `undo()`.
+   * Note that all work-in-progress in the `staging` Edit is lost when calling `undo()`.
    *
    * Before calling `undo()`:
    *
@@ -482,20 +481,20 @@ export class EditSystem extends AbstractSystem {
    *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
    *                                 \
    *                                  \-->  EditN0
-   *                                       `current` (WIP after Edit2)
+   *                                       `staging` (WIP after Edit2)
    * After calling `undo()`:
    *
    *   `base`  …undo   `stable`   redo…
    *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
    *                       \
    *                        \-->  EditN1
-   *                             `current` (WIP after Edit1)
+   *                             `staging` (WIP after Edit1)
    */
   undo() {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
     if (this._hasWorkInProgress) {
-      this.rollback();
+      this.revert();
       this.emit('historyjump');
       return;
     }
@@ -506,7 +505,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     if (this._index !== prevIndex) {
-      this._replaceCurrent();
+      this._replaceStaging();
       this._updateChanges();
       this.emit('historyjump');
     }
@@ -516,7 +515,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * redo
    * Move the `stable` index forward to the next Edit (if any)
-   * Note that all work-in-progress in the `current` Edit is lost when calling `redo()`.
+   * Note that all work-in-progress in the `staging` Edit is lost when calling `redo()`.
    *
    * Before calling `redo()`:
    *
@@ -524,14 +523,14 @@ export class EditSystem extends AbstractSystem {
    *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
    *                                 \
    *                                  \-->  EditN0
-   *                                       `current` (WIP after Edit2)
+   *                                       `staging` (WIP after Edit2)
    * After calling `redo()`:
    *
    *   `base`                     …undo    `stable`
    *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
    *                                           \
    *                                            \-->  EditN1
-   *                                                 `current` (WIP after Edit3)
+   *                                                 `staging` (WIP after Edit3)
    */
   redo() {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
@@ -542,7 +541,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     if (this._index !== prevIndex) {
-      this._replaceCurrent();
+      this._replaceStaging();
       this._updateChanges();
       this.emit('historyjump');
     }
@@ -570,7 +569,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * restoreCheckpoint
    * This returns the `history` and `index` back to the edit identified by the given checkpointID.
-   * Note that all work-in-progress in the `current` Edit is lost when calling `restoreCheckpoint()`.
+   * Note that all work-in-progress in the `staging` Edit is lost when calling `restoreCheckpoint()`.
    * @param  {string}  checkpointID - A string to identify the checkpoint
    */
   restoreCheckpoint(checkpointID) {
@@ -582,7 +581,7 @@ export class EditSystem extends AbstractSystem {
       this._history = checkpoint.history.slice();   // shallow copy
       this._index = checkpoint.index;
 
-      this._replaceCurrent();
+      this._replaceStaging();
       this._updateChanges();
       this.emit('historyjump');
     }
@@ -614,7 +613,7 @@ export class EditSystem extends AbstractSystem {
    */
   merge(entities, seenIDs) {
     const baseGraph = this.base.graph;
-    const headGraph = this.current.graph;
+    const stagingGraph = this.staging.graph;
 
     if (!(seenIDs instanceof Set)) {
       seenIDs = new Set(entities.map(entity => entity.id));
@@ -630,7 +629,7 @@ export class EditSystem extends AbstractSystem {
 
     // If we are merging in new relation members, bump the relation's version.
     for (const id of seenIDs) {
-      const entity = headGraph.hasEntity(id);
+      const entity = stagingGraph.hasEntity(id);
       if (entity?.type !== 'relation') continue;
 
       for (const member of entity.members) {
@@ -640,7 +639,11 @@ export class EditSystem extends AbstractSystem {
       }
     }
 
+    // Append staging graph..
+    // It's not in the history yet, but it represents the current state of things.
     const graphs = this._history.map(state => state.graph);
+    graphs.push(stagingGraph);
+
     baseGraph.rebase(entities, graphs, false);  // force = false
     this._tree.rebase(entities, false);         // force = false
 
@@ -650,7 +653,7 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * beginTransaction
-   * Prevents `editchange` and `historychange` events from being emitted.
+   * Prevents `stagingchange` and `stablechange` events from being emitted.
    * During a transaction, edits can be performed but no `change` events will be emitted.
    * This is to prevent other parts of the code from rendering/validating partial or incomplete edits.
    */
@@ -662,7 +665,7 @@ export class EditSystem extends AbstractSystem {
   /**
    * endTransaction
    * This marks the transaction as complete, and allows events to be emitted again.
-   * Any `editchange` and `historychange` events will be emitted that cover
+   * Any `stagingchange` and `stablechange` events will be emitted that cover
    *   the difference from the beginning -> end of the transaction.
    */
   endTransaction() {
@@ -701,12 +704,12 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * intersects
-   * Returns the entities from the `current` graph with bounding boxes overlapping the given `extent`.
+   * Returns the entities from the `staging` graph with bounding boxes overlapping the given `extent`.
    * @prarm   {Extent}  extent - the extent to test
    * @return  {Array}   Entities intersecting the given Extent
    */
   intersects(extent) {
-    return this._tree.intersects(extent, this.current.graph);
+    return this._tree.intersects(extent, this.staging.graph);
   }
 
 
@@ -1057,7 +1060,7 @@ export class EditSystem extends AbstractSystem {
     const _finish = () => {
       loading.close();            // unblock ui
       map.redrawEnabled = true;   // unbock drawing
-      this._replaceCurrent();
+      this._replaceStaging();
       this._updateChanges();
       this.emit('historyjump');
     };
@@ -1224,7 +1227,7 @@ export class EditSystem extends AbstractSystem {
 
   /**
    * _gatherSources
-   * Get the sources used to make the `current` edit.
+   * Get the sources used to make the `staging` edit.
    * @param   {string|Object?} annotation - Rapid edits may optionally use an annotation that includes the data source used
    * @return  {Object}  sources Object containing `imagery`, `photos`, `data` properties
    */
@@ -1262,60 +1265,60 @@ export class EditSystem extends AbstractSystem {
    * @param  {number?}  Eased time, should be in the range [0..1]
    */
   _perform(actions, t = 1) {
-    let graph = this._current.graph;
+    let graph = this._staging.graph;
     for (const fn of actions) {
       if (typeof fn === 'function') {
         graph = fn(graph, t);
       }
     }
 
-    this._current.graph = graph;
+    this._staging.graph = graph;
     this._hasWorkInProgress = true;
   }
 
 
   /**
-   * _replaceCurrent
-   * This replaces (aka rollback) the `current` work-in-progress edit with a fresh copy of `stable`.
+   * _replaceStaging
+   * This replaces the `staging` work-in-progress edit with a fresh copy of `stable`.
    * Rolls back the edits and emits no events.
    */
-  _replaceCurrent() {
-    this._current = new Edit({ graph: new Graph(this.stable.graph) });
+  _replaceStaging() {
+    this._staging = new Edit({ graph: new Graph(this.stable.graph) });
     this._hasWorkInProgress = false;
   }
 
 
   /**
    * _updateChanges
-   * Recalculate the differences and emit `historychange` and `editchange` events.
-   * @return {Difference}  Difference between before and after of `current` Edit
+   * Recalculate the differences and emit `stablechange` and `stagingchange` events.
+   * @return {Difference}  Difference between before and after of `staging` Edit
    */
   _updateChanges() {
     if (this._inTransaction) return;
 
     const baseGraph = this.base.graph;
     const stableGraph = this.stable.graph;
-    const currentGraph = this.current.graph;
-    let currentDifference;
+    const stagingGraph = this.staging.graph;
+    let stagingDifference;
 
-    // note: `this._hasWorkInProgress` is included here because in some cases the graph
-    // won't actually change.. for example an Action that exits early or "performs" a no-op.
-    // We still want to generate an empty Difference and emit 'editchange' in these situations.
-    if (this._lastCurrentGraph !== currentGraph || this._hasWorkInProgress) {
-      currentDifference = new Difference(this._lastCurrentGraph, currentGraph);
-      this._lastCurrentGraph = currentGraph;
-      this.emit('editchange', currentDifference);
+    // Note: `this._hasWorkInProgress` is included here because in some cases the graph
+    // won't actually change - for example an Action that exits early or "performs" a no-op.
+    // We still want to generate an empty Difference and emit 'stagingchange' in these situations.
+    if (this._lastStagingGraph !== stagingGraph || this._hasWorkInProgress) {
+      stagingDifference = new Difference(this._lastStagingGraph, stagingGraph);
+      this._lastStagingGraph = stagingGraph;
+      this.emit('stagingchange', stagingDifference);
     }
 
     if (this._lastStableGraph !== stableGraph) {
       this._fullDifference = new Difference(baseGraph, stableGraph);
       const stableDifference = new Difference(this._lastStableGraph, stableGraph);
       this._lastStableGraph = stableGraph;
-      this.emit('historychange', stableDifference);
+      this.emit('stablechange', stableDifference);
       this.deferredBackup();
     }
 
-    return currentDifference;  // only one place in the code uses this return - split operation?
+    return stagingDifference;  // only one place in the code uses this return - split operation?
   }
 
 }

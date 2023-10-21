@@ -4,7 +4,7 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationContinue(context, selectedIDs) {
-  const graph = context.systems.editor.current.graph;
+  const graph = context.systems.editor.staging.graph;
   const filters = context.systems.filters;
   const l10n = context.systems.l10n;
 
@@ -42,7 +42,7 @@ export function operationContinue(context, selectedIDs) {
 
 
   operation.available = function() {
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     return geometries.vertex.length === 1 && geometries.line.length <= 1 &&
       !filters.hasHiddenConnections(continueFromNode, graph);
   };

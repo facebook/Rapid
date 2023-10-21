@@ -11,7 +11,7 @@ export function uiFieldLanes(context, uifield) {
     var _entityIDs = [];
 
     function lanes(selection) {
-        const graph = context.systems.editor.current.graph;
+        const graph = context.systems.editor.staging.graph;
         const lanesData = graph.entity(_entityIDs[0]).lanes();
 
         if (!context.container().select('.inspector-wrap.inspector-hidden').empty() || !selection.node().parentNode) {

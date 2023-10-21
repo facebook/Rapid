@@ -38,7 +38,7 @@ export function uiFieldText(context, uifield) {
 
 
   function calcLocked() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     // Protect certain fields that have a companion `*:wikidata` value
     const lockable = ['brand', 'network', 'operator', 'flag'];
     const isLocked = lockable.includes(uifield.id) && _entityIDs.length && _entityIDs.some(entityID => {

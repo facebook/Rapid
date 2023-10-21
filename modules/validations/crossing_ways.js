@@ -432,7 +432,7 @@ export function validationCrossingWays(context) {
             subtype: subtype,
             severity: 'warning',
             message: function() {
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 const entity1 = graph.hasEntity(this.entityIds[0]);
                 const entity2 = graph.hasEntity(this.entityIds[1]);
                 return (entity1 && entity2) ? l10n.tHtml('issues.crossing_ways.message', {
@@ -453,7 +453,7 @@ export function validationCrossingWays(context) {
             loc: crossing.crossPoint,
             autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function() {
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 var selectedIDs = context.selectedIDs();
                 if (context.mode?.id !== 'select-osm' || selectedIDs.length !== 1) return [];
 
@@ -522,7 +522,7 @@ export function validationCrossingWays(context) {
                 if (selectedIDs.length !== 1) return;
 
                 var selectedWayID = selectedIDs[0];
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 if (!graph.hasEntity(selectedWayID)) return;
 
                 var resultWayIDs = [selectedWayID];
@@ -806,7 +806,7 @@ export function validationCrossingWays(context) {
           const selectedID = selectedIDs[0];
           if (!this.issue.entityIds.some(entityID => entityID === selectedID)) return;
 
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const entity = graph.hasEntity(selectedID);
           if (!entity) return;
 

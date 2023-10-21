@@ -122,7 +122,7 @@ export function uiToolUndoRedo(context) {
     }
 
     map.on('draw', debouncedUpdate);
-    editor.on('historychange', update);
+    editor.on('stablechange', update);
     context.on('modechange', update);
   };
 
@@ -136,7 +136,7 @@ export function uiToolUndoRedo(context) {
 
     debouncedUpdate.cancel();
     map.off('draw', debouncedUpdate);
-    editor.off('historychange', update);
+    editor.off('stablechange', update);
     context.off('modechange', update);
     _tooltip = null;
     _buttons = null;

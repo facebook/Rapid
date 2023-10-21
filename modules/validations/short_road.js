@@ -60,7 +60,7 @@ export function validationShortRoad(context) {
         title: l10n.t('issues.fix.continue_from_start.title'),
         entityIds: [entity.first()],
         onClick: () => {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const vertex = graph.entity(entity.first());
           continueDrawing(entity, vertex, context);
         }
@@ -73,7 +73,7 @@ export function validationShortRoad(context) {
         title: l10n.t('issues.fix.continue_from_end.title'),
         entityIds: [entity.last()],
         onClick: () => {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const vertex = graph.entity(entity.last());
           continueDrawing(entity, vertex, context);
         }
@@ -99,7 +99,7 @@ export function validationShortRoad(context) {
       type: type,
       severity: 'warning',
       message: function() {
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
         if (!entity) return '';
         const entityLabel = l10n.displayLabel(entity, graph);

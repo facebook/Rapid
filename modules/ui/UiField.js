@@ -64,7 +64,7 @@ export class UiField {
     this._tags = {};
 
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const l10n = context.systems.l10n;
 
     this.entityExtent = null;
@@ -120,7 +120,7 @@ export class UiField {
 
     const editor = this.context.systems.editor;
     const baseGraph = editor.base.graph;
-    const currGraph = editor.current.graph;
+    const currGraph = editor.staging.graph;
 
     return this.entityIDs.some(entityID => {
       const original = baseGraph.hasEntity(entityID);
@@ -371,7 +371,7 @@ export class UiField {
    */
   isAllowed() {
     const context = this.context;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const locations = context.systems.locations;
     const presetField = this.presetField;
 

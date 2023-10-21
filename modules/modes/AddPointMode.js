@@ -81,7 +81,7 @@ export class AddPointMode extends AbstractMode {
   _click(eventData) {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const projection = context.projection;
     const coord = eventData.coord;

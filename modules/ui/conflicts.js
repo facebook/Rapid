@@ -277,13 +277,13 @@ export function uiConflicts(context) {
     let extent = new Extent();
     let graph, entity;
 
-    graph = editor.current.graph;
+    graph = editor.staging.graph;
     entity = graph.hasEntity(datum.id);
     if (entity) extent = extent.extend(entity.extent(graph));
 
     datum.action();
 
-    graph = editor.current.graph;
+    graph = editor.staging.graph;
     entity = graph.hasEntity(datum.id);
     if (entity) extent = extent.extend(entity.extent(graph));
 
@@ -296,7 +296,7 @@ export function uiConflicts(context) {
 //    context.surface().selectAll('.hover')
 //      .classed('hover', false);
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.hasEntity(id);
     if (entity) {
       if (extent) {

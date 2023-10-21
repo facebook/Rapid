@@ -7,7 +7,7 @@ import { utilTotalExtent } from '../util';
 
 export function operationCopy(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
@@ -26,7 +26,7 @@ export function operationCopy(context, selectedIDs) {
   let _point;
 
   let operation = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     let selected = Object.assign({ relation: [], way: [], node: [] }, utilArrayGroupBy(entities, 'type'));
     let canCopy = [];
     let skip = {};

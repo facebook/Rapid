@@ -44,7 +44,6 @@ export class ValidationSystem extends AbstractSystem {
     this._ignoredIssueIDs = new Set();
     this._resolvedIssueIDs = new Set();
     this._completeDiff = new Map();    // complete diff base -> head of what the user changed
-    this._headIsStable = false;
     this._deferredRIC = new Map();   // Deferred `requestIdleCallback` - Map(handle -> Promise.reject)
     this._deferredST = new Set();    // Deferred `setTimeout` - Set(handles)
     this._errorOverrides = [];
@@ -123,7 +122,7 @@ export class ValidationSystem extends AbstractSystem {
 
         // WHEN TO RUN VALIDATION:
         editor
-          .on('historychange', () => this.validateAsync())
+          .on('stablechange', () => this.validateAsync())
           .on('merge', entityIDs => this._validateBaseEntitiesAsync(entityIDs));
       });
   }
@@ -206,7 +205,6 @@ export class ValidationSystem extends AbstractSystem {
     this._base = new ValidationCache('base');
     this._head = new ValidationCache('head');
     this._completeDiff = new Map();
-    this._headIsStable = false;
   }
 
 
@@ -269,12 +267,12 @@ export class ValidationSystem extends AbstractSystem {
    * @return  {Array}  An Array containing the issues
    */
   getIssues(options) {
-    // Note that we use `current.graph` here, not `cache.graph`,
-    // because that is the graph that the calling code will be using.
+    // Note that we use `staging.graph` here, not `cache.graph` or `stable.graph`,
+    // because that is the Graph that the calling code will be using.
     const opts = Object.assign({ what: 'all', where: 'all', includeIgnored: false, includeDisabledRules: false }, options);
     const context = this.context;
     const view = context.systems.map.extent();
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     let seen = new Set();
     let results = [];
 
@@ -289,7 +287,7 @@ export class ValidationSystem extends AbstractSystem {
       if (opts.includeIgnored === 'only' && !this._ignoredIssueIDs.has(issue.id)) return false;
       if (!opts.includeIgnored && this._ignoredIssueIDs.has(issue.id)) return false;
 
-      // This issue may involve an entity that doesn't exist in `current.graph`.
+      // This issue may involve an entity that doesn't exist in `staging.graph`.
       // This can happen because validation is async and rendering the issue lists is async.
       if ((issue.entityIds || []).some(id => !graph.hasEntity(id))) return false;
 
@@ -353,11 +351,11 @@ export class ValidationSystem extends AbstractSystem {
    * @param  {ValidationIssue}  The Issue to focus on
    */
   focusIssue(issue) {
-    // Note that we use `current.graph` here, not `cache.graph`,
+    // Note that we use `staging.graph` here, not `cache.graph` or `stable.graph`
     // because that is the graph that the calling code will be using.
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const map = context.systems.map;
     let selectID;
     let focusCenter;
@@ -552,48 +550,44 @@ export class ValidationSystem extends AbstractSystem {
   validateAsync() {
     const context = this.context;
     const editor = context.systems.editor;
+
     if (editor.canRestoreBackup) return Promise.resolve();   // Wait to see if the user wants to restore their backup
+    if (this._validationPromise) return this._validationPromise;   // Validation already in progress
 
-    // Make sure the caches have graphs assigned to them.
-    // (We don't do this in `reset` because context is still resetting things and `base` is unstable then)
     const baseGraph = editor.base.graph;
-    if (!this._head.graph) this._head.graph = baseGraph;
-    if (!this._base.graph) this._base.graph = baseGraph;
+    const stableGraph = editor.stable.graph;
+    const previousGraph = this._head.graph ?? baseGraph;   // the previously validated graph (or base if none)
 
-    const prevGraph = this._head.graph;
-    const headGraph = editor.stable.graph;
-
-    if (headGraph === prevGraph) {   // this._head.graph is stable - we are caught up
-      this._headIsStable = true;
+    // We are caught up to the stable graph (or user hasn't edited anything yet)
+    if (stableGraph === previousGraph || stableGraph === baseGraph) {
       this.emit('validated');
       return Promise.resolve();
     }
 
-    if (this._validationPromise) {    // Validation already in process, but we aren't caught up to `stable`
-      this._headIsStable = false;     // We will need to catch up after the validation promise fulfills
-      return this._validationPromise;
-    }
-
-    // If we get here, it's time to start validating stuff.
-    this._head.graph = headGraph;  // take snapshot
+    // If we get here, it's time to try validating the stable graph..
+    this._head.graph = stableGraph;   // take snapshot
     this._completeDiff = editor.difference().complete();
-    const incrementalDiff = new Difference(prevGraph, headGraph);
-    let entityIDs = [...incrementalDiff.complete().keys()];
+    const incrementalDiff = new Difference(previousGraph, stableGraph);
+    let entityIDs = [ ...incrementalDiff.complete().keys() ];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set
 
-    if (!entityIDs.size) {
+    if (!entityIDs.size) {    // nothing to do - committed a no-op edit?
       this.emit('validated');
       return Promise.resolve();
     }
 
-    this._validationPromise = this._validateEntitiesAsync(entityIDs, this._head)
+    this._validationPromise = this._validateEntitiesAsync(this._head, entityIDs)
       .then(() => this._updateResolvedIssues(entityIDs))
       .then(() => this.emit('validated'))
       .catch(e => console.error(e))  // eslint-disable-line
       .then(() => {
         this._validationPromise = null;
-        if (!this._headIsStable) {
-          this.validateAsync();   // run it again to catch up to `stable` graph
+
+        // Check if `stable` has changed while we were validating, and run it again to catch up if needed...
+        const stableGraph = editor.stable.graph;
+        const previousGraph = this._head.graph;
+        if (stableGraph !== previousGraph) {
+          this.validateAsync();  // recurse
         }
       });
 
@@ -616,13 +610,14 @@ export class ValidationSystem extends AbstractSystem {
     if (!entityIDs) return Promise.resolve();
 
     // Make sure the caches have graphs assigned to them.
-    // (We don't do this in `reset` because context is still resetting things and `base` is unstable then)
+    // (We don't do this in `reset` because EditSystem is still resetting things and `base`/`stable` may be wrong)
     const baseGraph = editor.base.graph;
-    if (!this._head.graph) this._head.graph = baseGraph;
+    const stableGraph = editor.stable.graph;
     if (!this._base.graph) this._base.graph = baseGraph;
+    if (!this._head.graph) this._head.graph = stableGraph;
 
     entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
-    return this._validateEntitiesAsync(entityIDs, this._base);
+    return this._validateEntitiesAsync(this._base, entityIDs);
   }
 
 
@@ -631,7 +626,7 @@ export class ValidationSystem extends AbstractSystem {
    * Runs all validation rules on a single entity.
    * Some things to note:
    *  - Graph is passed in from whenever the validation was started.  Validators shouldn't use
-   *    the current graph because this all happens async, and the graph might have changed
+   *    the staging/stable graphs because this all happens async, and the graph might have changed
    *   (for example, nodes getting deleted before the validation can run)
    *  - Validator functions may still be waiting on something and return a "provisional" result.
    *    In this situation, we will schedule to revalidate the entity sometime later.
@@ -727,12 +722,11 @@ export class ValidationSystem extends AbstractSystem {
    * _validateEntitiesAsync
    * Schedule validation for many entities.
    * This may take time but happen in the background during browser idle time.
-   * @param  {Array|Set}        entityIDs - The entityIDs to validate
-   * @param  {Graph}            graph     - The Graph to validate that contains those entities
    * @param  {ValidationCache}  cache     - The cache to store results in (`_head` or `_base`)
+   * @param  {Array|Set}        entityIDs - The entityIDs to validate
    * @return {Promise}  Promise fulfilled when the validation has completed.
    */
-  _validateEntitiesAsync(entityIDs, cache) {
+  _validateEntitiesAsync(cache, entityIDs) {
     // Enqueue the work
     const jobs = Array.from(entityIDs).map(entityID => {
       if (cache.queuedEntityIDs.has(entityID)) return null;  // queued already
@@ -791,7 +785,7 @@ export class ValidationSystem extends AbstractSystem {
     const handle = window.setTimeout(() => {
       this._deferredST.delete(handle);
       if (!cache.provisionalEntityIDs.size) return;  // nothing to do
-      this._validateEntitiesAsync(cache.provisionalEntityIDs, cache);
+      this._validateEntitiesAsync(cache, cache.provisionalEntityIDs);
     }, RETRY);
 
     this._deferredST.add(handle);

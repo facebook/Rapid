@@ -58,7 +58,7 @@ describe('PixiRenderer', () => {
     context = Rapid.coreContext().assetPath('../dist/').init().container(content);
 
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     graph.rebase(graphEntities, [graph], false);
     map = context.systems.map;
     content.call(map);

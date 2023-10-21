@@ -73,7 +73,7 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const l10n = context.systems.l10n;
 //    const osm = context.services.osm;
 

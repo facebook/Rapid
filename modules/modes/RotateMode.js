@@ -43,7 +43,7 @@ export class RotateMode extends AbstractMode {
   enter(options = {}) {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const filters = context.systems.filters;
     const locations = context.systems.locations;
     const map = context.systems.map;
@@ -111,7 +111,7 @@ export class RotateMode extends AbstractMode {
 
     // If there is work in progress, finalize it.
     if (editor.hasWorkInProgress) {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const annotation = (this._entityIDs.length === 1) ?
         l10n.t('operations.rotate.annotation.' + graph.geometry(this._entityIDs[0])) :
         l10n.t('operations.rotate.annotation.feature', { n: this._entityIDs.length });
@@ -197,7 +197,7 @@ export class RotateMode extends AbstractMode {
 
     // Update selected/active collections to contain the current moved entities
     this._selectedData.clear();
-    const currGraph = editor.current.graph;
+    const currGraph = editor.staging.graph;
     for (const entityID of this._entityIDs) {
       this._selectedData.set(entityID, currGraph.entity(entityID));
     }
@@ -212,7 +212,7 @@ export class RotateMode extends AbstractMode {
   _calcPivotLoc() {
     const context = this.context;
     const projection = context.projection;
-    const graph = context.systems.editor.current.graph;
+    const graph = context.systems.editor.staging.graph;
     const nodes = utilGetAllNodes(this._entityIDs, graph);
     const points = nodes.map(node => projection.project(node.loc));
 
@@ -254,7 +254,7 @@ export class RotateMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
 
-    editor.rollback();
+    editor.revert();
     context.enter('select-osm', { selection: { osm: this._entityIDs }} );
   }
 

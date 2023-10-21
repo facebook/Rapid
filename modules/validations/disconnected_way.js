@@ -25,7 +25,7 @@ export function validationDisconnectedWay(context) {
       subtype: 'highway',
       severity: 'warning',
       message: function() {
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = this.entityIds.length && graph.hasEntity(this.entityIds[0]);
         const label = entity && l10n.displayLabel(entity, graph);
         return l10n.tHtml('issues.disconnected_way.routable.message', { count: this.entityIds.length, highway: label });
@@ -37,7 +37,7 @@ export function validationDisconnectedWay(context) {
 
 
     function makeFixes() {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const singleEntity = this.entityIds.length === 1 && graph.hasEntity(this.entityIds[0]);
       let fixes = [];
 
@@ -181,7 +181,7 @@ export function validationDisconnectedWay(context) {
         title: l10n.tHtml(`issues.fix.continue_from_${whichEnd}.title`),
         entityIds: [vertexID],
         onClick: function() {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const wayID = this.issue.entityIds[0];
           const way = graph.hasEntity(wayID);
           const vertexID = this.entityIds[0];

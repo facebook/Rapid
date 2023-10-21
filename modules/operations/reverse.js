@@ -11,7 +11,7 @@ export function operationReverse(context, selectedIDs) {
 
 
   function getAction(entityID) {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.hasEntity(entityID);
     if (!entity) return null;
 
@@ -26,7 +26,7 @@ export function operationReverse(context, selectedIDs) {
 
 
   function getReverseType() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const nodeActionCount = actions.filter(action => {
       const entity = graph.hasEntity(action.entityID());
       return entity?.type === 'node';

@@ -174,7 +174,7 @@ export function uiSidebar(context) {
         sidebar.hoverModeSelect = _throttle(hoverModeSelect, 200);
 
         function hover(targets) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             let datum = targets && targets.length && targets[0];
 
             if (datum && datum.__featurehash__) { // hovering on data
@@ -292,7 +292,7 @@ export function uiSidebar(context) {
             sidebar.hide();
 
             if (ids && ids.length) {
-                const graph = editor.current.graph;
+                const graph = editor.staging.graph;
                 const entity = ids.length === 1 && graph.entity(ids[0]);
                 if (entity && newFeature && selection.classed('collapsed')) {
                     // uncollapse the sidebar

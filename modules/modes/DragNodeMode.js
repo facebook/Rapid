@@ -60,7 +60,7 @@ export class DragNodeMode extends AbstractMode {
     const midpoint = options.midpoint;
     const nodeID = options.nodeID;
 
-    let graph = editor.current.graph;
+    let graph = editor.staging.graph;
     let entity;
 
     if (midpoint) {
@@ -68,10 +68,10 @@ export class DragNodeMode extends AbstractMode {
       if (!graph.hasEntity(midpoint.edge[1])) return;
       entity = osmNode();
       editor.perform(actionAddMidpoint(midpoint, entity));
-      graph = editor.current.graph;         // refresh with post-action graph
+      graph = editor.staging.graph;         // refresh with post-action graph
       entity = graph.hasEntity(entity.id);  // refresh with post-action entity
       if (!entity) {  // somehow the midpoint did not convert to a node
-        editor.rollback();
+        editor.revert();
         return;
       }
       this._wasMidpoint = true;
@@ -157,7 +157,7 @@ export class DragNodeMode extends AbstractMode {
   _refreshEntities() {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     this._selectedData.clear();
     this.dragNode = this.dragNode && graph.hasEntity(this.dragNode.id);
@@ -182,7 +182,7 @@ export class DragNodeMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const projection = context.projection;
     const coord = eventData.coord;
@@ -235,7 +235,7 @@ export class DragNodeMode extends AbstractMode {
   /**
    * _end
    * Complete the drag.
-   * This calls `commit` to finalize the current edit with an annotation so that we can undo/redo to here.
+   * This calls `commit` to finalize the staging edit.
    * @param  eventData  `Object` data received from the drag behavior
    */
   _end(eventData) {
@@ -244,7 +244,7 @@ export class DragNodeMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
-    let graph = editor.current.graph;
+    let graph = editor.staging.graph;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -280,10 +280,7 @@ export class DragNodeMode extends AbstractMode {
       annotation = this._moveAnnotation();
     }
 
-    editor.commit({
-      annotation: annotation,
-      selectedIDs: [this.dragNode.id]
-    });
+    editor.commit({ annotation: annotation, selectedIDs: [this.dragNode.id] });
 
     // Choose next mode
     // (Note that if the drag node is gone, select mode will fallback to browse mode)
@@ -303,7 +300,7 @@ export class DragNodeMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const l10n = context.systems.l10n;
 
     const geometry = this.dragNode.geometry(graph);
@@ -320,7 +317,7 @@ export class DragNodeMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const l10n = context.systems.l10n;
 
     const nodeGeometry = this.dragNode.geometry(graph);
@@ -352,7 +349,7 @@ export class DragNodeMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const presets = context.systems.presets;
 
     return this.dragNode.geometry(graph) !== 'vertex' ||
@@ -369,7 +366,7 @@ export class DragNodeMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
 
-    editor.rollback();
+    editor.revert();
     this.context.enter('browse');
   }
 

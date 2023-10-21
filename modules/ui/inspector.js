@@ -22,7 +22,7 @@ export function uiInspector(context) {
 
 
   function inspector(selection) {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     presetList
       .entityIDs(_entityIDs)

@@ -60,7 +60,7 @@ export function uiImproveOsmDetails(context) {
         const link = d3_select(node);
         const isObjectLink = link.classed('error_object_link');
         const entityID = isObjectLink ? (_qaItem.objectType.charAt(0) + _qaItem.objectId) : node.textContent;
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const entity = graph.hasEntity(entityID);
 
         relatedEntities.push(entityID);

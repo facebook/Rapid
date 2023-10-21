@@ -191,7 +191,7 @@ export function validationOutdatedTags(context) {
 
 
     function showUpgradeMessage() {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const currEntity = graph.hasEntity(entity.id);
       if (!currEntity) return '';
 
@@ -292,7 +292,7 @@ export function validationOutdatedTags(context) {
 
 
     function showMultipolygonMessage() {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       let currMultipolygon = graph.hasEntity(multipolygon.id);
       if (!currMultipolygon) return '';
 

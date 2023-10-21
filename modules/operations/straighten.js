@@ -8,7 +8,7 @@ import { utilTotalExtent } from '../util/index';
 
 export function operationStraighten(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
@@ -30,7 +30,7 @@ export function operationStraighten(context, selectedIDs) {
 
 
   function chooseAction() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     // straighten selected nodes
     if (ways.length === 0 && nodes.length > 2) {
@@ -97,7 +97,7 @@ export function operationStraighten(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const disabledReason = action.disabled(graph);
 
     if (disabledReason) {

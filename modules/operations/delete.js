@@ -9,7 +9,7 @@ import { utilTotalExtent } from '../util';
 
 export function operationDelete(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
@@ -24,7 +24,7 @@ export function operationDelete(context, selectedIDs) {
 
 
   let operation = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     let nextNode;
     let nextLoc;
 
@@ -76,7 +76,7 @@ export function operationDelete(context, selectedIDs) {
 
 
   operation.disabled = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     if (!isNew && tooLarge()) {
       return 'too_large';
@@ -150,7 +150,7 @@ export function operationDelete(context, selectedIDs) {
 
 
   operation.annotation = function() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return selectedIDs.length === 1 ?
       l10n.t('operations.delete.annotation.' + graph.geometry(selectedIDs[0])) :
       l10n.t('operations.delete.annotation.feature', { n: selectedIDs.length });

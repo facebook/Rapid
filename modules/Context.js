@@ -117,7 +117,7 @@ export class Context extends EventEmitter {
     const filters = this.systems.filters;
     this.hasHiddenConnections = (entityID) => {
       const editor = this.systems.editor;
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const entity = graph.entity(entityID);
       return filters.hasHiddenConnections(entity, graph);
     };
@@ -414,7 +414,7 @@ export class Context extends EventEmitter {
   get copyIDs() { return this._copyIDs; }
   set copyIDs(val) {
     this._copyIDs = val;
-    this._copyGraph = this.systems.editor.current.graph;
+    this._copyGraph = this.systems.editor.staging.graph;
   }
 
   get copyLoc()     { return this._copyLoc; }

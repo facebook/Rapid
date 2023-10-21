@@ -77,7 +77,7 @@ export class DrawLineMode extends AbstractMode {
   enter(options = {}) {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     const continueNodeID = options.continueNodeID;
     const continueWayID = options.continueWayID;
@@ -168,7 +168,7 @@ export class DrawLineMode extends AbstractMode {
 
 
     editor.beginTransaction();
-    editor.rollback();    // rollback work-in-progress, i.e. the temporary drawing node
+    editor.revert();    // revert work-in-progress, i.e. the temporary drawing node
 
     // Confirm that the draw way exists and is valid..
     // If any issues, revert back to how things were before we started.
@@ -221,7 +221,7 @@ export class DrawLineMode extends AbstractMode {
     scene.clearClass('drawing');
     this._selectedData.clear();
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const drawWay = this.drawWayID && graph.hasEntity(this.drawWayID);
     const drawNode = this.drawWayID && graph.hasEntity(this.drawNodeID);
     const lastNode = this.lastNodeID && graph.hasEntity(this.lastNodeID);
@@ -253,7 +253,7 @@ export class DrawLineMode extends AbstractMode {
   _getAnnotation() {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const l10n = context.systems.l10n;
 
     const drawWay = this.drawWayID && graph.hasEntity(this.drawWayID);
@@ -283,7 +283,7 @@ export class DrawLineMode extends AbstractMode {
     const dist = this._lastCoord ? vecLength(coord, this._lastCoord) : 0;
     this._lastCoord = coord;
 
-    let graph = editor.current.graph;
+    let graph = editor.staging.graph;
     let drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
 
     editor.beginTransaction();
@@ -296,7 +296,7 @@ export class DrawLineMode extends AbstractMode {
     if (!drawNode) {
       if (dist > 1) {  // The user is moving the pointer so we really need a draw node!
         drawNode = this._addDrawNode();
-        graph = editor.current.graph;
+        graph = editor.staging.graph;
       } else {         // Never mind, the user is undoing/redoing - not moving!
         editor.endTransaction();
         return;
@@ -347,7 +347,7 @@ export class DrawLineMode extends AbstractMode {
 
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
-    let graph = editor.current.graph;
+    let graph = editor.staging.graph;
     let drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
 
     // Start transaction now - if we are making a draw node, we want it included.
@@ -358,7 +358,7 @@ export class DrawLineMode extends AbstractMode {
     // If we receive a 'click', we really do need a draw node now!
     if (this.drawWayID && !drawNode) {
       drawNode = this._addDrawNode();
-      graph = editor.current.graph;
+      graph = editor.staging.graph;
     }
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.
@@ -414,7 +414,7 @@ export class DrawLineMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
 
-    let graph = editor.current.graph;
+    let graph = editor.staging.graph;
     let drawWay = this.drawWayID && graph.hasEntity(this.drawWayID);
     let drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
     let lastNode = this.lastNodeID && graph.hasEntity(this.lastNodeID);
@@ -481,7 +481,7 @@ export class DrawLineMode extends AbstractMode {
     const editor = context.systems.editor;
     const midpoint = { loc: loc, edge: edge };
 
-    let graph = editor.current.graph;
+    let graph = editor.staging.graph;
     let drawWay = this.drawWayID && graph.hasEntity(this.drawWayID);
     let drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
     let lastNode = this.lastNodeID && graph.hasEntity(this.lastNodeID);
@@ -554,7 +554,7 @@ export class DrawLineMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
 
-    let graph = editor.current.graph;
+    let graph = editor.staging.graph;
     let drawWay = this.drawWayID && graph.hasEntity(this.drawWayID);
     let drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
     let lastNode = this.lastNodeID && graph.hasEntity(this.lastNodeID);
@@ -663,7 +663,7 @@ export class DrawLineMode extends AbstractMode {
   _finish() {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const drawWay = this.drawWayID && graph.hasEntity(this.drawWayID);
 
     if (drawWay) {

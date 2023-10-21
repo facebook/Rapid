@@ -30,7 +30,7 @@ export function uiIntroRapid(context, curtain) {
   }
 
   function _isTulipLaneAccepted() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return graph.hasEntity(tulipLaneID);
   }
 

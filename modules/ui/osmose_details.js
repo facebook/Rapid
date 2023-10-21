@@ -141,7 +141,7 @@ export function uiOsmoseDetails(context) {
             const node = nodes[i];
             const link = d3_select(node);
             const entityID = node.textContent;
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             const entity = graph.hasEntity(entityID);
 
             // Add click handler

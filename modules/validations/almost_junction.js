@@ -54,7 +54,7 @@ export function validationAlmostJunction(context) {
         subtype: 'highway-highway',
         severity: 'warning',
         message: function() {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const entity1 = graph.hasEntity(this.entityIds[0]);
           if (this.entityIds[0] === this.entityIds[2]) {
             return entity1 ? l10n.tHtml('issues.almost_junction.self.message', {
@@ -89,7 +89,7 @@ export function validationAlmostJunction(context) {
 
 
     function makeFixes() {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
 
       let fixes = [new ValidationFix({
         icon: 'rapid-icon-abutment',

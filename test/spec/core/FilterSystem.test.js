@@ -18,7 +18,7 @@ describe('FilterSystem', () => {
 
   class MockEditSystem {
     constructor() {}
-    get current() { return { graph: new Rapid.Graph() }; }
+    get staging() { return { graph: new Rapid.Graph() }; }
   }
 
   class MockContext {

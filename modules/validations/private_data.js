@@ -84,7 +84,7 @@ export function validationPrivateData(context) {
 
 
     function showMessage() {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const currEntity = graph.hasEntity(this.entityIds[0]);
       if (!currEntity) return '';
 

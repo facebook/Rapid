@@ -45,7 +45,7 @@ export function validationMissingRole(context) {
       type: type,
       severity: 'warning',
       message: function() {
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         const member = graph.hasEntity(this.entityIds[1]);
         const relation = graph.hasEntity(this.entityIds[0]);
         return (member && relation) ? l10n.tHtml('issues.missing_role.message', {

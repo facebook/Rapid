@@ -7,7 +7,7 @@ import { utilTotalExtent } from '../util';
 
 export function operationOrthogonalize(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
@@ -23,7 +23,7 @@ export function operationOrthogonalize(context, selectedIDs) {
 
 
   function getAction(entity) {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const geometry = entity.geometry(graph);
 
     // square a line/area
@@ -77,7 +77,7 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.disabled = function() {
     if (!actions.length) return '';
 
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const disabledReasons = actions.map(action => action.disabled(graph)).filter(Boolean);
     if (disabledReasons.length === actions.length) {   // none of the features can be squared
       if (new Set(disabledReasons).size > 1) {

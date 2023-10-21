@@ -129,7 +129,7 @@ export class DragBehavior extends AbstractBehavior {
   _pointermove(e) {
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const map = context.systems.map;
 
     // If we detect the edit (right-click) menu, we should cease any dragging behavior.

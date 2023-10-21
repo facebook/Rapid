@@ -47,7 +47,7 @@ export function uiFieldWikipedia(context, uifield) {
     .fetcher((value, callback) => {
       if (!value) {
         value = '';
-        const graph = editor.current.graph;
+        const graph = editor.staging.graph;
         for (let i in _entityIDs) {
           let entity = graph.hasEntity(_entityIDs[i]);
           if (entity.tags.name) {
@@ -220,14 +220,14 @@ export function uiFieldWikipedia(context, uifield) {
     if (skipWikidata || !value || !language()[2]) return;
 
     // attempt asynchronous update of wikidata tag..
-    const initGraph = editor.current.graph;
+    const initGraph = editor.staging.graph;
     const initEntityIDs = _entityIDs;
 
     wikidata.itemsByTitle(language()[2], value, (err, data) => {
       if (err || !data || !Object.keys(data).length) return;
 
       // If graph has changed, we can't apply this update.
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       if (graph !== initGraph) return;
 
       const qids = Object.keys(data);

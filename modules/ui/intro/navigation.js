@@ -30,7 +30,7 @@ export function uiIntroNavigation(context, curtain) {
 
   // Helper functions
   function _isTownHallSelected() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     if (!graph.hasEntity(townHallID)) return false;
     if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
@@ -38,12 +38,12 @@ export function uiIntroNavigation(context, curtain) {
   }
 
   function _doesSpringStreetExist() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return graph.hasEntity(springStreetID);
   }
 
   function _isSpringStreetSelected() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     if (!graph.hasEntity(springStreetID)) return false;
     if (context.mode?.id !== 'select-osm') return false;
     const ids = context.selectedIDs();
@@ -278,7 +278,7 @@ export function uiIntroNavigation(context, curtain) {
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       // preset match, in case the user happened to change it.
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       const entity = graph.entity(context.selectedIDs()[0]);
       const preset = presets.match(entity, graph);
 

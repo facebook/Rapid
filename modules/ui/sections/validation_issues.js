@@ -42,7 +42,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
     const center = map.center();
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     // sort issues by distance away from the center of the map
     let toDisplay = _issues

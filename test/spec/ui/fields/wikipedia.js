@@ -10,7 +10,7 @@ describe('uiFieldWikipedia', () => {
 
   class MockEditSystem {
     constructor() {}
-    get current() { return { graph: graph }; }
+    get staging() { return { graph: graph }; }
   }
 
   class MockLocalizationSystem {
@@ -151,7 +151,7 @@ describe('uiFieldWikipedia', () => {
     happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
 
     // t0
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     expect(graph.entity(entity.id).tags.wikidata).to.be.undefined;
 
     // t30:  graph change - Set title to "Title"
@@ -165,7 +165,7 @@ describe('uiFieldWikipedia', () => {
 
     // t70:  check that wikidata unchanged
     window.setTimeout(() => {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       expect(graph.entity(entity.id).tags.wikidata).to.be.undefined;
     }, 70);
 
@@ -173,7 +173,7 @@ describe('uiFieldWikipedia', () => {
 
     // t100:  check that wikidata has changed
     window.setTimeout(() => {
-      const graph = editor.current.graph;
+      const graph = editor.staging.graph;
       expect(graph.entity(entity.id).tags.wikidata).to.equal('Q216353');
 
       expect(spy.callCount).to.equal(4);

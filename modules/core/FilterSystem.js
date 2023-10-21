@@ -140,7 +140,7 @@ export class FilterSystem extends AbstractSystem {
 //    editor.on('merge.features', function(newEntities) {
 //      if (!newEntities) return;
 //      var handle = window.requestIdleCallback(function() {
-//        var graph = editor.current.graph;
+//        var graph = editor.staging.graph;
 //        var types = utilArrayGroupBy(newEntities, 'type');
 //        // ensure that getMatches is called on relations before ways
 //        var entities = [].concat(types.relation || [], types.way || [], types.node || []);
@@ -597,7 +597,7 @@ export class FilterSystem extends AbstractSystem {
     this._forceVisible = new Set();
 
     const editor = this.context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     for (const entityID of entityIDs) {
       this._forceVisible.add(entityID);

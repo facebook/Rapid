@@ -27,14 +27,14 @@ export function uiIntroBuilding(context, curtain) {
   let _rejectStep = null;
   let _onMapMove = null;
   let _onModeChange = null;
-  let _onHistoryChange = null;
+  let _onStableChange = null;
   let _houseID = null;
   let _tankID = null;
 
 
   // Helper functions
   function _doesHouseExist() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return _houseID && graph.hasEntity(_houseID);
   }
 
@@ -45,7 +45,7 @@ export function uiIntroBuilding(context, curtain) {
   }
 
   function _doesTankExist() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return _tankID && graph.hasEntity(_tankID);
   }
 
@@ -115,7 +115,7 @@ export function uiIntroBuilding(context, curtain) {
         if (context.mode?.id !== 'draw-area') { resolve(addHouseAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
-        _onHistoryChange = (difference) => {
+        _onStableChange = (difference) => {
           for (const entity of difference.created()) {  // created a node and a way
             if (entity.type === 'way') {
               _houseID = entity.id;
@@ -136,7 +136,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -150,7 +150,7 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => {
         if (_doesHouseExist() && _isHouseSelected()) {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const way = graph.entity(_houseID);
           const nodes = graph.childNodes(way);
           const points = utilArrayUniq(nodes).map(n => context.projection.project(n.loc));
@@ -241,10 +241,10 @@ export function uiIntroBuilding(context, curtain) {
         if (!_isHouseSelected()) context.enter('select-osm', { selection: { osm: [_houseID] }} );
 
         _onModeChange = reject;   // disallow mode change
-        _onHistoryChange = (difference) => {
+        _onStableChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             if (presets.match(modified[0], graph) === housePreset) {
               resolve(hasHouseAsync);
             } else {
@@ -266,7 +266,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-list-button').on('click.intro', null);
       });
@@ -278,7 +278,7 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
 
     // Make sure it's still a house, in case user somehow changed it..
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.entity(_houseID);
     const preset = presets.match(entity, graph);
     if (preset !== housePreset) {
@@ -307,7 +307,7 @@ export function uiIntroBuilding(context, curtain) {
       .setCenterZoomAsync(houseExtent.center(), setZoom, 100)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        _onHistoryChange = reject;  // disallow doing anything else
+        _onStableChange = reject;  // disallow doing anything else
 
         const textID = (context.lastPointerType === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
@@ -320,7 +320,7 @@ export function uiIntroBuilding(context, curtain) {
         });
       }))
       .finally(() => {
-        _onHistoryChange = null;
+        _onStableChange = null;
         editMenu.on('toggled.intro', null);
       });
   }
@@ -353,8 +353,8 @@ export function uiIntroBuilding(context, curtain) {
         };
 
         _onModeChange = reject;   // disallow mode change
-        _onHistoryChange = () => {
-          _onHistoryChange = null;
+        _onStableChange = () => {
+          _onStableChange = null;
           _onMapMove = null;
           curtain.reveal({ revealExtent: houseExtent });  // watch it change
           resolve();
@@ -375,7 +375,7 @@ export function uiIntroBuilding(context, curtain) {
       .finally(() => {
         _onMapMove = null;
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -451,7 +451,7 @@ export function uiIntroBuilding(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
-      _onHistoryChange = (difference) => {
+      _onStableChange = (difference) => {
         for (const entity of difference.created()) {  // created a node and a way
           if (entity.type === 'way') {
             _tankID = entity.id;
@@ -471,7 +471,7 @@ export function uiIntroBuilding(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onHistoryChange = null;
+      _onStableChange = null;
     });
   }
 
@@ -517,10 +517,10 @@ export function uiIntroBuilding(context, curtain) {
         if (!_isTankSelected()) context.enter('select-osm', { selection: { osm: [_tankID] }} );
 
         _onModeChange = reject;   // disallow mode change
-        _onHistoryChange = (difference) => {
+        _onStableChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             if (presets.match(modified[0], graph) === tankPreset) {
               resolve(hasTankAsync);
             } else {
@@ -561,7 +561,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -573,7 +573,7 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesTankExist()) return Promise.resolve(addTankAsync);
 
     // Make sure it's still a tank, in case user somehow changed it..
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const entity = graph.entity(_tankID);
     const preset = presets.match(entity, graph);
     if (preset !== tankPreset) {
@@ -597,7 +597,7 @@ export function uiIntroBuilding(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onHistoryChange = reject;  // disallow doing anything else
+      _onStableChange = reject;  // disallow doing anything else
 
       const textID = (context.lastPointerType === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
       curtain.reveal({
@@ -610,7 +610,7 @@ export function uiIntroBuilding(context, curtain) {
       });
     })
     .finally(() => {
-      _onHistoryChange = null;
+      _onStableChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -643,9 +643,9 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        _onHistoryChange = () => {
+        _onStableChange = () => {
           _onMapMove = null;
-          _onHistoryChange = null;
+          _onStableChange = null;
           curtain.reveal({ revealExtent: tankExtent });  // watch it change
           resolve();
         };
@@ -665,7 +665,7 @@ export function uiIntroBuilding(context, curtain) {
       .finally(() => {
         _onMapMove = null;
         _onModeChange = null;
-        _onHistoryChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -707,18 +707,18 @@ export function uiIntroBuilding(context, curtain) {
     _rejectStep = null;
     _onMapMove = null;
     _onModeChange = null;
-    _onHistoryChange = null;
+    _onStableChange = null;
 
     context.on('modechange', _modeChangeListener);
     map.on('move', _mapMoveListener);
-    editor.on('historychange', _historyChangeListener);
+    editor.on('stablechange', _stableChangeListener);
 
     runAsync(addHouseAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
         map.off('move', _mapMoveListener);
-        editor.off('historychange', _historyChangeListener);
+        editor.off('stablechange', _stableChangeListener);
       });
 
     function _mapMoveListener(...args) {
@@ -727,8 +727,8 @@ export function uiIntroBuilding(context, curtain) {
     function _modeChangeListener(...args) {
       if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _historyChangeListener(...args) {
-      if (typeof _onHistoryChange === 'function') _onHistoryChange(...args);
+    function _stableChangeListener(...args) {
+      if (typeof _onStableChange === 'function') _onStableChange(...args);
     }
   };
 

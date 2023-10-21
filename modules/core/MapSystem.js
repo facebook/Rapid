@@ -227,7 +227,7 @@ export class MapSystem extends AbstractSystem {
         }
         this.deferredRedraw();
       })
-      .on('editchange', difference => {
+      .on('stagingchange', difference => {
         // todo - maybe only do this if difference.didChange.geometry?
         const complete = difference.complete();
         for (const entity of complete.values()) {
@@ -595,7 +595,7 @@ export class MapSystem extends AbstractSystem {
     let extent;
 
     const editor = this.context.systems.editor;
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
 
     if (Array.isArray(entities)) {
       extent = utilTotalExtent(entities, graph);
@@ -626,7 +626,7 @@ export class MapSystem extends AbstractSystem {
         context.enter('select-osm', { selection: { osm: [entity.id] }} );
       }
 
-      const currGraph = editor.current.graph;  // may have changed by the time we get in here
+      const currGraph = editor.staging.graph;  // may have changed by the time we get in here
       const extent = entity.extent(currGraph);
       // Can't see it, or we're forcing the fit.
       if (extent.percentContainedIn(this.extent()) < 0.8 || doFit) {
@@ -634,7 +634,7 @@ export class MapSystem extends AbstractSystem {
       }
     };
 
-    const currGraph = editor.current.graph;
+    const currGraph = editor.staging.graph;
     let entity = currGraph.hasEntity(entityID);
     if (entity) {   // have it already
       gotEntity(entity);

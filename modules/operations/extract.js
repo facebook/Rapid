@@ -7,7 +7,7 @@ import { utilTotalExtent } from '../util';
 
 export function operationExtract(context, selectedIDs) {
   const editor = context.systems.editor;
-  const graph = editor.current.graph;
+  const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
@@ -53,7 +53,7 @@ export function operationExtract(context, selectedIDs) {
 
 //    // Consider:  Move to mouse pointer?  (Like how paste works)
 //    let extent = new Extent();
-//    const graph = editor.current.graph;
+//    const graph = editor.staging.graph;
 //    for (const entityID of extractedNodeIDs) {
 //      const entity = graph.entity(entityID);
 //      extent = extent.extend(entity.extent(graph));
@@ -79,7 +79,7 @@ export function operationExtract(context, selectedIDs) {
 
 
   operation.disabled = function () {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (selectedIDs.some(entityID => {

@@ -3,7 +3,7 @@ describe('operationStraighten', () => {
 
   class MockEditSystem {
     constructor() {}
-    get current() { return { graph: _graph }; }
+    get staging() { return { graph: _graph }; }
   }
 
   class MockLocalizationSystem {

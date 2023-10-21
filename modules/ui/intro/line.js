@@ -40,14 +40,14 @@ export function uiIntroLine(context, curtain) {
   let _rejectStep = null;
   let _onMapMove = null;
   let _onModeChange = null;
-  let _onEditChange = null;
+  let _onStagingChange = null;
   let _washingtonSegmentID = null;
   let _lineID = null;
 
 
   // Helper functions
   function _doesLineExist() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return _lineID && graph.hasEntity(_lineID);
   }
 
@@ -58,7 +58,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _isLineConnected() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     const tulipRoad = _lineID && graph.hasEntity(_lineID);
     const flowerStreet = flowerStreetID && graph.hasEntity(flowerStreetID);
     if (!tulipRoad || !flowerStreet) return false;
@@ -70,7 +70,7 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _hasWoodStreetParts() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return graph.hasEntity(woodStreetID) && graph.hasEntity(woodStreetEndID);
   }
 
@@ -81,12 +81,12 @@ export function uiIntroLine(context, curtain) {
   }
 
   function _has12thAvenueParts() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return graph.hasEntity(washingtonStreetID) && graph.hasEntity(twelfthAvenueID) && graph.hasEntity(eleventhAvenueEndID);
   }
 
   function _hasWashingtonSegment() {
-    const graph = editor.current.graph;
+    const graph = editor.staging.graph;
     return _washingtonSegmentID && graph.hasEntity(_washingtonSegmentID);
   }
 
@@ -155,7 +155,7 @@ export function uiIntroLine(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
-      _onEditChange = (difference) => {
+      _onStagingChange = (difference) => {
         for (const entity of difference.created()) {  // created a node and a way
           if (entity.type === 'way') {
             _lineID = entity.id;
@@ -175,7 +175,7 @@ export function uiIntroLine(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
     });
   }
 
@@ -193,7 +193,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist() || context.mode?.id !== 'draw-line') { resolve(addLineAsync); return; }
 
         _onModeChange = () => resolve(retryIntersectAsync);
-        _onEditChange = () => {
+        _onStagingChange = () => {
           if (_isLineConnected()) resolve(finishLineAsync);
         };
 
@@ -204,7 +204,7 @@ export function uiIntroLine(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStagingChange = null;
       });
   }
 
@@ -326,10 +326,10 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
-        _onEditChange = (difference) => {
+        _onStagingChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             if (presets.match(modified[0], graph) === residentialPreset) {
               resolve(nameRoadAsync);
             } else {
@@ -347,7 +347,7 @@ export function uiIntroLine(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStagingChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
       });
   }
@@ -382,10 +382,10 @@ export function uiIntroLine(context, curtain) {
         }
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = (difference) => {
+        _onStagingChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            const graph = editor.current.graph;
+            const graph = editor.staging.graph;
             if (presets.match(modified[0], graph) === residentialPreset) {
               resolve(nameRoadAsync);
             } else {
@@ -402,7 +402,7 @@ export function uiIntroLine(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStagingChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
       });
   }
@@ -494,7 +494,7 @@ export function uiIntroLine(context, curtain) {
       _onModeChange = (mode) => {
         if (!['browse', 'select-osm'].includes(mode.id)) reject();
       };
-      _onEditChange = (difference) => {
+      _onStagingChange = (difference) => {
         if (difference && difference.created().length === 1) {   // expect to create 1 node
           resolve(startDragEndpointAsync);
         } else {
@@ -510,7 +510,7 @@ export function uiIntroLine(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
     });
   }
 
@@ -538,7 +538,7 @@ export function uiIntroLine(context, curtain) {
         if (!_hasWoodStreetParts()) {
           reject();
         } else {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const entity = graph.entity(woodStreetEndID);
           if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) <= 4) {   // point is close enough
             resolve(finishDragEndpointAsync);   // advance to next step
@@ -577,7 +577,7 @@ export function uiIntroLine(context, curtain) {
         if (!_hasWoodStreetParts()) {
           reject();
         } else {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           const entity = graph.entity(woodStreetEndID);
           if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) > 4) {   // point is too far
             resolve(startDragEndpointAsync);   // back to previous step
@@ -603,7 +603,7 @@ export function uiIntroLine(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
-      _onEditChange = (difference) => {
+      _onStagingChange = (difference) => {
         if (difference && difference.created().length === 1) {
           resolve(continueDragMidpointAsync);
         }
@@ -616,7 +616,7 @@ export function uiIntroLine(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
     });
   }
 
@@ -687,7 +687,7 @@ export function uiIntroLine(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onEditChange = reject;  // disallow doing anything else
+      _onStagingChange = reject;  // disallow doing anything else
 
       const textID = (context.lastPointerType === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
       const rightClickString = helpHtml(context, 'intro.lines.split_street', {
@@ -705,7 +705,7 @@ export function uiIntroLine(context, curtain) {
       });
     })
     .finally(() => {
-      _onEditChange = null;
+      _onStagingChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -741,9 +741,9 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
-        _onEditChange = (difference) => {
+        _onStagingChange = (difference) => {
           _onMapMove = null;
-          _onEditChange = null;
+          _onStagingChange = null;
           if (difference && difference.created()) {
             _washingtonSegmentID = difference.created()[0].id;
             resolve();
@@ -765,7 +765,7 @@ export function uiIntroLine(context, curtain) {
       })
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStagingChange = null;
         _onMapMove = null;
       });
   }
@@ -799,7 +799,7 @@ export function uiIntroLine(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = () => resolve(multiSelectAsync);
-      _onEditChange = reject;  // disallow doing anything else
+      _onStagingChange = reject;  // disallow doing anything else
 
       const ids = context.selectedIDs();
       const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
@@ -812,7 +812,7 @@ export function uiIntroLine(context, curtain) {
    })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
     });
   }
 
@@ -858,11 +858,11 @@ export function uiIntroLine(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;  // reject will retry this step, which is what we want
-      _onEditChange = reject;  // disallow doing anything else
+      _onStagingChange = reject;  // disallow doing anything else
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
     });
   }
 
@@ -884,7 +884,7 @@ export function uiIntroLine(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
-      _onEditChange = reject;   // disallow doing anything else
+      _onStagingChange = reject;   // disallow doing anything else
 
       const textID = context.lastPointerType === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       const rightClickString = helpHtml(context, 'intro.lines.multi_select_success') + helpHtml(context, `intro.lines.multi_${textID}`);
@@ -900,7 +900,7 @@ export function uiIntroLine(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStagingChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -946,7 +946,7 @@ export function uiIntroLine(context, curtain) {
         // To fix this, we'll listen to both events to see whether the road segments have been deleted.
 
         _onModeChange = (mode) => {
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           if (mode.id === 'browse' && !graph.hasEntity(_washingtonSegmentID) && !graph.hasEntity(twelfthAvenueID)) {
             resolve(playAsync);
           } else {
@@ -954,10 +954,10 @@ export function uiIntroLine(context, curtain) {
           }
         };
 
-        _onEditChange = () => {
-          _onEditChange = null;
+        _onStagingChange = () => {
+          _onStagingChange = null;
           _onModeChange = null;
-          const graph = editor.current.graph;
+          const graph = editor.staging.graph;
           if (!graph.hasEntity(_washingtonSegmentID) && !graph.hasEntity(twelfthAvenueID)) {
             resolve(playAsync);
           } else {
@@ -971,7 +971,7 @@ export function uiIntroLine(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStagingChange = null;
         _onMapMove = null;
       });
   }
@@ -1014,18 +1014,18 @@ export function uiIntroLine(context, curtain) {
     _rejectStep = null;
     _onMapMove = null;
     _onModeChange = null;
-    _onEditChange = null;
+    _onStagingChange = null;
 
     context.on('modechange', _modeChangeListener);
     map.on('move', _mapMoveListener);
-    editor.on('editchange', _editChangeListener);
+    editor.on('stagingchange', _stagingChangeListener);
 
     runAsync(addLineAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
         map.off('move', _mapMoveListener);
-        editor.off('editchange', _editChangeListener);
+        editor.off('stagingchange', _stagingChangeListener);
       });
 
     function _mapMoveListener(...args) {
@@ -1034,8 +1034,8 @@ export function uiIntroLine(context, curtain) {
     function _modeChangeListener(...args) {
       if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(...args) {
-      if (typeof _onEditChange === 'function') _onEditChange(...args);
+    function _stagingChangeListener(...args) {
+      if (typeof _onStagingChange === 'function') _onStagingChange(...args);
     }
   };
 
