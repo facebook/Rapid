@@ -43,8 +43,10 @@ export class AddPointMode extends AbstractMode {
     this._active = true;
     const context = this.context;
 
-    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('crosshair');
 
+    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
     context.behaviors.draw
       .on('click', this._click)
       .on('cancel', this._cancel)
@@ -66,6 +68,9 @@ export class AddPointMode extends AbstractMode {
     }
 
     const context = this.context;
+
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('grab');
 
     context.behaviors.draw
       .off('click', this._click)
@@ -130,16 +135,10 @@ export class AddPointMode extends AbstractMode {
     const l10n = context.systems.l10n;
 
     const node = osmNode({ loc: loc, tags: this.defaultTags });
-//    this.nodeID = node.id;
+
     editor.perform(actionAddEntity(node));
-    editor.commit({
-      annotation: l10n.t('operations.add.annotation.point'),
-      selectedIDs: [node.id]
-    });
-    context.enter('select-osm', {
-      selection: { osm: [node.id] },
-      newFeature: true
-    });
+    editor.commit({ annotation: l10n.t('operations.add.annotation.point'), selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: true });
   }
 
 
@@ -154,14 +153,8 @@ export class AddPointMode extends AbstractMode {
 
     const node = osmNode({ tags: this.defaultTags });
     editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node));
-    editor.commit({
-      annotation: l10n.t('operations.add.annotation.vertex'),
-      selectedIDs: [node.id]
-    });
-    context.enter('select-osm', {
-      selection: { osm: [node.id] },
-      newFeature: true
-    });
+    editor.commit({ annotation: l10n.t('operations.add.annotation.vertex'), selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: true });
   }
 
 
@@ -185,14 +178,8 @@ export class AddPointMode extends AbstractMode {
     }
 
     editor.perform(actionChangeTags(node.id, tags));
-    editor.commit({
-      annotation: l10n.t('operations.add.annotation.point'),
-      selectedIDs: [node.id]
-    });
-    context.enter('select-osm', {
-      selection: { osm: [node.id] },
-      newFeature: false
-    });
+    editor.commit({ annotation: l10n.t('operations.add.annotation.point'), selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: false });
   }
 
 
@@ -203,5 +190,4 @@ export class AddPointMode extends AbstractMode {
   _cancel() {
     this.context.enter('browse');
   }
-
 }

@@ -7,6 +7,7 @@ import { actionAddVertex } from '../actions/add_vertex';
 import { actionMoveNode } from '../actions/move_node';
 import { geoChooseEdge } from '../geo';
 import { osmNode, osmWay } from '../osm';
+import { cursors } from './index';
 
 const DEBUG = false;
 
@@ -56,10 +57,11 @@ export class DrawAreaMode extends AbstractMode {
     this._snapshots = new Map();
 
     // Make sure the event handlers have `this` bound correctly
-    this._move = this._move.bind(this);
+    this._cancel = this._cancel.bind(this);
     this._click = this._click.bind(this);
     this._finish = this._finish.bind(this);
-    this._cancel = this._cancel.bind(this);
+    this._hover = this._hover.bind(this);
+    this._move = this._move.bind(this);
     this._restoreSnapshot = this._restoreSnapshot.bind(this);
   }
 
@@ -82,11 +84,16 @@ export class DrawAreaMode extends AbstractMode {
     this.drawNodeID = null;
     this.lastNodeID = null;
     this.firstNodeID = null;
-
     this._lastCoord = null;
     this._selectedData.clear();
 
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('crosshair');
+
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
+
+    context.behaviors.hover
+      .on('hoverchange', this._hover);
 
     context.behaviors.draw
       .on('move', this._move)
@@ -120,6 +127,12 @@ export class DrawAreaMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const scene = context.systems.map.scene;
+
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('grab');
+
+    context.behaviors.hover
+      .off('hoverchange', this._hover);
 
     context.behaviors.draw
       .off('move', this._move)
@@ -307,6 +320,9 @@ export class DrawAreaMode extends AbstractMode {
     let loc = projection.invert(coord);
 
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
+
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('crosshair');
 
     let graph = editor.staging.graph;
     let drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
@@ -707,6 +723,34 @@ export class DrawAreaMode extends AbstractMode {
       } else {
         context.enter('browse');
       }
+    }
+  }
+
+
+  /**
+   * _hover
+   * Changes the cursor styling based on what geometry is hovered
+   */
+  _hover(eventData) {
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const eventManager = context.systems.map.renderer.events;
+
+    const target = eventData.target;
+    const datum = target?.data;
+    const entity = datum && graph.hasEntity(datum.id);
+    const geom = entity?.geometry(graph) ?? 'unknown';
+
+    switch (geom) {
+      case 'line':
+        eventManager.setCursor(cursors.connectLineCursor);
+        break;
+      case 'vertex':
+        eventManager.setCursor(cursors.connectVertexCursor);
+        break;
+      default:
+        eventManager.setCursor('crosshair');
     }
   }
 }

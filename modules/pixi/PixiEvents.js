@@ -147,8 +147,6 @@ export class PixiEvents extends EventEmitter {
     // Pixi doesn't make this easy
     // On next pointerover event, the root event boundary will reset its perferred cursor
     // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
-    // So we set it on the stage.
-    this.renderer.stage.cursor = style;
     // We don't know when that event will be, next time user happens to shake the mouse?
     // So we'll also set it directly on the canvas so it locks in now
     this.renderer.pixi.view.style.cursor = style;
