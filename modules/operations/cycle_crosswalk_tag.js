@@ -88,12 +88,12 @@ export function operationCycleCrosswalkTag(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.cycle_highway_tag.${disabledReason}`) :
-      context.t('operations.cycle_highway_tag.description');
+      context.t(`operations.cycle_crosswalk_tag.${disabledReason}`) :
+      context.t('operations.cycle_crosswalk_tag.description');
   };
 
   operation.annotation = function() {
-    return context.t('operations.cycle_highway_tag.annotation');
+    return context.t('operations.cycle_crosswalk_tag.annotation');
   };
 
 
