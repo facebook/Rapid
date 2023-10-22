@@ -1,30 +1,26 @@
 describe('validationAmbiguousCrossingTags', () => {
-  let graph, tree;
+  let graph;
 
   class MockLocalizationSystem {
     constructor() {}
     displayLabel(entity)  { return entity.id; }
-    t()                   { return ''; }
-    tHtml()               { return ''; }
+    t(id)                 { return id; }
+    tHtml(id)             { return id; }
   }
 
   class MockEditSystem {
     constructor() {}
-    graph()  { return graph; }
-    tree()   { return tree; }
+    get staging() { return { graph: graph }; }
   }
 
   class MockContext {
     constructor() {
       this.services = {};
       this.systems = {
-        edits: new MockEditSystem(),
-        l10n:  new MockLocalizationSystem()
+        editor: new MockEditSystem(),
+        l10n:   new MockLocalizationSystem()
       };
     }
-    graph()  { return graph; }
-    t()      { return ''; }
-    tHtml()  { return ''; }
   }
 
   const context = new MockContext();
@@ -32,7 +28,6 @@ describe('validationAmbiguousCrossingTags', () => {
 
   beforeEach(() => {
     graph = new Rapid.Graph();     // reset
-    tree = new Rapid.Tree(graph);  // reset
   });
 
 
@@ -54,17 +49,17 @@ describe('validationAmbiguousCrossingTags', () => {
 
 
   //
-  //        n-2
-  //         *
-  //         |
-  // n-3 *---n*5---* n-4
-  //         |
-  //         *
-  //        n-1
+  //         n-2
+  //          *
+  //          |
+  // n-3 *-- n-5 --* n-4
+  //          |
+  //          *
+  //         n-1
   //
   function createWaysWithOneCrossingNode(w1tags = {}, w2tags = {}, nodeTags={}) {
+    const n5 = Rapid.osmNode({ id: 'n-5', loc: [0,  0], tags: nodeTags} );
 
-    const n5 = Rapid.osmNode({ id: 'n-5', loc: [ 0, 0], tags: nodeTags} );
     const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, -1] });
     const n2 = Rapid.osmNode({ id: 'n-2', loc: [0,  1] });
     const w1 = Rapid.osmWay({ id: 'w-1', nodes: ['n-1', 'n-5', 'n-2'], tags: w1tags });
@@ -73,11 +68,8 @@ describe('validationAmbiguousCrossingTags', () => {
     const n4 = Rapid.osmNode({ id: 'n-4', loc: [ 1, 0] });
     const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-5',  'n-4'], tags: w2tags });
 
-
     const entities = [n1, n2, n3, n4, n5, w1, w2];
     graph = new Rapid.Graph(entities);
-    tree = new Rapid.Tree(graph);
-    tree.rebase(entities, true);
   }
 
 
@@ -102,7 +94,7 @@ describe('validationAmbiguousCrossingTags', () => {
 
   it('flags unmarked lines that share a marked crossing node', () => {
     createWaysWithOneCrossingNode(
-      { crossing: 'unmarked', highway: 'footway', footway:'crossing' },
+      { crossing: 'unmarked', highway: 'footway', footway: 'crossing' },
       { highway: 'residential' },
       { 'crossing:markings' : 'yes' }
     );
@@ -112,7 +104,7 @@ describe('validationAmbiguousCrossingTags', () => {
 
   it('flags unmarked lines that share a zebra-marked crossing node', () => {
     createWaysWithOneCrossingNode(
-      { crossing: 'unmarked', highway: 'footway', footway:'crossing' },
+      { crossing: 'unmarked', highway: 'footway', footway: 'crossing' },
       { highway: 'residential' },
       { MARKING_TAG: 'zebra' }
     );
@@ -122,7 +114,7 @@ describe('validationAmbiguousCrossingTags', () => {
 
   it('flags marked lines that share an unmarked crossing node', () => {
     createWaysWithOneCrossingNode(
-      { crossing: 'marked', highway: 'footway', footway:'crossing' },
+      { crossing: 'marked', highway: 'footway', footway: 'crossing' },
       { highway: 'residential' },
       { 'crossing:markings': 'no' }
     );
@@ -132,7 +124,7 @@ describe('validationAmbiguousCrossingTags', () => {
 
   it('flags marked lines and nodes that have a different crossing marking type', () => {
     createWaysWithOneCrossingNode(
-      { crossing: 'marked', 'crossing:markings': 'zebra', highway: 'footway', footway:'crossing' },
+      { crossing: 'marked', 'crossing:markings': 'zebra', highway: 'footway', footway: 'crossing' },
       { highway: 'residential' },
       { 'crossing:markings': 'lines' }
     );
@@ -142,7 +134,7 @@ describe('validationAmbiguousCrossingTags', () => {
 
   it('flags an informal line and marked node', () => {
     createWaysWithOneCrossingNode(
-      { crossing: 'informal', highway: 'footway', footway:'crossing' },
+      { crossing: 'informal', highway: 'footway', footway: 'crossing' },
       { highway: 'residential' },
       { 'crossing:markings': 'lines' }
     );
@@ -152,7 +144,7 @@ describe('validationAmbiguousCrossingTags', () => {
 
   it('flags an marked line and informal ladder node', () => {
     createWaysWithOneCrossingNode(
-      { crossing: 'marked', highway: 'footway', footway:'crossing'},
+      { crossing: 'marked', highway: 'footway', footway: 'crossing'},
       { highway: 'residential' },
       { 'crossing:markings': 'ladder', 'crossing':'informal'}
     );
@@ -162,7 +154,7 @@ describe('validationAmbiguousCrossingTags', () => {
 
   it('flags a marked line with potential unmarked crossing nodes', () => {
     createWaysWithOneCrossingNode(
-      { crossing: 'marked', highway: 'footway', footway:'crossing'},
+      { crossing: 'marked', highway: 'footway', footway: 'crossing'},
       { highway: 'residential' },
       {}
     );
