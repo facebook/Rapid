@@ -214,13 +214,27 @@ export function uiSectionDataLayers(context) {
 
     /////////// add color picker here //////////////
 
-    uiRapidColorpicker(context, 'section-data-layers')
-      .on('change', changeColor);
+    // eslint-disable-next-line no-warning-comments
+    //FIXME: on change doesn't change custom data color
+    uiRapidColorpicker(context, section)
+      .on('change', function(d3_event) {
+        const target = d3_event.target;
+        // eslint-disable-next-line no-console
+        console.log(target, context, section);
+        changeColor('custom-data', 'red');
+      });
 
+  // eslint-disable-next-line no-warning-comments
+    // FIXME: on click doesn't toggle color picker popup
     liEnter
-      .append('div')
+      .append('button')
       .attr('class', 'rapid-colorpicker-fill')
-      .call(uiIcon('#fas-palette'));
+      .call(uiIcon('#fas-palette'))
+      .on('click', function(d3_event) {
+        const target = d3_event.target;
+        // eslint-disable-next-line no-console
+        console.log(target);
+      });
 
 
     liEnter
