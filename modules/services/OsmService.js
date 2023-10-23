@@ -35,7 +35,7 @@ export class OsmService extends AbstractSystem {
     // Some defaults that we will replace with whatever we fetch from the OSM API capabilities result.
     this._maxWayNodes = 2000;
     this._imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
-    this._urlroot = 'https://api.openstreetmap.org';
+    this._urlroot = 'https://www.openstreetmap.org';
 
     this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
     this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
