@@ -53,6 +53,7 @@ export class UiField {
     this.default = presetField.default;
     this.key = presetField.key;
     this.keys = presetField.keys;
+    this.safeid = presetField.safeid;
     this.t = presetField.t;
     this.tHtml = presetField.tHtml;
     this.hasTextForStringID = presetField.hasTextForStringID;
