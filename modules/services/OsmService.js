@@ -35,7 +35,7 @@ export class OsmService extends AbstractSystem {
     // Some defaults that we will replace with whatever we fetch from the OSM API capabilities result.
     this._maxWayNodes = 2000;
     this._imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
-    this._urlroot = 'https://www.openstreetmap.org';
+    this._urlroot = 'https://api.openstreetmap.org';
 
     this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
     this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
@@ -56,14 +56,16 @@ export class OsmService extends AbstractSystem {
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._authLoading = this._authLoading.bind(this);
     this._authDone = this._authDone.bind(this);
+    this._parseCapabilitiesJSON = this._parseCapabilitiesJSON.bind(this);
+    this._parseCapabilitiesXML = this._parseCapabilitiesXML.bind(this);
     this._parseNodeJSON = this._parseNodeJSON.bind(this);
-    this._parseWayJSON = this._parseWayJSON.bind(this);
-    this._parseRelationJSON = this._parseRelationJSON.bind(this);
     this._parseNodeXML = this._parseNodeXML.bind(this);
-    this._parseWayXML = this._parseWayXML.bind(this);
-    this._parseRelationXML = this._parseRelationXML.bind(this);
     this._parseNoteXML = this._parseNoteXML.bind(this);
+    this._parseRelationJSON = this._parseRelationJSON.bind(this);
+    this._parseRelationXML = this._parseRelationXML.bind(this);
     this._parseUserXML = this._parseUserXML.bind(this);
+    this._parseWayJSON = this._parseWayJSON.bind(this);
+    this._parseWayXML = this._parseWayXML.bind(this);
 
     this.reloadApiStatus = this.reloadApiStatus.bind(this);
     this.throttledReloadApiStatus = _throttle(this.reloadApiStatus, 500);
@@ -652,45 +654,18 @@ export class OsmService extends AbstractSystem {
   // GET /api/capabilities
   status(callback) {
 
-    const gotResult = (err, xml) => {
+    const gotResult = (err, result) => {
       if (err) {
         return callback(err, null);   // the status is null if no response could be retrieved
-
       } else if (this._rateLimitError) {
         return callback(this._rateLimitError, 'rateLimited');
-
       } else {
-        // Update blocklists
-        let regexes = [];
-        for (const element of xml.getElementsByTagName('blacklist')) {
-          const regexString = element.getAttribute('regex');  // needs unencode?
-          if (regexString) {
-            try {
-              regexes.push(new RegExp(regexString));
-            } catch (e) {
-              /* noop */
-            }
-          }
-        }
-        if (regexes.length) {
-          this._imageryBlocklists = regexes;
-        }
-
-        // Update max nodes per way
-        const waynodes = xml.getElementsByTagName('waynodes');
-        const maxWayNodes = waynodes.length && parseInt(waynodes[0].getAttribute('maximum'), 10);
-        if (maxWayNodes && isFinite(maxWayNodes)) {
-          this._maxWayNodes = maxWayNodes;
-        }
-
-        // Update status
-        const apiStatus = xml.getElementsByTagName('status');
-        const val = apiStatus[0].getAttribute('api');
-        return callback(undefined, val);
+        const status = this._parseCapabilitiesJSON(result);
+        return callback(undefined, status);
       }
     };
 
-    const url = this._urlroot + '/api/capabilities';
+    const url = this._urlroot + '/api/capabilities.json';
     const errback = this._wrapcb(gotResult);
 
     fetch(url)
@@ -1594,6 +1569,64 @@ export class OsmService extends AbstractSystem {
     this._userCache.user[uid] = user;
     delete this._userCache.toLoad[uid];
     return user;
+  }
+
+  _parseCapabilitiesJSON(json) {
+    // Update blocklists
+    const regexes = [];
+    for (const item of json.policy.imagery.blacklist) {
+      const regexString = item.regex;  // needs unencode?
+      if (regexString) {
+        try {
+          regexes.push(new RegExp(regexString));
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+    if (regexes.length) {
+      this._imageryBlocklists = regexes;
+    }
+
+    // Update max nodes per way
+    const maxWayNodes = json.api.waynodes.maximum;
+    if (maxWayNodes && isFinite(maxWayNodes)) {
+      this._maxWayNodes = maxWayNodes;
+    }
+
+    // Return status
+    const apiStatus = json.api.status.api;
+    return apiStatus;
+  }
+
+
+  _parseCapabilitiesXML(xml) {
+    // Update blocklists
+    const regexes = [];
+    for (const element of xml.getElementsByTagName('blacklist')) {
+      const regexString = element.getAttribute('regex');  // needs unencode?
+      if (regexString) {
+        try {
+          regexes.push(new RegExp(regexString));
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+    if (regexes.length) {
+      this._imageryBlocklists = regexes;
+    }
+
+    // Update max nodes per way
+    const waynodes = xml.getElementsByTagName('waynodes');
+    const maxWayNodes = waynodes.length && parseInt(waynodes[0].getAttribute('maximum'), 10);
+    if (maxWayNodes && isFinite(maxWayNodes)) {
+      this._maxWayNodes = maxWayNodes;
+    }
+
+    // Return status
+    const apiStatus = xml.getElementsByTagName('status');
+    return apiStatus[0].getAttribute('api');
   }
 
 

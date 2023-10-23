@@ -15,25 +15,54 @@ describe('OsmService', () => {
     spy = sinon.spy();
     fetchMock.reset();
 
+    const capabilitiesJSON =
+`{
+  "version": "0.6",
+  "generator": "OpenStreetMap server",
+  "copyright": "OpenStreetMap and contributors",
+  "attribution": "http://www.openstreetmap.org/copyright",
+  "license": "http://opendatacommons.org/licenses/odbl/1-0/",
+  "api": {
+    "version": { "minimum": "0.6", "maximum": "0.6" },
+    "area": { "maximum": 0.25 },
+    "note_area": { "maximum": 25 },
+    "tracepoints": { "per_page": 5000 },
+    "waynodes": { "maximum": 2000 },
+    "relationmembers": { "maximum": 32000 },
+    "changesets": { "maximum_elements": 10000, "default_query_limit": 100, "maximum_query_limit": 100 },
+    "notes": { "default_query_limit": 100, "maximum_query_limit": 10000 },
+    "timeout": { "seconds": 300 },
+    "status": { "database": "online", "api": "online", "gpx": "online" }
+  },
+  "policy": {
+    "imagery": {
+      "blacklist": [
+        { "regex": "\.foo\.com" },
+        { "regex": "\.bar\.org" }
+      ]
+    }
+  }
+}`;
+
     const capabilitiesXML =
 `<?xml version="1.0" encoding="UTF-8"?>
 <osm version="0.6" generator="OpenStreetMap server" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
- <api>
-   <version minimum="0.6" maximum="0.6"/>
-   <area maximum="0.25"/>
-   <note_area maximum="25"/>
-   <tracepoints per_page="5000"/>
-   <waynodes maximum="2000"/>
-   <changesets maximum_elements="10000"/>
-   <timeout seconds="300"/>
-   <status database="online" api="online" gpx="online"/>
- </api>
- <policy>
-   <imagery>
+  <api>
+    <version minimum="0.6" maximum="0.6"/>
+    <area maximum="0.25"/>
+    <note_area maximum="25"/>
+    <tracepoints per_page="5000"/>
+    <waynodes maximum="2000"/>
+    <changesets maximum_elements="10000"/>
+    <timeout seconds="300"/>
+    <status database="online" api="online" gpx="online"/>
+  </api>
+  <policy>
+    <imagery>
       <blacklist regex="\.foo\.com"/>
       <blacklist regex="\.bar\.org"/>
-   </imagery>
- </policy>
+    </imagery>
+  </policy>
 </osm>`;
 
     const userJSON =
@@ -86,7 +115,7 @@ describe('OsmService', () => {
       "user": "bhousel",
       "tags": {
         "comment": "Fix unsquare corners",
-        "created_by": "Rapid 2.0.3",
+        "created_by": "Rapid 2.1.0",
         "host": "http://127.0.0.1:8080/",
         "locale": "en-US",
         "imagery_used": "Bing Maps Aerial"
@@ -107,7 +136,7 @@ describe('OsmService', () => {
       "user": "bhousel",
       "tags": {
         "comment": "",
-        "created_by": "Rapid 2.0.3",
+        "created_by": "Rapid 2.1.0",
         "host": "http://127.0.0.1:8080/",
         "locale": "en-US",
         "imagery_used": "Bing Maps Aerial"
@@ -127,7 +156,7 @@ describe('OsmService', () => {
       "uid": 584325,
       "user": "bhousel",
       "tags": {
-        "created_by": "Rapid 2.0.3",
+        "created_by": "Rapid 2.1.0",
         "host": "http://127.0.0.1:8080/",
         "locale": "en-US",
         "imagery_used": "Bing Maps Aerial"
@@ -137,14 +166,15 @@ describe('OsmService', () => {
 }`;
 
     fetchMock
-      .mock(/api\/capabilities/, { status: 200, body: capabilitiesXML, headers: { 'Content-Type': 'application/xml' } })
+      .mock(/api\/capabilities\.json/, { status: 200, body: capabilitiesJSON, headers: { 'Content-Type': 'application/json' } })
+      .mock(/api\/capabilities(?!\.json)/, { status: 200, body: capabilitiesXML, headers: { 'Content-Type': 'application/xml' } })
       .mock(/user\/details\.json/, { status: 200, body: userJSON, headers: { 'Content-Type': 'application/json' } })
       .mock(/changesets\.json/, { status: 200, body: changesetJSON, headers: { 'Content-Type': 'application/json' } });
 
 
     _osm = new Rapid.OsmService(new MockContext());
     return _osm.initAsync()
-      .then(() => _osm.switchAsync({ url: 'https://www.openstreetmap.org' }));
+      .then(() => _osm.switchAsync({ url: 'https://api.openstreetmap.org' }));
   });
 
   afterEach(() => {
@@ -155,7 +185,7 @@ describe('OsmService', () => {
 
   function loginAsync() {
     return _osm.switchAsync({
-      url: 'https://www.openstreetmap.org',
+      url: 'https://api.openstreetmap.org',
       client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
       client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
       access_token: 'foo'  // preauth
@@ -183,7 +213,7 @@ describe('OsmService', () => {
 
   describe('#changesetURL', () => {
     it('provides a changeset url', () => {
-      expect(_osm.changesetURL(2)).to.eql('https://www.openstreetmap.org/changeset/2');
+      expect(_osm.changesetURL(2)).to.eql('https://api.openstreetmap.org/changeset/2');
     });
   });
 
@@ -191,47 +221,47 @@ describe('OsmService', () => {
     it('provides a local changesets url', () => {
       const center = [-74.65, 40.65];
       const zoom = 17;
-      expect(_osm.changesetsURL(center, zoom)).to.eql('https://www.openstreetmap.org/history#map=17/40.65000/-74.65000');
+      expect(_osm.changesetsURL(center, zoom)).to.eql('https://api.openstreetmap.org/history#map=17/40.65000/-74.65000');
     });
   });
 
   describe('#entityURL', () => {
     it('provides an entity url for a node', () => {
       const e = Rapid.osmNode({ id: 'n1' });
-      expect(_osm.entityURL(e)).to.eql('https://www.openstreetmap.org/node/1');
+      expect(_osm.entityURL(e)).to.eql('https://api.openstreetmap.org/node/1');
     });
 
     it('provides an entity url for a way', () => {
       const e = Rapid.osmWay({ id: 'w1' });
-      expect(_osm.entityURL(e)).to.eql('https://www.openstreetmap.org/way/1');
+      expect(_osm.entityURL(e)).to.eql('https://api.openstreetmap.org/way/1');
     });
 
     it('provides an entity url for a relation', () => {
       const e = Rapid.osmRelation({ id: 'r1' });
-      expect(_osm.entityURL(e)).to.eql('https://www.openstreetmap.org/relation/1');
+      expect(_osm.entityURL(e)).to.eql('https://api.openstreetmap.org/relation/1');
     });
   });
 
   describe('#historyURL', () => {
     it('provides a history url for a node', () => {
       const e = Rapid.osmNode({ id: 'n1' });
-      expect(_osm.historyURL(e)).to.eql('https://www.openstreetmap.org/node/1/history');
+      expect(_osm.historyURL(e)).to.eql('https://api.openstreetmap.org/node/1/history');
     });
 
     it('provides a history url for a way', () => {
       const e = Rapid.osmWay({ id: 'w1' });
-      expect(_osm.historyURL(e)).to.eql('https://www.openstreetmap.org/way/1/history');
+      expect(_osm.historyURL(e)).to.eql('https://api.openstreetmap.org/way/1/history');
     });
 
     it('provides a history url for a relation', () => {
       const e = Rapid.osmRelation({ id: 'r1' });
-      expect(_osm.historyURL(e)).to.eql('https://www.openstreetmap.org/relation/1/history');
+      expect(_osm.historyURL(e)).to.eql('https://api.openstreetmap.org/relation/1/history');
     });
   });
 
   describe('#userURL', () => {
     it('provides a user url', () => {
-      expect(_osm.userURL('bob')).to.eql('https://www.openstreetmap.org/user/bob');
+      expect(_osm.userURL('bob')).to.eql('https://api.openstreetmap.org/user/bob');
     });
   });
 
@@ -691,9 +721,9 @@ describe('OsmService', () => {
 <osm>
 <note lon="10" lat="0">
   <id>1</id>
-  <url>https://www.openstreetmap.org/api/0.6/notes/1</url>
-  <comment_url>https://www.openstreetmap.org/api/0.6/notes/1/comment</comment_url>
-  <close_url>https://www.openstreetmap.org/api/0.6/notes/1/close</close_url>
+  <url>https://api.openstreetmap.org/api/0.6/notes/1</url>
+  <comment_url>https://api.openstreetmap.org/api/0.6/notes/1/comment</comment_url>
+  <close_url>https://api.openstreetmap.org/api/0.6/notes/1/close</close_url>
   <date_created>2019-01-01 00:00:00 UTC</date_created>
   <status>open</status>
   <comments>
@@ -701,7 +731,7 @@ describe('OsmService', () => {
       <date>2019-01-01 00:00:00 UTC</date>
       <uid>584325</uid>
       <user>bhousel</user>
-      <user_url>https://www.openstreetmap.org/user/bhousel</user_url>
+      <user_url>https://api.openstreetmap.org/user/bhousel</user_url>
       <action>opened</action>
       <text>This is a note</text>
       <html>&lt;p&gt;This is a note&lt;/p&gt;</html>
