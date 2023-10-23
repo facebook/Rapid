@@ -12,7 +12,8 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   // Allow cycling through lines that match these presets
   const allowPresetRegex = [
     /^highway\/(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|track)/,
-    /^line$/
+    /^line$/,
+    /^crossing$/
   ];
 
   const defaultPresetIDs = [
@@ -21,7 +22,15 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     'highway/track',
     'highway/unclassified',
     'highway/tertiary',
-    'line'
+    'line',
+    'crossing/unmarked;crossing:markings=no',
+    'crossing/marked;crossing:markings=yes',
+    'crossing/marked;crossing:markings=zebra',
+    'crossing/marked;crossing:markings=lines',
+    'crossing/marked;crossing:markings=ladder',
+    'crossing/marked;crossing:markings=dashes',
+    'crossing/marked;crossing:markings=dots',
+    'crossing/marked;crossing:markings=ladder:skewed',
   ];
 
   // same selection as before?
