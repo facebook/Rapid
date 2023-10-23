@@ -467,9 +467,11 @@ export function uiCommit(context) {
         if (!d3_select(this).classed('disabled')) {
           this.blur();    // avoid keeping focus on the button - iD#4641
 
-          for (let key in uploader.changeset.tags) {
-            // remove any empty keys before upload
-            if (!key) delete uploader.changeset.tags[key];
+          const tags = uploader.changeset.tags;
+          for (const [k, v] of Object.entries(tags)) {
+            if (!k || !v) {    // remove any empty tags before upload
+              delete tags[k];
+            }
           }
 
           uploader.save();
@@ -608,7 +610,7 @@ export function uiCommit(context) {
           if (s[0] !== '#') { s = '#' + s; }    // prepend '#'
           let matched = s.match(hashtagRegex);
           return matched && matched[0];
-        }).filter(Boolean);                       // exclude falsy
+        }).filter(Boolean);                     // exclude falsy
 
       return matches || [];
     }

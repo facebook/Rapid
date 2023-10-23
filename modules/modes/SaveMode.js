@@ -55,16 +55,19 @@ export class SaveMode extends AbstractMode {
    * Enters the mode.
    */
   enter() {
+    const context = this.context;
+    const osm = context.services.osm;
+    const sidebar = context.systems.ui.sidebar;
+    const uploader = context.systems.uploader;
+
+    if (!osm) return false;  // can't enter save mode
+
     if (DEBUG) {
       console.log('SaveMode: entering');  // eslint-disable-line no-console
     }
 
     // Show sidebar
-    const context = this.context;
-    context.systems.ui.sidebar.expand();
-
-    const osm = context.services.osm;
-    if (!osm) return false;  // can't enter save mode
+    sidebar.expand();
 
     this._active = true;
     this._wasSuccessfulSave = false;
@@ -73,13 +76,13 @@ export class SaveMode extends AbstractMode {
       .on('cancel', this._cancel);
 
     if (osm.authenticated()) {
-      context.systems.ui.sidebar.show(this._uiCommit);
+      sidebar.show(this._uiCommit);
     } else {
       osm.authenticate(err => {
         if (err) {
           this._cancel();
         } else {
-          context.systems.ui.sidebar.show(this._uiCommit);
+          sidebar.show(this._uiCommit);
         }
       });
     }
@@ -91,7 +94,7 @@ export class SaveMode extends AbstractMode {
     this._keybindingOn();
     context.enableBehaviors(['map-interaction']);
 
-    context.systems.uploader
+    uploader
       .on('progressChanged', this._progressChanged)
       .on('resultConflicts', this._resultConflicts)
       .on('resultErrors', this._resultErrors)
@@ -116,10 +119,14 @@ export class SaveMode extends AbstractMode {
       console.log('SaveMode: exiting');  // eslint-disable-line no-console
     }
 
+    const context = this.context;
+    const sidebar = context.systems.ui.sidebar;
+    const uploader = context.systems.uploader;
+
     this._uiCommit.on('cancel', null);
     this._uiCommit = null;
 
-    this.context.systems.uploader
+    uploader
       .off('progressChanged', this._progressChanged)
       .off('resultConflicts', this._resultConflicts)
       .off('resultErrors', this._resultErrors)
@@ -132,13 +139,13 @@ export class SaveMode extends AbstractMode {
     this._keybindingOff();
     this._hideLoading();
 
-    this.context.container().selectAll('.main-content')
+    context.container().selectAll('.main-content')
       .classed('active', true)
       .classed('inactive', false);
 
     // After a successful save, we want to leave the "thanks" content in the sidebar
     if (!this._wasSuccessfulSave) {
-      this.context.systems.ui.sidebar.hide();
+      sidebar.hide();
     }
   }
 
@@ -301,15 +308,15 @@ export class SaveMode extends AbstractMode {
    */
   _resultSuccess(changeset) {
     const context = this.context;
-    const ui = context.systems.ui;
+    const sidebar = context.systems.ui.sidebar;
 
     const successContent = this._uiSuccess
       .changeset(changeset)
       .location(this._location)
-      .on('cancel', () => ui.sidebar.hide());
+      .on('cancel', () => sidebar.hide());
 
     this._wasSuccessfulSave = true;
-    ui.sidebar.show(successContent);
+    sidebar.show(successContent);
 
     // Add delay before resetting to allow for postgres replication iD#1646 iD#2678
     window.setTimeout(() => {
