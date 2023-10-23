@@ -514,12 +514,9 @@ en:
       title: Cycle Highway Tag
       key: C
       description: Shortcut to cycle selected highway through several different tags.
-      annotation: Changed highway tag of selected way.
-    cycle_crosswalk_tag:
-      title: Cycle Crosswalk Tag
-      key: X
-      description: Shortcut to cycle selected crosswalk through different tags.
-      annotation: Changed crosswalk tag of selected way.
+      annotation: |
+       Changed highway tag of selected way.
+       Changed crosswalk tag of selected way.
   restriction:
     controls:
       distance: Distance
