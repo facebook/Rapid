@@ -3,7 +3,13 @@ module.exports = function (config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-    plugins: ['karma-coverage', 'karma-mocha', 'karma-chrome-launcher', 'karma-json-fixtures-preprocessor'],
+    plugins: [
+      'karma-coverage',
+      'karma-mocha',
+      'karma-mocha-reporter',
+      'karma-chrome-launcher',
+      'karma-json-fixtures-preprocessor'
+    ],
 
     // frameworks to use
     // available frameworks: https://www.npmjs.com/search?q=keywords:karma-adapter
@@ -48,7 +54,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['mocha', 'coverage'],
 
     // web server port
     port: 9876,

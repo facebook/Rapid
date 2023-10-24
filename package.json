@@ -117,6 +117,7 @@
     "karma-coverage": "^2.2.1",
     "karma-json-fixtures-preprocessor": "^0.0.6",
     "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
     "karma-remap-istanbul": "^0.6.0",
     "mapillary_sprite_source": "^1.8.0",
     "mocha": "^10.2.0",
