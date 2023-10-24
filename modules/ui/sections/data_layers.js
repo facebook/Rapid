@@ -213,29 +213,20 @@ export function uiSectionDataLayers(context) {
       .html(l10n.tHtml('map_data.layers.custom.title'));
 
     /////////// add color picker here //////////////
-
+    const color = 'red';
     // eslint-disable-next-line no-warning-comments
-    //FIXME: on change doesn't change custom data color
+    //TODO: connect selected color to changeColor function
     uiRapidColorpicker(context, section)
-      .on('change', function(d3_event) {
-        const target = d3_event.target;
-        // eslint-disable-next-line no-console
-        console.log(target, context, section);
-        changeColor('custom-data', 'red');
-      });
+      .on('change', changeCustomColor('custom-data', color));
 
   // eslint-disable-next-line no-warning-comments
     // FIXME: on click doesn't toggle color picker popup
     liEnter
       .append('button')
       .attr('class', 'rapid-colorpicker-fill')
-      .call(uiIcon('#fas-palette'))
-      .on('click', function(d3_event) {
-        const target = d3_event.target;
-        // eslint-disable-next-line no-console
-        console.log(target);
-      });
-
+      // need on click event handler to trigger colorpicker popup to render
+      // .on('click', () => {})
+      .call(uiIcon('#fas-palette'));
 
     liEnter
       .append('button')
@@ -284,7 +275,7 @@ export function uiSectionDataLayers(context) {
 
   // color picker change color function
 
-  function changeColor(datasetID, color) {
+  function changeCustomColor(datasetID, color) {
     const rapid = context.systems.rapid;
     const dataset = rapid.datasets.get(datasetID);
     if (dataset) {
