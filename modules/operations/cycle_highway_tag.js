@@ -33,6 +33,22 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     'crossing/marked;crossing:markings=ladder:skewed',
   ];
 
+  // Modify the regular expression to match the desired crosswalk types
+  const crosswalkTypes = [
+    'unmarked',
+    'marked',
+    'marked:zebra',
+    'marked:lines',
+    'marked:dashes',
+    'marked:ladder',
+    'marked:dots',
+    'marked:ladder:skewed'
+  ];
+
+  const crosswalkRegex = new RegExp(`^crossing/(?:${crosswalkTypes.join('|')})`);
+
+  allowPresetRegex.push(crosswalkRegex);
+
   // same selection as before?
   const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
   const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
