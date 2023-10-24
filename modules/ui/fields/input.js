@@ -185,7 +185,7 @@ export function uiFieldText(context, uifield) {
     const pattern = uifield.presetField.pattern;
     const value = utilGetSetValue(input).trim().split(';')[0];
 
-    if (uifield.type === 'url' && value) return value;
+    if (uifield.type === 'url' && /^https?:\/\//i.test(value)) return value;
     if (uifield.type === 'identifier' && pattern) {
       return value && value.match(new RegExp(pattern));
     }
