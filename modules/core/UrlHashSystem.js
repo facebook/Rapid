@@ -151,6 +151,7 @@ export class UrlHashSystem extends AbstractSystem {
     this._updateHash();   // make sure hash matches the _currParams
     this._hashchange();   // emit 'hashchange' so other code knows what the hash contains
     this._updateTitle();
+    this._runOnceAtStartup();
   }
 
 
@@ -213,26 +214,6 @@ export class UrlHashSystem extends AbstractSystem {
       this.deferredUpdateHash();
     }
   }
-
-  /**
-   * runOnceAtStartup
-   * Called once startup is complete
-   * This will zoom into the object from the URL hash if there is any present
-   */
-  runOnceAtStartup() {
-    // const toOmit = ['comment', 'source', 'hashtags', 'walkthrough'];
-    // let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
-    const extent = context.mode?.extent;
-    const map = context.systems.map;
-    if (extent) {   // zoom in on extent
-      _lastTransform = map.transform();
-      const [w, h] = map.dimensions;
-      const z = map.extentZoom(extent, [w/2, h/2]);
-      map.centerZoomEase(extent.center(), z);
-
-    }
-  }
-
 
   /**
    * _updateHash
@@ -323,4 +304,21 @@ export class UrlHashSystem extends AbstractSystem {
 
     this.emit('hashchange', new Map(this._currParams), new Map(this._prevParams));  // emit copies
   }
+
+  /**
+   * runOnceAtStartup
+   * Called once startup is complete
+   * This will zoom into the object from the URL hash if there is any present
+   */
+  _runOnceAtStartup() {
+    const extent = context.mode?.extent;
+    const map = context.systems.map;
+    if (extent) {   // zoom in on extent
+      _lastTransform = map.transform();
+      const [w, h] = map.dimensions;
+      const z = map.extentZoom(extent, [w/2, h/2]);
+      map.centerZoomEase(extent.center(), z);
+    }
+  }
 }
+
