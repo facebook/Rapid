@@ -173,8 +173,9 @@ describe('OsmService', () => {
 
 
     _osm = new Rapid.OsmService(new MockContext());
-    return _osm.initAsync()
-      .then(() => _osm.switchAsync({ url: 'https://www.openstreetmap.org' }));
+    return _osm.initAsync();
+//why?
+//      .then(() => _osm.switchAsync({ url: 'https://www.openstreetmap.org' }));
   });
 
   afterEach(() => {
@@ -186,6 +187,7 @@ describe('OsmService', () => {
   function loginAsync() {
     return _osm.switchAsync({
       url: 'https://www.openstreetmap.org',
+      apiUrl: 'https://api.openstreetmap.org',
       client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
       client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
       access_token: 'foo'  // preauth
@@ -206,19 +208,23 @@ describe('OsmService', () => {
 
     it('changes the connectionID every time service is switched', () => {
       const originalID = _osm.connectionID;
-      return _osm.switchAsync({ url: 'https://api06.dev.openstreetmap.org' })
+      const newOpts = {
+        url: 'https://api06.dev.openstreetmap.org',
+        apiUrl: 'https://api06.dev.openstreetmap.org'
+      };
+      return _osm.switchAsync(newOpts)
         .then(() => expect(_osm.connectionID).to.be.above(originalID) );
     });
   });
 
   describe('#changesetURL', () => {
-    it('provides a changeset url', () => {
+    it('provides a changeset url based on wwwroot', () => {
       expect(_osm.changesetURL(2)).to.eql('https://www.openstreetmap.org/changeset/2');
     });
   });
 
   describe('#changesetsURL', () => {
-    it('provides a local changesets url', () => {
+    it('provides a local changesets url based on wwwroot', () => {
       const center = [-74.65, 40.65];
       const zoom = 17;
       expect(_osm.changesetsURL(center, zoom)).to.eql('https://www.openstreetmap.org/history#map=17/40.65000/-74.65000');
@@ -226,41 +232,41 @@ describe('OsmService', () => {
   });
 
   describe('#entityURL', () => {
-    it('provides an entity url for a node', () => {
+    it('provides an entity url for a node based on wwwroot', () => {
       const e = Rapid.osmNode({ id: 'n1' });
       expect(_osm.entityURL(e)).to.eql('https://www.openstreetmap.org/node/1');
     });
 
-    it('provides an entity url for a way', () => {
+    it('provides an entity url for a way based on wwwroot', () => {
       const e = Rapid.osmWay({ id: 'w1' });
       expect(_osm.entityURL(e)).to.eql('https://www.openstreetmap.org/way/1');
     });
 
-    it('provides an entity url for a relation', () => {
+    it('provides an entity url for a relation based on wwwroot', () => {
       const e = Rapid.osmRelation({ id: 'r1' });
       expect(_osm.entityURL(e)).to.eql('https://www.openstreetmap.org/relation/1');
     });
   });
 
   describe('#historyURL', () => {
-    it('provides a history url for a node', () => {
+    it('provides a history url for a node based on wwwroot', () => {
       const e = Rapid.osmNode({ id: 'n1' });
       expect(_osm.historyURL(e)).to.eql('https://www.openstreetmap.org/node/1/history');
     });
 
-    it('provides a history url for a way', () => {
+    it('provides a history url for a way based on wwwroot', () => {
       const e = Rapid.osmWay({ id: 'w1' });
       expect(_osm.historyURL(e)).to.eql('https://www.openstreetmap.org/way/1/history');
     });
 
-    it('provides a history url for a relation', () => {
+    it('provides a history url for a relation based on wwwroot', () => {
       const e = Rapid.osmRelation({ id: 'r1' });
       expect(_osm.historyURL(e)).to.eql('https://www.openstreetmap.org/relation/1/history');
     });
   });
 
   describe('#userURL', () => {
-    it('provides a user url', () => {
+    it('provides a user url based on wwwroot', () => {
       expect(_osm.userURL('bob')).to.eql('https://www.openstreetmap.org/user/bob');
     });
   });
@@ -276,14 +282,22 @@ describe('OsmService', () => {
 
 
   describe('#switchAsync', () => {
-    it('changes the URL', () => {
-      return _osm.switchAsync({ url: 'https://example.com' })
-        .then(() => expect(_osm.changesetURL(1)).to.equal('https://example.com/changeset/1'));
+    it('changes the wwwroot', () => {
+      const newOpts = {
+        url: 'https://www.example.com',
+        apiUrl: 'https://api.example.com'
+      };
+      return _osm.switchAsync(newOpts)
+        .then(() => expect(_osm.changesetURL(1)).to.equal('https://www.example.com/changeset/1'));
     });
 
     it('emits a change event', () => {
       _osm.on('authchange', spy);
-      return _osm.switchAsync({ url: 'https://example.com' })
+      const newOpts = {
+        url: 'https://www.example.com',
+        apiUrl: 'https://api.example.com'
+      };
+      return _osm.switchAsync(newOpts)
         .then(() => expect(spy).to.have.been.calledOnce);
     });
   });
@@ -722,8 +736,8 @@ describe('OsmService', () => {
 <note lon="10" lat="0">
   <id>1</id>
   <url>https://www.openstreetmap.org/api/0.6/notes/1</url>
-  <comment_url>https://www.openstreetmap.org/api/0.6/notes/1/comment</comment_url>
-  <close_url>https://www.openstreetmap.org/api/0.6/notes/1/close</close_url>
+  <comment_url>https://api.openstreetmap.org/api/0.6/notes/1/comment</comment_url>
+  <close_url>https://api.openstreetmap.org/api/0.6/notes/1/close</close_url>
   <date_created>2019-01-01 00:00:00 UTC</date_created>
   <status>open</status>
   <comments>

@@ -35,7 +35,8 @@ export class OsmService extends AbstractSystem {
     // Some defaults that we will replace with whatever we fetch from the OSM API capabilities result.
     this._maxWayNodes = 2000;
     this._imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
-    this._urlroot = 'https://www.openstreetmap.org';
+    this._wwwroot = 'https://www.openstreetmap.org';
+    this._apiroot = 'https://api.openstreetmap.org';
 
     this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
     this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
@@ -80,7 +81,8 @@ export class OsmService extends AbstractSystem {
     }
 
     this._oauth = osmAuth({
-      url: this._urlroot,
+      url: this._wwwroot,
+      apiUrl: this._apiroot,
       client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
       client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
       scope: 'read_prefs write_prefs write_api read_gpx write_notes',
@@ -149,7 +151,8 @@ export class OsmService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   switchAsync(newOptions) {
-    this._urlroot = newOptions.url;
+    this._wwwroot = newOptions.url;
+    this._apiroot = newOptions.apiUrl;
 
     // Copy the existing options, but omit 'access_token'.
     // (if we did preauth, access_token won't work on a different server)
@@ -174,8 +177,8 @@ export class OsmService extends AbstractSystem {
     return this._connectionID;
   }
 
-  get urlroot() {
-    return this._urlroot;
+  get wwwroot() {
+    return this._wwwroot;
   }
 
   get imageryBlocklists() {
@@ -189,13 +192,13 @@ export class OsmService extends AbstractSystem {
 
 
   changesetURL(changesetID) {
-    return `${this._urlroot}/changeset/${changesetID}`;
+    return `${this._wwwroot}/changeset/${changesetID}`;
   }
 
 
   changesetsURL(center, zoom) {
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
-    return this._urlroot + '/history#map=' +
+    return this._wwwroot + '/history#map=' +
       Math.floor(zoom) + '/' +
       center[1].toFixed(precision) + '/' +
       center[0].toFixed(precision);
@@ -204,28 +207,28 @@ export class OsmService extends AbstractSystem {
 
   entityURL(entity) {
     const entityID = entity.osmId();
-    return `${this._urlroot}/${entity.type}/${entityID}`;
+    return `${this._wwwroot}/${entity.type}/${entityID}`;
   }
 
 
   historyURL(entity) {
     const entityID = entity.osmId();
-    return `${this._urlroot}/${entity.type}/${entityID}/history`;
+    return `${this._wwwroot}/${entity.type}/${entityID}/history`;
   }
 
 
   userURL(username) {
-    return `${this._urlroot}/user/${username}`;
+    return `${this._wwwroot}/user/${username}`;
   }
 
 
   noteURL(note) {
-    return `${this._urlroot}/note/${note.id}`;
+    return `${this._wwwroot}/note/${note.id}`;
   }
 
 
   noteReportURL(note) {
-    return `${this._urlroot}/reports/new?reportable_type=Note&reportable_id=${note.id}`;
+    return `${this._wwwroot}/reports/new?reportable_type=Note&reportable_id=${note.id}`;
   }
 
 
@@ -277,7 +280,7 @@ export class OsmService extends AbstractSystem {
       }
     };
 
-    const resource = this._urlroot + path;
+    const resource = this._apiroot + path;
     const controller = new AbortController();
     const _fetch = this.authenticated() ? this._oauth.fetch : window.fetch;
 
@@ -391,7 +394,7 @@ export class OsmService extends AbstractSystem {
     }
 
     const errback = this._wrapcb(createdChangeset);
-    const resource = this._urlroot + '/api/0.6/changeset/create';
+    const resource = this._apiroot + '/api/0.6/changeset/create';
     const controller = new AbortController();
     const options = {
       method: 'PUT',
@@ -435,7 +438,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(uploadedChangeset);
-    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/upload`;
+    const resource = this._apiroot + `/api/0.6/changeset/${changeset.id}/upload`;
     const controller = new AbortController();
     const options = {
       method: 'POST',
@@ -486,7 +489,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(closedChangeset);
-    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/close`;
+    const resource = this._apiroot + `/api/0.6/changeset/${changeset.id}/close`;
     const controller = new AbortController();
     const options = {
       method: 'PUT',
@@ -665,7 +668,7 @@ export class OsmService extends AbstractSystem {
       }
     };
 
-    const url = this._urlroot + '/api/capabilities.json';
+    const url = this._apiroot + '/api/capabilities.json';
     const errback = this._wrapcb(gotResult);
 
     fetch(url)
@@ -876,7 +879,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(createdNote);
-    const resource = this._urlroot + '/api/0.6/notes?' +
+    const resource = this._apiroot + '/api/0.6/notes?' +
       utilQsString({ lon: note.loc[0], lat: note.loc[1], text: note.newComment });
     const controller = new AbortController();
     const options = { method: 'POST', signal: controller.signal };
@@ -944,7 +947,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(updatedNote);
-    let resource = this._urlroot + `/api/0.6/notes/${note.id}/${action}`;
+    let resource = this._apiroot + `/api/0.6/notes/${note.id}/${action}`;
     if (note.newComment) {
       resource += '?' + utilQsString({ text: note.newComment });
     }
