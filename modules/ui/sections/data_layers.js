@@ -21,6 +21,8 @@ export function uiSectionDataLayers(context) {
 
   const scene = context.scene();
 
+  // render color picker variable
+  let _renderColorPicker;
 
   function renderDisclosureContent(selection) {
     let container = selection.selectAll('.data-layer-container')
@@ -212,11 +214,11 @@ export function uiSectionDataLayers(context) {
       .append('span')
       .html(l10n.tHtml('map_data.layers.custom.title'));
 
-    /////////// add color picker here //////////////
-    const color = 'red';
+      /////////// add color picker here //////////////
+    const color = '#FF69B4';
     // eslint-disable-next-line no-warning-comments
     //TODO: connect selected color to changeColor function
-    uiRapidColorpicker(context, section)
+    _renderColorPicker = uiRapidColorpicker(context, section)
       .on('change', changeCustomColor('custom-data', color));
 
   // eslint-disable-next-line no-warning-comments
@@ -225,7 +227,6 @@ export function uiSectionDataLayers(context) {
       .append('button')
       .attr('class', 'rapid-colorpicker-fill')
       // need on click event handler to trigger colorpicker popup to render
-      // .on('click', () => {})
       .call(uiIcon('#fas-palette'));
 
     liEnter
@@ -271,6 +272,10 @@ export function uiSectionDataLayers(context) {
 
     ul.selectAll('button.zoom-to-data')
       .classed('disabled', d => !d.hasData);
+
+      // update colorpicker
+    ul.selectAll('button.rapid-colorpicker-fill')
+      .call(_renderColorPicker);
   }
 
   // color picker change color function
