@@ -120,7 +120,7 @@
     "karma-remap-istanbul": "^0.6.0",
     "mapillary_sprite_source": "^1.8.0",
     "mocha": "^10.2.0",
-    "name-suggestion-index": "~6.0.20231009",
+    "name-suggestion-index": "~6.0.20231023",
     "node-fetch": "^3.3.2",
     "npm-run-all": "^4.1.5",
     "osm-community-index": "~5.6.0",
@@ -128,7 +128,7 @@
     "postcss-selector-prepend": "^0.5.0",
     "shelljs": "^0.8.5",
     "shx": "^0.3.4",
-    "sinon": "^15.2.0",
+    "sinon": "^17.0.0",
     "sinon-chai": "^3.7.0",
     "static-server": "^2.2.1",
     "svg-sprite": "2.0.2"
