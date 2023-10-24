@@ -214,6 +214,25 @@ export class UrlHashSystem extends AbstractSystem {
     }
   }
 
+  /**
+   * runOnceAtStartup
+   * Called once startup is complete
+   * This will zoom into the object from the URL hash if there is any present
+   */
+  runOnceAtStartup() {
+    // const toOmit = ['comment', 'source', 'hashtags', 'walkthrough'];
+    // let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
+    const extent = context.mode?.extent;
+    const map = context.systems.map;
+    if (extent) {   // zoom in on extent
+      _lastTransform = map.transform();
+      const [w, h] = map.dimensions;
+      const z = map.extentZoom(extent, [w/2, h/2]);
+      map.centerZoomEase(extent.center(), z);
+
+    }
+  }
+
 
   /**
    * _updateHash
