@@ -40,7 +40,14 @@ body:
     id: reproduction
     attributes:
       label: Steps to reproduce
-      description: Provide a detailed list of steps that reproduce the issue.
+      description: Describe how to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
   - type: textarea
     id: URL
     attributes:
