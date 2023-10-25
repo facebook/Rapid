@@ -320,7 +320,6 @@ export class UrlHashSystem extends AbstractSystem {
       const extent = this.context.mode?.extent;
       const map = this.context.systems.map;
       if (extent) {   // zoom in on extent
-        _lastTransform = map.transform();
         const [w, h] = map.dimensions;
         const z = map.extentZoom(extent, [w/2, h/2]);
         map.centerZoomEase(extent.center(), z);
