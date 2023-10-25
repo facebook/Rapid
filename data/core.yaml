@@ -1831,10 +1831,13 @@ en:
         reference: Intersecting highways should share a junction vertex.
     ambiguous_crossing_tags:
       title: Ambiguous Crossing Tags
-      message: "{feature} crossing info conflicts with {feature2}"
-      incomplete_message: "{feature} has crossing info, but one or more of its nodes does not."
-      tip: "Crossing way markings conflict with crossing nodes"
-      reference: Crossing way markings should not conflict with its crossing node.
+      message: "{feature} line info conflicts with point {feature2}"
+      message_markings: "{feature} marking info conflicts with point {feature2}"
+      incomplete_message: "{feature} has crossing info, but one or more of its points does not."
+      tip: "Crossing line markings conflict with crossing point"
+      reference: Crossing line markings should not conflict with its crossing point.
+      upgrade_node: "Upgrade node to:"
+      upgrade_way: "Upgrade way to:"
     area_as_point:
       message: '{feature} should be an area, not a point'
     close_nodes:
@@ -2048,12 +2051,13 @@ en:
         annotation: Added a tunnel.
       address_the_concern:
         title: Address the concern
-      use_crossing_tags_from_node:
-        title: Use the crossing node's tags
-        annotation: Updated parent way's crossing tag info from a node.
-      use_crossing_tags_from_way:
-        title: Use the crossing way's tags
-        annotation: Updated child node's crossing tag info from a parent way.
+      set_both_as_marked:
+        title: Set way and node to marked
+        title_use_marking: Set way and node to {marking} marking
+        annotation: set way and node to have crossing markings.
+      set_both_as_unmarked:
+        title: Set way and node to unmarked
+        annotation: set way and node to have no crossing markings.
       connect_almost_junction:
         annotation: Connected very close features.
       connect_crossing_features:
