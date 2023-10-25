@@ -301,7 +301,7 @@ export function validationAmbiguousCrossingTags(context) {
             title: l10n.tHtml('issues.fix.set_both_as_unmarked.title'),
             onClick: function () {
 
-              const annotation = l10n.t('issues.fix.use_crossing_tags_from_node.annotation');
+              const annotation = l10n.t('issues.fix.set_both_as_unmarked.annotation');
               editor.perform(actionChangeTags(currentInfo.node.id, nodeDowngradeTags));
               editor.perform(actionChangeTags(currentInfo.way.id, wayDowngradeTags));
               editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
@@ -409,7 +409,7 @@ export function validationAmbiguousCrossingTags(context) {
       fixes.push(
         new ValidationFix({
           icon: 'rapid-icon-crossing',
-          title: l10n.tHtml('issues.fix.use_crossing_tags_from_way.title'),
+          title: l10n.tHtml('issues.fix.set_both_as_marked.title'),
           onClick: function () {
             const graph = editor.staging.graph;
             const [nodeID, wayID] = this.issue.entityIds;
@@ -418,7 +418,7 @@ export function validationAmbiguousCrossingTags(context) {
             if (!node || !way) return;
 
             const wayTags = way.tags;
-            let tags = {};
+            let tags = Object.assign({}, node.tags);
 
             // At the very least, we need to make the node into a crossing node
             tags.highway = 'crossing';
@@ -430,12 +430,15 @@ export function validationAmbiguousCrossingTags(context) {
             }
             tags.highway = 'crossing';
 
-            const annotation = l10n.t('issues.fix.use_crossing_tags_from_way.annotation');
+
+            const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
             editor.perform(actionChangeTags(nodeID, tags));
             editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
           }
         })
       );
+
+      return fixes;
     }
 
 
