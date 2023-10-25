@@ -149,23 +149,38 @@ export function validationAmbiguousCrossingTags(context) {
       let wayMarkingVal = wayUpdateTags['crossing:markings'];
 
 
+      // Special case: If one entity has 'crossing=marked' but no crossing:markings, then we need to remove the other entity's markings as well.
+      if (!currentInfo.way.tags['crossing:markings'] || currentInfo.way.tags['crossing:markings'] === '') {
+        delete nodeUpdateTags['crossing:markings'];
+        nodeUpdateTags.crossing = currentInfo.way.tags.crossing;
+      } else if (!currentInfo.node.tags['crossing:markings'] || currentInfo.node.tags['crossing:markings'] === '') {
+        delete wayUpdateTags['crossing:markings'];
+        wayUpdateTags.crossing = currentInfo.node.tags.crossing;
+      }
+
+
       // Calculate the updated tags for both fixes:
       // 1) Set node to use the way's markings,
       // 2) Set the way to use the node's markings
 
+      if (wayMarkingVal) {
+        nodeUpdateTags['crossing:markings'] = wayMarkingVal;
+      }
+      if (nodeMarkingVal) {
+        wayUpdateTags['crossing:markings'] = nodeMarkingVal;
+      }
 
-      nodeUpdateTags['crossing:markings'] = wayMarkingVal;
-      wayUpdateTags['crossing:markings'] = nodeMarkingVal;
       issues.push(new ValidationIssue(context, {
         type,
         subtype: 'fixme_tag',
         severity: 'warning',
         message: function () {
-          const node = context.hasEntity(this.entityIds[0]);
-          const way = context.hasEntity(this.entityIds[1]);
+          const graph = editor.staging.graph;
+          const node = graph.hasEntity(this.entityIds[0]);
+          const way = graph.hasEntity(this.entityIds[1]);
           return l10n.tHtml('issues.ambiguous_crossing_tags.message_markings', {
-            feature: l10n.displayLabel(node, context.graph()),
-            feature2: l10n.displayLabel(way, context.graph())
+            feature: l10n.displayLabel(node, graph),
+            feature2: l10n.displayLabel(way, graph)
           });
         },
         reference: showReference,
@@ -205,42 +220,54 @@ export function validationAmbiguousCrossingTags(context) {
 
     function makeConflictingMarkingFixes() {
       let fixes = [];
-      const parentWay = context.hasEntity(this.entityIds[1]);
-      const node = context.hasEntity(this.entityIds[0]);
+      const graph = editor.staging.graph;
 
-      //Since the 'node should use way' fix is first, that's what we should display.
-      fixes.push(
-        new ValidationFix({
-          icon: 'rapid-icon-crossing',
-          title: l10n.tHtml('issues.fix.set_both_as_marked.title_use_marking', {
-            marking: parentWay.tags['crossing:markings']
-          }),
-          onClick:  () => {
-            const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
-            context.perform(doMarkBothAsWay,annotation);
-          }
-        })
-      );
+      const parentWay = graph.hasEntity(this.entityIds[1]);
+      const node = graph.hasEntity(this.entityIds[0]);
 
-      fixes.push(
-        new ValidationFix({
-          icon: 'rapid-icon-crossing',
-          title: l10n.tHtml('issues.fix.set_both_as_marked.title_use_marking', {
-              marking: node.tags['crossing:markings']
-          }),
-          onClick: () => {
-            const annotation = l10n.t(
-              'issues.fix.set_both_as_unmarked.annotation'
-            );
-            context.perform(doMarkBothAsNode, annotation);
-          }
-        },
-        )
-      );
+      // Only display this fix if the node markings are present
+      if (node.tags['crossing:markings']) {
+        fixes.push(
+          new ValidationFix({
+            icon: 'rapid-icon-crossing',
+            title: getTitle(node.tags),
+            onClick: () => {
+              const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
+              editor.perform(doMarkBothAsNode, annotation);
+              editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
+            }
+          })
+        );
+      }
+      // Similarly, only display this fix if the way markings are present
+      if (parentWay.tags['crossing:markings']) {
+        fixes.push(
+          new ValidationFix({
+            icon: 'rapid-icon-crossing',
+            title: getTitle(parentWay.tags),
+            onClick: () => {
+              const annotation = l10n.t(
+                'issues.fix.set_both_as_marked.annotation'
+              );
+              editor.perform(doMarkBothAsWay, annotation);
+              editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
+            }
+          },
+          )
+        );
+      }
+
+      function getTitle(tags) {
+          return l10n.tHtml('issues.fix.set_both_as_marked.title_use_marking', {
+            marking: tags['crossing:markings']
+          });
+      }
+
 
       function doMarkBothAsNode() {
         return actionChangeTags(currentInfo.way.id, wayUpdateTags)(graph);
       }
+
 
       function doMarkBothAsWay() {
         return actionChangeTags(currentInfo.node.id, nodeUpdateTags)(graph);
@@ -261,46 +288,28 @@ export function validationAmbiguousCrossingTags(context) {
             title: l10n.tHtml('issues.fix.set_both_as_marked.title'),
             onClick:  () => {
               const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
-              context.perform(doMarkingChange,annotation);
+              editor.perform(actionChangeTags(currentInfo.node.id, nodeUpdateTags));
+              editor.perform(actionChangeTags(currentInfo.way.id, wayUpdateTags));
+              editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
             }
           })
         );
 
         fixes.push(
           new ValidationFix({
-            icon: 'rapid-icon-point',
-            title: l10n.tHtml('issues.fix.use_crossing_tags_from_node.title'),
+            icon: 'rapid-icon-crossing',
+            title: l10n.tHtml('issues.fix.set_both_as_unmarked.title'),
             onClick: function () {
-              const graph = editor.staging.graph;
-              const [nodeID, wayID] = this.issue.entityIds;
-              const node = graph.hasEntity(nodeID);
-              const way = graph.hasEntity(wayID);
-              if (!node || !way) return;
-
-              const tags = Object.assign({}, node.tags);
-              Object.keys(tags).forEach(tag => {
-                if ((tag === 'crossing') || (tag === 'crossing:markings')) return;
-                delete tags.tag;
-              });
 
               const annotation = l10n.t('issues.fix.use_crossing_tags_from_node.annotation');
-              editor.perform(actionChangeTags(wayID, tags));
+              editor.perform(actionChangeTags(currentInfo.node.id, nodeDowngradeTags));
+              editor.perform(actionChangeTags(currentInfo.way.id, wayDowngradeTags));
               editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
             }
           })
         );
       }
 
-      function doMarkingChange(graph, nodeUpdateTags, wayUpdateTags) {
-        graph = actionChangeTags(currentInfo.node.id, nodeUpdateTags);
-        return actionChangeTags(currentInfo.way.id, wayUpdateTags)(graph);
-      }
-
-      function doUnmarkingChange(graph, nodeDowngradeTags, wayDowngradeTags) {
-        actionChangeTags(currentInfo.node.id, nodeDowngradeTags);
-        actionChangeTags(currentInfo.way.id, wayDowngradeTags);
-        return graph;
-      }
 
       return fixes;
     }
@@ -346,9 +355,10 @@ export function validationAmbiguousCrossingTags(context) {
         subtype: 'fixme_tag',
         severity: 'warning',
         message: function () {
-          const way = context.hasEntity(this.entityIds[1]);
+          const graph = editor.staging.graph;
+          const way = graph.hasEntity(this.entityIds[1]);
           return l10n.tHtml('issues.ambiguous_crossing_tags.incomplete_message', {
-            feature: l10n.displayLabel(way, context.graph())
+            feature: l10n.displayLabel(way, graph)
           });
         },
         reference: showReference,

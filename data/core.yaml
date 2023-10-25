@@ -2053,7 +2053,8 @@ en:
         title: Address the concern
       set_both_as_marked:
         title: Set way and node to marked
-        title_use_marking: Set way and node to {marking} marking
+        title_use_marking: Use '{marking}' marking
+        title_use_crossing: Use '{crossing}'
         annotation: set way and node to have crossing markings.
       set_both_as_unmarked:
         title: Set way and node to unmarked
