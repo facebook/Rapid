@@ -1,4 +1,5 @@
-D3 Enter, Update, Exit
+* D3 notes
+Enter, Update, Exit methods
 
     - DOM elements = data points : update
         // updating existing data
@@ -8,4 +9,36 @@ D3 Enter, Update, Exit
     
     - DOM elements > data points : exit
         // removing missing or redundant data
+
+* Codebase walk-through
+/modules
+
+/modules/operations
+- shortcut or hot key that a mapper can use to interact with the map
+
+/modules/modes 
+- alter what key presses and short keys do
+    - e.g. 'esc' button does different things in different modes 
+
+/modules/behaviors
+- reusable functionality
+    - e.g. dragging, map nudging
+
+/modules/actions
+- any time you change the map
+
+/modules/osm
+- definitions of shapes you see on the map
+    - open street map entities
+
+/modules/pixi
+- where all the rendering happens
+
+/modules/services
+- where we get information from other places
+    - connecting to a server somewhere, getting some data from it
+
+
+
+
 
