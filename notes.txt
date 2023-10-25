@@ -1,0 +1,11 @@
+D3 Enter, Update, Exit
+
+    - DOM elements = data points : update
+        // updating existing data
+    
+    - DOM elements < data points : enter
+        // adding new data
+    
+    - DOM elements > data points : exit
+        // removing missing or redundant data
+
