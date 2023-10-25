@@ -305,27 +305,7 @@ export class UrlHashSystem extends AbstractSystem {
 
     this.emit('hashchange', new Map(this._currParams), new Map(this._prevParams));  // emit copies
   }
-    /**
-   * _hashchange
-   * Called on hashchange event (user changes url manually), and when enabling the hash behavior
-   * Receiving code will receive copies of both the current and previous parameters.
-   */
-  // _hashchange() {
-  //   if (!this._enabled) return;
 
-  //   this._currHash = window.location.hash;
-  //   const q = utilStringQs(this._currHash);
-
-  //   if (!this._prevParams) {         // We haven't emitted `hashchange` yet
-  //     this._prevParams = new Map();  // set previous to empty Map, so everything looks new
-  //   } else {
-  //     this._prevParams = this._currParams;   // copy current -> previous
-  //   }
-
-  //   this._currParams = new Map(Object.entries(q));
-
-  //   this.emit('hashchange', new Map(this._currParams), new Map(this._prevParams));  // emit copies
-  // }
   /**
    * runOnceAtStartup
    * Called once startup is complete
@@ -335,7 +315,6 @@ export class UrlHashSystem extends AbstractSystem {
       const extent = this.context.mode?.extent;
       const map = this.context.systems.map;
       if (extent) {   // zoom in on extent
-        // _lastTransform = map.transform();
         const [w, h] = map.dimensions;
         const z = map.extentZoom(extent, [w/2, h/2]);
         map.centerZoomEase(extent.center(), z);
