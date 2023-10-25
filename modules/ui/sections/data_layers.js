@@ -275,6 +275,9 @@ export function uiSectionDataLayers(context) {
 
       // update colorpicker
     ul.selectAll('button.rapid-colorpicker-fill')
+      .on('click', () => {
+        ul.append('div').classed('colorpicker-popup', true);
+      })
       .call(_renderColorPicker);
   }
 
