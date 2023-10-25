@@ -312,8 +312,19 @@ export class UrlHashSystem extends AbstractSystem {
    * This will zoom into the object from the URL hash if there is any present
    */
     _runOnceAtStartup() {
-      const extent = this.context.mode?.extent;
-      const map = this.context.systems.map;
+      // if (!this._enabled) return;
+
+      // Remove some of the initial-only params that only clutter up the hash
+      // const toOmit = ['map'];
+      // let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
+  
+      // const newHash = '#' + utilQsString(params, true);
+      // if (newHash !== this._currHash) {
+      //   window.history.replaceState(null, this.titleBase, newHash);
+      //   this._currHash = newHash;
+      // }
+      const extent = context.mode?.extent;
+      const map = context.systems.map;
       if (extent) {   // zoom in on extent
         const [w, h] = map.dimensions;
         const z = map.extentZoom(extent, [w/2, h/2]);
