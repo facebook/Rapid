@@ -14,30 +14,31 @@ import { utilDetect, utilRebind } from '../util';
 
 
 const readOnlyTags = [
+  /^closed:/,
+  /^ideditor:/,
+  /^rapid:/,
+  /^resolved:/,
+  /^warnings:/,
   /^changesets_count$/,
   /^created_by$/,
-  /^ideditor:/,
-  /^imagery_used$/,
+  /^(imagery|photos|data)_used$/,
   /^host$/,
   /^locale$/,
-  /^rapid:poweruser$/,
-  /^warnings:/,
-  /^resolved:/,
-  /^closed:note$/,
-  /^closed:keepright$/,
-  /^closed:improveosm:/,
-  /^closed:osmose:/
 ];
 
-// treat most punctuation (except -, _, +, &) as hashtag delimiters - iD#4398
+// Treat most punctuation (except -, _, +, &) as hashtag delimiters - iD#4398
 // from https://stackoverflow.com/a/25575009
 const hashtagRegex = /(#[^\u2000-\u206F\u2E00-\u2E7F\s\\'!"#$%()*,.\/:;<=>?@\[\]^`{|}~]+)/g;
 
 
 export function uiCommit(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const rapid = context.systems.rapid;
   const storage = context.systems.storage;
   const uploader = context.systems.uploader;
+  const urlhash = context.systems.urlhash;
+  const validator = context.systems.validator;
 
   const dispatch = d3_dispatch('cancel');
   let _userDetails;
@@ -67,7 +68,7 @@ export function uiCommit(context) {
   // Creates an initial changeset
   //
   function initChangeset() {
-    const localeCode = context.systems.l10n.localeCode();
+    const localeCode = l10n.localeCode();
 
     // Expire stored comment, hashtags, source after cutoff datetime - iD#3947 iD#4899
     const commentDate = +storage.getItem('commentDate') || 0;
@@ -80,7 +81,6 @@ export function uiCommit(context) {
     }
 
     // Override with any `comment`,`source`,`hashtags` that we got from the urlhash, if any
-    const urlhash = context.systems.urlhash;
     const defaultChangesetComment = urlhash.initialHashParams.get('comment');
     const defaultChangesetSource = urlhash.initialHashParams.get('source');
     const defaultChangesetHashtags = urlhash.initialHashParams.get('hashtags');
@@ -99,23 +99,23 @@ export function uiCommit(context) {
     }
 
     const detected = utilDetect();
-    let tags = {
-      comment: storage.getItem('comment') || '',
-      created_by: context.cleanTagValue('Rapid ' + context.version),
-      host: context.cleanTagValue(detected.host),
-      locale: context.cleanTagValue(localeCode)
+    const tags = {
+      comment:     storage.getItem('comment') || '',
+      created_by:  context.cleanTagValue('Rapid ' + context.version),
+      host:        context.cleanTagValue(detected.host),
+      locale:      context.cleanTagValue(localeCode)
     };
 
     // Call findHashtags initially - this will remove stored
     // hashtags if any hashtags are found in the comment - iD#4304
     findHashtags(tags, true);
 
-    let hashtags = storage.getItem('hashtags');
+    const hashtags = storage.getItem('hashtags');
     if (hashtags) {
       tags.hashtags = hashtags;
     }
 
-    let source = storage.getItem('source');
+    const source = storage.getItem('source');
     if (source) {
       tags.source = source;
     }
@@ -128,11 +128,7 @@ export function uiCommit(context) {
   // Calculates tags based on the user's editing session
   //
   function updateSessionChangesetTags() {
-    const osm = context.services.osm;
-    if (!osm) return;
-
-    let tags = Object.assign({}, uploader.changeset.tags);   // shallow copy
-    let sources = new Set((tags.source || '').split(';'));
+    const tags = Object.assign({}, uploader.changeset.tags);   // shallow copy
 
     // Sync up the `rapid:poweruser` tag
     // Set to true if the user had poweruser on at any point during their editing
@@ -142,40 +138,94 @@ export function uiCommit(context) {
       delete tags['rapid:poweruser'];
     }
 
-    // Sync up the used photo sources with `sources`
-    let usedPhotos = new Set(context.systems.edits.photosUsed());
-    let allPhotos = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
-    allPhotos.forEach(function(val) { sources.delete(val); });   // reset all
-    if (usedPhotos.size) {
-      sources.add('streetlevel imagery');
-      usedPhotos.forEach(function(val) { sources.add(val); });
-    } else {
-      sources.delete('streetlevel imagery');
+    // Update `source` tag,
+    // also `imagery_used`, `photos_used`, `data_used`
+    const used = editor.sourcesUsed();
+    const sources = new Set((tags.source || '').split(';'));
+
+    // Users may provide their own `source` values, but these are some values that we set below
+    const toRemove = [
+      'aerial imagery', 'streetlevel imagery',
+      'mapillary', 'kartaview', 'streetside',
+      'mapwithai', 'esri',
+    ];
+    for (const v of toRemove) {
+      sources.delete(v);
     }
 
-    // Sync up the used Rapid sources with `sources`
-    let usedRapid = rapid.sources;
-    let allRapid = ['mapwithai', 'esri'];
-    allRapid.forEach(function(val) { sources.delete(val); });   // reset all
-    usedRapid.forEach(function(val) { sources.add(val); });
+    // Aerial Imagery
+    // Update `imagery_used` tag
+    let setImageryUsed;
+    if (used.imagery.size) {
+      sources.add('aerial imagery');
+      setImageryUsed = context.cleanTagValue(Array.from(used.imagery).filter(Boolean).join(';'));
+    }
+    if (setImageryUsed) {
+      tags.imagery_used = setImageryUsed;
+    } else {
+      delete tags.imagery_used;
+    }
+
+    // Streetlevel Photos
+    // Update `photos_used` tag
+    let setPhotosUsed;
+    if (used.photos.size) {
+      sources.add('streetlevel imagery');
+      for (const v of used.photos) {
+        const match = v.match(/(mapillary|kartaview|streetside)/i);
+        if (match !== null) {
+          sources.add(match[1]);
+        }
+      }
+      setPhotosUsed = context.cleanTagValue(Array.from(used.photos).filter(Boolean).join(';'));
+    }
+    if (setPhotosUsed) {
+      tags.photos_used = setPhotosUsed;
+    } else {
+      delete tags.photos_used;
+    }
+
+    // Rapid, Esri, or Custom datasets
+    // Update `data_used` tag
+    let setDataUsed;
+    if (used.data.size) {
+      for (const v of used.data) {
+        const match = v.match(/(mapwithai|esri)/i);
+        if (match !== null) {
+          sources.add(match[1]);
+        }
+      }
+      setDataUsed = context.cleanTagValue(Array.from(used.data).filter(Boolean).join(';'));
+    }
+    if (setDataUsed) {
+      tags.data_used = setDataUsed;
+    } else {
+      delete tags.data_used;
+    }
 
     // Update `source` tag
-    let setSource = context.cleanTagValue(Array.from(sources).filter(Boolean).join(';'));
+    const setSource = context.cleanTagValue(Array.from(sources).filter(Boolean).join(';'));
     if (setSource) {
       tags.source = setSource;
     } else {
       delete tags.source;
     }
 
-    // Update `imagery_used` tag
-    let imageries = new Set(context.systems.edits.imageryUsed());
-    let setImagery = context.cleanTagValue(Array.from(imageries).filter(Boolean).join(';'));
-    tags.imagery_used = setImagery || 'None';
+
+    // Clear existing issue counts
+    for (const k of Object.keys(tags)) {
+      if (/^(closed|warnings|resolved):/.test(k)) {
+        delete tags[k];
+      }
+    }
 
     // Update tags for closed issues and notes
-    const osmClosed = osm.getClosedIDs();
-    if (osmClosed.length) {
-      tags['closed:note'] = context.cleanTagValue(osmClosed.join(';'));
+    const osm = context.services.osm;
+    if (osm) {
+      const osmClosed = osm.getClosedIDs();
+      if (osmClosed.length) {
+        tags['closed:note'] = context.cleanTagValue(osmClosed.join(';'));
+      }
     }
     const keepright = context.services.keepRight;
     if (keepright) {
@@ -199,14 +249,22 @@ export function uiCommit(context) {
       }
     }
 
-    // Remove existing issue counts
-    for (let key in tags) {
-      if (key.match(/(^warnings:)|(^resolved:)/)) {
-        delete tags[key];
-      }
-    }
+    // Add counts of warnings generated by the user's edits
+    const warnings = validator
+      .getIssuesBySeverity({ what: 'edited', where: 'all', includeIgnored: true, includeDisabledRules: true })
+      .warning
+      .filter(issue => issue.type !== 'help_request');    // exclude 'fixme' and similar - iD#8603
 
-    function addIssueCounts(issues, prefix) {
+    _addIssueCounts(warnings, 'warnings');
+
+    // add counts of issues resolved by the user's edits
+    const resolvedIssues = validator.getResolvedIssues();
+    _addIssueCounts(resolvedIssues, 'resolved');
+
+    uploader.changeset = uploader.changeset.update({ tags: tags });
+
+
+    function _addIssueCounts(issues, prefix) {
       let issuesByType = utilArrayGroupBy(issues, 'type');
       for (let issueType in issuesByType) {
         let issuesOfType = issuesByType[issueType];
@@ -221,20 +279,6 @@ export function uiCommit(context) {
         }
       }
     }
-
-    // Add counts of warnings generated by the user's edits
-    const warnings = context.systems.validator
-      .getIssuesBySeverity({ what: 'edited', where: 'all', includeIgnored: true, includeDisabledRules: true })
-      .warning
-      .filter(issue => issue.type !== 'help_request');    // exclude 'fixme' and similar - iD#8603
-
-    addIssueCounts(warnings, 'warnings');
-
-    // add counts of issues resolved by the user's edits
-    const resolvedIssues = context.systems.validator.getResolvedIssues();
-    addIssueCounts(resolvedIssues, 'resolved');
-
-    uploader.changeset = uploader.changeset.update({ tags: tags });
   }
 
 
@@ -254,7 +298,7 @@ export function uiCommit(context) {
     headerTitle
       .append('div')
       .append('h3')
-      .html(context.tHtml('commit.title'));
+      .html(l10n.tHtml('commit.title'));
 
     headerTitle
       .append('button')
@@ -312,7 +356,7 @@ export function uiCommit(context) {
     prose = prose.enter()
       .append('p')
       .attr('class', 'commit-info')
-      .html(context.tHtml('commit.upload_explanation'))
+      .html(l10n.tHtml('commit.upload_explanation'))
       .merge(prose);
 
     // Always check if this has changed, but only update prose.html()
@@ -340,7 +384,7 @@ export function uiCommit(context) {
         .attr('target', '_blank');
 
       prose
-        .html(context.tHtml('commit.upload_explanation_with_user', { user: userLink.html() }));
+        .html(l10n.tHtml('commit.upload_explanation_with_user', { user: userLink.html() }));
     });
 
 
@@ -361,7 +405,7 @@ export function uiCommit(context) {
 
     if (!labelEnter.empty()) {
       labelEnter
-        .call(uiTooltip(context).title(context.tHtml('commit.request_review_info')).placement('top'));
+        .call(uiTooltip(context).title(l10n.tHtml('commit.request_review_info')).placement('top'));
     }
 
     labelEnter
@@ -371,7 +415,7 @@ export function uiCommit(context) {
 
     labelEnter
       .append('span')
-      .html(context.tHtml('commit.request_review'));
+      .html(l10n.tHtml('commit.request_review'));
 
     // Update
     requestReview = requestReview
@@ -396,7 +440,7 @@ export function uiCommit(context) {
       .attr('class', 'secondary-action button cancel-button')
       .append('span')
       .attr('class', 'label')
-      .html(context.tHtml('commit.cancel'));
+      .html(l10n.tHtml('commit.cancel'));
 
     let uploadButton = buttonEnter
       .append('button')
@@ -404,7 +448,7 @@ export function uiCommit(context) {
 
     uploadButton.append('span')
       .attr('class', 'label')
-      .html(context.tHtml('commit.save'));
+      .html(l10n.tHtml('commit.save'));
 
     let uploadBlockerTooltipText = getUploadBlockerMessage();
 
@@ -423,9 +467,11 @@ export function uiCommit(context) {
         if (!d3_select(this).classed('disabled')) {
           this.blur();    // avoid keeping focus on the button - iD#4641
 
-          for (let key in uploader.changeset.tags) {
-            // remove any empty keys before upload
-            if (!key) delete uploader.changeset.tags[key];
+          const tags = uploader.changeset.tags;
+          for (const [k, v] of Object.entries(tags)) {
+            if (!k || !v) {    // remove any empty tags before upload
+              delete tags[k];
+            }
           }
 
           uploader.save();
@@ -481,16 +527,16 @@ export function uiCommit(context) {
 
 
   function getUploadBlockerMessage() {
-    const errors = context.systems.validator
+    const errors = validator
       .getIssuesBySeverity({ what: 'edited', where: 'all' }).error;
 
     if (errors.length) {
-      return context.t('commit.outstanding_errors_message', { count: errors.length });
+      return l10n.t('commit.outstanding_errors_message', { count: errors.length });
 
     } else {
       const comment = uploader.changeset?.tags?.comment ?? '';
       if (!comment.trim().length) {
-        return context.t('commit.comment_needed_message');
+        return l10n.t('commit.comment_needed_message');
       }
     }
     return null;
@@ -564,7 +610,7 @@ export function uiCommit(context) {
           if (s[0] !== '#') { s = '#' + s; }    // prepend '#'
           let matched = s.match(hashtagRegex);
           return matched && matched[0];
-        }).filter(Boolean);                       // exclude falsy
+        }).filter(Boolean);                     // exclude falsy
 
       return matches || [];
     }

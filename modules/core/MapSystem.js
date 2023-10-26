@@ -48,7 +48,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['edits', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['editor', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash']);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -214,45 +214,58 @@ export class MapSystem extends AbstractSystem {
 
 
     // Setup events that cause the map to redraw...
-    const edits = context.systems.edits;
+    const editor = context.systems.editor;
     const filters = context.systems.filters;
     const imagery = context.systems.imagery;
     const photos = context.systems.photos;
     const scene = this._renderer.scene;
 
-    const _didUndoOrRedo = (targetTransform) => {
-      const modeID = context.mode?.id;
-      if (modeID !== 'browse' && modeID !== 'select') return;
-      if (targetTransform) {
-        this.transformEase(targetTransform);
-      }
-    };
-
-    edits
+    editor
       .on('merge', entityIDs => {
         if (entityIDs) {
           scene.dirtyData('osm', entityIDs);
         }
         this.deferredRedraw();
       })
-      .on('change', difference => {
-        if (difference) {
-          // todo - maybe only do this if difference.didChange.geometry?
-          const complete = difference.complete();
-          for (const entity of complete.values()) {
-            if (entity) {      // may be undefined if entity was deleted
-              entity.touch();  // bump version in place
-              filters.clearEntity(entity);  // clear feature filter cache
-            }
+      .on('stagingchange', difference => {
+        // todo - maybe only do this if difference.didChange.geometry?
+        const complete = difference.complete();
+        for (const entity of complete.values()) {
+          if (entity) {      // may be undefined if entity was deleted
+            entity.touch();  // bump .v in place, rendering code will pick it up as dirty
+            filters.clearEntity(entity);  // clear feature filter cache
           }
-          // touching entity will bump .v and the renderer should pick it up as dirty?
-//         const entityIDs = [...complete.keys()];
-//         scene.dirtyData('osm', entityIDs);
         }
         this.immediateRedraw();
       })
-      .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
-      .on('redone', (stack) => _didUndoOrRedo(stack.transform));
+      .on('historyjump', () => {
+        // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
+        const stable = editor.stable;
+
+        // Reposition the map if we've jumped to a different place.
+        const t0 = this.transform();
+        const t1 = stable.transform;
+        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
+          this.transformEase(t1);
+        }
+
+        // Switch to select mode if the edit contains selected ids.
+        // Note: draw modes need to do a little extra work to survive this,
+        //  so they have their own `historyjump` listeners.
+        const modeID = context.mode?.id;
+        if (/^draw/.test(modeID)) return;
+
+        // For now these IDs are assumed to be OSM ids.
+        // Check that they are actually in the stable graph.
+        const graph = stable.graph;
+        const checkIDs = stable.selectedIDs ?? [];
+        const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
+        if (selectedIDs.length) {
+          context.enter('select-osm', { selection: { osm: selectedIDs }} );
+        } else {
+          context.enter('browse');
+        }
+      });
 
     filters
       .on('filterchange', () => {
@@ -406,21 +419,22 @@ export class MapSystem extends AbstractSystem {
   /**
    * mouse
    * Gets the current [x,y] pixel location of the pointer
-   * @return  Array [x,y] pixel location
+   * (or center of map if there is no readily available pointer coordinate)
+   * @return  Array [x,y] pixel location of pointer (or center of the map)
    */
   mouse() {
-    return this._renderer.events.coord;
+    return this._renderer.events.coord || this.centerPoint();
   }
 
 
   /**
    * mouseLoc
    * Gets the current [lon,lat] location of the pointer
-   * @return  Array [lon,lat] (or location at the center of the map)
+   * (or center of map if there is no readily available pointer coordinate)
+   * @return  Array [lon,lat] location of pointer (or center of the map)
    */
   mouseLoc() {
-    const coord = this.mouse() || this.centerPoint();
-    return this.context.projection.invert(coord);
+    return this.context.projection.invert(this.mouse());
   }
 
 
@@ -579,10 +593,14 @@ export class MapSystem extends AbstractSystem {
    */
   fitEntities(entities, duration = 0) {
     let extent;
+
+    const editor = this.context.systems.editor;
+    const graph = editor.staging.graph;
+
     if (Array.isArray(entities)) {
-      extent = utilTotalExtent(entities, this.context.graph());
+      extent = utilTotalExtent(entities, graph);
     } else {
-      extent = entities.extent(this.context.graph());
+      extent = entities.extent(graph);
     }
     if (!isFinite(extent.area())) return this;
 
@@ -600,21 +618,24 @@ export class MapSystem extends AbstractSystem {
   selectEntityID(entityID, fitToEntity) {
     const doFit = fitToEntity || false;
     const context = this.context;
+    const editor = context.systems.editor;
 
     const gotEntity = (entity) => {
       const selectedIDs = context.selectedIDs();
       if (context.mode?.id !== 'select-osm' || !selectedIDs.includes(entityID)) {
-        context.enter('select-osm', { selectedIDs: [entity.id] });
+        context.enter('select-osm', { selection: { osm: [entity.id] }} );
       }
 
-      const extent = entity.extent(context.graph());
+      const currGraph = editor.staging.graph;  // may have changed by the time we get in here
+      const extent = entity.extent(currGraph);
       // Can't see it, or we're forcing the fit.
       if (extent.percentContainedIn(this.extent()) < 0.8 || doFit) {
         this.fitEntities(entity);
       }
     };
 
-    let entity = context.hasEntity(entityID);
+    const currGraph = editor.staging.graph;
+    let entity = currGraph.hasEntity(entityID);
     if (entity) {   // have it already
       gotEntity(entity);
 

@@ -6,6 +6,7 @@ import { utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSettingsCustomData(context) {
+  const l10n = context.systems.l10n;
   const storage = context.systems.storage;
   const urlhash = context.systems.urlhash;
   const dispatch = d3_dispatch('change');
@@ -34,16 +35,16 @@ export function uiSettingsCustomData(context) {
 
     modal.select('.modal-section.header')
       .append('h3')
-      .html(context.tHtml('settings.custom_data.header'));
+      .html(l10n.tHtml('settings.custom_data.header'));
 
 
     const textSection = modal.select('.modal-section.message-text');
 
-    const data_instructions = context.t(`${prefix}.instructions`);
-    const file_heading = context.t(`${prefix}.file.heading`);
-    const file_instructions = context.t(`${prefix}.file.instructions`);
-    const file_types = context.t(`${prefix}.file.types`);
-    const file_tip = context.t(`${prefix}.file.tip`);
+    const data_instructions = l10n.t(`${prefix}.instructions`);
+    const file_heading = l10n.t(`${prefix}.file.heading`);
+    const file_instructions = l10n.t(`${prefix}.file.instructions`);
+    const file_types = l10n.t(`${prefix}.file.types`);
+    const file_tip = l10n.t(`${prefix}.file.tip`);
 
     const fileHtml = marked.parse(`
 ${data_instructions}
@@ -79,15 +80,15 @@ ${file_tip}
         }
       });
 
-    const data_or = context.t(`${prefix}.or`);
-    const url_heading = context.t(`${prefix}.url.heading`);
-    const url_instructions = context.t(`${prefix}.url.instructions`);
-    const url_tokens = context.t(`${prefix}.url.tokens`);
-    const url_xyz = context.t(`${prefix}.url.xyz`);
-    const url_example_file = context.t(`${prefix}.url.example_file`);
-    const url_example_xyz = context.t(`${prefix}.url.example_xyz`);
-    const url_example_pmtiles = context.t(`${prefix}.url.example_pmtiles`);
-    const example = context.t('example');
+    const data_or = l10n.t(`${prefix}.or`);
+    const url_heading = l10n.t(`${prefix}.url.heading`);
+    const url_instructions = l10n.t(`${prefix}.url.instructions`);
+    const url_tokens = l10n.t(`${prefix}.url.tokens`);
+    const url_xyz = l10n.t(`${prefix}.url.xyz`);
+    const url_example_file = l10n.t(`${prefix}.url.example_file`);
+    const url_example_xyz = l10n.t(`${prefix}.url.example_xyz`);
+    const url_example_pmtiles = l10n.t(`${prefix}.url.example_pmtiles`);
+    const example = l10n.t('example');
 
     const urlHtml = marked.parse(`
 ### ${data_or}
@@ -113,7 +114,7 @@ ${url_tokens}
     textSection
       .append('textarea')
       .attr('class', 'field-url')
-      .attr('placeholder', context.t('settings.custom_data.url.placeholder'))
+      .attr('placeholder', l10n.t('settings.custom_data.url.placeholder'))
       .call(utilNoAuto)
       .property('value', _currUrl);
 
@@ -124,7 +125,7 @@ ${url_tokens}
     buttonSection
       .insert('button', '.ok-button')
       .attr('class', 'button cancel-button secondary-action')
-      .html(context.tHtml('confirm.cancel'));
+      .html(l10n.tHtml('confirm.cancel'));
 
     buttonSection.select('.cancel-button')
       .on('click.cancel', clickCancel);

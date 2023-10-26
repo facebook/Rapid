@@ -31,7 +31,7 @@ export class UiSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'ui';
-    this.dependencies = new Set(['edits', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
+    this.dependencies = new Set(['editor', 'imagery', 'l10n', 'map', 'storage', 'urlhash']);
 
     this.authModal = null;
     this.defs = null;
@@ -71,13 +71,12 @@ export class UiSystem extends AbstractSystem {
 
     const context = this.context;
     const l10n = context.systems.l10n;
-    const prerequisites = l10n.initAsync();
+    const prerequisites = Promise.all([
+      l10n.initAsync(),
+    ]);
 
     return this._initPromise = prerequisites
       .then(() => {
-        // Setup event handlers
-        window.addEventListener('beforeunload', () => context.save());
-        window.addEventListener('unload', () => context.systems.edits.unlock());
         window.addEventListener('resize', () =>  this.resize());
 
         // After l10n is ready we can make these
@@ -205,23 +204,23 @@ this.didRender = true;
     //Now that the sidebar has been insantiated, it's safe to bind the keypress handlers
 
     context.keybinding()
-          .on('⌫', e => e.preventDefault())
-          .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle)   // iD#5663, iD#6864 - common QWERTY, AZERTY
-          .on(uiCmd('⌘' + l10n.t('background.key')), e => {
-            if (e) {
-              e.stopImmediatePropagation();
-              e.preventDefault();
-            }
-            const imagery = context.systems.imagery;
-            const storage = context.systems.storage;
-            const previousBackground = imagery.getSource(storage.getItem('background-last-used-toggle'));
-            if (previousBackground) {
-              const currentBackground = imagery.baseLayerSource();
-              storage.setItem('background-last-used-toggle', currentBackground.id);
-              storage.setItem('background-last-used', previousBackground.id);
-              imagery.baseLayerSource(previousBackground);
-            }
-          });
+      .on('⌫', e => e.preventDefault())
+      .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle)   // iD#5663, iD#6864 - common QWERTY, AZERTY
+      .on(uiCmd('⌘' + l10n.t('background.key')), e => {
+        if (e) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+        const imagery = context.systems.imagery;
+        const storage = context.systems.storage;
+        const previousBackground = imagery.getSource(storage.getItem('background-last-used-toggle'));
+        if (previousBackground) {
+          const currentBackground = imagery.baseLayerSource();
+          storage.setItem('background-last-used-toggle', currentBackground.id);
+          storage.setItem('background-last-used', previousBackground.id);
+          imagery.baseLayerSource(previousBackground);
+        }
+      });
 
     const content = container
       .append('div')
@@ -436,16 +435,14 @@ this.didRender = true;
 
 
     // What to show first?
-    const editSystem = context.systems.edits;
+    const editor = context.systems.editor;
     const urlhash = context.systems.urlhash;
     const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
 
     if (startWalkthrough) {
       container.call(uiIntro(context));   // Jump right into walkthrough..
-
-    } else if (editSystem.lock() && editSystem.hasRestorableChanges()) {
-      container.call(uiRestore(context));   // Offer to restore previous edits..
-
+    } else if (editor.canRestoreBackup) {
+      container.call(uiRestore(context));   // Offer to restore backup edits..
     } else {
 // uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew
 //      if (context.systems.storage.getItem('sawRapidSplash')) {

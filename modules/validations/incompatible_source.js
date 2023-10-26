@@ -3,6 +3,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationIncompatibleSource(context) {
   const type = 'incompatible_source';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
   const incompatibleRules = [
@@ -21,7 +22,7 @@ export function validationIncompatibleSource(context) {
 
 
   const validation = function checkIncompatibleSource(entity) {
-    const entitySources = entity.tags && entity.tags.source && entity.tags.source.split(';');
+    const entitySources = entity.tags?.source && entity.tags.source.split(';');
     if (!entitySources) return [];
 
     const entityID = entity.id;
@@ -40,9 +41,10 @@ export function validationIncompatibleSource(context) {
           type: type,
           severity: 'warning',
           message: () => {
-            const entity = context.hasEntity(entityID);
+            const graph = editor.staging.graph;
+            const entity = graph.hasEntity(entityID);
             return entity ? l10n.tHtml('issues.incompatible_source.feature.message', {
-              feature: l10n.displayLabel(entity, context.graph(), true /* verbose */),
+              feature: l10n.displayLabel(entity, graph, true),  // true = verbose
               value: source
             }) : '';
           },

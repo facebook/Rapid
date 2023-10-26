@@ -7,10 +7,12 @@ import { uiSectionPhotoOverlays } from '../sections/photo_overlays';
 
 
 export function uiPaneMapData(context) {
+  const l10n = context.systems.l10n;
+
   return uiPane(context, 'map-data')
-    .key(context.t('map_data.key'))
-    .label(context.tHtml('map_data.title'))
-    .description(context.tHtml('map_data.description'))
+    .key(l10n.t('map_data.key'))
+    .label(l10n.tHtml('map_data.title'))
+    .description(l10n.tHtml('map_data.description'))
     .iconName('rapid-icon-data')
     .sections([
       uiSectionDataLayers(context),

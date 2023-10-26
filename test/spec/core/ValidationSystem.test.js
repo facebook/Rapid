@@ -15,17 +15,29 @@ describe('ValidationSystem', () => {
     setItem()     { }
   }
 
+  class MockImagerySystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    imageryUsed() { return ''; }
+  }
+
   class MockLocalizationSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    t()           { return ''; }
-    tHtml()       { return ''; }
+    t(id)         { return id; }
+    tHtml(id)     { return id; }
   }
 
   class MockMapSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     extent()      { return new sdk.Extent(); }
+  }
+
+  class MockPhotoSystem {
+    constructor() { }
+    initAsync()   { return Promise.resolve(); }
+    photosUsed()  { return ''; }
   }
 
   class MockUrlSystem {
@@ -40,18 +52,19 @@ describe('ValidationSystem', () => {
     constructor()   {
       this.projection = new sdk.Projection();
       this.systems = {
-        data:     new Rapid.DataLoaderSystem(this),
-        edits:    new Rapid.EditSystem(this),
-        l10n:     new MockLocalizationSystem(),
-        map:      new MockMapSystem(),
-        presets:  new MockSystem(),
-        rapid:    new MockSystem(),
-        storage:  new MockStorageSystem(),
-        urlhash:  new MockUrlSystem()
+        dataloader: new Rapid.DataLoaderSystem(this),
+        editor:     new Rapid.EditSystem(this),
+        imagery:    new MockImagerySystem(),
+        l10n:       new MockLocalizationSystem(),
+        map:        new MockMapSystem(),
+        photos:     new MockPhotoSystem(),
+        presets:    new MockSystem(),
+        rapid:      new MockSystem(),
+        storage:    new MockStorageSystem(),
+        urlhash:    new MockUrlSystem()
       };
-      this.graph = this.systems.edits.graph;
-      this.hasEntity = (id) => this.systems.edits.graph().hasEntity(id);
-     }
+    }
+    scene()       { return { layers: new Map() }; }
     selectedIDs() { return []; }
     on() {}
   }
@@ -59,7 +72,7 @@ describe('ValidationSystem', () => {
   const context = new MockContext();
 
   before(() => {
-    const editSystem = context.systems.edits;
+    const editSystem = context.systems.editor;
     _validator = new Rapid.ValidationSystem(context);
 
     return editSystem.initAsync()
@@ -78,16 +91,19 @@ describe('ValidationSystem', () => {
 
   it('has no issues on init', () => {
     const issues = _validator.getIssues({ what: 'all', where: 'all' });
-    expect(issues).to.have.lengthOf(0);
+    expect(issues).to.be.an.instanceOf(Array).with.lengthOf(0);
   });
 
 
   it('validateAsync returns a Promise, fulfilled when the validation has completed', () => {
-    const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, 0], tags: { building: 'house', phone: '555-1212' } });
-    context.systems.edits.perform( Rapid.actionAddEntity(n1) );
+    const n_1 = Rapid.osmNode({ id: 'n-1', loc: [0, 0], tags: { building: 'house', phone: '555-1212' } });
+
+    const editor = context.systems.editor;
+    editor.perform(Rapid.actionAddEntity(n_1));
+    editor.commit({ annotation: 'added n-1', selectedIDs: ['n-1'] });
 
     const prom = _validator.validateAsync();
-    expect(prom).to.be.a('promise');
+    expect(prom).to.be.an.instanceOf(Promise);
 
     return prom
       .then(() => {

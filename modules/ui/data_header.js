@@ -2,6 +2,7 @@ import { uiIcon } from './icon';
 
 
 export function uiDataHeader(context) {
+  const l10n = context.systems.l10n;
   let _datum;
 
   function dataHeader(selection) {
@@ -27,7 +28,7 @@ export function uiDataHeader(context) {
     headerEnter
       .append('div')
       .attr('class', 'data-header-label')
-      .html(context.tHtml('map_data.layers.custom.title'));
+      .html(l10n.tHtml('map_data.layers.custom.title'));
   }
 
 

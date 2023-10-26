@@ -3,6 +3,7 @@ import { uiIcon } from './icon';
 
 
 export function uiNoteReport(context) {
+  const l10n = context.systems.l10n;
   let _note;
 
   function noteReport(selection) {
@@ -29,7 +30,7 @@ export function uiNoteReport(context) {
 
     linkEnter
       .append('span')
-      .text(context.t('note.report'));
+      .text(l10n.t('note.report'));
   }
 
 

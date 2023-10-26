@@ -10,10 +10,12 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSectionRawTagEditor(context, id) {
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
   const taginfo = context.services.taginfo;
   const dispatch = d3_dispatch('change');
+
   const availableViews = [
     { id: 'list', icon: '#fas-th-list' },
     { id: 'text', icon: '#fas-i-cursor' }
@@ -394,7 +396,8 @@ export function uiSectionRawTagEditor(context, id) {
       return;
     }
 
-    const geometry = context.graph().geometry(_entityIDs[0]);
+    const graph = editor.staging.graph;
+    const geometry = graph.geometry(_entityIDs[0]);
 
     key.call(uiCombobox(context, 'tag-key')
       .fetcher(function(value, callback) {

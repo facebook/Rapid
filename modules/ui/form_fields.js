@@ -5,6 +5,7 @@ import { utilGetSetValue, utilNoAuto } from '../util';
 
 
 export function uiFormFields(context) {
+  const l10n = context.systems.l10n;
   let moreCombo = uiCombobox(context, 'more-fields').minItems(1);
   let _uifields = [];
   let _lastPlaceholder = '';
@@ -82,7 +83,7 @@ export function uiFormFields(context) {
 
     moreEnter
       .append('span')
-      .text(context.t('inspector.add_fields'));
+      .text(l10n.t('inspector.add_fields'));
 
     more = moreEnter
       .merge(more);

@@ -10,27 +10,26 @@ import { utilDetect } from '../../util';
 
 
 export function uiSectionChanges(context) {
+  const dataloader = context.systems.dataloader;
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   let detected = utilDetect();
 
   let _discardTags = {};
-  const dataLoaderSystem = context.systems.data;
-  dataLoaderSystem.getDataAsync('discarded')
+  dataloader.getDataAsync('discarded')
     .then(d => _discardTags = d)
     .catch(() => { /* ignore */ });
 
   let section = uiSection(context, 'changes-list')
     .label(() => {
-      const editSystem = context.systems.edits;
-      const summary = editSystem.difference().summary();
+      const summary = editor.difference().summary();
       return l10n.t('inspector.title_count', { title: l10n.tHtml('commit.changes'), count: summary.size });
     })
     .disclosureContent(renderDisclosureContent);
 
 
   function renderDisclosureContent(selection) {
-    const editSystem = context.systems.edits;
-    const summary = [...editSystem.difference().summary().values()];
+    const summary = [...editor.difference().summary().values()];
 
     let container = selection.selectAll('.commit-section')
       .data([0]);
@@ -98,7 +97,7 @@ export function uiSectionChanges(context) {
 
     // Download changeset link
     let changeset = new osmChangeset().update({ id: undefined });
-    const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), _discardTags));
+    const changes = editor.changes(actionDiscardTags(editor.difference(), _discardTags));
 
     delete changeset.id;  // Export without chnageset_id
 
@@ -132,7 +131,7 @@ export function uiSectionChanges(context) {
     function mouseover(d) {
       if (d.entity) {
         context.surface().selectAll(
-          utilEntityOrMemberSelector([d.entity.id], context.graph())
+          utilEntityOrMemberSelector([d.entity.id], editor.staging.graph)
         ).classed('hover', true);
       }
     }
@@ -146,7 +145,7 @@ export function uiSectionChanges(context) {
       if (change.changeType !== 'deleted') {
         let entity = change.entity;
         context.systems.map.fitEntitiesEase(entity);
-        context.surface().selectAll(utilEntityOrMemberSelector([entity.id], context.graph()))
+        context.surface().selectAll(utilEntityOrMemberSelector([entity.id], editor.staging.graph))
           .classed('hover', true);
       }
     }

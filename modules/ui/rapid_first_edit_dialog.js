@@ -4,6 +4,7 @@ import { uiRapidSplash } from './rapid_splash';
 
 
 export function uiRapidFirstEditDialog(context) {
+  const l10n = context.systems.l10n;
 
   return function(selection) {
     let modalSelection = uiModal(selection);
@@ -17,13 +18,13 @@ export function uiRapidFirstEditDialog(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h3')
-      .html(context.t('rapid_first_edit.nice', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
+      .html(l10n.t('rapid_first_edit.nice', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
 
     firstEditModal
       .append('div')
       .attr('class', 'modal-section')
       .append('p')
-      .text(context.t('rapid_first_edit.text'));
+      .text(l10n.t('rapid_first_edit.text'));
 
     let buttonWrap = firstEditModal
       .append('div')
@@ -38,7 +39,7 @@ export function uiRapidFirstEditDialog(context) {
 
     exploring
       .append('div')
-      .text(context.t('rapid_first_edit.exploring'));
+      .text(l10n.t('rapid_first_edit.exploring'));
 
     let loginToOsm = buttonWrap
       .append('button')
@@ -52,7 +53,7 @@ export function uiRapidFirstEditDialog(context) {
 
     loginToOsm
       .append('div')
-      .text(context.t('rapid_first_edit.login_with_osm'));
+      .text(l10n.t('rapid_first_edit.login_with_osm'));
 
     modalSelection.select('button.close')
       .attr('class', 'hide');

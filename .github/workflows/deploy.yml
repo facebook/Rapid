@@ -18,12 +18,12 @@ jobs:
 
     steps:
     - name: Checkout 📥
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Use Node.js 16.14 ⚙️
+    - name: Use Node.js 18 ⚙️
       uses: actions/setup-node@v3
       with:
-        node-version: 16.14
+        node-version: 18
 
     - name: Install 🎯
       run: npm install
@@ -48,7 +48,7 @@ jobs:
 
     steps:
     - name: Checkout 📥
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Download artifacts 📥
       uses: actions/download-artifact@v3
@@ -57,7 +57,7 @@ jobs:
         path: dist
 
     - name: Configure AWS credentials 🔐
-      uses: aws-actions/configure-aws-credentials@v3
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ secrets.AWS_RAPID_DEPLOY_ROLE_ARN }}
         role-duration-seconds: 900 # the ttl of the session, in seconds.

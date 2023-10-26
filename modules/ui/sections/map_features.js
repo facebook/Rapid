@@ -4,9 +4,10 @@ import { uiSection } from '../section';
 
 export function uiSectionMapFeatures(context) {
   const filters = context.systems.filters;
+  const l10n = context.systems.l10n;
 
   const section = uiSection(context, 'map-features')
-    .label(context.tHtml('map_data.map_features'))
+    .label(l10n.tHtml('map_data.map_features'))
     .disclosureContent(renderDisclosureContent);
 
 
@@ -30,7 +31,7 @@ export function uiSectionMapFeatures(context) {
       .append('a')
       .attr('class', 'feature-list-link')
       .attr('href', '#')
-      .html(context.tHtml('issues.disable_all'))
+      .html(l10n.tHtml('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         filters.disableAll();
@@ -40,7 +41,7 @@ export function uiSectionMapFeatures(context) {
       .append('a')
       .attr('class', 'feature-list-link')
       .attr('href', '#')
-      .html(context.tHtml('issues.enable_all'))
+      .html(l10n.tHtml('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         filters.enableAll();
@@ -67,7 +68,7 @@ export function uiSectionMapFeatures(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => context.tHtml(`feature.${d}.tooltip`))
+        .title(d => l10n.tHtml(`feature.${d}.tooltip`))
         .placement('top')
       );
 
@@ -82,7 +83,7 @@ export function uiSectionMapFeatures(context) {
 
     label
       .append('span')
-      .html(d => context.tHtml(`feature.${d}.description`));
+      .html(d => l10n.tHtml(`feature.${d}.description`));
 
     // Update
     items = items

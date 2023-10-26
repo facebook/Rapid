@@ -3,6 +3,7 @@ import { QAItem } from '../osm';
 
 
 export function uiViewOnKeepRight(context) {
+  const l10n = context.systems.l10n;
   const keepright = context.services.keepRight;
   let _qaItem;
 
@@ -31,7 +32,7 @@ export function uiViewOnKeepRight(context) {
 
     linkEnter
       .append('span')
-      .text(context.t('inspector.view_on_keepRight'));
+      .text(l10n.t('inspector.view_on_keepRight'));
   }
 
 

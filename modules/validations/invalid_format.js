@@ -3,6 +3,7 @@ import { ValidationIssue } from '../core/lib';
 
 export function validationFormatting(context) {
   const type = 'invalid_format';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
 
@@ -56,9 +57,10 @@ export function validationFormatting(context) {
           subtype: 'website',
           severity: 'warning',
           message: function() {
-            const entity = context.hasEntity(this.entityIds[0]);
+            const graph = editor.staging.graph;
+            const entity = graph.hasEntity(this.entityIds[0]);
             return entity ? l10n.tHtml('issues.invalid_format.website.message' + this.data,
-              { feature: l10n.displayLabel(entity, context.graph()), site: websites.join(', ') }) : '';
+              { feature: l10n.displayLabel(entity, graph), site: websites.join(', ') }) : '';
           },
           reference: showReferenceWebsite,
           entityIds: [entity.id],
@@ -82,9 +84,10 @@ export function validationFormatting(context) {
           subtype: 'email',
           severity: 'warning',
           message: function() {
-            const entity = context.hasEntity(this.entityIds[0]);
+            const graph = editor.staging.graph;
+            const entity = graph.hasEntity(this.entityIds[0]);
             return entity ? l10n.tHtml('issues.invalid_format.email.message' + this.data,
-                { feature: l10n.displayLabel(entity, context.graph()), email: emails.join(', ') }) : '';
+                { feature: l10n.displayLabel(entity, graph), email: emails.join(', ') }) : '';
           },
           reference: showReferenceEmail,
           entityIds: [entity.id],

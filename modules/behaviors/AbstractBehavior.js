@@ -84,7 +84,8 @@ export class AbstractBehavior extends EventEmitter {
   /**
    * _getEventData
    * Returns an object containing the important details about this Pixi event.
-   * @param  `e`  A Pixi FederatedEvent (or something that looks like one)
+   * @param  {Object}  e - A Pixi FederatedEvent (or something that looks like one)
+   * @return {Object}  Object containing data about the event and what was targeted
    */
   _getEventData(e) {
 //    const result = {

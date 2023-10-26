@@ -52,18 +52,22 @@ export class SaveMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    */
   enter() {
+    const context = this.context;
+    const osm = context.services.osm;
+    const sidebar = context.systems.ui.sidebar;
+    const uploader = context.systems.uploader;
+
+    if (!osm) return false;  // can't enter save mode
+
     if (DEBUG) {
       console.log('SaveMode: entering');  // eslint-disable-line no-console
     }
 
     // Show sidebar
-    const context = this.context;
-    context.systems.ui.sidebar.expand();
-
-    const osm = context.services.osm;
-    if (!osm) return false;  // can't enter save mode
+    sidebar.expand();
 
     this._active = true;
     this._wasSuccessfulSave = false;
@@ -72,13 +76,13 @@ export class SaveMode extends AbstractMode {
       .on('cancel', this._cancel);
 
     if (osm.authenticated()) {
-      context.systems.ui.sidebar.show(this._uiCommit);
+      sidebar.show(this._uiCommit);
     } else {
       osm.authenticate(err => {
         if (err) {
           this._cancel();
         } else {
-          context.systems.ui.sidebar.show(this._uiCommit);
+          sidebar.show(this._uiCommit);
         }
       });
     }
@@ -90,7 +94,7 @@ export class SaveMode extends AbstractMode {
     this._keybindingOn();
     context.enableBehaviors(['map-interaction']);
 
-    context.systems.uploader
+    uploader
       .on('progressChanged', this._progressChanged)
       .on('resultConflicts', this._resultConflicts)
       .on('resultErrors', this._resultErrors)
@@ -115,10 +119,14 @@ export class SaveMode extends AbstractMode {
       console.log('SaveMode: exiting');  // eslint-disable-line no-console
     }
 
+    const context = this.context;
+    const sidebar = context.systems.ui.sidebar;
+    const uploader = context.systems.uploader;
+
     this._uiCommit.on('cancel', null);
     this._uiCommit = null;
 
-    this.context.systems.uploader
+    uploader
       .off('progressChanged', this._progressChanged)
       .off('resultConflicts', this._resultConflicts)
       .off('resultErrors', this._resultErrors)
@@ -131,13 +139,13 @@ export class SaveMode extends AbstractMode {
     this._keybindingOff();
     this._hideLoading();
 
-    this.context.container().selectAll('.main-content')
+    context.container().selectAll('.main-content')
       .classed('active', true)
       .classed('inactive', false);
 
     // After a successful save, we want to leave the "thanks" content in the sidebar
     if (!this._wasSuccessfulSave) {
-      this.context.systems.ui.sidebar.hide();
+      sidebar.hide();
     }
   }
 
@@ -154,7 +162,10 @@ export class SaveMode extends AbstractMode {
    * _progressChanged handler
    */
   _progressChanged(num, total) {
-    const modal = this.context.container().select('.loading-modal .modal-section');
+    const context = this.context;
+    const l10n = context.systems.l10n;
+
+    const modal = context.container().select('.loading-modal .modal-section');
     const progress = modal.selectAll('.progress')
       .data([0]);
 
@@ -163,7 +174,7 @@ export class SaveMode extends AbstractMode {
       .append('div')
       .attr('class', 'progress')
       .merge(progress)
-      .text(this.context.t('save.conflict_progress', { num: num, total: total }));
+      .text(l10n.t('save.conflict_progress', { num: num, total: total }));
   }
 
 
@@ -211,13 +222,16 @@ export class SaveMode extends AbstractMode {
    * resultErrors handler
    */
   _resultErrors(errors) {
+    const context = this.context;
+    const l10n = context.systems.l10n;
+
     this._keybindingOn();
 
-    const selection = uiConfirm(this.context, this.context.container());
+    const selection = uiConfirm(context, context.container());
     selection
       .select('.modal-section.header')
       .append('h3')
-      .text(this.context.t('save.error'));
+      .text(l10n.t('save.error'));
 
     this._addErrors(selection, errors);
     selection.okButton();
@@ -228,6 +242,9 @@ export class SaveMode extends AbstractMode {
    * _addErrors
    */
   _addErrors(selection, data) {
+    const context = this.context;
+    const l10n = context.systems.l10n;
+
     const message = selection
       .select('.modal-section.message-text');
 
@@ -244,7 +261,7 @@ export class SaveMode extends AbstractMode {
       .attr('class', 'error-description')
       .attr('href', '#')
       .classed('hide-toggle', true)
-      .text(d => d.msg || this.context.t('save.unknown_error_details'))
+      .text(d => d.msg || l10n.t('save.unknown_error_details'))
       .on('click', function(d3_event) {
         d3_event.preventDefault();
 
@@ -291,13 +308,15 @@ export class SaveMode extends AbstractMode {
    */
   _resultSuccess(changeset) {
     const context = this.context;
+    const sidebar = context.systems.ui.sidebar;
+
     const successContent = this._uiSuccess
       .changeset(changeset)
       .location(this._location)
-      .on('cancel', () => context.systems.ui.sidebar.hide());
+      .on('cancel', () => sidebar.hide());
 
     this._wasSuccessfulSave = true;
-    context.systems.ui.sidebar.show(successContent);
+    sidebar.show(successContent);
 
     // Add delay before resetting to allow for postgres replication iD#1646 iD#2678
     window.setTimeout(() => {
@@ -336,8 +355,10 @@ export class SaveMode extends AbstractMode {
     if (this._saveLoading) return;
 
     const context = this.context;
+    const l10n = context.systems.l10n;
+
     this._saveLoading = uiLoading(context)
-      .message(context.tHtml('save.uploading'))
+      .message(l10n.tHtml('save.uploading'))
       .blocking(true);
 
     context.container().call(this._saveLoading);  // block input during upload
@@ -378,8 +399,12 @@ export class SaveMode extends AbstractMode {
     this._uiSuccess = uiSuccess(this.context);
     this._location = null;
 
-    const loc = this.context.systems.map.center();
-    const nominatim = this.context.services.nominatim;
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const map = context.systems.map;
+    const loc = map.center();
+
+    const nominatim = context.services.nominatim;
     if (!nominatim) return;
 
     nominatim.reverse(loc, (err, result) => {
@@ -388,9 +413,9 @@ export class SaveMode extends AbstractMode {
       const addr = result.address;
       const place = addr?.town ?? addr?.city ?? addr?.county ?? '';
       const region = addr?.state ?? addr?.country ?? '';
-      const separator = (place && region) ? this.context.t('success.thank_you_where.separator') : '';
+      const separator = (place && region) ? l10n.t('success.thank_you_where.separator') : '';
 
-      this._location = this.context.t('success.thank_you_where.format',
+      this._location = l10n.t('success.thank_you_where.format',
         { place: place, separator: separator, region: region }
       );
     });

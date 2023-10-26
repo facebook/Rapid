@@ -12,28 +12,30 @@ export function uiIntroBuilding(context, curtain) {
   const chapter = { title: 'intro.buildings.title' };
   const editMenu = context.systems.ui.editMenu;
   const container = context.container();
-  const editSystem = context.systems.edits;
-  const mapSystem = context.systems.map;
-  const presetSystem = context.systems.presets;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
   const tankExtent = new Extent([-85.62766, 41.95324], [-85.62695, 41.95372]);
-  const buildingCatetory = presetSystem.item('category-building');
-  const housePreset = presetSystem.item('building/house');
-  const tankPreset = presetSystem.item('man_made/storage_tank');
+  const buildingCatetory = presets.item('category-building');
+  const housePreset = presets.item('building/house');
+  const tankPreset = presets.item('man_made/storage_tank');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
   let _onMapMove = null;
   let _onModeChange = null;
-  let _onEditChange = null;
+  let _onStableChange = null;
   let _houseID = null;
   let _tankID = null;
 
 
   // Helper functions
   function _doesHouseExist() {
-    return _houseID && context.hasEntity(_houseID);
+    const graph = editor.staging.graph;
+    return _houseID && graph.hasEntity(_houseID);
   }
 
   function _isHouseSelected() {
@@ -43,7 +45,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
   function _doesTankExist() {
-    return _tankID && context.hasEntity(_tankID);
+    const graph = editor.staging.graph;
+    return _tankID && graph.hasEntity(_tankID);
   }
 
   function _isTankSelected() {
@@ -70,14 +73,14 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addHouseAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
     _houseID = null;
 
     const loc = houseExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -105,15 +108,14 @@ export function uiIntroBuilding(context, curtain) {
   function startHouseAsync() {
     _houseID = null;
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(houseExtent.center(), 20, 200)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (context.mode?.id !== 'draw-area') { resolve(addHouseAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onStableChange = (difference) => {
           for (const entity of difference.created()) {  // created a node and a way
             if (entity.type === 'way') {
               _houseID = entity.id;
@@ -134,7 +136,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -148,8 +150,8 @@ export function uiIntroBuilding(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => {
         if (_doesHouseExist() && _isHouseSelected()) {
-          const graph = context.graph();
-          const way = context.entity(_houseID);
+          const graph = editor.staging.graph;
+          const way = graph.entity(_houseID);
           const nodes = graph.childNodes(way);
           const points = utilArrayUniq(nodes).map(n => context.projection.project(n.loc));
 
@@ -189,7 +191,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_building'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(addHouseAsync)
       });
     });
@@ -204,7 +206,7 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
 
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
-        if (!_isHouseSelected()) context.enter('select-osm', { selectedIDs: [_houseID] });
+        if (!_isHouseSelected()) context.enter('select-osm', { selection: { osm: [_houseID] }} );
 
         _onModeChange = reject;   // disallow mode change
 
@@ -236,14 +238,14 @@ export function uiIntroBuilding(context, curtain) {
         _rejectStep = reject;
 
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
-        if (!_isHouseSelected()) context.enter('select-osm', { selectedIDs: [_houseID] });
+        if (!_isHouseSelected()) context.enter('select-osm', { selection: { osm: [_houseID] }} );
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onStableChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === housePreset) {
+            const graph = editor.staging.graph;
+            if (presets.match(modified[0], graph) === housePreset) {
               resolve(hasHouseAsync);
             } else {
               resolve(chooseCategoryBuildingAsync);  // didn't pick house, retry
@@ -264,7 +266,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-list-button').on('click.intro', null);
       });
@@ -276,11 +278,18 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
 
     // Make sure it's still a house, in case user somehow changed it..
-    const entity = context.entity(_houseID);
-    const oldPreset = presetSystem.match(entity, context.graph());
-    context.replace(actionChangePreset(_houseID, oldPreset, housePreset));
+    const graph = editor.staging.graph;
+    const entity = graph.entity(_houseID);
+    const preset = presets.match(entity, graph);
+    if (preset !== housePreset) {
+      editor.perform(actionChangePreset(_houseID, preset, housePreset));
+      editor.commit({
+        annotation: l10n.t('operations.change_tags.annotation'),
+        selectedIDs: [_houseID]
+      });
+    }
 
-    editSystem.setCheckpoint('hasHouse');
+    editor.setCheckpoint('hasHouse');
     return Promise.resolve(rightClickHouseAsync);  // advance
   }
 
@@ -289,16 +298,16 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickHouseAsync() {
     if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
-    editSystem.resetToCheckpoint('hasHouse');
+    editor.restoreCheckpoint('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
-    const setZoom = Math.max(mapSystem.zoom(), 20);
+    const setZoom = Math.max(map.zoom(), 20);
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(houseExtent.center(), setZoom, 100)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        _onEditChange = reject;  // disallow doing anything else
+        _onStableChange = reject;  // disallow doing anything else
 
         const textID = (context.lastPointerType === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
@@ -311,7 +320,7 @@ export function uiIntroBuilding(context, curtain) {
         });
       }))
       .finally(() => {
-        _onEditChange = null;
+        _onStableChange = null;
         editMenu.on('toggled.intro', null);
       });
   }
@@ -344,8 +353,8 @@ export function uiIntroBuilding(context, curtain) {
         };
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = () => {
-          _onEditChange = null;
+        _onStableChange = () => {
+          _onStableChange = null;
           _onMapMove = null;
           curtain.reveal({ revealExtent: houseExtent });  // watch it change
           resolve();
@@ -357,7 +366,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for orthogonalize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (editSystem.undoAnnotation() === context.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
+        if (editor.getUndoAnnotation() === l10n.t('operations.orthogonalize.annotation.feature', { n: 1 })) {
           return doneSquareAsync;
         } else {
           return retryClickSquareAsync;
@@ -366,7 +375,7 @@ export function uiIntroBuilding(context, curtain) {
       .finally(() => {
         _onMapMove = null;
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -381,7 +390,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_square'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(rightClickHouseAsync)
       });
     });
@@ -391,14 +400,14 @@ export function uiIntroBuilding(context, curtain) {
   // "See how the corners of the building moved into place? Let's learn another useful trick."
   // Click Ok to advance
   function doneSquareAsync() {
-    editSystem.setCheckpoint('doneSquare');
+    editor.setCheckpoint('doneSquare');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.done_square'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(addTankAsync)
       });
     });
@@ -409,14 +418,14 @@ export function uiIntroBuilding(context, curtain) {
   // Click Add Area to advance
   function addTankAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('doneSquare');
+    editor.restoreCheckpoint('doneSquare');
     _tankID = null;
 
     const loc = tankExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 19.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -442,8 +451,7 @@ export function uiIntroBuilding(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
-      _onEditChange = (difference) => {
-        if (!difference) return;
+      _onStableChange = (difference) => {
         for (const entity of difference.created()) {  // created a node and a way
           if (entity.type === 'way') {
             _tankID = entity.id;
@@ -463,7 +471,7 @@ export function uiIntroBuilding(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStableChange = null;
     });
   }
 
@@ -506,14 +514,14 @@ export function uiIntroBuilding(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesTankExist()) { resolve(addTankAsync); return; }
-        if (!_isTankSelected()) context.enter('select-osm', { selectedIDs: [_tankID] });
+        if (!_isTankSelected()) context.enter('select-osm', { selection: { osm: [_tankID] }} );
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onStableChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === tankPreset) {
+            const graph = editor.staging.graph;
+            if (presets.match(modified[0], graph) === tankPreset) {
               resolve(hasTankAsync);
             } else {
               reject();  // didn't pick tank
@@ -553,7 +561,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -565,11 +573,18 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesTankExist()) return Promise.resolve(addTankAsync);
 
     // Make sure it's still a tank, in case user somehow changed it..
-    const entity = context.entity(_tankID);
-    const oldPreset = presetSystem.match(entity, context.graph());
-    context.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
+    const graph = editor.staging.graph;
+    const entity = graph.entity(_tankID);
+    const preset = presets.match(entity, graph);
+    if (preset !== tankPreset) {
+      editor.perform(actionChangePreset(_tankID, preset, tankPreset));
+      editor.commit({
+        annotation: l10n.t('operations.change_tags.annotation'),
+        selectedIDs: [_tankID]
+      });
+    }
 
-    editSystem.setCheckpoint('hasTank');
+    editor.setCheckpoint('hasTank');
     return Promise.resolve(rightClickTankAsync);  // advance
   }
 
@@ -578,11 +593,11 @@ export function uiIntroBuilding(context, curtain) {
   // Open the edit menu to advance
   function rightClickTankAsync() {
     if (!['browse', 'select-osm'].includes(context.mode?.id)) context.enter('browse');
-    editSystem.resetToCheckpoint('hasTank');
+    editor.restoreCheckpoint('hasTank');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onEditChange = reject;  // disallow doing anything else
+      _onStableChange = reject;  // disallow doing anything else
 
       const textID = (context.lastPointerType === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
       curtain.reveal({
@@ -595,7 +610,7 @@ export function uiIntroBuilding(context, curtain) {
       });
     })
     .finally(() => {
-      _onEditChange = null;
+      _onStableChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -628,9 +643,9 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        _onEditChange = () => {
+        _onStableChange = () => {
           _onMapMove = null;
-          _onEditChange = null;
+          _onStableChange = null;
           curtain.reveal({ revealExtent: tankExtent });  // watch it change
           resolve();
         };
@@ -641,7 +656,7 @@ export function uiIntroBuilding(context, curtain) {
       }))
       .then(delayAsync)   // wait for circularize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
-        if (editSystem.undoAnnotation() === context.t('operations.circularize.annotation.feature', { n: 1 })) {
+        if (editor.getUndoAnnotation() === l10n.t('operations.circularize.annotation.feature', { n: 1 })) {
           return playAsync;
         } else {
           return retryClickCircleAsync;
@@ -650,7 +665,7 @@ export function uiIntroBuilding(context, curtain) {
       .finally(() => {
         _onMapMove = null;
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -665,7 +680,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: tankExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_circle'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(rightClickTankAsync)
       });
     });
@@ -679,8 +694,8 @@ export function uiIntroBuilding(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-rapid',
-      tipHtml: helpHtml(context, 'intro.buildings.play', { next: context.t('intro.rapid.title') }),
-      buttonText: context.tHtml('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.buildings.play', { next: l10n.t('intro.rapid.title') }),
+      buttonText: l10n.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -692,28 +707,28 @@ export function uiIntroBuilding(context, curtain) {
     _rejectStep = null;
     _onMapMove = null;
     _onModeChange = null;
-    _onEditChange = null;
+    _onStableChange = null;
 
     context.on('modechange', _modeChangeListener);
-    mapSystem.on('move', _mapMoveListener);
-    editSystem.on('change', _editChangeListener);
+    map.on('move', _mapMoveListener);
+    editor.on('stablechange', _stableChangeListener);
 
     runAsync(addHouseAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        mapSystem.off('move', _mapMoveListener);
-        editSystem.off('change', _editChangeListener);
+        map.off('move', _mapMoveListener);
+        editor.off('stablechange', _stableChangeListener);
       });
 
-    function _mapMoveListener() {
-      if (typeof _onMapMove === 'function') _onMapMove();
+    function _mapMoveListener(...args) {
+      if (typeof _onMapMove === 'function') _onMapMove(...args);
     }
-    function _modeChangeListener(mode) {
-      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    function _modeChangeListener(...args) {
+      if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(difference) {
-      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    function _stableChangeListener(...args) {
+      if (typeof _onStableChange === 'function') _onStableChange(...args);
     }
   };
 

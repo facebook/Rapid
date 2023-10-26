@@ -82,8 +82,8 @@ export class KeepRightService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    const dataLoaderSystem = this.context.systems.data;
-    return dataLoaderSystem.getDataAsync('keepRight')
+    const dataloader = this.context.systems.dataloader;
+    return dataloader.getDataAsync('keepRight')
       .then(data => {
         this._krData = data;
         this._started = true;
@@ -415,6 +415,7 @@ export class KeepRightService extends AbstractSystem {
   _tokenReplacements(d) {
     if (!(d instanceof QAItem)) return;
 
+    const l10n = this.context.systems.l10n;
     const htmlRegex = new RegExp(/<\/[a-z][\s\S]*>/);
     const replacements = {};
 
@@ -454,7 +455,7 @@ export class KeepRightService extends AbstractSystem {
       } else {
         const compare = capture.toLowerCase();
         if (this._krData.localizeStrings[compare]) {   // some replacement strings can be localized
-          capture = this.context.t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
+          capture = l10n.t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
         }
       }
 
@@ -466,9 +467,11 @@ export class KeepRightService extends AbstractSystem {
 
 
   _parseError(capture, idType) {
+    const l10n = this.context.systems.l10n;
     const compare = capture.toLowerCase();
+
     if (this._krData.localizeStrings[compare]) {   // some replacement strings can be localized
-      capture = this.context.t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
+      capture = l10n.t('QA.keepRight.error_parts.' + this._krData.localizeStrings[compare]);
     }
 
     switch (idType) {
@@ -544,7 +547,7 @@ export class KeepRightService extends AbstractSystem {
         const match = item.match(/\#(\d+)\((.+)\)?/);
         if (match !== null && match.length > 2) {
           newList.push(linkEntity('w' + match[1]) + ' ' +
-            this.context.t('QA.keepRight.errorTypes.231.layer', { layer: match[2] })
+            l10n.t('QA.keepRight.errorTypes.231.layer', { layer: match[2] })
           );
         }
       }
@@ -577,7 +580,7 @@ export class KeepRightService extends AbstractSystem {
 
       const match = capture.match(/\(including the name (\'.+\')\)/);
       if (match?.length) {
-        return this.context.t('QA.keepRight.errorTypes.370.including_the_name', { name: match[1] });
+        return l10n.t('QA.keepRight.errorTypes.370.including_the_name', { name: match[1] });
       }
       return '';
     }

@@ -72,62 +72,65 @@ export class PasteBehavior extends AbstractBehavior {
    */
   _doPaste(e) {
     const context = this.context;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+    const map = context.systems.map;
 
-    // Nothing to copy..
+    // Note: nearly the same code appears in both PasteBehavior and PasteOperation
+    const copyGraph = context.copyGraph;
     const copyIDs = context.copyIDs;
-    if (!copyIDs.length) return;
+    if (!copyIDs.length) return;   // Nothing to copy..
 
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const eventManager = context.systems.map.renderer.events;
+    const eventManager = map.renderer.events;
     if (!eventManager.pointerOverRenderer) return;
 
     e.preventDefault();
     e.stopPropagation();
 
-    const copyGraph = context.copyGraph;
-    const projection = context.projection;
-
     const action = actionCopyEntities(copyIDs, copyGraph);
-    context.perform(action);
+    editor.beginTransaction();
+    editor.perform(action);
+
+    const currGraph = editor.staging.graph;
     const copies = action.copies();
 
-    let extent = new Extent();
-    let pasteIDs = new Set();
-    let originalIDs = new Set();
-    Object.values(copies).forEach(entity => originalIDs.add(entity.id));
+    const originalIDs = new Set();
+    for (const entity of Object.values(copies)) {
+      originalIDs.add(entity.id);
+    }
 
-    for (const id in copies) {
-      const oldEntity = copyGraph.entity(id);
-      const newEntity = copies[id];
+    let extent = new Extent();
+    let newIDs = [];
+    for (const [entityID, newEntity] of Object.entries(copies)) {
+      const oldEntity = copyGraph.entity(entityID);
 
       extent = extent.extend(oldEntity.extent(copyGraph));
 
-      // Exclude child nodes from pasteIDs if their parent way was also copied.
-      const parents = context.graph().parentWays(newEntity);
+      // Exclude child nodes from newIDs if their parent way was also copied.
+      const parents = currGraph.parentWays(newEntity);
       const parentCopied = parents.some(parent => originalIDs.has(parent.id));
+
       if (!parentCopied) {
-        pasteIDs.add(newEntity.id);
+        newIDs.push(newEntity.id);
       }
     }
 
     // Move pasted features to where mouse pointer is..
-    // Default to map center if we can't determine the mouse pointer
+    // (or center of map if there is no readily available pointer coordinate)
+    const projection = context.projection;
     const copyLoc = context.copyLoc;
     const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
-    const mousePoint = eventManager.coord || context.systems.map.centerPoint();
-    const delta = vecSubtract(mousePoint, copyPoint);
+    const delta = vecSubtract(map.mouse(), copyPoint);
+    const annotation = l10n.t('operations.paste.annotation', { n: newIDs.length });
 
-    const annotation = context.t('operations.paste.annotation', { n: pasteIDs.size });
-    context.perform(actionMove(Array.from(pasteIDs), delta, projection), annotation);
+    editor.perform(actionMove(newIDs, delta, projection));
+    editor.commit({ annotation: annotation, selectedIDs: newIDs });
+    editor.endTransaction();
 
     // Put the user in move mode so they can place the pasted features
-    // Grab the current versions from the graph (because they were just moved).
-    const pasted = new Map();    // Map (entityID -> Entity)
-    for (const pasteID of pasteIDs) {
-      pasted.set(pasteID, context.entity(pasteID));
-    }
-    context.enter('move', { selection: pasted });
+    context.enter('move', { selection: { osm: newIDs }} );
   }
 
 }

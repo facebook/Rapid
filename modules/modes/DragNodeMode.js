@@ -5,7 +5,6 @@ import { AbstractMode } from './AbstractMode';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
-import { actionNoop } from '../actions/noop';
 import { geoChooseEdge } from '../geo';
 import { osmNode } from '../osm';
 
@@ -41,51 +40,62 @@ export class DragNodeMode extends AbstractMode {
 
   /**
    * enter
-   * Expects a `selection` property in the options argument as a `Map(datumID -> datum)`
-   * @param  `options`  Optional `Object` of options passed to the new mode
-   * @return `true` if the mode can be entered, `false` if not
+   * Enters the mode.
+   * @param  {Object?}  options - Optional `Object` of options passed to the new mode
+   * @param  {Array}    options.reselectIDs - If set, reselect these IDs when finished dragging
+   *                      Mostly used when a line is selected and user is adjusting its shape.
+   * @param  {string}   options.nodeID - if set, drag the node for the given id
+   * @param  {Object}   options.midpoint - if set, create a node from the given midpoint
+   *                      For example `{ loc: entity.loc, edge: [ entity.a.id, entity.b.id ] }`
+   * @return {boolean}  `true` if the mode can be entered, `false` if not
    */
   enter(options = {}) {
     const context = this.context;
+    const editor = context.systems.editor;
+    const filters = context.systems.filters;
+    const l10n = context.systems.l10n;
+    const ui = context.systems.ui;
 
-    const selection = options.selection;
-    if (!(selection instanceof Map)) return false;
-    if (!selection.size) return false;
-
-    // When exiting mode, we'll try to restore the selection to what it was when we entered this mode.
     this._reselectIDs = options.reselectIDs ?? [];
+    const midpoint = options.midpoint;
+    const nodeID = options.nodeID;
 
-    let [entity] = selection.values();   // the first thing in the selection
+    let graph = editor.staging.graph;
+    let entity;
 
-    // This check was in start() before to prevent user from entering the mode.
-    // It's an odd check, not sure if still needed or why?  (low zooms?)
-    if (!context.editable()) return false;
+    if (midpoint) {
+      if (!graph.hasEntity(midpoint.edge[0])) return;
+      if (!graph.hasEntity(midpoint.edge[1])) return;
+      entity = osmNode();
+      editor.perform(actionAddMidpoint(midpoint, entity));
+      graph = editor.staging.graph;         // refresh with post-action graph
+      entity = graph.hasEntity(entity.id);  // refresh with post-action entity
+      if (!entity) {  // somehow the midpoint did not convert to a node
+        editor.revert();
+        return;
+      }
+      this._wasMidpoint = true;
 
-    this._wasMidpoint = (entity.type === 'midpoint');
+    } else if (nodeID) {
+      entity = graph.hasEntity(nodeID);
+      this._wasMidpoint = false;
+    }
+
+    if (!entity) return;
 
     if (!this._wasMidpoint) {
       // Bail out if the node is connected to something hidden.
-      const hasHidden = context.systems.filters.hasHiddenConnections(entity, context.graph());
+      const hasHidden = filters.hasHiddenConnections(entity, graph);
       if (hasHidden) {
-        context.systems.ui.flash
+        ui.flash
           .duration(4000)
           .iconName('#rapid-icon-no')
-          .label(context.t('modes.drag_node.connected_to_hidden'))();
+          .label(l10n.t('modes.drag_node.connected_to_hidden'))();
         return false;
       }
     }
 
     this._active = true;
-
-    // Convert a midpoint to a node..
-    if (this._wasMidpoint) {
-      const midpoint = { loc: entity.loc, edge: [ entity.a.id, entity.b.id ] };
-      entity = osmNode();
-      context.perform(actionAddMidpoint(midpoint, entity));
-      entity = context.entity(entity.id);   // get post-action entity
-    } else {
-      context.perform(actionNoop());
-    }
 
     this.dragNode = entity;
     this._startLoc = entity.loc;
@@ -93,7 +103,7 @@ export class DragNodeMode extends AbstractMode {
     // Set the 'drawing' class so that the dragNode and any parent ways won't emit events
     const scene = context.scene();
     scene.classData('osm', this.dragNode.id, 'drawing');
-    for (const parent of context.graph().parentWays(this.dragNode)) {
+    for (const parent of graph.parentWays(this.dragNode)) {
       scene.classData('osm', parent.id, 'drawing');
     }
 
@@ -109,10 +119,6 @@ export class DragNodeMode extends AbstractMode {
       .on('end', this._end)
       .on('cancel', this._cancel);
 
-    context.systems.edits
-      .on('undone', this._cancel)
-      .on('redone', this._cancel);
-
     return true;
   }
 
@@ -125,22 +131,21 @@ export class DragNodeMode extends AbstractMode {
     this._active = false;
 
     this.dragNode = null;
+    this._reselectIDs = [];
+    this._wasMidpoint = false;
     this._startLoc = null;
     this._clickLoc = null;
-    this._wasMidpoint = false;
+
     this._selectedData.clear();
 
     const context = this.context;
+
     context.scene().clearClass('drawing');
 
     context.behaviors.drag
       .off('move', this._move)
       .off('end', this._end)
       .off('cancel', this._cancel);
-
-    context.systems.edits
-      .off('undone', this._cancel)
-      .off('redone', this._cancel);
   }
 
 
@@ -151,7 +156,8 @@ export class DragNodeMode extends AbstractMode {
    */
   _refreshEntities() {
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
 
     this._selectedData.clear();
     this.dragNode = this.dragNode && graph.hasEntity(this.dragNode.id);
@@ -175,7 +181,9 @@ export class DragNodeMode extends AbstractMode {
     if (!this.dragNode) return;
 
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const locations = context.systems.locations;
     const projection = context.projection;
     const coord = eventData.coord;
 
@@ -214,13 +222,12 @@ export class DragNodeMode extends AbstractMode {
       loc = projection.invert(adjustedCoord);
     }
 
-    const locationSystem = context.systems.locations;
-    if (locationSystem.blocksAt(loc).length) {  // editing is blocked here
+    if (locations.blocksAt(loc).length) {  // editing is blocked here
       this._cancel();
       return;
     }
 
-    context.replace(actionMoveNode(this.dragNode.id, loc));
+    editor.perform(actionMoveNode(this.dragNode.id, loc));
     this._refreshEntities();
   }
 
@@ -228,63 +235,59 @@ export class DragNodeMode extends AbstractMode {
   /**
    * _end
    * Complete the drag.
-   * This calls `replace` to finalize the graph state with an annotation so that we can undo/redo to here.
-   * Note that `exit()` will be called immediately after this to perform cleanup.
+   * This calls `commit` to finalize the staging edit.
    * @param  eventData  `Object` data received from the drag behavior
    */
   _end(eventData) {
     if (!this.dragNode) return;
 
     const context = this.context;
-    const graph = context.graph();
-    const isPoint = this.dragNode.geometry(graph) === 'point';   // i.e. not a vertex along a line
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+    let graph = editor.staging.graph;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
     const choice = eventData?.target?.choice;
     const target = datum && graph.hasEntity(datum.id);
+    let annotation;
 
     // Snap to a Node
     if (target?.type === 'node' && this._canSnapToNode(target)) {
-      context.replace(
-        actionConnect([ target.id, this.dragNode.id ]),
-        this._connectAnnotation(target)
-      );
+      editor.perform(actionConnect([ target.id, this.dragNode.id ]));
+      annotation = this._connectAnnotation(target);
 
     // Snap to a Way
 //    } else if (target?.type === 'way' && choice) {
 //      const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
-//      context.replace(
-//        actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode),
-//        this._connectAnnotation(target)
-//      );
+//      editor.perform(actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode));
+//      annotation = this._connectAnnotation(target);
     } else if (target?.type === 'way') {
       const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, this.dragNode.id);
-      const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+      const SNAP_DIST = 6;  // hack to avoid snap to fill, see Rapid#719
       if (choice && choice.distance < SNAP_DIST) {
         const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
-        context.replace(
-          actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode),
-          this._connectAnnotation(target)
-        );
+        editor.perform(actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode));
+        annotation = this._connectAnnotation(target);
       } else {
-        context.replace(actionNoop(), this._moveAnnotation());
+        annotation = this._moveAnnotation();
       }
 
     } else if (this._wasMidpoint) {
-      context.replace(actionNoop(), context.t('operations.add.annotation.vertex'));
+      annotation = l10n.t('operations.add.annotation.vertex');
 
     } else {
-      context.replace(actionNoop(), this._moveAnnotation());
+      annotation = this._moveAnnotation();
     }
 
+    editor.commit({ annotation: annotation, selectedIDs: [this.dragNode.id] });
+
     // Choose next mode
-    if (isPoint && context.hasEntity(this.dragNode.id)) {
-      context.enter('select-osm', { selectedIDs: [this.dragNode.id] });
-    } else if (this._reselectIDs.length) {
-      context.enter('select-osm', { selectedIDs: this._reselectIDs });
+    // (Note that if the drag node is gone, select mode will fallback to browse mode)
+    if (this._reselectIDs.length) {
+      context.enter('select-osm', { selection: { osm: this._reselectIDs }} );
     } else {
-      context.enter('browse');
+      context.enter('select-osm', { selection: { osm: [this.dragNode.id] }} );
     }
   }
 
@@ -296,8 +299,12 @@ export class DragNodeMode extends AbstractMode {
     if (!this.dragNode) return undefined;
 
     const context = this.context;
-    const geometry = this.dragNode.geometry(context.graph());
-    return context.t(`operations.move.annotation.${geometry}`);
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const l10n = context.systems.l10n;
+
+    const geometry = this.dragNode.geometry(graph);
+    return l10n.t(`operations.move.annotation.${geometry}`);
   }
 
 
@@ -309,7 +316,10 @@ export class DragNodeMode extends AbstractMode {
     if (!this.dragNode || !target) return undefined;
 
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const l10n = context.systems.l10n;
+
     const nodeGeometry = this.dragNode.geometry(graph);
     const targetGeometry = target.geometry(graph);
 
@@ -321,12 +331,12 @@ export class DragNodeMode extends AbstractMode {
       if (sharedParentWays.length !== 0) {
         // if the nodes are next to each other, they are merged
         if (sharedParentWays[0].areAdjacent(this.dragNode.id, target.id)) {
-          return context.t('operations.connect.annotation.from_vertex.to_adjacent_vertex');
+          return l10n.t('operations.connect.annotation.from_vertex.to_adjacent_vertex');
         }
-        return context.t('operations.connect.annotation.from_vertex.to_sibling_vertex');
+        return l10n.t('operations.connect.annotation.from_vertex.to_sibling_vertex');
       }
     }
-    return context.t(`operations.connect.annotation.from_${nodeGeometry}.to_${targetGeometry}`);
+    return l10n.t(`operations.connect.annotation.from_${nodeGeometry}.to_${targetGeometry}`);
   }
 
 
@@ -337,10 +347,13 @@ export class DragNodeMode extends AbstractMode {
   _canSnapToNode(target) {
     if (!this.dragNode) return false;
 
-    const graph = this.context.graph();
-    const presetSystem = this.context.systems.presets;
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const presets = context.systems.presets;
+
     return this.dragNode.geometry(graph) !== 'vertex' ||
-      (target.geometry(graph) === 'vertex' || presetSystem.allowsVertex(target, graph));
+      (target.geometry(graph) === 'vertex' || presets.allowsVertex(target, graph));
   }
 
 
@@ -350,8 +363,11 @@ export class DragNodeMode extends AbstractMode {
    * Note that `exit()` will be called immediately after this to perform cleanup.
    */
   _cancel() {
+    const context = this.context;
+    const editor = context.systems.editor;
+
+    editor.revert();
     this.context.enter('browse');
   }
 
 }
-

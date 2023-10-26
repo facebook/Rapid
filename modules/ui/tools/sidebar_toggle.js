@@ -4,6 +4,7 @@ import { uiTooltip } from '../tooltip';
 
 export function uiToolSidebarToggle(context) {
   const l10n = context.systems.l10n;
+  const ui = context.systems.ui;
 
   let tool = {
     id: 'sidebar_toggle',
@@ -14,7 +15,7 @@ export function uiToolSidebarToggle(context) {
     selection
       .append('button')
       .attr('class', 'bar-button')
-      .on('click', () => context.systems.ui.sidebar.toggle())
+      .on('click', () => ui.sidebar.toggle())
       .call(uiTooltip(context)
         .placement('bottom')
         .title(l10n.tHtml('sidebar.tooltip'))

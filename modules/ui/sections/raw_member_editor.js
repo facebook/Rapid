@@ -1,5 +1,6 @@
 import { drag as d3_drag } from 'd3-drag';
 import { select as d3_select } from 'd3-selection';
+import { vecLength, vecSubtract } from '@rapid-sdk/math';
 import { utilUniqueString } from '@rapid-sdk/util';
 
 import { actionChangeMember } from '../../actions/change_member';
@@ -15,380 +16,381 @@ const MAX_MEMBERS = 1000;
 
 
 export function uiSectionRawMemberEditor(context) {
-    const l10n = context.systems.l10n;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
+  const taginfo = context.services.taginfo;
 
-    var section = uiSection(context, 'raw-member-editor')
-        .shouldDisplay(function() {
-            if (!_entityIDs || _entityIDs.length !== 1) return false;
+  let _entityIDs = [];
 
-            var entity = context.hasEntity(_entityIDs[0]);
-            return entity && entity.type === 'relation';
-        })
-        .label(function() {
-            var entity = context.hasEntity(_entityIDs[0]);
-            if (!entity) return '';
 
-            var gt = entity.members.length > MAX_MEMBERS ? '>' : '';
-            var count = gt + entity.members.slice(0, MAX_MEMBERS).length;
-            return l10n.t('inspector.title_count', { title: l10n.tHtml('inspector.members'), count: count });
-        })
-        .disclosureContent(renderDisclosureContent);
+  const section = uiSection(context, 'raw-member-editor')
+    .shouldDisplay(function() {
+      if (!_entityIDs || _entityIDs.length !== 1) return false;
 
-    var taginfo = context.services.taginfo;
-    var _entityIDs;
+      const graph = editor.staging.graph;  // the current graph
+      const entity = graph.hasEntity(_entityIDs[0]);
+      return entity?.type === 'relation';
+    })
+    .label(function() {
+      const graph = editor.staging.graph;  // the current graph
+      const entity = graph.hasEntity(_entityIDs[0]);
+      if (!entity) return '';
 
-    function downloadMember(d3_event, d) {
-        d3_event.preventDefault();
+      const gt = entity.members.length > MAX_MEMBERS ? '>' : '';
+      const count = gt + entity.members.slice(0, MAX_MEMBERS).length;
+      return l10n.t('inspector.title_count', { title: l10n.tHtml('inspector.members'), count: count });
+    })
+    .disclosureContent(renderDisclosureContent);
 
-        // display the loading indicator
-        d3_select(this.parentNode).classed('tag-reference-loading', true);
-        context.loadEntity(d.id, function() {
-            section.reRender();
-        });
+
+  function downloadMember(d3_event, d) {
+    d3_event.preventDefault();
+
+    // display the loading indicator
+    d3_select(this.parentNode).classed('tag-reference-loading', true);
+    context.loadEntity(d.id, function() {
+      section.reRender();
+    });
+  }
+
+
+  function zoomToMember(d3_event, d) {
+    d3_event.preventDefault();
+
+    const graph = editor.staging.graph;
+    const entity = graph.entity(d.id);
+    map.fitEntitiesEase(entity);
+
+    // highlight the feature in case it wasn't previously on-screen
+    utilHighlightEntities([d.id], true, context);
+  }
+
+
+  function selectMember(d3_event, d) {
+    d3_event.preventDefault();
+
+    // remove the hover-highlight styling
+    utilHighlightEntities([d.id], false, context);
+
+    const graph = editor.staging.graph;
+    const entity = graph.entity(d.id);
+    const mapExtent = map.extent();
+    if (!entity.intersects(mapExtent, graph)) {
+      // zoom to the entity if its extent is not visible now
+      map.fitEntitiesEase(entity);
     }
 
-    function zoomToMember(d3_event, d) {
-        d3_event.preventDefault();
+    context.enter('select-osm', { selection: { osm: [d.id] }} );
+  }
 
-        var entity = context.entity(d.id);
-        context.systems.map.fitEntitiesEase(entity);
 
-        // highlight the feature in case it wasn't previously on-screen
-        utilHighlightEntities([d.id], true, context);
+  function changeRole(d3_event, d) {
+    const oldRole = d.role;
+    const newRole = context.cleanRelationRole(d3_select(this).property('value'));
+
+    if (oldRole !== newRole) {
+      const member = { id: d.id, type: d.type, role: newRole };
+      editor.perform(actionChangeMember(d.relation.id, member, d.index));
+      editor.commit({
+        annotation: l10n.t('operations.change_role.annotation', { n: 1 }),
+        selectedIDs: [d.relation.id]
+      });
     }
+  }
 
 
-    function selectMember(d3_event, d) {
-        d3_event.preventDefault();
+  function deleteMember(d3_event, d) {
+    utilHighlightEntities([d.id], false, context);  // remove the hover-highlight styling
 
-        // remove the hover-highlight styling
-        utilHighlightEntities([d.id], false, context);
+    editor.perform(actionDeleteMember(d.relation.id, d.index));
+    editor.commit({
+      annotation: l10n.t('operations.delete_member.annotation', { n: 1 }),
+      selectedIDs: [d.relation.id]
+    });
 
-        var entity = context.entity(d.id);
-        var mapExtent = context.systems.map.extent();
-        if (!entity.intersects(mapExtent, context.graph())) {
-            // zoom to the entity if its extent is not visible now
-            context.systems.map.fitEntitiesEase(entity);
-        }
+    const graph = editor.staging.graph;  // the current graph, after the edit was performed
 
-        context.enter('select-osm', { selectedIDs: [d.id] });
+    // Removing the last member will also delete the relation. If this happens we need to exit select mode
+    if (!graph.hasEntity(d.relation.id)) {
+      context.enter('browse');
     }
+  }
 
 
-    function changeRole(d3_event, d) {
-        var oldRole = d.role;
-        var newRole = context.cleanRelationRole(d3_select(this).property('value'));
+  function renderDisclosureContent(selection) {
+    const graph = editor.staging.graph;  // the current graph
+    const entityID = _entityIDs[0];
+    const entity = graph.entity(entityID);
+    let memberships = [];
 
-        if (oldRole !== newRole) {
-            var member = { id: d.id, type: d.type, role: newRole };
-            context.perform(
-                actionChangeMember(d.relation.id, member, d.index),
-                l10n.t('operations.change_role.annotation', { n: 1 })
-            );
-            context.systems.validator.validate();
-        }
-    }
+    entity.members.slice(0, MAX_MEMBERS).forEach((member, index) => {
+      memberships.push({
+        index: index,
+        id: member.id,
+        type: member.type,
+        role: member.role,
+        relation: entity,
+        member: graph.hasEntity(member.id),
+        uid: utilUniqueString(`${entityID}-member-${index}`)
+      });
+    });
 
+    let list = selection.selectAll('.member-list')
+      .data([0]);
 
-    function deleteMember(d3_event, d) {
-        utilHighlightEntities([d.id], false, context);  // remove the hover-highlight styling
-
-        context.perform(
-            actionDeleteMember(d.relation.id, d.index),
-            l10n.t('operations.delete_member.annotation', { n: 1 })
-        );
-
-        if (!context.hasEntity(d.relation.id)) {
-            // Removing the last member will also delete the relation.
-            // If this happens we need to exit the selection mode
-            context.enter('browse');
-        } else {
-            // Changing the mode also runs `validate`, but otherwise we need to
-            // rerun it manually
-            context.systems.validator.validate();
-        }
-    }
-
-    function renderDisclosureContent(selection) {
-        var entityID = _entityIDs[0];
-        var memberships = [];
-        var entity = context.entity(entityID);
-        entity.members.slice(0, MAX_MEMBERS).forEach(function(member, index) {
-            memberships.push({
-                index: index,
-                id: member.id,
-                type: member.type,
-                role: member.role,
-                relation: entity,
-                member: context.hasEntity(member.id),
-                uid: utilUniqueString(entityID + '-member-' + index)
-            });
-        });
-
-        var list = selection.selectAll('.member-list')
-            .data([0]);
-
-        list = list.enter()
-            .append('ul')
-            .attr('class', 'member-list')
-            .merge(list);
+    list = list.enter()
+      .append('ul')
+      .attr('class', 'member-list')
+      .merge(list);
 
 
-        var items = list.selectAll('li')
-            .data(memberships, function(d) {
-                return osmEntity.key(d.relation) + ',' + d.index + ',' +
-                    (d.member ? osmEntity.key(d.member) : 'incomplete');
-            });
+    let items = list.selectAll('li')
+      .data(memberships, d => {
+        const parentKey = osmEntity.key(d.relation);
+        const childKey = (d.member && osmEntity.key(d.member)) || 'incomplete';
+        return `${parentKey},${d.index},${childKey}`;
+      });
 
-        items.exit()
-            .each(unbind)
-            .remove();
+    items.exit()
+      .each(_unbindCombo)
+      .remove();
 
-        var itemsEnter = items.enter()
-            .append('li')
-            .attr('class', 'member-row form-field')
-            .classed('member-incomplete', function(d) { return !d.member; });
+    let itemsEnter = items.enter()
+      .append('li')
+      .attr('class', 'member-row form-field')
+      .classed('member-incomplete', d => !d.member);
 
-        itemsEnter
-            .each(function(d) {
-                var item = d3_select(this);
+    itemsEnter
+      .each((d, i, nodes) => {
+        const item = d3_select(nodes[i]);
 
-                var label = item
-                    .append('label')
-                    .attr('class', 'field-label')
-                    .attr('for', d.uid);
+        let label = item
+          .append('label')
+          .attr('class', 'field-label')
+          .attr('for', d.uid);
 
-                if (d.member) {
-                    // highlight the member feature in the map while hovering on the list item
-                    item
-                        .on('mouseover', function() {
-                            utilHighlightEntities([d.id], true, context);
-                        })
-                        .on('mouseout', function() {
-                            utilHighlightEntities([d.id], false, context);
-                        });
+        if (d.member) {    // if the child has been loaded
+          item
+            .on('mouseover', () => utilHighlightEntities([d.id], true, context))
+            .on('mouseout', () => utilHighlightEntities([d.id], false, context));
 
-                    var labelLink = label
-                        .append('span')
-                        .attr('class', 'label-text')
-                        .append('a')
-                        .attr('href', '#')
-                        .on('click', selectMember);
+          let labelLink = label
+            .append('span')
+            .attr('class', 'label-text')
+            .append('a')
+            .attr('href', '#')
+            .on('click', selectMember);
 
-                    labelLink
-                        .append('span')
-                        .attr('class', 'member-entity-type')
-                        .html(function(d) {
-                            var matched = context.systems.presets.match(d.member, context.graph());
-                            return (matched && matched.name()) || l10n.displayType(d.member.id);
-                        });
-
-                    labelLink
-                        .append('span')
-                        .attr('class', 'member-entity-name')
-                        .html(d => (d.member ? l10n.displayName(d.member.tags) : ''));
-
-                    label
-                        .append('button')
-                        .attr('title', l10n.t('icons.remove'))
-                        .attr('class', 'remove member-delete')
-                        .call(uiIcon('#rapid-operation-delete'));
-
-                    label
-                        .append('button')
-                        .attr('class', 'member-zoom')
-                        .attr('title', l10n.t('icons.zoom_to'))
-                        .call(uiIcon('#rapid-icon-framed-dot', 'monochrome'))
-                        .on('click', zoomToMember);
-
-                } else {
-                    var labelText = label
-                        .append('span')
-                        .attr('class', 'label-text');
-
-                    labelText
-                        .append('span')
-                        .attr('class', 'member-entity-type')
-                        .html(l10n.tHtml('inspector.' + d.type, { id: d.id }));
-
-                    labelText
-                        .append('span')
-                        .attr('class', 'member-entity-name')
-                        .html(l10n.tHtml('inspector.incomplete', { id: d.id }));
-
-                    label
-                        .append('button')
-                        .attr('class', 'member-download')
-                        .attr('title', l10n.t('icons.download'))
-                        .call(uiIcon('#rapid-icon-load'))
-                        .on('click', downloadMember);
-                }
+          labelLink
+            .append('span')
+            .attr('class', 'member-entity-type')
+            .html(d => {
+              const matched = presets.match(d.member, editor.staging.graph);
+              return (matched && matched.name()) || l10n.displayType(d.member.id);
             });
 
-        var wrapEnter = itemsEnter
-            .append('div')
-            .attr('class', 'form-field-input-wrap form-field-input-member');
+          labelLink
+            .append('span')
+            .attr('class', 'member-entity-name')
+            .html(d => (d.member ? l10n.displayName(d.member.tags) : ''));
 
-        wrapEnter
-            .append('input')
-            .attr('class', 'member-role')
-            .attr('id', d => d.uid)
-            .property('type', 'text')
-            .attr('placeholder', l10n.t('inspector.role'))
-            .call(utilNoAuto);
+          label
+            .append('button')
+            .attr('title', l10n.t('icons.remove'))
+            .attr('class', 'remove member-delete')
+            .call(uiIcon('#rapid-operation-delete'));
 
-        if (taginfo) {
-            wrapEnter.each(bindTypeahead);
+          label
+            .append('button')
+            .attr('class', 'member-zoom')
+            .attr('title', l10n.t('icons.zoom_to'))
+            .call(uiIcon('#rapid-icon-framed-dot', 'monochrome'))
+            .on('click', zoomToMember);
+
+        } else {   // if the child has not yet loaded
+          let labelText = label
+            .append('span')
+            .attr('class', 'label-text');
+
+          labelText
+            .append('span')
+            .attr('class', 'member-entity-type')
+            .html(l10n.tHtml(`inspector.${d.type}`, { id: d.id }));
+
+          labelText
+            .append('span')
+            .attr('class', 'member-entity-name')
+            .html(l10n.tHtml('inspector.incomplete', { id: d.id }));
+
+          label
+            .append('button')
+            .attr('class', 'member-download')
+            .attr('title', l10n.t('icons.download'))
+            .call(uiIcon('#rapid-icon-load'))
+            .on('click', downloadMember);
         }
+      });
 
-        // update
-        items = items
-            .merge(itemsEnter)
-            .order();
+    let wrapEnter = itemsEnter
+      .append('div')
+      .attr('class', 'form-field-input-wrap form-field-input-member');
 
-        items.select('input.member-role')
-            .property('value', d => d.role)
-            .on('blur', changeRole)
-            .on('change', changeRole);
+    wrapEnter
+      .append('input')
+      .attr('class', 'member-role')
+      .attr('id', d => d.uid)
+      .property('type', 'text')
+      .attr('placeholder', l10n.t('inspector.role'))
+      .call(utilNoAuto);
 
-        items.select('button.member-delete')
-            .on('click', deleteMember);
+    if (taginfo) {
+      wrapEnter.each(_bindCombo);
+    }
 
-        var dragOrigin, targetIndex;
+    // update
+    items = items
+      .merge(itemsEnter)
+      .order();
 
-        items.call(d3_drag()
-            .on('start', function(d3_event) {
-                dragOrigin = {
-                    x: d3_event.x,
-                    y: d3_event.y
-                };
-                targetIndex = null;
-            })
-            .on('drag', function(d3_event) {
-                var x = d3_event.x - dragOrigin.x,
-                    y = d3_event.y - dragOrigin.y;
+    items.select('input.member-role')
+      .property('value', d => d.role)
+      .on('blur', changeRole)
+      .on('change', changeRole);
 
-                if (!d3_select(this).classed('dragging') &&
-                    // don't display drag until dragging beyond a distance threshold
-                    Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) <= 5) return;
+    items.select('button.member-delete')
+      .on('click', deleteMember);
 
-                var index = items.nodes().indexOf(this);
+    let x0, y0, targetIndex;
 
-                d3_select(this)
-                    .classed('dragging', true);
+    items.call(d3_drag()
+      .on('start', function(d3_event) {
+        x0 = d3_event.x;
+        y0 = d3_event.y;
+        targetIndex = null;
+      })
+      .on('drag', function(d3_event) {
+        const [x1, y1] = [d3_event.x, d3_event.y];
+        const [dx, dy] = vecSubtract([x1, y1], [x0, y0]);
 
-                targetIndex = null;
+        // don't display drag until dragging beyond a distance threshold
+        if (!d3_select(this).classed('dragging') && vecLength([dx, dy]) <= 5) return;
 
-                selection.selectAll('li.member-row')
-                    .style('transform', function(d2, index2) {
-                        var node = d3_select(this).node();
-                        if (index === index2) {
-                            return 'translate(' + x + 'px, ' + y + 'px)';
-                        } else if (index2 > index && d3_event.y > node.offsetTop) {
-                            if (targetIndex === null || index2 > targetIndex) {
-                                targetIndex = index2;
-                            }
-                            return 'translateY(-100%)';
-                        } else if (index2 < index && d3_event.y < node.offsetTop + node.offsetHeight) {
-                            if (targetIndex === null || index2 < targetIndex) {
-                                targetIndex = index2;
-                            }
-                            return 'translateY(100%)';
-                        }
-                        return null;
-                    });
-            })
-            .on('end', function(d3_event, d) {
+        let index = items.nodes().indexOf(this);
 
-                if (!d3_select(this).classed('dragging')) return;
+        d3_select(this)
+          .classed('dragging', true);
 
-                var index = items.nodes().indexOf(this);
+        targetIndex = null;
 
-                d3_select(this)
-                    .classed('dragging', false);
-
-                selection.selectAll('li.member-row')
-                    .style('transform', null);
-
-                if (targetIndex !== null) {
-                    // dragged to a new position, reorder
-                    context.perform(
-                        actionMoveMember(d.relation.id, index, targetIndex),
-                        l10n.t('operations.reorder_members.annotation')
-                    );
-                    context.systems.validator.validate();
-                }
-            })
-        );
-
-
-
-        function bindTypeahead(d) {
-            var row = d3_select(this);
-            var role = row.selectAll('input.member-role');
-            var origValue = role.property('value');
-
-            function sort(value, data) {
-                var sameletter = [];
-                var other = [];
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].value.substring(0, value.length) === value) {
-                        sameletter.push(data[i]);
-                    } else {
-                        other.push(data[i]);
-                    }
-                }
-                return sameletter.concat(other);
+        selection.selectAll('li.member-row')
+          .style('transform', function(d2, index2) {
+            let node = d3_select(this).node();
+            if (index === index2) {
+              return `translate(${dx}px, ${dy}px)`;
+            } else if (index2 > index && y1 > node.offsetTop) {
+              if (targetIndex === null || index2 > targetIndex) {
+                targetIndex = index2;
+              }
+              return 'translateY(-100%)';
+            } else if (index2 < index && y1 < node.offsetTop + node.offsetHeight) {
+              if (targetIndex === null || index2 < targetIndex) {
+                targetIndex = index2;
+              }
+              return 'translateY(100%)';
             }
+            return null;
+          });
+      })
+      .on('end', function(d3_event, d) {
+        if (!d3_select(this).classed('dragging')) return;
 
-            role.call(uiCombobox(context, 'member-role')
-                .fetcher(function(role, callback) {
-                    // The `geometry` param is used in the `taginfo.js` interface for
-                    // filtering results, as a key into the `tag_members_fractions`
-                    // object.  If we don't know the geometry because the member is
-                    // not yet downloaded, it's ok to guess based on type.
-                    var geometry;
-                    if (d.member) {
-                        geometry = context.graph().geometry(d.member.id);
-                    } else if (d.type === 'relation') {
-                        geometry = 'relation';
-                    } else if (d.type === 'way') {
-                        geometry = 'line';
-                    } else {
-                        geometry = 'point';
-                    }
+        let index = items.nodes().indexOf(this);
 
-                    var rtype = entity.tags.type;
-                    taginfo.roles({
-                        debounce: true,
-                        rtype: rtype || '',
-                        geometry: geometry,
-                        query: role
-                    }, function(err, data) {
-                        if (!err) callback(sort(role, data));
-                    });
-                })
-                .on('cancel', function() {
-                    role.property('value', origValue);
-                })
-            );
+        d3_select(this)
+          .classed('dragging', false);
+
+        selection.selectAll('li.member-row')
+          .style('transform', null);
+
+        if (targetIndex !== null) {   // dragged to a new position, reorder
+          editor.perform(actionMoveMember(d.relation.id, index, targetIndex));
+          editor.commit({
+            annotation: l10n.t('operations.reorder_members.annotation'),
+            selectedIDs: [d.relation.id]
+          });
         }
+      })
+    );
+  }
 
 
-        function unbind() {
-            var row = d3_select(this);
+  section.entityIDs = function(val) {
+    if (!arguments.length) return _entityIDs;
+    _entityIDs = val || [];
+    return section;
+  };
 
-            row.selectAll('input.member-role')
-                .call(uiCombobox.off, context);
+
+  function _bindCombo(d, i, nodes) {
+    let row = d3_select(nodes[i]);
+    let role = row.selectAll('input.member-role');
+    let origValue = role.property('value');
+
+    function sort(value, data) {
+      let sameletter = [];
+      let other = [];
+      for (const item of data) {
+        if (item.value.substring(0, value.length) === value) {
+          sameletter.push(item);
+        } else {
+          other.push(item);
         }
+      }
+      return sameletter.concat(other);
     }
 
-    section.entityIDs = function(val) {
-        if (!arguments.length) return _entityIDs;
-        _entityIDs = val;
-        return section;
-    };
+    role.call(uiCombobox(context, 'member-role')
+      .fetcher(function(role, callback) {
+        // The `geometry` param is used in the `taginfo.js` interface for
+        // filtering results, as a key into the `tag_members_fractions`
+        // object.  If we don't know the geometry because the member is
+        // not yet downloaded, it's ok to guess based on type.
+        let geometry;
+        if (d.member) {
+          const graph = editor.staging.graph;  // the current graph
+          geometry = graph.geometry(d.member.id);
+        } else if (d.type === 'relation') {
+          geometry = 'relation';
+        } else if (d.type === 'way') {
+          geometry = 'line';
+        } else {
+          geometry = 'point';
+        }
+
+        taginfo.roles({
+          debounce: true,
+          rtype: d.relation.tags.type || '',
+          geometry: geometry,
+          query: role
+        }, (err, data) => {
+          if (!err) callback(sort(role, data));
+        });
+      })
+      .on('cancel', () => {
+        role.property('value', origValue);
+      })
+    );
+  }
 
 
-    return section;
+  function _unbindCombo(d, i, nodes) {
+    const row = d3_select(nodes[i]);
+    row.selectAll('input.member-role')
+      .call(uiCombobox.off, context);
+  }
+
+
+  return section;
 }

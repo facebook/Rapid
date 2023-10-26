@@ -4,6 +4,7 @@ import { uiIcon } from './icon';
 
 
 export function uiImproveOsmComments(context) {
+  const l10n = context.systems.l10n;
   let _qaItem;
 
 
@@ -64,7 +65,7 @@ export function uiImproveOsmComments(context) {
         metadataEnter
           .append('div')
             .attr('class', 'comment-date')
-            .html(d => context.tHtml('note.status.commented', { when: localeDateString(d.timestamp) }));
+            .html(d => l10n.tHtml('note.status.commented', { when: localeDateString(d.timestamp) }));
 
         mainEnter
           .append('div')

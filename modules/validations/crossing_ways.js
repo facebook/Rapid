@@ -18,6 +18,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationCrossingWays(context) {
     const type = 'crossing_ways';
+    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
 
     // returns the way or its parent relation, whichever has a useful feature type
@@ -379,7 +380,8 @@ export function validationCrossingWays(context) {
 
 
     var validation = function checkCrossingWays(entity, graph) {
-        var tree = context.systems.edits.tree();
+//todo: using tree like this may be problematic - it may not reflect the graph we are validating
+        var tree = context.systems.editor.tree;
         var ways = waysToCheck(entity, graph);
         var issues = [];
         // declare these here to reduce garbage collection
@@ -448,9 +450,9 @@ export function validationCrossingWays(context) {
             subtype: subtype,
             severity: 'warning',
             message: function() {
-                var graph = context.graph();
-                var entity1 = graph.hasEntity(this.entityIds[0]);
-                var entity2 = graph.hasEntity(this.entityIds[1]);
+                const graph = editor.staging.graph;
+                const entity1 = graph.hasEntity(this.entityIds[0]);
+                const entity2 = graph.hasEntity(this.entityIds[1]);
                 return (entity1 && entity2) ? l10n.tHtml('issues.crossing_ways.message', {
                     feature: l10n.displayLabel(entity1, graph),
                     feature2: l10n.displayLabel(entity2, graph)
@@ -469,13 +471,13 @@ export function validationCrossingWays(context) {
             loc: crossing.crossPoint,
             autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function() {
+                const graph = editor.staging.graph;
                 var selectedIDs = context.selectedIDs();
                 if (context.mode?.id !== 'select-osm' || selectedIDs.length !== 1) return [];
 
                 var selectedIndex = this.entityIds[0] === selectedIDs[0] ? 0 : 1;
                 var selectedFeatureType = this.data.featureTypes[selectedIndex];
                 var otherFeatureType = this.data.featureTypes[selectedIndex === 0 ? 1 : 0];
-
                 var fixes = [];
 
                 if (connectionTags) {
@@ -492,8 +494,8 @@ export function validationCrossingWays(context) {
                     fixes.push(makeChangeLayerFix('lower'));
 
                 // can only add bridge/tunnel if both features are lines
-                } else if (context.graph().geometry(this.entityIds[0]) === 'line' &&
-                    context.graph().geometry(this.entityIds[1]) === 'line') {
+                } else if (graph.geometry(this.entityIds[0]) === 'line' &&
+                    graph.geometry(this.entityIds[1]) === 'line') {
 
                     // don't recommend adding bridges to waterways since they're uncommon
                     if (allowsBridge(selectedFeatureType) && selectedFeatureType !== 'waterway') {
@@ -527,7 +529,7 @@ export function validationCrossingWays(context) {
         }
     }
 
-    function makeAddBridgeOrTunnelFix(fixTitleID, iconName, bridgeOrTunnel){
+    function makeAddBridgeOrTunnelFix(fixTitleID, iconName, bridgeOrTunnel) {
         return new ValidationFix({
             icon: iconName,
             title: l10n.tHtml('issues.fix.' + fixTitleID + '.title'),
@@ -538,7 +540,8 @@ export function validationCrossingWays(context) {
                 if (selectedIDs.length !== 1) return;
 
                 var selectedWayID = selectedIDs[0];
-                if (!context.hasEntity(selectedWayID)) return;
+                const graph = editor.staging.graph;
+                if (!graph.hasEntity(selectedWayID)) return;
 
                 var resultWayIDs = [selectedWayID];
 
@@ -558,9 +561,7 @@ export function validationCrossingWays(context) {
                 var projection = context.projection;
 
                 var action = function actionAddStructure(graph) {
-
                     var edgeNodes = [graph.entity(edge[0]), graph.entity(edge[1])];
-
                     var crossedWay = graph.hasEntity(crossedWayID);
                     // use the explicit width of the crossed feature as the structure length, if available
                     var structLengthMeters = crossedWay && crossedWay.tags.width && parseFloat(crossedWay.tags.width);
@@ -722,8 +723,12 @@ export function validationCrossingWays(context) {
                     return graph;
                 };
 
-                context.perform(action, l10n.t(`issues.fix.${fixTitleID}.annotation`));
-                context.enter('select-osm', { selectedIDs: resultWayIDs });
+                editor.perform(action);
+                editor.commit({
+                  annotation: l10n.t(`issues.fix.${fixTitleID}.annotation`),
+                  selectedIDs: [selectedWayID]
+                });
+                context.enter('select-osm', { selection: { osm: resultWayIDs }} );
             }
         });
     }
@@ -751,7 +756,7 @@ export function validationCrossingWays(context) {
                 var closest = geoSphericalClosestPoint([n0.loc, n1.loc], loc);
                 if (closest && closest.distance < mergeThresholdInMeters) {
                     var closeNode = edgeNodes[closest.index];
-                    // Reuse the close node if it has no interesting tags or if it is already a crossing - #8326
+                    // Reuse the close node if it has no interesting tags or if it is already a crossing - iD#8326
                     if (!closeNode.hasInterestingTags() || closeNode.isCrossing()) {
                         canReuse = true;
                         const existingNode = newGraph.hasEntity(closeNode.id);
@@ -786,65 +791,77 @@ export function validationCrossingWays(context) {
     }
 
 
+    /**
+     * makeConnectWaysFix
+     */
     function makeConnectWaysFix(connectionTags) {
-        var fixTitleID = 'connect_features';
-        if (connectionTags.ford) {
-            fixTitleID = 'connect_using_ford';
-        }
-        return new ValidationFix({
-            icon: 'rapid-icon-crossing',
-            title: l10n.tHtml(`issues.fix.${fixTitleID}.title`),
-            onClick: function() {
-                var loc = this.issue.loc;
-                var edges = this.issue.data.edges;
-                var connectionTags = this.issue.data.connectionTags;
-                var action = getConnectWaysAction(loc, edges, connectionTags);
+      var fixTitleID = 'connect_features';
+      if (connectionTags.ford) {
+        fixTitleID = 'connect_using_ford';
+      }
+      return new ValidationFix({
+        icon: 'rapid-icon-crossing',
+        title: l10n.tHtml(`issues.fix.${fixTitleID}.title`),
+        onClick: function() {
+          const loc = this.issue.loc;
+          const edges = this.issue.data.edges;
+          const connectionTags = this.issue.data.connectionTags;
+          const result = getConnectWaysAction(loc, edges, connectionTags);
 
-                context.perform(action[0], action[1]);  // function, annotation
-            }
-        });
+          // result contains [function, annotation]
+          editor.perform(result[0]);
+          editor.commit({
+            annotation: result[1],
+            selectedIDs: this.issue.entityIds
+          });
+        }
+      });
     }
 
+
+    /**
+     * makeChangeLayerFix
+     */
     function makeChangeLayerFix(higherOrLower) {
-        return new ValidationFix({
-            icon: 'rapid-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
-            title: l10n.tHtml(`issues.fix.tag_this_as_${higherOrLower}.title`),
-            onClick: function() {
-                if (context.mode?.id !== 'select-osm') return;
+      return new ValidationFix({
+        icon: 'rapid-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
+        title: l10n.tHtml(`issues.fix.tag_this_as_${higherOrLower}.title`),
+        onClick: function() {
+          if (context.mode?.id !== 'select-osm') return;
 
-                var selectedIDs = context.selectedIDs();
-                if (selectedIDs.length !== 1) return;
+          const selectedIDs = context.selectedIDs();
+          if (selectedIDs.length !== 1) return;
 
-                var selectedID = selectedIDs[0];
-                if (!this.issue.entityIds.some(function(entityId) {
-                    return entityId === selectedID;
-                })) return;
+          const selectedID = selectedIDs[0];
+          if (!this.issue.entityIds.some(entityID => entityID === selectedID)) return;
 
-                var entity = context.hasEntity(selectedID);
-                if (!entity) return;
+          const graph = editor.staging.graph;
+          const entity = graph.hasEntity(selectedID);
+          if (!entity) return;
 
-                var tags = Object.assign({}, entity.tags);   // shallow copy
-                var layer = tags.layer && Number(tags.layer);
-                if (layer && !isNaN(layer)) {
-                    if (higherOrLower === 'higher') {
-                        layer += 1;
-                    } else {
-                        layer -= 1;
-                    }
-                } else {
-                    if (higherOrLower === 'higher') {
-                        layer = 1;
-                    } else {
-                        layer = -1;
-                    }
-                }
-                tags.layer = layer.toString();
-                context.perform(
-                    actionChangeTags(entity.id, tags),
-                    l10n.t('operations.change_tags.annotation')
-                );
+          const tags = Object.assign({}, entity.tags);   // shallow copy
+          let layer = tags.layer && Number(tags.layer);
+          if (layer && !isNaN(layer)) {
+            if (higherOrLower === 'higher') {
+              layer += 1;
+            } else {
+              layer -= 1;
             }
-        });
+          } else {
+            if (higherOrLower === 'higher') {
+              layer = 1;
+            } else {
+              layer = -1;
+            }
+          }
+          tags.layer = layer.toString();
+          editor.perform(actionChangeTags(entity.id, tags));
+          editor.commit({
+            annotation: l10n.t('operations.change_tags.annotation'),
+            selectedIDs: [selectedID]
+          });
+        }
+      });
     }
 
     validation.type = type;

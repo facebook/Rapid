@@ -39,23 +39,23 @@ export let uiCmd = function(code) {
 uiCmd.display = function(context, code) {
   if (code.length !== 1) return code;
 
-  const t = context.t;
+  const l10n = context.systems.l10n;
   const detected = utilDetect();
   const mac = (detected.os === 'mac');
   const replacements = {
-    '⌘': mac ? '⌘ ' + t('shortcuts.key.cmd')    : t('shortcuts.key.ctrl'),
-    '⇧': mac ? '⇧ ' + t('shortcuts.key.shift')  : t('shortcuts.key.shift'),
-    '⌥': mac ? '⌥ ' + t('shortcuts.key.option') : t('shortcuts.key.alt'),
-    '⌃': mac ? '⌃ ' + t('shortcuts.key.ctrl')   : t('shortcuts.key.ctrl'),
-    '⌫': mac ? '⌫ ' + t('shortcuts.key.delete') : t('shortcuts.key.backspace'),
-    '⌦': mac ? '⌦ ' + t('shortcuts.key.del')    : t('shortcuts.key.del'),
-    '↖': mac ? '↖ ' + t('shortcuts.key.pgup')   : t('shortcuts.key.pgup'),
-    '↘': mac ? '↘ ' + t('shortcuts.key.pgdn')   : t('shortcuts.key.pgdn'),
-    '⇞': mac ? '⇞ ' + t('shortcuts.key.home')   : t('shortcuts.key.home'),
-    '⇟': mac ? '⇟ ' + t('shortcuts.key.end')    : t('shortcuts.key.end'),
-    '↵': mac ? '⏎ ' + t('shortcuts.key.return') : t('shortcuts.key.enter'),
-    '⎋': mac ? '⎋ ' + t('shortcuts.key.esc')    : t('shortcuts.key.esc'),
-    '☰': mac ? '☰ ' + t('shortcuts.key.menu')  : t('shortcuts.key.menu'),
+    '⌘': mac ? '⌘ ' + l10n.t('shortcuts.key.cmd')    : l10n.t('shortcuts.key.ctrl'),
+    '⇧': mac ? '⇧ ' + l10n.t('shortcuts.key.shift')  : l10n.t('shortcuts.key.shift'),
+    '⌥': mac ? '⌥ ' + l10n.t('shortcuts.key.option') : l10n.t('shortcuts.key.alt'),
+    '⌃': mac ? '⌃ ' + l10n.t('shortcuts.key.ctrl')   : l10n.t('shortcuts.key.ctrl'),
+    '⌫': mac ? '⌫ ' + l10n.t('shortcuts.key.delete') : l10n.t('shortcuts.key.backspace'),
+    '⌦': mac ? '⌦ ' + l10n.t('shortcuts.key.del')    : l10n.t('shortcuts.key.del'),
+    '↖': mac ? '↖ ' + l10n.t('shortcuts.key.pgup')   : l10n.t('shortcuts.key.pgup'),
+    '↘': mac ? '↘ ' + l10n.t('shortcuts.key.pgdn')   : l10n.t('shortcuts.key.pgdn'),
+    '⇞': mac ? '⇞ ' + l10n.t('shortcuts.key.home')   : l10n.t('shortcuts.key.home'),
+    '⇟': mac ? '⇟ ' + l10n.t('shortcuts.key.end')    : l10n.t('shortcuts.key.end'),
+    '↵': mac ? '⏎ ' + l10n.t('shortcuts.key.return') : l10n.t('shortcuts.key.enter'),
+    '⎋': mac ? '⎋ ' + l10n.t('shortcuts.key.esc')    : l10n.t('shortcuts.key.esc'),
+    '☰': mac ? '☰ ' + l10n.t('shortcuts.key.menu')  : l10n.t('shortcuts.key.menu'),
   };
 
   return replacements[code] || code;

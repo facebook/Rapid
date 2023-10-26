@@ -7,7 +7,10 @@ import { utilHighlightEntities } from '../../util';
 
 
 export function uiSectionSelectionList(context) {
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
+
   let _selectedIDs = [];
 
   const section = uiSection(context, 'selected-features')
@@ -31,7 +34,7 @@ export function uiSectionSelectionList(context) {
   }
 
   function selectEntity(d3_event, entity) {
-    context.enter('select-osm', { selectedIDs: [entity.id] });
+    context.enter('select-osm', { selection: { osm: [entity.id] }} );
   }
 
   function deselectEntity(d3_event, entity) {
@@ -39,12 +42,14 @@ export function uiSectionSelectionList(context) {
     const index = selectedIDs.indexOf(entity.id);
     if (index > -1) {
       selectedIDs.splice(index, 1);
-      context.enter('select-osm', { selectedIDs: selectedIDs });
+      context.enter('select-osm', { selection: { osm: selectedIDs }} );
     }
   }
 
 
   function renderDisclosureContent(selection) {
+    const graph = editor.staging.graph;
+
     let list = selection.selectAll('.feature-list')
       .data([0]);
 
@@ -54,7 +59,7 @@ export function uiSectionSelectionList(context) {
       .merge(list);
 
     const entities = _selectedIDs
-      .map(d => context.hasEntity(d))
+      .map(d => graph.hasEntity(d))
       .filter(Boolean);
 
     let items = list.selectAll('.feature-list-item')
@@ -105,26 +110,21 @@ export function uiSectionSelectionList(context) {
       .attr('href', (d, i, nodes) => {
         const thiz = d3_select(nodes[i]);
         const entity = thiz._groups[0][0].parentNode.parentNode.__data__;
-        return '#rapid-icon-' + entity.geometry(context.graph());
+        return '#rapid-icon-' + entity.geometry(graph);
       });
 
     items.selectAll('.entity-type')
-      .html(entity => context.systems.presets.match(entity, context.graph()).name());
+      .html(entity => presets.match(entity, graph).name());
 
     items.selectAll('.entity-name')
       .html(d => {
-        const entity = context.entity(d.id);  // current version of the entity
+        const entity = graph.entity(d.id);
         return l10n.displayName(entity.tags);
       });
   }
 
 
-  context.systems.edits
-    .on('change', difference => {
-      if (difference) {
-        section.reRender();
-      }
-    });
+  editor.on('stablechange', () => section.reRender());
 
   return section;
 }

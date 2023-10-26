@@ -6,18 +6,24 @@ import { utilTotalExtent } from '../util';
 
 
 export function operationOrthogonalize(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const graph = editor.staging.graph;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
+  const extent = utilTotalExtent(entities, graph);
 
   let _type;   // 'feature' or 'corner'
   const actions = entities.map(getAction).filter(Boolean);
-  const coords = utilGetAllNodes(selectedIDs, context.graph()).map(node => node.loc);
+  const coords = utilGetAllNodes(selectedIDs, graph).map(node => node.loc);
 
 
   function getAction(entity) {
-    const graph = context.graph();
+    const graph = editor.staging.graph;
     const geometry = entity.geometry(graph);
 
     // square a line/area
@@ -46,18 +52,20 @@ export function operationOrthogonalize(context, selectedIDs) {
   let operation = function() {
     if (!actions.length) return;
 
-    let combinedAction = function(graph, t) {
-      actions.forEach(action => {
+    const combinedAction = (graph, t) => {
+      for (const action of actions) {
         if (!action.disabled(graph)) {
           graph = action(graph, t);
         }
-      });
+      }
       return graph;
     };
     combinedAction.transitionable = true;
 
-    context.perform(combinedAction, operation.annotation());
-    window.setTimeout(() => context.systems.validator.validate(), 300);  // after any transition
+    const annotation = operation.annotation();
+    editor
+      .performAsync(combinedAction)
+      .then(() => editor.commit({ annotation: annotation, selectedIDs: selectedIDs }));
   };
 
 
@@ -69,7 +77,8 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.disabled = function() {
     if (!actions.length) return '';
 
-    const disabledReasons = actions.map(action => action.disabled(context.graph())).filter(Boolean);
+    const graph = editor.staging.graph;
+    const disabledReasons = actions.map(action => action.disabled(graph)).filter(Boolean);
     if (disabledReasons.length === actions.length) {   // none of the features can be squared
       if (new Set(disabledReasons).size > 1) {
         return 'multiple_blockers';
@@ -87,9 +96,8 @@ export function operationOrthogonalize(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
@@ -111,19 +119,19 @@ export function operationOrthogonalize(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.orthogonalize.${disabledReason}.${multi}`) :
-      context.t(`operations.orthogonalize.description.${_type}.${multi}`);
+      l10n.t(`operations.orthogonalize.${disabledReason}.${multi}`) :
+      l10n.t(`operations.orthogonalize.description.${_type}.${multi}`);
   };
 
 
   operation.annotation = function() {
-    return context.t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
+    return l10n.t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
   };
 
 
   operation.id = 'orthogonalize';
-  operation.keys = [ context.t('operations.orthogonalize.key') ];
-  operation.title = context.t('operations.orthogonalize.title');
+  operation.keys = [ l10n.t('operations.orthogonalize.key') ];
+  operation.title = l10n.t('operations.orthogonalize.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

@@ -33,9 +33,8 @@ export class RapidSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'rapid';
-    this.dependencies = new Set(['edits', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['editor', 'l10n', 'urlhash']);
 
-    this.sources = new Set();
     // Watch edit history to keep track of which features have been accepted by the user.
     // These features will be filtered out when drawing
     this.acceptedIDs = new Set();
@@ -47,12 +46,9 @@ export class RapidSystem extends AbstractSystem {
 
     this._initPromise = null;
 
-
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._hashchange = this._hashchange.bind(this);
-    this._onUndone = this._onUndone.bind(this);
-    this._onChange = this._onChange.bind(this);
-    this._onRestore = this._onRestore.bind(this);
+    this._stablechange = this._stablechange.bind(this);
   }
 
 
@@ -71,13 +67,13 @@ export class RapidSystem extends AbstractSystem {
     }
 
     const context = this.context;
-    const edits = context.systems.edits;
+    const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     const map = context.systems.map;
     const urlhash = context.systems.urlhash;
 
     const prerequisites = Promise.all([
-      edits.initAsync(),
+      editor.initAsync(),
       map.initAsync(),   // RapidSystem should listen for hashchange after MapSystem
       l10n.initAsync(),
       urlhash.initAsync()
@@ -85,13 +81,8 @@ export class RapidSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
-        urlhash
-          .on('hashchange', this._hashchange);
-
-        edits
-          .on('undone', this._onUndone)
-          .on('change', this._onChange)
-          .on('restore', this._onRestore);
+        urlhash.on('hashchange', this._hashchange);
+        editor.on('stablechange', this._stablechange);
 
         this._datasets.set('fbRoads', {
           id: 'fbRoads',
@@ -101,6 +92,7 @@ export class RapidSystem extends AbstractSystem {
           conflated: true,
           service: 'mapwithai',
           color: RAPID_MAGENTA,
+          dataUsed: ['mapwithai', 'Facebook Roads'],
           label: l10n.t('rapid_feature_toggle.fbRoads.label'),
           license_markdown: l10n.t('rapid_feature_toggle.fbRoads.license_markdown')
         });
@@ -113,6 +105,7 @@ export class RapidSystem extends AbstractSystem {
           conflated: true,
           service: 'mapwithai',
           color: RAPID_MAGENTA,
+          dataUsed: ['mapwithai', 'Microsoft Buildings'],
           label: l10n.t('rapid_feature_toggle.msBuildings.label'),
           license_markdown: l10n.t('rapid_feature_toggle.msBuildings.license_markdown')
         });
@@ -137,8 +130,7 @@ export class RapidSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    this.sources = new Set();
-    this.acceptedIDs = new Set();
+    this.acceptedIDs.clear();
     return Promise.resolve();
   }
 
@@ -237,37 +229,25 @@ export class RapidSystem extends AbstractSystem {
 
 
   /**
-   *
+   * _stablechange
+   * This is called anytime the history changes, we recompute the acceptedIDs set.
+   * This can run on history change, undo, redo, or history restore.
    */
-  _onUndone(currentStack, previousStack) {
-    const annotation = previousStack.annotation;
-    if (!this._wasRapidEdit(annotation)) return;
+  _stablechange() {
+    const context = this.context;
+    const editor = context.systems.editor;
 
-    this.acceptedIDs.delete(annotation.id);
-    this.context.systems.map.immediateRedraw();
-  }
+    this.acceptedIDs.clear();
 
+    const history = editor.history;
+    const index = editor.index;
 
-  /**
-   *
-   */
-  _onChange() {
-    const annotation = this.context.systems.edits.peekAnnotation();
-    if (!this._wasRapidEdit(annotation)) return;
-
-    this.acceptedIDs.add(annotation.id);
-    this.context.systems.map.immediateRedraw();
-  }
-
-
-  /**
-   *
-   */
-  _onRestore() {
-    this.acceptedIDs = new Set();
-
-    this.context.systems.edits.peekAllAnnotations().forEach(annotation => {
-      if (!this._wasRapidEdit(annotation)) return;
+    // Start at `1` - there won't be sources on the `base` edit..
+    // End at `index` - don't continue into the redo part of the history..
+    for (let i = 1; i <= index; i++) {
+      const edit = history[i];
+      const annotation = edit.annotation;
+      if (!annotation?.type || !/^rapid/.test(annotation.type)) continue;  // not a rapid edit?
 
       this.acceptedIDs.add(annotation.id);
 
@@ -282,9 +262,7 @@ export class RapidSystem extends AbstractSystem {
       if (annotation.origid) {
         this.acceptedIDs.add(annotation.origid);
       }
-    });
-
-    this.context.systems.map.immediateRedraw();
+    }
   }
 
 
@@ -342,7 +320,7 @@ export class RapidSystem extends AbstractSystem {
           const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
           const nextColor = this._datasets.size % RAPID_COLORS.length;
 
-          let dataset = {
+          const dataset = {
             id: d.id,
             beta: isBeta,
             added: true,       // whether it should appear in the list
@@ -350,6 +328,7 @@ export class RapidSystem extends AbstractSystem {
             conflated: false,
             service: 'esri',
             color: RAPID_COLORS[nextColor],
+            dataUsed: ['esri', d.title],
             label: d.title,
             license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown')
           };

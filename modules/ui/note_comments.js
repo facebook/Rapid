@@ -4,6 +4,7 @@ import { uiIcon } from './icon';
 
 
 export function uiNoteComments(context) {
+  const l10n = context.systems.l10n;
   let _note;
 
 
@@ -51,13 +52,13 @@ export function uiNoteComments(context) {
             .attr('target', '_blank');
         }
         selection
-          .html(d => d.user || context.tHtml('note.anonymous'));
+          .html(d => d.user || l10n.tHtml('note.anonymous'));
       });
 
     metadataEnter
       .append('div')
       .attr('class', 'comment-date')
-      .html(d => context.t(`note.status.${d.action}`, { when: localeDateString(d.date) }));
+      .html(d => l10n.t(`note.status.${d.action}`, { when: localeDateString(d.date) }));
 
     mainEnter
       .append('div')

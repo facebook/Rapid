@@ -4,7 +4,7 @@ import { VectorTile } from '@mapbox/vector-tile';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { PMTiles } from 'pmtiles';
 import stringify from 'fast-json-stable-stringify';
-import polygonClipping from 'polygon-clipping';
+import * as Polyclip from 'polyclip-ts';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
 
@@ -540,12 +540,12 @@ export class VectorTileService extends AbstractSystem {
 
     // Union the coordinates together
     const sourceCoords = features.map(feature => feature.geojson.geometry.coordinates);
-    const mergedCoords = polygonClipping.union(...sourceCoords);
+    const mergedCoords = Polyclip.union(...sourceCoords);
     if (!mergedCoords || !mergedCoords.length) {
       throw new Error(`Failed to merge`);  // shouldn't happen
     }
 
-    // `polygonClip.union` always returns a MultiPolygon
+    // `Polyclip.union` always returns a MultiPolygon
     const merged = {
       type: 'Feature',
       geometry: {

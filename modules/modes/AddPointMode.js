@@ -33,6 +33,7 @@ export class AddPointMode extends AbstractMode {
 
   /**
    * enter
+   * Enters the mode.
    */
   enter() {
     if (DEBUG) {
@@ -41,16 +42,15 @@ export class AddPointMode extends AbstractMode {
 
     this._active = true;
     const context = this.context;
-    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
 
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('crosshair');
+
+    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
     context.behaviors.draw
       .on('click', this._click)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
-
-    context.systems.edits
-      .on('undone', this._cancel)
-      .on('redone', this._cancel);
 
     return true;
   }
@@ -61,22 +61,21 @@ export class AddPointMode extends AbstractMode {
    */
   exit() {
     if (!this._active) return;
+    this._active = false;
 
     if (DEBUG) {
       console.log('AddPointMode: exiting');  // eslint-disable-line no-console
     }
 
-    this._active = false;
-
     const context = this.context;
+
+    const eventManager = context.systems.map.renderer.events;
+    eventManager.setCursor('grab');
+
     context.behaviors.draw
       .off('click', this._click)
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
-
-    context.systems.edits
-      .off('undone', this._cancel)
-      .off('redone', this._cancel);
   }
 
 
@@ -86,13 +85,14 @@ export class AddPointMode extends AbstractMode {
    */
   _click(eventData) {
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const locations = context.systems.locations;
     const projection = context.projection;
     const coord = eventData.coord;
-    const loc = projection.invert(coord);
 
-    const locationSystem = context.systems.locations;
-    if (locationSystem.blocksAt(loc).length) return;   // editing is blocked here
+    const loc = projection.invert(coord);
+    if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -131,10 +131,14 @@ export class AddPointMode extends AbstractMode {
    */
   _clickNothing(loc) {
     const context = this.context;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+
     const node = osmNode({ loc: loc, tags: this.defaultTags });
-    const annotation = context.t('operations.add.annotation.point');
-    context.perform(actionAddEntity(node), annotation);
-    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
+
+    editor.perform(actionAddEntity(node));
+    editor.commit({ annotation: l10n.t('operations.add.annotation.point'), selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: true });
   }
 
 
@@ -144,10 +148,13 @@ export class AddPointMode extends AbstractMode {
    */
   _clickWay(loc, edge) {
     const context = this.context;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+
     const node = osmNode({ tags: this.defaultTags });
-    const annotation = context.t('operations.add.annotation.vertex');
-    context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
-    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
+    editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node));
+    editor.commit({ annotation: l10n.t('operations.add.annotation.vertex'), selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: true });
   }
 
 
@@ -157,20 +164,22 @@ export class AddPointMode extends AbstractMode {
    */
   _clickNode(loc, node) {
     const context = this.context;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
 
     if (Object.keys(this.defaultTags).length === 0) {
-      context.enter('select-osm', { selectedIDs: [node.id] });
+      context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: false });
       return;
     }
 
-    let tags = Object.assign({}, node.tags);  // shallow copy
+    const tags = Object.assign({}, node.tags);  // shallow copy
     for (const k in this.defaultTags) {
       tags[k] = this.defaultTags[k];
     }
 
-    const annotation = context.t('operations.add.annotation.point');
-    context.perform(actionChangeTags(node.id, tags), annotation);
-    context.enter('select-osm', { selectedIDs: [node.id], newFeature: true });
+    editor.perform(actionChangeTags(node.id, tags));
+    editor.commit({ annotation: l10n.t('operations.add.annotation.point'), selectedIDs: [node.id] });
+    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: false });
   }
 
 
@@ -181,5 +190,4 @@ export class AddPointMode extends AbstractMode {
   _cancel() {
     this.context.enter('browse');
   }
-
 }

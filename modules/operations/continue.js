@@ -4,10 +4,14 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 
 export function operationContinue(context, selectedIDs) {
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const graph = context.systems.editor.staging.graph;
+  const filters = context.systems.filters;
+  const l10n = context.systems.l10n;
+
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const geometries = Object.assign(
     { line: [], vertex: [] },
-    utilArrayGroupBy(entities, entity => entity.geometry(context.graph()))
+    utilArrayGroupBy(entities, entity => entity.geometry(graph))
   );
   const continueFromNode = geometries.vertex.length === 1 && geometries.vertex[0];
   const candidates = candidateWays();
@@ -16,8 +20,8 @@ export function operationContinue(context, selectedIDs) {
   function candidateWays() {
     if (!continueFromNode) return [];
 
-    return context.graph().parentWays(continueFromNode).filter(parent => {
-      return parent.geometry(context.graph()) === 'line' &&
+    return graph.parentWays(continueFromNode).filter(parent => {
+      return parent.geometry(graph) === 'line' &&
         !parent.isClosed() &&
         parent.affix(continueFromNode.id) &&
         (geometries.line.length === 0 || geometries.line[0] === parent);
@@ -28,7 +32,7 @@ export function operationContinue(context, selectedIDs) {
   let operation = function() {
     if (!candidates.length) return;
 
-    context.enter('draw-line', { continueWay: candidates[0], continueNode: continueFromNode });
+    context.enter('draw-line', { continueWayID: candidates[0].id, continueNodeID: continueFromNode.id });
   };
 
 
@@ -38,8 +42,9 @@ export function operationContinue(context, selectedIDs) {
 
 
   operation.available = function() {
+    const graph = context.systems.editor.staging.graph;
     return geometries.vertex.length === 1 && geometries.line.length <= 1 &&
-      !context.systems.filters.hasHiddenConnections(continueFromNode, context.graph());
+      !filters.hasHiddenConnections(continueFromNode, graph);
   };
 
 
@@ -57,19 +62,19 @@ export function operationContinue(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.continue.${disabledReason}`) :
-      context.t('operations.continue.description');
+      l10n.t(`operations.continue.${disabledReason}`) :
+      l10n.t('operations.continue.description');
   };
 
 
   operation.annotation = function() {
-    return context.t('operations.continue.annotation.line');
+    return l10n.t('operations.continue.annotation.line');
   };
 
 
   operation.id = 'continue';
-  operation.keys = [ context.t('operations.continue.key') ];
-  operation.title = context.t('operations.continue.title');
+  operation.keys = [ l10n.t('operations.continue.key') ];
+  operation.title = l10n.t('operations.continue.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

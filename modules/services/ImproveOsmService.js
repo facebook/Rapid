@@ -65,8 +65,8 @@ export class ImproveOsmService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    const dataLoaderSystem = this.context.systems.data;
-    return dataLoaderSystem.getDataAsync('qa_data')
+    const dataloader = this.context.systems.dataloader;
+    return dataloader.getDataAsync('qa_data')
       .then(data => {
         this._impOsmData = data.improveOSM;
         this._started = true;
@@ -122,6 +122,7 @@ export class ImproveOsmService extends AbstractSystem {
 
     // determine the needed tiles to cover the view
     const context = this.context;
+    const l10n = context.systems.l10n;
     const tiles = this._tiler.getTiles(context.projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -193,7 +194,7 @@ export class ImproveOsmService extends AbstractSystem {
                 d.replacements = {
                   percentage: feature.percentOfTrips,
                   num_trips: feature.numberOfTrips,
-                  highway: this._linkErrorObject(context.t('QA.keepRight.error_parts.highway')),
+                  highway: this._linkErrorObject(l10n.t('QA.keepRight.error_parts.highway')),
                   from_node: this._linkEntity('n' + feature.fromNodeId),
                   to_node: this._linkEntity('n' + feature.toNodeId)
                 };
@@ -222,12 +223,12 @@ export class ImproveOsmService extends AbstractSystem {
 
                 d.replacements = {
                   num_trips: numberOfTrips,
-                  geometry_type: context.t(`QA.improveOSM.geometry_types.${geoType}`)
+                  geometry_type: l10n.t(`QA.improveOSM.geometry_types.${geoType}`)
                 };
 
                 // -1 trips indicates data came from a 3rd party
                 if (numberOfTrips === -1) {
-                  d.desc = context.t('QA.improveOSM.error_types.mr.description_alt', d.replacements);
+                  d.desc = l10n.t('QA.improveOSM.error_types.mr.description_alt', d.replacements);
                 }
 
                 this._cache.data[d.id] = d;
@@ -270,7 +271,7 @@ export class ImproveOsmService extends AbstractSystem {
                   from_way: this._linkEntity('w' + from_way),
                   to_way: this._linkEntity('w' + to_way),
                   travel_direction: dir_of_travel,
-                  junction: this._linkErrorObject(context.t('QA.keepRight.error_parts.this_node'))
+                  junction: this._linkErrorObject(l10n.t('QA.keepRight.error_parts.this_node'))
                 };
 
                 this._cache.data[d.id] = d;
@@ -566,7 +567,8 @@ export class ImproveOsmService extends AbstractSystem {
       360: 'north'
     };
 
-    return this.context.t(`QA.improveOSM.directions.${compass[dir]}`);
+    const l10n = this.context.systems.l10n;
+    return l10n.t(`QA.improveOSM.directions.${compass[dir]}`);
   }
 
 

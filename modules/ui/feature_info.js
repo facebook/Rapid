@@ -2,17 +2,18 @@ import { uiTooltip } from './tooltip';
 
 
 export function uiFeatureInfo(context) {
-  const filterSystem = context.systems.filters;
+  const l10n = context.systems.l10n;
+  const filters = context.systems.filters;
 
   function update(selection) {
-    const stats = filterSystem.stats();
-    const hidden = filterSystem.hidden();
+    const stats = filters.stats();
+    const hidden = filters.hidden();
     let count = 0;
 
     const hiddenList = Array.from(hidden).map(k => {
       if (stats[k]) {
         count += stats[k];
-        return context.t('inspector.title_count', { title: context.tHtml(`feature.${k}.description`), count: stats[k] });
+        return l10n.t('inspector.title_count', { title: l10n.tHtml(`feature.${k}.description`), count: stats[k] });
       } else {
         return null;
       }
@@ -28,7 +29,7 @@ export function uiFeatureInfo(context) {
       selection.append('a')
         .attr('class', 'chip')
         .attr('href', '#')
-        .html(context.tHtml('feature_info.hidden_warning', { count: count }))
+        .html(l10n.tHtml('feature_info.hidden_warning', { count: count }))
         .call(tooltipBehavior)
         .on('click', (d3_event) => {
           tooltipBehavior.hide();
@@ -45,6 +46,6 @@ export function uiFeatureInfo(context) {
 
   return function(selection) {
     update(selection);
-    filterSystem.on('filterchange', () => update(selection));
+    filters.on('filterchange', () => update(selection));
   };
 }

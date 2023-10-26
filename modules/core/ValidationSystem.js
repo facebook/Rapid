@@ -17,7 +17,7 @@ const RETRY = 5000;    // wait 5 sec before revalidating provisional entities
  * We do both because that's the only way to know whether to credit a user with
  * fixing something (or breaking it).  This means that every feaature downloaded
  * from OSM gets validated.  This system maintains a work queue so that validation
- * is performed in the backkground during browser idle times.
+ * is performed in the background during browser idle times.
  *
  * It would be even better to do this in a worker process, but workers don't
  * have easy access to things like the Graph or Edits/History.
@@ -34,7 +34,7 @@ export class ValidationSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'validator';
-    this.dependencies = new Set(['edits', 'storage', 'map', 'urlhash']);
+    this.dependencies = new Set(['editor', 'storage', 'map', 'urlhash']);
 
     this._rules = new Map();    // Map(ruleID -> validator)
     this._base = new ValidationCache('base');   // issues before any user edits
@@ -44,17 +44,16 @@ export class ValidationSystem extends AbstractSystem {
     this._ignoredIssueIDs = new Set();
     this._resolvedIssueIDs = new Set();
     this._completeDiff = new Map();    // complete diff base -> head of what the user changed
-    this._headIsCurrent = false;
     this._deferredRIC = new Map();   // Deferred `requestIdleCallback` - Map(handle -> Promise.reject)
     this._deferredST = new Set();    // Deferred `setTimeout` - Set(handles)
-    this._headPromise = null;        // Promise fulfilled when validation is performed up to headGraph snapshot
     this._errorOverrides = [];
     this._warningOverrides = [];
     this._disableOverrides = [];
+
     this._initPromise = null;
+    this._validationPromise = null;    // Promise fulfilled when validation caught up to `stable` snapshot
 
     // Ensure methods used as callbacks always have `this` bound correctly.
-    this.validate = this.validate.bind(this);
     this.validateAsync = this.validateAsync.bind(this);
   }
 
@@ -81,44 +80,12 @@ export class ValidationSystem extends AbstractSystem {
       this._rules.set(fn.type, fn);
     });
 
-    // register event handlers:
-    const editSystem = context.systems.edits;
-
-    // WHEN TO RUN VALIDATION:
-    context
-      .on('modechange', this.validate);
-
-    editSystem
-      .on('restore', this.validate)   // on restore saved history
-      .on('undone', this.validate)    // on undo
-      .on('redone', this.validate);   // on redo
-
-// todo: find another way to reset this
-//      .on('reset', () => {            // on reset - happens after save, or enter/exit walkthrough
-//        this.reset(false);   // cached issues aren't valid any longer if the history has been reset
-//        this.validateAsync();
-//      });
-      // but not on 'change' (e.g. while drawing)
-
-    // When merging fetched data, validate base graph:
-    editSystem
-      .on('merge', entityIDs => {
-        if (!entityIDs) return;
-
-        // Make sure the caches have graphs assigned to them.
-        // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
-        const baseGraph = editSystem.base();
-        if (!this._head.graph) this._head.graph = baseGraph;
-        if (!this._base.graph) this._base.graph = baseGraph;
-
-        entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
-        this._validateEntitiesAsync(entityIDs, this._base);
-      });
-
-
+    // Init prerequisites
+    const editor = context.systems.editor;
     const storage = context.systems.storage;
     const urlhash = context.systems.urlhash;
     const prerequisites = Promise.all([
+      editor.initAsync(),
       storage.initAsync(),
       urlhash.initAsync()
     ]);
@@ -144,6 +111,19 @@ export class ValidationSystem extends AbstractSystem {
           const ruleIDs = disabledRules.split(',').map(s => s.trim()).filter(Boolean);
           this._disabledRuleIDs = new Set(ruleIDs);
         }
+
+        // register event handlers:
+
+    // todo: find another way to reset this
+    //      .on('reset', () => {            // on reset - happens after save, or enter/exit walkthrough
+    //        this.reset(false);   // cached issues aren't valid any longer if the history has been reset
+    //        this.validateAsync();
+    //      });
+
+        // WHEN TO RUN VALIDATION:
+        editor
+          .on('stablechange', () => this.validateAsync())
+          .on('merge', entityIDs => this._validateBaseEntitiesAsync(entityIDs));
       });
   }
 
@@ -173,8 +153,8 @@ export class ValidationSystem extends AbstractSystem {
   /**
    * _parseHashParam
    * Converts hash parameters for severity overrides to regex matchers
-   * @param   val   the value retrieved, e.g. `crossing_ways/bridge*,crossing_ways/tunnel*`
-   * @return  Array of Objects like { type: RegExp, subtype: RegExp }
+   * @param   {String}  val  - The value retrieved, e.g. `crossing_ways/bridge*,crossing_ways/tunnel*`
+   * @return  {Array}   Array of Objects like { type: RegExp, subtype: RegExp }
    */
   _parseHashParam(val = '') {
     let result = [];
@@ -200,7 +180,7 @@ export class ValidationSystem extends AbstractSystem {
   /**
    * _reset
    * Cancels deferred work and resets all caches
-   * @param   resetIgnored    `true` to also clear the list of user-ignored issues
+   * @param  {boolean}  resetIgnored    `true` to also clear the list of user-ignored issues
    */
   _reset(resetIgnored = false) {
     // empty queues
@@ -225,7 +205,6 @@ export class ValidationSystem extends AbstractSystem {
     this._base = new ValidationCache('base');
     this._head = new ValidationCache('head');
     this._completeDiff = new Map();
-    this._headIsCurrent = false;
   }
 
 
@@ -255,7 +234,7 @@ export class ValidationSystem extends AbstractSystem {
       cache.uncacheIssuesOfType('unsquare_way');   // uncache existing
 
       // rerun for all buildings
-      const tree = this.context.systems.edits.tree();
+      const tree = this.context.systems.editor.tree;
       const buildings = tree.intersects(new Extent([-180,-90],[180, 90]), cache.graph)  // everywhere
         .filter(entity => (entity.type === 'way' && entity.tags.building && entity.tags.building !== 'no'));
 
@@ -277,7 +256,7 @@ export class ValidationSystem extends AbstractSystem {
    * Gets all issues that match the given options
    * This is called by many other places
    *
-   * @param  `options` Object like:
+   * @param {Object} options - Object containing:
    *   {
    *     what: 'all',                  // 'all' or 'edited'
    *     where: 'all',                 // 'all' or 'visible'
@@ -285,18 +264,19 @@ export class ValidationSystem extends AbstractSystem {
    *     includeDisabledRules: false   // true, false, or 'only'
    *   }
    *
-   * @return  An Array containing the issues
+   * @return  {Array}  An Array containing the issues
    */
   getIssues(options) {
+    // Note that we use `staging.graph` here, not `cache.graph` or `stable.graph`,
+    // because that is the Graph that the calling code will be using.
     const opts = Object.assign({ what: 'all', where: 'all', includeIgnored: false, includeDisabledRules: false }, options);
     const context = this.context;
     const view = context.systems.map.extent();
+    const graph = context.systems.editor.staging.graph;
     let seen = new Set();
     let results = [];
 
     // Filter the issue set to include only what the calling code wants to see.
-    // Note that we use `context.graph()`/`context.hasEntity()` here, not `cache.graph`,
-    // because that is the graph that the calling code will be using.
     const filter = (issue) => {
       if (!issue) return false;
       if (seen.has(issue.id)) return false;
@@ -307,12 +287,12 @@ export class ValidationSystem extends AbstractSystem {
       if (opts.includeIgnored === 'only' && !this._ignoredIssueIDs.has(issue.id)) return false;
       if (!opts.includeIgnored && this._ignoredIssueIDs.has(issue.id)) return false;
 
-      // This issue may involve an entity that doesn't exist in context.graph()
+      // This issue may involve an entity that doesn't exist in `staging.graph`.
       // This can happen because validation is async and rendering the issue lists is async.
-      if ((issue.entityIds || []).some(id => !context.hasEntity(id))) return false;
+      if ((issue.entityIds || []).some(id => !graph.hasEntity(id))) return false;
 
       if (opts.where === 'visible') {
-        const extent = issue.extent(context.graph());
+        const extent = issue.extent(graph);
         if (!view.intersects(extent)) return false;
       }
 
@@ -355,8 +335,7 @@ export class ValidationSystem extends AbstractSystem {
    * Gets the issues that have been fixed by the user.
    * Resolved issues are tracked in the `_resolvedIssueIDs` Set,
    * and they should all be issues that exist in the base cache.
-   *
-   * @return  An Array containing the issues
+   * @return  {Array}  An Array containing the issues
    */
   getResolvedIssues() {
     return Array.from(this._resolvedIssueIDs)
@@ -369,13 +348,15 @@ export class ValidationSystem extends AbstractSystem {
    * focusIssue
    * Adjusts the map to focus on the given issue.
    * (requires the issue to have a reasonable extent defined)
-   * @param   The Issue to focus on
+   * @param  {ValidationIssue}  The Issue to focus on
    */
   focusIssue(issue) {
-    // Note that we use `context.graph()`/`context.hasEntity()` here, not `cache.graph`,
+    // Note that we use `staging.graph` here, not `cache.graph` or `stable.graph`
     // because that is the graph that the calling code will be using.
     const context = this.context;
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const map = context.systems.map;
     let selectID;
     let focusCenter;
 
@@ -409,13 +390,13 @@ export class ValidationSystem extends AbstractSystem {
     }
 
     if (focusCenter) {  // Adjust the view
-      const setZoom = Math.max(context.systems.map.zoom(), 19);
-      context.systems.map.centerZoomEase(focusCenter, setZoom);
+      const setZoom = Math.max(map.zoom(), 19);
+      map.centerZoomEase(focusCenter, setZoom);
     }
 
     if (selectID) {  // Enter select mode
       window.setTimeout(() => {
-        context.enter('select-osm', { selectedIDs: [selectID] });
+        context.enter('select-osm', { selection: { osm: [selectID] }} );
         this.emit('focusedIssue', issue);
       }, 250);  // after ease
     }
@@ -426,8 +407,9 @@ export class ValidationSystem extends AbstractSystem {
    * getIssuesBySeverity
    * Gets the issues then groups them by error/warning
    * (This just calls `getIssues`, then puts issues in groups)
-   * @param   options  - see `getIssues`
-   * @return  Object result like:
+   *
+   * @param   {Object}  options - see `getIssues`
+   * @return  {Object}  result like:
    *   {
    *     error:    Array of errors,
    *     warning:  Array of warnings
@@ -447,9 +429,9 @@ export class ValidationSystem extends AbstractSystem {
    * (This just calls `getIssues`, then filters for the given entity IDs)
    * The issues are sorted for relevance
    *
-   * @param   entityIDs  Array or Set of entityIDs to get issues for
-   * @param   options  - see `getIssues`
-   * @return  An Array containing the issues
+   * @param   {Array|Set}  entityIDs - Array or Set of entityIDs to get issues for
+   * @param   {Object}     options   - See `getIssues`
+   * @return  {Array}   An Array containing the issues
    */
   getSharedEntityIssues(entityIDs, options) {
     const orderedIssueTypes = [                 // Show some issue types in a particular order:
@@ -485,9 +467,9 @@ export class ValidationSystem extends AbstractSystem {
    * getEntityIssues
    * This just calls `getSharedEntityIssues` for the given entityID
    *
-   * @param   entityID  entityID to get issues for
-   * @param   options  - see `getIssues`
-   * @return  An Array containing the issues
+   * @param   {string}  entityID - The entityID to get issues for
+   * @param   {Object}  options  - See `getIssues`
+   * @return  {Array}   An Array containing the issues
    */
   getEntityIssues(entityID, options) {
     return this.getSharedEntityIssues([entityID], options);
@@ -496,7 +478,7 @@ export class ValidationSystem extends AbstractSystem {
 
   /**
    * getRuleKeys
-   * @return  An Array containing the rule keys
+   * @return  {Array}  An Array containing the rule keys
    */
   getRuleKeys() {
     return [...this._rules.keys()];
@@ -505,8 +487,8 @@ export class ValidationSystem extends AbstractSystem {
 
   /**
    * isRuleEnabled
-   * @param   ruleID  the ruleID (e.g. 'crossing_ways')
-   * @return  true/false
+   * @param   {string}   ruleID  - The ruleID (e.g. 'crossing_ways')
+   * @return  {boolean}  true/false
    */
   isRuleEnabled(ruleID) {
     return !this._disabledRuleIDs.has(ruleID);
@@ -517,7 +499,7 @@ export class ValidationSystem extends AbstractSystem {
    * toggleRule
    * Toggles a single validation rule,
    * then reruns the validation so that the user sees something happen in the UI
-   * @param   ruleID  the rule to toggle (e.g. 'crossing_ways')
+   * @param  {string}  ruleID - The rule to toggle (e.g. 'crossing_ways')
    */
   toggleRule(ruleID) {
     if (this._disabledRuleIDs.has(ruleID)) {
@@ -550,7 +532,7 @@ export class ValidationSystem extends AbstractSystem {
   /**
    * ignoreIssue
    * Don't show the given issue in lists
-   * @param   issueID   the issueID to ignore
+   * @param  {string}  issueID - The issueID to ignore
    */
   ignoreIssue(issueID) {
     this._ignoredIssueIDs.add(issueID);
@@ -563,65 +545,79 @@ export class ValidationSystem extends AbstractSystem {
    * (head graph contains user's edits)
    * Returns a Promise fulfilled when the validation has completed and then emits a `validated` event.
    * This may take time but happen in the background during browser idle time.
-   * @return  Promise fulfilled when validation is completed.
+   * @return  {Promise}  Promise fulfilled when validation is completed.
    */
   validateAsync() {
-    // Make sure the caches have graphs assigned to them.
-    // (we don't do this in `reset` because context is still resetting things and `base()` is unstable then)
     const context = this.context;
-    const baseGraph = context.systems.edits.base();
-    if (!this._head.graph) this._head.graph = baseGraph;
-    if (!this._base.graph) this._base.graph = baseGraph;
+    const editor = context.systems.editor;
 
-    const prevGraph = this._head.graph;
-    const currGraph = context.graph();
+    if (editor.canRestoreBackup) return Promise.resolve();   // Wait to see if the user wants to restore their backup
+    if (this._validationPromise) return this._validationPromise;   // Validation already in progress
 
-    if (currGraph === prevGraph) {   // this._head.graph is current - we are caught up
-      this._headIsCurrent = true;
+    const baseGraph = editor.base.graph;
+    const stableGraph = editor.stable.graph;
+    const previousGraph = this._head.graph ?? baseGraph;   // the previously validated graph (or base if none)
+
+    // We are caught up to the stable graph (or user hasn't edited anything yet)
+    if (stableGraph === previousGraph || stableGraph === baseGraph) {
       this.emit('validated');
       return Promise.resolve();
     }
 
-    if (this._headPromise) {         // Validation already in process, but we aren't caught up to current
-      this._headIsCurrent = false;   // We will need to catch up after the validation promise fulfills
-      return this._headPromise;
-    }
-
-    // If we get here, its time to start validating stuff.
-    this._head.graph = currGraph;  // take snapshot
-    this._completeDiff = context.systems.edits.difference().complete();
-    const incrementalDiff = new Difference(prevGraph, currGraph);
-    let entityIDs = [...incrementalDiff.complete().keys()];
+    // If we get here, it's time to try validating the stable graph..
+    this._head.graph = stableGraph;   // take snapshot
+    this._completeDiff = editor.difference().complete();
+    const incrementalDiff = new Difference(previousGraph, stableGraph);
+    let entityIDs = [ ...incrementalDiff.complete().keys() ];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set
 
-    if (!entityIDs.size) {
+    if (!entityIDs.size) {    // nothing to do - committed a no-op edit?
       this.emit('validated');
       return Promise.resolve();
     }
 
-    this._headPromise = this._validateEntitiesAsync(entityIDs, this._head)
+    this._validationPromise = this._validateEntitiesAsync(this._head, entityIDs)
       .then(() => this._updateResolvedIssues(entityIDs))
       .then(() => this.emit('validated'))
       .catch(e => console.error(e))  // eslint-disable-line
       .then(() => {
-        this._headPromise = null;
-        if (!this._headIsCurrent) {
-          this.validateAsync();   // run it again to catch up to current graph
+        this._validationPromise = null;
+
+        // Check if `stable` has changed while we were validating, and run it again to catch up if needed...
+        const stableGraph = editor.stable.graph;
+        const previousGraph = this._head.graph;
+        if (stableGraph !== previousGraph) {
+          this.validateAsync();  // recurse
         }
       });
 
-    return this._headPromise;
+    return this._validationPromise;
   }
 
 
   /**
-   * validate
-   * Legacy name - `validate` was always an async Promise-returning function.
-   * We now name these things like `validateAsync()`, but legacy code may still call `validate()`
-   * @return  Promise fulfilled when validation is completed.
+   * _validateBaseEntitiesAsync
+   * Validates new entities being merged into the base graph.
+   * (base graph contains original map state, before user's edits)
+   * This may take time but happen in the background during browser idle time.
+   * @param   {Array|Set}  entityIDs - The entityIDs to validate
+   * @return  {Promise}    Promise fulfilled when validation is completed.
    */
-  validate() {
-    return this.validateAsync();
+  _validateBaseEntitiesAsync(entityIDs) {
+    const context = this.context;
+    const editor = context.systems.editor;
+    if (editor.canRestoreBackup) return Promise.resolve();   // Wait to see if the user wants to restore their backup
+    if (!entityIDs) return Promise.resolve();
+
+    // Make sure the caches have graphs assigned to them.
+    // (We don't do this in `reset` because EditSystem is still resetting things and `base`/`stable` may be wrong)
+    const baseGraph = editor.base.graph;
+    const stableGraph = editor.stable.graph;
+    if (!this._base.graph) this._base.graph = baseGraph;
+    if (!this._head.graph) this._head.graph = stableGraph;
+
+    entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
+    return this._validateEntitiesAsync(this._base, entityIDs);
   }
 
 
@@ -630,14 +626,14 @@ export class ValidationSystem extends AbstractSystem {
    * Runs all validation rules on a single entity.
    * Some things to note:
    *  - Graph is passed in from whenever the validation was started.  Validators shouldn't use
-   *   `context.graph()` because this all happens async, and the graph might have changed
+   *    the staging/stable graphs because this all happens async, and the graph might have changed
    *   (for example, nodes getting deleted before the validation can run)
    *  - Validator functions may still be waiting on something and return a "provisional" result.
    *    In this situation, we will schedule to revalidate the entity sometime later.
    *
-   * @param  entity   The entity
-   * @param  graph    graph containing the entity
-   * @return Object result like:
+   * @param  {Entity}  entity - The entity to validate
+   * @param  {Graph}   graph  - The Graph containing the Entity
+   * @return {Object}  Result like:
    *   {
    *     issues:       Array of detected issues
    *     provisional:  `true` if provisional result, `false` if final result
@@ -672,14 +668,14 @@ export class ValidationSystem extends AbstractSystem {
     };
 
 
-    let result = { issues: [], provisional: false };
+    const result = { issues: [], provisional: false };
     for (const [key, rule] of this._rules) {   // run all validators
       if (typeof rule !== 'function') {
         console.error(`no such validation rule = ${key}`);  // eslint-disable-line no-console
         continue;
       }
       let detected = rule(entity, graph);
-      if (detected.provisional) {  // this validation should be run again later
+      if (detected.provisional) {   // this validation should be run again later
         result.provisional = true;
       }
 
@@ -701,7 +697,7 @@ export class ValidationSystem extends AbstractSystem {
    * - the issue is not in the head cache
    * - the user did something to one of the entities involved in the issue
    *
-   * @param  entityIDs  Array or Set containing entity IDs.
+   * @param  {Array|Set}  entityIDs - Array or Set containing entity IDs.
    */
   _updateResolvedIssues(entityIDs = []) {
     for (const entityID of entityIDs) {
@@ -725,16 +721,12 @@ export class ValidationSystem extends AbstractSystem {
   /**
    * _validateEntitiesAsync
    * Schedule validation for many entities.
-   *
-   * @param  entityIDs  Array or Set containing entityIDs.
-   * @param  graph      the graph to validate that contains those entities
-   * @param  cache      the cache to store results in (_head or _base)
-   *
-   * Returns
-   *   A Promise fulfilled when the validation has completed.
-   *   This may take time but happen in the background during browser idle time.
+   * This may take time but happen in the background during browser idle time.
+   * @param  {ValidationCache}  cache     - The cache to store results in (`_head` or `_base`)
+   * @param  {Array|Set}        entityIDs - The entityIDs to validate
+   * @return {Promise}  Promise fulfilled when the validation has completed.
    */
-  _validateEntitiesAsync(entityIDs, cache) {
+  _validateEntitiesAsync(cache, entityIDs) {
     // Enqueue the work
     const jobs = Array.from(entityIDs).map(entityID => {
       if (cache.queuedEntityIDs.has(entityID)) return null;  // queued already
@@ -763,7 +755,6 @@ export class ValidationSystem extends AbstractSystem {
 
     }).filter(Boolean);
 
-
     // Perform the work in chunks.
     // Because this will happen during idle callbacks, we want to choose a chunk size
     // that won't make the browser stutter too badly.
@@ -786,8 +777,7 @@ export class ValidationSystem extends AbstractSystem {
    * Sometimes a validator will return a "provisional" result.
    * In this situation, we'll need to revalidate the entity later.
    * This function waits a delay, then places them back into the validation queue.
-   *
-   * @param  cache  The cache (_head or _base)
+   * @param  {ValidationCache}  cache - The cache to revalidate (`_head` or `_base`)
    */
   _revalidateProvisionalEntities(cache) {
     if (!cache.provisionalEntityIDs.size) return;  // nothing to do
@@ -795,7 +785,7 @@ export class ValidationSystem extends AbstractSystem {
     const handle = window.setTimeout(() => {
       this._deferredST.delete(handle);
       if (!cache.provisionalEntityIDs.size) return;  // nothing to do
-      this._validateEntitiesAsync(cache.provisionalEntityIDs, cache);
+      this._validateEntitiesAsync(cache, cache.provisionalEntityIDs);
     }, RETRY);
 
     this._deferredST.add(handle);
@@ -805,9 +795,9 @@ export class ValidationSystem extends AbstractSystem {
   /**
    * _processQueue
    * Process the next chunk of deferred validation work
-   * @param   cache   The cache (_head or _base)
-   * @return  A Promise fulfilled when the validation has completed.
-   *   This may take time but happen in the background during browser idle time.
+   * This may take time but happen in the background during browser idle time.
+   * @param  {ValidationCache}  cache - The cache to process (`_head` or `_base`)
+   * @return {Promise}  Promise fulfilled when the validation has completed.
    */
   _processQueue(cache) {
     // console.log(`${cache.which} queue length ${cache.queue.length}`);

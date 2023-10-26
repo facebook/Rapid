@@ -3,7 +3,10 @@ import { select as d3_select } from 'd3-selection';
 
 
 export function uiAttribution(context) {
-  const imagerySystem = context.systems.imagery;
+  const imagery = context.systems.imagery;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+
   let _selection = d3_select(null);
 
 
@@ -41,7 +44,7 @@ export function uiAttribution(context) {
             .attr('target', '_blank');
         }
 
-        const terms_text = context.t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
+        const terms_text = l10n.t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
 
         if (d.icon && !d.overlay) {
           attribution
@@ -60,7 +63,7 @@ export function uiAttribution(context) {
 
     let copyright = attributions.selectAll('.copyright-notice')
       .data(d => {
-        let notice = d.copyrightNotices(context.systems.map.zoom(), context.systems.map.extent());
+        let notice = d.copyrightNotices(map.zoom(), map.extent());
         return notice ? [notice] : [];
       });
 
@@ -78,12 +81,12 @@ export function uiAttribution(context) {
 
 
   function update() {
-    let baselayer = imagerySystem.baseLayerSource();
+    let baselayer = imagery.baseLayerSource();
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
-    const z = context.systems.map.zoom();
-    let overlays = imagerySystem.overlayLayerSources() || [];
+    const z = map.zoom();
+    let overlays = imagery.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');
   }
@@ -92,8 +95,8 @@ export function uiAttribution(context) {
   return function(selection) {
     _selection = selection;
 
-    imagerySystem.on('imagerychange', update);
-    context.systems.map.on('draw', _throttle(update, 400, { leading: false }));
+    imagery.on('imagerychange', update);
+    map.on('draw', _throttle(update, 400, { leading: false }));
 
     update();
   };

@@ -11,7 +11,10 @@ export { uiFieldCheck as uiFieldOnewayCheck };
 
 
 export function uiFieldCheck(context, uifield) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
   const dispatch = d3_dispatch('change');
+
   let values = [];
   let texts = [];
 
@@ -35,10 +38,10 @@ export function uiFieldCheck(context, uifield) {
     }
   } else {
     values = [undefined, 'yes'];
-    texts = [context.tHtml('inspector.unknown'), context.tHtml('inspector.check.yes')];
+    texts = [l10n.tHtml('inspector.unknown'), l10n.tHtml('inspector.check.yes')];
     if (uifield.type !== 'defaultCheck') {
       values.push('no');
-      texts.push(context.tHtml('inspector.check.no'));
+      texts.push(l10n.tHtml('inspector.check.no'));
     }
   }
 
@@ -50,11 +53,12 @@ export function uiFieldCheck(context, uifield) {
     // hack: pretend `oneway` field is a `oneway_yes` field
     // where implied oneway tag exists (e.g. `junction=roundabout`) iD#2220, iD#1841
     if (uifield.id === 'oneway' && _entityIDs.length) {
-      const entity = context.entity(_entityIDs[0]);
+      const graph = editor.staging.graph;
+      const entity = graph.entity(_entityIDs[0]);
       for (let key in entity.tags) {
         if (key in osmOneWayTags && (entity.tags[key] in osmOneWayTags[key])) {
           _impliedYes = true;
-          texts[0] = context.tHtml('_tagging.presets.fields.oneway_yes.options.undefined');
+          texts[0] = l10n.tHtml('_tagging.presets.fields.oneway_yes.options.undefined');
           break;
         }
       }
@@ -69,7 +73,8 @@ export function uiFieldCheck(context, uifield) {
 
 
   function reverserSetText(selection) {
-    const entity = _entityIDs.length && context.hasEntity(_entityIDs[0]);
+    const graph = editor.staging.graph;
+    const entity = _entityIDs.length && graph.hasEntity(_entityIDs[0]);
     if (reverserHidden() || !entity) return selection;
 
     const first = entity.first();
@@ -78,7 +83,7 @@ export function uiFieldCheck(context, uifield) {
     const icon = pseudoDirection ? '#rapid-icon-forward' : '#rapid-icon-backward';
 
     selection.selectAll('.reverser-span')
-      .html(context.tHtml('inspector.check.reverser'))
+      .html(l10n.tHtml('inspector.check.reverser'))
       .call(uiIcon(icon, 'inline'));
 
     return selection;
@@ -154,18 +159,18 @@ export function uiFieldCheck(context, uifield) {
           d3_event.stopPropagation();
           if (!_entityIDs.length) return;
 
-          context.perform(
-            function(graph) {
-              for (const entityID of _entityIDs) {
-                graph = actionReverse(entityID)(graph);
-              }
-              return graph;
-            },
-            context.t('operations.reverse.annotation.line', { n: 1 })
-          );
+          const combinedAction = (graph) => {
+            for (const entityID of _entityIDs) {
+              graph = actionReverse(entityID)(graph);
+            }
+            return graph;
+          };
 
-          // must manually revalidate since no 'change' event was dispatched
-          context.systems.validator.validate();
+          editor.perform(combinedAction);
+          editor.commit({
+            annotation: l10n.t('operations.reverse.annotation.line', { n: 1 }),
+            selectedIDs: _entityIDs
+          });
 
           d3_select(this)
             .call(reverserSetText);
@@ -208,7 +213,7 @@ export function uiFieldCheck(context, uifield) {
       .property('checked', isChecked(_value));
 
     text
-      .html(isMixed ? context.tHtml('inspector.multiple_values') : textFor(_value))
+      .html(isMixed ? l10n.tHtml('inspector.multiple_values') : textFor(_value))
       .classed('mixed', isMixed);
 
     label

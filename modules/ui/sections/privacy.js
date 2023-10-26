@@ -4,12 +4,14 @@ import { uiSection } from '../section';
 
 
 export function uiSectionPrivacy(context) {
-  const prefs = context.systems.storage;
+  const l10n = context.systems.l10n;
+  const storage = context.systems.storage;
+
   const section = uiSection(context, 'preferences-third-party')
-    .label(context.tHtml('preferences.privacy.title'))
+    .label(l10n.tHtml('preferences.privacy.title'))
     .disclosureContent(renderDisclosureContent);
 
-  let _showThirdPartyIcons = prefs.getItem('preferences.privacy.thirdpartyicons') || 'true';
+  let _showThirdPartyIcons = storage.getItem('preferences.privacy.thirdpartyicons') || 'true';
 
   function renderDisclosureContent(selection) {
     // enter
@@ -24,7 +26,7 @@ export function uiSectionPrivacy(context) {
       .attr('class', 'privacy-third-party-icons-item')
       .append('label')
       .call(uiTooltip(context)
-        .title(context.tHtml('preferences.privacy.third_party_icons.tooltip'))
+        .title(l10n.tHtml('preferences.privacy.third_party_icons.tooltip'))
         .placement('bottom')
       );
 
@@ -34,13 +36,13 @@ export function uiSectionPrivacy(context) {
       .on('change', d3_event => {
         d3_event.preventDefault();
         _showThirdPartyIcons = (_showThirdPartyIcons === 'true') ? 'false' : 'true';
-        prefs.setItem('preferences.privacy.thirdpartyicons', _showThirdPartyIcons);
+        storage.setItem('preferences.privacy.thirdpartyicons', _showThirdPartyIcons);
         update();
       });
 
     thirdPartyIconsEnter
       .append('span')
-      .html(context.tHtml('preferences.privacy.third_party_icons.description'));
+      .html(l10n.tHtml('preferences.privacy.third_party_icons.description'));
 
 
     // Privacy Policy link
@@ -54,7 +56,7 @@ export function uiSectionPrivacy(context) {
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://mapwith.ai/doc/license/MapWithAIPrivacyPolicy.pdf')
       .append('span')
-      .html(context.tHtml('preferences.privacy.privacy_link'));
+      .html(l10n.tHtml('preferences.privacy.privacy_link'));
 
     update();
 

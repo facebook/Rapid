@@ -3,6 +3,7 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationHelpRequest(context) {
   const type = 'help_request';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
 
 
@@ -13,7 +14,7 @@ export function validationHelpRequest(context) {
     if (entity.version === undefined) return [];
 
     if (entity.v !== undefined) {
-      const baseEntity = context.systems.edits.base().hasEntity(entity.id);
+      const baseEntity = editor.base.graph.hasEntity(entity.id);
       // don't flag fixmes added by the user on existing features
       if (!baseEntity || !baseEntity.tags.fixme) return [];
     }
@@ -23,9 +24,10 @@ export function validationHelpRequest(context) {
       subtype: 'fixme_tag',
       severity: 'warning',
       message: function() {
-        const entity = context.hasEntity(this.entityIds[0]);
+        const graph = editor.staging.graph;
+        const entity = graph.hasEntity(this.entityIds[0]);
         return entity ? l10n.tHtml('issues.fixme_tag.message', {
-          feature: l10n.displayLabel(entity, context.graph(), true /* verbose */)
+          feature: l10n.displayLabel(entity, graph, true)    // true = verbose
         }) : '';
       },
       dynamicFixes: () => {

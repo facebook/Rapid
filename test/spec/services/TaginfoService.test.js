@@ -2,7 +2,7 @@ describe('TaginfoService', () => {
   let taginfo;
 
   class MockLocalizationSystem {
-    constructor() {}
+    constructor()  { }
     languageCode() { return 'en'; }
   }
 

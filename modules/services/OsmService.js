@@ -35,7 +35,8 @@ export class OsmService extends AbstractSystem {
     // Some defaults that we will replace with whatever we fetch from the OSM API capabilities result.
     this._maxWayNodes = 2000;
     this._imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
-    this._urlroot = 'https://www.openstreetmap.org';
+    this._wwwroot = 'https://www.openstreetmap.org';
+    this._apiroot = 'https://api.openstreetmap.org';
 
     this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
     this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
@@ -56,14 +57,16 @@ export class OsmService extends AbstractSystem {
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._authLoading = this._authLoading.bind(this);
     this._authDone = this._authDone.bind(this);
+    this._parseCapabilitiesJSON = this._parseCapabilitiesJSON.bind(this);
+    this._parseCapabilitiesXML = this._parseCapabilitiesXML.bind(this);
     this._parseNodeJSON = this._parseNodeJSON.bind(this);
-    this._parseWayJSON = this._parseWayJSON.bind(this);
-    this._parseRelationJSON = this._parseRelationJSON.bind(this);
     this._parseNodeXML = this._parseNodeXML.bind(this);
-    this._parseWayXML = this._parseWayXML.bind(this);
-    this._parseRelationXML = this._parseRelationXML.bind(this);
     this._parseNoteXML = this._parseNoteXML.bind(this);
+    this._parseRelationJSON = this._parseRelationJSON.bind(this);
+    this._parseRelationXML = this._parseRelationXML.bind(this);
     this._parseUserXML = this._parseUserXML.bind(this);
+    this._parseWayJSON = this._parseWayJSON.bind(this);
+    this._parseWayXML = this._parseWayXML.bind(this);
 
     this.reloadApiStatus = this.reloadApiStatus.bind(this);
     this.throttledReloadApiStatus = _throttle(this.reloadApiStatus, 500);
@@ -78,7 +81,8 @@ export class OsmService extends AbstractSystem {
     }
 
     this._oauth = osmAuth({
-      url: this._urlroot,
+      url: this._wwwroot,
+      apiUrl: this._apiroot,
       client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
       client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
       scope: 'read_prefs write_prefs write_api read_gpx write_notes',
@@ -147,7 +151,8 @@ export class OsmService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   switchAsync(newOptions) {
-    this._urlroot = newOptions.url;
+    this._wwwroot = newOptions.url;
+    this._apiroot = newOptions.apiUrl;
 
     // Copy the existing options, but omit 'access_token'.
     // (if we did preauth, access_token won't work on a different server)
@@ -168,16 +173,12 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  isChangesetInflight() {
-    return !!this._changeset.inflight;
-  }
-
   get connectionID() {
     return this._connectionID;
   }
 
-  get urlroot() {
-    return this._urlroot;
+  get wwwroot() {
+    return this._wwwroot;
   }
 
   get imageryBlocklists() {
@@ -191,13 +192,13 @@ export class OsmService extends AbstractSystem {
 
 
   changesetURL(changesetID) {
-    return `${this._urlroot}/changeset/${changesetID}`;
+    return `${this._wwwroot}/changeset/${changesetID}`;
   }
 
 
   changesetsURL(center, zoom) {
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
-    return this._urlroot + '/history#map=' +
+    return this._wwwroot + '/history#map=' +
       Math.floor(zoom) + '/' +
       center[1].toFixed(precision) + '/' +
       center[0].toFixed(precision);
@@ -206,28 +207,28 @@ export class OsmService extends AbstractSystem {
 
   entityURL(entity) {
     const entityID = entity.osmId();
-    return `${this._urlroot}/${entity.type}/${entityID}`;
+    return `${this._wwwroot}/${entity.type}/${entityID}`;
   }
 
 
   historyURL(entity) {
     const entityID = entity.osmId();
-    return `${this._urlroot}/${entity.type}/${entityID}/history`;
+    return `${this._wwwroot}/${entity.type}/${entityID}/history`;
   }
 
 
   userURL(username) {
-    return `${this._urlroot}/user/${username}`;
+    return `${this._wwwroot}/user/${username}`;
   }
 
 
   noteURL(note) {
-    return `${this._urlroot}/note/${note.id}`;
+    return `${this._wwwroot}/note/${note.id}`;
   }
 
 
   noteReportURL(note) {
-    return `${this._urlroot}/reports/new?reportable_type=Note&reportable_id=${note.id}`;
+    return `${this._wwwroot}/reports/new?reportable_type=Note&reportable_id=${note.id}`;
   }
 
 
@@ -279,7 +280,7 @@ export class OsmService extends AbstractSystem {
       }
     };
 
-    const resource = this._urlroot + path;
+    const resource = this._apiroot + path;
     const controller = new AbortController();
     const _fetch = this.authenticated() ? this._oauth.fetch : window.fetch;
 
@@ -393,7 +394,7 @@ export class OsmService extends AbstractSystem {
     }
 
     const errback = this._wrapcb(createdChangeset);
-    const resource = this._urlroot + '/api/0.6/changeset/create';
+    const resource = this._apiroot + '/api/0.6/changeset/create';
     const controller = new AbortController();
     const options = {
       method: 'PUT',
@@ -437,7 +438,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(uploadedChangeset);
-    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/upload`;
+    const resource = this._apiroot + `/api/0.6/changeset/${changeset.id}/upload`;
     const controller = new AbortController();
     const options = {
       method: 'POST',
@@ -445,6 +446,12 @@ export class OsmService extends AbstractSystem {
       body: JXON.stringify(changeset.osmChangeJXON(changes)),
       signal: controller.signal
     };
+
+    // Attempt to prevent user from creating duplicate changes - see iD#5200
+    // Some users will refresh their tab as soon as the changeset is inflight.
+    // We don't want to offer to restore these same changes when their browser refreshes.
+    const editor = this.context.systems.editor;
+    editor.clearBackup();
 
     this._oauth.fetch(resource, options)
       .then(utilFetchResponse)
@@ -482,7 +489,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(closedChangeset);
-    const resource = this._urlroot + `/api/0.6/changeset/${changeset.id}/close`;
+    const resource = this._apiroot + `/api/0.6/changeset/${changeset.id}/close`;
     const controller = new AbortController();
     const options = {
       method: 'PUT',
@@ -650,45 +657,18 @@ export class OsmService extends AbstractSystem {
   // GET /api/capabilities
   status(callback) {
 
-    const gotResult = (err, xml) => {
+    const gotResult = (err, result) => {
       if (err) {
         return callback(err, null);   // the status is null if no response could be retrieved
-
       } else if (this._rateLimitError) {
         return callback(this._rateLimitError, 'rateLimited');
-
       } else {
-        // Update blocklists
-        let regexes = [];
-        for (const element of xml.getElementsByTagName('blacklist')) {
-          const regexString = element.getAttribute('regex');  // needs unencode?
-          if (regexString) {
-            try {
-              regexes.push(new RegExp(regexString));
-            } catch (e) {
-              /* noop */
-            }
-          }
-        }
-        if (regexes.length) {
-          this._imageryBlocklists = regexes;
-        }
-
-        // Update max nodes per way
-        const waynodes = xml.getElementsByTagName('waynodes');
-        const maxWayNodes = waynodes.length && parseInt(waynodes[0].getAttribute('maximum'), 10);
-        if (maxWayNodes && isFinite(maxWayNodes)) {
-          this._maxWayNodes = maxWayNodes;
-        }
-
-        // Update status
-        const apiStatus = xml.getElementsByTagName('status');
-        const val = apiStatus[0].getAttribute('api');
-        return callback(undefined, val);
+        const status = this._parseCapabilitiesJSON(result);
+        return callback(undefined, status);
       }
     };
 
-    const url = this._urlroot + '/api/capabilities';
+    const url = this._apiroot + '/api/capabilities.json';
     const errback = this._wrapcb(gotResult);
 
     fetch(url)
@@ -899,7 +879,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(createdNote);
-    const resource = this._urlroot + '/api/0.6/notes?' +
+    const resource = this._apiroot + '/api/0.6/notes?' +
       utilQsString({ lon: note.loc[0], lat: note.loc[1], text: note.newComment });
     const controller = new AbortController();
     const options = { method: 'POST', signal: controller.signal };
@@ -967,7 +947,7 @@ export class OsmService extends AbstractSystem {
     };
 
     const errback = this._wrapcb(updatedNote);
-    let resource = this._urlroot + `/api/0.6/notes/${note.id}/${action}`;
+    let resource = this._apiroot + `/api/0.6/notes/${note.id}/${action}`;
     if (note.newComment) {
       resource += '?' + utilQsString({ text: note.newComment });
     }
@@ -1592,6 +1572,64 @@ export class OsmService extends AbstractSystem {
     this._userCache.user[uid] = user;
     delete this._userCache.toLoad[uid];
     return user;
+  }
+
+  _parseCapabilitiesJSON(json) {
+    // Update blocklists
+    const regexes = [];
+    for (const item of json.policy.imagery.blacklist) {
+      const regexString = item.regex;  // needs unencode?
+      if (regexString) {
+        try {
+          regexes.push(new RegExp(regexString));
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+    if (regexes.length) {
+      this._imageryBlocklists = regexes;
+    }
+
+    // Update max nodes per way
+    const maxWayNodes = json.api.waynodes.maximum;
+    if (maxWayNodes && isFinite(maxWayNodes)) {
+      this._maxWayNodes = maxWayNodes;
+    }
+
+    // Return status
+    const apiStatus = json.api.status.api;
+    return apiStatus;
+  }
+
+
+  _parseCapabilitiesXML(xml) {
+    // Update blocklists
+    const regexes = [];
+    for (const element of xml.getElementsByTagName('blacklist')) {
+      const regexString = element.getAttribute('regex');  // needs unencode?
+      if (regexString) {
+        try {
+          regexes.push(new RegExp(regexString));
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+    if (regexes.length) {
+      this._imageryBlocklists = regexes;
+    }
+
+    // Update max nodes per way
+    const waynodes = xml.getElementsByTagName('waynodes');
+    const maxWayNodes = waynodes.length && parseInt(waynodes[0].getAttribute('maximum'), 10);
+    if (maxWayNodes && isFinite(maxWayNodes)) {
+      this._maxWayNodes = maxWayNodes;
+    }
+
+    // Return status
+    const apiStatus = xml.getElementsByTagName('status');
+    return apiStatus[0].getAttribute('api');
   }
 
 

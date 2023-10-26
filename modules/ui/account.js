@@ -2,6 +2,7 @@ import { uiIcon } from './icon';
 
 
 export function uiAccount(context) {
+  const l10n = context.systems.l10n;
   const osm = context.services.osm;
 
 
@@ -58,7 +59,7 @@ export function uiAccount(context) {
       loginLogout
         .classed('hide', false)
         .select('a')
-        .text(context.t('logout'))
+        .text(l10n.t('logout'))
         .on('click', e => {
           e.preventDefault();
           osm.logout();
@@ -69,7 +70,7 @@ export function uiAccount(context) {
       loginLogout
         .classed('hide', false)
         .select('a')
-        .text(context.t('login'))
+        .text(l10n.t('login'))
         .on('click', e => {
           e.preventDefault();
           osm.authenticate();
@@ -84,7 +85,7 @@ export function uiAccount(context) {
   function tryLogout()  {
     if (!osm) return;
 
-    const url = osm.urlroot + '/logout?referer=%2Flogin';
+    const url = osm.wwwroot + '/logout?referer=%2Flogin';
     // Create a 600x550 popup window in the center of the screen
     const w = 600;
     const h = 550;

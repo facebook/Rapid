@@ -14,7 +14,8 @@ const GEOLOCATE_OPTIONS = {
 
 
 export function uiGeolocate(context) {
-  let _uiModal = uiLoading(context).message(context.tHtml('geolocate.locating')).blocking(true);
+  const l10n = context.systems.l10n;
+  let _uiModal = uiLoading(context).message(l10n.tHtml('geolocate.locating')).blocking(true);
   let _layer = context.scene().layers.get('map-ui');
   let _enabled = false;
   let _timeoutID;
@@ -75,7 +76,7 @@ export function uiGeolocate(context) {
   function error() {
     if (_enabled) {    // user may have disabled it before the callback fires
       context.systems.ui.flash
-        .label(context.tHtml('geolocate.location_unavailable'))
+        .label(l10n.tHtml('geolocate.location_unavailable'))
         .iconName('#rapid-icon-geolocate')();
     }
 
@@ -108,7 +109,7 @@ export function uiGeolocate(context) {
       .call(uiIcon('#rapid-icon-geolocate', 'light'))
       .call(uiTooltip(context)
         .placement(isRTL ? 'right' : 'left')
-        .title(context.tHtml('geolocate.title'))
+        .title(l10n.tHtml('geolocate.title'))
       );
   };
 }

@@ -11,10 +11,11 @@ import { utilHighlightEntities, utilNoAuto } from '../util';
 
 
 export function uiFeatureList(context) {
-  const nominatim = context.services.nominatim;
-  const presets = context.systems.presets;
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const nominatim = context.services.nominatim;
+  const presets = context.systems.presets;
 
   let _geocodeResults;
 
@@ -104,7 +105,7 @@ export function uiFeatureList(context) {
 
 
     function features() {
-      const graph = context.graph();
+      const graph = editor.staging.graph;
       const centerLoc = map.centerLoc();
       const q = search.property('value').toLowerCase();
       let result = [];

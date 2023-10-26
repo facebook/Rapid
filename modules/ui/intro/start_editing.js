@@ -6,9 +6,10 @@ import { utilRebind } from '../../util/rebind';
 
 
 export function uiIntroStartEditing(context, curtain) {
-  const dispatch = d3_dispatch('done', 'startEditing');
+  const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.startediting.title' };
   const container = context.container();
+  const l10n = context.systems.l10n;
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -36,7 +37,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml(context, 'intro.startediting.help'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(shortcutsAsync)
       });
     });
@@ -51,7 +52,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml(context, 'intro.startediting.shortcuts'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(showSaveAsync)
       });
     });
@@ -68,7 +69,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.top-toolbar button.save',
         tipHtml: helpHtml(context, 'intro.startediting.save'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(showStartMappingAsync)
       });
     });
@@ -80,19 +81,21 @@ export function uiIntroStartEditing(context, curtain) {
   function showStartMappingAsync() {
     container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
 
-    let modalSelection = uiModal(container);
+    const modalSelection = uiModal(container);
     modalSelection.select('.modal').attr('class', 'modal-splash modal');
     modalSelection.selectAll('.close').remove();
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      dispatch.call('startEditing');
 
       const startbutton = modalSelection.select('.content')
         .attr('class', 'fillL')
         .append('button')
         .attr('class', 'modal-section huge-modal-button')
-        .on('click', resolve);
+        .on('click', () => {
+          resolve();
+          dispatch.call('done');
+        });
 
       startbutton
         .append('svg')
@@ -102,7 +105,7 @@ export function uiIntroStartEditing(context, curtain) {
 
       startbutton
         .append('h2')
-        .html(context.tHtml('intro.startediting.start'));
+        .html(l10n.tHtml('intro.startediting.start'));
     })
     .finally(() => {
       modalSelection.remove();

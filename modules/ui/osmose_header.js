@@ -2,11 +2,13 @@ import { Color } from 'pixi.js';
 
 
 export function uiOsmoseHeader(context) {
+  const l10n = context.systems.l10n;
   const osmose = context.services.osmose;
   let _qaItem;
 
+
   function issueTitle(d) {
-    const unknown = context.t('inspector.unknown');
+    const unknown = l10n.t('inspector.unknown');
     if (!osmose || !d) return unknown;
 
     // Issue titles supplied by Osmose

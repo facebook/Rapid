@@ -4,17 +4,18 @@ import { uiIcon } from './icon';
 
 
 export function uiKeepRightHeader(context) {
+  const l10n = context.systems.l10n;
   let _qaItem;
 
 
   function issueTitle(d) {
-    const unknown = context.tHtml('inspector.unknown');
+    const unknown = l10n.tHtml('inspector.unknown');
     let replacements = d.replacements || {};
     replacements.default = unknown;  // special key `default` works as a fallback string
 
-    let title = context.tHtml(`QA.keepRight.errorTypes.${d.itemType}.title`, replacements);
+    let title = l10n.tHtml(`QA.keepRight.errorTypes.${d.itemType}.title`, replacements);
     if (title === unknown) {
-      title = context.tHtml(`QA.keepRight.errorTypes.${d.parentIssueType}.title`, replacements);
+      title = l10n.tHtml(`QA.keepRight.errorTypes.${d.parentIssueType}.title`, replacements);
     }
     return title;
   }

@@ -3,7 +3,6 @@ import { utilArrayUnion, utilArrayUniq } from '@rapid-sdk/util';
 import { AbstractSystem } from './AbstractSystem';
 import { actionDiscardTags } from '../actions/discard_tags';
 import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
-import { actionNoop } from '../actions/noop';
 import { actionRevert } from '../actions/revert';
 import { Graph } from './lib';
 
@@ -35,7 +34,7 @@ export class UploaderSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'uploader';
-    this.dependencies = new Set(['data', 'edits', 'l10n']);
+    this.dependencies = new Set(['dataloader', 'editor', 'l10n']);
 
     this.changeset = null;    // uiCommit will create it
 
@@ -73,11 +72,11 @@ export class UploaderSystem extends AbstractSystem {
       }
     }
 
-    const dataLoaderSystem = this.context.systems.data;
-    const prerequisites = dataLoaderSystem.initAsync();
+    const dataloader = this.context.systems.dataloader;
+    const prerequisites = dataloader.initAsync();
 
     return this._initPromise = prerequisites
-      .then(() => dataLoaderSystem.getDataAsync('discarded'))
+      .then(() => dataloader.getDataAsync('discarded'))
       .then(d => this._discardTags = d);
   }
 
@@ -149,15 +148,8 @@ export class UploaderSystem extends AbstractSystem {
     this._errors = [];
 
     // Store original changes, in case user wants to download them as an .osc file
-    const editSystem = context.systems.edits;
-    this._origChanges = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
-
-    // First time, `perform` a no-op action.
-    // Any conflict resolutions will be done as `replace`
-    // Remember to pop this later if needed
-    if (!tryAgain) {
-      editSystem.perform(actionNoop());
-    }
+    const editor = context.systems.editor;
+    this._origChanges = editor.changes(actionDiscardTags(editor.difference(), this._discardTags));
 
     // Attempt a fast upload first.. If there are conflicts, re-enter with `checkConflicts = true`
     if (!checkConflicts) {
@@ -174,12 +166,12 @@ export class UploaderSystem extends AbstractSystem {
   _startConflictCheck() {
     const context = this.context;
     const osm = context.services.osm;
-    const editSystem = context.systems.edits;
-    const summary = editSystem.difference().summary();
-    const graph = context.graph();
+    const editor = context.systems.editor;
+    const summary = editor.difference().summary();
+    const graph = editor.staging.graph;
 
     this._localGraph = graph;
-    this._remoteGraph = new Graph(editSystem.base(), true);
+    this._remoteGraph = new Graph(editor.base.graph, true);
 
     // Gather entityIDs to check
     // We will load these from the OSM API into the `remoteGraph`
@@ -272,9 +264,10 @@ export class UploaderSystem extends AbstractSystem {
 
   // Test everything in `_toCheckIDs` for conflicts
   _detectConflicts() {
-    const l10n = this.context.systems.l10n;
-    const editSystem = this.context.systems.edits;
-    const osm = this.context.services.osm;
+    const context = this.context;
+    const l10n = context.systems.l10n;
+    const editor = context.systems.editor;
+    const osm = context.services.osm;
     if (!osm) return;
 
     const localGraph = this._localGraph;
@@ -296,7 +289,7 @@ export class UploaderSystem extends AbstractSystem {
         strategy: 'safe'
       });
 
-      editSystem.replace(actionSafe);
+      editor.perform(actionSafe);
 
       const mergeConflicts = actionSafe.conflicts();
       if (!mergeConflicts.length) continue;  // merged safely
@@ -329,8 +322,8 @@ export class UploaderSystem extends AbstractSystem {
         details: mergeConflicts,
         chosen: 1,
         choices: [
-          { id: entityID, text: keepMine, action: () => editSystem.replace(actionForceLocal) },
-          { id: entityID, text: keepTheirs, action: () => editSystem.replace(actionForceRemote) }
+          { id: entityID, text: keepMine, action: () => editor.perform(actionForceLocal) },
+          { id: entityID, text: keepTheirs, action: () => editor.perform(actionForceRemote) }
         ]
       });
     }
@@ -378,8 +371,8 @@ export class UploaderSystem extends AbstractSystem {
       this._didResultInErrors();
 
     } else {
-      const editSystem = context.systems.edits;
-      const changes = editSystem.changes(actionDiscardTags(editSystem.difference(), this._discardTags));
+      const editor = context.systems.editor;
+      const changes = editor.changes(actionDiscardTags(editor.difference(), this._discardTags));
       if (changes.modified.length || changes.created.length || changes.deleted.length) {
         this.emit('willAttemptUpload');
         osm.sendChangeset(this.changeset, changes, this._uploadCallback);
@@ -421,7 +414,9 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInErrors() {
-    this.context.systems.edits.pop();
+    // this.context.systems.editor.pop();
+    const editor = this.context.systems.editor;
+    editor.revert();
     this.emit('resultErrors', this._errors);
     this._endSave();
   }
@@ -435,7 +430,6 @@ export class UploaderSystem extends AbstractSystem {
 
 
   _didResultInSuccess() {
-    this.context.systems.edits.clearSaved();   // clear edits saved in localstorage
     this.emit('resultSuccess', this.changeset);
     this._endSave();
   }
@@ -448,22 +442,25 @@ export class UploaderSystem extends AbstractSystem {
 
 
   cancelConflictResolution() {
-    this.context.systems.edits.pop();
+    // this.context.systems.editor.pop();
+    const editor = this.context.systems.editor;
+    editor.revert();
   }
 
 
   processResolvedConflicts() {
-    const editSystem = this.context.systems.edits;
+    const editor = this.context.systems.editor;
 
     for (const conflict of this._conflicts) {
       if (conflict.chosen === 1) {   // user chose "use theirs"
-        const entity = this.context.hasEntity(conflict.id);
+        const graph = editor.staging.graph;
+        const entity = graph.hasEntity(conflict.id);
         if (entity?.type === 'way') {
           for (const child of utilArrayUniq(entity.nodes)) {
-            editSystem.replace(actionRevert(child));
+            editor.perform(actionRevert(child));
           }
         }
-        editSystem.replace(actionRevert(conflict.id));
+        editor.perform(actionRevert(conflict.id));
       }
     }
 

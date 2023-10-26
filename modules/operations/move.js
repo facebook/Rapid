@@ -5,20 +5,22 @@ import { utilTotalExtent } from '../util/util';
 
 
 export function operationMove(context, selectedIDs) {
+  const editor = context.systems.editor;
+  const graph = editor.staging.graph;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const storage = context.systems.storage;
+
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const nodes = utilGetAllNodes(selectedIDs, context.graph());
+  const nodes = utilGetAllNodes(selectedIDs, graph);
   const coords = nodes.map(node => node.loc);
-  const extent = utilTotalExtent(entities, context.graph());
+  const extent = utilTotalExtent(entities, graph);
 
 
   let operation = function() {
-    const selection = new Map();
-    for (const entityID of selectedIDs) {
-      selection.set(entityID, context.entity(entityID));
-    }
-    context.enter('move', { selection: selection });
+    context.enter('move', { selection: { osm: selectedIDs }} );
   };
 
 
@@ -28,6 +30,7 @@ export function operationMove(context, selectedIDs) {
 
 
   operation.disabled = function() {
+    const graph = editor.staging.graph;
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (!isNew && notDownloaded()) {
@@ -42,9 +45,8 @@ export function operationMove(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
@@ -62,7 +64,7 @@ export function operationMove(context, selectedIDs) {
     }
 
     function incompleteRelation(entity) {
-      return entity.type === 'relation' && !entity.isComplete(context.graph());
+      return entity.type === 'relation' && !entity.isComplete(graph);
     }
   };
 
@@ -70,21 +72,22 @@ export function operationMove(context, selectedIDs) {
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.move.${disabledReason}.${multi}`) :
-      context.t(`operations.move.description.${multi}`);
+      l10n.t(`operations.move.${disabledReason}.${multi}`) :
+      l10n.t(`operations.move.description.${multi}`);
   };
 
 
   operation.annotation = function() {
+    const graph = editor.staging.graph;
     return selectedIDs.length === 1 ?
-      context.t('operations.move.annotation.' + context.graph().geometry(selectedIDs[0])) :
-      context.t('operations.move.annotation.feature', { n: selectedIDs.length });
+      l10n.t('operations.move.annotation.' + graph.geometry(selectedIDs[0])) :
+      l10n.t('operations.move.annotation.feature', { n: selectedIDs.length });
   };
 
 
   operation.id = 'move';
-  operation.keys = [ context.t('operations.move.key') ];
-  operation.title = context.t('operations.move.title');
+  operation.keys = [ l10n.t('operations.move.key') ];
+  operation.title = l10n.t('operations.move.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   operation.mouseOnly = true;

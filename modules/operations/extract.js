@@ -1,29 +1,31 @@
-import { vecSubtract } from '@rapid-sdk/math';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionExtract } from '../actions/extract';
-import { actionMove } from '../actions/move';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 import { utilTotalExtent } from '../util';
 
 
 export function operationExtract(context, selectedIDs) {
-  const presetSystem = context.systems.presets;
+  const editor = context.systems.editor;
+  const graph = editor.staging.graph;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
+  const storage = context.systems.storage;
+
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
-  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
-  const extent = utilTotalExtent(entities, context.graph());
-  const geometries = utilArrayUniq(entities.map(entity => entity.geometry(context.graph())));
+  const extent = utilTotalExtent(entities, graph);
+  const geometries = utilArrayUniq(entities.map(entity => entity.geometry(graph)));
   const geometryType = geometries.length === 1 ? geometries[0] : 'feature';
 
   const actions = entities.map(entity => {
     if (!entity.hasInterestingTags()) return null;
-
-    const graph = context.graph();
     if (entity.type === 'node' && graph.parentWays(entity).length === 0) return null;
 
     if (entity.type !== 'node') {
-      const preset = presetSystem.match(entity, graph);
+      const preset = presets.match(entity, graph);
       // only allow extraction from ways/relations if the preset supports points
       if (!preset.geometry.includes('point')) return null;
     }
@@ -35,30 +37,39 @@ export function operationExtract(context, selectedIDs) {
   let operation = function() {
     if (!actions.length) return;
 
+    const extractedNodeIDs = [];
     const combinedAction = (graph) => {
       for (const action of actions) {
         graph = action(graph);
+        extractedNodeIDs.push(action.getExtractedNodeID());
       }
       return graph;
     };
 
-    context.perform(combinedAction, operation.annotation());
-    context.systems.validator.validate();
+    const annotation = operation.annotation();
+    editor.beginTransaction();
+    editor.perform(combinedAction);
+    editor.commit({ annotation: annotation, selectedIDs: selectedIDs });
 
-    // Move the extracted nodes to the mouse cursor location
-    const projection = context.projection;
-    const extractedNodeIDs = actions.map(action => action.getExtractedNodeID());
-    const extractPoint = projection.project(extent.center());
-    const delta = vecSubtract(context.systems.map.mouse(), extractPoint);
-    context.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
+//    // Consider:  Move to mouse pointer?  (Like how paste works)
+//    let extent = new Extent();
+//    const graph = editor.staging.graph;
+//    for (const entityID of extractedNodeIDs) {
+//      const entity = graph.entity(entityID);
+//      extent = extent.extend(entity.extent(graph));
+//    }
+//
+//    // Move extracted features to where mouse pointer is..
+//    // (or center of map if there is no readily available pointer coordinate)
+//    const projection = context.projection;
+//    const extractPoint = projection.project(extent.center());
+//    const delta = vecSubtract(map.mouse(), extractPoint);
+//    editor.perform(actionMove(extractedNodeIDs, delta, projection));
+//    editor.endTransaction();
+//    context.enter('move', { selection: { osm: extractedNodeIDs }} );
 
-    // Put the user in move mode so they can place the extracted nodes where they want.
-    // We use the latest entities from the graph (because they were just moved).
-    const selection = new Map();    // Map (entityID -> Entity)
-    for (const extractedNodeID of extractedNodeIDs) {
-      selection.set(extractedNodeID, context.entity(extractedNodeID));
-    }
-    context.enter('move', { selection: selection });
+    editor.endTransaction();
+    context.enter('select-osm', { selection: { osm: extractedNodeIDs }} );
   };
 
 
@@ -68,10 +79,11 @@ export function operationExtract(context, selectedIDs) {
 
 
   operation.disabled = function () {
+    const graph = editor.staging.graph;
     if (!isNew && tooLarge()) {
       return 'too_large';
     } else if (selectedIDs.some(entityID => {
-      return context.graph().geometry(entityID) === 'vertex' && context.hasHiddenConnections(entityID);
+      return graph.geometry(entityID) === 'vertex' && context.hasHiddenConnections(entityID);
     })) {
       return 'connected_to_hidden';
     }
@@ -79,9 +91,8 @@ export function operationExtract(context, selectedIDs) {
 
     // If the selection is not 80% contained in view
     function tooLarge() {
-      const prefs = context.systems.storage;
-      const allowLargeEdits = prefs.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(context.systems.map.extent()) < 0.8;
+      const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
     }
   };
 
@@ -89,19 +100,19 @@ export function operationExtract(context, selectedIDs) {
   operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason ?
-      context.t(`operations.extract.${disabledReason}.${multi}`) :
-      context.t(`operations.extract.description.${geometryType}.${multi}`);
+      l10n.t(`operations.extract.${disabledReason}.${multi}`) :
+      l10n.t(`operations.extract.description.${geometryType}.${multi}`);
   };
 
 
   operation.annotation = function () {
-    return context.t('operations.extract.annotation', { n: selectedIDs.length });
+    return l10n.t('operations.extract.annotation', { n: selectedIDs.length });
   };
 
 
   operation.id = 'extract';
-  operation.keys = [ context.t('operations.extract.key') ];
-  operation.title = context.t('operations.extract.title');
+  operation.keys = [ l10n.t('operations.extract.key') ];
+  operation.title = l10n.t('operations.extract.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
   return operation;

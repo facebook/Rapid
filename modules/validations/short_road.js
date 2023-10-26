@@ -6,7 +6,9 @@ import { ValidationIssue, ValidationFix } from '../core/lib';
 
 export function validationShortRoad(context) {
   const type = 'short_road';
+  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
 
   // Thresholds for number of nodes and total length for a short road. A road
   // is considered as "short" only if it has less than 7 nodes and is shorter
@@ -29,12 +31,11 @@ export function validationShortRoad(context) {
     if (!context.editable()) return;
 
     // make sure the vertex is actually visible and editable
-    const map = context.systems.map;
     if (!map.trimmedExtent().contains(new Extent(vertex.loc))) {
       map.fitEntitiesEase(vertex);
     }
 
-    context.enter('draw-line', { continueWay: way, continueNode: vertex });
+    context.enter('draw-line', { continueWayID: way.id, continueNodeID: vertex.id });
   }
 
 
@@ -59,7 +60,8 @@ export function validationShortRoad(context) {
         title: l10n.t('issues.fix.continue_from_start.title'),
         entityIds: [entity.first()],
         onClick: () => {
-          const vertex = context.entity(entity.first());
+          const graph = editor.staging.graph;
+          const vertex = graph.entity(entity.first());
           continueDrawing(entity, vertex, context);
         }
       }));
@@ -71,7 +73,8 @@ export function validationShortRoad(context) {
         title: l10n.t('issues.fix.continue_from_end.title'),
         entityIds: [entity.last()],
         onClick: () => {
-          const vertex = context.entity(entity.last());
+          const graph = editor.staging.graph;
+          const vertex = graph.entity(entity.last());
           continueDrawing(entity, vertex, context);
         }
       }));
@@ -96,9 +99,10 @@ export function validationShortRoad(context) {
       type: type,
       severity: 'warning',
       message: function() {
-        const entity = context.hasEntity(this.entityIds[0]);
+        const graph = editor.staging.graph;
+        const entity = graph.hasEntity(this.entityIds[0]);
         if (!entity) return '';
-        const entityLabel = l10n.displayLabel(entity, context.graph());
+        const entityLabel = l10n.displayLabel(entity, graph);
         return l10n.t('issues.short_road.message', { highway: entityLabel });
       },
       reference: selection => {

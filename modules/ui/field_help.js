@@ -9,6 +9,7 @@
 //// It borrows some code from uiHelp
 //
 //export function uiFieldHelp(context, fieldName) {
+//    const l10n = context.systems.l10n;
 //    var fieldHelp = {};
 //    var _inspector = d3_select(null);
 //    var _wrap = d3_select(null);
@@ -51,8 +52,8 @@
 //    var fieldHelpHeadings = {};
 //
 //    var replacements = {
-//        distField: context.tHtml('restriction.controls.distance'),
-//        viaField: context.tHtml('restriction.controls.via'),
+//        distField: l10n.tHtml('restriction.controls.distance'),
+//        viaField: l10n.tHtml('restriction.controls.via'),
 //        fromShadow: icon('#rapid-turn-shadow', 'inline shadow from'),
 //        allowShadow: icon('#rapid-turn-shadow', 'inline shadow allow'),
 //        restrictShadow: icon('#rapid-turn-shadow', 'inline shadow restrict'),
@@ -70,12 +71,12 @@
 //            var subkey = helpkey + '.' + part;
 //            var depth = fieldHelpHeadings[subkey];                     // is this subkey a heading?
 //            var hhh = depth ? Array(depth + 1).join('#') + ' ' : '';   // if so, prepend with some ##'s
-//            return all + hhh + context.tHtml(subkey, replacements) + '\n\n';
+//            return all + hhh + l10n.tHtml(subkey, replacements) + '\n\n';
 //        }, '');
 //
 //        return {
 //            key: helpkey,
-//            title: context.tHtml(helpkey + '.title'),
+//            title: l10n.tHtml(helpkey + '.title'),
 //            html: marked.parse(text.trim())
 //        };
 //    });
@@ -194,7 +195,7 @@
 //        titleEnter
 //            .append('h2')
 //            .attr('class', isRTL ? 'fr' : 'fl')
-//            .html(context.tHtml('help.field.' + fieldName + '.title'));
+//            .html(l10n.tHtml('help.field.' + fieldName + '.title'));
 //
 //        titleEnter
 //            .append('button')

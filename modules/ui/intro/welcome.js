@@ -9,6 +9,8 @@ export function uiIntroWelcome(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.welcome.title' };
   const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -30,14 +32,14 @@ export function uiIntroWelcome(context, curtain) {
   // "Welcome! This walkthrough will teach you the basics of editing on OpenStreetMap."
   // Click Ok to advance
   function welcomeAsync() {
-    return context.systems.map
+    return map
       .setCenterZoomAsync(townHallExtent.center(), 19)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-welcome',
           tipHtml: helpHtml(context, 'intro.welcome.welcome'),
-          buttonText: context.tHtml('intro.ok'),
+          buttonText: l10n.tHtml('intro.ok'),
           buttonCallback: () => resolve(practiceAsync)
         });
       }));
@@ -51,7 +53,7 @@ export function uiIntroWelcome(context, curtain) {
       curtain.reveal({
         revealSelector: '.intro-nav-wrap .chapter-welcome',
         tipHtml: helpHtml(context, 'intro.welcome.practice'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(wordsAsync)
       });
     });
@@ -65,7 +67,7 @@ export function uiIntroWelcome(context, curtain) {
       curtain.reveal({
         revealSelector: '.intro-nav-wrap .chapter-welcome',
         tipHtml: helpHtml(context, 'intro.welcome.words'),
-        buttonText: context.tHtml('intro.ok'),
+        buttonText: l10n.tHtml('intro.ok'),
         buttonCallback: () => resolve(chaptersAsync)
       });
     });
@@ -77,7 +79,7 @@ export function uiIntroWelcome(context, curtain) {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.intro-nav-wrap .chapter-navigation',
-      tipHtml: helpHtml(context, 'intro.welcome.chapters', { next: context.t('intro.navigation.title') })
+      tipHtml: helpHtml(context, 'intro.welcome.chapters', { next: l10n.t('intro.navigation.title') })
     });
     return Promise.resolve();
   }

@@ -15,7 +15,12 @@ import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
 import { uiSectionSelectionList } from './sections/selection_list';
 
 
+let _wasSelectedIDs = [];
+
 export function uiEntityEditor(context) {
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const presets = context.systems.presets;
   const dispatch = d3_dispatch('choose');
 
   const sections = [
@@ -32,14 +37,15 @@ export function uiEntityEditor(context) {
 
   let _selection = null;
   let _state = 'select';
-  let _coalesceChanges = false;
   let _modified = false;
   let _startGraph;
   let _entityIDs = [];
   let _activePresets = [];
   let _newFeature;
 
-  context.systems.edits.on('change', _onChange);
+  // reset listener
+  editor.off('stagingchange', _onStagingChange);
+  editor.on('stagingchange', _onStagingChange);
 
 
   /**
@@ -49,8 +55,8 @@ export function uiEntityEditor(context) {
   function entityEditor(selection) {
     _selection = selection;
 
-    const combinedTags = _getCombinedTags(_entityIDs, context.graph());
-    const isRTL = context.systems.l10n.isRTL();
+    const combinedTags = _getCombinedTags(_entityIDs, editor.staging.graph);
+    const isRTL = l10n.isRTL();
 
     // Header
     let header = selection.selectAll('.header')
@@ -80,7 +86,7 @@ export function uiEntityEditor(context) {
       .merge(headerEnter);
 
     header.selectAll('h3')
-      .html(_entityIDs.length === 1 ? context.tHtml('inspector.edit') : context.tHtml('rapid_multiselect'));
+      .html(_entityIDs.length === 1 ? l10n.tHtml('inspector.edit') : l10n.tHtml('rapid_multiselect'));
 
     header.selectAll('.preset-reset')
       .on('click', function() {
@@ -139,8 +145,7 @@ export function uiEntityEditor(context) {
 
     // always reload these even if the entityIDs are unchanged, since we
     // could be reselecting after something like dragging a node
-    _startGraph = context.graph();
-    _coalesceChanges = false;
+    _startGraph = editor.staging.graph;
 
     if (val && _entityIDs && utilArrayIdentical(_entityIDs, val)) return entityEditor;  // exit early if no change
 
@@ -179,23 +184,23 @@ export function uiEntityEditor(context) {
   /**
    *
    */
-  function _onChange(difference) {
+  function _onStagingChange(difference) {
     if (!_selection) return;     // called before first render
     if (_selection.selectAll('.entity-editor').empty()) return;
     if (_state === 'hide') return;
 
-    const significant = !difference || difference.didChange.properties || difference.didChange.addition || difference.didChange.deletion;
+    const significant = difference.didChange.properties || difference.didChange.addition || difference.didChange.deletion;
     if (!significant) return;
 
-    _entityIDs = _entityIDs.filter(context.hasEntity);
+    const graph = editor.staging.graph;
+    _entityIDs = _entityIDs.filter(entityID => graph.hasEntity(entityID));
     if (!_entityIDs.length) return;
 
     const prevPreset = _activePresets.length === 1 && _activePresets[0];
     _loadActivePresets();
     const currPreset = _activePresets.length === 1 && _activePresets[0];
 
-    const currGraph = context.graph();
-    entityEditor.modified(_startGraph !== currGraph);
+    entityEditor.modified(_startGraph !== graph);
     _selection.call(entityEditor);  // rerender
 
     // If this difference caused the preset to change, flash the button.
@@ -215,10 +220,15 @@ export function uiEntityEditor(context) {
    * Use explicit entityIDs in case the selection changes before the event is fired.
    */
   function _changeTags(entityIDs, changed, onInput) {
-    let actions = [];
+    // same selection as before?
+    const isSameSelection = utilArrayIdentical(_entityIDs, _wasSelectedIDs);
+    _wasSelectedIDs = _entityIDs.slice();  // copy
 
-    for (const entityID of entityIDs) {
-      const entity = context.hasEntity(entityID);
+    editor.beginTransaction();
+
+    for (const entityID of _entityIDs) {
+      const graph = editor.staging.graph;
+      const entity = graph.hasEntity(entityID);
       if (!entity) continue;
 
       let tags = Object.assign({}, entity.tags);   // shallow copy
@@ -240,32 +250,27 @@ export function uiEntityEditor(context) {
       }
 
       if (!deepEqual(entity.tags, tags)) {
-        actions.push(actionChangeTags(entityID, tags));
+        editor.perform(actionChangeTags(entityID, tags));
       }
     }
 
-    if (actions.length) {
-      const combinedAction = (graph) => {
-        for (const action of actions) {
-          graph = action(graph);
-        }
-        return graph;
-      };
-
-      const annotation = context.t('operations.change_tags.annotation');
-
-      if (_coalesceChanges) {
-        context.overwrite(combinedAction, annotation);
-      } else {
-        context.perform(combinedAction, annotation);
-        _coalesceChanges = !!onInput;
-      }
-    }
-
-    // only rerun validation when leaving the field (on blur event)
+    // Only commit changes when leaving the field (i.e. on blur event)
     if (!onInput) {
-      context.systems.validator.validate();
+      // If this is the same selection as before, and the previous edit was also a change_tags,
+      // we can just replace the previous edit with this one.
+      const annotation = l10n.t('operations.change_tags.annotation');
+      const options = {
+        annotation: annotation,
+        selectedIDs: _entityIDs
+      };
+      if (isSameSelection && editor.getUndoAnnotation() === annotation) {
+        editor.commitAppend(options);
+      } else {
+        editor.commit(options);
+      }
     }
+
+    editor.endTransaction();
   }
 
 
@@ -273,13 +278,19 @@ export function uiEntityEditor(context) {
    *
    */
   function _revertTags(keys) {
-    let actions = [];
+    // same selection as before?
+    const isSameSelection = utilArrayIdentical(_entityIDs, _wasSelectedIDs);
+    _wasSelectedIDs = _entityIDs.slice();  // copy
+
+    const baseGraph = editor.base.graph;
+    editor.beginTransaction();
 
     for (const entityID of _entityIDs) {
-      const entity = context.entity(entityID);
-      let tags = Object.assign({}, entity.tags);   // shallow copy
+      const currGraph = editor.staging.graph;
+      const original = baseGraph.hasEntity(entityID);
+      const current = currGraph.entity(entityID);
+      let tags = Object.assign({}, current.tags);   // shallow copy
 
-      const original = context.graph().base.entities.get(entityID);
       let changed = {};
       for (const key of keys) {
         changed[key] = original?.tags[key] ?? undefined;
@@ -294,30 +305,25 @@ export function uiEntityEditor(context) {
 
       tags = utilCleanTags(tags);
 
-      if (!deepEqual(entity.tags, tags)) {
-        actions.push(actionChangeTags(entityID, tags));
+      if (!deepEqual(current.tags, tags)) {
+        editor.perform(actionChangeTags(entityID, tags));
       }
     }
 
-    if (actions.length) {
-      const combinedAction = (graph) => {
-        for (const action of actions) {
-          graph = action(graph);
-        }
-        return graph;
-      };
-
-      const annotation = context.t('operations.change_tags.annotation');
-
-      if (_coalesceChanges) {
-        context.overwrite(combinedAction, annotation);
-      } else {
-        context.perform(combinedAction, annotation);
-        _coalesceChanges = false;
-      }
+    // If this is the same selection as before, and the previous edit was also a change_tags,
+    // we can just replace the previous edit with this one.
+    const annotation = l10n.t('operations.change_tags.annotation');
+    const options = {
+      annotation: annotation,
+      selectedIDs: _entityIDs
+    };
+    if (isSameSelection && editor.getUndoAnnotation() === annotation) {
+      editor.commitAppend(options);
+    } else {
+      editor.commit(options);
     }
 
-    context.systems.validator.validate();
+    editor.endTransaction();
   }
 
 
@@ -325,8 +331,7 @@ export function uiEntityEditor(context) {
    *
    */
   function _loadActivePresets(isForNewSelection) {
-    const presetSystem = context.systems.presets;
-    const graph = context.graph();
+    const graph = editor.staging.graph;
 
     // If multiple entities, try to pick a preset that matches most of them
     const counts = {};
@@ -334,13 +339,13 @@ export function uiEntityEditor(context) {
       const entity = graph.hasEntity(entityID);
       if (!entity) return;
 
-      const preset = presetSystem.match(entity, graph);
+      const preset = presets.match(entity, graph);
       counts[preset.id] = (counts[preset.id] || 0) + 1;
     }
 
     const matches = Object.keys(counts)
       .sort((p1, p2) => counts[p2] - counts[p1])
-      .map(presetID => presetSystem.item(presetID));
+      .map(presetID => presets.item(presetID));
 
     if (!isForNewSelection) {
       // A "weak" preset doesn't set any tags. (e.g. "Address")

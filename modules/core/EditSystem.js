@@ -1,26 +1,76 @@
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
-import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
+import { utilArrayGroupBy, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
+import debounce from 'lodash-es/debounce';
 
 import { AbstractSystem } from './AbstractSystem';
-import { Difference, Graph, Tree } from './lib';
+import { Difference, Edit, Graph, Tree } from './lib';
 import { osmEntity } from '../osm/entity';
 import { uiLoading } from '../ui/loading';
 
 
-const DURATION = 150;
-
 
 /**
- * `EditSystem` maintains the stack of user edits
- *  (it used to be called 'history')
+ * `EditSystem` maintains the history of user edits.
+ * (This used to be called 'history', but that word means something else in browsers)
+ *
+ * This system maintains a Base Graph, a stack of Edit history, and a `staging` Edit.
+ *
+ * The Base Graph contains the base map state - all map entities that have been loaded
+ *   and what they look like before any edits have occurred.
+ * As more map is loaded, more map features get merged into the Base Graph.
+ *
+ * Each entry in the history stack is an `Edit`.  An Edit may contain:
+ *  - `annotation`  - undo/redo annotation, a String saying what the Edit did. e.g. "Started a Line".
+ *  - `graph`       - Graph at the time of the Edit
+ *  - `selectedIDs` - ids that the user had selected at the time (assumed to be OSM)
+ *  - `sources`     - sources being used to make the Edit (imagery, photos, data)
+ *  - `transform`   - map transform at the time of the Edit
+ *
+ * Special named Edits:
+ *  - `base` - The initial Edit, `history[0]`.
+ *     The `base` Edit contains the Base Graph and nothing else.
+ *  - `stable` - The latest accepted Edit, `history[index]`.
+ *     The `stable` Edit is suitable for validation, backups, saving.
+ *  - `staging` - A work-in-progress Edit, not yet added to the history.
+ *     The `staging` Edit is used throughout the application to determine the current map state.
+ *
+ *  The history might look like this:
+ *
+ *   `base`           …undo    `stable`   redo…
+ *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+ *                                 \
+ *                                  \-->  EditN
+ *                                       `staging` (WIP after `stable`)
+ *
+ * Code elsewhere in the application can use these methods to make edits and manipulate the history:
+ * - `perform(action)` - This performs a bit of work.  Perform accepts a varible number of
+ *      "action" arguments. Actions are functions that accept a Graph and return a modified Graph.
+ *      All work is performed against the `staging` edit.
+ * - `revert()` - This reverts all work in progress by replacing `staging` with a fresh copy of `stable`.
+ * - `commit(options)` - This accepts the `staging` work-in-progress edit by adding
+ *      it to the end of the history (removing any forward redo history, if any)
+ *      Commit accepts an `annotation` (e.g. "Started a line") to say what the edit does.
+ * - `commitAppend(options)` - This is just like `commit` but instead of
+ *      adding `staging` after `stable`, `staging` replaces `stable`.
+ * - `undo()` - Move the `stable` index back to the previous Edit (or `_index = 0`).
+ * - `redo()` - Move the `stable` index forward to the next Edit (if any)
+ * - `setCheckpoint(checkpointID)` - Save `history` and `index` as a checkpoint to return to later.
+ * - `restoreCheckpoint(checkpointID)` - Restore `history` and `index` identified by checkpointID.
+ *
+ * Code can also wrap calls in a "transaction", which will prevent change events from being emitted.
+ * - `beginTransaction()` - Prevents `stagingchange` and `stablechange` events from being emitted.
+ * - `endTransaction()` - Marks transaction as complete.  Any `stagingchange` and `stablechange`
+ *      events will be emitted that cover the difference from the beginning -> end of the transaction.
  *
  * Events available:
- *   'change'
- *   'merge'
- *   'restore'
- *   'undone'
- *   'redone'
+ *   'stagingchange' - Fires on every edit performed (i.e. when `staging` changes),
+ *      Receives Difference between old `staging` Graph and new `staging` Graph.
+ *   'stablechange' - Fires only when the history actually changes (i.e. when `stable` changes)
+ *      Receives Difference between old `stable` Graph and new `stable` Graph.
+ *   'historyjump' - Fires on undo/redo/restore.  This is for situations when we may need to
+ *      jump the user to a different part of the map and restore a different selection.
+ *   'merge'  - Fires when new base entities are merged into the base graph
  *   'storage_error'
  */
 export class EditSystem extends AbstractSystem {
@@ -31,25 +81,31 @@ export class EditSystem extends AbstractSystem {
    */
   constructor(context) {
     super(context);
-    this.id = 'edits';   // was: 'history'
-    this.dependencies = new Set(['storage', 'map', 'rapid']);
+    this.id = 'editor';   // was: 'history'
+    this.dependencies = new Set(['imagery', 'map', 'photos', 'storage']);
 
     this._mutex = utilSessionMutex('lock');
-    this._hasRestorableChanges = false;
+    this._canRestoreBackup = false;
+    this._hasWorkInProgress = false;
 
-    this._imageryUsed = [];
-    this._photosUsed = [];
-    this._checkpoints = {};
-    this._pausedGraph = false;
-    this._stack = [];
+    this._history = [];     // history of accepted edits (both undo and redo) (was called "stack")
+    this._index = 0;        // index of the latest `stable` edit
+    this._staging = null;   // work in progress edit, not yet added to the history
+
+    this._checkpoints = new Map();
+    this._inTransition = false;
+    this._inTransaction = false;
     this._tree = null;
-    this._index = 0;
+
+    this._lastStableGraph = null;
+    this._lastStagingGraph = null;
+    this._fullDifference = null;
+
     this._initPromise = null;
 
-    // When called like `context.graph`, don't lose `this`
-    this.graph = this.graph.bind(this);
-    this.pauseChangeDispatch = this.pauseChangeDispatch.bind(this);
-    this.resumeChangeDispatch = this.resumeChangeDispatch.bind(this);
+    // Make sure the event handlers have `this` bound correctly
+    this.saveBackup = this.saveBackup.bind(this);
+    this.deferredBackup = debounce(this.saveBackup, 1000, { leading: false, trailing: true });
   }
 
 
@@ -74,8 +130,21 @@ export class EditSystem extends AbstractSystem {
 
     return this._initPromise = prerequisites
       .then(() => {
-        // changes are restorable if Rapid is not open in another window/tab and a saved history exists in localStorage
-        this._hasRestorableChanges = this._mutex.lock() && storage.hasItem(this._historyKey());
+        if (window.mocha) return;
+
+        // Setup event handlers
+        window.addEventListener('beforeunload', e => {
+          if (this._index !== 0) {  // user did something
+            e.preventDefault();
+            this.saveBackup();
+            return (e.returnValue = '');  // show browser prompt
+          }
+        });
+
+        window.addEventListener('unload', () => this._mutex.unlock());
+
+        // changes are restorable if Rapid is not open in another window/tab and a backup exists in localStorage
+        this._canRestoreBackup = this._mutex.lock() && storage.hasItem(this._backupKey());
       });
   }
 
@@ -107,66 +176,450 @@ export class EditSystem extends AbstractSystem {
    * Called after completing an edit session to reset any internal state
    */
   reset() {
-    d3_select(document).interrupt('editTransition');
-    const base = new Graph();
-    this._stack = [{ graph: base }];
-    this._tree = new Tree(base);
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+    this.deferredBackup.cancel();
+
+    // Create a new Base Graph / Base Edit.
+    const baseGraph = new Graph();
+    const base = new Edit({ graph: baseGraph });
+    this._history = [ base ];
     this._index = 0;
-    this._checkpoints = {};
+
+    // Create a work-in-progress Edit derived from the base edit.
+    const currGraph = new Graph(baseGraph);
+    const staging = new Edit({ graph: currGraph });
+    this._staging = staging;
+    this._hasWorkInProgress = false;
+    this._tree = new Tree(currGraph);
+
+    this._lastStableGraph = baseGraph;
+    this._lastStagingGraph = currGraph;
+    this._fullDifference = new Difference(baseGraph, baseGraph);
+
+    this._checkpoints.clear();
+    this._inTransition = false;
+    this._inTransaction = false;
     this.emit('reset');
   }
 
 
-  graph() {
-    return this._stack[this._index].graph;
+  /**
+   * base
+   * The `base` edit is the initial edit in the history.  It contains the Base Graph.
+   * It will not contain any actual user edits, sources, annotation.
+   * @return {Edit} The initial Edit containing the Base Graph
+   */
+  get base() {
+    return this._history[0];
   }
 
+  /**
+   * stable
+   * The `stable` edit is the latest accepted edit in the history, as indicated by `_index`.
+   * The `stable` edit is suitable for validation or backups.
+   * Before the user edits anything, `_index === 0`, so the `stable === base`.
+   * Note that "future" redo history can continue past the `stable` edit, if the user has undone.
+   * @return {Edit} The latest accepted Edit in the history
+   */
+  get stable() {
+    return this._history[this._index];
+  }
 
-  tree() {
+  /**
+   * staging
+   * The `staging` edit will be a placeholder work-in-progress edit in the chain immediately
+   * following the `stable` edit.  The user may be drawing a feature or editing tags.
+   * The `staging` edit has not been added to the history yet.
+   * @return {Edit} The `staging` work-in-progress Edit
+   */
+  get staging() {
+    return this._staging;
+  }
+
+  /**
+   * tree
+   * The tree is a spatial index that keeps itself in sync with the `staging` graph.
+   * @return {Tree} The Tree (spatial index)
+   */
+  get tree() {
     return this._tree;
   }
 
+  /**
+   * history
+   * A shallow copy of the history.
+   * @return {Array} A shallow copy of the history
+   */
+  get history() {
+    return this._history.slice();
+  }
 
-  base() {
-    return this._stack[0].graph;
+  /**
+   * index
+   * Index pointing to the current `stable` Edit
+   * @return {number} Index pointing to the current `stable` Edit
+   */
+  get index() {
+    return this._index;
+  }
+
+  /**
+   * hasWorkInProgress
+   * Is there work in progress in the `staging` edit?
+   * @return {boolean}  `true` if there is work in progress in the `staging` edit.
+   */
+  get hasWorkInProgress() {
+    return this._hasWorkInProgress;
   }
 
 
-  peekAnnotation() {
-    return this._stack[this._index].annotation;
+  /**
+   * perform
+   * This performs a bit of work.  Perform accepts a variable number of "action" arguments.
+   * "Actions" are functions that accept a Graph and return a modified Graph.
+   * All work is performed against the `staging` work-in-progress edit.
+   * If multiple functions are passed, they will be performed in order,
+   *   and an `stagingchange` event will be emitted after they have all completed.
+   * @param   {...Function}  args - Variable number of Action functions to peform
+   * @return  {Difference}   Difference between before and after of `staging` Edit
+   */
+  perform(...args) {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+    this._perform(args, 1);
+    return this._updateChanges();   // only one place in the code uses this return - split operation?
   }
 
-  peekAllAnnotations() {
-    let result = [];
-    for (let i = 0; i <= this._index; i++) {
-      if (this._stack[i].annotation) {
-        result.push(this._stack[i].annotation);
-      }
+
+  /**
+   * performAsync
+   * Promisified version of `perform` that can support eased edits in a transition.
+   * This version of `perform` accepts a single Action function argument.
+   * If the Action is marked as being "transitionable", run it multiple times with
+   *   eased time parameter from 0..1 to create a smooth transition effect.
+   * If the Action is not marked as being "transitionable" just run it one time
+   *   with `time = 1` and return a resolved promise.
+   *
+   * @param   {Function}  action - single Action function to perform
+   * @return  {Promise}   Promise fulfilled when the transition is completed
+   */
+  performAsync(action) {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    if (typeof action !== 'function') {
+      return Promise.reject();
     }
-    return result;
+
+    if (!action.transitionable) {
+      this._perform([action], 1);
+      this._updateChanges();
+      return Promise.resolve();
+    }
+
+    const DURATION = 150;
+
+    return new Promise(resolve => {
+      d3_select(document)
+        .transition('editTransition')
+        .duration(DURATION)
+        .ease(d3_easeLinear)
+        .tween('edit.tween', () => {
+          return (t) => {
+            if (t < 1) {
+              this._replaceStaging();
+              this._perform([action], t);
+              this._updateChanges();
+            }
+          };
+        })
+        .on('start', () => {
+          this._inTransition = true;
+          this._replaceStaging();
+          this._perform([action], 0);
+          this._updateChanges();
+        })
+        .on('end interrupt', () => {
+          this._replaceStaging();
+          this._perform([action], 1);
+          this._updateChanges();
+          this._inTransition = false;
+          resolve();
+        });
+    });
+  }
+
+
+  /**
+   * revert
+   * This reverts the `staging` work-in-progress by replacing `staging` with a fresh copy of `stable`.
+   * (It's more like what `git reset --hard` does, but we can't call it "reset")
+   */
+  revert() {
+    if (!this._hasWorkInProgress) return;
+
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+    this._replaceStaging();
+    return this._updateChanges();
+  }
+
+
+  /**
+   * commit
+   * This finalizes the `staging` work-in-progress edit.
+   * (It's somewhat like what `git commit` does.)
+   *  - Set annotation, sources, and other edit metadata properties
+   *  - Add the `staging` edit to the end of the history (at this point `staging` becomes `stable`)
+   *  - Finally, create a new empty `staging` work-in-progress Edit
+   *
+   * Before calling `commit()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `staging` (WIP after Edit2)
+   * After calling `commit()`:
+   *
+   *   `base`                     …undo    `stable`
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> EditN0 ]
+   *                                           \
+   *                                            \-->  EditN1
+   *                                                 `staging` (WIP after EditN0)
+   *
+   * @param  {Object?}        options - Optional `Object` of options passed
+   * @param  {Object|string}  options.annotation - A String saying what the Edit did. e.g. "Started a Line".
+   *   Note that Rapid edits pass an Object as the annotation including more info about the edit.
+   * @param  {Array}          options.selectedIDs - Array of selectedIDs
+   */
+  commit(options = {}) {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    const context = this.context;
+    const staging = this.staging;
+
+    const annotation = options.annotation ?? '';
+    staging.annotation  = annotation;
+    staging.selectedIDs = options.selectedIDs ?? [];
+    staging.sources     = this._gatherSources(annotation);
+    staging.transform   = context.projection.transform();
+
+    // Discard forward/redo history if any, and add `staging` after `stable`
+    this._history.splice(this._index + 1, Infinity, staging);
+    this._index++;
+    // (At this point `stable` === `staging`)
+
+    this._replaceStaging();
+    this._updateChanges();
+  }
+
+
+  /**
+   * commitAppend
+   * This is like `commit`, but instead of adding `staging` after stable,
+   *   it replaces `stable` with `staging` and does not advance the history.
+   * (It's somewhat like what `git commit --append` does.)
+   *  - Set annotation, sources, and other edit metadata properties
+   *  - Replace the `stable` edit with the `staging` edit (at this point `staging` becomes `stable`)
+   *  - Finally, create a new empty `staging` work-in-progress Edit
+   *
+   * Note:  You can't do this if there are no edits yet - it will throw if you try to append to the `base` edit.
+   *
+   * Before calling `commitAppend()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `staging` (WIP after Edit2)
+   * After calling `commitAppend()`:
+   *
+   *   `base`           …undo    `stable`
+   *  [ Edit0 --> … --> Edit1 --> EditN0 ]
+   *                                 \
+   *                                  \-->  EditN1
+   *                                       `staging` (WIP after EditN0)
+   *
+   * @param  {Object?}        options - Optional `Object` of options passed
+   * @param  {Object|string}  options.annotation - A String saying what the Edit did. e.g. "Started a Line".
+   *   Note that Rapid edits pass an Object as the annotation including more info about the edit.
+   * @param  {Array}          options.selectedIDs - Array of selectedIDs
+   * @throws  Will throw if you try to append to the `base` edit
+   */
+  commitAppend(options = {}) {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    const context = this.context;
+    const staging = this.staging;
+
+    if (this._index === 0) {
+      throw new Error(`Can not commitAppend to the base edit!`);
+    }
+
+    const annotation = options.annotation ?? '';
+    staging.annotation  = annotation;
+    staging.selectedIDs = options.selectedIDs ?? [];
+    staging.sources     = this._gatherSources(annotation);
+    staging.transform   = context.projection.transform();
+
+    // Discard forward/redo history if any, and replace `stable` with `staging`.
+    this._history.splice(this._index, Infinity, staging);
+    // (At this point `stable` === `staging`)
+
+    this._replaceStaging();
+    this._updateChanges();
+  }
+
+
+  /**
+   * undo
+   * If there is work-in-progress on the `staging` edit, revert to `stable`
+   * Otherwise, move the `stable` index back to the previous Edit (or `_index = 0`).
+   * Note that all work-in-progress in the `staging` Edit is lost when calling `undo()`.
+   *
+   * Before calling `undo()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `staging` (WIP after Edit2)
+   * After calling `undo()`:
+   *
+   *   `base`  …undo   `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                       \
+   *                        \-->  EditN1
+   *                             `staging` (WIP after Edit1)
+   */
+  undo() {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    if (this._hasWorkInProgress) {
+      this.revert();
+      this.emit('historyjump');
+      return;
+    }
+
+    const prevIndex = this._index;
+    if (this._index > 0) {
+      this._index--;
+    }
+
+    if (this._index !== prevIndex) {
+      this._replaceStaging();
+      this._updateChanges();
+      this.emit('historyjump');
+    }
+  }
+
+
+  /**
+   * redo
+   * Move the `stable` index forward to the next Edit (if any)
+   * Note that all work-in-progress in the `staging` Edit is lost when calling `redo()`.
+   *
+   * Before calling `redo()`:
+   *
+   *   `base`           …undo    `stable`   redo…
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                 \
+   *                                  \-->  EditN0
+   *                                       `staging` (WIP after Edit2)
+   * After calling `redo()`:
+   *
+   *   `base`                     …undo    `stable`
+   *  [ Edit0 --> … --> Edit1 --> Edit2 --> Edit3 ]
+   *                                           \
+   *                                            \-->  EditN1
+   *                                                 `staging` (WIP after Edit3)
+   */
+  redo() {
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    const prevIndex = this._index;
+    if (this._index < this._history.length - 1) {
+      this._index++;
+    }
+
+    if (this._index !== prevIndex) {
+      this._replaceStaging();
+      this._updateChanges();
+      this.emit('historyjump');
+    }
+  }
+
+
+  /**
+   * setCheckpoint
+   * This saves the `history` and `index` as a "checkpoint" that we can return to later.
+   * If the given checkpointID exists, it will be overwritten.
+   * @param  {string}  checkpointID - A string to identify the checkpoint
+   */
+  setCheckpoint(checkpointID) {
+    if (!checkpointID) return;
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    // Save a shallow copy of history, in case user undos away the edit that `_index` points to.
+    this._checkpoints.set(checkpointID, {
+      history: this._history.slice(),  // shallow copy
+      index: this._index
+    });
+  }
+
+
+  /**
+   * restoreCheckpoint
+   * This returns the `history` and `index` back to the edit identified by the given checkpointID.
+   * Note that all work-in-progress in the `staging` Edit is lost when calling `restoreCheckpoint()`.
+   * @param  {string}  checkpointID - A string to identify the checkpoint
+   */
+  restoreCheckpoint(checkpointID) {
+    if (!checkpointID) return;
+    d3_select(document).interrupt('editTransition');    // complete any transition already in progress
+
+    const checkpoint = this._checkpoints.get(checkpointID);
+    if (checkpoint) {
+      this._history = checkpoint.history.slice();   // shallow copy
+      this._index = checkpoint.index;
+
+      this._replaceStaging();
+      this._updateChanges();
+      this.emit('historyjump');
+    }
+  }
+
+
+  /**
+   * deleteCheckpoint
+   * This removes the checkpoint identified by the given checkpointID.
+   * @param  {string}  checkpointID - A string to identify the checkpoint
+   */
+  deleteCheckpoint(checkpointID) {
+    if (!checkpointID) return;
+    this._checkpoints.delete(checkpointID);
   }
 
 
   /**
    *  merge
-   *  Merge new entities into the history.  This function is called
-   *  when we have parsed a new tile of OSM data, we will receive the
-   *  new entities and a list of all entity ids that the tile contains.
+   *  Merge new entities into the Base Graph.
+   *  This function is called when we have parsed a new tile of OSM data, we will
+   *   receive the new entities and a list of all entity ids that the tile contains.
    *  Can also be called in other situations, like restoring history from
    *  storage, or loading specific entities from the OSM API.
+   *  (Sorry, but this one is not like what `git merge` does.)
    *
-   *  @param  entities   Entities to merge into the history (usually only the new ones)
-   *  @param  seenIDs?   Optional - All entity IDs on the tile (including previously seen ones)
+   *  @param  {Array}  entities - Entities to merge into the history (usually only the new ones)
+   *  @param  {Set}    seenIDs? - Optional set of all entity IDs on the tile (including previously seen ones)
    */
   merge(entities, seenIDs) {
-    const baseGraph = this.base();
-    const headGraph = this.graph();
+    const baseGraph = this.base.graph;
+    const stagingGraph = this.staging.graph;
 
     if (!(seenIDs instanceof Set)) {
       seenIDs = new Set(entities.map(entity => entity.id));
     }
 
-    // Which ones are really new (not in the base graph)?
+    // Which ones are really new (not in the Base Graph)?
     const newIDs = new Set();
     for (const entity of entities) {
       if (!baseGraph.hasEntity(entity.id)) {  // not merged in yet.
@@ -176,7 +629,7 @@ export class EditSystem extends AbstractSystem {
 
     // If we are merging in new relation members, bump the relation's version.
     for (const id of seenIDs) {
-      const entity = headGraph.hasEntity(id);
+      const entity = stagingGraph.hasEntity(id);
       if (entity?.type !== 'relation') continue;
 
       for (const member of entity.members) {
@@ -186,276 +639,187 @@ export class EditSystem extends AbstractSystem {
       }
     }
 
-    const graphs = this._stack.map(state => state.graph);
-    baseGraph.rebase(entities, graphs, false);
-    this._tree.rebase(entities, false);
+    // Append staging graph..
+    // It's not in the history yet, but it represents the current state of things.
+    const graphs = this._history.map(state => state.graph);
+    graphs.push(stagingGraph);
+
+    baseGraph.rebase(entities, graphs, false);  // force = false
+    this._tree.rebase(entities, false);         // force = false
 
     this.emit('merge', seenIDs);
   }
 
 
-  perform(...args) {
-    // complete any transition already in progress
-    d3_select(document).interrupt('editTransition');
-
-    // We can perform a eased edit in a transition if we have:
-    // - a single action (or single action + annotation)
-    // - and that action is 'transitionable' (i.e. accepts eased time parameter)
-    const action0 = args[0];
-    let transitionable = false;
-    if (args.length === 1 || (args.length === 2 && typeof args[1] !== 'function')) {
-      transitionable = !!action0.transitionable;
-    }
-
-    if (transitionable) {
-      d3_select(document)
-        .transition('editTransition')
-        .duration(DURATION)
-        .ease(d3_easeLinear)
-        .tween('history.tween', () => {
-          return (t) => {
-            if (t < 1) this._overwrite([action0], t);
-          };
-        })
-        .on('start', () => {
-          this._perform([action0], 0);
-        })
-        .on('end interrupt', () => {
-          this._overwrite(args, 1);
-        });
-
-    } else {
-      return this._perform(args);
-    }
+  /**
+   * beginTransaction
+   * Prevents `stagingchange` and `stablechange` events from being emitted.
+   * During a transaction, edits can be performed but no `change` events will be emitted.
+   * This is to prevent other parts of the code from rendering/validating partial or incomplete edits.
+   */
+  beginTransaction() {
+    this._inTransaction = true;
   }
 
 
-  replace(...args) {
-    d3_select(document).interrupt('editTransition');
-    return this._replace(args, 1);
+  /**
+   * endTransaction
+   * This marks the transaction as complete, and allows events to be emitted again.
+   * Any `stagingchange` and `stablechange` events will be emitted that cover
+   *   the difference from the beginning -> end of the transaction.
+   */
+  endTransaction() {
+    this._inTransaction = false;
+    return this._updateChanges();
   }
 
 
-  // Same as calling pop and then perform
-  overwrite(...args) {
-    d3_select(document).interrupt('editTransition');
-    return this._overwrite(args, 1);
-  }
-
-
-  pop(n) {
-    d3_select(document).interrupt('editTransition');
-
-    const previous = this._stack[this._index].graph;
-    if (isNaN(+n) || +n < 0) {
-      n = 1;
-    }
-    while (n-- > 0 && this._index > 0) {
-      this._index--;
-      this._stack.pop();
-    }
-    return this._change(previous);
-  }
-
-
-  // Go back to the previous annotated edit or _index = 0.
-  undo() {
-    d3_select(document).interrupt('editTransition');
-
-    const previousEdit = this._stack[this._index];
-    while (this._index > 0) {
-      this._index--;
-      if (this._stack[this._index].annotation) break;
-    }
-
-    this.emit('undone', this._stack[this._index], previousEdit);
-    return this._change(previousEdit.graph);
-  }
-
-
-  // Go forward to the next annotated state.
-  redo() {
-    d3_select(document).interrupt('editTransition');
-
-    const previousEdit = this._stack[this._index];
-
-    let tryIndex = this._index;
-    while (tryIndex < this._stack.length - 1) {
-      tryIndex++;
-      if (this._stack[tryIndex].annotation) {
-        this._index = tryIndex;
-        this.emit('redone', this._stack[this._index], previousEdit);
-        break;
-      }
-    }
-
-    return this._change(previousEdit.graph);
-  }
-
-
-  pauseChangeDispatch() {
-    if (!this._pausedGraph) {
-      this._pausedGraph = this._stack[this._index].graph;
-    }
-  }
-
-
-  resumeChangeDispatch() {
-    if (this._pausedGraph) {
-      const previous = this._pausedGraph;
-      this._pausedGraph = null;
-      return this._change(previous);
-    }
-  }
-
-
-  undoAnnotation() {
+  /**
+   * getUndoAnnotation
+   * @return  {string?}  The previous undo annotation, or `undefined` if none
+   */
+  getUndoAnnotation() {
     let i = this._index;
     while (i >= 0) {
-      if (this._stack[i].annotation) return this._stack[i].annotation;
+      const edit = this._history[i];
+      if (edit.annotation) return edit.annotation;
       i--;
     }
   }
 
 
-  redoAnnotation() {
+  /**
+   * getRedoAnnotation
+   * @return  {string?}  The next redo annotation, or `undefined` if none
+   */
+  getRedoAnnotation() {
     let i = this._index + 1;
-    while (i <= this._stack.length - 1) {
-      if (this._stack[i].annotation) return this._stack[i].annotation;
+    while (i <= this._history.length - 1) {
+      const edit = this._history[i];
+      if (edit.annotation) return edit.annotation;
       i++;
     }
   }
 
 
-  // Returns the entities from the active graph with bounding boxes
-  // overlapping the given `extent`.
+  /**
+   * intersects
+   * Returns the entities from the `staging` graph with bounding boxes overlapping the given `extent`.
+   * @prarm   {Extent}  extent - the extent to test
+   * @return  {Array}   Entities intersecting the given Extent
+   */
   intersects(extent) {
-    return this._tree.intersects(extent, this._stack[this._index].graph);
+    return this._tree.intersects(extent, this.staging.graph);
   }
 
 
+  /**
+   * difference
+   * Returns a `Difference` containing all edits from `base` -> `stable`
+   * We use this pretty frequently, so it's cached in `this._fullDifference`
+   *  and recomputed by the `_updateChanges` function only when `stable` changes.
+   * @return {Difference} The total changes made by the user during their edit session
+   */
   difference() {
-    const base = this._stack[0].graph;
-    const head = this._stack[this._index].graph;
-    return new Difference(base, head);
+    return this._fullDifference;
   }
 
 
+  /**
+   * changes
+   * This returns a summery of all changes made from `base` -> `stable`
+   * Optionally includes a given action function to apply to the `stable` graph.
+   * @param  {Function?}  action - Optional action to apply to the `stable` graph
+   * @return {Object}     Object containing `modified`, `created`, `deleted` summary of changes
+   */
   changes(action) {
-    const base = this._stack[0].graph;
-    let head = this._stack[this._index].graph;
+    let difference = this._fullDifference;
 
     if (action) {
-      head = action(head);
+      const base = this.base.graph;
+      const head = action(this.stable.graph);
+      difference = new Difference(base, head);
     }
-
-    const difference = new Difference(base, head);
 
     return {
+      created:  difference.created(),
       modified: difference.modified(),
-      created: difference.created(),
-      deleted: difference.deleted()
+      deleted:  difference.deleted()
     };
   }
 
 
+  /**
+   * hasChanges
+   * This counts meangful edits only (modified, created, deleted).
+   * For example, we could perform a bunch of no-op edits and it would still return false.
+   * @return `true` if the user has made any meaningful edits
+   */
   hasChanges() {
-    return this.difference().changes.size > 0;
+    return this._fullDifference.changes.size > 0;
   }
 
 
-  imageryUsed(sources) {
-    if (sources !== undefined) {
-      this._imageryUsed = sources;
-      return this;
-
-    } else {
-      let results = new Set();
-      this._stack.slice(1, this._index + 1).forEach(function(edit) {
-        for (const source of edit.imageryUsed ?? []) {
-          if (source !== 'Custom') {
-            results.add(source);
-          }
-        }
-      });
-
-      return Array.from(results);
-    }
-  }
-
-
-  photosUsed(sources) {
-    if (sources !== undefined) {
-      this._photosUsed = sources;
-      return this;
-
-    } else {
-      let results = new Set();
-      this._stack.slice(1, this._index + 1).forEach(function(edit) {
-        for (const source of edit.photosUsed ?? []) {
-          results.add(source);
-        }
-      });
-
-      return Array.from(results);
-    }
-  }
-
-
-  // save the current history state
-  setCheckpoint(key) {
-    d3_select(document).interrupt('editTransition');
-
-    this._checkpoints[key] = {
-      stack: this._stack,
-      index: this._index
+  /**
+   * sourcesUsed
+   * This prepares the list of all sources used during the user's editing session.
+   * This is called by `commit.js` when preparing the changeset before uploading.
+   * @return {Object}  Object of all sources used during the user's editing session
+   */
+  sourcesUsed() {
+    const result = {
+      imagery: new Set(),
+      photos:  new Set(),
+      data:    new Set()
     };
-    return this;
-  }
 
-
-  // restore history state to a given checkpoint
-  resetToCheckpoint(key) {
-    d3_select(document).interrupt('editTransition');
-
-    if (key !== undefined && this._checkpoints.hasOwnProperty(key)) {  // reset to given key
-      const fromGraph = this._stack[this._index].graph;
-
-      this._stack = this._checkpoints[key].stack;
-      this._index = this._checkpoints[key].index;
-
-      const toGraph = this._stack[this._index].graph;
-      const difference = new Difference(fromGraph, toGraph);
-      this.emit('change', difference);
+    // Start at `1` - there won't be sources on the `base` edit..
+    // End at `_index` - don't continue into the redo part of the history..
+    for (let i = 1; i <= this._index; i++) {
+      const edit = this._history[i];
+      for (const which of ['imagery', 'photos', 'data']) {
+        for (const val of edit.sources[which] ?? []) {
+          result[which].add(val);
+        }
+      }
     }
+
+    return result;
   }
 
 
-  // `toIntroGraph()` is used to export the intro graph used by the walkthrough.
-  //
-  // To use it:
-  //  1. Start the walkthrough.
-  //  2. Get to a "free editing" tutorial step
-  //  3. Make your edits to the walkthrough map
-  //  4. In your browser dev console run:  `context.systems.edits.toIntroGraph()`
-  //  5. This outputs stringified JSON to the browser console
-  //  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
+  /**
+   * toIntroGraph
+   * This is used to export the intro graph used by the walkthrough.
+   * This function is indended to be called manually by developers.
+   * We only use this on very rare occasions to change the walkthrough data.
+   *
+   * To use it:
+   *  1. Start the walkthrough.
+   *  2. Get to a "free editing" tutorial step
+   *  3. Make your edits to the walkthrough map
+   *  4. In your browser dev console run:  `context.systems.editor.toIntroGraph()`
+   *  5. This outputs stringified JSON to the browser console (it will be a lot!)
+   *  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
+   *
+   * @returns {string} The stringified walkthrough data
+   */
   toIntroGraph() {
-    let nextID = { n: 0, r: 0, w: 0 };
-    let permIDs = {};
-    let graph = this.graph();
-    let result = new Map();   // Map(entityID -> Entity)
+    const nextID = { n: 0, r: 0, w: 0 };
+    const permIDs = {};
+    const graph = this.stable.graph;
+    const result = new Map();   // Map(entityID -> Entity)
 
     // Copy base entities..
     for (const entity of graph.base.entities.values()) {
-      const copy = _copyIntroEntity(entity);
+      const copy = _copyEntity(entity);
       result.set(copy.id, copy);
     }
 
     // Replace base entities with head entities..
     for (const [entityID, entity] of graph.local.entities) {
       if (entity) {
-        const copy = _copyIntroEntity(entity);
+        const copy = _copyEntity(entity);
         result.set(copy.id, copy);
       } else {
         result.delete(entityID);
@@ -471,23 +835,24 @@ export class EditSystem extends AbstractSystem {
       }
       if (Array.isArray(entity.members)) {
         entity.members = entity.members.map(member => {
-          member.id = permIDs[member.id] || member.id;
+          member.id = permIDs[member.id] ?? member.id;
           return member;
         });
       }
     }
 
     // Convert to Object so we can stringify it.
-    let obj = {};
+    const obj = {};
     for (const [k, v] of result) { obj[k] = v; }
     return JSON.stringify({ dataIntroGraph: obj });
 
 
-    function _copyIntroEntity(entity) {
-      let copy = utilObjectOmit(entity, ['type', 'user', 'v', 'version', 'visible']);
+    // Return a simplified copy of the Entity to save space.
+    function _copyEntity(entity) {
+      const copy = utilObjectOmit(entity, ['type', 'user', 'v', 'version', 'visible']);
 
       // Note: the copy is no longer an osmEntity, so it might not have `tags`
-      if (copy.tags && !Object.keys(copy.tags)) {
+      if (copy.tags && Object.keys(copy.tags).length === 0) {
         delete copy.tags;
       }
 
@@ -512,28 +877,30 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  //
-  //
-  //
+  /**
+   * toJSON
+   * Save the edit history to JSON.
+   * @return  {string?}  A String containing the JSON, or `undefined` if nothing to save
+   */
   toJSON() {
     if (!this.hasChanges()) return;
 
-    const baseGraph = this.base();       // The initial unedited graph
+    const OSM_PRECISION = 7;
+    const baseGraph = this.base.graph;   // The initial unedited graph
     const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
     const baseEntities = new Map();      // Map(entityID -> Entity)
-    const stackData = [];
+    const historyData = [];
 
-    // Preserve the users stack of edits..
-    for (const s of this._stack) {
-      const currGraph = s.graph;   // edit done at this point in time
-      let modified = [];
-      let deleted = [];
+    // Preserve the users history of edits..
+    for (const edit of this._history) {
+      const modified = [];
+      const deleted = [];
 
       // watch out: for modified entities we index on "key" - e.g. "n1v1"
-      for (const [entityID, entity] of currGraph.local.entities) {
+      for (const [entityID, entity] of edit.graph.local.entities) {
         if (entity) {
           const key = osmEntity.key(entity);
-          modifiedEntities.set(key, entity);
+          modifiedEntities.set(key, _copyEntity(entity));
           modified.push(key);
         } else {
           deleted.push(entityID);
@@ -542,16 +909,16 @@ export class EditSystem extends AbstractSystem {
         // Collect the original versions of edited Entities.
         const original = baseGraph.hasEntity(entityID);
         if (original && !baseEntities.has(entityID)) {
-          baseEntities.set(entityID, original);
+          baseEntities.set(entityID, _copyEntity(original));
         }
 
-        // For modified ways, collect originals of child nodes also.
+        // For modified ways, collect originals of child nodes also. - iD#4108
         // (This is needed for situations where we connect a way to an existing node)
         if (entity && entity.nodes) {
           for (const childID of entity.nodes) {
             const child = baseGraph.hasEntity(childID);
             if (child && !baseEntities.has(child.id)) {
-              baseEntities.set(child.id, child);
+              baseEntities.set(child.id, _copyEntity(child));
             }
           }
         }
@@ -562,208 +929,284 @@ export class EditSystem extends AbstractSystem {
         if (original) {
           for (const parent of baseGraph.parentWays(original)) {
             if (!baseEntities.has(parent.id)) {
-              baseEntities.set(parent.id, parent);
+              baseEntities.set(parent.id, _copyEntity(parent));
             }
           }
         }
       }
 
+      const sources = edit.sources ?? {};
+
       const item = {};
-      if (modified.length)  item.modified = modified;
-      if (deleted.length)   item.deleted = deleted;
-      if (s.imageryUsed)    item.imageryUsed = s.imageryUsed;
-      if (s.photosUsed)     item.photosUsed = s.photosUsed;
-      if (s.annotation)     item.annotation = s.annotation;
-      if (s.transform)      item.transform = s.transform;
-      if (s.selectedIDs)    item.selectedIDs = s.selectedIDs;
-      stackData.push(item);
+      if (modified.length)   item.modified = modified;
+      if (deleted.length)    item.deleted = deleted;
+      if (edit.annotation)   item.annotation = edit.annotation;
+      if (edit.selectedIDs)  item.selectedIDs = edit.selectedIDs;
+      if (edit.transform)    item.transform = edit.transform;
+      if (sources.imagery)   item.imageryUsed = sources.imagery;
+      if (sources.photos)    item.photosUsed = sources.photos;
+      if (sources.data)      item.dataUsed = sources.data;
+      historyData.push(item);
     }
 
     return JSON.stringify({
       version: 3,
       entities: [...modifiedEntities.values()],
       baseEntities: [...baseEntities.values()],
-      stack: stackData,
+      stack: historyData,
       nextIDs: osmEntity.id.next,
       index: this._index,
       timestamp: (new Date()).getTime()
     });
+
+
+    // Return a simplified copy of the Entity to save space.
+    function _copyEntity(entity) {
+      // omit 'visible'
+      const copy = utilObjectOmit(entity, ['visible']);
+
+      // omit 'tags' if empty
+      if (copy.tags && Object.keys(copy.tags).length === 0) {
+        delete copy.tags;
+      }
+
+      // simplify float precision
+      if (Array.isArray(copy.loc)) {
+        copy.loc[0] = +copy.loc[0].toFixed(OSM_PRECISION);
+        copy.loc[1] = +copy.loc[1].toFixed(OSM_PRECISION);
+      }
+      return copy;
+    }
+
   }
 
 
-  //
-  //
-  //
-  fromJSON(json, loadChildNodes) {
+  /**
+   * fromJSON
+   * Restore the edit history from a JSON string.
+   * Optionally fetch missing child nodes from OSM
+   *   (bhousel - not clear to me under what circumstances we would have a `false` here? Test environment?)
+   * @param  {string}   json - Stringified JSON to parse
+   * @param  {boolean}  loadMissing - if `true` also attempt to fetch missing child nodes from OSM API
+   * @return {string?}  A String containing the JSON, or `undefined` if nothing to save
+   */
+  fromJSON(json, loadMissing) {
     const context = this.context;
-    const rapidSystem = context.systems.rapid;
-    const mapSystem = context.systems.map;
+    const map = context.systems.map;
 
-    const baseGraph = this.base();   // The initial unedited graph
-    const hist = JSON.parse(json);
-    let loadComplete = true;
+    const baseGraph = this.base.graph;   // The initial unedited Graph
+    const loading = uiLoading(context).blocking(true);  // Only shown if we are looking for missingIDs
+    const backup = JSON.parse(json);
 
-    osmEntity.id.next = hist.nextIDs;
-    this._index = hist.index;
-
-    if (hist.version !== 2 && hist.version !== 3) {
-      throw new Error(`History version ${hist.version} not supported.`);
+    if (backup.version !== 3) {
+      throw new Error(`Backup version ${backup.version} not supported.`);
     }
 
-    // Instantiate the modified entities
+    // Restore the modified entities
     const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
-    for (const e of hist.entities) {
+    for (const e of backup.entities) {
       modifiedEntities.set(osmEntity.key(e), osmEntity(e));
     }
 
-    if (hist.version >= 3) {
-      // If v3+, instantiate base entities too.
-      const baseEntities = hist.baseEntities.map(e => osmEntity(e));
+    // Restore base entities..
+    const baseEntities = backup.baseEntities.map(e => osmEntity(e));
 
-      // Merge originals into base graph, note that the force parameter is `true` here
-      // to replace any that might have been loaded from the API.
-      const graphs = this._stack.map(s => s.graph);
-      baseGraph.rebase(baseEntities, graphs, true);
-      this._tree.rebase(baseEntities, true);
+    // Reconstruct the edit history..
+    let prevGraph = baseGraph;
+    this._history = backup.stack.map((item, index) => {
+      // Leave the base edit alone, this first edit should have nothing in it.
+      if (index === 0) return this.base;
 
-      // When we restore a modified way, we also need to fetch any missing
-      // childnodes that would normally have been downloaded with it.. iD#2142
-      if (loadChildNodes) {
-        const osm = context.services.osm;
-        const baseWays = baseEntities.filter(entity => entity.type === 'way');
-        const nodeIDs = baseWays.reduce(function(acc, way) { return utilArrayUnion(acc, way.nodes); }, []);
-        let missing = nodeIDs.filter(nodeID => !baseGraph.hasEntity(nodeID));
-
-        if (missing.length && osm) {
-          loadComplete = false;
-          mapSystem.redrawEnabled = false;
-
-          const loading = uiLoading(context).blocking(true);
-          context.container().call(loading);
-
-          const _childNodesLoaded = function(err, result) {
-            if (!err) {
-              const visibleGroups = utilArrayGroupBy(result.data, 'visible');
-              const visibles = visibleGroups.true || [];      // alive nodes
-              const invisibles = visibleGroups.false || [];   // deleted nodes
-
-              if (visibles.length) {
-                const visibleIDs = visibles.map(entity => entity.id);
-                const graphs = this._stack.map(s => s.graph);
-                missing = utilArrayDifference(missing, visibleIDs);
-                baseGraph.rebase(visibles, graphs, true);   // force = true
-                this._tree.rebase(visibles, true);          // force = true
-              }
-
-              // fetch older versions of nodes that were deleted..
-              invisibles.forEach(function(entity) {
-                osm.loadEntityVersion(entity.id, +entity.version - 1, _childNodesLoaded);
-              });
-            }
-
-            if (err || !missing.length) {
-              loading.close();
-              mapSystem.redrawEnabled = true;
-              this.emit('change');
-              this.emit('restore');
-            }
-          };
-
-          osm.loadMultiple(missing, _childNodesLoaded);
-        }
+      const entities = {};
+      for (const key of item.modified ?? []) {
+        const entity = modifiedEntities.get(key);
+        entities[entity.id] = entity;
       }
-    }   // end v3+
-
-
-    // Replace the history stack.
-    this._stack = hist.stack.map((s, index) => {
-      // Leave base graph alone, this first entry should have nothing in it.
-      if (index === 0) return this._stack[0];
-
-      let entities = {};
-
-      if (Array.isArray(s.modified)) {
-        s.modified.forEach(key => {
-          const entity = modifiedEntities.get(key);
-          entities[entity.id] = entity;
-        });
+      for (const entityID of item.deleted ?? []) {
+        entities[entityID] = undefined;
       }
 
-      if (Array.isArray(s.deleted)) {
-        s.deleted.forEach(entityID => {
-          entities[entityID] = undefined;
-        });
-      }
+      const graph = new Graph(prevGraph).load(entities);
+      prevGraph = graph;
 
-      // restore Rapid sources
-      if (rapidSystem && s.annotation?.type === 'rapid_accept_feature') {
-        const sourceTag = s.annotation.source;
-        rapidSystem.sources.add('mapwithai');      // always add 'mapwithai'
-        if (sourceTag && /^esri/.test(sourceTag)) {
-          rapidSystem.sources.add('esri');       // add 'esri' for esri sources
-        }
-      }
+      const sources = {};
+      if (Array.isArray(item.imageryUsed))  sources.imagery = item.imageryUsed;
+      if (Array.isArray(item.photosUsed))   sources.photos = item.photosUsed;
+      if (Array.isArray(item.dataUsed))     sources.data = item.dataUsed;
 
-      return {
-        graph: new Graph(baseGraph).load(entities),
-        annotation: s.annotation,
-        imageryUsed: s.imageryUsed,
-        photosUsed: s.photosUsed,
-        transform: s.transform,
-        selectedIDs: s.selectedIDs
-      };
+      return new Edit({
+        annotation:  item.annotation,
+        graph:       graph,
+        selectedIDs: item.selectedIDs,
+        sources:     sources,
+        transform:   item.transform
+      });
     });
 
+    // Restore some other properties..
+    osmEntity.id.next = backup.nextIDs;
+    this._index = backup.index;
 
-    const transform = this._stack[this._index].transform;
-    if (transform) {
-      mapSystem.transform(transform);
+    // Merge originals into Base Graph.
+    // Note that the force parameter is `true` here to replace anything that might
+    // have been loaded from the API while the user was waiting to press "restore".
+    const graphs = this._history.map(edit => edit.graph);
+    baseGraph.rebase(baseEntities, graphs, true);   // force = true
+    this._tree.rebase(baseEntities, true);          // force = true
+    const seenIDs = new Set(baseEntities.map(entity => entity.id));
+    this.emit('merge', seenIDs);
+
+    // Call _finish when we believe we have everything.
+    const _finish = () => {
+      loading.close();            // unblock ui
+      map.redrawEnabled = true;   // unbock drawing
+      this._replaceStaging();
+      this._updateChanges();
+      this.emit('historyjump');
+    };
+
+
+    // When we restore modified ways, we also need to fetch any missing childNodes
+    // that would normally have been downloaded with those ways.. see iD#2142
+    // As added challenges:
+    //  - We have to keep the UI blocked while this is happening, because it's destructive to the graphs/edits.
+    //  - Callback can be called multiple times, so we have to keep track of how many of the missing nodes we got.
+    //  - The child nodes may have been deleted, so we may have to fetch older non-deleted copies
+    //
+    // A thought I'm having is - if we need to do all this anyway, it might make more sense to just store the
+    // base version numbers rather than base entities, then use loadEntityVersion to fetch exactly what we need.
+    //
+    const missingIDs = new Set();
+    const osm = context.services.osm;
+    if (loadMissing && osm) {
+      const baseWays = baseEntities.filter(entity => entity.type === 'way');
+      for (const way of baseWays) {
+        for (const nodeID of way.nodes) {
+          if (!baseGraph.hasEntity(nodeID)) {
+            missingIDs.add(nodeID);
+          }
+        }
+      }
+
+      if (missingIDs.size) {
+        map.redrawEnabled = false;           // block drawing
+        context.container().call(loading);   // block ui
+
+        // watch out: this callback may be called multiple times..
+        const _missingEntitiesLoaded = (err, result) => {
+          if (!err) {
+            const visibleGroups = utilArrayGroupBy(result.data, 'visible');
+            const visibles = visibleGroups.true ?? [];      // alive nodes
+            const invisibles = visibleGroups.false ?? [];   // deleted nodes
+
+            // Visible (not deleted) entities can be merged directly in..
+            if (visibles.length) {
+              for (const visible of visibles) {
+                missingIDs.delete(visible.id);
+              }
+              baseGraph.rebase(visibles, graphs, true);   // force = true
+              this._tree.rebase(visibles, true);          // force = true
+              const seenIDs = new Set(visibles.map(entity => entity.id));
+              this.emit('merge', seenIDs);
+            }
+
+            // Invisible (deleted) entities, need to go back a version to find them..
+            for (const entity of invisibles) {
+              osm.loadEntityVersion(entity.id, +entity.version - 1, _missingEntitiesLoaded);
+            }
+          }
+
+          if (err ?? !missingIDs.size) {
+            _finish();
+          }
+        };
+
+        osm.loadMultiple(missingIDs, _missingEntitiesLoaded);
+      }
     }
 
-    if (loadComplete) {
-      this.emit('change');
-      this.emit('restore');
+    if (!missingIDs.size) {
+      _finish();
     }
 
-    return this;
   }
 
 
-  lock() {
-    return this._mutex.lock();
-  }
+  /**
+   * saveBackup
+   * Backup the user's edits to a JSON string in localStorage.
+   * This code runs occasionally as the user edits.
+   * @return  `true` if a backup was saved
+   */
+  saveBackup() {
+    const context = this.context;
+    if (context.inIntro) return;               // Don't backup edits made in the walkthrough
+    if (context.mode?.id === 'save') return;   // Edits made in save mode may be conflict resolutions
+    if (this._canRestoreBackup) return;        // Wait to see if the user wants to restore other edits
+    if (this._inTransition) return;            // Don't backup edits mid-transition
+    if (this._inTransaction) return;           // Don't backup edits mid-transaction
+    if (!this._mutex.locked()) return;         // Another browser tab owns the history
 
-
-  unlock() {
-    return this._mutex.unlock();
-  }
-
-
-  save() {
-    // bail out if another browser tab has locked the mutex, or changes exist that the user may want to restore.
-    if (!this._mutex.locked() || this._hasRestorableChanges) return;
-
-    const storage = this.context.systems.storage;
+    const storage = context.systems.storage;
     const json = this.toJSON();
     if (json) {
-      const success = storage.setItem(this._historyKey(), json);
-      if (!success) this.emit('storage_error');
-    } else {
-      storage.removeItem(this._historyKey());
+      const success = storage.setItem(this._backupKey(), json);
+      if (success) {
+        return true;
+      } else {
+        this.emit('storage_error');
+      }
     }
   }
 
 
-  // delete the history version saved in localStorage
-  clearSaved() {
-    this.context.debouncedSave.cancel();
+  /**
+   * canRestoreBackup
+   * This flag will be `true` if `initAsync` has determined that there is a restorable
+   *  backup, and we are waiting on the user to make a decision about what to do with it.
+   * @return `true` if there is a backup to restore
+   * @readonly
+   */
+  get canRestoreBackup() {
+    return this._canRestoreBackup;
+  }
 
-    // bail out if another browser tab has locked the mutex
-    if (!this._mutex.locked()) return;
 
-    this._hasRestorableChanges = false;
+  /**
+   * restoreBackup
+   * Restore the user's backup from localStorage.
+   * This happens when:
+   * - The user chooses to "Restore my changes" from the restore screen
+   */
+  restoreBackup() {
+    this._canRestoreBackup = false;
+
+    if (!this._mutex.locked()) return;  // another browser tab owns the history
+
     const storage = this.context.systems.storage;
-    storage.removeItem(this._historyKey());
+    const json = storage.getItem(this._backupKey());
+    if (json) {
+      this.fromJSON(json, true);
+    }
+  }
+
+
+  /**
+   * clearBackup
+   * Remove any backup stored in localStorage.
+   * This happens when:
+   * - The user chooses to "Discard my changes" from the restore screen
+   * - The user switches sources with the source switcher
+   * - A changeset is inflight, we remove it to prevent the user from restoring duplicate edits
+   */
+  clearBackup() {
+    this._canRestoreBackup = false;
+    this.deferredBackup.cancel();
+
+    if (!this._mutex.locked()) return;  // another browser tab owns the history
+
+    const storage = this.context.systems.storage;
+    storage.removeItem(this._backupKey());
 
     // clear the changeset metadata associated with the saved history
     storage.removeItem('comment');
@@ -772,99 +1215,110 @@ export class EditSystem extends AbstractSystem {
   }
 
 
-  savedHistoryJSON() {
-    const storage = this.context.systems.storage;
-    return storage.getItem(this._historyKey());
-  }
-
-
-  hasRestorableChanges() {
-    return this._hasRestorableChanges;
-  }
-
-
-  // load history from a version stored in localStorage
-  restore() {
-    if (this._mutex.locked()) {
-      this._hasRestorableChanges = false;
-      const json = this.savedHistoryJSON();
-      if (json) this.fromJSON(json, true);
-    }
-  }
-
-
-  // Rapid uses namespaced keys so multiple installations do not conflict
-  _historyKey() {
+  /**
+   * _backupKey
+   * Generate a key used to store/retrieve backup edits.
+   * It uses `window.location.origin` avoid conflicts with other instances of Rapid.
+   */
+  _backupKey() {
     return 'Rapid_' + window.location.origin + '_saved_history';
   }
 
 
-  // internal _act, accepts Array of actions and eased time
-  _act(args, t) {
-    let actions = args.slice();  // copy
+  /**
+   * _gatherSources
+   * Get the sources used to make the `staging` edit.
+   * @param   {string|Object?} annotation - Rapid edits may optionally use an annotation that includes the data source used
+   * @return  {Object}  sources Object containing `imagery`, `photos`, `data` properties
+   */
+  _gatherSources(annotation) {
+    const context = this.context;
 
-    let annotation;
-    if (typeof actions.at(-1) !== 'function') {
-      annotation = actions.pop();
+    const sources = {};
+    const imageryUsed = context.systems.imagery.imageryUsed();
+    if (imageryUsed.length)  {
+      sources.imagery = imageryUsed;
     }
 
-    let graph = this._stack[this._index].graph;
+    const photosUsed = context.systems.photos.photosUsed();
+    if (photosUsed.length) {
+      sources.photos = photosUsed;
+    }
+
+    const customLayer = context.scene().layers.get('custom-data');
+    const customDataUsed = customLayer?.dataUsed() ?? [];
+    const rapidDataUsed = annotation?.dataUsed ?? [];
+    const dataUsed = [...rapidDataUsed, ...customDataUsed];
+    if (dataUsed.length) {
+      sources.data = dataUsed;
+    }
+
+    return sources;
+  }
+
+
+  /**
+   * _perform
+   * Internal `_perform`, accepts both Actions array and eased time,
+   * Performs the edits and emits no events.
+   * @param  {Array}    Array of Action functions to perform
+   * @param  {number?}  Eased time, should be in the range [0..1]
+   */
+  _perform(actions, t = 1) {
+    let graph = this._staging.graph;
     for (const fn of actions) {
-      graph = fn(graph, t);
+      if (typeof fn === 'function') {
+        graph = fn(graph, t);
+      }
     }
 
-    return {
-      graph: graph,
-      annotation: annotation,
-      imageryUsed: this._imageryUsed,
-      photosUsed: this._photosUsed,
-      transform: this.context.projection.transform(),
-      selectedIDs: this.context.selectedIDs()
-    };
+    this._staging.graph = graph;
+    this._hasWorkInProgress = true;
   }
 
 
-  // internal _perform with eased time
-  _perform(args, t) {
-    const previous = this._stack[this._index].graph;
-    this._stack = this._stack.slice(0, this._index + 1);
-    const edit = this._act(args, t);
-    this._stack.push(edit);
-    this._index++;
-    return this._change(previous);
+  /**
+   * _replaceStaging
+   * This replaces the `staging` work-in-progress edit with a fresh copy of `stable`.
+   * Rolls back the edits and emits no events.
+   */
+  _replaceStaging() {
+    this._staging = new Edit({ graph: new Graph(this.stable.graph) });
+    this._hasWorkInProgress = false;
   }
 
 
-  // internal _replace with eased time
-  _replace(args, t) {
-    const previous = this._stack[this._index].graph;
-    const edit = this._act(args, t);
-    this._stack[this._index] = edit;
-    return this._change(previous);
-  }
+  /**
+   * _updateChanges
+   * Recalculate the differences and emit `stablechange` and `stagingchange` events.
+   * @return {Difference}  Difference between before and after of `staging` Edit
+   */
+  _updateChanges() {
+    if (this._inTransaction) return;
 
+    const baseGraph = this.base.graph;
+    const stableGraph = this.stable.graph;
+    const stagingGraph = this.staging.graph;
+    let stagingDifference;
 
-  // internal this._overwrite with eased time
-  _overwrite(args, t) {
-    const previous = this._stack[this._index].graph;
-    if (this._index > 0) {
-      this._index--;
-      this._stack.pop();
+    // Note: `this._hasWorkInProgress` is included here because in some cases the graph
+    // won't actually change - for example an Action that exits early or "performs" a no-op.
+    // We still want to generate an empty Difference and emit 'stagingchange' in these situations.
+    if (this._lastStagingGraph !== stagingGraph || this._hasWorkInProgress) {
+      stagingDifference = new Difference(this._lastStagingGraph, stagingGraph);
+      this._lastStagingGraph = stagingGraph;
+      this.emit('stagingchange', stagingDifference);
     }
-    this._stack = this._stack.slice(0, this._index + 1);
-    const edit = this._act(args, t);
-    this._stack.push(edit);
-    this._index++;
-    return this._change(previous);
-  }
 
-
-  // determine difference and dispatch a change event
-  _change(previous) {
-    const difference = new Difference(previous, this.graph());
-    if (!this._pausedGraph) {
-      this.emit('change', difference);
+    if (this._lastStableGraph !== stableGraph) {
+      this._fullDifference = new Difference(baseGraph, stableGraph);
+      const stableDifference = new Difference(this._lastStableGraph, stableGraph);
+      this._lastStableGraph = stableGraph;
+      this.emit('stablechange', stableDifference);
+      this.deferredBackup();
     }
-    return difference;
+
+    return stagingDifference;  // only one place in the code uses this return - split operation?
   }
+
 }

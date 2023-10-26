@@ -12,23 +12,25 @@ export function uiIntroPoint(context, curtain) {
   const chapter = { title: 'intro.points.title' };
   const editMenu = context.systems.ui.editMenu;
   const container = context.container();
-  const editSystem = context.systems.edits;
-  const mapSystem = context.systems.map;
-  const presetSystem = context.systems.presets;
+  const editor = context.systems.editor;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const presets = context.systems.presets;
 
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);
-  const cafePreset = presetSystem.item('amenity/cafe');
+  const cafePreset = presets.item('amenity/cafe');
 
   let _chapterCancelled = false;
   let _rejectStep = null;
   let _onModeChange = null;
-  let _onEditChange = null;
+  let _onStableChange = null;
   let _pointID = null;
 
 
   // Helper functions
   function _doesPointExist() {
-    return _pointID && context.hasEntity(_pointID);
+    const graph = editor.staging.graph;
+    return _pointID && graph.hasEntity(_pointID);
   }
 
   function _isPointSelected() {
@@ -55,14 +57,14 @@ export function uiIntroPoint(context, curtain) {
   // Click "Add Point" button to advance
   function addPointAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('initial');
+    editor.restoreCheckpoint('initial');
     _pointID = null;
 
     const loc = buildingExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -93,8 +95,7 @@ export function uiIntroPoint(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = () => resolve(searchPresetAsync);
-      _onEditChange = (difference) => {
-        if (!difference) return;
+      _onStableChange = (difference) => {
         const created = difference.created();
         if (created.length === 1) {
           _pointID = created[0].id;
@@ -109,7 +110,7 @@ export function uiIntroPoint(context, curtain) {
     })
     .finally(() => {
       _onModeChange = null;
-      _onEditChange = null;
+      _onStableChange = null;
     });
   }
 
@@ -121,14 +122,14 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+        if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
         _onModeChange = reject;  // disallow mode change
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onStableChange = (difference) => {
           const modified = difference.modified();
           if (modified.length === 1) {
-            if (presetSystem.match(modified[0], context.graph()) === cafePreset) {
+            const graph = editor.staging.graph;
+            if (presets.match(modified[0], graph) === cafePreset) {
               resolve(aboutFeatureEditorAsync);
             } else {
               reject();  // didn't pick cafe
@@ -168,7 +169,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
         container.select('.inspector-wrap').on('wheel.intro', null);
         container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       });
@@ -182,7 +183,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+        if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(addNameAsync);
@@ -193,7 +194,7 @@ export function uiIntroPoint(context, curtain) {
           revealSelector: '.entity-editor-pane',
           tipHtml: helpHtml(context, 'intro.points.feature_editor'),
           tipClass: 'intro-points-describe',
-          buttonText: context.tHtml('intro.ok'),
+          buttonText: l10n.tHtml('intro.ok'),
           buttonCallback: () => resolve(addNameAsync)
         });
       }))
@@ -210,23 +211,24 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
-        if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+        if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(hasPointAsync);
-        _onEditChange = () => resolve(addCloseEditorAsync);
+        _onStableChange = () => resolve(addCloseEditorAsync);
 
         showEntityEditor(container);
 
         // It's possible for the user to add a name in a previous step..
         // If so, don't tell them to add the name in this step.
         // Give them an OK button instead.
-        const entity = context.hasEntity(_pointID);
+        const graph = editor.staging.graph;
+        const entity = graph.hasEntity(_pointID);
         if (entity.tags.name) {
           const tooltip = curtain.reveal({
             revealSelector: '.entity-editor-pane',
             tipHtml: helpHtml(context, 'intro.points.fields_info'),
-            buttonText: context.tHtml('intro.ok'),
+            buttonText: l10n.tHtml('intro.ok'),
             buttonCallback: () => resolve(addCloseEditorAsync)
           });
 
@@ -242,7 +244,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -251,7 +253,7 @@ export function uiIntroPoint(context, curtain) {
   // Close entity editor / leave select mode to advance
   function addCloseEditorAsync() {
     if (!_doesPointExist()) return Promise.resolve(addPointAsync);
-    if (!_isPointSelected()) context.enter('select-osm', { selectedIDs: [_pointID] });
+    if (!_isPointSelected()) context.enter('select-osm', { selection: { osm: [_pointID] }});
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -278,11 +280,18 @@ export function uiIntroPoint(context, curtain) {
     if (!_doesPointExist()) return Promise.resolve(addPointAsync);
 
     // Make sure it's still a cafe, in case user somehow changed it..
-    const entity = context.entity(_pointID);
-    const oldPreset = presetSystem.match(entity, context.graph());
-    context.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
+    const graph = editor.staging.graph;
+    const entity = graph.entity(_pointID);
+    const preset = presets.match(entity, graph);
+    if (preset !== cafePreset) {
+      editor.perform(actionChangePreset(_pointID, preset, cafePreset));
+      editor.commit({
+        annotation: l10n.t('operations.change_tags.annotation'),
+        selectedIDs: [_pointID]
+      });
+    }
 
-    editSystem.setCheckpoint('hasPoint');
+    editor.setCheckpoint('hasPoint');
     return Promise.resolve(reselectPointAsync);  // advance
   }
 
@@ -291,13 +300,13 @@ export function uiIntroPoint(context, curtain) {
   // Reselect the point to advance
   function reselectPointAsync() {
     context.enter('browse');
-    editSystem.resetToCheckpoint('hasPoint');
+    editor.restoreCheckpoint('hasPoint');
 
     const loc = buildingExtent.center();
-    const msec = transitionTime(loc, mapSystem.center());
+    const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    return mapSystem
+    return map
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -323,7 +332,7 @@ export function uiIntroPoint(context, curtain) {
         if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
-        _onEditChange = () => resolve(updateCloseEditorAsync);
+        _onStableChange = () => resolve(updateCloseEditorAsync);
 
         showEntityEditor(container);
 
@@ -335,7 +344,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
       });
  }
 
@@ -370,7 +379,7 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onEditChange = reject;  // disallow doing anything else
+      _onStableChange = reject;  // disallow doing anything else
 
       const textID = context.lastPointerType === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       curtain.reveal({
@@ -383,7 +392,7 @@ export function uiIntroPoint(context, curtain) {
       });
     })
     .finally(() => {
-      _onEditChange = null;
+      _onStableChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -401,8 +410,7 @@ export function uiIntroPoint(context, curtain) {
         _onModeChange = () => {
           if (_doesPointExist()) reject();  // point still exists, try again
         };
-        _onEditChange = (difference) => {
-          if (!difference) return;
+        _onStableChange = (difference) => {
           const deleted = difference.deleted();
           if (deleted.length === 1 && deleted[0].id === _pointID) {
             resolve(undoAsync);
@@ -419,7 +427,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onEditChange = null;
+        _onStableChange = null;
       });
   }
 
@@ -429,14 +437,14 @@ export function uiIntroPoint(context, curtain) {
   function undoAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onEditChange = () => resolve(playAsync);
+      _onStableChange = () => resolve(playAsync);
       curtain.reveal({
         revealSelector: '.top-toolbar button.undo-button',
         tipHtml: helpHtml(context, 'intro.points.undo')
       });
     })
     .finally(() => {
-      _onEditChange = null;
+      _onStableChange = null;
     });
   }
 
@@ -448,8 +456,8 @@ export function uiIntroPoint(context, curtain) {
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-area',
-      tipHtml: helpHtml(context, 'intro.points.play', { next: context.t('intro.areas.title') }),
-      buttonText: context.tHtml('intro.ok'),
+      tipHtml: helpHtml(context, 'intro.points.play', { next: l10n.t('intro.areas.title') }),
+      buttonText: l10n.tHtml('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -460,23 +468,23 @@ export function uiIntroPoint(context, curtain) {
     _chapterCancelled = false;
     _rejectStep = null;
     _onModeChange = null;
-    _onEditChange = null;
+    _onStableChange = null;
 
     context.on('modechange', _modeChangeListener);
-    editSystem.on('change', _editChangeListener);
+    editor.on('stablechange', _stableChangeListener);
 
     runAsync(addPointAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
-        editSystem.off('change', _editChangeListener);
+        editor.off('stablechange', _stableChangeListener);
       });
 
-    function _modeChangeListener(mode) {
-      if (typeof _onModeChange === 'function') _onModeChange(mode);
+    function _modeChangeListener(...args) {
+      if (typeof _onModeChange === 'function') _onModeChange(...args);
     }
-    function _editChangeListener(difference) {
-      if (typeof _onEditChange === 'function') _onEditChange(difference);
+    function _stableChangeListener(...args) {
+      if (typeof _onStableChange === 'function') _onStableChange(...args);
     }
   };
 

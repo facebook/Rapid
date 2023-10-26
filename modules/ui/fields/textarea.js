@@ -5,7 +5,9 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiFieldTextarea(context, uifield) {
-  let dispatch = d3_dispatch('change');
+  const l10n = context.systems.l10n;
+  const dispatch = d3_dispatch('change');
+
   let input = d3_select(null);
   let _tags;
 
@@ -53,8 +55,8 @@ export function uiFieldTextarea(context, uifield) {
     _tags = tags;
     const key = uifield.key;
     const isMixed = Array.isArray(tags[key]);
-    const placeholder = isMixed ? context.t('inspector.multiple_values') :
-      (uifield.placeholder || context.t('inspector.unknown'));
+    const placeholder = isMixed ? l10n.t('inspector.multiple_values') :
+      (uifield.placeholder || l10n.t('inspector.unknown'));
 
     utilGetSetValue(input, !isMixed && tags[key] ? tags[key] : '')
       .attr('title', isMixed ? tags[key].filter(Boolean).join('\n') : undefined)

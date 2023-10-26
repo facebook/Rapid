@@ -342,11 +342,11 @@ export class PixiLayerCustomData extends AbstractLayer {
 
 
   /**
-   * getSrc
-   * @return {string}  A string describing the data source
+   * dataUsed
+   * @return  {Array}  Array of single element for the data layer currently enabled
    */
-  getSrc() {
-    return this._dataUsed;
+  dataUsed() {
+    return this._dataUsed ? [ this._dataUsed ] : [];
   }
 
 
