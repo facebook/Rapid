@@ -25,9 +25,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const isPowerUser = urlhash.getParam('poweruser') === 'true';
     if (isPowerUser) return false;
 
-    const annotations = editor.peekAllAnnotations();
-    const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');
-    return aiFeatureAccepts.length >= ACCEPT_FEATURES_LIMIT;
+    return rapid.acceptIDs.size >= ACCEPT_FEATURES_LIMIT;
   }
 
 
@@ -63,10 +61,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     };
 
     editor.perform(actionRapidAcceptFeature(_datum.id, graph));
-    editor.commit({
-      annotation: annotation,
-      selectedIDs: [_datum.id]
-    });
+    editor.commit({ annotation: annotation, selectedIDs: [_datum.id] });
     context.enter('select-osm', { selection: { osm: [_datum.id] }} );
 
     if (context.inIntro) return;
@@ -92,9 +87,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       origid: _datum.__origid__
     };
     editor.perform(actionNoop());
-    editor.commit({
-      annotation: annotation
-    });
+    editor.commit({ annotation: annotation });
     context.enter('browse');
   }
 

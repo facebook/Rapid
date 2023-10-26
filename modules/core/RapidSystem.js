@@ -37,7 +37,8 @@ export class RapidSystem extends AbstractSystem {
 
     // Watch edit history to keep track of which features have been accepted by the user.
     // These features will be filtered out when drawing
-    this.acceptedIDs = new Set();
+    this.acceptIDs = new Set();
+    this.ignoreIDs = new Set();
 
     this._datasets = new Map();   // Map(datasetID -> dataset)
     this._taskExtent = null;
@@ -130,7 +131,8 @@ export class RapidSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    this.acceptedIDs.clear();
+    this.acceptIDs.clear();
+    this.ignoreIDs.clear();
     return Promise.resolve();
   }
 
@@ -220,24 +222,18 @@ export class RapidSystem extends AbstractSystem {
   }
 
 
-  /**
-   *
-   */
-  _wasRapidEdit(annotation) {
-    return annotation?.type && /^rapid/.test(annotation.type);
-  }
-
 
   /**
    * _stablechange
-   * This is called anytime the history changes, we recompute the acceptedIDs set.
+   * This is called anytime the history changes, we recompute the accepted/ignored sets.
    * This can run on history change, undo, redo, or history restore.
    */
   _stablechange() {
     const context = this.context;
     const editor = context.systems.editor;
 
-    this.acceptedIDs.clear();
+    this.acceptIDs.clear();
+    this.ignoreIDs.clear();
 
     const history = editor.history;
     const index = editor.index;
@@ -247,21 +243,16 @@ export class RapidSystem extends AbstractSystem {
     for (let i = 1; i <= index; i++) {
       const edit = history[i];
       const annotation = edit.annotation;
-      if (!annotation?.type || !/^rapid/.test(annotation.type)) continue;  // not a rapid edit?
 
-      this.acceptedIDs.add(annotation.id);
+      if (annotation?.type === 'rapid_accept_feature') {
+        if (annotation.id)      this.acceptIDs.add(annotation.id);
+        if (annotation.origid)  this.acceptIDs.add(annotation.origid);
 
-      // `origid` (the original entity ID), a.k.a. datum.__origid__,
-      // is a hack used to deal with non-deterministic way-splitting
-      // in the roads service. Each way "split" will have an origid
-      // attribute for the original way it was derived from. In this
-      // particular case, restoring from history on page reload, we
-      // prevent new splits (possibly different from before the page
-      // reload) from being displayed by storing the origid and
-      // checking against it in render().
-      if (annotation.origid) {
-        this.acceptedIDs.add(annotation.origid);
+      } else if (annotation?.type === 'rapid_ignore_feature') {
+        if (annotation.id)      this.ignoreIDs.add(annotation.id);
+        if (annotation.origid)  this.ignoreIDs.add(annotation.origid);
       }
+
     }
   }
 

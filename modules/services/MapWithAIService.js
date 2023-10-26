@@ -350,8 +350,9 @@ export class MapWithAIService extends AbstractSystem {
       cache.seen[uid] = true;
     }
 
-    // Handle non-deterministic way splitting from Roads Service. Splits
-    // are consistent within a single request.
+
+    // Handle non-deterministic way splitting from Roads Service. Splits are consistent within a single request.
+    // Each way "split" by the service will have an origid attribute for the original way it was derived from.
     let origUid;
     if (child.attributes.orig_id) {
       origUid = osmEntity.id.fromOSM(child.nodeName, child.attributes.orig_id.value);
