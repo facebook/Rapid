@@ -10,7 +10,22 @@ We actively welcome your pull requests.
 5. Make sure your code lints.
 6. If you haven't already, complete the Contributor License Agreement ("CLA").
 
-## Contributor License Agreement ("CLA")
+### Forking, cloning and running Rapid
+
+- Make sure to use the latest `node` with something like  `nvm install node`
+- Run `npm run all`
+- Run `npm run quickstart` to start the server
+
+### Debugging and testing
+
+- In VSCode go to Run>Add Configuration... and select Launch Chrome
+- Examples of breakpoints
+- Conditional breakpoints
+- Some interesting files to break (init, etc)
+
+### Updating API documentation
+
+- run `npm run docs`## Contributor License Agreement ("CLA")
 In order to accept your pull request, we need you to submit a CLA. You only need
 to do this once to work on any of Facebook's open source projects.
 
