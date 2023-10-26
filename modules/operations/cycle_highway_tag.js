@@ -8,7 +8,7 @@ let _wasSelectedIDs = [];
 
 
 export function operationCycleHighwayTag(context, selectedIDs) {
-  const editor = context.systems.editor;
+  const editor = context.systems.edit;
   const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
