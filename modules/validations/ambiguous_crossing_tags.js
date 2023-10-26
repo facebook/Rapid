@@ -19,7 +19,7 @@ export function validationAmbiguousCrossingTags(context) {
   }
 
   function isCrossingNode(node) {
-    return node.tags.crossing;
+    return node.tags.crossing || node.tags.highway === 'crossing';
   }
 
 
@@ -61,13 +61,11 @@ export function validationAmbiguousCrossingTags(context) {
         //Check to see if the parent way / child node crossing tags conflict.
 
         // Marked/unmarked abmiguities/conflicts:
-        //Marked node with explicitly unmarked way
-        //marked node with unannotated way
-        //Marked way with explicitly unmarked node
-        //Marked way with unannotated node
-        //Generate 2 fixes: mark both as marked, or both as unmarked, optionally use marking value (if any)
-        if ((parentWay.tags?.crossing !== 'unmarked' && crossingNode.tags?.crossing === 'unmarked') ||
-          (parentWay.tags?.crossing !== 'marked' && crossingNode.tags?.crossing === 'marked')) {
+        // Marked way with explicitly unmarked or unannotated node
+        // Marked node with explicitly unmarked or unannotated way
+        // Generate 2 fixes: mark both as unmarked, or both as marked & optionally use marking value (if any)
+        if ((parentWay.tags?.crossing !== 'unmarked' && noCrossingMarkings(crossingNode.tags)) ||
+          (crossingNode.tags?.crossing !== 'unmarked' && noCrossingMarkings(parentWay.tags))) {
             markedUnmarkedConflicts.push({
             node: crossingNode,
             way: parentWay,
@@ -83,6 +81,10 @@ export function validationAmbiguousCrossingTags(context) {
         }
       });
     });
+
+    function noCrossingMarkings(nodeTags) {
+      return nodeTags?.crossing === 'unmarked' || !nodeTags?.crossing;
+    }
 
     markedUnmarkedConflicts.forEach(conflictingNodeInfo => {
       currentInfo = conflictingNodeInfo;
