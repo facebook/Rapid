@@ -1,0 +1,112 @@
+{
+  "categories": {},
+  "defaults": {},
+
+  "fields": {
+
+    "leaf_type_singular": {
+      "key": "leaf_type",
+      "type": "combo",
+      "stringsCrossReference": "{leaf_type}",
+      "iconsCrossReference": "{leaf_type}",
+      "options": [
+        "broadleaved",
+        "needleleaved",
+        "leafless",
+        "palm",
+        "none"
+      ],
+      "autoSuggestions": false,
+      "customValues": false
+    }
+  },
+
+  "presets": {
+    "natural/tree": null,
+    "natural/tree/needleleaved": null,
+    "natural/tree/broadleaved": null,
+    "natural/tree/needleleaved/deciduous": null,
+    "natural/tree/needleleaved/evergreen": null,
+    "natural/tree/broadleaved/deciduous": null,
+    "natural/tree/broadleaved/evergreen": null,
+
+    "natural/tree2": {
+      "name": "Tree, unspecified type",
+      "icon": "temaki-tree_broadleaved",
+      "geometry": ["point", "vertex"],
+      "fields": [
+        "leaf_type_singular",
+        "leaf_cycle_singular",
+        "height"
+      ],
+      "moreFields": [
+        "circumference",
+        "denotation",
+        "genus",
+        "species",
+        "species/wikidata",
+        "taxon",
+        "diameter_crown",
+        "diameter"
+      ],
+      "tags": {
+        "natural": "tree"
+      }
+    },
+
+    "natural/tree2/broadleaved": {
+      "name": "Tree, broad-leaved",
+      "icon": "temaki-tree_broadleaved",
+      "geometry": ["point", "vertex"],
+      "tags": {
+        "leaf_type": "broadleaved",
+        "natural": "tree"
+      },
+      "terms": ["deciduous", "leafy"]
+    },
+
+    "natural/tree2/needleleaved": {
+      "name": "Tree, needle-leaved",
+      "icon": "temaki-tree_needleleaved",
+      "geometry": ["point", "vertex"],
+      "tags": {
+        "leaf_type": "needleleaved",
+        "natural": "tree"
+      },
+      "terms": ["evergreen", "pine"]
+    },
+
+    "natural/tree2/cactus": {
+      "name": "Tree, cactus",
+      "icon": "temaki-tree_cactus",
+      "geometry": ["point", "vertex"],
+      "tags": {
+        "leaf_type": "leafless",
+        "natural": "tree"
+      },
+      "terms": ["saguero"]
+    },
+
+    "natural/tree2/palm": {
+      "name": "Tree, palm",
+      "icon": "temaki-tree_palm",
+      "geometry": ["point", "vertex"],
+      "tags": {
+        "leaf_type": "palm",
+        "natural": "tree"
+      },
+      "terms": ["coconut"]
+    },
+
+    "natural/tree2/none": {
+      "name": "Tree, no leaves",
+      "icon": "temaki-tree_leafless",
+      "geometry": ["point", "vertex"],
+      "tags": {
+        "leaf_type": "none",
+        "natural": "tree"
+      }
+    }
+
+  }
+}
