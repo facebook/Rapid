@@ -70,6 +70,7 @@ import { uiLoading } from '../ui/loading';
  *      Receives Difference between old `stable` Graph and new `stable` Graph.
  *   'historyjump' - Fires on undo/redo/restore.  This is for situations when we may need to
  *      jump the user to a different part of the map and restore a different selection.
+ *      Receives `prevIndex` and `currIndex`
  *   'merge'  - Fires when new base entities are merged into the base graph
  *   'storage_error'
  */
@@ -493,13 +494,14 @@ export class EditSystem extends AbstractSystem {
   undo() {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
+    const prevIndex = this._index;
+
     if (this._hasWorkInProgress) {
       this.revert();
-      this.emit('historyjump');
+      this.emit('historyjump', prevIndex, this._index);
       return;
     }
 
-    const prevIndex = this._index;
     if (this._index > 0) {
       this._index--;
     }
@@ -507,7 +509,7 @@ export class EditSystem extends AbstractSystem {
     if (this._index !== prevIndex) {
       this._replaceStaging();
       this._updateChanges();
-      this.emit('historyjump');
+      this.emit('historyjump', prevIndex, this._index);
     }
   }
 
@@ -543,7 +545,7 @@ export class EditSystem extends AbstractSystem {
     if (this._index !== prevIndex) {
       this._replaceStaging();
       this._updateChanges();
-      this.emit('historyjump');
+      this.emit('historyjump', prevIndex, this._index);
     }
   }
 
@@ -576,14 +578,16 @@ export class EditSystem extends AbstractSystem {
     if (!checkpointID) return;
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
 
+    const prevIndex = this._index;
     const checkpoint = this._checkpoints.get(checkpointID);
+
     if (checkpoint) {
       this._history = checkpoint.history.slice();   // shallow copy
       this._index = checkpoint.index;
 
       this._replaceStaging();
       this._updateChanges();
-      this.emit('historyjump');
+      this.emit('historyjump', prevIndex, this._index);
     }
   }
 
@@ -1062,7 +1066,7 @@ export class EditSystem extends AbstractSystem {
       map.redrawEnabled = true;   // unbock drawing
       this._replaceStaging();
       this._updateChanges();
-      this.emit('historyjump');
+      this.emit('historyjump', 0, this._index);  // send 0 in prevIndex, we are replacing history completely
     };
 
 

@@ -238,13 +238,15 @@ export class MapSystem extends AbstractSystem {
         }
         this.immediateRedraw();
       })
-      .on('historyjump', () => {
+      .on('historyjump', (prevIndex, currIndex) => {
         // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-        const stable = editor.stable;
+        // Counterintuitively, when undoing, we want the metadata from the _next_ edit (located at prevIndex).
+        const didUndo = (currIndex === prevIndex - 1);
+        const edit = didUndo ? editor.history[prevIndex] : editor.history[currIndex];
 
         // Reposition the map if we've jumped to a different place.
         const t0 = this.transform();
-        const t1 = stable.transform;
+        const t1 = edit.transform;
         if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
           this.transformEase(t1);
         }
@@ -257,8 +259,8 @@ export class MapSystem extends AbstractSystem {
 
         // For now these IDs are assumed to be OSM ids.
         // Check that they are actually in the stable graph.
-        const graph = stable.graph;
-        const checkIDs = stable.selectedIDs ?? [];
+        const graph = edit.graph;
+        const checkIDs = edit.selectedIDs ?? [];
         const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
         if (selectedIDs.length) {
           context.enter('select-osm', { selection: { osm: selectedIDs }} );
