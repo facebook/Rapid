@@ -243,6 +243,7 @@ export function uiMap3dViewer(context) {
           .on('end', () =>
             selection.selectAll('.three-d-map').style('display', 'none')
           );
+        urlhash.setParam('3d', true);
       } else {
         wrap
           .style('display', 'block')
@@ -251,7 +252,8 @@ export function uiMap3dViewer(context) {
           .duration(200)
           .style('opacity', '1')
           .on('end', () => redraw());
-      }
+          urlhash.setParam('3d', false);
+        }
     }
 
     /* setup */
