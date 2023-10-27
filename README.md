@@ -12,7 +12,7 @@ Rapid also includes data integrity checks to ensure that new map edits are consi
 
 ## Start mapping
 
-* Use [rapideditor.org/edit](https://rapideditor.org/edit) for the current release.
+* Use [rapideditor.org/edit](https://rapideditor.org/edit) for the latest release.
 * Learn more at [rapideditor.org](https://rapideditor.org).
 
 
