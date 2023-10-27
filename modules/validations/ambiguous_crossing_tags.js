@@ -352,6 +352,8 @@ export function validationAmbiguousCrossingTags(context) {
 
     candidateNodeInfos.forEach(candidateNodeInfo => {
       currentNodeInfo = candidateNodeInfo;
+      let autoArgs = [doTagUpgrade, l10n.t('issues.fix.set_both_as_marked.annotation')];
+
       issues.push(new ValidationIssue(context, {
         type,
         subtype: 'fixme_tag',
@@ -370,6 +372,7 @@ export function validationAmbiguousCrossingTags(context) {
         ],
         loc: candidateNodeInfo.node.loc,
         hash: utilHashcode(JSON.stringify(candidateNodeInfo.node.loc)),
+        autoArgs: autoArgs,
         data: {
           wayTags: candidateNodeInfo.way.tags,
           nodeTags: candidateNodeInfo.node.tags
@@ -403,6 +406,7 @@ export function validationAmbiguousCrossingTags(context) {
       return results;
     }
 
+
     function makeCandidateFixes() {
       let fixes = [];
       const graph = editor.staging.graph;  // I think we use staging graph in dynamic fixes?
@@ -413,28 +417,8 @@ export function validationAmbiguousCrossingTags(context) {
           icon: 'rapid-icon-crossing',
           title: l10n.tHtml('issues.fix.set_both_as_marked.title'),
           onClick: function () {
-            const graph = editor.staging.graph;
-            const [nodeID, wayID] = this.issue.entityIds;
-            const node = graph.hasEntity(nodeID);
-            const way = graph.hasEntity(wayID);
-            if (!node || !way) return;
-
-            const wayTags = way.tags;
-            let tags = Object.assign({}, node.tags);
-
-            // At the very least, we need to make the node into a crossing node
-            tags.highway = 'crossing';
-            if (wayTags.crossing) {
-              tags.crossing = wayTags.crossing;
-            }
-            if (wayTags['crossing:markings']) {
-              tags['crossing:markings'] = wayTags['crossing:markings'];
-            }
-            tags.highway = 'crossing';
-
-
             const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
-            editor.perform(actionChangeTags(nodeID, tags));
+            editor.perform(doTagUpgrade);
             editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
           }
         })
@@ -443,6 +427,25 @@ export function validationAmbiguousCrossingTags(context) {
       return fixes;
     }
 
+    function doTagUpgrade(graph) {
+      const node = currentNodeInfo.node;
+      const way = currentNodeInfo.way;
+      if (!node || !way) return;
+
+      const wayTags = way.tags;
+      let tags = Object.assign({}, node.tags);
+
+      // At the very least, we need to make the node into a crossing node
+      tags.highway = 'crossing';
+      if (wayTags.crossing) {
+        tags.crossing = wayTags.crossing;
+      }
+      if (wayTags['crossing:markings']) {
+        tags['crossing:markings'] = wayTags['crossing:markings'];
+      }
+      tags.highway = 'crossing';
+      return actionChangeTags(node.id, tags)(graph);
+    }
 
     function showReference(selection) {
       selection.selectAll('.issue-reference')
