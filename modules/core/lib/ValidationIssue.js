@@ -60,9 +60,6 @@ export class ValidationIssue {
     for (const fix of fixes) {
       fix.id = fix.title;   // the id doesn't matter as long as it's unique to this issue/fix
       fix.issue = this;     // add a reference back to this issue for use in actions
-//      if (fix.autoArgs) {
-//        this.autoFix = fix;
-//    }
     }
     return fixes;
   }
