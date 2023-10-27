@@ -4,19 +4,18 @@ import { actionChangePreset } from '../actions';
 import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 
 let _wasSelectedIDs = [];
-// let _wasPresetIDs = [];
-
+let _wasPresetIDs = [];
 
 export function operationCycleHighwayTag(context, selectedIDs) {
-  const editor = context.systems.edit;
+  const editor = context.systems.editor;
   const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
   const presets = context.systems.presets;
 
-  // Allow cycling through lines that match these highway presets
+  // Allow cycling through lines that match these presets
   const allowHighwayPresetRegex = [
     /^highway\/(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|track)/,
-    /^line$/
+    /^line$/,
   ];
 
   const defaultHighwayPresetIDs = [
@@ -25,7 +24,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     'highway/track',
     'highway/unclassified',
     'highway/tertiary',
-    'line'
+    'line',
   ];
 
   // Allow cycling through crossings that match these presets
@@ -44,38 +43,49 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     'crossing/marked;crossing:markings=ladder:skewed',
   ];
 
-  // Determine whether the selection contains highways or crossings
-  const isHighwaySelection = selectedIDs.some(entityID => {
-    const entity = graph.hasEntity(entityID);
-    const preset = presets.match(entity, graph);
-    return allowHighwayPresetRegex.some(regex => regex.test(preset.id));
-  });
+  // Check if selection is highway or crossing
+  const isCrosswalkSelection = selectedIDs.some((id) => id.includes('crosswalk'));
+  const isHighwaySelection = selectedIDs.some((id) => id.includes('highway'));
 
-  // Select the appropriate preset IDs based on the selection
-  const presetIDs = isHighwaySelection ? defaultHighwayPresetIDs : defaultCrossingPresetIDs;
+  // Define the preset IDs based on the selection type
+  let presetIDs;
 
-  // Filter selected entities based on the preset regex
+  // Declare isSameSelection here
+  let isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
+
+  if (isCrosswalkSelection) {
+    presetIDs = defaultCrossingPresetIDs;
+  } else if (isHighwaySelection) {
+    presetIDs = isSameSelection ? _wasPresetIDs : defaultHighwayPresetIDs;
+  } else {
+    return;
+  }
+
+  _wasPresetIDs = presetIDs;
+
+  // Gather selected entities allowed to be cycled
   const entities = selectedIDs
-  .map(entityID => graph.hasEntity(entityID))
-  .filter(entity => {
-    const preset = presets.match(entity, graph);
-    if (allowHighwayPresetRegex.some(regex => regex.test(preset.id)) || allowCrossingPresetRegex.some(regex => regex.test(preset.id))) {
-      return true;
-    }
-    return false;
-  });
+    .map(entityID => graph.hasEntity(entityID))
+    .filter(entity => {
+      if (entity?.type !== 'way') return false;
 
-  // same selection as before?
-  const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
+      const preset = presets.match(entity, graph);
+      // Check if the preset matches either allowHighwayPresetRegex or allowCrossingPresetRegex
+      if (
+        allowHighwayPresetRegex.some(regex => regex.test(preset.id)) ||
+        allowCrossingPresetRegex.some(regex => regex.test(preset.id))
+      ) {
+        return true;
+      }
+      return false;
+    });
 
   _wasSelectedIDs = selectedIDs.slice(); // copy
-  // _wasPresetIDs = Array.from(presetIDs);  // copy
-
 
   let operation = function() {
     if (!entities.length) return;
 
-    // Pick the next preset..
+    // Pick the next preset...
     const currPresetIDs = Array.from(presetIDs);
     const currPreset = presets.match(entities[0], editor.staging.graph);
     const index = currPreset ? currPresetIDs.indexOf(currPreset.id) : -1;
@@ -84,27 +94,27 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
     editor.beginTransaction();
 
-    // Update all selected highways...
+    // Update all selected highways or crosswalks...
     for (const entity of entities) {
       const oldPreset = presets.match(entity, editor.staging.graph);
-      const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
+      const action = actionChangePreset(entity.id, oldPreset, newPreset, true);
       editor.perform(action);
     }
 
-    // If this is the same selection as before, and the previous edit was also a cycle-tags,
-    // we can just replace the previous edit with this one.
-    const annotation = operation.annotation();
+    // Determine the appropriate annotation based on the selection type
+    const annotationKey = isCrosswalkSelection ? 'crosswalk_annotation' : 'highway_annotation';
+    const annotation = l10n.t(`operations.cycle_highway_tag.${annotationKey}`);
+
     const options = { annotation: annotation, selectedIDs: selectedIDs };
     if (isSameSelection && editor.getUndoAnnotation() === annotation) {
-      editor.commitAppend(options);  // Replace the previous cycle-tags edit
+      editor.commitAppend(options);
     } else {
       editor.commit(options);
     }
 
     editor.endTransaction();
-    context.enter('select-osm', { selection: { osm: selectedIDs }} );  // reselect
+    context.enter('select-osm', { selection: { osm: selectedIDs } });
   };
-
 
   operation.available = function() {
     return entities.length > 0;
@@ -114,19 +124,16 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     return false;
   };
 
-
   operation.tooltip = function() {
     const disabledReason = operation.disabled();
-    return disabledReason ?
-      l10n.t(`operations.cycle_highway_tag.${disabledReason}`) :
-      l10n.t('operations.cycle_highway_tag.description');
+    return disabledReason
+      ? l10n.t(`operations.cycle_highway_tag.${disabledReason}`)
+      : l10n.t('operations.cycle_highway_tag.description');
   };
-
 
   operation.annotation = function() {
     return l10n.t('operations.cycle_highway_tag.annotation');
   };
-
 
   operation.id = 'cycle_highway_tag';
   operation.keys = [ '⇧' + l10n.t('operations.cycle_highway_tag.key') ];
