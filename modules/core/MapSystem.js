@@ -614,11 +614,10 @@ export class MapSystem extends AbstractSystem {
   /**
    * selectEntityID
    * Selects an entity by ID, loading it first if needed
-   * @param  entityID   entityID to select
-   * @param  fitToEntity  whether to force fit to the entity after loading
+   * @param  entityID     entityID to select
+   * @param  fitToEntity  Whether to force fit the map view to show the entity
    */
-  selectEntityID(entityID, fitToEntity) {
-    const doFit = fitToEntity || false;
+  selectEntityID(entityID, fitToEntity = false) {
     const context = this.context;
     const editor = context.systems.editor;
 
@@ -629,9 +628,13 @@ export class MapSystem extends AbstractSystem {
       }
 
       const currGraph = editor.staging.graph;  // may have changed by the time we get in here
-      const extent = entity.extent(currGraph);
-      // Can't see it, or we're forcing the fit.
-      if (extent.percentContainedIn(this.extent()) < 0.8 || doFit) {
+      const entityExtent = entity.extent(currGraph);
+      const entityZoom = Math.min(this.trimmedExtentZoom(entityExtent), 20);  // the zoom that best shows the entity
+      const isOffscreen = (entityExtent.percentContainedIn(this.extent()) < 0.8);
+      const isTooSmall = (this.zoom() < entityZoom - 2);
+
+      // Can't reasonably see it, or we're forcing the fit.
+      if (fitToEntity || isOffscreen || isTooSmall) {
         this.fitEntities(entity);
       }
     };
