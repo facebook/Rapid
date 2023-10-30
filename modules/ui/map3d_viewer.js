@@ -285,7 +285,7 @@ export function uiMap3dViewer(context) {
       // .classed('active', !_isHidden)
       // .select('input')
       // .property('checked', !_isHidden);
-      if(context.urlhash?.getParam('3d') === 'true'){
+      if(context.systems.urlhash?.getParam('3d') === 'true'){
         wrap
         .style('display', 'block')
         .style('opacity', '0')
@@ -298,7 +298,7 @@ export function uiMap3dViewer(context) {
           .style('display', 'block')
           .style('opacity', '1')
           .transition()
-          .duration(200)
+          .duration(0)
           .style('opacity', '0')
           .on('end', () =>
             selection.selectAll('.three-d-map').style('display', 'none')
