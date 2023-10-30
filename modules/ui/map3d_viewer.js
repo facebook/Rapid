@@ -15,6 +15,7 @@ export function uiMap3dViewer(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const map3d = context.systems.map3d;
+  const urlhash = context.systems.urlhash;
 
   function render(selection) {
     let wrap = d3_select(null);
@@ -222,7 +223,6 @@ export function uiMap3dViewer(context) {
 
 
     function toggle(d3_event) {
-      const urlhash = context.systems.urlhash;
       if (d3_event) d3_event.preventDefault();
 
       _isHidden = !_isHidden;
@@ -275,6 +275,10 @@ export function uiMap3dViewer(context) {
     map.on('draw', () => redraw());
     map.on('move', () => redraw());
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
+    // if(context.urlhash.getParam('3d') === 'true'){
+    //   toggle();
+    // }
+    context.map.getp
 
     redraw();
   }
