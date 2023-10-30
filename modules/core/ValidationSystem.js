@@ -23,7 +23,8 @@ const RETRY = 5000;    // wait 5 sec before revalidating provisional entities
  * have easy access to things like the Graph or Edits/History.
  *
  * Events available:
- *   `validated`     Fires after some validation has occurred
+ *   `validated`       Fires after some validation has occurred
+ *   `focusedIssue`    Fires after an issue has received focus, receives the issue
  */
 export class ValidationSystem extends AbstractSystem {
 
@@ -355,51 +356,24 @@ export class ValidationSystem extends AbstractSystem {
     // because that is the graph that the calling code will be using.
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.staging.graph;
     const map = context.systems.map;
-    let selectID;
-    let focusCenter;
 
-    // Try to focus the map at the center of the issue..
-    const issueExtent = issue.extent(graph);
-    if (issueExtent) {
-      focusCenter = issueExtent.center();
+    const entityIDs = issue.entityIds ?? [];
+    const selectID = entityIDs[0];
+    if (!selectID) return;  // no entities?  shouldn't happen.
+
+    // Try to adjust the map view
+    if (issue.loc) {
+      map.centerZoomEase(issue.loc, 19);
+    } else if (entityIDs.length) {
+      map.fitEntitiesEase(entityIDs);
     }
 
-    // Try to select the first entity in the issue..
-    if (issue.entityIds && issue.entityIds.length) {
-      selectID = issue.entityIds[0];
-
-      // If a relation, focus on one of its members instead.
-      // Otherwise we might be focusing on a part of map where the relation is not visible.
-      if (selectID && selectID.charAt(0) === 'r') {   // relation
-        const ids = utilEntityAndDeepMemberIDs([selectID], graph);
-        let nodeID = ids.find(id => id.charAt(0) === 'n' && graph.hasEntity(id));
-
-        if (!nodeID) {  // relation has no downloaded nodes to focus on
-          const wayID = ids.find(id => id.charAt(0) === 'w' && graph.hasEntity(id));
-          if (wayID) {
-            nodeID = graph.entity(wayID).first();   // focus on the first node of this way
-          }
-        }
-
-        if (nodeID) {
-          focusCenter = graph.entity(nodeID).loc;
-        }
-      }
-    }
-
-    if (focusCenter) {  // Adjust the view
-      const setZoom = Math.max(map.zoom(), 19);
-      map.centerZoomEase(focusCenter, setZoom);
-    }
-
-    if (selectID) {  // Enter select mode
-      window.setTimeout(() => {
-        context.enter('select-osm', { selection: { osm: [selectID] }} );
-        this.emit('focusedIssue', issue);
-      }, 250);  // after ease
-    }
+    // Select the first entity in the issue.
+    window.setTimeout(() => {
+      context.enter('select-osm', { selection: { osm: [selectID] }} );
+      this.emit('focusedIssue', issue);
+    }, 250);  // after ease
   }
 
 
