@@ -275,16 +275,11 @@ export function uiMap3dViewer(context) {
     map.on('draw', () => redraw());
     map.on('move', () => redraw());
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
-    function _hashchange(currParams, prevParams){
-      const newMap = currParams.get('map');
-      const oldMap = prevParams.get('map');
-      // if (d3_event) d3_event.preventDefault();
-      // context
-      // .container()
-      // .select('.three-d-map-toggle-item')
-      // .classed('active', !_isHidden)
-      // .select('input')
-      // .property('checked', !_isHidden);
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   */
+    function _hashchange(){
       if(context.systems.urlhash?.getParam('3d') === 'true'){
         wrap
         .style('display', 'block')
