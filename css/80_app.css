@@ -303,11 +303,12 @@ input.hide,
 textarea.hide,
 div.hide,
 form.hide,
+span.hide,
 button.hide,
 a.hide,
 ul.hide,
 li.hide {
-    display: none;
+  display: none;
 }
 
 .deemphasize {
