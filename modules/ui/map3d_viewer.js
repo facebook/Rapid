@@ -253,7 +253,7 @@ export function uiMap3dViewer(context) {
           .duration(200)
           .style('opacity', '1')
           .on('end', () => redraw());
-        urlhash.setParam('3d', "true");
+        urlhash.setParam('3d', 'true');
         }
     }
 
@@ -280,7 +280,7 @@ export function uiMap3dViewer(context) {
    * Respond to any changes appearing in the url hash
    */
     function _hashchange(){
-      if(context.systems.urlhash?.getParam('3d') === 'true'){
+      if (context.systems.urlhash?.getParam('3d') === 'true'){
         wrap
         .style('display', 'block')
         .style('opacity', '0')
