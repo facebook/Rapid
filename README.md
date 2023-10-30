@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/%40rapideditor%2Frapid.svg)](https://badge.fury.io/js/%40rapideditor%2Frapid)
 
 
-# Rapid 
+<h1 align="center">Rapid</h1>
 
 Rapid is a web-based modern editor for [OpenStreetMap](https://www.openstreetmap.org/). Rapid integrates advanced mapping tools, authoritative geospatial open data, and cutting-edge technology to empower mappers at all levels to get started quickly, making accurate and fresh edits to maps.
 
