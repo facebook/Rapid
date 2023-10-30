@@ -222,6 +222,7 @@ export function uiMap3dViewer(context) {
 
 
     function toggle(d3_event) {
+      const urlhash = context.systems.urlhash;
       if (d3_event) d3_event.preventDefault();
 
       _isHidden = !_isHidden;
@@ -243,7 +244,7 @@ export function uiMap3dViewer(context) {
           .on('end', () =>
             selection.selectAll('.three-d-map').style('display', 'none')
           );
-        urlhash.setParam('3d', true);
+        urlhash.setParam('3d', null);
       } else {
         wrap
           .style('display', 'block')
@@ -252,7 +253,7 @@ export function uiMap3dViewer(context) {
           .duration(200)
           .style('opacity', '1')
           .on('end', () => redraw());
-          urlhash.setParam('3d', false);
+          urlhash.setParam('3d', "true");
         }
     }
 
