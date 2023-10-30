@@ -43,9 +43,16 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     'crossing/marked;crossing:markings=ladder:skewed',
   ];
 
+   //Do not allow multi-select.
+  if (selectedIDs.length > 1) return false;
+
+  const selectedID = selectedIDs[0];
+  const entity = graph.hasEntity(selectedID);
+
   // Check if selection is highway or crossing
-  const isCrosswalkSelection = selectedIDs.some((id) => id.includes('crosswalk'));
-  const isHighwaySelection = selectedIDs.some((id) => id.includes('highway'));
+  const isCrosswalkSelection = entity.tags.footway === 'crossing' && entity.tags.highway === 'footway';
+  const isHighwaySelection = !entity.tags.footway === 'crossing' && !!entity.tags.highway;
+
 
   // Define the preset IDs based on the selection type
   let presetIDs;
@@ -94,10 +101,10 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
     editor.beginTransaction();
 
-    // Update all selected highways or crosswalks...
+    // Update all selected highways...
     for (const entity of entities) {
       const oldPreset = presets.match(entity, editor.staging.graph);
-      const action = actionChangePreset(entity.id, oldPreset, newPreset, true);
+      const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
       editor.perform(action);
     }
 
@@ -113,7 +120,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     }
 
     editor.endTransaction();
-    context.enter('select-osm', { selection: { osm: selectedIDs } });
+    context.enter('select-osm', { selection: { osm: selectedIDs } }); // reselect
   };
 
   operation.available = function() {
