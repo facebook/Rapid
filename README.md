@@ -1,6 +1,7 @@
 [![build](https://github.com/facebook/Rapid/workflows/build/badge.svg)](https://github.com/facebook/Rapid/actions?query=workflow%3A%22build%22)
 [![npm version](https://badge.fury.io/js/%40rapideditor%2Frapid.svg)](https://badge.fury.io/js/%40rapideditor%2Frapid)
 
+
 # Rapid 
 
 Rapid is a web-based modern editor for [OpenStreetMap](https://www.openstreetmap.org/). Rapid integrates advanced mapping tools, authoritative geospatial open data, and cutting-edge technology to empower mappers at all levels to get started quickly, making accurate and fresh edits to maps.
@@ -30,8 +31,8 @@ We're available to chat!  Ping us on the `#rapid_feedback` channel on either:
 
 | **Request Type**  | **Instructions** |
 | ------------- | ------------- |
-| :world_map: Country Data  | To request Rapid data for other countries, please submit [a new issue](https://github.com/facebook/Rapid/issues/new). |
-| :large_blue_diamond: Features  | To request new features in Rapid to enhance your map editing workflow, please submit [a new issue](https://github.com/facebook/Rapid/issues/new). |
+| :earth_americas: Country Data  | To request Rapid data for other countries, please submit [a new issue](https://github.com/facebook/Rapid/issues/new). |
+| :star2: Features  | To request new features in Rapid to enhance your map editing workflow, please submit [a new issue](https://github.com/facebook/Rapid/issues/new). |
 | :motorway: Roads  | Please refer to this [list of Available Countries](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). If you would like to request roads for a new country, please [create an issue here](https://github.com/facebook/Rapid/issues) in this Rapid repo (not in other repos). We track all the requests and our progress on [this page](COUNTRY_REQUESTS.md). |
 
 ## License
