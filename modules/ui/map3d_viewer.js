@@ -15,7 +15,7 @@ export function uiMap3dViewer(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const map3d = context.systems.map3d;
-  // const urlhash = context.systems.urlhash;
+  const urlhash = context.systems.urlhash;
 
   function render(selection) {
     let wrap = d3_select(null);
@@ -244,7 +244,7 @@ export function uiMap3dViewer(context) {
           .on('end', () =>
             selection.selectAll('.three-d-map').style('display', 'none')
           );
-        // urlhash.setParam('3d', null);
+        urlhash.setParam('3d', null);
       } else {
         wrap
           .style('display', 'block')
@@ -253,7 +253,7 @@ export function uiMap3dViewer(context) {
           .duration(200)
           .style('opacity', '1')
           .on('end', () => redraw());
-          // urlhash.setParam('3d', "true");
+        urlhash.setParam('3d', "true");
         }
     }
 
@@ -275,10 +275,38 @@ export function uiMap3dViewer(context) {
     map.on('draw', () => redraw());
     map.on('move', () => redraw());
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
-    // if(context.urlhash.getParam('3d') === 'true'){
-    //   toggle();
-    // }
-    context.map.getp
+    function _hashchange(currParams, prevParams){
+      const newMap = currParams.get('map');
+      const oldMap = prevParams.get('map');
+      // if (d3_event) d3_event.preventDefault();
+      // context
+      // .container()
+      // .select('.three-d-map-toggle-item')
+      // .classed('active', !_isHidden)
+      // .select('input')
+      // .property('checked', !_isHidden);
+      if(context.urlhash?.getParam('3d') === 'true'){
+        wrap
+        .style('display', 'block')
+        .style('opacity', '0')
+        .transition()
+        .duration(200)
+        .style('opacity', '1')
+        .on('end', () => redraw());
+      } else {
+        wrap
+          .style('display', 'block')
+          .style('opacity', '1')
+          .transition()
+          .duration(200)
+          .style('opacity', '0')
+          .on('end', () =>
+            selection.selectAll('.three-d-map').style('display', 'none')
+          );
+      }
+    }
+    urlhash.on('hashchange', _hashchange );
+
 
     redraw();
   }
