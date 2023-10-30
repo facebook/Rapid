@@ -238,13 +238,15 @@ export class MapSystem extends AbstractSystem {
         }
         this.immediateRedraw();
       })
-      .on('historyjump', () => {
+      .on('historyjump', (prevIndex, currIndex) => {
         // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-        const stable = editor.stable;
+        // Counterintuitively, when undoing, we want the metadata from the _next_ edit (located at prevIndex).
+        const didUndo = (currIndex === prevIndex - 1);
+        const edit = didUndo ? editor.history[prevIndex] : editor.history[currIndex];
 
         // Reposition the map if we've jumped to a different place.
         const t0 = this.transform();
-        const t1 = stable.transform;
+        const t1 = edit.transform;
         if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
           this.transformEase(t1);
         }
@@ -257,8 +259,8 @@ export class MapSystem extends AbstractSystem {
 
         // For now these IDs are assumed to be OSM ids.
         // Check that they are actually in the stable graph.
-        const graph = stable.graph;
-        const checkIDs = stable.selectedIDs ?? [];
+        const graph = edit.graph;
+        const checkIDs = edit.selectedIDs ?? [];
         const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
         if (selectedIDs.length) {
           context.enter('select-osm', { selection: { osm: selectedIDs }} );
@@ -612,11 +614,10 @@ export class MapSystem extends AbstractSystem {
   /**
    * selectEntityID
    * Selects an entity by ID, loading it first if needed
-   * @param  entityID   entityID to select
-   * @param  fitToEntity  whether to force fit to the entity after loading
+   * @param  entityID     entityID to select
+   * @param  fitToEntity  Whether to force fit the map view to show the entity
    */
-  selectEntityID(entityID, fitToEntity) {
-    const doFit = fitToEntity || false;
+  selectEntityID(entityID, fitToEntity = false) {
     const context = this.context;
     const editor = context.systems.editor;
 
@@ -627,9 +628,13 @@ export class MapSystem extends AbstractSystem {
       }
 
       const currGraph = editor.staging.graph;  // may have changed by the time we get in here
-      const extent = entity.extent(currGraph);
-      // Can't see it, or we're forcing the fit.
-      if (extent.percentContainedIn(this.extent()) < 0.8 || doFit) {
+      const entityExtent = entity.extent(currGraph);
+      const entityZoom = Math.min(this.trimmedExtentZoom(entityExtent), 20);  // the zoom that best shows the entity
+      const isOffscreen = (entityExtent.percentContainedIn(this.extent()) < 0.8);
+      const isTooSmall = (this.zoom() < entityZoom - 2);
+
+      // Can't reasonably see it, or we're forcing the fit.
+      if (fitToEntity || isOffscreen || isTooSmall) {
         this.fitEntities(entity);
       }
     };
