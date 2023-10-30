@@ -301,10 +301,9 @@ export class ValidationSystem extends AbstractSystem {
     };
 
 
-    // collect head issues - present in the user edits
-    if (this._head.graph && this._head.graph !== this._base.graph) {
-      const issues = [ ...this._head.issues.values() ];
-      for (const issue of issues) {
+    // Collect head issues - present in the user edits
+    if (this._head.issues.size) {
+      for (const issue of this._head.issues.values()) {
         // In the head cache, only count features that the user is responsible for - iD#8632
         // For example, a user can undo some work and an issue will still present in the
         // head graph, but we don't want to credit the user for causing that issue.
@@ -317,10 +316,9 @@ export class ValidationSystem extends AbstractSystem {
       }
     }
 
-    // collect base issues - present before user edits
-    if (opts.what === 'all') {
-      const issues = [ ...this._base.issues.values() ];
-      for (const issue of issues) {
+    // Collect base issues - present before user edits
+    if (this._base.issues.size && opts.what === 'all') {
+      for (const issue of this._base.issues.values()) {
         if (!filter(issue)) continue;
         seen.add(issue.id);
         results.push(issue);
@@ -524,23 +522,32 @@ export class ValidationSystem extends AbstractSystem {
   validateAsync() {
     const context = this.context;
     const editor = context.systems.editor;
+    this._completeDiff = editor.difference().complete();
 
     if (editor.canRestoreBackup) return Promise.resolve();   // Wait to see if the user wants to restore their backup
     if (this._validationPromise) return this._validationPromise;   // Validation already in progress
 
     const baseGraph = editor.base.graph;
     const stableGraph = editor.stable.graph;
-    const previousGraph = this._head.graph ?? baseGraph;   // the previously validated graph (or base if none)
+    const previousGraph = this._head.graph ?? baseGraph;   // the previously validated graph
 
-    // We are caught up to the stable graph (or user hasn't edited anything yet)
-    if (stableGraph === previousGraph || stableGraph === baseGraph) {
+    // User has not edited, or undone back to the base state, reset head cache
+    if (stableGraph === baseGraph) {
+      this._head = new ValidationCache('head');
+      this._head.graph = stableGraph;
+      this._resolvedIssueIDs.clear();
       this.emit('validated');
       return Promise.resolve();
     }
 
-    // If we get here, it's time to try validating the stable graph..
+    // We are caught up to the stable graph
+    if (stableGraph === previousGraph) {
+      this.emit('validated');
+      return Promise.resolve();
+    }
+
+    // If we get here, stable !== previous, so it's time to validate the stable graph..
     this._head.graph = stableGraph;   // take snapshot
-    this._completeDiff = editor.difference().complete();
     const incrementalDiff = new Difference(previousGraph, stableGraph);
     let entityIDs = [ ...incrementalDiff.complete().keys() ];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set
@@ -580,15 +587,13 @@ export class ValidationSystem extends AbstractSystem {
   _validateBaseEntitiesAsync(entityIDs) {
     const context = this.context;
     const editor = context.systems.editor;
-    if (editor.canRestoreBackup) return Promise.resolve();   // Wait to see if the user wants to restore their backup
     if (!entityIDs) return Promise.resolve();
 
-    // Make sure the caches have graphs assigned to them.
+    // Make sure base cache has a graph assigned to it.
     // (We don't do this in `reset` because EditSystem is still resetting things and `base`/`stable` may be wrong)
-    const baseGraph = editor.base.graph;
-    const stableGraph = editor.stable.graph;
-    if (!this._base.graph) this._base.graph = baseGraph;
-    if (!this._head.graph) this._head.graph = stableGraph;
+    if (!this._base.graph) {
+      this._base.graph = editor.base.graph;
+    }
 
     entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
     return this._validateEntitiesAsync(this._base, entityIDs);

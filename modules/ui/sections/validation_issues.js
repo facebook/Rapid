@@ -248,7 +248,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   map.on('draw',
     debounce(() => {
       deferredRender();
-    }, 1000, { leading: false, trailing: true })  // after map has stopped moving for 1sec
+    }, 500, { leading: false, trailing: true })  // after map has stopped moving for 500ms
   );
 
   return section;
