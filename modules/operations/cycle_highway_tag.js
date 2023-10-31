@@ -43,44 +43,34 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     'crossing/marked;crossing:markings=ladder:skewed',
   ];
 
-   //Do not allow multi-select.
+  //Do not allow multi-select.
   if (selectedIDs.length > 1) return false;
 
   const selectedID = selectedIDs[0];
   const entity = graph.hasEntity(selectedID);
 
   // Check if selection is highway or crossing
-  const isCrosswalkSelection = entity.tags.footway === 'crossing' && entity.tags.highway === 'footway';
-  const isHighwaySelection = !entity.tags.footway === 'crossing' && !!entity.tags.highway;
-
+  const isCrosswalkSelection =
+    entity.tags.footway === 'crossing' && entity.tags.highway === 'footway';
+  const isHighwaySelection =
+    !entity.tags.footway === 'crossing' && !!entity.tags.highway;
 
   // Define the preset IDs based on the selection type
   let presetIDs;
-
-  // Declare isSameSelection here
-  let isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
-
-  if (isCrosswalkSelection) {
-    presetIDs = defaultCrossingPresetIDs;
-  } else if (isHighwaySelection) {
-    presetIDs = isSameSelection ? _wasPresetIDs : defaultHighwayPresetIDs;
-  } else {
-    return;
-  }
 
   _wasPresetIDs = presetIDs;
 
   // Gather selected entities allowed to be cycled
   const entities = selectedIDs
-    .map(entityID => graph.hasEntity(entityID))
-    .filter(entity => {
+    .map((entityID) => graph.hasEntity(entityID))
+    .filter((entity) => {
       if (entity?.type !== 'way') return false;
 
       const preset = presets.match(entity, graph);
       // Check if the preset matches either allowHighwayPresetRegex or allowCrossingPresetRegex
       if (
-        allowHighwayPresetRegex.some(regex => regex.test(preset.id)) ||
-        allowCrossingPresetRegex.some(regex => regex.test(preset.id))
+        allowHighwayPresetRegex.some((regex) => regex.test(preset.id)) ||
+        allowCrossingPresetRegex.some((regex) => regex.test(preset.id))
       ) {
         return true;
       }
@@ -89,7 +79,18 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
   _wasSelectedIDs = selectedIDs.slice(); // copy
 
-  let operation = function() {
+  let operation = function () {
+    // Declare isSameSelection here
+    let isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
+
+    if (isCrosswalkSelection) {
+      presetIDs = defaultCrossingPresetIDs;
+    } else if (isHighwaySelection) {
+      presetIDs = isSameSelection ? _wasPresetIDs : defaultHighwayPresetIDs;
+    } else {
+      return false;
+    }
+
     if (!entities.length) return;
 
     // Pick the next preset...
@@ -104,12 +105,19 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     // Update all selected highways...
     for (const entity of entities) {
       const oldPreset = presets.match(entity, editor.staging.graph);
-      const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
+      const action = actionChangePreset(
+        entity.id,
+        oldPreset,
+        newPreset,
+        true /* skip field defaults */
+      );
       editor.perform(action);
     }
 
     // Determine the appropriate annotation based on the selection type
-    const annotationKey = isCrosswalkSelection ? 'crosswalk_annotation' : 'highway_annotation';
+    const annotationKey = isCrosswalkSelection
+      ? 'crosswalk_annotation'
+      : 'highway_annotation';
     const annotation = l10n.t(`operations.cycle_highway_tag.${annotationKey}`);
 
     const options = { annotation: annotation, selectedIDs: selectedIDs };
@@ -123,27 +131,27 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     context.enter('select-osm', { selection: { osm: selectedIDs } }); // reselect
   };
 
-  operation.available = function() {
+  operation.available = function () {
     return entities.length > 0;
   };
 
-  operation.disabled = function() {
+  operation.disabled = function () {
     return false;
   };
 
-  operation.tooltip = function() {
+  operation.tooltip = function () {
     const disabledReason = operation.disabled();
     return disabledReason
       ? l10n.t(`operations.cycle_highway_tag.${disabledReason}`)
       : l10n.t('operations.cycle_highway_tag.description');
   };
 
-  operation.annotation = function() {
+  operation.annotation = function () {
     return l10n.t('operations.cycle_highway_tag.annotation');
   };
 
   operation.id = 'cycle_highway_tag';
-  operation.keys = [ '⇧' + l10n.t('operations.cycle_highway_tag.key') ];
+  operation.keys = ['⇧' + l10n.t('operations.cycle_highway_tag.key')];
   operation.title = l10n.t('operations.cycle_highway_tag.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
