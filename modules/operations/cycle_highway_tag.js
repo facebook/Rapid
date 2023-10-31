@@ -32,7 +32,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     /^highway\/footway\/crossing\/(unmarked|marked|zebra)/,
   ];
 
-  const defaultCrossingPresetIDs = [
+    const defaultCrossingPresetIDs = [
     'highway/footway/crossing/unmarked',
     'highway/footway/crossing/marked',
     'highway/footway/crossing/zebra',
@@ -144,7 +144,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   };
 
   operation.annotation = function () {
-    return 'Mocked translation for cycle_highway_tag.annotation';
+    l10n.t('operations.cycle_highway_tag.annotation');
   };
 
   operation.id = 'cycle_highway_tag';
