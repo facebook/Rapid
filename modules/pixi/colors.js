@@ -33,12 +33,12 @@ export const COLORS = {
   casing: 0xc75a48,
   stroke: 0xf58549,
 
-  red: 0x6e3144,
-  green: 0x8b9216,   // rgb(140, 208, 95)
+  red: 0xe06e5f,
+  green: 0x8cd05f,   // rgb(140, 208, 95)
   blue: 0x77d4de,   // rgb(119, 211, 222)
-  yellow: 0xfdc534,  // rgb(255, 255, 148)
-  gold: 0xfbab34,   // rgb(196, 189, 25)
-  orange: 0xeb8947,   // rgb(214, 136, 26)
+  yellow: 0xffff94,  // rgb(255, 255, 148)
+  gold: 0xc4be19,   // rgb(196, 189, 25)
+  orange: 0xd6881a,   // rgb(214, 136, 26)
   pink: 0xe3a4f5,   // rgb(228, 164, 245)
   teal: 0x99e1aa,   // rgb(153, 225, 170)
   lightgreen: 0xbee83f,   // rgb(191, 232, 63)
