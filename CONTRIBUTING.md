@@ -24,7 +24,7 @@ This section suggests a toolset and method to start hacking Rapid. However, you 
 ### Setting up Rapid
 
 1. **Fork Rapid.** Check out this [github guide](https://docs.github.com/en/get-started/quickstart/fork-a-repo) on how to do it.
-2. **Clone Rapid.** Learn how to, [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+2. **Clone your Rapid fork.** Learn how to, [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 3. From the CLI, open your freshly cloned Rapid directory by running the command `code Rapid`
 4. Once in VSCode, type **Ctrl+Shift+`** to open a terminal. Alternatively, use the **Terminal>New Terminal** menu option.
 5. Make sure you are using the latest `node` by running `nvm install node`
@@ -32,7 +32,7 @@ This section suggests a toolset and method to start hacking Rapid. However, you 
 7. Then run `npm run all` to set up Rapid.
 8. Finally, run `npm run quickstart` to start the server on port 8080.
 
-Congrats 🎉 You should now be able to use rapid by navigating to `http://localhost:8080/` on Chrome.
+Congrats! 🎉 You should now be able to use rapid by navigating to `http://localhost:8080/` on Chrome.
 
 ### Debugging and testing
 - In VSCode go to Run>Add Configuration... and select Launch Chrome
@@ -68,6 +68,11 @@ In order to accept your pull request, we need you to submit a CLA. You only need
 to do this once to work on any of Facebook's open source projects.
 
 Complete your CLA here: <https://code.facebook.com/cla>
+
+## Submit a Pull Request
+
+- Links to howtos, examples and videos
+- Include rebasing disclamer and Rita's method
 
 ## Issues
 We use GitHub issues to track bugs and feature requests. In case of bug reports, please ensure your description is clear and has sufficient instructions for reproducing the bugs.
