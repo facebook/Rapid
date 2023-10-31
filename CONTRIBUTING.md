@@ -32,7 +32,7 @@ This section suggests a toolset and method to start hacking Rapid. However, you 
 7. Then run `npm run all` to set up Rapid.
 8. Finally, run `npm run quickstart` to start the server on port 8080.
 
-Congrats! 🎉 You should now be able to use rapid by navigating to `http://localhost:8080/` on Chrome.
+Congrats! 🎉 You should now be able to use rapid by navigating to [http://localhost:8080/](http://localhost:8080/) on Chrome.
 
 ### Debugging and testing
 - In VSCode go to Run>Add Configuration... and select Launch Chrome
