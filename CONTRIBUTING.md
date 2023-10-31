@@ -10,10 +10,29 @@ We actively welcome your pull requests.
 5. Make sure your code lints.
 6. If you haven't already, complete the Contributor License Agreement ("CLA").
 
-### Forking, cloning and running Rapid
-- Make sure to use the latest `node` with something like  `nvm install node`
-- Run `npm run all`
-- Run `npm run quickstart` to start the server
+## Forking, cloning and running Rapid
+
+This section suggests a toolset and method to start hacking Rapid. However, you are welcome to use your own tools for the job. Here's what you could use:
+
+| Tool | Suggestion | Alternatives |
+|---|---|---|
+| 🟩 Node version manager | [nvm](https://github.com/nvm-sh/nvm) | [fish](https://github.com/jorgebucaran/nvm.fish), [n](https://github.com/tj/n), [volta](https://github.com/volta-cli/volta) |
+| 📝 Text editor | [VSCode](https://code.visualstudio.com/) | [Sublime](https://www.sublimetext.com/), [Vim](https://www.vim.org/), [Emacs](https://www.gnu.org/software/emacs/) |
+| 🧑‍💻 POSIX-compliant CLI | [Bash for Linux](https://www.gnu.org/software/bash/) | [WSL for Windows](https://learn.microsoft.com/en-us/windows/wsl/install), [Zsh the OSX default](https://www.zsh.org/) |
+| 🌐 Web browser | [Chrome](https://www.google.com/chrome/) | [Safari](https://www.apple.com/safari/), [Firefox](https://www.mozilla.org/en-US/firefox/new/), [Opera](https://www.opera.com/) |
+
+### Setting up Rapid
+
+1. **Fork Rapid.** Check out this [github guide](https://docs.github.com/en/get-started/quickstart/fork-a-repo) on how to do it.
+2. **Clone Rapid.** Learn how to, [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+3. From the CLI, open your freshly cloned Rapid directory by running the command `code Rapid`
+4. Once in VSCode, type **Ctrl+Shift+`** to open a terminal. Alternatively, use the **Terminal>New Terminal** menu option.
+5. Make sure you are using the latest `node` by running `nvm install node`
+6. Install all required packages with `npm install`
+7. Then run `npm run all` to set up Rapid.
+8. Finally, run `npm run quickstart` to start the server on port 8080.
+
+Congrats 🎉 You should now be able to use rapid by navigating to `http://localhost:8080/` on Chrome.
 
 ### Debugging and testing
 - In VSCode go to Run>Add Configuration... and select Launch Chrome
