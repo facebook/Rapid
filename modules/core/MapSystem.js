@@ -48,7 +48,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['editor', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['editor', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash', 'colors', 'styles']);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -242,6 +242,7 @@ export class MapSystem extends AbstractSystem {
     const filters = context.systems.filters;
     const imagery = context.systems.imagery;
     const photos = context.systems.photos;
+    const colors = context.systems.colors;
     const scene = this._renderer.scene;
 
     editor
@@ -302,6 +303,7 @@ export class MapSystem extends AbstractSystem {
     imagery.on('imagerychange', this.immediateRedraw);
     photos.on('photochange', this.immediateRedraw);
     scene.on('layerchange', this.immediateRedraw);
+    colors.on('colorchange', this.immediateRedraw);
 
     const osm = context.services.osm;
     if (osm) {

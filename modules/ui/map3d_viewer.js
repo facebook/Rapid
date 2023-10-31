@@ -1,7 +1,7 @@
 import { Color } from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
 
-import { styleMatch } from '../pixi/styles';
+import { StyleSystem } from '../core/StyleSystem';
 import { uiCmd } from './cmd';
 import { geomPolygonContainsPolygon } from '@rapid-sdk/math';
 
@@ -156,7 +156,7 @@ export function uiMap3dViewer(context) {
         let gj = areaEnt.asGeoJSON(editor.staging.graph);
         if (gj.type !== 'Polygon' && gj.type !== 'MultiPolygon') continue;
 
-        const style = styleMatch(areaEnt.tags);
+        const style = StyleSystem.styleMatch(areaEnt.tags);
         const fillColor = new Color(style.fill.color).toHex();
         const strokeColor = new Color(style.stroke.color).toHex();
 
@@ -193,7 +193,7 @@ export function uiMap3dViewer(context) {
         const gj = roadEnt.asGeoJSON(editor.staging.graph);
         if (gj.type !== 'LineString') continue;
 
-        const style = styleMatch(roadEnt.tags);
+        const style = StyleSystem.styleMatch(roadEnt.tags);
         const casingColor = new Color(style.casing.color).toHex();
         const strokeColor = new Color(style.stroke.color).toHex();
 
