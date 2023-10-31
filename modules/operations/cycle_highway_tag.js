@@ -29,34 +29,41 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
   // Allow cycling through crossings that match these presets
   const allowCrossingPresetRegex = [
-    /^crossing\/(unmarked|marked|marked:zebra|marked:lines|marked:dashes|marked:ladder|marked:dots|marked:ladder:skewed)/,
+    /^highway\/footway\/crossing\/(unmarked|marked|zebra)/,
   ];
 
   const defaultCrossingPresetIDs = [
-    'crossing/unmarked;crossing:markings=no',
-    'crossing/marked;crossing:markings=yes',
-    'crossing/marked;crossing:markings=zebra',
-    'crossing/marked;crossing:markings=lines',
-    'crossing/marked;crossing:markings=ladder',
-    'crossing/marked;crossing:markings=dashes',
-    'crossing/marked;crossing:markings=dots',
-    'crossing/marked;crossing:markings=ladder:skewed',
+    'highway/footway/crossing/unmarked',
+    'highway/footway/crossing/marked',
+    'highway/footway/crossing/zebra',
   ];
 
-  //Do not allow multi-select.
+  // Do not allow multi-select.
   if (selectedIDs.length > 1) return false;
 
   const selectedID = selectedIDs[0];
   const entity = graph.hasEntity(selectedID);
 
+
   // Check if selection is highway or crossing
   const isCrosswalkSelection =
     entity.tags.footway === 'crossing' && entity.tags.highway === 'footway';
   const isHighwaySelection =
-    !entity.tags.footway === 'crossing' && !!entity.tags.highway;
+    !entity.tags.footway && !!entity.tags.highway;
+
+  // Declare isSameSelection here
+  let isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
 
   // Define the preset IDs based on the selection type
   let presetIDs;
+
+  if (isSameSelection) {
+    presetIDs = _wasPresetIDs;
+  } else if (isCrosswalkSelection) {
+    presetIDs = defaultCrossingPresetIDs;
+  } else if (isHighwaySelection) {
+    presetIDs = defaultHighwayPresetIDs;
+  }
 
   _wasPresetIDs = presetIDs;
 
@@ -80,16 +87,6 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   _wasSelectedIDs = selectedIDs.slice(); // copy
 
   let operation = function () {
-    // Declare isSameSelection here
-    let isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
-
-    if (isCrosswalkSelection) {
-      presetIDs = defaultCrossingPresetIDs;
-    } else if (isHighwaySelection) {
-      presetIDs = isSameSelection ? _wasPresetIDs : defaultHighwayPresetIDs;
-    } else {
-      return false;
-    }
 
     if (!entities.length) return;
 
@@ -147,7 +144,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   };
 
   operation.annotation = function () {
-    return l10n.t('operations.cycle_highway_tag.annotation');
+    return 'Mocked translation for cycle_highway_tag.annotation';
   };
 
   operation.id = 'cycle_highway_tag';
