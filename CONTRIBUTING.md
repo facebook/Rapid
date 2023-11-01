@@ -95,8 +95,8 @@ Here are the relevant parts of the directory tree along with short descriptions 
 - `css`: It contains the `.css` for styling things like the sidebars, top bars, buttons, etc. Note that there is no `.css` 'inside' the map itself - That's all styled using webGL.
 - `data`: Static data files that define the imagery, data formats, language resources, and walkthrough data. 
 - `dist`: Where all the built artifacts get served from. 
-- `docs`: Documentation folder. This folder gets filled whenever you run `npm run doc`.
-- `modules`: Where most of the real code lives. Module subdirectories are: 
+- `docs`: The 'docs' directory is populated each time you execute 'npm run doc,' making it a valuable resource for documentation-related tasks. This folder gets filled whenever you run `npm run doc`. 
+- `modules`: The 'modules' directory is the heart of our codebase, housing the majority of the substantial code. Module subdirectories are: 
     - `actions`: Discrete modifications to the map state - Changing tags, moving a node, rotating a shape, scaling a polygon, these are all 'actions'.  Actions are only fired when the user changes the map. 
     - `behaviors`: Reusable bits of functionality that can apply to different modes (see `modes` below). Behaviors include Drag, Draw, Hover, Nudging, Select, and Paste.
     - `core`:  It's where a lot of our `Systems` live. Systems are fundamental building blocks of Rapid. For example, the EditSystem is where all the edits to the map are handled and kept track of, the UrlHashSystem keeps track of any changes/updates to the URL in the url bar, and the MapSystem is what sets up the Map and starts the webGL renderer going. 
