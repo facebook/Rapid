@@ -110,7 +110,50 @@
       "icon": "temaki-tree_leafless",
       "geometry": ["point", "vertex"],
       "tags": { "leaf_type": "none", "natural": "tree" }
-    }
+    },
 
+    "highway/footway/crossing/zebra": {
+      "name": "Marked Crossing (Zebra)",
+      "icon": "temaki-pedestrian_crosswalk",
+      "geometry": ["line"],
+      "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "zebra" }
+    },
+
+    "highway/footway/crossing/lines": {
+      "name": "Marked Crossing (Lines)",
+      "icon": "temaki-pedestrian_crosswalk",
+      "geometry": ["line"],
+      "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "lines" }
+
+    },
+    "highway/footway/crossing/ladder": {
+      "name": "Marked Crossing (Ladder)",
+      "icon": "temaki-pedestrian_crosswalk",
+      "geometry": ["line"],
+      "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "ladder" }
+
+    },
+
+    "highway/footway/crossing/dashes": {
+      "name": "Marked Crossing (Dashes)",
+      "icon": "temaki-pedestrian_crosswalk",
+      "geometry": ["line"],
+      "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "dashes" }
+
+    },
+
+    "highway/footway/crossing/dots": {
+      "name": "Marked Crossing (Dots)",
+      "icon": "temaki-pedestrian_crosswalk",
+      "geometry": ["line"],
+      "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "dots" }
+    },
+
+    "highway/footway/crossing/ladder:skewed": {
+      "name": "Marked Crossing (Skewed Ladder)",
+      "icon": "temaki-pedestrian_crosswalk",
+      "geometry": ["line"],
+      "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "ladder:skewed" }
+    }
   }
 }
