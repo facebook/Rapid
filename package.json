@@ -57,7 +57,7 @@
     "@mapbox/polylabel": "1.0.2",
     "@mapbox/sexagesimal": "1.2.0",
     "@mapbox/vector-tile": "^1.3.1",
-    "@pixi/display": "7.2.4",
+    "@pixi/display": "7.3.2",
     "@pixi/events": "7.2.4",
     "@rapid-sdk/math": "~1.0.0-pre.1",
     "@rapid-sdk/util": "~1.0.0-pre.1",
