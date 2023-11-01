@@ -92,7 +92,7 @@ Now that you know how to set up, run and debug Rapid, you will probably want a t
 
 Here are the relevant parts of the directory tree along with short descriptions of each directory:
 
-- `css`: It contains the `.css` for styling things like the sidebars, top bars, buttons, etc. Note that there is no `.css` 'inside' the map istelf - That's all styled using webGL.
+- `css`: It contains the `.css` for styling things like the sidebars, top bars, buttons, etc. Note that there is no `.css` 'inside' the map itself - That's all styled using webGL.
 - `data`: Static data files that define the imagery, data formats, language resources, and walkthrough data. 
 - `dist`: Where all the built artifacts get served from. 
 - `docs`: Documentation folder. This folder gets filled whenever you run `npm run doc`.
