@@ -118,6 +118,10 @@ export const STYLES = {
     casing: { width: 7, color: 0x746f6f },
     stroke: { width: 5, color: 0xc5b59f }
   },
+  proposed: {
+    stroke: {width: 8, color: 0xCCCCCC, dash: [7 , 3], cap: PIXI.LINE_CAP.BUTT}
+  },
+
 
   pedestrian: {
     casing: { width: 7, color: 0xffffff },
@@ -164,6 +168,10 @@ export const STYLES = {
     casing: { width: 7, color: 0x444444 },
     stroke: { width: 5, color: 0x77dddd }
   },
+  stream_intermittent: {
+    casing: { width: 7, color: 0x444444, cap: PIXI.LINE_CAP.BUTT },
+    stroke: { width: 5, color: 0x77dddd, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT, }
+  },
   ridge: {
     stroke: { width: 2, color: 0x8cd05f}  // rgb(140, 208, 95)
   },
@@ -180,6 +188,9 @@ export const STYLES = {
   railway: {
     casing: { width: 7, color: 0x555555, cap: PIXI.LINE_CAP.BUTT },
     stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
+  },
+  railway_abandoned: {
+    stroke: {dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
   },
 
   ferry: {
@@ -213,7 +224,16 @@ export const STYLES = {
   tree_row: {
     casing: { width: 7, color: 0x444444 },
     stroke: { width: 5, color: 0x8cd05f }
-  }
+  },
+  construction: {
+    casing: { width: 10, color: 0xffffff},
+    stroke: { width: 8, color: 0xfc6c14, cap: PIXI.LINE_CAP.BUTT, dash: [10, 10] },
+  },
+
+  pipeline: {
+    casing: { width: 7, color: 0x666},
+    stroke: { width: 5, color: 0xcbd0d8, dash: [80, 1.25], cap: PIXI.LINE_CAP.BUTT}
+  },
 };
 
 
@@ -281,6 +301,7 @@ const STYLE_SELECTORS = {
     bus_guideway: 'railway',
     busway: 'special_service',
     corridor: 'corridor',
+    construction: 'construction',
     cycleway: 'cycleway',
     footway: 'footway',
     living_street: 'living_street',
@@ -291,6 +312,7 @@ const STYLE_SELECTORS = {
     pedestrian: 'pedestrian',
     primary: 'primary',
     primary_link: 'primary',
+    proposed: 'proposed',
     residential: 'residential',
     residential_link: 'residential',
     secondary: 'secondary',
@@ -340,7 +362,8 @@ const STYLE_SELECTORS = {
   man_made: {
     adit: 'darkgray',
     breakwater: 'barrier_wall',
-    groyne: 'barrier_wall'
+    groyne: 'barrier_wall',
+    pipeline: 'pipeline'
   },
   military: {
     '*': 'orange'
@@ -369,6 +392,7 @@ const STYLE_SELECTORS = {
   },
   railway: {
     platform: 'footway',
+    abandoned: 'railway_abandoned',
     '*': 'railway'
   },
   route: {
@@ -396,6 +420,9 @@ const STYLE_SELECTORS = {
     'drive-through': 'special_service',
     parking_aisle: 'special_service',
     '*': 'special_service'
+  },
+  intermittent: {
+    yes: 'stream_intermittent',
   }
 };
 
