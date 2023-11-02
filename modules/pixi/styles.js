@@ -234,6 +234,10 @@ export const STYLES = {
     casing: { width: 7, color: 0x666},
     stroke: { width: 5, color: 0xcbd0d8, dash: [80, 1.25], cap: PIXI.LINE_CAP.BUTT}
   },
+
+  abandoned: {
+    stroke: { width: 27, color: 0xcbd0d8, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
+  },
 };
 
 
@@ -258,6 +262,8 @@ export const STYLES = {
 
 const STYLE_SELECTORS = {
   aeroway: {
+    planned: 'proposed',
+    proposed: 'proposed',
     runway: 'runway',
     taxiway: 'taxiway'
   },
@@ -297,6 +303,7 @@ const STYLE_SELECTORS = {
     green: 'lightgreen'
   },
   highway: {
+    abandoned: 'abandoned',
     bridleway: 'bridleway',
     bus_guideway: 'railway',
     busway: 'special_service',
@@ -310,6 +317,7 @@ const STYLE_SELECTORS = {
     motorway_link: 'motorway',
     path: 'path',
     pedestrian: 'pedestrian',
+    planned: 'proposed',
     primary: 'primary',
     primary_link: 'primary',
     proposed: 'proposed',
@@ -391,8 +399,10 @@ const STYLE_SELECTORS = {
     'plant': 'pink'
   },
   railway: {
-    platform: 'footway',
     abandoned: 'railway_abandoned',
+    planned: 'proposed',
+    platform: 'footway',
+    proposed: 'proposed',
     '*': 'railway'
   },
   route: {
@@ -423,7 +433,10 @@ const STYLE_SELECTORS = {
   },
   intermittent: {
     yes: 'stream_intermittent',
-  }
+  },
+  proposed: {
+    yes: 'proposed',
+  },
 };
 
 
