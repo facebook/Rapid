@@ -23,7 +23,7 @@ export function uiMap3dViewer(context) {
 
 
     function redraw() {
-      if (_isHidden || context.systems.urlhash?.getParam('map3d')) return;
+      if (_isHidden && !context.systems.urlhash?.getParam('map3d')) return;
       updateProjection();
       featuresToGeoJSON();
     }
