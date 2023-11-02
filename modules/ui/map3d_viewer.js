@@ -259,7 +259,15 @@ export function uiMap3dViewer(context) {
     }
 
     function _hashchange(){
+      // _isHidden = !_isHidden;
       let _isHidden = context.systems.urlhash?.getParam('map3d') ? true : false;
+
+      context
+        .container()
+        .select('.three-d-map-toggle-item')
+        .classed('active', !_isHidden)
+        .select('input')
+        .property('checked', !_isHidden);
 
       if (_isHidden){
         wrap
