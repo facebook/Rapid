@@ -226,7 +226,7 @@ export function uiMap3dViewer(context) {
       if (d3_event) d3_event.preventDefault();
 
       _isHidden = !_isHidden;
-      if(context.systems.urlhash?.getParam('map3d')) _isHidden = true;
+      if (context.systems.urlhash?.getParam('map3d')) _isHidden = true;
 
       context
         .container()
@@ -258,31 +258,12 @@ export function uiMap3dViewer(context) {
         }
     }
 
-    /* setup */
-    uiMap3dViewer.toggle = toggle;
-
-    wrap = selection.selectAll('.three-d-map').data([0]);
-
-    let wrapEnter = wrap
-      .enter()
-      .append('div')
-      .attr('class', 'three-d-map')
-      .attr('id', '3d-buildings')
-      .style('display', _isHidden ? 'none' : 'block');
-
-    wrap = wrapEnter.merge(wrap);
-    map3d.startAsync();
-
-    map.on('draw', () => redraw());
-    map.on('move', () => redraw());
-    context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
    */
     function _hashchange(){
       if (context.systems.urlhash?.getParam('map3d')){
-        redraw()
         wrap
         .style('display', 'block')
         .style('opacity', '0')
@@ -302,7 +283,26 @@ export function uiMap3dViewer(context) {
           );
       }
     }
-    urlhash.on('hashchange', _hashchange );
+
+    /* setup */
+    uiMap3dViewer.toggle = toggle;
+
+    wrap = selection.selectAll('.three-d-map').data([0]);
+
+    let wrapEnter = wrap
+      .enter()
+      .append('div')
+      .attr('class', 'three-d-map')
+      .attr('id', '3d-buildings')
+      .style('display', _isHidden ? 'none' : 'block');
+
+    wrap = wrapEnter.merge(wrap);
+    map3d.startAsync();
+
+    urlhash.on('hashchange', _hashchange);
+    map.on('draw', () => redraw());
+    map.on('move', () => redraw());
+    context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
 
 
     redraw();
