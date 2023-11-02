@@ -258,12 +258,10 @@ export function uiMap3dViewer(context) {
         }
     }
 
-  /**
-   * _hashchange
-   * Respond to any changes appearing in the url hash
-   */
     function _hashchange(){
-      if (context.systems.urlhash?.getParam('map3d')){
+      let _isHidden = context.systems.urlhash?.getParam('map3d') ? true : false;
+
+      if (_isHidden){
         wrap
         .style('display', 'block')
         .style('opacity', '0')
@@ -299,11 +297,10 @@ export function uiMap3dViewer(context) {
     wrap = wrapEnter.merge(wrap);
     map3d.startAsync();
 
-    urlhash.on('hashchange', _hashchange);
     map.on('draw', () => redraw());
     map.on('move', () => redraw());
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
-
+    urlhash.on('hashchange', _hashchange);
 
     redraw();
   }
