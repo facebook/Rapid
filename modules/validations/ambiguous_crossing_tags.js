@@ -172,6 +172,10 @@ export function validationAmbiguousCrossingTags(context) {
         wayUpdateTags['crossing:markings'] = nodeMarkingVal;
       }
 
+      //The autofix button can only do one thing- so we'll prefer to use the way tags over the node tags.
+      let autoArgs = [doMarkBothAsWay, l10n.t(wayMarkingVal ? 'issues.fix.set_both_as_marked.annotation' : 'issues.fix.set_both_as_unmarked.annotation')];
+
+
       issues.push(new ValidationIssue(context, {
         type,
         subtype: 'fixme_tag',
@@ -191,7 +195,8 @@ export function validationAmbiguousCrossingTags(context) {
           conflictingMarkingInfo.way.id,
         ],
         loc: conflictingMarkingInfo.node.loc,
-        hash:  utilHashcode(JSON.stringify(conflictingMarkingInfo.node.loc)),
+        hash: utilHashcode(JSON.stringify(conflictingMarkingInfo.node.loc)),
+        autoArgs: autoArgs,
         data: {
           wayTags: conflictingMarkingInfo.way.tags,
           nodeTags: conflictingMarkingInfo.node.tags
@@ -266,18 +271,19 @@ export function validationAmbiguousCrossingTags(context) {
       }
 
 
-      function doMarkBothAsNode() {
-        return actionChangeTags(currentInfo.way.id, wayUpdateTags)(graph);
-      }
-
-
-      function doMarkBothAsWay() {
-        return actionChangeTags(currentInfo.node.id, nodeUpdateTags)(graph);
-      }
-
       return fixes;
     }
 
+    function doMarkBothAsNode() {
+      return actionChangeTags(currentInfo.way.id, wayUpdateTags)(graph);
+    }
+
+
+    function doMarkBothAsWay() {
+      return actionChangeTags(currentInfo.node.id, nodeUpdateTags)(graph);
+    }
+
+    
     function makeFixes() {
       let fixes = [];
       const graph = editor.staging.graph;  // I think we use staging graph for dynamic fixes?
