@@ -226,6 +226,7 @@ export function uiMap3dViewer(context) {
       if (d3_event) d3_event.preventDefault();
 
       _isHidden = !_isHidden;
+      if(context.systems.urlhash?.getParam('map3d')) _isHidden = true;
 
       context
         .container()
@@ -234,7 +235,7 @@ export function uiMap3dViewer(context) {
         .select('input')
         .property('checked', !_isHidden);
 
-      if (_isHidden || context.systems.urlhash?.getParam('map3d') ) {
+      if (_isHidden ) {
         wrap
           .style('display', 'block')
           .style('opacity', '1')
@@ -281,6 +282,7 @@ export function uiMap3dViewer(context) {
    */
     function _hashchange(){
       if (context.systems.urlhash?.getParam('map3d')){
+        redraw()
         wrap
         .style('display', 'block')
         .style('opacity', '0')
