@@ -102,8 +102,6 @@ export function validationOutdatedTags(context) {
       prefix = 'incomplete.';
     }
 
-    let autoArgs = [doTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')];
-
     issues.push(new ValidationIssue(context, {
       type: type,
       subtype: subtype,
@@ -112,14 +110,13 @@ export function validationOutdatedTags(context) {
       reference: showUpgradeReference,
       entityIds: [entity.id],
       hash: utilHashcode(JSON.stringify(tagDiff)),
-      autoArgs: autoArgs,
+      autoArgs: [actionDoTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')],
       dynamicFixes: () => {
         let fixes = [
           new ValidationFix({
-            autoArgs: autoArgs,
             title: l10n.tHtml('issues.fix.upgrade_tags.title'),
             onClick: () => {
-              editor.perform(doTagUpgrade);
+              editor.perform(actionDoTagUpgrade);
               editor.commit({
                 annotation: l10n.t('issues.fix.upgrade_tags.annotation'),
                 selectedIDs: [entity.id]
@@ -134,7 +131,7 @@ export function validationOutdatedTags(context) {
             new ValidationFix({
               title: l10n.tHtml('issues.fix.tag_as_not.title', { name: item.displayName }),
               onClick: () => {
-                editor.perform(addNotTag);
+                editor.perform(actionAddNotTag);
                 editor.commit({
                   annotation: l10n.t('issues.fix.tag_as_not.annotation'),
                   selectedIDs: [entity.id]
@@ -147,10 +144,11 @@ export function validationOutdatedTags(context) {
 
       }
     }));
+
     return issues;
 
 
-    function doTagUpgrade(graph) {
+    function actionDoTagUpgrade(graph) {
       const currEntity = graph.hasEntity(entity.id);
       if (!currEntity) return graph;
 
@@ -167,7 +165,7 @@ export function validationOutdatedTags(context) {
     }
 
 
-    function addNotTag(graph) {
+    function actionAddNotTag(graph) {
       const currEntity = graph.hasEntity(entity.id);
       if (!currEntity) return graph;
 
@@ -206,7 +204,7 @@ export function validationOutdatedTags(context) {
 
 
     function showUpgradeReference(selection) {
-      let enter = selection.selectAll('.issue-reference')
+      const enter = selection.selectAll('.issue-reference')
         .data([0])
         .enter();
 
@@ -261,14 +259,13 @@ export function validationOutdatedTags(context) {
       message: showMultipolygonMessage,
       reference: showMultipolygonReference,
       entityIds: [outerWay.id, multipolygon.id],
-      autoArgs: [doMultipolygonUpgrade, l10n.t('issues.fix.move_tags.annotation')],
+      autoArgs: [actionUpgradeMultipolygon, l10n.t('issues.fix.move_tags.annotation')],
       dynamicFixes: () => {
         return [
           new ValidationFix({
-            // autoArgs: [doMultipolygonUpgrade, l10n.t('issues.fix.move_tags.annotation')],
             title: l10n.t('issues.fix.move_tags.title'),
             onClick: () => {
-              editor.perform(doMultipolygonUpgrade);
+              editor.perform(actionUpgradeMultipolygon);
               editor.commit({
                 annotation: l10n.t('issues.fix.move_tags.annotation'),
                 selectedIDs: [entity.id]
@@ -280,7 +277,7 @@ export function validationOutdatedTags(context) {
     })];
 
 
-    function doMultipolygonUpgrade(graph) {
+    function actionUpgradeMultipolygon(graph) {
       let currMultipolygon = graph.hasEntity(multipolygon.id);
       let currOuterWay = graph.hasEntity(outerWay.id);
       if (!currMultipolygon || !currOuterWay) return graph;

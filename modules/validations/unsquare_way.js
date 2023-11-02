@@ -90,7 +90,6 @@ export function validationUnsquareWay(context) {
           new ValidationFix({
             icon: 'rapid-operation-orthogonalize',
             title: l10n.t('issues.fix.square_feature.title'),
-//          autoArgs: autoArgs,
             onClick: function() {
               const entityID = this.issue.entityIds[0];
               // important to use the same `degreeThreshold` as for detection:

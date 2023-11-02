@@ -13,17 +13,16 @@ export class ValidationIssue {
     this.subtype = props.subtype;            // optional - category of the issue within the type (e.g. 'relation_type' under 'missing_tag')
     this.severity = props.severity;          // required - 'warning' or 'error'
     this.message = props.message;            // required - function returning localized string
-    this.reference = props.reference;        // optional - function(selection) to render reference information
-    this.entityIds = props.entityIds;        // optional - array of IDs of entities involved in the issue
+    this.reference = props.reference;        // required - function(selection) to render reference information
+    this.entityIds = props.entityIds;        // required - Array of IDs of entities involved in the issue
     this.loc = props.loc;                    // optional - [lon, lat] to zoom in on to see the issue
     this.data = props.data;                  // optional - object containing extra data for the fixes
     this.dynamicFixes = props.dynamicFixes;  // optional - function(context) returning fixes
     this.hash = props.hash;                  // optional - string to further differentiate the issue
+    this.autoArgs = props.autoArgs;          // optional - if this issue can be autofixed, supply the autofix args at issue creation
 
     this.id = this._generateID();            // generated - see below
     this.key = this._generateKey();          // generated - see below (call after generating this.id)
-    this.autoArgs = props.autoArgs;          // optional - if this issue can be autofixed, supply the autofix args at issue creation
-    this.autoFix = null;                     // generated - if autofix exists, will be set below
   }
 
 
@@ -60,9 +59,6 @@ export class ValidationIssue {
     for (const fix of fixes) {
       fix.id = fix.title;   // the id doesn't matter as long as it's unique to this issue/fix
       fix.issue = this;     // add a reference back to this issue for use in actions
-//      if (fix.autoArgs) {
-//        this.autoFix = fix;
-//    }
     }
     return fixes;
   }

@@ -305,7 +305,7 @@ export function uiFieldCombo(context, uifield) {
     function _isRapidFeature() {
         const rapid = context.systems.rapid;
         const entityID = _entityIDs?.length && _entityIDs[0];
-        return entityID && rapid.acceptedIDs.has(entityID);
+        return entityID && rapid.acceptIDs.has(entityID);
     }
 
 
