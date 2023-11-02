@@ -260,7 +260,7 @@ export function uiMap3dViewer(context) {
 
     function _hashchange(){
       // _isHidden = !_isHidden;
-      let _isHidden = context.systems.urlhash?.getParam('map3d') ? true : false;
+      let _isHidden = context.systems.urlhash?.getParam('map3d');
 
       context
         .container()
