@@ -19,11 +19,11 @@ export function uiMap3dViewer(context) {
 
   function render(selection) {
     let wrap = d3_select(null);
-    let _isHidden = true; // start out hidden
+    let _isHidden = !context.systems.urlhash?.getParam('map3d'); // depends on URL hash
 
 
     function redraw() {
-      if (_isHidden && !context.systems.urlhash?.getParam('map3d')) return;
+      if (_isHidden) return;
       updateProjection();
       featuresToGeoJSON();
     }
@@ -225,8 +225,7 @@ export function uiMap3dViewer(context) {
     function toggle(d3_event) {
       if (d3_event) d3_event.preventDefault();
 
-      _isHidden = !_isHidden;
-      if (context.systems.urlhash?.getParam('map3d')) _isHidden = true;
+      let shouldShow = context.systems.urlhash?.getParam('map3d');
 
       context
         .container()
@@ -235,7 +234,7 @@ export function uiMap3dViewer(context) {
         .select('input')
         .property('checked', !_isHidden);
 
-      if (_isHidden ) {
+      if (shouldShow) {
         wrap
           .style('display', 'block')
           .style('opacity', '1')
@@ -246,7 +245,9 @@ export function uiMap3dViewer(context) {
             selection.selectAll('.three-d-map').style('display', 'none')
           );
         urlhash.setParam('map3d', null);
+        _isHidden = false;
       } else {
+        _isHidden = true;
         wrap
           .style('display', 'block')
           .style('opacity', '0')
@@ -255,40 +256,41 @@ export function uiMap3dViewer(context) {
           .style('opacity', '1')
           .on('end', () => redraw());
         urlhash.setParam('map3d', 'true');
-        }
-    }
-
-    function _hashchange(){
-      // _isHidden = !_isHidden;
-      let _isHidden = context.systems.urlhash?.getParam('map3d');
-
-      context
-        .container()
-        .select('.three-d-map-toggle-item')
-        .classed('active', !_isHidden)
-        .select('input')
-        .property('checked', !_isHidden);
-
-      if (_isHidden){
-        wrap
-        .style('display', 'block')
-        .style('opacity', '0')
-        .transition()
-        .duration(200)
-        .style('opacity', '1')
-        .on('end', () => redraw());
-      } else {
-        wrap
-          .style('display', 'block')
-          .style('opacity', '1')
-          .transition()
-          .duration(0)
-          .style('opacity', '0')
-          .on('end', () =>
-            selection.selectAll('.three-d-map').style('display', 'none')
-          );
+        _isHidden = false;
       }
     }
+
+    // function _hashchange(){
+    //   // _isHidden = !_isHidden;
+    //   let _isHidden = context.systems.urlhash?.getParam('map3d');
+
+    //   context
+    //     .container()
+    //     .select('.three-d-map-toggle-item')
+    //     .classed('active', !_isHidden)
+    //     .select('input')
+    //     .property('checked', !_isHidden);
+
+    //   if (_isHidden){
+    //     wrap
+    //     .style('display', 'block')
+    //     .style('opacity', '0')
+    //     .transition()
+    //     .duration(200)
+    //     .style('opacity', '1')
+    //     .on('end', () => redraw());
+    //   } else {
+    //     wrap
+    //       .style('display', 'block')
+    //       .style('opacity', '1')
+    //       .transition()
+    //       .duration(0)
+    //       .style('opacity', '0')
+    //       .on('end', () =>
+    //         selection.selectAll('.three-d-map').style('display', 'none')
+    //       );
+    //   }
+    // }
 
     /* setup */
     uiMap3dViewer.toggle = toggle;
@@ -308,7 +310,7 @@ export function uiMap3dViewer(context) {
     map.on('draw', () => redraw());
     map.on('move', () => redraw());
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
-    urlhash.on('hashchange', _hashchange);
+    urlhash.on('hashchange', toggle);
 
     redraw();
   }
