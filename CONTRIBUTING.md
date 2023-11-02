@@ -11,7 +11,7 @@ We actively welcome your pull requests.
 6. If you haven't already, complete the Contributor License Agreement ("CLA").
 
 ## Forking, cloning, and running Rapid
-This section suggests a toolset and method to start hacking Rapid. However, you are welcome to use your own tools for the job. Here's what you could use:
+This section suggests a toolset and method to start contributing to Rapid. However, you are welcome to use your own tools for the job. Here's what you could use:
 
 | Tool | Suggestion | Alternatives |
 |---|---|---|
@@ -20,24 +20,24 @@ This section suggests a toolset and method to start hacking Rapid. However, you 
 | 🧑‍💻 POSIX-compliant CLI | [Bash for Linux](https://www.gnu.org/software/bash/) | [WSL for Windows](https://learn.microsoft.com/en-us/windows/wsl/install), [Zsh the OSX default](https://www.zsh.org/) |
 | 🌐 Web browser | [Chrome](https://www.google.com/chrome/) | [Safari](https://www.apple.com/safari/), [Firefox](https://www.mozilla.org/en-US/firefox/new/), [Opera](https://www.opera.com/) |
 
-### Setting up Rapid
-1. **Fork Rapid.** Check out this [github guide](https://docs.github.com/en/get-started/quickstart/fork-a-repo) on how to do it.
-2. **Clone your Rapid fork.** Learn how to, [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+### Setting up Rapid locally
+1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository from [facebook/Rapid](https://github.com/facebook/Rapid) to your own GitHub account.
+2. [Clone the repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) with `git clone https://github.com/YOUR-GITHUB-USERNAME/Rapid.git`.
 3. From the CLI, open your freshly cloned Rapid directory by running the command `code Rapid`
 4. Once in VSCode, type **Ctrl+Shift+`** to open a terminal. Alternatively, use the **Terminal>New Terminal** menu option.
-5. Make sure you are using the latest `node` by running `nvm install node`
-6. Install all required packages with `npm install`
+5. Make sure you are using [the latest `node`](https://nodejs.org/en/download) by running `node --version`. If not, then running `nvm install node` will set it up for you.
+6. Install all required dependencies with `npm install`
 7. Then run `npm run all` to set up Rapid.
 8. Finally, run `npm run quickstart` to start the server on port 8080.
 
-Congrats! 🎉 You should now be able to use rapid by navigating to [http://localhost:8080/](http://localhost:8080/) on Chrome.
+Congrats! 🎉 You should now be able to use rapid by navigating to [http://127.0.0.1:8080/](http://localhost:8080/) on Chrome.
 
 ### Setting up the VSCode debugger
-VSCode provides a debugging mode using Chrome. To use it, do this:
+VSCode provides a debugging mode using Chrome. To use it, follow these steps:
 
 1. Go to **Run>Add Configuration** and select `{} Chrome: Launch`
 2. This will create `launch.json`.
-3. Make sure to add the `/dist/` path to `webRoot` so that it looks like this:
+3. Make sure to add the `/dist/` path to `webRoot` and change `localhost` to `127.0.0.1` on `url`, so that the file looks like this:
 ```json
 {
     // Use IntelliSense to learn about possible attributes.
@@ -49,7 +49,7 @@ VSCode provides a debugging mode using Chrome. To use it, do this:
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
+            "url": "http://127.0.0.1:8080",
             "webRoot": "${workspaceFolder}/dist/"
         }
     ]
@@ -64,7 +64,7 @@ This will launch Chrome on whatever address you provided to `url` on `launch.jso
 
 ### Debugging example
 
-When hacking Rapid, it will be useful to watch the code execute line-by-line. To do this, you can set up inline breakpoints. You can learn all about it in [the official documentation](https://code.visualstudio.com/docs/editor/debugging).
+When coding Rapid, it will be useful to watch the code execute line-by-line. To do this, you can set up inline breakpoints. You can learn all about it in [the official documentation](https://code.visualstudio.com/docs/editor/debugging).
 
 A good place to start is the `/index.html` file. Set a breakpoint on the `context.initAsync();` call from it's last few lines:
 
@@ -80,11 +80,11 @@ A good place to start is the `/index.html` file. Set a breakpoint on the `contex
 ```
 Then run `npm run quickstart` and press **F5** to launch Chrome along with the VSCode debugger.
 
-This will freeze execution right at the moment of Rapid initialization. Click on the **Step in** button on the debugger controls (the arrow pointing down into a point) to enter the `context.initAsync()` function. Then click on **Step over** repeatedly to watch the code execute line-by-line.
+This will freeze execution right at the moment of Rapid initialization. Click on the **Step in** :arrow_down: button on the debugger controls (the arrow pointing down into a point) to enter the `context.initAsync()` function. Then click on **Step over** :arrow_heading_down: repeatedly to watch the code execute line-by-line.
 
 This will be a good primer on what's going on under the hood of Rapid. You can set up breakpoints anywhere in the code to figure out the call stack, live changes in variable values, or any other detail you may need.
 
-Please refer to [the official documentation](https://code.visualstudio.com/docs/editor/debugging) for more on all the information you can get from debugging.
+Please see [the official documentation](https://code.visualstudio.com/docs/editor/debugging) to learn all the details debugging can show you.
 
 ## Directory structure
 
@@ -102,14 +102,14 @@ Here are the relevant parts of the directory tree along with short descriptions 
     - `core`:  It's where a lot of our `Systems` live. Systems are fundamental building blocks of Rapid. For example, the EditSystem is where all the edits to the map are handled and kept track of, the UrlHashSystem keeps track of any changes/updates to the URL in the url bar, and the MapSystem is what sets up the Map and starts the webGL renderer going. 
     - `geo`: Geospatial/Geometric code used for transforming map entities. Most of this code now lives in an SDK called the `rapid-sdk`, which you will see referenced throughout. Need to calculate the center of a bunch of geometric points? the `rapid-sdk` has code for that. 
     - `modes`: These describe what the user is doing at the moment- they may be browsing, selecting, drawing a polygon, saving, or dragging a node.
-    - `operations` are for discrete edits the map - Using a hotkey to flip a polygon upside down, or right-clicking a square entity and selecting 'circularize' are two different operations. Right clicking an entity on the map will show you many operations that are appropriate for that entity. 
+    - `operations`: Operation are for discrete edits on the map - Using a hotkey to flip a polygon upside down, or right-clicking a square entity and selecting 'circularize' are two different operations. Right-clicking an entity on the map will show you many operations that are appropriate for that entity. 
     - `osm`: This is where the [OpenStreetMap](https://www.openstreetmap.org/) data model is defined: ways, nodes, tags, etc. Any time your code is dealing with a node or way information, it's using the code from this folder.
     - `pixi`: Contains all the [Pixi](https://pixijs.download/dev/docs/index.html) renderer code. 
     - `services`: Where we fetch data from other places - OSM data is loaded via the OSM Service. There are many services for different types of imagery/data.
     - `ui`: Where all the UI code is kept. There is code for the sidebars, top bars, Rapid button, color pickers, and a lot lot more.
     - `util`: assorted utility functions. A bit of a random grab-bag,  almost every codebase seems to have one of these. 🙂 
     - `validations`: As the mapper makes edits, this folder contains the code that runs automated validations on their changes and flags any issues. It's kind of like a code linter, but for map data.
-- `svg`: where all the svg icons live - Anytime you see an icon in the map, or in the sidebars/UI, it comes from here!
+- `svg`: where all the SVG icons live - Anytime you see an icon in the map, or in the sidebars/UI, it comes from here!
 
 ## Contributor License Agreement ("CLA")
 In order to accept your pull request, we need you to submit a CLA. You only need
@@ -119,7 +119,7 @@ Complete your CLA here: <https://code.facebook.com/cla>
 
 ## Submit a Pull Request
 
-To push your changes onto Rapid, you will have to [submit a PR from your Fork](https://docs.github.com/en/github-ae@latest/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork).
+To push your changes you will have to [submit a PR from your Fork](https://docs.github.com/en/github-ae@latest/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork).
 
 > **⚠️ A Note of Caution**: Rapid is a live code base! Please remember to continuously [sync your fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) and [synchronize those changes from VSCode](https://code.visualstudio.com/docs/sourcecontrol/overview#:~:text=There%20is%20a%20Synchronize%20Changes,commits%20to%20the%20upstream%20branch.) as you work in your local environment. You may also [rebase your main branch](https://github.blog/changelog/2022-02-03-more-ways-to-keep-your-pull-request-branch-up-to-date/) as you push commits to your PR.
 
