@@ -92,24 +92,24 @@ Now that you know how to set up, run and debug Rapid, you will probably want a t
 
 Here are the relevant parts of the directory tree along with short descriptions of each directory:
 
-- `css`: It contains the `.css` for styling things like the sidebars, top bars, buttons, etc. Note that there is no `.css` 'inside' the map itself - That's all styled using webGL.
+- `css`: It contains the `.css` for styling things like the sidebars, top bars, buttons, etc. Note that there is no `.css` 'inside' the map itself - That's all styled using WebGL.
 - `data`: Static data files that define the imagery, data formats, language resources, and walkthrough data. 
 - `dist`: Where all the built artifacts get served from. 
-- `docs`: The 'docs' directory is populated each time you execute 'npm run doc,' making it a valuable resource for documentation-related tasks. This folder gets filled whenever you run `npm run doc`. 
+- `docs`: The 'docs' directory is populated each time you execute 'npm run doc,' making it a valuable resource for documentation-related tasks.
 - `modules`: The 'modules' directory is the heart of our codebase, housing the majority of the substantial code. Module subdirectories are: 
     - `actions`: Discrete modifications to the map state - Changing tags, moving a node, rotating a shape, scaling a polygon, these are all 'actions'.  Actions are only fired when the user changes the map. 
-    - `behaviors`: Reusable bits of functionality that can apply to different modes (see `modes` below). Behaviors include Drag, Draw, Hover, Nudging, Select, and Paste.
-    - `core`:  It's where a lot of our `Systems` live. Systems are fundamental building blocks of Rapid. For example, the EditSystem is where all the edits to the map are handled and kept track of, the UrlHashSystem keeps track of any changes/updates to the URL in the url bar, and the MapSystem is what sets up the Map and starts the webGL renderer going. 
+    - `behaviors`: Reusable bits of functionality that can apply to different modes (see `modes` below). Behaviors include **Drag**, **Draw**, **Hover**, **Nudging**, **Select**, and **Paste**.
+    - `core`:  It's where a lot of our `Systems` live. Systems are fundamental building blocks of Rapid. For example, the **EditSystem** is where all the edits to the map are handled and kept track of, the **UrlHashSystem** keeps track of any changes/updates to the URL in the url bar, and the **MapSystem** is what sets up the Map and starts the WebGL renderer going. 
     - `geo`: Geospatial/Geometric code used for transforming map entities. Most of this code now lives in an SDK called the `rapid-sdk`, which you will see referenced throughout. Need to calculate the center of a bunch of geometric points? the `rapid-sdk` has code for that. 
-    - `modes`: These describe what the user is doing at the moment- they may be browsing, selecting, drawing a polygon, saving, or dragging a node.
+    - `modes`: These describe what the user is doing at the moment - They may be browsing, selecting, drawing a polygon, saving, or dragging a node.
     - `operations`: Operation are for discrete edits on the map - Using a hotkey to flip a polygon upside down, or right-clicking a square entity and selecting 'circularize' are two different operations. Right-clicking an entity on the map will show you many operations that are appropriate for that entity. 
     - `osm`: This is where the [OpenStreetMap](https://www.openstreetmap.org/) data model is defined: ways, nodes, tags, etc. Any time your code is dealing with a node or way information, it's using the code from this folder.
     - `pixi`: Contains all the [Pixi](https://pixijs.download/dev/docs/index.html) renderer code. 
     - `services`: Where we fetch data from other places - OSM data is loaded via the OSM Service. There are many services for different types of imagery/data.
     - `ui`: Where all the UI code is kept. There is code for the sidebars, top bars, Rapid button, color pickers, and a lot lot more.
-    - `util`: assorted utility functions. A bit of a random grab-bag,  almost every codebase seems to have one of these. 🙂 
+    - `util`: Assorted utility functions. A bit of a random grab-bag. Almost every codebase seems to have one of these. 🙂 
     - `validations`: As the mapper makes edits, this folder contains the code that runs automated validations on their changes and flags any issues. It's kind of like a code linter, but for map data.
-- `svg`: where all the SVG icons live - Anytime you see an icon in the map, or in the sidebars/UI, it comes from here!
+- `svg`: Where all the SVG icons live - Anytime you see an icon in the map, or in the sidebars/UI, it comes from here!
 
 ## Contributor License Agreement ("CLA")
 In order to accept your pull request, we need you to submit a CLA. You only need
