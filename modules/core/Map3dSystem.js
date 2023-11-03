@@ -28,6 +28,7 @@ export class Map3dSystem extends AbstractSystem {
     this._loadPromise = null;
     this._startPromise = null;
 
+    // this._hashchange = this._hashchange.bind(this);
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
@@ -47,6 +48,7 @@ export class Map3dSystem extends AbstractSystem {
         return Promise.reject(`Cannot init:  ${this.id} requires ${id}`);
       }
     }
+    // context.systems.urlhash.on('hashchange', this._hashchange);
     return Promise.resolve();
   }
 
@@ -361,4 +363,57 @@ export class Map3dSystem extends AbstractSystem {
       ],
     ];
   }
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  currParams   Map(key -> value) of the current hash parameters
+   * @param  prevParams   Map(key -> value) of the previous hash parameters
+   */
+    // _hashchange(currParams, prevParams) {
+    //   // map3d
+    //   const newIds = currParams.get('map3d');
+    //   const oldIds = prevParams.get('map3d');
+    //   if (newIds !== oldIds) {
+    //     let shouldShow = context.systems.urlhash?.getParam('map3d');
+    //     let wrap = d3_select(null);
+
+    //     // context
+    //     //   .container()
+    //     //   .select('.three-d-map-toggle-item')
+    //     //   .classed('active', !_isHidden)
+    //     //   .select('input')
+    //     //   .property('checked', !_isHidden);
+  
+    //     if (shouldShow) {
+    //       wrap
+    //         .style('display', 'block')
+    //         .style('opacity', '1')
+    //         .transition()
+    //         .duration(200)
+    //         .style('opacity', '0')
+    //         .on('end', () =>
+    //           selection.selectAll('.three-d-map').style('display', 'none')
+    //         );
+    //       urlhash.setParam('map3d', null);
+    //       _isHidden = false;
+    //     } else {
+    //       wrap
+    //         .style('display', 'block')
+    //         .style('opacity', '0')
+    //         .transition()
+    //         .duration(200)
+    //         .style('opacity', '1')
+    //         .on('end', () => redraw());
+    //       urlhash.setParam('map3d', 'true');
+    //       _isHidden = true;
+    //     }
+    //     // if (typeof newIds === 'string') {
+    //     //   const ids = newIds.split(',').map(s => s.trim()).filter(Boolean);
+    //     //   const modeID = this.mode?.id;
+    //     //   if (ids.length && modeID !== 'save') {
+    //     //     this.selectEntityID(ids[0]);  // for now, just the select first one
+    //     //   }
+    //     // }
+    //   }
+    // }
 }
