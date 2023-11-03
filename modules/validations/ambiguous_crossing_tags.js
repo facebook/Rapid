@@ -453,12 +453,14 @@ export function validationAmbiguousCrossingTags(context) {
     function makeCandidateFixes() {
       let fixes = [];
 
+      const way = currentNodeInfo.way;
+
       fixes.push(
         new ValidationFix({
           icon: 'rapid-icon-crossing',
-          title: l10n.tHtml('issues.fix.set_both_as_marked.title'),
+          title: l10n.tHtml(hasMarkings(way) ? 'issues.fix.set_both_as_marked.title' : 'issues.fix.set_both_as_unmarked.title'),
           onClick: function () {
-            const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
+            const annotation = l10n.t(hasMarkings(way)  ? 'issues.fix.set_both_as_marked.annotation' : 'issues.fix.set_both_as_unmarked.annotation' );
             editor.perform(doTagUpgrade);
             editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
           }
