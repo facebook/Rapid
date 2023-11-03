@@ -23,7 +23,8 @@ const RETRY = 5000;    // wait 5 sec before revalidating provisional entities
  * have easy access to things like the Graph or Edits/History.
  *
  * Events available:
- *   `validated`     Fires after some validation has occurred
+ *   `validated`       Fires after some validation has occurred
+ *   `focusedIssue`    Fires after an issue has received focus, receives the issue
  */
 export class ValidationSystem extends AbstractSystem {
 
@@ -300,10 +301,9 @@ export class ValidationSystem extends AbstractSystem {
     };
 
 
-    // collect head issues - present in the user edits
-    if (this._head.graph && this._head.graph !== this._base.graph) {
-      const issues = [ ...this._head.issues.values() ];
-      for (const issue of issues) {
+    // Collect head issues - present in the user edits
+    if (this._head.issues.size) {
+      for (const issue of this._head.issues.values()) {
         // In the head cache, only count features that the user is responsible for - iD#8632
         // For example, a user can undo some work and an issue will still present in the
         // head graph, but we don't want to credit the user for causing that issue.
@@ -316,10 +316,9 @@ export class ValidationSystem extends AbstractSystem {
       }
     }
 
-    // collect base issues - present before user edits
-    if (opts.what === 'all') {
-      const issues = [ ...this._base.issues.values() ];
-      for (const issue of issues) {
+    // Collect base issues - present before user edits
+    if (this._base.issues.size && opts.what === 'all') {
+      for (const issue of this._base.issues.values()) {
         if (!filter(issue)) continue;
         seen.add(issue.id);
         results.push(issue);
@@ -355,51 +354,24 @@ export class ValidationSystem extends AbstractSystem {
     // because that is the graph that the calling code will be using.
     const context = this.context;
     const editor = context.systems.editor;
-    const graph = editor.staging.graph;
     const map = context.systems.map;
-    let selectID;
-    let focusCenter;
 
-    // Try to focus the map at the center of the issue..
-    const issueExtent = issue.extent(graph);
-    if (issueExtent) {
-      focusCenter = issueExtent.center();
+    const entityIDs = issue.entityIds ?? [];
+    const selectID = entityIDs[0];
+    if (!selectID) return;  // no entities?  shouldn't happen.
+
+    // Try to adjust the map view
+    if (issue.loc) {
+      map.centerZoomEase(issue.loc, 19);
+    } else if (entityIDs.length) {
+      map.fitEntitiesEase(entityIDs);
     }
 
-    // Try to select the first entity in the issue..
-    if (issue.entityIds && issue.entityIds.length) {
-      selectID = issue.entityIds[0];
-
-      // If a relation, focus on one of its members instead.
-      // Otherwise we might be focusing on a part of map where the relation is not visible.
-      if (selectID && selectID.charAt(0) === 'r') {   // relation
-        const ids = utilEntityAndDeepMemberIDs([selectID], graph);
-        let nodeID = ids.find(id => id.charAt(0) === 'n' && graph.hasEntity(id));
-
-        if (!nodeID) {  // relation has no downloaded nodes to focus on
-          const wayID = ids.find(id => id.charAt(0) === 'w' && graph.hasEntity(id));
-          if (wayID) {
-            nodeID = graph.entity(wayID).first();   // focus on the first node of this way
-          }
-        }
-
-        if (nodeID) {
-          focusCenter = graph.entity(nodeID).loc;
-        }
-      }
-    }
-
-    if (focusCenter) {  // Adjust the view
-      const setZoom = Math.max(map.zoom(), 19);
-      map.centerZoomEase(focusCenter, setZoom);
-    }
-
-    if (selectID) {  // Enter select mode
-      window.setTimeout(() => {
-        context.enter('select-osm', { selection: { osm: [selectID] }} );
-        this.emit('focusedIssue', issue);
-      }, 250);  // after ease
-    }
+    // Select the first entity in the issue.
+    window.setTimeout(() => {
+      context.enter('select-osm', { selection: { osm: [selectID] }} );
+      this.emit('focusedIssue', issue);
+    }, 250);  // after ease
   }
 
 
@@ -550,23 +522,32 @@ export class ValidationSystem extends AbstractSystem {
   validateAsync() {
     const context = this.context;
     const editor = context.systems.editor;
+    this._completeDiff = editor.difference().complete();
 
     if (editor.canRestoreBackup) return Promise.resolve();   // Wait to see if the user wants to restore their backup
     if (this._validationPromise) return this._validationPromise;   // Validation already in progress
 
     const baseGraph = editor.base.graph;
     const stableGraph = editor.stable.graph;
-    const previousGraph = this._head.graph ?? baseGraph;   // the previously validated graph (or base if none)
+    const previousGraph = this._head.graph ?? baseGraph;   // the previously validated graph
 
-    // We are caught up to the stable graph (or user hasn't edited anything yet)
-    if (stableGraph === previousGraph || stableGraph === baseGraph) {
+    // User has not edited, or undone back to the base state, reset head cache
+    if (stableGraph === baseGraph) {
+      this._head = new ValidationCache('head');
+      this._head.graph = stableGraph;
+      this._resolvedIssueIDs.clear();
       this.emit('validated');
       return Promise.resolve();
     }
 
-    // If we get here, it's time to try validating the stable graph..
+    // We are caught up to the stable graph
+    if (stableGraph === previousGraph) {
+      this.emit('validated');
+      return Promise.resolve();
+    }
+
+    // If we get here, stable !== previous, so it's time to validate the stable graph..
     this._head.graph = stableGraph;   // take snapshot
-    this._completeDiff = editor.difference().complete();
     const incrementalDiff = new Difference(previousGraph, stableGraph);
     let entityIDs = [ ...incrementalDiff.complete().keys() ];
     entityIDs = this._head.withAllRelatedEntities(entityIDs);  // expand set
@@ -606,15 +587,13 @@ export class ValidationSystem extends AbstractSystem {
   _validateBaseEntitiesAsync(entityIDs) {
     const context = this.context;
     const editor = context.systems.editor;
-    if (editor.canRestoreBackup) return Promise.resolve();   // Wait to see if the user wants to restore their backup
     if (!entityIDs) return Promise.resolve();
 
-    // Make sure the caches have graphs assigned to them.
+    // Make sure base cache has a graph assigned to it.
     // (We don't do this in `reset` because EditSystem is still resetting things and `base`/`stable` may be wrong)
-    const baseGraph = editor.base.graph;
-    const stableGraph = editor.stable.graph;
-    if (!this._base.graph) this._base.graph = baseGraph;
-    if (!this._head.graph) this._head.graph = stableGraph;
+    if (!this._base.graph) {
+      this._base.graph = editor.base.graph;
+    }
 
     entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
     return this._validateEntitiesAsync(this._base, entityIDs);
