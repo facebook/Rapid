@@ -14,7 +14,7 @@ import { EventEmitter } from '@pixi/utils';
  *   At this stage all components are still being constructed, in no particular order.
  *   You should not call other components or use the context in the constructor.
  *
- * initAsync() - called one time after all systems are constructed.
+ * `initAsync()` - called one time after all systems are constructed.
  *   Systems may check at init time that their dependencies are met.
  *   They may chain onto other system initAsync promises in order to establish a dependency graph.
  *   (for example, if DataLoaderSystem must be initialized and ready
@@ -24,7 +24,7 @@ import { EventEmitter } from '@pixi/utils';
  *   You should be able to call methods but there is no user interface yet.
  *   and no events will be dispatched yet.
  *
- * startAsync() - called one time after all systems are initialized
+ * `startAsync()` - called one time after all systems are initialized
  *   At this stage we are creating the user interface and the map.
  *   There is an `autoStart` property that defaults to `true` but can be set `false` for some systems.
  *   (for example Map3dSystem doesn't need to load and start MapLibre until the user actually decides
@@ -32,13 +32,18 @@ import { EventEmitter } from '@pixi/utils';
  *   Like with init, components can chain onto other components startAsync promises they depend on.
  *   After 'start', the system should be doing its job and dispatching events.
  *
- * resetAsync() - called after completing an edit session to reset any internal state
+ * `resetAsync()` - called after completing an edit session to reset any internal state
  *   Resets mainly happen when completing an edit session, but can happen other times
  *   for example entering/exiting the tutorial or when switching connection between live/dev OSM API.
  *
+ * `pause()` / `resume()` - call these methods from other parts of the application to pause or resume.
+ *   The meaning of "pause" / "resume" is dependent on the system - they may not be used at all.
+ *   It may be used to prevent network fetches, background work, or rendering.
+ *   (Note: they are currently sync - may need to be made async in the future?)
+ *
  * Properties you can access:
  *   `id`        `String`   Identifier for the system (e.g. 'l10n')
- *   `autoStart` `Boolean`  True to start automatically when initializing the context
+ *   `autoStart` `Boolean`  True to start automatically when initializing the Context
  */
 export class AbstractSystem extends EventEmitter {
 
@@ -54,7 +59,9 @@ export class AbstractSystem extends EventEmitter {
     this.autoStart = true;
 
     this._started = false;
+    this._paused = false;
   }
+
 
   /**
    * started
@@ -62,6 +69,15 @@ export class AbstractSystem extends EventEmitter {
    */
   get started() {
     return this._started;
+  }
+
+
+  /**
+   * paused
+   * @readonly
+   */
+  get paused() {
+    return this._paused;
   }
 
 
@@ -98,6 +114,28 @@ export class AbstractSystem extends EventEmitter {
    */
   resetAsync() {
     return Promise.resolve();
+  }
+
+
+  /**
+   * pause
+   * Pauses this system
+   * The meaning of "pause" / "resume" is dependent on the system - they may not be used at all.
+   * It may be used to prevent network fetches, background work, or rendering.
+   */
+  pause() {
+    this._paused = true;
+  }
+
+
+  /**
+   * resume
+   * Resumes (unpauses) this system.
+   * The meaning of "pause" / "resume" is dependent on the system - they may not be used at all.
+   * It may be used to prevent network fetches, background work, or rendering.
+   */
+  resume() {
+    this._paused = false;
   }
 
 }

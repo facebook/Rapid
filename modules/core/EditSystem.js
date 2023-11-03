@@ -1062,8 +1062,8 @@ export class EditSystem extends AbstractSystem {
 
     // Call _finish when we believe we have everything.
     const _finish = () => {
-      loading.close();            // unblock ui
-      map.redrawEnabled = true;   // unbock drawing
+      loading.close();         // unblock ui
+      map.resume();            // unbock drawing
       this._replaceStaging();
       this._updateChanges();
       this.emit('historyjump', 0, this._index);  // send 0 in prevIndex, we are replacing history completely
@@ -1093,7 +1093,7 @@ export class EditSystem extends AbstractSystem {
       }
 
       if (missingIDs.size) {
-        map.redrawEnabled = false;           // block drawing
+        map.pause();                         // block drawing
         context.container().call(loading);   // block ui
 
         // watch out: this callback may be called multiple times..

@@ -29,7 +29,6 @@ export class MapWithAIService extends AbstractSystem {
     this._tiler = new Tiler().zoomRange(TILEZOOM);
     this._datasets = {};
     this._deferred = new Set();
-    this._off = false;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._parseNode = this._parseNode.bind(this);
@@ -111,7 +110,7 @@ export class MapWithAIService extends AbstractSystem {
    * @param   {string}  datasetID - datasetID to load tiles for
    */
   loadTiles(datasetID) {
-    if (this._off) return;
+    if (this._paused) return;
 
     let ds = this._datasets[datasetID];
     let graph, tree, cache;
@@ -190,11 +189,6 @@ export class MapWithAIService extends AbstractSystem {
     if (!ds || !ds.tree || !ds.graph) return;
     ds.graph.rebase(entities, [ds.graph], false);
     ds.tree.rebase(entities, false);
-  }
-
-
-  toggle(val) {
-    this._off = !val;
   }
 
 
