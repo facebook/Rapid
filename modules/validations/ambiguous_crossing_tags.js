@@ -1,12 +1,17 @@
 
 import { actionChangeTags } from '../actions/change_tags';
 import { ValidationIssue, ValidationFix } from '../core/lib';
-import { utilHashcode, utilTagDiff } from '@rapid-sdk/util';
+import { utilHashcode } from '@rapid-sdk/util';
 
 /**
- * Look for roads with crossing nodes whose crossing markings conflict/are ambiguous:
- * a road that is 'unmarked' should not have a crossing node with markings, and vice versa.
- * Also flag nodes without crossing info, but who have at least one parent way with crossing information 'candidate'
+ * Ambiguous Crossing Tags: this file is all about resolving ambiguities between crossing ways and their constituent crossing nodes.
+ *
+ * There are three classes of ambiguity:
+ *
+ * marked/unmarked - i.e. one is marked and the other is not marked
+ * conflicting- both are marked but the markings differ (zebra vs. marked, ladder vs. lines, etc)
+ * candidate crossings: nodes without any crossing info that are candidates to be made into crossings
+ * *
  */
 export function validationAmbiguousCrossingTags(context) {
   const type = 'ambiguous_crossing_tags';
@@ -14,6 +19,7 @@ export function validationAmbiguousCrossingTags(context) {
   const l10n = context.systems.l10n;
 
 
+  // Some utility methods.
   function isCrossingHighway(entity) {
     return entity.type === 'way' && entity.tags.footway === 'crossing';
   }
@@ -22,13 +28,13 @@ export function validationAmbiguousCrossingTags(context) {
     return node.tags.crossing || node.tags.highway === 'crossing';
   }
 
-  function wayHasMarkings(way) {
-    return way.tags.crossing === 'marked';
+  function hasMarkings(entity) {
+    return (entity.tags.crossing === 'marked' || (entity.tags['crossing:markings'] !== undefined && entity.tags['crossing:markings'] !== 'no'));
   }
 
-
+  // Crossing node candidate check
   function isCrossingNodeCandidate(node, parentWays) {
-    //Can't be a crossing candidate... if it's already marked as crossing.
+    // Can't be a crossing candidate... if it's already marked as crossing.
     if (node.tags.highway === 'crossing') return false;
 
     // We should only consider node candidates with at least one parent highway that is not a footway.
@@ -36,6 +42,9 @@ export function validationAmbiguousCrossingTags(context) {
     return (crossings.length > 0 && parentWays.length > 0);
   }
 
+  // This method performs both the conflicting checks and the marked/unmarked checks, generating fixes for both.
+  // Note that 'unmarked' can either mean: explicity unmarked, such as tags like  `crossing=unmarked`, `
+  // crossing=unmarked; crossing: markings=no`, or implicitly unmarked, i.e. no marking tag info whatsoever.
   function crossingNodeIssues(entity, graph) {
     let issues = [];
     let currentInfo;
@@ -49,10 +58,9 @@ export function validationAmbiguousCrossingTags(context) {
     let wayUpdateTags;
     let nodeDowngradeTags;
     let wayDowngradeTags;
-    let wayTagDiff;
-    let nodeTagDiff;
 
-    //First obtain all the nodes marked as a crossing.
+    // First obtain all the nodes marked as a crossing.
+    // We'll check each one.
     const crossingNodes = findCrossingNodes(entity);
 
     crossingNodes.forEach(crossingNode => {
@@ -62,7 +70,7 @@ export function validationAmbiguousCrossingTags(context) {
 
         // Can't compare node crossing to way crossing if the way crossing is 'uncontrolled'.
         if (parentWay.tags.crossing === 'uncontrolled' || parentWay.tags.crossing === 'traffic_signals') return;
-        //Check to see if the parent way / child node crossing tags conflict.
+        // Check to see if the parent way / child node crossing tags conflict.
 
         // Marked/unmarked abmiguities/conflicts:
         // Marked way with explicitly unmarked or unannotated node
@@ -74,8 +82,8 @@ export function validationAmbiguousCrossingTags(context) {
             node: crossingNode,
             way: parentWay,
             });
-        } else if (parentWay.tags.crossing === 'marked' && crossingNode.tags?.crossing === 'marked') {
-          //Both marked but with different markings, and therefore conflicting
+        } else if (hasMarkings(parentWay) && hasMarkings(crossingNode)) {
+          // Both marked but with different markings, and therefore conflicting
           if (parentWay.tags['crossing:markings'] !== crossingNode.tags['crossing:markings']) {
             markingConflicts.push({
               node: crossingNode,
@@ -90,13 +98,16 @@ export function validationAmbiguousCrossingTags(context) {
       return nodeTags?.crossing === 'unmarked' || !nodeTags?.crossing;
     }
 
+    // For each marked/unmarked conflict, we'll need to generate two fixes:
+    // one to update both entities as 'marked' with the markings already potentially set on the marked entity
+    // one to downgrade both entities to being 'unmarked'.
     markedUnmarkedConflicts.forEach(conflictingNodeInfo => {
       currentInfo = conflictingNodeInfo;
 
       nodeUpdateTags = Object.assign({}, currentInfo.node.tags);
       wayUpdateTags = Object.assign({}, currentInfo.way.tags);
 
-      //Get the markings, favoring the way which is right more often.
+      // Get the markings, favoring the way which is right more often.
       let markingVal = wayUpdateTags['crossing:markings'] || nodeUpdateTags['crossing:markings'];
 
       // On the chance that the marking value is explicitly unmarked, change it to marked to construct our update tags.
@@ -111,7 +122,7 @@ export function validationAmbiguousCrossingTags(context) {
       wayUpdateTags['crossing:markings'] = markingVal;
       wayUpdateTags.crossing = 'marked';
 
-      //Alternatively, figure out the tags to set both as unmarked
+      // Alternatively, figure out the tags to set both as unmarked
       nodeDowngradeTags = Object.assign({}, currentInfo.node.tags);
       wayDowngradeTags = Object.assign({}, currentInfo.way.tags);
 
@@ -120,9 +131,12 @@ export function validationAmbiguousCrossingTags(context) {
       wayDowngradeTags['crossing:markings'] = 'no';
       wayDowngradeTags.crossing = 'unmarked';
 
-      const wayMarked = wayHasMarkings(currentInfo.way);
-      //The autofix button can only do one thing- so we'll prefer to use the way tags over the node tags.
-      let autoArgs = [wayMarked ? doMarkBothAsWay : doUnmarkNodeAsWay, l10n.t( wayHasMarkings(currentInfo.way) ? 'issues.fix.set_both_as_marked.annotation' : 'issues.fix.set_both_as_unmarked.annotation')];
+      const wayMarked = hasMarkings(currentInfo.way);
+
+      // The autofix button can only do one thing- so we'll prefer to use the way tags over the node tags.
+      // This is because empirically we see that crossing ways in OSM are tagged with crossing markings much more often than the crossing nodes are.
+      // So if the way is already marked, chances are the node just needs to be made the same as the way.
+      let autoArgs = [wayMarked ? doMarkBothAsWay : doUnmarkNodeAsWay, l10n.t( hasMarkings(currentInfo.way) ? 'issues.fix.set_both_as_marked.annotation' : 'issues.fix.set_both_as_unmarked.annotation')];
 
       issues.push(new ValidationIssue(context, {
         type,
@@ -146,7 +160,7 @@ export function validationAmbiguousCrossingTags(context) {
           wayTags: conflictingNodeInfo.way.tags,
           nodeTags: conflictingNodeInfo.node.tags
         },
-        dynamicFixes: makeFixes
+        dynamicFixes: makeMarkedUnmarkedFixes
       }));
     });
 
@@ -182,14 +196,15 @@ export function validationAmbiguousCrossingTags(context) {
         wayUpdateTags['crossing:markings'] = nodeMarkingVal;
       }
 
-      //The autofix button can only do one thing- so we'll prefer to use the way tags over the node tags.
+      // The autofix button can only do one thing- so we'll prefer to use the way tags over the node tags.
+      // (See earlier code note about why we prefer the way tags)
       let autoArgs = [doMarkBothAsWay, l10n.t(wayMarkingVal ? 'issues.fix.set_both_as_marked.annotation' : 'issues.fix.set_both_as_unmarked.annotation')];
 
 
       issues.push(new ValidationIssue(context, {
         type,
         subtype: 'fixme_tag',
-        severity: 'warning',
+        severity: 'error',
         message: function () {
           const graph = editor.staging.graph;
           const node = graph.hasEntity(this.entityIds[0]);
@@ -299,7 +314,7 @@ export function validationAmbiguousCrossingTags(context) {
       return actionChangeTags(currentInfo.node.id, nodeDowngradeTags)(graph);
     }
 
-    function makeFixes() {
+    function makeMarkedUnmarkedFixes() {
       let fixes = [];
       const graph = editor.staging.graph;  // I think we use staging graph for dynamic fixes?
       const parentWay = graph.hasEntity(this.entityIds[1]);
@@ -350,11 +365,13 @@ export function validationAmbiguousCrossingTags(context) {
   }
 
 
+  // This method performs the crossing node candidate check. This check attempts to find normal nodes in a crossing way that are potentials to upgrade into crossing nodes.
+  // Not all the nodes found with this validation need to be upgraded, it is merely to call attention to the potential for missing crossing information.
   function crossingNodeCandidateIssues(entity, graph) {
     let issues = [];
     let currentNodeInfo;
     let candidateNodeInfos = [];
-    //Now, find all the nodes that aren't marked as crossings, but are *actually* crossings of at least one footway.
+    // Now, find all the nodes that aren't marked as crossings, but are *actually* crossings of at least one footway.
     const crossingNodeCandidates = findCrossingNodeCandidates(entity);
 
 
@@ -370,7 +387,7 @@ export function validationAmbiguousCrossingTags(context) {
       }
     });
 
-
+    // For each crossing candidate...
     candidateNodeInfos.forEach(candidateNodeInfo => {
       currentNodeInfo = candidateNodeInfo;
       let autoArgs = [doTagUpgrade, l10n.t('issues.fix.set_both_as_marked.annotation')];
@@ -414,7 +431,7 @@ export function validationAmbiguousCrossingTags(context) {
       way.nodes.forEach((nodeID, index) => {
 
         if (index === 0 || index === way.nodes.length - 1) {
-          //only evaluate 'inner' nodes, not the ends.
+          // only evaluate 'inner' nodes, not the ends.
           return;
         }
         const node = graph.entity(nodeID);
@@ -430,8 +447,6 @@ export function validationAmbiguousCrossingTags(context) {
 
     function makeCandidateFixes() {
       let fixes = [];
-      const graph = editor.staging.graph;  // I think we use staging graph in dynamic fixes?
-      const parentWay = graph.hasEntity(this.entityIds[1]);
 
       fixes.push(
         new ValidationFix({
