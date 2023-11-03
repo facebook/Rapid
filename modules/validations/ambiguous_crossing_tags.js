@@ -76,8 +76,8 @@ export function validationAmbiguousCrossingTags(context) {
         // Marked way with explicitly unmarked or unannotated node
         // Marked node with explicitly unmarked or unannotated way
         // Generate 2 fixes: mark both as unmarked, or both as marked & optionally use marking value (if any)
-        if ((parentWay.tags?.crossing !== 'unmarked' && noCrossingMarkings(crossingNode.tags)) ||
-          (crossingNode.tags?.crossing !== 'unmarked' && noCrossingMarkings(parentWay.tags))) {
+        if ((hasCrossingMarkings(parentWay.tags) && noCrossingMarkings(crossingNode.tags)) ||
+          (hasCrossingMarkings(crossingNode.tags) && noCrossingMarkings(parentWay.tags))) {
             markedUnmarkedConflicts.push({
             node: crossingNode,
             way: parentWay,
@@ -94,8 +94,13 @@ export function validationAmbiguousCrossingTags(context) {
       });
     });
 
-    function noCrossingMarkings(nodeTags) {
-      return nodeTags?.crossing === 'unmarked' || !nodeTags?.crossing;
+    function noCrossingMarkings(entityTags) {
+      const tag = entityTags?.crossing;
+      return  tag === 'unmarked' || tag === 'informal' || !tag;
+    }
+
+    function hasCrossingMarkings(entityTags) {
+      return entityTags?.crossing === 'uncontrolled' || entityTags?.crossing === 'marked';
     }
 
     // For each marked/unmarked conflict, we'll need to generate two fixes:
