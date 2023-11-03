@@ -73,7 +73,7 @@ describe('validationAmbiguousCrossingTags', () => {
   }
 
 
-  function verifySingleCrossingIssue(issues) {
+  function verifySingleCrossingWarning(issues) {
     // each entity must produce an identical issue
     expect(issues).to.have.lengthOf(1);
 
@@ -85,6 +85,21 @@ describe('validationAmbiguousCrossingTags', () => {
       expect(issue.loc).to.eql([0, 0]);
     }
   }
+
+
+  function verifySingleCrossingError(issues) {
+    // each entity must produce an identical issue
+    expect(issues).to.have.lengthOf(1);
+
+    for (const issue of issues) {
+      expect(issue.type).to.eql('ambiguous_crossing_tags');
+      expect(issue.severity).to.eql('error');
+
+      expect(issue.entityIds).to.have.lengthOf(2);
+      expect(issue.loc).to.eql([0, 0]);
+    }
+  }
+
 
   it('ignores untagged lines that share an untagged crossing node', () => {
     createWaysWithOneCrossingNode();
@@ -99,7 +114,7 @@ describe('validationAmbiguousCrossingTags', () => {
       { 'crossing:markings' : 'yes' }
     );
     const issues = validate();
-    verifySingleCrossingIssue(issues);
+    verifySingleCrossingWarning(issues);
   });
 
   it('flags unmarked lines that share a zebra-marked crossing node', () => {
@@ -109,7 +124,7 @@ describe('validationAmbiguousCrossingTags', () => {
       { MARKING_TAG: 'zebra' }
     );
     const issues = validate();
-    verifySingleCrossingIssue(issues);
+    verifySingleCrossingWarning(issues);
   });
 
   it('flags marked lines that share an unmarked crossing node', () => {
@@ -119,17 +134,17 @@ describe('validationAmbiguousCrossingTags', () => {
       { 'crossing:markings': 'no' }
     );
     const issues = validate();
-    verifySingleCrossingIssue(issues);
+    verifySingleCrossingWarning(issues);
   });
 
   it('flags marked lines and nodes that have a different crossing marking type', () => {
     createWaysWithOneCrossingNode(
       { crossing: 'marked', 'crossing:markings': 'zebra', highway: 'footway', footway: 'crossing' },
       { highway: 'residential' },
-      { 'crossing:markings': 'lines' }
+      { 'highway': 'crossing', 'crossing':'marked', 'crossing:markings': 'lines' }
     );
     const issues = validate();
-    verifySingleCrossingIssue(issues);
+    verifySingleCrossingError(issues);
   });
 
   it('flags an informal line and marked node', () => {
@@ -139,17 +154,17 @@ describe('validationAmbiguousCrossingTags', () => {
       { 'crossing:markings': 'lines' }
     );
     const issues = validate();
-    verifySingleCrossingIssue(issues);
+    verifySingleCrossingWarning(issues);
   });
 
   it('flags an marked line and informal ladder node', () => {
     createWaysWithOneCrossingNode(
       { crossing: 'marked', highway: 'footway', footway: 'crossing'},
       { highway: 'residential' },
-      { 'crossing:markings': 'ladder', 'crossing':'informal'}
+      { 'highway':'crossing', 'crossing':'informal'}
     );
     const issues = validate();
-    verifySingleCrossingIssue(issues);
+    verifySingleCrossingWarning(issues);
   });
 
   it('flags a marked line with potential unmarked crossing nodes', () => {
@@ -159,7 +174,7 @@ describe('validationAmbiguousCrossingTags', () => {
       {}
     );
     const issues = validate();
-    verifySingleCrossingIssue(issues);
+    verifySingleCrossingWarning(issues);
   });
 
 });
