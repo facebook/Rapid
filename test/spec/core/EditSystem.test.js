@@ -44,6 +44,8 @@ describe('EditSystem', () => {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     on()          { return this; }
+    pause()       { }
+    resume()      { }
   }
 
   class MockImagerySystem {

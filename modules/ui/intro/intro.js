@@ -124,7 +124,7 @@ export function uiIntro(context, skipToRapid) {
 
     // Disable OSM
     if (osm) {
-      osm.toggle(false);
+      osm.pause();
     }
 
     // Load walkthrough data
@@ -159,7 +159,7 @@ export function uiIntro(context, skipToRapid) {
     });
 
     if (mapwithai) {
-      mapwithai.toggle(false);    // disable network
+      mapwithai.pause();    // disable network
       mapwithai.merge('rapid_intro_graph', Object.values(_rapidGraph));
     }
 
@@ -286,11 +286,11 @@ export function uiIntro(context, skipToRapid) {
       context.resetAsync()
         .then(() => {
           if (osm) {
-            osm.toggle(true);
+            osm.resume();
           }
 
           if (mapwithai) {
-            mapwithai.toggle(true);
+            mapwithai.resume();
           }
 
           if (original.edits) {

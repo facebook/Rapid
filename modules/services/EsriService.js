@@ -34,7 +34,6 @@ export class EsriService extends AbstractSystem {
     this._tiler = new Tiler().zoomRange(TILEZOOM);
     this._datasets = {};
     this._gotDatasets = false;
-    this._off = false;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._parseDataset = this._parseDataset.bind(this);
@@ -102,7 +101,7 @@ export class EsriService extends AbstractSystem {
    * @param   {string}  datasetID - datasetID to load tiles for
    */
   loadTiles(datasetID) {
-    if (this._off) return;
+    if (this._paused) return;
 
     // `loadDatasetsAsync` and `loadLayerAsync` are asynchronous,
     // so ensure both have completed before we start requesting tiles.
@@ -142,11 +141,6 @@ export class EsriService extends AbstractSystem {
   graph(datasetID)  {
     const ds = this._datasets[datasetID];
     return ds?.graph;
-  }
-
-
-  toggle(val) {
-    this._off = !val;
   }
 
 

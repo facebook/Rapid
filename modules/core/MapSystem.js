@@ -20,15 +20,15 @@ function clamp(num, min, max) {
 
 
 /**
- * `MapSystem` maintains the map state
- * and provides an interface for manipulating the map view.
+ * `MapSystem` maintains the map state and provides an interface for manipulating the map view.
+ *
+ * Supports `pause()` / `resume()` - when paused, the map system will not render
  *
  * Properties available:
  *   `dimensions`      The pixel dimensions of the map viewport [width,height]
  *   `supersurface`    D3 selection to the parent `div` "supersurface"
  *   `surface`         D3 selection to the sibling `canvas` "surface"
  *   `overlay`         D3 selection to the sibling `div` "overlay"
- *   `redrawEnabled`   `true` to allow drawing, `false` to pause drawing
  *   `highlightEdits`   true` if edited features should be shown in a special style, `false` otherwise
  *   `areaFillMode`    one of 'full', 'partial' (default), or 'wireframe'
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
@@ -53,7 +53,6 @@ export class MapSystem extends AbstractSystem {
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
     this.overlay = d3_select(null);       // sibling `div`, offsets supersurface transform (used to hold the editmenu)
-    this.redrawEnabled = true;
 
     // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
@@ -169,7 +168,7 @@ export class MapSystem extends AbstractSystem {
     selection
       // Suppress the native right-click context menu
       .on('contextmenu', e => e.preventDefault())
-      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – iD#5552
       .on('wheel.map mousewheel.map', e => e.preventDefault());
 
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
@@ -365,7 +364,7 @@ export class MapSystem extends AbstractSystem {
    * allow the changes to batch up over several animation frames.
    */
   deferredRedraw() {
-    if (!this._renderer || !this.redrawEnabled) return;
+    if (!this._renderer || this._paused) return;
     this._renderer.deferredRender();
   }
 
@@ -377,7 +376,7 @@ export class MapSystem extends AbstractSystem {
    * the map to update on one of the next few animation frames to show their change.
    */
   immediateRedraw() {
-    if (!this._renderer || !this.redrawEnabled) return;
+    if (!this._renderer || this._paused) return;
     this._renderer.render();
   }
 
