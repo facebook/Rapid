@@ -19,8 +19,8 @@ export function uiMap3dViewer(context) {
 
   function render(selection) {
     let wrap = d3_select(null);
-    // let _isHidden = !context.systems.urlhash?.getParam('map3d'); // depends on URL hash
-    let _isHidden = true; // start as hidden
+    let _isHidden = !urlhash.getParam('map3d'); // depends on URL hash
+    // let _isHidden = true; // start as hidden
 
 
     function redraw() {
@@ -226,7 +226,7 @@ export function uiMap3dViewer(context) {
     function toggle(d3_event) {
       if (d3_event) d3_event.preventDefault();
 
-      let shouldShow = context.systems.urlhash?.getParam('map3d');
+      _isHidden = urlhash.getParam('map3d');
 
       context
         .container()
@@ -235,8 +235,7 @@ export function uiMap3dViewer(context) {
         .select('input')
         .property('checked', !_isHidden);
 
-      if (shouldShow) {
-        _isHidden = false;
+      if (_isHidden) {
         wrap
           .style('display', 'block')
           .style('opacity', '1')
@@ -248,7 +247,6 @@ export function uiMap3dViewer(context) {
           );
         urlhash.setParam('map3d', null);
       } else {
-        _isHidden = true;
         wrap
           .style('display', 'block')
           .style('opacity', '0')
