@@ -49,7 +49,6 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
     if (this.supported) {
       const service = this.context.services.mapillary;
-
       service.on('bearingChanged', this._handleBearingChange);
       service.on('fovChanged', this._handleFovChange);
     }

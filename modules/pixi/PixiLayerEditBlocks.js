@@ -18,7 +18,6 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
     this.enabled = true;   // this layer should always be enabled
-    this._oldk = 0;
   }
 
 

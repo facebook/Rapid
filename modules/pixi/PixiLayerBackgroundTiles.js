@@ -50,6 +50,18 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   */
+  reset() {
+    super.reset();
+    this.destroyAll();
+    this._tileMaps.clear();
+    this._failed.clear();
+  }
+
+
+  /**
    * render
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering

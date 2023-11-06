@@ -105,10 +105,12 @@ export class PixiLayerLabels extends AbstractLayer {
 
 
   /**
-   * resetAll
-   * Remove all label and debug objects from the scene and from all caches
+   * reset
+   * Every Layer should have a reset function to clear out any state when a reset occurs.
    */
-  resetAll() {
+  reset() {
+    super.reset();
+
     for (const label of this._labels.values()) {
 //      if (textureManager.get('text', label.str)) {
 //        textureManager.free('text', label.str);
@@ -183,7 +185,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // Reset all labels and avoids when scale changes
       const k = projection.scale();
       if (k !== this._oldk) {
-        this.resetAll();
+        this.reset();
         this._oldk = k;
       }
 
