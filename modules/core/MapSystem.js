@@ -22,7 +22,7 @@ function clamp(num, min, max) {
 /**
  * `MapSystem` maintains the map state and provides an interface for manipulating the map view.
  *
- * Supports `pause()` / `resume()` - when paused, the map system will not render
+ * Supports `pause()` / `resume()` - when paused, the the code in PixiRenderer.js will not render
  *
  * Properties available:
  *   `dimensions`      The pixel dimensions of the map viewport [width,height]
@@ -152,6 +152,8 @@ export class MapSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
+    this._renderer?.scene?.reset();
+    this.immediateRedraw();
     return Promise.resolve();
   }
 
@@ -364,8 +366,7 @@ export class MapSystem extends AbstractSystem {
    * allow the changes to batch up over several animation frames.
    */
   deferredRedraw() {
-    if (!this._renderer || this._paused) return;
-    this._renderer.deferredRender();
+    this._renderer?.deferredRender();
   }
 
 
@@ -376,8 +377,7 @@ export class MapSystem extends AbstractSystem {
    * the map to update on one of the next few animation frames to show their change.
    */
   immediateRedraw() {
-    if (!this._renderer || this._paused) return;
-    this._renderer.render();
+    this._renderer?.render();
   }
 
 
@@ -844,7 +844,7 @@ export class MapSystem extends AbstractSystem {
    * @readonly
    */
   get scene() {
-    return this._renderer.scene;
+    return this._renderer?.scene;
   }
 
   /**

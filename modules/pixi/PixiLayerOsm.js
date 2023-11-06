@@ -107,6 +107,16 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   */
+  reset() {
+    super.reset();
+    this._resolved.clear();
+  }
+
+
+  /**
    * render
    * Render any data we have, and schedule fetching more of it to cover the view
    * @param  frame        Integer frame being rendered

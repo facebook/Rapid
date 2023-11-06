@@ -66,6 +66,29 @@ export class AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   * Override in a subclass with needed logic.
+   * @abstract
+   */
+  reset() {
+    this._featureHasData.clear();
+    this._dataHasFeature.clear();
+    this._parentHasChildren.clear();
+    this._childHasParents.clear();
+    this._dataHasClass.clear();
+    this._classHasData.clear();
+
+    for (const feature of this.features.values()) {
+      feature.destroy();
+    }
+
+    this.features.clear();
+    this.retained.clear();
+  }
+
+
+  /**
    * render
    * Every Layer should have a render function that manages the Features in view.
    * Override in a subclass with needed logic. It will be passed:

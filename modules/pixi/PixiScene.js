@@ -113,6 +113,18 @@ export class PixiScene extends EventEmitter {
 
 
   /**
+   * reset
+   * Calls each Layer's `reset' method.
+   * This is used to clear out any state when a reset occurs.
+   */
+  reset() {
+    for (const layer of this.layers.values()) {
+      layer.reset();
+    }
+  }
+
+
+  /**
    * render
    * Calls each Layer's `render` and `cull` methods
    * - `render` will create and update the Features that belong in the scene
