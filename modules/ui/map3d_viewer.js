@@ -37,7 +37,7 @@ export function uiMap3dViewer(context) {
       const center = extent.center();
       extent.padByMeters(100);
 
-      map3d.maplibre.jumpTo({
+      map3d.maplibre?.jumpTo({
         center: center,
         bearing: 0,
         zoom: map.zoom() - 3,
