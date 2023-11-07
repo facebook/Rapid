@@ -224,6 +224,7 @@ export function uiMap3dViewer(context) {
 
 
     function toggle(d3_event) {
+      if (!d3_event?.preventDefault) return;
       if (d3_event) d3_event.preventDefault();
 
       _isHidden = urlhash.getParam('map3d');
@@ -258,38 +259,6 @@ export function uiMap3dViewer(context) {
       }
     }
 
-    // function _hashchange(){
-    //   // _isHidden = !_isHidden;
-    //   let _isHidden = context.systems.urlhash?.getParam('map3d');
-
-    //   context
-    //     .container()
-    //     .select('.three-d-map-toggle-item')
-    //     .classed('active', !_isHidden)
-    //     .select('input')
-    //     .property('checked', !_isHidden);
-
-    //   if (_isHidden){
-    //     wrap
-    //     .style('display', 'block')
-    //     .style('opacity', '0')
-    //     .transition()
-    //     .duration(200)
-    //     .style('opacity', '1')
-    //     .on('end', () => redraw());
-    //   } else {
-    //     wrap
-    //       .style('display', 'block')
-    //       .style('opacity', '1')
-    //       .transition()
-    //       .duration(0)
-    //       .style('opacity', '0')
-    //       .on('end', () =>
-    //         selection.selectAll('.three-d-map').style('display', 'none')
-    //       );
-    //   }
-    // }
-
     /* setup */
     uiMap3dViewer.toggle = toggle;
 
@@ -315,4 +284,3 @@ export function uiMap3dViewer(context) {
 
   return render;
 }
-
