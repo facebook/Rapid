@@ -10,33 +10,35 @@ import { EventEmitter } from '@pixi/utils';
  * System Components all go through a standard lifecycle.
  * `constructor()` -> `initAsync()` -> `startAsync()`
  *
- * `constructor()` - called one time and passed the Context.
+ * `constructor()` - Called one time and passed the Context.
  *   At this stage all components are still being constructed, in no particular order.
  *   You should not call other components or use the context in the constructor.
  *
- * `initAsync()` - called one time after all systems are constructed.
+ * `initAsync()` - Called one time after all systems are constructed.
  *   Systems may check at init time that their dependencies are met.
- *   They may chain onto other system initAsync promises in order to establish a dependency graph.
- *   (for example, if DataLoaderSystem must be initialized and ready
- *    so that the ImagerySystem can start fetching its imagery index)
- *   initAsync is also a good place to set up event listeners.
+ *   They may chain onto other system `initAsync` promises in order to establish a dependency graph.
+ *   (for example, if `DataLoaderSystem` must be initialized and ready
+ *    so that the `ImagerySystem` can start fetching its imagery index)
+ *   `initAsync` is also a good place to set up event listeners.
  *   After 'init', the component should mostly be able to function normally.
  *   You should be able to call methods but there is no user interface yet.
  *   and no events will be dispatched yet.
  *
- * `startAsync()` - called one time after all systems are initialized
+ * `startAsync()` - Called one time after all systems are initialized.
  *   At this stage we are creating the user interface and the map.
  *   There is an `autoStart` property that defaults to `true` but can be set `false` for some systems.
- *   (for example Map3dSystem doesn't need to load and start MapLibre until the user actually decides
- *    they want to see it - it is another component's job to call `startAsync() in this situation`)
+ *   (for example `Map3dSystem` doesn't need to load and start MapLibre until the user actually decides
+ *    they want to see it - it is another component's job to call `startAsync` in this situation)
  *   Like with init, components can chain onto other components startAsync promises they depend on.
  *   After 'start', the system should be doing its job and dispatching events.
  *
- * `resetAsync()` - called after completing an edit session to reset any internal state
- *   Resets mainly happen when completing an edit session, but can happen other times
- *   for example entering/exiting the tutorial or when switching connection between live/dev OSM API.
+ * `resetAsync()` - Called after completing an edit session to reset any internal state.
+ *   Resets mainly happen when completing an edit session, but can happen other times,
+ *   for example entering/exiting the tutorial, restoring a saved backup, or when switching
+ *   connection between live/dev OSM API.  Each system is responsible for clearing out any
+ *   stored state during reset.
  *
- * `pause()` / `resume()` - call these methods from other parts of the application to pause or resume.
+ * `pause()` / `resume()` - Call these methods from other parts of the application to pause or resume.
  *   The meaning of "pause" / "resume" is dependent on the system - they may not be used at all.
  *   It may be used to prevent network fetches, background work, or rendering.
  *   (Note: they are currently sync - may need to be made async in the future?)
@@ -109,7 +111,7 @@ export class AbstractSystem extends EventEmitter {
 
   /**
    * resetAsync
-   * Called after completing an edit session to reset any internal state
+   * Called after completing an edit session to reset any internal state.
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {

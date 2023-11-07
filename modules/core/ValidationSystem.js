@@ -739,13 +739,13 @@ export class ValidationSystem extends AbstractSystem {
     // that won't make the browser stutter too badly.
     cache.queue = cache.queue.concat(utilArrayChunk(jobs, 50));
 
-    // Perform the work
-    if (cache.queuePromise) return cache.queuePromise;
-
-    cache.queuePromise = this._processQueue(cache)
-      .then(() => this._revalidateProvisionalEntities(cache))
-      .catch(e => console.error(e))  // eslint-disable-line
-      .finally(() => cache.queuePromise = null);
+    // Enqueue the work
+    if (!cache.queuePromise) {
+      cache.queuePromise = this._processQueue(cache)
+        .then(() => this._revalidateProvisionalEntities(cache))
+        .catch(e => console.error(e))  // eslint-disable-line
+        .finally(() => cache.queuePromise = null);
+    }
 
     return cache.queuePromise;
   }
@@ -820,9 +820,9 @@ class ValidationCache {
    * @param  which String 'base' or 'head' to keep track of it
    */
   constructor(which) {
-    this.which = which;
+    this.which = which;   // 'base' or 'head'
     this.graph = null;
-    this.queue = [];
+    this.queue = [];      // Array(jobs)
     this.queuePromise = null;
     this.queuedEntityIDs = new Set();
     this.provisionalEntityIDs = new Set();
