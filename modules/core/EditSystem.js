@@ -135,7 +135,7 @@ export class EditSystem extends AbstractSystem {
 
         // Setup event handlers
         window.addEventListener('beforeunload', e => {
-          if (this._index !== 0) {  // user did something
+          if (this._history.length > 1) {  // user did something
             e.preventDefault();
             this.saveBackup();
             return (e.returnValue = '');  // show browser prompt
@@ -757,7 +757,7 @@ export class EditSystem extends AbstractSystem {
    * hasChanges
    * This counts meangful edits only (modified, created, deleted).
    * For example, we could perform a bunch of no-op edits and it would still return false.
-   * @return `true` if the user has made any meaningful edits
+   * @return {boolean}  `true` if the user has made any meaningful edits
    */
   hasChanges() {
     return this._fullDifference.changes.size > 0;
@@ -986,153 +986,172 @@ export class EditSystem extends AbstractSystem {
 
 
   /**
-   * fromJSON
+   * fromJSONAsync
    * Restore the edit history from a JSON string.
-   * Optionally fetch missing child nodes from OSM
-   *   (bhousel - not clear to me under what circumstances we would have a `false` here? Test environment?)
+   * Because the restore process can involve fetching additional information from the OSM API,
+   *  this function needs to be async, and should be chained after a `context.resetAsync()` to ensure
+   *  that we are starting with a clean slate in regards to validation and rendering.
+   *
    * @param  {string}   json - Stringified JSON to parse
-   * @param  {boolean}  loadMissing - if `true` also attempt to fetch missing child nodes from OSM API
-   * @return {string?}  A String containing the JSON, or `undefined` if nothing to save
+   * @return {Promise}  Promise resolved when the restore process is complete
    */
-  fromJSON(json, loadMissing) {
+  fromJSONAsync(json) {
     const context = this.context;
     const map = context.systems.map;
+    const osm = context.services.osm;
 
-    const baseGraph = this.base.graph;   // The initial unedited Graph
-    const loading = uiLoading(context).blocking(true);  // Only shown if we are looking for missingIDs
     const backup = JSON.parse(json);
 
     if (backup.version !== 3) {
       throw new Error(`Backup version ${backup.version} not supported.`);
     }
 
-    // Restore the modified entities
-    const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
-    for (const e of backup.entities) {
-      modifiedEntities.set(osmEntity.key(e), osmEntity(e));
+    // should we assert that the history has been reset?
+    // we expect to chain after context.resetAsync() ? we could just call this.reset() ?
+
+    map.pause();  // block rendering
+
+    let loading;
+    if (!window.mocha) {
+      loading = uiLoading(context).blocking(true);
+      context.container().call(loading);   // block ui
     }
 
-    // Restore base entities..
-    const baseEntities = backup.baseEntities.map(e => osmEntity(e));
+    const __baseEntities = new Map();        // Map(entityID -> Entity)
+    const __modifiedEntities = new Map();    // Map(Entity.key -> Entity)  (watch out: entity.key - e.g. 'n1v1')
+    const __missingEntityIDs = new Set();    // Set(entityID)
 
-    // Reconstruct the edit history..
-    let prevGraph = baseGraph;
-    this._history = backup.stack.map((item, index) => {
-      // Leave the base edit alone, this first edit should have nothing in it.
-      if (index === 0) return this.base;
-
-      const entities = {};
-      for (const key of item.modified ?? []) {
-        const entity = modifiedEntities.get(key);
-        entities[entity.id] = entity;
-      }
-      for (const entityID of item.deleted ?? []) {
-        entities[entityID] = undefined;
-      }
-
-      const graph = new Graph(prevGraph).load(entities);
-      prevGraph = graph;
-
-      const sources = {};
-      if (Array.isArray(item.imageryUsed))  sources.imagery = item.imageryUsed;
-      if (Array.isArray(item.photosUsed))   sources.photos = item.photosUsed;
-      if (Array.isArray(item.dataUsed))     sources.data = item.dataUsed;
-
-      return new Edit({
-        annotation:  item.annotation,
-        graph:       graph,
-        selectedIDs: item.selectedIDs,
-        sources:     sources,
-        transform:   item.transform
-      });
-    });
-
-    // Restore some other properties..
     osmEntity.id.next = backup.nextIDs;
-    this._index = backup.index;
 
-    // Merge originals into Base Graph.
-    // Note that the force parameter is `true` here to replace anything that might
-    // have been loaded from the API while the user was waiting to press "restore".
-    const graphs = this._history.map(edit => edit.graph);
-    baseGraph.rebase(baseEntities, graphs, true);   // force = true
-    this._tree.rebase(baseEntities, true);          // force = true
-    const seenIDs = new Set(baseEntities.map(entity => entity.id));
-    this.emit('merge', seenIDs);
+    // Reconstruct base entities..
+    for (const e of backup.baseEntities) {
+      const entity = osmEntity(e);
+      __baseEntities.set(entity.id, entity);
+    }
 
-    // Call _finish when we believe we have everything.
-    const _finish = () => {
-      loading.close();         // unblock ui
-      map.resume();            // unbock drawing
-      this._replaceStaging();
-      this._updateChanges();
-      this.emit('historyjump', 0, this._index);  // send 0 in prevIndex, we are replacing history completely
-    };
+    // Determine if any nodes are missing and need to be loaded separately..
+    for (const entity of __baseEntities.values()) {
+      if (!Array.isArray(entity.nodes)) continue;  // consider ways only
+      for (const nodeID of entity.nodes) {
+        if (!__baseEntities.has(nodeID)) {
+          __missingEntityIDs.add(nodeID);
+        }
+      }
+    }
 
+    // Reconstruct modified entities..
+    for (const e of backup.entities) {
+      __modifiedEntities.set(osmEntity.key(e), osmEntity(e));
+    }
 
-    // When we restore modified ways, we also need to fetch any missing childNodes
-    // that would normally have been downloaded with those ways.. see iD#2142
+    // Load missing entities from the OSM API
+    // When we restore ways, we also need to fetch any missing childNodes
+    //  that would normally have been downloaded with those ways.. see iD#2142
     // As added challenges:
     //  - We have to keep the UI blocked while this is happening, because it's destructive to the graphs/edits.
     //  - Callback can be called multiple times, so we have to keep track of how many of the missing nodes we got.
     //  - The child nodes may have been deleted, so we may have to fetch older non-deleted copies
     //
     // A thought I'm having is - if we need to do all this anyway, it might make more sense to just store the
-    // base version numbers rather than base entities, then use loadEntityVersion to fetch exactly what we need.
-    //
-    const missingIDs = new Set();
-    const osm = context.services.osm;
-    if (loadMissing && osm) {
-      const baseWays = baseEntities.filter(entity => entity.type === 'way');
-      for (const way of baseWays) {
-        for (const nodeID of way.nodes) {
-          if (!baseGraph.hasEntity(nodeID)) {
-            missingIDs.add(nodeID);
-          }
-        }
-      }
+    // base version numbers rather than base entities, then use `loadEntityVersion` to fetch exactly what we need.
+    const _loadMissingEntitiesAsync = () => {
+      return new Promise((resolve, reject) => {
 
-      if (missingIDs.size) {
-        map.pause();                         // block drawing
-        context.container().call(loading);   // block ui
+        if (osm && __missingEntityIDs.size) {
+          // watch out: this callback may be called multiple times..
+          const _missingEntitiesLoaded = (err, result) => {
+            if (err) {
+              reject(err);
 
-        // watch out: this callback may be called multiple times..
-        const _missingEntitiesLoaded = (err, result) => {
-          if (!err) {
-            const visibleGroups = utilArrayGroupBy(result.data, 'visible');
-            const visibles = visibleGroups.true ?? [];      // alive nodes
-            const invisibles = visibleGroups.false ?? [];   // deleted nodes
+            } else {
+              const visibleGroups = utilArrayGroupBy(result.data, 'visible');
+              const visibles = visibleGroups.true ?? [];      // alive nodes
+              const invisibles = visibleGroups.false ?? [];   // deleted nodes
 
-            // Visible (not deleted) entities can be merged directly in..
-            if (visibles.length) {
-              for (const visible of visibles) {
-                missingIDs.delete(visible.id);
+              // Visible (not deleted) are no longer missing and will be merged as base entities..
+              for (const entity of visibles) {
+                __missingEntityIDs.delete(entity.id);
+                __baseEntities.set(entity.id, entity);
               }
-              baseGraph.rebase(visibles, graphs, true);   // force = true
-              this._tree.rebase(visibles, true);          // force = true
-              const seenIDs = new Set(visibles.map(entity => entity.id));
-              this.emit('merge', seenIDs);
+
+              // Invisible (deleted) entities, need to go back a version to find them..
+              for (const entity of invisibles) {
+                osm.loadEntityVersion(entity.id, +entity.version - 1, _missingEntitiesLoaded);
+              }
             }
 
-            // Invisible (deleted) entities, need to go back a version to find them..
-            for (const entity of invisibles) {
-              osm.loadEntityVersion(entity.id, +entity.version - 1, _missingEntitiesLoaded);
+            if (!__missingEntityIDs.size) {  // are we done?
+              resolve();
             }
-          }
+          };
 
-          if (err ?? !missingIDs.size) {
-            _finish();
-          }
-        };
+          osm.loadMultiple(__missingEntityIDs, _missingEntitiesLoaded);
 
-        osm.loadMultiple(missingIDs, _missingEntitiesLoaded);
+        } else {  // nothing to do
+          resolve();
+        }
+
+      });
+    };
+
+
+    // Call _finish when we believe we have everything..
+    // This merges the base entities, reconstructs history, and unblocks the other parts of the app.
+    const _finish = () => {
+
+      // Merge base entities into base graph (force = false, as base graph is assumed to be fresh)
+      const baseEntities = [...__baseEntities.values()];
+      const baseEntityIDs = new Set(__baseEntities.keys());
+      const baseGraph = this.base.graph;
+      baseGraph.rebase(baseEntities, [baseGraph], false);   // force = false
+      this._tree.rebase(baseEntities, false);               // force = false
+
+      // Reconstruct the edit history, each Graph derives from the previous one..
+      // Start at i = 1, leaving base edit alone, the first edit will have nothing in it.
+      let prevGraph = baseGraph;
+      for (let i = 1; i < backup.stack.length; i++) {
+        const item = backup.stack[i];
+        const entities = {};
+        for (const key of item.modified ?? []) {
+          const entity = __modifiedEntities.get(key);
+          entities[entity.id] = entity;
+        }
+        for (const entityID of item.deleted ?? []) {
+          entities[entityID] = undefined;
+        }
+
+        const graph = new Graph(prevGraph).load(entities);
+        prevGraph = graph;
+
+        const sources = {};
+        if (Array.isArray(item.imageryUsed))  sources.imagery = item.imageryUsed;
+        if (Array.isArray(item.photosUsed))   sources.photos = item.photosUsed;
+        if (Array.isArray(item.dataUsed))     sources.data = item.dataUsed;
+
+        this._history.push(new Edit({
+          annotation:  item.annotation,
+          graph:       graph,
+          selectedIDs: item.selectedIDs,
+          sources:     sources,
+          transform:   item.transform
+        }));
       }
-    }
 
-    if (!missingIDs.size) {
-      _finish();
-    }
+      this._index = backup.index;
+      this._replaceStaging();
 
+      map.resume();       // unbock rendering, events will start firing now
+      loading?.close();   // unblock ui
+
+      // emit events
+      this.emit('merge', baseEntityIDs);
+      this._updateChanges();
+      this.emit('historyjump', 0, this._index);  // send 0 in prevIndex, we are replacing history completely
+    };
+
+
+    return _loadMissingEntitiesAsync()
+      .finally(() => _finish());
   }
 
 
@@ -1140,7 +1159,7 @@ export class EditSystem extends AbstractSystem {
    * saveBackup
    * Backup the user's edits to a JSON string in localStorage.
    * This code runs occasionally as the user edits.
-   * @return  `true` if a backup was saved
+   * @return  {boolean?}  `true` if a backup was saved
    */
   saveBackup() {
     const context = this.context;
@@ -1168,7 +1187,7 @@ export class EditSystem extends AbstractSystem {
    * canRestoreBackup
    * This flag will be `true` if `initAsync` has determined that there is a restorable
    *  backup, and we are waiting on the user to make a decision about what to do with it.
-   * @return `true` if there is a backup to restore
+   * @return   {boolean}  `true` if there is a backup to restore
    * @readonly
    */
   get canRestoreBackup() {
@@ -1187,10 +1206,12 @@ export class EditSystem extends AbstractSystem {
 
     if (!this._mutex.locked()) return;  // another browser tab owns the history
 
-    const storage = this.context.systems.storage;
+    const context = this.context;
+    const storage = context.systems.storage;
     const json = storage.getItem(this._backupKey());
     if (json) {
-      this.fromJSON(json, true);
+      context.resetAsync()
+        .then(() => this.fromJSONAsync(json));
     }
   }
 
@@ -1223,6 +1244,7 @@ export class EditSystem extends AbstractSystem {
    * _backupKey
    * Generate a key used to store/retrieve backup edits.
    * It uses `window.location.origin` avoid conflicts with other instances of Rapid.
+   * @return {string}  The key used to store/retrieve backup edits in localStorage
    */
   _backupKey() {
     return 'Rapid_' + window.location.origin + '_saved_history';
