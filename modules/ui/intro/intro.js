@@ -123,9 +123,7 @@ export function uiIntro(context, skipToRapid) {
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
     // Disable OSM
-    if (osm) {
-      osm.pause();
-    }
+    osm?.pause();
 
     // Load walkthrough data
     editor.reset();
@@ -285,13 +283,8 @@ export function uiIntro(context, skipToRapid) {
       // Restore edits and re-enable services.
       context.resetAsync()
         .then(() => {
-          if (osm) {
-            osm.resume();
-          }
-
-          if (mapwithai) {
-            mapwithai.resume();
-          }
+          osm?.resume();
+          mapwithai?.resume();
 
           if (original.edits) {
             editor.fromJSON(original.edits, true);
