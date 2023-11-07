@@ -596,7 +596,11 @@ export class ValidationSystem extends AbstractSystem {
     }
 
     entityIDs = this._base.withAllRelatedEntities(entityIDs);  // expand set
-    return this._validateEntitiesAsync(this._base, entityIDs);
+
+    return this._validateEntitiesAsync(this._base, entityIDs)
+      .then(() => this._updateResolvedIssues(entityIDs))
+      .then(() => this.emit('validated'))
+      .catch(e => console.error(e));  // eslint-disable-line
   }
 
 
