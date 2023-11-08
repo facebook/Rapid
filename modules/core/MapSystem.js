@@ -149,12 +149,35 @@ export class MapSystem extends AbstractSystem {
   /**
    * resetAsync
    * Called after completing an edit session to reset any internal state
+   * Note that calling `resetAsync` schedules an "immediate" redraw (on the next available tick).
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
     this._renderer?.scene?.reset();
     this.immediateRedraw();
     return Promise.resolve();
+  }
+
+
+  /**
+   * pause
+   * Pauses this system
+   * When paused, the MapSystem will not render
+   */
+  pause() {
+    this._paused = true;
+  }
+
+
+  /**
+   * resume
+   * Resumes (unpauses) this system.
+   * When paused, the MapSystem will not render
+   * Note that calling `resume` schedules an "immediate" redraw (on the next available tick).
+   */
+  resume() {
+    this._paused = false;
+    this.immediateRedraw();
   }
 
 

@@ -99,7 +99,9 @@ export function uiIntro(context, skipToRapid) {
    * @param  selection  D3-selection to render the walkthrough content into (the root container)
    */
   function _startIntro(selection) {
-    urlhash.disable();
+    urlhash.pause();
+    osm?.pause();
+
     context.inIntro = true;
     context.enter('browse');
 
@@ -126,9 +128,6 @@ export function uiIntro(context, skipToRapid) {
     // Show sidebar and disable the sidebar resizing button
     ui.sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
-
-    // Disable OSM
-    osm?.pause();
 
     // Setup imagery
     const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
@@ -288,10 +287,10 @@ export function uiIntro(context, skipToRapid) {
     map.transform(_original.transform);
     window.location.replace(_original.hash);
 
+    context.inIntro = false;
     osm?.resume();
     mapwithai?.resume();
-    context.inIntro = false;
-    urlhash.enable();
+    urlhash.resume();
 
     // Reset, then restore the user's edits, if any...
     context.resetAsync()

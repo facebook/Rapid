@@ -9,6 +9,8 @@ import { AbstractSystem } from './AbstractSystem';
  * It updates the `window.location.hash` and document title
  * It also binds to the hashchange event and responds to changes made by the user directly to the url
  *
+ * Supports `pause()` / `resume()` - when paused, url hash will not emit events or do anything
+ *
  * Properties you can access:
  *   `initialHashParams`  Map(string -> string) containing the initial query params (e.g. `background=Bing` etc)
  *   `doUpdateTitle`     `true` if we should update the document title, `false` if not (default `true`)
@@ -111,15 +113,24 @@ export class UrlHashSystem extends AbstractSystem {
   startAsync() {
     if (this._startPromise) return this._startPromise;
 
+    const context = this.context;
+    const editor = context.systems.editor;
+    const l10n = context.systems.l10n;
+
     const prerequisites = Promise.all([
-      this.context.systems.l10n.startAsync(),
-      this.context.systems.editor.startAsync()
+      l10n.startAsync(),
+      editor.startAsync()
     ]);
 
     return this._startPromise = prerequisites
       .then(() => {
+        // Register event handlers here
+        editor.on('stablechange', this.deferredUpdateTitle);
+        context.on('modechange', this.deferredUpdateTitle);
+        window.addEventListener('hashchange', this._hashchange);
+
         this._started = true;
-        this.enable();
+        this.resume();
       });
   }
 
@@ -135,40 +146,31 @@ export class UrlHashSystem extends AbstractSystem {
 
 
   /**
-   * enable
-   * Bind event handlers
+   * pause
+   * Pauses this system
+   * When paused, the UrlHashSystem will not respond to changes or emit events.
    */
-  enable() {
-    if (this._enabled) return;
-    this._enabled = true;
-
+  pause() {
+    this._paused = true;
     this._currHash = null;
-
-    this.context.systems.editor.on('stablechange', this.deferredUpdateTitle);
-    this.context.on('modechange', this.deferredUpdateTitle);
-    window.addEventListener('hashchange', this._hashchange);
-
-    this._updateHash();   // make sure hash matches the _currParams
-    this._hashchange();   // emit 'hashchange' so other code knows what the hash contains
-    this._updateTitle();
+    this.deferredUpdateHash.cancel();
+    this.deferredUpdateTitle.cancel();
   }
 
 
   /**
-   * disable
-   * Unbind event handlers
+   * resume
+   * Resumes (unpauses) this system.
+   * When paused, the UrlHashSystem will not respond to changes or emit events.
+   * Calling `resume()` updates the hash and title, and will emit a `hashchange` event.
    */
-  disable() {
-    if (!this._enabled) return;
-    this._enabled = false;
-
+  resume() {
+    this._paused = false;
     this._currHash = null;
-    this.deferredUpdateHash.cancel();
-    this.deferredUpdateTitle.cancel();
 
-    this.context.systems.editor.off('stablechange', this.deferredUpdateTitle);
-    this.context.off('modechange', this.deferredUpdateTitle);
-    window.removeEventListener('hashchange', this._hashchange);
+    this._updateHash();   // make sure hash matches the _currParams
+    this._hashchange();   // emit 'hashchange' so other code knows what the hash contains
+    this._updateTitle();
   }
 
 
@@ -209,7 +211,7 @@ export class UrlHashSystem extends AbstractSystem {
       this._currParams.set(k, v);
     }
 
-    if (this._enabled) {
+    if (this._started && !this._paused) {
       this.deferredUpdateHash();
     }
   }
@@ -221,7 +223,7 @@ export class UrlHashSystem extends AbstractSystem {
    * This updates the URL hash without affecting the browser navigation stack.
    */
   _updateHash() {
-    if (!this._enabled) return;
+    if (!this._started || this._paused) return;
 
     // Remove some of the initial-only params that only clutter up the hash
     const toOmit = ['comment', 'source', 'hashtags', 'walkthrough'];
@@ -240,7 +242,7 @@ export class UrlHashSystem extends AbstractSystem {
    * Updates the title of the tab (by setting `document.title`)
    */
   _updateTitle() {
-    if (!this._enabled) return;
+    if (!this._started || this._paused) return;
     if (!this.doUpdateTitle) return;
 
     const context = this.context;
@@ -289,7 +291,7 @@ export class UrlHashSystem extends AbstractSystem {
    * Receiving code will receive copies of both the current and previous parameters.
    */
   _hashchange() {
-    if (!this._enabled) return;
+    if (!this._started || this._paused) return;
 
     this._currHash = window.location.hash;
     const q = utilStringQs(this._currHash);
