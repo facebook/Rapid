@@ -43,9 +43,6 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     'highway/footway/crossing/ladder:skewed',
   ];
 
-  // Do not allow multi-select.
-  if (selectedIDs.length > 1) return false;
-
   const selectedID = selectedIDs[0];
   const entity = graph.hasEntity(selectedID);
 
