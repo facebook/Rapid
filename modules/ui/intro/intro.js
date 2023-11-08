@@ -55,7 +55,12 @@ export function uiIntro(context, skipToRapid) {
 
   let _introGraph = {};
   let _rapidGraph = {};
+  let _original = {};
+  let _progress = [];
   let _currChapter;
+  let _buttons;
+  let _curtain;
+  let _navwrap;
 
 
   /**
@@ -90,7 +95,7 @@ export function uiIntro(context, skipToRapid) {
 
   /**
    * _startIntro
-   * Call this to render the intro walkthrough
+   * After the walkthrough data has been loaded, this starts the walkthrough.
    * @param  selection  D3-selection to render the walkthrough content into (the root container)
    */
   function _startIntro(selection) {
@@ -99,7 +104,7 @@ export function uiIntro(context, skipToRapid) {
     context.enter('browse');
 
     // Save current state
-    const original = {
+    _original = {
       hash: window.location.hash,
       transform: map.transform(),
       brightness: imagery.brightness,
@@ -113,7 +118,7 @@ export function uiIntro(context, skipToRapid) {
     // Remember which layers were enabled before, enable only certain ones in the walkthrough.
     for (const [layerID, layer] of context.scene().layers) {
       if (layer.enabled) {
-        original.layersEnabled.add(layerID);
+        _original.layersEnabled.add(layerID);
       }
     }
     context.scene().onlyLayers(['background', 'osm', 'labels']);
@@ -123,25 +128,18 @@ export function uiIntro(context, skipToRapid) {
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
     // Disable OSM
-    if (osm) {
-      osm.toggle(false);
-    }
-
-    // Load walkthrough data
-    editor.reset();
-    editor.merge(Object.values(_introGraph));
-    editor.setCheckpoint('initial');
+    osm?.pause();
 
     // Setup imagery
     const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
     imagery.baseLayerSource(introSource);
-    original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
+    _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.brightness = 1;
 
     // Setup Rapid Walkthrough dataset and disable service
     for (const [datasetID, dataset] of rapid.datasets) {
       if (dataset.enabled) {
-        original.datasetsEnabled.add(datasetID);
+        _original.datasetsEnabled.add(datasetID);
         dataset.enabled = false;
       }
     }
@@ -159,31 +157,31 @@ export function uiIntro(context, skipToRapid) {
     });
 
     if (mapwithai) {
-      mapwithai.toggle(false);    // disable network
+      mapwithai.pause();    // disable network
       mapwithai.merge('rapid_intro_graph', Object.values(_rapidGraph));
     }
 
-    const curtain = new UiCurtain(context);
-    selection.call(curtain.enable);
+    _curtain = new UiCurtain(context);
+    selection.call(_curtain.enable);
 
     // Store that the user started the walkthrough..
     storage.setItem('walkthrough_started', 'yes');
 
     // Restore previous walkthrough progress..
     const storedProgress = storage.getItem('walkthrough_progress') || '';
-    const progress = storedProgress.split(';').filter(Boolean);
+    _progress = storedProgress.split(';').filter(Boolean);
 
     // Create the chapters
     const chapters = chapterFlow.map((chapterID, i) => {
-      const s = chapterUi[chapterID](context, curtain)
+      const s = chapterUi[chapterID](context, _curtain)
         .on('done', () => {    // When completing each chapter..
-          buttons
+          _buttons
             .filter(d => d.title === s.title)
             .classed('finished', true);
 
           // Store walkthrough progress..
-          progress.push(chapterID);
-          storage.setItem('walkthrough_progress', utilArrayUniq(progress).join(';'));
+          _progress.push(chapterID);
+          storage.setItem('walkthrough_progress', utilArrayUniq(_progress).join(';'));
 
           if (i < chapterFlow.length - 1) {
             const nextID = chapterFlow[i + 1];
@@ -197,112 +195,115 @@ export function uiIntro(context, skipToRapid) {
     });
 
 
-    let navwrap = selection
+    _navwrap = selection
       .append('div')
       .attr('class', 'intro-nav-wrap fillD');
 
-    navwrap
+    _navwrap
       .append('svg')
       .attr('class', 'intro-nav-wrap-logo')
       .append('use')
       .attr('xlink:href', '#rapid-logo-walkthrough');
 
-    let buttonwrap = navwrap
+    const buttonwrap = _navwrap
       .append('div')
       .attr('class', 'joined')
       .selectAll('button.chapter');
 
-    let buttons = buttonwrap
+    _buttons = buttonwrap
       .data(chapters)
       .enter()
       .append('button')
       .attr('class', (d, i) => `chapter chapter-${chapterFlow[i]}`)
       .on('click', _enterChapter);
 
-    buttons
+    _buttons
       .append('span')
       .html(d => l10n.tHtml(d.title));
 
-    buttons
+    _buttons
       .append('span')
       .attr('class', 'status')
       .call(uiIcon(l10n.isRTL() ? '#rapid-icon-backward' : '#rapid-icon-forward', 'inline'));
 
-    _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 
-
-    /**
-     * _enterChapter
-     * Call this to enter a new chapter.
-     * Either called explicitly or by clicking a button the chapter navigation bar.
-     * @param  d3_event    If clicked on a button, the click event (not used)
-     * @param  newChapter  The chapter to enter
-     */
-    function _enterChapter(d3_event, newChapter) {
-      if (_currChapter) _currChapter.exit();
-      context.enter('browse');
-
-      _currChapter = newChapter;
-      _currChapter.enter();
-
-      buttons
-        .classed('next', false)
-        .classed('active', d => d.title === _currChapter.title);
-    }
-
-
-    /**
-     * _finish
-     * Cleanup, restore state, and leave the walkthrough
-     */
-    function _finish() {
-      // Store if walkthrough is completed..
-      const incomplete = utilArrayDifference(chapterFlow, progress);
-      if (!incomplete.length) {
-        storage.setItem('walkthrough_completed', 'yes');
-      }
-
-      // Restore Rapid datasets and service
-      for (const [datasetID, dataset] of rapid.datasets) {
-        dataset.enabled = original.datasetsEnabled.has(datasetID);
-      }
-      rapid.datasets.delete('rapid_intro_graph');
-
-      curtain.disable();
-      navwrap.remove();
-      context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
-
-      // Restore Map State
-      for (const [layerID, layer] of context.scene().layers) {
-        layer.enabled = original.layersEnabled.has(layerID);
-      }
-      imagery.baseLayerSource(original.baseLayer);
-      original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
-      imagery.brightness = original.brightness;
-      map.transform(original.transform);
-      window.location.replace(original.hash);
-
-      // Restore edits and re-enable services.
-      context.resetAsync()
-        .then(() => {
-          if (osm) {
-            osm.toggle(true);
-          }
-
-          if (mapwithai) {
-            mapwithai.toggle(true);
-          }
-
-          if (original.edits) {
-            editor.fromJSON(original.edits, true);
-          }
-
-          context.inIntro = false;
-          urlhash.enable();
-        });
-    }
-
+    // Reset, then load the data into the editor and start.
+    context.resetAsync()
+      .then(() => {
+        editor.merge(Object.values(_introGraph));
+        editor.setCheckpoint('initial');
+        _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
+      });
   }
+
+
+  /**
+   * _enterChapter
+   * Call this to enter a new chapter.
+   * Either called explicitly or by clicking a button the chapter navigation bar.
+   * @param  d3_event    If clicked on a button, the click event (not used)
+   * @param  newChapter  The chapter to enter
+   */
+  function _enterChapter(d3_event, newChapter) {
+    if (_currChapter) _currChapter.exit();
+    context.enter('browse');
+
+    _currChapter = newChapter;
+    _currChapter.enter();
+
+    _buttons
+      .classed('next', false)
+      .classed('active', d => d.title === _currChapter.title);
+  }
+
+
+  /**
+   * _finish
+   * Cleanup, restore state, and leave the walkthrough
+   */
+  function _finish() {
+    // Store if walkthrough is completed..
+    const incomplete = utilArrayDifference(chapterFlow, _progress);
+    if (!incomplete.length) {
+      storage.setItem('walkthrough_completed', 'yes');
+    }
+
+    // Restore Rapid datasets and service
+    for (const [datasetID, dataset] of rapid.datasets) {
+      dataset.enabled = _original.datasetsEnabled.has(datasetID);
+    }
+    rapid.datasets.delete('rapid_intro_graph');
+
+    _curtain.disable();
+    _navwrap.remove();
+    context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
+
+    // Restore Map State
+    for (const [layerID, layer] of context.scene().layers) {
+      layer.enabled = _original.layersEnabled.has(layerID);
+    }
+    imagery.baseLayerSource(_original.baseLayer);
+    _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
+    imagery.brightness = _original.brightness;
+    map.transform(_original.transform);
+    window.location.replace(_original.hash);
+
+    osm?.resume();
+    mapwithai?.resume();
+    context.inIntro = false;
+    urlhash.enable();
+
+    // Reset, then restore the user's edits, if any...
+    context.resetAsync()
+      .then(() => {
+        if (_original.edits) {
+          return editor.fromJSONAsync(_original.edits);
+        } else {
+          return Promise.resolve();
+        }
+      });
+  }
+
 
   return intro;
 }

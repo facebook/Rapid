@@ -52,7 +52,6 @@ export class OsmService extends AbstractSystem {
     this._userChangesets = undefined;
     this._userDetails = undefined;
     this._cachedApiStatus = undefined;
-    this._off = false;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._authLoading = this._authLoading.bind(this);
@@ -165,11 +164,6 @@ export class OsmService extends AbstractSystem {
 //        this.userChangesets(function() {});  // eagerly load user details/changesets
         this.emit('authchange');
       });
-  }
-
-
-  toggle(val) {
-    this._off = !val;
   }
 
 
@@ -693,7 +687,7 @@ export class OsmService extends AbstractSystem {
   // Load data (entities) from the API in tiles
   // GET /api/0.6/map?bbox=
   loadTiles(projection, callback) {
-    if (this._off) return;
+    if (this._paused) return;
 
     // determine the needed tiles to cover the view
     const tiles = this._tiler
@@ -720,7 +714,7 @@ export class OsmService extends AbstractSystem {
   // Load a single data tile
   // GET /api/0.6/map?bbox=
   loadTile(tile, callback) {
-    if (this._off) return;
+    if (this._paused) return;
 
     const cache = this._tileCache;
     if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
@@ -798,7 +792,7 @@ export class OsmService extends AbstractSystem {
   // Load notes from the API in tiles
   // GET /api/0.6/notes?bbox=
   loadNotes(projection, noteOptions) {
-    if (this._off) return;
+    if (this._paused) return;
     noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
 
     const cache = this._noteCache;

@@ -39,6 +39,7 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('preset_defaults', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.4/dist/preset_defaults.min.json');
     fileMap.set('preset_fields', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.4/dist/fields.min.json');
     fileMap.set('preset_presets', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.4/dist/presets.min.json');
+    fileMap.set('preset_overrides', 'data/preset_overrides.min.json');
     fileMap.set('qa_data', 'data/qa_data.min.json');
     fileMap.set('shortcuts', 'data/shortcuts.min.json');
     fileMap.set('territory_languages', 'data/territory_languages.min.json');
@@ -68,6 +69,7 @@ export class DataLoaderSystem extends AbstractSystem {
       c.preset_defaults = {};
       c.preset_fields = {};
       c.preset_presets = {};
+      c.preset_overrides = {};
       c.qa_data = { improveOSM: {}, osmose: {} };
       c.shortcuts = [];
       c.territory_languages = {};

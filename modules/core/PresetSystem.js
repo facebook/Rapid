@@ -94,16 +94,13 @@ export class PresetSystem extends AbstractSystem {
           dataloader.getDataAsync('preset_categories'),
           dataloader.getDataAsync('preset_defaults'),
           dataloader.getDataAsync('preset_presets'),
-          dataloader.getDataAsync('preset_fields')
+          dataloader.getDataAsync('preset_fields'),
+          dataloader.getDataAsync('preset_overrides')   // customizations to merge in after the id-tagging-schema
         ]);
       })
       .then(vals => {
-        this.merge({
-          categories: vals[0],
-          defaults: vals[1],
-          presets: vals[2],
-          fields: vals[3]
-        });
+        this.merge({ categories: vals[0], defaults: vals[1], presets: vals[2], fields: vals[3] });
+        this.merge(vals[4]);
         osmSetAreaKeys(this.areaKeys());
         osmSetPointTags(this.pointTags());
         osmSetVertexTags(this.vertexTags());
@@ -173,15 +170,18 @@ export class PresetSystem extends AbstractSystem {
         const isFallback = existing?.isFallback();
 
         if (p) {   // add or replace
+
 // Rename icon identifiers to match the rapid spritesheet
 if (p.icon) p.icon = p.icon.replace(/^iD-/, 'rapid-');
 
 // A few overrides to use better icons than the ones provided by the id-tagging-schema project
 if (presetID === 'address')                         p.icon = 'maki-circle-stroked';
-if (presetID === 'natural/tree')                    p.icon = 'maki-park';
+if (presetID === 'highway/turning_loop')            p.icon = 'maki-circle';
 if (/^highway\/crossing/.test(presetID))            p.icon = 'temaki-pedestrian';
 if (/^highway\/footway\/crossing/.test(presetID))   p.icon = 'temaki-pedestrian';
-if (p.icon === 'roentgen-needleleaved_tree')        p.icon = 'maki-park-alt1';
+if (p.icon === 'roentgen-needleleaved_tree')        p.icon = 'temaki-tree_needleleaved';
+if (p.icon === 'roentgen-tree')                     p.icon = 'temaki-tree_broadleaved';
+
           const preset = new Preset(context, presetID, p, this._fields, this._presets);
           if (preset.locationSet) newLocationSets.push(preset);
           this._presets[presetID] = preset;

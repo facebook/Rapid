@@ -443,7 +443,10 @@ export function validationCrossingWays(context) {
         }
 
         // Differentiate based on the loc rounded to 4 digits, since two ways can cross multiple times.
-        var uniqueID = '' + crossing.crossPoint[0].toFixed(4) + ',' + crossing.crossPoint[1].toFixed(4);
+        const uniqueID = '' + crossing.crossPoint[0].toFixed(4) + ',' + crossing.crossPoint[1].toFixed(4);
+
+        // Support autofix for connecting ways (except ford)
+        const autoArgs = connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags);
 
         return new ValidationIssue(context, {
             type: type,
@@ -469,7 +472,7 @@ export function validationCrossingWays(context) {
             },
             hash: uniqueID,
             loc: crossing.crossPoint,
-            autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
+            autoArgs: autoArgs,
             dynamicFixes: function() {
                 const graph = editor.staging.graph;
                 var selectedIDs = context.selectedIDs();

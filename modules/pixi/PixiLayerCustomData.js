@@ -486,7 +486,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * This function is either called from the `FileReader` or the `fetch` then chain.
    * All files get converted to GeoJSON
    * @param  {string|Object}  data       The file data
-   * @param  {string}         extention  The file extention
+   * @param  {string}         extension  The file extension
    */
   _setFile(data, extension) {
     if (!data) return;

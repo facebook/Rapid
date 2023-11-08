@@ -37,7 +37,6 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
     if (this.supported) {
       const service = this.context.services.streetside;
-
       service.on('viewerChanged', this._handleBearingChange);
     }
   }

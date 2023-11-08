@@ -20,15 +20,15 @@ function clamp(num, min, max) {
 
 
 /**
- * `MapSystem` maintains the map state
- * and provides an interface for manipulating the map view.
+ * `MapSystem` maintains the map state and provides an interface for manipulating the map view.
+ *
+ * Supports `pause()` / `resume()` - when paused, the the code in PixiRenderer.js will not render
  *
  * Properties available:
  *   `dimensions`      The pixel dimensions of the map viewport [width,height]
  *   `supersurface`    D3 selection to the parent `div` "supersurface"
  *   `surface`         D3 selection to the sibling `canvas` "surface"
  *   `overlay`         D3 selection to the sibling `div` "overlay"
- *   `redrawEnabled`   `true` to allow drawing, `false` to pause drawing
  *   `highlightEdits`   true` if edited features should be shown in a special style, `false` otherwise
  *   `areaFillMode`    one of 'full', 'partial' (default), or 'wireframe'
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
@@ -53,7 +53,6 @@ export class MapSystem extends AbstractSystem {
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
     this.overlay = d3_select(null);       // sibling `div`, offsets supersurface transform (used to hold the editmenu)
-    this.redrawEnabled = true;
 
     // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
@@ -153,6 +152,8 @@ export class MapSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
+    this._renderer?.scene?.reset();
+    this.immediateRedraw();
     return Promise.resolve();
   }
 
@@ -169,7 +170,7 @@ export class MapSystem extends AbstractSystem {
     selection
       // Suppress the native right-click context menu
       .on('contextmenu', e => e.preventDefault())
-      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – iD#5552
       .on('wheel.map mousewheel.map', e => e.preventDefault());
 
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
@@ -238,13 +239,15 @@ export class MapSystem extends AbstractSystem {
         }
         this.immediateRedraw();
       })
-      .on('historyjump', () => {
+      .on('historyjump', (prevIndex, currIndex) => {
         // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-        const stable = editor.stable;
+        // Counterintuitively, when undoing, we want the metadata from the _next_ edit (located at prevIndex).
+        const didUndo = (currIndex === prevIndex - 1);
+        const edit = didUndo ? editor.history[prevIndex] : editor.history[currIndex];
 
         // Reposition the map if we've jumped to a different place.
         const t0 = this.transform();
-        const t1 = stable.transform;
+        const t1 = edit.transform;
         if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
           this.transformEase(t1);
         }
@@ -257,8 +260,8 @@ export class MapSystem extends AbstractSystem {
 
         // For now these IDs are assumed to be OSM ids.
         // Check that they are actually in the stable graph.
-        const graph = stable.graph;
-        const checkIDs = stable.selectedIDs ?? [];
+        const graph = edit.graph;
+        const checkIDs = edit.selectedIDs ?? [];
         const selectedIDs = checkIDs.filter(entityID => graph.hasEntity(entityID));
         if (selectedIDs.length) {
           context.enter('select-osm', { selection: { osm: selectedIDs }} );
@@ -363,8 +366,7 @@ export class MapSystem extends AbstractSystem {
    * allow the changes to batch up over several animation frames.
    */
   deferredRedraw() {
-    if (!this._renderer || !this.redrawEnabled) return;
-    this._renderer.deferredRender();
+    this._renderer?.deferredRender();
   }
 
 
@@ -375,8 +377,7 @@ export class MapSystem extends AbstractSystem {
    * the map to update on one of the next few animation frames to show their change.
    */
   immediateRedraw() {
-    if (!this._renderer || !this.redrawEnabled) return;
-    this._renderer.render();
+    this._renderer?.render();
   }
 
 
@@ -612,11 +613,10 @@ export class MapSystem extends AbstractSystem {
   /**
    * selectEntityID
    * Selects an entity by ID, loading it first if needed
-   * @param  entityID   entityID to select
-   * @param  fitToEntity  whether to force fit to the entity after loading
+   * @param  entityID     entityID to select
+   * @param  fitToEntity  Whether to force fit the map view to show the entity
    */
-  selectEntityID(entityID, fitToEntity) {
-    const doFit = fitToEntity || false;
+  selectEntityID(entityID, fitToEntity = false) {
     const context = this.context;
     const editor = context.systems.editor;
 
@@ -627,9 +627,13 @@ export class MapSystem extends AbstractSystem {
       }
 
       const currGraph = editor.staging.graph;  // may have changed by the time we get in here
-      const extent = entity.extent(currGraph);
-      // Can't see it, or we're forcing the fit.
-      if (extent.percentContainedIn(this.extent()) < 0.8 || doFit) {
+      const entityExtent = entity.extent(currGraph);
+      const entityZoom = Math.min(this.trimmedExtentZoom(entityExtent), 20);  // the zoom that best shows the entity
+      const isOffscreen = (entityExtent.percentContainedIn(this.extent()) < 0.8);
+      const isTooSmall = (this.zoom() < entityZoom - 2);
+
+      // Can't reasonably see it, or we're forcing the fit.
+      if (fitToEntity || isOffscreen || isTooSmall) {
         this.fitEntities(entity);
       }
     };
@@ -840,7 +844,7 @@ export class MapSystem extends AbstractSystem {
    * @readonly
    */
   get scene() {
-    return this._renderer.scene;
+    return this._renderer?.scene;
   }
 
   /**

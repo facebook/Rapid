@@ -29,13 +29,18 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
   // Allow cycling through crossings that match these presets
   const allowCrossingPresetRegex = [
-    /^highway\/footway\/crossing\/(unmarked|marked|zebra)/,
+    /^highway\/footway\/crossing\/(unmarked|marked|zebra|lines|ladder|dashes|dots|ladder:skewed)/,
   ];
 
-    const defaultCrossingPresetIDs = [
+  const defaultCrossingPresetIDs = [
     'highway/footway/crossing/unmarked',
     'highway/footway/crossing/marked',
     'highway/footway/crossing/zebra',
+    'highway/footway/crossing/lines',
+    'highway/footway/crossing/ladder',
+    'highway/footway/crossing/dashes',
+    'highway/footway/crossing/dots',
+    'highway/footway/crossing/ladder:skewed',
   ];
 
   // Do not allow multi-select.
@@ -144,7 +149,11 @@ export function operationCycleHighwayTag(context, selectedIDs) {
   };
 
   operation.annotation = function () {
-    l10n.t('operations.cycle_highway_tag.annotation');
+    if (isCrosswalkSelection) {
+      return l10n.t('operations.cycle_highway_tag.crosswalk_annotation');
+    } else {
+      return l10n.t('operations.cycle_highway_tag.highway_annotation');
+    }
   };
 
   operation.id = 'cycle_highway_tag';

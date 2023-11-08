@@ -20,6 +20,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
+  const urlhash = context.systems.urlhash;
   const validator = context.systems.validator;
 
   const section = uiSection(context, sectionID)
@@ -29,15 +30,18 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   let _issues = [];
 
+
   function sectionLabel() {
     const countText = _issues.length > MAX_ISSUES ? `${MAX_ISSUES}+` : String(_issues.length);
     const titleText = l10n.t(`issues.${severity}s.list_title`);
     return l10n.t('inspector.title_count', { title: titleText, count: countText });
   }
 
+
   function sectionShouldDisplay() {
     return _issues.length;
   }
+
 
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
@@ -45,7 +49,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     const graph = editor.staging.graph;
 
     // sort issues by distance away from the center of the map
-    let toDisplay = _issues
+    let issues = _issues
       .map(function withDistance(issue) {
         const extent = issue.extent(graph);
         const dist = extent ? geoSphericalDistance(center, extent.center()) : 0;
@@ -53,16 +57,14 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       })
       .sort((a, b) => a.dist - b.dist);   // nearest to farthest
 
-    toDisplay = toDisplay.slice(0, MAX_ISSUES);
+    issues = issues.slice(0, MAX_ISSUES);
 
     selection
-      .call(drawIssuesList, toDisplay);
+      .call(drawIssuesList, issues);
   }
 
 
-  //
   // Creates the issues list if needed and updates it with the current issues
-  //
   function drawIssuesList(selection, issues) {
     const showAutoFix = (storage.getItem('rapid-internal-feature.showAutoFix') === 'true');
 
@@ -74,6 +76,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .attr('class', `layer-list issues-list ${severity}s-list`)
       .merge(list);
 
+
     let items = list.selectAll('li')
       .data(issues, d => d.key);
 
@@ -82,18 +85,18 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .remove();
 
     // Enter
-    let itemsEnter = items.enter()
+    const itemsEnter = items.enter()
       .append('li')
       .attr('class', d => `issue severity-${d.severity}`);
 
-    let labelsEnter = itemsEnter
+    const labelsEnter = itemsEnter
       .append('button')
       .attr('class', 'issue-label')
       .on('click',     (d3_event, d) => validator.focusIssue(d))
       .on('mouseover', (d3_event, d) => utilHighlightEntities(d.entityIds, true, context))
       .on('mouseout',  (d3_event, d) => utilHighlightEntities(d.entityIds, false, context));
 
-    let textEnter = labelsEnter
+    const textEnter = labelsEnter
       .append('span')
       .attr('class', 'issue-text');
 
@@ -110,33 +113,15 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .append('span')
       .attr('class', 'issue-message');
 
-    if (showAutoFix) {  // for each issue, append autofix button if issue has `autoArgs`
-      labelsEnter
-        .append('span')
-        .attr('class', 'issue-autofix')
-        .each((d, i, nodes) => {
-          if (!d.autoArgs) return;
+    labelsEnter
+      .append('span')
+      .attr('class', 'issue-autofix')
+      .append('button')
+      .attr('title', l10n.t('issues.fix_one.title'))
+      .attr('class', 'autofix action')
+      .on('click', clickAutoFix)
+      .call(uiIcon('#rapid-icon-wrench'));
 
-          d3_select(nodes[i])
-            .append('button')
-            .attr('title', l10n.t('issues.fix_one.title'))
-            .datum(d)  // set button datum to the issue
-            .attr('class', 'autofix action')
-            .on('click', (d3_event, d) => {
-              d3_event.preventDefault();
-              d3_event.stopPropagation();
-
-              utilHighlightEntities(d.entityIds, false, context);  // unhighlight
-
-              editor.perform(d.autoArgs[0]);   // autoArgs[0] = action
-              editor.commit({
-                annotation: d.autoArgs[1],      // autoArgs[1] = annotation
-                selectedIDs: d.entityIds
-              });
-            })
-            .call(uiIcon('#rapid-icon-wrench'));
-        });
-    }
 
     // Update
     items = items
@@ -145,6 +130,10 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
     items.selectAll('.issue-message')
       .html(d => d.message(context));
+
+    items.selectAll('.issue-autofix')
+      .classed('hide', d => !(showAutoFix && d.autoArgs));
+
 
     const autofixable = issues.filter(issue => issue.autoArgs);
     let autoFixAll = selection.selectAll('.autofix-all')
@@ -179,23 +168,43 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .merge(autoFixAllEnter);
 
     autoFixAll.selectAll('.autofix-all-link')
-      .on('click', () => {
-        editor.beginTransaction();
-
-        for (const issue of autofixable) {
-          const action = issue.autoArgs[0];  // [action, annotation]
-          editor.perform(action);
-        }
-
-        editor.commit({
-          annotation: l10n.t('issues.fix_all.annotation')
-        });
-        editor.endTransaction();
-      });
+      .on('click', (d3_event) => clickAutoFixAll(d3_event, autofixable));
   }
 
 
-  // get the current display options for the issues lists
+  // User clicked "Autofix", fix a single issue.
+  function clickAutoFix(d3_event, issue) {
+    if (d3_event) {
+      d3_event.preventDefault();
+      d3_event.stopPropagation();
+    }
+
+    utilHighlightEntities(issue.entityIds, false, context);  // unhighlight
+    editor.perform(issue.autoArgs[0]);   // autoArgs = [action, annotation]
+    editor.commit({ annotation: issue.autoArgs[1], selectedIDs: issue.entityIds });
+  }
+
+
+  // User clicked "Autofix All", fix all the autofixable issues.
+  function clickAutoFixAll(d3_event, issues) {
+    if (d3_event) {
+      d3_event.preventDefault();
+      d3_event.stopPropagation();
+    }
+
+    editor.beginTransaction();
+
+    for (const issue of issues) {
+      const action = issue.autoArgs[0];  // autoArgs = [action, annotation]
+      editor.perform(action);
+    }
+
+    editor.commit({ annotation: l10n.t('issues.fix_all.annotation') });
+    editor.endTransaction();
+  }
+
+
+  // Get the current display options for the issues lists
   function getOptions() {
     return {
       what: storage.getItem('validate-what') || 'edited',
@@ -203,38 +212,43 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     };
   }
 
-  // get and cache the issues to display, unordered
+
+  // Get and cache the issues to display, unordered
   function reloadIssues() {
     const options = getOptions();
     _issues = validator.getIssuesBySeverity(options)[severity];
   }
 
-  // only update the contents if the issues pane is actually open
+
+  // Only update the contents if the issues pane is actually open
   function isVisible() {
     return context.container().selectAll('.map-panes .issues-pane.shown').size();
   }
 
 
-  // event handlers to refresh the lists
-
-  validator.on('validated', () => {
+  // Rerender the issue pane contents, but wait for an idle moment
+  function deferredRender() {
     window.requestIdleCallback(() => {
       if (!isVisible()) return;
       reloadIssues();
       section.reRender();
     });
+  }
+
+
+  // event handlers to refresh the lists
+  validator.on('validated', deferredRender);
+
+  urlhash.on('hashchange', (currParams, prevParams) => {
+    if (currParams.get('poweruser') !== prevParams.get('poweruser')) {   // change in poweruser status
+      deferredRender();
+    }
   });
 
   map.on('draw',
     debounce(() => {
-      window.requestIdleCallback(() => {
-        if (!isVisible()) return;
-        if (getOptions().where === 'visible') {  // must refetch issues if they are viewport-dependent
-          reloadIssues();
-        }
-        section.reRender();
-      });
-    }, 1000, { leading: false, trailing: true })  // after map has stopped moving for 1sec
+      deferredRender();
+    }, 500, { leading: false, trailing: true })  // after map has stopped moving for 500ms
   );
 
   return section;

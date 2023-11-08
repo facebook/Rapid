@@ -15,10 +15,12 @@ export function uiMap3dViewer(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const map3d = context.systems.map3d;
+  const urlhash = context.systems.urlhash;
 
   function render(selection) {
     let wrap = d3_select(null);
-    let _isHidden = true; // start out hidden
+    let _isHidden = !urlhash.getParam('map3d'); // depends on URL hash
+    // let _isHidden = true; // start as hidden
 
 
     function redraw() {
@@ -35,7 +37,7 @@ export function uiMap3dViewer(context) {
       const center = extent.center();
       extent.padByMeters(100);
 
-      map3d.maplibre.jumpTo({
+      map3d.maplibre?.jumpTo({
         center: center,
         bearing: 0,
         zoom: map.zoom() - 3,
@@ -222,9 +224,10 @@ export function uiMap3dViewer(context) {
 
 
     function toggle(d3_event) {
+      if (!d3_event?.preventDefault) return;
       if (d3_event) d3_event.preventDefault();
 
-      _isHidden = !_isHidden;
+      _isHidden = urlhash.getParam('map3d');
 
       context
         .container()
@@ -243,6 +246,7 @@ export function uiMap3dViewer(context) {
           .on('end', () =>
             selection.selectAll('.three-d-map').style('display', 'none')
           );
+        urlhash.setParam('map3d', null);
       } else {
         wrap
           .style('display', 'block')
@@ -251,6 +255,7 @@ export function uiMap3dViewer(context) {
           .duration(200)
           .style('opacity', '1')
           .on('end', () => redraw());
+        urlhash.setParam('map3d', 'true');
       }
     }
 
@@ -272,10 +277,10 @@ export function uiMap3dViewer(context) {
     map.on('draw', () => redraw());
     map.on('move', () => redraw());
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
+    urlhash.on('hashchange', toggle);
 
     redraw();
   }
 
   return render;
 }
-

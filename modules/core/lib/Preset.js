@@ -301,10 +301,11 @@ export class Preset {
     return s;
   }
 
+
   // For a preset without its own name, use names from another preset.
   // Replace {presetID} placeholders with the name of the specified presets.
   _resolveName(prop) {
-    const val = this.orig[prop] || '';    // always lookup original properties, don't use the functions
+    const val = this.orig[prop] ?? '';    // always lookup original properties, don't use the functions
     const match = val.match(/^\{(.*)\}$/);
     if (match) {
       const preset = this.allPresets[match[1]];
@@ -317,10 +318,11 @@ export class Preset {
     return this;
   }
 
+
   // For a preset without fields, use the fields of the parent preset.
   // Replace {presetID} placeholders with the fields of the specified presets.
   _resolveFields(prop) {
-    const fieldIDs = this.orig[prop] || '';    // always lookup original properties, don't use the functions
+    const fieldIDs = this.orig[prop] ?? [];    // always lookup original properties, don't use the functions
     const thiz = this;
     let resolved = [];
 
@@ -353,7 +355,7 @@ export class Preset {
       if (!parent) return [];
 
       if (prop === 'fields') {
-        return parent.fields().filter(shouldInherit);
+        return parent.fields();
       } else if (prop === 'moreFields') {
         return parent.moreFields();
       } else {
@@ -361,17 +363,6 @@ export class Preset {
       }
     }
 
-
-    // Skip `fields` for the keys which define the preset.
-    // These are usually `typeCombo` fields like `shop=*`
-    function shouldInherit(f) {
-      if (f.key && thiz.tags[f.key] !== undefined &&
-        // inherit anyway if multiple values are allowed or just a checkbox
-        f.type !== 'multiCombo' && f.type !== 'semiCombo' && f.type !== 'manyCombo' && f.type !== 'check'
-      ) return false;
-
-      return true;
-    }
   }
 
 }

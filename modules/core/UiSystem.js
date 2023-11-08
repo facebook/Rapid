@@ -188,7 +188,7 @@ this.didRender = true;
       .call(uiFullScreen(context));
 
     const map = context.systems.map;
-    map.redrawEnabled = false;  // don't draw until we've set zoom/lat/long
+    map.pause();  // don't draw until we've set zoom/lat/long
 
     container
       .append('svg')
@@ -429,7 +429,7 @@ this.didRender = true;
     // Setup map dimensions, and allow rendering..
     // This should happen after .main-content and toolbars exist.
     this.resize();
-    map.redrawEnabled = true;
+    map.resume();
 
     context.enter('browse');
 

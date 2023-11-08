@@ -409,12 +409,15 @@ export class PixiRenderer extends EventEmitter {
     // Wait for textures to be loaded before attempting rendering.
     if (!this.textures?.loaded) return;
 
-    // Reproject the pixi geometries only whenever zoom changes
     const context = this.context;
+    const map = context.systems.map;
+    if (map.paused) return;
+
+    // Reproject the pixi geometries only whenever zoom changes
     const pixiProjection = this.pixiProjection;
     const pixiTransform = pixiProjection.transform();
     const mapTransform = context.projection.transform();
-    const effectiveZoom = context.systems.map.effectiveZoom();
+    const effectiveZoom = map.effectiveZoom();
 
     const pixiXY = [pixiTransform.x, pixiTransform.y];
     const mapXY = [mapTransform.x, mapTransform.y];

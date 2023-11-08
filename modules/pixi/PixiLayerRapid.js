@@ -139,6 +139,16 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   */
+  reset() {
+    super.reset();
+    this._resolved.clear();
+  }
+
+
+  /**
    * render
    * Render any data we have, and schedule fetching more of it to cover the view
    * @param  frame        Integer frame being rendered
@@ -184,13 +194,16 @@ export class PixiLayerRapid extends AbstractLayer {
     const datasetID = dataset.id + (dataset.conflated ? '-conflated' : '');
     const dsGraph = service.graph(datasetID);
 
-    // Filter out features that have already been accepted by the user.
-    function isAccepted(entity) {
-      return rapid.acceptedIDs.has(entity.id) || rapid.acceptedIDs.has(entity.__origid__);
+    // Filter out features that have already been accepted or ignored by the user.
+    function isAcceptedOrIgnored(entity) {
+      return (
+        rapid.acceptIDs.has(entity.id) || rapid.acceptIDs.has(entity.__origid__) ||
+        rapid.ignoreIDs.has(entity.id) || rapid.ignoreIDs.has(entity.__origid__)
+      );
     }
 
     // Gather data
-    let data = { points: [], vertices: new Set(), lines: [], polygons: [] };
+    const data = { points: [], vertices: new Set(), lines: [], polygons: [] };
 
     /* Facebook AI/ML */
     if (dataset.service === 'mapwithai') {
@@ -198,21 +211,22 @@ export class PixiLayerRapid extends AbstractLayer {
         service.loadTiles(datasetID);  // fetch more
       }
 
+      // Skip features already accepted/ignored by the user
       const entities = service.getData(datasetID)
-        .filter(d => d.type === 'way' && !isAccepted(d));  // skip features already accepted by the user
+        .filter(entity => entity.type === 'way' && !isAcceptedOrIgnored(entity));
 
       // fb_ai service gives us roads and buildings together,
       // so filter further according to which dataset we're drawing
       if (dataset.id === 'fbRoads' || dataset.id === 'rapid_intro_graph') {
         data.lines = entities.filter(d => d.geometry(dsGraph) === 'line' && !!d.tags.highway);
 
-        // Gather first and last vertices
-        data.lines.forEach(d => {
-          const first = dsGraph.entity(d.first());
-          const last = dsGraph.entity(d.last());
+        // Gather endpoint vertices, we will render these also
+        for (const way of data.lines) {
+          const first = dsGraph.entity(way.first());
+          const last = dsGraph.entity(way.last());
           data.vertices.add(first);
           data.vertices.add(last);
-        });
+        }
 
       } else {  // ms buildings or esri buildings through conflation service
         data.polygons = entities.filter(d => d.geometry(dsGraph) === 'area');
@@ -227,7 +241,7 @@ export class PixiLayerRapid extends AbstractLayer {
       const entities = service.getData(datasetID);
 
       for (const entity of entities) {
-        if (isAccepted(entity)) continue;   // skip features already accepted by the user
+        if (isAcceptedOrIgnored(entity)) continue;   // skip features already accepted/ignored by the user
         const geom = entity.geometry(dsGraph);
         if (geom === 'point' && !!entity.__fbid__) {  // standalone points only (not vertices/childnodes)
           data.points.push(entity);

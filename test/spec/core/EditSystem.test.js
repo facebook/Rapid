@@ -44,6 +44,8 @@ describe('EditSystem', () => {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
     on()          { return this; }
+    pause()       { }
+    resume()      { }
   }
 
   class MockImagerySystem {
@@ -83,7 +85,6 @@ describe('EditSystem', () => {
   }
 
   const context = new MockContext();
-
 
   beforeEach(() => {
     _editor = new Rapid.EditSystem(context);
@@ -760,7 +761,7 @@ describe('EditSystem', () => {
   });
 
 
-  describe('#fromJSON', () => {
+  describe('#fromJSONAsync', () => {
     it('restores from v3 JSON (creation)', () => {
       const json = {
         version: 3,
@@ -773,12 +774,14 @@ describe('EditSystem', () => {
         nextIDs: { node: -2, way: -1, relation: -1 },
         index: 1
       };
-      _editor.fromJSON(JSON.stringify(json));
-      expect(_editor.staging.graph.entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
-      expect(_editor.getUndoAnnotation()).to.eql('Added a point.');
-      expect(_editor.sourcesUsed().imagery).to.include('Bing');
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editor.difference().created().length).to.eql(1);
+      return _editor.fromJSONAsync(JSON.stringify(json))
+        .then(() => {
+          expect(_editor.staging.graph.entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
+          expect(_editor.getUndoAnnotation()).to.eql('Added a point.');
+          expect(_editor.sourcesUsed().imagery).to.include('Bing');
+          expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
+          expect(_editor.difference().created().length).to.eql(1);
+        });
     });
 
     it('restores from v3 JSON (modification)', () => {
@@ -793,12 +796,14 @@ describe('EditSystem', () => {
         nextIDs: { node: -2, way: -1, relation: -1 },
         index: 1
       };
-      _editor.fromJSON(JSON.stringify(json));
-      expect(_editor.staging.graph.entity('n1')).to.eql(Rapid.osmNode({ id: 'n1', loc: [2, 3], v: 1 }));
-      expect(_editor.getUndoAnnotation()).to.eql('Moved a point.');
-      expect(_editor.sourcesUsed().imagery).to.include('Bing');
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
-      expect(_editor.difference().modified().length).to.eql(1);
+      return _editor.fromJSONAsync(JSON.stringify(json))
+        .then(() => {
+          expect(_editor.staging.graph.entity('n1')).to.eql(Rapid.osmNode({ id: 'n1', loc: [2, 3], v: 1 }));
+          expect(_editor.getUndoAnnotation()).to.eql('Moved a point.');
+          expect(_editor.sourcesUsed().imagery).to.include('Bing');
+          expect(Rapid.osmEntity.id.next).to.eql({ node: -2, way: -1, relation: -1 });
+          expect(_editor.difference().modified().length).to.eql(1);
+        });
     });
 
     it('restores from v3 JSON (deletion)', () => {
@@ -813,12 +818,14 @@ describe('EditSystem', () => {
         nextIDs: { node: -1, way: -2, relation: -3 },
         index: 1
       };
-      _editor.fromJSON(JSON.stringify(json));
-      expect(_editor.staging.graph.hasEntity('n1')).to.be.undefined;
-      expect(_editor.getUndoAnnotation()).to.eql('Deleted a point.');
-      expect(_editor.sourcesUsed().imagery).to.include('Bing');
-      expect(Rapid.osmEntity.id.next).to.eql({ node: -1, way: -2, relation: -3 });
-      expect(_editor.difference().deleted().length).to.eql(1);
+      return _editor.fromJSONAsync(JSON.stringify(json))
+        .then(() => {
+          expect(_editor.staging.graph.hasEntity('n1')).to.be.undefined;
+          expect(_editor.getUndoAnnotation()).to.eql('Deleted a point.');
+          expect(_editor.sourcesUsed().imagery).to.include('Bing');
+          expect(Rapid.osmEntity.id.next).to.eql({ node: -1, way: -2, relation: -3 });
+          expect(_editor.difference().deleted().length).to.eql(1);
+        });
     });
   });
 });

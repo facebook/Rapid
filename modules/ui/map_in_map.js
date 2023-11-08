@@ -60,7 +60,7 @@ export function uiMapInMap(context) {
 
     /**
      * zoomEnded
-     * d3-zoom callback that recieves zoom/pan events
+     * d3-zoom callback that receives zoom/pan events
      * @param  d3_event   A d3-zoom event, transform contains details about what changed
      */
     function zoomed(d3_event) {

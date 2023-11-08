@@ -15,7 +15,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
 
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
-  context.systems.urlhash.on('hashchange', updatePowerUserKeys);
+  urlhash.on('hashchange', updatePowerUserKeys);
 
 
   /**

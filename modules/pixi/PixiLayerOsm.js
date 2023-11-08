@@ -107,6 +107,16 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
   /**
+   * reset
+   * Every Layer should have a reset function to clear out any state when a reset occurs.
+   */
+  reset() {
+    super.reset();
+    this._resolved.clear();
+  }
+
+
+  /**
    * render
    * Render any data we have, and schedule fetching more of it to cover the view
    * @param  frame        Integer frame being rendered
@@ -273,7 +283,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
       let geojson = this._resolved.get(entityID);
-      if (geojson?.v !== version) {  // bust cache if the entity has a new verison
+      if (geojson?.v !== version) {  // bust cache if the entity has a new version
         geojson = null;
       }
       if (!geojson) {
@@ -413,7 +423,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Cache GeoJSON resolution, as we expect the asGeoJSON call to be kinda slow.
       let geojson = this._resolved.get(entityID);
-      if (geojson?.v !== version) {  // bust cache if the entity has a new verison
+      if (geojson?.v !== version) {  // bust cache if the entity has a new version
         geojson = null;
       }
       if (!geojson) {
