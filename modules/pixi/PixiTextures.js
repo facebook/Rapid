@@ -1,4 +1,4 @@
-import { Assets, Graphics, Rectangle, SVGResource, Texture, FORMATS, TYPES } from 'pixi.js';
+import { Assets, Graphics, Rectangle, SVGResource, Texture, FORMATS, MSAA_QUALITY, TYPES } from 'pixi.js';
 import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 
 
@@ -226,7 +226,9 @@ export class PixiTextures {
    */
   graphicToTexture(textureID, graphic, options) {
     const renderer = this.context.pixi.renderer;
+    options.multisample = MSAA_QUALITY.NONE;  // disable multisampling so we can use gl.readPixels
     const renderTexture = renderer.generateTexture(graphic, options);
+
     const baseTexture = renderTexture.baseTexture;
 
     if (baseTexture.format !== FORMATS.RGBA) return;       // we could handle other values
