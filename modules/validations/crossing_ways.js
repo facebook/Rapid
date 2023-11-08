@@ -74,11 +74,7 @@ export function validationCrossingWays(context) {
         if (geometry !== 'line') return null;
 
         if (hasTag(tags, 'railway') && osmRailwayTrackTagValues[tags.railway]) return 'railway';
-
-        if (hasTag(tags, 'waterway') &&
-            osmFlowingWaterwayTagValues[tags.waterway] &&
-            entity.tags.intermittent !== 'yes'      // Ignore intermittent waterways - Rapid#1018
-        ) return 'waterway';
+        if (hasTag(tags, 'waterway') && osmFlowingWaterwayTagValues[tags.waterway]) return 'waterway';
 
         return null;
     }
