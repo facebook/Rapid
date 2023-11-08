@@ -505,9 +505,15 @@ export class KartaviewService extends AbstractSystem {
 }
 
 _fetchImagesForSequence(sequenceID) {
-  if (this.fetchedSequences.has(sequenceID)) {
-    return;
+  if (!sequenceID) {
+    console.error('Invalid sequenceID:', sequenceID);
+    return; // Abort the operation if sequenceID is not defined
   }
+
+  if (this.fetchedSequences.has(sequenceID)) {
+    return; // Sequence already fetched
+  }
+
   // Add the sequence to the fetched set to avoid duplicate fetching
   this.fetchedSequences.add(sequenceID);
   const controller = new AbortController();
@@ -558,7 +564,8 @@ _fetchImagesForSequence(sequenceID) {
     .catch(err => {
       if (err instanceof Error) console.error(err);
     });
-}
+  }
+
 
   /**
    * _zoomPan
