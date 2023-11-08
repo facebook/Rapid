@@ -512,7 +512,7 @@ export class VectorTileService extends AbstractSystem {
     //  +-----+------+          | high |
     //                          +------+
     //
-    // Important to ignore the edge betwen low-high, as this is the one we are currently merging!
+    // Important to ignore the edge between low-high, as this is the one we are currently merging!
     // Edges to ignore will either be "lowRight,highLeft" or "lowBottom,highTop"
 
     // Define tile edges (lower x,y,z - higher x,y,z)

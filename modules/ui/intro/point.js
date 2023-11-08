@@ -205,7 +205,7 @@ export function uiIntroPoint(context, curtain) {
 
 
   // "Let's pretend that you have local knowledge of this cafe, and you know its name..."
-  // Make any edit to advance (or click Ok if they happend to add a name already)
+  // Make any edit to advance (or click Ok if they happened to add a name already)
   function addNameAsync() {
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
