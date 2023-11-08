@@ -21,7 +21,7 @@ export class Map3dSystem extends AbstractSystem {
     super(context);
     this.id = 'map3d';
     this.autoStart = false;
-    this.dependencies = new Set(['map']);
+    this.dependencies = new Set(['map', 'urlhash']);
     this.containerID = '3d-buildings';
     this.maplibre = null;
 
