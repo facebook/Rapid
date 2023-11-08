@@ -26,8 +26,7 @@ export function uiSectionPhotoOverlays(context) {
       .merge(container)
       .call(drawPhotoItems)
       .call(drawPhotoTypeItems)
-      .call(drawDateFilter)
-      .call(drawUsernameFilter);
+      .call(drawDateFilter);
   }
 
 
@@ -252,72 +251,6 @@ export function uiSectionPhotoOverlays(context) {
       .merge(liEnter)
       .classed('active', filterEnabled);
   }
-
-
-  function drawUsernameFilter(selection) {
-    function filterEnabled() {
-      return photos.usernames;
-    }
-
-    let ul = selection
-      .selectAll('.layer-list-username-filter')
-      .data([0]);
-
-    ul.exit()
-      .remove();
-
-    ul = ul.enter()
-      .append('ul')
-      .attr('class', 'layer-list layer-list-username-filter')
-      .merge(ul);
-
-    let li = ul.selectAll('.list-item-username-filter')
-      .data(photos.shouldFilterByUsername() ? ['username-filter'] : []);
-
-    li.exit()
-      .remove();
-
-    let liEnter = li.enter()
-      .append('li')
-      .attr('class', 'list-item-username-filter');
-
-    let labelEnter = liEnter
-      .append('label')
-      .each((d, i, nodes) => {
-        d3_select(nodes[i])
-          .call(uiTooltip(context)
-            .title(l10n.tHtml('photo_overlays.username_filter.tooltip'))
-            .placement('top')
-          );
-      });
-
-    labelEnter
-      .append('span')
-      .html(l10n.tHtml('photo_overlays.username_filter.title'));
-
-    labelEnter
-      .append('input')
-      .attr('type', 'text')
-      .attr('class', 'list-item-input')
-      .call(utilNoAuto)
-      .property('value', usernameValue)
-      .on('change', function() {
-        let value = d3_select(this).property('value');
-        photos.setUsernameFilter(value, true);
-        d3_select(this).property('value', usernameValue);
-      });
-
-    li
-      .merge(liEnter)
-      .classed('active', filterEnabled);
-
-    function usernameValue() {
-      let usernames = photos.usernames;
-      if (usernames) return usernames.join('; ');
-      return usernames;
-    }
-  }
-
 
   context.scene().on('layerchange', section.reRender);
   photos.on('photochange', section.reRender);
