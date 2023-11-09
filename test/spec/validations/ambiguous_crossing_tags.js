@@ -167,7 +167,7 @@ describe('validationAmbiguousCrossingTags', () => {
     verifySingleCrossingWarning(issues);
   });
 
-  it('flags a marked line with potential unmarked crossing nodes', () => {
+  it('flags a marked line with bare crossing candidate node', () => {
     createWaysWithOneCrossingNode(
       { crossing: 'marked', highway: 'footway', footway: 'crossing'},
       { highway: 'residential' },
