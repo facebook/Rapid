@@ -259,8 +259,11 @@ export function validationAmbiguousCrossingTags(context) {
       let fixes = [];
       const graph = editor.staging.graph;
 
-      const parentWay = graph.hasEntity(this.entityIds[1]);
-      const node = graph.hasEntity(this.entityIds[0]);
+      const [nodeID, wayID] = this.entityIds;
+      const parentWay = graph.hasEntity(wayID);
+      const node = graph.hasEntity(nodeID);
+
+      if (!parentWay || !node) return;
 
       // Only display this fix if the node markings are present
       if (node.tags['crossing:markings']) {
@@ -322,7 +325,10 @@ export function validationAmbiguousCrossingTags(context) {
     function makeMarkedUnmarkedFixes() {
       let fixes = [];
       const graph = editor.staging.graph;  // I think we use staging graph for dynamic fixes?
-      const parentWay = graph.hasEntity(this.entityIds[1]);
+      const [nodeID, wayID] = this.entityIds;
+      const node = graph.hasEntity(nodeID);
+      const parentWay = graph.hasEntity(wayID);
+      if (!node || !parentWay) return;
 
       if (parentWay) {
         fixes.push(
@@ -452,8 +458,12 @@ export function validationAmbiguousCrossingTags(context) {
 
     function makeCandidateFixes() {
       let fixes = [];
+      const graph = editor.staging.graph;
+      const [nodeID, wayID] = this.entityIds;
+      const node = graph.hasEntity(nodeID);
+      const way = graph.hasEntity(wayID);
+      if (!node || !way) return;
 
-      const way = currentNodeInfo.way;
 
       fixes.push(
         new ValidationFix({
