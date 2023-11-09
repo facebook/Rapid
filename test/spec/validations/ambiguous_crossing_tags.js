@@ -157,7 +157,7 @@ describe('validationAmbiguousCrossingTags', () => {
     verifySingleCrossingWarning(issues);
   });
 
-  it('flags an marked line and informal ladder node', () => {
+  it('flags a marked line and informal ladder node', () => {
     createWaysWithOneCrossingNode(
       { crossing: 'marked', highway: 'footway', footway: 'crossing'},
       { highway: 'residential' },
