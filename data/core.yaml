@@ -1831,12 +1831,13 @@ en:
         reference: Intersecting highways should share a junction vertex.
     ambiguous_crossing_tags:
       title: Ambiguous Crossing Tags
-      message: "{feature} line info conflicts with point {feature2}"
-      message_markings: "{feature} marking info conflicts with point {feature2}"
-      incomplete_message: "{feature} has crossing info, but one or more of its points does not."
+      message: "Line and point disagree about markings"
+      message_markings: "Line has marking '{marking1}' but point has marking '{marking2}'"
+      incomplete_message: "Point may be missing crossing information."
+      incomplete_reference: "Point looks like it may be updated to a crossing."
       tip: "Crossing line markings conflict with crossing point"
-      reference: Crossing line markings should not conflict with its crossing point.
-      upgrade_node: "Upgrade node to:"
+      reference: Line and point must either be both marked or both unmarked.
+      upgrade_node: "Upgrade point to:"
       upgrade_way: "Upgrade way to:"
     area_as_point:
       message: '{feature} should be an area, not a point'
@@ -2051,14 +2052,17 @@ en:
         annotation: Added a tunnel.
       address_the_concern:
         title: Address the concern
+      make_crossing_node:
+        title: Make point into a crossing
+        annotation: Make point into a crossing.
       set_both_as_marked:
-        title: Set way and node to marked
+        title: Set line and point to marked
         title_use_marking: Use '{marking}' marking
         title_use_crossing: Use '{crossing}'
-        annotation: set way and node to have crossing markings.
+        annotation: Set way and node to have crossing markings.
       set_both_as_unmarked:
-        title: Set way and node to unmarked
-        annotation: set way and node to have no crossing markings.
+        title: Set line and point to unmarked
+        annotation: Set way and node to have no crossing markings.
       connect_almost_junction:
         annotation: Connected very close features.
       connect_crossing_features:

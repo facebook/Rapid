@@ -151,10 +151,7 @@ export function validationAmbiguousCrossingTags(context) {
           const graph = editor.staging.graph;
           const node = graph.hasEntity(this.entityIds[0]);
           const way = graph.hasEntity(this.entityIds[1]);
-          return (way && node) ? l10n.tHtml('issues.ambiguous_crossing_tags.message', {
-            feature:  l10n.displayLabel(node, graph),
-            feature2: l10n.displayLabel(way, graph)
-          }) : '';
+          return (way && node) ? l10n.tHtml('issues.ambiguous_crossing_tags.message') : '';
         },
         reference: showReference,
         entityIds: [ conflictingNodeInfo.node.id, conflictingNodeInfo.way.id ],
@@ -215,8 +212,8 @@ export function validationAmbiguousCrossingTags(context) {
           const node = graph.hasEntity(this.entityIds[0]);
           const way = graph.hasEntity(this.entityIds[1]);
           return l10n.tHtml('issues.ambiguous_crossing_tags.message_markings', {
-            feature: l10n.displayLabel(node, graph),
-            feature2: l10n.displayLabel(way, graph)
+            marking1: way.tags['crossing:markings'],
+            marking2: node.tags['crossing:markings']
           });
         },
         reference: showReference,
@@ -410,9 +407,7 @@ export function validationAmbiguousCrossingTags(context) {
         message: function () {
           const graph = editor.staging.graph;
           const way = graph.hasEntity(this.entityIds[1]);
-          return l10n.tHtml('issues.ambiguous_crossing_tags.incomplete_message', {
-            feature: l10n.displayLabel(way, graph)
-          });
+          return l10n.tHtml('issues.ambiguous_crossing_tags.incomplete_message');
         },
         reference: showReference,
         entityIds: [
@@ -468,9 +463,9 @@ export function validationAmbiguousCrossingTags(context) {
       fixes.push(
         new ValidationFix({
           icon: 'rapid-icon-crossing',
-          title: l10n.tHtml(hasMarkings(way) ? 'issues.fix.set_both_as_marked.title' : 'issues.fix.set_both_as_unmarked.title'),
+          title: l10n.tHtml('issues.fix.make_crossing_node.title'),
           onClick: function () {
-            const annotation = l10n.t(hasMarkings(way)  ? 'issues.fix.set_both_as_marked.annotation' : 'issues.fix.set_both_as_unmarked.annotation' );
+            const annotation = l10n.t('issues.fix.make_crossing_node.annotation');
             editor.perform(doTagUpgrade);
             editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
           }
@@ -506,7 +501,7 @@ export function validationAmbiguousCrossingTags(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.ambiguous_crossing_tags.reference'));
+        .html(l10n.tHtml('issues.ambiguous_crossing_tags.incomplete_reference'));
     }
   }
 
