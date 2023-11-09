@@ -136,6 +136,9 @@ export class MoveMode extends AbstractMode {
     } else if (['Backspace', 'Delete', 'Del', 'Escape', 'Esc'].includes(e.key)) {
       e.preventDefault();
       this._cancel();
+    } else if (['r', 'R'].includes(e.key)) {
+      e.preventDefault();
+      this._rotateMode();
     }
   }
 
@@ -179,6 +182,14 @@ export class MoveMode extends AbstractMode {
    */
   _finish() {
     this.context.enter('select-osm', { selection: { osm: this._entityIDs }} );
+  }
+
+  /**
+   * _rotateMode
+   * Return to roate mode if e.key is pressed
+   */
+  _rotateMode() {
+    this.context.enter('rotate', { selection: { osm: this._entityIDs }} );
   }
 
 
