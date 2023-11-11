@@ -10,6 +10,7 @@ import { PixiLayerLabels } from './PixiLayerLabels';
 import { PixiLayerMapillaryFeatures } from './PixiLayerMapillaryFeatures';
 import { PixiLayerMapillaryPhotos } from './PixiLayerMapillaryPhotos';
 import { PixiLayerMapillarySigns } from './PixiLayerMapillarySigns';
+import { PixiLayerMapRoulette } from './PixiLayerMapRoulette';
 import { PixiLayerOsm } from './PixiLayerOsm';
 import { PixiLayerOsmNotes } from './PixiLayerOsmNotes';
 import { PixiLayerOsmose } from './PixiLayerOsmose';
@@ -91,10 +92,12 @@ export class PixiScene extends EventEmitter {
       new PixiLayerOsm(this, 'osm'),
       new PixiLayerRapid(this, 'rapid'),
 
+
       new PixiLayerMapillaryFeatures(this, 'mapillary-map-features'),
       new PixiLayerMapillarySigns(this, 'mapillary-signs'),
 
       new PixiLayerCustomData(this, 'custom-data'),
+      new PixiLayerMapRoulette(this, 'maproulette'),
       new PixiLayerOsmNotes(this, 'notes'),
       new PixiLayerImproveOsm(this, 'improveOSM'),
       new PixiLayerKeepRight(this, 'keepRight'),

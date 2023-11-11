@@ -815,6 +815,9 @@ en:
       notes:
         tooltip: Note data from OpenStreetMap
         title: OpenStreetMap Notes
+      maproulette:
+        tooltip: Tasks from maproulette.org
+        title: MapRoulette Tasks
       keepRight:
         tooltip: Data issues detected by keepright.at
         title: KeepRight Issues
