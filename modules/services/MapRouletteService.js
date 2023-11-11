@@ -103,7 +103,6 @@ export class MapRouletteService extends AbstractSystem {
     for (const tile of tiles) {
       if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
 
-      const [x, y, z] = tile.xyz;
       const extent = this.context.systems.map.extent();
       const bbox = extent.bbox();
 

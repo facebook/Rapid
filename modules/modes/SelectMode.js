@@ -4,11 +4,13 @@ import { Extent } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode';
 import { osmNote, QAItem } from '../osm';
+import { Task as MapRouletteTask } from '../maproulette/Task';
 import { uiDataEditor } from '../ui/data_editor';
 import { uiImproveOsmEditor } from '../ui/improveOSM_editor';
 import { uiKeepRightEditor } from '../ui/keepRight_editor';
 import { uiNoteEditor } from '../ui/note_editor';
 import { uiOsmoseEditor } from '../ui/osmose_editor';
+import { uiMapRouletteEditor } from '../ui/maproulette_editor';
 import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector';
 import { utilKeybinding } from '../util';
 
@@ -139,7 +141,18 @@ export class SelectMode extends AbstractMode {
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
-    // Selected custom data (e.g. gpx track)...
+    } else if (datum instanceof MapRouletteTask && datum.service === 'maproulette') {
+      sidebarContent = uiMapRouletteEditor(context).error(datum);
+      sidebarContent
+      .on('change', () => {
+        context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+        const maproulette = context.services.maproulette;
+        const error = maproulette?.getError(datumID);
+        if (!(error instanceof MapRouletteTask)) return;  // or - go to browse mode?
+        context.systems.ui.sidebar.show(sidebarContent.error(error));
+        this._selectedData.set(datumID, error);  // update selectedData after a change happens?
+      });
+      // Selected custom data (e.g. gpx track)...
     } else if (datum.__featurehash__) {
       const dataEditor = uiDataEditor(context).datum(datum);
       sidebarContent = dataEditor;

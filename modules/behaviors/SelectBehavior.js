@@ -2,6 +2,7 @@ import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { osmEntity, osmNote, QAItem } from '../osm';
+import { Task as MapRouletteTask } from '../maproulette/Task';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { osmNode } from '../osm/node';
 import { osmWay } from '../osm/way';
@@ -336,6 +337,7 @@ export class SelectBehavior extends AbstractBehavior {
       data.__fbid__ ||            // Clicked a Rapid feature..
       data.__featurehash__ ||     // Clicked Custom Data (e.g. gpx track)
       data instanceof osmNote ||  // Clicked an OSM Note...
+      data instanceof MapRouletteTask ||  // Clicked an MR Task...
       data instanceof QAItem      // Clicked a QA Item (keepright, osmose, improveosm)...
     ) {
       const selection = new Map().set(dataID, data);
