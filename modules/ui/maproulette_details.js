@@ -18,8 +18,9 @@ export function uiMapRouletteDetails(context) {
     if (!maproulette || !d) return '';
 
     // Issue strings are cached from MapRoulette API
-    const s = maproulette.getStrings(d.itemType);
-    return (type in s) ? s[type] : '';
+    // const s = maproulette.getStrings(d.itemType);
+    // return (type in s) ? s[type] : '';
+    return null;
   }
 
 
