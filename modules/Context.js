@@ -29,7 +29,7 @@ export class Context extends EventEmitter {
   constructor() {
     super();
 
-    this.version = '2.1.1';
+    this.version = '2.2.0b';
     this.privacyVersion = '20201202';
 
     this.maxCharsForTagKey = 255;
