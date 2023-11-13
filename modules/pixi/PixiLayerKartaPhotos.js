@@ -70,7 +70,6 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
     const toDate = photoSystem.toDate;
-    const usernames = photoSystem.usernames;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -80,9 +79,6 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       const toTimestamp = new Date(toDate).getTime();
       images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
     }
-    if (usernames) {
-      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
-    }
     return images;
   }
 
@@ -91,7 +87,6 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     const photoSystem = this.context.systems.photos;
     const fromDate = photoSystem.fromDate;
     const toDate = photoSystem.toDate;
-    const usernames = photoSystem.usernames;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
@@ -100,9 +95,6 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     if (toDate) {
       const toTimestamp = new Date(toDate).getTime();
       sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
-    }
-    if (usernames) {
-      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
     }
     return sequences;
   }
