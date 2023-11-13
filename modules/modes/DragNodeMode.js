@@ -112,7 +112,9 @@ export class DragNodeMode extends AbstractMode {
     const clickCoord = context.behaviors.drag.lastDown.coord;
     this._clickLoc = context.projection.invert(clickCoord);
 
-    context.enableBehaviors(['hover', 'drag']);
+    context.enableBehaviors(['hover', 'drag', 'map-nudging']);
+    // Now that the user has clicked, let them nudge the map by moving to the edge.
+    context.behaviors['map-nudging'].allow();
 
     context.behaviors.drag
       .on('move', this._move)

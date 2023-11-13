@@ -113,6 +113,8 @@ export class DrawLineMode extends AbstractMode {
     eventManager.setCursor('crosshair');
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
+    // Now that the user has clicked, let them nudge the map by moving to the edge.
+    context.behaviors['map-nudging'].allow();
 
     context.behaviors.hover
       .on('hoverchange', this._hover);
