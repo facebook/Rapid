@@ -32,6 +32,7 @@ export class ImagerySystem extends AbstractSystem {
 
     this._initPromise = null;
     this._imageryIndex = null;
+    this._waybackImageryIndex = null;
     this._baseLayer = null;
     this._overlayLayers = new Map();   // Map (sourceID -> source)
     this._checkedBlocklists = [];
@@ -79,7 +80,9 @@ export class ImagerySystem extends AbstractSystem {
     return this._initPromise = prerequisites
       .then(() => urlhash.on('hashchange', this._hashchange))
       .then(() => dataloader.getDataAsync('imagery'))
-      .then(data => this._initImageryIndex(data));
+      .then(() => dataloader.getDataAsync('wayback'))
+      .then(data => this._initImageryIndex(data))
+      .then(waybackData => this._initWaybackImageryIndex(waybackData));
       // .catch(e => {
         // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
       // });
@@ -97,10 +100,10 @@ export class ImagerySystem extends AbstractSystem {
    *   }
    *  @param  data  {Array}  imagery index data
    */
-  _initImageryIndex(data) {
+  _initWaybackImageryIndex(data) {
     const context = this.context;
 
-    this._imageryIndex = {
+    this._waybackImageryIndex = {
       features: new Map(),   // Map(id -> GeoJSON feature)
       sources: new Map(),    // Map(id -> ImagerySource)
       query: null            // which-polygon index
