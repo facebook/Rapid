@@ -7,7 +7,7 @@ import { utilNoAuto } from '../../util/index.js';
 
 export function uiSectionColorblindModeOptions(context) {
   const l10n = context.systems.l10n;
-  const colors = context.systems.colors;  // todo: replace
+  const styles = context.systems.styles; 
 
   let comboData = [{ title: 'default', value: l10n.t('preferences.colorblind_options.default') }];
 
@@ -20,9 +20,9 @@ export function uiSectionColorblindModeOptions(context) {
   const filtersObject = { 'Protanopia': protanopiaFilter, 'Deuteranopia': deuteranopiaFilter, 'Tritanopia': tritanopiaFilter };
 
   // color matrices
-  const protanopiaMatrix = colors.protanopiaMatrix;
-  const deuteranopiaMatrix = colors.deuteranopiaMatrix;
-  const tritanopiaMatrix = colors.tritanopiaMatrix;
+  const protanopiaMatrix = styles.protanopiaMatrix;
+  const deuteranopiaMatrix = styles.deuteranopiaMatrix;
+  const tritanopiaMatrix = styles.tritanopiaMatrix;
 
   // apply color matrices to filters
   protanopiaFilter.matrix = protanopiaMatrix;
@@ -45,7 +45,7 @@ export function uiSectionColorblindModeOptions(context) {
   loadComboBoxData();
 
   const section = uiSection(context, 'preferences-colorblind-mode-options')
-    .label(l10n.tHtml('preferences.colorblind_options.title'))
+    .label(l10n.t('preferences.colorblind_options.title'))
     .disclosureContent(renderDisclosureContent);
 
   const colorblindCombo = uiCombobox(context, 'colorblind-mode-options');
