@@ -37,80 +37,42 @@
       "fill": { "color": "0xaaaaaa", "alpha": 0.3 }
     }
   },
-  "red_blind": {
+  "example": {
     "red": {
-      "fill": { "color": "0x0e0ffb", "alpha": 0.8 }
+      "fill": { "color": "0xFF0E41", "alpha": 0.3 }
     },
     "green": {
-      "fill": { "color": "0x051d0d", "alpha": 0.8 }
+      "fill": { "color": "0x09F04A", "alpha": 0.3 }
     },
     "blue": {
-      "fill": { "color": "0x0a0f48", "alpha": 0.8 }
+      "fill": { "color": "0x0CBCFF", "alpha": 0.3 }
     },
     "yellow": {
-      "fill": { "color": "0xddd317", "alpha": 0.5 }
+      "fill": { "color": "0xFFCA09", "alpha": 0.25 }
     },
     "gold": {
-      "fill": { "color": "0xa9840c", "alpha": 0.8 }
+      "fill": { "color": "0xFF0EBC", "alpha": 0.3 }
     },
     "orange": {
-      "fill": { "color": "0x633d1d", "alpha": 0.8 }
+      "fill": { "color": "0xFF510B", "alpha": 0.3 }
     },
     "pink": {
-      "fill": { "color": "0xc396cd", "alpha": 0.8 }
+      "fill": { "color": "0xF1C0E8", "alpha": 0.3 }
     },
     "teal": {
-      "fill": { "color": "0x199378", "alpha": 0.8 }
+      "fill": { "color": "0x12FFD1", "alpha": 0.3 }
     },
     "lightgreen": {
-      "fill": { "color": "0x62a41e", "alpha": 0.8 }
+      "fill": { "color": "0x540FFF", "alpha": 0.3 }
     },
     "tan": {
-      "fill": { "color": "0xeec193", "alpha": 0.8 }
+      "fill": { "color": "0xAFFA1F", "alpha": 0.3 }
     },
     "darkgray": {
-      "fill": { "color": "0x373435", "alpha": 0.9 }
+      "fill": { "color": "0x0000FE", "alpha": 0.5 }
     },
     "lightgray": {
-      "fill": { "color": "0xaaaaaa", "alpha": 0.8 }
-    }
-  },
-  "green_blind": {
-    "red": {
-      "fill": { "color": "0x7098d4", "alpha": 0.8 }
-    },
-    "green": {
-      "fill": { "color": "0x28192a", "alpha": 0.8 }
-    },
-    "blue": {
-      "fill": { "color": "0x0a0f48", "alpha": 0.8 }
-    },
-    "yellow": {
-      "fill": { "color": "0xfaf6ae", "alpha": 0.5 }
-    },
-    "gold": {
-      "fill": { "color": "0xa94f02", "alpha": 0.8 }
-    },
-    "orange": {
-      "fill": { "color": "0x633d1d", "alpha": 0.8 }
-    },
-    "pink": {
-      "fill": { "color": "0xc396cd", "alpha": 0.8 }
-    },
-    "teal": {
-      "fill": { "color": "0x199378", "alpha": 0.8 }
-    },
-    "lightgreen": {
-      "fill": { "color": "0x9e5f0c", "alpha": 0.8 }
-    },
-    "tan": {
-      "fill": { "color": "0xeec193", "alpha": 0.8 }
-    },
-    "darkgray": {
-      "fill": { "color": "0x373435", "alpha": 0.9 }
-    },
-    "lightgray": {
-      "fill": { "color": "0xaaaaaa", "alpha": 0.8 }
+      "fill": { "color": "0xE9AF1E", "alpha": 0.3 }
     }
   }
 }

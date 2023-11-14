@@ -12,6 +12,28 @@ export class ColorSystem extends AbstractSystem {
         this.colorSchemes = null;
         this.currentColorScheme = null;
 
+        // matrix values from https://github.com/maputnik/editor
+        this.protanopiaMatrix = [
+            0.567, 0.433, 0, 0, 0,
+            0.558, 0.442, 0, 0, 0,
+            0, 0.242, 0.758, 0, 0,
+            0, 0, 0, 1, 0
+        ];
+
+        this.deuteranopiaMatrix = [
+            0.625, 0.375, 0,   0, 0,
+            0.7, 0.3, 0, 0, 0,
+            0, 0.3, 0.7, 0, 0,
+            0, 0, 0, 1, 0
+        ];
+
+        this.tritanopiaMatrix = [
+            0.95, 0.05, 0, 0, 0,
+            0, 0.433, 0.567, 0, 0,
+            0, 0.475, 0.525, 0, 0,
+            0, 0, 0, 1, 0
+        ];
+
         this.getColorScheme = this.getColorScheme.bind(this);
         this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
     }

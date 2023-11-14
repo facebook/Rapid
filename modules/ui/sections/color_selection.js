@@ -1,9 +1,8 @@
+import * as PIXI from 'pixi.js';
 import { uiTooltip } from '../tooltip';
 import { uiCombobox } from '../combobox';
-import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 import { utilNoAuto } from '../../util';
-
 
 export function uiSectionColorSelection(context) {
   const l10n = context.systems.l10n;
@@ -75,7 +74,6 @@ export function uiSectionColorSelection(context) {
     colorCombo.data(comboData);
 
     update();
-
 
     function update() {
       selection.selectAll('.preferences-color-selection-item')

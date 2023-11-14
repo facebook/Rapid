@@ -1000,9 +1000,16 @@ en:
       title: Map Color Scheme
       tooltip: Switch between color schemes
       default: Default
-      red_blind: Protanopia
-      green_blind: Deuteranopia
+      example: Example (High Contrast)
       placeholder: Select color scheme
+    colorblind_options:
+      title: Colorblind Mode
+      tooltip: Switch between colorblind modes
+      default: Default (None)
+      protanopia: Protanopia
+      deuteranopia: Deuteranopia
+      tritanopia: Tritanopia
+      placeholder: Select colorblind mode
   restore:
     heading: You have unsaved changes
     description: "Do you wish to restore unsaved changes from a previous editing session?"

@@ -3,6 +3,7 @@ export { uiSectionBackgroundList } from './background_list';
 export { uiSectionBackgroundOffset } from './background_offset';
 export { uiSectionChanges } from './changes';
 export { uiSectionColorSelection } from './color_selection';
+export { uiSectionColorblindModeOptions } from './colorblind_mode_options';
 export { uiSectionDataLayers } from './data_layers';
 export { uiSectionEntityIssues } from './entity_issues';
 export { uiSectionFeatureType } from './feature_type';
