@@ -28,7 +28,7 @@ export class ColorSystem extends AbstractSystem {
         const dataloader = context.systems.dataloader;
 
         dataloader.getDataAsync('colors')
-            .then((data) => { this.colorData = data; } );
+            .then((data) => { this.colorData = data.default[0]; } );
 
         return Promise.resolve();
     }
