@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ benchmarking ]
 
+env:
+  FORCE_COLOR: 2
+
 jobs:
   benchmark:
     runs-on: ubuntu-latest

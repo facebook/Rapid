@@ -11,6 +11,9 @@ permissions:
   id-token: write # required to use OIDC authentication
   contents: read # required to checkout the code from the repo
 
+env:
+  FORCE_COLOR: 2
+
 jobs:
   build:
     name: Build
