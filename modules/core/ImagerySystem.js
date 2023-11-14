@@ -32,6 +32,7 @@ export class ImagerySystem extends AbstractSystem {
 
     this._initPromise = null;
     this._imageryIndex = null;
+    this._waybackImagery = null;
     this._baseLayer = null;
     this._overlayLayers = new Map();   // Map (sourceID -> source)
     this._checkedBlocklists = [];
@@ -79,12 +80,88 @@ export class ImagerySystem extends AbstractSystem {
     return this._initPromise = prerequisites
       .then(() => urlhash.on('hashchange', this._hashchange))
       .then(() => dataloader.getDataAsync('imagery'))
-      .then(data => this._initImageryIndex(data));
+      .then(data => this._initImageryIndex(data))
+      .then(() => dataloader.getDataAsync('wayback'))
+      .then(data => this._initWaybackImageryIndex(data));
       // .catch(e => {
         // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
       // });
   }
 
+   /**
+   * _initWaybackImageryIndex
+   * Set up the waybackImagery index after it has been downloaded
+   * It contains these properties:
+   *   {
+   *     features:  Map(id -> GeoJSON feature)
+   *     sources:   Map(id -> ImagerySource)
+   *     query:     A which-polygon index to perform spatial queries against
+   *   }
+   *  @param  data  {Array}  imagery index data
+   */
+
+  _initWaybackImageryIndex(data) {
+    const context = this.context;
+
+    this._waybackImageryIndex = {
+      features: new Map(),   // Map(id -> GeoJSON feature)
+      sources: new Map(),    // Map(id -> ImagerySource)
+      query: null            // which-polygon index
+    };
+
+    // Extract a GeoJSON feature for each imagery item.
+    const features = data.items.map(d => {
+      if (!d.polygon) return null;
+
+      // workaround for editor-layer-index weirdness..
+      // Add an extra array nest to each element in `d.polygon`
+      // so the rings are not treated as a bunch of holes:
+      //   what we get:  [ [[outer],[hole],[hole]] ]
+      //   what we want: [ [[outer]],[[outer]],[[outer]] ]
+      const rings = d.polygon.map(ring => [ring]);
+
+      const feature = {
+        type: 'Feature',
+        properties: { id: d.id },
+        geometry: { type: 'MultiPolygon', coordinates: rings }
+      };
+
+      this._waybackImageryIndex.features.set(d.id.toLowerCase(), feature);
+      return feature;
+    }).filter(Boolean);
+
+    // Create a which-polygon index to support efficient spatial querying.
+    this._waybackImageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
+
+    // Instantiate `ImagerySource` objects for each imagery item.
+    for (const d of data.items) {
+      let source;
+      if (d.type === 'bing') {
+        source = new ImagerySourceBing(context, d);
+      } else if (/^EsriWorldImagery/.test(d.id)) {
+        source = new ImagerySourceEsri(context, d);
+      } else {
+        source = new ImagerySource(context, d);
+      }
+      this._imageryIndex.sources.set(d.id.toLowerCase(), source);
+    }
+
+    // Add 'None'
+    const none = new ImagerySourceNone(context);
+    this._imageryIndex.sources.set(none.id, none);
+
+    // Add 'Custom' - seed it with whatever template the user has used previously
+    const custom = new ImagerySourceCustom(context);
+    const storage = this.context.systems.storage;
+    custom.template = storage.getItem('background-custom-template') || '';
+    this._imageryIndex.sources.set(custom.id, custom);
+
+    // Default the locator overlay to "on"..
+    const locator = this._imageryIndex.sources.get('mapbox_locator_overlay');
+    if (locator) {
+      this.toggleOverlayLayer(locator);
+    }
+  }
 
   /**
    * _initImageryIndex
