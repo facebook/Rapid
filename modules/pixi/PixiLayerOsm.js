@@ -6,7 +6,6 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { styleMatch } from './styles';
 
 const MINZOOM = 12;
 
@@ -333,7 +332,8 @@ export class PixiLayerOsm extends AbstractLayer {
         if (feature.dirty) {
           const preset = presets.match(entity, graph);
 
-          const style = styleMatch(entity.tags);
+          const systems = this.context.systems;
+          const style = systems.styles.styleMatch(entity.tags);
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
           feature.style = style;
 
@@ -488,7 +488,8 @@ export class PixiLayerOsm extends AbstractLayer {
               }
             }
 
-            const style = styleMatch(tags);
+            const systems = this.context.systems;
+            const style = systems.styles.styleMatch(tags);
             // Todo: handle alternating/two-way case too
             if (geom === 'line') {
               style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
