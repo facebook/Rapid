@@ -197,6 +197,14 @@
     }
   },
   {
+    "countryCodes": ["mx"],
+    "format": [
+      ["street", "housenumber"],
+      ["neighbourhood"],
+      ["postcode", "city", "state"]
+    ]
+  },
+  {
     "countryCodes": ["in"],
     "format": [
       ["housenumber", "street"],
