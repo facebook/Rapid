@@ -833,8 +833,9 @@ const HIGHWAYSTACK = {
   unclassified: -8,
   residential: -9,
   service: -10,
-  track: -11,
-  footway: -12
+  busway: -11,
+  track: -12,
+  footway: -20
 };
 
 
