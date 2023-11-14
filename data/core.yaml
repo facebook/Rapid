@@ -996,6 +996,13 @@ en:
         pan:
           title: Pan the Map
           tooltip: Scrolling with the wheel will pan the map.  Holding down Shift will zoom and unzoom the map.
+    color_selection:
+      title: Map Color Scheme
+      tooltip: Switch between color schemes
+      default: Default
+      red_blind: Protanopia
+      green_blind: Deuteranopia
+      placeholder: Select color scheme
   restore:
     heading: You have unsaved changes
     description: "Do you wish to restore unsaved changes from a previous editing session?"

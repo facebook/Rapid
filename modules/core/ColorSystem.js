@@ -9,8 +9,11 @@ export class ColorSystem extends AbstractSystem {
         this.autoStart = true;
         this._started = false;
         this.colorData = null;
+        this.colorSchemes = null;
+        this.currentColorScheme = null;
 
         this.getColorScheme = this.getColorScheme.bind(this);
+        this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
     }
 
     initAsync(){
@@ -28,7 +31,13 @@ export class ColorSystem extends AbstractSystem {
         const dataloader = context.systems.dataloader;
 
         dataloader.getDataAsync('colors')
-            .then((data) => { this.colorData = data; } );
+            .then((data) => {
+                this.colorSchemes = data;
+                // set current scheme to default
+                this.colorData = data.default;
+                this.currentColorScheme = 'default';
+                this.emit('colorsloaded');  // emit copies
+            });
 
         return Promise.resolve();
     }
@@ -38,6 +47,20 @@ export class ColorSystem extends AbstractSystem {
     }
 
     getColorScheme() {
+        // returns the default color scheme object
         return this.colorData;
+    }
+
+    getAllColorSchemes() {
+        // returns an object containing all color scheme objects
+        return this.colorSchemes;
+    }
+
+    setColorScheme(scheme) {
+        let currentScheme = this.colorSchemes[scheme];
+        if (this.colorData !== currentScheme) { // if the selected scheme is not the current scheme, assign the colorData var to the new scheme
+            this.currentColorScheme = scheme;
+            this.colorData = currentScheme;
+        }
     }
 }
