@@ -45,6 +45,9 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('territory_languages', 'data/territory_languages.min.json');
     fileMap.set('wmf_sitematrix', 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json');
 
+    // Add wayback imagery endpoint
+    fileMap.set('wayback', 'https://www.arcgis.com/sharing/rest/content/groups/0f3189e1d1414edfad860b697b7d8311?f=json');
+
     this.fileMap = fileMap;
     this._cachedData = {};
     this._inflight = {};
