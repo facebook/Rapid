@@ -83,51 +83,51 @@ export class ImagerySystem extends AbstractSystem {
       .then(data => this._initImageryIndex(data))
       .then(() => dataloader.getDataAsync('wayback'))
       .then(data => this._initWaybackImageryIndex(data));
-      // .catch(e => {
-        // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
-      // });
+    // .catch(e => {
+    // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+    // });
   }
 
-   /**
-   * _initWaybackImageryIndex
-   * Set up the waybackImagery index after it has been downloaded
-   * It contains these properties:
-   *   {
-   *     features:  Map(id -> GeoJSON feature)
-   *     sources:   Map(id -> ImagerySource)
-   *     query:     A which-polygon index to perform spatial queries against
-   *   }
-   *  @param  data  {Array}  imagery index data
-   */
+  /**
+  * _initWaybackImageryIndex
+  * Set up the waybackImagery index after it has been downloaded
+  * It contains these properties:
+  *   {
+  *     features:  Map(id -> GeoJSON feature)
+  *     sources:   Map(id -> ImagerySource)
+  *     query:     A which-polygon index to perform spatial queries against
+  *   }
+  *  @param  data  {Array}  imagery index data
+  */
 
-_initWaybackImageryIndex(data, groups) {
+  _initWaybackImageryIndex(data, groups) {
     const context = this.context;
 
     this._waybackImageryIndex = {
-        features: new Map(),   // Map(id -> GeoJSON feature)
-        sources: new Map(),    // Map(id -> ImagerySource)
-        query: null            // which-polygon index
+      features: new Map(),   // Map(id -> GeoJSON feature)
+      sources: new Map(),    // Map(id -> ImagerySource)
+      query: null            // which-polygon index
     };
 
     // Extract a GeoJSON feature for each imagery item.
     const features = data.items.map(d => {
-        if (!d.polygon) return null;
+      if (!d.polygon) return null;
 
-        // workaround for editor-layer-index weirdness..
-        // Add an extra array nest to each element in `d.polygon`
-        // so the rings are not treated as a bunch of holes:
-        //   what we get:  [ [[outer],[hole],[hole]] ]
-        //   what we want: [ [[outer]],[[outer]],[[outer]] ]
-        const rings = d.polygon.map(ring => [ring]);
+      // workaround for editor-layer-index weirdness..
+      // Add an extra array nest to each element in `d.polygon`
+      // so the rings are not treated as a bunch of holes:
+      //   what we get:  [ [[outer],[hole],[hole]] ]
+      //   what we want: [ [[outer]],[[outer]],[[outer]] ]
+      const rings = d.polygon.map(ring => [ring]);
 
-        const feature = {
-            type: 'Feature',
-            properties: { id: d.id },
-            geometry: { type: 'MultiPolygon', coordinates: rings }
-        };
+      const feature = {
+        type: 'Feature',
+        properties: { id: d.id },
+        geometry: { type: 'MultiPolygon', coordinates: rings }
+      };
 
-        this._waybackImageryIndex.features.set(d.id.toLowerCase(), feature);
-        return feature;
+      this._waybackImageryIndex.features.set(d.id.toLowerCase(), feature);
+      return feature;
     }).filter(Boolean);
 
     // Create a which-polygon index to support efficient spatial querying.
@@ -135,15 +135,15 @@ _initWaybackImageryIndex(data, groups) {
 
     // Instantiate `ImagerySource` objects for each imagery item.
     for (const d of data.items) {
-        let source;
-        if (d.type === 'bing') {
-            source = new ImagerySourceBing(context, d);
-        } else if (/^EsriWorldImagery/.test(d.id)) {
-            source = new ImagerySourceEsri(context, d);
-        } else {
-            source = new ImagerySource(context, d);
-        }
-        this._waybackImageryIndex.sources.set(d.id.toLowerCase(), source);
+      let source;
+      if (d.type === 'bing') {
+        source = new ImagerySourceBing(context, d);
+      } else if (/^EsriWorldImagery/.test(d.id)) {
+        source = new ImagerySourceEsri(context, d);
+      } else {
+        source = new ImagerySource(context, d);
+      }
+      this._waybackImageryIndex.sources.set(d.id.toLowerCase(), source);
     }
 
     // Add 'None'
@@ -159,87 +159,87 @@ _initWaybackImageryIndex(data, groups) {
     // Default the locator overlay to "on"..
     const locator = this._waybackImageryIndex.sources.get('mapbox_locator_overlay');
     if (locator) {
-        this.toggleOverlayLayer(locator);
+      this.toggleOverlayLayer(locator);
     }
 
     // Parse the layer's date from the title
     function parsedDateTitle(title) {
-        const dateDisplay = title.match(/\wayback (\d{4})-(\d\d)-(\d\d)\)/);
-        if (!dateDisplay) return;
-        return new Date(Date.UTC(
-            parseInt(dateDisplay[1], 10),
-            parseInt(dateDisplay[2], 10) - 1,
-            parseInt(dateDisplay[3], 10)
-        ));
+      const dateDisplay = title.match(/wayback (\d{4})-(\d\d)-(\d\d)\)/);
+      if (!dateDisplay) return;
+      return new Date(Date.UTC(
+        parseInt(dateDisplay[1], 10),
+        parseInt(dateDisplay[2], 10) - 1,
+        parseInt(dateDisplay[3], 10)
+      ));
     }
 
     if (groups) {
-        // Index the metadata MapServer URLs by the date of the World Imagery map.
-        let metadataMapServersByDate = Object.fromEntries(
-            groups.items
-                .filter(function(item) {
-                    return item.type === 'Map Service';
-                })
-                .map(function(item) {
-                    // Extract the layer's date from the title to avoid having to hit each MapServer right away.
-                    const date = parsedDateTitle(item.title) || new Date(item.created);
-                    const dateString = date.toISOString().split('T')[0];
-                    return [dateString, item.url];
-                })
-        );
+      // Index the metadata MapServer URLs by the date of the World Imagery map.
+      let metadataMapServersByDate = Object.fromEntries(
+        groups.items
+          .filter(function (item) {
+            return item.type === 'Map Service';
+          })
+          .map(function (item) {
+            // Extract the layer's date from the title to avoid having to hit each MapServer right away.
+            const date = parsedDateTitle(item.title) || new Date(item.created);
+            const dateString = date.toISOString().split('T')[0];
+            return [dateString, item.url];
+          })
+      );
 
-        this._waybackIndex = groups.items
-            .filter(function(item) {
-                return item.type === 'WMTS';
-            })
-            .map(function(item) {
-                const date = parsedDateTitle(item.title) || new Date(item.created);
-                const dateString = date && date.toISOString().split('T')[0];
+      this._waybackIndex = groups.items
+        .filter(function (item) {
+          return item.type === 'WMTS';
+        })
+        .map(function (item) {
+          const date = parsedDateTitle(item.title) || new Date(item.created);
+          const dateString = date && date.toISOString().split('T')[0];
 
-                // Convert the bounding box to a polygon.
-                const bbox = {
-                    min_lon: item.extent[0][0],
-                    min_lat: item.extent[0][1],
-                    max_lon: item.extent[1][0],
-                    max_lat: item.extent[1][1],
-                };
-                const polygon = [
-                    [
-                        [bbox.min_lon, bbox.min_lat],
-                        [bbox.min_lon, bbox.max_lat],
-                        [bbox.max_lon, bbox.max_lat],
-                        [bbox.max_lon, bbox.min_lat],
-                        [bbox.min_lon, bbox.min_lat],
-                    ],
-                ];
+          // Convert the bounding box to a polygon.
+          const bbox = {
+            min_lon: item.extent[0][0],
+            min_lat: item.extent[0][1],
+            max_lon: item.extent[1][0],
+            max_lat: item.extent[1][1],
+          };
+          const polygon = [
+            [
+              [bbox.min_lon, bbox.min_lat],
+              [bbox.min_lon, bbox.max_lat],
+              [bbox.max_lon, bbox.max_lat],
+              [bbox.max_lon, bbox.min_lat],
+              [bbox.min_lon, bbox.min_lat],
+            ],
+          ];
 
-                // Convert placeholder tokens in the URL template from Esri's format to OSM's.
-                const template = item.url
-                    .replaceAll('{level}', '{zoom}')
-                    .replaceAll('{row}', '{y}')
-                    .replaceAll('{col}', '{x}');
+          // Convert placeholder tokens in the URL template from Esri's format to OSM's.
+          const template = item.url
+            .replaceAll('{level}', '{zoom}')
+            .replaceAll('{row}', '{y}')
+            .replaceAll('{col}', '{x}');
 
-                return {
-                    id: `EsriWorldImagery_${dateString}`,
-                    name: item.title,
-                    type: 'tms',
-                    template,
-                    metadata: metadataMapServersByDate[dateString],
-                    startDate: date.toISOString(),
-                    endDate: date.toISOString(),
-                    polygon,
-                    terms_text: item.accessInformation,
-                    description: item.snippet,
-                    // Match Esri World Imagery layer
-                    'default': true,
-                    zoomExtent: [0, 22],
-                    terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
-                    icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
-                };
-            });
+          return {
+            id: `EsriWorldImagery_${dateString}`,
+            name: item.title,
+            type: 'tms',
+            template,
+            metadata: metadataMapServersByDate[dateString],
+            startDate: date.toISOString(),
+            endDate: date.toISOString(),
+            polygon,
+            terms_text: item.accessInformation,
+            description: item.snippet,
+            // Match Esri World Imagery layer
+            'default': true,
+            zoomExtent: [0, 22],
+            terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
+            icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
+          };
+        });
     }
     return this._waybackImageryIndex;
-}
+  }
 
 
   /**
