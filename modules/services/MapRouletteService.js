@@ -28,6 +28,7 @@ export class MapRouletteService extends AbstractSystem {
     this.autoStart = false;
 
     this._taskData = { icons: {}, types: [] };
+    this._maprouletteStrings = new Map();   // Map (locale -> Object containing strings)
 
     this._cache = null;   // cache gets replaced on init/reset
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
@@ -50,7 +51,9 @@ export class MapRouletteService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-      this._started = true;
+    this._loadStringsAsync()
+      .then(() => this._started = true);
+      // this._started = true;
   }
 
 
@@ -307,6 +310,70 @@ export class MapRouletteService extends AbstractSystem {
     } while (coincident);
 
     return loc;
+  }
+
+  /**
+   * _loadStringsAsync
+   * Load the strings for the types of tasks that we support
+   * @return  Promise
+   */
+  _loadStringsAsync() {
+    // Only need to cache strings for supported issue types
+    const itemTypes = Object.keys(this._osmoseData.icons);
+
+    // For now, we only do this one time at init.
+    // Todo: support switching locales
+    let stringData = {};
+    const localeCode = this.context.systems.l10n.localeCode();
+    this._osmoseStrings.set(localeCode, stringData);
+
+    // Using multiple individual item + class requests to reduce fetched data size
+    const allRequests = itemTypes.map(itemType => {
+
+      const handleResponse = (data) => {
+        // Bunch of nested single value arrays of objects
+        const [ cat = { items:[] } ] = data.categories;
+        const [ item = { class:[] } ] = cat.items;
+        const [ cl = null ] = item.class;
+
+        // If null default value is reached, data wasn't as expected (or was empty)
+        if (!cl) {
+          /* eslint-disable no-console */
+          console.log(`Osmose strings request (${itemType}) had unexpected data`);
+          /* eslint-enable no-console */
+          return;
+        }
+
+        // Save item colors to automatically style issue markers later
+        const itemInt = item.item;
+        this._osmoseColors.set(itemInt, new Color(item.color).toNumber());
+
+        // Value of root key will be null if no string exists
+        // If string exists, value is an object with key 'auto' for string
+        const { title, detail, fix, trap } = cl;
+
+        let issueStrings = {};
+        // Force title to begin with an uppercase letter
+        if (title)  issueStrings.title = title.auto.charAt(0).toUpperCase() + title.auto.slice(1);
+        if (detail) issueStrings.detail = marked.parse(detail.auto);
+        if (trap)   issueStrings.trap = marked.parse(trap.auto);
+        if (fix)    issueStrings.fix = marked.parse(fix.auto);
+
+        stringData[itemType] = issueStrings;
+      };
+
+      // Osmose API falls back to English strings where untranslated or if locale doesn't exist
+      const [item, cl] = itemType.split('-');
+      // const url = `${OSMOSE_API}/items/${item}/class/${cl}?langs=${localeCode}`;
+      // MAPROULETTE: Change this to MR API
+
+      return fetch(url)
+        .then(utilFetchResponse)
+        .then(handleResponse);
+
+    }).filter(Boolean);
+
+    return Promise.all(allRequests);
   }
 
 
