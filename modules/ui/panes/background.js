@@ -1,4 +1,5 @@
 import { uiPane } from '../pane';
+import { uiSectionWaybackImagery } from '../sections';
 import { uiSectionBackgroundDisplayOptions } from '../sections/background_display_options';
 import { uiSectionBackgroundList } from '../sections/background_list';
 import { uiSectionBackgroundOffset } from '../sections/background_offset';
@@ -18,6 +19,7 @@ export function uiPaneBackground(context) {
     .sections([
       uiSectionBackgroundList(context),
       // uiSectionReactContainer(context),
+      uiSectionWaybackImagery(context),
       uiSectionOverlayList(context),
       uiSectionGridDisplayOptions(context),
       uiSectionBackgroundDisplayOptions(context),

@@ -779,6 +779,10 @@ en:
     reset: reset
     reset_all: Reset All
     display_options: Display Options
+    wayback_imagery:
+      title: ESRI Wayback Imagery
+      tooltip: Imagery listing from the ESRI Wayback archive
+      example_item_text: Just for demo purposes
     brightness: Brightness
     contrast: Contrast
     saturation: Saturation
