@@ -996,6 +996,10 @@ en:
         pan:
           title: Pan the Map
           tooltip: Scrolling with the wheel will pan the map.  Holding down Shift will zoom and unzoom the map.
+    color_selection:
+      title: Color Selection
+      tooltip: Use to switch between color schemes
+      description: Swap color schemes
   restore:
     heading: You have unsaved changes
     description: "Do you wish to restore unsaved changes from a previous editing session?"

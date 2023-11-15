@@ -1,6 +1,7 @@
 import { uiPane } from '../pane';
 import { uiSectionPrivacy } from '../sections/privacy';
 import { uiSectionMapInteractionOptions } from '../sections/map_interaction_options';
+import { uiSectionColorSelection } from '../sections/color_selection';
 
 
 export function uiPanePreferences(context) {
@@ -13,6 +14,7 @@ export function uiPanePreferences(context) {
     .iconName('fas-user-cog')
     .sections([
       uiSectionPrivacy(context),
-      uiSectionMapInteractionOptions(context)
+      uiSectionMapInteractionOptions(context),
+      uiSectionColorSelection(context)
     ]);
 }
