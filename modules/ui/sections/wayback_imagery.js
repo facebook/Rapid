@@ -1,6 +1,8 @@
 import { uiTooltip } from '../tooltip';
+import { uiCombobox } from '../combobox';
 import { uiIcon } from '../icon';
 import { uiSection } from '../section';
+import { utilNoAuto } from '../../util';
 
 
 export function uiSectionWaybackImagery(context) {
@@ -10,6 +12,9 @@ export function uiSectionWaybackImagery(context) {
     .label(l10n.tHtml('background.wayback_imagery.title'))
     .disclosureContent(renderDisclosureContent);
 
+  const waybackCombo = uiCombobox(context, 'wayback-vintages');
+
+  let _waybackSelectedId = null;
   let _checkboxState = false;
 
   function renderDisclosureContent(selection) {
@@ -22,7 +27,7 @@ export function uiSectionWaybackImagery(context) {
       .append('ul')
       .attr('class', 'layer-list background-wayback-list');
 
-    let thirdPartyIconsEnter = privacyOptionsListEnter
+      let thirdPartyIconsEnter = privacyOptionsListEnter
       .append('li')
       .attr('class', 'background-wayback-item')
       .append('label')
@@ -43,6 +48,28 @@ export function uiSectionWaybackImagery(context) {
     thirdPartyIconsEnter
       .append('span')
       .html(l10n.tHtml('background.wayback_imagery.example_item_text'));
+
+    let pickerCombo = privacyOptionsListEnter.append('div');
+
+    pickerCombo.append('input')
+    .attr('class', 'wayback-vintage-select')
+      .attr('placeholder', l10n.t('background.wayback_imagery.placeholder'))
+      .call(utilNoAuto)
+      .call(waybackCombo)
+      .on('blur change', d3_event => {
+        const element = d3_event.currentTarget;
+        const val = (element && element.value) || '';
+        const data = waybackCombo.data();
+        if (data.some(item => item.value === val)) {  // only allow picking values from the list
+          _waybackSelectedId = val;
+        } else {
+          d3_event.currentTarget.value = '';
+          _waybackSelectedId = null;
+        }
+      });
+
+    const comboData = [{ title: 'first', value: 1 }, { title: 'second', value: 2 }];
+      waybackCombo.data(comboData);
 
     update();
 

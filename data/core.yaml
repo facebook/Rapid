@@ -783,6 +783,7 @@ en:
       title: ESRI Wayback Imagery
       tooltip: Imagery listing from the ESRI Wayback archive
       example_item_text: Just for demo purposes
+      placeholder: Please select a vintage
     brightness: Brightness
     contrast: Contrast
     saturation: Saturation
