@@ -9,7 +9,7 @@ export class ColorSystem extends AbstractSystem {
         this.autoStart = true;
         this._started = false;
         this.colorData = null;
-        this.colorSchemes = null;
+        this.colorSchemes = [];
 
         this.getColorScheme = this.getColorScheme.bind(this);
         this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
@@ -31,8 +31,9 @@ export class ColorSystem extends AbstractSystem {
 
         dataloader.getDataAsync('colors')
             .then((data) => {
-                this.colorSchemes = data;
-                this.colorData = data.default[0];
+                const keys = Object.keys(data);
+                this.colorSchemes = this.colorSchemes.concat(keys);
+                this.colorData = data.default;
             });
 
         return Promise.resolve();
@@ -47,7 +48,6 @@ export class ColorSystem extends AbstractSystem {
     }
 
     getAllColorSchemes() {
-        const schemes = Object.keys(this.colorSchemes);
-        return schemes;
+        return this.colorSchemes;
     }
 }

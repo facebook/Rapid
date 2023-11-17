@@ -1,82 +1,78 @@
 {
-  "default": [
-    {
-      "red": {
-        "fill": { "color": "0xe06e5f", "alpha": 0.3 }
-      },
-      "green": {
-        "fill": { "color": "0x8cd05f", "alpha": 0.3 }
-      },
-      "blue": {
-        "fill": { "color": "0x77d4de", "alpha": 0.3 }
-      },
-      "yellow": {
-        "fill": { "color": "0xffff94", "alpha": 0.25 }
-      },
-      "gold": {
-        "fill": { "color": "0xc4be19", "alpha": 0.3 }
-      },
-      "orange": {
-        "fill": { "color": "0xd6881a", "alpha": 0.3 }
-      },
-      "pink": {
-        "fill": { "color": "0xe3a4f5", "alpha": 0.3 }
-      },
-      "teal": {
-        "fill": { "color": "0x99e1aa", "alpha": 0.3 }
-      },
-      "lightgreen": {
-        "fill": { "color": "0xbee83f", "alpha": 0.3 }
-      },
-      "tan": {
-        "fill": { "color": "0xf5dcba", "alpha": 0.3 }
-      },
-      "darkgray": {
-        "fill": { "color": "0x8c8c8c", "alpha": 0.5 }
-      },
-      "lightgray": {
-        "fill": { "color": "0xaaaaaa", "alpha": 0.3 }
-      }
+  "default": {
+    "red": {
+      "fill": { "color": "0xe06e5f", "alpha": 0.3 }
+    },
+    "green": {
+      "fill": { "color": "0x8cd05f", "alpha": 0.3 }
+    },
+    "blue": {
+      "fill": { "color": "0x77d4de", "alpha": 0.3 }
+    },
+    "yellow": {
+      "fill": { "color": "0xffff94", "alpha": 0.25 }
+    },
+    "gold": {
+      "fill": { "color": "0xc4be19", "alpha": 0.3 }
+    },
+    "orange": {
+      "fill": { "color": "0xd6881a", "alpha": 0.3 }
+    },
+    "pink": {
+      "fill": { "color": "0xe3a4f5", "alpha": 0.3 }
+    },
+    "teal": {
+      "fill": { "color": "0x99e1aa", "alpha": 0.3 }
+    },
+    "lightgreen": {
+      "fill": { "color": "0xbee83f", "alpha": 0.3 }
+    },
+    "tan": {
+      "fill": { "color": "0xf5dcba", "alpha": 0.3 }
+    },
+    "darkgray": {
+      "fill": { "color": "0x8c8c8c", "alpha": 0.5 }
+    },
+    "lightgray": {
+      "fill": { "color": "0xaaaaaa", "alpha": 0.3 }
     }
-  ],
-  "red-blind": [
-    {
-      "red": {
-        "fill": { "color": "0x0e0ffb", "alpha": 0.8 }
-      },
-      "green": {
-        "fill": { "color": "0x051d0d", "alpha": 0.8 }
-      },
-      "blue": {
-        "fill": { "color": "0x0a0f48", "alpha": 0.8 }
-      },
-      "yellow": {
-        "fill": { "color": "0xddd317", "alpha": 0.5 }
-      },
-      "gold": {
-        "fill": { "color": "0xa9840c", "alpha": 0.8 }
-      },
-      "orange": {
-        "fill": { "color": "0x633d1d", "alpha": 0.8 }
-      },
-      "pink": {
-        "fill": { "color": "0xc396cd", "alpha": 0.8 }
-      },
-      "teal": {
-        "fill": { "color": "0x199378", "alpha": 0.8 }
-      },
-      "lightgreen": {
-        "fill": { "color": "0x62a41e", "alpha": 0.8 }
-      },
-      "tan": {
-        "fill": { "color": "0xeec193", "alpha": 0.8 }
-      },
-      "darkgray": {
-        "fill": { "color": "0x373435", "alpha": 0.9 }
-      },
-      "lightgray": {
-        "fill": { "color": "0xaaaaaa", "alpha": 0.8 }
-      }
+  },
+  "red-blind": {
+    "red": {
+      "fill": { "color": "0x0e0ffb", "alpha": 0.8 }
+    },
+    "green": {
+      "fill": { "color": "0x051d0d", "alpha": 0.8 }
+    },
+    "blue": {
+      "fill": { "color": "0x0a0f48", "alpha": 0.8 }
+    },
+    "yellow": {
+      "fill": { "color": "0xddd317", "alpha": 0.5 }
+    },
+    "gold": {
+      "fill": { "color": "0xa9840c", "alpha": 0.8 }
+    },
+    "orange": {
+      "fill": { "color": "0x633d1d", "alpha": 0.8 }
+    },
+    "pink": {
+      "fill": { "color": "0xc396cd", "alpha": 0.8 }
+    },
+    "teal": {
+      "fill": { "color": "0x199378", "alpha": 0.8 }
+    },
+    "lightgreen": {
+      "fill": { "color": "0x62a41e", "alpha": 0.8 }
+    },
+    "tan": {
+      "fill": { "color": "0xeec193", "alpha": 0.8 }
+    },
+    "darkgray": {
+      "fill": { "color": "0x373435", "alpha": 0.9 }
+    },
+    "lightgray": {
+      "fill": { "color": "0xaaaaaa", "alpha": 0.8 }
     }
-  ]
+  }
 }
