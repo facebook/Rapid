@@ -500,7 +500,8 @@ export function validationCrossingWays(context) {
       entityIds: [ entity1.id, entity2.id ],
       data: {
         edges: edges,
-        featureTypes: featureTypes
+        featureTypes: featureTypes,
+        connectionTags: connectionTags
       },
       hash: uniqueID,
       loc: crossing.crossPoint,
