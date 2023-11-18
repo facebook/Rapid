@@ -10,7 +10,7 @@ import { osmEntity } from '../../osm';
 import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
-import { utilHighlightEntities, utilNoAuto } from '../../util';
+import { utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../../util';
 
 const MAX_MEMBERS = 1000;
 
@@ -194,8 +194,8 @@ export function uiSectionRawMemberEditor(context) {
           labelLink
             .append('span')
             .attr('class', 'member-entity-name')
-            .classed('has-color', d => d.member.type === 'relation' && d.member.tags.colour)
-            .style('border-color', d => d.member.type === 'relation' && d.member.tags.colour)
+            .classed('has-color', d => !!_getColor(d.member))
+            .style('border-color', d => _getColor(d.member))
             .text(d => (d.member ? l10n.displayName(d.member.tags) : ''));
 
           label
@@ -333,6 +333,12 @@ export function uiSectionRawMemberEditor(context) {
     _entityIDs = val || [];
     return section;
   };
+
+
+  function _getColor(entity) {
+    const val = entity?.type === 'relation' && entity?.tags.colour;
+    return (val && utilIsColorValid(val)) ? val : null;
+  }
 
 
   function _bindCombo(d, i, nodes) {
