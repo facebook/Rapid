@@ -432,22 +432,30 @@ export function validationCrossingWays(context) {
       return type1 < type2;
     });
 
-    const entities = crossing.wayInfos.map(wayInfo => {
-      return getTaggedEntityForWay(wayInfo.way, graph);
-    });
+    const entities = crossing.wayInfos.map(wayInfo => getTaggedEntityForWay(wayInfo.way, graph));
+    const [entity1, entity2] = entities;
 
+    const tags1 = entity1.tags;
+    const tags2 = entity2.tags;
     const type1 = crossing.wayInfos[0].featureType;
     const type2 = crossing.wayInfos[1].featureType;
     const edges = [crossing.wayInfos[0].edge, crossing.wayInfos[1].edge];
     const featureTypes = [type1, type2];
 
-    const connectionTags = getConnectionTags(entities[0], entities[1], graph);
+    const connectionTags = getConnectionTags(entity1, entity2, graph);
 
-    const isCrossingIndoors = taggedAsIndoor(entities[0].tags) && taggedAsIndoor(entities[1].tags);
-    const isCrossingTunnels = allowTunnel.has(type1) && hasTag(entities[0].tags.tunnel) &&
-                              allowTunnel.has(type2) && hasTag(entities[1].tags.tunnel);
-    const isCrossingBridges = allowBridge.has(type1) && hasTag(entities[0].tags.bridge) &&
-                              allowBridge.has(type2) && hasTag(entities[1].tags.bridge);
+    const isCrossingIndoors = taggedAsIndoor(tags1) && taggedAsIndoor(tags2);
+
+    const bridge1 = allowBridge.has(type1) && hasTag(tags1.bridge);
+    const bridge2 = allowBridge.has(type2) && hasTag(tags2.bridge);
+    const isCrossingBridges = bridge1 && bridge2;
+
+    const tunnel1 = allowTunnel.has(type1) && hasTag(tags1.tunnel);
+    const tunnel2 = allowTunnel.has(type2) && hasTag(tags2.tunnel);
+    const isCrossingTunnels = tunnel1 && tunnel2;
+
+    const isMinorCrossing = (tags1.highway === 'service' || tags2.highway === 'service') &&
+      connectionTags?.highway === 'crossing';
 
     const subtype = [type1, type2].sort().join('-');
 
@@ -467,8 +475,13 @@ export function validationCrossingWays(context) {
     // Differentiate based on the loc rounded to 4 digits, since two ways can cross multiple times.
     const uniqueID = '' + crossing.crossPoint[0].toFixed(4) + ',' + crossing.crossPoint[1].toFixed(4);
 
-    // Support autofix for connecting ways (except ford)
-    const autoArgs = connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags);
+    // Support autofix for some kinds of connections
+    let autoArgs = null;
+    if (isMinorCrossing) {
+      autoArgs = getConnectWaysAction(crossing.crossPoint, edges, {});  // untagged connection
+    } else if (connectionTags && !connectionTags.ford) {
+      autoArgs = getConnectWaysAction(crossing.crossPoint, edges, connectionTags); // suggested tagged connection
+    }
 
     return new ValidationIssue(context, {
       type: type,
@@ -484,11 +497,10 @@ export function validationCrossingWays(context) {
         }) : '';
       },
       reference: showReference,
-      entityIds: [ entities[0].id, entities[1].id ],
+      entityIds: [ entity1.id, entity2.id ],
       data: {
         edges: edges,
-        featureTypes: featureTypes,
-        connectionTags: connectionTags
+        featureTypes: featureTypes
       },
       hash: uniqueID,
       loc: crossing.crossPoint,
@@ -503,8 +515,13 @@ export function validationCrossingWays(context) {
         const otherType = this.data.featureTypes[selectedIndex === 0 ? 1 : 0];
         const fixes = [];
 
+        // For crossings between sidewalk and service road, offer an untagged connection fix - iD#9650, iD#8463
+        if (isMinorCrossing) {
+          fixes.push(makeConnectWaysFix({}));
+        }
+
         if (connectionTags) {
-          fixes.push(makeConnectWaysFix(this.data.connectionTags));
+          fixes.push(makeConnectWaysFix(connectionTags));
         }
 
         if (isCrossingIndoors) {
@@ -556,15 +573,15 @@ export function validationCrossingWays(context) {
 
   /**
    * makeAddBridgeOrTunnelFix
-   * @param  {string}  fixTitleID
+   * @param  {string}  titleID
    * @param  {string}  iconName
    * @param  {string}  bridgeOrTunnel
    * @return {ValidationFix}
    */
-  function makeAddBridgeOrTunnelFix(fixTitleID, iconName, bridgeOrTunnel) {
+  function makeAddBridgeOrTunnelFix(titleID, iconName, bridgeOrTunnel) {
     return new ValidationFix({
       icon: iconName,
-      title: l10n.tHtml(`issues.fix.${fixTitleID}.title`),
+      title: l10n.tHtml(`issues.fix.${titleID}.title`),
       onClick: function() {
         if (context.mode?.id !== 'select-osm') return;
 
@@ -747,7 +764,7 @@ export function validationCrossingWays(context) {
 
         editor.perform(actionAddStructure);
         editor.commit({
-          annotation: l10n.t(`issues.fix.${fixTitleID}.annotation`),
+          annotation: l10n.t(`issues.fix.${titleID}.annotation`),
           selectedIDs: [selectedWayID]
         });
         context.enter('select-osm', { selection: { osm: resultWayIDs }} );
@@ -825,17 +842,22 @@ export function validationCrossingWays(context) {
    * @return {ValidationFix}
    */
   function makeConnectWaysFix(connectionTags) {
-    let fixTitleID = 'connect_features';
+    let titleID = 'connect_features';
+    let iconID = 'rapid-icon-connect';
+
     if (connectionTags.ford) {
-      fixTitleID = 'connect_using_ford';
+      titleID = 'connect_using_ford';
+    } else if (connectionTags.highway === 'crossing') {
+      titleID = 'connect_using_crossing';
+      iconID = 'temaki-pedestrian';
     }
+
     return new ValidationFix({
-      icon: 'rapid-icon-crossing',
-      title: l10n.tHtml(`issues.fix.${fixTitleID}.title`),
+      icon: iconID,
+      title: l10n.tHtml(`issues.fix.${titleID}.title`),
       onClick: function() {
         const loc = this.issue.loc;
         const edges = this.issue.data.edges;
-        const connectionTags = this.issue.data.connectionTags;
         const result = getConnectWaysAction(loc, edges, connectionTags);
 
         // result contains [function, annotation]
