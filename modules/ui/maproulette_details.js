@@ -18,7 +18,7 @@ export function uiMapRouletteDetails(context) {
     if (!maproulette || !d) return '';
 
     // Issue strings are cached from MapRoulette API
-    const s = maproulette.getStrings(d.itemType);
+    // const s = maproulette.getStrings(d.itemType);
     // return (type in s) ? s[type] : '';
     return null;
   }
@@ -102,7 +102,7 @@ export function uiMapRouletteDetails(context) {
 
     // Save current item to check if UI changed by time request resolves
     if (!maproulette) return;
-    maproulette.loadIssueDetailAsync(_qaItem)
+    maproulette.loadTaskDetailAsync(_qaItem)
       .then(d => {
         // Do nothing if _qaItem has changed by the time Promise resolves
         if (_qaItem.id !== d.id) return;
