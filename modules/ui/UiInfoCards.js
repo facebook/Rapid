@@ -4,6 +4,7 @@ import { UiBackgroundCard } from './cards/UiBackgroundCard.js';
 import { UiHistoryCard } from './cards/UiHistoryCard.js';
 import { UiLocationCard } from './cards/UiLocationCard.js';
 import { UiMeasurementCard } from './cards/UiMeasurementCard.js';
+import { UiYuleLogCard } from './cards/UiYuleLogCard.js';
 import { utilCmd } from '../util/cmd.js';
 
 
@@ -30,13 +31,15 @@ export class UiInfoCards {
     this.HistoryCard = new UiHistoryCard(context);
     this.LocationCard = new UiLocationCard(context);
     this.MeasurementCard = new UiMeasurementCard(context);
+    this.YuleLogCard = new UiYuleLogCard(context);
 
     // Info Cards
     this.cards = [
       this.BackgroundCard,
       this.HistoryCard,
       this.LocationCard,
-      this.MeasurementCard
+      this.MeasurementCard,
+      this.YuleLogCard
     ];
 
     // D3 selections
