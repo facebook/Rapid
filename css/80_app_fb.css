@@ -1133,8 +1133,16 @@ div.holiday-banner {
     margin-top: -15px;
     text-shadow: 0 0 80px rgba(223, 221, 170, 0.85),0 0 30px rgba(252, 249, 233, 0.85),0 0 6px DarkRed;
 }
+div.panel-container-yule_log {
+    padding-bottom: 0px;
+    width:400px;
+    height:250px;
+}
 
-
+div.panel-content.panel-content-yule_log {
+    background:url('https://media.giphy.com/media/ZHXz9MZbJI1YA/giphy.gif');
+    height: 100%;
+}
 div.holiday-banner.smaller {
     margin: 0 0 .8em 0;
     font-size: 2.5em;

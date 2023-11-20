@@ -434,6 +434,11 @@
               "modifiers": ["⌘", "⇧"],
               "shortcuts": ["shortcuts.command.toggle_measurement_card.key"],
               "text": "shortcuts.command.toggle_measurement_card.label"
+            },
+            {
+              "modifiers": ["⌘", "⇧"],
+              "shortcuts": ["shortcuts.command.toggle_yule_log.key"],
+              "text": "shortcuts.command.toggle_yule_log.label"
             }
           ]
         }
