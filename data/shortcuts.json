@@ -402,6 +402,11 @@
             "modifiers": ["⌘", "⇧"],
             "shortcuts": ["info_panels.measurement.key"],
             "text": "shortcuts.tools.info.measurement"
+          },
+          {
+            "modifiers": ["⌘", "⇧"],
+            "shortcuts": ["info_panels.yule_log.key"],
+            "text": "shortcuts.tools.info.yule_log"
           }
         ]
       }
