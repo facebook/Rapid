@@ -59,12 +59,13 @@ export function uiSectionWaybackImagery(context) {
             .attr('placeholder', l10n.t('background.wayback_imagery.placeholder'))
             .call(utilNoAuto)
             .call(waybackCombo)
-            .on('blur change', d3_event => {
+            .on('blur change', (d3_event) => {
                 const element = d3_event.currentTarget;
                 const val = (element && element.value) || '';
                 const data = waybackCombo.data();
                 if (data.some(item => item.value === val)) {  // only allow picking values from the list
                     _waybackSelectedId = val;
+                    imagery.baseLayerSource(imagery.getSource(_waybackSelectedId));
                 } else {
                     d3_event.currentTarget.value = '';
                     _waybackSelectedId = null;
