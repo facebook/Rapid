@@ -18,7 +18,7 @@ export function uiOsmoseDetails(context) {
     if (!osmose || !d) return '';
 
     // Issue strings are cached from Osmose API
-    // const s = osmose.getStrings(d.itemType);
+    const s = osmose.getStrings(d.itemType);
     return (type in s) ? s[type] : '';
   }
 
