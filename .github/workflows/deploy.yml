@@ -31,6 +31,10 @@ jobs:
     - name: Install 🎯
       run: npm install
 
+    - run: |
+        echo "::remove-matcher owner=eslint-compact::"
+        echo "::remove-matcher owner=eslint-stylish::"
+
     - name: Run 🏃
       run: npm run all
 
@@ -66,30 +70,25 @@ jobs:
         role-duration-seconds: 900 # the ttl of the session, in seconds.
         aws-region: us-west-2
 
-    - name: Setup vars 📋
+    - name: Setup environment vars 📋
       id: vars
       run: |
-        echo "identifier=$(git rev-parse --short ${{ github.sha }})-16.x" >> "$GITHUB_ENV"
-        echo "distdir=$(git rev-parse --short ${{ github.sha }})-16.x-" >> "$GITHUB_ENV"
+        echo "yyyymmdd=$(date +'%Y%m%d')"                           >> "$GITHUB_ENV"
+        echo "revision=$(git rev-parse --short ${{ github.sha }})"  >> "$GITHUB_ENV"
+        echo "distpath=${yyyymmdd}-${revision}"                     >> "$GITHUB_ENV"
 
-    - name: Prep files 🔨
-      run: npm run aws_deploy
+    - name: Rewriting index.html 🔨
+      run: node scripts/predeploy.js
       env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
+        YYYYMMDD: ${{ env.yyyymmdd }}
+        REVISION: ${{ env.revision }}
+        DISTPATH: ${{ env.distpath }}
 
-    - name: Copy new index file to S3 📤
-      run: aws s3 cp $DISTDIR/index.html s3://world.ai.rapid/rapid/$IDENTIFIER-rapid.html --no-progress
-      env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
-
-    - name: Copy new dist dir to S3 📤
-      run: aws s3 cp $DISTDIR s3://world.ai.rapid/rapid/$DISTDIR --recursive --no-progress
-      env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
+    - name: Copy build to S3 📤
+      run: |
+        aws s3 cp dist             s3://world.ai.rapid/rapid/${{ env.distpath }}  --no-progress --recursive
+        aws s3 cp dist/index.html  s3://world.ai.rapid/canary                     --no-progress
 
     - name: Deployment complete! 🚀
       run: |
-        echo "Your build is here: https://mapwith.ai/rapid/${{ env.distdir }}/index.html"
+        echo "Your build is here: https://rapideditor.org/rapid/${{ env.distpath }}/index.html and https://rapideditor.org/canary"

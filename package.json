@@ -20,7 +20,6 @@
     "build:data": "shx mkdir -p dist/data && node scripts/build_data.js",
     "build:bundle": "node config/esbuild.config.modern.js",
     "clean": "shx rm -f dist/esbuild.json dist/*.js dist/*.map dist/*.css dist/img/*-sprite.svg",
-    "aws_deploy": "python3 scripts/aws_deploy.py",
     "dist": "run-p dist:**",
     "dist:legacy:bundle": "node config/esbuild.config.legacy.js",
     "dist:min:bundle": "node config/esbuild.config.modern-min.js",
