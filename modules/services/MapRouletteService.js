@@ -158,7 +158,8 @@ export class MapRouletteService extends AbstractSystem {
     if (task.elems !== undefined) return Promise.resolve(task);
 
     const localeCode = this.context.systems.l10n.localeCode();
-    const url = `${MAPROULETTE_API}/task/${task.id}?langs=${localeCode}`;
+    // const url = `${MAPROULETTE_API}/task/${task.id}?langs=${localeCode}`;
+    const url = `${MAPROULETTE_API}/task/${task.id}`;
     const handleResponse = (data) => {
       // Associated elements used for highlighting
       // Assign directly for immediate use in the callback

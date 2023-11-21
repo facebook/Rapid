@@ -108,17 +108,17 @@ export function uiMapRouletteDetails(context) {
         if (_qaItem.id !== d.id) return;
 
         // No details to add if there are no associated issue elements
-        if (!d.elems || d.elems.length === 0) return;
+        if (!d.task) return;
 
         // Things like keys and values are dynamically added to a subtitle string
-        if (d.detail) {
+        if (d.details.instruction) {
           detailsDiv
             .append('h4')
             .html(l10n.tHtml('QA.maproulette.detail_title'));
 
           detailsDiv
             .append('p')
-            .html(d => d.detail)
+            .html(d => d.details.instruction)
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
