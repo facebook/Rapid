@@ -41,7 +41,7 @@ export const modes = {
 export const cursors = {
   connectLineCursor: 'url(/img/holiday_candy_cane_cursor.png) 5 5, auto',
   connectVertexCursor: 'url(/img/holiday_santa_claus_cursor.png) 5 5, auto',
-  lineCursor:'url(/img/holiday_candy_cane_cursor.png) 5 5, auto',
+  lineCursor:'url(/img/holiday_santa_sleigh_cursor.png) 5 5, auto',
   vertexCursor: 'url(/img/holiday_gingerbread_man_cursor.png) 5 5, auto',
   pointCursor:'url(/img/holiday_candy_cane_cursor.png) 5 5, auto',
   areaCursor:'url(/img/holiday_christmas_tree_cursor.png) 9 9, auto',
