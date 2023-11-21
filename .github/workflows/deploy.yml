@@ -50,22 +50,23 @@ jobs:
     - name: Setup environment vars 📋
       id: vars
       run: |
-        echo "yyyymmdd=$(date +'%Y%m%d')"                           >> "$GITHUB_ENV"
-        echo "revision=$(git rev-parse --short ${{ github.sha }})"  >> "$GITHUB_ENV"
-        echo "distpath=${yyyymmdd}-${revision}"                     >> "$GITHUB_ENV"
+        echo "YYYYMMDD=$(date +'%Y%m%d')"                           >> "$GITHUB_ENV"
+        echo "REVISION=$(git rev-parse --short ${{ github.sha }})"  >> "$GITHUB_ENV"
+
+    - name: Setup dist path 📋
+      run: |
+        echo "DISTPATH=${{ env.YYYYMMDD }}-${{ env.REVISION }}"     >> "$GITHUB_ENV"
 
     - name: Predeploy index.html 🔨
       run: node scripts/predeploy.js
-      env:
-        YYYYMMDD: ${{ env.yyyymmdd }}
-        REVISION: ${{ env.revision }}
-        DISTPATH: ${{ env.distpath }}
 
     - name: Copy build to S3 📤
       run: |
-        aws s3 cp dist             s3://world.ai.rapid/rapid/${{ env.distpath }}  --no-progress --recursive
-        aws s3 cp dist/index.html  s3://world.ai.rapid/canary                     --no-progress
+        aws s3 cp dist  s3://world.ai.rapid/rapid/${{ env.DISTPATH }}  --no-progress --recursive
+        echo "Your build is here: https://rapideditor.org/rapid/${{ env.DISTPATH }}/index.html"
 
-    - name: Deployment complete! 🚀
+    - name: Set as canary build 🐤
+      if: ${{ github.ref_name == 'main' && github.event_name == 'push' }}
       run: |
-        echo "Your build is here: https://rapideditor.org/rapid/${{ env.distpath }}/index.html and https://rapideditor.org/canary"
+        aws s3 cp dist/index.html  s3://world.ai.rapid/canary  --no-progress
+        echo "This is latest build on main, so it is available here: https://rapideditor.org/canary"
