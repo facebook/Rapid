@@ -37,7 +37,7 @@ export function uiMapRouletteDetails(context) {
 
 
     // Description
-    if (taskString(_qaItem, 'detail')) {
+    if (_qaItem.task.parentName) {
       const div = detailsEnter
         .append('div')
         .attr('class', 'qa-details-subsection');
@@ -49,7 +49,7 @@ export function uiMapRouletteDetails(context) {
       div
         .append('p')
         .attr('class', 'qa-details-description-text')
-        .html(d => taskString(d, 'detail'))
+        .html(d => _qaItem.task.parentName)
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
