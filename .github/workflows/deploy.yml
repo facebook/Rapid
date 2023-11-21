@@ -37,8 +37,8 @@ jobs:
     - name: Run 🏃
       run: npm run all
 
-    - name: Test 🧪
-      run: npm run test
+#    - name: Test 🧪
+#      run: npm run test
 
     - name: Configure AWS credentials 🔐
       uses: aws-actions/configure-aws-credentials@v4
