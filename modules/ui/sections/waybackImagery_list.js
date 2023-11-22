@@ -63,9 +63,12 @@ export function uiSectionWaybackImagery(context) {
                 const element = d3_event.currentTarget;
                 const val = (element && element.value) || '';
                 const data = waybackCombo.data();
-                if (data.some(item => item.value === val)) {  // only allow picking values from the list
+                const item = data.find(item => item.value === val);
+
+                if (item) {  // only allow picking values from the list
                     _waybackSelectedId = val;
-                    imagery.baseLayerSource(imagery.getSource(_waybackSelectedId));
+                    const waybackSource = imagery.getWaybackSource(item.title);
+                    imagery.baseLayerSource(waybackSource);
                 } else {
                     d3_event.currentTarget.value = '';
                     _waybackSelectedId = null;

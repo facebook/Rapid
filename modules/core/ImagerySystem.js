@@ -100,7 +100,7 @@ export class ImagerySystem extends AbstractSystem {
   *  @param  data  {Array}  imagery index data
   */
 
-  _initWaybackImageryIndex(data, groups) {
+  _initWaybackImageryIndex(data) {
     const context = this.context;
 
     this._waybackImageryIndex = {
@@ -133,34 +133,9 @@ export class ImagerySystem extends AbstractSystem {
     // Create a which-polygon index to support efficient spatial querying.
     this._waybackImageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
 
-    // Instantiate `ImagerySource` objects for each imagery item.
-    for (const d of data.items) {
-      let source;
-      if (d.type === 'bing') {
-        source = new ImagerySourceBing(context, d);
-      } else if (/^EsriWorldImagery/.test(d.id)) {
-        source = new ImagerySourceEsri(context, d);
-      } else {
-        source = new ImagerySource(context, d);
-      }
-      this._waybackImageryIndex.sources.set(d.id.toLowerCase(), source);
-    }
-
     // Add 'None'
     const none = new ImagerySourceNone(context);
     this._waybackImageryIndex.sources.set(none.id, none);
-
-    // Add 'Custom' - seed it with whatever template the user has used previously
-    const custom = new ImagerySourceCustom(context);
-    const storage = this.context.systems.storage;
-    custom.template = storage.getItem('background-custom-template') || '';
-    this._waybackImageryIndex.sources.set(custom.id, custom);
-
-    // Default the locator overlay to "on"..
-    const locator = this._waybackImageryIndex.sources.get('mapbox_locator_overlay');
-    if (locator) {
-      this.toggleOverlayLayer(locator);
-    }
 
     // Parse the layer's date from the title
     function parsedDateTitle(title) {
@@ -173,10 +148,9 @@ export class ImagerySystem extends AbstractSystem {
       ));
     }
 
-    if (groups) {
       // Index the metadata MapServer URLs by the date of the World Imagery map.
       let metadataMapServersByDate = Object.fromEntries(
-        groups.items
+        data.items
           .filter(function (item) {
             return item.type === 'Map Service';
           })
@@ -188,56 +162,61 @@ export class ImagerySystem extends AbstractSystem {
           })
       );
 
-      this._waybackIndex = groups.items
+      const wmtsItems = data.items
         .filter(function (item) {
           return item.type === 'WMTS';
-        })
-        .map(function (item) {
-          const date = parsedDateTitle(item.title) || new Date(item.created);
-          const dateString = date && date.toISOString().split('T')[0];
-
-          // Convert the bounding box to a polygon.
-          const bbox = {
-            min_lon: item.extent[0][0],
-            min_lat: item.extent[0][1],
-            max_lon: item.extent[1][0],
-            max_lat: item.extent[1][1],
-          };
-          const polygon = [
-            [
-              [bbox.min_lon, bbox.min_lat],
-              [bbox.min_lon, bbox.max_lat],
-              [bbox.max_lon, bbox.max_lat],
-              [bbox.max_lon, bbox.min_lat],
-              [bbox.min_lon, bbox.min_lat],
-            ],
-          ];
-
-          // Convert placeholder tokens in the URL template from Esri's format to OSM's.
-          const template = item.url
-            .replaceAll('{level}', '{zoom}')
-            .replaceAll('{row}', '{y}')
-            .replaceAll('{col}', '{x}');
-
-          return {
-            id: `EsriWorldImagery_${dateString}`,
-            name: item.title,
-            type: 'tms',
-            template,
-            metadata: metadataMapServersByDate[dateString],
-            startDate: date.toISOString(),
-            endDate: date.toISOString(),
-            polygon,
-            terms_text: item.accessInformation,
-            description: item.snippet,
-            // Match Esri World Imagery layer
-            'default': true,
-            zoomExtent: [0, 22],
-            terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
-            icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
-          };
         });
+
+    for (const item of wmtsItems) {
+      const date = parsedDateTitle(item.title) || new Date(item.created);
+      const dateString = date && date.toISOString().split('T')[0];
+
+      // Convert the bounding box to a polygon.
+      const bbox = {
+        min_lon: item.extent[0][0],
+        min_lat: item.extent[0][1],
+        max_lon: item.extent[1][0],
+        max_lat: item.extent[1][1],
+      };
+      const polygon = [
+        [
+          [bbox.min_lon, bbox.min_lat],
+          [bbox.min_lon, bbox.max_lat],
+          [bbox.max_lon, bbox.max_lat],
+          [bbox.max_lon, bbox.min_lat],
+          [bbox.min_lon, bbox.min_lat],
+        ],
+      ];
+
+      // Convert placeholder tokens in the URL template from Esri's format to OSM's.
+      const template = item.url
+        .replaceAll('{level}', '{zoom}')
+        .replaceAll('{row}', '{y}')
+        .replaceAll('{col}', '{x}');
+
+      const source = {
+        id: `EsriWorldImagery_${dateString}`,
+        name: item.title,
+        type: 'tms',
+        template: template,
+        metadata: metadataMapServersByDate[dateString],
+        startDate: date.toISOString(),
+        endDate: date.toISOString(),
+        polygon: polygon,
+        terms_text: item.accessInformation,
+        description: item.snippet,
+        // Match Esri World Imagery layer
+        'default': true,
+        zoomExtent: [0, 22],
+        terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
+        icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
+      };
+
+      const imagerySource = new ImagerySource(context, source);
+      this._waybackImageryIndex.sources.set(item.id.toLowerCase(), imagerySource);
     }
+
+
     return this._waybackImageryIndex;
   }
 
@@ -551,6 +530,15 @@ export class ImagerySystem extends AbstractSystem {
       this.getSource('Bing') ||
       first ||    // maybe this is a custom Rapid that doesn't include Bing?
       this.getSource('none');
+  }
+
+
+  /**
+   *
+   */
+  getWaybackSource(sourceID) {
+    if (!this._waybackImageryIndex) return null;   // called before init()?
+    return this._waybackImageryIndex.sources.get(sourceID.toLowerCase());
   }
 
 
