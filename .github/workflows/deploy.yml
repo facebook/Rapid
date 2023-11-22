@@ -17,6 +17,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    environment:
+      name: Deployment
+      url: ${{ steps.deployment.outputs.url }}
+
     steps:
     - run: |
         echo "::remove-matcher owner=eslint-compact::"
@@ -55,24 +59,28 @@ jobs:
     # The revision is unique, so we save every one of these indefinitely.
     - name: Setup BUILD_ID for push 🗂️
       if: ${{ github.event_name == 'push' }}
-      run: |
-        echo "BUILD_ID=${{ github.ref_name }}-${{ env.BUILD_SHA }}" >> "$GITHUB_ENV"
+      run: echo "BUILD_ID=${{ github.ref_name }}-${{ env.BUILD_SHA }}" >> "$GITHUB_ENV"
 
     # On pull request, the BUILD_ID will be 'pull-request-#', e.g. `pull-request-1123`
     # Subsequent changes to the pull request will overwrite this build.
     - name: Setup BUILD_ID for pull request 🗂️
       if: ${{ github.event_name == 'pull_request' }}
-      run: |
-        echo "BUILD_ID=pull-request-${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
+      run: echo "BUILD_ID=pull-request-${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
+
+    # Setup BUILD_URL
+    - name: Setup BUILD_URL 🗂️
+      run: echo "BUILD_URL=https://rapideditor.org/rapid/${{ env.BUILD_ID }}/index.html" >> "$GITHUB_ENV"
 
     # Rewrite the urls and embed build info in index.html
     - name: Predeploy index.html 🔨
       run: node scripts/predeploy.js
 
     - name: Copy build to S3 📤
+      id: deployment
       run: |
         aws s3 sync dist s3://world.ai.rapid/rapid/${{ env.BUILD_ID }} --delete --only-show-errors
-        echo "Your build is here: https://rapideditor.org/rapid/${{ env.BUILD_ID }}/index.html"
+        echo "Your build is here: ${{ env.BUILD_URL }}"
+        echo "url=${{ env.BUILD_URL }}" >> "$GITHUB_OUTPUT"
 
     - name: Set as canary build 🐤
       if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
