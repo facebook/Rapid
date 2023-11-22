@@ -17,72 +17,72 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    # This tells Github that a deployment happened and where to find it
     environment:
-      name: Deployment
-      url: ${{ steps.deployment.outputs.url }}
+      name: ${{ steps.target.outputs.url }}
+      url:  ${{ steps.target.outputs.url }}
 
     steps:
     - run: |
         echo "::remove-matcher owner=eslint-compact::"
         echo "::remove-matcher owner=eslint-stylish::"
 
-    - name: Checkout 📥
+    - name: 📥  Checkout
       uses: actions/checkout@v4
 
-    - name: Use Node.js 18 ⚙️
+    - name: ⚙️  Use Node.js 18
       uses: actions/setup-node@v4
       with:
         node-version: 18
 
-    - name: Install 🎯
-      run: npm install
+    - name: 🏗️  Install
+      run: |
+        npm install
+        npm run all
 
-    - name: Run 🏃
-      run: npm run all
-
-#    - name: Test 🧪
+#    - name: 🧪  Test
 #      run: npm run test
 
-    - name: Configure AWS credentials 🔐
+    - name: 🔐  Setup AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ secrets.AWS_RAPID_DEPLOY_ROLE_ARN }}
         role-duration-seconds: 900 # the ttl of the session, in seconds.
         aws-region: us-west-2
 
-    - name: Setup environment vars 📋
+    - name: 📋  Setup environment vars
       run: |
         echo "YYYYMMDD=$(date +'%Y%m%d')"                            >> "$GITHUB_ENV"
         echo "BUILD_SHA=$(git rev-parse --short ${{ github.sha }})"  >> "$GITHUB_ENV"
 
     # On branch push, the BUILD_ID will be 'branch_name-revision', e.g. `main-d3adc0de`
     # The revision is unique, so we save every one of these indefinitely.
-    - name: Setup BUILD_ID for push 🗂️
+    - name: 🗂️  Setup BUILD_ID for push
       if: ${{ github.event_name == 'push' }}
       run: echo "BUILD_ID=${{ github.ref_name }}-${{ env.BUILD_SHA }}" >> "$GITHUB_ENV"
 
     # On pull request, the BUILD_ID will be 'pull-request-#', e.g. `pull-request-1123`
     # Subsequent changes to the pull request will overwrite this build.
-    - name: Setup BUILD_ID for pull request 🗂️
+    - name: 🗂️  Setup BUILD_ID for pull request
       if: ${{ github.event_name == 'pull_request' }}
       run: echo "BUILD_ID=pull-request-${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
 
-    # Setup BUILD_URL
-    - name: Setup BUILD_URL 🗂️
-      run: echo "BUILD_URL=https://rapideditor.org/rapid/${{ env.BUILD_ID }}/index.html" >> "$GITHUB_ENV"
+    - name: 🎯  Setup deployment targets
+      id: target
+      run: |
+        echo "s3=s3://world.ai.rapid/rapid/${{ env.BUILD_ID }}"                  >> "$GITHUB_OUTPUT"
+        echo "url=https://rapideditor.org/rapid/${{ env.BUILD_ID }}/index.html"  >> "$GITHUB_OUTPUT"
 
     # Rewrite the urls and embed build info in index.html
-    - name: Predeploy index.html 🔨
+    - name: 🔨 Predeploy index.html
       run: node scripts/predeploy.js
 
-    - name: Copy build to S3 📤
-      id: deployment
+    - name: 📤  Copy build to S3
       run: |
-        aws s3 sync dist s3://world.ai.rapid/rapid/${{ env.BUILD_ID }} --delete --only-show-errors
-        echo "Your build is here: ${{ env.BUILD_URL }}"
-        echo "url=${{ env.BUILD_URL }}" >> "$GITHUB_OUTPUT"
+        aws s3 sync dist ${{ steps.target.outputs.s3 }} --delete --only-show-errors
+        echo "Your build is here: ${{ steps.target.outputs.url }}"
 
-    - name: Set as canary build 🐤
+    - name: 🐤  Set as canary build
       if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
       run: |
         aws s3 cp dist/index.html  s3://world.ai.rapid/canary  --only-show-errors
