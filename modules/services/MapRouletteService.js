@@ -109,9 +109,9 @@ export class MapRouletteService extends AbstractSystem {
       const extent = this.context.systems.map.extent();
       const bbox = extent.bbox();
 
-      const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
+      const urlBboxSpecifier = `${bbox.minX},${bbox.maxY},${bbox.maxX},${bbox.minY}`;
 
-      const url = `${MAPROULETTE_API}/tasks/box/` + urlBboxSpecifier;
+      const url = `${MAPROULETTE_API}/challenges/extendedFind?bb=${encodeURIComponent(urlBboxSpecifier)}&cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&limit=50&order=DESC&page=0&pe=true&sort=popularity`;
 
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
@@ -125,7 +125,8 @@ export class MapRouletteService extends AbstractSystem {
             // MapRoulette tasks are uniquely identified by an
             // `id`
               const id = task.id;
-              let loc = [task.point.lng, task.point.lat];
+              // let loc = [task.location.coordinates[1], task.location.coordinates[0]];
+              let loc = task.location.coordinates;
               loc = this._preventCoincident(loc);
 
               let d = new Task(loc, this, id, { task });
