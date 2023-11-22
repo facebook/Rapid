@@ -6,6 +6,8 @@ name: deploy
 on:
   push:
     branches: [ main, '*staging*', 'rapid-v1.x' ]
+  pull_request:
+    branches: [ main ]
 
 permissions:
   id-token: write # required to use OIDC authentication
@@ -48,25 +50,35 @@ jobs:
         aws-region: us-west-2
 
     - name: Setup environment vars 📋
-      id: vars
       run: |
-        echo "YYYYMMDD=$(date +'%Y%m%d')"                           >> "$GITHUB_ENV"
-        echo "REVISION=$(git rev-parse --short ${{ github.sha }})"  >> "$GITHUB_ENV"
+        echo "YYYYMMDD=$(date +'%Y%m%d')"                            >> "$GITHUB_ENV"
+        echo "BUILD_SHA=$(git rev-parse --short ${{ github.sha }})"  >> "$GITHUB_ENV"
 
-    - name: Setup dist path 📋
+    # On branch push, the BUILD_ID will be 'branch_name-revision', e.g. `main-d3adc0de`
+    # The revision is unique, so we save every one of these indefinitely.
+    - name: Setup BUILD_ID for push 🗂️
+      if: ${{ github.event_name == 'push' }}
       run: |
-        echo "DISTPATH=${{ env.YYYYMMDD }}-${{ env.REVISION }}"     >> "$GITHUB_ENV"
+        echo "BUILD_ID=${{ github.ref_name }}-${{ env.BUILD_SHA }}" >> "$GITHUB_ENV"
 
+    # On pull request, the BUILD_ID will be 'pull-request-#', e.g. `pull-request-1123`
+    # Subsequent changes to the pull request will overwrite this build.
+    - name: Setup BUILD_ID for pull request 🗂️
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        echo "BUILD_ID=pull-request-${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
+
+    # Rewrite the urls and embed build info in index.html
     - name: Predeploy index.html 🔨
       run: node scripts/predeploy.js
 
     - name: Copy build to S3 📤
       run: |
-        aws s3 cp dist  s3://world.ai.rapid/rapid/${{ env.DISTPATH }}  --no-progress --recursive
-        echo "Your build is here: https://rapideditor.org/rapid/${{ env.DISTPATH }}/index.html"
+        aws s3 sync dist s3://world.ai.rapid/rapid/${{ env.BUILD_ID }} --delete --only-show-errors
+        echo "Your build is here: https://rapideditor.org/rapid/${{ env.BUILD_ID }}/index.html"
 
     - name: Set as canary build 🐤
-      if: ${{ github.ref_name == 'main' && github.event_name == 'push' }}
+      if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
       run: |
-        aws s3 cp dist/index.html  s3://world.ai.rapid/canary  --no-progress
+        aws s3 cp dist/index.html  s3://world.ai.rapid/canary  --only-show-errors
         echo "This is latest build on main, so it is available here: https://rapideditor.org/canary"

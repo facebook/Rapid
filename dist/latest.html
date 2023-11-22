@@ -62,7 +62,9 @@ You can adjust the URLs elsewhere in this file if you want to limit Rapid to a s
           const context = new Rapid.Context();
           context.containerNode = container;
           context.assetPath = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/';
-          context.revision = '';
+          context.buildID = '';
+          context.buildSHA = '';
+          context.buildDate = '';
           context.apiConnections = [
             {
               url: 'https://www.openstreetmap.org',
