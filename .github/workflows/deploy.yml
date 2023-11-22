@@ -20,7 +20,7 @@ jobs:
 
     # This tells Github that a deployment happened and where to find it
     environment:
-      name: ${{ steps.target.outputs.url }}
+      name: Staging
       url:  ${{ steps.target.outputs.url }}
 
     steps:
