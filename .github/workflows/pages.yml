@@ -1,4 +1,4 @@
-name: Deploy static content to GitHub Pages
+name: pages
 
 on:
   push:
@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  pages:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
