@@ -24,6 +24,7 @@ export function uiIntroPoint(context, curtain) {
   let _rejectStep = null;
   let _onModeChange = null;
   let _onStableChange = null;
+  let _onStagingChange = null;
   let _pointID = null;
 
 
@@ -215,7 +216,7 @@ export function uiIntroPoint(context, curtain) {
 
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(hasPointAsync);
-        _onStableChange = () => resolve(addCloseEditorAsync);
+        _onStagingChange = () => resolve(addCloseEditorAsync);
 
         showEntityEditor(container);
 
@@ -244,7 +245,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onStableChange = null;
+        _onStagingChange = null;
       });
   }
 
@@ -332,7 +333,7 @@ export function uiIntroPoint(context, curtain) {
         if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
 
         _onModeChange = reject;   // disallow mode change
-        _onStableChange = () => resolve(updateCloseEditorAsync);
+        _onStagingChange = () => resolve(updateCloseEditorAsync);
 
         showEntityEditor(container);
 
@@ -344,7 +345,7 @@ export function uiIntroPoint(context, curtain) {
       }))
       .finally(() => {
         _onModeChange = null;
-        _onStableChange = null;
+        _onStagingChange = null;
       });
  }
 
@@ -379,7 +380,7 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _onStableChange = reject;  // disallow doing anything else
+      _onStagingChange = reject;  // disallow doing anything else
 
       const textID = context.lastPointerType === 'mouse' ? 'rightclick' : 'edit_menu_touch';
       curtain.reveal({
@@ -392,7 +393,7 @@ export function uiIntroPoint(context, curtain) {
       });
     })
     .finally(() => {
-      _onStableChange = null;
+      _onStagingChange = null;
       editMenu.on('toggled.intro', null);
     });
   }
@@ -469,15 +470,18 @@ export function uiIntroPoint(context, curtain) {
     _rejectStep = null;
     _onModeChange = null;
     _onStableChange = null;
+    _onStagingChange = null;
 
     context.on('modechange', _modeChangeListener);
     editor.on('stablechange', _stableChangeListener);
+    editor.on('stagingchange', _stagingChangeListener);
 
     runAsync(addPointAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);
         editor.off('stablechange', _stableChangeListener);
+        editor.off('stagingchange', _stagingChangeListener);
       });
 
     function _modeChangeListener(...args) {
@@ -485,6 +489,9 @@ export function uiIntroPoint(context, curtain) {
     }
     function _stableChangeListener(...args) {
       if (typeof _onStableChange === 'function') _onStableChange(...args);
+    }
+    function _stagingChangeListener(...args) {
+      if (typeof _onStagingChange === 'function') _onStagingChange(...args);
     }
   };
 
