@@ -10,7 +10,7 @@ import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTooltip } from '../tooltip';
-import { utilNoAuto, utilHighlightEntities } from '../../util';
+import { utilNoAuto, utilIsColorValid, utilHighlightEntities } from '../../util';
 
 const MAX_MEMBERSHIPS = 1000;
 
@@ -134,6 +134,12 @@ export function uiSectionRawMembershipEditor(context) {
     }
 
 
+    function _getColor(entity) {
+      const val = entity?.type === 'relation' && entity?.tags.colour;
+      return (val && utilIsColorValid(val)) ? val : null;
+    }
+
+
     function changeRole(d3_event, d) {
         if (d === 0) return;    // called on newrow (shouldn't happen)
         if (_inChange) return;  // avoid accidental recursive call iD#5731
@@ -245,6 +251,7 @@ export function uiSectionRawMembershipEditor(context) {
             var matched = presets.match(entity, graph);
             var presetName = (matched && matched.name()) || l10n.t('inspector.relation');
             var entityName = l10n.displayName(entity.tags) || '';
+            var color = _getColor(entity);
 
             return selection => {
                 selection
@@ -252,8 +259,8 @@ export function uiSectionRawMembershipEditor(context) {
                     .text(presetName + ' ');
                 selection
                     .append('span')
-                    .classed('has-color', entity.tags.colour)
-                    .style('border-color', entity.tags.colour)
+                    .classed('has-color', !!color)
+                    .style('border-color', color)
                     .text(entityName);
             };
         }
@@ -362,8 +369,8 @@ export function uiSectionRawMembershipEditor(context) {
         labelLink
             .append('span')
             .attr('class', 'member-entity-name')
-            .classed('has-color', d => d.relation.tags.colour)
-            .style('border-color', d => d.relation.tags.colour)
+            .classed('has-color', d => !!_getColor(d.relation))
+            .style('border-color', d => _getColor(d.relation))
             .text(function(d) {
                 const matched = presets.match(d.relation, editor.staging.graph);
                 // hide the network from the name if there is NSI match

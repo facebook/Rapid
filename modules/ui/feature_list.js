@@ -7,7 +7,7 @@ import { osmEntity } from '../osm/entity';
 import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 
-import { utilHighlightEntities, utilNoAuto } from '../util';
+import { utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../util';
 
 
 export function uiFeatureList(context) {
@@ -303,8 +303,8 @@ export function uiFeatureList(context) {
       label
         .append('span')
         .attr('class', 'entity-name')
-        .classed('has-color', d => d.entity && d.entity.type === 'relation' && d.entity.tags.colour)
-        .style('border-color', d => d.entity && d.entity.type === 'relation' && d.entity.tags.colour)
+        .classed('has-color', d => !!_getColor(d.entity))
+        .style('border-color', d => _getColor(d.entity))
         .text(d => d.name);
 
       enter
@@ -316,6 +316,12 @@ export function uiFeatureList(context) {
 
       items.exit()
         .remove();
+    }
+
+
+    function _getColor(entity) {
+      const val = entity?.type === 'relation' && entity?.tags.colour;
+      return (val && utilIsColorValid(val)) ? val : null;
     }
 
 

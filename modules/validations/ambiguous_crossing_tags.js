@@ -266,7 +266,7 @@ export function validationAmbiguousCrossingTags(context) {
       if (node.tags['crossing:markings']) {
         fixes.push(
           new ValidationFix({
-            icon: 'rapid-icon-crossing',
+            icon: 'rapid-icon-connect',
             title: getTitle(node.tags),
             onClick: () => {
               const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
@@ -280,7 +280,7 @@ export function validationAmbiguousCrossingTags(context) {
       if (parentWay.tags['crossing:markings']) {
         fixes.push(
           new ValidationFix({
-            icon: 'rapid-icon-crossing',
+            icon: 'rapid-icon-connect',
             title: getTitle(parentWay.tags),
             onClick: () => {
               const annotation = l10n.t(
@@ -330,7 +330,7 @@ export function validationAmbiguousCrossingTags(context) {
       if (parentWay) {
         fixes.push(
           new ValidationFix({
-            icon: 'rapid-icon-crossing',
+            icon: 'rapid-icon-connect',
             title: l10n.tHtml('issues.fix.set_both_as_marked.title'),
             onClick:  () => {
               const annotation = l10n.t('issues.fix.set_both_as_marked.annotation');
@@ -343,7 +343,7 @@ export function validationAmbiguousCrossingTags(context) {
 
         fixes.push(
           new ValidationFix({
-            icon: 'rapid-icon-crossing',
+            icon: 'rapid-icon-connect',
             title: l10n.tHtml('issues.fix.set_both_as_unmarked.title'),
             onClick: function () {
 
@@ -462,7 +462,7 @@ export function validationAmbiguousCrossingTags(context) {
 
       fixes.push(
         new ValidationFix({
-          icon: 'rapid-icon-crossing',
+          icon: 'rapid-icon-connect',
           title: l10n.tHtml('issues.fix.make_crossing_node.title'),
           onClick: function () {
             const annotation = l10n.t('issues.fix.make_crossing_node.annotation');

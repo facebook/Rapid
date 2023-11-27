@@ -7,6 +7,7 @@ import { UiPanelBackground } from './panels/UiPanelBackground';
 import { UiPanelHistory } from './panels/UiPanelHistory';
 import { UiPanelLocation } from './panels/UiPanelLocation';
 import { UiPanelMeasurement } from './panels/UiPanelMeasurement';
+import { UiPanelYuleLog } from './panels/UiPanelYuleLog';
 
 
 /**
@@ -21,7 +22,8 @@ export function uiInfo(context) {
     background:   new UiPanelBackground(context),
     history:      new UiPanelHistory(context),
     location:     new UiPanelLocation(context),
-    measurement:  new UiPanelMeasurement(context)
+    measurement:  new UiPanelMeasurement(context),
+    'yule_log':  new UiPanelYuleLog(context)
   };
 
   const panelIDs = Object.keys(panels);
