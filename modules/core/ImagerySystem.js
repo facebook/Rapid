@@ -139,8 +139,11 @@ export class ImagerySystem extends AbstractSystem {
 
     // Parse the layer's date from the title
     function parsedDateTitle(title) {
-      const dateDisplay = title.match(/wayback (\d{4})-(\d\d)-(\d\d)\)/);
+      const dateDisplay = title.match(/\(Wayback (\d{4})-(\d\d)-(\d\d)\)/);
+      // console.log(title, 'title');
+      // console.log(dateDisplay, 'Ezekiel');
       if (!dateDisplay) return;
+
       return new Date(Date.UTC(
         parseInt(dateDisplay[1], 10),
         parseInt(dateDisplay[2], 10) - 1,
