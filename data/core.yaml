@@ -782,7 +782,7 @@ en:
     wayback_imagery:
       title: ESRI Wayback Imagery
       tooltip: Imagery listing from the ESRI Wayback archive
-      example_item_text: Just for demo purposes
+      example_item_text: Choose a historical date
       placeholder: Please select a vintage
     brightness: Brightness
     contrast: Contrast
