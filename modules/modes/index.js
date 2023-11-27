@@ -33,14 +33,18 @@ export { modeDragNote } from './drag_note';
 export const modes = {
   available: new Map()   // Map (id -> Mode constructor)
 };
+// christmas tree https://www.vecteezy.com/png/9346313-hand-drawn-christmas-tree
+// candy cane https://www.vecteezy.com/png/11016194-christmas-toy-lollipop-red-and-white-cane
+// ginger bread man https://www.vecteezy.com/png/9399803-gingerbread-man-clipart-design-illustration
+// santa https://www.vecteezy.com/png/15693545-santa-claus-christmas-cartoon-character
 
 export const cursors = {
-  connectLineCursor: 'url(/img/cursor-draw-connect-line.png) 9 9, crosshair',
-  connectVertexCursor: 'url(/img/cursor-draw-connect-vertex.png) 9 9, crosshair',
-  lineCursor:'url(/img/cursor-select-line.png), auto',
-  vertexCursor: 'url(/img/cursor-select-vertex.png), auto',
-  pointCursor:'url(/img/cursor-select-point.png), auto',
-  areaCursor:'url(/img/cursor-select-area.png), auto',
+  connectLineCursor: 'url(/img/holiday_candy_cane_cursor.png) 5 5, auto',
+  connectVertexCursor: 'url(/img/holiday_santa_claus_cursor.png) 5 5, auto',
+  lineCursor:'url(/img/holiday_santa_sleigh_cursor.png) 5 5, auto',
+  vertexCursor: 'url(/img/holiday_gingerbread_man_cursor.png) 5 5, auto',
+  pointCursor:'url(/img/holiday_candy_cane_cursor.png) 5 5, auto',
+  areaCursor:'url(/img/holiday_christmas_tree_cursor.png) 9 9, auto',
 };
 
 
