@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { actionChangePreset } from '../../actions/change_preset';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroPoint(context, curtain) {
@@ -16,6 +16,7 @@ export function uiIntroPoint(context, curtain) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
+  const ui = context.systems.ui;
 
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);
   const cafePreset = presets.item('amenity/cafe');
@@ -140,7 +141,7 @@ export function uiIntroPoint(context, curtain) {
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        showPresetList(container);
+        ui.sidebar.showPresetList();
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
@@ -189,7 +190,7 @@ export function uiIntroPoint(context, curtain) {
         // If user leaves select mode here, just continue with the tutorial.
         _onModeChange = () => resolve(addNameAsync);
 
-        showEntityEditor(container);
+        ui.sidebar.showEntityEditor();
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
@@ -218,7 +219,7 @@ export function uiIntroPoint(context, curtain) {
         _onModeChange = () => resolve(hasPointAsync);
         _onStagingChange = () => resolve(addCloseEditorAsync);
 
-        showEntityEditor(container);
+        ui.sidebar.showEntityEditor();
 
         // It's possible for the user to add a name in a previous step..
         // If so, don't tell them to add the name in this step.
@@ -260,7 +261,7 @@ export function uiIntroPoint(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(hasPointAsync);
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
 
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
@@ -335,7 +336,7 @@ export function uiIntroPoint(context, curtain) {
         _onModeChange = reject;   // disallow mode change
         _onStagingChange = () => resolve(updateCloseEditorAsync);
 
-        showEntityEditor(container);
+        ui.sidebar.showEntityEditor();
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
@@ -359,7 +360,7 @@ export function uiIntroPoint(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(rightClickPointAsync);
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',

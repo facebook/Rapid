@@ -3,7 +3,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroNavigation(context, curtain) {
@@ -14,6 +14,7 @@ export function uiIntroNavigation(context, curtain) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
+  const ui = context.systems.ui;
 
   const townHallID = 'n2061';
   const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);
@@ -248,7 +249,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
@@ -274,7 +275,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       // preset match, in case the user happened to change it.
@@ -306,7 +307,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
@@ -332,7 +333,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(searchStreetAsync);
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
 
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
@@ -452,7 +453,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(playAsync);
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
       const tipHtml = helpHtml(context, 'intro.navigation.street_different_fields') + '{br}' +

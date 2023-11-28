@@ -15,46 +15,62 @@ export function uiPresetList(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const filters = context.systems.filters;
-  const presetSystem = context.systems.presets;
+  const presets = context.systems.presets;
   const dispatch = d3_dispatch('cancel', 'choose');
 
   let _entityIDs;
   let _currLoc;
-  let _currentPresets;
+  let _selectedPresetIDs = new Set();
   let _autofocus = false;
 
 
+  /**
+   * presetList
+   * (This is the render function)
+   */
   function presetList(selection) {
     if (!_entityIDs) return;
 
-    let presets = presetSystem.matchAllGeometry(entityGeometries());
+    const geometries = entityGeometries();
+    const allPresets = presets.matchAllGeometry(geometries);
     const isRTL = l10n.isRTL();
 
-    selection.html('');
+    // Header
+    const header = selection.selectAll('.header')
+      .data([0]);
 
-    const messagewrap = selection
+    // Enter
+    const headerEnter = header.enter()
       .append('div')
       .attr('class', 'header fillL');
 
-    const message = messagewrap
+    headerEnter
       .append('h3')
-      .html(l10n.tHtml('inspector.choose'));
+      .attr('class', 'preset-list-message')
+      .text(l10n.t('inspector.choose'));
 
-    messagewrap
+    headerEnter
       .append('button')
       .attr('class', 'preset-choose')
       .on('click', function() { dispatch.call('cancel', this); })
       .call(uiIcon(isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'));
 
+    const message = header.merge(headerEnter)
+      .selectAll('.preset-list-message');
 
-    const searchWrap = selection
+
+    // Search box
+    const search = selection.selectAll('.search-header')
+      .data([0]);
+
+    const searchEnter = search.enter()
       .append('div')
       .attr('class', 'search-header');
 
-    searchWrap
+    searchEnter
       .call(uiIcon('#rapid-icon-search', 'pre-text'));
 
-    const search = searchWrap
+    const inputEnter = searchEnter
       .append('input')
       .attr('class', 'preset-search-input')
       .attr('placeholder', l10n.t('inspector.search'))
@@ -64,30 +80,47 @@ export function uiPresetList(context) {
       .on('keypress', keypress)
       .on('input', debounce(inputevent));
 
-    if (_autofocus) {
-      search.node().focus();
+    // update
+    const input = search.merge(searchEnter)
+      .selectAll('.preset-search-input');
 
-      // Safari 14 doesn't always like to focus immediately, so try again on the next pass
-      setTimeout(() => {
-        search.node().focus();
-      }, 0);
+    if (_autofocus) {
+      // Safari 14 doesn't always like to focus immediately, so schedule it with setTimeout
+      setTimeout(() => input.node().focus(), 0);
     }
 
-    const listWrap = selection
+
+    // Preset List
+    const listWrap = selection.selectAll('.inspector-body')
+      .data([0]);
+
+    // enter
+    const listWrapEnter = listWrap.enter()
       .append('div')
       .attr('class', 'inspector-body');
 
-    const list = listWrap
+    const listEnter = listWrapEnter
       .append('div')
-      .attr('class', 'preset-list')
-      .call(drawList, presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro, _currLoc));
+      .attr('class', 'preset-list-main preset-list');
 
-    filters.on('filterchange', updateForFeatureHiddenState);
+    // update
+    const list = listWrap.merge(listWrapEnter)
+      .selectAll('.preset-list-main');
+
+    list
+      .call(drawList, presets.defaults(geometries[0], 36, !context.inIntro, _currLoc));
+
+    // rebind event listener
+    filters.off('filterchange', _checkFilteringRules);
+    filters.on('filterchange', _checkFilteringRules);
+
 
 
     function initialKeydown(d3_event) {
+      const val = input.property('value');
+
       // hack to let delete shortcut work when search is autofocused
-      if (search.property('value').length === 0 &&
+      if (val.length === 0 &&
         (d3_event.keyCode === utilKeybinding.keyCodes['⌫'] ||
          d3_event.keyCode === utilKeybinding.keyCodes['⌦'])) {
         d3_event.preventDefault();
@@ -95,7 +128,7 @@ export function uiPresetList(context) {
         operationDelete(context, _entityIDs)();
 
       // hack to let undo work when search is autofocused
-      } else if (search.property('value').length === 0 &&
+      } else if (val.length === 0 &&
         (d3_event.ctrlKey || d3_event.metaKey) &&
         d3_event.keyCode === utilKeybinding.keyCodes.z) {
         d3_event.preventDefault();
@@ -112,7 +145,7 @@ export function uiPresetList(context) {
     function keydown(d3_event) {
       if (d3_event.keyCode === utilKeybinding.keyCodes['↓'] &&       // down arrow
         // if insertion point is at the end of the string
-        search.node().selectionStart === search.property('value').length
+        input.node().selectionStart === input.property('value').length
       ) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
@@ -125,35 +158,35 @@ export function uiPresetList(context) {
     }
 
     function keypress(d3_event) {
-      const value = search.property('value');
-      if (d3_event.keyCode === 13 && value.length) {  // ↩ Return
+      const val = input.property('value');
+      if (d3_event.keyCode === 13 && val.length) {  // ↩ Return
         list.selectAll('.preset-list-item:first-child')
           .each(function(d) { d.choose.call(this); });
       }
     }
 
     function inputevent() {
-      const value = search.property('value');
-      list.classed('filtered', value.length);
+      const val = input.property('value');
+      list.classed('filtered', val.length);
+
+      const geometry = entityGeometries()[0];
 
       let collection, messageText;
-      if (value.length) {
-        collection = presets.search(value, entityGeometries()[0], _currLoc);
-        messageText = l10n.t('inspector.results', { n: collection.array.length, search: value });
+      if (val.length) {
+        collection = allPresets.search(val, geometry, _currLoc);
+        messageText = l10n.t('inspector.results', { n: collection.array.length, search: val });
       } else {
-        collection = presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro, _currLoc);
+        collection = presets.defaults(geometry, 36, !context.inIntro, _currLoc);
         messageText = l10n.t('inspector.choose');
       }
       list.call(drawList, collection);
-      message.html(messageText);
+      message.text(messageText);
     }
   }
 
 
   // Draws a collection of Presets/Categories
   function drawList(selection, collection) {
-    collection = collection.matchAllGeometry(entityGeometries());  // not sure why we do this again
-
     let arr = [];
     for (const item of collection.array) {
       if (!item) continue;  // not sure how this would happen
@@ -175,13 +208,13 @@ export function uiPresetList(context) {
     items.enter()
       .append('div')
       .attr('class', d => 'preset-list-item preset-' + d.preset.id.replace('/', '-'))
-      .classed('current', d => _currentPresets.includes(d.preset))
+      .classed('current', d => _selectedPresetIDs.has(d.preset.id))
       .each(function(d) { d3_select(this).call(d); })
       .style('opacity', 0)
       .transition()
       .style('opacity', 1);
 
-    updateForFeatureHiddenState();
+    _checkFilteringRules();
   }
 
 
@@ -235,8 +268,8 @@ export function uiPresetList(context) {
         previousItem.select('.preset-list-button').node().focus();     // focus on the previous item
       } else {
         // the focus is at the top of the list, move focus back to the search field
-        const search = d3_select(this.closest('.preset-list-pane')).select('.preset-search-input');
-        search.node().focus();
+        const input = d3_select(this.closest('.preset-list-pane')).select('.preset-search-input');
+        input.node().focus();
       }
 
     // arrow left, move focus to the parent item if there is one
@@ -329,7 +362,7 @@ export function uiPresetList(context) {
         .attr('class', 'arrow');
 
       sublist = box.append('div')
-        .attr('class', 'preset-list fillL3');
+        .attr('class', 'preset-list preset-list-sub fillL3');
     }
 
 
@@ -402,12 +435,12 @@ export function uiPresetList(context) {
     item.choose = function() {
       if (d3_select(this).classed('disabled')) return;
       if (!context.inIntro) {
-        presetSystem.setMostRecent(preset);
+        presets.setMostRecent(preset);
       }
 
       const combinedAction = (graph) => {
         for (const entityID of _entityIDs) {
-          const oldPreset = presetSystem.match(graph.entity(entityID), graph);
+          const oldPreset = presets.match(graph.entity(entityID), graph);
           graph = actionChangePreset(entityID, oldPreset, preset)(graph);
         }
         return graph;
@@ -433,7 +466,7 @@ export function uiPresetList(context) {
   }
 
 
-  function updateForFeatureHiddenState() {
+  function _checkFilteringRules() {
     const graph = editor.staging.graph;
     if (!_entityIDs.every(entityID => graph.hasEntity(entityID))) return;
 
@@ -443,24 +476,26 @@ export function uiPresetList(context) {
     // remove existing tooltips
     buttons.call(uiTooltip(context).destroyAny);
 
-    buttons.each(function(item, index) {
-      let hiddenPresetFeaturesId;
-      for (let i in geometries) {
-        hiddenPresetFeaturesId = filters.isHiddenPreset(item.preset, geometries[i]);
-        if (hiddenPresetFeaturesId) break;
+    buttons.each((d, i, nodes) => {
+      const selection = d3_select(nodes[i]);
+
+      let filterID;  // check whether this preset would be hidden by the current filtering rules
+      for (const geometry of geometries) {
+        filterID = filters.isHiddenPreset(d.preset, geometry);
+        if (filterID) break;
       }
-      const isHiddenPreset = !context.inIntro && !!hiddenPresetFeaturesId &&
-        (_currentPresets.length !== 1 || item.preset !== _currentPresets[0]);
 
-      d3_select(this)
-        .classed('disabled', isHiddenPreset);
+      const isHidden = filterID && !context.inIntro && !_selectedPresetIDs.has(d.preset.id);
 
-      if (isHiddenPreset) {
-        d3_select(this).call(uiTooltip(context)
+      selection
+        .classed('disabled', isHidden);
+
+      if (isHidden) {
+        selection.call(uiTooltip(context)
           .title(l10n.tHtml('inspector.hidden_preset.manual', {
-            features: l10n.tHtml('feature.' + hiddenPresetFeaturesId + '.description')
+            features: l10n.tHtml(`feature.${filterID}.description`)
           }))
-          .placement(index < 2 ? 'bottom' : 'top')
+          .placement(i < 2 ? 'bottom' : 'top')
         );
       }
     });
@@ -479,25 +514,40 @@ export function uiPresetList(context) {
 
     _entityIDs = val;
     _currLoc = null;
+    _selectedPresetIDs = new Set();
 
-    if (_entityIDs && _entityIDs.length) {
+    if (Array.isArray(_entityIDs)) {
       const graph = editor.staging.graph;
 
       // calculate current location
       _currLoc = utilTotalExtent(_entityIDs, graph).center();
 
       // match presets
-      let presets = _entityIDs.map(entityID => presetSystem.match(graph.entity(entityID), graph));
-      presetList.presets(presets);
+      for (const entityID of _entityIDs) {
+        const matched = presets.match(graph.entity(entityID), graph);
+        if (matched) {
+          _selectedPresetIDs.add(matched.id);
+        }
+      }
     }
 
     return presetList;
   };
 
 
-  presetList.presets = function(val) {
-    if (!arguments.length) return _currentPresets;
-    _currentPresets = val;
+  presetList.selected = function(val) {
+    if (!arguments.length) return _selectedPresetIDs;
+
+    _selectedPresetIDs = new Set();
+
+    if (Array.isArray(val)) {
+      for (const preset of val) {
+        if (preset?.id) {
+          _selectedPresetIDs.add(preset.id);
+        }
+      }
+    }
+
     return presetList;
   };
 

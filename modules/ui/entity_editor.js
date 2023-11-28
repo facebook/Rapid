@@ -25,9 +25,7 @@ export function uiEntityEditor(context) {
 
   const sections = [
     uiSectionSelectionList(context),
-    uiSectionFeatureType(context).on('choose', function(presets) {
-      dispatch.call('choose', this, presets);
-    }),
+    uiSectionFeatureType(context).on('choose', function(selected) { dispatch.call('choose', this, selected); }),
     uiSectionEntityIssues(context),
     uiSectionPresetFields(context).on('change', _changeTags).on('revert', _revertTags),
     uiSectionRawTagEditor(context, 'raw-tag-editor').on('change', _changeTags),
@@ -40,7 +38,7 @@ export function uiEntityEditor(context) {
   let _modified = false;
   let _startGraph;
   let _entityIDs = [];
-  let _activePresets = [];
+  let _selectedPresets = [];
   let _newFeature;
 
   // reset listener
@@ -89,9 +87,7 @@ export function uiEntityEditor(context) {
       .html(_entityIDs.length === 1 ? l10n.tHtml('inspector.edit') : l10n.tHtml('rapid_multiselect'));
 
     header.selectAll('.preset-reset')
-      .on('click', function() {
-        dispatch.call('choose', this, _activePresets);
-      });
+      .on('click', function() { dispatch.call('choose', this, _selectedPresets); });
 
     // Body
     let body = selection.selectAll('.inspector-body')
@@ -108,7 +104,7 @@ export function uiEntityEditor(context) {
 
     for (const section of sections) {
       if (section.entityIDs)  section.entityIDs(_entityIDs);
-      if (section.presets)    section.presets(_activePresets);
+      if (section.presets)    section.presets(_selectedPresets);
       if (section.tags)       section.tags(combinedTags);
       if (section.state)      section.state(_state);
 
@@ -171,11 +167,11 @@ export function uiEntityEditor(context) {
    *
    */
   entityEditor.presets = function(val) {
-    if (!arguments.length) return _activePresets;
+    if (!arguments.length) return _selectedPresets;
 
     // don't reload the same preset
-    if (!utilArrayIdentical(val, _activePresets)) {
-      _activePresets = val;
+    if (!utilArrayIdentical(val, _selectedPresets)) {
+      _selectedPresets = val;
     }
     return entityEditor;
   };
@@ -196,9 +192,9 @@ export function uiEntityEditor(context) {
     _entityIDs = _entityIDs.filter(entityID => graph.hasEntity(entityID));
     if (!_entityIDs.length) return;
 
-    const prevPreset = _activePresets.length === 1 && _activePresets[0];
+    const prevPreset = _selectedPresets.length === 1 && _selectedPresets[0];
     _loadActivePresets();
-    const currPreset = _activePresets.length === 1 && _activePresets[0];
+    const currPreset = _selectedPresets.length === 1 && _selectedPresets[0];
 
     entityEditor.modified(_startGraph !== graph);
     _selection.call(entityEditor);  // rerender
@@ -349,9 +345,9 @@ export function uiEntityEditor(context) {
 
     if (!isForNewSelection) {
       // A "weak" preset doesn't set any tags. (e.g. "Address")
-      const isWeakPreset = _activePresets.length === 1 &&
-        !_activePresets[0].isFallback() &&
-        Object.keys(_activePresets[0].addTags || {}).length === 0;
+      const isWeakPreset = _selectedPresets.length === 1 &&
+        !_selectedPresets[0].isFallback() &&
+        Object.keys(_selectedPresets[0].addTags || {}).length === 0;
 
       // Don't replace a weak preset with a fallback preset (e.g. "Point")
       if (isWeakPreset && matches.length === 1 && matches[0].isFallback()) return;
