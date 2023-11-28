@@ -228,7 +228,7 @@ export class ImagerySource {
     const d = new Date(s);
     if (isNaN(d.getTime())) return null;
 
-    const localeCode = this.context.localizationSystem.localeCode();
+    const localeCode = this.context.systems.l10n.localeCode();
     return d.toLocaleDateString(localeCode, options);
   }
 

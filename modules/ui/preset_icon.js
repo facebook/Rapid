@@ -1,5 +1,4 @@
 import { Color } from 'pixi.js';
-import { styleMatch } from '../pixi/styles';
 import { uiIcon } from './icon';
 
 
@@ -254,7 +253,7 @@ export function uiPresetIcon(context) {
     const showLine = isPreset && (geom === 'line');
     const showArea = isPreset && (geom === 'area');
     const showRoute = isPreset && (geom === 'route') && (p.id !== 'type/route');
-    const style = styleMatch(tags);
+    const style = context.systems.styles.styleMatch(tags);
 
     container
       .classed('showing-img', !!imageURL);

@@ -10,7 +10,7 @@ import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTooltip } from '../tooltip';
-import { utilNoAuto, utilHighlightEntities } from '../../util';
+import { utilNoAuto, utilIsColorValid, utilHighlightEntities } from '../../util';
 
 const MAX_MEMBERSHIPS = 1000;
 
@@ -134,6 +134,12 @@ export function uiSectionRawMembershipEditor(context) {
     }
 
 
+    function _getColor(entity) {
+      const val = entity?.type === 'relation' && entity?.tags.colour;
+      return (val && utilIsColorValid(val)) ? val : null;
+    }
+
+
     function changeRole(d3_event, d) {
         if (d === 0) return;    // called on newrow (shouldn't happen)
         if (_inChange) return;  // avoid accidental recursive call iD#5731
@@ -234,12 +240,29 @@ export function uiSectionRawMembershipEditor(context) {
         var result = [];
         var graph = editor.staging.graph;
 
+        function baseDisplayValue(entity) {
+            var matched = presets.match(entity, graph);
+            var presetName = (matched && matched.name()) || l10n.t('inspector.relation');
+            var entityName = l10n.displayName(entity.tags) || '';
+            return presetName + ' ' + entityName;
+        }
+
         function baseDisplayLabel(entity) {
             var matched = presets.match(entity, graph);
             var presetName = (matched && matched.name()) || l10n.t('inspector.relation');
             var entityName = l10n.displayName(entity.tags) || '';
+            var color = _getColor(entity);
 
-            return presetName + ' ' + entityName;
+            return selection => {
+                selection
+                    .append('b')
+                    .text(presetName + ' ');
+                selection
+                    .append('span')
+                    .classed('has-color', !!color)
+                    .style('border-color', color)
+                    .text(entityName);
+            };
         }
 
         var explicitRelation = q && graph.hasEntity(q.toLowerCase());
@@ -247,17 +270,22 @@ export function uiSectionRawMembershipEditor(context) {
             // loaded relation is specified explicitly, only show that
             result.push({
                 relation: explicitRelation,
-                value: baseDisplayLabel(explicitRelation) + ' ' + explicitRelation.id
+                value: baseDisplayValue(explicitRelation) + ' ' + explicitRelation.id,
+                display: baseDisplayLabel(explicitRelation)
             });
 
         } else {
             editor.intersects(map.extent()).forEach(function(entity) {
                 if (entity.type !== 'relation' || entity.id === entityID) return;
 
-                var value = baseDisplayLabel(entity);
+                var value = baseDisplayValue(entity);
                 if (q && (value + ' ' + entity.id).toLowerCase().indexOf(q.toLowerCase()) === -1) return;
 
-                result.push({ relation: entity, value: value });
+                result.push({
+                    relation: entity,
+                    value: value,
+                    display: baseDisplayLabel(entity)
+                });
             });
 
             result.sort(function(a, b) {
@@ -334,14 +362,16 @@ export function uiSectionRawMembershipEditor(context) {
             .append('span')
             .attr('class', 'member-entity-type')
             .html(function(d) {
-                var matched = presets.match(d.relation, editor.staging.graph);
+                const matched = presets.match(d.relation, editor.staging.graph);
                 return (matched && matched.name()) || l10n.t('inspector.relation');
             });
 
         labelLink
             .append('span')
             .attr('class', 'member-entity-name')
-            .html(function(d) {
+            .classed('has-color', d => !!_getColor(d.relation))
+            .style('border-color', d => _getColor(d.relation))
+            .text(function(d) {
                 const matched = presets.match(d.relation, editor.staging.graph);
                 // hide the network from the name if there is NSI match
                 return l10n.displayName(d.relation.tags, matched.suggestion);

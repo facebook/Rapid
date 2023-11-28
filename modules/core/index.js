@@ -17,6 +17,8 @@ import { UiSystem } from './UiSystem';
 import { UploaderSystem } from './UploaderSystem';
 import { UrlHashSystem } from './UrlHashSystem';
 import { ValidationSystem } from './ValidationSystem';
+import { ColorSystem } from './ColorSystem';
+import { StyleSystem } from './StyleSystem';
 
 export {
   AbstractSystem,
@@ -35,7 +37,9 @@ export {
   UiSystem,
   UploaderSystem,
   UrlHashSystem,
-  ValidationSystem
+  ValidationSystem,
+  ColorSystem,
+  StyleSystem
 };
 
 // At init time, we will instantiate any that are in the 'available' collection.
@@ -59,3 +63,5 @@ systems.available.set('ui', UiSystem);
 systems.available.set('uploader', UploaderSystem);
 systems.available.set('urlhash', UrlHashSystem);
 systems.available.set('validator', ValidationSystem);
+systems.available.set('colors', ColorSystem);
+systems.available.set('styles', StyleSystem);
