@@ -45,6 +45,9 @@
           const context = new Rapid.Context();
           context.containerNode = container;
           context.assetPath = 'dist/';
+          context.buildID = '';
+          context.buildSHA = '';
+          context.buildDate = '';
           context.apiConnections = [
             {
               url: 'https://www.openstreetmap.org',

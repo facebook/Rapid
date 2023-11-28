@@ -29,8 +29,13 @@ export class Context extends EventEmitter {
   constructor() {
     super();
 
-    this.version = '2.1.1';
     this.privacyVersion = '20201202';
+    this.version = '2.2.0-beta.0';     // see https://semver.org/ for examples
+
+    // These may be set by our continuous deployment scripts, or left empty
+    this.buildID = '';
+    this.buildSHA = '';
+    this.buildDate = '';
 
     this.maxCharsForTagKey = 255;
     this.maxCharsForTagValue = 255;

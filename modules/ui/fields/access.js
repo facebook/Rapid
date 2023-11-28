@@ -200,6 +200,11 @@ export function uiFieldAccess(context, uifield) {
       motor_vehicle: 'yes',
       bicycle: 'yes',
       horse: 'yes'
+    },
+    busway: {
+      access: 'no',
+      bus: 'designated',
+      emergency: 'yes'
     }
   };
 

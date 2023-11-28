@@ -36,6 +36,85 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+
+# NOT YET RELEASED [2.2.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.0)
+#### 2023-Month-Date
+
+This release was made possible in part by three hackers from Major League Hacking: [@RitaDee](github.com/RitaDee), [@voscarmv](github.com/voscarmv), and [@lauble](github.com/lauble).
+
+Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
+#### :tada: New Features
+
+* [#1141] Added a big new validation to help call attention to ambiguous/missing pedestrian crossing way and node data.
+* [#1146], [#1182], [#1197] Several new presets added for trees, crossings, and curbs
+* [#1154] The Cycle Highway Tags (shift-C) operation now also works with crossing ways (Credit: [@RitaDee](github.com/RitaDee))
+* [#1068] 3D Map open/closed state is now saved in a `3dmap` url parameter (Credit: [@voscarmv](github.com/voscarmv))
+
+##### :camera:  Streetview Imagery Improvements:
+* [#1149] Mapillary image viewer now displays the compass bearing angle indicator.
+* [#551] Streetview imagery is now navigable with keyboard arrow keys.
+* [#508] :compass: Panoramic Streetview image pins should now display a bearing viewfield indicator on the map.
+* [#1148] :sparkles: Mapillary viewfield angle now narrows/widens as the user zooms in / out.
+* [#1139] Updated the kartaview imagery APIs to rely on the new v2 API, eliminating the 404's/ blank images that the layer was displaying
+
+#### :bug: Bugfixes:
+* [#858] v2 Regression has been fixed: undoing *during* draw modes no longer deletes the entire draw operation
+* [#1063] Connecting a crosswalk to an existing highway now creates a crossing node that doesn't need tag upgrading
+* [#1103] Fixed a bug that mistakenly removed the most recently created relation from the edit history
+* [#1115] Crosswalks that are joined to the map will now receive up-to-date tags
+* [#1108] on page load, Rapid should now correctly zoom to the object specified in the URL `id` param
+* [#1110] Photo imagery used should now be properly referenced in the changeset tags
+* [#1116], [#1112] Validation system should now fire correctly when the user edits, pans, and zooms
+* [#1058], [#1121] Changeset comment should now be remembered and reused next time
+* [#1124] OSM username isn't escaped properly (Credit: [@RitaDee](github.com/RitaDee))
+* [#1126] Clicking 'reload my changes' very quickly should no longer cause a crash/stack trace
+* [#1129] The commit message text field should now properly receive focus when the user clicks 'save'
+* [#1155] Clicking on a third-party website URL should now work properly
+* [#1169], [#1201] Fixed the incorrect Microsoft Building license link
+* [#1171] Restored some 'way over waterway' validations
+
+#### :hammer: Development / Code Improvements
+* [#1123] Switched clipper to polyclip-ts.
+* [#1130] Openstreetmap api switched from `www.openstreetmap.org` to `api.openstreetmap.org`
+* [#1156] Modernized the edit system with an extremely large refactor
+* [#1162] The Bug template now prompts the submitter to include screenshots / videos. (Credit: [@RitaDee](github.com/RitaDee))
+* [#1177] The README.md has undergone some formatting improvements (Credit: [@lauble](github.com/lauble))
+* [#1179] The CONTRIBUTING.md has also received extensive edits (Credit: [@voscarmv](github.com/voscarmv))
+
+[#508]: https://github.com/facebook/Rapid/issues/508
+[#551]: https://github.com/facebook/Rapid/issues/551
+[#858]: https://github.com/facebook/Rapid/issues/858
+[#1058]: https://github.com/facebook/Rapid/issues/1058
+[#1063]: https://github.com/facebook/Rapid/issues/1063
+[#1068]: https://github.com/facebook/Rapid/issues/1068
+[#1103]: https://github.com/facebook/Rapid/issues/1103
+[#1108]: https://github.com/facebook/Rapid/issues/1108
+[#1110]: https://github.com/facebook/Rapid/issues/1110
+[#1112]: https://github.com/facebook/Rapid/issues/1112
+[#1116]: https://github.com/facebook/Rapid/issues/1116
+[#1115]: https://github.com/facebook/Rapid/issues/1115
+[#1121]: https://github.com/facebook/Rapid/issues/1121
+[#1123]: https://github.com/facebook/Rapid/issues/1123
+[#1124]: https://github.com/facebook/Rapid/issues/1124
+[#1126]: https://github.com/facebook/Rapid/issues/1126
+[#1129]: https://github.com/facebook/Rapid/issues/1129
+[#1130]: https://github.com/facebook/Rapid/issues/1130
+[#1139]: https://github.com/facebook/Rapid/issues/1139
+[#1141]: https://github.com/facebook/Rapid/issues/1141
+[#1146]: https://github.com/facebook/Rapid/issues/1146
+[#1148]: https://github.com/facebook/Rapid/issues/1148
+[#1149]: https://github.com/facebook/Rapid/issues/1149
+[#1154]: https://github.com/facebook/Rapid/issues/1154
+[#1155]: https://github.com/facebook/Rapid/issues/1155
+[#1156]: https://github.com/facebook/Rapid/issues/1156
+[#1169]: https://github.com/facebook/Rapid/issues/1169
+[#1171]: https://github.com/facebook/Rapid/issues/1171
+[#1177]: https://github.com/facebook/Rapid/issues/1177
+[#1179]: https://github.com/facebook/Rapid/issues/1179
+[#1182]: https://github.com/facebook/Rapid/issues/1182
+[#1197]: https://github.com/facebook/Rapid/issues/1197
+[#1201]: https://github.com/facebook/Rapid/issues/1201
+
 # [2.1.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.1)
 #### 2023-Sep-01
 

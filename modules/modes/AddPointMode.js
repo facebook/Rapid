@@ -84,6 +84,7 @@ export class AddPointMode extends AbstractMode {
    * Process whatever the user clicked on
    */
   _click(eventData) {
+    // console.log('HITTT');
     const context = this.context;
     const editor = context.systems.editor;
     const graph = editor.staging.graph;
@@ -93,7 +94,6 @@ export class AddPointMode extends AbstractMode {
 
     const loc = projection.invert(coord);
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
-
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
     const choice = eventData?.target?.choice;
@@ -120,7 +120,8 @@ export class AddPointMode extends AbstractMode {
         return;
       }
     }
-
+    // Now that the user has clicked, let them nudge the map by moving to the edge.
+    context.behaviors['map-nudging'].allow();
     this._clickNothing(loc);
   }
 

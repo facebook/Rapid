@@ -39,6 +39,21 @@ export function utilHighlightEntities(ids, highlighted, context) {
 }
 
 
+// Returns whether value looks like a valid color we can display
+export function utilIsColorValid(value) {
+  // OSM only supports hex or named colors
+  if (!value.match(/^(#([0-9a-fA-F]{3}){1,2}|\w+)$/)) {
+    return false;
+  }
+  // see https://stackoverflow.com/a/68217760/1627467
+  if (!CSS.supports('color', value) || ['unset', 'inherit', 'initial', 'revert'].includes(value)) {
+    return false;
+  }
+
+  return true;
+}
+
+
 // `utilSetTransform`
 // Applies a CSS transformation to the given selection
 export function utilSetTransform(selection, x, y, scale, rotate) {

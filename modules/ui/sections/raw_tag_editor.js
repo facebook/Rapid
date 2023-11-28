@@ -10,6 +10,7 @@ import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
 
 export function uiSectionRawTagEditor(context, id) {
+  const dataloader = context.systems.dataloader;
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
@@ -29,6 +30,10 @@ export function uiSectionRawTagEditor(context, id) {
     })
     .disclosureContent(renderDisclosureContent);
 
+
+  let _discardKeys = new Set();
+  dataloader.getDataAsync('discarded')
+    .then(data => _discardKeys = new Set(Object.keys(data)));
 
   let _tagView = storage.getItem('raw-tag-editor-view') || 'list';   // 'list, 'text'
   let _readOnlyTags = [];
@@ -407,7 +412,12 @@ export function uiSectionRawTagEditor(context, id) {
           query: value
         }, function(err, data) {
           if (!err) {
-            const filtered = data.filter(d => _tags[d.value] === undefined);
+            const filtered = data.filter(d => {
+              if (/_\d$/.test(d.value)) return false;          // tag like `_1`, see iD#9422
+              if (_discardKeys.has(d.value)) return false;     // discardable, see iD#9817
+              if (_tags[d.value] !== undefined) return false;  // already used as a tag
+              return true;
+            });
             callback(sort(value, filtered));
           }
         });
