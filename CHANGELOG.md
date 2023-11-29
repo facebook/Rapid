@@ -37,18 +37,18 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 -->
 
 
-# NOT YET RELEASED [2.2.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.0)
-#### 2023-Month-Date
+# [2.2.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.0)
+#### 2023-Dec-xx  (Not released yet!)
 
-This release was made possible in part by three hackers from Major League Hacking: [@RitaDee](github.com/RitaDee), [@voscarmv](github.com/voscarmv), and [@lauble](github.com/lauble).
+This release was made possible in part by three hackers from [Major League Hacking](https://mlh.io/): [@RitaDee], [@voscarmv], and [@lauble].
+Also, welcome to the dev team [@tannerwurster]!
 
-Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 #### :tada: New Features
 
 * [#1141] Added a big new validation to help call attention to ambiguous/missing pedestrian crossing way and node data.
 * [#1146], [#1182], [#1197] Several new presets added for trees, crossings, and curbs
-* [#1154] The Cycle Highway Tags (shift-C) operation now also works with crossing ways (Credit: [@RitaDee](github.com/RitaDee))
-* [#1068] 3D Map open/closed state is now saved in a `3dmap` url parameter (Credit: [@voscarmv](github.com/voscarmv))
+* [#1154] The Cycle Highway Tags (shift-C) operation now also works with crossing ways (Credit: [@RitaDee])
+* [#1068] 3D Map open/closed state is now saved in a `3dmap` url parameter (Credit: [@voscarmv])
 
 ##### :camera:  Streetview Imagery Improvements:
 * [#1149] Mapillary image viewer now displays the compass bearing angle indicator.
@@ -66,7 +66,7 @@ Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 * [#1110] Photo imagery used should now be properly referenced in the changeset tags
 * [#1116], [#1112] Validation system should now fire correctly when the user edits, pans, and zooms
 * [#1058], [#1121] Changeset comment should now be remembered and reused next time
-* [#1124] OSM username isn't escaped properly (Credit: [@RitaDee](github.com/RitaDee))
+* [#1124] OSM username isn't escaped properly (Credit: [@RitaDee])
 * [#1126] Clicking 'reload my changes' very quickly should no longer cause a crash/stack trace
 * [#1129] The commit message text field should now properly receive focus when the user clicks 'save'
 * [#1155] Clicking on a third-party website URL should now work properly
@@ -77,9 +77,9 @@ Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 * [#1123] Switched clipper to polyclip-ts.
 * [#1130] Openstreetmap api switched from `www.openstreetmap.org` to `api.openstreetmap.org`
 * [#1156] Modernized the edit system with an extremely large refactor
-* [#1162] The Bug template now prompts the submitter to include screenshots / videos. (Credit: [@RitaDee](github.com/RitaDee))
-* [#1177] The README.md has undergone some formatting improvements (Credit: [@lauble](github.com/lauble))
-* [#1179] The CONTRIBUTING.md has also received extensive edits (Credit: [@voscarmv](github.com/voscarmv))
+* [#1162] The Bug template now prompts the submitter to include screenshots / videos. (Credit: [@RitaDee])
+* [#1177] The README.md has undergone some formatting improvements (Credit: [@lauble])
+* [#1179] The CONTRIBUTING.md has also received extensive edits (Credit: [@voscarmv])
 
 [#508]: https://github.com/facebook/Rapid/issues/508
 [#551]: https://github.com/facebook/Rapid/issues/551
@@ -107,6 +107,7 @@ Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 [#1154]: https://github.com/facebook/Rapid/issues/1154
 [#1155]: https://github.com/facebook/Rapid/issues/1155
 [#1156]: https://github.com/facebook/Rapid/issues/1156
+[#1162]: https://github.com/facebook/Rapid/issues/1162
 [#1169]: https://github.com/facebook/Rapid/issues/1169
 [#1171]: https://github.com/facebook/Rapid/issues/1171
 [#1177]: https://github.com/facebook/Rapid/issues/1177
@@ -114,6 +115,12 @@ Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 [#1182]: https://github.com/facebook/Rapid/issues/1182
 [#1197]: https://github.com/facebook/Rapid/issues/1197
 [#1201]: https://github.com/facebook/Rapid/issues/1201
+
+[@RitaDee]: https://github.com/RitaDee
+[@lauble]: https://github.com/lauble
+[@tannerwurster]: https://github.com/tannerwurster
+[@voscarmv]: https://github.com/voscarmv
+
 
 # [2.1.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.1)
 #### 2023-Sep-01
