@@ -99,8 +99,9 @@ export function uiIntro(context, skipToRapid) {
    * @param  selection  D3-selection to render the walkthrough content into (the root container)
    */
   function _startIntro(selection) {
-    urlhash.pause();
-    osm?.pause();
+    urlhash.pause();       // disable updates
+    osm?.pause();          // disable network
+    mapwithai?.pause();    // disable network
 
     context.inIntro = true;
     context.enter('browse');
@@ -125,17 +126,7 @@ export function uiIntro(context, skipToRapid) {
     }
     context.scene().onlyLayers(['background', 'osm', 'labels']);
 
-    // Show sidebar and disable the sidebar resizing button
-    ui.sidebar.expand();
-    context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
-
-    // Setup imagery
-    const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
-    imagery.baseLayerSource(introSource);
-    _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
-    imagery.brightness = 1;
-
-    // Setup Rapid Walkthrough dataset and disable service
+    // Remember which Rapid datasets were enabled before - we will show only a fake walkthrough dataset
     for (const [datasetID, dataset] of rapid.datasets) {
       if (dataset.enabled) {
         _original.datasetsEnabled.add(datasetID);
@@ -147,7 +138,7 @@ export function uiIntro(context, skipToRapid) {
       id: 'rapid_intro_graph',
       beta: false,
       added: true,
-      enabled: true,
+      enabled: false,   // start disabled, rapid chapter will enable it
       conflated: false,
       service: 'mapwithai',
       color: '#da26d3',
@@ -155,10 +146,15 @@ export function uiIntro(context, skipToRapid) {
       label: 'Rapid Walkthrough'
     });
 
-    if (mapwithai) {
-      mapwithai.pause();    // disable network
-      mapwithai.merge('rapid_intro_graph', Object.values(_rapidGraph));
-    }
+    // Show sidebar and disable the sidebar resizing button
+    ui.sidebar.expand();
+    context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
+
+    // Setup imagery
+    const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
+    imagery.baseLayerSource(introSource);
+    _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
+    imagery.brightness = 1;
 
     _curtain = new UiCurtain(context);
     selection.call(_curtain.enable);
@@ -230,6 +226,7 @@ export function uiIntro(context, skipToRapid) {
     context.resetAsync()
       .then(() => {
         editor.merge(Object.values(_introGraph));
+        mapwithai?.merge('rapid_intro_graph', Object.values(_rapidGraph));
         editor.setCheckpoint('initial');
         _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
       });

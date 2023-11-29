@@ -12,6 +12,8 @@ export function uiIntroRapid(context, curtain) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const rapid = context.systems.rapid;
+  const ui = context.systems.ui;
 
   const tulipLaneID = 'w-516';
   const tulipLaneExtent = new Extent([-85.62991, 41.95568], [-85.62700, 41.95638]);
@@ -54,6 +56,11 @@ export function uiIntroRapid(context, curtain) {
     context.enter('browse');
     editor.restoreCheckpoint('initial');
 
+    // Make sure Rapid data is on..
+    context.scene().enableLayers('rapid');
+    const dataset = rapid.datasets.get('rapid_intro_graph');
+    dataset.enabled = true;
+
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
@@ -92,8 +99,12 @@ export function uiIntroRapid(context, curtain) {
   function selectRoadAsync() {
     context.enter('browse');
     editor.restoreCheckpoint('initial');
+    ui.togglePanes();   // close issue pane
+
+    // Make sure Rapid data is on (in case the user unchecked it in a previous step)..
     context.scene().enableLayers('rapid');
-    context.systems.ui.togglePanes();   // close issue pane
+    const dataset = rapid.datasets.get('rapid_intro_graph');
+    dataset.enabled = true;
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -237,7 +248,7 @@ export function uiIntroRapid(context, curtain) {
   function afterUndoRoadAddAsync() {
     if (_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);  // should be un-accepted now
 
-    context.systems.ui.togglePanes();   // close issue pane
+    ui.togglePanes();   // close issue pane
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -256,6 +267,11 @@ export function uiIntroRapid(context, curtain) {
   function selectRoadAgainAsync() {
     context.enter('browse');
     editor.restoreCheckpoint('initial');
+
+    // Make sure Rapid data is on (in case the user unchecked it in a previous step)..
+    context.scene().enableLayers('rapid');
+    const dataset = rapid.datasets.get('rapid_intro_graph');
+    dataset.enabled = true;
 
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -365,7 +381,11 @@ export function uiIntroRapid(context, curtain) {
 
 
   chapter.exit = () => {
+    // Make sure Rapid data is off..
     context.scene().disableLayers('rapid');
+    const dataset = rapid.datasets.get('rapid_intro_graph');
+    dataset.enabled = false;
+
     _chapterCancelled = true;
 
     if (_rejectStep) {   // bail out of whatever step we are in
