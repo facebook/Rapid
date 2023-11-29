@@ -41,7 +41,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### 2023-Dec-xx  (Not released yet!)
 
 This release was made possible in part by three hackers from [Major League Hacking](https://mlh.io/): [@RitaDee], [@voscarmv], and [@lauble].
-Also, welcome to the dev team [@tannerwurster]!
+Also, welcome to the dev team [@tannerwuster]!
 
 #### :tada: New Features
 
@@ -118,7 +118,7 @@ Also, welcome to the dev team [@tannerwurster]!
 
 [@RitaDee]: https://github.com/RitaDee
 [@lauble]: https://github.com/lauble
-[@tannerwurster]: https://github.com/tannerwurster
+[@tannerwuster]: https://github.com/tannerwuster
 [@voscarmv]: https://github.com/voscarmv
 
 
