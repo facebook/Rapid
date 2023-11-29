@@ -1,5 +1,4 @@
 import { uiTooltip } from '../tooltip';
-import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 import { uiCombobox } from '../combobox';
 import { utilNoAuto } from '../../util';
@@ -14,7 +13,7 @@ export function uiSectionWaybackImagery(context) {
 
     let _waybackSelectedId = null;
 
-    let _checkboxState = false;
+    // let _checkboxState = false;
 
     // Create a uiCombobox instance
     const waybackCombo = uiCombobox(context);
@@ -34,29 +33,26 @@ export function uiSectionWaybackImagery(context) {
             .attr('class', 'background-wayback-item')
             .append('label')
             .call(uiTooltip(context)
-                .title(l10n.tHtml('background.wayback_imagery.tooltip'))
-                .placement('bottom')
+            .title(l10n.tHtml('background.wayback_imagery.tooltip'))
+            .placement('bottom')
             );
-
-        thirdPartyIconsEnter
-            .append('input')
-            .attr('type', 'checkbox')
-            .on('change', function () {
-                // Toggle the checkbox state
-                _checkboxState = !_checkboxState;
-                update();
-            });
 
         // Render the individual (single) item.
         thirdPartyIconsEnter
             .append('span')
-            .html(l10n.tHtml('background.wayback_imagery.example_item_text'));
+            .html(l10n.tHtml('background.wayback_imagery.example_item_text'))
+            .style('font-size', '14px')
+            .style('font-weight', 'bold')
+            .style('vertical-align', 'middle');
 
         let pickerCombo = privacyOptionsListEnter.append('div');
 
         pickerCombo.append('input')
             .attr('class', 'wayback-vintage-select')
             .attr('placeholder', l10n.t('background.wayback_imagery.placeholder'))
+            .style('vertical-align', 'middle')
+            .style('margin-left', '12px')
+            .style('border', 'none')
             .call(utilNoAuto)
             .call(waybackCombo)
             .on('blur change', (d3_event) => {
@@ -1347,9 +1343,7 @@ export function uiSectionWaybackImagery(context) {
 
         function update() {
             selection.selectAll('.background-wayback-item')
-                .classed('active', _checkboxState)
-                .select('input')
-                .property('checked', _checkboxState);
+                .select('input');
         }
     }
 
