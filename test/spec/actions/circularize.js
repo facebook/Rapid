@@ -278,20 +278,6 @@ describe('actionCircularize', function () {
         expect(graph.entity('-').nodes).to.have.length(20);
     });
 
-    it('circularizes a closed single line way', function () {
-        var graph = new Rapid.Graph([
-                Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                Rapid.osmNode({id: 'b', loc: [0, 2]}),
-                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'a']})
-            ]);
-
-        expect(area('-', graph)).to.eql(0);
-
-        graph = Rapid.actionCircularize('-', projection)(graph);
-
-        expect(isCircular('-', graph)).to.be.ok;
-    });
-
     it('not disable circularize when its not circular', function(){
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),

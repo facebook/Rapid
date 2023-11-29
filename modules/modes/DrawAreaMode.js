@@ -150,8 +150,7 @@ export class DrawAreaMode extends AbstractMode {
     // If any issues, revert back to how things were before we started.
     const graph = editor.stable.graph;
     const drawWay = this.drawWayID && graph.hasEntity(this.drawWayID);
-    const length = drawWay?.nodes?.length || 0;
-    if (length < 4) {
+    if (!drawWay || drawWay.isDegenerate()) {
       if (DEBUG) {
         console.log('DrawAreaMode: draw way invalid, rolling back');  // eslint-disable-line no-console
       }

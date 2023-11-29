@@ -466,6 +466,10 @@ describe('osmWay', function () {
             expect(Rapid.osmWay({nodes: ['a', 'b']}).isDegenerate()).to.equal(false);
         });
 
+        it('returns true for a linear way that doubles back on itself', function () {
+            expect(iD.osmWay({nodes: ['a', 'b', 'a']}).isDegenerate()).to.equal(true);
+        });
+
         it('returns true for an area with zero, one, or two unique nodes', function () {
             expect(Rapid.osmWay({tags: {area: 'yes'}, nodes: []}).isDegenerate()).to.equal(true);
             expect(Rapid.osmWay({tags: {area: 'yes'}, nodes: ['a', 'a']}).isDegenerate()).to.equal(true);
