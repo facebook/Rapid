@@ -4,7 +4,7 @@ import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionChangePreset } from '../../actions/change_preset';
 import { utilRebind } from '../../util';
-import { delayAsync, eventCancel, helpHtml, isMostlySquare, showPresetList, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper';
 
 
 export function uiIntroBuilding(context, curtain) {
@@ -16,6 +16,7 @@ export function uiIntroBuilding(context, curtain) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
+  const ui = context.systems.ui;
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
   const tankExtent = new Extent([-85.62766, 41.95324], [-85.62695, 41.95372]);
@@ -210,10 +211,12 @@ export function uiIntroBuilding(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
-        showPresetList(container);
+        ui.sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const button = container.select('.preset-category-building .preset-list-button');
+        if (button.empty()) { resolve(addHouseAsync); return; }
+
         curtain.reveal({
           revealNode: button.node(),
           revealPadding: 5,
@@ -253,10 +256,12 @@ export function uiIntroBuilding(context, curtain) {
           }
         };
 
-        showPresetList(container);
+        // ui.sidebar.showPresetList();  // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const button = container.select('.preset-building-house .preset-list-button');
+        if (button.empty()) { resolve(addHouseAsync); return; }
+
         curtain.reveal({
           revealNode: button.node(),
           revealPadding: 5,
@@ -531,7 +536,7 @@ export function uiIntroBuilding(context, curtain) {
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        showPresetList(container);
+        ui.sidebar.showPresetList();
 
         curtain.reveal({
           revealSelector: '.preset-search-input',

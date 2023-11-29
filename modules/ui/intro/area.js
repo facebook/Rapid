@@ -3,7 +3,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroArea(context, curtain) {
@@ -14,6 +14,7 @@ export function uiIntroArea(context, curtain) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
+  const ui = context.systems.ui;
 
   const playgroundExtent = new Extent([-85.63575, 41.94137], [-85.63526, 41.94180]);
   const playgroundPreset = presets.item('leisure/playground');
@@ -194,7 +195,7 @@ export function uiIntroArea(context, curtain) {
           }
         };
 
-        showPresetList(container);
+        ui.sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         curtain.reveal({
@@ -258,7 +259,7 @@ export function uiIntroArea(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change;
 
-        showEntityEditor(container);
+        ui.sidebar.showEntityEditor();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         // scroll "Add field" into view
@@ -345,7 +346,7 @@ export function uiIntroArea(context, curtain) {
         }
       }, 300);
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
 
       curtain.reveal({
         revealSelector: 'div.combobox',
@@ -375,7 +376,7 @@ export function uiIntroArea(context, curtain) {
       _rejectStep = reject;
       _onModeChange = () => resolve(playAsync);
 
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
@@ -397,7 +398,7 @@ export function uiIntroArea(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _onModeChange = reject;   // disallow mode change;
-      showEntityEditor(container);
+      ui.sidebar.showEntityEditor();
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',

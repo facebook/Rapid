@@ -324,8 +324,12 @@ export function uiSidebar(context) {
         };
 
 
-        sidebar.showPresetList = function() {
-            inspector.showList();
+        sidebar.showPresetList = function(...args) {
+            inspector.showPresetList(...args);
+        };
+
+        sidebar.showEntityEditor = function(...args) {
+            inspector.showEntityEditor(...args);
         };
 
 
@@ -437,6 +441,7 @@ export function uiSidebar(context) {
     }
 
     sidebar.showPresetList = function() {};
+    sidebar.showEntityEditor = function() {};
     sidebar.hover = function() {};
     sidebar.hover.cancel = function() {};
     sidebar.intersects = function() {};

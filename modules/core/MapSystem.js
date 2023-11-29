@@ -265,9 +265,13 @@ export class MapSystem extends AbstractSystem {
       })
       .on('historyjump', (prevIndex, currIndex) => {
         // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-        // Counterintuitively, when undoing, we want the metadata from the _next_ edit (located at prevIndex).
+        const prevEdit = editor.history[prevIndex];
+        const currEdit = editor.history[currIndex];
+
+        // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
+        // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
         const didUndo = (currIndex === prevIndex - 1);
-        const edit = didUndo ? editor.history[prevIndex] : editor.history[currIndex];
+        const edit = (didUndo && prevEdit) ?? currEdit;
 
         // Reposition the map if we've jumped to a different place.
         const t0 = this.transform();
