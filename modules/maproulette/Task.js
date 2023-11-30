@@ -28,5 +28,10 @@ export class Task {
   static id() {
     return this.nextId--;
   }
+
+  // Return extent object for zoom-in on-click
+  extent(){
+    return {};
+  }
 }
 Task.nextId = -1;
