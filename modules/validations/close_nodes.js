@@ -245,7 +245,7 @@ export function validationCloseNodes(context) {
             return graph;
           }
         };
-      }
+      };
 
       return new ValidationIssue(context, {
         type: type,
