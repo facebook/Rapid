@@ -5504,6 +5504,10 @@ li.hide + li.version .badge .tooltip .popover-arrow {
     pointer-events: auto;
 }
 
+.curtain-tooltip .popover-inner a {
+    pointer-events: auto;
+}
+
 .curtain-tooltip .popover-inner .button-section button {
     width: 66.6666%;
 }
