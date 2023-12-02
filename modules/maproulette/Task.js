@@ -1,3 +1,5 @@
+import { Extent } from '@rapid-sdk/math';
+
 export class Task {
   constructor(loc, service, id, props) {
     // Store required properties
@@ -31,7 +33,22 @@ export class Task {
 
   // Return extent object for zoom-in on-click
   extent(){
-    return {};
+    let sortX = this.task.bounding.coordinates[0].sort(
+      (a, b) => {
+        return b[0] - a[0];
+      }
+    );
+    const minX = sortX[0][0];
+    const maxX = sortX[sortX.length - 1][0];
+    let sortY = this.task.bounding.coordinates[0].sort(
+      (a, b) => {
+        return b[1] - a[1];
+      }
+    );
+    const minY = sortY[0][1];
+    const maxY = sortY[sortY.length - 1][1];
+
+    return new Extent([minX, minY], [maxX, maxY]);
   }
 }
 Task.nextId = -1;

@@ -142,8 +142,8 @@ export class SelectMode extends AbstractMode {
         });
 
     } else if (datum instanceof MapRouletteTask && datum.service === 'maproulette') {
+      context.systems.map.extent(datum.extent());
       sidebarContent = uiMapRouletteEditor(context).error(datum);
-      // context.systems.map.extent(datum.extent());
       sidebarContent
       .on('change', () => {
         context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
