@@ -146,13 +146,14 @@ export class PixiEvents extends EventEmitter {
   // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
   // We don't know when that event will be, next time user happens to shake the mouse?
   // So we'll also set it directly on the canvas so it locks in now
+  const context = this.context;
   const cursors = {
-    connectLineCursor:'url(dist/img/cursor-draw-connect-line.png) 9 9, crosshair',
-    connectVertexCursor:'url(dist/img/cursor-draw-connect-vertex.png) 9 9, crosshair',
-    lineCursor:'url(dist/img/cursor-select-line.png), auto',
-    vertexCursor:'url(dist/img/cursor-select-vertex.png), auto',
-    pointCursor:'url(dist/img/cursor-select-point.png), auto',
-    areaCursor:'url(dist/img/cursor-select-area.png), auto',
+    connectLineCursor:`url(${context.assetPath}/img/cursor-draw-connect-line.png) 9 9, crosshair`,
+    connectVertexCursor:`url(${context.assetPath}/img/cursor-draw-connect-vertex.png) 9 9, crosshair`,
+    lineCursor:`url(${context.assetPath}/img/cursor-select-line.png), auto`,
+    vertexCursor:`url(${context.assetPath}/img/cursor-select-vertex.png), auto`,
+    pointCursor:`url(${context.assetPath}/img/cursor-select-point.png), auto`,
+    areaCursor:`url(${context.assetPath}/img/cursor-select-area.png), auto`,
   };
   switch (style) {
     case 'connectLineCursor':
