@@ -7,7 +7,6 @@ import { actionAddVertex } from '../actions/add_vertex';
 import { actionMoveNode } from '../actions/move_node';
 import { geoChooseEdge } from '../geo';
 import { osmNode, osmWay } from '../osm';
-import { cursors } from './index';
 
 const DEBUG = false;
 /**
@@ -780,10 +779,10 @@ export class DrawLineMode extends AbstractMode {
 
     switch (geom) {
       case 'line':
-        eventManager.setCursor(cursors.connectLineCursor);
+        eventManager.setCursor('connectLineCursor');
         break;
       case 'vertex':
-        eventManager.setCursor(cursors.connectVertexCursor);
+        eventManager.setCursor('connectVertexCursor');
         break;
       default:
         eventManager.setCursor('crosshair');

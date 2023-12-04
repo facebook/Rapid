@@ -141,15 +141,42 @@ export class PixiEvents extends EventEmitter {
    * @param  `style` String for one of the given CSS cursor styles (pass 'inherit' to reset)
    */
   setCursor(style) {
-    // this.renderer.pixi.renderer.events.setCursor(style);
-    // this.renderer.pixi.renderer.events.rootBoundary.cursor = style;
-
-    // Pixi doesn't make this easy
-    // On next pointerover event, the root event boundary will reset its perferred cursor
-    // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
-    // We don't know when that event will be, next time user happens to shake the mouse?
-    // So we'll also set it directly on the canvas so it locks in now
-    this.renderer.pixi.view.style.cursor = style;
+  // Pixi doesn't make this easy
+  // On next pointerover event, the root event boundary will reset its perferred cursor
+  // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
+  // We don't know when that event will be, next time user happens to shake the mouse?
+  // So we'll also set it directly on the canvas so it locks in now
+  const cursors = {
+    connectLineCursor:'url(dist/img/cursor-draw-connect-line.png) 9 9, crosshair',
+    connectVertexCursor:'url(dist/img/cursor-draw-connect-vertex.png) 9 9, crosshair',
+    lineCursor:'url(dist/img/cursor-select-line.png), auto',
+    vertexCursor:'url(dist/img/cursor-select-vertex.png), auto',
+    pointCursor:'url(dist/img/cursor-select-point.png), auto',
+    areaCursor:'url(dist/img/cursor-select-area.png), auto',
+  };
+  switch (style) {
+    case 'connectLineCursor':
+      this.renderer.pixi.view.style.cursor = cursors.connectLineCursor;
+      break;
+    case 'connectVertexCursor':
+      this.renderer.pixi.view.style.cursor = cursors.connectVertexCursor;
+      break;
+    case 'lineCursor':
+      this.renderer.pixi.view.style.cursor = cursors.lineCursor;
+      break;
+    case 'vertexCursor':
+      this.renderer.pixi.view.style.cursor = cursors.vertexCursor;
+      break;
+    case 'pointCursor':
+      this.renderer.pixi.view.style.cursor = cursors.pointCursor;
+      break;
+    case 'areaCursor':
+      this.renderer.pixi.view.style.cursor = cursors.areaCursor;
+      break;
+    default:
+      this.renderer.pixi.view.style.cursor = style;
+      break;
+    }
   }
 
 
