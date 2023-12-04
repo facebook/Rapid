@@ -94,7 +94,7 @@ export class MapRouletteService extends AbstractSystem {
    * loadTiles
    * Schedule any data requests needed to cover the current map view
    */
-  loadTiles() {
+  loadTiles(challengeId) {
     // determine the needed tiles to cover the view
     const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
@@ -109,10 +109,12 @@ export class MapRouletteService extends AbstractSystem {
       const extent = this.context.systems.map.extent();
       const bbox = extent.bbox();
 
-      const urlBboxSpecifier = `${bbox.minX},${bbox.minY},${bbox.maxX},${bbox.maxY}`;
-
+      // const urlBboxSpecifier = `${bbox.minX},${bbox.minY},${bbox.maxX},${bbox.maxY}`;
       // const url = `${MAPROULETTE_API}/challenges/extendedFind?bb=${encodeURIComponent(urlBboxSpecifier)}&cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&limit=50&order=DESC&page=0&pe=true&sort=popularity`;
-      const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
+      // const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
+
+      const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
+      const url = `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}${challengeId ? '?cid='+challengeId : ''}`;
 
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
