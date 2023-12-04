@@ -148,12 +148,12 @@ export class PixiEvents extends EventEmitter {
   // So we'll also set it directly on the canvas so it locks in now
   const context = this.context;
   const cursors = {
-    connectLineCursor:`url(${context.assetPath}/img/cursor-draw-connect-line.png) 9 9, crosshair`,
-    connectVertexCursor:`url(${context.assetPath}/img/cursor-draw-connect-vertex.png) 9 9, crosshair`,
-    lineCursor:`url(${context.assetPath}/img/cursor-select-line.png), auto`,
-    vertexCursor:`url(${context.assetPath}/img/cursor-select-vertex.png), auto`,
-    pointCursor:`url(${context.assetPath}/img/cursor-select-point.png), auto`,
-    areaCursor:`url(${context.assetPath}/img/cursor-select-area.png), auto`,
+    connectLineCursor:`url(${context.assetPath}img/cursor-draw-connect-line.png) 9 9, crosshair`,
+    connectVertexCursor:`url(${context.assetPath}img/cursor-draw-connect-vertex.png) 9 9, crosshair`,
+    lineCursor:`url(${context.assetPath}img/cursor-select-line.png), auto`,
+    vertexCursor:`url(${context.assetPath}img/cursor-select-vertex.png), auto`,
+    pointCursor:`url(${context.assetPath}img/cursor-select-point.png), auto`,
+    areaCursor:`url(${context.assetPath}img/cursor-select-area.png), auto`,
   };
   switch (style) {
     case 'connectLineCursor':
