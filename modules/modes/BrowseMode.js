@@ -88,17 +88,17 @@ export class BrowseMode extends AbstractMode {
     const geom = entity?.geometry(graph) ?? 'unknown';
 
     switch (geom) {
+      case 'area':
+        eventManager.setCursor('areaCursor');
+        break;
       case 'line':
         eventManager.setCursor('lineCursor');
-        break;
-      case 'vertex':
-        eventManager.setCursor('vertexCursor');
         break;
       case 'point':
         eventManager.setCursor('pointCursor');
         break;
-      case 'area':
-        eventManager.setCursor('areaCursor');
+      case 'vertex':
+        eventManager.setCursor('vertexCursor');
         break;
       default:
         eventManager.setCursor('grab');
