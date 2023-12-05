@@ -204,7 +204,6 @@ this.didRender = true;
     //Now that the sidebar has been insantiated, it's safe to bind the keypress handlers
 
     context.keybinding()
-      .on('⌫', e => e.preventDefault())
       .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle)   // iD#5663, iD#6864 - common QWERTY, AZERTY
       .on(uiCmd('⌘' + l10n.t('background.key')), e => {
         if (e) {
