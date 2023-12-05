@@ -9,9 +9,9 @@ import { utilFetchResponse } from '../util';
 
 const TILEZOOM = 14;
 const IMPOSM_API = {
-  ow: 'https://grab.community.improve-osm.org/directionOfFlowService',
-  mr: 'https://grab.community.improve-osm.org/missingGeoService',
-  tr: 'https://grab.community.improve-osm.org/turnRestrictionService'
+  ow: 'https://community.improveosm.org/directionOfFlowService',
+  mr: 'https://community.improveosm.org/missingGeoService',
+  tr: 'https://community.improveosm.org/turnRestrictionService'
 };
 
 // A mapping of improveOSM error types and their respective tint colors.
