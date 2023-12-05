@@ -269,7 +269,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // These presets probably are POIs even without a label
       // See nsi.guide for the sort of things we are looking for.
-      if (/^(club|craft|emergency|healthcare|office|power|shop|telecom|tourism)/.test(preset.id)) return true;
+      if (/^(attraction|club|craft|emergency|healthcare|office|power|shop|telecom|tourism)/.test(preset.id)) return true;
       if (/^amenity\/(?!parking|shelter)/.test(preset.id)) return true;
       if (/^leisure\/(?!garden|firepit|picnic_table|pitch|swimming_pool)/.test(preset.id)) return true;
 

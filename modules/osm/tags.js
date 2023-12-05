@@ -144,6 +144,9 @@ export var osmOneWayTags = {
         'sled': true,
         'yes': true
     },
+    'roller_coaster': {
+        'track': true
+    },
     'seamark:type': {
         'two-way_route': true,
         'recommended_traffic_lane': true,

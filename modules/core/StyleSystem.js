@@ -97,7 +97,7 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 5, color: 0xc5b59f }
       },
       proposed: {
-        stroke: {width: 8, color: 0xCCCCCC, dash: [7 , 3], cap: PIXI.LINE_CAP.BUTT}
+        stroke: { width: 8, color: 0xcccccc, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       },
       pedestrian: {
         casing: { width: 7, color: 0xffffff },
@@ -163,7 +163,7 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
       },
       railway_abandoned: {
-        stroke: {dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       },
       ferry: {
         casing: { alpha: 0 },  // disable
@@ -196,11 +196,15 @@ export class StyleSystem extends AbstractSystem {
       },
       construction: {
         casing: { width: 10, color: 0xffffff},
-        stroke: { width: 8, color: 0xfc6c14, cap: PIXI.LINE_CAP.BUTT, dash: [10, 10] },
+        stroke: { width: 8, color: 0xfc6c14, dash: [10, 10], cap: PIXI.LINE_CAP.BUTT },
       },
       pipeline: {
-        casing: { width: 7, color: 0x666},
-        stroke: { width: 5, color: 0xcbd0d8, dash: [80, 1.25], cap: PIXI.LINE_CAP.BUTT}
+        casing: { width: 7, color: 0x444444 },
+        stroke: { width: 5, color: 0xdddddd, dash: [80, 2], cap: PIXI.LINE_CAP.BUTT }
+      },
+      roller_coaster: {
+        casing: { width: 7, color: 0x444444 },
+        stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: PIXI.LINE_CAP.BUTT }
       },
       abandoned: {
         stroke: { width: 27, color: 0xcbd0d8, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
@@ -363,7 +367,7 @@ export class StyleSystem extends AbstractSystem {
         '*': 'green'
       },
       power: {
-        'plant': 'pink'
+        plant: 'pink'
       },
       railway: {
         abandoned: 'railway_abandoned',
@@ -372,8 +376,11 @@ export class StyleSystem extends AbstractSystem {
         proposed: 'proposed',
         '*': 'railway'
       },
+      roller_coaster: {
+        track: 'roller_coaster'
+      },
       route: {
-        'ferry': 'ferry'
+        ferry: 'ferry'
       },
       sport: {
         baseball: 'yellow',
