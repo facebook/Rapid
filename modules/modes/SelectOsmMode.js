@@ -44,6 +44,7 @@ export class SelectOsmMode extends AbstractMode {
     this._lastVertex = this._lastVertex.bind(this);
     this._nextVertex = this._nextVertex.bind(this);
     this._previousVertex = this._previousVertex.bind(this);
+    this._hover = this._hover.bind(this);
   }
 
 
@@ -92,6 +93,8 @@ export class SelectOsmMode extends AbstractMode {
     this._active = true;
     context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'lasso', 'paste']);
 
+    context.behaviors.hover
+      .on('hoverchange', this._hover);
     // Compute the total extent of selected items
     this.extent = utilTotalExtent(entityIDs, graph);
 
@@ -203,6 +206,9 @@ export class SelectOsmMode extends AbstractMode {
       d3_select(document).call(this.keybinding.unbind);
       this.keybinding = null;
     }
+
+    this.context.behaviors.hover
+      .off('hoverchange', this._hover);
   }
 
 
@@ -384,6 +390,43 @@ export class SelectOsmMode extends AbstractMode {
 //    }
   }
 
+
+  /**
+   * _hover
+   * Changes the cursor styling based on what geometry is hovered
+   */
+  _hover(eventData) {
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const eventManager = context.systems.map.renderer.events;
+
+    const target = eventData.target;
+    const datum = target?.data;
+    const entity = datum && graph.hasEntity(datum.id);
+    const geom = entity?.geometry(graph) ?? 'unknown';
+
+    switch (geom) {
+      case 'area':
+        eventManager.setCursor('areaCursor');
+        break;
+      case 'line':
+        eventManager.setCursor('lineCursor');
+        break;
+      case 'point':
+        eventManager.setCursor('pointCursor');
+        break;
+      case 'unknown':
+        eventManager.setCursor('selectSplitCursor');
+        break;
+      case 'vertex':
+        eventManager.setCursor('vertexCursor');
+        break;
+      default:
+        eventManager.setCursor('grab');
+        break;
+    }
+  }
 
 
 //  function selectParent(d3_event) {
