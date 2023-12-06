@@ -17,8 +17,9 @@ describe('uiSectionRawTagEditor', () => {
     constructor()   {
       this.services = {};
       this.systems = {
-        l10n:     new MockLocalizationSystem(),
-        storage:  new MockStorageSystem()
+        dataloader:  new Rapid.DataLoaderSystem(this),
+        l10n:        new MockLocalizationSystem(),
+        storage:     new MockStorageSystem()
       };
     }
     cleanTagKey(val)    { return val; }

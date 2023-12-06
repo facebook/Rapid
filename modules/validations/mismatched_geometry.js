@@ -21,16 +21,21 @@ export function validationMismatchedGeometry(context) {
     function tagSuggestingLineIsArea(entity) {
         if (entity.type !== 'way' || entity.isClosed()) return null;
 
-        var tagSuggestingArea = entity.tagSuggestingArea();
+        const tagSuggestingArea = entity.tagSuggestingArea();
         if (!tagSuggestingArea) {
             return null;
         }
 
-        var asLine = presets.matchTags(tagSuggestingArea, 'line');
-        var asArea = presets.matchTags(tagSuggestingArea, 'area');
-        if (asLine && asArea && (asLine === asArea)) {
-            // these tags also allow lines and making this an area wouldn't matter
-            return null;
+        const linePreset = presets.matchTags(tagSuggestingArea, 'line');
+        const areaPreset = presets.matchTags(tagSuggestingArea, 'area');
+
+        if (linePreset && areaPreset) {
+            // If the same preset allows both lines and areas (e.g. barrier), ignore
+            if (linePreset === areaPreset) return null;
+
+            // If the presets match something like '*', (e.g. attraction), ignore
+            const key = Object.keys(tagSuggestingArea)[0];
+            if (linePreset.tags[key] === '*' || areaPreset.tags[key === '*']) return null;
         }
 
         return tagSuggestingArea;

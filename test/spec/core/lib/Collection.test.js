@@ -106,25 +106,25 @@ describe('Collection', () => {
     });
 
     it('sorts preset with matchScore penalty below others', () => {
-      const result = collection.search('par', 'point').matchGeometry('point').array;
+      const result = collection.search('par', 'point').array;
       expect(result.indexOf(p.parking), 'Parking').to.eql(0);   // 1. 'Parking' (default matchScore)
       expect(result.indexOf(p.park), 'Park').to.eql(1);         // 2. 'Park' (low matchScore)
     });
 
     it('ignores matchScore penalty for exact name match', () => {
-      const result = collection.search('park', 'point').matchGeometry('point').array;
+      const result = collection.search('park', 'point').array;
       expect(result.indexOf(p.park), 'Park').to.eql(0);         // 1. 'Park' (low matchScore)
       expect(result.indexOf(p.parking), 'Parking').to.eql(1);   // 2. 'Parking' (default matchScore)
     });
 
     it('considers diacritics on exact matches', () => {
-      const result = collection.search('ğṝȁ', 'point').matchGeometry('point').array;
+      const result = collection.search('ğṝȁ', 'point').array;
       expect(result.indexOf(p.grass2), 'Ğṝȁß').to.eql(0);    // 1. 'Ğṝȁß'  (leading name)
       expect(result.indexOf(p.grass1), 'Grass').to.eql(1);   // 2. 'Grass' (similar name)
     });
 
     it('replaces diacritics on fuzzy matches', () => {
-      const result = collection.search('graß', 'point').matchGeometry('point').array;
+      const result = collection.search('graß', 'point').array;
       expect(result.indexOf(p.grass1), 'Grass').to.be.within(0,1);   // 1. 'Grass' (similar name)
       expect(result.indexOf(p.grass2), 'Ğṝȁß').to.be.within(0,1);    // 2. 'Ğṝȁß'  (similar name)
     });

@@ -15,46 +15,66 @@ export function uiPresetList(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const filters = context.systems.filters;
-  const presetSystem = context.systems.presets;
+  const presets = context.systems.presets;
   const dispatch = d3_dispatch('cancel', 'choose');
 
   let _entityIDs;
   let _currLoc;
-  let _currentPresets;
+  let _selectedPresetIDs = new Set();
   let _autofocus = false;
+  let _list = d3_select(null);
+  let _input = d3_select(null);
 
 
+  /**
+   * presetList
+   * (This is the render function)
+   * @param  {d3-selection}  selection  - parent selection to render into
+   */
   function presetList(selection) {
     if (!_entityIDs) return;
 
-    let presets = presetSystem.matchAllGeometry(entityGeometries());
+    const geometries = entityGeometries();
+    const allPresets = presets.matchAllGeometry(geometries);
+    const defaultPresets = presets.defaults(geometries[0], 36, !context.inIntro, _currLoc);
     const isRTL = l10n.isRTL();
 
-    selection.html('');
+    // Header
+    const header = selection.selectAll('.header')
+      .data([0]);
 
-    const messagewrap = selection
+    // Enter
+    const headerEnter = header.enter()
       .append('div')
       .attr('class', 'header fillL');
 
-    const message = messagewrap
+    headerEnter
       .append('h3')
-      .html(l10n.tHtml('inspector.choose'));
+      .attr('class', 'preset-list-message')
+      .text(l10n.t('inspector.choose'));
 
-    messagewrap
+    headerEnter
       .append('button')
       .attr('class', 'preset-choose')
       .on('click', function() { dispatch.call('cancel', this); })
       .call(uiIcon(isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'));
 
+    const message = header.merge(headerEnter)
+      .selectAll('.preset-list-message');
 
-    const searchWrap = selection
+
+    // Search box
+    let search = selection.selectAll('.search-header')
+      .data([0]);
+
+    const searchEnter = search.enter()
       .append('div')
       .attr('class', 'search-header');
 
-    searchWrap
+    searchEnter
       .call(uiIcon('#rapid-icon-search', 'pre-text'));
 
-    const search = searchWrap
+    searchEnter
       .append('input')
       .attr('class', 'preset-search-input')
       .attr('placeholder', l10n.t('inspector.search'))
@@ -64,147 +84,183 @@ export function uiPresetList(context) {
       .on('keypress', keypress)
       .on('input', debounce(inputevent));
 
-    if (_autofocus) {
-      search.node().focus();
+    // update
+    search = search.merge(searchEnter);
+    _input = search.selectAll('.preset-search-input');
 
-      // Safari 14 doesn't always like to focus immediately, so try again on the next pass
-      setTimeout(() => {
-        search.node().focus();
-      }, 0);
+    if (_autofocus) {
+      // Safari 14 doesn't always like to focus immediately, so schedule it with setTimeout
+      setTimeout(() => _input.node().focus(), 0);
     }
 
-    const listWrap = selection
+
+    // Preset List
+    const listWrap = selection.selectAll('.inspector-body')
+      .data([0]);
+
+    // enter
+    const listWrapEnter = listWrap.enter()
       .append('div')
       .attr('class', 'inspector-body');
 
-    const list = listWrap
+    const listEnter = listWrapEnter
       .append('div')
-      .attr('class', 'preset-list')
-      .call(drawList, presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro, _currLoc));
+      .attr('class', 'preset-list-main preset-list');
 
-    filters.on('filterchange', updateForFeatureHiddenState);
+    // update
+    _list = listWrap.merge(listWrapEnter)
+      .selectAll('.preset-list-main')
+      .call(drawList, defaultPresets);
+
+    // rebind event listener
+    filters.off('filterchange', _checkFilteringRules);
+    filters.on('filterchange', _checkFilteringRules);
 
 
-    function initialKeydown(d3_event) {
+    function initialKeydown(e) {
+      const val = _input.property('value');
+
       // hack to let delete shortcut work when search is autofocused
-      if (search.property('value').length === 0 &&
-        (d3_event.keyCode === utilKeybinding.keyCodes['⌫'] ||
-         d3_event.keyCode === utilKeybinding.keyCodes['⌦'])) {
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
+      if (val.length === 0 &&
+        (e.keyCode === utilKeybinding.keyCodes['⌫'] ||
+         e.keyCode === utilKeybinding.keyCodes['⌦'])) {
+        e.preventDefault();
+        e.stopPropagation();
         operationDelete(context, _entityIDs)();
 
       // hack to let undo work when search is autofocused
-      } else if (search.property('value').length === 0 &&
-        (d3_event.ctrlKey || d3_event.metaKey) &&
-        d3_event.keyCode === utilKeybinding.keyCodes.z) {
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
+      } else if (val.length === 0 &&
+        (e.ctrlKey || e.metaKey) &&
+        e.keyCode === utilKeybinding.keyCodes.z) {
+        e.preventDefault();
+        e.stopPropagation();
         editor.undo();
 
-      } else if (!d3_event.ctrlKey && !d3_event.metaKey) {
+      } else if (!e.ctrlKey && !e.metaKey) {
         // don't check for delete/undo hack on future keydown events
         d3_select(this).on('keydown', keydown);
-        keydown.call(this, d3_event);
+        keydown.call(this, e);
       }
     }
 
-    function keydown(d3_event) {
-      if (d3_event.keyCode === utilKeybinding.keyCodes['↓'] &&       // down arrow
+    function keydown(e) {
+      if (e.keyCode === utilKeybinding.keyCodes['↓'] &&       // down arrow
         // if insertion point is at the end of the string
-        search.node().selectionStart === search.property('value').length
+        _input.node().selectionStart === _input.property('value').length
       ) {
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
         // move focus to the first item in the preset list
-        let buttons = list.selectAll('.preset-list-button');
+        let buttons = _list.selectAll('.preset-list-button');
         if (!buttons.empty()) {
-          buttons.nodes()[0].focus();
+          buttons.node().focus();
         }
       }
     }
 
-    function keypress(d3_event) {
-      const value = search.property('value');
-      if (d3_event.keyCode === 13 && value.length) {  // ↩ Return
-        list.selectAll('.preset-list-item:first-child')
-          .each(function(d) { d.choose.call(this); });
+    function keypress(e) {
+      const target = e.currentTarget;
+      const selection = d3_select(target);
+      const val = _input.property('value');
+
+      if (e.keyCode === 13 && val.length) {  // ↩ Return
+        const item = _list.selectAll('.preset-list-item:first-child').datum();
+        item.choose();
       }
     }
 
     function inputevent() {
-      const value = search.property('value');
-      list.classed('filtered', value.length);
+      const val = _input.property('value');
+      _list.classed('filtered', val.length);
+
+      const geometry = entityGeometries()[0];
 
       let collection, messageText;
-      if (value.length) {
-        collection = presets.search(value, entityGeometries()[0], _currLoc);
-        messageText = l10n.t('inspector.results', { n: collection.array.length, search: value });
+      if (val.length) {
+        collection = allPresets.search(val, geometry, _currLoc);
+        messageText = l10n.t('inspector.results', { n: collection.array.length, search: val });
       } else {
-        collection = presetSystem.defaults(entityGeometries()[0], 36, !context.inIntro, _currLoc);
+        collection = defaultPresets;
         messageText = l10n.t('inspector.choose');
       }
-      list.call(drawList, collection);
-      message.html(messageText);
+      _list.call(drawList, collection);
+      message.text(messageText);
     }
   }
 
 
-  // Draws a collection of Presets/Categories
+  /**
+   * drawList
+   * Draws a collection of Presets/Categories.
+   * The category items themselves may also contain sublists.
+   * @param  {d3-selection}  selection  - parent selection to render list items into (in this case, a `div.preset-list`)
+   * @param  {Collection}    collection - collection of categories and presets to include in the list
+   */
   function drawList(selection, collection) {
-    collection = collection.matchAllGeometry(entityGeometries());  // not sure why we do this again
-
-    let arr = [];
+    const data = [];
     for (const item of collection.array) {
       if (!item) continue;  // not sure how this would happen
       if (item.members) {
-        arr.push(CategoryItem(item));
+        data.push(new CategoryItem(item));
       } else {
-        arr.push(PresetItem(item));
+        data.push(new PresetItem(item));
       }
     }
 
-    const items = selection.selectAll('.preset-list-item')
-      .data(arr, d => d.preset.id);
+    // Select direct descendant list items only...
+    // Because `d3.selectAll` uses `element.querySelectorAll`, `:scope` refers to self
+    // see https://developer.mozilla.org/en-US/docs/Web/CSS/:scope
+    let items = selection.selectAll(':scope > .preset-list-item')
+      .data(data, d => d.preset.id);
 
-    items.order();  // make them match the order of `arr`
-
+    // exit
     items.exit()
       .remove();
 
-    items.enter()
+    // enter
+    const itemsEnter = items.enter()
       .append('div')
-      .attr('class', d => 'preset-list-item preset-' + d.preset.id.replace('/', '-'))
-      .classed('current', d => _currentPresets.includes(d.preset))
-      .each(function(d) { d3_select(this).call(d); })
+      .attr('class', d => `preset-list-item preset-${d.preset.safeid}`)
       .style('opacity', 0)
       .transition()
       .style('opacity', 1);
 
-    updateForFeatureHiddenState();
+    // update
+    items = items.merge(itemsEnter)
+      .order()   // make them match the order of `arr`
+      .each((d, i, nodes) => d3_select(nodes[i]).call(d.render))
+      .classed('current', d => _selectedPresetIDs.has(d.preset.id));
+
+    _checkFilteringRules();
   }
 
 
-  function itemKeydown(d3_event) {
+  function itemKeydown(e) {
+    const target = e.currentTarget;
+    const selection = d3_select(target);
+
     // the actively focused item
-    let item = d3_select(this.closest('.preset-list-item'));
-    let parentItem = d3_select(item.node().parentNode.closest('.preset-list-item'));
+    const item = d3_select(target.closest('.preset-list-item'));
+    const node = item.node();
+    const parentItem = d3_select(node.parentNode.closest('.preset-list-item'));
+    const parentNode = parentItem.node();
     const isRTL = l10n.isRTL();
 
     // arrow down, move focus to the next, lower item
-    if (d3_event.keyCode === utilKeybinding.keyCodes['↓']) {
-      d3_event.preventDefault();
-      d3_event.stopPropagation();
+    if (e.keyCode === utilKeybinding.keyCodes['↓']) {
+      e.preventDefault();
+      e.stopPropagation();
 
       // the next item in the list at the same level
-      let nextItem = d3_select(item.node().nextElementSibling);
+      let nextItem = d3_select(node.nextElementSibling);
+
       // if there is no next item in this list
       if (nextItem.empty()) {
-        if (!parentItem.empty()) {        // if there is a parent item
+        if (parentNode) {        // if there is a parent item
           // the item is the last item of a sublist, select the next item at the parent level
-          nextItem = d3_select(parentItem.node().nextElementSibling);
+          nextItem = d3_select(parentNode.nextElementSibling);
         }
-      } else if (d3_select(this).classed('expanded')) {                    // if the focused item is expanded
+      } else if (selection.classed('expanded')) {                    // if the focused item is expanded
         nextItem = item.select('.subgrid .preset-list-item:first-child');  // select the first subitem instead
       }
 
@@ -213,12 +269,12 @@ export function uiPresetList(context) {
       }
 
     // arrow up, move focus to the previous, higher item
-    } else if (d3_event.keyCode === utilKeybinding.keyCodes['↑']) {
-      d3_event.preventDefault();
-      d3_event.stopPropagation();
+    } else if (e.keyCode === utilKeybinding.keyCodes['↑']) {
+      e.preventDefault();
+      e.stopPropagation();
 
       // the previous item in the list at the same level
-      let previousItem = d3_select(item.node().previousElementSibling);
+      let previousItem = d3_select(node.previousElementSibling);
 
       // if there is no previous item in this list
       if (previousItem.empty()) {
@@ -235,149 +291,183 @@ export function uiPresetList(context) {
         previousItem.select('.preset-list-button').node().focus();     // focus on the previous item
       } else {
         // the focus is at the top of the list, move focus back to the search field
-        const search = d3_select(this.closest('.preset-list-pane')).select('.preset-search-input');
-        search.node().focus();
+        _input.node().focus();
       }
 
     // arrow left, move focus to the parent item if there is one
-    } else if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '→' : '←']) {
-      d3_event.preventDefault();
-      d3_event.stopPropagation();
+    } else if (e.keyCode === utilKeybinding.keyCodes[isRTL ? '→' : '←']) {
+      e.preventDefault();
+      e.stopPropagation();
       if (!parentItem.empty()) {     // if there is a parent item, focus on the parent item
         parentItem.select('.preset-list-button').node().focus();
       }
 
     // arrow right, choose this item
-    } else if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '←' : '→']) {
-      d3_event.preventDefault();
-      d3_event.stopPropagation();
-      item.datum().choose.call(d3_select(this).node());
+    } else if (e.keyCode === utilKeybinding.keyCodes[isRTL ? '←' : '→']) {
+      e.preventDefault();
+      e.stopPropagation();
+      item.datum().choose();
     }
   }
 
 
   /**
    */
-  function CategoryItem(preset) {
-    let box;
-    let sublist;
-    let shown = false;
+  class CategoryItem {
+    constructor(preset) {
+      this.box = null;
+      this.sublist = null;
+      this.shown = false;
+      this.preset = preset;
 
-    function item(selection) {
+      // Ensure methods used as callbacks always have `this` bound correctly.
+      // (This is also necessary when using `d3-selection.call`)
+      this.choose = this.choose.bind(this);
+      this.render = this.render.bind(this);
+      this._click = this._click.bind(this);
+      this._keydown = this._keydown.bind(this);
+    }
+
+
+    render(selection) {
+      const preset = this.preset;
+      const geometries = entityGeometries();
       const isRTL = l10n.isRTL();
 
-      const wrap = selection.append('div')
+      const wrapEnter = selection.selectAll(':scope > .preset-list-button-wrap')
+        .data([this], d => d.preset.id)
+        .enter()
+        .append('div')
         .attr('class', 'preset-list-button-wrap category');
 
-      function click() {
-        const isExpanded = d3_select(this).classed('expanded');
-        const iconName = isExpanded ? (isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward') : '#rapid-icon-down';
-        d3_select(this)
-          .classed('expanded', !isExpanded);
-        d3_select(this).selectAll('div.label-inner svg.icon use')
-          .attr('href', iconName);
-        item.choose();
-      }
-
-      const geometries = entityGeometries();
-
-      const button = wrap
+      const buttonEnter = wrapEnter
         .append('button')
         .attr('class', 'preset-list-button')
         .classed('expanded', false)
         .call(uiPresetIcon(context)
           .geometry(geometries.length === 1 && geometries[0])
           .preset(preset))
-        .on('click', click)
-        .on('keydown', function(d3_event) {
-          if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '←' : '→']) {  // right arrow, expand the focused item
-            d3_event.preventDefault();
-            d3_event.stopPropagation();
-            if (!d3_select(this).classed('expanded')) {   // if the item isn't expanded
-              click.call(this, d3_event);                 // toggle expansion (expand the item)
-            }
-          } else if (d3_event.keyCode === utilKeybinding.keyCodes[isRTL ? '→' : '←']) {   // left arrow, collapse the focused item
-            d3_event.preventDefault();
-            d3_event.stopPropagation();
-            if (d3_select(this).classed('expanded')) {    // if the item is expanded
-              click.call(this, d3_event);                 // toggle expansion (collapse the item)
-            }
-          } else {
-            itemKeydown.call(this, d3_event);
-          }
-        });
+        .on('click', this._click)
+        .on('keydown', this._keydown);
 
-      let label = button
+      const labelEnter = buttonEnter
         .append('div')
         .attr('class', 'label')
         .append('div')
         .attr('class', 'label-inner');
 
-      label
+      labelEnter
         .append('div')
         .attr('class', 'namepart')
         .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
         .append('span')
         .html(() => preset.nameLabel() + '&hellip;');
 
-      box = selection.append('div')
+      this.box = selection
+        .append('div')
         .attr('class', 'subgrid')
         .style('max-height', '0px')
         .style('opacity', 0);
 
-      box.append('div')
+      this.box
+        .append('div')
         .attr('class', 'arrow');
 
-      sublist = box.append('div')
-        .attr('class', 'preset-list fillL3');
+      this.sublist = this.box
+        .append('div')
+        .attr('class', 'preset-list preset-list-sub fillL3');
     }
 
+    _keydown(e) {
+      const isRTL = l10n.isRTL();
+      const target = e.currentTarget;
+      const selection = d3_select(target);
+      if (e.keyCode === utilKeybinding.keyCodes[isRTL ? '←' : '→']) {  // right arrow, expand the focused item
+        e.preventDefault();
+        e.stopPropagation();
+        if (!selection.classed('expanded')) {  // if the item isn't expanded
+          this._click(e);                      // toggle expansion (expand the item)
+        }
+      } else if (e.keyCode === utilKeybinding.keyCodes[isRTL ? '→' : '←']) {   // left arrow, collapse the focused item
+        e.preventDefault();
+        e.stopPropagation();
+        if (selection.classed('expanded')) {   // if the item is expanded
+          this._click(e);                      // toggle expansion (collapse the item)
+        }
+      } else {
+        itemKeydown(e);
+      }
+    }
 
-    item.choose = function() {
-      if (!box || !sublist) return;
+    _click(e) {
+      const isRTL = l10n.isRTL();
+      const target = e.currentTarget;
+      const selection = d3_select(target);
+      const isExpanded = selection.classed('expanded');
+      const iconName = isExpanded ? (isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward') : '#rapid-icon-down';
+      selection.classed('expanded', !isExpanded);
+      selection.selectAll('div.label-inner svg.icon use').attr('href', iconName);
+      this.choose();
+    }
 
-      if (shown) {
-        shown = false;
-        box.transition()
+    choose() {
+      if (!this.box || !this.sublist) return;
+
+      if (this.shown) {
+        this.shown = false;
+        this.box.transition()
           .duration(200)
           .style('opacity', '0')
           .style('max-height', '0px')
           .style('padding-bottom', '0px');
       } else {
-        shown = true;
-        const members = preset.members.matchAllGeometry(entityGeometries());
-        sublist.call(drawList, members);
-        box.transition()
+        this.shown = true;
+        const collection = this.preset.members.matchAllGeometry(entityGeometries());
+        this.sublist.call(drawList, collection);
+        this.box.transition()
           .duration(200)
           .style('opacity', '1')
-          .style('max-height', 200 + members.array.length * 190 + 'px')
+          .style('max-height', 200 + collection.array.length * 190 + 'px')
           .style('padding-bottom', '10px');
       }
-    };
+    }
 
-    item.preset = preset;
-    return item;
   }
 
 
   /**
    */
-  function PresetItem(preset) {
-    function item(selection) {
-      const wrap = selection.append('div')
-        .attr('class', 'preset-list-button-wrap');
+  class PresetItem {
+    constructor(preset) {
+      this.preset = preset;
+      this.reference = uiTagReference(context, preset.reference());
 
+      // Ensure methods used as callbacks always have `this` bound correctly.
+      // (This is also necessary when using `d3-selection.call`)
+      this.choose = this.choose.bind(this);
+      this.render = this.render.bind(this);
+    }
+
+    render(selection) {
+      const preset = this.preset;
       const geometries = entityGeometries();
 
-      const button = wrap.append('button')
+      const wrapEnter = selection.selectAll('.preset-list-button-wrap')
+        .data([this], d => d.preset.id)
+        .enter()
+        .append('div')
+        .attr('class', 'preset-list-button-wrap');
+
+      const buttonEnter = wrapEnter
+        .append('button')
         .attr('class', 'preset-list-button')
         .call(uiPresetIcon(context)
           .geometry(geometries.length === 1 && geometries[0])
           .preset(preset))
-        .on('click', item.choose)
+        .on('click', this.choose)
         .on('keydown', itemKeydown);
 
-      const label = button
+      const labelEnter = buttonEnter
         .append('div')
         .attr('class', 'label')
         .append('div')
@@ -388,26 +478,30 @@ export function uiPresetList(context) {
         preset.subtitleLabel()
       ].filter(Boolean);
 
-      label.selectAll('.namepart')
+      labelEnter.selectAll('.namepart')
         .data(nameparts)
         .enter()
         .append('div')
         .attr('class', 'namepart')
         .html(d => d);
 
-      wrap.call(item.reference.button);
-      selection.call(item.reference.body);
+      wrapEnter.call(this.reference.button);
+      selection.call(this.reference.body);
     }
 
-    item.choose = function() {
-      if (d3_select(this).classed('disabled')) return;
+
+    choose() {
+      const preset = this.preset;
+// figure out how to do this without `this`
+      // if (d3_select(this).classed('disabled')) return;
+
       if (!context.inIntro) {
-        presetSystem.setMostRecent(preset);
+        presets.setMostRecent(preset);
       }
 
       const combinedAction = (graph) => {
         for (const entityID of _entityIDs) {
-          const oldPreset = presetSystem.match(graph.entity(entityID), graph);
+          const oldPreset = presets.match(graph.entity(entityID), graph);
           graph = actionChangePreset(entityID, oldPreset, preset)(graph);
         }
         return graph;
@@ -419,48 +513,41 @@ export function uiPresetList(context) {
         selectedIDs: _entityIDs
       });
       dispatch.call('choose', this, preset);
-    };
+    }
 
-    item.help = function(d3_event) {
-      d3_event.stopPropagation();
-      item.reference.toggle();
-    };
-
-    item.preset = preset;
-    item.reference = uiTagReference(context, preset.reference());
-
-    return item;
   }
 
 
-  function updateForFeatureHiddenState() {
+  function _checkFilteringRules() {
     const graph = editor.staging.graph;
     if (!_entityIDs.every(entityID => graph.hasEntity(entityID))) return;
 
     const geometries = entityGeometries();
-    const buttons = context.container().selectAll('.preset-list .preset-list-button');
+    const buttons = _list.selectAll('.preset-list-button');
 
     // remove existing tooltips
     buttons.call(uiTooltip(context).destroyAny);
 
-    buttons.each(function(item, index) {
-      let hiddenPresetFeaturesId;
-      for (let i in geometries) {
-        hiddenPresetFeaturesId = filters.isHiddenPreset(item.preset, geometries[i]);
-        if (hiddenPresetFeaturesId) break;
+    buttons.each((d, i, nodes) => {
+      const selection = d3_select(nodes[i]);
+
+      let filterID;  // check whether this preset would be hidden by the current filtering rules
+      for (const geometry of geometries) {
+        filterID = filters.isHiddenPreset(d.preset, geometry);
+        if (filterID) break;
       }
-      const isHiddenPreset = !context.inIntro && !!hiddenPresetFeaturesId &&
-        (_currentPresets.length !== 1 || item.preset !== _currentPresets[0]);
 
-      d3_select(this)
-        .classed('disabled', isHiddenPreset);
+      const isHidden = filterID && !context.inIntro && !_selectedPresetIDs.has(d.preset.id);
 
-      if (isHiddenPreset) {
-        d3_select(this).call(uiTooltip(context)
+      selection
+        .classed('disabled', isHidden);
+
+      if (isHidden) {
+        selection.call(uiTooltip(context)
           .title(l10n.tHtml('inspector.hidden_preset.manual', {
-            features: l10n.tHtml('feature.' + hiddenPresetFeaturesId + '.description')
+            features: l10n.tHtml(`feature.${filterID}.description`)
           }))
-          .placement(index < 2 ? 'bottom' : 'top')
+          .placement(i < 2 ? 'bottom' : 'top')
         );
       }
     });
@@ -479,25 +566,42 @@ export function uiPresetList(context) {
 
     _entityIDs = val;
     _currLoc = null;
+    _selectedPresetIDs = new Set();
+    _input.property('value', '');
+    _list.selectAll('.preset-list-item').remove();
 
-    if (_entityIDs && _entityIDs.length) {
+    if (Array.isArray(_entityIDs)) {
       const graph = editor.staging.graph;
 
       // calculate current location
       _currLoc = utilTotalExtent(_entityIDs, graph).center();
 
       // match presets
-      let presets = _entityIDs.map(entityID => presetSystem.match(graph.entity(entityID), graph));
-      presetList.presets(presets);
+      for (const entityID of _entityIDs) {
+        const matched = presets.match(graph.entity(entityID), graph);
+        if (matched) {
+          _selectedPresetIDs.add(matched.id);
+        }
+      }
     }
 
     return presetList;
   };
 
 
-  presetList.presets = function(val) {
-    if (!arguments.length) return _currentPresets;
-    _currentPresets = val;
+  presetList.selected = function(val) {
+    if (!arguments.length) return _selectedPresetIDs;
+
+    _selectedPresetIDs = new Set();
+
+    if (Array.isArray(val)) {
+      for (const preset of val) {
+        if (preset?.id) {
+          _selectedPresetIDs.add(preset.id);
+        }
+      }
+    }
+
     return presetList;
   };
 

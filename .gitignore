@@ -8,6 +8,7 @@ npm-debug.log
 
 transifex.auth
 
+/dist/index-copy.html
 /dist/*.js
 /dist/*.css
 /dist/*.map
@@ -15,8 +16,6 @@ transifex.auth
 /dist/data/
 /dist/img/*.svg
 /dist/locales/en.min.json
-/dist/mapillary-js/
-/dist/pannellum-streetside/
 
 /coverage/
 

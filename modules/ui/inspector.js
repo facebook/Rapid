@@ -6,6 +6,18 @@ import { uiPresetList } from './preset_list';
 import { uiViewOnOSM } from './view_on_osm';
 
 
+// The Inspector is a UI component for viewing/editing OSM Entities in the sidebar.
+// It consists of two divs that can slide side to side (only one will be visible at a time):
+//
+// +--------+--------+
+// |        |        |
+// | Preset | Entity |
+// |  List  | Editor |
+// |        |        |
+// |        |        |
+// +--------+--------+
+//
+
 export function uiInspector(context) {
   const editor = context.systems.editor;
   const validator = context.systems.validator;
@@ -16,6 +28,7 @@ export function uiInspector(context) {
   let wrap = d3_select(null);
   let presetPane = d3_select(null);
   let editorPane = d3_select(null);
+  let _current = '';
   let _state = 'select';
   let _entityIDs;
   let _newFeature = false;
@@ -27,13 +40,13 @@ export function uiInspector(context) {
     presetList
       .entityIDs(_entityIDs)
       .autofocus(_newFeature)
-      .on('choose', inspector.setPreset)
-      .on('cancel', () => inspector.setPreset());
+      .on('choose', choice => inspector.setPreset(choice))
+      .on('cancel', () => inspector.setPreset() );
 
     entityEditor
       .state(_state)
       .entityIDs(_entityIDs)
-      .on('choose', inspector.showList);
+      .on('choose', selected => inspector.showPresetList(selected, true));  // true = animate in
 
     wrap = selection.selectAll('.panewrap')
       .data([0]);
@@ -55,13 +68,9 @@ export function uiInspector(context) {
     editorPane = wrap.selectAll('.entity-editor-pane');
 
     if (_shouldDefaultToPresetList()) {
-      wrap.style('right', '-100%');
-      editorPane.classed('hide', true);
-      presetPane.classed('hide', false).call(presetList);
+      inspector.showPresetList();
     } else {
-      wrap.style('right', '0%');
-      presetPane.classed('hide', true);
-      editorPane.classed('hide', false).call(entityEditor);
+      inspector.showEntityEditor();
     }
 
     let footer = selection.selectAll('.footer')
@@ -113,41 +122,71 @@ export function uiInspector(context) {
   }
 
 
-  inspector.showList = function(presets) {
-    presetPane.classed('hide', false);
+  //
+  // Show the preset list , optionally with given selected array, and optionally with a slide-in animation
+  //
+  inspector.showPresetList = function(selected, animate) {
+    if (_current !== 'presetList') {
+      presetPane.classed('hide', false);
 
-    wrap.transition()
-      .styleTween('right', () => d3_interpolate('0%', '-100%'))
-      .on('end', () => editorPane.classed('hide', true));
-
-    if (presets) {
-      presetList.presets(presets);
+      if (animate) {
+        wrap.transition()
+          .styleTween('right', () => d3_interpolate('0%', '-100%'))
+          .on('end', () => editorPane.classed('hide', true));
+      } else {
+        wrap.style('right', '-100%');
+        editorPane.classed('hide', true);
+      }
+      _current = 'presetList';
     }
 
+    if (Array.isArray(selected)) {
+      presetList.selected(selected);
+    }
+
+    // render
     presetPane
       .call(presetList.autofocus(true));
   };
 
 
-  inspector.setPreset = function(preset) {
-    // upon setting multipolygon, go to the area preset list instead of the editor
-    if (preset && preset.id === 'type/multipolygon') {
-      presetPane
-        .call(presetList.autofocus(true));
-
-    } else {
+  //
+  // Show the entity editor, optionally with the given presets, optionally with slide-in animation
+  //
+  inspector.showEntityEditor = function(presets, animate) {
+    if (_current !== 'entityEditor') {
       editorPane.classed('hide', false);
 
-      wrap.transition()
-        .styleTween('right', () => d3_interpolate('-100%', '0%'))
-        .on('end', () => presetPane.classed('hide', true));
-
-      if (preset) {
-        entityEditor.presets([preset]);
+      if (animate) {
+        wrap.transition()
+          .styleTween('right', () => d3_interpolate('-100%', '0%'))
+          .on('end', () => presetPane.classed('hide', true));
+      } else {
+        wrap.style('right', '0%');
+        presetPane.classed('hide', true);
       }
+      _current = 'entityEditor';
+    }
 
-      editorPane
-        .call(entityEditor);
+    if (Array.isArray(presets)) {
+      entityEditor.presets(presets);
+    }
+
+    editorPane
+      .call(entityEditor);
+  };
+
+
+  //
+  // Choose the given preset
+  //
+  inspector.setPreset = function(preset) {
+    // upon choosing multipolygon, re-render the area preset list instead of the editor
+    if (preset?.id === 'type/multipolygon') {
+      inspector.showPresetList();
+    } else {
+      const choice = preset ? [preset] : null;
+      inspector.showEntityEditor(choice, true);  // true = animate
     }
   };
 

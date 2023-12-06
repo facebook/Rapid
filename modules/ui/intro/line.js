@@ -2,7 +2,7 @@ import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroLine(context, curtain) {
@@ -15,6 +15,7 @@ export function uiIntroLine(context, curtain) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
+  const ui = context.systems.ui;
 
   const flowerStreetID = 'w646';
   const tulipRoadStartExtent = new Extent([-85.63016, 41.95749], [-85.62937, 41.95843]);
@@ -267,7 +268,7 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
-        showPresetList(container);
+        // ui.sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         categoryButton = container.select('.preset-category-road_minor .preset-list-button');
@@ -305,7 +306,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
-        showPresetList(container);
+        // ui.sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
@@ -362,7 +363,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
-        showPresetList(container);
+        ui.sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
@@ -419,7 +420,7 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = () => resolve(didNameRoadAsync);
 
-        showEntityEditor(container);
+        ui.sidebar.showEntityEditor();
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',

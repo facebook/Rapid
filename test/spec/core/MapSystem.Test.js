@@ -45,7 +45,9 @@ describe('MapSystem', () => {
         photos:  new MockSystem(),
         l10n:    new MockLocalizationSystem(),
         storage: new MockStorageSystem(),
-        urlhash: new MockSystem()
+        urlhash: new MockSystem(),
+        colors: new MockSystem(),
+        styles: new MockSystem(),
       };
       this.projection = new sdk.Projection();
     }

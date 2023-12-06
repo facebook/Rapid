@@ -16,12 +16,14 @@ Rapid also includes data integrity checks to ensure that new map edits are consi
 * Use [rapideditor.org/edit](https://rapideditor.org/edit) for the latest release.
 * Learn more at [rapideditor.org](https://rapideditor.org).
 
-
 ## Participate!
 
 * Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guide](CONTRIBUTING.md) to learn about how to contribute.
 * See [open issues in the issue tracker](https://github.com/facebook/Rapid/issues?state=open) if you're looking to help on issues.
 * To help with internationalization, please follow the [general translating page in iD repo](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating).
+* Test a prerelease version of Rapid:
+  * The current build of the `main` branch is available here: https://rapideditor.org/canary
+  * Note that this [canary build](https://www.pcmag.com/encyclopedia/term/canary-build) of Rapid may be unstable and buggy!
 
 We're available to chat!  Ping us on the `#rapid_feedback` channel on either:
 * [OpenStreetMap US Slack](https://slack.openstreetmap.us/)

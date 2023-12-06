@@ -236,7 +236,7 @@ Object.assign(osmWay.prototype, {
 
 
     isDegenerate: function() {
-        return (new Set(this.nodes).size < (this.isArea() ? 3 : 2));
+        return (new Set(this.nodes).size < (this.isClosed() ? 3 : 2));
     },
 
 

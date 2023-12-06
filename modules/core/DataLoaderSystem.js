@@ -44,6 +44,7 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('shortcuts', 'data/shortcuts.min.json');
     fileMap.set('territory_languages', 'data/territory_languages.min.json');
     fileMap.set('wmf_sitematrix', 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json');
+    fileMap.set('colors', 'data/colors.min.json');
 
     // Add wayback imagery endpoint
     fileMap.set('wayback', 'https://www.arcgis.com/sharing/rest/content/groups/0f3189e1d1414edfad860b697b7d8311?f=json');
@@ -77,6 +78,7 @@ export class DataLoaderSystem extends AbstractSystem {
       c.shortcuts = [];
       c.territory_languages = {};
       c.wmf_sitematrix = [ ['English','English','en'], ['German', 'Deutsch', 'de'] ];
+      c.colors = {};
     }
   }
 

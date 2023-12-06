@@ -1,6 +1,5 @@
 import { AbstractMode } from './AbstractMode';
 import { operationPaste } from '../operations/paste';
-import { cursors } from './index';
 
 const DEBUG = false;
 
@@ -89,17 +88,17 @@ export class BrowseMode extends AbstractMode {
     const geom = entity?.geometry(graph) ?? 'unknown';
 
     switch (geom) {
-      case 'line':
-        eventManager.setCursor(cursors.lineCursor);
+      case 'area':
+        eventManager.setCursor('areaCursor');
         break;
-      case 'vertex':
-        eventManager.setCursor(cursors.vertexCursor);
+      case 'line':
+        eventManager.setCursor('lineCursor');
         break;
       case 'point':
-        eventManager.setCursor(cursors.pointCursor);
+        eventManager.setCursor('pointCursor');
         break;
-      case 'area':
-        eventManager.setCursor(cursors.areaCursor);
+      case 'vertex':
+        eventManager.setCursor('vertexCursor');
         break;
       default:
         eventManager.setCursor('grab');

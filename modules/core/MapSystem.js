@@ -48,7 +48,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['editor', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash']);
+    this.dependencies = new Set(['editor', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash', 'colors', 'styles']);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -242,6 +242,7 @@ export class MapSystem extends AbstractSystem {
     const filters = context.systems.filters;
     const imagery = context.systems.imagery;
     const photos = context.systems.photos;
+    const colors = context.systems.colors;
     const scene = this._renderer.scene;
 
     editor
@@ -264,9 +265,13 @@ export class MapSystem extends AbstractSystem {
       })
       .on('historyjump', (prevIndex, currIndex) => {
         // This code occurs when jumping to a different edit because of a undo/redo/restore, etc.
-        // Counterintuitively, when undoing, we want the metadata from the _next_ edit (located at prevIndex).
+        const prevEdit = editor.history[prevIndex];
+        const currEdit = editor.history[currIndex];
+
+        // Counterintuitively, when undoing, we might want the metadata from the _next_ edit (located at prevIndex).
+        // If that edit exists (it might not if we are restoring) use that one, otherwise just use the current edit
         const didUndo = (currIndex === prevIndex - 1);
-        const edit = didUndo ? editor.history[prevIndex] : editor.history[currIndex];
+        const edit = (didUndo && prevEdit) ?? currEdit;
 
         // Reposition the map if we've jumped to a different place.
         const t0 = this.transform();
@@ -302,6 +307,7 @@ export class MapSystem extends AbstractSystem {
     imagery.on('imagerychange', this.immediateRedraw);
     photos.on('photochange', this.immediateRedraw);
     scene.on('layerchange', this.immediateRedraw);
+    colors.on('colorchange', this.immediateRedraw);
 
     const osm = context.services.osm;
     if (osm) {

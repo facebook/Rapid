@@ -91,10 +91,10 @@ export class Collection {
       };
     }
 
-    let pool = this.array;
+    let pool = this.array.filter(a => a.matchGeometry(geometry));
     if (Array.isArray(loc)) {
-      const locationSystem = this.context.systems.locations;
-      const validHere = locationSystem.locationSetsAt(loc);
+      const locations = this.context.systems.locations;
+      const validHere = locations.locationSetsAt(loc);
       pool = pool.filter(a => !a.locationSetID || validHere[a.locationSetID]);
     }
 

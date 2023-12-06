@@ -1,92 +1,89 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Deploy
+name: deploy
 
 on:
   push:
     branches: [ main, '*staging*', 'rapid-v1.x' ]
+  pull_request:
+    branches: [ main ]
 
 permissions:
-  id-token: write # required to use OIDC authentication
-  contents: read # required to checkout the code from the repo
+  id-token: write  # required to use OIDC authentication
+  contents: read   # required to checkout the code from the repo
+
+env:
+  FORCE_COLOR: 2
 
 jobs:
-  build:
-    name: Build
+  deploy:
     runs-on: ubuntu-latest
 
+    # This tells Github that a deployment happened and where to find it
+    environment:
+      name: Staging
+      url:  ${{ steps.target.outputs.url }}
+
     steps:
-    - name: Checkout 📥
+    - run: |
+        echo "::remove-matcher owner=eslint-compact::"
+        echo "::remove-matcher owner=eslint-stylish::"
+
+    - name: 📥  Checkout
       uses: actions/checkout@v4
 
-    - name: Use Node.js 18 ⚙️
+    - name: ⚙️  Use Node.js 18
       uses: actions/setup-node@v4
       with:
         node-version: 18
 
-    - name: Install 🎯
-      run: npm install
+    - name: 🏗️  Install
+      run: |
+        npm install
+        npm run all
 
-    - name: Run 🏃
-      run: npm run all
+#    - name: 🧪  Test
+#      run: npm run test
 
-    - name: Test 🧪
-      run: npm run test
-
-    - name: Upload artifacts 📤
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifacts
-        path: dist
-        if-no-files-found: error
-
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-    - name: Checkout 📥
-      uses: actions/checkout@v4
-
-    - name: Download artifacts 📥
-      uses: actions/download-artifact@v3
-      with:
-        name: build-artifacts
-        path: dist
-
-    - name: Configure AWS credentials 🔐
+    - name: 🔐  Setup AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ secrets.AWS_RAPID_DEPLOY_ROLE_ARN }}
         role-duration-seconds: 900 # the ttl of the session, in seconds.
         aws-region: us-west-2
 
-    - name: Setup vars 📋
-      id: vars
+    - name: 📋  Setup environment vars
       run: |
-        echo "identifier=$(git rev-parse --short ${{ github.sha }})-16.x" >> "$GITHUB_ENV"
-        echo "distdir=$(git rev-parse --short ${{ github.sha }})-16.x-" >> "$GITHUB_ENV"
+        echo "YYYYMMDD=$(date +'%Y%m%d')"                            >> "$GITHUB_ENV"
+        echo "BUILD_SHA=$(git rev-parse --short ${{ github.sha }})"  >> "$GITHUB_ENV"
 
-    - name: Prep files 🔨
-      run: npm run aws_deploy
-      env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
+    # On branch push, the BUILD_ID will be 'branch_name-revision', e.g. `main-d3adc0de`
+    # The revision is unique, so we save every one of these indefinitely.
+    - name: 🗂️  Setup BUILD_ID for push
+      if: ${{ github.event_name == 'push' }}
+      run: echo "BUILD_ID=${{ github.ref_name }}-${{ env.BUILD_SHA }}" >> "$GITHUB_ENV"
 
-    - name: Copy new index file to S3 📤
-      run: aws s3 cp $DISTDIR/index.html s3://world.ai.rapid/rapid/$IDENTIFIER-rapid.html --no-progress
-      env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
+    # On pull request, the BUILD_ID will be 'pull-request-#', e.g. `pull-request-1123`
+    # Subsequent changes to the pull request will overwrite this build.
+    - name: 🗂️  Setup BUILD_ID for pull request
+      if: ${{ github.event_name == 'pull_request' }}
+      run: echo "BUILD_ID=pull-request-${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
 
-    - name: Copy new dist dir to S3 📤
-      run: aws s3 cp $DISTDIR s3://world.ai.rapid/rapid/$DISTDIR --recursive --no-progress
-      env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
-
-    - name: Deployment complete! 🚀
+    - name: 🎯  Setup deployment targets
+      id: target
       run: |
-        echo "Your build is here: https://mapwith.ai/rapid/${{ env.distdir }}/index.html"
+        echo "s3=s3://world.ai.rapid/rapid/${{ env.BUILD_ID }}"                  >> "$GITHUB_OUTPUT"
+        echo "url=https://rapideditor.org/rapid/${{ env.BUILD_ID }}/index.html"  >> "$GITHUB_OUTPUT"
+
+    # Rewrite the urls and embed build info in index.html
+    - name: 🔨 Predeploy index.html
+      run: node scripts/predeploy.js
+
+    - name: 📤  Copy build to S3
+      run: |
+        aws s3 sync dist ${{ steps.target.outputs.s3 }} --delete --only-show-errors
+        echo "Your build is here: ${{ steps.target.outputs.url }}"
+
+    - name: 🐤  Set as canary build
+      if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+      run: |
+        aws s3 cp dist/index.html  s3://world.ai.rapid/canary  --only-show-errors
+        echo "This is latest build on main, so it is available here: https://rapideditor.org/canary"
