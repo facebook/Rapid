@@ -142,7 +142,7 @@ export class SelectMode extends AbstractMode {
         });
 
     } else if (datum instanceof MapRouletteTask && datum.service === 'maproulette') {
-      context.systems.map.extent(datum.extent());
+      // context.systems.map.extent(datum.extent());
       sidebarContent = uiMapRouletteEditor(context).error(datum);
       sidebarContent
       .on('change', () => {

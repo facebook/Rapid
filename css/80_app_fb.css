@@ -316,6 +316,14 @@ button.bugnub {
     border-radius: 5px;
 }
 
+.list-item.list-item-maproulette {
+    flex-direction: column;
+}
+
+.ideditor[dir='ltr'] .layer-list .indented {
+    padding-left: 24px;
+}
+
 .rapid-inspector-choice .choice-wrap {
     display: flex;
     flex: 1;
