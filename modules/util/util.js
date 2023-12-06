@@ -2,18 +2,26 @@ import * as PIXI from 'pixi.js';
 import { Extent } from '@rapid-sdk/math';
 
 
-// Accepts an array of entities -or- entityIDs
-export function utilTotalExtent(array, graph) {
-  return array.reduce(function(extent, val) {
-    let entity = (typeof val === 'string' ? graph.hasEntity(val) : val);
+/**
+ * utilTotalExtent
+ * Returns an `Extent` that contains all of the given Entities or entityIDs.
+ * @param   {Array|Set}  vals - Entities -or- EntityIDs
+ * @return  {Extent}     Total Extent that contains the given Entities
+ */
+export function utilTotalExtent(vals, graph) {
+  const extent = new Extent();
+
+  for (const val of vals) {
+    const entity = (typeof val === 'string' ? graph.hasEntity(val) : val);
     if (entity) {
-      let other = entity.extent(graph);
+      const other = entity.extent(graph);
       // update extent in place
       extent.min = [ Math.min(extent.min[0], other.min[0]), Math.min(extent.min[1], other.min[1]) ];
       extent.max = [ Math.max(extent.max[0], other.max[0]), Math.max(extent.max[1], other.max[1]) ];
     }
-    return extent;
-  }, new Extent());
+  }
+
+  return extent;
 }
 
 
