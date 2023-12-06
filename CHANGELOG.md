@@ -70,6 +70,7 @@ Also, welcome to the dev team [@tannerwuster]!
 * [#1116], [#1112] Validation system should now fire correctly when the user edits, pans, and zooms
 * [#1058], [#1121] Changeset comment should now be remembered and reused next time
 * [#1124] OSM username isn't escaped properly (Credit: [@RitaDee])
+* [#1125], [iD#8758] Connectivity warnings now update as users cause or fix connectivity issues
 * [#1126] Clicking 'reload my changes' very quickly should no longer cause a crash/stack trace
 * [#1129] The commit message text field should now properly receive focus when the user clicks 'save'
 * [#1155] Clicking on a third-party website URL should now work properly
@@ -117,6 +118,7 @@ Also, welcome to the dev team [@tannerwuster]!
 [#1121]: https://github.com/facebook/Rapid/issues/1121
 [#1123]: https://github.com/facebook/Rapid/issues/1123
 [#1124]: https://github.com/facebook/Rapid/issues/1124
+[#1125]: https://github.com/facebook/Rapid/issues/1125
 [#1126]: https://github.com/facebook/Rapid/issues/1126
 [#1129]: https://github.com/facebook/Rapid/issues/1129
 [#1130]: https://github.com/facebook/Rapid/issues/1130
@@ -156,6 +158,7 @@ Also, welcome to the dev team [@tannerwuster]!
 [#iD9630]: https://github.com/openstreetmap/iD/pull/9630
 [#iD9424]: https://github.com/openstreetmap/iD/pull/9424
 [#iD9422]: https://github.com/openstreetmap/iD/issues/9422
+[#iD8758]: https://github.com/openstreetmap/iD/issues/8758
 
 [@RitaDee]: https://github.com/RitaDee
 [@lauble]: https://github.com/lauble
