@@ -1,5 +1,6 @@
 import { Extent } from '@rapid-sdk/math';
-import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@rapid-sdk/util';
+import { utilArrayChunk, utilArrayGroupBy } from '@rapid-sdk/util';
+import RBush from 'rbush';
 
 import { AbstractSystem } from './AbstractSystem';
 import { Difference } from './lib/Difference';
@@ -350,10 +351,7 @@ export class ValidationSystem extends AbstractSystem {
    * @param  {ValidationIssue}  The Issue to focus on
    */
   focusIssue(issue) {
-    // Note that we use `staging.graph` here, not `cache.graph` or `stable.graph`
-    // because that is the graph that the calling code will be using.
     const context = this.context;
-    const editor = context.systems.editor;
     const map = context.systems.map;
 
     const entityIDs = issue.entityIds ?? [];
@@ -830,12 +828,29 @@ class ValidationCache {
     this.queuePromise = null;
     this.queuedEntityIDs = new Set();
     this.provisionalEntityIDs = new Set();
-    this.issues = new Map();          // Map(issue.id -> issue)
-    this.entityIssueIDs = new Map();  // Map(entity.id -> Set(issue.id))
+    this.issues = new Map();          // Map(issueID -> ValidationIssue)
+    this.entityIssueIDs = new Map();  // Map(entityID -> Set(issueID))
+
+    // A RBush spatial index that stores 'boxes'.
+    // The boxes mark regions where the involved entities may need to be rechecked
+    // by being part of a impossible oneway or disconnected way routing island.
+    this.recheckRBush = new RBush();
+    this.recheckBoxes = new Map();   // Map(issueID -> Box)
   }
 
 
   cacheIssue(issue) {
+    if (this.issues.has(issue.id)) {
+      this.uncacheIssue(issue);
+    }
+
+    if (issue.type === 'disconnected_way' || issue.type === 'impossible_oneway') {
+      const extent = issue.extent(this.graph);
+      const box = Object.assign({ issueID: issue.id }, extent.bbox());
+      this.recheckRBush.insert(box);
+      this.recheckBoxes.set(issue.id, box);
+    }
+
     for (const entityID of issue.entityIds ?? []) {
       let issueIDs = this.entityIssueIDs.get(entityID);
       if (!issueIDs) {
@@ -849,6 +864,12 @@ class ValidationCache {
 
 
   uncacheIssue(issue) {
+    const box = this.recheckBoxes.get(issue.id);
+    if (box) {
+      this.recheckRBush.remove(box);
+      this.recheckBoxes.delete(issue.id);
+    }
+
     for (const entityID of issue.entityIds ?? []) {
       let issueIDs = this.entityIssueIDs.get(entityID);
       if (issueIDs) {
@@ -898,24 +919,60 @@ class ValidationCache {
   }
 
 
-  // Return the expandeded set of entityIDs related to issues for the given entityIDs
-  // @param   entityIDs  Array or Set containing entityIDs.
-  // @return  Set of entityIDs related to the given entityIDs
+  /**
+   * withAllRelatedEntities
+   * Returns an expanded set of `entityIDs` that need to also be validated alongside the given `entityIDs`
+   * - Entities involved in the same issues
+   * - Entities connected to the given entities
+   * - Entities involved in nearby connectivity issues (impossible oneway, disconnected way)
+   *
+   * @param   {Array|Set}  entityIDs - Array or Set containing entityIDs.
+   * @return  {Set}        entityIDs related to the given entityIDs
+   */
   withAllRelatedEntities(entityIDs = []) {
-    let results = new Set();
-    for (const entityID of entityIDs) {
-      results.add(entityID);  // include self
+    const graph = this.graph;
+    const results = new Set(entityIDs);            // include original entityIDs
+    if (!graph || !results.size) return results;   // nothing to do
 
+    const relatedIssueIDs = new Set();
+
+    for (const entityID of entityIDs) {
+      const entity = graph.hasEntity(entityID);
+      if (!entity) continue;
+
+      // Gather Issues this Entity is involved in..
       const issueIDs = this.entityIssueIDs.get(entityID) ?? [];
       for (const issueID of issueIDs) {
-        const issue = this.issues.get(issueID);
-        const relatedEntityIDs = issue?.entityIDs ?? [];
-        for (const relatedEntityID of relatedEntityIDs) {
-          results.add(relatedEntityID);
+        relatedIssueIDs.add(issueID);
+      }
+
+      if (entity.type === 'way' || entity.type === 'node') {
+        // Gather nearby connectivity Issues (impossible oneway, disconnected way)
+        const extent = entity.extent(graph);
+        const boxes = this.recheckRBush.search(extent.bbox()) ?? [];
+        for (const box of boxes) {
+          relatedIssueIDs.add(box.issueID);
         }
+
+        // Gather other Entities connected to this Entity..
+        const checkNodes = entity.type === 'way' ? graph.childNodes(entity) : entity.type === 'node' ? [entity] : [];
+        for (const node of checkNodes) {
+          for (const parentWay of graph.parentWays(node)) {
+            results.add(parentWay.id);
+          }
+        }
+      }
+    }
+
+    for (const issueID of relatedIssueIDs) {
+      const issue = this.issues.get(issueID);
+      const relatedEntityIDs = issue?.entityIds ?? [];
+      for (const relatedEntityID of relatedEntityIDs) {
+        results.add(relatedEntityID);
       }
     }
 
     return results;
   }
+
 }
