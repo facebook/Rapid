@@ -37,7 +37,7 @@ export function uiMapRouletteDetails(context) {
 
 
     // Description
-    if (_qaItem.task.parentName) {
+    if (_qaItem.task.parentName && _qaItem.task.parentId) {
       const div = detailsEnter
         .append('div')
         .attr('class', 'qa-details-subsection');
@@ -49,7 +49,7 @@ export function uiMapRouletteDetails(context) {
       div
         .append('p')
         .attr('class', 'qa-details-description-text')
-        .html(d => _qaItem.task.parentName)
+        .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`)
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -111,14 +111,14 @@ export function uiMapRouletteDetails(context) {
         if (!d.task) return;
 
         // Things like keys and values are dynamically added to a subtitle string
-        if (d.details.instruction) {
+        if (d.task.parentName && d.details.parent) {
           detailsDiv
             .append('h4')
             .html(l10n.tHtml('QA.maproulette.detail_title'));
 
           detailsDiv
             .append('p')
-            .html(d => d.details.instruction)
+            .html(d => `${d.task.parentName} ${d.details.parent}`)
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
