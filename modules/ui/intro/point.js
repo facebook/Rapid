@@ -156,7 +156,7 @@ export function uiIntroPoint(context, curtain) {
         // Get user to choose the Cafe preset from the search result
         function _checkPresetSearch() {
           const first = container.select('.preset-list-item:first-child');
-          if (!first.classed('preset-amenity-cafe')) return;
+          if (!first.classed('preset-amenity_cafe')) return;
 
           curtain.reveal({
             revealNode: first.select('.preset-list-button').node(),
