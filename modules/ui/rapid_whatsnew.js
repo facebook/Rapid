@@ -43,7 +43,7 @@ export function uiRapidWhatsNew(context) {
     imageSection
       .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/rapid-v21-splash.jpg'));
+      .attr('src', context.asset('img/rapid-v22-splash.jpg'));
 
     body.selectAll('p a')
       .attr('target', '_blank');

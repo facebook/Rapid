@@ -1075,8 +1075,8 @@ en:
     skip_to_rapid: "Learn about Rapid!"
     start: "No thanks, just start mapping"
   rapid_whats_new:
-    welcome: "Welcome to {rapidicon} v2.1!"
-    text: "New this release: a 3D map Viewer built with MapLibre, and custom data support for .pmtiles! Enable the 3D map from the 'Background' panel (B). <p> Check out the [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md) for bug fixes, and please see [our github discussion post](https://github.com/facebook/Rapid/discussions/993) for more on these features and our future plans for Rapid. We want your feedback!"
+    welcome: "Welcome to {rapidicon} v2.2!"
+    text: "In this release:  New validations to detect mismatched crossing tags, improvements to Mapillary and KartaView streetview imagery, Cycle Tags operation now cycles through crossing types, and many other enhancements and fixes.<p> Check out the [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md) for more details.  Happy Mapping!"
     ok: Okay
     nope: No thanks, just take me to Rapid
     dontshowagain: Don't show this again
