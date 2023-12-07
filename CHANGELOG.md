@@ -37,49 +37,71 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 -->
 
 
-# NOT YET RELEASED [2.2.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.0)
-#### 2023-Month-Date
+# [2.2.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.0)
+#### 2023-Dec-xx  (Not released yet!)
 
-This release was made possible in part by three hackers from Major League Hacking: [@RitaDee](github.com/RitaDee), [@voscarmv](github.com/voscarmv), and [@lauble](github.com/lauble).
+This release was made possible in part by three hackers from [Major League Hacking](https://mlh.io/): [@RitaDee], [@voscarmv], and [@lauble].
+Also, welcome to the dev team [@tannerwuster]!
 
-Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 #### :tada: New Features
-
 * [#1141] Added a big new validation to help call attention to ambiguous/missing pedestrian crossing way and node data.
 * [#1146], [#1182], [#1197] Several new presets added for trees, crossings, and curbs
-* [#1154] The Cycle Highway Tags (shift-C) operation now also works with crossing ways (Credit: [@RitaDee](github.com/RitaDee))
-* [#1068] 3D Map open/closed state is now saved in a `3dmap` url parameter (Credit: [@voscarmv](github.com/voscarmv))
+* [#1154] The Cycle Highway Tags (shift-C) operation now also works with crossing ways (Credit: [@RitaDee])
+* [#1068] 3D Map open/closed state is now saved in a `3dmap` url parameter (Credit: [@voscarmv])
+* [#iD9998] Show wikidata errors from Osmose
+* [#iD9650] Offer to connect sidewalk to minor service roads / driveways without adding `crossing` tags
+* [#iD9891] :roller_coaster: Add rendering and presets for `roller_coaster=track`, `roller_coaster=support`, `roller_coaster=station`
+* [#iD9633] :bus: Add rendering and presets for `highway=busway`
 
 ##### :camera:  Streetview Imagery Improvements:
 * [#1149] Mapillary image viewer now displays the compass bearing angle indicator.
 * [#551] Streetview imagery is now navigable with keyboard arrow keys.
 * [#508] :compass: Panoramic Streetview image pins should now display a bearing viewfield indicator on the map.
 * [#1148] :sparkles: Mapillary viewfield angle now narrows/widens as the user zooms in / out.
-* [#1139] Updated the kartaview imagery APIs to rely on the new v2 API, eliminating the 404's/ blank images that the layer was displaying
+* [#1139] Updated the Kartaview imagery APIs to rely on the new v2 API, eliminating the 404's/ blank images that the layer was displaying
 
 #### :bug: Bugfixes:
-* [#858] v2 Regression has been fixed: undoing *during* draw modes no longer deletes the entire draw operation
+* [#858] Undo/Redo now supported while in draw modes
 * [#1063] Connecting a crosswalk to an existing highway now creates a crossing node that doesn't need tag upgrading
 * [#1103] Fixed a bug that mistakenly removed the most recently created relation from the edit history
 * [#1115] Crosswalks that are joined to the map will now receive up-to-date tags
-* [#1108] on page load, Rapid should now correctly zoom to the object specified in the URL `id` param
+* [#1108] On page load, Rapid should now correctly zoom to the object specified in the URL `id` param
 * [#1110] Photo imagery used should now be properly referenced in the changeset tags
 * [#1116], [#1112] Validation system should now fire correctly when the user edits, pans, and zooms
 * [#1058], [#1121] Changeset comment should now be remembered and reused next time
-* [#1124] OSM username isn't escaped properly (Credit: [@RitaDee](github.com/RitaDee))
+* [#1124] OSM username isn't escaped properly (Credit: [@RitaDee])
+* [#1125], [iD#8758] Connectivity warnings now update as users cause or fix connectivity issues
 * [#1126] Clicking 'reload my changes' very quickly should no longer cause a crash/stack trace
 * [#1129] The commit message text field should now properly receive focus when the user clicks 'save'
 * [#1155] Clicking on a third-party website URL should now work properly
 * [#1169], [#1201] Fixed the incorrect Microsoft Building license link
 * [#1171] Restored some 'way over waterway' validations
+* [#iD10003] Prevent degenerate ways caused by deleting a corner of a triangle
+
+#### :sparkles: Usability & Accessibility
+* [#iD10007] Sanitize Amazon CloudFront 'signature' values in `imagery_used` changeset tag
+* [#iD9995] Fix backspace not working as a keyboard shortcut
+* [#iD9912], [#iD9911] Hide unnecessary horizontal scrollbars in hover mode for fields and upload dialog
+* [#iD9424] Show route relation colors in lists and comboboxes
+* [#iD9817] Don't suggest discardable tags (e.g. `created_by`) in the raw tag editor dropdowns
+* [#iD9422] Don't suggest alternate tags (e.g. `alt_name_1`) in the raw tag editor dropdowns
+
+#### :earth_asia: Localization
+* [#iD9928] Added address format for Mexico
+* [#iD9927] Added address format for South Korea
+* [#iD9925] Added address format for Indonesia
+* [#iD9685], [#iD9630] Added address format for Phillipines
+* [#iD9667] Added address format for Latvia
 
 #### :hammer: Development / Code Improvements
+* [#iD9997] Update domain names used to connect to ImproveOSM service
+* [#iD9692] Show colors in console when running GitHub actions
 * [#1123] Switched clipper to polyclip-ts.
 * [#1130] Openstreetmap api switched from `www.openstreetmap.org` to `api.openstreetmap.org`
 * [#1156] Modernized the edit system with an extremely large refactor
-* [#1162] The Bug template now prompts the submitter to include screenshots / videos. (Credit: [@RitaDee](github.com/RitaDee))
-* [#1177] The README.md has undergone some formatting improvements (Credit: [@lauble](github.com/lauble))
-* [#1179] The CONTRIBUTING.md has also received extensive edits (Credit: [@voscarmv](github.com/voscarmv))
+* [#1162] The Bug template now prompts the submitter to include screenshots / videos. (Credit: [@RitaDee])
+* [#1177] The README.md has undergone some formatting improvements (Credit: [@lauble])
+* [#1179] The CONTRIBUTING.md has also received extensive edits (Credit: [@voscarmv])
 
 [#508]: https://github.com/facebook/Rapid/issues/508
 [#551]: https://github.com/facebook/Rapid/issues/551
@@ -96,6 +118,7 @@ Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 [#1121]: https://github.com/facebook/Rapid/issues/1121
 [#1123]: https://github.com/facebook/Rapid/issues/1123
 [#1124]: https://github.com/facebook/Rapid/issues/1124
+[#1125]: https://github.com/facebook/Rapid/issues/1125
 [#1126]: https://github.com/facebook/Rapid/issues/1126
 [#1129]: https://github.com/facebook/Rapid/issues/1129
 [#1130]: https://github.com/facebook/Rapid/issues/1130
@@ -107,6 +130,7 @@ Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 [#1154]: https://github.com/facebook/Rapid/issues/1154
 [#1155]: https://github.com/facebook/Rapid/issues/1155
 [#1156]: https://github.com/facebook/Rapid/issues/1156
+[#1162]: https://github.com/facebook/Rapid/issues/1162
 [#1169]: https://github.com/facebook/Rapid/issues/1169
 [#1171]: https://github.com/facebook/Rapid/issues/1171
 [#1177]: https://github.com/facebook/Rapid/issues/1177
@@ -114,6 +138,33 @@ Also, welcome to the dev team [Tanner Wuster](https://github.org/tannerwuster)!
 [#1182]: https://github.com/facebook/Rapid/issues/1182
 [#1197]: https://github.com/facebook/Rapid/issues/1197
 [#1201]: https://github.com/facebook/Rapid/issues/1201
+[#iD10007]: https://github.com/openstreetmap/iD/pull/10007
+[#iD10003]: https://github.com/openstreetmap/iD/pull/10003
+[#iD9998]: https://github.com/openstreetmap/iD/pull/9998
+[#iD9997]: https://github.com/openstreetmap/iD/pull/9997
+[#iD9995]: https://github.com/openstreetmap/iD/pull/9995
+[#iD9928]: https://github.com/openstreetmap/iD/pull/9928
+[#iD9927]: https://github.com/openstreetmap/iD/pull/9927
+[#iD9925]: https://github.com/openstreetmap/iD/pull/9925
+[#iD9912]: https://github.com/openstreetmap/iD/pull/9912
+[#iD9911]: https://github.com/openstreetmap/iD/pull/9911
+[#iD9891]: https://github.com/openstreetmap/iD/pull/9891
+[#iD9817]: https://github.com/openstreetmap/iD/pull/9817
+[#iD9692]: https://github.com/openstreetmap/iD/pull/9692
+[#iD9685]: https://github.com/openstreetmap/iD/pull/9685
+[#iD9667]: https://github.com/openstreetmap/iD/pull/9667
+[#iD9650]: https://github.com/openstreetmap/iD/pull/9650
+[#iD9633]: https://github.com/openstreetmap/iD/pull/9633
+[#iD9630]: https://github.com/openstreetmap/iD/pull/9630
+[#iD9424]: https://github.com/openstreetmap/iD/pull/9424
+[#iD9422]: https://github.com/openstreetmap/iD/issues/9422
+[#iD8758]: https://github.com/openstreetmap/iD/issues/8758
+
+[@RitaDee]: https://github.com/RitaDee
+[@lauble]: https://github.com/lauble
+[@tannerwuster]: https://github.com/tannerwuster
+[@voscarmv]: https://github.com/voscarmv
+
 
 # [2.1.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.1.1)
 #### 2023-Sep-01

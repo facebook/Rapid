@@ -290,28 +290,26 @@ export class ImagerySourceCustom extends ImagerySource {
   }
 
   get imageryUsed() {
-    // sanitize personal connection tokens - iD#6801
+    // Sanitize personal connection tokens - iD#6801
     let cleaned = this._template;
 
-    // from query string parameters
-    if (cleaned.indexOf('?') !== -1) {
-      let parts = cleaned.split('?', 2);
-      let qs = utilStringQs(parts[1]);
-
-      ['access_token', 'connectId', 'token', 'key'].forEach(param => {
-        if (qs[param]) {
-          qs[param] = '{apikey}';
+    // Sanitize query string parameters
+    let [url, params] = cleaned.split('?', 2);
+    if (params) {
+      const qs = utilStringQs(params);
+      for (const k of Object.keys(qs)) {
+        if (/^(access_token|connectid|key|signature|token)$/i.test(k)) {
+          qs[k] = '{apikey}';
         }
-      });
-      cleaned = parts[0] + '?' + utilQsString(qs, true);  // true = soft encode
+      }
+      cleaned = url + '?' + utilQsString(qs, true);  // true = soft encode
     }
 
-    // from wms/wmts api path parameters
-    // Ideally this would be a for loop iterating over multiple combinations, but when run under test,
-    // something seems to cast strings to objects ("token" -> "[object Object]") when used in a for of loop.
+    // Sanitize wms/wmts path parameters
     cleaned = cleaned
       .replace(/token\/(\w+)/, 'token/{apikey}')
       .replace(/key=(\w+)/, 'key={apikey}');
+
     return `Custom (${cleaned} )`;
   }
 

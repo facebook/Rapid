@@ -46,5 +46,19 @@
     },
     "url": "7586487389962e3f7c24b076dcc8270e6e23a5cb81e890c3fbe9928c5093fa862d8d946ea4a44f02efec19eda9f69b0bc82df4d53b740a5e284aef977eda72de707e354b5b2aa6f1afe22e7c67af90bcb2f8b411c773f6975badf128356ed1bc36fab11bb8fb221958273b22615127e25f52d3b423676a0ae92e2c9293321614e93443ce3b4fd688e8d58f0e9024a515beb7c68a31231802580a3c6517a795e413b83920f5818a6ad329d49ffb16eb7e90e2c67606ded433f813e8deae3d45fd629591f5a240e172c1663beab003ab12ce9f497037",
     "encrypted": true
+  },
+  {
+    "id": "stamen-terrain-background",
+    "name": "Stamen Terrain",
+    "type": "tms",
+    "category": "elevation",
+    "i18n": true,
+    "attribution": {
+      "html": "&copy; <a href=\"https://stadiamaps.com/\" target=\"_blank\">Stadia Maps</a> &copy; <a href=\"https://stamen.com/\" target=\"_blank\">Stamen Design</a> &copy; <a href=\"https://openmaptiles.org/\" target=\"_blank\">OpenMapTiles</a> &copy; <a href=\"https://www.openstreetmap.org/about/\" target=\"_blank\">OpenStreetMap contributors</a>"
+    },
+    "url": "https://tiles.stadiamaps.com/tiles/stamen_terrain_background/{z}/{x}/{y}{r}.png",
+    "icon": "https://stamen.com/wp-content/uploads/2016/07/stamen_compass_rose_small-01.png",
+    "max_zoom": 20,
+    "min_zoom": 4
   }
 ]

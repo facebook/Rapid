@@ -117,6 +117,10 @@ describe('ImagerySourceCustom', () => {
       const source = new Rapid.ImagerySourceCustom(context, 'http://example.com?key=MYTOKEN');
       expect(source.imageryUsed).to.eql('Custom (http://example.com?key={apikey} )');
     });
+    it('sanitizes `Signature` for CloudFront', () => {
+      const source = new Rapid.ImagerySourceCustom(context, 'https://example.com/?Key-Pair-Id=foo&Policy=bar&Signature=MYTOKEN');
+      expect(source.imageryUsed).to.eql('Custom (https://example.com/?Key-Pair-Id=foo&Policy=bar&Signature={apikey} )');
+    });
     it('sanitizes wms path `token`', () => {
       const source = new Rapid.ImagerySourceCustom(context, 'http://example.com/wms/v1/token/MYTOKEN/1.0.0/layer');
       expect(source.imageryUsed).to.eql('Custom (http://example.com/wms/v1/token/{apikey}/1.0.0/layer )');

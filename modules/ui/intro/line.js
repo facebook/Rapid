@@ -268,7 +268,7 @@ export function uiIntroLine(context, curtain) {
 
         _onModeChange = reject;   // disallow mode change
 
-        ui.sidebar.showPresetList();
+        // ui.sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         categoryButton = container.select('.preset-category-road_minor .preset-list-button');
@@ -306,7 +306,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter('select-osm', { selection: { osm: [_lineID] }} );
 
-        ui.sidebar.showPresetList();
+        // ui.sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const categoryButton = container.select('.preset-category-road_minor .preset-list-button');

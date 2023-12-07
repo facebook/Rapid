@@ -2449,7 +2449,7 @@ en:
       select_road_again: "Next, we'll learn how to ignore roads that you don't want to add. **Select the AI-assisted road again with a left-click.**"
       ignore_road: "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map."
       help: "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new Rapid-specific shortcuts that speed up your mapping."
-      done: "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). **Click '{next}' to continue.**"
+      done: "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the <a href=\"https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries\" target=\"_blank\">Available Countries List</a>. **Click '{next}' to continue.**"
     startediting:
       title: "Start Editing"
       help: "You're now ready to edit OpenStreetMap!{br}You can replay this walkthrough anytime or view more documentation by pressing the {help_icon} {help} button or the `{help_key}` key."

@@ -124,14 +124,13 @@
       "icon": "temaki-pedestrian_crosswalk",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "lines" }
-
     },
+
     "highway/footway/crossing/ladder": {
       "name": "Marked Crossing (Ladder)",
       "icon": "temaki-pedestrian_crosswalk",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "ladder" }
-
     },
 
     "highway/footway/crossing/dashes": {
@@ -139,7 +138,6 @@
       "icon": "temaki-pedestrian_crosswalk",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "dashes" }
-
     },
 
     "highway/footway/crossing/dots": {
@@ -154,6 +152,33 @@
       "icon": "temaki-pedestrian_crosswalk",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "ladder:skewed" }
+    },
+
+    "roller_coaster/station": {
+      "name": "Roller Coaster Station",
+      "icon": "temaki-roller_coaster",
+      "geometry": ["vertex", "area"],
+      "fields": ["building_area_yes"],
+      "tags": { "roller_coaster": "station" }
+    },
+
+    "roller_coaster/support": {
+      "name": "Roller Coaster Support",
+      "icon": "roentgen-tower",
+      "geometry": ["line"],
+      "fields": ["height", "layer", "material"],
+      "moreFields": ["colour"],
+      "tags": { "roller_coaster": "support" }
+    },
+
+    "roller_coaster/track": {
+      "name": "Roller Coaster Track",
+      "icon": "temaki-roller_coaster",
+      "geometry": ["line"],
+      "fields": ["height", "layer"],
+      "moreFields": ["colour"],
+      "tags": { "roller_coaster": "track" }
     }
+
   }
 }

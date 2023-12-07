@@ -141,15 +141,47 @@ export class PixiEvents extends EventEmitter {
    * @param  `style` String for one of the given CSS cursor styles (pass 'inherit' to reset)
    */
   setCursor(style) {
-    // this.renderer.pixi.renderer.events.setCursor(style);
-    // this.renderer.pixi.renderer.events.rootBoundary.cursor = style;
-
-    // Pixi doesn't make this easy
-    // On next pointerover event, the root event boundary will reset its perferred cursor
-    // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
-    // We don't know when that event will be, next time user happens to shake the mouse?
-    // So we'll also set it directly on the canvas so it locks in now
-    this.renderer.pixi.view.style.cursor = style;
+  // Pixi doesn't make this easy
+  // On next pointerover event, the root event boundary will reset its perferred cursor
+  // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
+  // We don't know when that event will be, next time user happens to shake the mouse?
+  // So we'll also set it directly on the canvas so it locks in now
+  const context = this.context;
+  const cursors = {
+    areaCursor:`url(${context.assetPath}img/cursor-select-area.png), pointer`,
+    connectLineCursor:`url(${context.assetPath}img/cursor-draw-connect-line.png) 9 9, crosshair`,
+    connectVertexCursor:`url(${context.assetPath}img/cursor-draw-connect-vertex.png) 9 9, crosshair`,
+    lineCursor:`url(${context.assetPath}img/cursor-select-line.png), pointer`,
+    pointCursor:`url(${context.assetPath}img/cursor-select-point.png), pointer`,
+    selectSplitCursor:`url(${context.assetPath}img/cursor-select-split.png), pointer`,
+    vertexCursor:`url(${context.assetPath}img/cursor-select-vertex.png), pointer`,
+  };
+  switch (style) {
+    case 'areaCursor':
+      this.renderer.pixi.view.style.cursor = cursors.areaCursor;
+      break;
+    case 'connectLineCursor':
+      this.renderer.pixi.view.style.cursor = cursors.connectLineCursor;
+      break;
+    case 'connectVertexCursor':
+      this.renderer.pixi.view.style.cursor = cursors.connectVertexCursor;
+      break;
+    case 'lineCursor':
+      this.renderer.pixi.view.style.cursor = cursors.lineCursor;
+      break;
+    case 'pointCursor':
+      this.renderer.pixi.view.style.cursor = cursors.pointCursor;
+      break;
+    case 'selectSplitCursor':
+      this.renderer.pixi.view.style.cursor = cursors.selectSplitCursor;
+      break;
+    case 'vertexCursor':
+      this.renderer.pixi.view.style.cursor = cursors.vertexCursor;
+      break;
+    default:
+      this.renderer.pixi.view.style.cursor = style;
+      break;
+    }
   }
 
 
