@@ -63,8 +63,8 @@ export class MapRouletteService extends AbstractSystem {
    * Called after completing an edit session to reset any internal state
    * @return {Promise} Promise resolved when this component has completed resetting
    */
-  resetAsync() {
-    if (this._cache) {
+  resetAsync(hardReset = false) {
+    if (this._cache && !hardReset) {
       Object.values(this._cache.inflightTile).forEach(controller => this._abortRequest(controller));
     }
     this._cache = {
@@ -120,6 +120,7 @@ export class MapRouletteService extends AbstractSystem {
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
 
+      this.resetAsync(true);
       fetch(url, { signal: controller.signal })
         .then(utilFetchResponse)
         .then(data => {
@@ -400,7 +401,7 @@ export class MapRouletteService extends AbstractSystem {
     }
     setChallengeId(val) {
       this.challengeId = val;
-      // this.loadTiles(true);
+      this.loadTiles(true);
     }
 
 }
