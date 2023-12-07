@@ -171,7 +171,7 @@ export function uiSectionDataLayers(context) {
     mapRouletteChallengeSelector
       .append('input')
       .attr('type', 'text')
-      .on('change', (d3_event, d) => context.services.maproulette.setChallengeId(d3_event.currentTarget.value) );
+      .on('keyup', (d3_event, d) => { context.services.maproulette.setChallengeId(d3_event.currentTarget.value); toggleLayer(d.id); toggleLayer(d.id); } );
       
     // Update
     li

@@ -25,7 +25,7 @@ export class MapRouletteService extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'maproulette';
-    this.challengeId = null;
+    this.challengeId = '42505';
     this.autoStart = false;
 
     this._taskData = { icons: {}, types: [] };
@@ -95,7 +95,7 @@ export class MapRouletteService extends AbstractSystem {
    * loadTiles
    * Schedule any data requests needed to cover the current map view
    */
-  loadTiles() {
+  loadTiles(redraw = false) {
     // determine the needed tiles to cover the view
     const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
@@ -105,7 +105,7 @@ export class MapRouletteService extends AbstractSystem {
 
     // issue new requests..
     for (const tile of tiles) {
-      if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
+      if ((this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) && !redraw) continue;
 
       const extent = this.context.systems.map.extent();
       const bbox = extent.bbox();
@@ -400,7 +400,7 @@ export class MapRouletteService extends AbstractSystem {
     }
     setChallengeId(val) {
       this.challengeId = val;
-      this.loadTiles();
+      // this.loadTiles(true);
     }
 
 }
