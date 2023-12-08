@@ -49,7 +49,7 @@ export function uiMapRouletteDetails(context) {
       div
         .append('p')
         .attr('class', 'qa-details-description-text')
-        .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`)
+        .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`) // change this to show challenge details
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
