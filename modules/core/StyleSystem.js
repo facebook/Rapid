@@ -41,9 +41,8 @@ export class StyleSystem extends AbstractSystem {
     super(context);
     this.id = 'styles';
     this.context = context;
-    this.dependencies = new Set(['dataloader', 'colors']);
+    this.dependencies = new Set(['colors']);
     this.autoStart = true;
-    this._started = false;
 
     this.DEFAULTS = {
       fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
@@ -510,6 +509,12 @@ export class StyleSystem extends AbstractSystem {
     this.styleMatch = this.styleMatch.bind(this);
   }
 
+
+  /**
+   * initAsync
+   * Called after all core objects have been constructed.
+   * @return {Promise} Promise resolved when this component has completed initialization
+   */
   initAsync(){
     for (const id of this.dependencies) {
       if (!this.context.systems[id]) {
@@ -519,15 +524,32 @@ export class StyleSystem extends AbstractSystem {
     return Promise.resolve();
   }
 
+  /**
+   * startAsync
+   * Called after all core objects have been initialized.
+   * @return {Promise} Promise resolved when this component has completed startup
+   */
   startAsync() {
     this._started = true;
     return Promise.resolve();
   }
 
+
+  /**
+   * resetAsync
+   * Called after completing an edit session to reset any internal state
+   * @return {Promise} Promise resolved when this component has completed resetting
+   */
   resetAsync() {
     return Promise.resolve();
   }
 
+
+  /**
+   * styleMatch
+   * @param  {Object}  tags - OSM tags to match to a display style
+   * @return {Object}  Styling info for the given tags
+   */
   styleMatch(tags) {
     let matched = this.DEFAULTS;
     let selectivity = 999;
@@ -537,6 +559,9 @@ export class StyleSystem extends AbstractSystem {
     for (const [k, v] of Object.entries(tags)) {
       const group = this.STYLE_SELECTORS[k];
       if (!group || !v) continue;
+
+      // Exception: only consider 'service' when a 'highway' tag is present (not 'railway') - Rapid#1252
+      if (k === 'service' && getTag(tags, 'highway') === undefined) continue;
 
       // smaller groups are more selective
       const groupsize = Object.keys(group).length;
@@ -553,7 +578,7 @@ export class StyleSystem extends AbstractSystem {
       }
     }
 
-  // copy style, filling in defaults
+    // copy style, filling in defaults
     let style = {};
     for (const group of ['fill', 'casing', 'stroke']) {
       style[group] = {};
