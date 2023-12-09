@@ -14,6 +14,7 @@ const highwayPresetRegex = [
 const highwayPresetIDs = [
   'highway/residential',
   'highway/service',
+  'highway/service/driveway',
   'highway/track',
   'highway/unclassified',
   'highway/tertiary',
