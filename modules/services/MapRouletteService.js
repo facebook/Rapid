@@ -161,7 +161,7 @@ export class MapRouletteService extends AbstractSystem {
    */
   loadTaskDetailAsync(task) {
     // Issue details only need to be fetched once
-    if (task.elems !== undefined) return Promise.resolve(task);
+    if (task.details !== undefined) return Promise.resolve(task);
 
     const localeCode = this.context.systems.l10n.localeCode();
     // const url = `${MAPROULETTE_API}/task/${task.id}?langs=${localeCode}`;
