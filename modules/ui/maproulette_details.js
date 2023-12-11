@@ -25,86 +25,87 @@ export function uiMapRouletteDetails(context) {
 
 
   function maprouletteDetails(selection) {
-    const details = selection.selectAll('.error-details')
-      .data(_qaItem ? [_qaItem] : [], d => `${d.id}-${d.status || 0}` );
-
-    details.exit()
-      .remove();
-
-    const detailsEnter = details.enter()
-      .append('div')
-      .attr('class', 'error-details qa-details-container');
-
-
-    // Description
-    if (_qaItem.task.parentName && _qaItem.task.parentId) {
-      const div = detailsEnter
-        .append('div')
-        .attr('class', 'qa-details-subsection');
-
-      div
-        .append('h4')
-        .html(l10n.tHtml('QA.keepRight.detail_description'));
-
-      div
-        .append('p')
-        .attr('class', 'qa-details-description-text')
-        .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`) // change this to show challenge details
-        // .html(d => _qaItem.details.description) // This throws unhandled error that prevents line 106 of this same file from executing, which has to execute before the data here can even exist. Solution: run loadTaskDetailAsync before running this line.
-        .selectAll('a')
-        .attr('rel', 'noopener')
-        .attr('target', '_blank');
-    }
-
-    // Elements (populated later as data is requested)
-    const detailsDiv = detailsEnter
-      .append('div')
-      .attr('class', 'qa-details-subsection');
-
-    const elemsDiv = detailsEnter
-      .append('div')
-      .attr('class', 'qa-details-subsection');
-
-    // Suggested Fix (mustn't exist for every issue type)
-    if (taskString(_qaItem, 'fix')) {
-      const div = detailsEnter
-        .append('div')
-        .attr('class', 'qa-details-subsection');
-
-      div
-        .append('h4')
-        .html(l10n.tHtml('QA.maproulette.fix_title'));
-
-      div
-        .append('p')
-        .html(d => taskString(d, 'fix'))
-        .selectAll('a')
-        .attr('rel', 'noopener')
-        .attr('target', '_blank');
-    }
-
-    // Common Pitfalls (mustn't exist for every issue type)
-    if (taskString(_qaItem, 'trap')) {
-      const div = detailsEnter
-        .append('div')
-        .attr('class', 'qa-details-subsection');
-
-      div
-        .append('h4')
-        .html(l10n.tHtml('QA.maproulette.trap_title'));
-
-      div
-        .append('p')
-        .html(d => taskString(d, 'trap'))
-        .selectAll('a')
-        .attr('rel', 'noopener')
-        .attr('target', '_blank');
-    }
 
     // Save current item to check if UI changed by time request resolves
     if (!maproulette) return;
     maproulette.loadTaskDetailAsync(_qaItem)
       .then(d => {
+        const details = selection.selectAll('.error-details')
+        .data(_qaItem ? [_qaItem] : [], d => `${d.id}-${d.status || 0}` );
+  
+      details.exit()
+        .remove();
+  
+      const detailsEnter = details.enter()
+        .append('div')
+        .attr('class', 'error-details qa-details-container');
+  
+  
+      // Description
+      if (_qaItem.task.parentName && _qaItem.task.parentId) {
+        const div = detailsEnter
+          .append('div')
+          .attr('class', 'qa-details-subsection');
+  
+        div
+          .append('h4')
+          .html(l10n.tHtml('QA.keepRight.detail_description'));
+  
+        div
+          .append('p')
+          .attr('class', 'qa-details-description-text')
+          .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`) // change this to show challenge details
+          // .html(d => _qaItem.details.description) // This throws unhandled error that prevents line 106 of this same file from executing, which has to execute before the data here can even exist. Solution: run loadTaskDetailAsync before running this line.
+          .selectAll('a')
+          .attr('rel', 'noopener')
+          .attr('target', '_blank');
+      }
+  
+      // Elements (populated later as data is requested)
+      const detailsDiv = detailsEnter
+        .append('div')
+        .attr('class', 'qa-details-subsection');
+  
+      const elemsDiv = detailsEnter
+        .append('div')
+        .attr('class', 'qa-details-subsection');
+  
+      // Suggested Fix (mustn't exist for every issue type)
+      if (taskString(_qaItem, 'fix')) {
+        const div = detailsEnter
+          .append('div')
+          .attr('class', 'qa-details-subsection');
+  
+        div
+          .append('h4')
+          .html(l10n.tHtml('QA.maproulette.fix_title'));
+  
+        div
+          .append('p')
+          .html(d => taskString(d, 'fix'))
+          .selectAll('a')
+          .attr('rel', 'noopener')
+          .attr('target', '_blank');
+      }
+  
+      // Common Pitfalls (mustn't exist for every issue type)
+      if (taskString(_qaItem, 'trap')) {
+        const div = detailsEnter
+          .append('div')
+          .attr('class', 'qa-details-subsection');
+  
+        div
+          .append('h4')
+          .html(l10n.tHtml('QA.maproulette.trap_title'));
+  
+        div
+          .append('p')
+          .html(d => taskString(d, 'trap'))
+          .selectAll('a')
+          .attr('rel', 'noopener')
+          .attr('target', '_blank');
+      }
+  
         // Do nothing if _qaItem has changed by the time Promise resolves
         if (_qaItem.id !== d.id) return;
 
