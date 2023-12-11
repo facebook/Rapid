@@ -102,6 +102,11 @@ export function validationOutdatedTags(context) {
       prefix = 'incomplete.';
     }
 
+    let autoArgs = null;
+    if (subtype !== 'noncanonical_brand') {
+      autoArgs = [actionDoTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')];
+    }
+
     issues.push(new ValidationIssue(context, {
       type: type,
       subtype: subtype,
@@ -110,7 +115,7 @@ export function validationOutdatedTags(context) {
       reference: showUpgradeReference,
       entityIds: [entity.id],
       hash: utilHashcode(JSON.stringify(tagDiff)),
-      autoArgs: [actionDoTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')],
+      autoArgs: autoArgs,
       dynamicFixes: () => {
         let fixes = [
           new ValidationFix({
