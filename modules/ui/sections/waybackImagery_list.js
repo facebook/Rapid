@@ -33,8 +33,8 @@ export function uiSectionWaybackImagery(context) {
             .attr('class', 'background-wayback-item')
             .append('label')
             .call(uiTooltip(context)
-            .title(l10n.tHtml('background.wayback_imagery.tooltip'))
-            .placement('bottom')
+                .title(l10n.tHtml('background.wayback_imagery.tooltip'))
+                .placement('bottom')
             );
 
         // Render the individual (single) item.
@@ -82,7 +82,7 @@ export function uiSectionWaybackImagery(context) {
             },
             {
                 title: '474c65ab3e1941468511785495eb8987',
-               'value': '2018-06-06'
+                'value': '2018-06-06'
             },
             {
                 title: 'cd21e40a815549a69bb54d575777d973',
@@ -90,10 +90,10 @@ export function uiSectionWaybackImagery(context) {
             },
             {
                 title: '060a9a68c1774b78bd7cb5ec2332b969',
-                value:'2016-11-16'
+                value: '2016-11-16'
             },
             {
-                title:'098c68a0edc24be9a4e9ea5697320887',
+                title: '098c68a0edc24be9a4e9ea5697320887',
                 value: '2018-03-28'
             },
             {
@@ -1337,6 +1337,14 @@ export function uiSectionWaybackImagery(context) {
                 value: '2023-11-01'
             },
         ];
+
+        comboData.sort((a, b) => {
+            const dateA = a.value.replace(/-/g, '');
+            const dateB = b.value.replace(/-/g, '');
+
+            return dateB.localeCompare(dateA);
+        });
+
         waybackCombo.data(comboData);
 
         update();
