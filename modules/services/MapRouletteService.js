@@ -6,7 +6,7 @@ import { Task } from '../maproulette/Task';
 import { utilFetchResponse } from '../util';
 
 
-const TILEZOOM = 14;
+const TILEZOOM = 18;
 const MAPROULETTE_API = 'https://maproulette.org/api/v2';
 
 
@@ -64,7 +64,8 @@ export class MapRouletteService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync(hardReset = false) {
-    if (this._cache && !hardReset) {
+    if (this._cache) {
+    // if (this._cache && !hardReset) {
       Object.values(this._cache.inflightTile).forEach(controller => this._abortRequest(controller));
     }
     this._cache = {
@@ -105,7 +106,8 @@ export class MapRouletteService extends AbstractSystem {
 
     // issue new requests..
     for (const tile of tiles) {
-      if ((this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) && !redraw) continue;
+      // if ((this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) && !redraw) continue;
+      if ((this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id])) continue;
 
       const extent = this.context.systems.map.extent();
       const bbox = extent.bbox();
@@ -115,12 +117,12 @@ export class MapRouletteService extends AbstractSystem {
       // const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
 
       const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
-      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}${this.challengeId.length > 0 ? '?cid='+this.challengeId : ''}`;
+      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=id&order=DESC${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`;
 
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
 
-      this.resetAsync(true);
+      // this.resetAsync(true);
       fetch(url, { signal: controller.signal })
         .then(utilFetchResponse)
         .then(data => {
