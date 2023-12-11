@@ -1339,8 +1339,8 @@ export function uiSectionWaybackImagery(context) {
         ];
 
         comboData.sort((a, b) => {
-            const dateA = a.value.replace(/-/g, '');
-            const dateB = b.value.replace(/-/g, '');
+            const dateA = a.value;
+            const dateB = b.value;
 
             return dateB.localeCompare(dateA);
         });
