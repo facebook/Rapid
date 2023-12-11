@@ -214,7 +214,7 @@ export function uiIntroBuilding(context, curtain) {
         ui.sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        const button = container.select('.preset-category-building .preset-list-button');
+        const button = container.select('.preset-category_building .preset-list-button');
         if (button.empty()) { resolve(addHouseAsync); return; }
 
         curtain.reveal({
@@ -259,7 +259,7 @@ export function uiIntroBuilding(context, curtain) {
         // ui.sidebar.showPresetList();  // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        const button = container.select('.preset-building-house .preset-list-button');
+        const button = container.select('.preset-building_house .preset-list-button');
         if (button.empty()) { resolve(addHouseAsync); return; }
 
         curtain.reveal({
@@ -551,7 +551,7 @@ export function uiIntroBuilding(context, curtain) {
         // Get user to choose the Tank preset from the search result
         function _checkPresetSearch() {
           const first = container.select('.preset-list-item:first-child');
-          if (!first.classed('preset-man_made-storage_tank')) return;
+          if (!first.classed('preset-man_made_storage_tank')) return;
 
           curtain.reveal({
             revealNode: first.select('.preset-list-button').node(),

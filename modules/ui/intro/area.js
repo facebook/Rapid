@@ -211,7 +211,7 @@ export function uiIntroArea(context, curtain) {
         // Get user to choose the Playground preset from the search result
         function _checkPresetSearch() {
           const first = container.select('.preset-list-item:first-child');
-          if (!first.classed('preset-leisure-playground')) return;
+          if (!first.classed('preset-leisure_playground')) return;
 
           curtain.reveal({
             revealNode: first.select('.preset-list-button').node(),

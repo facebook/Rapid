@@ -271,7 +271,7 @@ export function uiIntroLine(context, curtain) {
         // ui.sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        categoryButton = container.select('.preset-category-road_minor .preset-list-button');
+        categoryButton = container.select('.preset-category_road_minor .preset-list-button');
         if (categoryButton.empty()) {
           reject(new Error('no minor roads category?'));
           return;
@@ -309,7 +309,7 @@ export function uiIntroLine(context, curtain) {
         // ui.sidebar.showPresetList(); // calling this again causes issue
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
+        const categoryButton = container.select('.preset-category_road_minor .preset-list-button');
         if (categoryButton.empty()) {
           reject(new Error('no minor roads category?'));
           return;
@@ -319,7 +319,7 @@ export function uiIntroLine(context, curtain) {
           return;
         }
         // reveal all choices - at this point in the tutorial we are giving the user more freedom
-        const subgrid = container.select('.preset-category-road_minor .subgrid');
+        const subgrid = container.select('.preset-category_road_minor .subgrid');
         if (subgrid.empty()) {
           reject(new Error('no minor roads presets?'));
           return;
@@ -342,7 +342,7 @@ export function uiIntroLine(context, curtain) {
         curtain.reveal({
           revealNode: subgrid.node(),
           revealPadding: 5,
-          tipSelector: '.preset-highway-residential .preset-list-button',
+          tipSelector: '.preset-highway_residential .preset-list-button',
           tipHtml: helpHtml(context, 'intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
         });
       }))
@@ -366,7 +366,7 @@ export function uiIntroLine(context, curtain) {
         ui.sidebar.showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
+        const categoryButton = container.select('.preset-category_road_minor .preset-list-button');
         if (categoryButton.empty()) {
           reject(new Error('no minor roads category?'));
           return;
@@ -376,7 +376,7 @@ export function uiIntroLine(context, curtain) {
           return;
         }
         // reveal just the button we want them to click
-        const presetButton = container.select('.preset-highway-residential .preset-list-button');
+        const presetButton = container.select('.preset-highway_residential .preset-list-button');
         if (presetButton.empty()) {
           reject(new Error('no residential road preset?'));
           return;

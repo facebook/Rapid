@@ -18,8 +18,11 @@ export function uiPresetList(context) {
   const presets = context.systems.presets;
   const dispatch = d3_dispatch('cancel', 'choose');
 
-  let _entityIDs;
-  let _currLoc;
+  let _entityIDs = [];
+  let _currLoc = null;
+  let _geometries = [];
+  let _allPresets = null;
+  let _defaultPresets = null;
   let _selectedPresetIDs = new Set();
   let _autofocus = false;
   let _list = d3_select(null);
@@ -32,11 +35,8 @@ export function uiPresetList(context) {
    * @param  {d3-selection}  selection  - parent selection to render into
    */
   function presetList(selection) {
-    if (!_entityIDs) return;
+    if (!_entityIDs.length) return;
 
-    const geometries = entityGeometries();
-    const allPresets = presets.matchAllGeometry(geometries);
-    const defaultPresets = presets.defaults(geometries[0], 36, !context.inIntro, _currLoc);
     const isRTL = l10n.isRTL();
 
     // Header
@@ -103,14 +103,14 @@ export function uiPresetList(context) {
       .append('div')
       .attr('class', 'inspector-body');
 
-    const listEnter = listWrapEnter
+    listWrapEnter
       .append('div')
       .attr('class', 'preset-list-main preset-list');
 
     // update
     _list = listWrap.merge(listWrapEnter)
       .selectAll('.preset-list-main')
-      .call(drawList, defaultPresets);
+      .call(drawList, _defaultPresets);
 
     // rebind event listener
     filters.off('filterchange', _checkFilteringRules);
@@ -159,10 +159,7 @@ export function uiPresetList(context) {
     }
 
     function keypress(e) {
-      const target = e.currentTarget;
-      const selection = d3_select(target);
-      const val = _input.property('value');
-
+      const val = e.currentTarget.value;
       if (e.keyCode === 13 && val.length) {  // ↩ Return
         const item = _list.selectAll('.preset-list-item:first-child').datum();
         item.choose();
@@ -173,14 +170,14 @@ export function uiPresetList(context) {
       const val = _input.property('value');
       _list.classed('filtered', val.length);
 
-      const geometry = entityGeometries()[0];
+      const geometry = _geometries[0];
 
       let collection, messageText;
       if (val.length) {
-        collection = allPresets.search(val, geometry, _currLoc);
+        collection = _allPresets.search(val, geometry, _currLoc);
         messageText = l10n.t('inspector.results', { n: collection.array.length, search: val });
       } else {
-        collection = defaultPresets;
+        collection = _defaultPresets;
         messageText = l10n.t('inspector.choose');
       }
       _list.call(drawList, collection);
@@ -331,7 +328,6 @@ export function uiPresetList(context) {
 
     render(selection) {
       const preset = this.preset;
-      const geometries = entityGeometries();
       const isRTL = l10n.isRTL();
 
       const wrapEnter = selection.selectAll(':scope > .preset-list-button-wrap')
@@ -345,7 +341,7 @@ export function uiPresetList(context) {
         .attr('class', 'preset-list-button')
         .classed('expanded', false)
         .call(uiPresetIcon(context)
-          .geometry(geometries.length === 1 && geometries[0])
+          .geometry(_geometries.length === 1 && _geometries[0])
           .preset(preset))
         .on('click', this._click)
         .on('keydown', this._keydown);
@@ -422,7 +418,7 @@ export function uiPresetList(context) {
           .style('padding-bottom', '0px');
       } else {
         this.shown = true;
-        const collection = this.preset.members.matchAllGeometry(entityGeometries());
+        const collection = this.preset.members.matchAllGeometry(_geometries);
         this.sublist.call(drawList, collection);
         this.box.transition()
           .duration(200)
@@ -450,7 +446,6 @@ export function uiPresetList(context) {
 
     render(selection) {
       const preset = this.preset;
-      const geometries = entityGeometries();
 
       const wrapEnter = selection.selectAll('.preset-list-button-wrap')
         .data([this], d => d.preset.id)
@@ -462,7 +457,7 @@ export function uiPresetList(context) {
         .append('button')
         .attr('class', 'preset-list-button')
         .call(uiPresetIcon(context)
-          .geometry(geometries.length === 1 && geometries[0])
+          .geometry(_geometries.length === 1 && _geometries[0])
           .preset(preset))
         .on('click', this.choose)
         .on('keydown', itemKeydown);
@@ -522,7 +517,6 @@ export function uiPresetList(context) {
     const graph = editor.staging.graph;
     if (!_entityIDs.every(entityID => graph.hasEntity(entityID))) return;
 
-    const geometries = entityGeometries();
     const buttons = _list.selectAll('.preset-list-button');
 
     // remove existing tooltips
@@ -532,7 +526,7 @@ export function uiPresetList(context) {
       const selection = d3_select(nodes[i]);
 
       let filterID;  // check whether this preset would be hidden by the current filtering rules
-      for (const geometry of geometries) {
+      for (const geometry of _geometries) {
         filterID = filters.isHiddenPreset(d.preset, geometry);
         if (filterID) break;
       }
@@ -564,17 +558,22 @@ export function uiPresetList(context) {
   presetList.entityIDs = function(val) {
     if (!arguments.length) return _entityIDs;
 
-    _entityIDs = val;
+    _entityIDs = val ?? [];
     _currLoc = null;
+    _geometries = [];
+    _allPresets = null;
+    _defaultPresets = null;
     _selectedPresetIDs = new Set();
     _input.property('value', '');
     _list.selectAll('.preset-list-item').remove();
 
-    if (Array.isArray(_entityIDs)) {
+    if (_entityIDs.length) {
       const graph = editor.staging.graph;
 
-      // calculate current location
       _currLoc = utilTotalExtent(_entityIDs, graph).center();
+      _geometries = _getGeometries();
+      _allPresets = presets.matchAllGeometry(_geometries);
+      _defaultPresets = presets.defaults(_geometries[0], 36, !context.inIntro, _currLoc);
 
       // match presets
       for (const entityID of _entityIDs) {
@@ -606,7 +605,7 @@ export function uiPresetList(context) {
   };
 
 
-  function entityGeometries() {
+  function _getGeometries() {
     const graph = editor.staging.graph;
     let counts = {};
 

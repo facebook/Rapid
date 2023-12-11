@@ -58,7 +58,7 @@ Also, welcome to the dev team [@tannerwuster]!
 * [#551] Streetview imagery is now navigable with keyboard arrow keys.
 * [#508] :compass: Panoramic Streetview image pins should now display a bearing viewfield indicator on the map.
 * [#1148] :sparkles: Mapillary viewfield angle now narrows/widens as the user zooms in / out.
-* [#1139] Updated the Kartaview imagery APIs to rely on the new v2 API, eliminating the 404's/ blank images that the layer was displaying
+* [#1139] Updated the KartaView imagery APIs to rely on the new v2 API, eliminating the 404's/ blank images that the layer was displaying
 
 #### :bug: Bugfixes:
 * [#858] Undo/Redo now supported while in draw modes

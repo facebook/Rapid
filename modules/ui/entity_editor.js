@@ -376,68 +376,65 @@ export function uiEntityEditor(context) {
   //   width: [ '3', undefined ]
   // }
   function _getCombinedTags(entityIDs, graph) {
-      var tags = {};
-      var tagCounts = {};
-      var allKeys = new Set();
+    const combined = {};
+    const tagCounts = {};
 
-      var entities = entityIDs.map(function(entityID) {
-          return graph.hasEntity(entityID);
-      }).filter(Boolean);
+    const entities = entityIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
 
-      // gather the aggregate keys
-      entities.forEach(function(entity) {
-          var keys = Object.keys(entity.tags).filter(Boolean);
-          keys.forEach(function(key) {
-              allKeys.add(key);
-          });
-      });
-
-      entities.forEach(function(entity) {
-          allKeys.forEach(function(key) {
-              var value = entity.tags[key]; // purposely allow `undefined`
-
-              if (!tags.hasOwnProperty(key)) {
-                  // first value, set as raw
-                  tags[key] = value;
-              } else {
-                  if (!Array.isArray(tags[key])) {
-                      if (tags[key] !== value) {
-                          // first alternate value, replace single value with array
-                          tags[key] = [tags[key], value];
-                      }
-                  } else { // type is array
-                      if (tags[key].indexOf(value) === -1) {
-                          // subsequent alternate value, add to array
-                          tags[key].push(value);
-                      }
-                  }
-              }
-
-              var tagHash = key + '=' + value;
-              if (!tagCounts[tagHash]) tagCounts[tagHash] = 0;
-              tagCounts[tagHash] += 1;
-          });
-      });
-
-      for (var key in tags) {
-          if (!Array.isArray(tags[key])) continue;
-
-          // sort values by frequency then alphabetically
-          tags[key] = tags[key].sort(function(val1, val2) {
-              var key = key; // capture
-              var count2 = tagCounts[key + '=' + val2];
-              var count1 = tagCounts[key + '=' + val1];
-              if (count2 !== count1) {
-                  return count2 - count1;
-              }
-              if (val2 && val1) {
-                  return val1.localeCompare(val2);
-              }
-              return val1 ? 1 : -1;
-          });
+    // gather the keys
+    const allKeys = new Set();
+    for (const entity of entities) {
+      for (const k of Object.keys(entity.tags)) {
+        if (k) {
+          allKeys.add(k);
+        }
       }
+    }
 
-      return tags;
+    // gather the values
+    for (const entity of entities) {
+      for (const k of allKeys) {
+        const v = entity.tags[k];  // purposely allow `undefined`
+        const vals = combined[k];
+
+        if (!vals) {    // first value found, just save the value
+          combined[k] = v;
+        } else {
+          if (!Array.isArray(vals)) {
+            if (vals !== v) {         // additional value found, convert to Array of values
+              combined[k] = [vals, v];
+            }
+          } else {
+            if (!vals.includes(v)) {  // additional value found, append to Array of values
+              vals.push(v);
+            }
+          }
+        }
+
+        const kv = `${k}=${v}`;
+        tagCounts[kv] = (tagCounts[kv] ?? 0) + 1;
+      }
+    }
+
+    // sort the Array-like values
+    for (const [k, vals] of Object.entries(combined)) {
+      if (!Array.isArray(vals)) continue;
+
+      // sort in place, by frequency then alphabetically
+      vals.sort((val1, val2) => {
+        const count1 = tagCounts[`${k}=${val1}`] ?? 0;
+        const count2 = tagCounts[`${k}=${val2}`] ?? 0;
+        if (count2 !== count1) {
+          return count2 - count1;
+        }
+        if (val2 && val1) {
+          return val1.localeCompare(val2);
+        }
+        return val1 ? 1 : -1;
+      });
+    }
+
+    return combined;
   }
 
 

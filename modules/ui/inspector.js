@@ -28,7 +28,6 @@ export function uiInspector(context) {
   let wrap = d3_select(null);
   let presetPane = d3_select(null);
   let editorPane = d3_select(null);
-  let _current = '';
   let _state = 'select';
   let _entityIDs;
   let _newFeature = false;
@@ -126,18 +125,15 @@ export function uiInspector(context) {
   // Show the preset list , optionally with given selected array, and optionally with a slide-in animation
   //
   inspector.showPresetList = function(selected, animate) {
-    if (_current !== 'presetList') {
-      presetPane.classed('hide', false);
+    presetPane.classed('hide', false);
 
-      if (animate) {
-        wrap.transition()
-          .styleTween('right', () => d3_interpolate('0%', '-100%'))
-          .on('end', () => editorPane.classed('hide', true));
-      } else {
-        wrap.style('right', '-100%');
-        editorPane.classed('hide', true);
-      }
-      _current = 'presetList';
+    if (animate) {
+      wrap.transition()
+        .styleTween('right', () => d3_interpolate('0%', '-100%'))
+        .on('end', () => editorPane.classed('hide', true));
+    } else {
+      wrap.style('right', '-100%');
+      editorPane.classed('hide', true);
     }
 
     if (Array.isArray(selected)) {
@@ -154,18 +150,15 @@ export function uiInspector(context) {
   // Show the entity editor, optionally with the given presets, optionally with slide-in animation
   //
   inspector.showEntityEditor = function(presets, animate) {
-    if (_current !== 'entityEditor') {
-      editorPane.classed('hide', false);
+    editorPane.classed('hide', false);
 
-      if (animate) {
-        wrap.transition()
-          .styleTween('right', () => d3_interpolate('-100%', '0%'))
-          .on('end', () => presetPane.classed('hide', true));
-      } else {
-        wrap.style('right', '0%');
-        presetPane.classed('hide', true);
-      }
-      _current = 'entityEditor';
+    if (animate) {
+      wrap.transition()
+        .styleTween('right', () => d3_interpolate('-100%', '0%'))
+        .on('end', () => presetPane.classed('hide', true));
+    } else {
+      wrap.style('right', '0%');
+      presetPane.classed('hide', true);
     }
 
     if (Array.isArray(presets)) {
