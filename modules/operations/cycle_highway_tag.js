@@ -23,7 +23,8 @@ const highwayPresetIDs = [
 
 // If the presetID matches any of these, we can cycle through crossings
 const crossingPresetRegex = [
-  /^highway\/footway\/crossing\//,
+  /^highway\/footway\/(crossing|sidewalk)/,
+  /^highway\/footway$/,
 ];
 
 const crossingPresetIDs = [
