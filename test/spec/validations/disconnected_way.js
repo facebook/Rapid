@@ -113,7 +113,11 @@ describe('validationDisconnectedWay', () => {
   //       |
   //  n-1  *---*  n-3
   //
-  function createConnectedWays(w1tags = {}, w2tags = {}, n1tags = {}) {
+  function createConnectedWays(tags = {}) {
+    const w1tags = tags.w1 ?? {};
+    const w2tags = tags.w2 ?? {};
+    const n1tags = tags.n1 ?? {};
+
     const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, 0], tags: n1tags });
     const n2 = Rapid.osmNode({ id: 'n-2', loc: [0, 1] });
     const n3 = Rapid.osmNode({ id: 'n-3', loc: [1, 0] });
@@ -125,7 +129,10 @@ describe('validationDisconnectedWay', () => {
   }
 
   it('flags highway connected only to service area', () => {
-    createConnectedWays({ highway: 'unclassified' }, { highway: 'services' });
+    createConnectedWays({
+      w1: { highway: 'unclassified' },
+      w2: { highway: 'services' }
+    });
     const issues = validate();
     expect(issues).to.have.lengthOf(1);
 
@@ -137,13 +144,19 @@ describe('validationDisconnectedWay', () => {
   });
 
   it('ignores highway connected to entrance vertex', () => {
-    createConnectedWays({ highway: 'unclassified' }, {}, { entrance: 'yes' });
+    createConnectedWays({
+      w1: { highway: 'unclassified' },
+      n1: { entrance: 'yes' }
+    });
     const issues = validate();
     expect(issues).to.have.lengthOf(0);
   });
 
   it('ignores highway connected to parking entrance vertex', () => {
-    createConnectedWays({ highway: 'unclassified' }, {}, { amenity: 'parking_entrance' });
+    createConnectedWays({
+      w1: { highway: 'unclassified' },
+      n1: { amenity: 'parking_entrance' }
+    });
     const issues = validate();
     expect(issues).to.have.lengthOf(0);
   });

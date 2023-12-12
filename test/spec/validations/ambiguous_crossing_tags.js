@@ -57,16 +57,20 @@ describe('validationAmbiguousCrossingTags', () => {
   //          *
   //         n-1
   //
-  function createWaysWithOneCrossingNode(w1tags = {}, w2tags = {}, nodeTags={}) {
-    const n5 = Rapid.osmNode({ id: 'n-5', loc: [0,  0], tags: nodeTags} );
+  function createJunction(tags = {}) {
+    const w1Tags = tags.w1 ?? {};
+    const w2Tags = tags.w2 ?? {};
+    const nTags  = tags.n  ?? {};
+
+    const n5 = Rapid.osmNode({ id: 'n-5', loc: [0,  0], tags: nTags} );
 
     const n1 = Rapid.osmNode({ id: 'n-1', loc: [0, -1] });
     const n2 = Rapid.osmNode({ id: 'n-2', loc: [0,  1] });
-    const w1 = Rapid.osmWay({ id: 'w-1', nodes: ['n-1', 'n-5', 'n-2'], tags: w1tags });
+    const w1 = Rapid.osmWay({ id: 'w-1', nodes: ['n-1', 'n-5', 'n-2'], tags: w1Tags });
 
     const n3 = Rapid.osmNode({ id: 'n-3', loc: [-1, 0] });
     const n4 = Rapid.osmNode({ id: 'n-4', loc: [ 1, 0] });
-    const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-5',  'n-4'], tags: w2tags });
+    const w2 = Rapid.osmWay({ id: 'w-2', nodes: ['n-3', 'n-5',  'n-4'], tags: w2Tags });
 
     const entities = [n1, n2, n3, n4, n5, w1, w2];
     graph = new Rapid.Graph(entities);
@@ -74,7 +78,6 @@ describe('validationAmbiguousCrossingTags', () => {
 
 
   function verifySingleCrossingWarning(issues) {
-    // each entity must produce an identical issue
     expect(issues).to.have.lengthOf(1);
 
     for (const issue of issues) {
@@ -87,92 +90,78 @@ describe('validationAmbiguousCrossingTags', () => {
   }
 
 
-  function verifySingleCrossingError(issues) {
-    // each entity must produce an identical issue
-    expect(issues).to.have.lengthOf(1);
-
-    for (const issue of issues) {
-      expect(issue.type).to.eql('ambiguous_crossing_tags');
-      expect(issue.severity).to.eql('error');
-
-      expect(issue.entityIds).to.have.lengthOf(2);
-      expect(issue.loc).to.eql([0, 0]);
-    }
-  }
-
-
   it('ignores untagged lines that share an untagged crossing node', () => {
-    createWaysWithOneCrossingNode();
+    createJunction();
     const issues = validate();
     expect(issues).to.have.lengthOf(0);
   });
 
   it('flags unmarked lines that share a marked crossing node', () => {
-    createWaysWithOneCrossingNode(
-      { crossing: 'unmarked', highway: 'footway', footway: 'crossing' },
-      { highway: 'residential' },
-      { 'crossing:markings' : 'yes' }
-    );
+    createJunction({
+      w1: { crossing: 'unmarked', highway: 'footway', footway: 'crossing' },
+      w2: { highway: 'residential' },
+      n:  { 'crossing:markings' : 'yes' }
+    });
     const issues = validate();
     verifySingleCrossingWarning(issues);
   });
 
   it('flags unmarked lines that share a zebra-marked crossing node', () => {
-    createWaysWithOneCrossingNode(
-      { crossing: 'unmarked', highway: 'footway', footway: 'crossing' },
-      { highway: 'residential' },
-      { MARKING_TAG: 'zebra' }
-    );
+    createJunction({
+      w1: { crossing: 'unmarked', highway: 'footway', footway: 'crossing' },
+      w2: { highway: 'residential' },
+      n:  { MARKING_TAG: 'zebra' }
+    });
     const issues = validate();
     verifySingleCrossingWarning(issues);
   });
 
   it('flags marked lines that share an unmarked crossing node', () => {
-    createWaysWithOneCrossingNode(
-      { crossing: 'marked', highway: 'footway', footway: 'crossing' },
-      { highway: 'residential' },
-      { 'crossing:markings': 'no' }
-    );
+    createJunction({
+      w1: { crossing: 'marked', highway: 'footway', footway: 'crossing' },
+      w2: { highway: 'residential' },
+      n:  { 'crossing:markings': 'no' }
+    });
     const issues = validate();
     verifySingleCrossingWarning(issues);
   });
 
   it('flags marked lines and nodes that have a different crossing marking type', () => {
-    createWaysWithOneCrossingNode(
-      { crossing: 'marked', 'crossing:markings': 'zebra', highway: 'footway', footway: 'crossing' },
-      { highway: 'residential' },
-      { 'highway': 'crossing', 'crossing':'marked', 'crossing:markings': 'lines' }
-    );
+    createJunction({
+      w1: { crossing: 'marked', 'crossing:markings': 'zebra', highway: 'footway', footway: 'crossing' },
+      w2: { highway: 'residential' },
+      n:  { 'highway': 'crossing', 'crossing':'marked', 'crossing:markings': 'lines' }
+    });
     const issues = validate();
-    verifySingleCrossingError(issues);
+    verifySingleCrossingWarning(issues);
   });
 
   it('flags an informal line and marked node', () => {
-    createWaysWithOneCrossingNode(
-      { crossing: 'informal', highway: 'footway', footway: 'crossing' },
-      { highway: 'residential' },
-      { 'crossing:markings': 'lines' }
-    );
+    createJunction({
+      w1: { crossing: 'informal', highway: 'footway', footway: 'crossing' },
+      w2: { highway: 'residential' },
+      n:  { 'crossing:markings': 'lines' }
+    });
     const issues = validate();
     verifySingleCrossingWarning(issues);
   });
 
   it('flags a marked line and informal ladder node', () => {
-    createWaysWithOneCrossingNode(
-      { crossing: 'marked', highway: 'footway', footway: 'crossing'},
-      { highway: 'residential' },
-      { 'highway':'crossing', 'crossing':'informal'}
-    );
+    createJunction({
+      w1: { crossing: 'marked', highway: 'footway', footway: 'crossing'},
+      w2: { highway: 'residential' },
+      n:  { 'highway':'crossing', 'crossing':'informal'}
+    });
     const issues = validate();
     verifySingleCrossingWarning(issues);
   });
 
   it('flags a marked line with bare crossing candidate node', () => {
-    createWaysWithOneCrossingNode(
-      { crossing: 'marked', highway: 'footway', footway: 'crossing'},
-      { highway: 'residential' },
-      {}
-    );
+    createJunction({
+      w1: { crossing: 'marked', highway: 'footway', footway: 'crossing'},
+      w2: { highway: 'residential' },
+      n: {}
+    });
     const issues = validate();
     verifySingleCrossingWarning(issues);
   });
