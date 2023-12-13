@@ -6,36 +6,54 @@ import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
 let _lastSelectedIDs = [];
 
 // If the presetID matches any of these, we can cycle through highways
-const highwayPresetRegex = [
+const highwayLinePresetRegex = [
   /^highway\/(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|track)/,
   /^line$/,   // untagged line
 ];
 
-const highwayPresetIDs = [
+const highwayLinePresetIDs = [
   'highway/residential',
   'highway/service',
   'highway/service/driveway',
   'highway/track',
   'highway/unclassified',
   'highway/tertiary',
-  'line',
+  'line'
 ];
 
-// If the presetID matches any of these, we can cycle through crossings
-const crossingPresetRegex = [
+// If the presetID matches any of these, we can cycle through line crossings
+const crossingLinePresetRegex = [
   /^highway\/footway\/(crossing|sidewalk)/,
-  /^highway\/footway$/,
+  /^highway\/footway$/
 ];
 
-const crossingPresetIDs = [
-  'highway/footway/crossing/unmarked',
-  'highway/footway/crossing/marked',
-  'highway/footway/crossing/zebra',
-  'highway/footway/crossing/lines',
-  'highway/footway/crossing/ladder',
-  'highway/footway/crossing/dashes',
-  'highway/footway/crossing/dots',
-  'highway/footway/crossing/ladder:skewed'
+const crossingLinePresetIDs = [
+  'highway/footway/crossing2/dashes',
+  'highway/footway/crossing2/dots',
+  'highway/footway/crossing2/ladder',
+  'highway/footway/crossing2/ladder:skewed',
+  'highway/footway/crossing2/lines',
+  'highway/footway/crossing2/surface',
+  'highway/footway/crossing2/unmarked',
+  'highway/footway/crossing2/zebra',
+  'highway/footway/crossing2/other'
+];
+
+// If the presetID matches any of these, we can cycle through vertex crossings
+const crossingVertexPresetRegex = [
+  /^highway\/crossing/
+];
+
+const crossingVertexPresetIDs = [
+  'highway/crossing2/dashes',
+  'highway/crossing2/dots',
+  'highway/crossing2/ladder',
+  'highway/crossing2/ladder:skewed',
+  'highway/crossing2/lines',
+  'highway/crossing2/surface',
+  'highway/crossing2/unmarked',
+  'highway/crossing2/zebra',
+  'highway/crossing2/other'
 ];
 
 
@@ -52,28 +70,40 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
   for (const entityID of selectedIDs) {
     const entity = graph.hasEntity(entityID);
-    if (entity?.type !== 'way') continue;
+    if (!entity) continue;
 
+    const geometry = entity.geometry(graph);
     const preset = presets.match(entity, graph);
-    const isHighway = highwayPresetRegex.some(regex => regex.test(preset.id));
-    const isCrossing = crossingPresetRegex.some(regex => regex.test(preset.id));
+    const isHighwayLine = (geometry === 'line' && highwayLinePresetRegex.some(regex => regex.test(preset.id)));
+    const isCrossingLine = (geometry === 'line' && crossingLinePresetRegex.some(regex => regex.test(preset.id)));
+    const isCrossingVertex = (geometry === 'vertex' && crossingVertexPresetRegex.some(regex => regex.test(preset.id)));
 
-    if (isHighway) {
+    if (isHighwayLine) {
       _entities.push(entity);
-      if (!_presetIDs) {
-        _presetIDs = highwayPresetIDs;
+      if (!_presetIDs) {   // lock it in
+        _presetIDs = highwayLinePresetIDs;
         _annotation = l10n.t('operations.cycle_highway_tag.highway_annotation');
-      } else if (_presetIDs !== highwayPresetIDs) {  // mix of highways and crossings, bail out
+      } else if (_presetIDs !== highwayLinePresetIDs) {   // mix of types, bail out
         _entities = []; _presetIDs = null; _annotation = ''; break;
       }
     }
 
-    if (isCrossing) {
+    if (isCrossingLine) {
       _entities.push(entity);
-      if (!_presetIDs) {
-        _presetIDs = crossingPresetIDs;
+      if (!_presetIDs) {  // lock it in
+        _presetIDs = crossingLinePresetIDs;
         _annotation = l10n.t('operations.cycle_highway_tag.crosswalk_annotation');
-      } else if (_presetIDs !== crossingPresetIDs) {  // mix of highways and crossings, bail out
+      } else if (_presetIDs !== crossingLinePresetIDs) {   // mix of types, bail out
+        _entities = []; _presetIDs = null; _annotation = ''; break;
+      }
+    }
+
+    if (isCrossingVertex) {
+      _entities.push(entity);
+      if (!_presetIDs) {  // lock it in
+        _presetIDs = crossingVertexPresetIDs;
+        _annotation = l10n.t('operations.cycle_highway_tag.crosswalk_annotation');
+      } else if (_presetIDs !== crossingVertexPresetIDs) {   // mix of types, bail out
         _entities = []; _presetIDs = null; _annotation = ''; break;
       }
     }
