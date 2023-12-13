@@ -403,7 +403,7 @@ export class MapRouletteService extends AbstractSystem {
     }
     setChallengeId(val) {
       this.challengeId = val;
-      this.loadTiles(true);
+      // this.loadTiles(true);
     }
 
 }
