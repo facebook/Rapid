@@ -25,7 +25,7 @@ export class MapRouletteService extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'maproulette';
-    this.challengeId = '42505';
+    this.challengeId = '';
     this.autoStart = false;
 
     this._taskData = { icons: {}, types: [] };
@@ -96,6 +96,20 @@ export class MapRouletteService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles(redraw = false) {
+    // if(this.challengeId.length > 0){
+    //   this._cache = {
+    //     tasks: new Map(),    // Map (taskID -> Task)
+    //     loadedTile: {},
+    //     inflightTile: {},
+    //     inflightPost: {},
+    //     closed: {},
+    //     rtree: new RBush()
+    //   };    
+    // }
+    if(redraw){
+      this._cache.tasks = new Map();
+      this._cache.rtree = new RBush();
+    }
     // determine the needed tiles to cover the view
     const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
@@ -115,8 +129,8 @@ export class MapRouletteService extends AbstractSystem {
       // const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
 
       const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
-      const url = `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}${this.challengeId ? '?cid='+this.challengeId : ''}`;
-
+      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=id&order=DESC${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`;
+    
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
 
@@ -400,7 +414,7 @@ export class MapRouletteService extends AbstractSystem {
     }
     setChallengeId(val) {
       this.challengeId = val;
-      // this.loadTiles(true);
+      this.loadTiles(true);
     }
 
 }
