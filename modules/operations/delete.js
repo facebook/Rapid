@@ -158,7 +158,7 @@ export function operationDelete(context, selectedIDs) {
 
 
   operation.id = 'delete';
-  operation.keys = [ uiCmd('⌘⌫'), uiCmd('⌘⌦'), uiCmd('⌦') ];
+  operation.keys = [ uiCmd('⌘ Cmd + ⌫ Delete'), uiCmd('⌘ Cmd + ⌦ Delete'), uiCmd('⌦ Delete') ];
   operation.title = l10n.t('operations.delete.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
