@@ -6,7 +6,7 @@ import { Task } from '../maproulette/Task';
 import { utilFetchResponse } from '../util';
 
 
-const TILEZOOM = 14;
+const TILEZOOM = 18;
 const MAPROULETTE_API = 'https://maproulette.org/api/v2';
 
 
@@ -96,20 +96,10 @@ export class MapRouletteService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles(redraw = false) {
-    // if(this.challengeId.length > 0){
-    //   this._cache = {
-    //     tasks: new Map(),    // Map (taskID -> Task)
-    //     loadedTile: {},
-    //     inflightTile: {},
-    //     inflightPost: {},
-    //     closed: {},
-    //     rtree: new RBush()
-    //   };    
+    // if(redraw){
+    //   this._cache.tasks = new Map();
+    //   this._cache.rtree = new RBush();
     // }
-    if(redraw){
-      this._cache.tasks = new Map();
-      this._cache.rtree = new RBush();
-    }
     // determine the needed tiles to cover the view
     const projection = this.context.projection;
     const tiles = this._tiler.getTiles(projection).tiles;
