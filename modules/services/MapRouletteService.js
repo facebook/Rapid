@@ -6,7 +6,7 @@ import { Task } from '../maproulette/Task';
 import { utilFetchResponse } from '../util';
 
 
-const TILEZOOM = 18;
+const TILEZOOM = 14;
 const MAPROULETTE_API = 'https://maproulette.org/api/v2';
 
 
@@ -25,7 +25,7 @@ export class MapRouletteService extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'maproulette';
-    this.challengeId = '';
+    this.challengeId = '42505';
     this.autoStart = false;
 
     this._taskData = { icons: {}, types: [] };
@@ -63,9 +63,8 @@ export class MapRouletteService extends AbstractSystem {
    * Called after completing an edit session to reset any internal state
    * @return {Promise} Promise resolved when this component has completed resetting
    */
-  resetAsync(hardReset = false) {
+  resetAsync() {
     if (this._cache) {
-    // if (this._cache && !hardReset) {
       Object.values(this._cache.inflightTile).forEach(controller => this._abortRequest(controller));
     }
     this._cache = {
@@ -106,8 +105,7 @@ export class MapRouletteService extends AbstractSystem {
 
     // issue new requests..
     for (const tile of tiles) {
-      // if ((this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) && !redraw) continue;
-      if ((this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id])) continue;
+      if ((this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) && !redraw) continue;
 
       const extent = this.context.systems.map.extent();
       const bbox = extent.bbox();
@@ -117,12 +115,11 @@ export class MapRouletteService extends AbstractSystem {
       // const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
 
       const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
-      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=id&order=DESC${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`;
+      const url = `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}${this.challengeId ? '?cid='+this.challengeId : ''}`;
 
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
 
-      // this.resetAsync(true);
       fetch(url, { signal: controller.signal })
         .then(utilFetchResponse)
         .then(data => {
@@ -163,11 +160,11 @@ export class MapRouletteService extends AbstractSystem {
    */
   loadTaskDetailAsync(task) {
     // Issue details only need to be fetched once
-    if (task.details !== undefined) return Promise.resolve(task);
+    if (task.elems !== undefined) return Promise.resolve(task);
 
     const localeCode = this.context.systems.l10n.localeCode();
     // const url = `${MAPROULETTE_API}/task/${task.id}?langs=${localeCode}`;
-    const url = `${MAPROULETTE_API}/challenge/${task.task.parentId}`;
+    const url = `${MAPROULETTE_API}/task/${task.id}`;
     const handleResponse = (data) => {
       // Associated elements used for highlighting
       // Assign directly for immediate use in the callback
@@ -192,7 +189,7 @@ export class MapRouletteService extends AbstractSystem {
   }
 
 
-  /**
+  /***
    * postUpdate
    * @param   issue
    * @param   callback
