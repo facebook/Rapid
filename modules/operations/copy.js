@@ -136,7 +136,7 @@ export function operationCopy(context, selectedIDs) {
 
 
   operation.id = 'copy';
-  operation.keys = [ uiCmd('⌘C') ];
+  operation.keys = [ uiCmd('⌘ Cmd + C') ];
   operation.title = l10n.t('operations.copy.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 

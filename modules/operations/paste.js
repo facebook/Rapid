@@ -93,7 +93,7 @@ export function operationPaste(context) {
 
 
   operation.id = 'paste';
-  operation.keys = [ uiCmd('⌘V') ];
+  operation.keys = [ uiCmd('⌘ Cmd + V') ];
   operation.title = l10n.t('operations.paste.title');
 
   return operation;
