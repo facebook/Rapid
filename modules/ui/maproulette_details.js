@@ -71,22 +71,22 @@ export function uiMapRouletteDetails(context) {
         .attr('class', 'qa-details-subsection');
   
       // Suggested Fix (mustn't exist for every issue type)
-      if (_qaItem.details.name) {
-        const div = detailsEnter
-          .append('div')
-          .attr('class', 'qa-details-subsection');
+      // if (_qaItem.details.name) {
+      //   const div = detailsEnter
+      //     .append('div')
+      //     .attr('class', 'qa-details-subsection');
   
-        div
-          .append('h4')
-          .html(l10n.tHtml('QA.maproulette.fix_title'));
+      //   div
+      //     .append('h4')
+      //     .html(l10n.tHtml('QA.maproulette.fix_title'));
   
-        div
-          .append('p')
-          .html(d => d.details.name)
-          .selectAll('a')
-          .attr('rel', 'noopener')
-          .attr('target', '_blank');
-      }
+      //   div
+      //     .append('p')
+      //     .html(d => d.details.name)
+      //     .selectAll('a')
+      //     .attr('rel', 'noopener')
+      //     .attr('target', '_blank');
+      // }
   
       // Common Pitfalls (mustn't exist for every issue type)
       if (_qaItem.details.instruction) {
@@ -120,65 +120,65 @@ export function uiMapRouletteDetails(context) {
 
           detailsDiv
             .append('p')
-            .html(d => `${d.task.parentName} ${d.details.parent}`)
+            .html(d => `Challenge ID: ${d.task.parentId} || Task ID: ${d.task.id}`)
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
         }
 
         // Create list of linked issue elements
-        elemsDiv
-          .append('h4')
-          .html(l10n.tHtml('QA.maproulette.elems_title'));
+        // elemsDiv
+        //   .append('h4')
+        //   .html(l10n.tHtml('QA.maproulette.elems_title'));
 
-        elemsDiv
-          .append('ul').selectAll('li')
-          .data(d.elems)
-          .enter()
-          .append('li')
-          .append('a')
-          .attr('href', '#')
-          .attr('class', 'error_entity_link')
-          .html(d => d.details.checkinComment)
-          .each((d, i, nodes) => {
-            const node = nodes[i];
-            const link = d3_select(node);
-            const entityID = node.textContent;
-            const graph = editor.staging.graph;
-            const entity = graph.hasEntity(entityID);
+        // elemsDiv
+        //   .append('ul').selectAll('li')
+        //   .data(d.elems)
+        //   .enter()
+        //   .append('li')
+        //   .append('a')
+        //   .attr('href', '#')
+        //   .attr('class', 'error_entity_link')
+        //   .html(d => d.details.checkinComment)
+        //   .each((d, i, nodes) => {
+        //     const node = nodes[i];
+        //     const link = d3_select(node);
+        //     const entityID = node.textContent;
+        //     const graph = editor.staging.graph;
+        //     const entity = graph.hasEntity(entityID);
 
-            // Add click handler
-            link
-              .on('mouseenter', () => {
-                utilHighlightEntities([entityID], true, context);
-              })
-              .on('mouseleave', () => {
-                utilHighlightEntities([entityID], false, context);
-              })
-              .on('click', (d3_event) => {
-                d3_event.preventDefault();
+        //     // Add click handler
+        //     link
+        //       .on('mouseenter', () => {
+        //         utilHighlightEntities([entityID], true, context);
+        //       })
+        //       .on('mouseleave', () => {
+        //         utilHighlightEntities([entityID], false, context);
+        //       })
+        //       .on('click', (d3_event) => {
+        //         d3_event.preventDefault();
 
-                utilHighlightEntities([entityID], false, context);
+        //         utilHighlightEntities([entityID], false, context);
 
-                map.scene.enableLayers('osm');  // make sure osm layer is even on
-                map.centerZoom(d.loc, 20);
-                map.selectEntityID(entityID);
-              });
+        //         map.scene.enableLayers('osm');  // make sure osm layer is even on
+        //         map.centerZoom(d.loc, 20);
+        //         map.selectEntityID(entityID);
+        //       });
 
-            // Replace with friendly name if possible
-            // (The entity may not yet be loaded into the graph)
-            if (entity) {
-              let name = l10n.displayName(entity.tags);  // try to use common name
-              if (!name) {
-                const preset = presets.match(entity, graph);
-                name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
-              }
+        //     // Replace with friendly name if possible
+        //     // (The entity may not yet be loaded into the graph)
+        //     if (entity) {
+        //       let name = l10n.displayName(entity.tags);  // try to use common name
+        //       if (!name) {
+        //         const preset = presets.match(entity, graph);
+        //         name = preset && !preset.isFallback() && preset.name();  // fallback to preset name
+        //       }
 
-              if (name) {
-                node.innerText = name;
-              }
-            }
-          });
+        //       if (name) {
+        //         node.innerText = name;
+        //       }
+        //     }
+        //   });
 
         // Don't hide entities related to this issue - iD#5880
         filters.forceVisible(d.elems);

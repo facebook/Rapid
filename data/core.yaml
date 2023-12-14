@@ -1179,10 +1179,9 @@ en:
       trap_title: Common Mistakes
     maproulette:
       title: MapRoulette Challenge
-      detail_title: Name
+      detail_title: IDs
       elems_title: Details
-      fix_title: Instruction
-      trap_title: Common Mistakes
+      trap_title: Instructions
     improveOSM:
       title: ImproveOSM Detection
       geometry_types:

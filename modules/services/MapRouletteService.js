@@ -119,8 +119,8 @@ export class MapRouletteService extends AbstractSystem {
       // const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
 
       const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
-      // const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=id&order=ASC&cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`;
-      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`;
+      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=id&order=ASC&cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`;
+      // const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&parentid='+this.challengeId : ''}`;
     
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
