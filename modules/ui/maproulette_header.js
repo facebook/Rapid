@@ -8,10 +8,11 @@ export function uiMapRouletteHeader(context) {
 
 
   function issueTitle(d) {
-    const unknown = l10n.t('inspector.unknown');
-    if (!maproulette || !d) return unknown;
+    // const unknown = l10n.t('inspector.unknown');
+    // if (!maproulette || !d) return unknown;
 
-    return ('title' in d) ? d.title : unknown;
+    // return ('title' in d) ? d.title : unknown;
+    return d.task.parentName;
   }
 
 
