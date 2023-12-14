@@ -65,11 +65,11 @@ export class Field {
   }
 
   title() {
-    return this._resolveReference('label').t('label', { 'default': this.id });
+    return this._resolveReference('label').t('label', { 'default': this.orig.label || this.id });
   }
 
   label() {
-    return this._resolveReference('label').tHtml('label', { 'default': this.id });
+    return this._resolveReference('label').tHtml('label', { 'default': this.orig.label || this.id });
   }
   // _this.label = () => _this._resolveReference('label').t.append('label', { 'default': this.id });  // someday?
 

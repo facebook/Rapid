@@ -1,8 +1,12 @@
-export function actionUpgradeTags(entityId, oldTags, replaceTags) {
+import { actionSyncCrossingTags } from './sync_crossing_tags';
+
+
+export function actionUpgradeTags(entityID, oldTags, replaceTags) {
 
     return function(graph) {
-        var entity = graph.entity(entityId);
-        var tags = Object.assign({}, entity.tags);  // shallow copy
+        var entity = graph.entity(entityID);
+        var origTags = Object.assign({}, entity.tags);  // shallow copy
+        var tags = Object.assign({}, entity.tags);      // shallow copy
         var transferValue;
         var semiIndex;
 
@@ -61,6 +65,13 @@ export function actionUpgradeTags(entityId, oldTags, replaceTags) {
             }
         }
 
-        return graph.replace(entity.update({ tags: tags }));
+        graph = graph.replace(entity.update({ tags: tags }));
+
+        const crossingKeys = ['crossing', 'crossing_ref', 'crossing:signals', 'crossing:markings', 'crossing:island'];
+        if (crossingKeys.some(k => tags[k] !== origTags[k])) {  // `crossing` tag changed?
+          graph = actionSyncCrossingTags(entityID)(graph);      // more updates may be necessary..
+        }
+
+        return graph;
     };
 }

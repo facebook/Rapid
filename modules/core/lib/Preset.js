@@ -337,10 +337,15 @@ export class Preset {
       }
     }
 
-    // no fields resolved, so use the parent's if possible
-    if (!resolved.length) {
-      const endIndex = this.id.lastIndexOf('/');
-      const parentID = endIndex && this.id.substring(0, endIndex);
+    // No fields resolved for this preset, search up the preset path until we find some.
+    // e.g. `highway/footway/crossing/zebra` will try:
+    //  `highway/footway/crossing`
+    //  `highway/footway`
+    //  `highway`
+    let parts = this.id.split('/');
+    while (!resolved.length && parts.length) {
+      parts.pop();
+      const parentID = parts.join('/');
       if (parentID) {
         resolved = inheritFields(parentID, prop);
       }
@@ -349,7 +354,7 @@ export class Preset {
     return utilArrayUniq(resolved);
 
 
-    // returns an array of fields to inherit from the given presetID, if found
+    // Returns an Array of fields to inherit from the given presetID, if found
     function inheritFields(presetID, prop) {
       const parent = thiz.allPresets[presetID];
       if (!parent) return [];

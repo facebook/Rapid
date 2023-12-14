@@ -34,6 +34,7 @@ export { actionScale } from './scale';
 export { actionSplit } from './split';
 export { actionStraightenNodes } from './straighten_nodes';
 export { actionStraightenWay } from './straighten_way';
+export { actionSyncCrossingTags } from './sync_crossing_tags';
 export { actionUnrestrictTurn } from './unrestrict_turn';
 export { actionReflect } from './reflect.js';
 export { actionUpgradeTags } from './upgrade_tags';

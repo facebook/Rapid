@@ -36,6 +36,9 @@ export function validationOutdatedTags(context) {
     const oldTags = Object.assign({}, entity.tags);  // shallow copy
     let subtype = 'deprecated_tags';
 
+    // Note: We are going to modify `graph` and `entity` locally in here, but these things will not change.
+    // It's just a working graph where we can apply changes in order to determine the final tag diff.
+
     // Upgrade preset, if a replacement is available..
     if (preset.replacement) {
       const newPreset = presets.item(preset.replacement);
@@ -47,10 +50,8 @@ export function validationOutdatedTags(context) {
     // Upgrade deprecated tags..
     if (_dataDeprecated) {
       const deprecatedTags = entity.deprecatedTags(_dataDeprecated);
-      if (deprecatedTags.length) {
-        deprecatedTags.forEach(tag => {
-          graph = actionUpgradeTags(entity.id, tag.old, tag.replace)(graph);
-        });
+      for (const tag of deprecatedTags) {
+        graph = actionUpgradeTags(entity.id, tag.old, tag.replace)(graph);
         entity = graph.entity(entity.id);
       }
     }
@@ -58,15 +59,19 @@ export function validationOutdatedTags(context) {
     // Add missing addTags from the detected preset
     let newTags = Object.assign({}, entity.tags);  // shallow copy
     if (preset.tags !== preset.addTags) {
-      Object.keys(preset.addTags).forEach(k => {
+      for (const [k, v] of Object.entries(preset.addTags)) {
+// TODO - for now, skip tag upgrades on crossing nodes only, see Rapid#1260
+// The `ambiguous_crossing_tags` validator will take care of them.
+// (We don't need to raise the same issue twice - for both the node and the way)
+if (entity.type === 'node' && /^highway\/crossing\//.test(preset.id)) continue;
         if (!newTags[k]) {
-          if (preset.addTags[k] === '*') {
+          if (v === '*') {
             newTags[k] = 'yes';
           } else {
-            newTags[k] = preset.addTags[k];
+            newTags[k] = v;
           }
         }
-      });
+      }
     }
 
     // Attempt to match a canonical record in the name-suggestion-index.
@@ -102,6 +107,13 @@ export function validationOutdatedTags(context) {
       prefix = 'incomplete.';
     }
 
+    // Allow autofix for simple upgrades..
+    // `noncanonical_brand` upgrades may have false positives, so they should be reviewed manually.
+    let autoArgs = null;
+    if (subtype !== 'noncanonical_brand') {
+      autoArgs = [actionDoTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')];
+    }
+
     issues.push(new ValidationIssue(context, {
       type: type,
       subtype: subtype,
@@ -110,7 +122,7 @@ export function validationOutdatedTags(context) {
       reference: showUpgradeReference,
       entityIds: [entity.id],
       hash: utilHashcode(JSON.stringify(tagDiff)),
-      autoArgs: [actionDoTagUpgrade, l10n.t('issues.fix.upgrade_tags.annotation')],
+      autoArgs: autoArgs,
       dynamicFixes: () => {
         let fixes = [
           new ValidationFix({
@@ -153,13 +165,13 @@ export function validationOutdatedTags(context) {
       if (!currEntity) return graph;
 
       const newTags = Object.assign({}, currEntity.tags);  // shallow copy
-      tagDiff.forEach(diff => {
+      for (const diff of tagDiff) {
         if (diff.type === '-') {
           delete newTags[diff.key];
         } else if (diff.type === '+') {
           newTags[diff.key] = diff.newVal;
         }
-      });
+      }
 
       return actionChangeTags(currEntity.id, newTags)(graph);
     }

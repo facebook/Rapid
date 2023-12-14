@@ -188,13 +188,18 @@ osmEntity.prototype = {
         return true;
     },
 
+    // TODO - This does not belong here.
+    // Entities should not be responsible for checking their tags are deprecated.
+    // (It's telling that `dataDeprecated` needs to be passed in for it to even do this.)
+    // `deprecatedTags` is only called by the `outdated_tags` validator, so maybe it should be moved there.
+    // Or maybe into the `PresetSystem`, if this is a thing might be called from outside the validator.
     deprecatedTags: function(dataDeprecated) {
         var tags = this.tags;
 
         // if there are no tags, none can be deprecated
         if (Object.keys(tags).length === 0) return [];
 
-        var deprecated = [];
+        var results = [];
         dataDeprecated.forEach(function(d) {
             var oldKeys = Object.keys(d.old);
             if (d.replace) {
@@ -233,10 +238,10 @@ osmEntity.prototype = {
                 return false;
             });
             if (matchesDeprecatedTags) {
-                deprecated.push(d);
+                results.push(d);
             }
         });
 
-        return deprecated;
+        return results;
     }
 };
