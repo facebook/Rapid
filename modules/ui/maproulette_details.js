@@ -54,8 +54,8 @@ export function uiMapRouletteDetails(context) {
         div
           .append('p')
           .attr('class', 'qa-details-description-text')
-          .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`) // change this to show challenge details
-          // .html(d => _qaItem.details.description) // This throws unhandled error that prevents line 106 of this same file from executing, which has to execute before the data here can even exist. Solution: run loadTaskDetailAsync before running this line.
+          // .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`) // change this to show challenge details
+          .html(d => _qaItem.details.description) // This throws unhandled error that prevents line 106 of this same file from executing, which has to execute before the data here can even exist. Solution: run loadTaskDetailAsync before running this line.
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
