@@ -42,7 +42,7 @@ export function uiMapRouletteDetails(context) {
   
   
       // Description
-      if (_qaItem.task.parentName && _qaItem.task.parentId) {
+      if (_qaItem.details.description) {
         const div = detailsEnter
           .append('div')
           .attr('class', 'qa-details-subsection');
@@ -55,7 +55,7 @@ export function uiMapRouletteDetails(context) {
           .append('p')
           .attr('class', 'qa-details-description-text')
           // .html(d => `Challenge name: ${_qaItem.task.parentName} || Challenge ID: ${_qaItem.task.parentId} || Task ID: ${_qaItem.task.id}`) // change this to show challenge details
-          .html(d => _qaItem.details.description) // This throws unhandled error that prevents line 106 of this same file from executing, which has to execute before the data here can even exist. Solution: run loadTaskDetailAsync before running this line.
+          .html(d => d.details.description)
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
@@ -71,7 +71,7 @@ export function uiMapRouletteDetails(context) {
         .attr('class', 'qa-details-subsection');
   
       // Suggested Fix (mustn't exist for every issue type)
-      if (taskString(_qaItem, 'fix')) {
+      if (_qaItem.details.name) {
         const div = detailsEnter
           .append('div')
           .attr('class', 'qa-details-subsection');
@@ -82,14 +82,14 @@ export function uiMapRouletteDetails(context) {
   
         div
           .append('p')
-          .html(d => taskString(d, 'fix'))
+          .html(d => d.details.name)
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
       }
   
       // Common Pitfalls (mustn't exist for every issue type)
-      if (taskString(_qaItem, 'trap')) {
+      if (_qaItem.details.instruction) {
         const div = detailsEnter
           .append('div')
           .attr('class', 'qa-details-subsection');
@@ -100,7 +100,7 @@ export function uiMapRouletteDetails(context) {
   
         div
           .append('p')
-          .html(d => taskString(d, 'trap'))
+          .html(d => d.details.instruction)
           .selectAll('a')
           .attr('rel', 'noopener')
           .attr('target', '_blank');
@@ -139,7 +139,7 @@ export function uiMapRouletteDetails(context) {
           .append('a')
           .attr('href', '#')
           .attr('class', 'error_entity_link')
-          .html(d => d)
+          .html(d => d.details.checkinComment)
           .each((d, i, nodes) => {
             const node = nodes[i];
             const link = d3_select(node);
