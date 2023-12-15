@@ -119,7 +119,7 @@ export class MapRouletteService extends AbstractSystem {
       // const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
 
       const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
-      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=id&order=ASC&cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`;
+      const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=parent_id&order=DESC&cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`; // Presumably the parent_id (that is, Challenge ID) will be auto-incremental for new Challenges, and thus a DESC Sort will give priority to loading newer challenges from the API first. This is done so that older, deleted challenges are left out.
       // const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&parentid='+this.challengeId : ''}`;
     
       const controller = new AbortController();
