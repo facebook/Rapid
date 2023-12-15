@@ -13,7 +13,7 @@ export function actionChangePreset(entityID, oldPreset, newPreset, skipFieldDefa
 
     graph = graph.replace(entity.update({ tags: tags }));
 
-    const crossingKeys = ['crossing', 'crossing_ref', 'crossing:signals', 'crossing:markings', 'crossing:island'];
+    const crossingKeys = ['crossing', 'crossing_ref', 'crossing:continuous', 'crossing:island', 'crossing:markings', 'crossing:signals'];
     if (crossingKeys.some(k => tags[k] !== origTags[k])) {  // `crossing` tag changed?
       graph = actionSyncCrossingTags(entityID)(graph);      // more updates may be necessary..
     }

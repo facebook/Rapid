@@ -12,7 +12,7 @@ const pathVals = new Set([
 
 const crossingKeys = new Set([
   'crossing', 'crossing_ref',
-  'crossing:signals', 'crossing:markings', 'crossing:island',
+  'crossing:continuous', 'crossing:island', 'crossing:markings', 'crossing:signals',
   'lit', 'traffic_calming', 'surface'
 ]);
 
@@ -110,9 +110,10 @@ export function actionSyncCrossingTags(entityID) {
       }
 
       // Set/remove the `highway=crossing` tag too.
+      // By convention this should also be removed for `crossing=no` and `crossing=informmal`.
       // Watch out for multivalues ';', sometimes the `crossing` might also be a stopline / traffic_signals / etc.
       const highwayVals = new Set( (childTags.highway || '').split(';').filter(Boolean) );
-      if (isCrossing) {
+      if (isCrossing && !['informal', 'no'].includes(t.crossing)) {
         highwayVals.add('crossing');
       } else {
         highwayVals.delete('crossing');
@@ -227,8 +228,10 @@ export function actionSyncCrossingTags(entityID) {
       if (!markings) {   // Assign default `crossing:markings`, if it doesn't exist yet..
         switch (crossing) {
           case 'island':
+          case 'pedestrian_signals':
           case 'traffic_signals':
             break;    // these convey no info about markings
+          case 'informal':
           case 'no':
           case 'unmarked':
             markings = tags['crossing:markings'] = 'no';
@@ -244,10 +247,12 @@ export function actionSyncCrossingTags(entityID) {
 
       if (!signals) {   // Assign default `crossing:signals`, if it doesn't exist yet..
         switch (crossing) {
+          case 'informal':
           case 'no':
           case 'uncontrolled':
             signals = tags['crossing:signals'] = 'no';
             break;
+          case 'pedestrian_signals':
           case 'traffic_signals':
             signals = tags['crossing:signals'] = 'yes';
             break;
@@ -255,8 +260,8 @@ export function actionSyncCrossingTags(entityID) {
       }
 
       // Remove the legacy `crossing` tag if it directly conflicts with a modern `crossing:*` tag.
-      const legacyMarked = !(['island', 'no', 'traffic_signals', 'unmarked'].includes(crossing));
-      const legacySignaled = (crossing === 'traffic_signals');
+      const legacyMarked = !(['island', 'informal', 'no', 'traffic_signals', 'pedestrian_signals', 'unmarked'].includes(crossing));
+      const legacySignaled = (['traffic_signals', 'pedestrian_signals'].includes(crossing));
       const modernMarked = (markings && markings !== 'no');
       const modernSignaled = (signals && signals !== 'no');
       if (
