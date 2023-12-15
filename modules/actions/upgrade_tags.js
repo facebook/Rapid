@@ -1,77 +1,89 @@
 import { actionSyncCrossingTags } from './sync_crossing_tags';
 
 
+/**
+ * actionUpgradeTags
+ * This action works specifically to perform tag upgrades as directed by
+ *  rules found in the id-tagging-schema `deprecated.json` file.
+ * see: https://github.com/openstreetmap/id-tagging-schema/blob/main/data/deprecated.json
+ *
+ * Some of the types of replacement rules found in the file:
+ *
+ *  - a basic replacement:
+ *  {
+ *    "old":     { "building": "home" },
+ *    "replace": { "building": "house" }
+ *  }
+ *
+ *  - a '*' replacement:
+ *  {
+ *    "old":     { "building": "entrance" },
+ *    "replace": { "entrance": "*" }
+ *  }
+ *
+ *  - a '$1' token replacement - these are called 'transfer values' in the code below
+ *   {
+ *     "old":     { "building:min_height": "*" },
+ *     "replace": { "min_height": "$1" }
+ *   }
+ *
+ */
 export function actionUpgradeTags(entityID, oldTags, replaceTags) {
 
-    return function(graph) {
-        var entity = graph.entity(entityID);
-        var origTags = Object.assign({}, entity.tags);  // shallow copy
-        var tags = Object.assign({}, entity.tags);      // shallow copy
-        var transferValue;
-        var semiIndex;
+  return function(graph) {
+    const entity = graph.entity(entityID);
+    const tags = Object.assign({}, entity.tags);      // shallow copy
+    let transferValue;
+    let semiIndex;
 
-        for (var oldTagKey in oldTags) {
-            if (!(oldTagKey in tags)) continue;
-            // wildcard match
-            if (oldTags[oldTagKey] === '*') {
-                // note the value since we might need to transfer it
-                transferValue = tags[oldTagKey];
-                delete tags[oldTagKey];
-            // exact match
-            } else if (oldTags[oldTagKey] === tags[oldTagKey]) {
-                delete tags[oldTagKey];
-            // match is within semicolon-delimited values
-            } else {
-                var vals = tags[oldTagKey].split(';').filter(Boolean);
-                var oldIndex = vals.indexOf(oldTags[oldTagKey]);
-                if (vals.length === 1 || oldIndex === -1) {
-                    delete tags[oldTagKey];
-                } else {
-                    if (replaceTags && replaceTags[oldTagKey]) {
-                        // replacing a value within a semicolon-delimited value, note the index
-                        semiIndex = oldIndex;
-                    }
-                    vals.splice(oldIndex, 1);
-                    tags[oldTagKey] = vals.join(';');
-                }
+    for (const [k, v] of Object.entries(oldTags)) {
+      if (!(k in tags)) continue;
+
+      if (v === '*') {             // wildcard match
+        transferValue = tags[k];   // note the value since we might need to transfer it
+        delete tags[k];
+      } else if (v === tags[k]) {   // exact match
+        delete tags[k];
+      } else {    // look for match in semicolon-delimited values
+        const vals = tags[k].split(';').filter(Boolean);
+        const oldIndex = vals.indexOf(v);
+        if (vals.length === 1 || oldIndex === -1) {
+          delete tags[k];
+        } else {
+          if (replaceTags && replaceTags[k]) {
+            semiIndex = oldIndex;   // replacing a value within a semicolon-delimited value, note the index
+          }
+          vals.splice(oldIndex, 1);
+          tags[k] = vals.join(';');
+        }
+      }
+    }
+
+    if (replaceTags) {
+      for (const [k, v] of Object.entries(replaceTags)) {
+        if (v === '*') {
+          if (tags[k] && tags[k] !== 'no') {  // allow any pre-existing value except `no` (troll tag)
+            continue;
+          } else {   // otherwise assume `yes` is okay
+            tags[k] = 'yes';
+          }
+        } else if (v === '$1') {      // replace with transferred value
+          tags[k] = transferValue;
+        } else {
+          if (tags[k] && oldTags[k] && semiIndex !== undefined) {  // replace within semicolon list
+            const vals = tags[k].split(';').filter(Boolean);
+            if (vals.indexOf(v) === -1) {
+              vals.splice(semiIndex, 0, v);
+              tags[k] = vals.join(';');
             }
+          } else {
+            tags[k] = v;
+          }
         }
+      }
+    }
 
-        if (replaceTags) {
-            for (var replaceKey in replaceTags) {
-                var replaceValue = replaceTags[replaceKey];
-                if (replaceValue === '*') {
-                    if (tags[replaceKey] && tags[replaceKey] !== 'no') {
-                        // allow any pre-existing value except `no` (troll tag)
-                        continue;
-                    } else {
-                        // otherwise assume `yes` is okay
-                        tags[replaceKey] = 'yes';
-                    }
-                } else if (replaceValue === '$1') {
-                    tags[replaceKey] = transferValue;
-                } else {
-                    if (tags[replaceKey] && oldTags[replaceKey] && semiIndex !== undefined) {
-                        // don't override preexisting values
-                        var existingVals = tags[replaceKey].split(';').filter(Boolean);
-                        if (existingVals.indexOf(replaceValue) === -1) {
-                            existingVals.splice(semiIndex, 0, replaceValue);
-                            tags[replaceKey] = existingVals.join(';');
-                        }
-                    } else {
-                        tags[replaceKey] = replaceValue;
-                    }
-                }
-            }
-        }
-
-        graph = graph.replace(entity.update({ tags: tags }));
-
-        const crossingKeys = ['crossing', 'crossing_ref', 'crossing:signals', 'crossing:markings', 'crossing:island'];
-        if (crossingKeys.some(k => tags[k] !== origTags[k])) {  // `crossing` tag changed?
-          graph = actionSyncCrossingTags(entityID)(graph);      // more updates may be necessary..
-        }
-
-        return graph;
-    };
+    graph = graph.replace(entity.update({ tags: tags }));
+    return graph;
+  };
 }
