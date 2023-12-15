@@ -51,7 +51,8 @@ export function actionSyncCrossingTags(entityID) {
    * @return  {Graph}   The modified output Graph
    */
   function syncParentToChildren(parent, graph, skipChildID) {
-    const parentTags = Object.assign({}, parent.tags);  // copy
+    let parentTags = Object.assign({}, parent.tags);  // copy
+    parentTags = cleanCrossingTags(parentTags);
 
     // Is the parent way tagged with something like `highway=footway`+`footway=crossing` ?
     let isCrossing = false;
@@ -69,13 +70,13 @@ export function actionSyncCrossingTags(entityID) {
         if (['crossing', 'lit', 'surface'].includes(k)) continue;
         delete parentTags[k];
       }
-      graph = graph.replace(parent.update({ tags: parentTags }));
     }
+    graph = graph.replace(parent.update({ tags: parentTags }));
 
     // Gather relevant crossing tags from the parent way..
-    const syncTags = {};
+    const t = {};
     for (const k of crossingKeys) {
-      syncTags[k] = parentTags[k];
+      t[k] = parentTags[k];
     }
 
     // Gather child crossings between the parent and any other roads..
@@ -100,7 +101,7 @@ export function actionSyncCrossingTags(entityID) {
     for (const child of crossingNodes) {
       const childTags = Object.assign({}, child.tags);  // copy
 
-      for (const [k, v] of Object.entries(syncTags)) {
+      for (const [k, v] of Object.entries(t)) {
         if (v) {
           childTags[k] = v;
         } else {
@@ -139,7 +140,8 @@ export function actionSyncCrossingTags(entityID) {
    * @return  {Graph}  The modified output Graph
    */
   function syncChildToParents(child, graph) {
-    const childTags = Object.assign({}, child.tags);  // copy
+    let childTags = Object.assign({}, child.tags);  // copy
+    childTags = cleanCrossingTags(childTags);
 
     // Is the child vertex tagged with something like `highway=crossing` or `crossing:markings=*?
     let isCrossing = false;
@@ -154,13 +156,13 @@ export function actionSyncCrossingTags(entityID) {
         if (['crossing', 'lit', 'surface'].includes(k)) continue;
         delete childTags[k];
       }
-      graph = graph.replace(child.update({ tags: childTags }));
     }
+    graph = graph.replace(child.update({ tags: childTags }));
 
     // Gather relevant crossing tags from the child vertex..
-    const syncTags = {};
+    const t = {};
     for (const k of crossingKeys) {
-      syncTags[k] = childTags[k];
+      t[k] = childTags[k];
     }
 
     // Gather parent ways that are already tagged as crossings..
@@ -177,7 +179,7 @@ export function actionSyncCrossingTags(entityID) {
     for (const parent of crossingWays) {
       const parentTags = Object.assign({}, parent.tags);  // copy
 
-      for (const [k, v] of Object.entries(syncTags)) {
+      for (const [k, v] of Object.entries(t)) {
         if (v) {
           parentTags[k] = v;
         } else {
@@ -197,6 +199,95 @@ export function actionSyncCrossingTags(entityID) {
     }
 
     return graph;
+  }
+
+
+  /**
+   * cleanCrossingTags
+   * Attempt to assign basic defaults to avoid tag mismatches / unnecessary validation warnings.
+   * @param   {Object}  t - the input tags to check
+   * @return  {Object}  updated tags to set
+   */
+  function cleanCrossingTags(t) {
+    let crossing = t.crossing ?? '';
+    let markings = t['crossing:markings'] ?? '';
+    let signals  = t['crossing:signals'] ?? '';
+
+    // At least one of these must be set..
+    if (!crossing && !markings && !signals) return t;
+
+    // Bail out if any of these tags include semicolons..
+    if (crossing.includes(';') || markings.includes(';') || signals.includes(';')) return t;
+
+    const tags = Object.assign({}, t);  // copy
+
+    // First, consider the legacy `crossing` tag.
+    // See https://wiki.openstreetmap.org/wiki/Proposal:Highway_crossing_cleanup
+    if (crossing) {
+      if (!markings) {   // Assign default `crossing:markings`, if it doesn't exist yet..
+        switch (crossing) {
+          case 'island':
+          case 'traffic_signals':
+            break;    // these convey no info about markings
+          case 'no':
+          case 'unmarked':
+            markings = tags['crossing:markings'] = 'no';
+            break;
+          case 'zebra':
+            markings = tags['crossing:markings'] = 'zebra';
+            break;
+          default:
+            markings = tags['crossing:markings'] = 'yes';
+            break;
+        }
+      }
+
+      if (!signals) {   // Assign default `crossing:signals`, if it doesn't exist yet..
+        switch (crossing) {
+          case 'no':
+          case 'uncontrolled':
+            signals = tags['crossing:signals'] = 'no';
+            break;
+          case 'traffic_signals':
+            signals = tags['crossing:signals'] = 'yes';
+            break;
+        }
+      }
+
+      // Remove the legacy `crossing` tag if it directly conflicts with a modern `crossing:*` tag.
+      const legacyMarked = !(['island', 'no', 'traffic_signals', 'unmarked'].includes(crossing));
+      const legacySignaled = (crossing === 'traffic_signals');
+      const modernMarked = (markings && markings !== 'no');
+      const modernSignaled = (signals && signals !== 'no');
+      if (
+        (legacyMarked && !modernMarked) || (!legacyMarked && modernMarked) ||
+        (legacySignaled && !modernSignaled) || (!legacySignaled && modernSignaled)
+      ) {
+        delete tags.crossing;
+      }
+    }
+
+
+    // Attempt to assign a legacy `crossing` tag, if it is missing.
+    if (!tags.crossing) {
+      if (signals && signals !== 'no') {
+        tags.crossing = 'traffic_signals';
+
+      } else if (markings) {
+        switch (markings) {
+          case 'no':
+            tags.crossing = 'unmarked';
+            break;
+          default:
+            tags.crossing = 'marked';
+            break;
+        }
+      } else {  // unsure what kind of markings or signals it has
+        tags.crossing = 'yes';
+      }
+    }
+
+    return tags;
   }
 
 }
