@@ -96,7 +96,7 @@ export class MapRouletteService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles(redraw = false) {
-    if(redraw){
+    if (redraw) {
       this._cache.tasks = new Map();
       this._cache.rtree = new RBush();
     }
