@@ -101,13 +101,13 @@ export function uiMapRouletteEditor(context) {
       .append('div')
       .attr('class', 'buttons');
 
-    buttonEnter
-      .append('button')
-      .attr('class', 'button close-button action');
+    // buttonEnter
+    //   .append('button')
+    //   .attr('class', 'button close-button action');
 
-    buttonEnter
-      .append('button')
-      .attr('class', 'button ignore-button action');
+    // buttonEnter
+    //   .append('button')
+    //   .attr('class', 'button ignore-button action');
 
     // update
     buttonSection = buttonSection
