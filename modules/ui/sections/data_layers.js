@@ -91,7 +91,7 @@ export function uiSectionDataLayers(context) {
           d3_select(nodes[i])
             .call(uiTooltip(context)
               .title(l10n.tHtml(`map_data.layers.${d.id}.tooltip`))
-              .keys([uiCmd('⌥ Option' + l10n.t('area_fill.wireframe.key'))])
+              .keys([uiCmd('⌥' + l10n.t('area_fill.wireframe.key'))])
               .placement('bottom')
             );
         } else {

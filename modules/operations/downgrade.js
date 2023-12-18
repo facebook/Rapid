@@ -134,7 +134,7 @@ export function operationDowngrade(context, selectedIDs) {
 
 
   operation.id = 'downgrade';
-  operation.keys = [ uiCmd('⌫ Delete') ];
+  operation.keys = [ uiCmd('⌫') ];
   operation.title = l10n.t('operations.downgrade.title');
   operation.behavior = new KeyOperationBehavior(context, operation);
 
