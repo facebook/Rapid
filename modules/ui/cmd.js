@@ -38,6 +38,7 @@ export let uiCmd = function(code) {
 // return a display-focused string for a given keyboard code
 uiCmd.display = function(context, code) {
   if (code.length !== 1) return code;
+
   const l10n = context.systems.l10n;
   const detected = utilDetect();
   const mac = (detected.os === 'mac');
