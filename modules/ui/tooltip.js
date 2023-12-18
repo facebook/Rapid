@@ -1,6 +1,6 @@
 import { utilFunctor } from '../util/util';
 import { uiPopover } from './popover';
-
+import { uiCmd } from './cmd';
 
 export function uiTooltip(context) {
     const l10n = context.systems.l10n;
@@ -91,9 +91,13 @@ export function uiTooltip(context) {
             keyhintWrap.selectAll('kbd.shortcut')
                 .data(keys && keys.length ? keys : [])
                 .enter()
-                .append('kbd')
-                .attr('class', 'shortcut')
-                .html(d => d);
+                .append('span')
+                .html(d => {
+                    const keysArray = d.split('');
+                    return keysArray.map(key => `<kbd class="shortcut">${uiCmd.display(context, key)}</kbd>`)
+                    .join('<span>+</span>');
+                })
+                .style('white-space', 'nowrap');
         };
     });
 
