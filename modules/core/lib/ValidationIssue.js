@@ -12,14 +12,16 @@ export class ValidationIssue {
     this.type = props.type;                  // required - name of rule that created the issue (e.g. 'missing_tag')
     this.subtype = props.subtype;            // optional - category of the issue within the type (e.g. 'relation_type' under 'missing_tag')
     this.severity = props.severity;          // required - 'warning' or 'error'
-    this.message = props.message;            // required - function returning localized string
-    this.reference = props.reference;        // required - function(selection) to render reference information
     this.entityIds = props.entityIds;        // required - Array of IDs of entities involved in the issue
     this.loc = props.loc;                    // optional - [lon, lat] to zoom in on to see the issue
     this.data = props.data;                  // optional - object containing extra data for the fixes
-    this.dynamicFixes = props.dynamicFixes;  // optional - function(context) returning fixes
     this.hash = props.hash;                  // optional - string to further differentiate the issue
     this.autoArgs = props.autoArgs;          // optional - if this issue can be autofixed, supply the autofix args at issue creation
+
+    // Make sure callbacks have `this` bound correctly
+    if (props.message)      this.message      = props.message.bind(this);       // required - function returning localized string
+    if (props.reference)    this.reference    = props.reference.bind(this);     // required - function(selection) to render reference information
+    if (props.dynamicFixes) this.dynamicFixes = props.dynamicFixes.bind(this);  // optional - function(context) returning fixes
 
     this.id = this._generateID();            // generated - see below
     this.key = this._generateKey();          // generated - see below (call after generating this.id)
