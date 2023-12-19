@@ -1829,16 +1829,24 @@ en:
         message: "{feature} ends very close to itself but does not reconnect"
       highway-highway:
         reference: Intersecting highways should share a junction vertex.
-    ambiguous_crossing_tags:
+    ambiguous_crossing:
       title: Ambiguous Crossing Tags
-      message: "Line and point disagree about markings"
-      message_markings: "Line has marking '{marking1}' but point has marking '{marking2}'"
+      message:
+        conflict: Crossing line and point tags conflict
+        update: Crossing tags can be updated
       incomplete_message: "Point may be missing crossing information."
       incomplete_reference: "Point looks like it may be updated to a crossing."
       tip: "Crossing line markings conflict with crossing point"
       reference: Line and point must either be both marked or both unmarked.
       upgrade_node: "Upgrade point to:"
       upgrade_way: "Upgrade way to:"
+      not_a_crossing: "(not a crossing)"
+      annotation:
+        changed: Changed crossing tags
+      fix:
+        update_type: "Update tags for a '{type}' crossing"
+        choose_type: "Tag this crossing as '{type}'"
+        remove_all: Remove all crossing tags
     area_as_point:
       message: '{feature} should be an area, not a point'
     close_nodes:

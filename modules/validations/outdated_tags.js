@@ -33,6 +33,10 @@ export function validationOutdatedTags(context) {
     let preset = presets.match(entity, graph);
     if (!preset) return [];
 
+    // Skip all preset upgrades on crossings, see Rapid#1260
+    // The `ambiguous_crossing_tags` validator will take care of them.
+    if (/crossing/.test(preset.id)) return [];
+
     const oldTags = Object.assign({}, entity.tags);  // shallow copy
     let subtype = 'deprecated_tags';
 
@@ -60,10 +64,6 @@ export function validationOutdatedTags(context) {
     let newTags = Object.assign({}, entity.tags);  // shallow copy
     if (preset.tags !== preset.addTags) {
       for (const [k, v] of Object.entries(preset.addTags)) {
-// TODO - for now, skip tag upgrades on crossing nodes only, see Rapid#1260
-// The `ambiguous_crossing_tags` validator will take care of them.
-// (We don't need to raise the same issue twice - for both the node and the way)
-if (entity.type === 'node' && /^highway\/crossing\//.test(preset.id)) continue;
         if (!newTags[k]) {
           if (v === '*') {
             newTags[k] = 'yes';
