@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { utilHashcode, utilTagDiff } from '@rapid-sdk/util';
+import { utilTagDiff } from '@rapid-sdk/util';
 
 import { actionChangePreset, actionChangeTags, actionSyncCrossingTags } from '../actions';
 import { Difference, ValidationIssue, ValidationFix } from '../core/lib';
@@ -25,7 +25,7 @@ export function validationAmbiguousCrossingTags(context) {
     if (entity.type !== 'way' || entity.isDegenerate()) return [];
 
     const tagIssues = detectCrossingTagIssues(entity, graph);
-//    const candidateIssues = detectCrossingCandidateIssues(entity, graph);
+    const candidateIssues = detectCrossingCandidateIssues(entity, graph);
 
     return [...tagIssues, ...candidateIssues];
   };
@@ -58,8 +58,39 @@ export function validationAmbiguousCrossingTags(context) {
 
 
   /**
+   * actionCandidateToCrossing
+   * Converts the given "candidate" nodeID to a crossing along the given wayID
+   * @param  {string}   nodeID - The Node to make into a crossing
+   * @param  {string}   wayID  - The parent Way that already is a crossing way
+   * @return {Function} The Action function, accepts a Graph and returns a modified Graph
+   */
+  function actionCandidateToCrossing(nodeID, wayID) {
+    return graph => {
+      const node = graph.entity(nodeID);
+      const way = graph.entity(wayID);
+
+      const wayTags = way.tags;
+      let tags = Object.assign({}, node.tags);
+
+      // At the very least, we need to make the node into a crossing node
+      tags.highway = 'crossing';
+      if (wayTags.crossing) {
+        tags.crossing = wayTags.crossing;
+      }
+      if (wayTags['crossing:markings']) {
+        tags['crossing:markings'] = wayTags['crossing:markings'];
+      }
+      tags.highway = 'crossing';
+      graph = actionChangeTags(node.id, tags)(graph);
+
+      return graph;
+    };
+  }
+
+
+  /**
    * detectCrossingTagIssues
-   * This check just applies the updates and compares graphs to see what has changed.
+   * This check just runs `actionUpdateCrossing` and compares graphs to see what has changed.
    * @param   {Way}    startWay - Way being validated
    * @param   {Graph}  startGraph - Graph being validated
    * @return  {Array}  Array of ValidationIssues detected
@@ -337,163 +368,112 @@ export function validationAmbiguousCrossingTags(context) {
         })
         .html(d => d.display);
     }
-
   }
 
 
+  /**
+   * detectCrossingCandidateIssues
+   * This method performs the crossing node candidate check. This check attempts to find normal nodes in a
+   * crossing way that are potentials to upgrade into crossing nodes.  Not all the nodes found with this check
+   * need to be upgraded, it is merely to call attention to the potential for missing crossing information.
+   * @param   {Way}    way - Way being validated
+   * @param   {Graph}  graph - Graph being validated
+   * @return  {Array}  Array of ValidationIssues detected
+   */
+  function detectCrossingCandidateIssues(way, graph) {
+    const issues = [];
 
-//
-//  // Some utility methods.
-//  function isCrossingHighway(entity) {
-//    return entity.type === 'way' && entity.tags.footway === 'crossing';
-//  }
-//
-//  function isCrossingNode(node) {
-//    return node.tags.crossing || node.tags.highway === 'crossing';
-//  }
-//
-//  function hasMarkings(entity) {
-//    return (entity.tags.crossing === 'marked' || (entity.tags['crossing:markings'] !== undefined && entity.tags['crossing:markings'] !== 'no'));
-//  }
-//
-//  function noCrossingMarkings(entityTags) {
-//    const tag = entityTags?.crossing;
-//    return tag === 'unmarked' || tag === 'informal' || !tag;
-//  }
-//
-//  function hasCrossingMarkings(entityTags) {
-//    return entityTags?.crossing === 'uncontrolled' || entityTags?.crossing === 'marked';
-//  }
-//
-//
-//
-//  // Crossing node candidate check
-//  function isCrossingNodeCandidate(node, parentWays) {
-//    // Can't be a crossing candidate... if it's already marked as crossing.
-//    if (node.tags.highway === 'crossing') return false;
-//
-//    // We should only consider node candidates with at least one parent highway that is not a footway.
-//    const crossings = parentWays.filter(way => way.tags?.highway && !way.tags?.footway);
-//    return (crossings.length > 0 && parentWays.length > 0);
-//  }
-//
-//
+    // Find all the nodes that aren't marked as crossings, but are *actually* crossings of at least one footway.
+    for (const node of findCrossingNodeCandidates(way, graph)) {
+      const parentWays = graph.parentWays(node);
+      const parentCrossingWay = parentWays.find(way => way.tags.footway === 'crossing');
+      if (!parentCrossingWay) continue;
 
-//  // This method performs the crossing node candidate check. This check attempts to find normal nodes in a
-//  // crossing way that are potentials to upgrade into crossing nodes.  Not all the nodes found with this check
-//  // need to be upgraded, it is merely to call attention to the potential for missing crossing information.
-//  function detectCrossingCandidateIssues(entity, graph) {
-//    let issues = [];
-//    let currentNodeInfo;
-//    let candidates = [];
-//
-//    // Now, find all the nodes that aren't marked as crossings, but are *actually* crossings of at least one footway.
-//    for (const node of findCrossingNodeCandidates(entity, graph)) {
-//      const parentWays = graph.parentWays(node);
-//      const parentCrossingWay = parentWays.filter(way => way.tags?.footway === 'crossing')[0];
-//      if (parentCrossingWay) {
-//        candidates.push({ node: node, way: parentCrossingWay });
-//      }
-//    }
-//
-//    // For each crossing candidate...
-//    for (const candidate of candidates) {
-//      currentNodeInfo = candidate;
-//
-//      issues.push(new ValidationIssue(context, {
-//        type,
-//        subtype: 'candidate_crossing',
-//        severity: 'warning',
-//        message: () => l10n.tHtml('issues.ambiguous_crossing.incomplete_message'),
-//        reference: showReference,
-//        entityIds: [ candidate.node.id, candidate.way.id ],
-//        loc: candidate.node.loc,
-//        hash: utilHashcode(JSON.stringify(candidate.node.loc)),
-//        autoArgs: [ doTagUpgrade, l10n.t('issues.fix.set_both_as_marked.annotation') ],
-//        data: {
-//          wayTags: candidate.way.tags,
-//          nodeTags: candidate.node.tags
-//        },
-//        dynamicFixes: makeCandidateFixes
-//      }));
-//    }
-//
-//    return issues;
-//
-//
-//    /**
-//     * @param {*} way
-//     * @returns a list of nodes in that way that don't have crossing markings, but have multiple parent ways, one of which is a crossing way
-//     */
-//    function findCrossingNodeCandidates(way, graph) {
-//      let results = [];
-//
-//      // 1..len-1 : only evaluate 'inner' nodes, not the ends.
-//      for (let i = 1; i < way.nodes.length - 1; i++) {
-//        const node = graph.hasEntity(way.nodes[i]);
-//        if (!node || !isCrossingNodeCandidate(node, graph.parentWays(node))) continue;
-//        results.push(node);
-//      }
-//
-//      return results;
-//    }
-//
-//
-//    function makeCandidateFixes() {
-//      let fixes = [];
-//      const graph = editor.staging.graph;
-//      const [nodeID, wayID] = this.entityIds;
-//      const node = graph.hasEntity(nodeID);
-//      const way = graph.hasEntity(wayID);
-//      if (!node || !way) return;
-//
-//      fixes.push(
-//        new ValidationFix({
-//          icon: 'rapid-icon-connect',
-//          title: l10n.tHtml('issues.fix.make_crossing_node.title'),
-//          onClick: function () {
-//            const annotation = l10n.t('issues.fix.make_crossing_node.annotation');
-//            editor.perform(doTagUpgrade);
-//            editor.commit({ annotation: annotation, selectedIDs: context.selectedIDs() });
-//          }
-//        })
-//      );
-//
-//      return fixes;
-//    }
-//
-//
-//    function doTagUpgrade(graph) {
-//      const node = currentNodeInfo.node;
-//      const way = currentNodeInfo.way;
-//      if (!node || !way) return graph;
-//
-//      const wayTags = way.tags;
-//      let tags = Object.assign({}, node.tags);
-//
-//      // At the very least, we need to make the node into a crossing node
-//      tags.highway = 'crossing';
-//      if (wayTags.crossing) {
-//        tags.crossing = wayTags.crossing;
-//      }
-//      if (wayTags['crossing:markings']) {
-//        tags['crossing:markings'] = wayTags['crossing:markings'];
-//      }
-//      tags.highway = 'crossing';
-//      return actionChangeTags(node.id, tags)(graph);
-//    }
-//
-//
-//    function showReference(selection) {
-//      selection.selectAll('.issue-reference')
-//        .data([0])
-//        .enter()
-//        .append('div')
-//        .attr('class', 'issue-reference')
-//        .html(l10n.tHtml('issues.ambiguous_crossing.incomplete_reference'));
-//    }
-//  }
+      const nodeID = node.id;
+      const wayID = parentCrossingWay.id;
 
+      issues.push(new ValidationIssue(context, {
+        type,
+        subtype: 'candidate_crossing',
+        severity: 'warning',
+        entityIds: [ nodeID, wayID ],
+        loc: node.loc,
+        autoArgs: [ actionCandidateToCrossing(nodeID, wayID), l10n.t('issues.ambiguous_crossing.annotation.candidate') ],
+        message: () => l10n.t('issues.ambiguous_crossing.incomplete_message'),
+        reference: showCandidateReference,
+        dynamicFixes: makeCandidateFixes
+      }));
+    }
+
+    return issues;
+
+
+    // Crossing node candidate check
+    function isCrossingNodeCandidate(node, graph) {
+      // Can't be a crossing candidate... if it's already marked as crossing.
+      if (node.tags.highway === 'crossing') return false;
+
+      // We should only consider node candidates with at least one parent highway that is not a footway.
+      const parentWays = graph.parentWays(node);
+      const crossings = parentWays.filter(way => way.tags.highway && !way.tags.footway);
+      return (crossings.length > 0 && parentWays.length > 0);
+    }
+
+
+    /**
+     * findCrossingNodeCandidates
+     * @param   {Way}    way - Way being validated
+     * @param   {Graph}  graph - Graph being validated
+     * @return  {Array}  nodes in that way that don't have crossing markings, but have multiple parent ways, one of which is a crossing way
+     */
+    function findCrossingNodeCandidates(way, graph) {
+      let results = [];
+
+      // 1..len-1 : only evaluate 'inner' nodes, not the ends.
+      for (let i = 1; i < way.nodes.length - 1; i++) {
+        const node = graph.hasEntity(way.nodes[i]);
+        if (!node || !isCrossingNodeCandidate(node, graph)) continue;
+        results.push(node);
+      }
+
+      return results;
+    }
+
+
+    function makeCandidateFixes() {
+      const issue = this;
+
+      return [
+        new ValidationFix({
+          icon: 'rapid-icon-connect',
+          title: l10n.t('issues.ambiguous_crossing.fix.candidate'),
+          onClick: () => {
+            const [nodeID, wayID] = issue.entityIds;
+            const graph = editor.staging.graph;
+            const node = graph.hasEntity(nodeID);
+            const way = graph.hasEntity(wayID);
+            if (!node || !way) return;
+
+            editor.perform(actionCandidateToCrossing(nodeID, wayID));
+            editor.commit({
+              annotation: l10n.t('issues.ambiguous_crossing.annotation.candidate'),
+              selectedIDs: context.selectedIDs()
+            });
+          }
+        })
+      ];
+    }
+
+
+    function showCandidateReference(selection) {
+      selection.selectAll('.issue-reference')
+        .data([0])
+        .enter()
+        .append('div')
+        .attr('class', 'issue-reference')
+        .html(l10n.tHtml('issues.ambiguous_crossing.incomplete_reference'));
+    }
+  }
 
 
   validation.type = type;

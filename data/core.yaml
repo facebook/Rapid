@@ -1842,11 +1842,13 @@ en:
       upgrade_way: "Upgrade way to:"
       not_a_crossing: "(not a crossing)"
       annotation:
+        candidate: Made point into a crossing
         changed: Changed crossing tags
       fix:
-        update_type: "Update tags for a '{type}' crossing"
+        candidate: Make point into a crossing
         choose_type: "Tag this crossing as '{type}'"
         remove_all: Remove all crossing tags
+        update_type: "Update tags for a '{type}' crossing"
     area_as_point:
       message: '{feature} should be an area, not a point'
     close_nodes:
@@ -2060,9 +2062,6 @@ en:
         annotation: Added a tunnel.
       address_the_concern:
         title: Address the concern
-      make_crossing_node:
-        title: Make point into a crossing
-        annotation: Make point into a crossing.
       set_both_as_marked:
         title: Set line and point to marked
         title_use_marking: Use '{marking}' marking

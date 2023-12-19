@@ -17,8 +17,9 @@ describe('validationAmbiguousCrossingTags', () => {
     constructor() {
       this.services = {};
       this.systems = {
-        editor: new MockEditSystem(),
-        l10n:   new MockLocalizationSystem()
+        editor:   new MockEditSystem(),
+        l10n:     new MockLocalizationSystem(),
+        presets:  new Rapid.PresetSystem(this)
       };
     }
   }
