@@ -10,10 +10,16 @@ const pathVals = new Set([
   'path', 'footway', 'cycleway', 'bridleway', 'pedestrian'
 ]);
 
+// These crossing tags should be kept in sync between the parent way and any child nodes
 const crossingKeys = new Set([
   'crossing', 'crossing_ref', 'crossing:continuous', 'crossing:island', 'crossing:markings', 'crossing:signals'
 ]);
 
+// These tags can be preserved (not deleted) if they are set in one place and not the other.
+// (they function more as attribute tags than defining tags)
+const crossingPreserveKeys = new Set([
+  'crossing_ref', 'crossing:continuous', 'crossing:island'
+]);
 
 /**
  *  actionSyncCrossingTags
@@ -164,7 +170,7 @@ export function actionSyncCrossingTags(entityID) {
       for (const [k, v] of Object.entries(t)) {
         if (v) {
           childTags[k] = v;
-        } else {
+        } else if (!crossingPreserveKeys.has(k)) {
           delete childTags[k];
         }
       }
@@ -243,7 +249,7 @@ export function actionSyncCrossingTags(entityID) {
       for (const [k, v] of Object.entries(t)) {
         if (v) {
           parentTags[k] = v;
-        } else {
+        } else if (!crossingPreserveKeys.has(k)) {
           delete parentTags[k];
         }
       }
