@@ -11,9 +11,7 @@ const pathVals = new Set([
 ]);
 
 const crossingKeys = new Set([
-  'crossing', 'crossing_ref',
-  'crossing:continuous', 'crossing:island', 'crossing:markings', 'crossing:signals',
-  'lit', 'traffic_calming', 'surface'
+  'crossing', 'crossing_ref', 'crossing:continuous', 'crossing:island', 'crossing:markings', 'crossing:signals'
 ]);
 
 
@@ -112,8 +110,8 @@ export function actionSyncCrossingTags(entityID) {
     // We allow crossing tags on paths, because it could just be a sidewalk crossing the street.
     if (!isParentPath) {
       for (const k of crossingKeys) {
-        // Watch out, it could be a `railway=crossing` or something, so some tags can remain.
-        if (['crossing', 'lit', 'surface'].includes(k)) continue;
+        // Watch out, it could be a `railway=crossing` or something, so `crossing` tag can remain.
+        if (k === 'crossing') continue;
         delete parentTags[k];
       }
     }
@@ -217,8 +215,8 @@ export function actionSyncCrossingTags(entityID) {
     // If child vertex isn't a road-path crossing anymore, most of these tags should be removed.
     if (!isChildCrossing) {
       for (const k of crossingKeys) {
-        // Watch out, it could be a `railway=crossing` or something, so some tags can remain.
-        if (['crossing', 'lit', 'surface'].includes(k)) continue;
+        // Watch out, it could be a `railway=crossing` or something, so `crossing` tag can remain.
+        if (k === 'crossing') continue;
         delete childTags[k];
       }
     }
@@ -273,18 +271,44 @@ export function actionSyncCrossingTags(entityID) {
    */
   function cleanCrossingTags(t) {
     let crossing = t.crossing ?? '';
+    let crossingref = t.crossing_ref ?? '';
     let markings = t['crossing:markings'] ?? '';
     let signals  = t['crossing:signals'] ?? '';
 
     // At least one of these must be set..
-    if (!crossing && !markings && !signals) return t;
+    if (!crossing && !crossingref && !markings && !signals) return t;
 
     // Bail out if any of these tags include semicolons..
-    if (crossing.includes(';') || markings.includes(';') || signals.includes(';')) return t;
+    if (crossing.includes(';') || crossingref.includes(';') || markings.includes(';') || signals.includes(';')) return t;
 
     const tags = Object.assign({}, t);  // copy
 
-    // First, consider the legacy `crossing` tag.
+    // First, consider `crossing_ref` tag
+    if (crossingref) {  // Assign default `crossing:markings`, if it doesn't exist yet..
+      if (!markings) {
+        switch (crossingref) {
+          case 'zebra':
+            markings = tags['crossing:markings'] = 'zebra';
+            break;
+          default:
+            markings = tags['crossing:markings'] = 'yes';
+            break;
+        }
+      }
+      if (!signals) {  // Assign default `crossing:signals`, if it doesn't exist yet..
+        switch (crossingref) {
+          case 'hawk':
+          case 'pelican':
+          case 'puffin':
+          case 'toucan':
+          case 'pegasus':
+            signals = tags['crossing:signals'] = 'yes';
+            break;
+        }
+      }
+    }
+
+    // Next, consider the legacy `crossing` tag.
     // See https://wiki.openstreetmap.org/wiki/Proposal:Highway_crossing_cleanup
     if (crossing) {
       if (!markings) {   // Assign default `crossing:markings`, if it doesn't exist yet..
