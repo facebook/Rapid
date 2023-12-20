@@ -30,7 +30,7 @@ export class Context extends EventEmitter {
     super();
 
     this.privacyVersion = '20201202';
-    this.version = '2.2.0-beta.0';     // see https://semver.org/ for examples
+    this.version = '2.2.0';     // see https://semver.org/ for examples
 
     // These may be set by our continuous deployment scripts, or left empty
     this.buildID = '';

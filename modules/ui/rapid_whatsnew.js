@@ -9,7 +9,7 @@ export function uiRapidWhatsNew(context) {
 
   // If user has not seen this version of the what's new screen, show it again.
   // Just bump the version to a higher number to get it to come back.
-  const currWhatsNewVersion = 20230823;
+  const currWhatsNewVersion = 20231220;
   let _dontShowAgain = false;
 
   return function render(selection) {
