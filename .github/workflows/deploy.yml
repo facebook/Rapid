@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: [ main, '*staging*', 'rapid-v1.x' ]
+    branches: [ main, release, '*staging*', 'rapid-v1.x' ]
   pull_request:
     branches: [ main ]
 
