@@ -38,13 +38,13 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 
 # [2.2.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.0)
-#### 2023-Dec-xx  (Not released yet!)
+#### 2023-Dec-20
 
 This release was made possible in part by three hackers from [Major League Hacking](https://mlh.io/): [@RitaDee], [@voscarmv], and [@lauble].
 Also, welcome to the dev team [@tannerwuster]!
 
 #### :tada: New Features
-* [#1141] Added a big new validation to help call attention to ambiguous/missing pedestrian crossing way and node data.
+* [#1141], [#1260] Added new validation, presets, and code to clean up ambiguous/missing pedestrian crossing way and node data.
 * [#1146], [#1182], [#1197] Several new presets added for trees, crossings, and curbs
 * [#1154] The Cycle Highway Tags (shift-C) operation now also works with crossing ways (Credit: [@RitaDee])
 * [#1068] 3D Map open/closed state is now saved in a `3dmap` url parameter (Credit: [@voscarmv])
@@ -76,9 +76,13 @@ Also, welcome to the dev team [@tannerwuster]!
 * [#1155] Clicking on a third-party website URL should now work properly
 * [#1169], [#1201] Fixed the incorrect Microsoft Building license link
 * [#1171] Restored some 'way over waterway' validations
+* [#1241] Fix Stamen terrain basemaps imagery layer
+* [#1252] Fix styling of railways that include a `service` tag
 * [#iD10003] Prevent degenerate ways caused by deleting a corner of a triangle
 
 #### :sparkles: Usability & Accessibility
+* [#1240] Support poweruser autofix for "Two points are very close together"
+* [#1249], [#1250] Restore custom cursors for hovering and selecting OSM data
 * [#iD10007] Sanitize Amazon CloudFront 'signature' values in `imagery_used` changeset tag
 * [#iD9995] Fix backspace not working as a keyboard shortcut
 * [#iD9912], [#iD9911] Hide unnecessary horizontal scrollbars in hover mode for fields and upload dialog
@@ -138,6 +142,12 @@ Also, welcome to the dev team [@tannerwuster]!
 [#1182]: https://github.com/facebook/Rapid/issues/1182
 [#1197]: https://github.com/facebook/Rapid/issues/1197
 [#1201]: https://github.com/facebook/Rapid/issues/1201
+[#1240]: https://github.com/facebook/Rapid/issues/1240
+[#1241]: https://github.com/facebook/Rapid/issues/1241
+[#1249]: https://github.com/facebook/Rapid/issues/1249
+[#1250]: https://github.com/facebook/Rapid/issues/1250
+[#1252]: https://github.com/facebook/Rapid/issues/1252
+[#1260]: https://github.com/facebook/Rapid/issues/1260
 [#iD10007]: https://github.com/openstreetmap/iD/pull/10007
 [#iD10003]: https://github.com/openstreetmap/iD/pull/10003
 [#iD9998]: https://github.com/openstreetmap/iD/pull/9998
