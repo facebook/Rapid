@@ -1823,24 +1823,24 @@ en:
       annotation: Fixed several validation issues.
     almost_junction:
       title: Almost Junctions
-      message: "{feature} is very close but not connected to {feature2}"
       tip: "Find features that should possibly be connected to other nearby features"
+      message: "{feature} is very close but not connected to {feature2}"
       self:
         message: "{feature} ends very close to itself but does not reconnect"
       highway-highway:
         reference: Intersecting highways should share a junction vertex.
     ambiguous_crossing:
       title: Ambiguous Crossing Tags
+      tip: "Find situations where crossing tagging is inconsistent or outdated"
+      not_a_crossing: "(not a crossing)"
+      no_changes: "(no changes)"
       message:
+        candidate: Point looks like it may be a crossing
         conflict: Crossing line and point tags conflict
         update: Crossing tags can be updated
-      incomplete_message: "Point may be missing crossing information."
-      incomplete_reference: "Point looks like it may be updated to a crossing."
-      tip: "Crossing line markings conflict with crossing point"
-      reference: Line and point must either be both marked or both unmarked.
-      upgrade_node: "Upgrade point to:"
-      upgrade_way: "Upgrade way to:"
-      not_a_crossing: "(not a crossing)"
+      reference:
+        line1: The `crossing` tags should be consistent between the line and points.
+        line2: To make the points match the line tagging, the following updates are suggested.
       annotation:
         candidate: Made point into a crossing
         changed: Changed crossing tags
