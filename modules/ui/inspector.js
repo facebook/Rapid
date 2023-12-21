@@ -140,9 +140,9 @@ export function uiInspector(context) {
       presetList.selected(selected);
     }
 
-    // render
+    // render and autofocus only if the feature is new.
     presetPane
-      .call(presetList.autofocus(true));
+      .call(presetList.autofocus(_newFeature));
   };
 
 
@@ -179,6 +179,8 @@ export function uiInspector(context) {
       inspector.showPresetList();
     } else {
       const choice = preset ? [preset] : null;
+      const input = presetPane.select('.preset-search-input').node();
+      input.value = '';
       inspector.showEntityEditor(choice, true);  // true = animate
     }
   };
