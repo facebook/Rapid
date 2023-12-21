@@ -114,13 +114,14 @@ export class MapRouletteService extends AbstractSystem {
       const extent = this.context.systems.map.extent();
       const bbox = extent.bbox();
 
+
       // const urlBboxSpecifier = `${bbox.minX},${bbox.minY},${bbox.maxX},${bbox.maxY}`;
       // const url = `${MAPROULETTE_API}/challenges/extendedFind?bb=${encodeURIComponent(urlBboxSpecifier)}&cLocal=0&ce=true&limit=50&order=DESC&page=0&pe=true&sort=popularity`;
       // const url = `${MAPROULETTE_API}/taskCluster?cLocal=0&cStatus=${encodeURIComponent('3,4,0,-1')}&ce=true&invf=&pe=true&points=25&tbb=${encodeURIComponent(urlBboxSpecifier)}`;
+      // const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&parentid='+this.challengeId : ''}`;
 
       const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
       const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?sort=parent_id&order=DESC&cStatus=${encodeURIComponent('0,3')}${this.challengeId.length > 0 ? '&cid='+this.challengeId : ''}`; // Presumably the parent_id (that is, Challenge ID) will be auto-incremental for new Challenges, and thus a DESC Sort will give priority to loading newer challenges from the API first. This is done so that older, deleted challenges are left out.
-      // const url =  `${MAPROULETTE_API}/tasks/box/${urlBboxSpecifier}?cStatus=${encodeURIComponent('3,4,0,-1')}${this.challengeId.length > 0 ? '&parentid='+this.challengeId : ''}`;
     
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
@@ -324,77 +325,14 @@ export class MapRouletteService extends AbstractSystem {
   }
 
   /**
-   * _loadStringsAsync
-   * Load the strings for the types of tasks that we support
-   * @return  Promise
-   */
-  // _loadStringsAsync() {
-  //   // Only need to cache strings for supported issue types
-  //   const itemTypes = Object.keys(this._osmoseData.icons);
-
-  //   // For now, we only do this one time at init.
-  //   // Todo: support switching locales
-  //   let stringData = {};
-  //   const localeCode = this.context.systems.l10n.localeCode();
-  //   this._osmoseStrings.set(localeCode, stringData);
-
-  //   // Using multiple individual item + class requests to reduce fetched data size
-  //   const allRequests = itemTypes.map(itemType => {
-
-  //     const handleResponse = (data) => {
-  //       // Bunch of nested single value arrays of objects
-  //       const [ cat = { items:[] } ] = data.categories;
-  //       const [ item = { class:[] } ] = cat.items;
-  //       const [ cl = null ] = item.class;
-
-  //       // If null default value is reached, data wasn't as expected (or was empty)
-  //       if (!cl) {
-  //         /* eslint-disable no-console */
-  //         console.log(`Osmose strings request (${itemType}) had unexpected data`);
-  //         /* eslint-enable no-console */
-  //         return;
-  //       }
-
-  //       // Save item colors to automatically style issue markers later
-  //       const itemInt = item.item;
-  //       this._osmoseColors.set(itemInt, new Color(item.color).toNumber());
-
-  //       // Value of root key will be null if no string exists
-  //       // If string exists, value is an object with key 'auto' for string
-  //       const { title, detail, fix, trap } = cl;
-
-  //       let issueStrings = {};
-  //       // Force title to begin with an uppercase letter
-  //       if (title)  issueStrings.title = title.auto.charAt(0).toUpperCase() + title.auto.slice(1);
-  //       if (detail) issueStrings.detail = marked.parse(detail.auto);
-  //       if (trap)   issueStrings.trap = marked.parse(trap.auto);
-  //       if (fix)    issueStrings.fix = marked.parse(fix.auto);
-
-  //       stringData[itemType] = issueStrings;
-  //     };
-
-  //     // Osmose API falls back to English strings where untranslated or if locale doesn't exist
-  //     const [item, cl] = itemType.split('-');
-  //     // const url = `${OSMOSE_API}/items/${item}/class/${cl}?langs=${localeCode}`;
-  //     // MAPROULETTE: Change this to MR API
-
-  //     return fetch(url)
-  //       .then(utilFetchResponse)
-  //       .then(handleResponse);
-
-  //   }).filter(Boolean);
-
-  //   return Promise.all(allRequests);
-  // }
-  /**
    * itemURL
    * Returns the url to link to details about an item
    * @param   item
    * @return  the url
    */
   itemURL(item) {
-    // return `https://maproulette.org/challenge/${item.task.parentId}/task/${item.id}`; // As of Dic 15 2023 Task pages on MR.org seem broken. Uncommend when this is fixed.
-    return `https://maproulette.org/challenge/${item.task.parentId}`; // For now this should suffice until MR.org fixes Task links
+    // return `https://maproulette.org/challenge/${item.task.parentId}/task/${item.id}`; // To look at a specific task, the user must be signed into their MR account. As of Dec 21 MR does not offer an automatic sign-in redirect.
+    return `https://maproulette.org/challenge/${item.task.parentId}`; // We use this for now because we can't be sure if user is signed in or not.
   }
 
   /**
