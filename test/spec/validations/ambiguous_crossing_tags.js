@@ -17,8 +17,9 @@ describe('validationAmbiguousCrossingTags', () => {
     constructor() {
       this.services = {};
       this.systems = {
-        editor: new MockEditSystem(),
-        l10n:   new MockLocalizationSystem()
+        editor:   new MockEditSystem(),
+        l10n:     new MockLocalizationSystem(),
+        presets:  new Rapid.PresetSystem(this)
       };
     }
   }
@@ -81,11 +82,9 @@ describe('validationAmbiguousCrossingTags', () => {
     expect(issues).to.have.lengthOf(1);
 
     for (const issue of issues) {
-      expect(issue.type).to.eql('ambiguous_crossing_tags');
+      expect(issue.type).to.eql('ambiguous_crossing');
       expect(issue.severity).to.eql('warning');
-
       expect(issue.entityIds).to.have.lengthOf(2);
-      expect(issue.loc).to.eql([0, 0]);
     }
   }
 

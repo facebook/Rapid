@@ -3560,7 +3560,9 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .issue-info.expanded {
     display: inline-block;
 }
-
+.issue-info .suggested-update {
+    margin-top: 10px;
+}
 .issue-info .issue-reference {
     margin-bottom: 10px;
 }
@@ -3583,6 +3585,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 .issue-info .tagDiff-cell-remove {
     background: #fdd;
+}
+.issue-info .tagDiff-message {
+    padding: 2px 10px;
+    font-family: monospace;
+    font-size: 10px;
 }
 
 

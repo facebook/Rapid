@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilCleanTags } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { actionChangeTags } from '../actions/change_tags';
+import { actionChangeTags, actionSyncCrossingTags } from '../actions';
 import { uiIcon } from './icon';
 import { utilRebind } from '../util';
 
@@ -28,7 +28,7 @@ export function uiEntityEditor(context) {
     uiSectionFeatureType(context).on('choose', function(selected) { dispatch.call('choose', this, selected); }),
     uiSectionEntityIssues(context),
     uiSectionPresetFields(context).on('change', _changeTags).on('revert', _revertTags),
-    uiSectionRawTagEditor(context, 'raw-tag-editor').on('change', _changeTags),
+    uiSectionRawTagEditor(context, 'raw-tag-editor').on('change', _changeRawTags),
     uiSectionRawMemberEditor(context),
     uiSectionRawMembershipEditor(context)
   ];
@@ -211,11 +211,22 @@ export function uiEntityEditor(context) {
 
 
   /**
+   * When using the fields, we will automatically run the `syncCrossingTags` action.
+   * When using the raw tags editor, dont do this.
+   * (It will trigger validation warnings for any crossing tags that go out of sync)
+   */
+  function _changeRawTags(entityIDs, changed, onInput) {
+    _changeTags(entityIDs, changed, onInput, true);
+  }
+
+
+  /**
    * Tag changes that fire on input can all get coalesced into a single
    * history operation when the user leaves the field.  iD#2342
    * Use explicit entityIDs in case the selection changes before the event is fired.
+   * We'll also sync up the crossing tags if this update didn't come from the raw tag editor.
    */
-  function _changeTags(entityIDs, changed, onInput) {
+  function _changeTags(entityIDs, changed, onInput, wasRawTagEditor = false) {
     // same selection as before?
     const isSameSelection = utilArrayIdentical(_entityIDs, _wasSelectedIDs);
     _wasSelectedIDs = _entityIDs.slice();  // copy
@@ -247,6 +258,9 @@ export function uiEntityEditor(context) {
 
       if (!deepEqual(entity.tags, tags)) {
         editor.perform(actionChangeTags(entityID, tags));
+        if (!wasRawTagEditor) {
+          editor.perform(actionSyncCrossingTags(entityID));
+        }
       }
     }
 
@@ -255,10 +269,7 @@ export function uiEntityEditor(context) {
       // If this is the same selection as before, and the previous edit was also a change_tags,
       // we can just replace the previous edit with this one.
       const annotation = l10n.t('operations.change_tags.annotation');
-      const options = {
-        annotation: annotation,
-        selectedIDs: _entityIDs
-      };
+      const options = { annotation: annotation, selectedIDs: _entityIDs };
       if (isSameSelection && editor.getUndoAnnotation() === annotation) {
         editor.commitAppend(options);
       } else {
@@ -303,16 +314,14 @@ export function uiEntityEditor(context) {
 
       if (!deepEqual(current.tags, tags)) {
         editor.perform(actionChangeTags(entityID, tags));
+        editor.perform(actionSyncCrossingTags(entityID));
       }
     }
 
     // If this is the same selection as before, and the previous edit was also a change_tags,
     // we can just replace the previous edit with this one.
     const annotation = l10n.t('operations.change_tags.annotation');
-    const options = {
-      annotation: annotation,
-      selectedIDs: _entityIDs
-    };
+    const options = { annotation: annotation, selectedIDs: _entityIDs };
     if (isSameSelection && editor.getUndoAnnotation() === annotation) {
       editor.commitAppend(options);
     } else {

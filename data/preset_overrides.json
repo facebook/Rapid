@@ -21,13 +21,21 @@
     },
 
     "crossing": null,
-    "crossing/LEGACY": {
+    "crossing/markings": null,
+    "crossing/signals": null,
+
+    "crossing2": {
       "key": "crossing",
-      "type": "text",
+      "type": "combo",
       "label": "Crossing Type",
       "$note": "This displays the legacy `crossing=*` tag"
     },
-    "crossing/signals": {
+    "crossing2/markings": {
+      "key": "crossing:markings",
+      "type": "combo",
+      "label": "Crossing Markings"
+    },
+    "crossing2/signals": {
       "key": "crossing:signals",
       "type": "check",
       "label": "Crossing Signals"
@@ -145,7 +153,7 @@
       "name": "Cycle & Foot Crossing",
       "icon": "temaki-ped_cyclist_crosswalk",
       "geometry": ["line"],
-      "fields": ["{@templates/crossing/markings}", "crossing/signals", "crossing/island"],
+      "fields": ["crossing2/markings", "crossing2/signals", "crossing/island", "crossing2"],
       "moreFields": ["flashing_lights", "crossing_raised", "surface", "tactile_paving"],
       "tags": { "highway": "cycleway", "cycleway": "crossing" },
       "terms": ["bicycle and foot crosswalk", "bike and pedestrian crossing", "cycleway", "cycling", "cyclist"],
@@ -159,7 +167,6 @@
       "name": "Cycle & Foot Crossing (Other)",
       "icon": "temaki-ped_cyclist_crosswalk",
       "geometry": ["line"],
-      "fields": ["crossing/LEGACY", "{highway/cycleway/crossing2}"],
       "tags": { "highway": "cycleway", "cycleway": "crossing", "crossing": "*" },
       "terms": ["bicycle and foot crosswalk", "bike and pedestrian crossing", "cycleway", "cycling", "cyclist"],
       "reference": { "key": "cycleway", "value": "crossing" },
@@ -172,7 +179,7 @@
       "name": "Pedestrian Crossing",
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
-      "fields": ["{@templates/crossing/markings}", "crossing/signals", "crossing/island"],
+      "fields": ["crossing2/markings", "crossing2/signals", "crossing/island", "crossing2"],
       "moreFields": ["flashing_lights", "crossing_raised", "surface", "tactile_paving"],
       "tags": { "highway": "footway", "footway": "crossing" },
       "terms": ["crosswalk", "foot path crossing", "pedestrian crossing"],
@@ -186,7 +193,6 @@
       "name": "Crossing (Other)",
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
-      "fields": ["crossing/LEGACY", "{highway/footway/crossing2}"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing": "*" },
       "terms": ["crosswalk", "foot path crossing", "pedestrian crossing"],
       "reference": { "key": "footway", "value": "crossing" },
@@ -250,7 +256,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "dashes" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "dashes" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "dashes" },
       "$note": "Match modern `crossing:markings=dashes`"
     },
     "highway/footway/crossing2/dots": {
@@ -258,7 +264,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "dots" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "dots" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "dots" },
       "$note": "Match modern `crossing:markings=dots`"
     },
     "highway/footway/crossing2/ladder": {
@@ -266,7 +272,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "ladder" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "ladder" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "ladder" },
       "$note": "Match modern `crossing:markings=ladder`"
     },
     "highway/footway/crossing2/ladder:skewed": {
@@ -274,7 +280,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "ladder:skewed" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "ladder:skewed" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "ladder:skewed" },
       "$note": "Match modern `crossing:markings=ladder:skewed`"
     },
     "highway/footway/crossing2/lines": {
@@ -282,7 +288,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "lines" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "lines" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "lines" },
       "$note": "Match modern `crossing:markings=lines`"
     },
     "highway/footway/crossing2/other": {
@@ -290,7 +296,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "*" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "*" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "*" },
       "$note": "Match modern `crossing:markings=*`"
     },
     "highway/footway/crossing2/surface": {
@@ -298,7 +304,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "surface" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "surface" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "surface" },
       "$note": "Match modern `crossing:markings=surface`"
     },
     "highway/footway/crossing2/unmarked": {
@@ -314,7 +320,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:markings": "zebra" },
-      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "marked", "crossing:markings": "zebra" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:markings": "zebra" },
       "$note": "Match modern `crossing:markings=zebra`"
     },
     "highway/footway/crossing2/signals": {
@@ -322,6 +328,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["line"],
       "tags": { "highway": "footway", "footway": "crossing", "crossing:signals": "*" },
+      "addTags": { "highway": "footway", "footway": "crossing", "crossing": "*", "crossing:signals": "*" },
       "matchScore": 0.5,
       "$note": "Match modern `crossing:signals=*` (but prefer to match other tags)"
     },
@@ -337,7 +344,7 @@
       "name": "Pedestrian Crossing",
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
-      "fields": ["{@templates/crossing/markings}", "crossing/signals", "crossing/island"],
+      "fields": ["crossing2/markings", "crossing2/signals", "crossing/island", "crossing2"],
       "moreFields": ["flashing_lights", "crossing_raised", "surface", "tactile_paving"],
       "tags": { "highway": "crossing" },
       "terms": ["crosswalk", "foot path crossing", "pedestrian crossing"],
@@ -350,7 +357,6 @@
       "name": "Crossing (Other)",
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
-      "fields": ["crossing/LEGACY", "{highway/crossing2}"],
       "tags": { "highway": "crossing", "crossing": "*" },
       "terms": ["crosswalk", "foot path crossing", "pedestrian crossing"],
       "searchable": false,
@@ -413,7 +419,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:markings": "dashes" },
-      "addTags": { "highway": "crossing", "crossing": "marked", "crossing:markings": "dashes" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:markings": "dashes" },
       "$note": "Match modern `crossing:markings=dashes`"
     },
     "highway/crossing2/dots": {
@@ -421,7 +427,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:markings": "dots" },
-      "addTags": { "highway": "crossing", "crossing": "marked", "crossing:markings": "dots" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:markings": "dots" },
       "$note": "Match modern `crossing:markings=dots`"
     },
     "highway/crossing2/ladder": {
@@ -429,7 +435,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:markings": "ladder" },
-      "addTags": { "highway": "crossing", "crossing": "marked", "crossing:markings": "ladder" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:markings": "ladder" },
       "$note": "Match modern `crossing:markings=ladder`"
     },
     "highway/crossing2/ladder:skewed": {
@@ -437,7 +443,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:markings": "ladder:skewed" },
-      "addTags": { "highway": "crossing", "crossing": "marked", "crossing:markings": "ladder:skewed" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:markings": "ladder:skewed" },
       "$note": "Match modern `crossing:markings=ladder:skewed`"
     },
     "highway/crossing2/lines": {
@@ -445,7 +451,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:markings": "lines" },
-      "addTags": { "highway": "crossing", "crossing": "marked", "crossing:markings": "lines" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:markings": "lines" },
       "$note": "Match modern `crossing:markings=lines`"
     },
     "highway/crossing2/other": {
@@ -453,7 +459,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:markings": "*" },
-      "addTags": { "highway": "crossing", "crossing": "marked", "crossing:markings": "*" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:markings": "*" },
       "$note": "Match modern `crossing:markings=*`"
     },
     "highway/crossing2/surface": {
@@ -477,7 +483,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:markings": "zebra" },
-      "addTags": { "highway": "crossing", "crossing": "marked", "crossing:markings": "zebra" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:markings": "zebra" },
       "$note": "Match modern `crossing:markings=zebra`"
     },
     "highway/crossing2/signals": {
@@ -485,6 +491,7 @@
       "icon": "temaki-pedestrian",
       "geometry": ["vertex"],
       "tags": { "highway": "crossing", "crossing:signals": "*" },
+      "addTags": { "highway": "crossing", "crossing": "*", "crossing:signals": "*" },
       "matchScore": 0.6,
       "$note": "Match modern `crossing:signals=*` (but prefer to match other tags)"
     },

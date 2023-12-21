@@ -154,7 +154,17 @@ export class UiField {
     d3_event.preventDefault();
     if (!this.entityIDs?.length || this._locked) return;
 
-    this.dispatch.call('revert', this, this.keys);
+    // Crossings.. :-(  If reverting any of these, revert the related ones.  Rapid#1260
+    const keys = new Set(this.keys);
+    if (keys.has('crossing')) {
+      keys.add('crossing:markings');
+      keys.add('crossing:signals');
+    }
+    if (keys.has('crossing:markings') || keys.has('crossing:signals')) {
+      keys.add('crossing');
+    }
+
+    this.dispatch.call('revert', this, [...keys]);
   }
 
 
@@ -163,8 +173,20 @@ export class UiField {
     d3_event.preventDefault();
     if (this._locked) return;
 
+    // Crossings.. :(  If removing any of these, remove the related ones.  Rapid#1260
+    const keys = new Set(this.keys);
+    if (keys.has('crossing')) {
+      keys.add('crossing:markings');
+      keys.add('crossing:signals');
+    }
+    if (keys.has('crossing:markings') || keys.has('crossing:signals')) {
+      keys.add('crossing');
+    }
+
     const tagChange = {};
-    this.keys.forEach(k => tagChange[k] = undefined);
+    for (const k of keys) {
+      tagChange[k] = undefined;
+    }
     this.dispatch.call('change', this, tagChange);
   }
 
