@@ -32,6 +32,7 @@ export class Task {
   }
 
   // Return extent object for zoom-in on-click
+  // This converts the polygon returned by 
   extent(){
     let sortX = this.task.bounding.coordinates[0].sort(
       (a, b) => {
