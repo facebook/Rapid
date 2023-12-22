@@ -31,10 +31,27 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 ###### Changed Presets
 ###### New and Changed Fields
 
-[#xxx]: https://github.com/facebook/Rapid/issues/xxx
+[#xxxx]: https://github.com/facebook/Rapid/issues/xxxx
 [iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+
+# [2.2.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.1)
+#### 2023-Dec-22
+
+#### :sparkles: Usability & Accessibility
+* [#1255], [#1261]  Always display the text for keyboard modifier symbols, e.g. "⌘ Cmd", not "⌘"
+
+#### :bug: Bugfixes:
+* [#1265], [#1266], [#1267]  Fix bug causing the preset pane to block keyboard shortcuts from being used
+* [#1268]  Fix bug causing the `crossing` tags to be overwritten when modifying a connected non-crossing node
+
+[#1255]: https://github.com/facebook/Rapid/issues/1255
+[#1261]: https://github.com/facebook/Rapid/issues/1261
+[#1265]: https://github.com/facebook/Rapid/issues/1265
+[#1266]: https://github.com/facebook/Rapid/issues/1266
+[#1267]: https://github.com/facebook/Rapid/issues/1267
+[#1268]: https://github.com/facebook/Rapid/issues/1268
 
 
 # [2.2.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.0)
