@@ -17,6 +17,12 @@ import { uiSectionSelectionList } from './sections/selection_list';
 
 let _wasSelectedIDs = [];
 
+// Crossings.. :-(  If touching any of these, call the sync action.  Rapid#1260
+const crossingKeys = new Set([
+  'crossing', 'crossing_ref', 'crossing:continuous', 'crossing:island', 'crossing:markings', 'crossing:signals'
+]);
+
+
 export function uiEntityEditor(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
@@ -239,9 +245,13 @@ export function uiEntityEditor(context) {
       if (!entity) continue;
 
       let tags = Object.assign({}, entity.tags);   // shallow copy
+      let involvesCrossing = false;
 
       for (const [k, v] of Object.entries(changed)) {
         if (!k) continue;
+        if (crossingKeys.has(k)) {
+          involvesCrossing = true;
+        }
 
         // No op for source=digitalglobe or source=maxar on ML roads. TODO: switch to check on __fbid__
         const source = entity.tags.source;
@@ -258,7 +268,7 @@ export function uiEntityEditor(context) {
 
       if (!deepEqual(entity.tags, tags)) {
         editor.perform(actionChangeTags(entityID, tags));
-        if (!wasRawTagEditor) {
+        if (!wasRawTagEditor && involvesCrossing) {
           editor.perform(actionSyncCrossingTags(entityID));
         }
       }
@@ -303,8 +313,14 @@ export function uiEntityEditor(context) {
         changed[key] = original?.tags[key] ?? undefined;
       }
 
+      let involvesCrossing = false;
       for (const [k, v] of Object.entries(changed)) {
         if (!k) continue;
+
+        if (crossingKeys.has(k)) {
+          involvesCrossing = true;
+        }
+
         if (v !== undefined || tags.hasOwnProperty(k)) {
           tags[k] = v;
         }
@@ -314,7 +330,9 @@ export function uiEntityEditor(context) {
 
       if (!deepEqual(current.tags, tags)) {
         editor.perform(actionChangeTags(entityID, tags));
-        editor.perform(actionSyncCrossingTags(entityID));
+        if (involvesCrossing) {
+          editor.perform(actionSyncCrossingTags(entityID));
+        }
       }
     }
 

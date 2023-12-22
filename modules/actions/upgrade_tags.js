@@ -1,5 +1,3 @@
-import { actionSyncCrossingTags } from './sync_crossing_tags';
-
 
 /**
  * actionUpgradeTags

@@ -31,9 +31,10 @@ const crossingPreserveKeys = new Set([
  *  - A crossing node:  It will be tagged like `highway=crossing`
  *
  *  This code is run automatically:
- *  - when changing presets
- *  - when editing in the field sections of the preset editor (but not the raw tag editor)
- *  - by the `ambiguous_crossing_tags` validator to detect issues
+ *  - when changing presets, if a crossing tag is affected
+ *  - when editing in the field sections of the preset editor, if a crossing tag is affected
+ *    (but not the raw tag editor)
+ *  - by the `ambiguous_crossing_tags` validator to detect issues, or make fixes
  *
  *  @param  {string}   entityID  - The Entity with the tags that should be checked
  *  @return {Function} The Action function, accepts a Graph and returns a modified Graph
