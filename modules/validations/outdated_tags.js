@@ -7,6 +7,11 @@ import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelatio
 import { ValidationIssue, ValidationFix } from '../core/lib';
 
 
+const pathVals = new Set([
+  'path', 'footway', 'cycleway', 'bridleway', 'pedestrian'
+]);
+
+
 export function validationOutdatedTags(context) {
   const type = 'outdated_tags';
   const dataloader = context.systems.dataloader;
@@ -25,6 +30,23 @@ export function validationOutdatedTags(context) {
 
 
   /**
+   * _isCrossingWay
+   * Is the way tagged with something that would indicate that it is a crossing,
+   *   for example `highway=footway`+`footway=crossing` ?
+   * @param   {Object}   tags - tags to check
+   * @return  {boolean}  `true` if the way is tagged as a crossing
+   */
+  function _isCrossingWay(tags) {
+    for (const k of pathVals) {
+      if (tags.highway === k && tags[k] === 'crossing') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  /**
    * oldTagIssues
    */
   function oldTagIssues(entity, graph) {
@@ -33,9 +55,21 @@ export function validationOutdatedTags(context) {
     let preset = presets.match(entity, graph);
     if (!preset) return [];
 
-    // Skip all preset upgrades on crossings, see Rapid#1260
+    // Crossings are special, see Rapid#1260
+    // This validator can perform preset upgrades on standalone crossing nodes
+    //   that are NOT attached to a parent crossing way.
+    // If the crossing is: 1. a way or 2. a node attached to a parent crossing way, bail out.
     // The `ambiguous_crossing_tags` validator will take care of them.
-    if (/crossing/.test(preset.id)) return [];
+    // (i.e. that parent way is the thing that will get validated thoroughly)
+    if (/crossing/.test(preset.id)) {
+      if (entity.type === 'way') {
+        return [];
+      } else if (entity.type === 'node') {
+        const parents = graph.parentWays(entity);
+        const hasParentCrossing = parents.some(parent => _isCrossingWay(parent.tags));
+        if (hasParentCrossing) return [];
+      }
+    }
 
     const oldTags = Object.assign({}, entity.tags);  // shallow copy
     let subtype = 'deprecated_tags';
