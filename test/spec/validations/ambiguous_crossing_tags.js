@@ -109,7 +109,7 @@ describe('validationAmbiguousCrossingTags', () => {
     createJunction({
       w1: { crossing: 'unmarked', highway: 'footway', footway: 'crossing' },
       w2: { highway: 'residential' },
-      n:  { MARKING_TAG: 'zebra' }
+      n:  { crossing: 'zebra' }
     });
     const issues = validate();
     verifySingleCrossingWarning(issues);
