@@ -249,7 +249,6 @@ export function validationCrossingWays(context) {
 
       // One feature is a path but not both
       if ((entity1IsPath || entity2IsPath) && entity1IsPath !== entity2IsPath) {
-        const path = entity1IsPath ? entity1 : entity2;
         const road = entity1IsPath ? entity2 : entity1;
 
         // No crossing suggestion in some situations
