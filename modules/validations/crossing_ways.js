@@ -4,10 +4,7 @@ import {
   vecAngle, vecLength
 } from '@rapid-sdk/math';
 
-import { actionAddMidpoint } from '../actions/add_midpoint';
-import { actionChangeTags } from '../actions/change_tags';
-import { actionMergeNodes } from '../actions/merge_nodes';
-import { actionSplit } from '../actions/split';
+import { actionAddMidpoint, actionChangeTags, actionMergeNodes, actionSplit, actionSyncCrossingTags } from '../actions';
 import { osmNode } from '../osm/node';
 import {
   osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
@@ -37,6 +34,26 @@ export function validationCrossingWays(context) {
     'motorway', 'motorway_link', 'trunk', 'trunk_link',
     'primary', 'primary_link', 'secondary', 'secondary_link'
   ]);
+  const pathVals = new Set([
+    'path', 'footway', 'cycleway', 'bridleway', 'pedestrian'
+  ]);
+
+
+  /**
+   * isCrossingWay
+   * Is the way tagged with something that would indicate that it is a crossing,
+   *   for example `highway=footway`+`footway=crossing` ?
+   * @param   {Object}   tags - tags to check
+   * @return  {boolean}  `true` if the way is tagged as a crossing
+   */
+  function isCrossingWay(tags) {
+    for (const k of pathVals) {
+      if (tags.highway === k && tags[k] === 'crossing') {
+        return true;
+      }
+    }
+    return false;
+  }
 
 
   /**
@@ -240,34 +257,9 @@ export function validationCrossingWays(context) {
           return {};  // allowed, no tag suggestion
         }
 
-        // Suggest joining them with a `highway=crossing` node,
-        // and copy important crossing* tags from the path, if any
-        const suggestion = { highway: 'crossing' };
-        for (const k of ['crossing', 'crossing:markings', 'crossing:signals']) {
-          if (path.tags[k]) {
-            suggestion[k] = path.tags[k];
-          }
-        }
-
-        // Many features are tagged the "old" way with 'crossing=yes|no'. We should consider these ways
-        // and suggest that the nodes use the newer 'crossing:markings' tag structure.
-        const markings = path.tags['crossing:markings'];
-        const crossing = path.tags.crossing;
-
-        if (!!markings && markings !== 'no') {
-          // Marking tag exists, and annotated as marked somehow? reuse the tag!
-          suggestion['crossing:markings'] = markings;
-
-        } else if (crossing) {
-          // Annotated in the old way as anything but unmarked? suggest 'yes'.
-          if (crossing !== 'unmarked') {
-            suggestion['crossing:markings'] = 'yes';
-          } else {
-            suggestion['crossing:markings'] = 'no';
-          }
-        }
-
-        return suggestion;
+        // Suggest joining them with a `highway=crossing` node.
+        // We'll run the `actionsyncCrossingTags` afterwards to make sure the tags are synced.
+        return { highway: 'crossing' };
 
       } else {      // road-road or path-path
         return {};  // allowed, no tag suggestion
@@ -457,6 +449,17 @@ export function validationCrossingWays(context) {
     const isMinorCrossing = (tags1.highway === 'service' || tags2.highway === 'service') &&
       connectionTags?.highway === 'crossing';
 
+    // If we are trying to create a crossing node, and one of the crossing ways is already a tagged crossing,
+    // sync that parent way's tags to the new crossing node that we are creating - Rapid#1271
+    let crossingWayID = null;
+    if (connectionTags?.highway === 'crossing') {
+      if (isCrossingWay(tags1)) {
+        crossingWayID = entity1.id;
+      } else if (isCrossingWay(tags2)) {
+        crossingWayID = entity2.id;
+      }
+    }
+
     const subtype = [type1, type2].sort().join('-');
 
     let crossingTypeID = subtype;
@@ -478,9 +481,9 @@ export function validationCrossingWays(context) {
     // Support autofix for some kinds of connections
     let autoArgs = null;
     if (isMinorCrossing) {
-      autoArgs = getConnectWaysAction(crossing.crossPoint, edges, {});  // untagged connection
+      autoArgs = getConnectWaysAction(crossing.crossPoint, edges, null, {});  // untagged connection
     } else if (connectionTags && !connectionTags.ford) {
-      autoArgs = getConnectWaysAction(crossing.crossPoint, edges, connectionTags); // suggested tagged connection
+      autoArgs = getConnectWaysAction(crossing.crossPoint, edges, crossingWayID, connectionTags); // suggested tagged connection
     }
 
     return new ValidationIssue(context, {
@@ -501,6 +504,7 @@ export function validationCrossingWays(context) {
       data: {
         edges: edges,
         featureTypes: featureTypes,
+        crossingWayID: crossingWayID,
         connectionTags: connectionTags
       },
       hash: uniqueID,
@@ -776,12 +780,13 @@ export function validationCrossingWays(context) {
 
   /**
    * getConnectWaysAction
-   * @param  {Array}   loc    - [lon,lat] location where the connection should be
-   * @param  {Array}   edges  - edges that will participate in the connection
-   * @param  {Array}   tags   - tags to assign to the new connection node
+   * @param  {Array}   loc             - [lon,lat] location where the connection should be
+   * @param  {Array}   edges           - edges that will participate in the connection
+   * @param  {string?} crossingWayID   - optionally, run `actionsyncCrossingTags` on this wayID
+   * @param  {Object}  tags            - tags to assign to the new connection node
    * @return {Action}  An Action function that connects the ways
    */
-  function getConnectWaysAction(loc, edges, tags) {
+  function getConnectWaysAction(loc, edges, crossingWayID, tags) {
     const actionConnectCrossingWays = (graph) => {
 
       // Create a new candidate junction node which will be inserted at the connection location..
@@ -806,16 +811,6 @@ export function validationCrossingWays(context) {
           // Reuse the close node if it has no interesting tags or if it is already a crossing - iD#8326
           if (!closeNode.hasInterestingTags() || closeNode.isCrossing()) {
             canReuse = true;
-            const existingNode = graph.hasEntity(closeNode.id);
-            // Don't overwrite the existing node's tags.
-            if (existingNode.tags?.crossing && newNode.tags?.crossing) {
-              delete newNode.tags.crossing;
-            }
-
-            if (existingNode.tags['crossing:markings'] && newNode.tags['crossing:markings']) {
-              delete newNode.tags['crossing:markings'];
-            }
-            graph = graph.replace(newNode);
             mergeNodeIDs.push(closeNode.id);
           }
         }
@@ -825,9 +820,14 @@ export function validationCrossingWays(context) {
         }
       }
 
-      // If we're reusing nearby nodes, merge them with the new node
+      // If we're reusing nearby nodes, merge them with the new node.
       if (mergeNodeIDs.length > 1) {
         graph = actionMergeNodes(mergeNodeIDs, loc)(graph);
+      }
+
+      // If the parent way is tagged as a crossing, sync its crossing tags to the node we just added.
+      if (crossingWayID) {
+        graph = actionSyncCrossingTags(crossingWayID)(graph);
       }
 
       return graph;
@@ -859,7 +859,8 @@ export function validationCrossingWays(context) {
       onClick: function() {
         const loc = this.issue.loc;
         const edges = this.issue.data.edges;
-        const result = getConnectWaysAction(loc, edges, connectionTags);
+        const crossingWayID = this.issue.data.crossingWayID;
+        const result = getConnectWaysAction(loc, edges, crossingWayID, connectionTags);
 
         // result contains [function, annotation]
         editor.perform(result[0]);

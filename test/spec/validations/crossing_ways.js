@@ -274,14 +274,14 @@ describe('validationCrossingWays', () => {
     verifySingleCrossingIssue(validate(), { highway: 'crossing'});
   });
 
-  it('flags road crossing crosswalk', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway', crossing: 'marked' });
-    verifySingleCrossingIssue(validate(), { highway: 'crossing', crossing:'marked', 'crossing:markings':'yes' });
+  it('flags road crossing marked crossing', () => {
+    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway', footway: 'crossing', crossing: 'marked' });
+    verifySingleCrossingIssue(validate(), { highway: 'crossing' });
   });
 
   it('flags road crossing unmarked crossing', () => {
-    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway', crossing: 'unmarked' });
-    verifySingleCrossingIssue(validate(), { highway: 'crossing', crossing:'unmarked', 'crossing:markings':'no' });
+    createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'footway', footway: 'crossing', crossing: 'unmarked' });
+    verifySingleCrossingIssue(validate(), { highway: 'crossing' });
   });
 
   it('flags road=track crossing footway', () => {
