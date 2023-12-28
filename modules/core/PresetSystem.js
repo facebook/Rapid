@@ -177,8 +177,8 @@ if (p.icon) p.icon = p.icon.replace(/^iD-/, 'rapid-');
 // A few overrides to use better icons than the ones provided by the id-tagging-schema project
 if (presetID === 'address')                         p.icon = 'maki-circle-stroked';
 if (presetID === 'highway/turning_loop')            p.icon = 'maki-circle';
-if (/^highway\/crossing/.test(presetID))            p.icon = 'temaki-pedestrian';
-if (/^highway\/footway\/crossing/.test(presetID))   p.icon = 'temaki-pedestrian';
+//if (/^highway\/crossing/.test(presetID))            p.icon = 'temaki-pedestrian';
+//if (/^highway\/footway\/crossing/.test(presetID))   p.icon = 'temaki-pedestrian';
 if (p.icon === 'roentgen-needleleaved_tree')        p.icon = 'temaki-tree_needleleaved';
 if (p.icon === 'roentgen-tree')                     p.icon = 'temaki-tree_broadleaved';
 

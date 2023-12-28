@@ -92,7 +92,7 @@
     "@pixi/jsdoc-template": "^2.6.0",
     "@playwright/test": "^1.40.1",
     "@rapideditor/mapillary_sprite_source": "^1.8.0",
-    "@rapideditor/temaki": "~5.6.0",
+    "@rapideditor/temaki": "~5.7.0",
     "autoprefixer": "^10.4.16",
     "benchmark": "^2.1.4",
     "btoa": "^1.2.1",
