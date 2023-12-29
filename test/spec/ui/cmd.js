@@ -37,22 +37,22 @@ describe('uiCmd', () => {
   it('changes keys to linux versions', () => {
     _userAgent = 'Linux';
     Rapid.utilDetect(true);  // force redetection
-    expect(Rapid.uiCmd('⌘⌫')).to.eql('Ctrl+Backspace');
-    expect(Rapid.uiCmd('⌘A')).to.eql('Ctrl+A');
-    expect(Rapid.uiCmd('⇧A')).to.eql('Shift+A');
-    expect(Rapid.uiCmd('⌘⇧A')).to.eql('Ctrl+Shift+A');
-    expect(Rapid.uiCmd('⌘⇧Z')).to.eql('Ctrl+Shift+Z');
+    expect(Rapid.uiCmd('⌘⌫')).to.eql('⌃⌫');
+    expect(Rapid.uiCmd('⌘A')).to.eql('⌃A');
+    expect(Rapid.uiCmd('⇧A')).to.eql('⇧A');
+    expect(Rapid.uiCmd('⌘⇧A')).to.eql('⌃⇧A');
+    expect(Rapid.uiCmd('⌘⇧Z')).to.eql('⌃⇧Z');
   });
 
 
   it('changes keys to win versions', () => {
     _userAgent = 'Win';
     Rapid.utilDetect(true);  // force redetection
-    expect(Rapid.uiCmd('⌘⌫')).to.eql('Ctrl+Backspace');
-    expect(Rapid.uiCmd('⌘A')).to.eql('Ctrl+A');
-    expect(Rapid.uiCmd('⇧A')).to.eql('Shift+A');
-    expect(Rapid.uiCmd('⌘⇧A')).to.eql('Ctrl+Shift+A');
-    expect(Rapid.uiCmd('⌘⇧Z')).to.eql('Ctrl+Y');  // special case
+    expect(Rapid.uiCmd('⌘⌫')).to.eql('⌃⌫');
+    expect(Rapid.uiCmd('⌘A')).to.eql('⌃A');
+    expect(Rapid.uiCmd('⇧A')).to.eql('⇧A');
+    expect(Rapid.uiCmd('⌘⇧A')).to.eql('⌃⇧A');
+    expect(Rapid.uiCmd('⌘⇧Z')).to.eql('⌃Y');  // special case
   });
 
 
@@ -60,7 +60,7 @@ describe('uiCmd', () => {
     _userAgent = 'Win';
     Rapid.utilDetect(true);  // force redetection
     expect(Rapid.uiCmd('f11')).to.eql('f11');
-    expect(Rapid.uiCmd('⌘plus')).to.eql('Ctrl+plus');
+    expect(Rapid.uiCmd('⌘plus')).to.eql('⌃plus');
   });
 
 });

@@ -1,6 +1,9 @@
+import { select as d3_select } from 'd3-selection';
+
 import { utilFunctor } from '../util/util';
 import { uiPopover } from './popover';
 import { uiCmd } from './cmd';
+
 
 export function uiTooltip(context) {
     const l10n = context.systems.l10n;
@@ -72,32 +75,39 @@ export function uiTooltip(context) {
                 .html(text);
 
             var keyhintWrap = selection
-                .selectAll('.keyhint-wrap')
-                .data(keys && keys.length ? [0] : []);
+                .selectAll('.NOT-keyhint-wrap')
+                .data(keys?.length ? [0] : []);
 
             keyhintWrap.exit()
                 .remove();
 
             var keyhintWrapEnter = keyhintWrap.enter()
                 .append('div')
-                .attr('class', 'keyhint-wrap');
+                .attr('class', 'NOT-keyhint-wrap');
 
             keyhintWrapEnter
                 .append('span')
-                .html(l10n.tHtml('tooltip_keyhint'));
+                .text(l10n.t('tooltip_keyhint'));  // "Shortcut:"
 
             keyhintWrap = keyhintWrapEnter.merge(keyhintWrap);
 
             keyhintWrap.selectAll('kbd.shortcut')
-                .data(keys && keys.length ? keys : [])
+                .data(keys?.length ? keys : [])
                 .enter()
-                .append('span')
-                .html(d => {
-                    const keysArray = d.split('');
-                    return keysArray.map(key => `<kbd class="shortcut">${uiCmd.display(context, key)}</kbd>`)
-                    .join('<span>+</span>');
-                })
-                .style('white-space', 'nowrap');
+                .each((d, i, nodes) => {
+                    const selection = d3_select(nodes[i]);
+
+                    selection
+                        .append('kbd')
+                        .attr('class', 'shortcut')
+                        .text(d => uiCmd.display(context, d));
+
+                    if (i < keys.length - 1) {
+                        selection
+                            .append('span')
+                            .text('+');
+                    }
+                });
         };
     });
 

@@ -8,13 +8,15 @@ import { utilKeybinding } from '../util/keybinding';
 
 export function uiZoom(context) {
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const ui = context.systems.ui;
 
   const zooms = [{
     id: 'zoom-in',
     icon: 'rapid-icon-plus',
     title: l10n.t('zoom.in'),
     action: zoomIn,
-    isDisabled: () => !context.systems.map.canZoomIn(),
+    isDisabled: () => !map.canZoomIn(),
     disabledTitle: l10n.t('zoom.disabled.in'),
     key: '+'
   }, {
@@ -22,33 +24,29 @@ export function uiZoom(context) {
     icon: 'rapid-icon-minus',
     title: l10n.t('zoom.out'),
     action: zoomOut,
-    isDisabled: () => !context.systems.map.canZoomOut(),
+    isDisabled: () => !map.canZoomOut(),
     disabledTitle: l10n.t('zoom.disabled.out'),
     key: '-'
   }];
 
   function zoomIn(d3_event) {
-    if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.systems.map.zoomIn();
+    map.zoomIn();
   }
 
   function zoomOut(d3_event) {
-    if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.systems.map.zoomOut();
+    map.zoomOut();
   }
 
   function zoomInFurther(d3_event) {
-    if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.systems.map.zoomInFurther();
+    map.zoomInFurther();
   }
 
   function zoomOutFurther(d3_event) {
-    if (d3_event.shiftKey) return;
     d3_event.preventDefault();
-    context.systems.map.zoomOutFurther();
+    map.zoomOutFurther();
   }
 
   return function render(selection) {
@@ -69,7 +67,7 @@ export function uiZoom(context) {
         if (!d.isDisabled()) {
           d.action(d3_event);
         } else if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          context.systems.ui.flash
+          ui.flash
             .duration(2000)
             .iconName(`#${d.icon}`)
             .iconClass('disabled')
@@ -107,6 +105,6 @@ export function uiZoom(context) {
 
     updateButtonStates();
 
-    context.systems.map.on('draw', updateButtonStates);
+    map.on('draw', updateButtonStates);
   };
 }

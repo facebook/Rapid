@@ -1,43 +1,30 @@
 import { utilDetect } from '../util/detect';
 
 
-// Translate a MacOS key command into the appropriate Windows/Linux equivalent.
-// For example, ⌘Z -> Ctrl+Z
-export let uiCmd = function(code) {
+// Throughout Rapid we specify key combos in MacOS style.
+// This helper converts a key combo to the key combo for the system the user is on,
+// - on MacOS, no change
+// - on Windows/Linux, convert Command to Control, for example, ⌘Z -> ⌃Z
+export let uiCmd = function(combo) {
   const detected = utilDetect();
 
   if (detected.os === 'mac') {
-    return code;
+    return combo;
   }
 
   if (detected.os === 'win') {
-    if (code === '⌘⇧Z') return 'Ctrl+Y';
+    if (combo === '⌘⇧Z') return '⌃Y';  // special handling for Redo on Windows
   }
 
-  const replacements = {
-    '⌘': 'Ctrl',
-    '⇧': 'Shift',
-    '⌥': 'Alt',
-    '⌫': 'Backspace',
-    '⌦': 'Delete'
-  };
-
-  let result = '';
-  for (let i = 0; i < code.length; i++) {
-    if (code[i] in replacements) {
-      result += replacements[code[i]] + (i < code.length - 1 ? '+' : '');
-    } else {
-      result += code[i];
-    }
-  }
-
-  return result;
+  return combo.replace('⌘', '⌃');
 };
 
 
-// return a display-focused string for a given keyboard code
-uiCmd.display = function(context, code) {
-  if (code.length !== 1) return code;
+// Return a display-focused string for a given key character.
+// On Mac, we include the symbols, on other systems, we only include the word.
+// For example, '⌘' -> '⌘ Cmd'
+uiCmd.display = function(context, char) {
+  if (char.length !== 1) return char;  // Ignore if multiple chars, like "F11"
 
   const l10n = context.systems.l10n;
   const detected = utilDetect();
@@ -58,5 +45,5 @@ uiCmd.display = function(context, code) {
     '☰': mac ? '☰ ' + l10n.t('shortcuts.key.menu')  : l10n.t('shortcuts.key.menu'),
   };
 
-  return replacements[code] || code;
+  return replacements[char] || char;
 };

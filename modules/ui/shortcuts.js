@@ -139,7 +139,7 @@ export function uiShortcuts(context) {
             .selectAll('kbd.modifier')
             .data(function (d) {
                 if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
-                    return ['⌘'];
+                    return ['⌃'];
                 } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
                     return [];
                 } else {
@@ -153,11 +153,11 @@ export function uiShortcuts(context) {
                 selection
                     .append('kbd')
                     .attr('class', 'modifier')
-                    .html(function (d) { return uiCmd.display(context, d); });
+                    .text(d => uiCmd.display(context, d));
 
                 selection
                     .append('span')
-                    .html('+');
+                    .text('+');
             });
 
 

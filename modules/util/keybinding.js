@@ -204,11 +204,11 @@ export function utilKeybinding(namespace) {
 utilKeybinding.modifierCodes = {
     // Shift key, ⇧
     '⇧': 16, shift: 16,
-    // CTRL key, on Mac: ⌃
+    // Control key, ⌃
     '⌃': 17, ctrl: 17,
-    // ALT key, on Mac: ⌥ (Alt)
+    // Alt key, on Mac: '⌥ Option'
     '⌥': 18, alt: 18, option: 18,
-    // META, on Mac: ⌘ (CMD), on Windows (Win), on Linux (Super)
+    // Meta key, on Mac: '⌘ Command', on Windows 'Win', on Linux 'Super'
     '⌘': 91, meta: 91, cmd: 91, 'super': 91, win: 91
 };
 
@@ -219,7 +219,7 @@ utilKeybinding.modifierProperties = {
     91: 'metaKey'
 };
 
-utilKeybinding.plusKeys = ['plus', 'ffplus', '=', 'ffequals', '≠', '±'];
+utilKeybinding.plusKeys = ['+', 'plus', 'ffplus', '=', 'ffequals', '≠', '±'];
 utilKeybinding.minusKeys = ['_', '-', 'ffminus', 'dash', '–', '—'];
 
 utilKeybinding.keys = {
