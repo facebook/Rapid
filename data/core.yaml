@@ -979,7 +979,7 @@ en:
     key: P
     privacy:
       title: Privacy
-      privacy_link: View the Map with AI privacy policy
+      privacy_link: View the Rapid privacy policy
       third_party_icons:
         description: Show Third Party Icons
         tooltip: Uncheck this box to avoid loading icons from third party sites such as Wikimedia Commons, Facebook, or Twitter.
