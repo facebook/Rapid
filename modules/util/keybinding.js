@@ -199,8 +199,9 @@ export function utilKeybinding(namespace) {
 
 /*
  * See https://github.com/keithamus/jwerty
+ * Watch out: The '⌃' symbol U+2303 is not the same as the carat symbol '^' U+005E
+ * see https://wincent.com/wiki/Unicode_representations_of_modifier_keys
  */
-
 utilKeybinding.modifierCodes = {
     // Shift key, ⇧
     '⇧': 16, shift: 16,
@@ -219,7 +220,7 @@ utilKeybinding.modifierProperties = {
     91: 'metaKey'
 };
 
-utilKeybinding.plusKeys = ['+', 'plus', 'ffplus', '=', 'ffequals', '≠', '±'];
+utilKeybinding.plusKeys = ['+', 'ffplus', '=', 'ffequals', '≠', '±'];
 utilKeybinding.minusKeys = ['_', '-', 'ffminus', 'dash', '–', '—'];
 
 utilKeybinding.keys = {

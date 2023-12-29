@@ -5,6 +5,10 @@ import { utilDetect } from '../util/detect';
 // This helper converts a key combo to the key combo for the system the user is on,
 // - on MacOS, no change
 // - on Windows/Linux, convert Command to Control, for example, ⌘Z -> ⌃Z
+//
+// Watch out: The '⌃' symbol U+2303 is not the same as the carat symbol '^' U+005E
+// see https://wincent.com/wiki/Unicode_representations_of_modifier_keys
+//
 export let uiCmd = function(combo) {
   const detected = utilDetect();
 
@@ -23,6 +27,7 @@ export let uiCmd = function(combo) {
 // Return a display-focused string for a given key character.
 // On Mac, we include the symbols, on other systems, we only include the word.
 // For example, '⌘' -> '⌘ Cmd'
+// Important:  This is intended to be called with a single character, not a key combo.
 uiCmd.display = function(context, char) {
   if (char.length !== 1) return char;  // Ignore if multiple chars, like "F11"
 
