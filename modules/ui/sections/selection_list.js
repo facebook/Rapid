@@ -30,7 +30,7 @@ export function uiSectionSelectionList(context) {
   }
 
   function sectionLabel() {
-    return l10n.t('inspector.title_count', { title: l10n.tHtml('inspector.features'), count: _selectedIDs.length });
+    return l10n.t('inspector.title_count', { title: l10n.t('inspector.features'), count: _selectedIDs.length });
   }
 
   function selectEntity(d3_event, entity) {

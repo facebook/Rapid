@@ -7,20 +7,21 @@ import { uiTooltip } from './tooltip';
 export function uiIssuesInfo(context) {
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
+  const ui = context.systems.ui;
   const validator = context.systems.validator;
 
   let warningsItem = {
     id: 'warnings',
     count: 0,
     iconID: 'rapid-icon-alert',
-    descriptionID: 'issues.warnings_and_errors'
+    stringID: 'issues.warnings_and_errors'
   };
 
   let resolvedItem = {
     id: 'resolved',
     count: 0,
     iconID: 'rapid-icon-apply',
-    descriptionID: 'issues.user_resolved_issues'
+    stringID: 'issues.user_resolved_issues'
   };
 
 
@@ -57,7 +58,7 @@ export function uiIssuesInfo(context) {
 
         let tooltip = uiTooltip(context)
           .placement('top')
-          .title(l10n.tHtml(d.descriptionID));
+          .title(l10n.t(d.stringID));
 
         chipSelection
           .call(tooltip)
@@ -65,7 +66,7 @@ export function uiIssuesInfo(context) {
             d3_event.preventDefault();
             tooltip.hide();
             // open the Issues pane
-            context.systems.ui.togglePanes(context.container().select('.map-panes .issues-pane'));
+            ui.togglePanes(context.container().select('.map-panes .issues-pane'));
           });
 
         chipSelection.call(uiIcon(`#${d.iconID}`));

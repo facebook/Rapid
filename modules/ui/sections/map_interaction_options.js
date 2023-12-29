@@ -7,7 +7,7 @@ export function uiSectionMapInteractionOptions(context) {
   const l10n = context.systems.l10n;
 
   const section = uiSection(context, 'map-interaction')
-    .label(l10n.tHtml('preferences.map_interaction.title'))
+    .label(l10n.t('preferences.map_interaction.title'))
     .disclosureContent(renderDisclosureContent);
 
   const MOUSE_WHEEL_OPTIONS = ['auto', 'zoom', 'pan'];

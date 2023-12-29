@@ -12,14 +12,14 @@ export function uiToolNotes(context) {
 
   let tool = {
     id: 'notes',
-    label: l10n.tHtml('modes.add_note.label')
+    label: l10n.t('modes.add_note.label')
   };
 
   const mode = {
     id: 'add-note',
-    title: l10n.tHtml('modes.add_note.title'),
+    title: l10n.t('modes.add_note.title'),
     button: 'note',
-    description: l10n.tHtml('modes.add_note.description'),
+    description: l10n.t('modes.add_note.description'),
     key: l10n.t('modes.add_note.key')
   };
 
@@ -54,7 +54,7 @@ export function uiToolNotes(context) {
       .on('click.notes', (d3_event, d) => {
         if (!notesEditable()) return;
 
-        // When drawing, ignore accidental clicks on mode buttons - #4042
+        // When drawing, ignore accidental clicks on mode buttons - iD#4042
         var currMode = context.mode?.id;
         if (/^draw/.test(currMode)) return;
 

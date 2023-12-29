@@ -10,7 +10,7 @@ export function uiSectionBackgroundOffset(context) {
   const imagerySystem = context.systems.imagery;
 
   const section = uiSection(context, 'background-offset')
-    .label(l10n.tHtml('background.fix_misalignment'))
+    .label(l10n.t('background.fix_misalignment'))
     .disclosureContent(renderDisclosureContent);
 
   const DIRECTIONS = [
@@ -122,7 +122,7 @@ export function uiSectionBackgroundOffset(context) {
     containerEnter
       .append('div')
       .attr('class', 'nudge-instructions')
-      .html(l10n.tHtml('background.offset'));
+      .text(l10n.t('background.offset'));
 
     let nudgeWrapEnter = containerEnter
       .append('div')

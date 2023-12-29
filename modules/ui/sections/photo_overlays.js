@@ -10,7 +10,7 @@ export function uiSectionPhotoOverlays(context) {
   const photos = context.systems.photos;
 
   const section = uiSection(context, 'photo-overlays')
-    .label(l10n.tHtml('photo_overlays.title'))
+    .label(l10n.t('photo_overlays.title'))
     .disclosureContent(renderDisclosureContent);
 
   const scene = context.scene();
@@ -94,14 +94,14 @@ export function uiSectionPhotoOverlays(context) {
     let labelEnter = liEnter
       .append('label')
       .each((d, i, nodes) => {
-        let titleID;
-        if (d.id === 'mapillary-signs') titleID = 'mapillary.signs.tooltip';
-        else if (d.id === 'mapillary') titleID = 'mapillary_images.tooltip';
-        else if (d.id === 'kartaview') titleID = 'kartaview_images.tooltip';
-        else titleID = d.id.replace(/-/g, '_') + '.tooltip';
+        let stringID;
+        if (d.id === 'mapillary-signs') stringID = 'mapillary.signs.tooltip';
+        else if (d.id === 'mapillary') stringID = 'mapillary_images.tooltip';
+        else if (d.id === 'kartaview') stringID = 'kartaview_images.tooltip';
+        else stringID = d.id.replace(/-/g, '_') + '.tooltip';
         d3_select(nodes[i])
           .call(uiTooltip(context)
-            .title(l10n.tHtml(titleID))
+            .title(l10n.t(stringID))
             .placement('top')
           );
       });
@@ -113,10 +113,10 @@ export function uiSectionPhotoOverlays(context) {
 
     labelEnter
       .append('span')
-      .html(d => {
-        let titleID = d.id;
-        if (titleID === 'mapillary-signs') titleID = 'photo_overlays.traffic_signs';
-        return l10n.tHtml(titleID.replace(/-/g, '_') + '.title');
+      .text(d => {
+        let stringID = d.id;
+        if (stringID === 'mapillary-signs') stringID = 'photo_overlays.traffic_signs';
+        return l10n.t(stringID.replace(/-/g, '_') + '.title');
       });
 
     // Update
@@ -162,7 +162,7 @@ export function uiSectionPhotoOverlays(context) {
       .each(function(d) {
         d3_select(this)
           .call(uiTooltip(context)
-            .title(l10n.tHtml(`photo_overlays.photo_type.${d}.tooltip`))
+            .title(l10n.t(`photo_overlays.photo_type.${d}.tooltip`))
             .placement('top')
           );
       });
@@ -174,7 +174,7 @@ export function uiSectionPhotoOverlays(context) {
 
     labelEnter
       .append('span')
-      .html(d => l10n.tHtml(`photo_overlays.photo_type.${d}.title`));
+      .text(d => l10n.t(`photo_overlays.photo_type.${d}.title`));
 
     // Update
     li
@@ -219,14 +219,14 @@ export function uiSectionPhotoOverlays(context) {
       .each((d, i, nodes) => {
         d3_select(nodes[i])
           .call(uiTooltip(context)
-            .title(l10n.tHtml(`photo_overlays.date_filter.${d}.tooltip`))
+            .title(l10n.t(`photo_overlays.date_filter.${d}.tooltip`))
             .placement('top')
           );
       });
 
     labelEnter
       .append('span')
-      .html(d => l10n.tHtml(`photo_overlays.date_filter.${d}.title`));
+      .text(d => l10n.t(`photo_overlays.date_filter.${d}.title`));
 
     labelEnter
       .append('input')

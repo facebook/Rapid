@@ -56,12 +56,8 @@ export class ImagerySource {
     return this.context.systems.l10n.t(`imagery.${this._idtx}.name`, { default: this._name });
   }
 
-  get label() {
-    return this.context.systems.l10n.tHtml(`imagery.${this._idtx}.name`, { default: this._name });
-  }
-
   get description() {
-    return this.context.systems.l10n.tHtml(`imagery.${this._idtx}.description`, { default: this._description });
+    return this.context.systems.l10n.t(`imagery.${this._idtx}.description`, { default: this._description });
   }
 
   get imageryUsed() {
@@ -258,9 +254,6 @@ export class ImagerySourceNone extends ImagerySource {
   get name() {
     return this.context.systems.l10n.t('background.none');
   }
-  get label() {
-    return this.context.systems.l10n.tHtml('background.none');
-  }
   get area() {
     return -1;  // sources in background pane are sorted by area
   }
@@ -281,9 +274,6 @@ export class ImagerySourceCustom extends ImagerySource {
   }
   get name() {
     return this.context.systems.l10n.t('background.custom');
-  }
-  get label() {
-    return this.context.systems.l10n.tHtml('background.custom');
   }
   get area() {
     return -2;  // sources in background pane are sorted by area

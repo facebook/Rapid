@@ -59,7 +59,7 @@ export function uiTooltip(context) {
                 .append('div')
                 .attr('class', 'tooltip-heading')
                 .merge(headingSelect)
-                .html(heading);
+                .text(heading);
 
             var textSelect = selection
                 .selectAll('.tooltip-text')
@@ -72,10 +72,10 @@ export function uiTooltip(context) {
                 .append('div')
                 .attr('class', 'tooltip-text')
                 .merge(textSelect)
-                .html(text);
+                .html(text);    // watch out: a few tooltips still send html through here
 
             var keyhintWrap = selection
-                .selectAll('.NOT-keyhint-wrap')
+                .selectAll('.tooltip-keyhint')
                 .data(keys?.length ? [0] : []);
 
             keyhintWrap.exit()
@@ -83,7 +83,7 @@ export function uiTooltip(context) {
 
             var keyhintWrapEnter = keyhintWrap.enter()
                 .append('div')
-                .attr('class', 'NOT-keyhint-wrap');
+                .attr('class', 'tooltip-keyhint');
 
             keyhintWrapEnter
                 .append('span')

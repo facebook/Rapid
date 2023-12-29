@@ -182,7 +182,7 @@ export function uiSectionBackgroundList(context) {
       if (d.id === previousBackgroundID()) {
         item.call(uiTooltip(context)
           .placement(placement)
-          .title('<div>' + l10n.t('background.switch') + '</div>')
+          .title(l10n.t('background.switch'))
           .keys([uiCmd('⌘' + l10n.t('background.key'))])
         );
       } else if (d.description || isOverflowing) {

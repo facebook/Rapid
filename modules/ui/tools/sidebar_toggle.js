@@ -8,7 +8,7 @@ export function uiToolSidebarToggle(context) {
 
   let tool = {
     id: 'sidebar_toggle',
-    label: l10n.tHtml('toolbar.inspect')
+    label: l10n.t('toolbar.inspect')
   };
 
   tool.install = function(selection) {
@@ -18,7 +18,7 @@ export function uiToolSidebarToggle(context) {
       .on('click', () => ui.sidebar.toggle())
       .call(uiTooltip(context)
         .placement('bottom')
-        .title(l10n.tHtml('sidebar.tooltip'))
+        .title(l10n.t('sidebar.tooltip'))
         .keys([ l10n.t('sidebar.key') ])
         .scrollContainer(context.container().select('.top-toolbar'))
       )

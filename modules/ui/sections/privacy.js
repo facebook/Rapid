@@ -8,7 +8,7 @@ export function uiSectionPrivacy(context) {
   const storage = context.systems.storage;
 
   const section = uiSection(context, 'preferences-third-party')
-    .label(l10n.tHtml('preferences.privacy.title'))
+    .label(l10n.t('preferences.privacy.title'))
     .disclosureContent(renderDisclosureContent);
 
   let _showThirdPartyIcons = storage.getItem('preferences.privacy.thirdpartyicons') || 'true';
@@ -26,7 +26,7 @@ export function uiSectionPrivacy(context) {
       .attr('class', 'privacy-third-party-icons-item')
       .append('label')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('preferences.privacy.third_party_icons.tooltip'))
+        .title(l10n.t('preferences.privacy.third_party_icons.tooltip'))
         .placement('bottom')
       );
 
@@ -42,7 +42,7 @@ export function uiSectionPrivacy(context) {
 
     thirdPartyIconsEnter
       .append('span')
-      .html(l10n.tHtml('preferences.privacy.third_party_icons.description'));
+      .text(l10n.t('preferences.privacy.third_party_icons.description'));
 
 
     // Privacy Policy link
@@ -56,7 +56,7 @@ export function uiSectionPrivacy(context) {
       .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://rapideditor.org/doc/license/MapWithAIPrivacyPolicy.pdf')
       .append('span')
-      .html(l10n.tHtml('preferences.privacy.privacy_link'));
+      .text(l10n.t('preferences.privacy.privacy_link'));
 
     update();
 

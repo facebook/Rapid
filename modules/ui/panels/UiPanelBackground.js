@@ -21,7 +21,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     this.id = 'background';
 
     const l10n = context.systems.l10n;
-    this.label = l10n.tHtml('info_panels.background.title');
+    this.title = l10n.t('info_panels.background.title');
     this.key = l10n.t('info_panels.background.key');
 
     this._selection = d3_select(null);
@@ -106,7 +106,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     list
       .append('li')
-      .html(source.label);
+      .text(source.name);
 
     // Add list items for all the imagery metadata
     METADATA_KEYS.forEach(k => {
@@ -114,7 +114,7 @@ export class UiPanelBackground extends AbstractUiPanel {
         .append('li')
         .attr('class', `background-info-list-${k}`)
         .classed('hide', !this._metadata[k])
-        .html(l10n.tHtml(`info_panels.background.${k}`) + ':')
+        .text(l10n.t(`info_panels.background.${k}`) + ':')
         .append('span')
         .attr('class', `background-info-span-${k}`)
         .text(this._metadata[k]);
@@ -127,7 +127,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     selection
       .append('a')
-      .html(l10n.tHtml(`info_panels.background.${toggleTiles}`))
+      .text(l10n.t(`info_panels.background.${toggleTiles}`))
       .attr('href', '#')
       .attr('class', 'button button-toggle-tiles')
       .on('click', e => {

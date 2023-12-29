@@ -11,8 +11,8 @@ export function uiPaneIssues(context) {
 
   return uiPane(context, 'issues')
     .key(l10n.t('issues.key'))
-    .label(l10n.tHtml('issues.title'))
-    .description(l10n.tHtml('issues.title'))
+    .label(l10n.t('issues.title'))
+    .description(l10n.t('issues.title'))
     .iconName('rapid-icon-alert')
     .sections([
       uiSectionValidationOptions(context),

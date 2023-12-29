@@ -83,7 +83,7 @@ export function uiSectionValidationStatus(context) {
       .merge(resetIgnoredEnter);
 
     resetIgnored.select('a')
-      .html(l10n.t('inspector.title_count', { title: l10n.tHtml('issues.reset_ignored'), count: ignoredIssues.length }));
+      .text(l10n.t('inspector.title_count', { title: l10n.t('issues.reset_ignored'), count: ignoredIssues.length }));
 
     resetIgnored.on('click', d3_event => {
       d3_event.preventDefault();
@@ -102,12 +102,12 @@ export function uiSectionValidationStatus(context) {
         const hiddenIssues = validator.getIssues(hiddenOpts);
         if (hiddenIssues.length) {
           selection.select('.box .details')
-            .html(l10n.tHtml('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
+            .text(l10n.t('issues.no_issues.hidden_issues.' + type, { count: hiddenIssues.length.toString() } ));
           return;
         }
       }
       selection.select('.box .details')
-        .html(l10n.tHtml('issues.no_issues.hidden_issues.none'));
+        .text(l10n.t('issues.no_issues.hidden_issues.none'));
     }
 
     let messageType;
@@ -155,7 +155,7 @@ export function uiSectionValidationStatus(context) {
     }
 
     selection.select('.box .message')
-      .html(l10n.tHtml(`issues.no_issues.message.${messageType}`));
+      .text(l10n.t(`issues.no_issues.message.${messageType}`));
   }
 
 

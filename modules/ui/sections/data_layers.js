@@ -10,7 +10,7 @@ import { uiSettingsCustomData } from '../settings/custom_data';
 export function uiSectionDataLayers(context) {
   const l10n = context.systems.l10n;
   const section = uiSection(context, 'data-layers')
-    .label(l10n.tHtml('map_data.data_layers'))
+    .label(l10n.t('map_data.data_layers'))
     .disclosureContent(renderDisclosureContent);
 
   const settingsCustomData = uiSettingsCustomData(context)
@@ -90,14 +90,14 @@ export function uiSectionDataLayers(context) {
         if (d.id === 'osm') {
           d3_select(nodes[i])
             .call(uiTooltip(context)
-              .title(l10n.tHtml(`map_data.layers.${d.id}.tooltip`))
+              .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
               .keys([uiCmd('⌥' + l10n.t('area_fill.wireframe.key'))])
               .placement('bottom')
             );
         } else {
           d3_select(nodes[i])
             .call(uiTooltip(context)
-              .title(l10n.tHtml(`map_data.layers.${d.id}.tooltip`))
+              .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
               .placement('bottom')
             );
         }
@@ -110,7 +110,7 @@ export function uiSectionDataLayers(context) {
 
     labelEnter
       .append('span')
-      .html(d => l10n.tHtml(`map_data.layers.${d.id}.title`));
+      .text(d => l10n.t(`map_data.layers.${d.id}.title`));
 
     // Update
     li
@@ -149,7 +149,7 @@ export function uiSectionDataLayers(context) {
       .each((d, i, nodes) => {
         d3_select(nodes[i])
           .call(uiTooltip(context)
-            .title(l10n.tHtml(`map_data.layers.${d.id}.tooltip`))
+            .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
             .placement('bottom')
           );
       });
@@ -161,7 +161,7 @@ export function uiSectionDataLayers(context) {
 
     labelEnter
       .append('span')
-      .html(d => l10n.tHtml(`map_data.layers.${d.id}.title`));
+      .text(d => l10n.t(`map_data.layers.${d.id}.title`));
 
     // Update
     li
@@ -196,7 +196,7 @@ export function uiSectionDataLayers(context) {
     let labelEnter = liEnter
       .append('label')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('map_data.layers.custom.tooltip'))
+        .title(l10n.t('map_data.layers.custom.tooltip'))
         .placement('top')
       );
 
@@ -207,13 +207,13 @@ export function uiSectionDataLayers(context) {
 
     labelEnter
       .append('span')
-      .html(l10n.tHtml('map_data.layers.custom.title'));
+      .text(l10n.t('map_data.layers.custom.title'));
 
     liEnter
       .append('button')
       .attr('class', 'open-data-options')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('settings.custom_data.tooltip'))
+        .title(l10n.t('settings.custom_data.tooltip'))
         .placement(isRTL ? 'right' : 'left')
       )
       .on('click', d3_event => {
@@ -226,7 +226,7 @@ export function uiSectionDataLayers(context) {
       .append('button')
       .attr('class', 'zoom-to-data')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('map_data.layers.custom.zoom'))
+        .title(l10n.t('map_data.layers.custom.zoom'))
         .placement(isRTL ? 'right' : 'left')
       )
       .on('click', function(d3_event) {
@@ -285,7 +285,7 @@ export function uiSectionDataLayers(context) {
       .attr('class', 'history-panel-toggle-item')
       .append('label')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('map_data.history_panel.tooltip'))
+        .title(l10n.t('map_data.history_panel.tooltip'))
         .keys([uiCmd('⌘⇧' + l10n.t('info_panels.history.key'))])
         .placement('top')
       );
@@ -300,14 +300,14 @@ export function uiSectionDataLayers(context) {
 
     historyPanelLabelEnter
       .append('span')
-      .html(l10n.tHtml('map_data.history_panel.title'));
+      .text(l10n.t('map_data.history_panel.title'));
 
     let measurementPanelLabelEnter = panelsListEnter
       .append('li')
       .attr('class', 'measurement-panel-toggle-item')
       .append('label')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('map_data.measurement_panel.tooltip'))
+        .title(l10n.t('map_data.measurement_panel.tooltip'))
         .keys([uiCmd('⌘⇧' + l10n.t('info_panels.measurement.key'))])
         .placement('top')
       );
@@ -322,7 +322,7 @@ export function uiSectionDataLayers(context) {
 
     measurementPanelLabelEnter
       .append('span')
-      .html(l10n.tHtml('map_data.measurement_panel.title'));
+      .text(l10n.t('map_data.measurement_panel.title'));
   }
 
 

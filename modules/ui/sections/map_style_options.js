@@ -6,7 +6,7 @@ export function uiSectionMapStyleOptions(context) {
   const l10n = context.systems.l10n;
 
   const section = uiSection(context, 'fill-area')
-    .label(l10n.tHtml('map_data.style_options'))
+    .label(l10n.t('map_data.style_options'))
     .disclosureContent(renderDisclosureContent);
 
 
@@ -43,7 +43,7 @@ export function uiSectionMapStyleOptions(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => l10n.tHtml(`${name}.${d}.tooltip`))
+        .title(d => l10n.t(`${name}.${d}.tooltip`))
         .keys(d => {
           let key = (d === 'wireframe' ? l10n.t('area_fill.wireframe.key') : null);
           if (d === 'highlight_edits') {
@@ -65,7 +65,7 @@ export function uiSectionMapStyleOptions(context) {
 
     label
       .append('span')
-      .html(d => l10n.tHtml(`${name}.${d}.description`));
+      .text(d => l10n.t(`${name}.${d}.description`));
 
     // Update
     items = items

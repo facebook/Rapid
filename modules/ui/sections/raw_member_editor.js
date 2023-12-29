@@ -40,7 +40,7 @@ export function uiSectionRawMemberEditor(context) {
 
       const gt = entity.members.length > MAX_MEMBERS ? '>' : '';
       const count = gt + entity.members.slice(0, MAX_MEMBERS).length;
-      return l10n.t('inspector.title_count', { title: l10n.tHtml('inspector.members'), count: count });
+      return l10n.t('inspector.title_count', { title: l10n.t('inspector.members'), count: count });
     })
     .disclosureContent(renderDisclosureContent);
 
@@ -219,12 +219,12 @@ export function uiSectionRawMemberEditor(context) {
           labelText
             .append('span')
             .attr('class', 'member-entity-type')
-            .html(l10n.tHtml(`inspector.${d.type}`, { id: d.id }));
+            .text(l10n.t(`inspector.${d.type}`, { id: d.id }));
 
           labelText
             .append('span')
             .attr('class', 'member-entity-name')
-            .html(l10n.tHtml('inspector.incomplete', { id: d.id }));
+            .text(l10n.t('inspector.incomplete', { id: d.id }));
 
           label
             .append('button')

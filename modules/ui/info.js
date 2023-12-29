@@ -63,7 +63,7 @@ export function uiInfo(context) {
 
       titleEnter
         .append('h3')
-        .html(d => panels[d].label);
+        .text(d => panels[d].title);
 
       titleEnter
         .append('button')

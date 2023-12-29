@@ -75,7 +75,7 @@ export class UiField {
 
     this._locked = false;
     this._lockedTip = uiTooltip(context)
-      .title(l10n.tHtml('inspector.lock.suggestion', { label: this.label }))
+      .title(l10n.t('inspector.lock.suggestion', { label: this.label }))
       .placement('bottom');
 
 

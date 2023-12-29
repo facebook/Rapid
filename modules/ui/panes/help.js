@@ -271,8 +271,8 @@ export function uiPaneHelp(context) {
     }, '');
 
     docs.push({
-      title: l10n.tHtml(`help.${section}.title`),
-      content: marked.parse(markdown.trim())
+      title: l10n.t(`help.${section}.title`),
+      contentHtml: marked.parse(markdown.trim())
         .replace(/<code>/g, '<kbd>')       // use <kbd> styling for shortcuts
         .replace(/<\/code>/g, '<\/kbd>')
     });
@@ -281,8 +281,8 @@ export function uiPaneHelp(context) {
 
   const helpPane = uiPane(context, 'help')
     .key(l10n.t('help.key'))
-    .label(l10n.tHtml('help.title'))
-    .description(l10n.tHtml('help.title'))
+    .label(l10n.t('help.title'))
+    .description(l10n.t('help.title'))
     .iconName('rapid-icon-help');
 
 
@@ -291,9 +291,9 @@ export function uiPaneHelp(context) {
     function clickHelp(d, i) {
       const isRTL = l10n.isRTL();
       content.property('scrollTop', 0);
-      helpPane.selection().select('.pane-heading h2').html(d.title);
+      helpPane.selection().select('.pane-heading h2').text(d.title);
 
-      body.html(d.content);
+      body.html(d.contentHtml);
       body.selectAll('a').attr('target', '_blank');
       menuItems.classed('selected', item => item.title === d.title);
 
@@ -319,7 +319,7 @@ export function uiPaneHelp(context) {
 
         nextLink
           .append('span')
-          .html(docs[i + 1].title)
+          .text(docs[i + 1].title)
           .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
       }
 
@@ -339,7 +339,7 @@ export function uiPaneHelp(context) {
         prevLink
           .call(uiIcon((isRTL ? '#rapid-icon-forward' : '#rapid-icon-backward'), 'inline'))
           .append('span')
-          .html(docs[i - 1].title);
+          .text(docs[i - 1].title);
       }
     }
 
@@ -367,7 +367,7 @@ export function uiPaneHelp(context) {
       .append('li')
       .append('a')
       .attr('href', '#')
-      .html(d => d.title)
+      .text(d => d.title)
       .on('click', function(d3_event, d) {
         d3_event.preventDefault();
         clickHelp(d, docs.indexOf(d));
@@ -377,7 +377,7 @@ export function uiPaneHelp(context) {
       .append('li')
       .attr('class', 'shortcuts')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('shortcuts.tooltip'))
+        .title(l10n.t('shortcuts.tooltip'))
         .keys(['?'])
         .placement('top')
       )
@@ -387,7 +387,7 @@ export function uiPaneHelp(context) {
 
     shortcuts
       .append('div')
-      .html(l10n.tHtml('shortcuts.title'));
+      .text(l10n.t('shortcuts.title'));
 
     let walkthrough = toc
       .append('li')
@@ -404,7 +404,7 @@ export function uiPaneHelp(context) {
 
     walkthrough
       .append('div')
-      .html(l10n.tHtml('splash.walkthrough'));
+      .text(l10n.t('splash.walkthrough'));
 
     let helpContent = content
       .append('div')

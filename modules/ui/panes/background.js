@@ -12,8 +12,8 @@ export function uiPaneBackground(context) {
 
   return uiPane(context, 'background')
     .key(l10n.t('background.key'))
-    .label(l10n.tHtml('background.title'))
-    .description(l10n.tHtml('background.description'))
+    .label(l10n.t('background.title'))
+    .description(l10n.t('background.description'))
     .iconName('rapid-icon-layers')
     .sections([
       uiSectionBackgroundList(context),

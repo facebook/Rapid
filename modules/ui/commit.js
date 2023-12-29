@@ -405,7 +405,7 @@ export function uiCommit(context) {
 
     if (!labelEnter.empty()) {
       labelEnter
-        .call(uiTooltip(context).title(l10n.tHtml('commit.request_review_info')).placement('top'));
+        .call(uiTooltip(context).title(l10n.t('commit.request_review_info')).placement('top'));
     }
 
     labelEnter

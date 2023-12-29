@@ -23,7 +23,7 @@ export function uiSectionEntityIssues(context) {
   let section = uiSection(context, 'entity-issues')
     .shouldDisplay(() => _issues.length)
     .label(() => {
-      return l10n.t('inspector.title_count', { title: l10n.tHtml('issues.list_title'), count: _issues.length });
+      return l10n.t('inspector.title_count', { title: l10n.t('issues.list_title'), count: _issues.length });
     })
     .disclosureContent(renderDisclosureContent);
 
@@ -149,7 +149,7 @@ export function uiSectionEntityIssues(context) {
         if (typeof d.reference === 'function') {
           selection.call(d.reference);
         } else {
-          selection.html(l10n.tHtml('inspector.no_documentation_key'));
+          selection.text(l10n.t('inspector.no_documentation_key'));
         }
       });
 
@@ -201,7 +201,7 @@ export function uiSectionEntityIssues(context) {
     buttons
       .append('span')
       .attr('class', 'fix-message')
-      .html(d => d.title);
+      .text(d => d.title);
 
     fixesEnter.merge(fixes)
       .selectAll('button')

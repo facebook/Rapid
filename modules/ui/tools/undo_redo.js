@@ -18,7 +18,7 @@ export function uiToolUndoRedo(context) {
 
   let tool = {
     id: 'undo_redo',
-    label: l10n.tHtml('toolbar.undo_redo')
+    label: l10n.t('toolbar.undo_redo')
   };
 
   const commands = [{

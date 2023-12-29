@@ -18,7 +18,7 @@ export class UiPanelLocation extends AbstractUiPanel {
     this.id = 'location';
 
     const l10n = context.systems.l10n;
-    this.label = l10n.tHtml('info_panels.location.title');
+    this.title = l10n.t('info_panels.location.title');
     this.key = l10n.t('info_panels.location.key');
 
     this._selection = d3_select(null);

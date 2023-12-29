@@ -11,7 +11,7 @@ export function uiToolSave(context) {
 
   let tool = {
     id: 'save',
-    label: l10n.tHtml('save.title')
+    label: l10n.t('save.title')
   };
 
   let key = uiCmd('⌘S');
@@ -57,7 +57,7 @@ export function uiToolSave(context) {
 
     if (_tooltip) {
       _tooltip
-        .title(l10n.tHtml(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
+        .title(l10n.t(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
         .keys([key]);
     }
 
@@ -66,7 +66,7 @@ export function uiToolSave(context) {
       .style('background', bgColor(_numChanges));
 
     _button.select('span.count')
-      .html(_numChanges);
+      .text(_numChanges);
   }
 
 
@@ -85,7 +85,7 @@ export function uiToolSave(context) {
 
     _tooltip = uiTooltip(context)
       .placement('bottom')
-      .title(l10n.tHtml('save.no_changes'))
+      .title(l10n.t('save.no_changes'))
       .keys([key])
       .scrollContainer(context.container().select('.top-toolbar'));
 
@@ -107,7 +107,7 @@ export function uiToolSave(context) {
         //         .duration(2000)
         //         .iconName('#rapid-icon-save')
         //         .iconClass('disabled')
-        //         .label(l10n.tHtml('save.no_changes'))();
+        //         .label(l10n.t('save.no_changes'))();
         // }
         // lastPointerUpType = null;
       })
@@ -120,7 +120,7 @@ export function uiToolSave(context) {
       .append('span')
       .attr('class', 'count')
       .attr('aria-hidden', 'true')
-      .html('0');
+      .text('0');
 
     updateCount();
 

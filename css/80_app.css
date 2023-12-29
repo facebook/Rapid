@@ -5248,11 +5248,9 @@ button.conflicts-button {
     font-size: 14px;
 }
 
-.keyhint-wrap {
-    background: #f6f6f6;
+.tooltip-keyhint {
     padding: 10px;
     margin: 10px -10px -10px -10px;
-    border-radius: 0 0 3px 3px;
 }
 .popover-inner .shortcut {
     font-weight: bold;
@@ -5287,13 +5285,10 @@ button.conflicts-button {
 }
 .tooltip.dark .popover-inner,
 .tooltip.dark .tooltip-heading,
-.tooltip.dark .keyhint-wrap,
 .map-pane .popover-inner,
 .map-pane .tooltip-heading,
-.map-pane .keyhint-wrap,
 .sidebar .popover-inner,
-.sidebar .tooltip-heading,
-.sidebar .keyhint-wrap {
+.sidebar .tooltip-heading {
     background: #000;
     color: #ccc;
 }

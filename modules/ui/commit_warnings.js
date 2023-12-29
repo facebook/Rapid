@@ -1,7 +1,6 @@
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
 import { uiIcon } from './icon';
-import { uiTooltip } from './tooltip';
 
 
 export function uiCommitWarnings(context) {
@@ -81,13 +80,6 @@ export function uiCommitWarnings(context) {
       buttons
         .append('strong')
         .attr('class', 'issue-message');
-
-      buttons
-        .filter(d => d.tooltip)
-        .call(uiTooltip(context)
-          .title(d => d.tooltip)
-          .placement('top')
-        );
 
       items = itemsEnter
         .merge(items);

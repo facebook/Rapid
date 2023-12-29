@@ -8,8 +8,8 @@ export function uiPanePreferences(context) {
 
   return uiPane(context, 'preferences')
     .key(l10n.t('preferences.key'))
-    .label(l10n.tHtml('preferences.title'))
-    .description(l10n.tHtml('preferences.description'))
+    .label(l10n.t('preferences.title'))
+    .description(l10n.t('preferences.description'))
     .iconName('fas-user-cog')
     .sections([
       uiSectionPrivacy(context),

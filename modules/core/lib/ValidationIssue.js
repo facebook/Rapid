@@ -50,7 +50,7 @@ export class ValidationIssue {
       const validator = this.context.systems.validator;
 
       fixes.push(new ValidationFix({
-        title: l10n.tHtml('issues.fix.ignore_issue.title'),
+        title: l10n.t('issues.fix.ignore_issue.title'),
         icon: 'rapid-icon-close',
         onClick: () => {
           validator.ignoreIssue(this.id);

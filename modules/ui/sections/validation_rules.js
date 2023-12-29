@@ -16,7 +16,7 @@ export function uiSectionValidationRules(context) {
 
   const section = uiSection(context, 'issues-rules')
     .disclosureContent(renderDisclosureContent)
-    .label(l10n.tHtml('issues.rules.title'));
+    .label(l10n.t('issues.rules.title'));
 
 
   let _ruleKeys = validator.getRuleKeys()
@@ -46,7 +46,7 @@ export function uiSectionValidationRules(context) {
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(l10n.tHtml('issues.disable_all'))
+      .text(l10n.t('issues.disable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         validator.disableRules(_ruleKeys);
@@ -56,7 +56,7 @@ export function uiSectionValidationRules(context) {
       .append('a')
       .attr('class', 'issue-rules-link')
       .attr('href', '#')
-      .html(l10n.tHtml('issues.enable_all'))
+      .text(l10n.t('issues.enable_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         validator.disableRules([]);
@@ -83,7 +83,7 @@ export function uiSectionValidationRules(context) {
     let enter = items.enter()
       .append('li')
       .call(uiTooltip(context)
-        .title(d => l10n.tHtml(`issues.${d}.tip`))
+        .title(d => l10n.t(`issues.${d}.tip`))
         .placement('top')
       );
 

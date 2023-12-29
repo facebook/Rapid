@@ -97,7 +97,7 @@ export function uiEditMenu(context) {
       let tooltip = uiTooltip(context)
         .heading(d.title)
         .title(d.tooltip())
-        .keys([d.keys[0]]);
+        .keys([d.keys[0]]);  // display the first key combo, if there are alternates
 
       _tooltips.push(tooltip);
 
@@ -111,7 +111,7 @@ export function uiEditMenu(context) {
     if (showLabels) {
       buttonsEnter.append('span')
         .attr('class', 'label')
-        .html(d => d.title);
+        .text(d => d.title);
     }
 
     // update

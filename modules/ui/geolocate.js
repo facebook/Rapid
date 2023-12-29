@@ -15,6 +15,9 @@ const GEOLOCATE_OPTIONS = {
 
 export function uiGeolocate(context) {
   const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const ui = context.systems.ui;
+
   let _uiModal = uiLoading(context).message(l10n.tHtml('geolocate.locating')).blocking(true);
   let _layer = context.scene().layers.get('map-ui');
   let _enabled = false;
@@ -40,7 +43,7 @@ export function uiGeolocate(context) {
     } else {   // stop geolocating
       _enabled = false;
       _layer.geolocationData = null;
-      context.systems.map.deferredRedraw();
+      map.deferredRedraw();
       finish();
     }
   }
@@ -52,15 +55,13 @@ export function uiGeolocate(context) {
       const coords = result.coords;
       const extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
       _layer.geolocationData = result;
-      context.systems.map.deferredRedraw();
+      map.deferredRedraw();
 
       // If `_timeoutID` has a value, this is the first successful result we've received.
       // Recenter the map and clear the timeout.
       if (_timeoutID) {
         window.clearTimeout(_timeoutID);
         _timeoutID = undefined;
-
-        const map = context.systems.map;
         map.centerZoomEase(extent.center(), Math.min(20, map.extentZoom(extent)));
       }
 
@@ -75,14 +76,14 @@ export function uiGeolocate(context) {
 
   function error() {
     if (_enabled) {    // user may have disabled it before the callback fires
-      context.systems.ui.flash
+      ui.flash
         .label(l10n.tHtml('geolocate.location_unavailable'))
         .iconName('#rapid-icon-geolocate')();
     }
 
     _enabled = false;
     _layer.geolocationData = null;
-    context.systems.map.deferredRedraw();
+    map.deferredRedraw();
     finish();
   }
 
@@ -101,7 +102,7 @@ export function uiGeolocate(context) {
   return function(selection) {
     if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) return;
 
-    const isRTL = context.systems.l10n.isRTL();
+    const isRTL = l10n.isRTL();
 
     _button = selection
       .append('button')
@@ -109,7 +110,7 @@ export function uiGeolocate(context) {
       .call(uiIcon('#rapid-icon-geolocate', 'light'))
       .call(uiTooltip(context)
         .placement(isRTL ? 'right' : 'left')
-        .title(l10n.tHtml('geolocate.title'))
+        .title(l10n.t('geolocate.title'))
       );
   };
 }

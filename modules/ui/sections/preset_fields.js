@@ -13,7 +13,7 @@ export function uiSectionPresetFields(context) {
   const presetSystem = context.systems.presets;
 
   let section = uiSection(context, 'preset-fields')
-    .label(l10n.tHtml('inspector.fields'))
+    .label(l10n.t('inspector.fields'))
     .disclosureContent(renderDisclosureContent);
 
   const dispatch = d3_dispatch('change', 'revert');

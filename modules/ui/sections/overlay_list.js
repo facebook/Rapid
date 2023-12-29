@@ -12,7 +12,7 @@ export function uiSectionOverlayList(context) {
   const imagery = context.systems.imagery;
 
   const section = uiSection(context, 'overlay-list')
-    .label(l10n.tHtml('background.overlays'))
+    .label(l10n.t('background.overlays'))
     .disclosureContent(renderDisclosureContent);
 
   let _overlayList = d3_select(null);
@@ -74,7 +74,7 @@ export function uiSectionOverlayList(context) {
 
     label
       .append('span')
-      .html(d => d.label);
+      .text(d => d.name);
 
 
     selection.selectAll('li')

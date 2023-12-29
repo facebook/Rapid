@@ -44,7 +44,7 @@ export function uiVersion(context) {
         .attr('href', 'https://github.com/facebook/Rapid/blob/main/CHANGELOG.md')
         .call(uiIcon('#maki-gift'))
         .call(uiTooltip(context)
-          .title(l10n.tHtml('version.whats_new', { version: currVersion }))
+          .title(l10n.t('version.whats_new', { version: currVersion }))
           .placement('top')
           .scrollContainer(context.container().select('.main-footer-wrap'))
         );

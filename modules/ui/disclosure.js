@@ -57,7 +57,7 @@ export function uiDisclosure(context, key) {
       .classed('expanded', _isExpanded);
 
     hideToggle.selectAll('.hide-toggle-text')
-      .html(_label());
+      .text(_label());
 
     const isRTL = l10n.isRTL();
     const icon = _isExpanded ? 'down' : isRTL ? 'backward' : 'forward';

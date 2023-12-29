@@ -46,7 +46,7 @@ export function uiFieldLocalized(context, uifield) {
     var _selection = d3_select(null);
     var _multilingual = [];
     var _buttonTip = uiTooltip(context)
-        .title(l10n.tHtml('translate.translate'))
+        .title(l10n.t('translate.translate'))
         .placement('left');
     var _wikiTitles;
     var _entityIDs = [];

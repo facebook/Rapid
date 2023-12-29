@@ -34,7 +34,7 @@ export function uiSectionValidationOptions(context) {
     optionsEnter
       .append('div')
       .attr('class', 'issues-option-title')
-      .html(d => l10n.tHtml(`issues.options.${d.key}.title`));
+      .text(d => l10n.t(`issues.options.${d.key}.title`));
 
     let valuesEnter = optionsEnter.selectAll('label')
       .data(d => {
@@ -53,7 +53,7 @@ export function uiSectionValidationOptions(context) {
 
     valuesEnter
       .append('span')
-      .html(d => l10n.tHtml(`issues.options.${d.key}.${d.value}`));
+      .text(d => l10n.t(`issues.options.${d.key}.${d.value}`));
   }
 
   function getOptions() {

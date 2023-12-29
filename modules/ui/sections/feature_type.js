@@ -18,7 +18,7 @@ export function uiSectionFeatureType(context) {
   let _tagReference;
 
   let section = uiSection(context, 'feature-type')
-    .label(l10n.tHtml('inspector.feature_type'))
+    .label(l10n.t('inspector.feature_type'))
     .disclosureContent(renderDisclosureContent);
 
 
@@ -37,7 +37,7 @@ export function uiSectionFeatureType(context) {
       .append('button')
       .attr('class', 'preset-list-button preset-reset')
       .call(uiTooltip(context)
-        .title(l10n.tHtml('inspector.back_tooltip'))
+        .title(l10n.t('inspector.back_tooltip'))
         .placement('bottom')
       );
 

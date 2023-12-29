@@ -402,14 +402,14 @@ this.didRender = true;
       .attr('tabindex', -1)
       .on('click', this._clickBugLink)
       .call(uiIcon('#rapid-icon-bug', 'bugnub'))
-      .call(uiTooltip(context).title(l10n.tHtml('report_a_bug')).placement('top'));
+      .call(uiTooltip(context).title(l10n.t('report_a_bug')).placement('top'));
 
     issueLinks
       .append('a')
       .attr('target', '_blank')
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating')
       .call(uiIcon('#rapid-icon-translate', 'light'))
-      .call(uiTooltip(context).title(l10n.tHtml('help_translate')).placement('top'));
+      .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
 
     aboutList
       .append('li')

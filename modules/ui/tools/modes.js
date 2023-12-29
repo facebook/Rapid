@@ -16,31 +16,31 @@ export function uiToolDrawModes(context) {
 
   let tool = {
     id: 'draw_modes',
-    label: l10n.tHtml('toolbar.add_feature')
+    label: l10n.t('toolbar.add_feature')
   };
 
   const modes = [
     {
       id: 'add-point',
-      title: l10n.tHtml('modes.add_point.title'),
+      title: l10n.t('modes.add_point.title'),
       button: 'point',
-      description: l10n.tHtml('modes.add_point.description'),
+      description: l10n.t('modes.add_point.description'),
       preset: presets.item('point'),
       key: '1'
     },
     {
       id: 'draw-line',
-      title: l10n.tHtml('modes.add_line.title'),
+      title: l10n.t('modes.add_line.title'),
       button: 'line',
-      description: l10n.tHtml('modes.add_line.description'),
+      description: l10n.t('modes.add_line.description'),
       preset: presets.item('line'),
       key: '2'
     },
     {
       id: 'draw-area',
-      title: l10n.tHtml('modes.add_area.title'),
+      title: l10n.t('modes.add_area.title'),
       button: 'area',
-      description: l10n.tHtml('modes.add_area.description'),
+      description: l10n.t('modes.add_area.description'),
       preset: presets.item('area'),
       key: '3'
     }
@@ -64,7 +64,7 @@ export function uiToolDrawModes(context) {
         if (!context.editable()) return;
 
         if (d.id === 'add-area') return; //Short-circuit area drawing temporarily.
-        // When drawing, ignore accidental clicks on mode buttons - #4042
+        // When drawing, ignore accidental clicks on mode buttons - iD#4042
         const currMode = context.mode?.id;
         if (/^draw/.test(currMode)) return;
 
@@ -90,7 +90,7 @@ export function uiToolDrawModes(context) {
     buttonsEnter
       .append('span')
       .attr('class', 'label')
-      .html(d => d.title);
+      .text(d => d.title);
 
     // if we are adding/removing the buttons, check if toolbar has overflowed
     if (buttons.enter().size() || buttons.exit().size()) {

@@ -47,7 +47,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this.id = 'measurement';
 
     const l10n = context.systems.l10n;
-    this.label = l10n.tHtml('info_panels.measurement.title');
+    this.title = l10n.t('info_panels.measurement.title');
     this.key = l10n.t('info_panels.measurement.key');
 
     this._selection = d3_select(null);
@@ -193,7 +193,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (geometry) {
       list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.geometry') + ':')
+        .text(l10n.t('info_panels.measurement.geometry') + ':')
         .append('span')
         .text(closed ? l10n.t('info_panels.measurement.closed_' + geometry) : l10n.t('geometry.' + geometry));
     }
@@ -201,7 +201,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (totalNodeCount) {
       list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.node_count') + ':')
+        .text(l10n.t('info_panels.measurement.node_count') + ':')
         .append('span')
         .text(totalNodeCount.toLocaleString(localeCode));
     }
@@ -209,7 +209,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (area) {
       list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.area') + ':')
+        .text(l10n.t('info_panels.measurement.area') + ':')
         .append('span')
         .text(l10n.displayArea(area, this._isImperial));
     }
@@ -217,7 +217,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (length) {
       list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.' + (closed ? 'perimeter' : 'length')) + ':')
+        .text(l10n.t('info_panels.measurement.' + (closed ? 'perimeter' : 'length')) + ':')
         .append('span')
         .text(l10n.displayLength(length, this._isImperial));
     }
@@ -225,7 +225,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (typeof distance === 'number') {
       list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.distance') + ':')
+        .text(l10n.t('info_panels.measurement.distance') + ':')
         .append('span')
         .text(l10n.displayLength(distance, this._isImperial));
     }
@@ -233,7 +233,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (location) {
       coordItem = list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.location') + ':');
+        .text(l10n.t('info_panels.measurement.location') + ':');
       coordItem.append('span')
         .text(l10n.dmsCoordinatePair(location));
       coordItem.append('span')
@@ -243,7 +243,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (centroid) {
       coordItem = list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.centroid') + ':');
+        .text(l10n.t('info_panels.measurement.centroid') + ':');
       coordItem.append('span')
         .text(l10n.dmsCoordinatePair(centroid));
       coordItem.append('span')
@@ -253,7 +253,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     if (center) {
       coordItem = list
         .append('li')
-        .html(l10n.tHtml('info_panels.measurement.center') + ':');
+        .text(l10n.t('info_panels.measurement.center') + ':');
       coordItem.append('span')
         .text(l10n.dmsCoordinatePair(center));
       coordItem.append('span')
@@ -265,7 +265,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
       const toggle = this._isImperial ? 'imperial' : 'metric';
       selection
         .append('a')
-        .html(l10n.tHtml(`info_panels.measurement.${toggle}`))
+        .text(l10n.t(`info_panels.measurement.${toggle}`))
         .attr('href', '#')
         .attr('class', 'button button-toggle-units')
         .on('click', e => {

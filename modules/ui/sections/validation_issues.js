@@ -156,7 +156,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     linkEnter
       .append('span')
       .attr('class', 'autofix-all-link-text')
-      .html(l10n.tHtml('issues.fix_all.title'));
+      .text(l10n.t('issues.fix_all.title'));
 
     linkEnter
       .append('span')

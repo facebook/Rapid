@@ -8,7 +8,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
   const imagerySystem = context.systems.imagery;
 
   const section = uiSection(context, 'background-display-options')
-    .label(l10n.tHtml('background.display_options'))
+    .label(l10n.t('background.display_options'))
     .disclosureContent(renderDisclosureContent);
 
   let _storedOpacity = storageSystem.getItem('background-opacity');
@@ -63,7 +63,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
 
     slidersEnter
       .append('h5')
-      .html(d => l10n.tHtml(`background.${d}`))
+      .text(d => l10n.t(`background.${d}`))
       .append('span')
       .attr('class', d => `display-option-value display-option-value-${d}`);
 
@@ -97,7 +97,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
       .append('a')
       .attr('class', 'display-option-resetlink')
       .attr('href', '#')
-      .html(l10n.tHtml('background.reset_all'))
+      .text(l10n.t('background.reset_all'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         for (const s of settings) {

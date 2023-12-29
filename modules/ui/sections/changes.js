@@ -23,7 +23,7 @@ export function uiSectionChanges(context) {
   let section = uiSection(context, 'changes-list')
     .label(() => {
       const summary = editor.difference().summary();
-      return l10n.t('inspector.title_count', { title: l10n.tHtml('commit.changes'), count: summary.size });
+      return l10n.t('inspector.title_count', { title: l10n.t('commit.changes'), count: summary.size });
     })
     .disclosureContent(renderDisclosureContent);
 
@@ -69,7 +69,7 @@ export function uiSectionChanges(context) {
     buttons
       .append('span')
       .attr('class', 'change-type')
-      .html(d => l10n.tHtml(`commit.${d.changeType}`) + ' ');
+      .text(d => l10n.t(`commit.${d.changeType}`) + ' ');
 
     buttons
       .append('strong')
@@ -125,7 +125,7 @@ export function uiSectionChanges(context) {
     linkEnter
       .call(uiIcon('#rapid-icon-load', 'inline'))
       .append('span')
-      .html(l10n.tHtml('commit.download_changes'));
+      .text(l10n.t('commit.download_changes'));
 
 
     function mouseover(d) {

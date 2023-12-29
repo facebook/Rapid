@@ -18,7 +18,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     this.id = 'history';
 
     const l10n = context.systems.l10n;
-    this.label = l10n.tHtml('info_panels.history.title');
+    this.title = l10n.t('info_panels.history.title');
     this.key = l10n.t('info_panels.history.key');
 
     this._selection = d3_select(null);
@@ -101,7 +101,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     selection
       .append('h4')
       .attr('class', 'history-heading')
-      .html(singular || l10n.tHtml('info_panels.selected', { n: selected.length }));
+      .text(singular || l10n.t('info_panels.selected', { n: selected.length }));
 
     if (!singular) return;
 
@@ -126,7 +126,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     if (!note || note.isNew()) {
       selection
         .append('div')
-        .html(l10n.tHtml('info_panels.history.note_no_history'));
+        .text(l10n.t('info_panels.history.note_no_history'));
       return;
     }
 
@@ -135,20 +135,20 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     list
       .append('li')
-      .html(l10n.tHtml('info_panels.history.note_comments') + ':')
+      .text(l10n.t('info_panels.history.note_comments') + ':')
       .append('span')
-      .html(note.comments.length);
+      .text(note.comments.length);
 
     if (note.comments.length) {
       list
         .append('li')
-        .html(l10n.tHtml('info_panels.history.note_created_date') + ':')
+        .text(l10n.t('info_panels.history.note_created_date') + ':')
         .append('span')
         .text(this.displayTimestamp(note.comments[0].date));
 
       list
         .append('li')
-        .html(l10n.tHtml('info_panels.history.note_created_user') + ':')
+        .text(l10n.t('info_panels.history.note_created_user') + ':')
         .call(this.renderUser, note.comments[0].user);
     }
 
@@ -160,7 +160,7 @@ export class UiPanelHistory extends AbstractUiPanel {
         .attr('href', osm.noteURL(note))
         .call(uiIcon('#rapid-icon-out-link', 'inline'))
         .append('span')
-        .html(l10n.tHtml('info_panels.history.note_link_text'));
+        .text(l10n.t('info_panels.history.note_link_text'));
     }
   }
 
@@ -178,7 +178,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     if (!entity || entity.isNew()) {
       selection
         .append('div')
-        .html(l10n.tHtml('info_panels.history.no_history'));
+        .text(l10n.t('info_panels.history.no_history'));
       return;
     }
 
@@ -209,24 +209,24 @@ export class UiPanelHistory extends AbstractUiPanel {
 
     list
       .append('li')
-      .html(l10n.tHtml('info_panels.history.version') + ':')
+      .text(l10n.t('info_panels.history.version') + ':')
       .append('span')
       .text(entity.version);
 
     list
       .append('li')
-      .html(l10n.tHtml('info_panels.history.last_edit') + ':')
+      .text(l10n.t('info_panels.history.last_edit') + ':')
       .append('span')
       .text(this.displayTimestamp(entity.timestamp));
 
     list
       .append('li')
-      .html(l10n.tHtml('info_panels.history.edited_by') + ':')
+      .text(l10n.t('info_panels.history.edited_by') + ':')
       .call(this.renderUser, entity.user);
 
     list
       .append('li')
-      .html(l10n.tHtml('info_panels.history.changeset') + ':')
+      .text(l10n.t('info_panels.history.changeset') + ':')
       .call(this.renderChangeset, entity.changeset);
   }
 
@@ -267,7 +267,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     if (!userName) {
       selection
         .append('span')
-        .html(l10n.tHtml('info_panels.history.unknown'));
+        .text(l10n.t('info_panels.history.unknown'));
       return;
     }
 
@@ -312,7 +312,7 @@ export class UiPanelHistory extends AbstractUiPanel {
     if (!changeset) {
       selection
         .append('span')
-        .html(l10n.tHtml('info_panels.history.unknown'));
+        .text(l10n.t('info_panels.history.unknown'));
       return;
     }
 

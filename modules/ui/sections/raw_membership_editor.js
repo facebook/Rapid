@@ -30,7 +30,7 @@ export function uiSectionRawMembershipEditor(context) {
             var parents = getSharedParentRelations();
             var gt = parents.length > MAX_MEMBERSHIPS ? '>' : '';
             var count = gt + parents.slice(0, MAX_MEMBERSHIPS).length;
-            return l10n.t('inspector.title_count', { title: l10n.tHtml('inspector.relations'), count: count });
+            return l10n.t('inspector.title_count', { title: l10n.t('inspector.relations'), count: count });
         })
         .disclosureContent(renderDisclosureContent);
 
@@ -233,7 +233,7 @@ export function uiSectionRawMembershipEditor(context) {
         var newRelation = {
             relation: null,
             value: l10n.t('inspector.new_relation'),
-            display: l10n.tHtml('inspector.new_relation')
+            display: l10n.t('inspector.new_relation')
         };
 
         var entityID = _entityIDs[0];
@@ -493,7 +493,7 @@ export function uiSectionRawMembershipEditor(context) {
             .call(uiIcon('#rapid-icon-plus', 'light'));
         addRelationButton
             .call(uiTooltip(context)
-              .title(l10n.tHtml('inspector.add_to_relation'))
+              .title(l10n.t('inspector.add_to_relation'))
               .placement(l10n.isRTL() ? 'left' : 'right')
              );
 
