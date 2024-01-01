@@ -104,7 +104,7 @@
     "concat-files": "^0.1.1",
     "editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
     "esbuild": "^0.19.10",
-    "esbuild-visualizer": "^0.5.1",
+    "esbuild-visualizer": "^0.6.0",
     "eslint": "^8.56.0",
     "fetch-mock": "^9.11.0",
     "gaze": "^1.1.3",
