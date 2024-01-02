@@ -97,7 +97,7 @@ export function uiEditMenu(context) {
       let tooltip = uiTooltip(context)
         .heading(d.title)
         .title(d.tooltip())
-        .keys([d.keys[0]]);  // display the first key combo, if there are alternates
+        .shortcut(d.keys[0]);  // display the first key combo, if there are alternates
 
       _tooltips.push(tooltip);
 

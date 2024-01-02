@@ -67,7 +67,7 @@ export function uiToolNotes(context) {
       .call(uiTooltip(context)
         .placement('bottom')
         .title(d => d.description)
-        .keys(d => [d.key])
+        .shortcut(d => d.key)
         .scrollContainer(context.container().select('.top-toolbar'))
       );
 

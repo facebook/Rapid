@@ -76,7 +76,7 @@ export function uiPane(context, id) {
       _paneTooltip = uiTooltip(context)
         .placement(isRTL ? 'right' : 'left')
         .title(_description)
-        .keys([_key]);
+        .shortcut(_key);
     }
 
     selection

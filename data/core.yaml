@@ -556,7 +556,7 @@ en:
     title: Redo
     tooltip: "Redo: {action}"
     nothing: Nothing to redo.
-  tooltip_keyhint: "Shortcut:"
+  tooltip_keyhint: "Key:"
   translate:
     translate: Add multilingual name
     localized_translation_label: Multilingual Name

@@ -19,7 +19,7 @@ export function uiToolSidebarToggle(context) {
       .call(uiTooltip(context)
         .placement('bottom')
         .title(l10n.t('sidebar.tooltip'))
-        .keys([ l10n.t('sidebar.key') ])
+        .shortcut(l10n.t('sidebar.key'))
         .scrollContainer(context.container().select('.top-toolbar'))
       )
       .call(uiIcon('#rapid-icon-sidebar-' + (l10n.isRTL() ? 'right' : 'left')));

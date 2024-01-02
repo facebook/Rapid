@@ -44,12 +44,10 @@ export function uiSectionMapStyleOptions(context) {
       .append('li')
       .call(uiTooltip(context)
         .title(d => l10n.t(`${name}.${d}.tooltip`))
-        .keys(d => {
-          let key = (d === 'wireframe' ? l10n.t('area_fill.wireframe.key') : null);
-          if (d === 'highlight_edits') {
-            key = l10n.t('map_data.highlight_edits.key');
-          }
-          return key ? [key] : null;
+        .shortcut(d => {
+          if (d === 'wireframe') return l10n.t('area_fill.wireframe.key');
+          if (d === 'highlight_edits') return l10n.t('map_data.highlight_edits.key');
+          return null;
         })
         .placement('top')
       );

@@ -65,7 +65,7 @@ export function uiToolUndoRedo(context) {
         }
         return str ? l10n.t(`${d.id}.tooltip`, { action: str }) : l10n.t(`${d.id}.nothing`);
       })
-      .keys(d => [d.key])
+      .shortcut(d => d.key)
       .scrollContainer(context.container().select('.top-toolbar'));
 
     // var lastPointerUpType;

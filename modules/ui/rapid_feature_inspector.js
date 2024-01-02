@@ -283,23 +283,23 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .on('click', onClick);
 
     // build tooltips
-    let title, keys;
+    let title, shortcut;
     if (d.key === 'accept') {
       if (isAddFeatureDisabled()) {
         title = l10n.t('rapid_feature_inspector.option_accept.disabled', { n: ACCEPT_FEATURES_LIMIT } );
-        keys = [];
+        shortcut = '';
       } else {
         title = l10n.t('rapid_feature_inspector.option_accept.tooltip');
-        keys = [l10n.t('rapid_feature_inspector.option_accept.key')];
+        shortcut = l10n.t('rapid_feature_inspector.option_accept.key');
       }
     } else if (d.key === 'ignore') {
       title = l10n.t('rapid_feature_inspector.option_ignore.tooltip');
-      keys = [l10n.t('rapid_feature_inspector.option_ignore.key')];
+      shortcut = l10n.t('rapid_feature_inspector.option_ignore.key');
     }
 
-    if (title && keys) {
+    if (title) {
       choiceButton = choiceButton
-        .call(uiTooltip(context).placement('bottom').title(title).keys(keys));
+        .call(uiTooltip(context).placement('bottom').title(title).shortcut(shortcut));
     }
 
     choiceButton

@@ -58,7 +58,7 @@ export function uiToolSave(context) {
     if (_tooltip) {
       _tooltip
         .title(l10n.t(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
-        .keys([key]);
+        .shortcut(key);
     }
 
     _button
@@ -86,7 +86,7 @@ export function uiToolSave(context) {
     _tooltip = uiTooltip(context)
       .placement('bottom')
       .title(l10n.t('save.no_changes'))
-      .keys([key])
+      .shortcut(key)
       .scrollContainer(context.container().select('.top-toolbar'));
 
     // var lastPointerUpType;

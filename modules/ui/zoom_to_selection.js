@@ -16,7 +16,7 @@ export function uiZoomToSelection(context) {
     let tooltip = uiTooltip(context)
       .placement(l10n.isRTL() ? 'right' : 'left')
       .title(() => isDisabled() ? l10n.t('inspector.zoom_to.no_selection') : l10n.t('inspector.zoom_to.title'))
-      .keys([shortcutKey]);
+      .shortcut(shortcutKey);
 
     let button = selection
       .append('button')

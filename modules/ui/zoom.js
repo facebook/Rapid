@@ -53,7 +53,7 @@ export function uiZoom(context) {
     let tooltipBehavior = uiTooltip(context)
       .placement(l10n.isRTL() ? 'right' : 'left')
       .title(d => d.isDisabled() ? d.disabledTitle : d.title)
-      .keys(d => [d.key]);
+      .shortcut(d => d.key);
 
     let _lastPointerUpType;
 

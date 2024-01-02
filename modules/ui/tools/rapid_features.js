@@ -66,7 +66,7 @@ export function uiToolRapidFeatures(context) {
       .call(uiTooltip(context)
         .placement('bottom')
         .title(l10n.t('shortcuts.browsing.display_options.rapid_features_data'))
-        .keys(rapidFeaturesToggleKey)
+        .shortcut(rapidFeaturesToggleKey)
       );
 
     rapidButtonEnter
