@@ -349,7 +349,7 @@ export function validationAmbiguousCrossingTags(context) {
                 const klass = (d.type === '+') ? 'add' : 'remove';
                 return `tagDiff-cell tagDiff-cell-${klass}`;
               })
-              .html(d => d.display);
+              .text(d => d.display);
           }
         });
     }

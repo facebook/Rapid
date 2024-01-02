@@ -81,7 +81,7 @@ export function validationMissingTag(context) {
         message: function() {
           const graph = editor.staging.graph;
           const entity = graph.hasEntity(this.entityIds[0]);
-          return entity ? l10n.tHtml(`issues.${messageID}.message`, {
+          return entity ? l10n.t(`issues.${messageID}.message`, {
             feature: l10n.displayLabel(entity, graph)
           }) : '';
         },
@@ -92,7 +92,7 @@ export function validationMissingTag(context) {
           const selectFixType = subtype === 'highway_classification' ? 'select_road_type' : 'select_preset';
           fixes.push(new ValidationFix({
             icon: 'rapid-icon-search',
-            title: l10n.tHtml(`issues.fix.${selectFixType}.title`),
+            title: l10n.t(`issues.fix.${selectFixType}.title`),
             onClick: function() {
               context.systems.ui.sidebar.showPresetList();
             }
@@ -115,7 +115,7 @@ export function validationMissingTag(context) {
           fixes.push(
             new ValidationFix({
               icon: 'rapid-operation-delete',
-              title: l10n.tHtml('issues.fix.delete_feature.title'),
+              title: l10n.t('issues.fix.delete_feature.title'),
               disabledReason: disabledReasonID ? l10n.t(`operations.delete.${disabledReasonID}.single`) : undefined,
               onClick: deleteOnClick
             })
@@ -131,7 +131,7 @@ export function validationMissingTag(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml(`issues.${referenceID}.reference`));
+        .text(l10n.t(`issues.${referenceID}.reference`));
     }
   };
 

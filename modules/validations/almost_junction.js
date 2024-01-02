@@ -57,12 +57,12 @@ export function validationAlmostJunction(context) {
           const graph = editor.staging.graph;
           const entity1 = graph.hasEntity(this.entityIds[0]);
           if (this.entityIds[0] === this.entityIds[2]) {
-            return entity1 ? l10n.tHtml('issues.almost_junction.self.message', {
+            return entity1 ? l10n.t('issues.almost_junction.self.message', {
               feature: l10n.displayLabel(entity1, graph)
             }) : '';
           } else {
             const entity2 = graph.hasEntity(this.entityIds[2]);
-            return (entity1 && entity2) ? l10n.tHtml('issues.almost_junction.message', {
+            return (entity1 && entity2) ? l10n.t('issues.almost_junction.message', {
               feature: l10n.displayLabel(entity1, graph),
               feature2: l10n.displayLabel(entity2, graph)
             }) : '';
@@ -93,7 +93,7 @@ export function validationAlmostJunction(context) {
 
       let fixes = [new ValidationFix({
         icon: 'rapid-icon-abutment',
-        title: l10n.tHtml('issues.fix.connect_features.title'),
+        title: l10n.t('issues.fix.connect_features.title'),
         onClick: function() {
           const annotation = l10n.t('issues.fix.connect_almost_junction.annotation');
           const [, endNodeId, crossWayId] = this.issue.entityIds;
@@ -144,7 +144,7 @@ export function validationAlmostJunction(context) {
         // node has no descriptive tags, suggest noexit fix
         fixes.push(new ValidationFix({
           icon: 'maki-barrier',
-          title: l10n.tHtml('issues.fix.tag_as_disconnected.title'),
+          title: l10n.t('issues.fix.tag_as_disconnected.title'),
           onClick: function() {
             const nodeID = this.issue.entityIds[1];
             const tags = Object.assign({}, graph.entity(nodeID).tags);
@@ -167,7 +167,7 @@ export function validationAlmostJunction(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.almost_junction.highway-highway.reference'));
+        .text(l10n.t('issues.almost_junction.highway-highway.reference'));
     }
 
     function isExtendableCandidate(node, way) {

@@ -28,7 +28,7 @@ export function validationDisconnectedWay(context) {
         const graph = editor.staging.graph;
         const entity = this.entityIds.length && graph.hasEntity(this.entityIds[0]);
         const label = entity && l10n.displayLabel(entity, graph);
-        return l10n.tHtml('issues.disconnected_way.routable.message', { count: this.entityIds.length, highway: label });
+        return l10n.t('issues.disconnected_way.routable.message', { count: this.entityIds.length, highway: label });
       },
       reference: showReference,
       entityIds: Array.from(routingIslandEntities).map(entity => entity.id),
@@ -51,13 +51,13 @@ export function validationDisconnectedWay(context) {
         }
         if (!fixes.length) {
           fixes.push(new ValidationFix({
-            title: l10n.tHtml('issues.fix.connect_feature.title')
+            title: l10n.t('issues.fix.connect_feature.title')
           }));
         }
 
         fixes.push(new ValidationFix({
           icon: 'rapid-operation-delete',
-          title: l10n.tHtml('issues.fix.delete_feature.title'),
+          title: l10n.t('issues.fix.delete_feature.title'),
           entityIds: [ singleEntity.id ],
           onClick: function() {
             const id = this.issue.entityIds[0];
@@ -69,7 +69,7 @@ export function validationDisconnectedWay(context) {
         }));
       } else {
         fixes.push(new ValidationFix({
-          title: l10n.tHtml('issues.fix.connect_features.title')
+          title: l10n.t('issues.fix.connect_features.title')
         }));
       }
 
@@ -83,7 +83,7 @@ export function validationDisconnectedWay(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.disconnected_way.routable.reference'));
+        .text(l10n.t('issues.disconnected_way.routable.reference'));
     }
 
 
@@ -178,7 +178,7 @@ export function validationDisconnectedWay(context) {
 
       return new ValidationFix({
         icon: 'rapid-operation-continue' + (useLeftContinue ? '-left' : ''),
-        title: l10n.tHtml(`issues.fix.continue_from_${whichEnd}.title`),
+        title: l10n.t(`issues.fix.continue_from_${whichEnd}.title`),
         entityIds: [vertexID],
         onClick: function() {
           const graph = editor.staging.graph;

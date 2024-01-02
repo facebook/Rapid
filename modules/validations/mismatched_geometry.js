@@ -100,7 +100,7 @@ export function validationMismatchedGeometry(context) {
             message: function() {
                 const graph = editor.staging.graph;
                 const entity = graph.hasEntity(this.entityIds[0]);
-                return entity ? l10n.tHtml('issues.tag_suggests_area.message', {
+                return entity ? l10n.t('issues.tag_suggests_area.message', {
                     feature: l10n.displayLabel(entity, 'area', true),   // true = verbose
                     tag: utilTagText({ tags: tagSuggestingArea })
                 }) : '';
@@ -115,13 +115,13 @@ export function validationMismatchedGeometry(context) {
                 var connectEndsOnClick = makeConnectEndpointsFixOnClick(entity, graph);
 
                 fixes.push(new ValidationFix({
-                    title: l10n.tHtml('issues.fix.connect_endpoints.title'),
+                    title: l10n.t('issues.fix.connect_endpoints.title'),
                     onClick: connectEndsOnClick
                 }));
 
                 fixes.push(new ValidationFix({
                     icon: 'rapid-operation-delete',
-                    title: l10n.tHtml('issues.fix.remove_tag.title'),
+                    title: l10n.t('issues.fix.remove_tag.title'),
                     onClick: function() {
                         const entityID = this.issue.entityIds[0];
                         const graph = editor.staging.graph;
@@ -149,7 +149,7 @@ export function validationMismatchedGeometry(context) {
                 .enter()
                 .append('div')
                 .attr('class', 'issue-reference')
-                .html(l10n.tHtml('issues.tag_suggests_area.reference'));
+                .text(l10n.t('issues.tag_suggests_area.reference'));
         }
     }
 
@@ -175,7 +175,7 @@ export function validationMismatchedGeometry(context) {
                 message: function() {
                     const graph = editor.staging.graph;
                     const entity = graph.hasEntity(this.entityIds[0]);
-                    return entity ? l10n.tHtml('issues.vertex_as_point.message', {
+                    return entity ? l10n.t('issues.vertex_as_point.message', {
                         feature: l10n.displayLabel(entity, 'vertex', true /* verbose */)
                     }) : '';
                 },
@@ -185,7 +185,7 @@ export function validationMismatchedGeometry(context) {
                         .enter()
                         .append('div')
                         .attr('class', 'issue-reference')
-                        .html(l10n.tHtml('issues.vertex_as_point.reference'));
+                        .text(l10n.t('issues.vertex_as_point.reference'));
                 },
                 entityIds: [entity.id]
             });
@@ -199,7 +199,7 @@ export function validationMismatchedGeometry(context) {
                 message: function() {
                     const graph = editor.staging.graph;
                     const entity = graph.hasEntity(this.entityIds[0]);
-                    return entity ? l10n.tHtml('issues.point_as_vertex.message', {
+                    return entity ? l10n.t('issues.point_as_vertex.message', {
                         feature: l10n.displayLabel(entity, 'point', true /* verbose */)
                     }) : '';
                 },
@@ -209,7 +209,7 @@ export function validationMismatchedGeometry(context) {
                         .enter()
                         .append('div')
                         .attr('class', 'issue-reference')
-                        .html(l10n.tHtml('issues.point_as_vertex.reference'));
+                        .text(l10n.t('issues.point_as_vertex.reference'));
                 },
                 entityIds: [entity.id],
                 dynamicFixes: extractPointDynamicFixes
@@ -278,7 +278,7 @@ export function validationMismatchedGeometry(context) {
             message: function() {
                 const graph = editor.staging.graph;
                 const entity = graph.hasEntity(this.entityIds[0]);
-                return entity ? l10n.tHtml('issues.' + referenceId + '.message', {
+                return entity ? l10n.t('issues.' + referenceId + '.message', {
                     feature: l10n.displayLabel(entity, targetGeom, true /* verbose */)
                 }) : '';
             },
@@ -288,7 +288,7 @@ export function validationMismatchedGeometry(context) {
                     .enter()
                     .append('div')
                     .attr('class', 'issue-reference')
-                    .html(l10n.tHtml('issues.mismatched_geometry.reference'));
+                    .text(l10n.t('issues.mismatched_geometry.reference'));
             },
             entityIds: [entity.id],
             dynamicFixes: dynamicFixes
@@ -328,7 +328,7 @@ export function validationMismatchedGeometry(context) {
       return [
         new ValidationFix({
           icon: 'rapid-icon-line',
-          title: l10n.tHtml('issues.fix.convert_to_line.title'),
+          title: l10n.t('issues.fix.convert_to_line.title'),
           onClick: convertOnClick
         })
       ];
@@ -359,7 +359,7 @@ export function validationMismatchedGeometry(context) {
       return [
         new ValidationFix({
           icon: 'rapid-operation-extract',
-          title: l10n.tHtml('issues.fix.extract_point.title'),
+          title: l10n.t('issues.fix.extract_point.title'),
           onClick: extractOnClick
         })
       ];
@@ -394,7 +394,7 @@ export function validationMismatchedGeometry(context) {
                 message: function() {
                     const graph = editor.staging.graph;
                     const entity = graph.hasEntity(this.entityIds[0]);
-                    return entity ? l10n.tHtml('issues.unclosed_multipolygon_part.message', {
+                    return entity ? l10n.t('issues.unclosed_multipolygon_part.message', {
                         feature: l10n.displayLabel(entity, graph, true /* verbose */)
                     }) : '';
                 },
@@ -416,7 +416,7 @@ export function validationMismatchedGeometry(context) {
                 .enter()
                 .append('div')
                 .attr('class', 'issue-reference')
-                .html(l10n.tHtml('issues.unclosed_multipolygon_part.reference'));
+                .text(l10n.t('issues.unclosed_multipolygon_part.reference'));
         }
     }
 

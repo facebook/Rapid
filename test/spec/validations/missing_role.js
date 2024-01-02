@@ -4,7 +4,6 @@ describe('validationMissingRole', () => {
     constructor() {}
     displayLabel(entity)  { return entity.id; }
     t(id)                 { return id; }
-    tHtml(id)             { return id; }
   }
 
   class MockContext {

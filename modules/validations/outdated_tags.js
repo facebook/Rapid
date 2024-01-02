@@ -160,7 +160,7 @@ export function validationOutdatedTags(context) {
       dynamicFixes: () => {
         let fixes = [
           new ValidationFix({
-            title: l10n.tHtml('issues.fix.upgrade_tags.title'),
+            title: l10n.t('issues.fix.upgrade_tags.title'),
             onClick: () => {
               editor.perform(actionDoTagUpgrade);
               editor.commit({
@@ -175,7 +175,7 @@ export function validationOutdatedTags(context) {
         if (item) {
           fixes.push(
             new ValidationFix({
-              title: l10n.tHtml('issues.fix.tag_as_not.title', { name: item.displayName }),
+              title: l10n.t('issues.fix.tag_as_not.title', { name: item.displayName }),
               onClick: () => {
                 editor.perform(actionAddNotTag);
                 editor.commit({
@@ -239,11 +239,11 @@ export function validationOutdatedTags(context) {
       const currEntity = graph.hasEntity(entity.id);
       if (!currEntity) return '';
 
-      let messageID = `issues.outdated_tags.${prefix}message`;
+      let stringID = `issues.outdated_tags.${prefix}message`;
       if (subtype === 'noncanonical_brand' && isOnlyAddingTags) {
-        messageID += '_incomplete';
+        stringID += '_incomplete';
       }
-      return l10n.tHtml(messageID, {
+      return l10n.t(stringID, {
         feature: l10n.displayLabel(currEntity, graph, true /* verbose */)
       });
     }
@@ -257,11 +257,11 @@ export function validationOutdatedTags(context) {
       enter
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml(`issues.outdated_tags.${prefix}reference`));
+        .text(l10n.t(`issues.outdated_tags.${prefix}reference`));
 
       enter
         .append('strong')
-        .html(l10n.tHtml('issues.suggested'));
+        .text(l10n.t('issues.suggested'));
 
       enter
         .append('table')
@@ -276,7 +276,7 @@ export function validationOutdatedTags(context) {
           const klass = (d.type === '+') ? 'add' : 'remove';
           return `tagDiff-cell tagDiff-cell-${klass}`;
         })
-        .html(d => d.display);
+        .text(d => d.display);
     }
   }
 
@@ -339,7 +339,7 @@ export function validationOutdatedTags(context) {
       let currMultipolygon = graph.hasEntity(multipolygon.id);
       if (!currMultipolygon) return '';
 
-      return l10n.tHtml('issues.old_multipolygon.message',
+      return l10n.t('issues.old_multipolygon.message',
           { multipolygon: l10n.displayLabel(currMultipolygon, graph, true) }   // true = verbose
       );
     }
@@ -351,7 +351,7 @@ export function validationOutdatedTags(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.old_multipolygon.reference'));
+        .text(l10n.t('issues.old_multipolygon.reference'));
     }
   }
 

@@ -48,7 +48,7 @@ export function validationMissingRole(context) {
         const graph = editor.staging.graph;
         const member = graph.hasEntity(this.entityIds[1]);
         const relation = graph.hasEntity(this.entityIds[0]);
-        return (member && relation) ? l10n.tHtml('issues.missing_role.message', {
+        return (member && relation) ? l10n.t('issues.missing_role.message', {
           member: l10n.displayLabel(member, graph),
           relation: l10n.displayLabel(relation, graph)
         }) : '';
@@ -63,7 +63,7 @@ export function validationMissingRole(context) {
           makeAddRoleFix('outer'),
           new ValidationFix({
             icon: 'rapid-operation-delete',
-            title: l10n.tHtml('issues.fix.remove_from_relation.title'),
+            title: l10n.t('issues.fix.remove_from_relation.title'),
             onClick: () => {
               const parentID = this.issue.entityIds[0];
               editor.perform(actionDeleteMember(parentID, this.issue.data.member.index));
@@ -84,14 +84,14 @@ export function validationMissingRole(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.missing_role.multipolygon.reference'));
+        .text(l10n.t('issues.missing_role.multipolygon.reference'));
     }
   }
 
 
   function makeAddRoleFix(role) {
     return new ValidationFix({
-      title: l10n.tHtml(`issues.fix.set_as_${role}.title`),
+      title: l10n.t(`issues.fix.set_as_${role}.title`),
       onClick: () => {
         const oldMember = this.issue.data.member;
         const member = { id: this.issue.entityIds[1], type: oldMember.type, role: role };

@@ -77,7 +77,7 @@ export function validationUnsquareWay(context) {
       message: function() {
         const graph = editor.staging.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
-        return entity ? l10n.tHtml('issues.unsquare_way.message', {
+        return entity ? l10n.t('issues.unsquare_way.message', {
           feature: l10n.displayLabel(entity, graph)
         }) : '';
       },
@@ -103,7 +103,7 @@ export function validationUnsquareWay(context) {
           }),
 /*
           new ValidationFix({     // Tag as unnsquare
-            title: l10n.tHtml('issues.fix.tag_as_unsquare.title'),
+            title: l10n.t('issues.fix.tag_as_unsquare.title'),
             onClick: function() {
               const graph = editor.staging.graph;
               const entityID = this.issue.entityIds[0];
@@ -128,7 +128,7 @@ export function validationUnsquareWay(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.unsquare_way.buildings.reference'));
+        .text(l10n.t('issues.unsquare_way.buildings.reference'));
     }
   };
 

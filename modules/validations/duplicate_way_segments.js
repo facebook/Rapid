@@ -80,7 +80,7 @@ export function validationDuplicateWaySegments(context) {
         message: function() {
           const graph = editor.staging.graph;
           const entity = graph.hasEntity(this.entityIds[0]);
-          return entity ? l10n.tHtml('issues.duplicate_way_segments.message', {
+          return entity ? l10n.t('issues.duplicate_way_segments.message', {
             way: l10n.displayLabel(entity, graph)
           }) : '';
         },
@@ -91,15 +91,15 @@ export function validationDuplicateWaySegments(context) {
           return [
             new ValidationFix({
               icon: 'rapid-icon-plus',
-              title: l10n.tHtml('issues.fix.merge_points.title'),
+              title: l10n.t('issues.fix.merge_points.title'),
             }),
             new ValidationFix({
               icon: 'rapid-operation-delete',
-              title: l10n.tHtml('issues.fix.remove_way_segments.title')
+              title: l10n.t('issues.fix.remove_way_segments.title')
             }),
             new ValidationFix({
               icon: 'rapid-operation-disconnect',
-              title: l10n.tHtml('issues.fix.move_way_segments_apart.title')
+              title: l10n.t('issues.fix.move_way_segments_apart.title')
             })
           ];
         }
@@ -112,7 +112,7 @@ export function validationDuplicateWaySegments(context) {
           .enter()
           .append('div')
           .attr('class', 'issue-reference')
-          .html(l10n.t('issues.duplicate_way_segments.reference'));
+          .text(l10n.t('issues.duplicate_way_segments.reference'));
       }
     }
 

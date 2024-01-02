@@ -181,7 +181,7 @@ export function validationCloseNodes(context) {
               const graph = editor.staging.graph;
               const entity = graph.hasEntity(this.entityIds[0]);
               const entity2 = graph.hasEntity(this.entityIds[1]);
-              return (entity && entity2) ? l10n.tHtml('issues.close_nodes.detached.message', {
+              return (entity && entity2) ? l10n.t('issues.close_nodes.detached.message', {
                 feature: l10n.displayLabel(entity, graph),
                 feature2: l10n.displayLabel(entity2, graph)
               }) : '';
@@ -192,11 +192,11 @@ export function validationCloseNodes(context) {
               return [
                 new ValidationFix({
                   icon: 'rapid-operation-disconnect',
-                  title: l10n.tHtml('issues.fix.move_points_apart.title')
+                  title: l10n.t('issues.fix.move_points_apart.title')
                 }),
                 new ValidationFix({
                   icon: 'rapid-icon-layers',
-                  title: l10n.tHtml('issues.fix.use_different_layers_or_levels.title')
+                  title: l10n.t('issues.fix.use_different_layers_or_levels.title')
                 })
               ];
             }
@@ -207,13 +207,12 @@ export function validationCloseNodes(context) {
       return issues;
 
       function showReference(selection) {
-        const referenceText = l10n.t('issues.close_nodes.detached.reference');
         selection.selectAll('.issue-reference')
           .data([0])
           .enter()
           .append('div')
           .attr('class', 'issue-reference')
-          .html(referenceText);
+          .text(l10n.t('issues.close_nodes.detached.reference'));
       }
     }
 
@@ -254,7 +253,7 @@ export function validationCloseNodes(context) {
         message: function() {
           const graph = editor.staging.graph;
           const entity = graph.hasEntity(this.entityIds[0]);
-          return entity ? l10n.tHtml('issues.close_nodes.message', { way: l10n.displayLabel(entity, graph) }) : '';
+          return entity ? l10n.t('issues.close_nodes.message', { way: l10n.displayLabel(entity, graph) }) : '';
         },
         reference: showReference,
         entityIds: [way.id, node1.id, node2.id],
@@ -267,7 +266,7 @@ export function validationCloseNodes(context) {
           return [
             new ValidationFix({
               icon: 'rapid-icon-plus',
-              title: l10n.tHtml('issues.fix.merge_points.title'),
+              title: l10n.t('issues.fix.merge_points.title'),
               onClick: function() {
                 const entityIds = this.issue.entityIds;
                 editor.perform(actionMergeNodes([entityIds[1], entityIds[2]]));
@@ -279,20 +278,19 @@ export function validationCloseNodes(context) {
             }),
             new ValidationFix({
               icon: 'rapid-operation-disconnect',
-              title: l10n.tHtml('issues.fix.move_points_apart.title')
+              title: l10n.t('issues.fix.move_points_apart.title')
             })
           ];
         }
       });
 
       function showReference(selection) {
-        const referenceText = l10n.t('issues.close_nodes.reference');
         selection.selectAll('.issue-reference')
           .data([0])
           .enter()
           .append('div')
           .attr('class', 'issue-reference')
-          .html(referenceText);
+          .text(l10n.t('issues.close_nodes.reference'));
       }
     }
 

@@ -61,7 +61,7 @@ export function validationSuspiciousName(context) {
         if (!entity) return '';
         const preset = presets.match(entity, graph);
         const langName = langCode && l10n.languageName(langCode);
-        return l10n.tHtml('issues.generic_name.message' + (langName ? '_language' : ''),
+        return l10n.t('issues.generic_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: genericName, language: langName }
         );
       },
@@ -72,7 +72,7 @@ export function validationSuspiciousName(context) {
         return [
           new ValidationFix({
             icon: 'rapid-operation-delete',
-            title: l10n.tHtml('issues.fix.remove_the_name.title'),
+            title: l10n.t('issues.fix.remove_the_name.title'),
             onClick: function() {
               const graph = editor.staging.graph;
               const entityID = this.issue.entityIds[0];
@@ -96,7 +96,7 @@ export function validationSuspiciousName(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.generic_name.reference'));
+        .text(l10n.t('issues.generic_name.reference'));
     }
   }
 
@@ -111,7 +111,7 @@ export function validationSuspiciousName(context) {
         if (!entity) return '';
         const preset = presets.match(entity, graph);
         const langName = langCode && l10n.languageName(langCode);
-        return l10n.tHtml('issues.incorrect_name.message' + (langName ? '_language' : ''),
+        return l10n.t('issues.incorrect_name.message' + (langName ? '_language' : ''),
           { feature: preset.name(), name: incorrectName, language: langName }
         );
       },
@@ -122,7 +122,7 @@ export function validationSuspiciousName(context) {
         return [
           new ValidationFix({
             icon: 'rapid-operation-delete',
-            title: l10n.tHtml('issues.fix.remove_the_name.title'),
+            title: l10n.t('issues.fix.remove_the_name.title'),
             onClick: function() {
               const graph = editor.staging.graph;
               const entityID = this.issue.entityIds[0];
@@ -146,7 +146,7 @@ export function validationSuspiciousName(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.generic_name.reference'));
+        .text(l10n.t('issues.generic_name.reference'));
     }
   }
 

@@ -493,7 +493,7 @@ export function validationCrossingWays(context) {
         const graph = editor.staging.graph;
         const entity1 = graph.hasEntity(this.entityIds[0]);
         const entity2 = graph.hasEntity(this.entityIds[1]);
-        return (entity1 && entity2) ? l10n.tHtml('issues.crossing_ways.message', {
+        return (entity1 && entity2) ? l10n.t('issues.crossing_ways.message', {
           feature: l10n.displayLabel(entity1, graph),
           feature2: l10n.displayLabel(entity2, graph)
         }) : '';
@@ -531,7 +531,7 @@ export function validationCrossingWays(context) {
         if (isCrossingIndoors) {
           fixes.push(new ValidationFix({
             icon: 'rapid-icon-layers',
-            title: l10n.tHtml('issues.fix.use_different_levels.title')
+            title: l10n.t('issues.fix.use_different_levels.title')
           }));
 
         } else if (isCrossingTunnels || isCrossingBridges || type1 === 'building' || type2 === 'building')  {
@@ -557,7 +557,7 @@ export function validationCrossingWays(context) {
         // repositioning the features is always an option
         fixes.push(new ValidationFix({
           icon: 'rapid-operation-move',
-          title: l10n.tHtml('issues.fix.reposition_features.title')
+          title: l10n.t('issues.fix.reposition_features.title')
         }));
 
         return fixes;
@@ -570,7 +570,7 @@ export function validationCrossingWays(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml(`issues.crossing_ways.${crossingTypeID}.reference`));
+        .text(l10n.t(`issues.crossing_ways.${crossingTypeID}.reference`));
     }
   }
 
@@ -585,7 +585,7 @@ export function validationCrossingWays(context) {
   function makeAddBridgeOrTunnelFix(titleID, iconName, bridgeOrTunnel) {
     return new ValidationFix({
       icon: iconName,
-      title: l10n.tHtml(`issues.fix.${titleID}.title`),
+      title: l10n.t(`issues.fix.${titleID}.title`),
       onClick: function() {
         if (context.mode?.id !== 'select-osm') return;
 
@@ -854,7 +854,7 @@ export function validationCrossingWays(context) {
 
     return new ValidationFix({
       icon: iconID,
-      title: l10n.tHtml(`issues.fix.${titleID}.title`),
+      title: l10n.t(`issues.fix.${titleID}.title`),
       onClick: function() {
         const loc = this.issue.loc;
         const edges = this.issue.data.edges;
@@ -880,7 +880,7 @@ export function validationCrossingWays(context) {
   function makeChangeLayerFix(higherOrLower) {
     return new ValidationFix({
       icon: 'rapid-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
-      title: l10n.tHtml(`issues.fix.tag_this_as_${higherOrLower}.title`),
+      title: l10n.t(`issues.fix.tag_this_as_${higherOrLower}.title`),
       onClick: function() {
         if (context.mode?.id !== 'select-osm') return;
 

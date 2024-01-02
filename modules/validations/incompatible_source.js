@@ -43,7 +43,7 @@ export function validationIncompatibleSource(context) {
           message: () => {
             const graph = editor.staging.graph;
             const entity = graph.hasEntity(entityID);
-            return entity ? l10n.tHtml('issues.incompatible_source.feature.message', {
+            return entity ? l10n.t('issues.incompatible_source.feature.message', {
               feature: l10n.displayLabel(entity, graph, true),  // true = verbose
               value: source
             }) : '';
@@ -53,7 +53,7 @@ export function validationIncompatibleSource(context) {
           hash: source,
           dynamicFixes: () => {
             return [
-              new ValidationFix({ title: l10n.tHtml('issues.fix.remove_proprietary_data.title') })
+              new ValidationFix({ title: l10n.t('issues.fix.remove_proprietary_data.title') })
             ];
           }
         });
@@ -68,7 +68,7 @@ export function validationIncompatibleSource(context) {
             .enter()
             .append('div')
             .attr('class', 'issue-reference')
-            .html(l10n.tHtml(`issues.incompatible_source.reference.${id}`));
+            .text(l10n.t(`issues.incompatible_source.reference.${id}`));
         };
       }
     };

@@ -131,7 +131,7 @@ export function validationImpossibleOneway(context) {
         message: function() {
           const graph = editor.staging.graph;
           const entity = graph.hasEntity(this.entityIds[0]);
-          return entity ? l10n.tHtml(`issues.impossible_oneway.${messageID}.message`, {
+          return entity ? l10n.t(`issues.impossible_oneway.${messageID}.message`, {
             feature: l10n.displayLabel(entity, graph)
           }) : '';
         },
@@ -143,7 +143,7 @@ export function validationImpossibleOneway(context) {
           if (attachedOneways.length) {
             fixes.push(new ValidationFix({
               icon: 'rapid-operation-reverse',
-              title: l10n.tHtml('issues.fix.reverse_feature.title'),
+              title: l10n.t('issues.fix.reverse_feature.title'),
               entityIds: [way.id],
               onClick: function() {
                 const entityID = this.issue.entityIds[0];
@@ -160,7 +160,7 @@ export function validationImpossibleOneway(context) {
             const useLeftContinue = (isFirst && !isRTL) || (!isFirst && isRTL);
             fixes.push(new ValidationFix({
               icon: 'rapid-operation-continue' + (useLeftContinue ? '-left' : ''),
-              title: l10n.tHtml('issues.fix.continue_from_' + (isFirst ? 'start' : 'end') + '.title'),
+              title: l10n.t('issues.fix.continue_from_' + (isFirst ? 'start' : 'end') + '.title'),
               onClick: function() {
                 const entityID = this.issue.entityIds[0];
                 const vertexID = this.issue.entityIds[1];
@@ -183,7 +183,7 @@ export function validationImpossibleOneway(context) {
             .enter()
             .append('div')
             .attr('class', 'issue-reference')
-            .html(l10n.tHtml(`issues.impossible_oneway.${referenceID}.reference`));
+            .text(l10n.t(`issues.impossible_oneway.${referenceID}.reference`));
         };
       }
     }

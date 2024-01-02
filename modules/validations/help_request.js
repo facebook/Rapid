@@ -26,13 +26,13 @@ export function validationHelpRequest(context) {
       message: function() {
         const graph = editor.staging.graph;
         const entity = graph.hasEntity(this.entityIds[0]);
-        return entity ? l10n.tHtml('issues.fixme_tag.message', {
+        return entity ? l10n.t('issues.fixme_tag.message', {
           feature: l10n.displayLabel(entity, graph, true)    // true = verbose
         }) : '';
       },
       dynamicFixes: () => {
         return [
-          new ValidationFix({ title: l10n.tHtml('issues.fix.address_the_concern.title') })
+          new ValidationFix({ title: l10n.t('issues.fix.address_the_concern.title') })
         ];
       },
       reference: showReference,
@@ -45,7 +45,7 @@ export function validationHelpRequest(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.fixme_tag.reference'));
+        .text(l10n.t('issues.fixme_tag.reference'));
     }
   };
 

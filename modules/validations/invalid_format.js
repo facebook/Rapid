@@ -31,7 +31,7 @@ export function validationFormatting(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.invalid_format.email.reference'));
+        .text(l10n.t('issues.invalid_format.email.reference'));
     }
 
     /*
@@ -41,7 +41,7 @@ export function validationFormatting(context) {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.invalid_format.website.reference'));
+        .text(l10n.t('issues.invalid_format.website.reference'));
     }
 
     if (entity.tags.website) {
@@ -59,7 +59,7 @@ export function validationFormatting(context) {
           message: function() {
             const graph = editor.staging.graph;
             const entity = graph.hasEntity(this.entityIds[0]);
-            return entity ? l10n.tHtml('issues.invalid_format.website.message' + this.data,
+            return entity ? l10n.t('issues.invalid_format.website.message' + this.data,
               { feature: l10n.displayLabel(entity, graph), site: websites.join(', ') }) : '';
           },
           reference: showReferenceWebsite,
@@ -86,8 +86,8 @@ export function validationFormatting(context) {
           message: function() {
             const graph = editor.staging.graph;
             const entity = graph.hasEntity(this.entityIds[0]);
-            return entity ? l10n.tHtml('issues.invalid_format.email.message' + this.data,
-                { feature: l10n.displayLabel(entity, graph), email: emails.join(', ') }) : '';
+            return entity ? l10n.t('issues.invalid_format.email.message' + this.data,
+              { feature: l10n.displayLabel(entity, graph), email: emails.join(', ') }) : '';
           },
           reference: showReferenceEmail,
           entityIds: [entity.id],

@@ -52,7 +52,7 @@ export function validationPrivateData(context) {
         return [
           new ValidationFix({
             icon: 'rapid-operation-delete',
-            title: l10n.tHtml(`issues.fix.${fixID}.title`),
+            title: l10n.t(`issues.fix.${fixID}.title`),
             onClick: () => {
               editor.perform(doUpgrade);
               editor.commit({
@@ -88,7 +88,7 @@ export function validationPrivateData(context) {
       const currEntity = graph.hasEntity(this.entityIds[0]);
       if (!currEntity) return '';
 
-      return l10n.tHtml('issues.private_data.contact.message',
+      return l10n.t('issues.private_data.contact.message',
         { feature: l10n.displayLabel(currEntity, graph) }
       );
     }
@@ -102,11 +102,11 @@ export function validationPrivateData(context) {
       enter
         .append('div')
         .attr('class', 'issue-reference')
-        .html(l10n.tHtml('issues.private_data.reference'));
+        .text(l10n.t('issues.private_data.reference'));
 
       enter
         .append('strong')
-        .html(l10n.tHtml('issues.suggested'));
+        .text(l10n.t('issues.suggested'));
 
       enter
         .append('table')
@@ -121,7 +121,7 @@ export function validationPrivateData(context) {
           const klass = d.type === '+' ? 'add' : 'remove';
           return `tagDiff-cell tagDiff-cell-${klass}`;
         })
-        .html(d => d.display);
+        .text(d => d.display);
     }
   };
 
