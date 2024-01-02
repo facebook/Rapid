@@ -20,8 +20,6 @@ export function uiMap3dViewer(context) {
   function render(selection) {
     let wrap = d3_select(null);
     let _isHidden = !urlhash.getParam('map3d'); // depends on URL hash
-    // let _isHidden = true; // start as hidden
-
 
     function redraw() {
       if (_isHidden) return;
@@ -224,10 +222,9 @@ export function uiMap3dViewer(context) {
 
 
     function toggle(d3_event) {
-      if (!d3_event?.preventDefault) return;
       if (d3_event) d3_event.preventDefault();
 
-      _isHidden = urlhash.getParam('map3d');
+      _isHidden = !_isHidden; // update the value of _isHidden
 
       context
         .container()
@@ -277,7 +274,6 @@ export function uiMap3dViewer(context) {
     map.on('draw', () => redraw());
     map.on('move', () => redraw());
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
-    urlhash.on('hashchange', toggle);
 
     redraw();
   }
