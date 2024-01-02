@@ -36,6 +36,29 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.2.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.2)
+#### 2024-Jan-02
+
+#### :sparkles: Usability & Accessibility
+* [#1259] Add custom icons for marked crossing presets
+* [#1269] Restore `surface` main field for crossing presets
+
+#### :bug: Bugfixes:
+* [#1270] Don't suggest removing crossing marked as standalone node
+* [#1271] Run `actionSyncCrossingTags` after creating a crossing junction
+* [#1272] Fix key shortcut display issues in tooltips, also fix issue where '+' key shortcut to zoom in was not working
+* [#1273], [#1282] Fix 3D map toggle checkbox
+
+[#1259]: https://github.com/facebook/Rapid/issues/1259
+[#1269]: https://github.com/facebook/Rapid/issues/1269
+[#1270]: https://github.com/facebook/Rapid/issues/1270
+[#1271]: https://github.com/facebook/Rapid/issues/1271
+[#1272]: https://github.com/facebook/Rapid/issues/1272
+[#1273]: https://github.com/facebook/Rapid/issues/1273
+[#1282]: https://github.com/facebook/Rapid/issues/1282
+
+
+
 # [2.2.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.1)
 #### 2023-Dec-22
 
