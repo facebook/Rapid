@@ -3,6 +3,7 @@ import { ImproveOsmService } from './ImproveOsmService';
 import { KartaviewService } from './KartaviewService';
 import { KeepRightService } from './KeepRightService';
 import { MapillaryService } from './MapillaryService';
+import { MapRouletteService } from './MapRouletteService';
 import { MapWithAIService } from './MapWithAIService';
 import { NominatimService } from './NominatimService';
 import { NsiService } from './NsiService';
@@ -21,6 +22,7 @@ export {
   KartaviewService,
   KeepRightService,
   MapillaryService,
+  MapRouletteService,
   MapWithAIService,
   NominatimService,
   NsiService,
@@ -44,6 +46,7 @@ services.available.set('improveOSM', ImproveOsmService);
 services.available.set('kartaview', KartaviewService);
 services.available.set('keepRight', KeepRightService);
 services.available.set('mapillary', MapillaryService);
+services.available.set('maproulette', MapRouletteService);
 services.available.set('mapwithai', MapWithAIService);
 services.available.set('nominatim', NominatimService);
 services.available.set('nsi', NsiService);

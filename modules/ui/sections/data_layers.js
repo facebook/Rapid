@@ -122,7 +122,7 @@ export function uiSectionDataLayers(context) {
 
 
   function drawQAItems(selection) {
-    const qaKeys = ['keepRight', 'improveOSM', 'osmose'];
+    const qaKeys = ['maproulette', 'keepRight', 'improveOSM', 'osmose'];
     const qaLayers = qaKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
 
     let ul = selection
@@ -162,7 +162,17 @@ export function uiSectionDataLayers(context) {
     labelEnter
       .append('span')
       .html(d => l10n.tHtml(`map_data.layers.${d.id}.title`));
+    
+    let mapRouletteChallengeSelector = liEnter
+      .filter(d => d.id === 'maproulette')
+      .append('div')
+      .attr('class', 'indented');
 
+    mapRouletteChallengeSelector
+      .append('input')
+      .attr('type', 'text')
+      .on('keyup', (d3_event, d) => { context.services.maproulette.setChallengeId(d3_event.currentTarget.value); toggleLayer(d.id); toggleLayer(d.id); } );
+      
     // Update
     li
       .merge(liEnter)
