@@ -56,13 +56,13 @@ export function actionSyncCrossingTags(entityID) {
 
 
   /**
-   * _isCrossingWay
+   * _isHighwayCrossingWay
    * Is the way tagged with something that would indicate that it is a crossing,
    *   for example `highway=footway`+`footway=crossing` ?
    * @param   {Object}   tags - tags to check
    * @return  {boolean}  `true` if the way is tagged as a crossing
    */
-  function _isCrossingWay(tags) {
+  function _isHighwayCrossingWay(tags) {
     for (const k of pathVals) {
       if (tags.highway === k && tags[k] === 'crossing') {
         return true;
@@ -73,13 +73,13 @@ export function actionSyncCrossingTags(entityID) {
 
 
   /**
-   * _isCrossable
-   * Is the way tagged with something that can have crossings along it?
+   * _isCrossableWay
+   * Is the way tagged with something that can have crossing nodes along it?
    * @param   {Object}   tags - tags to check
    * @return  {boolean}  `true` if the way is tagged as a crossing
    */
-  function _isCrossable(tags) {
-    return roadVals.has(tags.highway) || pathVals.has(tags.highway);
+  function _isCrossableWay(tags) {
+    return roadVals.has(tags.highway) || pathVals.has(tags.highway) || !!tags.railway || !!tags.crossing;
   }
 
 
@@ -125,14 +125,12 @@ export function actionSyncCrossingTags(entityID) {
 
     // These are the two conditions where we want to attempt syncing the parent crossing tags to child nodes:
     // 1. Is the parent actually a crossing  (e.g. `highway=footway`+`footway=crossing`)
-    const isCrossingWay = _isCrossingWay(parentTags);
-    // 2. Some kind of way that shouldn't have crossings on it. (e.g. tagged as a stream or barrier or something),
-    const isNotCrossable = !_isCrossable(parentTags);
+    const isCrossingWay = _isHighwayCrossingWay(parentTags);
+    // 2. Some kind of way that shouldn't have crossing tags on it. (e.g. tagged as a stream or barrier or something)
+    const isNotCrossable = !_isCrossableWay(parentTags);
 
-    if (isNotCrossable) {    // most crossing tags should be removed.
+    if (isNotCrossable) {    // crossing tags should be removed
       for (const k of crossingKeys) {
-        // Watch out, it could be a `railway=crossing` or something, so `crossing` tag can remain.
-        if (k === 'crossing') continue;
         delete parentTags[k];
       }
     }
@@ -176,8 +174,8 @@ export function actionSyncCrossingTags(entityID) {
         let isCandidate = true;
         for (const other of graph.parentWays(node)) {
           if (other.id === parent.id) continue;  // ignore self
-          if (_isCrossable(other.tags)) {  // other way can have crossing tags
-            isCandidate = false;           // so dont touch them
+          if (_isCrossableWay(other.tags)) {  // other way can have crossing tags
+            isCandidate = false;              // so dont touch them
             break;
           }
         }
@@ -236,17 +234,19 @@ export function actionSyncCrossingTags(entityID) {
    * @return  {Graph}  The modified output Graph
    */
   function syncChildToParents(child, graph) {
+    const parentWays = graph.parentWays(child);
+
     let childTags = Object.assign({}, child.tags);  // copy
     childTags = cleanCrossingTags(childTags);
 
-    // Is the child vertex tagged with something like `highway=crossing` or `crossing:markings=*?
-    const isCrossingNode = _isCrossingNode(childTags);
+    // Is the child vertex
+    // 1. tagged with something like `highway=crossing` or `crossing:markings=*?  and
+    // 2. has a parent that can have crossing nodes along it
+    const isCrossingNode = _isCrossingNode(childTags) && parentWays.some(way => _isCrossableWay(way.tags));
 
-    // If child vertex isn't a road-path crossing anymore, most of these tags should be removed.
+    // If child vertex isn't a crossing anymore, most of these tags should be removed.
     if (!isCrossingNode) {
       for (const k of crossingKeys) {
-        // Watch out, it could be a `railway=crossing` or something, so `crossing` tag can remain.
-        if (k === 'crossing') continue;
         delete childTags[k];
       }
     }
@@ -265,8 +265,8 @@ export function actionSyncCrossingTags(entityID) {
 
     // Gather parent ways that are already tagged as crossings..
     const crossingWays = new Set();
-    for (const way of graph.parentWays(child)) {
-      if (_isCrossingWay(way.tags)) {
+    for (const way of parentWays) {
+      if (_isHighwayCrossingWay(way.tags)) {
         crossingWays.add(way);
       }
     }
