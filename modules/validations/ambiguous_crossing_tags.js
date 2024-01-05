@@ -115,13 +115,16 @@ export function validationAmbiguousCrossingTags(context) {
     // If we haven't already, create the 'not a crossing' choice to remove the crossing tags completely.
     addChoice(inferCrossingType({/* no tags */}));
 
-    // If the updates are only adding tags, this is considered an "upgrade" not a "conflict"
-    let isOnlyAddingTags = true;
-    for (const update of updates.values()) {
-      if (!update.tagDiff?.length) continue;
-      if (update.tagDiff.some(d => d.type === '-')) {
-        isOnlyAddingTags = false;
-        break;
+    // If a single update, or multiple updates only adding tags, this is considered an "upgrade"..
+    // If multiple updates with tag changes, this is consideredd a "conflict"..
+    let isTagUpgrade = true;
+    if (updates.size > 1) {
+      for (const update of updates.values()) {
+        if (!update.tagDiff?.length) continue;
+        if (update.tagDiff.some(d => d.type === '-')) {
+          isTagUpgrade = false;
+          break;
+        }
       }
     }
 
@@ -134,7 +137,7 @@ export function validationAmbiguousCrossingTags(context) {
         data: {
           isParentCrossing: isParentCrossing,
           isParentChanged: isParentChanged,
-          isOnlyAddingTags: isOnlyAddingTags,
+          isTagUpgrade: isTagUpgrade,
           updates: updates,
           choices: choices
         },
@@ -210,7 +213,7 @@ export function validationAmbiguousCrossingTags(context) {
       const issue = this;
       const wayID = issue.entityIds[0];
       const choices = issue.data.choices;
-      const stringID = issue.data.isOnlyAddingTags ? 'update_type' : 'choose_type';
+      const stringID = issue.data.isTagUpgrade ? 'update_type' : 'choose_type';
       const fixes = [];
 
       for (const [type, choice] of choices) {
@@ -265,9 +268,9 @@ export function validationAmbiguousCrossingTags(context) {
       const issue = this;
       const data = issue.data;
 
-      if (data.isParentCrossing && !data.isParentChanged && data.isOnlyAddingTags) {
+      if (data.isParentCrossing && !data.isParentChanged && data.isTagUpgrade) {
         return l10n.t('issues.ambiguous_crossing.message.candidate');
-      } else if (data.isOnlyAddingTags) {
+      } else if (data.isTagUpgrade) {
         return l10n.t('issues.ambiguous_crossing.message.update');
       } else {
         return l10n.t('issues.ambiguous_crossing.message.conflict');

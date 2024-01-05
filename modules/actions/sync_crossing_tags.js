@@ -387,7 +387,8 @@ export function actionSyncCrossingTags(entityID) {
       const modernSignaled = (signals && signals !== 'no');
       if (
         (legacyMarked && !modernMarked) || (!legacyMarked && modernMarked) ||
-        (legacySignaled && !modernSignaled) || (!legacySignaled && modernSignaled)
+        (legacySignaled && !modernSignaled) || (!legacySignaled && modernSignaled) ||
+        (crossing === 'yes' && markings)  // replace 'yes' with something better - Rapid#1284
       ) {
         crossing = null;
         delete tags.crossing;
