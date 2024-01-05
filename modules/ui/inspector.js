@@ -140,9 +140,9 @@ export function uiInspector(context) {
       presetList.selected(selected);
     }
 
-    // render and autofocus only if the feature is new.
+    // render preset list, focus on input field in some situations
     presetPane
-      .call(presetList.autofocus(_newFeature));
+      .call(presetList.autofocus(_newFeature || animate));
   };
 
 
