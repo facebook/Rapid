@@ -88,7 +88,8 @@ export function validationImpossibleOneway(context) {
 
       const node = graph.hasEntity(nodeID);
 
-      // ignore if this node or its tile are unloaded
+      // Bail out if map not fully loaded here - we won't know all the node's parentWays.
+      // Don't worry, as more map tiles are loaded, we'll have additional chances to validate it.
       if (!node || !osm.isDataLoaded(node.loc)) return [];
 
       if (isConnectedViaOtherTypes(way, node)) return [];

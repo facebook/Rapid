@@ -65,6 +65,11 @@ export function validationOutdatedTags(context) {
       if (entity.type === 'way') {
         return [];
       } else if (entity.type === 'node') {
+        // Bail out if map not fully loaded here - we won't know all the node's parentWays.
+        // Don't worry, as more map tiles are loaded, we'll have additional chances to validate it.
+        const osm = context.services.osm;
+        if (osm && !osm.isDataLoaded(entity.loc)) return [];
+
         const parents = graph.parentWays(entity);
         const hasParentCrossing = parents.some(parent => _isCrossingWay(parent.tags));
         if (hasParentCrossing) return [];

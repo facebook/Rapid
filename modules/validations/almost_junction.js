@@ -171,7 +171,8 @@ export function validationAlmostJunction(context) {
     }
 
     function isExtendableCandidate(node, way) {
-      // can not accurately test vertices on tiles not downloaded from osm - iD#5938
+      // Bail out if map not fully loaded here - we won't know all the node's parentWays. - iD#5938
+      // Don't worry, as more map tiles are loaded, we'll have additional chances to validate it.
       const osm = context.services.osm;
       if (osm && !osm.isDataLoaded(node.loc)) {
         return false;

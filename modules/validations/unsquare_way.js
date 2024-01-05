@@ -33,7 +33,8 @@ export function validationUnsquareWay(context) {
     const nodes = graph.childNodes(entity).slice();    // shallow copy
     if (nodes.length > nodeThreshold + 1) return [];   // +1 because closing node appears twice
 
-    // ignore if not all nodes are fully downloaded
+    // Bail out if map not fully loaded here - we won't know all the node's parentWays.
+    // Don't worry, as more map tiles are loaded, we'll have additional chances to validate it.
     const osm = context.services.osm;
     if (!osm || nodes.some(node => !osm.isDataLoaded(node.loc))) return [];
 
