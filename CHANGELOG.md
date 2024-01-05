@@ -36,6 +36,21 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.2.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.3)
+#### 2024-Jan-05
+
+#### :bug: Bugfixes:
+* [#1265] Autofocus preset search if the user clicked to open the preset pane
+* [#1283] Fix display of community index text on post save screen
+* [#1284] Marked crossing presets should avoid setting `crossing=yes` if a better tag can be used
+* [#1286] Reset scroll of sidebar content when changing selection
+
+[#1265]: https://github.com/facebook/Rapid/issues/1265
+[#1283]: https://github.com/facebook/Rapid/issues/1283
+[#1284]: https://github.com/facebook/Rapid/issues/1284
+[#1286]: https://github.com/facebook/Rapid/issues/1286
+
+
 # [2.2.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.2)
 #### 2024-Jan-02
 
@@ -56,7 +71,6 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1272]: https://github.com/facebook/Rapid/issues/1272
 [#1273]: https://github.com/facebook/Rapid/issues/1273
 [#1282]: https://github.com/facebook/Rapid/issues/1282
-
 
 
 # [2.2.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.1)
