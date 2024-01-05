@@ -18,6 +18,7 @@ export function uiPresetList(context) {
   const presets = context.systems.presets;
   const dispatch = d3_dispatch('cancel', 'choose');
 
+  let _selection = null;
   let _entityIDs = [];
   let _currLoc = null;
   let _geometries = [];
@@ -35,6 +36,8 @@ export function uiPresetList(context) {
    * @param  {d3-selection}  selection  - parent selection to render into
    */
   function presetList(selection) {
+    _selection = selection;
+
     if (!_entityIDs.length) return;
 
     const isRTL = l10n.isRTL();
@@ -579,6 +582,14 @@ export function uiPresetList(context) {
         if (matched) {
           _selectedPresetIDs.add(matched.id);
         }
+      }
+    }
+
+    // reset scroll to top
+    if (_selection) {
+      const element = _selection.selectAll('.inspector-body').node();
+      if (element) {
+        element.scroll(0, 0);
       }
     }
 

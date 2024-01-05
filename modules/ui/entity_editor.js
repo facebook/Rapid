@@ -155,6 +155,14 @@ export function uiEntityEditor(context) {
 
     _loadActivePresets(true);
 
+    // reset scroll to top
+    if (_selection) {
+      const element = _selection.selectAll('.inspector-body').node();
+      if (element) {
+        element.scroll(0, 0);
+      }
+    }
+
     return entityEditor.modified(false);
   };
 
