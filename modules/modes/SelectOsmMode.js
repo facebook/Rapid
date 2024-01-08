@@ -272,8 +272,9 @@ export class SelectOsmMode extends AbstractMode {
   nudgeSelection(delta) {
     return () => {
       const editor = this.context.systems.editor;
+      const projection = this.context.projection;
       // prevent nudging during low zoom selection
-      // if (!this.context.systems.map.withinEditableZoom()) return;
+      if (!this.context.editable()) return [];
 
       const moveOp = operationMove(this.context, this.selectedIDs);
       if (moveOp.disabled()) {
@@ -283,7 +284,8 @@ export class SelectOsmMode extends AbstractMode {
           .iconClass('operation disabled')
           .label(moveOp.tooltip)();
       } else {
-        editor.perform(actionMove(this.selectedIDs, delta, this.context.projection), moveOp.annotation());
+        editor.perform(actionMove(this.selectedIDs, delta, projection));
+        editor.commit({ annotation: moveOp.annotation(), selectedIDs: this.selectedIDs });
       }
     };
   }
