@@ -2,7 +2,9 @@ import { select as d3_select } from 'd3-selection';
 
 import { AbstractMode } from './AbstractMode';
 import { actionDeleteRelation } from '../actions/delete_relation';
+import { actionMove } from '../actions/move';
 import * as Operations from '../operations/index';
+import { operationMove } from '../operations/move';
 import { uiCmd } from '../ui/cmd';
 import { utilKeybinding, utilTotalExtent } from '../util';
 
@@ -45,6 +47,7 @@ export class SelectOsmMode extends AbstractMode {
     this._nextVertex = this._nextVertex.bind(this);
     this._previousVertex = this._previousVertex.bind(this);
     this._hover = this._hover.bind(this);
+    this.nudgeSelection = this.nudgeSelection.bind(this);
   }
 
 
@@ -138,6 +141,15 @@ export class SelectOsmMode extends AbstractMode {
       .on(['}', uiCmd('⌘]'), 'end'], this._lastVertex)
       .on(['\\', 'pause'], this._focusNextParent)
       .on('⎋', this._esc, true);
+      this.keybinding
+      .on(uiCmd('⇧←'), this.nudgeSelection([-10, 0]))
+      .on(uiCmd('⇧↑'), this.nudgeSelection([0, -10]))
+      .on(uiCmd('⇧→'), this.nudgeSelection([10, 0]))
+      .on(uiCmd('⇧↓'), this.nudgeSelection([0, 10]))
+      .on(uiCmd('⇧⌥←'), this.nudgeSelection([-100, 0]))
+      .on(uiCmd('⇧⌥↑'), this.nudgeSelection([0, -100]))
+      .on(uiCmd('⇧⌥→'), this.nudgeSelection([100, 0]))
+      .on(uiCmd('⇧⌥↓'), this.nudgeSelection([0, 100]));
 //      .on(uiCmd('⌘↑'), this._selectParent)    // tbh I dont know what these are
 //      .on(uiCmd('⌘↓'), this._selectChild)
 
@@ -251,6 +263,29 @@ export class SelectOsmMode extends AbstractMode {
     }
 
     return graph.hasEntity(this._focusedParentID);
+  }
+
+  /**
+   * nudgeSelection
+   *  use shift + arrow keys to move selected features (+ option to move even more)
+   */
+  nudgeSelection(delta) {
+    return () => {
+      const editor = this.context.systems.editor;
+      // prevent nudging during low zoom selection
+      // if (!this.context.systems.map.withinEditableZoom()) return;
+
+      const moveOp = operationMove(this.context, this.selectedIDs);
+      if (moveOp.disabled()) {
+        this.context.systems.ui.flash
+          .duration(4000)
+          .iconName('#iD-operation-' + moveOp.id)
+          .iconClass('operation disabled')
+          .label(moveOp.tooltip)();
+      } else {
+        editor.perform(actionMove(this.selectedIDs, delta, this.context.projection), moveOp.annotation());
+      }
+    };
   }
 
 
