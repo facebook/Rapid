@@ -48,8 +48,19 @@ export class MapWithAIService extends AbstractSystem {
         const datasetID = 'rapid_intro_graph';
         const graph = new Graph();
         const tree = new Tree(graph);
-        const cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
-        const ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+        const cache = {
+          inflight: {},
+          loaded: new Set(),           // Set(tileID)
+          seen: new Set(),             // Set(entityID)
+          seenFirstNodeID: new Set(),  // Set(entityID)
+          splitWays: new Map()         // Map(originalID -> Set(Entity))
+        };
+        const ds = {
+          id: datasetID,
+          graph: graph,
+          tree: tree,
+          cache: cache
+        };
         this._datasets[datasetID] = ds;
       });
   }
@@ -83,7 +94,13 @@ export class MapWithAIService extends AbstractSystem {
       }
       ds.graph = new Graph();
       ds.tree = new Tree(ds.graph);
-      ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
+      ds.cache = {
+        inflight: {},
+        loaded: new Set(),           // Set(tileID)
+        seen: new Set(),             // Set(entityID)
+        seenFirstNodeID: new Set(),  // Set(entityID)
+        splitWays: new Map()         // Map(originalID -> Set(Entity))
+      };
     }
     return Promise.resolve();
   }
@@ -114,16 +131,29 @@ export class MapWithAIService extends AbstractSystem {
 
     let ds = this._datasets[datasetID];
     let graph, tree, cache;
+
     if (ds) {
       graph = ds.graph;
       tree = ds.tree;
       cache = ds.cache;
+
     } else {
       // as tile requests arrive, setup the resources needed to hold the results
       graph = new Graph();
       tree = new Tree(graph);
-      cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
-      ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+      cache = {
+        inflight: {},
+        loaded: new Set(),           // Set(tileID)
+        seen: new Set(),             // Set(entityID)
+        seenFirstNodeID: new Set(),  // Set(entityID)
+        splitWays: new Map()         // Map(originalID -> Set(Entity))
+      };
+      ds = {
+        id: datasetID,
+        graph: graph,
+        tree: tree,
+        cache: cache
+      };
       this._datasets[datasetID] = ds;
     }
 
@@ -141,13 +171,13 @@ export class MapWithAIService extends AbstractSystem {
     }
 
     for (const tile of tiles) {
-      if (cache.loaded[tile.id] || cache.inflight[tile.id]) continue;
+      if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
 
       // exit if this tile covers a blocked region (all corners are blocked)
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
       const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
       if (tileBlocked) {
-        cache.loaded[tile.id] = true;  // don't try again
+        cache.loaded.add(tile.id);  // don't try again
         continue;
       }
 
@@ -160,9 +190,9 @@ export class MapWithAIService extends AbstractSystem {
           if (!xml) return;
           this._parseXML(ds, xml, tile, (err, result) => {
             if (err) return;
-            graph.rebase(result, [graph], true);
+            graph.rebase(result, [graph], true);   // true = force replace entities
             tree.rebase(result, true);
-            cache.loaded[tile.id] = true;
+            cache.loaded.add(tile.id);
 
             this.context.deferredRedraw();
             this.emit('loadedData');
@@ -184,6 +214,7 @@ export class MapWithAIService extends AbstractSystem {
   }
 
 
+  /* this is called to merge in the rapid_intro_graph */
   merge(datasetID, entities) {
     const ds = this._datasets[datasetID];
     if (!ds || !ds.tree || !ds.graph) return;
@@ -202,7 +233,7 @@ export class MapWithAIService extends AbstractSystem {
     const isConflated = /-conflated$/.test(dataset.id);
     const datasetID = dataset.id.replace('-conflated', '');
 
-    let qs = {
+    const qs = {
       conflate_with_osm: isConflated,
       theme: 'ml_road_vector',
       collaborator: 'fbid',
@@ -264,7 +295,7 @@ export class MapWithAIService extends AbstractSystem {
 
   _getTags(xml) {
     const elems = Array.from(xml.getElementsByTagName('tag'));
-    let tags = {};
+    const tags = {};
     for (const elem of elems) {
       const attrs = elem.attributes;
       const k = (attrs.k.value ?? '').trim();
@@ -303,8 +334,7 @@ export class MapWithAIService extends AbstractSystem {
   }
 
 
-  _parseXML(dataset, xml, tile, callback, options) {
-    options = Object.assign({ skipSeen: true }, options);
+  _parseXML(dataset, xml, tile, callback) {
     if (!xml || !xml.childNodes) {
       return callback({ message: 'No XML', status: -1 });
     }
@@ -315,9 +345,11 @@ export class MapWithAIService extends AbstractSystem {
       this._deferred.delete(handle);
       let results = [];
       for (const child of children) {
-        const result = this._parseChild(dataset, tile, child, options);
+        const result = this._parseEntity(dataset, tile, child);
         if (result) results.push(result);
       }
+
+      results = results.concat(this._connectSplitWays(dataset));
       callback(null, results);
     });
 
@@ -325,56 +357,194 @@ export class MapWithAIService extends AbstractSystem {
   }
 
 
-  _parseChild(dataset, tile, child, options) {
-    const graph = dataset.graph;
+  _parseEntity(dataset, tile, element) {
     const cache = dataset.cache;
 
-    let parser;
-    if (child.nodeName === 'node') {
-      parser = this._parseNode;
-    } else if (child.nodeName === 'way') {
-      parser = this._parseWay;
-    }
-    if (!parser) return null;
+    const type = element.nodeName;
+    if (!['node', 'way'].includes(type)) return null;
 
-    const uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
-    if (options.skipSeen) {
-      if (cache.seen[uid]) return null;  // avoid reparsing a "seen" entity
-      if (cache.origIdTile[uid]) return null;  // avoid double-parsing a split way
-      cache.seen[uid] = true;
-    }
+    let entityID, entity;
+    entityID = osmEntity.id.fromOSM(type, element.attributes.id.value);
 
-
-    // Handle non-deterministic way splitting from Roads Service. Splits are consistent within a single request.
-    // Each way "split" by the service will have an origid attribute for the original way it was derived from.
-    let origUid;
-    if (child.attributes.orig_id) {
-      origUid = osmEntity.id.fromOSM(child.nodeName, child.attributes.orig_id.value);
-      // skip if seen already
-      if (graph.hasEntity(origUid) || (cache.origIdTile[origUid] && cache.origIdTile[origUid] !== tile.id)) {
+    if (type === 'node') {
+      if (cache.seen.has(entityID)) {   // ignore nodes we've seen already
         return null;
+      } else {
+        entity = this._parseNode(element, entityID);
+        cache.seen.add(entityID);
       }
-      cache.origIdTile[origUid] = tile.id;
-    }
 
-    let entity = parser(child, uid);
+    } else if (type === 'way') {
 
-    // Ignore duplicate buildings in the MS Buildings dataset.
-    // They will appear with unique entity id, but with the same nodelist.
-    // See https://github.com/facebook/Rapid/issues/873
-    if (/^msBuildings/.test(dataset.id) && entity.type === 'way') {
-      const firstNodeID = entity.nodes[0];
-      if (cache.firstNodeIDs.has(firstNodeID)) return null;
-      cache.firstNodeIDs.add(firstNodeID);
+      //   The MapWithAI service uses a non-deterministic method for splitting ways into segments.
+      //   This means that each request we issue may split the way differently, see Rapid#1288
+      //   This is extra challenging because the user may accept some roads, store their edits to
+      //   localStorage, refresh Rapid and restore their edits, and we'd expect their restored
+      //   edits should still work with whatever ways we receive from the server.
+      //   We work around this issue in `_connectSplitWays`
+
+      // If `orig_id` is present, it means that the way was split
+      // by the server, and we will need to reassemble the pieces.
+      if (element.attributes.orig_id) {
+        const origEntityID = osmEntity.id.fromOSM(type, element.attributes.orig_id.value);
+        entity = this._parseWay(element, entityID);
+        let ways = cache.splitWays.get(origEntityID);
+        if (!ways) {
+          ways = new Set();
+          cache.splitWays.set(origEntityID, ways);
+        }
+        ways.add(entity);
+        return null;   // bail out, `_connectSplitWays` will handle this instead
+
+      } else {  // a normal unsplit way
+        if (cache.seen.has(entityID)) {   // ignore ways we've seen already
+          return null;
+        } else {
+          entity = this._parseWay(element, entityID);
+          cache.seen.add(entityID);
+
+          // Ignore duplicate buildings in the MS Buildings dataset.
+          // They will appear with unique entity id, but with the same nodelist, see Rapid#873
+          if (/^msBuildings/.test(dataset.id)) {
+            const firstNodeID = entity.nodes[0];
+            if (cache.seenFirstNodeID.has(firstNodeID)) {
+              return null;
+            }
+            cache.seenFirstNodeID.add(firstNodeID);
+          }
+
+        }
+      }
+
+    } else {
+      return null;
     }
 
     const metadata = {
-      __fbid__: child.attributes.id.value,
-      __origid__: origUid,
+      __fbid__: entityID,
       __service__: 'mapwithai',
       __datasetid__: dataset.id
     };
+
     return Object.assign(entity, metadata);
   }
+
+
+  /**
+   * _connectSplitWays
+   * Call this sometimes to reassemble ways that were split by the server.
+   */
+  _connectSplitWays(dataset) {
+    const graph = dataset.graph;
+    const cache = dataset.cache;
+    const results = [];
+
+    for (const [origEntityID, ways] of cache.splitWays) {
+      let survivor = graph.hasEntity(origEntityID);   // if we've done this before, the graph will have it
+
+      // Check each way that shares this `origEntityID`.
+      // Pick one to be the "survivor" (it doesn't matter which one).
+      // Merge the nodes into the survivor (this will bump internal version `v`, so it gets redrawn)
+      //
+      // some implementation notes:
+      // 1. `actionJoin` is similar to this, but does more than we need and uses `osmJoinWays`,
+      // 2. `osmJoinWays` could almost do this, but it only can join head-tail, it can't
+      //  deal with situations where ways partially overlap or reverse, which we get from this server.
+      //  see examples below
+
+      for (const candidate of ways) {
+        if (!survivor || !survivor.nodes.length) {   // first time, just pick first way we see.
+          survivor = candidate.update({ id: origEntityID });  // but use the original (stable) id
+          ways.delete(candidate);
+          continue;
+        }
+
+        // We will attempt to merge the `candidate.nodes` into the `survivor.nodes` somewhere.
+        // Here are some situations we account for (candidate can be forward or reverse):
+        // survivor.nodes = [C, D, E, F, G, H, J, K]
+        // candidate.nodes = [G, F, E, D], indexes = [4, 3, 2, 1]      (candidate aleady contained)
+        // candidate.nodes = [A, B, C, D], indexes = [-1, -1, 0, 1]    (prepend at beginning)
+        // candidate.nodes = [J, I, H, G], indexes = [6, -1, 5, 4]     (splice into middle)
+        // candidate.nodes = [M, L, K, J], indexes = [-1, -1, 7, 6]    (append at end)
+        // candidate.nodes = [N, O, P, Q], indexes = [-1, -1, -1, -1]  (discontinuity)
+        const indexes = [];
+        for (const nodeID of candidate.nodes) {
+         indexes.push(survivor.nodes.indexOf(nodeID));
+        }
+
+        if (indexes.every(ix => ix !== -1)) {  // candidate already contained in survivor
+          ways.delete(candidate);              // remove candidate
+          continue;
+
+        } else if (indexes.every(ix => ix === -1)) {  // discontinuity, keep candidate around
+          continue;                                   // in case we load more map and can connect it
+        }
+
+        // We consider the survivor to be going in the forward direction.
+        // We want to make sure the candidate also matches this direction.
+        // To determine direction - do the real (not `-1`) indexes go up or down?
+        let isReverse = false;
+        let prev;
+        for (const curr of indexes) {
+          if (curr === -1) continue;  // ignore these
+
+          if (prev === undefined) {
+            prev = curr;
+          } else {
+            isReverse = curr < prev;
+            break;
+          }
+        }
+
+        if (prev === 0 && indexes[0] === 0) {  // didn't go above 0, and indexes looks like [0, -1, -1, …]
+          isReverse = true;
+        }
+
+        if (isReverse) {
+          candidate.nodes.reverse();  // ok to reverse it, candidate isn't an actual way in the graph
+          indexes.reverse();
+        }
+
+        // Take nodes from either survivor or candidate
+        const nodeIDs = [];
+        let s = 0;  // s = survivor index
+
+        for (let c = 0; c < indexes.length; c++) {   // c = candidate index
+          const i = indexes[c];
+          if (i === -1) {
+            nodeIDs.push(candidate.nodes[c]);  // take next candidate
+          } else {
+            while (s <= i) {
+              nodeIDs.push(survivor.nodes[s]);   // take survivors up to i
+              s++;
+            }
+          }
+        }
+        while (s < survivor.nodes.length) {   // take any remaining survivors
+          nodeIDs.push(survivor.nodes[s]);
+          s++;
+        }
+
+        ways.delete(candidate);    // remove candidate
+        survivor = survivor.update({ nodes: nodeIDs });   // note, update bumps 'v' version automatically
+      }
+
+
+      // Include the survivor entity in the result.
+      // (calling code will merge it into the graph).
+      if (survivor) {
+        const metadata = {
+          __fbid__: survivor.id,
+          __service__: 'mapwithai',
+          __datasetid__: dataset.id
+        };
+        results.push(Object.assign(survivor, metadata));
+      }
+
+    }
+
+    return results;
+  }
+
 
 }

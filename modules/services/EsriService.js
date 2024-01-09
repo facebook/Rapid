@@ -73,7 +73,7 @@ export class EsriService extends AbstractSystem {
       }
       ds.graph = new Graph();
       ds.tree = new Tree(ds.graph);
-      ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
+      ds.cache = { inflight: {}, loaded: {}, seen: {} };
     }
 
     return Promise.resolve();
@@ -281,7 +281,7 @@ export class EsriService extends AbstractSystem {
     this._datasets[ds.id] = ds;
     ds.graph = new Graph();
     ds.tree = new Tree(ds.graph);
-    ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+    ds.cache = { inflight: {}, loaded: {}, seen: {} };
 
     // cleanup the `licenseInfo` field by removing styles  (not used currently)
     let license = d3_select(document.createElement('div'));
@@ -362,7 +362,7 @@ export class EsriService extends AbstractSystem {
     dataset.cache.seen[featureID] = true;
 
     const id = `${dataset.id}-${featureID}`;
-    const metadata = { __fbid__: id, __origid__: id, __service__: 'esri', __datasetid__: dataset.id };
+    const metadata = { __fbid__: id, __service__: 'esri', __datasetid__: dataset.id };
     let entities = [];
     let nodemap = new Map();
 

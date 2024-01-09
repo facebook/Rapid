@@ -55,8 +55,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const annotation = {
       type: 'rapid_accept_feature',
       description: l10n.t('rapid_feature_inspector.option_accept.annotation'),
-      id: _datum.id,
-      origid: _datum.__origid__,
+      entityID: _datum.id,
       dataUsed: dataset?.dataUsed || [datasetID]
     };
 
@@ -83,8 +82,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const annotation = {
       type: 'rapid_ignore_feature',
       description: l10n.t('rapid_feature_inspector.option_ignore.annotation'),
-      id: _datum.id,
-      origid: _datum.__origid__
+      entityID: _datum.id
     };
     editor.perform(actionNoop());
     editor.commit({ annotation: annotation });

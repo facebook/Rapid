@@ -60,7 +60,7 @@ function locationChanged(loc1, loc2) {
 
 function removeMetadata(entity) {
     delete entity.__fbid__;
-    delete entity.__origid__;
+    delete entity.__origid__;    // old
     delete entity.__service__;
     delete entity.__datasetid__;
     delete entity.tags.conn;

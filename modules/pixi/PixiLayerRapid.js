@@ -196,10 +196,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     // Filter out features that have already been accepted or ignored by the user.
     function isAcceptedOrIgnored(entity) {
-      return (
-        rapid.acceptIDs.has(entity.id) || rapid.acceptIDs.has(entity.__origid__) ||
-        rapid.ignoreIDs.has(entity.id) || rapid.ignoreIDs.has(entity.__origid__)
-      );
+      return rapid.acceptIDs.has(entity.id) || rapid.ignoreIDs.has(entity.id);
     }
 
     // Gather data
