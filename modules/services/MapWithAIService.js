@@ -482,22 +482,26 @@ export class MapWithAIService extends AbstractSystem {
 
         // We consider the survivor to be going in the forward direction.
         // We want to make sure the candidate also matches this direction.
-        // To determine direction - do the real (not `-1`) indexes go up or down?
+        // To determine direction - do the matched (not `-1`) indexes go up or down?
         let isReverse = false;
+        let onlyOneIndex = false;  // if only one matched index, we expect it at start or end
         let prev;
         for (const curr of indexes) {
-          if (curr === -1) continue;  // ignore these
+          if (curr === -1) continue;   // ignore these
 
-          if (prev === undefined) {
+          if (prev === undefined) {  // found one
+            onlyOneIndex = true;
             prev = curr;
-          } else {
+          } else {    // found two, compare them
+            onlyOneIndex = false;
             isReverse = curr < prev;
             break;
           }
         }
 
-        if (prev === 0 && indexes[0] === 0) {  // didn't go above 0, and indexes looks like [0, -1, -1, …]
-          isReverse = true;
+        if (onlyOneIndex) {   // new nodes (-1's) should go before the beginning or after the end
+          if (indexes.at(0) === 0)  isReverse = true;   // indexes look like [ 0, -1, -1, -1 ]   move -1's to beginning
+          if (indexes.at(-1) !== 0) isReverse = true;   // indexes look like [ -1, -1, -1, N ]   move -1's to end
         }
 
         if (isReverse) {
