@@ -36,6 +36,18 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.2.4](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.4)
+#### 2024-Jan-11
+
+#### :bug: Bugfixes:
+* [#1287], [#1288] Fix bug: Adding a detected road feature can cause nearby other features to vanish
+* [#1292] Fix incorrect tagging after choosing a crossing validation fix where multiple nodes exist along a way
+
+[#1287]: https://github.com/facebook/Rapid/issues/1287
+[#1288]: https://github.com/facebook/Rapid/issues/1288
+[#1292]: https://github.com/facebook/Rapid/issues/1292
+
+
 # [2.2.3](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.3)
 #### 2024-Jan-05
 
