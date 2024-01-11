@@ -203,7 +203,7 @@ export function validationAmbiguousCrossingTags(context) {
         // Merge tags into an existing choice, if it's a real type.
         // This is useful if we first added `crossing=zebra` and then
         // later want to include a better tag like 'crossing:markings=zebra'
-        choice.setTags = Object.apply(choice.tags, tags);
+        choice.setTags = Object.assign(choice.setTags, tags);
       }
       return choice;
     }
