@@ -4,7 +4,6 @@ import fs from 'node:fs';
 import stringify from 'json-stringify-pretty-compact';
 import shell from 'shelljs';
 import YAML from 'js-yaml';
-import fetch from 'node-fetch';
 
 import * as languageNames from './language_names.js';
 

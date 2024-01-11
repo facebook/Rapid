@@ -2,7 +2,6 @@
 /* Downloads the latest translations from Transifex */
 import btoa from 'btoa';
 import chalk from 'chalk';
-import fetch from 'node-fetch';
 import fs from 'node:fs';
 import YAML from 'js-yaml';
 
