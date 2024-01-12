@@ -142,14 +142,10 @@ export class SelectOsmMode extends AbstractMode {
       .on(['\\', 'pause'], this._focusNextParent)
       .on('⎋', this._esc, true);
       this.keybinding
-      .on(uiCmd('⇧←'), this.nudgeSelection([-10, 0]))
-      .on(uiCmd('⇧↑'), this.nudgeSelection([0, -10]))
-      .on(uiCmd('⇧→'), this.nudgeSelection([10, 0]))
-      .on(uiCmd('⇧↓'), this.nudgeSelection([0, 10]))
-      .on(uiCmd('⇧⌥←'), this.nudgeSelection([-100, 0]))
-      .on(uiCmd('⇧⌥↑'), this.nudgeSelection([0, -100]))
-      .on(uiCmd('⇧⌥→'), this.nudgeSelection([100, 0]))
-      .on(uiCmd('⇧⌥↓'), this.nudgeSelection([0, 100]));
+      .on(uiCmd('←'), this.nudgeSelection([-10, 0]))
+      .on(uiCmd('↑'), this.nudgeSelection([0, -10]))
+      .on(uiCmd('→'), this.nudgeSelection([10, 0]))
+      .on(uiCmd('↓'), this.nudgeSelection([0, 10]));
 //      .on(uiCmd('⌘↑'), this._selectParent)    // tbh I dont know what these are
 //      .on(uiCmd('⌘↓'), this._selectChild)
 

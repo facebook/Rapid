@@ -119,16 +119,17 @@ export class MapInteractionBehavior extends AbstractBehavior {
       const panMore = (e.altKey || e.metaKey || e.ctrlKey);  // pan more if modifier down
 
       let delta;
-      if (e.key === 'ArrowLeft') {
-        delta = panMore ? [WIDTH / 2, 0] : [PAN_PIXELS, 0];
-      } else if (e.key === 'ArrowRight') {
-        delta = panMore ? [-WIDTH / 2, 0] : [-PAN_PIXELS, 0];
-      } else if (e.key === 'ArrowUp') {
-        delta = panMore ? [0, HEIGHT / 2] : [0, PAN_PIXELS];
-      } else if (e.key === 'ArrowDown') {
-        delta = panMore ? [0, -HEIGHT / 2] : [0, -PAN_PIXELS];
+      if (context.mode?.id !== 'select-osm') {
+        if (e.key === 'ArrowLeft') {
+          delta = panMore ? [WIDTH / 2, 0] : [PAN_PIXELS, 0];
+        } else if (e.key === 'ArrowRight') {
+          delta = panMore ? [-WIDTH / 2, 0] : [-PAN_PIXELS, 0];
+        } else if (e.key === 'ArrowUp') {
+          delta = panMore ? [0, HEIGHT / 2] : [0, PAN_PIXELS];
+        } else if (e.key === 'ArrowDown') {
+          delta = panMore ? [0, -HEIGHT / 2] : [0, -PAN_PIXELS];
+        }
       }
-
       if (delta) {
         e.preventDefault();
         map.pan(delta, EASE);
