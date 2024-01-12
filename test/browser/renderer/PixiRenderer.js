@@ -1,5 +1,6 @@
 describe('PixiRenderer', () => {
   const timestamp = 1649012524130;
+  let context;
   let map;
   let renderData;
   let graphEntities;
@@ -10,12 +11,11 @@ describe('PixiRenderer', () => {
   // Converts a list of json OSM entities to osm objects
   function jsonToOSM(renderData) {
     // Entity data is already split into points, vertices, lines, and polygons.
-    let osmRenderData = {};
-
-    let points = renderData.points.map(point => Rapid.osmNode(point));
-    let vertices = renderData.vertices.map(vertex => Rapid.osmNode(vertex));
-    let lines = renderData.lines.map(line => Rapid.osmWay(line));
-    let polygons = renderData.polygons.map(polygon => Rapid.osmWay(polygon));
+    const osmRenderData = {};
+    const points = renderData.points.map(point => Rapid.osmNode(point));
+    const vertices = renderData.vertices.map(vertex => Rapid.osmNode(vertex));
+    const lines = renderData.lines.map(line => Rapid.osmWay(line));
+    const polygons = renderData.polygons.map(polygon => Rapid.osmWay(polygon));
 
     osmRenderData.points = points;
     osmRenderData.vertices = vertices;
@@ -28,9 +28,8 @@ describe('PixiRenderer', () => {
 
   // Converts a list of json OSM entities to osm objects
   function castEntities(entities) {
-    let osmEntities = [];
-    for (entityKey in entities) {
-      let entity = entities[entityKey];
+    const osmEntities = [];
+    for (const entity of entities) {
       if (entity.id.charAt(0) === 'w') osmEntities.push(new Rapid.osmWay(entity));
       if (entity.id.charAt(0) === 'n') osmEntities.push(new Rapid.osmNode(entity));
     }

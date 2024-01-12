@@ -1,4 +1,3 @@
-/* globals chai:false */
 /* eslint no-extend-native:off */
 
 // Disable things that use the network
