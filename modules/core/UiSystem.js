@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 
-import { AbstractSystem } from './AbstractSystem';
-import { utilDetect } from '../util/detect';
-import { utilGetDimensions } from '../util/dimensions';
+import { AbstractSystem } from './AbstractSystem.js';
+import { utilDetect } from '../util/detect.js';
+import { utilGetDimensions } from '../util/dimensions.js';
 
 import {
   uiAccount, uiAttribution, uiContributors, UiDefs, uiEditMenu,
@@ -12,11 +12,11 @@ import {
   uiRapidWhatsNew, uiRapidSplash, uiRestore, uiScale, uiShortcuts,
   uiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
   uiTopToolbar, uiVersion, uiZoom, uiZoomToSelection, uiCmd,
-} from '../ui';
+} from '../ui/index.js';
 
 import {
   uiPaneBackground, uiPaneHelp, uiPaneIssues, uiPaneMapData, uiPanePreferences
-} from '../ui/panes';
+} from '../ui/panes/index.js';
 
 
 /**

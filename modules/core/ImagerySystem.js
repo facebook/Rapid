@@ -1,8 +1,8 @@
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
-import { AbstractSystem } from './AbstractSystem';
-import { ImagerySource, ImagerySourceBing, ImagerySourceCustom, ImagerySourceEsri, ImagerySourceNone } from './lib/ImagerySource';
+import { AbstractSystem } from './AbstractSystem.js';
+import { ImagerySource, ImagerySourceBing, ImagerySourceCustom, ImagerySourceEsri, ImagerySourceNone } from './lib/ImagerySource.js';
 
 
 /**

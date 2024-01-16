@@ -1,8 +1,8 @@
-import { JXON } from '../../util/jxon';
-import { osmChangeset } from '../../osm';
-import { actionDiscardTags } from '../../actions';
-import { uiIcon } from '../icon';
-import { uiTooltip } from '../tooltip';
+import { JXON } from '../../util/jxon.js';
+import { osmChangeset } from '../../osm/index.js';
+import { actionDiscardTags } from '../../actions/index.js';
+import { uiIcon } from '../icon.js';
+import { uiTooltip } from '../tooltip.js';
 
 
 export function uiToolDownloadOsc(context) {

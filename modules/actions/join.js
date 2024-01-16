@@ -1,10 +1,10 @@
 import { geomPathIntersections } from '@rapid-sdk/math';
 import { utilArrayGroupBy, utilArrayIdentical, utilArrayIntersection } from '@rapid-sdk/util';
 
-import { actionDeleteRelation } from './delete_relation';
-import { actionDeleteWay } from './delete_way';
-import { osmIsInterestingTag } from '../osm/tags';
-import { osmJoinWays } from '../osm/multipolygon';
+import { actionDeleteRelation } from './delete_relation.js';
+import { actionDeleteWay } from './delete_way.js';
+import { osmIsInterestingTag } from '../osm/tags.js';
+import { osmJoinWays } from '../osm/multipolygon.js';
 
 
 // Join ways at the end node they share.

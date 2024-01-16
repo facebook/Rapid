@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import {
   uiToolRapidFeatures, uiToolDrawModes, uiToolNotes, uiToolSave,
   uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc
-} from './tools';
+} from './tools/index.js';
 
 
 export function uiTopToolbar(context) {

@@ -1,9 +1,9 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
-import { uiCmd } from './cmd';
-import { uiTooltip } from './tooltip';
-import { utilKeybinding } from '../util/keybinding';
+import { uiIcon } from './icon.js';
+import { uiCmd } from './cmd.js';
+import { uiTooltip } from './tooltip.js';
+import { utilKeybinding } from '../util/keybinding.js';
 
 
 export function uiZoom(context) {

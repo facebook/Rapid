@@ -1,11 +1,10 @@
 import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
 import { vecAdd } from '@rapid-sdk/math';
-import { uiTooltip } from './tooltip';
-import { utilRebind } from '../util/rebind';
-import { utilHighlightEntities } from '../util/util';
-import { uiIcon } from './icon';
+
+import { uiTooltip } from './tooltip.js';
+import { uiIcon } from './icon.js';
+import { utilHighlightEntities, utilRebind } from '../util/index.js';
 
 
 export function uiEditMenu(context) {

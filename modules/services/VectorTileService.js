@@ -2,14 +2,15 @@ import { Extent, Tiler, vecEqual } from '@rapid-sdk/math';
 import { utilHashcode } from '@rapid-sdk/util';
 import { VectorTile } from '@mapbox/vector-tile';
 import geojsonRewind from '@mapbox/geojson-rewind';
-import { PMTiles } from 'pmtiles';
+// import { PMTiles } from 'pmtiles';
+import * as PMTiles from 'pmtiles';
 import stringify from 'fast-json-stable-stringify';
 import * as Polyclip from 'polyclip-ts';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { utilFetchResponse } from '../util/index.js';
 
 
 /**

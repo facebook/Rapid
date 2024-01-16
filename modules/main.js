@@ -16,6 +16,6 @@ window.cancelIdleCallback = window.cancelIdleCallback ||
     window.cancelAnimationFrame(handle);
   };
 
-import * as __all__ from './index';
+import * as __all__ from './index.js';
 window.Rapid = __all__;
 window.iD = __all__;

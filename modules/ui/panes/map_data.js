@@ -1,9 +1,9 @@
-import { uiPane } from '../pane';
+import { uiPane } from '../pane.js';
 
-import { uiSectionDataLayers } from '../sections/data_layers';
-import { uiSectionMapFeatures } from '../sections/map_features';
-import { uiSectionMapStyleOptions } from '../sections/map_style_options';
-import { uiSectionPhotoOverlays } from '../sections/photo_overlays';
+import { uiSectionDataLayers } from '../sections/data_layers.js';
+import { uiSectionMapFeatures } from '../sections/map_features.js';
+import { uiSectionMapStyleOptions } from '../sections/map_style_options.js';
+import { uiSectionPhotoOverlays } from '../sections/photo_overlays.js';
 
 
 export function uiPaneMapData(context) {

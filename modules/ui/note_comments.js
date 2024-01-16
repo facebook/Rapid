@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
+import { uiIcon } from './icon.js';
 
 
 export function uiNoteComments(context) {

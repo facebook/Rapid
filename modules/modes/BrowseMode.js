@@ -1,5 +1,5 @@
-import { AbstractMode } from './AbstractMode';
-import { operationPaste } from '../operations/paste';
+import { AbstractMode } from './AbstractMode.js';
+import { operationPaste } from '../operations/paste.js';
 
 const DEBUG = false;
 

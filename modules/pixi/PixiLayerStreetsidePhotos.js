@@ -1,6 +1,6 @@
-import { AbstractLayer } from './AbstractLayer';
-import { PixiFeatureLine } from './PixiFeatureLine';
-import { PixiFeaturePoint } from './PixiFeaturePoint';
+import { AbstractLayer } from './AbstractLayer.js';
+import { PixiFeatureLine } from './PixiFeatureLine.js';
+import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 const STREETSIDE_TEAL = 0xfffc4;

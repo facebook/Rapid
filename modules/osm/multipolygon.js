@@ -1,6 +1,6 @@
-import { actionReverse } from '../actions/reverse';
-import { osmIsInterestingTag } from './tags';
-import { osmWay } from './way';
+import { actionReverse } from '../actions/reverse.js';
+import { osmIsInterestingTag } from './tags.js';
+import { osmWay } from './way.js';
 
 
 // "Old" multipolyons, previously known as "simple" multipolygons, are as follows:

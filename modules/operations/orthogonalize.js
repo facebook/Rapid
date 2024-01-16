@@ -1,8 +1,8 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { actionOrthogonalize } from '../actions/orthogonalize';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { utilTotalExtent } from '../util';
+import { actionOrthogonalize } from '../actions/orthogonalize.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 export function operationOrthogonalize(context, selectedIDs) {

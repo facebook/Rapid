@@ -1,10 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilArrayUnion } from '@rapid-sdk/util';
 
-import { UiField } from '../UiField';
-import { uiFormFields } from '../form_fields';
-import { uiSection } from '../section';
-import { utilRebind } from '../../util';
+import { UiField } from '../UiField.js';
+import { uiFormFields } from '../form_fields.js';
+import { uiSection } from '../section.js';
+import { utilRebind } from '../../util/index.js';
 
 
 export function uiSectionPresetFields(context) {

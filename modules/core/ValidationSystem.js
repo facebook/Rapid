@@ -2,9 +2,9 @@ import { Extent } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { AbstractSystem } from './AbstractSystem';
-import { Difference } from './lib/Difference';
-import * as Validations from '../validations/index';
+import { AbstractSystem } from './AbstractSystem.js';
+import { Difference } from './lib/Difference.js';
+import * as Validations from '../validations/index.js';
 
 const RETRY = 5000;    // wait 5 sec before revalidating provisional entities
 

@@ -1,10 +1,10 @@
 import { utilArrayUnion, utilArrayUniq } from '@rapid-sdk/util';
 
-import { AbstractSystem } from './AbstractSystem';
-import { actionDiscardTags } from '../actions/discard_tags';
-import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
-import { actionRevert } from '../actions/revert';
-import { Graph } from './lib';
+import { AbstractSystem } from './AbstractSystem.js';
+import { actionDiscardTags } from '../actions/discard_tags.js';
+import { actionMergeRemoteChanges } from '../actions/merge_remote_changes.js';
+import { actionRevert } from '../actions/revert.js';
+import { Graph } from './lib/index.js';
 
 
 

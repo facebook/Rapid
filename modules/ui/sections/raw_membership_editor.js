@@ -1,16 +1,16 @@
 import { select as d3_select } from 'd3-selection';
 import { utilArrayGroupBy, utilArrayIntersection, utilUniqueString } from '@rapid-sdk/util';
 
-import { actionAddEntity } from '../../actions/add_entity';
-import { actionAddMember } from '../../actions/add_member';
-import { actionChangeMember } from '../../actions/change_member';
-import { actionDeleteMembers } from '../../actions/delete_members';
-import { osmEntity, osmRelation } from '../../osm';
-import { uiIcon } from '../icon';
-import { uiCombobox } from '../combobox';
-import { uiSection } from '../section';
-import { uiTooltip } from '../tooltip';
-import { utilNoAuto, utilIsColorValid, utilHighlightEntities } from '../../util';
+import { actionAddEntity } from '../../actions/add_entity.js';
+import { actionAddMember } from '../../actions/add_member.js';
+import { actionChangeMember } from '../../actions/change_member.js';
+import { actionDeleteMembers } from '../../actions/delete_members.js';
+import { osmEntity, osmRelation } from '../../osm/index.js';
+import { uiIcon } from '../icon.js';
+import { uiCombobox } from '../combobox.js';
+import { uiSection } from '../section.js';
+import { uiTooltip } from '../tooltip.js';
+import { utilNoAuto, utilIsColorValid, utilHighlightEntities } from '../../util/index.js';
 
 const MAX_MEMBERSHIPS = 1000;
 

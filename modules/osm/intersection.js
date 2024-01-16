@@ -1,11 +1,11 @@
 import { geoSphericalDistance, vecAngle } from '@rapid-sdk/math';
 import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
-import { actionDeleteRelation } from '../actions/delete_relation';
-import { actionReverse } from '../actions/reverse';
-import { actionSplit } from '../actions/split';
-import { Graph } from '../core/lib';
-import { osmEntity } from './entity';
+import { actionDeleteRelation } from '../actions/delete_relation.js';
+import { actionReverse } from '../actions/reverse.js';
+import { actionSplit } from '../actions/split.js';
+import { Graph } from '../core/lib/index.js';
+import { osmEntity } from './entity.js';
 
 
 export function osmTurn(turn) {

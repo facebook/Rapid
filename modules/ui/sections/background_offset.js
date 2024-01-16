@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 
-import { uiIcon } from '../icon';
-import { uiSection } from '../section';
+import { uiIcon } from '../icon.js';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionBackgroundOffset(context) {

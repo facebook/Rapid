@@ -1,4 +1,4 @@
-import { ValidationIssue } from '../core/lib';
+import { ValidationIssue } from '../core/lib/index.js';
 
 
 export function validationFormatting(context) {

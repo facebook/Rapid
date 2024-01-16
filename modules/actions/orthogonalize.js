@@ -2,8 +2,8 @@ import {
   vecAdd, vecEqual, vecInterp, vecLength, vecNormalize, vecProject, vecScale, vecSubtract
 } from '@rapid-sdk/math';
 
-import { actionDeleteNode } from './delete_node';
-import { geoOrthoNormalizedDotProduct, geoOrthoCalcScore, geoOrthoCanOrthogonalize } from '../geo';
+import { actionDeleteNode } from './delete_node.js';
+import { geoOrthoNormalizedDotProduct, geoOrthoCalcScore, geoOrthoCanOrthogonalize } from '../geo/index.js';
 
 
 export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) {

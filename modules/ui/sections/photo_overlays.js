@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiTooltip } from '../tooltip';
-import { uiSection } from '../section';
-import { utilGetSetValue, utilNoAuto } from '../../util';
+import { uiTooltip } from '../tooltip.js';
+import { uiSection } from '../section.js';
+import { utilGetSetValue, utilNoAuto } from '../../util/index.js';
 
 
 export function uiSectionPhotoOverlays(context) {

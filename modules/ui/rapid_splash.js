@@ -1,6 +1,6 @@
-import { uiIntro } from './intro/intro';
-import { icon } from './intro/helper';
-import { uiModal } from './modal';
+import { icon } from './intro/helper.js';
+import { uiIntro } from './intro/intro.js';
+import { uiModal } from './modal.js';
 
 
 export function uiRapidSplash(context) {

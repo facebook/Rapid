@@ -1,22 +1,22 @@
-export * from './actions/index';
-export * from './behaviors/index';
-export * from './core/index';
-export * from './geo/index';
-export * from './modes/index';
-export * from './operations/index';
-export * from './osm/index';
-export * from './services/index';
-export * from './svg/index';
-export * from './ui/fields/index';
-export * from './ui/panels/index';
-export * from './ui/panes/index';
-export * from './ui/sections/index';
-export * from './ui/settings/index';
-export * from './ui/index';
-export * from './util/index';
-export * from './validations/index';
+export * from './actions/index.js';
+export * from './behaviors/index.js';
+export * from './core/index.js';
+export * from './geo/index.js';
+export * from './modes/index.js';
+export * from './operations/index.js';
+export * from './osm/index.js';
+export * from './services/index.js';
+export * from './svg/index.js';
+export * from './ui/fields/index.js';
+export * from './ui/panels/index.js';
+export * from './ui/panes/index.js';
+export * from './ui/sections/index.js';
+export * from './ui/settings/index.js';
+export * from './ui/index.js';
+export * from './util/index.js';
+export * from './validations/index.js';
 
-export { Context } from './Context';
+export { Context } from './Context.js';
 
 // Reexport only what our tests use, see iD#4379
 import * as D3 from 'd3';

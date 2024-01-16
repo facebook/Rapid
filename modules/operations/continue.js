@@ -1,6 +1,6 @@
 import { utilArrayGroupBy } from '@rapid-sdk/util';
 
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
 
 
 export function operationContinue(context, selectedIDs) {

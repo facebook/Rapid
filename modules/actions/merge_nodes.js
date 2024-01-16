@@ -1,5 +1,6 @@
-import { actionConnect } from './connect';
 import { vecAdd, vecScale } from '@rapid-sdk/math';
+
+import { actionConnect } from './connect.js';
 
 
 // `actionMergeNodes` is just a combination of:

@@ -1,24 +1,24 @@
-export * from './lib/index';
+export * from './lib/index.js';
 
-import { AbstractSystem } from './AbstractSystem';
-import { ColorSystem } from './ColorSystem';
-import { DataLoaderSystem } from './DataLoaderSystem';
-import { EditSystem } from './EditSystem';
-import { FilterSystem } from './FilterSystem';
-import { ImagerySystem } from './ImagerySystem';
-import { LocalizationSystem } from './LocalizationSystem';
-import { LocationSystem } from './LocationSystem';
-import { Map3dSystem } from './Map3dSystem';
-import { MapSystem } from './MapSystem';
-import { PhotoSystem } from './PhotoSystem';
-import { PresetSystem } from './PresetSystem';
-import { RapidSystem } from './RapidSystem';
-import { StorageSystem } from './StorageSystem';
-import { StyleSystem } from './StyleSystem';
-import { UiSystem } from './UiSystem';
-import { UploaderSystem } from './UploaderSystem';
-import { UrlHashSystem } from './UrlHashSystem';
-import { ValidationSystem } from './ValidationSystem';
+import { AbstractSystem } from './AbstractSystem.js';
+import { ColorSystem } from './ColorSystem.js';
+import { DataLoaderSystem } from './DataLoaderSystem.js';
+import { EditSystem } from './EditSystem.js';
+import { FilterSystem } from './FilterSystem.js';
+import { ImagerySystem } from './ImagerySystem.js';
+import { LocalizationSystem } from './LocalizationSystem.js';
+import { LocationSystem } from './LocationSystem.js';
+import { Map3dSystem } from './Map3dSystem.js';
+import { MapSystem } from './MapSystem.js';
+import { PhotoSystem } from './PhotoSystem.js';
+import { PresetSystem } from './PresetSystem.js';
+import { RapidSystem } from './RapidSystem.js';
+import { StorageSystem } from './StorageSystem.js';
+import { StyleSystem } from './StyleSystem.js';
+import { UiSystem } from './UiSystem.js';
+import { UploaderSystem } from './UploaderSystem.js';
+import { UrlHashSystem } from './UrlHashSystem.js';
+import { ValidationSystem } from './ValidationSystem.js';
 
 export {
   AbstractSystem,

@@ -1,6 +1,7 @@
-import { icon } from './intro/helper';
-import { uiModal } from './modal';
 import { marked } from 'marked';
+
+import { icon } from './intro/helper.js';
+import { uiModal } from './modal.js';
 
 
 export function uiRapidWhatsNew(context) {

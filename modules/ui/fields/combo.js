@@ -4,10 +4,10 @@ import { drag as d3_drag } from 'd3-drag';
 import { utilArrayUniq, utilUnicodeCharsCount } from '@rapid-sdk/util';
 import { iso1A2Code } from '@rapideditor/country-coder';
 
-import { osmEntity } from '../../osm/entity';
-import { uiCombobox } from '../combobox';
-import { utilKeybinding } from '../../util/keybinding';
-import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { osmEntity } from '../../osm/entity.js';
+import { uiCombobox } from '../combobox.js';
+import { utilKeybinding } from '../../util/keybinding.js';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 export {
     uiFieldCombo as uiFieldManyCombo,

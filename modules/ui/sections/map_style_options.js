@@ -1,5 +1,5 @@
-import { uiTooltip } from '../tooltip';
-import { uiSection } from '../section';
+import { uiTooltip } from '../tooltip.js';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionMapStyleOptions(context) {

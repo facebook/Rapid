@@ -1,6 +1,6 @@
-import { uiPane } from '../pane';
-import { uiSectionPrivacy } from '../sections/privacy';
-import { uiSectionMapInteractionOptions } from '../sections/map_interaction_options';
+import { uiPane } from '../pane.js';
+import { uiSectionPrivacy } from '../sections/privacy.js';
+import { uiSectionMapInteractionOptions } from '../sections/map_interaction_options.js';
 
 
 export function uiPanePreferences(context) {

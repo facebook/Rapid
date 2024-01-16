@@ -1,11 +1,11 @@
 import { select as d3_select } from 'd3-selection';
 import { marked } from 'marked';
 
-import { icon } from './intro/helper';
-import { uiIcon } from './icon';
-import { uiModal } from './modal';
-import { uiRapidColorpicker } from './rapid_colorpicker';
-import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
+import { icon } from './intro/helper.js';
+import { uiIcon } from './icon.js';
+import { uiModal } from './modal.js';
+import { uiRapidColorpicker } from './rapid_colorpicker.js';
+import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets.js';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {

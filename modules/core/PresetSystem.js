@@ -1,9 +1,9 @@
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { AbstractSystem } from './AbstractSystem';
-import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
-import { Category, Collection, Field, Preset } from './lib';
-import { uiFields } from '../ui/fields';
+import { AbstractSystem } from './AbstractSystem.js';
+import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags.js';
+import { Category, Collection, Field, Preset } from './lib/index.js';
+import { uiFields } from '../ui/fields/index.js';
 
 const VERBOSE = true;        // warn about v6 preset features we don't support currently
 const MAXRECENTS = 30;       // how many recents to store in localstorage

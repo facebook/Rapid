@@ -1,10 +1,10 @@
 import { select as d3_select } from 'd3-selection';
 
-import { actionNoop, actionRapidAcceptFeature } from '../actions';
-import { uiIcon } from './icon';
-import { uiFlash } from './flash';
-import { uiTooltip } from './tooltip';
-import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
+import { actionNoop, actionRapidAcceptFeature } from '../actions/index.js';
+import { uiIcon } from './icon.js';
+import { uiFlash } from './flash.js';
+import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog.js';
+import { uiTooltip } from './tooltip.js';
 
 const ACCEPT_FEATURES_LIMIT = 50;
 

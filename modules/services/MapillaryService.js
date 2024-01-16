@@ -4,8 +4,8 @@ import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { utilFetchResponse } from '../util/index.js';
 
 const MAPILLARY_JS = 'https://cdn.jsdelivr.net/npm/mapillary-js@4/dist/mapillary.min.js';
 const MAPILLARY_CSS = 'https://cdn.jsdelivr.net/npm/mapillary-js@4/dist/mapillary.min.css';

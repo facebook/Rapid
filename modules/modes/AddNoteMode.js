@@ -1,5 +1,5 @@
-import { AbstractMode } from './AbstractMode';
-import { osmNote } from '../osm/note';
+import { AbstractMode } from './AbstractMode.js';
+import { osmNote } from '../osm/note.js';
 
 const DEBUG = false;
 

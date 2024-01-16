@@ -1,4 +1,4 @@
-import { uiSection } from '../section';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionValidationOptions(context) {

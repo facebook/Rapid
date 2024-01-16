@@ -1,9 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { uiIcon } from './icon';
-import { utilGetDimensions } from '../util/dimensions';
-import { utilRebind } from '../util';
+import { uiIcon } from './icon.js';
+import { utilGetDimensions, utilRebind } from '../util/index.js';
 
 
 export function uiPhotoViewer(context) {

@@ -1,16 +1,16 @@
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { uiTooltip } from '../tooltip';
-import { ImagerySource } from '../../core/lib';
-import { uiIcon } from '../icon';
-import { uiCmd } from '../cmd';
-import { uiSettingsCustomBackground } from '../settings/custom_background';
-import { uiMapInMap } from '../map_in_map';
-import { uiMap3dViewer } from '../map3d_viewer';
-import { uiSection } from '../section';
+import { uiTooltip } from '../tooltip.js';
+import { ImagerySource } from '../../core/lib/index.js';
+import { uiIcon } from '../icon.js';
+import { uiCmd } from '../cmd.js';
+import { uiSettingsCustomBackground } from '../settings/custom_background.js';
+import { uiMapInMap } from '../map_in_map.js';
+import { uiMap3dViewer } from '../map3d_viewer.js';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionBackgroundList(context) {

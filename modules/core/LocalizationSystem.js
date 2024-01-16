@@ -1,5 +1,5 @@
-import { AbstractSystem } from './AbstractSystem';
-import { utilDetect } from '../util/detect';
+import { AbstractSystem } from './AbstractSystem.js';
+import { utilDetect } from '../util/detect.js';
 
 
 function wrap(x, min, max) {

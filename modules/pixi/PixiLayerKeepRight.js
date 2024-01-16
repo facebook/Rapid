@@ -1,5 +1,5 @@
-import { AbstractLayer } from './AbstractLayer';
-import { PixiFeaturePoint } from './PixiFeaturePoint';
+import { AbstractLayer } from './AbstractLayer.js';
+import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 

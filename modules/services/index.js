@@ -1,19 +1,19 @@
-import { EsriService } from './EsriService';
-import { ImproveOsmService } from './ImproveOsmService';
-import { KartaviewService } from './KartaviewService';
-import { KeepRightService } from './KeepRightService';
-import { MapillaryService } from './MapillaryService';
-import { MapWithAIService } from './MapWithAIService';
-import { NominatimService } from './NominatimService';
-import { NsiService } from './NsiService';
-import { OsmService } from './OsmService';
-import { OsmoseService } from './OsmoseService';
-import { OsmWikibaseService } from './OsmWikibaseService';
-import { StreetsideService } from './StreetsideService';
-import { TaginfoService } from './TaginfoService';
-import { VectorTileService } from './VectorTileService';
-import { WikidataService } from './WikidataService';
-import { WikipediaService } from './WikipediaService';
+import { EsriService } from './EsriService.js';
+import { ImproveOsmService } from './ImproveOsmService.js';
+import { KartaviewService } from './KartaviewService.js';
+import { KeepRightService } from './KeepRightService.js';
+import { MapillaryService } from './MapillaryService.js';
+import { MapWithAIService } from './MapWithAIService.js';
+import { NominatimService } from './NominatimService.js';
+import { NsiService } from './NsiService.js';
+import { OsmService } from './OsmService.js';
+import { OsmoseService } from './OsmoseService.js';
+import { OsmWikibaseService } from './OsmWikibaseService.js';
+import { StreetsideService } from './StreetsideService.js';
+import { TaginfoService } from './TaginfoService.js';
+import { VectorTileService } from './VectorTileService.js';
+import { WikidataService } from './WikidataService.js';
+import { WikipediaService } from './WikipediaService.js';
 
 export {
   EsriService,

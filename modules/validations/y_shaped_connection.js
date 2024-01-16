@@ -1,7 +1,7 @@
 import { geoSphericalDistance, vecAngle } from '@rapid-sdk/math';
 
-import { operationDelete } from '../operations/index';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { operationDelete } from '../operations/index.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationYShapedConnection(context) {

@@ -1,15 +1,15 @@
-import { AbstractMode } from './AbstractMode';
-import { AddNoteMode } from './AddNoteMode';
-import { AddPointMode } from './AddPointMode';
-import { BrowseMode } from './BrowseMode';
-import { DragNodeMode } from './DragNodeMode';
-import { DrawAreaMode } from './DrawAreaMode';
-import { DrawLineMode } from './DrawLineMode';
-import { MoveMode } from './MoveMode';
-import { RotateMode } from './RotateMode';
-import { SaveMode } from './SaveMode';
-import { SelectMode } from './SelectMode';
-import { SelectOsmMode } from './SelectOsmMode';
+import { AbstractMode } from './AbstractMode.js';
+import { AddNoteMode } from './AddNoteMode.js';
+import { AddPointMode } from './AddPointMode.js';
+import { BrowseMode } from './BrowseMode.js';
+import { DragNodeMode } from './DragNodeMode.js';
+import { DrawAreaMode } from './DrawAreaMode.js';
+import { DrawLineMode } from './DrawLineMode.js';
+import { MoveMode } from './MoveMode.js';
+import { RotateMode } from './RotateMode.js';
+import { SaveMode } from './SaveMode.js';
+import { SelectMode } from './SelectMode.js';
+import { SelectOsmMode } from './SelectOsmMode.js';
 
 export {
   AbstractMode,
@@ -27,7 +27,7 @@ export {
 };
 
 // legacy
-export { modeDragNote } from './drag_note';
+export { modeDragNote } from './drag_note.js';
 
 // At init time, we will instantiate any that are in the 'available' collection.
 export const modes = {

@@ -1,9 +1,9 @@
 import { Extent, vecSubtract } from '@rapid-sdk/math';
 
-import { actionCopyEntities } from '../actions/copy_entities';
-import { actionMove } from '../actions/move';
+import { actionCopyEntities } from '../actions/copy_entities.js';
+import { actionMove } from '../actions/move.js';
 
-import { uiCmd } from '../ui/cmd';
+import { uiCmd } from '../ui/cmd.js';
 
 
 // see also `PasteBehavior`

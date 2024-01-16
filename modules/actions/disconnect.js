@@ -1,4 +1,4 @@
-import { osmNode } from '../osm/node';
+import { osmNode } from '../osm/node.js';
 
 
 // Disconnect the ways at the given node.

@@ -1,12 +1,12 @@
 import { vecAdd, vecSubtract } from '@rapid-sdk/math';
 import { utilArrayIntersection } from '@rapid-sdk/util';
 
-import { AbstractMode } from './AbstractMode';
-import { actionAddMidpoint } from '../actions/add_midpoint';
-import { actionConnect } from '../actions/connect';
-import { actionMoveNode } from '../actions/move_node';
-import { geoChooseEdge } from '../geo';
-import { osmNode } from '../osm';
+import { AbstractMode } from './AbstractMode.js';
+import { actionAddMidpoint } from '../actions/add_midpoint.js';
+import { actionConnect } from '../actions/connect.js';
+import { actionMoveNode } from '../actions/move_node.js';
+import { geoChooseEdge } from '../geo/index.js';
+import { osmNode } from '../osm/node.js';
 
 
 

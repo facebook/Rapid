@@ -1,7 +1,7 @@
 import { Extent } from '@rapid-sdk/math';
 
-import { ValidationFix } from './ValidationFix';
-import { utilTotalExtent } from '../../util';
+import { ValidationFix } from './ValidationFix.js';
+import { utilTotalExtent } from '../../util/index.js';
 
 
 export class ValidationIssue {

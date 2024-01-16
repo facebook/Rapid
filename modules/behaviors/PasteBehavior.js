@@ -1,11 +1,10 @@
 import { Extent, vecSubtract } from '@rapid-sdk/math';
 
-import { AbstractBehavior } from './AbstractBehavior';
-import { actionCopyEntities } from '../actions/copy_entities';
-import { actionMove } from '../actions/move';
-import { utilDetect } from '../util/detect';
+import { AbstractBehavior } from './AbstractBehavior.js';
+import { actionCopyEntities } from '../actions/copy_entities.js';
+import { actionMove } from '../actions/move.js';
+import { utilDetect } from '../util/detect.js';
 
-const MACOS = (utilDetect().os === 'mac');
 
 
 /**
@@ -20,6 +19,8 @@ export class PasteBehavior extends AbstractBehavior {
   constructor(context) {
     super(context);
     this.id = 'paste';
+
+    this._isMacOS = (utilDetect().os === 'mac');
 
     // Make sure the event handlers have `this` bound correctly
     this._keydown = this._keydown.bind(this);
@@ -58,7 +59,8 @@ export class PasteBehavior extends AbstractBehavior {
    * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
-    const modifier = (MACOS && e.metaKey) || (!MACOS && e.ctrlKey);
+    const isMacOS = this._isMacOS;
+    const modifier = (isMacOS && e.metaKey) || (!isMacOS && e.ctrlKey);
     if (modifier && e.key === 'v') {
       this._doPaste(e);
     }

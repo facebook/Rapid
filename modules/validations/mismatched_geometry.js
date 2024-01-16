@@ -2,14 +2,14 @@ import { geoSphericalDistance } from '@rapid-sdk/math';
 import { utilTagText } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { actionAddVertex } from '../actions/add_vertex';
-import { actionChangeTags } from '../actions/change_tags';
-import { actionMergeNodes } from '../actions/merge_nodes';
-import { actionExtract } from '../actions/extract';
-import { osmJoinWays } from '../osm/multipolygon';
-import { osmNodeGeometriesForTags, osmTagSuggestingArea } from '../osm/tags';
-import { geoHasSelfIntersections } from '../geo';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { actionAddVertex } from '../actions/add_vertex.js';
+import { actionChangeTags } from '../actions/change_tags.js';
+import { actionMergeNodes } from '../actions/merge_nodes.js';
+import { actionExtract } from '../actions/extract.js';
+import { osmJoinWays } from '../osm/multipolygon.js';
+import { osmNodeGeometriesForTags, osmTagSuggestingArea } from '../osm/tags.js';
+import { geoHasSelfIntersections } from '../geo/index.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationMismatchedGeometry(context) {

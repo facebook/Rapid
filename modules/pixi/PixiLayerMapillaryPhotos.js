@@ -1,7 +1,8 @@
-import { AbstractLayer } from './AbstractLayer';
-import { PixiFeatureLine } from './PixiFeatureLine';
-import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
+
+import { AbstractLayer } from './AbstractLayer.js';
+import { PixiFeatureLine } from './PixiFeatureLine.js';
+import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 
 const MINZOOM = 12;
 const MAPILLARY_GREEN = 0x05CB63;

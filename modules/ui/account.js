@@ -1,4 +1,4 @@
-import { uiIcon } from './icon';
+import { uiIcon } from './icon.js';
 
 
 export function uiAccount(context) {

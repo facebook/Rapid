@@ -2,10 +2,10 @@ import { geoArea as d3_geoArea } from 'd3-geo';
 import { Extent, vecCross } from '@rapid-sdk/math';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { osmEntity } from './entity';
-import { osmLanes } from './lanes';
-import { osmTagSuggestingArea, osmOneWayTags, osmRightSideIsInsideTags, osmRemoveLifecyclePrefix } from './tags';
-import { utilTotalExtent } from '../util';
+import { osmEntity } from './entity.js';
+import { osmLanes } from './lanes.js';
+import { osmTagSuggestingArea, osmOneWayTags, osmRightSideIsInsideTags, osmRemoveLifecyclePrefix } from './tags.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 export function osmWay() {

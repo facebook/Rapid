@@ -1,6 +1,6 @@
-import { uiTooltip } from '../tooltip';
-import { uiIcon } from '../icon';
-import { uiSection } from '../section';
+import { uiTooltip } from '../tooltip.js';
+import { uiIcon } from '../icon.js';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionPrivacy(context) {

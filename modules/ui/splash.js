@@ -1,5 +1,5 @@
-import { uiIntro } from './intro/intro';
-import { uiModal } from './modal';
+import { uiIntro } from './intro/intro.js';
+import { uiModal } from './modal.js';
 
 
 export function uiSplash(context) {

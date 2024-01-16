@@ -2,10 +2,10 @@ import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@rapid-sdk/math';
 import { utilQsString } from '@rapid-sdk/util';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { Graph, Tree } from '../core/lib';
-import { osmNode, osmRelation, osmWay } from '../osm';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { Graph, Tree } from '../core/lib/index.js';
+import { osmNode, osmRelation, osmWay } from '../osm/index.js';
+import { utilFetchResponse } from '../util/index.js';
 
 
 const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';

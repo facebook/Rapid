@@ -1,4 +1,4 @@
-import { actionDeleteRelation } from './delete_relation';
+import { actionDeleteRelation } from './delete_relation.js';
 
 
 // `actionUnrestrictTurn` deletes a turn restriction relation.

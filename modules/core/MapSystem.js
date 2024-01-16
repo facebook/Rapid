@@ -1,11 +1,10 @@
 import { select as d3_select } from 'd3-selection';
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
 
-import { AbstractSystem } from './AbstractSystem';
-import { PixiRenderer } from '../pixi/PixiRenderer';
+import { AbstractSystem } from './AbstractSystem.js';
+import { PixiRenderer } from '../pixi/PixiRenderer.js';
 import { uiCmd } from '../ui/cmd.js';
-import { utilTotalExtent } from '../util/util';
-import { utilGetDimensions } from '../util/dimensions';
+import { utilGetDimensions, utilTotalExtent } from '../util/index.js';
 
 
 const TILESIZE = 256;

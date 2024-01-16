@@ -1,10 +1,10 @@
-import { AbstractMode } from './AbstractMode';
+import { AbstractMode } from './AbstractMode.js';
 
-import { actionAddEntity } from '../actions/add_entity';
-import { actionChangeTags } from '../actions/change_tags';
-import { actionAddMidpoint } from '../actions/add_midpoint';
-import { geoChooseEdge } from '../geo';
-import { osmNode } from '../osm/node';
+import { actionAddEntity } from '../actions/add_entity.js';
+import { actionChangeTags } from '../actions/change_tags.js';
+import { actionAddMidpoint } from '../actions/add_midpoint.js';
+import { geoChooseEdge } from '../geo/index.js';
+import { osmNode } from '../osm/node.js';
 
 const DEBUG = false;
 

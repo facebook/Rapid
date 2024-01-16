@@ -2,8 +2,8 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUnion } from '@rapid-sdk/util';
 
-import { UiField } from '../UiField';
-import { utilRebind } from '../../util';
+import { UiField } from '../UiField.js';
+import { utilRebind } from '../../util/index.js';
 
 export { uiFieldRadio as uiFieldStructureRadio };
 

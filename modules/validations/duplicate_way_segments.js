@@ -1,4 +1,4 @@
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 // This validation determines whether way segments are duplicated atop one another,

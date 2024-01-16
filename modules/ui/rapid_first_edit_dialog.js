@@ -1,6 +1,6 @@
-import { icon } from './intro/helper';
-import { uiModal } from './modal';
-import { uiRapidSplash } from './rapid_splash';
+import { icon } from './intro/helper.js';
+import { uiModal } from './modal.js';
+import { uiRapidSplash } from './rapid_splash.js';
 
 
 export function uiRapidFirstEditDialog(context) {

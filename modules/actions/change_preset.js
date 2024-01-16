@@ -1,4 +1,4 @@
-import { actionSyncCrossingTags } from './sync_crossing_tags';
+import { actionSyncCrossingTags } from './sync_crossing_tags.js';
 
 export function actionChangePreset(entityID, oldPreset, newPreset, skipFieldDefaults) {
   return function action(graph) {

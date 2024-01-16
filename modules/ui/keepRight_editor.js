@@ -1,11 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
-import { uiKeepRightDetails } from './keepRight_details';
-import { uiKeepRightHeader } from './keepRight_header';
-import { uiViewOnKeepRight } from './view_on_keepRight';
-import { utilNoAuto, utilRebind } from '../util';
+import { uiIcon } from './icon.js';
+import { uiKeepRightDetails } from './keepRight_details.js';
+import { uiKeepRightHeader } from './keepRight_header.js';
+import { uiViewOnKeepRight } from './view_on_keepRight.js';
+import { utilNoAuto, utilRebind } from '../util/index.js';
 
 
 export function uiKeepRightEditor(context) {

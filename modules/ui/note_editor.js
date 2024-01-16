@@ -1,13 +1,12 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
-
-import { uiNoteComments } from './note_comments';
-import { uiNoteHeader } from './note_header';
-import { uiNoteReport } from './note_report';
-import { uiViewOnOSM } from './view_on_osm';
-import { utilNoAuto, utilRebind } from '../util';
+import { uiIcon } from './icon.js';
+import { uiNoteComments } from './note_comments.js';
+import { uiNoteHeader } from './note_header.js';
+import { uiNoteReport } from './note_report.js';
+import { uiViewOnOSM } from './view_on_osm.js';
+import { utilNoAuto, utilRebind } from '../util/index.js';
 
 
 export function uiNoteEditor(context) {

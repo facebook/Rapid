@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { AbstractUiPanel } from './AbstractUiPanel';
+import { AbstractUiPanel } from './AbstractUiPanel.js';
 
 const METADATA_KEYS = ['zoom', 'vintage', 'source', 'description', 'resolution', 'accuracy'];
 

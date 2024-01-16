@@ -1,5 +1,6 @@
 import RBush from 'rbush';
-import { Difference } from './Difference';
+
+import { Difference } from './Difference.js';
 
 
 /**

@@ -1,5 +1,6 @@
 import { select as d3_select } from 'd3-selection';
-import { osmPathHighwayTagValues, osmPavedTags, osmSemipavedTags, osmLifecyclePrefixes } from '../osm/tags';
+
+import { osmPathHighwayTagValues, osmPavedTags, osmSemipavedTags, osmLifecyclePrefixes } from '../osm/tags.js';
 
 
 export function svgTagClasses() {

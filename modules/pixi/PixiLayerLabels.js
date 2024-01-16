@@ -2,8 +2,9 @@ import * as PIXI from 'pixi.js';
 import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
-import { AbstractLayer } from './AbstractLayer';
+import { AbstractLayer } from './AbstractLayer.js';
 import { getLineSegments, getDebugBBox, lineToPoly } from './helpers.js';
+
 
 const MINZOOM = 12;
 

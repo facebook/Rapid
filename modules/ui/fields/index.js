@@ -1,23 +1,23 @@
-export * from './check';
-export * from './combo';
-export * from './input';
-export * from './access';
-export * from './address';
-export * from './cycleway';
-export * from './lanes';
-export * from './localized';
-export * from './roadspeed';
-export * from './radio';
-export * from './restrictions';
-export * from './textarea';
-export * from './wikidata';
-export * from './wikipedia';
+export * from './check.js';
+export * from './combo.js';
+export * from './input.js';
+export * from './access.js';
+export * from './address.js';
+export * from './cycleway.js';
+export * from './lanes.js';
+export * from './localized.js';
+export * from './roadspeed.js';
+export * from './radio.js';
+export * from './restrictions.js';
+export * from './textarea.js';
+export * from './wikidata.js';
+export * from './wikipedia.js';
 
 import {
     uiFieldCheck,
     uiFieldDefaultCheck,
     uiFieldOnewayCheck
-} from './check';
+} from './check.js';
 
 import {
     uiFieldCombo,
@@ -26,7 +26,7 @@ import {
     uiFieldNetworkCombo,
     uiFieldSemiCombo,
     uiFieldTypeCombo
-} from './combo';
+} from './combo.js';
 
 import {
     uiFieldEmail,
@@ -35,23 +35,23 @@ import {
     uiFieldTel,
     uiFieldText,
     uiFieldUrl
-} from './input';
+} from './input.js';
 
 import {
     uiFieldRadio,
     uiFieldStructureRadio
-} from './radio';
+} from './radio.js';
 
-import { uiFieldAccess } from './access';
-import { uiFieldAddress } from './address';
-import { uiFieldCycleway } from './cycleway';
-import { uiFieldLanes } from './lanes';
-import { uiFieldLocalized } from './localized';
-import { uiFieldRoadspeed } from './roadspeed';
-// import { uiFieldRestrictions } from './restrictions';
-import { uiFieldTextarea } from './textarea';
-import { uiFieldWikidata } from './wikidata';
-import { uiFieldWikipedia } from './wikipedia';
+import { uiFieldAccess } from './access.js';
+import { uiFieldAddress } from './address.js';
+import { uiFieldCycleway } from './cycleway.js';
+import { uiFieldLanes } from './lanes.js';
+import { uiFieldLocalized } from './localized.js';
+import { uiFieldRoadspeed } from './roadspeed.js';
+// import { uiFieldRestrictions } from './restrictions.js';
+import { uiFieldTextarea } from './textarea.js';
+import { uiFieldWikidata } from './wikidata.js';
+import { uiFieldWikipedia } from './wikipedia.js';
 
 export var uiFields = {
     access: uiFieldAccess,

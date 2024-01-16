@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 
-import { utilFunctor } from '../util/util';
-import { uiPopover } from './popover';
-import { uiCmd } from './cmd';
+import { uiPopover } from './popover.js';
+import { uiCmd } from './cmd.js';
+import { utilFunctor } from '../util/util.js';
 
 
 export function uiTooltip(context) {

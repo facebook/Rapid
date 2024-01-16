@@ -1,12 +1,12 @@
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayGroupBy, utilObjectOmit, utilSessionMutex } from '@rapid-sdk/util';
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { AbstractSystem } from './AbstractSystem';
-import { Difference, Edit, Graph, Tree } from './lib';
-import { osmEntity } from '../osm/entity';
-import { uiLoading } from '../ui/loading';
+import { AbstractSystem } from './AbstractSystem.js';
+import { Difference, Edit, Graph, Tree } from './lib/index.js';
+import { osmEntity } from '../osm/entity.js';
+import { uiLoading } from '../ui/loading.js';
 
 
 

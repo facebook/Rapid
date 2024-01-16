@@ -1,7 +1,7 @@
 import { gpx } from '@tmcw/togeojson';
 import { Extent } from '@rapid-sdk/math';
 
-import { AbstractSystem } from './AbstractSystem';
+import { AbstractSystem } from './AbstractSystem.js';
 
 const RAPID_MAGENTA = '#da26d3';
 const RAPID_COLORS = [
