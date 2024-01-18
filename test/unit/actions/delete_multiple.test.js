@@ -2,38 +2,40 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
 
-test.todo('actionDeleteMultiple', async t => {
-    it('deletes multiple entities of heterogeneous types', function () {
-        var n      = Rapid.osmNode(),
-            w      = Rapid.osmWay(),
-            r      = Rapid.osmRelation(),
-            action = Rapid.actionDeleteMultiple([n.id, w.id, r.id]),
-            graph  = action(new Rapid.Graph([n, w, r]));
-        expect(graph.hasEntity(n.id)).to.be.undefined;
-        expect(graph.hasEntity(w.id)).to.be.undefined;
-        expect(graph.hasEntity(r.id)).to.be.undefined;
-    });
+test('actionDeleteMultiple', async t => {
+  await t.test('deletes multiple entities of heterogeneous types', t => {
+    const n1 = Rapid.osmNode({id: 'n1'});
+    const w1 = Rapid.osmWay({id: 'w1'});
+    const r1 = Rapid.osmRelation({id: 'r1'});
+    const graph = new Rapid.Graph([n1, w1, r1]);
+    const result = Rapid.actionDeleteMultiple(['n1', 'w1', 'r1'])(graph);
+    assert.ok(result instanceof Rapid.Graph);
+    assert.ok(!result.hasEntity('n1'));
+    assert.ok(!result.hasEntity('w1'));
+    assert.ok(!result.hasEntity('r1'));
+  });
 
-    it('deletes a way and one of its nodes', function () {
-        var n      = Rapid.osmNode(),
-            w      = Rapid.osmWay({nodes: [n.id]}),
-            action = Rapid.actionDeleteMultiple([w.id, n.id]),
-            graph  = action(new Rapid.Graph([n, w]));
-        expect(graph.hasEntity(w.id)).to.be.undefined;
-        expect(graph.hasEntity(n.id)).to.be.undefined;
-    });
 
-    // This was moved to operationDelete.  We should test operations and move this test there.
-    // it('#disabled', function () {
-    //     it('returns the result of the first action that is disabled', function () {
-    //         var node     = Rapid.osmNode(),
-    //             relation = Rapid.osmRelation({members: [{id: 'w'}]}),
-    //             graph    = new Rapid.Graph([node, relation]),
-    //             action   = Rapid.actionDeleteMultiple([node.id, relation.id]);
-    //         expect(action.disabled(graph)).to.equal('incomplete_relation');
-    //     });
-    // });
+  await t.test('deletes a way and one of its nodes', t => {
+    const n1 = Rapid.osmNode({id: 'n1'});
+    const w1 = Rapid.osmWay({id: 'w1', nodes: ['n1']});
+    const graph = new Rapid.Graph([n1, w1]);
+    const result = Rapid.actionDeleteMultiple(['w1', 'n1'])(graph);
+    assert.ok(result instanceof Rapid.Graph);
+    assert.ok(!result.hasEntity('w1'));
+    assert.ok(!result.hasEntity('n1'));
+  });
+
+
+  // This was moved to operationDelete.  We should test operations and move this test there.
+  // await t.test('#disabled', async t => {
+  //   await t.test('returns the result of the first action that is disabled', t => {
+  //     const n1 = Rapid.osmNode({id: 'n1'});
+  //     const r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'w1'}]});  // 'w1' not downloaded
+  //     const graph = new Rapid.Graph([n1, r1]);
+  //     const action = Rapid.actionDeleteMultiple(['n1', 'r1']);
+  //     expect(action.disabled(graph)).to.equal('incomplete_relation');
+  //   });
+  // });
 });
