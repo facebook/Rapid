@@ -297,32 +297,34 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('not disable circularize when its not circular', t => {
-    const graph = new Rapid.Graph([
-      Rapid.osmNode({id: 'a', loc: [0, 0]}),
-      Rapid.osmNode({id: 'b', loc: [2, 0]}),
-      Rapid.osmNode({id: 'c', loc: [2, 2]}),
-      Rapid.osmNode({id: 'd', loc: [0, 2]}),
-      Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-    ]);
+  await t.test('#disabled', async t => {
+    await t.test('not disable circularize when its not circular', t => {
+      const graph = new Rapid.Graph([
+        Rapid.osmNode({id: 'a', loc: [0, 0]}),
+        Rapid.osmNode({id: 'b', loc: [2, 0]}),
+        Rapid.osmNode({id: 'c', loc: [2, 2]}),
+        Rapid.osmNode({id: 'd', loc: [0, 2]}),
+        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+      ]);
 
-    const disabled = Rapid.actionCircularize('-', projection).disabled(graph);
-    assert.equal(disabled, false);
-  });
+      const disabled = Rapid.actionCircularize('-', projection).disabled(graph);
+      assert.equal(disabled, false);
+    });
 
 
-  await t.test('disable circularize twice', t => {
-    const graph = new Rapid.Graph([
-      Rapid.osmNode({id: 'a', loc: [0, 0]}),
-      Rapid.osmNode({id: 'b', loc: [2, 0]}),
-      Rapid.osmNode({id: 'c', loc: [2, 2]}),
-      Rapid.osmNode({id: 'd', loc: [0, 2]}),
-      Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-    ]);
+    await t.test('disable circularize twice', t => {
+      const graph = new Rapid.Graph([
+        Rapid.osmNode({id: 'a', loc: [0, 0]}),
+        Rapid.osmNode({id: 'b', loc: [2, 0]}),
+        Rapid.osmNode({id: 'c', loc: [2, 2]}),
+        Rapid.osmNode({id: 'd', loc: [0, 2]}),
+        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+      ]);
 
-    const result = Rapid.actionCircularize('-', projection)(graph);
-    const disabled = Rapid.actionCircularize('-', projection).disabled(result);
-    assert.equal(disabled, 'already_circular');
+      const result = Rapid.actionCircularize('-', projection)(graph);
+      const disabled = Rapid.actionCircularize('-', projection).disabled(result);
+      assert.equal(disabled, 'already_circular');
+    });
   });
 
 
