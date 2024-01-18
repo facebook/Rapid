@@ -2,14 +2,14 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
+test('actionChangeTags', async t => {
+  await t.test('changes an entity\'s tags', t => {
+    const entity = Rapid.osmEntity();
+    const setTags = { foo: 'bar' };
+    const graph = new Rapid.Graph([entity]);
+    const result = Rapid.actionChangeTags(entity.id, setTags)(graph);
 
-test.todo('actionChangeTags', async t => {
-    it('changes an entity\'s tags', function () {
-        var entity = Rapid.osmEntity(),
-            tags   = {foo: 'bar'},
-            graph  = Rapid.actionChangeTags(entity.id, tags)(new Rapid.Graph([entity]));
-        expect(graph.entity(entity.id).tags).to.eql(tags);
-    });
+    assert.ok(result instanceof Rapid.Graph);
+    assert.deepEqual(result.entity(entity.id).tags, setTags);
+  });
 });

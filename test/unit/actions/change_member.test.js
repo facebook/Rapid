@@ -7,7 +7,7 @@ test('actionChangeMember', async t => {
     const node = Rapid.osmNode();
     const relation = Rapid.osmRelation({members: [{id: node.id}]});
     const action = Rapid.actionChangeMember(relation.id, {id: node.id, role: 'node'}, 0);
-    const graph = new Rapid.Graph([node, relation])
+    const graph = new Rapid.Graph([node, relation]);
     const result = action(graph);
 
     assert.ok(result instanceof Rapid.Graph);
