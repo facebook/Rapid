@@ -15,13 +15,23 @@ export function validationImpossibleOneway(context) {
     if (entity.isClosed()) return [];
     if (!typeForWay(entity)) return [];
     if (!entity.isOneWay()) return [];
-    if (entity.tags.intermittent === 'yes') return [];  // Ignore intermittent waterways - Rapid#1018
+    if (
+      entity.tags.oneway === 'alternating' ||
+      entity.tags.oneway === 'reversible' ||
+      entity.tags.intermittent === 'yes'      // Ignore intermittent waterways - Rapid#1018
+    ) return [];
 
     const firstIssues = issuesForNode(entity, entity.first());
     const lastIssues = issuesForNode(entity, entity.last());
     return firstIssues.concat(lastIssues);
 
 
+    /**
+     * typeForWay
+     * Return whether the way is a 'highway' or 'waterway'.
+     * @param   {osmWay}   way
+     * @return  {string?}  'highway' or 'waterway'
+     */
     function typeForWay(way) {
       if (way.geometry(graph) !== 'line') return null;
       if (osmRoutableHighwayTagValues[way.tags.highway]) return 'highway';
@@ -30,13 +40,35 @@ export function validationImpossibleOneway(context) {
     }
 
 
+    /**
+     * nodeOccursMoreThanOnce
+     * We skip checks on nodes that occur more than once.
+     * This can happen if a way starts/ends in its middle, for example:
+     *
+     * A --> B --> +
+     *       |     |
+     *       + <-- +
+     *
+     * @param   {osmWay}   way
+     * @param   {string}   nodeID
+     * @return  {boolean}  `true` if the node occurs more than once
+     */
     function nodeOccursMoreThanOnce(way, nodeID) {
       return (way.nodes.indexOf(nodeID) !== way.nodes.lastIndexOf(nodeID));
     }
 
 
-    function isConnectedViaOtherTypes(way, node) {
-      let wayType = typeForWay(way);
+    /**
+     * isNodeTaggedAsConnected
+     * Returns `true` if the node is connected (aka reachable/escapable)
+     * based on its tagging or what type of features it is attached to.
+     * @param   {osmWay}   way
+     * @param   {osmNode}  node
+     * @param   {boolean}  `true` if this node occurs at the head of the way.
+     * @return  {boolean}  `true` if this node is considered connected.
+     */
+    function isNodeTaggedAsConnected(way, node, isHead) {
+      const wayType = typeForWay(way);
 
       if (wayType === 'highway') {
         // entrances are considered connected
@@ -44,7 +76,7 @@ export function validationImpossibleOneway(context) {
         if (node.tags.amenity === 'parking_entrance') return true;
 
       } else if (wayType === 'waterway') {
-        if (node.id === way.first()) {
+        if (isHead) {
           // multiple waterways may start at the same spring
           if (node.tags.natural === 'spring') return true;
         } else {
@@ -59,7 +91,7 @@ export function validationImpossibleOneway(context) {
         if (wayType === 'highway') {
           // allow connections to highway areas
           if (parentWay.geometry(graph) === 'area' && osmRoutableHighwayTagValues[parentWay.tags.highway]) return true;
-          // count connections to ferry routes as connected
+          // consider connections to ferry routes as connected
           if (parentWay.tags.route === 'ferry') return true;
 
           return graph.parentRelations(parentWay).some(parentRelation => {
@@ -76,11 +108,21 @@ export function validationImpossibleOneway(context) {
     }
 
 
+    /**
+     * issuesForNode
+     * Detects issues that occur at the given nodeID.
+     * This function gets called twice, once for the start node, once for the end node.
+     * (The start/end nodes can function either as the head or tail, depending on whether
+     *  the way is tagged as a normal oneway or a reverse oneway, see Rapid#1302)
+     * @param   {osmWay}   way     - way to check (it should be a oneway)
+     * @param   {osmNode}  nodeID  - node to check (either the start or end node of the way)
+     * @param   {Array}    Array of any `ValidationIssue`s detected
+     */
     function issuesForNode(way, nodeID) {
-      const isFirst = nodeID === way.first();
+      const isHead = (nodeID === way.first() && way.tags.oneway !== '-1');
       const wayType = typeForWay(way);
 
-      // ignore if this way is self-connected at this node
+      // Skip checks if the way is self-connected at this node.
       if (nodeOccursMoreThanOnce(way, nodeID)) return [];
 
       const osm = context.services.osm;
@@ -92,30 +134,36 @@ export function validationImpossibleOneway(context) {
       // Don't worry, as more map tiles are loaded, we'll have additional chances to validate it.
       if (!node || !osm.isDataLoaded(node.loc)) return [];
 
-      if (isConnectedViaOtherTypes(way, node)) return [];
+      // Some tags imply that the node is connected and we can stop here.
+      if (isNodeTaggedAsConnected(way, node, isHead)) return [];
 
-      const attachedWaysOfSameType = graph.parentWays(node).filter(parentWay => {
-        if (parentWay.id === way.id) return false;
-        return typeForWay(parentWay) === wayType;
+      // Collect other ways of the same type (highway or waterway).
+      const attachedWaysOfSameType = graph.parentWays(node).filter(other => {
+        if (other.id === way.id) return false;  // ignore self
+        return typeForWay(other) === wayType;
       });
 
-      // assume it's okay for waterways to start or end disconnected for now
+      // Assume it's okay for waterways to start or end disconnected for now.
       if (wayType === 'waterway' && attachedWaysOfSameType.length === 0) return [];
 
-      // ignore if the way is connected to some non-oneway features
-      const attachedOneways = attachedWaysOfSameType.filter(attachedWay => attachedWay.isOneWay());
+      // No issues if this oneway is connected to non-oneway features of the same type.
+      const attachedOneways = attachedWaysOfSameType.filter(other => other.isOneWay());
       if (attachedOneways.length < attachedWaysOfSameType.length) return [];
 
-      if (attachedOneways.length) {
-        const connectedEndpointsOkay = attachedOneways.some(attachedOneway => {
-          if ((isFirst ? attachedOneway.first() : attachedOneway.last()) !== nodeID) return true;
-          if (nodeOccursMoreThanOnce(attachedOneway, nodeID)) return true;
-          return false;
-        });
-        if (connectedEndpointsOkay) return [];
+      // Finally, check how this oneway attaches to the other oneways.
+      // tail->head or head->tail is ok, head-head or tail-tail is not
+      for (const other of attachedOneways) {
+        // Again, skip checks on self-connected ways
+        if (nodeOccursMoreThanOnce(other, nodeID)) return [];
+
+        const otherHead = (other.tags.oneway === '-1') ? other.last() : other.first();
+        const otherTail = (other.tags.oneway === '-1') ? other.first() : other.last();
+        if ((isHead && nodeID === otherTail) || (!isHead && nodeID === otherHead)) return [];
       }
 
-      const placement = isFirst ? 'start' : 'end';
+      // If we get here, the way is not reachable / escapable.
+
+      const placement = isHead ? 'start' : 'end';
       let messageID, referenceID;
       if (wayType === 'waterway') {
         messageID = `${wayType}.connected.${placement}`;
@@ -158,10 +206,10 @@ export function validationImpossibleOneway(context) {
           }
           if (node.tags.noexit !== 'yes') {
             const isRTL = l10n.isRTL();
-            const useLeftContinue = (isFirst && !isRTL) || (!isFirst && isRTL);
+            const useLeftContinue = (isHead && !isRTL) || (!isHead && isRTL);
             fixes.push(new ValidationFix({
               icon: 'rapid-operation-continue' + (useLeftContinue ? '-left' : ''),
-              title: l10n.t('issues.fix.continue_from_' + (isFirst ? 'start' : 'end') + '.title'),
+              title: l10n.t('issues.fix.continue_from_' + (isHead ? 'start' : 'end') + '.title'),
               onClick: function() {
                 const entityID = this.issue.entityIds[0];
                 const vertexID = this.issue.entityIds[1];
