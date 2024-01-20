@@ -4,6 +4,7 @@ import { uiSectionBackgroundList } from '../sections/background_list';
 import { uiSectionBackgroundOffset } from '../sections/background_offset';
 import { uiSectionGridDisplayOptions } from '../sections/grid_display_options';
 import { uiSectionOverlayList } from '../sections/overlay_list';
+import { uiSectionWaybackImagery } from '../sections/waybackImagery_list';
 // import { uiSectionReactContainer } from '../sections/react_container';
 
 
@@ -18,6 +19,7 @@ export function uiPaneBackground(context) {
     .sections([
       uiSectionBackgroundList(context),
       // uiSectionReactContainer(context),
+      uiSectionWaybackImagery(context),
       uiSectionOverlayList(context),
       uiSectionGridDisplayOptions(context),
       uiSectionBackgroundDisplayOptions(context),

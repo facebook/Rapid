@@ -1,5 +1,6 @@
 export { uiSectionBackgroundDisplayOptions } from './background_display_options';
 export { uiSectionBackgroundList } from './background_list';
+export { uiSectionWaybackImagery } from './waybackImagery_list';
 export { uiSectionBackgroundOffset } from './background_offset';
 export { uiSectionChanges } from './changes';
 export { uiSectionDataLayers } from './data_layers';
