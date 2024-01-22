@@ -15,7 +15,7 @@ import { osmNode } from '../osm/node.js';
 //   https://github.com/openstreetmap/josm/blob/mirror/src/org/openstreetmap/josm/actions/UnGlueAction.java
 //
 export function actionDisconnect(nodeId, newNodeID) {
-    var wayIds;
+    var _wayIDs;
 
 
     var action = function(graph) {
@@ -50,7 +50,7 @@ export function actionDisconnect(nodeId, newNodeID) {
         var way, waynode;
         for (var i = 0; i < parentWays.length; i++) {
             way = parentWays[i];
-            if (wayIds && wayIds.indexOf(way.id) === -1) {
+            if (_wayIDs && _wayIDs.indexOf(way.id) === -1) {
                 keeping = true;
                 continue;
             }
@@ -62,8 +62,8 @@ export function actionDisconnect(nodeId, newNodeID) {
                     if (waynode === nodeId) {
                         if (way.isClosed() &&
                             parentWays.length > 1 &&
-                            wayIds &&
-                            wayIds.indexOf(way.id) !== -1 &&
+                            _wayIDs &&
+                            _wayIDs.indexOf(way.id) !== -1 &&
                             j === way.nodes.length - 1) {
                             continue;
                         }
@@ -103,9 +103,9 @@ export function actionDisconnect(nodeId, newNodeID) {
             var relations = graph.parentRelations(way);
             relations.forEach(function(relation) {
                 if (relation.id in seenRelationIds) {
-                    if (wayIds) {
-                        if (wayIds.indexOf(way.id) !== -1 ||
-                            wayIds.indexOf(seenRelationIds[relation.id]) !== -1) {
+                    if (_wayIDs) {
+                        if (_wayIDs.indexOf(way.id) !== -1 ||
+                            _wayIDs.indexOf(seenRelationIds[relation.id]) !== -1) {
                             sharedRelation = relation;
                         }
                     } else {
@@ -122,8 +122,8 @@ export function actionDisconnect(nodeId, newNodeID) {
 
 
     action.limitWays = function(val) {
-        if (!arguments.length) return wayIds;
-        wayIds = val;
+        if (!arguments.length) return _wayIDs;
+        _wayIDs = val;
         return action;
     };
 
