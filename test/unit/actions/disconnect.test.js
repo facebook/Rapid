@@ -3,7 +3,7 @@ import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test.todo('actionDisconnect', async t => {
+test('actionDisconnect', async t => {
 
   await t.test('replaces the node with a new node in all but the first way', t => {
     // Situation:

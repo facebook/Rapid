@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test.todo('actionDiscardTags', async t => {
+test('actionDiscardTags', async t => {
   const discardTags = { created_by: true };
 
   await t.test('defaults to empty discardTags', t => {
