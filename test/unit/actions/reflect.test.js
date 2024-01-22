@@ -2,193 +2,152 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
-
-test.todo('actionReflect', async t => {
+test('actionReflect', async t => {
     var projection = new Rapid.sdk.Projection();
-
-    it('does not create or remove nodes', function () {
+    await t.test('does not create or remove nodes', () => {
         var graph = new Rapid.Graph([
-                Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-            ]);
-        graph = Rapid.actionReflect(['-'], projection)(graph);
-        expect(graph.entity('-').nodes).to.have.length(5);
+            Rapid.osmNode({id: 'a', loc: [0, 0]}),
+            Rapid.osmNode({id: 'b', loc: [4, 0]}),
+            Rapid.osmNode({id: 'c', loc: [4, 2]}),
+            Rapid.osmNode({id: 'd', loc: [1, 2]}),
+            Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        ]);
+        const result = Rapid.actionReflect(['-'], projection)(graph);
+        assert.deepEqual(result.entity('-').nodes.length, 5);
     });
 
-
-    it('reflects across long axis', function () {
-        //
+    await t.test('reflects across long axis', () => {
         //    d -- c      a ---- b
         //   /     |  ->   \     |
         //  a ---- b        d -- c
-        //
         var graph = new Rapid.Graph([
-                Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-            ]);
-        graph = Rapid.actionReflect(['-'], projection)(graph);
-        expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
-        expect(graph.entity('a').loc[1]).to.be.closeTo(2, 1e-6);
-        expect(graph.entity('b').loc[0]).to.be.closeTo(4, 1e-6);
-        expect(graph.entity('b').loc[1]).to.be.closeTo(2, 1e-6);
-        expect(graph.entity('c').loc[0]).to.be.closeTo(4, 1e-6);
-        expect(graph.entity('c').loc[1]).to.be.closeTo(0, 1e-6);
-        expect(graph.entity('d').loc[0]).to.be.closeTo(1, 1e-6);
-        expect(graph.entity('d').loc[1]).to.be.closeTo(0, 1e-6);
+            Rapid.osmNode({id: 'a', loc: [0, 0]}),
+            Rapid.osmNode({id: 'b', loc: [4, 0]}),
+            Rapid.osmNode({id: 'c', loc: [4, 2]}),
+            Rapid.osmNode({id: 'd', loc: [1, 2]}),
+            Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        ]);
+        const result = Rapid.actionReflect(['-'], projection)(graph);
+        var epsilon = 1e-9;
+        assert.ok(Math.abs(result.entity('a').loc[0] - 0) < epsilon);
+        assert.ok(Math.abs(result.entity('a').loc[1] - 2) < epsilon);
+        assert.ok(Math.abs(result.entity('b').loc[0] - 4) < epsilon);
+        assert.ok(Math.abs(result.entity('b').loc[1] - 2) < epsilon);
+        assert.ok(Math.abs(result.entity('c').loc[0] - 4) < epsilon);
+        assert.ok(Math.abs(result.entity('c').loc[1]) < epsilon);
+        assert.ok(Math.abs(result.entity('d').loc[0] - 1) < epsilon);
+        assert.ok(Math.abs(result.entity('d').loc[1]) < epsilon);
     });
 
+    await t.test('reflects across long axis', () => {
+        //    d -- c      a ---- b
+        //   /     |  ->   \     |
+        //  a ---- b        d -- c
+        var graph = new Rapid.Graph([
+            Rapid.osmNode({id: 'a', loc: [0, 0]}),
+            Rapid.osmNode({id: 'b', loc: [4, 0]}),
+            Rapid.osmNode({id: 'c', loc: [4, 2]}),
+            Rapid.osmNode({id: 'd', loc: [1, 2]}),
+            Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        ]);
+        const result = Rapid.actionReflect(['-'], projection)(graph);
+        var epsilon = 1e-6;
+        assert.ok(Math.abs(result.entity('a').loc[0] - 0) < epsilon);
+        assert.ok(Math.abs(result.entity('a').loc[1] - 2) < epsilon);
+        assert.ok(Math.abs(result.entity('b').loc[0] - 4) < epsilon);
+        assert.ok(Math.abs(result.entity('b').loc[1] - 2) < epsilon);
+        assert.ok(Math.abs(result.entity('c').loc[0] - 4) < epsilon);
+        assert.ok(Math.abs(result.entity('c').loc[1]) < epsilon);
+        assert.ok(Math.abs(result.entity('d').loc[0] - 1) < epsilon);
+        assert.ok(Math.abs(result.entity('d').loc[1]) < epsilon);
+    });
 
-    it('reflects across short axis', function () {
-        //
+    await t.test('reflects across short axis', () => {
         //    d -- c      c -- d
         //   /     |  ->  |     \
         //  a ---- b      b ---- a
-        //
         var graph = new Rapid.Graph([
+            Rapid.osmNode({id: 'a', loc: [0, 0]}),
+            Rapid.osmNode({id: 'b', loc: [4, 0]}),
+            Rapid.osmNode({id: 'c', loc: [4, 2]}),
+            Rapid.osmNode({id: 'd', loc: [1, 2]}),
+            Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        ]);
+        const result = Rapid.actionReflect(['-'], projection).useLongAxis(false)(graph);
+        var epsilon = 1e-6;
+        assert.ok(Math.abs(result.entity('a').loc[0] - 4) < epsilon);
+        assert.ok(Math.abs(result.entity('a').loc[1]) < epsilon);
+        assert.ok(Math.abs(result.entity('b').loc[0]) < epsilon);
+        assert.ok(Math.abs(result.entity('b').loc[1]) < epsilon);
+        assert.ok(Math.abs(result.entity('c').loc[0]) < epsilon);
+        assert.ok(Math.abs(result.entity('c').loc[1] - 2) < epsilon);
+        assert.ok(Math.abs(result.entity('d').loc[0] - 3) < epsilon);
+        assert.ok(Math.abs(result.entity('d').loc[1] - 2) < epsilon);
+    });
+
+    await t.test('transitions', async t => {
+        await t.test('is transitionable', () => {
+            assert.equal(Rapid.actionReflect().transitionable, true);
+        });
+
+        await t.test('reflect long at t = 0', () => {
+            var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0, 0]}),
                 Rapid.osmNode({id: 'b', loc: [4, 0]}),
                 Rapid.osmNode({id: 'c', loc: [4, 2]}),
                 Rapid.osmNode({id: 'd', loc: [1, 2]}),
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
-        graph = Rapid.actionReflect(['-'], projection).useLongAxis(false)(graph);
-        expect(graph.entity('a').loc[0]).to.be.closeTo(4, 1e-6);
-        expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
-        expect(graph.entity('b').loc[0]).to.be.closeTo(0, 1e-6);
-        expect(graph.entity('b').loc[1]).to.be.closeTo(0, 1e-6);
-        expect(graph.entity('c').loc[0]).to.be.closeTo(0, 1e-6);
-        expect(graph.entity('c').loc[1]).to.be.closeTo(2, 1e-6);
-        expect(graph.entity('d').loc[0]).to.be.closeTo(3, 1e-6);
-        expect(graph.entity('d').loc[1]).to.be.closeTo(2, 1e-6);
-    });
-
-
-    it('transitions', function () {
-        it('is transitionable', function() {
-            expect(Rapid.actionReflect().transitionable).to.be.true;
+            const result = Rapid.actionReflect(['-'], projection)(graph, 0);
+            var epsilon = 1e-6;
+            assert.ok(Math.abs(result.entity('a').loc[0]) < epsilon);
+            assert.ok(Math.abs(result.entity('a').loc[1]) < epsilon);
+            assert.ok(Math.abs(result.entity('b').loc[0] - 4) < epsilon);
+            assert.ok(Math.abs(result.entity('b').loc[1]) < epsilon);
+            assert.ok(Math.abs(result.entity('c').loc[0] - 4) < epsilon);
+            assert.ok(Math.abs(result.entity('c').loc[1] - 2) < epsilon);
+            assert.ok(Math.abs(result.entity('d').loc[0] - 1) < epsilon);
+            assert.ok(Math.abs(result.entity('d').loc[1] - 2) < epsilon);
         });
 
-        it('reflect long at t = 0', function() {
+        await t.test('reflect long at t = 0.5', () => {
             var graph = new Rapid.Graph([
-                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                    Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-                ]);
-            graph = Rapid.actionReflect(['-'], projection)(graph, 0);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('b').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('b').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('c').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('c').loc[1]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('d').loc[0]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('d').loc[1]).to.be.closeTo(2, 1e-6);
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [4, 0]}),
+                Rapid.osmNode({id: 'c', loc: [4, 2]}),
+                Rapid.osmNode({id: 'd', loc: [1, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            ]);
+            const result = Rapid.actionReflect(['-'], projection)(graph, 0.5);
+            var epsilon = 1e-6;
+            assert.ok(Math.abs(result.entity('a').loc[0]) < epsilon);
+            assert.ok(Math.abs(result.entity('a').loc[1] - 1) < epsilon);
+            assert.ok(Math.abs(result.entity('b').loc[0] - 4) < epsilon);
+            assert.ok(Math.abs(result.entity('b').loc[1] - 1) < epsilon);
+            assert.ok(Math.abs(result.entity('c').loc[0] - 4) < epsilon);
+            assert.ok(Math.abs(result.entity('c').loc[1] - 1) < epsilon);
+            assert.ok(Math.abs(result.entity('d').loc[0] - 1) < epsilon);
+            assert.ok(Math.abs(result.entity('d').loc[1] - 1) < epsilon);
         });
 
-        it('reflect long at t = 0.5', function() {
+        await t.test('reflect short at t = 1', () => {
             var graph = new Rapid.Graph([
-                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                    Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-                ]);
-            graph = Rapid.actionReflect(['-'], projection)(graph, 0.5);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('b').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('b').loc[1]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('c').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('c').loc[1]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('d').loc[0]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('d').loc[1]).to.be.closeTo(1, 1e-6);
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [4, 0]}),
+                Rapid.osmNode({id: 'c', loc: [4, 2]}),
+                Rapid.osmNode({id: 'd', loc: [1, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            ]);
+            const result = Rapid.actionReflect(['-'], projection).useLongAxis(false)(graph, 1);
+            var epsilon = 1e-6;
+            assert.ok(Math.abs(result.entity('a').loc[0] - 4) < epsilon);
+            assert.ok(Math.abs(result.entity('a').loc[1]) < epsilon);
+            assert.ok(Math.abs(result.entity('b').loc[0]) < epsilon);
+            assert.ok(Math.abs(result.entity('b').loc[1]) < epsilon);
+            assert.ok(Math.abs(result.entity('c').loc[0]) < epsilon);
+            assert.ok(Math.abs(result.entity('c').loc[1] - 2) < epsilon);
+            assert.ok(Math.abs(result.entity('d').loc[0] - 3) < epsilon);
+            assert.ok(Math.abs(result.entity('d').loc[1] - 2) < epsilon);
         });
-
-        it('reflect long at t = 1', function() {
-            var graph = new Rapid.Graph([
-                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                    Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-                ]);
-            graph = Rapid.actionReflect(['-'], projection)(graph, 1);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('b').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('b').loc[1]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('c').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('c').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('d').loc[0]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('d').loc[1]).to.be.closeTo(0, 1e-6);
-        });
-
-        it('reflect short at t = 0', function() {
-            var graph = new Rapid.Graph([
-                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                    Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-                ]);
-            graph = Rapid.actionReflect(['-'], projection).useLongAxis(false)(graph, 0);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('b').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('b').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('c').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('c').loc[1]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('d').loc[0]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('d').loc[1]).to.be.closeTo(2, 1e-6);
-        });
-
-        it('reflect short at t = 0.5', function() {
-            var graph = new Rapid.Graph([
-                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                    Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-                ]);
-            graph = Rapid.actionReflect(['-'], projection).useLongAxis(false)(graph, 0.5);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('b').loc[0]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('b').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('c').loc[0]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('c').loc[1]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('d').loc[0]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('d').loc[1]).to.be.closeTo(2, 1e-6);
-        });
-
-        it('reflect short at t = 1', function() {
-            var graph = new Rapid.Graph([
-                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
-                    Rapid.osmNode({id: 'b', loc: [4, 0]}),
-                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
-                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
-                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
-                ]);
-            graph = Rapid.actionReflect(['-'], projection).useLongAxis(false)(graph, 1);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(4, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('b').loc[0]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('b').loc[1]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('c').loc[0]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('c').loc[1]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('d').loc[0]).to.be.closeTo(3, 1e-6);
-            expect(graph.entity('d').loc[1]).to.be.closeTo(2, 1e-6);
-        });
-
     });
 });
