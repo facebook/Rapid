@@ -2,11 +2,8 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
-
-test.todo('actionRestrictTurn', async t => {
-    it('adds a via node restriction to an unrestricted turn', function() {
+test('actionRestrictTurn', async t => {
+    await t.test('adds a via node restriction to an unrestricted turn', () => {
         //
         // u === * --- w
         //
@@ -25,26 +22,25 @@ test.todo('actionRestrictTurn', async t => {
         };
 
         var action = Rapid.actionRestrictTurn(turn, 'no_straight_on', 'r');
-        graph = action(graph);
+        const result = action(graph);
 
-        var r = graph.entity('r');
-        expect(r.tags).to.eql({type: 'restriction', restriction: 'no_straight_on'});
+        var r = result.entity('r');
+        assert.deepEqual(r.tags, {type: 'restriction', restriction: 'no_straight_on'});
 
         var f = r.memberByRole('from');
-        expect(f.id).to.eql('=');
-        expect(f.type).to.eql('way');
+        assert.strictEqual(f.id, '=');
+        assert.strictEqual(f.type, 'way');
 
         var v = r.memberByRole('via');
-        expect(v.id).to.eql('*');
-        expect(v.type).to.eql('node');
+        assert.strictEqual(v.id, '*');
+        assert.strictEqual(v.type, 'node');
 
         var t = r.memberByRole('to');
-        expect(t.id).to.eql('-');
-        expect(t.type).to.eql('way');
+        assert.strictEqual(t.id, '-');
+        assert.strictEqual(t.type, 'way');
     });
 
-
-    it('adds a via way restriction to an unrestricted turn', function() {
+    await t.test('adds a via way restriction to an unrestricted turn', () => {
         //
         // u === v1
         //       |
@@ -67,21 +63,21 @@ test.todo('actionRestrictTurn', async t => {
         };
 
         var action = Rapid.actionRestrictTurn(turn, 'no_u_turn', 'r');
-        graph = action(graph);
+        const result =  action(graph);
 
-        var r = graph.entity('r');
-        expect(r.tags).to.eql({type: 'restriction', restriction: 'no_u_turn'});
+        var r = result.entity('r');
+        assert.deepEqual(r.tags, {type: 'restriction', restriction: 'no_u_turn'});
 
         var f = r.memberByRole('from');
-        expect(f.id).to.eql('=');
-        expect(f.type).to.eql('way');
+        assert.strictEqual(f.id, '=');
+        assert.strictEqual(f.type, 'way');
 
         var v = r.memberByRole('via');
-        expect(v.id).to.eql('|');
-        expect(v.type).to.eql('way');
+        assert.strictEqual(v.id, '|');
+        assert.strictEqual(v.type, 'way');
 
         var t = r.memberByRole('to');
-        expect(t.id).to.eql('-');
-        expect(t.type).to.eql('way');
+        assert.strictEqual(t.id, '-');
+        assert.strictEqual(t.type, 'way');
     });
 });

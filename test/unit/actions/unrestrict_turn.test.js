@@ -2,11 +2,8 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
-
-test.todo('actionUnrestrictTurn', async t => {
-    it('removes a restriction from a restricted turn', function() {
+test('actionUnrestrictTurn', async t => {
+    await t.test('removes a restriction from a restricted turn', () => {
         //
         // u === * --- w
         //
@@ -24,7 +21,7 @@ test.todo('actionUnrestrictTurn', async t => {
         ]);
         var action = Rapid.actionUnrestrictTurn({ restrictionID: 'r' });
 
-        graph = action(graph);
-        expect(graph.hasEntity('r')).to.be.undefined;
+        const result = action(graph);
+        assert.strictEqual(result.hasEntity('r'), undefined);
     });
 });
