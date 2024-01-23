@@ -1,173 +1,208 @@
-import { test } from 'node:test';
+import { beforeEach, test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
-const beforeEach = function() {};  // remove
 
-test.todo('actionMergePolygon', async t => {
+test('actionMergePolygon', async t => {
 
-    function node(id, x, y) {
-        e.push(Rapid.osmNode({ id: id, loc: [x, y] }));
-    }
+  let graph;
 
-    function way(id, nodes) {
-        e.push(Rapid.osmWay({ id: id, nodes: nodes.map(function(n) { return 'n' + n; }) }));
-    }
+  //                                  n15
+  //                                / |
+  //                               /  |
+  //                           n13 -- n14
+  //  n3 ---------------- n2
+  //   | n7 ---------- n6 |
+  //   |  | n11 -- n10 |  |
+  //   |  |   |    |   |  |
+  //   |  |  n8 -- n9  |  |
+  //   | n4 ---------- n5 |
+  //  n0 ---------------- n1
+  //
 
-    var e = [];
+  beforeEach(() => {
+    graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n0', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n1', loc: [5, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [5, 5] }),
+      Rapid.osmNode({ id: 'n3', loc: [0, 5] }),
+      Rapid.osmNode({ id: 'n4', loc: [1, 1] }),
+      Rapid.osmNode({ id: 'n5', loc: [4, 1] }),
+      Rapid.osmNode({ id: 'n6', loc: [4, 4] }),
+      Rapid.osmNode({ id: 'n7', loc: [1, 4] }),
+      Rapid.osmNode({ id: 'n8', loc: [2, 2] }),
+      Rapid.osmNode({ id: 'n9', loc: [3, 2] }),
+      Rapid.osmNode({ id: 'n10', loc: [3, 3] }),
+      Rapid.osmNode({ id: 'n11', loc: [2, 3] }),
+      Rapid.osmNode({ id: 'n13', loc: [8, 8] }),
+      Rapid.osmNode({ id: 'n14', loc: [8, 9] }),
+      Rapid.osmNode({ id: 'n15', loc: [9, 9] }),
+      Rapid.osmWay({ id: 'w0', nodes: ['n0', 'n1', 'n2', 'n3', 'n0'] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n4', 'n5', 'n6', 'n7', 'n4'] }),
+      Rapid.osmWay({ id: 'w2', nodes: ['n8', 'n9', 'n10', 'n11', 'n8'] }),
+      Rapid.osmWay({ id: 'w3', nodes: ['n4', 'n5', 'n6'] }),
+      Rapid.osmWay({ id: 'w4', nodes: ['n6', 'n7', 'n4'] }),
+      Rapid.osmWay({ id: 'w5', nodes: ['n13', 'n14', 'n15', 'n13'] })
+    ]);
+  });
 
-    node('n0', 0, 0);
-    node('n1', 5, 0);
-    node('n2', 5, 5);
-    node('n3', 0, 5);
 
-    node('n4', 1, 1);
-    node('n5', 4, 1);
-    node('n6', 4, 4);
-    node('n7', 1, 4);
+  await t.test('creates a multipolygon from two closed ways', t => {
+    const result = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
+    assert.ok(result instanceof Rapid.Graph);
 
-    node('n8', 2, 2);
-    node('n9', 3, 2);
-    node('n10', 3, 3);
-    node('n11', 2, 3);
+    const r = result.hasEntity('r');
+    assert.ok(r instanceof Rapid.osmRelation);
+    assert.equal(r.geometry(result), 'area');
+    assert.ok(r.isMultipolygon());
+    assert.equal(r.members.length, 2);
 
-    node('n13', 8, 8);
-    node('n14', 8, 9);
-    node('n15', 9, 9);
+    const m0 = r.memberById('w0');
+    assert.equal(m0.role, 'outer');
+    assert.equal(m0.type, 'way');
 
-    way('w0', [0, 1, 2, 3, 0]);
-    way('w1', [4, 5, 6, 7, 4]);
-    way('w2', [8, 9, 10, 11, 8]);
+    const m1 = r.memberById('w1');
+    assert.equal(m1.role, 'inner');
+    assert.equal(m1.type, 'way');
+  });
 
-    way('w3', [4, 5, 6]);
-    way('w4', [6, 7, 4]);
 
-    way('w5', [13, 14, 15, 13]);
+  await t.test('creates a multipolygon from a closed way and a multipolygon relation', t => {
+    const graph2 = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
+    assert.ok(graph2 instanceof Rapid.Graph);
+    const result = Rapid.actionMergePolygon(['r', 'w2'])(graph2);
+    assert.ok(result instanceof Rapid.Graph);
 
-    var graph;
+    const r = result.hasEntity('r');
+    assert.ok(r instanceof Rapid.osmRelation);
+    assert.equal(r.members.length, 3);
+  });
 
-    beforeEach(function() {
-        graph = new Rapid.Graph(e);
-    });
 
-    function find(relation, id) {
-        return relation.members.find(function (m) { return m.id === id; });
-    }
+  await t.test('creates a multipolygon from two multipolygon relations', t => {
+    const graph2 = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
+    assert.ok(graph2 instanceof Rapid.Graph);
+    const graph3 = Rapid.actionMergePolygon(['w2', 'w5'], 'r2')(graph2);
+    assert.ok(graph3 instanceof Rapid.Graph);
+    const result = Rapid.actionMergePolygon(['r', 'r2'])(graph3);
+    assert.ok(result instanceof Rapid.Graph);
 
-    it('creates a multipolygon from two closed ways', function() {
-        graph = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
-        var r = graph.entity('r');
-        expect(!!r).to.equal(true);
-        expect(r.geometry(graph)).to.equal('area');
-        expect(r.isMultipolygon()).to.equal(true);
-        expect(r.members.length).to.equal(2);
-        expect(find(r, 'w0').role).to.equal('outer');
-        expect(find(r, 'w0').type).to.equal('way');
-        expect(find(r, 'w1').role).to.equal('inner');
-        expect(find(r, 'w1').type).to.equal('way');
-    });
+    // Delete the other relation
+    assert.ok(!result.hasEntity('r2'));
 
-    it('creates a multipolygon from a closed way and a multipolygon relation', function() {
-        graph = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
-        graph = Rapid.actionMergePolygon(['r', 'w2'])(graph);
-        var r = graph.entity('r');
-        expect(r.members.length).to.equal(3);
-    });
+    const r = result.hasEntity('r');
+    assert.ok(r instanceof Rapid.osmRelation);
 
-    it('creates a multipolygon from two multipolygon relations', function() {
-        graph = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
-        graph = Rapid.actionMergePolygon(['w2', 'w5'], 'r2')(graph);
-        graph = Rapid.actionMergePolygon(['r', 'r2'])(graph);
+    assert.equal(r.memberById('w0').role, 'outer');
+    assert.equal(r.memberById('w1').role, 'inner');
+    assert.equal(r.memberById('w2').role, 'outer');
+    assert.equal(r.memberById('w5').role, 'outer');
+  });
 
-        // Delete other relation
-        expect(graph.hasEntity('r2')).to.equal(undefined);
 
-        var r = graph.entity('r');
-        expect(find(r, 'w0').role).to.equal('outer');
-        expect(find(r, 'w1').role).to.equal('inner');
-        expect(find(r, 'w2').role).to.equal('outer');
-        expect(find(r, 'w5').role).to.equal('outer');
-    });
+  await t.test('merges multipolygon tags', t => {
+    const graph2 = new Rapid.Graph([
+      Rapid.osmRelation({id: 'r1', tags: {type: 'multipolygon', a: 'a'}}),
+      Rapid.osmRelation({id: 'r2', tags: {type: 'multipolygon', b: 'b'}})
+    ]);
 
-    it('merges multipolygon tags', function() {
-        var graph = new Rapid.Graph([
-            Rapid.osmRelation({id: 'r1', tags: {type: 'multipolygon', a: 'a'}}),
-            Rapid.osmRelation({id: 'r2', tags: {type: 'multipolygon', b: 'b'}})
-        ]);
+    const result = Rapid.actionMergePolygon(['r1', 'r2'])(graph2);
+    assert.ok(result instanceof Rapid.Graph);
 
-        graph = Rapid.actionMergePolygon(['r1', 'r2'])(graph);
+    const r1 = result.hasEntity('r1');
+    assert.ok(r1 instanceof Rapid.osmRelation);
+    assert.deepEqual(r1.tags,  {type: 'multipolygon', a: 'a', b: 'b'})
+  });
 
-        expect(graph.entity('r1').tags.a).to.equal('a');
-        expect(graph.entity('r1').tags.b).to.equal('b');
-    });
 
-    it('merges tags from closed outer ways', function() {
-        graph = graph.replace(graph.entity('w0').update({ tags: { 'building': 'yes' }}));
-        graph = Rapid.actionMergePolygon(['w0', 'w5'], 'r')(graph);
-        expect(graph.entity('w0').tags.building).to.equal(undefined);
-        expect(graph.entity('r').tags.building).to.equal('yes');
-    });
+  await t.test('merges tags from closed outer ways', t => {
+    const graph2 = graph.replace(graph.entity('w0').update({ tags: { 'building': 'yes' }}));
 
-    it('merges no tags from unclosed outer ways', function() {
-        graph = graph.replace(graph.entity('w3').update({ tags: { 'natural': 'water' }}));
+    const result = Rapid.actionMergePolygon(['w0', 'w5'], 'r')(graph2);
+    assert.ok(result instanceof Rapid.Graph);
+    assert.equal(result.entity('w0').tags.building, undefined);
+    assert.equal(result.entity('r').tags.building, 'yes');
+  });
 
-        var r1 = Rapid.osmRelation({id: 'r1', tags: {type: 'multipolygon'}});
-        var r2 = Rapid.osmRelation({id: 'r2', tags: {type: 'multipolygon'},
-            members: [
-                { type: 'way', role: 'outer', id: 'w3' },
-                { type: 'way', role: 'outer', id: 'w4' }
-            ]});
 
-        graph = graph.replace(r1).replace(r2);
-        graph = Rapid.actionMergePolygon(['r1', 'r2'])(graph);
-        expect(graph.entity('w3').tags.natural).to.equal('water');
-        expect(graph.entity('r1').tags.natural).to.equal(undefined);
-    });
+  await t.test('merges no tags from unclosed outer ways', t => {
+    const r1 = Rapid.osmRelation({id: 'r1', tags: {type: 'multipolygon'}});
+    const r2 = Rapid.osmRelation({id: 'r2', tags: {type: 'multipolygon'},
+      members: [
+        { type: 'way', role: 'outer', id: 'w3' },
+        { type: 'way', role: 'outer', id: 'w4' }
+      ]});
 
-    it('merges no tags from inner ways', function() {
-        graph = graph.replace(graph.entity('w1').update({ tags: { 'natural': 'water' }}));
-        graph = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
-        expect(graph.entity('w1').tags.natural).to.equal('water');
-        expect(graph.entity('r').tags.natural).to.equal(undefined);
-    });
+    const graph2 = graph
+      .replace(graph.entity('w3').update({ tags: { 'natural': 'water' }}))
+      .replace(r1)
+      .replace(r2);
 
-    it('doesn\'t copy area tags from ways', function() {
-        graph = graph.replace(graph.entity('w0').update({ tags: { 'area': 'yes' }}));
-        graph = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
-        var r = graph.entity('r');
-        expect(r.tags.area).to.equal(undefined);
-    });
+    const result = Rapid.actionMergePolygon(['r1', 'r2'])(graph2);
+    assert.ok(result instanceof Rapid.Graph);
+    assert.equal(result.entity('w3').tags.natural, 'water');
+    assert.equal(result.entity('r1').tags.natural, undefined);
+  });
 
-    it('creates a multipolygon with two disjunct outer rings', function() {
-        graph = Rapid.actionMergePolygon(['w0', 'w5'], 'r')(graph);
-        var r = graph.entity('r');
-        expect(find(r, 'w0').role).to.equal('outer');
-        expect(find(r, 'w5').role).to.equal('outer');
-    });
 
-    it('creates a multipolygon with an island in a hole', function() {
-        graph = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
-        graph = Rapid.actionMergePolygon(['r', 'w2'])(graph);
-        var r = graph.entity('r');
-        expect(find(r, 'w0').role).to.equal('outer');
-        expect(find(r, 'w1').role).to.equal('inner');
-        expect(find(r, 'w2').role).to.equal('outer');
-    });
+  await t.test('merges no tags from inner ways', t => {
+    const graph2 = graph.replace(graph.entity('w1').update({ tags: { 'natural': 'water' }}));
 
-    it('extends a multipolygon with multi-way rings', function() {
-        var r = Rapid.osmRelation({ id: 'r', tags: { type: 'multipolygon' }, members: [
-            { type: 'way', role: 'outer', id: 'w0' },
-            { type: 'way', role: 'inner', id: 'w3' },
-            { type: 'way', role: 'inner', id: 'w4' }
-        ]});
-        graph = graph.replace(r);
-        graph = Rapid.actionMergePolygon(['r', 'w2'])(graph);
-        r = graph.entity('r');
-        expect(find(r, 'w0').role).to.equal('outer');
-        expect(find(r, 'w2').role).to.equal('outer');
-        expect(find(r, 'w3').role).to.equal('inner');
-        expect(find(r, 'w4').role).to.equal('inner');
-    });
+    const result = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph2);
+    assert.ok(result instanceof Rapid.Graph);
+    assert.equal(result.entity('w1').tags.natural, 'water');
+    assert.equal(result.entity('r').tags.natural, undefined);
+  });
+
+
+  await t.test('doesn\'t copy area tags from ways', t => {
+    const graph2 = graph.replace(graph.entity('w0').update({ tags: { 'area': 'yes' }}));
+
+    const result = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph2);
+    assert.ok(result instanceof Rapid.Graph);
+    assert.equal(result.entity('r').tags.area, undefined);
+  });
+
+
+  await t.test('creates a multipolygon with two disjunct outer rings', t => {
+    const result = Rapid.actionMergePolygon(['w0', 'w5'], 'r')(graph);
+    assert.ok(result instanceof Rapid.Graph);
+
+    const r = result.entity('r');
+    assert.equal(r.memberById('w0').role, 'outer');
+    assert.equal(r.memberById('w5').role, 'outer');
+  });
+
+
+  await t.test('creates a multipolygon with an island in a hole', t => {
+    const graph2 = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
+    assert.ok(graph2 instanceof Rapid.Graph);
+    const result = Rapid.actionMergePolygon(['r', 'w2'])(graph2);
+    assert.ok(result instanceof Rapid.Graph);
+
+    const r = result.entity('r');
+    assert.equal(r.memberById('w0').role, 'outer');
+    assert.equal(r.memberById('w1').role, 'inner');
+    assert.equal(r.memberById('w2').role, 'outer');
+  });
+
+
+  await t.test('extends a multipolygon with multi-way rings', t => {
+    const graph2 = graph.replace(
+      Rapid.osmRelation({ id: 'r', tags: { type: 'multipolygon' }, members: [
+        { type: 'way', role: 'outer', id: 'w0' },
+        { type: 'way', role: 'inner', id: 'w3' },
+        { type: 'way', role: 'inner', id: 'w4' }
+      ]})
+    );
+
+    const result = Rapid.actionMergePolygon(['r', 'w2'])(graph2);
+    assert.ok(result instanceof Rapid.Graph);
+
+    const r = result.entity('r');
+    assert.equal(r.memberById('w0').role, 'outer');
+    assert.equal(r.memberById('w2').role, 'outer');
+    assert.equal(r.memberById('w3').role, 'inner');
+    assert.equal(r.memberById('w4').role, 'inner');
+  });
 });
