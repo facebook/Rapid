@@ -1,9 +1,9 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionUnrestrictTurn', async t => {
-    await t.test('removes a restriction from a restricted turn', () => {
+describe('actionUnrestrictTurn', () => {
+    it('removes a restriction from a restricted turn', () => {
         //
         // u === * --- w
         //
