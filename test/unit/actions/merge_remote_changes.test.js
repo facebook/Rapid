@@ -1,65 +1,63 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
 
-test.todo('actionMergeRemoteChanges', async t => {
+describe('actionMergeRemoteChanges', () => {
   const discardTags = { created_by: true };
 
   const base = new Rapid.Graph([
-    Rapid.osmNode({ id: 'a', loc: [1, 1], version: '1', tags: { foo: 'foo' }}),
+    Rapid.osmNode({ id: 'n1', loc: [1, 1], version: '1', tags: { foo: 'foo' }}),
 
-    Rapid.osmNode({ id: 'p1', loc: [ 10,  10], version: '1' }),
-    Rapid.osmNode({ id: 'p2', loc: [ 10, -10], version: '1' }),
-    Rapid.osmNode({ id: 'p3', loc: [-10, -10], version: '1' }),
-    Rapid.osmNode({ id: 'p4', loc: [-10,  10], version: '1' }),
+    Rapid.osmNode({ id: 'n10', loc: [ 10,  10], version: '1' }),
+    Rapid.osmNode({ id: 'n11', loc: [ 10, -10], version: '1' }),
+    Rapid.osmNode({ id: 'n12', loc: [-10, -10], version: '1' }),
+    Rapid.osmNode({ id: 'n13', loc: [-10,  10], version: '1' }),
     Rapid.osmWay({
-      id: 'w1',
-      nodes: ['p1', 'p2', 'p3', 'p4', 'p1'],
+      id: 'w10',
+      nodes: ['n10', 'n11', 'n12', 'n13', 'n10'],
       version: '1',
       tags: { foo: 'foo', area: 'yes' }
     }),
 
-    Rapid.osmNode({ id: 'q1', loc: [ 5,  5], version: '1' }),
-    Rapid.osmNode({ id: 'q2', loc: [ 5, -5], version: '1' }),
-    Rapid.osmNode({ id: 'q3', loc: [-5, -5], version: '1' }),
-    Rapid.osmNode({ id: 'q4', loc: [-5,  5], version: '1' }),
+    Rapid.osmNode({ id: 'n20', loc: [ 5,  5], version: '1' }),
+    Rapid.osmNode({ id: 'n21', loc: [ 5, -5], version: '1' }),
+    Rapid.osmNode({ id: 'n22', loc: [-5, -5], version: '1' }),
+    Rapid.osmNode({ id: 'n23', loc: [-5,  5], version: '1' }),
     Rapid.osmWay({
-      id: 'w2',
-      nodes: ['q1', 'q2', 'q3', 'q4', 'q1'],
+      id: 'w20',
+      nodes: ['n20', 'n21', 'n22', 'n23', 'n20'],
       version: '1',
       tags: { foo: 'foo', area: 'yes' }
     }),
 
     Rapid.osmRelation({
       id: 'r',
-      members: [{ id: 'w1', role: 'outer' }, { id: 'w2', role: 'inner' }],
+      members: [{ id: 'w10', role: 'outer' }, { id: 'w20', role: 'inner' }],
       version: '1',
       tags: { type: 'multipolygon', foo: 'foo' }
     })
   ]);
 
   // some new objects not in the graph yet..
-  const r1 = Rapid.osmNode({ id: 'r1', loc: [ 12,  12], version: '1' });
-  const r2 = Rapid.osmNode({ id: 'r2', loc: [ 12, -12], version: '1' });
-  const r3 = Rapid.osmNode({ id: 'r3', loc: [-12, -12], version: '1' });
-  const r4 = Rapid.osmNode({ id: 'r4', loc: [-12,  12], version: '1' });
-  const w3 = Rapid.osmWay({
-    id: 'w3',
-    nodes: ['r1', 'r2', 'r3', 'r4', 'r1'],
+  const n30 = Rapid.osmNode({ id: 'n30', loc: [ 12,  12], version: '1' });
+  const n31 = Rapid.osmNode({ id: 'n31', loc: [ 12, -12], version: '1' });
+  const n32 = Rapid.osmNode({ id: 'n32', loc: [-12, -12], version: '1' });
+  const n33 = Rapid.osmNode({ id: 'n33', loc: [-12,  12], version: '1' });
+  const w30 = Rapid.osmWay({
+    id: 'w30',
+    nodes: ['n30', 'n31', 'n32', 'n33', 'n30'],
     version: '1',
     tags: { foo: 'foo_new', area: 'yes' }
   });
 
-  const s1 = Rapid.osmNode({ id: 's1', loc: [ 6,  6], version: '1' });
-  const s2 = Rapid.osmNode({ id: 's2', loc: [ 6, -6], version: '1' });
-  const s3 = Rapid.osmNode({ id: 's3', loc: [-6, -6], version: '1' });
-  const s4 = Rapid.osmNode({ id: 's4', loc: [-6,  6], version: '1' });
-  const w4 = Rapid.osmWay({
-    id: 'w4',
-    nodes: ['s1', 's2', 's3', 's4', 's1'],
+  const n40 = Rapid.osmNode({ id: 'n40', loc: [ 6,  6], version: '1' });
+  const n41 = Rapid.osmNode({ id: 'n41', loc: [ 6, -6], version: '1' });
+  const n42 = Rapid.osmNode({ id: 'n42', loc: [-6, -6], version: '1' });
+  const n43 = Rapid.osmNode({ id: 'n43', loc: [-6,  6], version: '1' });
+  const w40 = Rapid.osmWay({
+    id: 'w40',
+    nodes: ['n40', 'n41', 'n42', 'n43', 'n40'],
     version: '1',
     tags: { foo: 'foo_new', area: 'yes' }
   });
@@ -70,13 +68,13 @@ test.todo('actionMergeRemoteChanges', async t => {
   }
 
 
-  it('non-destuctive merging', () => {
-    it('tags', () => {
+  describe('non-destuctive merging', () => {
+    describe('tags', () => {
       it('doesn\'t merge tags if conflict (local change, remote change)', () => {
         const localTags = { foo: 'foo_local' };      // changed foo
         const remoteTags = { foo: 'foo_remote' };    // changed foo
-        const local = base.entity('a').update({ tags: localTags });
-        const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags });
+        const remote = base.entity('n1').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -84,16 +82,16 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
 
       it('doesn\'t merge tags if conflict (local change, remote delete)', () => {
         var localTags = { foo: 'foo_local' };     // changed foo
         const remoteTags = {};                    // deleted foo
-        const local = base.entity('a').update({ tags: localTags });
-        const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags });
+        const remote = base.entity('n1').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -101,16 +99,16 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
 
       it('doesn\'t merge tags if conflict (local delete, remote change)', () => {
         const localTags = {};                       // deleted foo
         const remoteTags = { foo: 'foo_remote' };   // changed foo
-        const local = base.entity('a').update({ tags: localTags });
-        const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags });
+        const remote = base.entity('n1').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -118,16 +116,16 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
 
       it('doesn\'t merge tags if conflict (local add, remote add)', () => {
         const localTags = { foo: 'foo', bar: 'bar_local' };    // same foo, added bar
         const remoteTags = { foo: 'foo', bar: 'bar_remote' };  // same foo, added bar
-        const local = base.entity('a').update({ tags: localTags });
-        const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags });
+        const remote = base.entity('n1').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -135,17 +133,17 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
 
       it('merges tags if no conflict (remote delete)', () => {
         const localTags = { foo: 'foo', bar: 'bar_local' };   // same foo, added bar
         const remoteTags = {};                                // deleted foo
         const mergedTags = { bar: 'bar_local' };
-        const local = base.entity('a').update({ tags: localTags });
-        const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags });
+        const remote = base.entity('n1').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -153,18 +151,21 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result.entity('a').version).to.eql('2');
-        expect(result.entity('a').tags).to.eql(mergedTags);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n1');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.tags, mergedTags);
       });
 
       it('merges tags if no conflict (local delete)', () => {
         const localTags = {};                                   // deleted foo
         const remoteTags = { foo: 'foo', bar: 'bar_remote' };   // same foo, added bar
         const mergedTags = { bar: 'bar_remote' };
-        const local = base.entity('a').update({ tags: localTags });
-        const remote = base.entity('a').update({ tags: remoteTags, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags });
+        const remote = base.entity('n1').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -172,21 +173,24 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result.entity('a').version).to.eql('2');
-        expect(result.entity('a').tags).to.eql(mergedTags);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n1');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.tags, mergedTags);
       });
     });
 
-    it('nodes', () => {
+    describe('nodes', () => {
       it('doesn\'t merge nodes if location is different', () => {
         const localTags = { foo: 'foo_local' };                // changed foo
         const remoteTags = { foo: 'foo', bar: 'bar_remote' };  // same foo, added bar
         const localLoc = [2, 2];                               // moved node
         const remoteLoc = [3, 3];                              // moved node
-        const local = base.entity('a').update({ tags: localTags, loc: localLoc });
-        const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags, loc: localLoc });
+        const remote = base.entity('n1').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -194,9 +198,9 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
 
       it('merges nodes if location is same', () => {
@@ -205,8 +209,8 @@ test.todo('actionMergeRemoteChanges', async t => {
         const mergedTags = { foo: 'foo_local', bar: 'bar_remote' };
         const localLoc = [2, 2];                               // moved node
         const remoteLoc = [2, 2];                              // moved node
-        const local = base.entity('a').update({ tags: localTags, loc: localLoc });
-        const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags, loc: localLoc });
+        const remote = base.entity('n1').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -214,21 +218,24 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result.entity('a').version).to.eql('2');
-        expect(result.entity('a').tags).to.eql(mergedTags);
-        expect(result.entity('a').loc).to.eql([2, 2]);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n1');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.tags, mergedTags);
+        assert.deepEqual(n.loc, [2, 2]);
       });
     });
 
-    it('ways', () => {
+    describe('ways', () => {
       it('merges ways if nodelist is same', () => {
         const localTags = { foo: 'foo_local', area: 'yes' };                // changed foo
         const remoteTags = { foo: 'foo', bar: 'bar_remote', area: 'yes' };  // same foo, added bar
         const mergedTags = { foo: 'foo_local', bar: 'bar_remote', area: 'yes' };
-        const local = base.entity('w1').update({ tags: localTags });
-        const remote = base.entity('w1').update({ tags: remoteTags, version: '2' });
+        const local = base.entity('w10').update({ tags: localTags });
+        const remote = base.entity('w10').update({ tags: remoteTags, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -236,108 +243,119 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('w1').version).to.eql('2');
-        expect(result.entity('w1').tags).to.eql(mergedTags);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const w = result.entity('w10');
+        assert.equal(w.version, '2');
+        assert.deepEqual(w.tags, mergedTags);
       });
 
       it('merges ways if nodelist changed only remotely', () => {
         const localTags = { foo: 'foo_local', area: 'yes' };                // changed foo
         const remoteTags = { foo: 'foo', bar: 'bar_remote', area: 'yes' };  // same foo, added bar
         const mergedTags = { foo: 'foo_local', bar: 'bar_remote', area: 'yes' };
-        const localNodes = ['p1', 'p2', 'p3', 'p4', 'p1'];                  // didn't change nodes
-        const remoteNodes = ['p1', 'r2', 'r3', 'p4', 'p1'];                 // changed nodes
-        const local = base.entity('w1').update({ tags: localTags, nodes: localNodes });
-        const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
+        const localNodes = ['n10', 'n11', 'n12', 'n13', 'n10'];             // didn't change nodes
+        const remoteNodes = ['n10', 'n31', 'n32', 'n13', 'n10'];            // changed nodes
+        const local = base.entity('w10').update({ tags: localTags, nodes: localNodes });
+        const remote = base.entity('w10').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
         const localGraph = makeGraph([local]);
-        const remoteGraph = makeGraph([remote, r2, r3]);
+        const remoteGraph = makeGraph([remote, n31, n32]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('w1').version).to.eql('2');
-        expect(result.entity('w1').tags).to.eql(mergedTags);
-        expect(result.entity('w1').nodes).to.eql(remoteNodes);
-        expect(result.hasEntity('r2')).to.eql(r2);
-        expect(result.hasEntity('r3')).to.eql(r3);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const w = result.entity('w10');
+        assert.equal(w.version, '2');
+        assert.deepEqual(w.tags, mergedTags);
+        assert.deepEqual(w.nodes, remoteNodes);
+        assert.equal(result.hasEntity('n31'), n31);  // remote node added to local
+        assert.equal(result.hasEntity('n32'), n32);  // remote node added to local
       });
 
       it('merges ways if nodelist changed only locally', () => {
         const localTags = { foo: 'foo_local', area: 'yes' };                // changed foo
         const remoteTags = { foo: 'foo', bar: 'bar_remote', area: 'yes' };  // same foo, added bar
         const mergedTags = { foo: 'foo_local', bar: 'bar_remote', area: 'yes' };
-        const localNodes = ['p1', 'r2', 'r3', 'p4', 'p1'];                  // changed nodes
-        const remoteNodes = ['p1', 'p2', 'p3', 'p4', 'p1'];                 // didn't change nodes
-        const local = base.entity('w1').update({ tags: localTags, nodes: localNodes });
-        const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
-        const localGraph = makeGraph([local, r2, r3]);
+        const localNodes = ['n10', 'n31', 'n32', 'n13', 'n10'];             // changed nodes
+        const remoteNodes = ['n10', 'n11', 'n12', 'n13', 'n10'];            // didn't change nodes
+        const local = base.entity('w10').update({ tags: localTags, nodes: localNodes });
+        const remote = base.entity('w10').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
+        const localGraph = makeGraph([local, n31, n32]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('w1').version).to.eql('2');
-        expect(result.entity('w1').tags).to.eql(mergedTags);
-        expect(result.entity('w1').nodes).to.eql(localNodes);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const w = result.entity('w10');
+        assert.equal(w.version, '2');
+        assert.deepEqual(w.tags, mergedTags);
+        assert.deepEqual(w.nodes, localNodes);
       });
 
       it('merges ways if nodelist changes don\'t overlap', () => {
         const localTags   = { foo: 'foo_local', area: 'yes' };               // changed foo
         const remoteTags  = { foo: 'foo', bar: 'bar_remote', area: 'yes' };  // same foo, added bar
         const mergedTags  = { foo: 'foo_local', bar: 'bar_remote', area: 'yes' };
-        const localNodes  = ['p1', 'r1', 'r2',  'p3',     'p4',     'p1'];   // changed p2 -> r1, r2
-        const remoteNodes = ['p1',    'p2',     'p3',  'r3', 'r4',  'p1'];   // changed p4 -> r3, r4
-        const mergedNodes = ['p1', 'r1', 'r2',  'p3',  'r3', 'r4',  'p1'];
-        const local = base.entity('w1').update({ tags: localTags, nodes: localNodes });
-        const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
-        const localGraph = makeGraph([local, r1, r2]);
-        const remoteGraph = makeGraph([remote, r3, r4]);
+        const localNodes  = ['n10', 'n30', 'n31',  'n12',     'n13',      'n10'];   // changed n11 -> n30, n31
+        const remoteNodes = ['n10',    'n11',      'n12',  'n32', 'n33',  'n10'];   // changed n13 -> n32, n33
+        const mergedNodes = ['n10', 'n30', 'n31',  'n12',  'n32', 'n33',  'n10'];
+        const local = base.entity('w10').update({ tags: localTags, nodes: localNodes });
+        const remote = base.entity('w10').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
+        const localGraph = makeGraph([local, n30, n31]);
+        const remoteGraph = makeGraph([remote, n32, n33]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
+        assert.ok(result instanceof Rapid.Graph);
 
-        expect(result.entity('w1').version).to.eql('2');
-        expect(result.entity('w1').tags).to.eql(mergedTags);
-        expect(result.entity('w1').nodes).to.eql(mergedNodes);
-        expect(result.hasEntity('r3')).to.eql(r3);
-        expect(result.hasEntity('r4')).to.eql(r4);
+        const w = result.entity('w10');
+        assert.equal(w.version, '2');
+        assert.deepEqual(w.tags, mergedTags);
+        assert.deepEqual(w.nodes, mergedNodes);
+        assert.equal(result.hasEntity('n32'), n32);  // remote node added to local
+        assert.equal(result.hasEntity('n33'), n33);  // remote node added to local
       });
 
       it('doesn\'t merge ways if nodelist changes overlap', () => {
         const localTags   = { foo: 'foo_local', area: 'yes' };                // changed foo
         const remoteTags  = { foo: 'foo', bar: 'bar_remote', area: 'yes' };   // same foo, added bar
-        const localNodes  = ['p1', 'r1', 'r2', 'p3', 'p4', 'p1'];             // changed p2 -> r1, r2
-        const remoteNodes = ['p1', 'r3', 'r4', 'p3', 'p4', 'p1'];             // changed p2 -> r3, r4
-        const local = base.entity('w1').update({ tags: localTags, nodes: localNodes });
-        const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
-        const localGraph = makeGraph([local, r1, r2]);
-        const remoteGraph = makeGraph([remote, r3, r4]);
+        const localNodes  = ['n10', 'n30', 'n31', 'n12', 'n13', 'n10'];       // changed n11 -> n30, n31
+        const remoteNodes = ['n10', 'n32', 'n33', 'n12', 'n13', 'n10'];       // changed n11 -> n32, n33
+        const local = base.entity('w10').update({ tags: localTags, nodes: localNodes });
+        const remote = base.entity('w10').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
+        const localGraph = makeGraph([local, n30, n31]);
+        const remoteGraph = makeGraph([remote, n32, n33]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
 
       it('merges ways if childNode location is same', () => {
         const localLoc = [12, 12];     // moved node
         const remoteLoc = [12, 12];    // moved node
-        const local = base.entity('p1').update({ loc: localLoc });
-        const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
+        const local = base.entity('n10').update({ loc: localLoc });
+        const remote = base.entity('n10').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -345,17 +363,20 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('p1').version).to.eql('2');
-        expect(result.entity('p1').loc).to.eql(remoteLoc);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n10');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.loc, remoteLoc);
       });
 
       it('doesn\'t merge ways if childNode location is different', () => {
         const localLoc = [12, 12];     // moved node
         const remoteLoc = [13, 13];    // moved node
-        const local = base.entity('p1').update({ loc: localLoc });
-        const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
+        const local = base.entity('n10').update({ loc: localLoc });
+        const remote = base.entity('n10').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -363,22 +384,22 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
     });
 
-    it('relations', () => {
+    describe('relations', () => {
       it('doesn\'t merge relations if members have changed', () => {
         const localTags   = { foo: 'foo_local', type: 'multipolygon' };                    // changed foo
         const remoteTags  = { foo: 'foo', bar: 'bar_remote', type: 'multipolygon' };       // same foo, added bar
-        const localMembers = [{ id: 'w1', role: 'outer' }, { id: 'w2', role: 'inner' }];   // same members
-        const remoteMembers = [{ id: 'w1', role: 'outer' }, { id: 'w4', role: 'inner' }];  // changed inner to w4
+        const localMembers = [{ id: 'w10', role: 'outer' }, { id: 'w20', role: 'inner' }];   // same members
+        const remoteMembers = [{ id: 'w10', role: 'outer' }, { id: 'w40', role: 'inner' }];  // changed inner to w40
         const local = base.entity('r').update({ tags: localTags, members: localMembers });
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
         const localGraph = makeGraph([local]);
-        const remoteGraph = makeGraph([remote, s1, s2, s3, s4, w4]);
+        const remoteGraph = makeGraph([remote, n40, n41, n42, n43, w40]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
@@ -386,15 +407,15 @@ test.todo('actionMergeRemoteChanges', async t => {
         };
         const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
-        expect(result).to.eql(localGraph);
+        assert.equal(result, localGraph);
       });
 
       it('merges relations if members are same and changed tags don\'t conflict', () => {
         const localTags   = { foo: 'foo_local', type: 'multipolygon' };                    // changed foo
         const remoteTags  = { foo: 'foo', bar: 'bar_remote', type: 'multipolygon' };       // same foo, added bar
         const mergedTags  = { foo: 'foo_local', bar: 'bar_remote', type: 'multipolygon' };
-        const localMembers = [{ id: 'w1', role: 'outer' }, { id: 'w2', role: 'inner' }];   // same members
-        const remoteMembers = [{ id: 'w1', role: 'outer' }, { id: 'w2', role: 'inner' }];  // same members
+        const localMembers = [{ id: 'w10', role: 'outer' }, { id: 'w20', role: 'inner' }];   // same members
+        const remoteMembers = [{ id: 'w10', role: 'outer' }, { id: 'w20', role: 'inner' }];  // same members
         const local = base.entity('r').update({ tags: localTags, members: localMembers });
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
         const localGraph = makeGraph([local]);
@@ -406,18 +427,21 @@ test.todo('actionMergeRemoteChanges', async t => {
         };
         const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
-        expect(result.entity('r').version).to.eql('2');
-        expect(result.entity('r').tags).to.eql(mergedTags);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const r = result.entity('r');
+        assert.equal(r.version, '2');
+        assert.deepEqual(r.tags, mergedTags);
       });
     });
 
-    it('#conflicts', () => {
+    describe('#conflicts', () => {
       it('returns conflict details', () => {
         const localTags = { foo: 'foo_local' };                 // changed foo
         const remoteTags = { foo: 'foo', bar: 'bar_remote' };   // same foo, added bar
         const remoteLoc = [2, 2];                               // moved node
-        const local = base.entity('a').update({ tags: localTags });
-        const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags });
+        const remote = base.entity('n1').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -425,23 +449,27 @@ test.todo('actionMergeRemoteChanges', async t => {
           remoteGraph: remoteGraph,
           discardTags: discardTags
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
-        action(localGraph);
-        expect(action.conflicts()).not.to.be.empty;
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
+        const result = action(localGraph);
+        assert.equal(result, localGraph);
+
+        const conflicts = action.conflicts();
+        assert.ok(conflicts instanceof Array);
+        assert.ok(conflicts.length > 0);
       });
     });
   });
 
 
-  it('destuctive merging', () => {
-    it('nodes', () => {
+  describe('destuctive merging', () => {
+    describe('nodes', () => {
       it('merges nodes with \'force_local\' option', () => {
         const localTags = { foo: 'foo_local' };     // changed foo
         const remoteTags = { foo: 'foo_remote' };   // changed foo
         const localLoc = [2, 2];                    // moved node
         const remoteLoc = [3, 3];                   // moved node
-        const local = base.entity('a').update({ tags: localTags, loc: localLoc });
-        const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags, loc: localLoc });
+        const remote = base.entity('n1').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -450,11 +478,14 @@ test.todo('actionMergeRemoteChanges', async t => {
           discardTags: discardTags,
           strategy: 'force_local'
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result.entity('a').version).to.eql('2');
-        expect(result.entity('a').tags).to.eql(localTags);
-        expect(result.entity('a').loc).to.eql(localLoc);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n1');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.tags, localTags);
+        assert.deepEqual(n.loc, localLoc);
       });
 
       it('merges nodes with \'force_remote\' option', () => {
@@ -462,8 +493,8 @@ test.todo('actionMergeRemoteChanges', async t => {
         const remoteTags = { foo: 'foo_remote' };   // changed foo
         const localLoc = [2, 2];                    // moved node
         const remoteLoc = [3, 3];                   // moved node
-        const local = base.entity('a').update({ tags: localTags, loc: localLoc });
-        const remote = base.entity('a').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
+        const local = base.entity('n1').update({ tags: localTags, loc: localLoc });
+        const remote = base.entity('n1').update({ tags: remoteTags, loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -472,66 +503,75 @@ test.todo('actionMergeRemoteChanges', async t => {
           discardTags: discardTags,
           strategy: 'force_remote'
         };
-        const action = Rapid.actionMergeRemoteChanges('a', opts);
+        const action = Rapid.actionMergeRemoteChanges('n1', opts);
         const result = action(localGraph);
-        expect(result.entity('a').version).to.eql('2');
-        expect(result.entity('a').tags).to.eql(remoteTags);
-        expect(result.entity('a').loc).to.eql(remoteLoc);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n1');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.tags, remoteTags);
+        assert.deepEqual(n.loc, remoteLoc);
       });
     });
 
-    it('ways', () => {
+    describe('ways', () => {
       it('merges ways with \'force_local\' option', () => {
         const localTags   = { foo: 'foo_local', area: 'yes' };      // changed foo
         const remoteTags  = { foo: 'foo_remote', area: 'yes' };     // changed foo
-        const localNodes  = ['p1', 'r1', 'r2', 'p3', 'p4', 'p1'];   // changed p2 -> r1, r2
-        const remoteNodes = ['p1', 'r3', 'r4', 'p3', 'p4', 'p1'];   // changed p2 -> r3, r4
-        const local = base.entity('w1').update({ tags: localTags, nodes: localNodes });
-        const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
-        const localGraph = makeGraph([local, r1, r2]);
-        const remoteGraph = makeGraph([remote, r3, r4]);
+        const localNodes  = ['n10', 'n30', 'n31', 'n12', 'n13', 'n10'];   // changed n11 -> n30, n31
+        const remoteNodes = ['n10', 'n32', 'n33', 'n12', 'n13', 'n10'];   // changed n11 -> n32, n33
+        const local = base.entity('w10').update({ tags: localTags, nodes: localNodes });
+        const remote = base.entity('w10').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
+        const localGraph = makeGraph([local, n30, n31]);
+        const remoteGraph = makeGraph([remote, n32, n33]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
           discardTags: discardTags,
           strategy: 'force_local'
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('w1').version).to.eql('2');
-        expect(result.entity('w1').tags).to.eql(localTags);
-        expect(result.entity('w1').nodes).to.eql(localNodes);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const w = result.entity('w10');
+        assert.equal(w.version, '2');
+        assert.deepEqual(w.tags, localTags);
+        assert.deepEqual(w.nodes, localNodes);
       });
 
       it('merges ways with \'force_remote\' option', () => {
         const localTags   = { foo: 'foo_local', area: 'yes' };      // changed foo
         const remoteTags  = { foo: 'foo_remote', area: 'yes' };     // changed foo
-        const localNodes  = ['p1', 'r1', 'r2', 'p3', 'p4', 'p1'];   // changed p2 -> r1, r2
-        const remoteNodes = ['p1', 'r3', 'r4', 'p3', 'p4', 'p1'];   // changed p2 -> r3, r4
-        const local = base.entity('w1').update({ tags: localTags, nodes: localNodes });
-        const remote = base.entity('w1').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
-        const localGraph = makeGraph([local, r1, r2]);
-        const remoteGraph = makeGraph([remote, r3, r4]);
+        const localNodes  = ['n10', 'n30', 'n31', 'n12', 'n13', 'n10'];   // changed n11 -> n30, n31
+        const remoteNodes = ['n10', 'n32', 'n33', 'n12', 'n13', 'n10'];   // changed n11 -> n32, n33
+        const local = base.entity('w10').update({ tags: localTags, nodes: localNodes });
+        const remote = base.entity('w10').update({ tags: remoteTags, nodes: remoteNodes, version: '2' });
+        const localGraph = makeGraph([local, n30, n31]);
+        const remoteGraph = makeGraph([remote, n32, n33]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
           discardTags: discardTags,
           strategy: 'force_remote'
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('w1').version).to.eql('2');
-        expect(result.entity('w1').tags).to.eql(remoteTags);
-        expect(result.entity('w1').nodes).to.eql(remoteNodes);
-        expect(result.hasEntity('r3')).to.eql(r3);
-        expect(result.hasEntity('r4')).to.eql(r4);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const w = result.entity('w10');
+        assert.equal(w.version, '2');
+        assert.deepEqual(w.tags, remoteTags);
+        assert.deepEqual(w.nodes, remoteNodes);
+        assert.equal(result.hasEntity('n32'), n32);  // remote node added to local
+        assert.equal(result.hasEntity('n33'), n33);  // remote node added to local
       });
 
       it('merges way childNodes with \'force_local\' option', () => {
         const localLoc = [12, 12];     // moved node
         const remoteLoc = [13, 13];    // moved node
-        const local = base.entity('p1').update({ loc: localLoc });
-        const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
+        const local = base.entity('n10').update({ loc: localLoc });
+        const remote = base.entity('n10').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -540,17 +580,20 @@ test.todo('actionMergeRemoteChanges', async t => {
           discardTags: discardTags,
           strategy: 'force_local'
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('p1').version).to.eql('2');
-        expect(result.entity('p1').loc).to.eql(localLoc);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n10');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.loc, localLoc);
       });
 
       it('merges way childNodes with \'force_remote\' option', () => {
         const localLoc = [12, 12];     // moved node
         const remoteLoc = [13, 13];    // moved node
-        const local = base.entity('p1').update({ loc: localLoc });
-        const remote = base.entity('p1').update({ loc: remoteLoc, version: '2' });
+        const local = base.entity('n10').update({ loc: localLoc });
+        const remote = base.entity('n10').update({ loc: remoteLoc, version: '2' });
         const localGraph = makeGraph([local]);
         const remoteGraph = makeGraph([remote]);
         const opts = {
@@ -559,44 +602,49 @@ test.todo('actionMergeRemoteChanges', async t => {
           discardTags: discardTags,
           strategy: 'force_remote'
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('p1').version).to.eql('2');
-        expect(result.entity('p1').loc).to.eql(remoteLoc);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const n = result.entity('n10');
+        assert.equal(n.version, '2');
+        assert.deepEqual(n.loc, remoteLoc);
       });
 
       it('keeps only important childNodes when merging', () => {
-        const localNodes  = ['p1', 'r1', 'r2', 'p3', 'p4', 'p1'];  // changed p2 -> r1, r2
-        const remoteNodes = ['p1', 'r3', 'r4', 'p3', 'p4', 'p1'];  // changed p2 -> r3, r4
-        const localr1 = r1.update({ tags: { highway: 'traffic_signals' }});  // r1 has interesting tags
-        const local = base.entity('w1').update({ nodes: localNodes });
-        const remote = base.entity('w1').update({ nodes: remoteNodes, version: '2' });
-        const localGraph = makeGraph([local, localr1, r2]);
-        const remoteGraph = makeGraph([remote, r3, r4]);
+        const localNodes  = ['n10', 'n30', 'n31', 'n12', 'n13', 'n10'];  // changed n11 -> n30, n31
+        const remoteNodes = ['n10', 'n32', 'n33', 'n12', 'n13', 'n10'];  // changed n11 -> n32, n33
+        const localn30 = n30.update({ tags: { highway: 'traffic_signals' }});  // n30 has interesting tags
+        const local = base.entity('w10').update({ nodes: localNodes });
+        const remote = base.entity('w10').update({ nodes: remoteNodes, version: '2' });
+        const localGraph = makeGraph([local, localn30, n31]);
+        const remoteGraph = makeGraph([remote, n32, n33]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
           discardTags: discardTags,
           strategy: 'force_remote'
         };
-        const action = Rapid.actionMergeRemoteChanges('w1', opts);
+        const action = Rapid.actionMergeRemoteChanges('w10', opts);
         const result = action(localGraph);
-        expect(result.entity('w1').nodes).to.eql(remoteNodes);
-        expect(result.hasEntity('r1')).to.eql(localr1);
-        expect(result.hasEntity('r2')).to.be.not.ok;
+        assert.ok(result instanceof Rapid.Graph);
+
+        assert.deepEqual(result.entity('w10').nodes, remoteNodes);
+        assert.equal(result.hasEntity('n30'), localn30);
+        assert.ok(!result.hasEntity('n31'));
       });
     });
 
-    it('relations', () => {
+    describe('relations', () => {
       it('merges relations with \'force_local\' option', () => {
         const localTags = { foo: 'foo_local', type: 'multipolygon' };    // changed foo
         const remoteTags = { foo: 'foo_remote', type: 'multipolygon' };  // changed foo
-        const localMembers = [{ id: 'w3', role: 'outer' }, { id: 'w2', role: 'inner' }];   // changed outer to w3
-        const remoteMembers = [{ id: 'w1', role: 'outer' }, { id: 'w4', role: 'inner' }];  // changed inner to w4
+        const localMembers = [{ id: 'w30', role: 'outer' }, { id: 'w20', role: 'inner' }];   // changed outer to w30
+        const remoteMembers = [{ id: 'w10', role: 'outer' }, { id: 'w40', role: 'inner' }];  // changed inner to w40
         const local = base.entity('r').update({ tags: localTags, members: localMembers });
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
-        const localGraph = makeGraph([local, r1, r2, r3, r4, w3]);
-        const remoteGraph = makeGraph([remote, s1, s2, s3, s4, w4]);
+        const localGraph = makeGraph([local, n30, n31, n32, n33, w30]);
+        const remoteGraph = makeGraph([remote, n40, n41, n42, n43, w40]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
@@ -605,20 +653,23 @@ test.todo('actionMergeRemoteChanges', async t => {
         };
         const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
-        expect(result.entity('r').version).to.eql('2');
-        expect(result.entity('r').tags).to.eql(localTags);
-        expect(result.entity('r').members).to.eql(localMembers);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const r = result.entity('r');
+        assert.equal(r.version, '2');
+        assert.deepEqual(r.tags, localTags);
+        assert.deepEqual(r.members, localMembers);
       });
 
       it('merges relations with \'force_remote\' option', () => {
         const localTags = { foo: 'foo_local', type: 'multipolygon' };      // changed foo
         const remoteTags = { foo: 'foo_remote', type: 'multipolygon' };    // changed foo
-        const localMembers = [{ id: 'w3', role: 'outer' }, { id: 'w2', role: 'inner' }];   // changed outer to w3
-        const remoteMembers = [{ id: 'w1', role: 'outer' }, { id: 'w4', role: 'inner' }];  // changed inner to w4
+        const localMembers = [{ id: 'w30', role: 'outer' }, { id: 'w20', role: 'inner' }];   // changed outer to w30
+        const remoteMembers = [{ id: 'w10', role: 'outer' }, { id: 'w40', role: 'inner' }];  // changed inner to w40
         const local = base.entity('r').update({ tags: localTags, members: localMembers });
         const remote = base.entity('r').update({ tags: remoteTags, members: remoteMembers, version: '2' });
-        const localGraph = makeGraph([local, r1, r2, r3, r4, w3]);
-        const remoteGraph = makeGraph([remote, s1, s2, s3, s4, w4]);
+        const localGraph = makeGraph([local, n30, n31, n32, n33, w30]);
+        const remoteGraph = makeGraph([remote, n40, n41, n42, n43, w40]);
         const opts = {
           localGraph: localGraph,
           remoteGraph: remoteGraph,
@@ -627,9 +678,12 @@ test.todo('actionMergeRemoteChanges', async t => {
         };
         const action = Rapid.actionMergeRemoteChanges('r', opts);
         const result = action(localGraph);
-        expect(result.entity('r').version).to.eql('2');
-        expect(result.entity('r').tags).to.eql(remoteTags);
-        expect(result.entity('r').members).to.eql(remoteMembers);
+        assert.ok(result instanceof Rapid.Graph);
+
+        const r = result.entity('r');
+        assert.equal(r.version, '2');
+        assert.deepEqual(r.tags, remoteTags);
+        assert.deepEqual(r.members, remoteMembers);
       });
     });
   });

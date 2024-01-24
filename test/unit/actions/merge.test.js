@@ -1,10 +1,10 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionMerge', async t => {
-  await t.test('merges multiple points to a line', t => {
+describe('actionMerge', () => {
+  it('merges multiple points to a line', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a', tags: {a: 'a'}}),
       Rapid.osmNode({id: 'b', tags: {b: 'b'}}),
@@ -24,7 +24,7 @@ test('actionMerge', async t => {
   });
 
 
-  await t.test('merges multiple points to an area', t => {
+  it('merges multiple points to an area', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a', tags: {a: 'a'}}),
       Rapid.osmNode({id: 'b', tags: {b: 'b'}}),
@@ -44,7 +44,7 @@ test('actionMerge', async t => {
   });
 
 
-  await t.test('preserves original point if possible', t => {
+  it('preserves original point if possible', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a', loc: [1, 0], tags: {a: 'a'}}),
       Rapid.osmNode({id: 'p', loc: [0, 0], tags: {p: 'p'}}),

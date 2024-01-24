@@ -1,11 +1,12 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionMergeNodes', async t => {
 
-  await t.test('#disabled', async t => {
-    await t.test('enabled for both internal and endpoint nodes', t => {
+describe('actionMergeNodes', () => {
+
+  describe('#disabled', () => {
+    it('enabled for both internal and endpoint nodes', () => {
       //
       // a --- b --- c
       //
@@ -29,7 +30,7 @@ test('actionMergeNodes', async t => {
   });
 
 
-  await t.test('merges two isolated nodes, averaging loc', t => {
+  it('merges two isolated nodes, averaging loc', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({ id: 'a', loc: [0, 0] }),
       Rapid.osmNode({ id: 'b', loc: [4, 4] })
@@ -45,7 +46,7 @@ test('actionMergeNodes', async t => {
   });
 
 
-  await t.test('merges two isolated nodes, merging tags, and keeping loc of the interesting node', t => {
+  it('merges two isolated nodes, merging tags, and keeping loc of the interesting node', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({ id: 'a', loc: [0, 0], tags: { highway: 'traffic_signals' }}),
       Rapid.osmNode({ id: 'b', loc: [4, 4] })
@@ -62,7 +63,7 @@ test('actionMergeNodes', async t => {
   });
 
 
-  await t.test('merges two isolated nodes, merging tags, and averaging loc of both interesting nodes', t => {
+  it('merges two isolated nodes, merging tags, and averaging loc of both interesting nodes', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({ id: 'a', loc: [0, -2], tags: { highway: 'traffic_signals' } }),
       Rapid.osmNode({ id: 'b', loc: [0,  2], tags: { crossing: 'marked' } })
@@ -79,7 +80,7 @@ test('actionMergeNodes', async t => {
   });
 
 
-  await t.test('merges two nodes along a single way', t => {
+  it('merges two nodes along a single way', () => {
     //
     //  scenerio:         merge b,c:
     //
@@ -103,7 +104,7 @@ test('actionMergeNodes', async t => {
   });
 
 
-  await t.test('merges two nodes from two ways', t => {
+  it('merges two nodes from two ways', () => {
     //
     //  scenerio:        merge b,d:
     //
@@ -134,7 +135,7 @@ test('actionMergeNodes', async t => {
   });
 
 
-  await t.test('merges three nodes from three ways', t => {
+  it('merges three nodes from three ways', () => {
     //
     //  scenerio:        merge b,d:
     //

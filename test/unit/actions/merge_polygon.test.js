@@ -1,9 +1,9 @@
-import { beforeEach, test } from 'node:test';
+import { beforeEach, describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionMergePolygon', async t => {
+describe('actionMergePolygon', () => {
 
   let graph;
 
@@ -47,7 +47,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('creates a multipolygon from two closed ways', t => {
+  it('creates a multipolygon from two closed ways', () => {
     const result = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
     assert.ok(result instanceof Rapid.Graph);
 
@@ -67,7 +67,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('creates a multipolygon from a closed way and a multipolygon relation', t => {
+  it('creates a multipolygon from a closed way and a multipolygon relation', () => {
     const graph2 = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
     assert.ok(graph2 instanceof Rapid.Graph);
     const result = Rapid.actionMergePolygon(['r', 'w2'])(graph2);
@@ -79,7 +79,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('creates a multipolygon from two multipolygon relations', t => {
+  it('creates a multipolygon from two multipolygon relations', () => {
     const graph2 = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
     assert.ok(graph2 instanceof Rapid.Graph);
     const graph3 = Rapid.actionMergePolygon(['w2', 'w5'], 'r2')(graph2);
@@ -100,7 +100,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('merges multipolygon tags', t => {
+  it('merges multipolygon tags', () => {
     const graph2 = new Rapid.Graph([
       Rapid.osmRelation({id: 'r1', tags: {type: 'multipolygon', a: 'a'}}),
       Rapid.osmRelation({id: 'r2', tags: {type: 'multipolygon', b: 'b'}})
@@ -115,7 +115,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('merges tags from closed outer ways', t => {
+  it('merges tags from closed outer ways', () => {
     const graph2 = graph.replace(graph.entity('w0').update({ tags: { 'building': 'yes' }}));
 
     const result = Rapid.actionMergePolygon(['w0', 'w5'], 'r')(graph2);
@@ -125,7 +125,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('merges no tags from unclosed outer ways', t => {
+  it('merges no tags from unclosed outer ways', () => {
     const r1 = Rapid.osmRelation({id: 'r1', tags: {type: 'multipolygon'}});
     const r2 = Rapid.osmRelation({id: 'r2', tags: {type: 'multipolygon'},
       members: [
@@ -145,7 +145,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('merges no tags from inner ways', t => {
+  it('merges no tags from inner ways', () => {
     const graph2 = graph.replace(graph.entity('w1').update({ tags: { 'natural': 'water' }}));
 
     const result = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph2);
@@ -155,7 +155,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('doesn\'t copy area tags from ways', t => {
+  it('doesn\'t copy area tags from ways', () => {
     const graph2 = graph.replace(graph.entity('w0').update({ tags: { 'area': 'yes' }}));
 
     const result = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph2);
@@ -164,7 +164,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('creates a multipolygon with two disjunct outer rings', t => {
+  it('creates a multipolygon with two disjunct outer rings', () => {
     const result = Rapid.actionMergePolygon(['w0', 'w5'], 'r')(graph);
     assert.ok(result instanceof Rapid.Graph);
 
@@ -174,7 +174,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('creates a multipolygon with an island in a hole', t => {
+  it('creates a multipolygon with an island in a hole', () => {
     const graph2 = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph);
     assert.ok(graph2 instanceof Rapid.Graph);
     const result = Rapid.actionMergePolygon(['r', 'w2'])(graph2);
@@ -187,7 +187,7 @@ test('actionMergePolygon', async t => {
   });
 
 
-  await t.test('extends a multipolygon with multi-way rings', t => {
+  it('extends a multipolygon with multi-way rings', () => {
     const graph2 = graph.replace(
       Rapid.osmRelation({ id: 'r', tags: { type: 'multipolygon' }, members: [
         { type: 'way', role: 'outer', id: 'w0' },
