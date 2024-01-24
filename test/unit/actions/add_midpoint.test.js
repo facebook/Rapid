@@ -1,9 +1,9 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionAddMidpoint', async t => {
-  await t.test('adds the node at the midpoint location', t => {
+describe('actionAddMidpoint', () => {
+  it('adds the node at the midpoint location', () => {
     const node = Rapid.osmNode();
     const a = Rapid.osmNode();
     const b = Rapid.osmNode();
@@ -15,7 +15,7 @@ test('actionAddMidpoint', async t => {
     assert.deepEqual(result.entity(node.id).loc, [1, 2]);
   });
 
-  await t.test('adds the node to a way that contains the given edge in forward order', t => {
+  it('adds the node to a way that contains the given edge in forward order', () => {
     const node = Rapid.osmNode();
     const a = Rapid.osmNode();
     const b = Rapid.osmNode();
@@ -30,7 +30,7 @@ test('actionAddMidpoint', async t => {
     assert.deepEqual(result.entity(w2.id).nodes, [a.id, node.id, b.id]);
   });
 
-  await t.test('adds the node to a way that contains the given edge in reverse order', t => {
+  it('adds the node to a way that contains the given edge in reverse order', () => {
     const node = Rapid.osmNode();
     const a = Rapid.osmNode();
     const b = Rapid.osmNode();
@@ -45,7 +45,7 @@ test('actionAddMidpoint', async t => {
     assert.deepEqual(result.entity(w2.id).nodes, [b.id, node.id, a.id]);
   });
 
-  await t.test('turns an invalid double-back into a self-intersection', t => {
+  it('turns an invalid double-back into a self-intersection', () => {
     // a====b (aba)
     // Expected result (converts to a valid loop):
     // a---b (acba)

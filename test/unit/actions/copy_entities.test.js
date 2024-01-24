@@ -1,10 +1,10 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionCopyEntities', async t => {
-  await t.test('copies a node', t => {
+describe('actionCopyEntities', () => {
+  it('copies a node', () => {
     const a = Rapid.osmNode({id: 'a'});
     const base = new Rapid.Graph([a]);
 
@@ -18,7 +18,7 @@ test('actionCopyEntities', async t => {
   });
 
 
-  await t.test('copies a way', t => {
+  it('copies a way', () => {
     const a = Rapid.osmNode({id: 'a'});
     const b = Rapid.osmNode({id: 'b'});
     const w = Rapid.osmWay({id: 'w', nodes: ['a', 'b']});
@@ -34,7 +34,7 @@ test('actionCopyEntities', async t => {
   });
 
 
-  await t.test('copies multiple nodes', t => {
+  it('copies multiple nodes', () => {
     const base = new Rapid.Graph([
       Rapid.osmNode({id: 'a'}),
       Rapid.osmNode({id: 'b'})
@@ -50,7 +50,7 @@ test('actionCopyEntities', async t => {
   });
 
 
-  await t.test('copies multiple ways, keeping the same connections', t => {
+  it('copies multiple ways, keeping the same connections', () => {
     const base = new Rapid.Graph([
       Rapid.osmNode({id: 'a'}),
       Rapid.osmNode({id: 'b'}),
@@ -75,7 +75,7 @@ test('actionCopyEntities', async t => {
   });
 
 
-  await t.test('obtains source entities from an alternate graph', t => {
+  it('obtains source entities from an alternate graph', () => {
     const a = Rapid.osmNode({id: 'a'});
     const old = new Rapid.Graph([a]);
     const base = new Rapid.Graph();

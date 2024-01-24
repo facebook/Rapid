@@ -1,10 +1,11 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionJoin', async t => {
-  await t.test('#disabled', async t => {
-    await t.test('returns falsy for ways that share an end/start node', t => {
+
+describe('actionJoin', () => {
+  describe('#disabled', () => {
+    it('returns falsy for ways that share an end/start node', () => {
       // a --> b ==> c
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
@@ -18,7 +19,7 @@ test('actionJoin', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for ways that share a start/end node', t => {
+    it('returns falsy for ways that share a start/end node', () => {
       // a <-- b <== c
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
@@ -32,7 +33,7 @@ test('actionJoin', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for ways that share a start/start node', t => {
+    it('returns falsy for ways that share a start/start node', () => {
       // a <-- b ==> c
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
@@ -46,7 +47,7 @@ test('actionJoin', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for ways that share an end/end node', t => {
+    it('returns falsy for ways that share an end/end node', () => {
       // a --> b <== c
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
@@ -60,7 +61,7 @@ test('actionJoin', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for more than two ways when connected, regardless of order', t => {
+    it('returns falsy for more than two ways when connected, regardless of order', () => {
       // a --> b ==> c ~~> d
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
@@ -80,7 +81,7 @@ test('actionJoin', async t => {
       assert.ok(!Rapid.actionJoin(['~', '-', '=']).disabled(graph));
     });
 
-    await t.test('returns \'not_eligible\' for non-line geometries', t => {
+    it('returns \'not_eligible\' for non-line geometries', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]})
       ]);
@@ -89,7 +90,7 @@ test('actionJoin', async t => {
       assert.equal(disabled, 'not_eligible');
     });
 
-    await t.test('returns \'not_adjacent\' for ways that don\'t share the necessary nodes', t => {
+    it('returns \'not_adjacent\' for ways that don\'t share the necessary nodes', () => {
       // a -- b -- c
       //      |
       //      d
@@ -107,7 +108,7 @@ test('actionJoin', async t => {
     });
 
     for (const type of ['restriction', 'connectivity']) {
-      await t.test(`returns ${type} in situations where a ${type} relation would be damaged (a)`, t => {
+      it(`returns ${type} in situations where a ${type} relation would be damaged (a)`, () => {
         // a --> b ==> c
         // from: -
         // to: =
@@ -129,7 +130,7 @@ test('actionJoin', async t => {
         assert.equal(disabled, type);
       });
 
-      await t.test(`returns ${type} in situations where a ${type} relation would be damaged (b)`, t => {
+      it(`returns ${type} in situations where a ${type} relation would be damaged (b)`, () => {
         // a --> b ==> c
         //       |
         //       d
@@ -155,7 +156,7 @@ test('actionJoin', async t => {
         assert.equal(disabled, type);
       });
 
-      await t.test(`returns falsy in situations where a ${type} relation would not be damaged (a)`, t => {
+      it(`returns falsy in situations where a ${type} relation would not be damaged (a)`, () => {
         // a --> b ==> c
         // |
         // d
@@ -181,7 +182,7 @@ test('actionJoin', async t => {
         assert.ok(!disabled);
       });
 
-      await t.test(`returns falsy in situations where a ${type} relation would not be damaged (b)`, t => {
+      it(`returns falsy in situations where a ${type} relation would not be damaged (b)`, () => {
         //       d
         //       |
         // a --> b ==> c
@@ -212,7 +213,7 @@ test('actionJoin', async t => {
       });
     }
 
-    await t.test('returns \'conflicting_relations\' when a relation would be extended', t => {
+    it('returns \'conflicting_relations\' when a relation would be extended', () => {
       // a --> b ==> c
       // members: -
       // not member: =
@@ -231,7 +232,7 @@ test('actionJoin', async t => {
       assert.equal(disabled, 'conflicting_relations');
     });
 
-    await t.test('returns \'conflicting_relations\' when a relation would be forked', t => {
+    it('returns \'conflicting_relations\' when a relation would be forked', () => {
       // a --> b ==> c
       //       |
       //       d
@@ -255,7 +256,7 @@ test('actionJoin', async t => {
       assert.equal(disabled, 'conflicting_relations');
     });
 
-    await t.test('returns \'paths_intersect\' if resulting way intersects itself', t => {
+    it('returns \'paths_intersect\' if resulting way intersects itself', () => {
       //   d
       //   |
       // a --- b
@@ -275,7 +276,7 @@ test('actionJoin', async t => {
       assert.equal(disabled, 'paths_intersect');
     });
 
-    await t.test('returns \'conflicting_tags\' for two entities that have conflicting tags', t => {
+    it('returns \'conflicting_tags\' for two entities that have conflicting tags', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
         Rapid.osmNode({id: 'b', loc: [2,0]}),
@@ -288,7 +289,7 @@ test('actionJoin', async t => {
       assert.equal(disabled, 'conflicting_tags');
     });
 
-    await t.test('takes tag reversals into account when calculating conflicts', t => {
+    it('takes tag reversals into account when calculating conflicts', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
         Rapid.osmNode({id: 'b', loc: [2,0]}),
@@ -301,7 +302,7 @@ test('actionJoin', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for exceptions to tag conflicts: missing tag', t => {
+    it('returns falsy for exceptions to tag conflicts: missing tag', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
         Rapid.osmNode({id: 'b', loc: [2,0]}),
@@ -314,7 +315,7 @@ test('actionJoin', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for exceptions to tag conflicts: uninteresting tag', t => {
+    it('returns falsy for exceptions to tag conflicts: uninteresting tag', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0,0]}),
         Rapid.osmNode({id: 'b', loc: [2,0]}),
@@ -329,7 +330,7 @@ test('actionJoin', async t => {
   });
 
 
-  await t.test('joins a --> b ==> c', t => {
+  it('joins a --> b ==> c', () => {
     // Expected result:
     // a --> b --> c
     const graph = new Rapid.Graph([
@@ -346,7 +347,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('='));
   });
 
-  await t.test('joins a <-- b <== c', t => {
+  it('joins a <-- b <== c', () => {
     // Expected result:
     // a <-- b <-- c
     const graph = new Rapid.Graph([
@@ -363,7 +364,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('='));
   });
 
-  await t.test('joins a <-- b ==> c', t => {
+  it('joins a <-- b ==> c', () => {
     // Expected result:
     // a --> b --> c
     const graph = new Rapid.Graph([
@@ -381,7 +382,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('='));
   });
 
-  await t.test('joins a --> b <== c', t => {
+  it('joins a --> b <== c', () => {
     // Expected result:
     // a --> b --> c
     // tags on === reversed
@@ -400,7 +401,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('='));
   });
 
-  await t.test('joins a --> b <== c <++ d **> e', t => {
+  it('joins a --> b <== c <++ d **> e', () => {
     // Expected result:
     // a --> b --> c --> d --> e
     // tags on === reversed
@@ -425,7 +426,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('*'));
   });
 
-  await t.test('prefers to choose an existing way as the survivor', t => {
+  it('prefers to choose an existing way as the survivor', () => {
     // a --> b ==> c ++> d
     // --- is new, === is existing, +++ is new
     // Expected result:
@@ -447,7 +448,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('w-2'));
   });
 
-  await t.test('prefers to choose the oldest way as the survivor', t => {
+  it('prefers to choose the oldest way as the survivor', () => {
     // n1 ==> n2 ++> n3 --> n4
     // ==> is existing, ++> is existing, --> is new
     // Expected result:
@@ -470,7 +471,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('w2'));
   });
 
-  await t.test('merges tags', t => {
+  it('merges tags', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a', loc: [0,0]}),
       Rapid.osmNode({id: 'b', loc: [2,0]}),
@@ -489,7 +490,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('+'));
   });
 
-  await t.test('preserves sidedness of start segment, co-directional lines', t => {
+  it('preserves sidedness of start segment, co-directional lines', () => {
     // a -----> b =====> c
     //   v v v
     //
@@ -512,7 +513,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('='));
   });
 
-  await t.test('preserves sidedness of end segment, co-directional lines', t => {
+  it('preserves sidedness of end segment, co-directional lines', () => {
     // a -----> b =====> c
     //            v v v
     //
@@ -535,7 +536,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('-'));
   });
 
-  await t.test('preserves sidedness of start segment, contra-directional lines', t => {
+  it('preserves sidedness of start segment, contra-directional lines', () => {
     // a -----> b <===== c
     //   v v v
     //
@@ -558,7 +559,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('='));
   });
 
-  await t.test('preserves sidedness of end segment, contra-directional lines', t => {
+  it('preserves sidedness of end segment, contra-directional lines', () => {
     // a -----> b <===== c
     //             v v v
     //
@@ -582,7 +583,7 @@ test('actionJoin', async t => {
   });
 
 
-  await t.test('merges relations', t => {
+  it('merges relations', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a', loc: [0,0]}),
       Rapid.osmNode({id: 'b', loc: [2,0]}),
@@ -604,7 +605,7 @@ test('actionJoin', async t => {
     assert.deepEqual(result.entity('r2').members, [ {id: '-', role: 'r2', type: 'way'} ]);
   });
 
-  await t.test('preserves duplicate route segments in relations', t => {
+  it('preserves duplicate route segments in relations', () => {
     //
     // Situation:
     //    a ---> b ===> c ~~~~> d                        join '-' and '='
@@ -644,7 +645,7 @@ test('actionJoin', async t => {
     ]);
   });
 
-  await t.test('collapses resultant single-member multipolygon into basic area', t => {
+  it('collapses resultant single-member multipolygon into basic area', () => {
     // Situation:
     // b --> c
     // |#####|
@@ -679,7 +680,7 @@ test('actionJoin', async t => {
     assert.ok(!result.hasEntity('r'));
   });
 
-  await t.test('does not collapse resultant single-member multipolygon into basic area when tags conflict', t => {
+  it('does not collapse resultant single-member multipolygon into basic area when tags conflict', () => {
     // Situation:
     // b --> c
     // |#####|

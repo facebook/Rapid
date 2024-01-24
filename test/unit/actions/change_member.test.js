@@ -1,9 +1,9 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionChangeMember', async t => {
-  await t.test('updates the member at the specified index', t => {
+describe('actionChangeMember', () => {
+  it('updates the member at the specified index', () => {
     const node = Rapid.osmNode();
     const relation = Rapid.osmRelation({members: [{id: node.id}]});
     const action = Rapid.actionChangeMember(relation.id, {id: node.id, role: 'node'}, 0);

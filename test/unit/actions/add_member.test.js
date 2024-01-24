@@ -1,9 +1,9 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionAddMember', async t => {
-  await t.test('adds an member to a relation at the specified index', t => {
+describe('actionAddMember', () => {
+  it('adds an member to a relation at the specified index', () => {
     const r = Rapid.osmRelation({members: [{id: '1'}, {id: '3'}]});
     const graph = new Rapid.Graph([r]);
     const result = Rapid.actionAddMember(r.id, {id: '2'}, 1)(graph);
@@ -11,12 +11,12 @@ test('actionAddMember', async t => {
     assert.deepEqual(result.entity(r.id).members, [{id: '1'}, {id: '2'}, {id: '3'}]);
   });
 
-  await t.test('inserts way members at a sensible index', async t => {
+  describe('inserts way members at a sensible index', () => {
     function members(graph) {
       return graph.entity('r').members.map(m => m.id);
     }
 
-    await t.test('handles incomplete relations', t => {
+    it('handles incomplete relations', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [0, 0]}),
@@ -35,7 +35,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['~', '-', '=']);
     });
 
-    await t.test('adds the member to a relation with no members', t => {
+    it('adds the member to a relation with no members', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [0, 0]}),
@@ -48,7 +48,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['-']);
     });
 
-    await t.test('appends the member if the ways are not connecting', t => {
+    it('appends the member if the ways are not connecting', () => {
       // Before:  a ---> b
       // After:   a ---> b .. c ===> d
       const graph = new Rapid.Graph([
@@ -68,7 +68,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['-', '=']);
     });
 
-    await t.test('appends the member if the way connects at end', t => {
+    it('appends the member if the way connects at end', () => {
       // Before:   a ---> b
       // After:    a ---> b ===> c
       const graph = new Rapid.Graph([
@@ -87,7 +87,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['-', '=']);
     });
 
-    await t.test('inserts the member if the way connects at beginning', t => {
+    it('inserts the member if the way connects at beginning', () => {
       // Before:          b ---> c ~~~> d
       // After:    a ===> b ---> c ~~~> d
       const graph = new Rapid.Graph([
@@ -109,7 +109,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['=', '-', '~']);
     });
 
-    await t.test('inserts the member if the way connects in middle', t => {
+    it('inserts the member if the way connects in middle', () => {
       // Before:  a ---> b  ..  c ~~~> d
       // After:   a ---> b ===> c ~~~> d
       const graph = new Rapid.Graph([
@@ -131,7 +131,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['-', '=', '~']);
     });
 
-    await t.test('inserts the member multiple times if insertPair provided (middle)', t => {
+    it('inserts the member multiple times if insertPair provided (middle)', () => {
       // Before:  a ---> b  ..  c ~~~> d <~~~ c  ..  b <--- a
       // After:   a ---> b ===> c ~~~> d <~~~ c <=== b <--- a
       const graph = new Rapid.Graph([
@@ -161,7 +161,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['-', '=', '~', '~', '=', '-']);
     });
 
-    await t.test('inserts the member multiple times if insertPair provided (beginning/end)', t => {
+    it('inserts the member multiple times if insertPair provided (beginning/end)', () => {
       // Before:         b <=== c ~~~> d <~~~ c ===> b
       // After:   a <--- b <=== c ~~~> d <~~~ c ===> b ---> a
       const graph = new Rapid.Graph([
@@ -191,7 +191,7 @@ test('actionAddMember', async t => {
       assert.deepEqual(members(result), ['-', '=', '~', '~', '=', '-']);
     });
 
-    await t.test('keeps stops and platforms ordered before node, way, relation (for PTv2 routes)', t => {
+    it('keeps stops and platforms ordered before node, way, relation (for PTv2 routes)', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [0, 0]}),

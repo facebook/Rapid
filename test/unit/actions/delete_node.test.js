@@ -1,10 +1,10 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionDeleteNode', async t => {
-  await t.test('removes the node from the graph', t => {
+describe('actionDeleteNode', () => {
+  it('removes the node from the graph', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const graph = new Rapid.Graph([n1]);
     const result = Rapid.actionDeleteNode('n1')(graph);
@@ -12,7 +12,7 @@ test('actionDeleteNode', async t => {
     assert.ok(!result.hasEntity('n1'));
   });
 
-  await t.test('removes the node from parent ways', t => {
+  it('removes the node from parent ways', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const n2 = Rapid.osmNode({id: 'n2'});
     const n3 = Rapid.osmNode({id: 'n3'});
@@ -24,7 +24,7 @@ test('actionDeleteNode', async t => {
     assert.deepEqual(result.entity('w1').nodes, ['n2', 'n3']);
   });
 
-  await t.test('removes the node from parent relations', t => {
+  it('removes the node from parent relations', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const n2 = Rapid.osmNode({id: 'n2'});
     const r1 = Rapid.osmRelation({ id: 'r1', members: [{ id: 'n1' }, { id: 'n2' }]});
@@ -35,7 +35,7 @@ test('actionDeleteNode', async t => {
     assert.deepEqual(result.entity('r1').members, [{ id: 'n2' }]);
   });
 
-  await t.test('deletes linear parent ways that become degenerate', t => {
+  it('deletes linear parent ways that become degenerate', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const n2 = Rapid.osmNode({id: 'n2'});
     const w1 = Rapid.osmWay({id: 'w1', nodes: ['n1', 'n2']});
@@ -47,7 +47,7 @@ test('actionDeleteNode', async t => {
     assert.ok(!result.hasEntity('w1'));
   });
 
-  await t.test('deletes circular parent ways that become degenerate', t => {
+  it('deletes circular parent ways that become degenerate', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const n2 = Rapid.osmNode({id: 'n2'});
     const n3 = Rapid.osmNode({id: 'n3'});
@@ -61,7 +61,7 @@ test('actionDeleteNode', async t => {
     assert.ok(!result.hasEntity('w1'));
   });
 
-  await t.test('deletes parent relations that become empty', t => {
+  it('deletes parent relations that become empty', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const r1 = Rapid.osmRelation({id: 'r1', members: [{ id: 'n1' }]});
     const graph = new Rapid.Graph([n1, r1]);

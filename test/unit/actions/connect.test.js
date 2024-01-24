@@ -1,11 +1,11 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionConnect', async t => {
+describe('actionConnect', () => {
 
-  await t.test('chooses the first non-new node as the survivor', t => {
+  it('chooses the first non-new node as the survivor', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a'}),
       Rapid.osmNode({id: 'b', version: '1'}),
@@ -20,7 +20,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('chooses the last node as the survivor when all are new', t => {
+  it('chooses the last node as the survivor when all are new', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a'}),
       Rapid.osmNode({id: 'b'}),
@@ -35,7 +35,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('replaces non-surviving nodes in parent ways', t => {
+  it('replaces non-surviving nodes in parent ways', () => {
     // a --- b --- c
     //
     //       e
@@ -67,7 +67,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('handles circular ways', t => {
+  it('handles circular ways', () => {
     // c -- a   d === e
     // |   /
     // |  /
@@ -92,7 +92,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('merges adjacent nodes', t => {
+  it('merges adjacent nodes', () => {
     // a --- b --- c
     //
     // Connect [b, c]
@@ -115,7 +115,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('merges adjacent nodes with connections', t => {
+  it('merges adjacent nodes with connections', () => {
     // a --- b --- c
     //       |
     //       d
@@ -145,7 +145,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('deletes a degenerate way', t => {
+  it('deletes a degenerate way', () => {
     // a --- b
     //
     // Connect [a, b]
@@ -164,7 +164,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('merges tags to the surviving node', t => {
+  it('merges tags to the surviving node', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a', tags: {a: 'a'}}),
       Rapid.osmNode({id: 'b', tags: {b: 'b'}}),
@@ -177,7 +177,7 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('merges memberships to the surviving node', t => {
+  it('merges memberships to the surviving node', () => {
     const graph = new Rapid.Graph([
       Rapid.osmNode({id: 'a'}),
       Rapid.osmNode({id: 'b'}),
@@ -196,8 +196,8 @@ test('actionConnect', async t => {
   });
 
 
-  await t.test('#disabled', async t => {
-    await t.test('returns falsy when connecting members of the same relation and same roles', t => {
+  describe('#disabled', () => {
+    it('returns falsy when connecting members of the same relation and same roles', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a'}),
         Rapid.osmNode({id: 'b'}),
@@ -214,7 +214,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns falsy when connecting members of different relation and different roles', t => {
+    it('returns falsy when connecting members of different relation and different roles', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a'}),
         Rapid.osmNode({id: 'b'}),
@@ -229,7 +229,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns \'relation\' when connecting members of the same relation but different roles', t => {
+    it('returns \'relation\' when connecting members of the same relation but different roles', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a'}),
         Rapid.osmNode({id: 'b'}),
@@ -246,7 +246,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns falsy when connecting a node unrelated to the restriction', t => {
+    it('returns falsy when connecting a node unrelated to the restriction', () => {
       //
       //  a --- b   d ~~~ e        r1:  `no_right_turn`
       //        |                        FROM '-'
@@ -277,7 +277,7 @@ test('actionConnect', async t => {
       assert.ok(!disabledCD);
     });
 
-    await t.test('returns falsy when connecting nodes that would not break a via-node restriction', t => {
+    it('returns falsy when connecting nodes that would not break a via-node restriction', () => {
       //
       //  a --- b --- c      r1:  `no_right_turn`
       //              |            FROM '-'
@@ -312,7 +312,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns falsy when connecting nodes that would not break a via-way restriction', t => {
+    it('returns falsy when connecting nodes that would not break a via-way restriction', () => {
       //
       //  a --- b --- c      r1:  `no_u_turn`
       //              |            FROM '='
@@ -354,7 +354,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns \'restriction\' when connecting nodes that would break a via-node restriction', t => {
+    it('returns \'restriction\' when connecting nodes that would break a via-node restriction', () => {
       //
       //  a --- b --- c      r1:  `no_right_turn`
       //              |            FROM '-'
@@ -388,7 +388,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns falsy when connecting nodes on a via-node u_turn restriction', t => {
+    it('returns falsy when connecting nodes on a via-node u_turn restriction', () => {
       //
       //  a --- b --- c      r1:  `no_u_turn`
       //              |            FROM '-'
@@ -419,7 +419,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns \'restriction\' when connecting nodes that would break a via-way restriction', t => {
+    it('returns \'restriction\' when connecting nodes that would break a via-way restriction', () => {
       //
       //  a --- b --- c      r1:  `no_u_turn`
       //              |            FROM '='
@@ -466,7 +466,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns \'restriction\' when connecting would destroy a way in a via-node restriction', t => {
+    it('returns \'restriction\' when connecting would destroy a way in a via-node restriction', () => {
       //
       //  a --- b      r1:  `no_right_turn`
       //        |            FROM '-'
@@ -493,7 +493,7 @@ test('actionConnect', async t => {
     });
 
 
-    await t.test('returns \'restriction\' when connecting would destroy a way in via-way restriction', t => {
+    it('returns \'restriction\' when connecting would destroy a way in via-way restriction', () => {
       //
       //  a --- b      r1:  `no_u_turn`
       //        |            FROM '='

@@ -1,11 +1,11 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionDisconnect', async t => {
+describe('actionDisconnect', () => {
 
-  await t.test('replaces the node with a new node in all but the first way', t => {
+  it('replaces the node with a new node in all but the first way', () => {
     // Situation:
     //    a --- b --- c
     //          |
@@ -35,7 +35,7 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('disconnects only the ways specified by limitWays', t => {
+  it('disconnects only the ways specified by limitWays', () => {
     // Situation:
     //    a --- b === c
     //          |
@@ -65,7 +65,7 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('keeps a closed line closed, when being disconnected at the closing node', t => {
+  it('keeps a closed line closed, when being disconnected at the closing node', () => {
     // Situation:
     //    a === b -- c
     //          |    |
@@ -95,7 +95,7 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('disconnects the closing node of a linear way (not area)', t => {
+  it('disconnects the closing node of a linear way (not area)', () => {
     // Situation:
     //  a --- b
     //   \   /
@@ -121,7 +121,7 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('disconnects a shared non-closing node in an area without breaking the area', t => {
+  it('disconnects a shared non-closing node in an area without breaking the area', () => {
     // Situation:
     //  a -- b -- c
     //       |    |
@@ -150,7 +150,7 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('disconnects the closing node of an area without breaking the area', t => {
+  it('disconnects the closing node of an area without breaking the area', () => {
     // Situation:
     // a --- b --- d
     //  \   / \   /
@@ -184,7 +184,7 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('disconnects multiple closing nodes of multiple areas without breaking the areas', t => {
+  it('disconnects multiple closing nodes of multiple areas without breaking the areas', () => {
     // Situation:
     // a --- b --- d
     //  \   / \   /
@@ -218,7 +218,7 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('copies location and tags to the new nodes', t => {
+  it('copies location and tags to the new nodes', () => {
     const tags = { highway: 'traffic_signals' };
     const loc = [1, 2];
     const graph = new Rapid.Graph([
@@ -248,14 +248,14 @@ test('actionDisconnect', async t => {
   });
 
 
-  await t.test('#disabled', async t => {
-    await t.test('returns \'not_connected\' for a node shared by less than two ways', t => {
+  describe('#disabled', () => {
+    it('returns \'not_connected\' for a node shared by less than two ways', () => {
       const graph = new Rapid.Graph([Rapid.osmNode({id: 'a'})]);
       const disabled = Rapid.actionDisconnect('a').disabled(graph);
       assert.equal(disabled, 'not_connected');
     });
 
-    await t.test('returns falsy for the closing node in a closed line', t => {
+    it('returns falsy for the closing node in a closed line', () => {
       //  a --- b
       //  |     |
       //  d --- c
@@ -270,7 +270,7 @@ test('actionDisconnect', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns not_connected for the closing node in a closed area', t => {
+    it('returns not_connected for the closing node in a closed area', () => {
       //  a --- b
       //  |     |
       //  d --- c
@@ -285,7 +285,7 @@ test('actionDisconnect', async t => {
       assert.equal(disabled, 'not_connected');
     });
 
-    await t.test('returns falsy for a shared non-closing node in an area', t => {
+    it('returns falsy for a shared non-closing node in an area', () => {
       //  a --- b --- c
       //        |     |
       //        e --- d
@@ -301,7 +301,7 @@ test('actionDisconnect', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for a node shared by two or more ways', t => {
+    it('returns falsy for a node shared by two or more ways', () => {
       //  a --- b --- c
       //        |
       //        d
@@ -317,7 +317,7 @@ test('actionDisconnect', async t => {
       assert.ok(!disabled);
     });
 
-    await t.test('returns falsy for an intersection of two ways with way specified by limitWays', t => {
+    it('returns falsy for an intersection of two ways with way specified by limitWays', () => {
       //  a --- b === c
       //        |
       //        d
@@ -335,7 +335,7 @@ test('actionDisconnect', async t => {
     });
 
 
-    await t.test('returns \'relation\' for a node connecting any two members of the same relation', t => {
+    it('returns \'relation\' for a node connecting any two members of the same relation', () => {
       // Covers restriction relations, routes, multipolygons.
       // a --- b === c
       const graph = new Rapid.Graph([
@@ -350,7 +350,7 @@ test('actionDisconnect', async t => {
       assert.equal(disabled, 'relation');
     });
 
-    await t.test('returns falsy for a node connecting two members of an unaffected relation', t => {
+    it('returns falsy for a node connecting two members of an unaffected relation', () => {
       //  a --- b === c
       //        |
       //        d

@@ -1,9 +1,9 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionCircularize', async t => {
+describe('actionCircularize', () => {
   // This makes our projection operate like the d3 default of [480,250].
   // https://github.com/d3/d3-geo#projection_translate
   const projection = new Rapid.sdk.Projection().scale(150).translate([480, 250]);
@@ -56,7 +56,7 @@ test('actionCircularize', async t => {
   }
 
 
-  await t.test('creates nodes if necessary', t => {
+  it('creates nodes if necessary', () => {
     //    d ---- c
     //    |      |
     //    a ---- b
@@ -75,7 +75,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('reuses existing nodes', t => {
+  it('reuses existing nodes', () => {
     //    d,e -- c
     //    |      |
     //    a ---- b
@@ -101,7 +101,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('limits movement of nodes that are members of other ways', t => {
+  it('limits movement of nodes that are members of other ways', () => {
     //    b ---- a
     //    |      |
     //    c ---- d
@@ -122,7 +122,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('creates circle respecting min-angle limit', t => {
+  it('creates circle respecting min-angle limit', () => {
     //    d ---- c
     //    |      |
     //    a ---- b
@@ -148,7 +148,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('leaves clockwise ways clockwise', t => {
+  it('leaves clockwise ways clockwise', () => {
     //    d ---- c
     //    |      |
     //    a ---- b
@@ -169,7 +169,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('leaves counter-clockwise ways counter-clockwise', t => {
+  it('leaves counter-clockwise ways counter-clockwise', () => {
     //    d ---- c
     //    |      |
     //    a ---- b
@@ -190,7 +190,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('adds new nodes on shared way wound in opposite direction', t => {
+  it('adds new nodes on shared way wound in opposite direction', () => {
     //    c ---- b ---- f
     //    |     /       |
     //    |    a        |
@@ -228,7 +228,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('adds new nodes on shared way wound in similar direction', t => {
+  it('adds new nodes on shared way wound in similar direction', () => {
     //    c ---- b ---- f
     //    |     /       |
     //    |    a        |
@@ -266,7 +266,7 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('circularizes extremely concave ways with a key node on the wrong side of the centroid', t => {
+  it('circularizes extremely concave ways with a key node on the wrong side of the centroid', () => {
     //    c ------------ b -- f
     //    |       ___---      |
     //    |  a ===            |
@@ -297,8 +297,8 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('#disabled', async t => {
-    await t.test('not disable circularize when its not circular', t => {
+  describe('#disabled', () => {
+    it('not disable circularize when its not circular', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [2, 0]}),
@@ -312,7 +312,7 @@ test('actionCircularize', async t => {
     });
 
 
-    await t.test('disable circularize twice', t => {
+    it('disable circularize twice', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [2, 0]}),
@@ -328,12 +328,12 @@ test('actionCircularize', async t => {
   });
 
 
-  await t.test('transitions', async t => {
-    await t.test('is transitionable', t => {
+  describe('transitions', () => {
+    it('is transitionable', () => {
       assert.ok(Rapid.actionCircularize().transitionable);
     });
 
-    await t.test('circularize at t = 0', t => {
+    it('circularize at t = 0', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [2, 0]}),
@@ -347,7 +347,7 @@ test('actionCircularize', async t => {
       assert.ok(closeTo(area('-', result), -4));
     });
 
-    await t.test('circularize at t = 0.5', t => {
+    it('circularize at t = 0.5', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [2, 0]}),
@@ -361,7 +361,7 @@ test('actionCircularize', async t => {
       assert.ok(closeTo(area('-', result), -4.812));
     });
 
-    await t.test('circularize at t = 1', t => {
+    it('circularize at t = 1', () => {
       const graph = new Rapid.Graph([
         Rapid.osmNode({id: 'a', loc: [0, 0]}),
         Rapid.osmNode({id: 'b', loc: [2, 0]}),

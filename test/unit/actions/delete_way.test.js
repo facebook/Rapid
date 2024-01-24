@@ -1,9 +1,10 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionDeleteWay', async t => {
-  await t.test('removes the way from the graph', t => {
+
+describe('actionDeleteWay', () => {
+  it('removes the way from the graph', () => {
     const w1 = Rapid.osmWay({id: 'w1'});
     const graph = new Rapid.Graph([w1]);
     const result = Rapid.actionDeleteWay('w1')(graph);
@@ -11,7 +12,7 @@ test('actionDeleteWay', async t => {
     assert.ok(!result.hasEntity('w1'));
   });
 
-  await t.test('removes a way from parent relations', t => {
+  it('removes a way from parent relations', () => {
     const w1 = Rapid.osmWay({id: 'w1'});
     const w2 = Rapid.osmWay({id: 'w2'});
     const r1 = Rapid.osmRelation({id: 'r1', members: [{ id: 'w1' }, { id: 'w2' }]});
@@ -22,7 +23,7 @@ test('actionDeleteWay', async t => {
     assert.deepEqual(result.entity('r1').members, [{ id: 'w2' }]);
   });
 
-  await t.test('deletes child nodes not referenced by another parent', t => {
+  it('deletes child nodes not referenced by another parent', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const w1 = Rapid.osmWay({id: 'w1', nodes: ['n1']});
     const graph = new Rapid.Graph([n1, w1]);
@@ -32,7 +33,7 @@ test('actionDeleteWay', async t => {
     assert.ok(!result.hasEntity('n1'));
   });
 
-  await t.test('does not delete child nodes referenced by another parent', t => {
+  it('does not delete child nodes referenced by another parent', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const w1 = Rapid.osmWay({id: 'w1', nodes: ['n1']});
     const w2 = Rapid.osmWay({id: 'w2', nodes: ['n1']});
@@ -44,7 +45,7 @@ test('actionDeleteWay', async t => {
     assert.ok(result.hasEntity('n1'));
   });
 
-  await t.test('deletes uninteresting child nodes', t => {
+  it('deletes uninteresting child nodes', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const n2 = Rapid.osmNode({id: 'n2'});
     const w1 = Rapid.osmWay({id: 'w1', nodes: ['n1', 'n2']});
@@ -56,7 +57,7 @@ test('actionDeleteWay', async t => {
     assert.ok(!result.hasEntity('n2'));
   });
 
-  await t.test('deletes a circular way, including the start/end node', t => {
+  it('deletes a circular way, including the start/end node', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const n2 = Rapid.osmNode({id: 'n2'});
     const n3 = Rapid.osmNode({id: 'n3'});
@@ -70,7 +71,7 @@ test('actionDeleteWay', async t => {
     assert.ok(!result.hasEntity('n3'));
   });
 
-  await t.test('does not delete child nodes with interesting tags', t => {
+  it('does not delete child nodes with interesting tags', () => {
     const n1 = Rapid.osmNode({id: 'n1', tags: { highway: 'traffic_signals' }});
     const w1 = Rapid.osmWay({id: 'w1', nodes: ['n1']});
     const graph = new Rapid.Graph([n1, w1]);
@@ -80,7 +81,7 @@ test('actionDeleteWay', async t => {
     assert.ok(result.hasEntity('n1'));
   });
 
-  await t.test('deletes parent relations that become empty', t => {
+  it('deletes parent relations that become empty', () => {
     const w1 = Rapid.osmWay({id: 'w1'});
     const r1 = Rapid.osmRelation({id: 'r1', members: [{ id: 'w1' }]});
     const graph = new Rapid.Graph([w1, r1]);
@@ -91,8 +92,8 @@ test('actionDeleteWay', async t => {
   });
 
 //  // This was moved to operationDelete.  We should test operations and move this test there.
-//  await t.test('#disabled', async t => {
-//    await t.test('returns \'part_of_relation\' for members of route and boundary relations', t => {
+//  describe('#disabled', () => {
+//    it('returns \'part_of_relation\' for members of route and boundary relations', () => {
 //      const w1 = Rapid.osmWay({id: 'w1'});
 //      const w2 = Rapid.osmWay({id: 'w2'});
 //      const r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'w1'}], tags: {type: 'route'}});      // route
@@ -102,7 +103,7 @@ test('actionDeleteWay', async t => {
 //      expect(Rapid.actionDeleteWay('r2').disabled(graph)).to.equal('part_of_relation');
 //    });
 //
-//    await t.test('returns \'part_of_relation\' for outer members of multipolygons', t => {
+//    it('returns \'part_of_relation\' for outer members of multipolygons', () => {
 //      const w1 = Rapid.osmWay({id: 'w1'});
 //      const r1 = Rapid.osmRelation({id: r1, members: [{id: 'w1', role: 'outer'}], tags: {type: 'multipolygon'}});
 //      const graph = new Rapid.Graph([w1, r1]);
@@ -110,7 +111,7 @@ test('actionDeleteWay', async t => {
 //      expect(action.disabled(graph)).to.equal('part_of_relation');
 //    });
 //
-//    await t.test('returns falsy for inner members of multipolygons', t => {
+//    it('returns falsy for inner members of multipolygons', () => {
 //      const w1 = Rapid.osmWay({id: 'w1'});
 //      const r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'w1', role: 'inner'}], tags: {type: 'multipolygon'}});
 //      const graph = new Rapid.Graph([w1, r1]);

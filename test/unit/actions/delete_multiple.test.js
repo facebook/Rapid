@@ -1,10 +1,10 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionDeleteMultiple', async t => {
-  await t.test('deletes multiple entities of heterogeneous types', t => {
+describe('actionDeleteMultiple', () => {
+  it('deletes multiple entities of heterogeneous types', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const w1 = Rapid.osmWay({id: 'w1'});
     const r1 = Rapid.osmRelation({id: 'r1'});
@@ -17,7 +17,7 @@ test('actionDeleteMultiple', async t => {
   });
 
 
-  await t.test('deletes a way and one of its nodes', t => {
+  it('deletes a way and one of its nodes', () => {
     const n1 = Rapid.osmNode({id: 'n1'});
     const w1 = Rapid.osmWay({id: 'w1', nodes: ['n1']});
     const graph = new Rapid.Graph([n1, w1]);
@@ -29,8 +29,8 @@ test('actionDeleteMultiple', async t => {
 
 
   // This was moved to operationDelete.  We should test operations and move this test there.
-  // await t.test('#disabled', async t => {
-  //   await t.test('returns the result of the first action that is disabled', t => {
+  // describe('#disabled', () => {
+  //   it('returns the result of the first action that is disabled', () => {
   //     const n1 = Rapid.osmNode({id: 'n1'});
   //     const r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'w1'}]});  // 'w1' not downloaded
   //     const graph = new Rapid.Graph([n1, r1]);

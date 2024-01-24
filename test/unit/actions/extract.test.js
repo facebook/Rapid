@@ -1,16 +1,16 @@
-import { test, beforeEach } from 'node:test';
+import { beforeEach, describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-test('actionExtract', async t => {
+describe('actionExtract', () => {
   const tags = { 'name': 'test' };
 
   function createTargetNode(id, lonlat) {
     return Rapid.osmNode({ id: id, loc: lonlat, tags: tags });
   }
 
-  await t.test('linear way', async t => {
+  describe('linear way', () => {
     let graph;
     beforeEach(() => {
       // a -- b -- c -- d
@@ -23,14 +23,14 @@ test('actionExtract', async t => {
       ]);
     });
 
-    await t.test('target in first position', async t => {
+    describe('target in first position', () => {
       beforeEach(() => {
         // Swap target into the location & position of A
         const target = createTargetNode('a', graph.entity('a').loc);
         graph = graph.replace(target);
       });
 
-      await t.test('does not change length of way', t => {
+      it('does not change length of way', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -39,7 +39,7 @@ test('actionExtract', async t => {
         assert.equal(nodes.length, 4);
       });
 
-      await t.test('does not change order of nodes', t => {
+      it('does not change order of nodes', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -52,7 +52,7 @@ test('actionExtract', async t => {
         assert.equal(nodes[3], 'd');
       });
 
-      await t.test('does not change location of nodes', t => {
+      it('does not change location of nodes', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -64,7 +64,7 @@ test('actionExtract', async t => {
         assert.deepEqual(result.entity(nodes[3]).loc, [3, 0]);
       });
 
-      await t.test('does replace target node', t => {
+      it('does replace target node', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -74,7 +74,7 @@ test('actionExtract', async t => {
         assert.deepEqual(replacement.tags, {});   // and that the tags are not present
       });
 
-      await t.test('does detach target node', t => {
+      it('does detach target node', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -88,14 +88,14 @@ test('actionExtract', async t => {
   });
 
 //
-//    await t.test('target in second position', t => {
+//    it('target in second position', () => {
 //      beforeEach(() => {
 //        // Swap target into the location & position of B
 //        const target = createTargetNode('b', graph.entity('b').loc);
 //        graph = graph.replace(target);
 //      });
 //
-//      await t.test('does not change length of way', t => {
+//      it('does not change length of way', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // Confirm that the way still has 4 nodes
@@ -103,7 +103,7 @@ test('actionExtract', async t => {
 //        expect(target.nodes.length).to.eql(4);
 //      });
 //
-//      await t.test('does not change order of nodes', t => {
+//      it('does not change order of nodes', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // Confirm that the way is ordered correctly
@@ -117,7 +117,7 @@ test('actionExtract', async t => {
 //        expect(target.nodes[3]).to.eql('d');
 //      });
 //
-//      await t.test('does not change location of nodes', t => {
+//      it('does not change location of nodes', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // Confirm that the nodes have not moved, including the replacement node
@@ -128,7 +128,7 @@ test('actionExtract', async t => {
 //        expect(result.entity(nodes[3]).loc).to.eql([3, 0]);
 //      });
 //
-//      await t.test('does replace target node', t => {
+//      it('does replace target node', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        const nodes = result.entity('-').nodes;
@@ -138,7 +138,7 @@ test('actionExtract', async t => {
 //        expect(result.entity(nodes[1]).tags).to.eql({});
 //      });
 //
-//      await t.test('does detach target node', t => {
+//      it('does detach target node', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // confirm that a still exists
@@ -155,7 +155,7 @@ test('actionExtract', async t => {
 //  });
 
 
-  await t.test('closed way', async t => {
+  describe('closed way', () => {
     let graph;
     beforeEach(() => {
       //  d -- c
@@ -170,14 +170,14 @@ test('actionExtract', async t => {
       ]);
     });
 
-    await t.test('target in first position', async t => {
+    describe('target in first position', () => {
       beforeEach(() => {
         // Swap target into the location & position of A
         const targetNode = createTargetNode('a', graph.entity('a').loc);
         graph = graph.replace(targetNode);
       });
 
-      await t.test('does not change length of way', t => {
+      it('does not change length of way', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -186,7 +186,7 @@ test('actionExtract', async t => {
         assert.equal(nodes.length, 5);
       });
 
-      await t.test('does not change order of nodes', t => {
+      it('does not change order of nodes', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -200,7 +200,7 @@ test('actionExtract', async t => {
         assert.equal(nodes[0], nodes[4]); // way remains closed
       });
 
-      await t.test('does not change location of nodes', t => {
+      it('does not change location of nodes', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -212,7 +212,7 @@ test('actionExtract', async t => {
         assert.deepEqual(result.entity(nodes[3]).loc, [0, 1]);
       });
 
-      await t.test('does replace target node', t => {
+      it('does replace target node', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -222,7 +222,7 @@ test('actionExtract', async t => {
         assert.deepEqual(replacement.tags, {});   // and that the tags are not present
       });
 
-      await t.test('does detach target node', t => {
+      it('does detach target node', () => {
         const result = Rapid.actionExtract('a')(graph);
         assert.ok(result instanceof Rapid.Graph);
 
@@ -234,14 +234,14 @@ test('actionExtract', async t => {
       });
     });
 
-//    await t.test('target in second position', t => {
+//    it('target in second position', () => {
 //      beforeEach(() => {
 //        // Swap target into the location & position of B
 //        const targetNode = createTargetNode('b', graph.entity('b').loc);
 //        graph = graph.replace(targetNode);
 //      });
 //
-//      await t.test('does not change length of way', t => {
+//      it('does not change length of way', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // Confirm that the way still has 5 nodes
@@ -249,7 +249,7 @@ test('actionExtract', async t => {
 //        expect(target.nodes.length).to.eql(5);
 //      });
 //
-//      await t.test('does not change order of nodes', t => {
+//      it('does not change order of nodes', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // Confirm that the way is ordered correctly
@@ -264,7 +264,7 @@ test('actionExtract', async t => {
 //        expect(target.nodes[4]).to.eql('a');
 //      });
 //
-//      await t.test('does not change location of nodes', t => {
+//      it('does not change location of nodes', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // Confirm that the nodes have not moved, including the replacement node
@@ -276,7 +276,7 @@ test('actionExtract', async t => {
 //        // Confirmed already that node[4] is node[0] so no further assertion needed
 //      });
 //
-//      await t.test('does replace target node', t => {
+//      it('does replace target node', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        const nodes = result.entity('-').nodes;
@@ -286,7 +286,7 @@ test('actionExtract', async t => {
 //        expect(result.entity(nodes[1]).tags).to.eql({});
 //      });
 //
-//      await t.test('does detach target node', t => {
+//      it('does detach target node', () => {
 //        const result = Rapid.actionExtract('b')(graph);
 //
 //        // confirm that a still exists
@@ -303,7 +303,7 @@ test('actionExtract', async t => {
   });
 
 
-  await t.test('intersecting linear ways', async t => {
+  describe('intersecting linear ways', () => {
     let graph;
     beforeEach(() => {
       //
@@ -327,14 +327,14 @@ test('actionExtract', async t => {
       ]);
     });
 
-    await t.test('does not change length of ways', t => {
+    it('does not change length of ways', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
       assert.equal(result.entity('-').nodes.length, 4);
       assert.equal(result.entity('=').nodes.length, 3);
     });
 
-    await t.test('does not change order of nodes', t => {
+    it('does not change order of nodes', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -350,7 +350,7 @@ test('actionExtract', async t => {
       assert.equal(way2.nodes[2], 'f');
     });
 
-    await t.test('does not change location of nodes', t => {
+    it('does not change location of nodes', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -366,7 +366,7 @@ test('actionExtract', async t => {
       assert.deepEqual(result.entity(way2.nodes[2]).loc, [2, 2]);
     });
 
-    await t.test('uses same replacement node at intersection', t => {
+    it('uses same replacement node at intersection', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -376,7 +376,7 @@ test('actionExtract', async t => {
       assert.equal(way1.nodes[2], way2.nodes[0]);
     });
 
-    await t.test('does replace target node', t => {
+    it('does replace target node', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -386,7 +386,7 @@ test('actionExtract', async t => {
       assert.deepEqual(replacement.tags, {});   // and that the tags are not present
     });
 
-    await t.test('does detach target node', t => {
+    it('does detach target node', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -399,7 +399,7 @@ test('actionExtract', async t => {
   });
 
 
-  await t.test('intersecting closed way', async t => {
+  describe('intersecting closed way', () => {
     let graph;
     beforeEach(() => {
       //
@@ -424,14 +424,14 @@ test('actionExtract', async t => {
       ]);
     });
 
-    await t.test('does not change length of ways', t => {
+    it('does not change length of ways', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
       assert.equal(result.entity('-').nodes.length, 5);
       assert.equal(result.entity('=').nodes.length, 5);
     });
 
-    await t.test('does not change order of nodes', t => {
+    it('does not change order of nodes', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -450,7 +450,7 @@ test('actionExtract', async t => {
       assert.equal(way2.nodes[0], way2.nodes[4]);  // still closed
     });
 
-    await t.test('does not change location of nodes', t => {
+    it('does not change location of nodes', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -467,7 +467,7 @@ test('actionExtract', async t => {
       assert.deepEqual(result.entity(way2.nodes[3]).loc, [1, 2]);
     });
 
-    await t.test('uses same replacement node at intersection', t => {
+    it('uses same replacement node at intersection', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -477,7 +477,7 @@ test('actionExtract', async t => {
       assert.equal(way1.nodes[2], way2.nodes[0]);
     });
 
-    await t.test('does replace target node', t => {
+    it('does replace target node', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -487,7 +487,7 @@ test('actionExtract', async t => {
       assert.deepEqual(replacement.tags, {});   // and that the tags are not present
     });
 
-    await t.test('does detach target node', t => {
+    it('does detach target node', () => {
       const result = Rapid.actionExtract('c')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -500,7 +500,7 @@ test('actionExtract', async t => {
   });
 
 
-  await t.test('with relation', async t => {
+  describe('with relation', () => {
     let graph;
 
     beforeEach(() => {
@@ -525,7 +525,7 @@ test('actionExtract', async t => {
       ]);
     });
 
-    await t.test('target is not a member of relation', t => {
+    it('target is not a member of relation', () => {
       const result = Rapid.actionExtract('b')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -534,7 +534,7 @@ test('actionExtract', async t => {
       assert.deepEqual(result.parentRelations(target), []);  // the target has removed from the relation
     });
 
-    await t.test('replacement is a member of relation', t => {
+    it('replacement is a member of relation', () => {
       const result = Rapid.actionExtract('b')(graph);
       assert.ok(result instanceof Rapid.Graph);
 
@@ -548,7 +548,7 @@ test('actionExtract', async t => {
       assert.equal(parents[0].id, 'r');
     });
 
-    await t.test('Relation membership has the same properties', t => {
+    it('Relation membership has the same properties', () => {
       const result = Rapid.actionExtract('b')(graph);
 
       const way = result.entity('-');
