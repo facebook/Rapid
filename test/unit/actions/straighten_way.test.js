@@ -1,11 +1,11 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionStraightenWay', async t => {
+describe('actionStraightenWay', () => {
     var projection = new Rapid.sdk.Projection();
 
-    await t.test('returns falsy for ways with internal nodes near centerline', () => {
+    it('returns falsy for ways with internal nodes near centerline', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01]}),
@@ -16,7 +16,8 @@ test('actionStraightenWay', async t => {
         assert.ok(!Rapid.actionStraightenWay(['-'], projection).disabled(graph));
     });
 
-    await t.test('returns \'too_bendy\' for ways with internal nodes far off centerline', () => {
+
+    it('returns \'too_bendy\' for ways with internal nodes far off centerline', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 1]}),
@@ -27,7 +28,8 @@ test('actionStraightenWay', async t => {
         assert.strictEqual(Rapid.actionStraightenWay(['-'], projection).disabled(graph), 'too_bendy');
     });
 
-    await t.test('returns \'too_bendy\' for ways with coincident start/end nodes', () => {
+
+    it('returns \'too_bendy\' for ways with coincident start/end nodes', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0]}),
@@ -38,7 +40,8 @@ test('actionStraightenWay', async t => {
         assert.strictEqual(Rapid.actionStraightenWay(['-'], projection).disabled(graph), 'too_bendy');
     });
 
-    await t.test('deletes empty nodes', () => {
+
+    it('deletes empty nodes', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {}}),
@@ -51,7 +54,8 @@ test('actionStraightenWay', async t => {
         assert.strictEqual(result.hasEntity('b'), undefined);
     });
 
-    await t.test('does not delete tagged nodes', () => {
+
+    it('does not delete tagged nodes', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
@@ -65,7 +69,8 @@ test('actionStraightenWay', async t => {
         assert.strictEqual(result.entity('b').loc[1], 0);
     });
 
-    await t.test('does not delete nodes connected to other ways', () => {
+
+    it('does not delete nodes connected to other ways', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01]}),
@@ -80,7 +85,8 @@ test('actionStraightenWay', async t => {
         assert.strictEqual(result.entity('b').loc[1], 0);
     });
 
-    await t.test('straightens multiple, connected ways', () => {
+
+    it('straightens multiple, connected ways', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
@@ -103,7 +109,8 @@ test('actionStraightenWay', async t => {
         assert.strictEqual(result.hasEntity('g'), undefined);
     });
 
-    await t.test('straightens multiple, connected ways going in different directions', () => {
+
+    it('straightens multiple, connected ways going in different directions', () => {
         var graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
@@ -126,12 +133,15 @@ test('actionStraightenWay', async t => {
         assert.strictEqual(result.hasEntity('g'), undefined);
     });
 
-    await t.test('transitions', async t => {
-        await t.test('is transitionable', () => {
+
+    describe('transitions', () => {
+
+        it('is transitionable', () => {
             assert.strictEqual(Rapid.actionStraightenWay().transitionable, true);
         });
 
-        await t.test('straighten at t = 0', () => {
+
+        it('straighten at t = 0', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0, 0]}),
                 Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
@@ -148,7 +158,8 @@ test('actionStraightenWay', async t => {
             assert.strictEqual(result.entity('c').loc[1], -0.01);
         });
 
-        await t.test('straighten at t = 0.5', () => {
+
+        it('straighten at t = 0.5', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0, 0]}),
                 Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
@@ -165,7 +176,8 @@ test('actionStraightenWay', async t => {
             assert.strictEqual(result.entity('c').loc[1], -0.005);
         });
 
-        await t.test('straighten at t = 1', () => {
+
+        it('straighten at t = 1', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0, 0]}),
                 Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
