@@ -430,15 +430,15 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
 
                         if (matchesViaTo) {
                             if (isOnly) {
-                                restrict = { id: restriction.id, direct: matchesFrom, from: f.id, only: true, end: true };
+                                restrict = { id: restriction.id, direct: matchesFrom, from: f.id, no: false, only: true, end: true };
                             } else {
-                                restrict = { id: restriction.id, direct: matchesFrom, from: f.id, no: true, end: true };
+                                restrict = { id: restriction.id, direct: matchesFrom, from: f.id, no: true, only: false, end: true };
                             }
                         } else {    // indirect - caused by a different nearby restriction
                             if (isAlongOnlyPath) {
-                                restrict = { id: restriction.id, direct: false, from: f.id, only: true, end: false };
+                                restrict = { id: restriction.id, direct: false, from: f.id, no: false, only: true, end: false };
                             } else if (isOnly) {
-                                restrict = { id: restriction.id, direct: false, from: f.id, no: true, end: true };
+                                restrict = { id: restriction.id, direct: false, from: f.id, no: true, only: false, end: true };
                             }
                         }
 
