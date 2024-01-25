@@ -3,13 +3,13 @@ import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 describe('actionStraightenNodes', () => {
-    var projection = {
+    const projection = {
         project: function (val) { return val; },
         invert: function (val) { return val; }
     };
 
     it('returns falsy for ways with internal nodes near centerline', () => {
-        var graph = new Rapid.Graph([
+        const graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01]}),
             Rapid.osmNode({id: 'c', loc: [2, 0]}),
@@ -20,7 +20,7 @@ describe('actionStraightenNodes', () => {
     });
 
     it('returns \'too_bendy\' for ways with internal nodes far off centerline', () => {
-        var graph = new Rapid.Graph([
+        const graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 1]}),
             Rapid.osmNode({id: 'c', loc: [2, 0]}),
@@ -31,7 +31,7 @@ describe('actionStraightenNodes', () => {
     });
 
     it('returns \'too_bendy\' for ways with coincident start/end nodes', () => {
-        var graph = new Rapid.Graph([
+        const graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0]}),
             Rapid.osmNode({id: 'c', loc: [2, 0]}),
@@ -42,7 +42,7 @@ describe('actionStraightenNodes', () => {
     });
 
     it('deletes empty nodes', () => {
-        var graph = new Rapid.Graph([
+        const graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {}}),
             Rapid.osmNode({id: 'c', loc: [2, 0]}),
@@ -55,7 +55,7 @@ describe('actionStraightenNodes', () => {
     });
 
     it('does not delete tagged nodes', () => {
-        var graph = new Rapid.Graph([
+        const graph = new Rapid.Graph([
             Rapid.osmNode({id: 'a', loc: [0, 0]}),
             Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
             Rapid.osmNode({id: 'c', loc: [2, 0]}),
@@ -74,7 +74,7 @@ describe('actionStraightenNodes', () => {
         });
 
         it('straighten at t = 0', () => {
-            var graph = new Rapid.Graph([
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0, -1]}),
                 Rapid.osmNode({id: 'b', loc: [5, 1], tags: {foo: 'bar'}}),
                 Rapid.osmNode({id: 'c', loc: [10, -1]}),  // untagged
@@ -89,7 +89,7 @@ describe('actionStraightenNodes', () => {
         });
 
         it('straighten at t = 0.5', () => {
-            var graph = new Rapid.Graph([
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0, -1]}),
                 Rapid.osmNode({id: 'b', loc: [5, 1], tags: {foo: 'bar'}}),
                 Rapid.osmNode({id: 'c', loc: [10, -1]}),  // untagged
@@ -104,7 +104,7 @@ describe('actionStraightenNodes', () => {
         });
 
         it('straighten at t = 1', () => {
-            var graph = new Rapid.Graph([
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0, -1]}),
                 Rapid.osmNode({id: 'b', loc: [5, 1], tags: {foo: 'bar'}}),
                 Rapid.osmNode({id: 'c', loc: [10, -1]}),  // untagged
