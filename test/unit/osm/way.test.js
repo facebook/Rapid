@@ -1,166 +1,209 @@
-describe('osmWay', function () {
+import { after, before, describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+import * as Rapid from '../../../modules/headless.js';
+
+describe('osmWay', () => {
     var _savedAreaKeys;
 
-    before(function() {
+    before(() => {
         _savedAreaKeys = Rapid.osmAreaKeys;
         Rapid.osmSetAreaKeys({ building: {} });
     });
 
-    after(function() {
+
+    after(() => {
         Rapid.osmSetAreaKeys(_savedAreaKeys);
     });
 
-    it('returns a way', function () {
-        expect(Rapid.osmWay()).to.be.an.instanceOf(Rapid.osmWay);
-        expect(Rapid.osmWay().type).to.equal('way');
+
+    it('returns a way', () => {
+        var way = Rapid.osmWay();
+        assert.ok(way instanceof Rapid.osmWay);
+        assert.equal(way.type, 'way');
     });
 
-    it('defaults nodes to an empty array', function () {
-        expect(Rapid.osmWay().nodes).to.eql([]);
+
+    it('defaults nodes to an empty array', () => {
+        var way = Rapid.osmWay();
+        assert.deepEqual(way.nodes, []);
     });
 
-    it('sets nodes as specified', function () {
-        expect(Rapid.osmWay({nodes: ['n-1']}).nodes).to.eql(['n-1']);
+
+    it('sets nodes as specified', () => {
+        var way = Rapid.osmWay({nodes: ['n-1']});
+        assert.deepEqual(way.nodes, ['n-1']);
     });
 
-    it('defaults tags to an empty object', function () {
-        expect(Rapid.osmWay().tags).to.eql({});
+
+    it('defaults tags to an empty object', () => {
+        var way = Rapid.osmWay();
+        assert.deepEqual(way.tags, {});
     });
 
-    it('sets tags as specified', function () {
-        expect(Rapid.osmWay({tags: {foo: 'bar'}}).tags).to.eql({foo: 'bar'});
+
+    it('sets tags as specified', () => {
+        var way = Rapid.osmWay({tags: {foo: 'bar'}});
+        assert.deepEqual(way.tags, {foo: 'bar'});
     });
 
-    describe('#copy', function () {
-        it('returns a new Way', function () {
-            var w = Rapid.osmWay({id: 'w'}),
+
+    describe('#copy', () => {
+        it('returns a new Way', () => {
+            const w = Rapid.osmWay({id: 'w'}),
                 result = w.copy(null, {});
 
-            expect(result).to.be.an.instanceof(Rapid.osmWay);
-            expect(result).not.to.equal(w);
+            assert.ok(result instanceof Rapid.osmWay);
+            assert.notEqual(result, w);
         });
 
-        it('adds the new Way to input object', function () {
-            var w = Rapid.osmWay({id: 'w'}),
+
+        it('adds the new Way to input object', () => {
+            const w = Rapid.osmWay({id: 'w'}),
                 copies = {},
                 result = w.copy(null, copies);
-            expect(Object.keys(copies)).to.have.length(1);
-            expect(copies.w).to.equal(result);
+            assert.equal(Object.keys(copies).length, 1);
+            assert.equal(copies.w, result);
         });
 
-        it('returns an existing copy in input object', function () {
-            var w = Rapid.osmWay({id: 'w'}),
+
+        it('returns an existing copy in input object', () => {
+            const w = Rapid.osmWay({id: 'w'}),
                 copies = {},
                 result1 = w.copy(null, copies),
                 result2 = w.copy(null, copies);
-            expect(Object.keys(copies)).to.have.length(1);
-            expect(result1).to.equal(result2);
+            assert.equal(Object.keys(copies).length, 1);
+            assert.equal(result1, result2);
         });
 
-        it('deep copies nodes', function () {
-            var a = Rapid.osmNode({id: 'a'}),
+
+        it('deep copies nodes', () => {
+            const a = Rapid.osmNode({id: 'a'}),
                 b = Rapid.osmNode({id: 'b'}),
                 w = Rapid.osmWay({id: 'w', nodes: ['a', 'b']}),
                 graph = new Rapid.Graph([a, b, w]),
                 copies = {},
                 result = w.copy(graph, copies);
 
-            expect(Object.keys(copies)).to.have.length(3);
-            expect(copies.a).to.be.an.instanceof(Rapid.osmNode);
-            expect(copies.b).to.be.an.instanceof(Rapid.osmNode);
-            expect(copies.a).not.to.equal(w.nodes[0]);
-            expect(copies.b).not.to.equal(w.nodes[1]);
-            expect(result.nodes).to.deep.eql([copies.a.id, copies.b.id]);
+            assert.equal(Object.keys(copies).length, 3);
+            assert.ok(copies.a instanceof Rapid.osmNode);
+            assert.ok(copies.b instanceof Rapid.osmNode);
+            assert.notEqual(copies.a, w.nodes[0]);
+            assert.notEqual(copies.b, w.nodes[1]);
+            assert.deepEqual(result.nodes, [copies.a.id, copies.b.id]);
         });
 
-        it('creates only one copy of shared nodes', function () {
-            var a = Rapid.osmNode({id: 'a'}),
+
+        it('creates only one copy of shared nodes', () => {
+            const a = Rapid.osmNode({id: 'a'}),
                 w = Rapid.osmWay({id: 'w', nodes: ['a', 'a']}),
                 graph = new Rapid.Graph([a, w]),
                 copies = {},
                 result = w.copy(graph, copies);
 
-            expect(result.nodes[0]).to.equal(result.nodes[1]);
+            assert.equal(result.nodes[0], result.nodes[1]);
         });
     });
 
-    describe('#first', function () {
-        it('returns the first node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).first()).to.equal('a');
+    describe('#first', () => {
+        it('returns the first node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.equal(way.first(), 'a');
         });
     });
 
-    describe('#last', function () {
-        it('returns the last node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).last()).to.equal('c');
+    describe('#last', () => {
+        it('returns the last node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.equal(way.last(), 'c');
         });
     });
 
-    describe('#contains', function () {
-        it('returns true if the way contains the given node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).contains('b')).to.be.true;
+    describe('#contains', () => {
+        it('returns true if the way contains the given node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.ok(way.contains('b'));
         });
 
-        it('returns false if the way does not contain the given node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).contains('d')).to.be.false;
-        });
-    });
 
-    describe('#affix', function () {
-        it('returns \'prefix\' if the way starts with the given node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).affix('a')).to.equal('prefix');
-        });
-
-        it('returns \'suffix\' if the way ends with the given node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).affix('c')).to.equal('suffix');
-        });
-
-        it('returns falsy if the way does not start or end with the given node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).affix('b')).not.to.be.ok;
-            expect(Rapid.osmWay({nodes: []}).affix('b')).not.to.be.ok;
+        it('returns false if the way does not contain the given node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.ok(!way.contains('d'));
         });
     });
 
-    describe('#extent', function () {
-        it('returns the minimal Extent containing all member nodes', function () {
-            var node1 = Rapid.osmNode({loc: [0, 0]}),
-                node2 = Rapid.osmNode({loc: [5, 10]}),
-                way   = Rapid.osmWay({nodes: [node1.id, node2.id]}),
-                graph = new Rapid.Graph([node1, node2, way]);
-            expect(way.extent(graph).equals(new sdk.Extent([0, 0], [5, 10]))).to.be.ok;
+
+    describe('#affix', () => {
+        it('returns \'prefix\' if the way starts with the given node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.equal(way.affix('a'), 'prefix');
+        });
+
+
+        it('returns \'suffix\' if the way ends with the given node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.equal(way.affix('c'), 'suffix');
+        });
+
+
+        it('returns falsy if the way does not start or end with the given node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.ok(!way.affix('b'));
+            assert.ok(!Rapid.osmWay({nodes: []}).affix('b'));
         });
     });
 
-    describe('#isClosed', function() {
-        it('returns false when the way contains no nodes', function() {
-            expect(Rapid.osmWay().isClosed()).to.be.false;
-        });
-
-        it('returns false when the way contains a single node', function() {
-            expect(Rapid.osmWay({ nodes: 'a'.split('') }).isClosed()).to.be.false;
-        });
-
-        it('returns false when the way ends are not equal', function() {
-            expect(Rapid.osmWay({ nodes: 'abc'.split('') }).isClosed()).to.be.false;
-        });
-
-        it('returns true when the way ends are equal', function() {
-            expect(Rapid.osmWay({ nodes: 'aba'.split('') }).isClosed()).to.be.true;
-        });
-
-        it('returns true when the way contains two of the same node', function() {
-            expect(Rapid.osmWay({ nodes: 'aa'.split('') }).isClosed()).to.be.true;
+    describe('#extent', () => {
+        it('returns the minimal Extent containing all member nodes', () => {
+            const node1 = Rapid.osmNode({loc: [0, 0]});
+            const node2 = Rapid.osmNode({loc: [5, 10]});
+            var way = Rapid.osmWay({nodes: [node1.id, node2.id]});
+            const graph = new Rapid.Graph([node1, node2, way]);
+            const extent = way.extent(graph);
+            assert.ok(extent.equals(new Rapid.sdk.Extent([0, 0], [5, 10])));
         });
     });
 
-    describe('#isConvex', function() {
-        it('returns true for convex ways', function() {
+
+    describe('#isClosed', () => {
+        it('returns false when the way contains no nodes', () => {
+            var way = Rapid.osmWay();
+            assert.equal(way.isClosed(), false);
+        });
+
+
+        it('returns false when the way contains a single node', () => {
+            var way = Rapid.osmWay({ nodes: 'a'.split('') });
+            assert.equal(way.isClosed(), false);
+        });
+
+
+        it('returns false when the way ends are not equal', () => {
+            var way = Rapid.osmWay({ nodes: 'abc'.split('') });
+            assert.equal(way.isClosed(), false);
+        });
+
+
+        it('returns true when the way ends are equal', () => {
+            var way = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.equal(way.isClosed(), true);
+        });
+
+
+        it('returns true when the way contains two of the same node', () => {
+            var way = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(way.isClosed(), true);
+        });
+    });
+
+
+    describe('#isConvex', () => {
+        it('returns true for convex ways', () => {
             //    d -- e
             //    |     \
             //    |      a
             //    |     /
             //    c -- b
-            var graph = new Rapid.Graph([
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [ 0.0003,  0.0000]}),
                 Rapid.osmNode({id: 'b', loc: [ 0.0002, -0.0002]}),
                 Rapid.osmNode({id: 'c', loc: [-0.0002, -0.0002]}),
@@ -168,16 +211,17 @@ describe('osmWay', function () {
                 Rapid.osmNode({id: 'e', loc: [ 0.0002,  0.0002]}),
                 Rapid.osmWay({id: 'w', nodes: ['a','b','c','d','e','a']})
             ]);
-            expect(graph.entity('w').isConvex(graph)).to.be.true;
+            assert.ok(graph.entity('w').isConvex(graph));
         });
 
-        it('returns false for concave ways', function() {
+
+        it('returns false for concave ways', () => {
             //    d -- e
             //    |   /
             //    |  a
             //    |   \
             //    c -- b
-            var graph = new Rapid.Graph([
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [ 0.0000,  0.0000]}),
                 Rapid.osmNode({id: 'b', loc: [ 0.0002, -0.0002]}),
                 Rapid.osmNode({id: 'c', loc: [-0.0002, -0.0002]}),
@@ -185,16 +229,17 @@ describe('osmWay', function () {
                 Rapid.osmNode({id: 'e', loc: [ 0.0002,  0.0002]}),
                 Rapid.osmWay({id: 'w', nodes: ['a','b','c','d','e','a']})
             ]);
-            expect(graph.entity('w').isConvex(graph)).to.be.false;
+            assert.equal(graph.entity('w').isConvex(graph), false);
         });
 
-        it('returns null for non-closed ways', function() {
+
+        it('returns null for non-closed ways', () => {
             //    d -- e
             //    |
             //    |  a
             //    |   \
             //    c -- b
-            var graph = new Rapid.Graph([
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [ 0.0000,  0.0000]}),
                 Rapid.osmNode({id: 'b', loc: [ 0.0002, -0.0002]}),
                 Rapid.osmNode({id: 'c', loc: [-0.0002, -0.0002]}),
@@ -202,845 +247,1069 @@ describe('osmWay', function () {
                 Rapid.osmNode({id: 'e', loc: [ 0.0002,  0.0002]}),
                 Rapid.osmWay({id: 'w', nodes: ['a','b','c','d','e']})
             ]);
-            expect(graph.entity('w').isConvex(graph)).to.be.null;
+            assert.equal(graph.entity('w').isConvex(graph), null);
         });
 
-        it('returns null for degenerate ways', function() {
-            var graph = new Rapid.Graph([
+
+        it('returns null for degenerate ways', () => {
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [0.0000,  0.0000]}),
                 Rapid.osmWay({id: 'w', nodes: ['a','a']})
             ]);
-            expect(graph.entity('w').isConvex(graph)).to.be.null;
+            assert.equal(graph.entity('w').isConvex(graph), null);
         });
     });
 
-    describe('#layer', function() {
-        it('returns 0 when the way has no tags', function() {
-            expect(Rapid.osmWay().layer()).to.equal(0);
+
+    describe('#layer', () => {
+        it('returns 0 when the way has no tags', () => {
+            var way = Rapid.osmWay();
+            assert.equal(way.layer(), 0);
         });
 
-        it('returns 0 when the way has a non numeric layer tag', function() {
-            expect(Rapid.osmWay({tags: { layer: 'NaN' }}).layer()).to.equal(0);
-            expect(Rapid.osmWay({tags: { layer: 'Infinity' }}).layer()).to.equal(0);
-            expect(Rapid.osmWay({tags: { layer: 'Foo' }}).layer()).to.equal(0);
+
+        it('returns 0 when the way has a non numeric layer tag', () => {
+            var way = Rapid.osmWay({tags: { layer: 'NaN' }});
+            assert.equal(way.layer(), 0);
+            way = Rapid.osmWay({tags: { layer: 'Infinity' }});
+            assert.equal(way.layer(), 0);
+            way = Rapid.osmWay({tags: { layer: 'Foo' }});
+            assert.equal(way.layer(), 0);
         });
 
-        it('returns the layer when the way has an explicit layer tag', function() {
-            expect(Rapid.osmWay({tags: { layer: '2' }}).layer()).to.equal(2);
-            expect(Rapid.osmWay({tags: { layer: '-5' }}).layer()).to.equal(-5);
+
+        it('returns the layer when the way has an explicit layer tag', () => {
+            var way = Rapid.osmWay({tags: { layer: '2' }});
+            assert.equal(way.layer(), 2);
+            way = Rapid.osmWay({tags: { layer: '-5' }});
+            assert.equal(way.layer(), -5);
         });
 
-        it('clamps the layer to within -10, 10', function() {
-            expect(Rapid.osmWay({tags: { layer: '12' }}).layer()).to.equal(10);
-            expect(Rapid.osmWay({tags: { layer: '-15' }}).layer()).to.equal(-10);
+
+        it('clamps the layer to within -10, 10', () => {
+            var way = Rapid.osmWay({tags: { layer: '12' }});
+            assert.equal(way.layer(), 10);
+            way = Rapid.osmWay({tags: { layer: '-15' }});
+            assert.equal(way.layer(), -10);
         });
 
-        it('returns 1 for location=overground', function() {
-            expect(Rapid.osmWay({tags: { location: 'overground' }}).layer()).to.equal(1);
+
+        it('returns 1 for location=overground', () => {
+            var way = Rapid.osmWay({tags: { location: 'overground' }});
+            assert.equal(way.layer(), 1);
         });
 
-        it('returns -1 for covered=yes', function() {
-            expect(Rapid.osmWay({tags: { covered: 'yes' }}).layer()).to.equal(-1);
+
+        it('returns -1 for covered=yes', () => {
+            var way = Rapid.osmWay({tags: { covered: 'yes' }});
+            assert.equal(way.layer(), -1);
         });
 
-        it('returns -1 for location=underground', function() {
-            expect(Rapid.osmWay({tags: { location: 'underground' }}).layer()).to.equal(-1);
+
+        it('returns -1 for location=underground', () => {
+            var way = Rapid.osmWay({tags: { location: 'underground' }});
+            assert.equal(way.layer(), -1);
         });
 
-        it('returns -10 for location=underwater', function() {
-            expect(Rapid.osmWay({tags: { location: 'underwater' }}).layer()).to.equal(-10);
+
+        it('returns -10 for location=underwater', () => {
+            var way = Rapid.osmWay({tags: { location: 'underwater' }});
+            assert.equal(way.layer(), -10);
         });
 
-        it('returns 10 for power lines', function() {
-            expect(Rapid.osmWay({tags: { power: 'line' }}).layer()).to.equal(10);
-            expect(Rapid.osmWay({tags: { power: 'minor_line' }}).layer()).to.equal(10);
+
+        it('returns 10 for power lines', () => {
+            var way = Rapid.osmWay({tags: { power: 'line' }});
+            assert.equal(way.layer(), 10);
+            way = Rapid.osmWay({tags: { power: 'minor_line' }});
+            assert.equal(way.layer(), 10);
         });
 
-        it('returns 10 for aerialways', function() {
-            expect(Rapid.osmWay({tags: { aerialway: 'cable_car' }}).layer()).to.equal(10);
+
+        it('returns 10 for aerialways', () => {
+            var way = Rapid.osmWay({tags: { aerialway: 'cable_car' }});
+            assert.equal(way.layer(), 10);
         });
 
-        it('returns 1 for bridges', function() {
-            expect(Rapid.osmWay({tags: { bridge: 'yes' }}).layer()).to.equal(1);
+
+        it('returns 1 for bridges', () => {
+            var way = Rapid.osmWay({tags: { bridge: 'yes' }});
+            assert.equal(way.layer(), 1);
         });
 
-        it('returns -1 for cuttings', function() {
-            expect(Rapid.osmWay({tags: { cutting: 'yes' }}).layer()).to.equal(-1);
+
+        it('returns -1 for cuttings', () => {
+            var way = Rapid.osmWay({tags: { cutting: 'yes' }});
+            assert.equal(way.layer(), -1);
         });
 
-        it('returns -1 for tunnels', function() {
-            expect(Rapid.osmWay({tags: { tunnel: 'yes' }}).layer()).to.equal(-1);
+
+        it('returns -1 for tunnels', () => {
+            var way = Rapid.osmWay({tags: { tunnel: 'yes' }});
+            assert.equal(way.layer(), -1);
         });
 
-        it('returns -1 for waterways', function() {
-            expect(Rapid.osmWay({tags: { waterway: 'stream' }}).layer()).to.equal(-1);
+
+        it('returns -1 for waterways', () => {
+            var way = Rapid.osmWay({tags: { waterway: 'stream' }});
+            assert.equal(way.layer(), -1);
         });
 
-        it('returns -10 for pipelines', function() {
-            expect(Rapid.osmWay({tags: { man_made: 'pipeline' }}).layer()).to.equal(-10);
-        });
 
-        it('returns -10 for boundaries', function() {
-            expect(Rapid.osmWay({tags: { boundary: 'administrative' }}).layer()).to.equal(-10);
-        });
-
-    });
-
-    describe('#isOneWay', function() {
-        it('returns false when the way has no tags', function() {
-            expect(Rapid.osmWay().isOneWay()).to.be.false;
-        });
-
-        it('returns false when the way has tag oneway=no', function() {
-            expect(Rapid.osmWay({tags: { oneway: 'no' }}).isOneWay(), 'oneway no').to.be.false;
-            expect(Rapid.osmWay({tags: { oneway: '0' }}).isOneWay(), 'oneway 0').to.be.false;
-        });
-
-        it('returns true when the way has tag oneway=yes', function() {
-            expect(Rapid.osmWay({tags: { oneway: 'yes' }}).isOneWay(), 'oneway yes').to.be.true;
-            expect(Rapid.osmWay({tags: { oneway: '1' }}).isOneWay(), 'oneway 1').to.be.true;
-            expect(Rapid.osmWay({tags: { oneway: '-1' }}).isOneWay(), 'oneway -1').to.be.true;
-        });
-
-        it('returns true when the way has tag oneway=reversible', function() {
-            expect(Rapid.osmWay({tags: { oneway: 'reversible' }}).isOneWay(), 'oneway reversible').to.be.true;
-        });
-
-        it('returns true when the way has tag oneway=alternating', function() {
-            expect(Rapid.osmWay({tags: { oneway: 'alternating' }}).isOneWay(), 'oneway alternating').to.be.true;
-        });
-
-        it('returns true when the way has implied oneway tag (waterway=river, waterway=stream, etc)', function() {
-            expect(Rapid.osmWay({tags: { waterway: 'river' }}).isOneWay(), 'river').to.be.true;
-            expect(Rapid.osmWay({tags: { waterway: 'stream' }}).isOneWay(), 'stream').to.be.true;
-            expect(Rapid.osmWay({tags: { highway: 'motorway' }}).isOneWay(), 'motorway').to.be.true;
-            expect(Rapid.osmWay({tags: { junction: 'roundabout' }}).isOneWay(), 'roundabout').to.be.true;
-            expect(Rapid.osmWay({tags: { junction: 'circular' }}).isOneWay(), 'circular').to.be.true;
-        });
-
-        it('returns false when the way does not have implied oneway tag', function() {
-            expect(Rapid.osmWay({tags: { highway: 'motorway_link' }}).isOneWay(), 'motorway_link').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'trunk' }}).isOneWay(), 'trunk').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'trunk_link' }}).isOneWay(), 'trunk_link').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'primary' }}).isOneWay(), 'primary').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'primary_link' }}).isOneWay(), 'primary_link').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'secondary' }}).isOneWay(), 'secondary').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'secondary_link' }}).isOneWay(), 'secondary_link').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'tertiary' }}).isOneWay(), 'tertiary').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'tertiary_link' }}).isOneWay(), 'tertiary_link').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'unclassified' }}).isOneWay(), 'unclassified').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'residential' }}).isOneWay(), 'residential').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'living_street' }}).isOneWay(), 'living_street').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'service' }}).isOneWay(), 'service').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'track' }}).isOneWay(), 'track').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'path' }}).isOneWay(), 'path').to.be.false;
-        });
-
-        it('returns false when oneway=no overrides implied oneway tag', function() {
-            expect(Rapid.osmWay({tags: { junction: 'roundabout', oneway: 'no' }}).isOneWay(), 'roundabout').to.be.false;
-            expect(Rapid.osmWay({tags: { junction: 'circular', oneway: 'no' }}).isOneWay(), 'circular').to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'motorway', oneway: 'no' }}).isOneWay(), 'motorway').to.be.false;
+        it('returns -10 for boundaries', () => {
+            var way = Rapid.osmWay({tags: { boundary: 'administrative' }});
+            assert.equal(way.layer(), -10);
         });
     });
 
-    describe('#sidednessIdentifier', function() {
-        it('returns tag when the tag has implied sidedness', function() {
-            expect(Rapid.osmWay({tags: { natural: 'cliff' }}).sidednessIdentifier()).to.eql('natural');
-            expect(Rapid.osmWay({tags: { natural: 'coastline' }}).sidednessIdentifier()).to.eql('coastline');
-            expect(Rapid.osmWay({tags: { barrier: 'retaining_wall' }}).sidednessIdentifier()).to.eql('barrier');
-            expect(Rapid.osmWay({tags: { barrier: 'kerb' }}).sidednessIdentifier()).to.eql('barrier');
-            expect(Rapid.osmWay({tags: { barrier: 'guard_rail' }}).sidednessIdentifier()).to.eql('barrier');
-            expect(Rapid.osmWay({tags: { barrier: 'city_wall' }}).sidednessIdentifier()).to.eql('barrier');
-            expect(Rapid.osmWay({tags: { man_made: 'embankment' }}).sidednessIdentifier()).to.eql('man_made');
-            expect(Rapid.osmWay({tags: { 'abandoned:barrier': 'guard_rail' }}).sidednessIdentifier()).to.eql('barrier');
+
+    describe('#isOneWay', () => {
+        it('returns false when the way has no tags', () => {
+            var way = Rapid.osmWay();
+            assert.equal(way.isOneWay(), false);
         });
 
-        it('returns null when tag does not have implied sidedness', function() {
-            expect(Rapid.osmWay({tags: { natural: 'ridge' }}).sidednessIdentifier()).to.be.null;
-            expect(Rapid.osmWay({tags: { barrier: 'fence' }}).sidednessIdentifier()).to.be.null;
-            expect(Rapid.osmWay({tags: { man_made: 'dyke' }}).sidednessIdentifier()).to.be.null;
-            expect(Rapid.osmWay({tags: { highway: 'motorway' }}).sidednessIdentifier()).to.be.null;
-            expect(Rapid.osmWay({tags: { 'demolished:highway': 'motorway' }}).sidednessIdentifier()).to.be.null;
-            expect(Rapid.osmWay({tags: { 'not:natural': 'cliff' }}).sidednessIdentifier()).to.be.null;
-        });
-    });
 
-    describe('#isSided', function() {
-        it('returns false when the way has no tags', function() {
-            expect(Rapid.osmWay().isSided()).to.be.false;
+        it('returns false when the way has tag oneway=no', () => {
+            var way = Rapid.osmWay({tags: { oneway: 'no' }});
+            assert.equal(way.isOneWay(), false, 'oneway no');
+            way = Rapid.osmWay({tags: { oneway: '0' }});
+            assert.equal(way.isOneWay(), false, 'oneway 0');
         });
 
-        it('returns false when the way has two_sided=yes', function() {
-            expect(Rapid.osmWay({tags: { two_sided: 'yes' }}).isSided()).to.be.false;
+
+        it('returns true when the way has tag oneway=yes', () => {
+            var way = Rapid.osmWay({tags: { oneway: 'yes' }});
+            assert.equal(way.isOneWay(), true, 'oneway yes');
+            way = Rapid.osmWay({tags: { oneway: '1' }});
+            assert.equal(way.isOneWay(), true, 'oneway 1');
+            way = Rapid.osmWay({tags: { oneway: '-1' }});
+            assert.equal(way.isOneWay(), true, 'oneway -1');
         });
 
-        it('returns true when the tag has implied sidedness', function() {
-            expect(Rapid.osmWay({tags: { natural: 'cliff' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { natural: 'coastline' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'retaining_wall' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'kerb' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'guard_rail' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'city_wall' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { man_made: 'embankment' }}).isSided()).to.be.true;
+
+        it('returns true when the way has tag oneway=reversible', () => {
+            var way = Rapid.osmWay({tags: { oneway: 'reversible' }});
+            assert.equal(way.isOneWay(), true, 'oneway reversible');
         });
 
-        it('returns false when two_sided=yes overrides tag with implied sidedness', function() {
-            expect(Rapid.osmWay({tags: { natural: 'cliff', two_sided: 'yes' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { natural: 'coastline', two_sided: 'yes' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { barrier: 'retaining_wall', two_sided: 'yes' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { barrier: 'kerb', two_sided: 'yes' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { barrier: 'guard_rail', two_sided: 'yes' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { barrier: 'city_wall', two_sided: 'yes' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { man_made: 'embankment', two_sided: 'yes' }}).isSided()).to.be.false;
+
+        it('returns true when the way has tag oneway=alternating', () => {
+            var way = Rapid.osmWay({tags: { oneway: 'alternating' }});
+            assert.equal(way.isOneWay(), true, 'oneway alternating');
         });
 
-        it('returns true when two_sided=no is on tag with implied sidedness', function() {
-            expect(Rapid.osmWay({tags: { natural: 'cliff', two_sided: 'no' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { natural: 'coastline', two_sided: 'no' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'retaining_wall', two_sided: 'no' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'kerb', two_sided: 'no' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'guard_rail', two_sided: 'no' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { barrier: 'city_wall', two_sided: 'no' }}).isSided()).to.be.true;
-            expect(Rapid.osmWay({tags: { man_made: 'embankment', two_sided: 'no' }}).isSided()).to.be.true;
+
+        it('returns true when the way has implied oneway tag (waterway=river, waterway=stream, etc)', () => {
+            var way = Rapid.osmWay({tags: { waterway: 'river' }});
+            assert.equal(way.isOneWay(), true, 'river');
+            way = Rapid.osmWay({tags: { waterway: 'stream' }});
+            assert.equal(way.isOneWay(), true, 'stream');
+            way = Rapid.osmWay({tags: { highway: 'motorway' }});
+            assert.equal(way.isOneWay(), true, 'motorway');
+            way = Rapid.osmWay({tags: { junction: 'roundabout' }});
+            assert.equal(way.isOneWay(), true, 'roundabout');
+            way = Rapid.osmWay({tags: { junction: 'circular' }});
+            assert.equal(way.isOneWay(), true, 'circular');
         });
 
-        it('returns false when the tag does not have implied sidedness', function() {
-            expect(Rapid.osmWay({tags: { natural: 'ridge' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { barrier: 'fence' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { man_made: 'dyke' }}).isSided()).to.be.false;
-            expect(Rapid.osmWay({tags: { highway: 'motorway' }}).isSided()).to.be.false;
-        });
-    });
 
-    describe('#isArea', function() {
-        it('returns false when the way has no tags', function() {
-            expect(Rapid.osmWay().isArea()).to.equal(false);
-        });
-
-        it('returns true if the way has tag area=yes', function() {
-            expect(Rapid.osmWay({tags: { area: 'yes' }}).isArea()).to.equal(true);
-        });
-
-        it('returns false if the way is closed and has no tags', function() {
-            expect(Rapid.osmWay({nodes: ['n1', 'n1']}).isArea()).to.equal(false);
-        });
-
-        it('returns true if the way is closed and has a key in Rapid.osmAreaKeys', function() {
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: {building: 'yes'}}).isArea()).to.equal(true);
-        });
-
-        it('returns true for some highway and railway exceptions', function() {
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: { highway: 'services' }}).isArea(), 'highway=services').to.equal(true);
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: { highway: 'rest_area' }}).isArea(), 'highway=rest_area').to.equal(true);
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'roundhouse' }}).isArea(), 'railway=roundhouse').to.equal(true);
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'station' }}).isArea(), 'railway=station').to.equal(true);
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'traverser' }}).isArea(), 'railway=traverser').to.equal(true);
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'turntable' }}).isArea(), 'railway=turntable').to.equal(true);
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'wash' }}).isArea(), 'railway=wash').to.equal(true);
-        });
-
-        it('returns false if the way is closed and has no keys in Rapid.osmAreaKeys', function() {
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: {a: 'b'}}).isArea()).to.equal(false);
+        it('returns false when the way does not have implied oneway tag', () => {
+            var way = Rapid.osmWay({tags: { highway: 'motorway_link' }});
+            assert.equal(way.isOneWay(), false, 'motorway_link');
+            way = Rapid.osmWay({tags: { highway: 'trunk' }});
+            assert.equal(way.isOneWay(), false, 'trunk');
+            way = Rapid.osmWay({tags: { highway: 'trunk_link' }});
+            assert.equal(way.isOneWay(), false, 'trunk_link');
+            way = Rapid.osmWay({tags: { highway: 'primary' }});
+            assert.equal(way.isOneWay(), false, 'primary');
+            way = Rapid.osmWay({tags: { highway: 'primary_link' }});
+            assert.equal(way.isOneWay(), false, 'primary_link');
+            way = Rapid.osmWay({tags: { highway: 'secondary' }});
+            assert.equal(way.isOneWay(), false, 'secondary');
+            way = Rapid.osmWay({tags: { highway: 'secondary_link' }});
+            assert.equal(way.isOneWay(), false, 'secondary_link');
+            way = Rapid.osmWay({tags: { highway: 'tertiary' }});
+            assert.equal(way.isOneWay(), false, 'tertiary');
+            way = Rapid.osmWay({tags: { highway: 'tertiary_link' }});
+            assert.equal(way.isOneWay(), false, 'tertiary_link');
+            way = Rapid.osmWay({tags: { highway: 'unclassified' }});
+            assert.equal(way.isOneWay(), false, 'unclassified');
+            way = Rapid.osmWay({tags: { highway: 'residential' }});
+            assert.equal(way.isOneWay(), false, 'residential');
+            way = Rapid.osmWay({tags: { highway: 'living_street' }});
+            assert.equal(way.isOneWay(), false, 'living_street');
+            way = Rapid.osmWay({tags: { highway: 'service' }});
+            assert.equal(way.isOneWay(), false, 'service');
+            way = Rapid.osmWay({tags: { highway: 'track' }});
+            assert.equal(way.isOneWay(), false, 'track');
+            way = Rapid.osmWay({tags: { highway: 'path' }});
+            assert.equal(way.isOneWay(), false, 'path');
         });
 
-        it('returns false if the way is closed and has tag area=no', function() {
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: {area: 'no', building: 'yes'}}).isArea()).to.equal(false);
-        });
 
-        it('returns false for coastline', function() {
-            expect(Rapid.osmWay({nodes: ['n1', 'n1'], tags: {natural: 'coastline'}}).isArea()).to.equal(false);
+        it('returns false when oneway=no overrides implied oneway tag', () => {
+            var way = Rapid.osmWay({tags: { junction: 'roundabout', oneway: 'no' }});
+            assert.equal(way.isOneWay(), false, 'roundabout');
+            way = Rapid.osmWay({tags: { junction: 'circular', oneway: 'no' }});
+            assert.equal(way.isOneWay(), false, 'circular');
+            way = Rapid.osmWay({tags: { highway: 'motorway', oneway: 'no' }});
+            assert.equal(way.isOneWay(), false, 'motorway');
         });
     });
 
-    describe('#isDegenerate', function() {
-       it('returns true for a linear way with zero or one nodes', function () {
-           expect(Rapid.osmWay({nodes: []}).isDegenerate()).to.equal(true);
-           expect(Rapid.osmWay({nodes: ['a']}).isDegenerate()).to.equal(true);
-       });
 
-        it('returns true for a circular way with only one unique node', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'a']}).isDegenerate()).to.equal(true);
+    describe('#sidednessIdentifier', () => {
+        it('returns tag when the tag has implied sidedness', () => {
+            var way = Rapid.osmWay({tags: { natural: 'cliff' }});
+            assert.equal(way.sidednessIdentifier(), 'natural');
+            way = Rapid.osmWay({tags: { natural: 'coastline' }});
+            assert.equal(way.sidednessIdentifier(), 'coastline');
+            way = Rapid.osmWay({tags: { barrier: 'retaining_wall' }});
+            assert.equal(way.sidednessIdentifier(), 'barrier');
+            way = Rapid.osmWay({tags: { barrier: 'kerb' }});
+            assert.equal(way.sidednessIdentifier(), 'barrier');
+            way = Rapid.osmWay({tags: { barrier: 'guard_rail' }});
+            assert.equal(way.sidednessIdentifier(), 'barrier');
+            way = Rapid.osmWay({tags: { barrier: 'city_wall' }});
+            assert.equal(way.sidednessIdentifier(), 'barrier');
+            way = Rapid.osmWay({tags: { man_made: 'embankment' }});
+            assert.equal(way.sidednessIdentifier(), 'man_made');
+            way = Rapid.osmWay({tags: {'abandoned:barrier': 'guard_rail' }});
+            assert.equal(way.sidednessIdentifier(), 'barrier');
         });
 
-        it('returns false for a linear way with two or more nodes', function () {
-            expect(Rapid.osmWay({nodes: ['a', 'b']}).isDegenerate()).to.equal(false);
-        });
 
-        it('returns true for a linear way that doubles back on itself', function () {
-            expect(iD.osmWay({nodes: ['a', 'b', 'a']}).isDegenerate()).to.equal(true);
-        });
-
-        it('returns true for an area with zero, one, or two unique nodes', function () {
-            expect(Rapid.osmWay({tags: {area: 'yes'}, nodes: []}).isDegenerate()).to.equal(true);
-            expect(Rapid.osmWay({tags: {area: 'yes'}, nodes: ['a', 'a']}).isDegenerate()).to.equal(true);
-            expect(Rapid.osmWay({tags: {area: 'yes'}, nodes: ['a', 'b', 'a']}).isDegenerate()).to.equal(true);
-        });
-
-        it('returns false for an area with three or more unique nodes', function () {
-            expect(Rapid.osmWay({tags: {area: 'yes'}, nodes: ['a', 'b', 'c', 'a']}).isDegenerate()).to.equal(false);
+        it('returns null when tag does not have implied sidedness', () => {
+            var way = Rapid.osmWay({tags: { natural: 'ridge' }});
+            assert.equal(way.sidednessIdentifier(), null);
+            way = Rapid.osmWay({tags: { barrier: 'fence' }});
+            assert.equal(way.sidednessIdentifier(), null);
+            way = Rapid.osmWay({tags: { man_made: 'dyke' }});
+            assert.equal(way.sidednessIdentifier(), null);
+            way = Rapid.osmWay({tags: { highway: 'motorway' }});
+            assert.equal(way.sidednessIdentifier(), null);
+            way = Rapid.osmWay({tags: {'demolished:highway': 'motorway' }});
+            assert.equal(way.sidednessIdentifier(), null);
+            way = Rapid.osmWay({tags: {'not:natural': 'cliff' }});
+            assert.equal(way.sidednessIdentifier(), null);
         });
     });
 
-    describe('#areAdjacent', function() {
-        it('returns false for nodes not in the way', function() {
-            expect(Rapid.osmWay().areAdjacent('a', 'b')).to.equal(false);
+
+    describe('#isSided', () => {
+        it('returns false when the way has no tags', () => {
+            var way = Rapid.osmWay();
+            assert.equal(way.isSided(), false);
         });
 
-        it('returns false for non-adjacent nodes in the way', function() {
-            expect(Rapid.osmWay({nodes: ['a', 'b', 'c']}).areAdjacent('a', 'c')).to.equal(false);
+
+        it('returns false when the way has two_sided=yes', () => {
+            var way = Rapid.osmWay({tags: { two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
         });
 
-        it('returns true for adjacent nodes in the way (forward)', function() {
+
+        it('returns true when the tag has implied sidedness', () => {
+            var way = Rapid.osmWay({tags: { natural: 'cliff' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { natural: 'coastline' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'retaining_wall' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'kerb' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'guard_rail' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'city_wall' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { man_made: 'embankment' }});
+            assert.equal(way.isSided(), true);
+        });
+
+
+        it('returns false when two_sided=yes overrides tag with implied sidedness', () => {
+            var way = Rapid.osmWay({tags: { natural: 'cliff', two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { natural: 'coastline', two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { barrier: 'retaining_wall', two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { barrier: 'kerb', two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { barrier: 'guard_rail', two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { barrier: 'city_wall', two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { man_made: 'embankment', two_sided: 'yes' }});
+            assert.equal(way.isSided(), false);
+        });
+
+
+        it('returns true when two_sided=no is on tag with implied sidedness', () => {
+            var way = Rapid.osmWay({tags: { natural: 'cliff', two_sided: 'no' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { natural: 'coastline', two_sided: 'no' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'retaining_wall', two_sided: 'no' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'kerb', two_sided: 'no' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'guard_rail', two_sided: 'no' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { barrier: 'city_wall', two_sided: 'no' }});
+            assert.equal(way.isSided(), true);
+            way = Rapid.osmWay({tags: { man_made: 'embankment', two_sided: 'no' }});
+            assert.equal(way.isSided(), true);
+        });
+
+
+        it('returns false when the tag does not have implied sidedness', () => {
+            var way = Rapid.osmWay({tags: { natural: 'ridge' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { barrier: 'fence' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { man_made: 'dyke' }});
+            assert.equal(way.isSided(), false);
+            way = Rapid.osmWay({tags: { highway: 'motorway' }});
+            assert.equal(way.isSided(), false);
+        });
+    });
+
+
+    describe('#isArea', () => {
+        it('returns false when the way has no tags', () => {
+            var way = Rapid.osmWay();
+            assert.equal(way.isArea(), false);
+        });
+
+
+        it('returns true if the way has tag area=yes', () => {
+            var way = Rapid.osmWay({tags: { area: 'yes' }});
+            assert.equal(way.isArea(), true);
+        });
+
+
+        it('returns false if the way is closed and has no tags', () => {
+            var way = Rapid.osmWay({nodes: ['n1', 'n1']});
+            assert.equal(way.isArea(), false);
+        });
+
+
+        it('returns true if the way is closed and has a key in Rapid.osmAreaKeys', () => {
+            var way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: {building: 'yes'}});
+            assert.equal(way.isArea(), true);
+        });
+
+
+        it('returns true for some highway and railway exceptions', () => {
+            var way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: { highway: 'services' }});
+            assert.equal(way.isArea(), true, 'highway=services');
+            way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: { highway: 'rest_area' }});
+            assert.equal(way.isArea(), true, 'highway=rest_area');
+            way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'roundhouse' }});
+            assert.equal(way.isArea(), true, 'railway=roundhouse');
+            way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'station' }});
+            assert.equal(way.isArea(), true, 'railway=station');
+            way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'traverser' }});
+            assert.equal(way.isArea(), true, 'railway=traverser');
+            way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'turntable' }});
+            assert.equal(way.isArea(), true, 'railway=turntable');
+            way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: { railway: 'wash' }});
+            assert.equal(way.isArea(), true, 'railway=wash');
+        });
+
+
+        it('returns false if the way is closed and has no keys in Rapid.osmAreaKeys', () => {
+            var way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: {a: 'b'}});
+            assert.equal(way.isArea(), false);
+        });
+
+
+        it('returns false if the way is closed and has tag area=no', () => {
+            var way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: {area: 'no', building: 'yes'}});
+            assert.equal(way.isArea(), false);
+        });
+
+
+        it('returns false for coastline', () => {
+            var way = Rapid.osmWay({nodes: ['n1', 'n1'], tags: {natural: 'coastline'}});
+            assert.equal(way.isArea(), false);
+        });
+    });
+
+
+    describe('#isDegenerate', () => {
+        it('returns true for a linear way with zero or one nodes', () => {
+            var way = Rapid.osmWay({nodes: []});
+            assert.equal(way.isDegenerate(), true);
+            way = Rapid.osmWay({nodes: ['a']});
+            assert.equal(way.isDegenerate(), true);
+        });
+
+
+        it('returns true for a circular way with only one unique node', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'a']});
+            assert.equal(way.isDegenerate(), true);
+        });
+
+
+        it('returns false for a linear way with two or more nodes', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b']});
+            assert.equal(way.isDegenerate(), false);
+        });
+
+
+        it('returns true for a linear way that doubles back on itself', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'a']});
+            assert.equal(way.isDegenerate(), true);
+        });
+
+
+        it('returns true for an area with zero, one, or two unique nodes', () => {
+            var way = Rapid.osmWay({tags: {area: 'yes'}, nodes: []});
+            assert.equal(way.isDegenerate(), true);
+            way = Rapid.osmWay({tags: {area: 'yes'}, nodes: ['a', 'a']});
+            assert.equal(way.isDegenerate(), true);
+            way = Rapid.osmWay({tags: {area: 'yes'}, nodes: ['a', 'b', 'a']});
+            assert.equal(way.isDegenerate(), true);
+        });
+
+
+        it('returns false for an area with three or more unique nodes', () => {
+            var way = Rapid.osmWay({tags: {area: 'yes'}, nodes: ['a', 'b', 'c', 'a']});
+            assert.equal(way.isDegenerate(), false);
+        });
+    });
+
+
+    describe('#areAdjacent', () => {
+        it('returns false for nodes not in the way', () => {
+            var way = Rapid.osmWay();
+            assert.equal(way.areAdjacent('a', 'b'), false);
+        });
+
+
+        it('returns false for non-adjacent nodes in the way', () => {
+            var way = Rapid.osmWay({nodes: ['a', 'b', 'c']});
+            assert.equal(way.areAdjacent('a', 'c'), false);
+        });
+
+
+        it('returns true for adjacent nodes in the way (forward)', () => {
             var way = Rapid.osmWay({nodes: ['a', 'b', 'c', 'd']});
-            expect(way.areAdjacent('a', 'b')).to.equal(true);
-            expect(way.areAdjacent('b', 'c')).to.equal(true);
-            expect(way.areAdjacent('c', 'd')).to.equal(true);
+            assert.equal(way.areAdjacent('a', 'b'), true);
+            assert.equal(way.areAdjacent('b', 'c'), true);
+            assert.equal(way.areAdjacent('c', 'd'), true);
         });
 
-        it('returns true for adjacent nodes in the way (reverse)', function() {
+
+        it('returns true for adjacent nodes in the way (reverse)', () => {
             var way = Rapid.osmWay({nodes: ['a', 'b', 'c', 'd']});
-            expect(way.areAdjacent('b', 'a')).to.equal(true);
-            expect(way.areAdjacent('c', 'b')).to.equal(true);
-            expect(way.areAdjacent('d', 'c')).to.equal(true);
+            assert.equal(way.areAdjacent('b', 'a'), true);
+            assert.equal(way.areAdjacent('c', 'b'), true);
+            assert.equal(way.areAdjacent('d', 'c'), true);
         });
     });
 
-    describe('#geometry', function() {
-        it('returns \'line\' when the way is not an area', function () {
-            expect(Rapid.osmWay().geometry(new Rapid.Graph())).to.equal('line');
+
+    describe('#geometry', () => {
+        it('returns \'line\' when the way is not an area', () => {
+            const graph = new Rapid.Graph();
+            var way = Rapid.osmWay();
+            assert.equal(way.geometry(graph), 'line');
         });
 
-        it('returns \'area\' when the way is an area', function () {
-            expect(Rapid.osmWay({tags: { area: 'yes' }}).geometry(new Rapid.Graph())).to.equal('area');
-        });
-    });
 
-    describe('#close', function () {
-        it('returns self for empty way', function () {
-            var w = Rapid.osmWay();
-            expect(w.close()).to.deep.equal(w);
-        });
-
-        it('returns self for already closed way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w1.close()).to.deep.equal(w1);
-            var w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w2.close()).to.deep.equal(w2);
-        });
-
-        it('closes a way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w1.close().nodes.join('')).to.eql('aba', 'multiple');
-            var w2 = Rapid.osmWay({ nodes: 'a'.split('') });
-            expect(w2.close().nodes.join('')).to.eql('aa', 'single');
-        });
-
-        it('eliminates duplicate consecutive nodes when closing a linear way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
-            expect(w1.close().nodes.join('')).to.eql('aba', 'duplicate at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
-            expect(w2.close().nodes.join('')).to.eql('abca', 'duplicate in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
-            expect(w3.close().nodes.join('')).to.eql('abca', 'duplicate at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
-            expect(w4.close().nodes.join('')).to.eql('abcba', 'duplicates multiple places');
+        it('returns \'area\' when the way is an area', () => {
+            const graph = new Rapid.Graph();
+            var way = Rapid.osmWay({tags: { area: 'yes' }});
+            assert.equal(way.geometry(graph), 'area');
         });
     });
 
-    describe('#unclose', function () {
-        it('returns self for empty way', function () {
-            var w = Rapid.osmWay();
-            expect(w.unclose()).to.deep.equal(w);
+
+    describe('#close', () => {
+        it('returns self for empty way', () => {
+            const w = Rapid.osmWay();
+            assert.deepEqual(w.close(), w);
         });
 
-        it('returns self for already unclosed way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'a'.split('') });
-            expect(w1.unclose()).to.deep.equal(w1);
-            var w2 = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w2.unclose()).to.deep.equal(w2);
+
+        it('returns self for already closed way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.deepEqual(w1.close(), w1);
+            const w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.deepEqual(w2.close(), w2);
         });
 
-        it('uncloses a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w1.unclose().nodes.join('')).to.eql('ab', 'multiple');
-            var w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w2.unclose().nodes.join('')).to.eql('a', 'single');
+
+        it('closes a way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.equal(w1.close().nodes.join(''), 'aba', 'multiple');
+            const w2 = Rapid.osmWay({ nodes: 'a'.split('') });
+            assert.equal(w2.close().nodes.join(''), 'aa', 'single');
         });
 
-        it('eliminates duplicate consecutive nodes when unclosing a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.unclose().nodes.join('')).to.eql('abc', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.unclose().nodes.join('')).to.eql('abc', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.unclose().nodes.join('')).to.eql('abc', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.unclose().nodes.join('')).to.eql('abc', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.unclose().nodes.join('')).to.eql('abcb', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.unclose().nodes.join('')).to.eql('a', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.unclose().nodes.join('')).to.eql('a', 'single node circular with duplicates');
+
+        it('eliminates duplicate consecutive nodes when closing a linear way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
+            assert.equal(w1.close().nodes.join(''), 'aba', 'duplicate at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
+            assert.equal(w2.close().nodes.join(''), 'abca', 'duplicate in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
+            assert.equal(w3.close().nodes.join(''), 'abca', 'duplicate at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
+            assert.equal(w4.close().nodes.join(''), 'abcba', 'duplicates multiple places');
         });
     });
 
-    describe('#addNode', function () {
-        it('adds a node to an empty way', function () {
-            var w = Rapid.osmWay();
-            expect(w.addNode('a').nodes).to.eql(['a']);
+
+    describe('#unclose', () => {
+        it('returns self for empty way', () => {
+            const w = Rapid.osmWay();
+            assert.deepEqual(w.unclose(), w);
         });
 
-        it('adds a node to the end of a linear way when index is undefined', function () {
-            var w = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w.addNode('c').nodes.join('')).to.eql('abc');
+
+        it('returns self for already unclosed way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'a'.split('') });
+            assert.deepEqual(w1.unclose(), w1);
+            const w2 = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.deepEqual(w2.unclose(), w2);
         });
 
-        it('adds a node before the end connector of a circular way when index is undefined', function () {
-            var w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w1.addNode('c').nodes.join('')).to.eql('abca', 'circular');
-            var w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w2.addNode('c').nodes.join('')).to.eql('aca', 'single node circular');
+
+        it('uncloses a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.equal(w1.unclose().nodes.join(''), 'ab', 'multiple');
+            const w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w2.unclose().nodes.join(''), 'a', 'single');
         });
 
-        it('adds an internal node to a linear way at a positive index', function () {
-            var w = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w.addNode('c', 1).nodes.join('')).to.eql('acb');
-        });
 
-        it('adds an internal node to a circular way at a positive index', function () {
-            var w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w1.addNode('c', 1).nodes.join('')).to.eql('acba', 'circular');
-            var w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w2.addNode('c', 1).nodes.join('')).to.eql('aca', 'single node circular');
-        });
-
-        it('adds a leading node to a linear way at index 0', function () {
-            var w = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w.addNode('c', 0).nodes.join('')).to.eql('cab');
-        });
-
-        it('adds a leading node to a circular way at index 0, preserving circularity', function () {
-            var w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w1.addNode('c', 0).nodes.join('')).to.eql('cabc', 'circular');
-            var w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w2.addNode('c', 0).nodes.join('')).to.eql('cac', 'single node circular');
-        });
-
-        it('throws RangeError if index outside of array range for linear way', function () {
-            var w = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w.addNode.bind(w, 'c', 3)).to.throw(RangeError, /out of range 0\.\.2/, 'over range');
-            expect(w.addNode.bind(w, 'c', -1)).to.throw(RangeError, /out of range 0\.\.2/, 'under range');
-        });
-
-        it('throws RangeError if index outside of array range for circular way', function () {
-            var w = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w.addNode.bind(w, 'c', 3)).to.throw(RangeError, /out of range 0\.\.2/, 'over range');
-            expect(w.addNode.bind(w, 'c', -1)).to.throw(RangeError, /out of range 0\.\.2/, 'under range');
-        });
-
-        it('eliminates duplicate consecutive nodes when adding to the end of a linear way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
-            expect(w1.addNode('b').nodes.join('')).to.eql('ab', 'duplicate at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
-            expect(w2.addNode('c').nodes.join('')).to.eql('abc', 'duplicate in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
-            expect(w3.addNode('c').nodes.join('')).to.eql('abc', 'duplicate at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
-            expect(w4.addNode('b').nodes.join('')).to.eql('abcb', 'duplicates multiple places');
-        });
-
-        it('eliminates duplicate consecutive nodes when adding same node before the end connector of a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.addNode('c').nodes.join('')).to.eql('abca', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.addNode('c').nodes.join('')).to.eql('abca', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.addNode('c').nodes.join('')).to.eql('abca', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.addNode('a').nodes.join('')).to.eql('abca', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.addNode('b').nodes.join('')).to.eql('abcba', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.addNode('a').nodes.join('')).to.eql('aa', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.addNode('a').nodes.join('')).to.eql('aa', 'single node circular with duplicates');
-        });
-
-        it('eliminates duplicate consecutive nodes when adding different node before the end connector of a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.addNode('d').nodes.join('')).to.eql('abcda', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.addNode('d').nodes.join('')).to.eql('abcda', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.addNode('d').nodes.join('')).to.eql('abcda', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.addNode('d').nodes.join('')).to.eql('abcda', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.addNode('d').nodes.join('')).to.eql('abcbda', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.addNode('d').nodes.join('')).to.eql('ada', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.addNode('d').nodes.join('')).to.eql('ada', 'single node circular with duplicates');
-        });
-
-        it('eliminates duplicate consecutive nodes when adding to the beginning of a linear way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
-            expect(w1.addNode('a', 0).nodes.join('')).to.eql('ab', 'duplicate at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
-            expect(w2.addNode('a', 0).nodes.join('')).to.eql('abc', 'duplicate in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
-            expect(w3.addNode('a', 0).nodes.join('')).to.eql('abc', 'duplicate at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
-            expect(w4.addNode('a', 0).nodes.join('')).to.eql('abcb', 'duplicates multiple places');
-        });
-
-        it('eliminates duplicate consecutive nodes when adding same node as beginning connector a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.addNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.addNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.addNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.addNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.addNode('a', 0).nodes.join('')).to.eql('abcba', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.addNode('a', 0).nodes.join('')).to.eql('aa', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.addNode('a', 0).nodes.join('')).to.eql('aa', 'single node circular with duplicates');
-        });
-
-        it('eliminates duplicate consecutive nodes when adding different node as beginning connector of a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.addNode('d', 0).nodes.join('')).to.eql('dabcd', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.addNode('d', 0).nodes.join('')).to.eql('dabcd', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.addNode('d', 0).nodes.join('')).to.eql('dabcd', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.addNode('d', 0).nodes.join('')).to.eql('dabcd', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.addNode('d', 0).nodes.join('')).to.eql('dabcbd', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.addNode('d', 0).nodes.join('')).to.eql('dad', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.addNode('d', 0).nodes.join('')).to.eql('dad', 'single node circular with duplicates');
+        it('eliminates duplicate consecutive nodes when unclosing a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.unclose().nodes.join(''), 'abc', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.unclose().nodes.join(''), 'abc', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.unclose().nodes.join(''), 'abc', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.unclose().nodes.join(''), 'abc', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.unclose().nodes.join(''), 'abcb', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.unclose().nodes.join(''), 'a', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.unclose().nodes.join(''), 'a', 'single node circular with duplicates');
         });
     });
 
-    describe('#updateNode', function () {
-        it('throws RangeError if empty way', function () {
-            var w = Rapid.osmWay();
-            expect(w.updateNode.bind(w, 'd', 0)).to.throw(RangeError, /out of range 0\.\.-1/);
+
+    describe('#addNode', () => {
+        it('adds a node to an empty way', () => {
+            const w = Rapid.osmWay();
+            assert.deepEqual(w.addNode('a').nodes, ['a']);
         });
 
-        it('updates an internal node on a linear way at a positive index', function () {
-            var w = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w.updateNode('d', 1).nodes.join('')).to.eql('ad');
+
+        it('adds a node to the end of a linear way when index is undefined', () => {
+            const w = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.equal(w.addNode('c').nodes.join(''), 'abc');
         });
 
-        it('updates an internal node on a circular way at a positive index', function () {
-            var w = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w.updateNode('d', 1).nodes.join('')).to.eql('ada', 'circular');
+
+        it('adds a node before the end connector of a circular way when index is undefined', () => {
+            const w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.equal(w1.addNode('c').nodes.join(''), 'abca', 'circular');
+            const w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w2.addNode('c').nodes.join(''), 'aca', 'single node circular');
         });
 
-        it('updates a leading node on a linear way at index 0', function () {
-            var w = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w.updateNode('d', 0).nodes.join('')).to.eql('db');
+
+        it('adds an internal node to a linear way at a positive index', () => {
+            const w = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.equal(w.addNode('c', 1).nodes.join(''), 'acb');
         });
 
-        it('updates a leading node on a circular way at index 0, preserving circularity', function () {
-            var w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w1.updateNode('d', 0).nodes.join('')).to.eql('dbd', 'circular');
-            var w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w2.updateNode('d', 0).nodes.join('')).to.eql('dd', 'single node circular');
+
+        it('adds an internal node to a circular way at a positive index', () => {
+            const w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.equal(w1.addNode('c', 1).nodes.join(''), 'acba', 'circular');
+            const w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w2.addNode('c', 1).nodes.join(''), 'aca', 'single node circular');
         });
 
-        it('throws RangeError if index outside of array range for linear way', function () {
-            var w = Rapid.osmWay({ nodes: 'ab'.split('') });
-            expect(w.updateNode.bind(w, 'd', 2)).to.throw(RangeError, /out of range 0\.\.1/, 'over range');
-            expect(w.updateNode.bind(w, 'd', -1)).to.throw(RangeError, /out of range 0\.\.1/, 'under range');
+
+        it('adds a leading node to a linear way at index 0', () => {
+            const w = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.equal(w.addNode('c', 0).nodes.join(''), 'cab');
         });
 
-        it('throws RangeError if index outside of array range for circular way', function () {
-            var w = Rapid.osmWay({ nodes: 'aba'.split('') });
-            expect(w.updateNode.bind(w, 'd', 3)).to.throw(RangeError, /out of range 0\.\.2/, 'over range');
-            expect(w.updateNode.bind(w, 'd', -1)).to.throw(RangeError, /out of range 0\.\.2/, 'under range');
+
+        it('adds a leading node to a circular way at index 0, preserving circularity', () => {
+            const w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.equal(w1.addNode('c', 0).nodes.join(''), 'cabc', 'circular');
+            const w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w2.addNode('c', 0).nodes.join(''), 'cac', 'single node circular');
         });
 
-        it('eliminates duplicate consecutive nodes when updating the end of a linear way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcc'.split('') });
-            expect(w1.updateNode('c', 3).nodes.join('')).to.eql('abc', 'duplicate at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
-            expect(w2.updateNode('c', 3).nodes.join('')).to.eql('abc', 'duplicate in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
-            expect(w3.updateNode('c', 3).nodes.join('')).to.eql('abc', 'duplicate at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
-            expect(w4.updateNode('b', 6).nodes.join('')).to.eql('abcb', 'duplicates multiple places');
+
+        it('throws RangeError if index outside of array range for linear way', () => {
+            const w = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.throws(() => w.addNode('c', 3), RangeError, /out of range 0\.\.2/, 'over range');
+            assert.throws(() => w.addNode('c', -1), RangeError, /out of range 0\.\.2/, 'under range');
         });
 
-        it('eliminates duplicate consecutive nodes when updating same node before the end connector of a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.updateNode('c', 3).nodes.join('')).to.eql('abca', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.updateNode('c', 3).nodes.join('')).to.eql('abca', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.updateNode('c', 3).nodes.join('')).to.eql('abca', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.updateNode('a', 3).nodes.join('')).to.eql('abca', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.updateNode('b', 6).nodes.join('')).to.eql('abcba', 'duplicates multiple places');
+
+        it('throws RangeError if index outside of array range for circular way', () => {
+            const w = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.throws(() => w.addNode('c', 3), RangeError, /out of range 0\.\.2/, 'over range');
+            assert.throws(() => w.addNode('c', -1), RangeError, /out of range 0\.\.2/, 'under range');
         });
 
-        it('eliminates duplicate consecutive nodes when updating different node before the end connector of a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.updateNode('d', 3).nodes.join('')).to.eql('abcda', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.updateNode('d', 3).nodes.join('')).to.eql('abda', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.updateNode('d', 3).nodes.join('')).to.eql('abda', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.updateNode('d', 3).nodes.join('')).to.eql('dbcd', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.updateNode('d', 6).nodes.join('')).to.eql('abcbda', 'duplicates multiple places');
+
+        it('eliminates duplicate consecutive nodes when adding to the end of a linear way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
+            assert.equal(w1.addNode('b').nodes.join(''), 'ab', 'duplicate at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
+            assert.equal(w2.addNode('c').nodes.join(''), 'abc', 'duplicate in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
+            assert.equal(w3.addNode('c').nodes.join(''), 'abc', 'duplicate at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
+            assert.equal(w4.addNode('b').nodes.join(''), 'abcb', 'duplicates multiple places');
         });
 
-        it('eliminates duplicate consecutive nodes when updating the beginning of a linear way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
-            expect(w1.updateNode('b', 0).nodes.join('')).to.eql('b', 'duplicate at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
-            expect(w2.updateNode('b', 0).nodes.join('')).to.eql('bc', 'duplicate in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
-            expect(w3.updateNode('a', 0).nodes.join('')).to.eql('abc', 'duplicate at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
-            expect(w4.updateNode('a', 0).nodes.join('')).to.eql('abcb', 'duplicates multiple places');
+
+        it('eliminates duplicate consecutive nodes when adding same node before the end connector of a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.addNode('c').nodes.join(''), 'abca', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.addNode('c').nodes.join(''), 'abca', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.addNode('c').nodes.join(''), 'abca', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.addNode('a').nodes.join(''), 'abca', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.addNode('b').nodes.join(''), 'abcba', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.addNode('a').nodes.join(''), 'aa', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.addNode('a').nodes.join(''), 'aa', 'single node circular with duplicates');
         });
 
-        it('eliminates duplicate consecutive nodes when updating same node as beginning connector a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.updateNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.updateNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.updateNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.updateNode('a', 0).nodes.join('')).to.eql('abca', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.updateNode('a', 0).nodes.join('')).to.eql('abcba', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.updateNode('a', 0).nodes.join('')).to.eql('aa', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.updateNode('a', 0).nodes.join('')).to.eql('aa', 'single node circular with duplicates');
+
+        it('eliminates duplicate consecutive nodes when adding different node before the end connector of a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.addNode('d').nodes.join(''), 'abcda', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.addNode('d').nodes.join(''), 'abcda', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.addNode('d').nodes.join(''), 'abcda', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.addNode('d').nodes.join(''), 'abcda', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.addNode('d').nodes.join(''), 'abcbda', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.addNode('d').nodes.join(''), 'ada', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.addNode('d').nodes.join(''), 'ada', 'single node circular with duplicates');
         });
 
-        it('eliminates duplicate consecutive nodes when updating different node as beginning connector of a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.updateNode('d', 0).nodes.join('')).to.eql('dbcd', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.updateNode('d', 0).nodes.join('')).to.eql('dbcd', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.updateNode('d', 0).nodes.join('')).to.eql('dbcd', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.updateNode('d', 0).nodes.join('')).to.eql('dbcd', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.updateNode('d', 0).nodes.join('')).to.eql('dbcbd', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.updateNode('d', 0).nodes.join('')).to.eql('dd', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.updateNode('d', 0).nodes.join('')).to.eql('dd', 'single node circular with duplicates');
+
+        it('eliminates duplicate consecutive nodes when adding to the beginning of a linear way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
+            assert.equal(w1.addNode('a', 0).nodes.join(''), 'ab', 'duplicate at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
+            assert.equal(w2.addNode('a', 0).nodes.join(''), 'abc', 'duplicate in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
+            assert.equal(w3.addNode('a', 0).nodes.join(''), 'abc', 'duplicate at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
+            assert.equal(w4.addNode('a', 0).nodes.join(''), 'abcb', 'duplicates multiple places');
         });
 
-        it('eliminates duplicate consecutive nodes when updating different node as ending connector of a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
-            expect(w1.updateNode('d', 4).nodes.join('')).to.eql('dbcd', 'duplicate internal node at end');
-            var w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
-            expect(w2.updateNode('d', 4).nodes.join('')).to.eql('dbcd', 'duplicate internal node in middle');
-            var w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w3.updateNode('d', 4).nodes.join('')).to.eql('dbcd', 'duplicate connector node at beginning');
-            var w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w4.updateNode('d', 4).nodes.join('')).to.eql('dbcd', 'duplicate connector node at end');
-            var w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
-            expect(w5.updateNode('d', 7).nodes.join('')).to.eql('dbcbd', 'duplicates multiple places');
-            var w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w6.updateNode('d', 1).nodes.join('')).to.eql('dd', 'single node circular');
-            var w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
-            expect(w7.updateNode('d', 2).nodes.join('')).to.eql('dd', 'single node circular with duplicates');
-        });
-    });
 
-    describe('#replaceNode', function () {
-        it('replaces a node', function () {
-            var w1 = Rapid.osmWay({ nodes: 'a'.split('') });
-            expect(w1.replaceNode('a','b').nodes.join('')).to.eql('b', 'single replace, single node');
-            var w2 = Rapid.osmWay({ nodes: 'abc'.split('') });
-            expect(w2.replaceNode('b','d').nodes.join('')).to.eql('adc', 'single replace, linear');
-            var w4 = Rapid.osmWay({ nodes: 'abca'.split('') });
-            expect(w4.replaceNode('b','d').nodes.join('')).to.eql('adca', 'single replace, circular');
+        it('eliminates duplicate consecutive nodes when adding same node as beginning connector a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.addNode('a', 0).nodes.join(''), 'abca', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.addNode('a', 0).nodes.join(''), 'abca', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.addNode('a', 0).nodes.join(''), 'abca', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.addNode('a', 0).nodes.join(''), 'abca', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.addNode('a', 0).nodes.join(''), 'abcba', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.addNode('a', 0).nodes.join(''), 'aa', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.addNode('a', 0).nodes.join(''), 'aa', 'single node circular with duplicates');
         });
 
-        it('replaces multiply occurring nodes', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcb'.split('') });
-            expect(w1.replaceNode('b','d').nodes.join('')).to.eql('adcd', 'multiple replace, linear');
-            var w2 = Rapid.osmWay({ nodes: 'abca'.split('') });
-            expect(w2.replaceNode('a','d').nodes.join('')).to.eql('dbcd', 'multiple replace, circular');
-            var w3 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w3.replaceNode('a','d').nodes.join('')).to.eql('dd', 'multiple replace, single node circular');
-        });
 
-        it('eliminates duplicate consecutive nodes when replacing along a linear way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abbcd'.split('') });
-            expect(w1.replaceNode('c','b').nodes.join('')).to.eql('abd', 'duplicate before');
-            var w2 = Rapid.osmWay({ nodes: 'abcdd'.split('') });
-            expect(w2.replaceNode('c','d').nodes.join('')).to.eql('abd', 'duplicate after');
-            var w3 = Rapid.osmWay({ nodes: 'abbcbb'.split('')});
-            expect(w3.replaceNode('c','b').nodes.join('')).to.eql('ab', 'duplicate before and after');
-        });
-
-        it('eliminates duplicate consecutive nodes when replacing internal nodes along a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abbcda'.split('') });
-            expect(w1.replaceNode('c','b').nodes.join('')).to.eql('abda', 'duplicate before');
-            var w2 = Rapid.osmWay({ nodes: 'abcdda'.split('') });
-            expect(w2.replaceNode('c','d').nodes.join('')).to.eql('abda', 'duplicate after');
-            var w3 = Rapid.osmWay({ nodes: 'abbcbba'.split('')});
-            expect(w3.replaceNode('c','b').nodes.join('')).to.eql('aba', 'duplicate before and after');
-        });
-
-        it('eliminates duplicate consecutive nodes when replacing adjacent to connecting nodes along a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcda'.split('') });
-            expect(w1.replaceNode('d','a').nodes.join('')).to.eql('abca', 'before single end connector');
-            var w2 = Rapid.osmWay({ nodes: 'abcda'.split('') });
-            expect(w2.replaceNode('b','a').nodes.join('')).to.eql('acda', 'after single beginning connector');
-            var w3 = Rapid.osmWay({ nodes: 'abcdaa'.split('') });
-            expect(w3.replaceNode('d','a').nodes.join('')).to.eql('abca', 'before duplicate end connector');
-            var w4 = Rapid.osmWay({ nodes: 'aabcda'.split('') });
-            expect(w4.replaceNode('b','a').nodes.join('')).to.eql('acda', 'after duplicate beginning connector');
-        });
-
-        it('eliminates duplicate consecutive nodes when replacing connecting nodes along a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w1.replaceNode('a','d').nodes.join('')).to.eql('dbcd', 'duplicate end connector');
-            var w2 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w2.replaceNode('a','d').nodes.join('')).to.eql('dbcd', 'duplicate beginning connector');
-            var w3 = Rapid.osmWay({ nodes: 'aabcaa'.split('') });
-            expect(w3.replaceNode('a','d').nodes.join('')).to.eql('dbcd', 'duplicate beginning and end connectors');
-            var w4 = Rapid.osmWay({ nodes: 'aabaacaa'.split('') });
-            expect(w4.replaceNode('a','d').nodes.join('')).to.eql('dbdcd', 'duplicates multiple places');
+        it('eliminates duplicate consecutive nodes when adding different node as beginning connector of a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.addNode('d', 0).nodes.join(''), 'dabcd', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.addNode('d', 0).nodes.join(''), 'dabcd', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.addNode('d', 0).nodes.join(''), 'dabcd', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.addNode('d', 0).nodes.join(''), 'dabcd', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.addNode('d', 0).nodes.join(''), 'dabcbd', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.addNode('d', 0).nodes.join(''), 'dad', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.addNode('d', 0).nodes.join(''), 'dad', 'single node circular with duplicates');
         });
     });
 
-    describe('#removeNode', function () {
-        it('removes a node', function () {
-            var w1 = Rapid.osmWay({ nodes: 'a'.split('') });
-            expect(w1.removeNode('a').nodes.join('')).to.eql('', 'single remove, single node');
-            var w2 = Rapid.osmWay({ nodes: 'abc'.split('') });
-            expect(w2.removeNode('b').nodes.join('')).to.eql('ac', 'single remove, linear');
-            var w3 = Rapid.osmWay({ nodes: 'abca'.split('') });
-            expect(w3.removeNode('b').nodes.join('')).to.eql('aca', 'single remove, circular');
-            var w4 = Rapid.osmWay({ nodes: 'aa'.split('') });
-            expect(w4.removeNode('a').nodes.join('')).to.eql('', 'multiple remove, single node circular');
+
+
+    describe('#updateNode', () => {
+        it('throws RangeError if empty way', () => {
+            const w = Rapid.osmWay();
+            assert.throws(() => w.updateNode('d', 0), RangeError, /out of range 0\.\.-1/);
         });
 
-        it('removes multiply occurring nodes', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcb'.split('') });
-            expect(w1.removeNode('b').nodes.join('')).to.eql('ac', 'multiple remove, linear');
-            var w2 = Rapid.osmWay({ nodes: 'abcba'.split('') });
-            expect(w2.removeNode('b').nodes.join('')).to.eql('aca', 'multiple remove, circular');
+
+        it('updates an internal node on a linear way at a positive index', () => {
+            const w = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.equal(w.updateNode('d', 1).nodes.join(''), 'ad');
         });
 
-        it('eliminates duplicate consecutive nodes when removing along a linear way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abbcd'.split('') });
-            expect(w1.removeNode('c').nodes.join('')).to.eql('abd', 'duplicate before');
-            var w2 = Rapid.osmWay({ nodes: 'abcdd'.split('') });
-            expect(w2.removeNode('c').nodes.join('')).to.eql('abd', 'duplicate after');
-            var w3 = Rapid.osmWay({ nodes: 'abbcbb'.split('')});
-            expect(w3.removeNode('c').nodes.join('')).to.eql('ab', 'duplicate before and after');
+
+        it('updates an internal node on a circular way at a positive index', () => {
+            const w = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.equal(w.updateNode('d', 1).nodes.join(''), 'ada', 'circular');
         });
 
-        it('eliminates duplicate consecutive nodes when removing internal nodes along a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abbcda'.split('') });
-            expect(w1.removeNode('c').nodes.join('')).to.eql('abda', 'duplicate before');
-            var w2 = Rapid.osmWay({ nodes: 'abcdda'.split('') });
-            expect(w2.removeNode('c').nodes.join('')).to.eql('abda', 'duplicate after');
-            var w3 = Rapid.osmWay({ nodes: 'abbcbba'.split('')});
-            expect(w3.removeNode('c').nodes.join('')).to.eql('aba', 'duplicate before and after');
+
+        it('updates a leading node on a linear way at index 0', () => {
+            const w = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.equal(w.updateNode('d', 0).nodes.join(''), 'db');
         });
 
-        it('eliminates duplicate consecutive nodes when removing adjacent to connecting nodes along a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcdaa'.split('') });
-            expect(w1.removeNode('d').nodes.join('')).to.eql('abca', 'duplicate end connector');
-            var w2 = Rapid.osmWay({ nodes: 'aabcda'.split('') });
-            expect(w2.removeNode('b').nodes.join('')).to.eql('acda', 'duplicate beginning connector');
+
+        it('updates a leading node on a circular way at index 0, preserving circularity', () => {
+            const w1 = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.equal(w1.updateNode('d', 0).nodes.join(''), 'dbd', 'circular');
+            const w2 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w2.updateNode('d', 0).nodes.join(''), 'dd', 'single node circular');
         });
 
-        it('eliminates duplicate consecutive nodes when removing connecting nodes along a circular way', function () {
-            var w1 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
-            expect(w1.removeNode('a').nodes.join('')).to.eql('bcb', 'duplicate end connector');
-            var w2 = Rapid.osmWay({ nodes: 'aabca'.split('') });
-            expect(w2.removeNode('a').nodes.join('')).to.eql('bcb', 'duplicate beginning connector');
-            var w3 = Rapid.osmWay({ nodes: 'aabcaa'.split('') });
-            expect(w3.removeNode('a').nodes.join('')).to.eql('bcb', 'duplicate beginning and end connectors');
-            var w4 = Rapid.osmWay({ nodes: 'aabaacaa'.split('') });
-            expect(w4.removeNode('a').nodes.join('')).to.eql('bcb', 'duplicates multiple places');
+
+        it('throws RangeError if index outside of array range for linear way', () => {
+            const w = Rapid.osmWay({ nodes: 'ab'.split('') });
+            assert.throws(() => w.updateNode('d', 2), RangeError, /out of range 0\.\.1/, 'over range');
+            assert.throws(() => w.updateNode('d', -1), RangeError, /out of range 0\.\.1/, 'under range');
+        });
+
+
+        it('throws RangeError if index outside of array range for circular way', () => {
+            const w = Rapid.osmWay({ nodes: 'aba'.split('') });
+            assert.throws(() => w.updateNode('d', 3), RangeError, /out of range 0\.\.2/, 'over range');
+            assert.throws(() => w.updateNode('d', -1), RangeError, /out of range 0\.\.2/, 'under range');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when updating the end of a linear way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcc'.split('') });
+            assert.equal(w1.updateNode('c', 3).nodes.join(''), 'abc', 'duplicate at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
+            assert.equal(w2.updateNode('c', 3).nodes.join(''), 'abc', 'duplicate in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
+            assert.equal(w3.updateNode('c', 3).nodes.join(''), 'abc', 'duplicate at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
+            assert.equal(w4.updateNode('b', 6).nodes.join(''), 'abcb', 'duplicates multiple places');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when updating same node before the end connector of a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.updateNode('c', 3).nodes.join(''), 'abca', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.updateNode('c', 3).nodes.join(''), 'abca', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.updateNode('c', 3).nodes.join(''), 'abca', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.updateNode('a', 3).nodes.join(''), 'abca', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.updateNode('b', 6).nodes.join(''), 'abcba', 'duplicates multiple places');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when updating different node before the end connector of a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.updateNode('d', 3).nodes.join(''), 'abcda', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.updateNode('d', 3).nodes.join(''), 'abda', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.updateNode('d', 3).nodes.join(''), 'abda', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.updateNode('d', 3).nodes.join(''), 'dbcd', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.updateNode('d', 6).nodes.join(''), 'abcbda', 'duplicates multiple places');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when updating the beginning of a linear way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abb'.split('') });
+            assert.equal(w1.updateNode('b', 0).nodes.join(''), 'b', 'duplicate at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbc'.split('') });
+            assert.equal(w2.updateNode('b', 0).nodes.join(''), 'bc', 'duplicate in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabc'.split('') });
+            assert.equal(w3.updateNode('a', 0).nodes.join(''), 'abc', 'duplicate at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abbbcbb'.split('') });
+            assert.equal(w4.updateNode('a', 0).nodes.join(''), 'abcb', 'duplicates multiple places');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when updating same node as beginning connector a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.updateNode('a', 0).nodes.join(''), 'abca', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.updateNode('a', 0).nodes.join(''), 'abca', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.updateNode('a', 0).nodes.join(''), 'abca', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.updateNode('a', 0).nodes.join(''), 'abca', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.updateNode('a', 0).nodes.join(''), 'abcba', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.updateNode('a', 0).nodes.join(''), 'aa', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.updateNode('a', 0).nodes.join(''), 'aa', 'single node circular with duplicates');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when updating different node as beginning connector of a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.updateNode('d', 0).nodes.join(''), 'dbcd', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.updateNode('d', 0).nodes.join(''), 'dbcd', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.updateNode('d', 0).nodes.join(''), 'dbcd', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.updateNode('d', 0).nodes.join(''), 'dbcd', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.updateNode('d', 0).nodes.join(''), 'dbcbd', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.updateNode('d', 0).nodes.join(''), 'dd', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.updateNode('d', 0).nodes.join(''), 'dd', 'single node circular with duplicates');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when updating different node as ending connector of a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcca'.split('') });
+            assert.equal(w1.updateNode('d', 4).nodes.join(''), 'dbcd', 'duplicate internal node at end');
+            const w2 = Rapid.osmWay({ nodes: 'abbca'.split('') });
+            assert.equal(w2.updateNode('d', 4).nodes.join(''), 'dbcd', 'duplicate internal node in middle');
+            const w3 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w3.updateNode('d', 4).nodes.join(''), 'dbcd', 'duplicate connector node at beginning');
+            const w4 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w4.updateNode('d', 4).nodes.join(''), 'dbcd', 'duplicate connector node at end');
+            const w5 = Rapid.osmWay({ nodes: 'abbbcbba'.split('') });
+            assert.equal(w5.updateNode('d', 7).nodes.join(''), 'dbcbd', 'duplicates multiple places');
+            const w6 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w6.updateNode('d', 1).nodes.join(''), 'dd', 'single node circular');
+            const w7 = Rapid.osmWay({ nodes: 'aaa'.split('') });
+            assert.equal(w7.updateNode('d', 2).nodes.join(''), 'dd', 'single node circular with duplicates');
         });
     });
 
-    describe('#asJXON', function () {
-        it('converts a way to jxon', function() {
-            var node = Rapid.osmWay({id: 'w-1', nodes: ['n1', 'n2'], tags: {highway: 'residential'}});
-            expect(node.asJXON()).to.eql({way: {
+
+    describe('#replaceNode', () => {
+        it('replaces a node', () => {
+            const w1 = Rapid.osmWay({ nodes: 'a'.split('') });
+            assert.equal(w1.replaceNode('a','b').nodes.join(''), 'b', 'single replace, single node');
+            const w2 = Rapid.osmWay({ nodes: 'abc'.split('') });
+            assert.equal(w2.replaceNode('b','d').nodes.join(''), 'adc', 'single replace, linear');
+            const w4 = Rapid.osmWay({ nodes: 'abca'.split('') });
+            assert.equal(w4.replaceNode('b','d').nodes.join(''), 'adca', 'single replace, circular');
+        });
+
+
+        it('replaces multiply occurring nodes', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcb'.split('') });
+            assert.equal(w1.replaceNode('b','d').nodes.join(''), 'adcd', 'multiple replace, linear');
+            const w2 = Rapid.osmWay({ nodes: 'abca'.split('') });
+            assert.equal(w2.replaceNode('a','d').nodes.join(''), 'dbcd', 'multiple replace, circular');
+            const w3 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w3.replaceNode('a','d').nodes.join(''), 'dd', 'multiple replace, single node circular');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when replacing along a linear way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abbcd'.split('') });
+            assert.equal(w1.replaceNode('c','b').nodes.join(''), 'abd', 'duplicate before');
+            const w2 = Rapid.osmWay({ nodes: 'abcdd'.split('') });
+            assert.equal(w2.replaceNode('c','d').nodes.join(''), 'abd', 'duplicate after');
+            const w3 = Rapid.osmWay({ nodes: 'abbcbb'.split('')});
+            assert.equal(w3.replaceNode('c','b').nodes.join(''), 'ab', 'duplicate before and after');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when replacing internal nodes along a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abbcda'.split('') });
+            assert.equal(w1.replaceNode('c','b').nodes.join(''), 'abda', 'duplicate before');
+            const w2 = Rapid.osmWay({ nodes: 'abcdda'.split('') });
+            assert.equal(w2.replaceNode('c','d').nodes.join(''), 'abda', 'duplicate after');
+            const w3 = Rapid.osmWay({ nodes: 'abbcbba'.split('')});
+            assert.equal(w3.replaceNode('c','b').nodes.join(''), 'aba', 'duplicate before and after');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when replacing adjacent to connecting nodes along a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcda'.split('') });
+            assert.equal(w1.replaceNode('d','a').nodes.join(''), 'abca', 'before single end connector');
+            const w2 = Rapid.osmWay({ nodes: 'abcda'.split('') });
+            assert.equal(w2.replaceNode('b','a').nodes.join(''), 'acda', 'after single beginning connector');
+            const w3 = Rapid.osmWay({ nodes: 'abcdaa'.split('') });
+            assert.equal(w3.replaceNode('d','a').nodes.join(''), 'abca', 'before duplicate end connector');
+            const w4 = Rapid.osmWay({ nodes: 'aabcda'.split('') });
+            assert.equal(w4.replaceNode('b','a').nodes.join(''), 'acda', 'after duplicate beginning connector');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when replacing connecting nodes along a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w1.replaceNode('a','d').nodes.join(''), 'dbcd', 'duplicate end connector');
+            const w2 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w2.replaceNode('a','d').nodes.join(''), 'dbcd', 'duplicate beginning connector');
+            const w3 = Rapid.osmWay({ nodes: 'aabcaa'.split('') });
+            assert.equal(w3.replaceNode('a','d').nodes.join(''), 'dbcd', 'duplicate beginning and end connectors');
+            const w4 = Rapid.osmWay({ nodes: 'aabaacaa'.split('') });
+            assert.equal(w4.replaceNode('a','d').nodes.join(''), 'dbdcd', 'duplicates multiple places');
+        });
+    });
+
+    describe('#removeNode', () => {
+        it('removes a node', () => {
+            const w1 = Rapid.osmWay({ nodes: 'a'.split('') });
+            assert.equal(w1.removeNode('a').nodes.join(''), '', 'single remove, single node');
+            const w2 = Rapid.osmWay({ nodes: 'abc'.split('') });
+            assert.equal(w2.removeNode('b').nodes.join(''), 'ac', 'single remove, linear');
+            const w3 = Rapid.osmWay({ nodes: 'abca'.split('') });
+            assert.equal(w3.removeNode('b').nodes.join(''), 'aca', 'single remove, circular');
+            const w4 = Rapid.osmWay({ nodes: 'aa'.split('') });
+            assert.equal(w4.removeNode('a').nodes.join(''), '', 'multiple remove, single node circular');
+        });
+
+
+        it('removes multiply occurring nodes', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcb'.split('') });
+            assert.equal(w1.removeNode('b').nodes.join(''), 'ac', 'multiple remove, linear');
+            const w2 = Rapid.osmWay({ nodes: 'abcba'.split('') });
+            assert.equal(w2.removeNode('b').nodes.join(''), 'aca', 'multiple remove, circular');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when removing along a linear way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abbcd'.split('') });
+            assert.equal(w1.removeNode('c').nodes.join(''), 'abd', 'duplicate before');
+            const w2 = Rapid.osmWay({ nodes: 'abcdd'.split('') });
+            assert.equal(w2.removeNode('c').nodes.join(''), 'abd', 'duplicate after');
+            const w3 = Rapid.osmWay({ nodes: 'abbcbb'.split('')});
+            assert.equal(w3.removeNode('c').nodes.join(''), 'ab', 'duplicate before and after');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when removing internal nodes along a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abbcda'.split('') });
+            assert.equal(w1.removeNode('c').nodes.join(''), 'abda', 'duplicate before');
+            const w2 = Rapid.osmWay({ nodes: 'abcdda'.split('') });
+            assert.equal(w2.removeNode('c').nodes.join(''), 'abda', 'duplicate after');
+            const w3 = Rapid.osmWay({ nodes: 'abbcbba'.split('')});
+            assert.equal(w3.removeNode('c').nodes.join(''), 'aba', 'duplicate before and after');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when removing adjacent to connecting nodes along a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcdaa'.split('') });
+            assert.equal(w1.removeNode('d').nodes.join(''), 'abca', 'duplicate end connector');
+            const w2 = Rapid.osmWay({ nodes: 'aabcda'.split('') });
+            assert.equal(w2.removeNode('b').nodes.join(''), 'acda', 'duplicate beginning connector');
+        });
+
+
+        it('eliminates duplicate consecutive nodes when removing connecting nodes along a circular way', () => {
+            const w1 = Rapid.osmWay({ nodes: 'abcaa'.split('') });
+            assert.equal(w1.removeNode('a').nodes.join(''), 'bcb', 'duplicate end connector');
+            const w2 = Rapid.osmWay({ nodes: 'aabca'.split('') });
+            assert.equal(w2.removeNode('a').nodes.join(''), 'bcb', 'duplicate beginning connector');
+            const w3 = Rapid.osmWay({ nodes: 'aabcaa'.split('') });
+            assert.equal(w3.removeNode('a').nodes.join(''), 'bcb', 'duplicate beginning and end connectors');
+            const w4 = Rapid.osmWay({ nodes: 'aabaacaa'.split('') });
+            assert.equal(w4.removeNode('a').nodes.join(''), 'bcb', 'duplicates multiple places');
+        });
+    });
+
+
+    describe('#asJXON', () => {
+        it('converts a way to jxon', () => {
+            const node = Rapid.osmWay({id: 'w-1', nodes: ['n1', 'n2'], tags: {highway: 'residential'}});
+            assert.deepEqual(node.asJXON(), {way: {
                 '@id': '-1',
                 '@version': 0,
                 nd: [{keyAttributes: {ref: '1'}}, {keyAttributes: {ref: '2'}}],
                 tag: [{keyAttributes: {k: 'highway', v: 'residential'}}]}});
         });
 
-        it('includes changeset if provided', function() {
-            expect(Rapid.osmWay().asJXON('1234').way['@changeset']).to.equal('1234');
+
+        it('includes changeset if provided', () => {
+            const jxon = Rapid.osmWay().asJXON('1234');
+            assert.equal(jxon.way['@changeset'], '1234');
         });
     });
 
-    describe('#asGeoJSON', function () {
-        it('converts a line to a GeoJSON LineString geometry', function () {
-            var a = Rapid.osmNode({loc: [1, 2]}),
-                b = Rapid.osmNode({loc: [3, 4]}),
-                w = Rapid.osmWay({tags: {highway: 'residential'}, nodes: [a.id, b.id]}),
-                graph = new Rapid.Graph([a, b, w]),
-                json = w.asGeoJSON(graph);
 
-            expect(json.type).to.equal('LineString');
-            expect(json.coordinates).to.eql([a.loc, b.loc]);
+    describe('#asGeoJSON', () => {
+        it('converts a line to a GeoJSON LineString geometry', () => {
+            const a = Rapid.osmNode({loc: [1, 2]});
+            const b = Rapid.osmNode({loc: [3, 4]});
+            const w = Rapid.osmWay({tags: {highway: 'residential'}, nodes: [a.id, b.id]});
+            const graph = new Rapid.Graph([a, b, w]);
+            const json = w.asGeoJSON(graph);
+
+            assert.equal(json.type, 'LineString');
+            assert.deepEqual(json.coordinates, [a.loc, b.loc]);
         });
 
-        it('converts an area to a GeoJSON Polygon geometry', function () {
-            var a = Rapid.osmNode({loc: [1, 2]}),
-                b = Rapid.osmNode({loc: [5, 6]}),
-                c = Rapid.osmNode({loc: [3, 4]}),
-                w = Rapid.osmWay({tags: {area: 'yes'}, nodes: [a.id, b.id, c.id, a.id]}),
-                graph = new Rapid.Graph([a, b, c, w]),
-                json = w.asGeoJSON(graph);
 
-            expect(json.type).to.equal('Polygon');
-            expect(json.coordinates).to.eql([[a.loc, b.loc, c.loc, a.loc]]);
+        it('converts an area to a GeoJSON Polygon geometry', () => {
+            const a = Rapid.osmNode({loc: [1, 2]});
+            const b = Rapid.osmNode({loc: [5, 6]});
+            const c = Rapid.osmNode({loc: [3, 4]});
+            const w = Rapid.osmWay({tags: {area: 'yes'}, nodes: [a.id, b.id, c.id, a.id]});
+            const graph = new Rapid.Graph([a, b, c, w]);
+            const json = w.asGeoJSON(graph);
+
+            assert.equal(json.type, 'Polygon');
+            assert.deepEqual(json.coordinates, [[a.loc, b.loc, c.loc, a.loc]]);
         });
 
-        it('converts an unclosed area to a GeoJSON LineString geometry', function () {
-            var a = Rapid.osmNode({loc: [1, 2]}),
-                b = Rapid.osmNode({loc: [5, 6]}),
-                c = Rapid.osmNode({loc: [3, 4]}),
-                w = Rapid.osmWay({tags: {area: 'yes'}, nodes: [a.id, b.id, c.id]}),
-                graph = new Rapid.Graph([a, b, c, w]),
-                json = w.asGeoJSON(graph);
 
-            expect(json.type).to.equal('LineString');
-            expect(json.coordinates).to.eql([a.loc, b.loc, c.loc]);
+        it('converts an unclosed area to a GeoJSON LineString geometry', () => {
+            const a = Rapid.osmNode({loc: [1, 2]});
+            const b = Rapid.osmNode({loc: [5, 6]});
+            const c = Rapid.osmNode({loc: [3, 4]});
+            const w = Rapid.osmWay({tags: {area: 'yes'}, nodes: [a.id, b.id, c.id]});
+            const graph = new Rapid.Graph([a, b, c, w]);
+            const json = w.asGeoJSON(graph);
+
+            assert.equal(json.type, 'LineString');
+            assert.deepEqual(json.coordinates, [a.loc, b.loc, c.loc]);
         });
     });
 
-    describe('#area', function() {
-        it('returns a relative measure of area', function () {
-            var graph = new Rapid.Graph([
+
+    describe('#area', () => {
+        it('returns a relative measure of area', () => {
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [-0.0002,  0.0001]}),
                 Rapid.osmNode({id: 'b', loc: [ 0.0002,  0.0001]}),
                 Rapid.osmNode({id: 'c', loc: [ 0.0002, -0.0001]}),
@@ -1053,14 +1322,15 @@ describe('osmWay', function () {
                 Rapid.osmWay({id: 'l', tags: {area: 'yes'}, nodes: ['e', 'f', 'g', 'h', 'e']})
             ]);
 
-            var s = Math.abs(graph.entity('s').area(graph)),
-                l = Math.abs(graph.entity('l').area(graph));
+            const s = Math.abs(graph.entity('s').area(graph));
+            const l = Math.abs(graph.entity('l').area(graph));
 
-            expect(s).to.be.lt(l);
+            assert.ok(s < l);
         });
 
-        it('treats unclosed areas as if they were closed', function () {
-            var graph = new Rapid.Graph([
+
+        it('treats unclosed areas as if they were closed', () => {
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [-0.0002,  0.0001]}),
                 Rapid.osmNode({id: 'b', loc: [ 0.0002,  0.0001]}),
                 Rapid.osmNode({id: 'c', loc: [ 0.0002, -0.0001]}),
@@ -1069,14 +1339,15 @@ describe('osmWay', function () {
                 Rapid.osmWay({id: 'l', tags: {area: 'yes'}, nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            var s = graph.entity('s').area(graph),
-                l = graph.entity('l').area(graph);
+            const s = graph.entity('s').area(graph);
+            const l = graph.entity('l').area(graph);
 
-            expect(s).to.equal(l);
+            assert.equal(s, l);
         });
 
-        it('returns 0 for degenerate areas', function () {
-            var graph = new Rapid.Graph([
+
+        it('returns 0 for degenerate areas', () => {
+            const graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'a', loc: [-0.0002,  0.0001]}),
                 Rapid.osmNode({id: 'b', loc: [ 0.0002,  0.0001]}),
                 Rapid.osmWay({id: '0', tags: {area: 'yes'}, nodes: []}),
@@ -1084,10 +1355,9 @@ describe('osmWay', function () {
                 Rapid.osmWay({id: '2', tags: {area: 'yes'}, nodes: ['a', 'b']})
             ]);
 
-            expect(graph.entity('0').area(graph)).to.equal(0);
-            expect(graph.entity('1').area(graph)).to.equal(0);
-            expect(graph.entity('2').area(graph)).to.equal(0);
+            assert.equal(graph.entity('0').area(graph), 0);
+            assert.equal(graph.entity('1').area(graph), 0);
+            assert.equal(graph.entity('2').area(graph), 0);
         });
     });
-
 });
