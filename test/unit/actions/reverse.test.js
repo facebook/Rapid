@@ -1,9 +1,9 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionReverse', async t => {
-    await t.test('reverses the order of nodes in the way', () => {
+describe('actionReverse', () => {
+    it('reverses the order of nodes in the way', () => {
         var node1 = Rapid.osmNode();
         var node2 = Rapid.osmNode();
         var way = Rapid.osmWay({nodes: [node1.id, node2.id]});
@@ -11,7 +11,8 @@ test('actionReverse', async t => {
         assert.deepEqual(graph.entity(way.id).nodes, [node2.id, node1.id]);
     });
 
-    await t.test('preserves non-directional tags', () => {
+
+    it('preserves non-directional tags', () => {
         var way = Rapid.osmWay({tags: {'highway': 'residential'}});
         var graph = new Rapid.Graph([way]);
 
@@ -19,76 +20,86 @@ test('actionReverse', async t => {
         assert.deepEqual(graph.entity(way.id).tags, {'highway': 'residential'});
     });
 
-    await t.test('reverses directional tags on nodes', async t => {
-        await t.test('reverses relative directions', () => {
+    describe('reverses directional tags on nodes', () => {
+        it('reverses relative directions', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': 'forward' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': 'backward' });
         });
 
-        await t.test('reverses relative directions for arbitrary direction tags', () => {
+
+        it('reverses relative directions for arbitrary direction tags', () => {
             var node1 = Rapid.osmNode({ tags: { 'traffic_sign:direction': 'forward' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'traffic_sign:direction': 'backward' });
         });
 
-        await t.test('reverses absolute directions, cardinal compass points', () => {
+
+        it('reverses absolute directions, cardinal compass points', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': 'E' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': 'W' });
         });
 
-        await t.test('reverses absolute directions, intercardinal compass points', () => {
+
+        it('reverses absolute directions, intercardinal compass points', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': 'SE' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': 'NW' });
         });
 
-        await t.test('reverses absolute directions, secondary intercardinal compass points', () => {
+
+        it('reverses absolute directions, secondary intercardinal compass points', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': 'NNE' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': 'SSW' });
         });
 
-        await t.test('reverses absolute directions, 0 degrees', () => {
+
+        it('reverses absolute directions, 0 degrees', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': '0' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': '180' });
         });
 
-        await t.test('reverses absolute directions, positive degrees', () => {
+
+        it('reverses absolute directions, positive degrees', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': '85.5' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': '265.5' });
         });
 
-        await t.test('reverses absolute directions, positive degrees > 360', () => {
+
+        it('reverses absolute directions, positive degrees > 360', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': '385.5' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': '205.5' });
         });
 
-        await t.test('reverses absolute directions, negative degrees', () => {
+
+        it('reverses absolute directions, negative degrees', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': '-85.5' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': '94.5' });
         });
 
-        await t.test('preserves non-directional tags', () => {
+
+        it('preserves non-directional tags', () => {
             var node1 = Rapid.osmNode({ tags: { 'traffic_sign': 'maxspeed' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'traffic_sign': 'maxspeed' });
         });
 
-        await t.test('preserves non-reversible direction tags', () => {
+
+        it('preserves non-reversible direction tags', () => {
             var node1 = Rapid.osmNode({ tags: { 'direction': 'both' } });
             var graph = Rapid.actionReverse(node1.id)(new Rapid.Graph([node1]));
             assert.deepEqual(graph.entity(node1.id).tags, { 'direction': 'both' });
         });
     });
 
-    await t.test('reverses oneway', async t => {
-        await t.test('preserves oneway tags', () => {
+    describe('reverses oneway', () => {
+        it('preserves oneway tags', () => {
             var way = Rapid.osmWay({tags: {'oneway': 'yes'}});
             var graph = new Rapid.Graph([way]);
 
@@ -96,7 +107,8 @@ test('actionReverse', async t => {
             assert.deepEqual(graph.entity(way.id).tags, {'oneway': 'yes'});
         });
 
-        await t.test('reverses oneway tags if reverseOneway: true is provided', () => {
+
+        it('reverses oneway tags if reverseOneway: true is provided', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'yes', tags: {oneway: 'yes'}}),
                 Rapid.osmWay({id: 'no', tags: {oneway: 'no'}}),
@@ -114,7 +126,8 @@ test('actionReverse', async t => {
                 .entity('-1').tags, {'oneway': 'yes'}, '-1');
         });
 
-        await t.test('ignores other oneway tags', () => {
+
+        it('ignores other oneway tags', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'alternating', tags: {oneway: 'alternating'}}),
                 Rapid.osmWay({id: 'reversible', tags: {oneway: 'reversible'}}),
@@ -131,8 +144,8 @@ test('actionReverse', async t => {
     });
 
 
-    await t.test('reverses incline', async t => {
-        await t.test('transforms incline=up ⟺ incline=down', () => {
+    describe('reverses incline', () => {
+        it('transforms incline=up ⟺ incline=down', () => {
             var way = Rapid.osmWay({tags: {'incline': 'up'}});
             var graph = new Rapid.Graph([way]);
 
@@ -143,7 +156,8 @@ test('actionReverse', async t => {
             assert.deepEqual(graph.entity(way.id).tags, {'incline': 'up'});
         });
 
-        await t.test('negates numeric-valued incline tags', () => {
+
+        it('negates numeric-valued incline tags', () => {
             var way = Rapid.osmWay({tags: {'incline': '5%'}});
             var graph = new Rapid.Graph([way]);
 
@@ -162,8 +176,8 @@ test('actionReverse', async t => {
     });
 
 
-    await t.test('reverses directional keys on ways', async t => {
-        await t.test('transforms *:right=* ⟺ *:left=*', () => {
+    describe('reverses directional keys on ways', () => {
+        it('transforms *:right=* ⟺ *:left=*', () => {
             var way = Rapid.osmWay({tags: {'cycleway:right': 'lane'}});
             var graph = new Rapid.Graph([way]);
 
@@ -174,7 +188,8 @@ test('actionReverse', async t => {
             assert.deepEqual(graph.entity(way.id).tags, {'cycleway:right': 'lane'});
         });
 
-        await t.test('transforms *:right:*=* ⟺ *:left:*=*', () => {
+
+        it('transforms *:right:*=* ⟺ *:left:*=*', () => {
             var way = Rapid.osmWay({tags: {'cycleway:right:surface': 'paved'}});
             var graph = new Rapid.Graph([way]);
 
@@ -185,7 +200,8 @@ test('actionReverse', async t => {
             assert.deepEqual(graph.entity(way.id).tags, {'cycleway:right:surface': 'paved'});
         });
 
-        await t.test('transforms *:forward=* ⟺ *:backward=*', () => {
+
+        it('transforms *:forward=* ⟺ *:backward=*', () => {
             var way = Rapid.osmWay({tags: {'maxspeed:forward': '25'}});
             var graph = new Rapid.Graph([way]);
 
@@ -196,7 +212,8 @@ test('actionReverse', async t => {
             assert.deepEqual(graph.entity(way.id).tags, {'maxspeed:forward': '25'});
         });
 
-        await t.test('transforms multiple directional tags', () => {
+
+        it('transforms multiple directional tags', () => {
             var way = Rapid.osmWay({tags: {'maxspeed:forward': '25', 'maxspeed:backward': '30'}});
             var graph = new Rapid.Graph([way]);
 
@@ -206,8 +223,8 @@ test('actionReverse', async t => {
     });
 
 
-     await t.test('reverses directional values on ways', async t => {
-        await t.test('transforms *=up ⟺ *=down', () => {
+     describe('reverses directional values on ways', () => {
+        it('transforms *=up ⟺ *=down', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'inclineU', tags: {incline: 'up'}}),
                 Rapid.osmWay({id: 'directionU', tags: {direction: 'up'}}),
@@ -226,7 +243,8 @@ test('actionReverse', async t => {
                 .entity('directionD').tags, {direction: 'up'}, 'directionD');
         });
 
-        await t.test('skips *=up ⟺ *=down for ignored tags', () => {
+
+        it('skips *=up ⟺ *=down for ignored tags', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'name', tags: {name: 'up'}}),
                 Rapid.osmWay({id: 'note', tags: {note: 'up'}}),
@@ -244,7 +262,8 @@ test('actionReverse', async t => {
                 .entity('description').tags, {description: 'down'}, 'description');
         });
 
-        await t.test('transforms *=forward ⟺ *=backward', () => {
+
+        it('transforms *=forward ⟺ *=backward', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'conveyingF', tags: {conveying: 'forward'}}),
                 Rapid.osmWay({id: 'directionF', tags: {direction: 'forward'}}),
@@ -275,7 +294,8 @@ test('actionReverse', async t => {
                 .entity('trolley_wireB').tags, {trolley_wire: 'forward'}, 'trolley_wireB');
         });
 
-        await t.test('drops "s" from forwards/backwards when reversing', () => {
+
+        it('drops "s" from forwards/backwards when reversing', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'conveyingF', tags: {conveying: 'forwards'}}),
                 Rapid.osmWay({id: 'conveyingB', tags: {conveying: 'backwards'}})
@@ -287,7 +307,8 @@ test('actionReverse', async t => {
                 .entity('conveyingB').tags, {conveying: 'forward'}, 'conveyingB');
         });
 
-        await t.test('skips *=forward ⟺ *=backward for ignored tags', () => {
+
+        it('skips *=forward ⟺ *=backward for ignored tags', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'name', tags: {name: 'forward'}}),
                 Rapid.osmWay({id: 'note', tags: {note: 'forwards'}}),
@@ -305,7 +326,8 @@ test('actionReverse', async t => {
                 .entity('description').tags, {description: 'backwards'}, 'description');
         });
 
-        await t.test('transforms *=right ⟺ *=left', () => {
+
+        it('transforms *=right ⟺ *=left', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'sidewalkR', tags: {sidewalk: 'right'}}),
                 Rapid.osmWay({id: 'sidewalkL', tags: {sidewalk: 'left'}})
@@ -317,7 +339,8 @@ test('actionReverse', async t => {
                 .entity('sidewalkL').tags, {sidewalk: 'right'}, 'sidewalkL');
         });
 
-        await t.test('skips *=right ⟺ *=left for ignored tags', () => {
+
+        it('skips *=right ⟺ *=left for ignored tags', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmWay({id: 'name', tags: {name: 'right'}}),
                 Rapid.osmWay({id: 'note', tags: {note: 'right'}}),
@@ -337,8 +360,8 @@ test('actionReverse', async t => {
     });
 
 
-    await t.test('reverses relation roles', async t => {
-        await t.test('transforms role=forward ⟺ role=backward in member relations', () => {
+    describe('reverses relation roles', () => {
+        it('transforms role=forward ⟺ role=backward in member relations', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'n1'}),
                 Rapid.osmNode({id: 'n2'}),
@@ -353,7 +376,8 @@ test('actionReverse', async t => {
                 .entity('backward').members[0].role, 'forward', 'backward');
         });
 
-        await t.test('drops "s" from forwards/backwards when reversing', () => {
+
+        it('drops "s" from forwards/backwards when reversing', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'n1'}),
                 Rapid.osmNode({id: 'n2'}),
@@ -368,7 +392,8 @@ test('actionReverse', async t => {
                 .entity('backwards').members[0].role, 'forward', 'backwards');
         });
 
-        await t.test('doesn\'t transform role=north ⟺ role=south in member relations', () => {
+
+        it('doesn\'t transform role=north ⟺ role=south in member relations', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'n1'}),
                 Rapid.osmNode({id: 'n2'}),
@@ -383,7 +408,8 @@ test('actionReverse', async t => {
                 .entity('south').members[0].role, 'south', 'south');
         });
 
-        await t.test('doesn\'t transform role=east ⟺ role=west in member relations', () => {
+
+        it('doesn\'t transform role=east ⟺ role=west in member relations', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'n1'}),
                 Rapid.osmNode({id: 'n2'}),
@@ -398,7 +424,8 @@ test('actionReverse', async t => {
                 .entity('west').members[0].role, 'west', 'west');
         });
 
-        await t.test('ignores directionless roles in member relations', () => {
+
+        it('ignores directionless roles in member relations', () => {
             var graph = new Rapid.Graph([
                 Rapid.osmNode({id: 'n1'}),
                 Rapid.osmNode({id: 'n2'}),
@@ -415,8 +442,8 @@ test('actionReverse', async t => {
     });
 
 
-    await t.test('reverses directional values on childnodes', async t => {
-        await t.test('reverses the direction of a forward facing stop sign on the way', () => {
+    describe('reverses directional values on childnodes', () => {
+        it('reverses the direction of a forward facing stop sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'direction': 'forward', 'highway': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -426,7 +453,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags.direction, 'backward');
         });
 
-        await t.test('reverses the direction of a backward facing stop sign on the way', () => {
+
+        it('reverses the direction of a backward facing stop sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'direction': 'backward', 'highway': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -436,7 +464,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags.direction, 'forward');
         });
 
-        await t.test('reverses the direction of a left facing stop sign on the way', () => {
+
+        it('reverses the direction of a left facing stop sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'direction': 'left', 'highway': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -446,7 +475,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags.direction, 'right');
         });
 
-        await t.test('reverses the direction of a right facing stop sign on the way', () => {
+
+        it('reverses the direction of a right facing stop sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'direction': 'right', 'highway': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -456,7 +486,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags.direction, 'left');
         });
 
-        await t.test('does not assign a direction to a directionless stop sign on the way during a reverse', () => {
+
+        it('does not assign a direction to a directionless stop sign on the way during a reverse', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'highway': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -466,7 +497,8 @@ test('actionReverse', async t => {
             assert.equal(target.tags.direction, undefined);
         });
 
-        await t.test('ignores directions other than forward or backward on attached stop sign during a reverse', () => {
+
+        it('ignores directions other than forward or backward on attached stop sign during a reverse', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'direction': 'empty', 'highway': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -478,8 +510,8 @@ test('actionReverse', async t => {
     });
 
 
-    await t.test('reverses directional keys on childnodes', async t => {
-        await t.test('reverses the direction of a forward facing traffic sign on the way', () => {
+    describe('reverses directional keys on childnodes', () => {
+        it('reverses the direction of a forward facing traffic sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'traffic_sign:forward': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -489,7 +521,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags['traffic_sign:backward'], 'stop');
         });
 
-        await t.test('reverses the direction of a backward facing stop sign on the way', () => {
+
+        it('reverses the direction of a backward facing stop sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'traffic_sign:backward': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -499,7 +532,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags['traffic_sign:forward'], 'stop');
         });
 
-        await t.test('reverses the direction of a left facing traffic sign on the way', () => {
+
+        it('reverses the direction of a left facing traffic sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'traffic_sign:left': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -509,7 +543,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags['traffic_sign:right'], 'stop');
         });
 
-        await t.test('reverses the direction of a right facing stop sign on the way', () => {
+
+        it('reverses the direction of a right facing stop sign on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: {'traffic_sign:right': 'stop'}});
             var node3 = Rapid.osmNode();
@@ -520,7 +555,7 @@ test('actionReverse', async t => {
         });
 
         // For issue #4595
-        await t.test('reverses the direction of a forward facing traffic_signals on the way', () => {
+        it('reverses the direction of a forward facing traffic_signals on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: { 'traffic_signals:direction': 'forward', 'highway': 'traffic_signals' }});
             var node3 = Rapid.osmNode();
@@ -530,7 +565,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags['traffic_signals:direction'], 'backward');
         });
 
-        await t.test('reverses the direction of a backward facing traffic_signals on the way', () => {
+
+        it('reverses the direction of a backward facing traffic_signals on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: { 'traffic_signals:direction': 'backward', 'highway': 'traffic_signals' }});
             var node3 = Rapid.osmNode();
@@ -540,7 +576,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags['traffic_signals:direction'], 'forward');
         });
 
-        await t.test('reverses the direction of a left facing traffic_signals on the way', () => {
+
+        it('reverses the direction of a left facing traffic_signals on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: { 'traffic_signals:direction': 'left', 'highway': 'traffic_signals' }});
             var node3 = Rapid.osmNode();
@@ -550,7 +587,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags['traffic_signals:direction'], 'right');
         });
 
-        await t.test('reverses the direction of a right facing traffic_signals on the way', () => {
+
+        it('reverses the direction of a right facing traffic_signals on the way', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: { 'traffic_signals:direction': 'right', 'highway': 'traffic_signals' }});
             var node3 = Rapid.osmNode();
@@ -560,7 +598,8 @@ test('actionReverse', async t => {
             assert.deepEqual(target.tags['traffic_signals:direction'], 'left');
         });
 
-        await t.test('does not assign a direction to a directionless traffic_signals on the way during a reverse', () => {
+
+        it('does not assign a direction to a directionless traffic_signals on the way during a reverse', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: { 'highway': 'traffic_signals' }});
             var node3 = Rapid.osmNode();
@@ -570,7 +609,8 @@ test('actionReverse', async t => {
             assert.equal(target.tags['traffic_signals:direction'], undefined);
         });
 
-        await t.test('ignores directions other than forward or backward on attached traffic_signals during a reverse', () => {
+
+        it('ignores directions other than forward or backward on attached traffic_signals during a reverse', () => {
             var node1 = Rapid.osmNode();
             var node2 = Rapid.osmNode({tags: { 'traffic_signals:direction': 'empty', 'highway': 'traffic_signals' }});
             var node3 = Rapid.osmNode();
