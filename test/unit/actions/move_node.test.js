@@ -1,53 +1,54 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-const it = function() {};  // remove
-const expect = function() {};  // remove
-
-test.todo('actionMoveNode', async t => {
+describe('actionMoveNode', () => {
     it('changes a node\'s location', function () {
-        var node = Rapid.osmNode({id: 'a', loc: [0, 0]});
-        var toLoc = [2, 3];
-        var graph = new Rapid.Graph([node]);
+        const node = Rapid.osmNode({id: 'a', loc: [0, 0]});
+        const toLoc = [2, 3];
+        const graph = new Rapid.Graph([node]);
 
-        graph = Rapid.actionMoveNode('a', toLoc)(graph);
-        expect(graph.entity('a').loc).to.eql(toLoc);
+        const result = Rapid.actionMoveNode('a', toLoc)(graph);
+        assert.deepEqual(result.entity('a').loc, toLoc);
     });
 
-    it('transitions', function () {
+
+    describe('transitions', () => {
         it('is transitionable', function() {
-            expect(Rapid.actionMoveNode().transitionable).to.be.true;
+            assert.strictEqual(Rapid.actionMoveNode().transitionable, true);
         });
+
 
         it('move node at t = 0', function() {
-            var node = Rapid.osmNode({id: 'a', loc: [0, 0]});
-            var toLoc = [2, 3];
-            var graph = new Rapid.Graph([node]);
+            const node = Rapid.osmNode({id: 'a', loc: [0, 0]});
+            const toLoc = [2, 3];
+            const graph = new Rapid.Graph([node]);
 
-            graph = Rapid.actionMoveNode('a', toLoc)(graph, 0);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
+            const result = Rapid.actionMoveNode('a', toLoc)(graph, 0);
+            assert.strictEqual(result.entity('a').loc[0], 0, 1e-6);
+            assert.strictEqual(result.entity('a').loc[1], 0, 1e-6);
         });
+
 
         it('move node at t = 0.5', function() {
-            var node = Rapid.osmNode({id: 'a', loc: [0, 0]});
-            var toLoc = [2, 3];
-            var graph = new Rapid.Graph([node]);
+            const node = Rapid.osmNode({id: 'a', loc: [0, 0]});
+            const toLoc = [2, 3];
+            const graph = new Rapid.Graph([node]);
 
-            graph = Rapid.actionMoveNode('a', toLoc)(graph, 0.5);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(1, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(1.5, 1e-6);
+            const result = Rapid.actionMoveNode('a', toLoc)(graph, 0.5);
+            assert.strictEqual(result.entity('a').loc[0], 1, 1e-6);
+            assert.strictEqual(result.entity('a').loc[1], 1.5, 1e-6);
         });
 
-        it('move node at t = 1', function() {
-            var node = Rapid.osmNode({id: 'a', loc: [0, 0]});
-            var toLoc = [2, 3];
-            var graph = new Rapid.Graph([node]);
 
-            graph = Rapid.actionMoveNode('a', toLoc)(graph, 1);
-            expect(graph.entity('a').loc[0]).to.be.closeTo(2, 1e-6);
-            expect(graph.entity('a').loc[1]).to.be.closeTo(3, 1e-6);
+        it('move node at t = 1', function() {
+            const node = Rapid.osmNode({id: 'a', loc: [0, 0]});
+            const toLoc = [2, 3];
+            const graph = new Rapid.Graph([node]);
+
+            const result = Rapid.actionMoveNode('a', toLoc)(graph, 1);
+            assert.strictEqual(result.entity('a').loc[0], 2, 1e-6);
+            assert.strictEqual(result.entity('a').loc[1], 3, 1e-6);
         });
     });
 });
