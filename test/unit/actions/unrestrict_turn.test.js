@@ -7,7 +7,7 @@ describe('actionUnrestrictTurn', () => {
         //
         // u === * --- w
         //
-        var graph = new Rapid.Graph([
+        const graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'u' }),
             Rapid.osmNode({ id: '*' }),
             Rapid.osmNode({ id: 'w' }),
@@ -19,7 +19,7 @@ describe('actionUnrestrictTurn', () => {
                 { id: '*', role: 'via', type: 'node' }
             ]})
         ]);
-        var action = Rapid.actionUnrestrictTurn({ restrictionID: 'r' });
+        const action = Rapid.actionUnrestrictTurn({ restrictionID: 'r' });
 
         const result = action(graph);
         assert.strictEqual(result.hasEntity('r'), undefined);
