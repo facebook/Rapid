@@ -1,10 +1,10 @@
-import { test } from 'node:test';
+import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-test('actionRevert', async t => {
-    await t.test('basic', async t => {
-        await t.test('removes a new entity', () => {
+describe('actionRevert', () => {
+    describe('basic', () => {
+        it('removes a new entity', () => {
             var n1 = Rapid.osmNode({id: 'n-1'}),
                 graph = new Rapid.Graph().replace(n1);
 
@@ -12,7 +12,8 @@ test('actionRevert', async t => {
             assert.strictEqual(result.hasEntity('n-1'), undefined, 'n-1 removed');
         });
 
-        await t.test('reverts an updated entity', () => {
+
+        it('reverts an updated entity', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n1up = n1.update({}),
                 graph = new Rapid.Graph([n1]).replace(n1up);
@@ -21,7 +22,8 @@ test('actionRevert', async t => {
             assert.strictEqual(result.hasEntity('n1'), n1, 'n1 reverted');
         });
 
-        await t.test('restores a deleted entity', () => {
+
+        it('restores a deleted entity', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 graph = new Rapid.Graph([n1]).remove(n1);
 
@@ -30,8 +32,8 @@ test('actionRevert', async t => {
         });
     });
 
-    await t.test('reverting way child nodes', async t => {
-        await t.test('removes new node, updates parent way nodelist', () => {
+    describe('reverting way child nodes', () => {
+        it('removes new node, updates parent way nodelist', () => {
             // note: test with a 3 node way so w1 doesn't go degenerate..
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n2'}),
@@ -51,7 +53,8 @@ test('actionRevert', async t => {
             assert.deepStrictEqual(w1_1.nodes, w1.nodes, 'w1 nodes updated');
         });
 
-        await t.test('reverts existing node, preserves parent way nodelist', () => {
+
+        it('reverts existing node, preserves parent way nodelist', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n2'}),
                 w1 = Rapid.osmWay({id: 'w1', nodes: ['n1', 'n2']}),
@@ -69,8 +72,8 @@ test('actionRevert', async t => {
         });
     });
 
-    await t.test('reverting relation members', async t => {
-        await t.test('removes new node, updates parent relation memberlist', () => {
+    describe('reverting relation members', () => {
+        it('removes new node, updates parent relation memberlist', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n-2'}),
                 r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'n1'}]}),
@@ -86,7 +89,8 @@ test('actionRevert', async t => {
             assert.deepStrictEqual(r1_1.members, r1.members, 'r1 members updated');
         });
 
-        await t.test('reverts existing node, preserves parent relation memberlist', () => {
+
+        it('reverts existing node, preserves parent relation memberlist', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n2'}),
                 r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'n1'}, {id: 'n2'}]}),
@@ -104,8 +108,8 @@ test('actionRevert', async t => {
         });
     });
 
-    await t.test('reverting parent ways', async t => {
-        await t.test('removes new way, preserves new and existing child nodes', () => {
+    describe('reverting parent ways', () => {
+        it('removes new way, preserves new and existing child nodes', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n-2'}),
                 w1 = Rapid.osmWay({id: 'w-1', nodes: ['n1', 'n-2']}),
@@ -119,7 +123,8 @@ test('actionRevert', async t => {
             assert.deepStrictEqual(result.parentWays(n2), [], 'n-2 has no parent ways');
         });
 
-        await t.test('reverts an updated way, preserves new and existing child nodes', () => {
+
+        it('reverts an updated way, preserves new and existing child nodes', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n-2'}),
                 w1 = Rapid.osmWay({id: 'w1', nodes: ['n1']}),
@@ -134,7 +139,8 @@ test('actionRevert', async t => {
             assert.deepStrictEqual(result.parentWays(n2), [], 'n2 has no parent ways');
         });
 
-        await t.test('restores a deleted way, preserves new and existing child nodes', () => {
+
+        it('restores a deleted way, preserves new and existing child nodes', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n-2'}),
                 w1 = Rapid.osmWay({id: 'w1', nodes: ['n1']}),
@@ -150,8 +156,8 @@ test('actionRevert', async t => {
         });
     });
 
-    await t.test('reverting parent relations', async t => {
-        await t.test('removes new relation, preserves new and existing members', () => {
+    describe('reverting parent relations', () => {
+        it('removes new relation, preserves new and existing members', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n-2'}),
                 r1 = Rapid.osmRelation({id: 'r-1', members: [{id: 'n1'}, {id: 'n-2'}]}),
@@ -165,7 +171,8 @@ test('actionRevert', async t => {
             assert.deepStrictEqual(result.parentRelations(n2), [], 'n-2 has no parent relations');
         });
 
-        await t.test('reverts an updated relation, preserves new and existing members', () => {
+
+        it('reverts an updated relation, preserves new and existing members', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n-2'}),
                 r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'n1'}]}),
@@ -180,7 +187,8 @@ test('actionRevert', async t => {
             assert.deepStrictEqual(result.parentRelations(n2), [], 'n-2 has no parent relations');
         });
 
-        await t.test('restores a deleted relation, preserves new and existing members', () => {
+
+        it('restores a deleted relation, preserves new and existing members', () => {
             var n1 = Rapid.osmNode({id: 'n1'}),
                 n2 = Rapid.osmNode({id: 'n-2'}),
                 r1 = Rapid.osmRelation({id: 'r1', members: [{id: 'n1'}]}),
