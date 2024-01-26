@@ -437,7 +437,14 @@ export class EsriService extends AbstractSystem {
         }
       }
 
-      tags.source = `esri/${dataset.name}`;
+      // Since ESRI had to split the massive google open buildings dataset into multiple countries,
+      // They asked us to aggregate them all under the same 'Google Open Buildings' dataset - #1300
+      let name = `${dataset.name}`;
+      if (name.startsWith('Google_Buildings_for')) {
+        name = 'Google_Open_Buildings';
+      }
+
+      tags.source = `esri/${name}`;
       return tags;
     }
 

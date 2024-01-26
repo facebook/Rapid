@@ -254,6 +254,26 @@ export class RapidSystem extends AbstractSystem {
   }
 
 
+
+  /**
+   * _openBuildingsTitle
+   * For #1309 we need to change the dataset titles from
+   * 'Google Buildings for <Country>' to 'Google Open Buildings'.
+   *
+   * All other titles are returned unmodified.
+   *
+   * @param {*} title string for the dataset
+   * @return the same title in most cases, or the proper google buildings title if applicable.
+   */
+  _openBuildingsTitle(title) {
+
+    if (title.startsWith('Google Buildings for')) {
+      return 'Google Open Buildings';
+    } else {
+      return title;
+    }
+}
+
   /**
    * _hashchange
    * Respond to any changes appearing in the url hash
@@ -316,7 +336,7 @@ export class RapidSystem extends AbstractSystem {
             conflated: false,
             service: 'esri',
             color: RAPID_COLORS[nextColor],
-            dataUsed: ['esri', d.title],
+            dataUsed: ['esri', this._openBuildingsTitle(d.title)],
             label: d.title,
             license_markdown: l10n.t('rapid_feature_toggle.esri.license_markdown')
           };
