@@ -1,3 +1,8 @@
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+import * as Rapid from '../../../modules/headless.js';
+
+
 describe('Collection', () => {
 
   class MockLocalizationSystem {
@@ -57,21 +62,23 @@ describe('Collection', () => {
 
   describe('#item', () => {
     it('fetches a preset by id', () => {
-      expect(collection.item('highway/residential')).to.equal(p.residential);
+      assert.equal(collection.item('highway/residential'), p.residential);
     });
   });
 
   describe('#index', () => {
     it('return -1 when given id for preset not in the collection', () => {
-      expect(collection.index('foobar')).to.equal(-1);
+      assert.equal(collection.index('foobar'), -1);
     });
   });
 
   describe('#matchGeometry', () => {
     it('returns a new collection only containing presets matching a geometry', () => {
-      expect(collection.matchGeometry('area').array).to.include.members(
-        [p.residential, p.park, p.soccer, p.football]
-      );
+      const arr = collection.matchGeometry('area').array;
+      assert.ok(arr.includes(p.residential));
+      assert.ok(arr.includes(p.park));
+      assert.ok(arr.includes(p.soccer));
+      assert.ok(arr.includes(p.football));
     });
   });
 
@@ -79,7 +86,7 @@ describe('Collection', () => {
 //// TODO fix - these are all messed up
     it('matches leading name', () => {
       const result = collection.search('resid', 'area').array;
-      expect(result.indexOf(p.residential)).to.eql(0);  // 1. 'Residential' (by name)
+      assert.equal(result.indexOf(p.residential), 0);  // 1. 'Residential' (by name)
     });
 
     it.skip('returns alternate matches in correct order', () => {
@@ -107,36 +114,37 @@ describe('Collection', () => {
 
     it('sorts preset with matchScore penalty below others', () => {
       const result = collection.search('par', 'point').array;
-      expect(result.indexOf(p.parking), 'Parking').to.eql(0);   // 1. 'Parking' (default matchScore)
-      expect(result.indexOf(p.park), 'Park').to.eql(1);         // 2. 'Park' (low matchScore)
+      assert.equal(result.indexOf(p.parking), 0, 'Parking');   // 1. 'Parking' (default matchScore)
+      assert.equal(result.indexOf(p.park), 1, 'Park');         // 2. 'Park' (low matchScore)
     });
 
     it('ignores matchScore penalty for exact name match', () => {
       const result = collection.search('park', 'point').array;
-      expect(result.indexOf(p.park), 'Park').to.eql(0);         // 1. 'Park' (low matchScore)
-      expect(result.indexOf(p.parking), 'Parking').to.eql(1);   // 2. 'Parking' (default matchScore)
+      assert.equal(result.indexOf(p.park), 0, 'Park');         // 1. 'Park' (low matchScore)
+      assert.equal(result.indexOf(p.parking), 1, 'Parking');   // 2. 'Parking' (default matchScore)
     });
 
     it('considers diacritics on exact matches', () => {
       const result = collection.search('ğṝȁ', 'point').array;
-      expect(result.indexOf(p.grass2), 'Ğṝȁß').to.eql(0);    // 1. 'Ğṝȁß'  (leading name)
-      expect(result.indexOf(p.grass1), 'Grass').to.eql(1);   // 2. 'Grass' (similar name)
+      assert.equal(result.indexOf(p.grass2), 0, 'Ğṝȁß');    // 1. 'Ğṝȁß'  (leading name)
+      assert.equal(result.indexOf(p.grass1), 1, 'Grass');   // 2. 'Grass' (similar name)
     });
 
     it('replaces diacritics on fuzzy matches', () => {
       const result = collection.search('graß', 'point').array;
-      expect(result.indexOf(p.grass1), 'Grass').to.be.within(0,1);   // 1. 'Grass' (similar name)
-      expect(result.indexOf(p.grass2), 'Ğṝȁß').to.be.within(0,1);    // 2. 'Ğṝȁß'  (similar name)
+      assert.ok(result.indexOf(p.grass1) < 2, 'Grass');   // 1. 'Grass' (similar name)
+      assert.ok(result.indexOf(p.grass2) < 2, 'Ğṝȁß');    // 2. 'Ğṝȁß'  (similar name)
     });
 
     // it('includes the appropriate fallback preset', () => {
-    //   expect(collection.search('foo', 'point').array, 'point').to.include(p.point);
-    //   expect(collection.search('foo', 'line').array, 'line').to.include(p.line);
-    //   expect(collection.search('foo', 'area').array, 'area').to.include(p.area);
+    //   assert.ok(collection.search('foo', 'point').array.includes(p.point), 'point');
+    //   assert.ok(collection.search('foo', 'line').array.includes(p.line), 'line');
+    //   assert.ok(collection.search('foo', 'area').array.includes(p.area), 'area');
     // });
 
     it('excludes presets with searchable: false', () => {
-      expect(collection.search('excluded', 'point').array).not.to.include(p.excluded);
+      const result = collection.search('excluded', 'point').array;
+      assert.ok(!result.includes(p.excluded));
     });
   });
 });

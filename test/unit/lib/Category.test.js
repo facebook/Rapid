@@ -1,3 +1,8 @@
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+import * as Rapid from '../../../modules/headless.js';
+
+
 describe('Category', () => {
 
   class MockContext {
@@ -17,14 +22,14 @@ describe('Category', () => {
   const category = new Rapid.Category(context, 'road', categoryData, allPresets);
 
   it('maps members names to preset instances', () => {
-    expect(category.members).to.be.an.instanceof(Rapid.Collection);
-    expect(category.members.array[0]).to.eql(residential);
+    assert.ok(category.members instanceof Rapid.Collection);
+    assert.equal(category.members.array[0], residential);
   });
 
   describe('#matchGeometry', () => {
     it('matches the type of an entity', () => {
-      expect(category.matchGeometry('line')).to.be.true;
-      expect(category.matchGeometry('point')).to.be.false;
+      assert.equal(category.matchGeometry('line'), true);
+      assert.equal(category.matchGeometry('point'), false);
     });
   });
 });
