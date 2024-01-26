@@ -2,6 +2,8 @@ import { Tiler } from '@rapid-sdk/math';
 
 import { AbstractSystem } from '../core/AbstractSystem';
 import { Graph, Tree } from '../core/lib';
+import { utilStringQs } from '@rapid-sdk/util';
+
 import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilFetchResponse } from '../util';
 
@@ -260,7 +262,10 @@ export class MapWithAIService extends AbstractSystem {
       qs.crop_bbox = taskExtent.toParam();
     }
 
-    const url = APIROOT + '?' + mapwithaiQsString(qs, true);  // true = noencode
+    const customUrlRoot = utilStringQs(window.location.hash).fb_ml_road_url;
+
+    const urlRoot = customUrlRoot || APIROOT;
+    const url = urlRoot + '?' + mapwithaiQsString(qs, true);  // true = noencode
     return url;
 
 
