@@ -111,7 +111,7 @@ describe('actionMergePolygon', () => {
 
     const r1 = result.hasEntity('r1');
     assert.ok(r1 instanceof Rapid.osmRelation);
-    assert.deepEqual(r1.tags,  {type: 'multipolygon', a: 'a', b: 'b'})
+    assert.deepEqual(r1.tags,  {type: 'multipolygon', a: 'a', b: 'b'});
   });
 
 
