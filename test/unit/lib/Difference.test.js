@@ -1,3 +1,8 @@
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+import * as Rapid from '../../../modules/headless.js';
+
+
 describe('Difference', () => {
   describe('constructor', () => {
     it('constructs a Difference between 2 Graphs', () => {
@@ -5,15 +10,17 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff).to.be.an.instanceOf(Rapid.Difference);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
+      assert.ok(diff instanceof Rapid.Difference);
+      assert.ok(diff.changes instanceof Map);
+      assert.ok(diff.changes.has('n'));
     });
 
     it('constructs an empty Difference if base and head are the same', () => {
       const base = new Rapid.Graph();
       const diff = new Rapid.Difference(base, base);
-      expect(diff).to.be.an.instanceOf(Rapid.Difference);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.is.empty;
+      assert.ok(diff instanceof Rapid.Difference);
+      assert.ok(diff.changes instanceof Map);
+      assert.equal(diff.changes.size, 0);
     });
   });
 
@@ -23,8 +30,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(diff.changes.get('n')).to.eql({ base: undefined, head: node });
+      assert.ok(diff.changes instanceof Map);
+      assert.deepEqual(diff.changes.get('n'), { base: undefined, head: node });
     });
 
     it('includes undone created entities', () => {
@@ -32,8 +39,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node);
       const diff = new Rapid.Difference(head, base);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(diff.changes.get('n')).to.eql({ base: node, head: undefined });
+      assert.ok(diff.changes instanceof Map);
+      assert.deepEqual(diff.changes.get('n'), { base: node, head: undefined });
     });
 
     it('includes modified entities', () => {
@@ -42,8 +49,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph([n1]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(diff.changes.get('n')).to.eql({ base: n1, head: n2 });
+      assert.ok(diff.changes instanceof Map);
+      assert.deepEqual(diff.changes.get('n'), { base: n1, head: n2 });
     });
 
     it('includes undone modified entities', () => {
@@ -52,8 +59,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph([n1]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(head, base);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(diff.changes.get('n')).to.eql({ base: n2, head: n1 });
+      assert.ok(diff.changes instanceof Map);
+      assert.deepEqual(diff.changes.get('n'), { base: n2, head: n1 });
     });
 
     it('doesn\'t include updated but identical entities', () => {
@@ -62,7 +69,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph([n1]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.empty;
+      assert.ok(diff.changes instanceof Map);
+      assert.equal(diff.changes.size, 0);
     });
 
     it('includes deleted entities', () => {
@@ -70,8 +78,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph([node]);
       const head = base.remove(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(diff.changes.get('n')).to.eql({ base: node, head: undefined });
+      assert.ok(diff.changes instanceof Map);
+      assert.deepEqual(diff.changes.get('n'), { base: node, head: undefined });
     });
 
     it('includes undone deleted entities', () => {
@@ -79,8 +87,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph([node]);
       const head = base.remove(node);
       const diff = new Rapid.Difference(head, base);
-      expect(diff.changes).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(diff.changes.get('n')).to.eql({ base: undefined, head: node });
+      assert.ok(diff.changes instanceof Map);
+      assert.deepEqual(diff.changes.get('n'), { base: undefined, head: node });
     });
 
     it('doesn\'t include created entities that were subsequently deleted', () => {
@@ -88,7 +96,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node).remove(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.empty;
+      assert.ok(diff.changes instanceof Map);
+      assert.equal(diff.changes.size, 0);
     });
 
     it('doesn\'t include created entities that were subsequently reverted', () => {
@@ -96,7 +105,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node).revert('n-1');
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.empty;
+      assert.ok(diff.changes instanceof Map);
+      assert.equal(diff.changes.size, 0);
     });
 
     it('doesn\'t include modified entities that were subsequently reverted', () => {
@@ -105,7 +115,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph([n1]);
       const head = base.replace(n2).revert('n');
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.empty;
+      assert.ok(diff.changes instanceof Map);
+      assert.equal(diff.changes.size, 0);
     });
 
     it('doesn\'t include deleted entities that were subsequently reverted', () => {
@@ -113,7 +124,8 @@ describe('Difference', () => {
       const base = new Rapid.Graph([node]);
       const head = base.remove(node).revert('n');
       const diff = new Rapid.Difference(base, head);
-      expect(diff.changes).to.be.empty;
+      assert.ok(diff.changes instanceof Map);
+      assert.equal(diff.changes.size, 0);
     });
   });
 
@@ -124,7 +136,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph();
       const head = base.replace(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.created()).to.eql([node]);
+      assert.deepEqual(diff.created(), [node]);
     });
   });
 
@@ -135,7 +147,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph([n1]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.modified()).to.eql([n2]);
+      assert.deepEqual(diff.modified(), [n2]);
     });
   });
 
@@ -145,7 +157,7 @@ describe('Difference', () => {
       const base = new Rapid.Graph([node]);
       const head = base.remove(node);
       const diff = new Rapid.Difference(base, head);
-      expect(diff.deleted()).to.eql([node]);
+      assert.deepEqual(diff.deleted(), [node]);
     });
   });
 
@@ -162,8 +174,8 @@ describe('Difference', () => {
       const head = base.replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('+');
-      expect(summary.get('+')).to.eql({ changeType: 'created', entity: way, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('+'), { changeType: 'created', entity: way, graph: head });
     });
 
     it('reports a deleted way as deleted', () => {
@@ -171,8 +183,8 @@ describe('Difference', () => {
       const head = base.remove(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
-      expect(summary.get('-')).to.eql({ changeType: 'deleted', entity: way, graph: base });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'deleted', entity: way, graph: base });
     });
 
     it('reports a modified way as modified', () => {
@@ -180,8 +192,8 @@ describe('Difference', () => {
       const head = base.replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: way, graph: head });
     });
 
     it('reports a way as modified when a member vertex is moved', () => {
@@ -189,8 +201,8 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: head.entity('-'), graph: head });
     });
 
     it('reports a way as modified when a member vertex is added', () => {
@@ -199,8 +211,8 @@ describe('Difference', () => {
       const head = base.replace(vertex).replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: way, graph: head });
     });
 
     it('reports a way as modified when a member vertex is removed', () => {
@@ -208,8 +220,8 @@ describe('Difference', () => {
       const head = base.replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: way, graph: head });
     });
 
     it('reports a created way containing a moved vertex as being created', () => {
@@ -218,9 +230,9 @@ describe('Difference', () => {
       const head = base.replace(way).replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('+', '-');
-      expect(summary.get('+')).to.eql({ changeType: 'created', entity: way, graph: head });
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('+'), { changeType: 'created', entity: way, graph: head });
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: head.entity('-'), graph: head });
     });
 
     it('reports a created way with a created vertex as being created', () => {
@@ -229,8 +241,8 @@ describe('Difference', () => {
       const head = base.replace(vertex).replace(way);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('+');
-      expect(summary.get('+')).to.eql({ changeType: 'created', entity: way, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('+'), { changeType: 'created', entity: way, graph: head });
     });
 
     it('reports a vertex as modified when it has tags and they are changed', () => {
@@ -238,8 +250,8 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('a');
-      expect(summary.get('a')).to.eql({ changeType: 'modified', entity: vertex, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('a'), { changeType: 'modified', entity: vertex, graph: head });
     });
 
     it('reports a vertex as modified when it has tags and is moved', () => {
@@ -247,9 +259,9 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-', 'a');
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
-      expect(summary.get('a')).to.eql({ changeType: 'modified', entity: vertex, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: head.entity('-'), graph: head });
+      assert.deepEqual(summary.get('a'), { changeType: 'modified', entity: vertex, graph: head });
     });
 
     it('does not report a vertex as modified when it is moved and has no-op tag changes', () => {
@@ -257,8 +269,8 @@ describe('Difference', () => {
       const head = base.replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-');
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: head.entity('-'), graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: head.entity('-'), graph: head });
     });
 
     it('reports a vertex as deleted when it had tags', () => {
@@ -266,8 +278,8 @@ describe('Difference', () => {
       const head = base.remove(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('v');
-      expect(summary.get('v')).to.eql({ changeType: 'deleted', entity: vertex, graph: base });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('v'), { changeType: 'deleted', entity: vertex, graph: base });
     });
 
     it('reports a vertex as created when it has tags', () => {
@@ -276,9 +288,9 @@ describe('Difference', () => {
       const head = base.replace(way).replace(vertex);
       const diff = new Rapid.Difference(base, head);
       const summary = diff.summary();
-      expect(summary).to.be.an.instanceOf(Map).that.has.all.keys('-', 'c');
-      expect(summary.get('-')).to.eql({ changeType: 'modified', entity: way, graph: head });
-      expect(summary.get('c')).to.eql({ changeType: 'created', entity: vertex, graph: head });
+      assert.ok(summary instanceof Map);
+      assert.deepEqual(summary.get('-'), { changeType: 'modified', entity: way, graph: head });
+      assert.deepEqual(summary.get('c'), { changeType: 'created', entity: vertex, graph: head });
     });
   });
 
@@ -289,8 +301,8 @@ describe('Difference', () => {
       const head = base.replace(node);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(complete.get('n')).to.equal(node);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), node);
     });
 
     it('includes modified entities', () => {
@@ -300,8 +312,8 @@ describe('Difference', () => {
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(complete.get('n')).to.equal(n2);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), n2);
     });
 
     it('includes deleted entities', () => {
@@ -310,8 +322,8 @@ describe('Difference', () => {
       const head = base.remove(node);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n');
-      expect(complete.get('n')).to.be.undefined;
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), undefined);
     });
 
     it('includes nodes added to a way', () => {
@@ -323,8 +335,10 @@ describe('Difference', () => {
       const head = base.replace(w2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('w', 'n1', 'n2');
-      expect(complete.get('n2')).to.equal(n2);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('w'), w2);
+      assert.equal(complete.get('n1'), n1);
+      assert.equal(complete.get('n2'), n2);
     });
 
     it('includes nodes removed from a way', () => {
@@ -336,8 +350,10 @@ describe('Difference', () => {
       const head = base.replace(w2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('w', 'n1', 'n2');
-      expect(complete.get('n2')).to.equal(n2);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('w'), w2);
+      assert.equal(complete.get('n1'), n1);
+      assert.equal(complete.get('n2'), n2);
     });
 
     it('includes multipolygon members', () => {
@@ -353,69 +369,81 @@ describe('Difference', () => {
       const head = base.replace(r2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('r', 'w1', 'w2');
-      expect(complete.get('w2')).to.equal(w2);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('r'), r2);
+      assert.equal(complete.get('w1'), w1);
+      assert.equal(complete.get('w2'), w2);
     });
 
     it('includes parent ways of modified nodes', () => {
-      const n1   = Rapid.osmNode({ id: 'n' });
-      const n2   = n1.move([1, 2]);
-      const way  = Rapid.osmWay({ id: 'w', nodes: ['n']});
-      const base = new Rapid.Graph([n1, way]);
+      const n1 = Rapid.osmNode({ id: 'n' });
+      const n2 = n1.move([1, 2]);
+      const w = Rapid.osmWay({ id: 'w', nodes: ['n']});
+      const base = new Rapid.Graph([n1, w]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'w');
-      expect(complete.get('w')).to.equal(way);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), n2);
+      assert.equal(complete.get('w'), w);
     });
 
     it('includes parent relations of modified entities', () => {
-      const n1   = Rapid.osmNode({ id: 'n' });
-      const n2   = n1.move([1, 2]);
-      const rel  = Rapid.osmRelation({ id: 'r', members: [{ id: 'n' }]});
-      const base = new Rapid.Graph([n1, rel]);
+      const n1 = Rapid.osmNode({ id: 'n' });
+      const n2 = n1.move([1, 2]);
+      const r = Rapid.osmRelation({ id: 'r', members: [{ id: 'n' }]});
+      const base = new Rapid.Graph([n1, r]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'r');
-      expect(complete.get('r')).to.equal(rel);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), n2);
+      assert.equal(complete.get('r'), r);
     });
 
     it('includes parent relations of modified entities, recursively', () => {
-      const n1   = Rapid.osmNode({ id: 'n' });
-      const n2   = n1.move([1, 2]);
-      const rel1 = Rapid.osmRelation({ id: 'r1', members: [{ id: 'n' }]});
-      const rel2 = Rapid.osmRelation({ id: 'r2', members: [{ id: 'r1' }]});
-      const base = new Rapid.Graph([n1, rel1, rel2]);
+      const n1 = Rapid.osmNode({ id: 'n' });
+      const n2 = n1.move([1, 2]);
+      const r1 = Rapid.osmRelation({ id: 'r1', members: [{ id: 'n' }]});
+      const r2 = Rapid.osmRelation({ id: 'r2', members: [{ id: 'r1' }]});
+      const base = new Rapid.Graph([n1, r1, r2]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'r1', 'r2');
-      expect(complete.get('r2')).to.equal(rel2);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), n2);
+      assert.equal(complete.get('r1'), r1);
+      assert.equal(complete.get('r2'), r2);
     });
 
     it('includes parent relations of parent ways of modified nodes', () => {
-      const n1   = Rapid.osmNode({ id: 'n' });
-      const n2   = n1.move([1, 2]);
-      const way  = Rapid.osmWay({ id: 'w', nodes: ['n']});
-      const rel  = Rapid.osmRelation({ id: 'r', members: [{ id: 'w' }]});
-      const base = new Rapid.Graph([n1, way, rel]);
+      const n1 = Rapid.osmNode({ id: 'n' });
+      const n2 = n1.move([1, 2]);
+      const w = Rapid.osmWay({ id: 'w', nodes: ['n']});
+      const r = Rapid.osmRelation({ id: 'r', members: [{ id: 'w' }]});
+      const base = new Rapid.Graph([n1, w, r]);
       const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'w', 'r');
-      expect(complete.get('r')).to.equal(rel);
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), n2);
+      assert.equal(complete.get('w'), w);
+      assert.equal(complete.get('r'), r);
     });
 
     it('copes with recursive relations', () => {
-      const node = Rapid.osmNode({ id: 'n' });
-      const rel1 = Rapid.osmRelation({ id: 'r1', members: [{ id: 'n' }, { id: 'r2' }]});
-      const rel2 = Rapid.osmRelation({ id: 'r2', members: [{ id: 'r1' }]});
-      const base = new Rapid.Graph([node, rel1, rel2]);
-      const head = base.replace(node.move([1, 2]));
+      const n1 = Rapid.osmNode({ id: 'n' });
+      const n2 = n1.move([1, 2]);
+      const r1 = Rapid.osmRelation({ id: 'r1', members: [{ id: 'n' }, { id: 'r2' }]});
+      const r2 = Rapid.osmRelation({ id: 'r2', members: [{ id: 'r1' }]});
+      const base = new Rapid.Graph([n1, r1, r2]);
+      const head = base.replace(n2);
       const diff = new Rapid.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceOf(Map).that.has.all.keys('n', 'r1', 'r2');
+      assert.ok(complete instanceof Map);
+      assert.equal(complete.get('n'), n2);
+      assert.equal(complete.get('r1'), r1);
+      assert.equal(complete.get('r2'), r2);
     });
 
   });
