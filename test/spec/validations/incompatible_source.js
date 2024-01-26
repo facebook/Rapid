@@ -51,4 +51,10 @@ describe('validationIncompatibleSource', () => {
     expect(issues).to.have.lengthOf(0);
   });
 
+  it('does not flag buildings in one of the many the google-open-buildings datasets', () => {
+    const n = Rapid.osmNode({ tags: { building: 'yes', source: 'esri/Google_Open_Buildings' }});
+    const issues = validator(n);
+    expect(issues).to.have.lengthOf(0);
+  });
+
 });
