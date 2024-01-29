@@ -1,5 +1,5 @@
-import { uiTooltip } from './tooltip';
-import { uiIcon } from './icon';
+import { uiIcon } from './icon.js';
+import { uiTooltip } from './tooltip.js';
 
 
 export function uiZoomToSelection(context) {

@@ -1,4 +1,4 @@
-import { AbstractBehavior } from './AbstractBehavior';
+import { AbstractBehavior } from './AbstractBehavior.js';
 
 
 /**

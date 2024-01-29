@@ -1,12 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
-import { uiCmd } from './cmd';
+import { uiIcon } from './icon.js';
+import { uiCmd } from './cmd.js';
 
-import { UiPanelBackground } from './panels/UiPanelBackground';
-import { UiPanelHistory } from './panels/UiPanelHistory';
-import { UiPanelLocation } from './panels/UiPanelLocation';
-import { UiPanelMeasurement } from './panels/UiPanelMeasurement';
+import { UiPanelBackground } from './panels/UiPanelBackground.js';
+import { UiPanelHistory } from './panels/UiPanelHistory.js';
+import { UiPanelLocation } from './panels/UiPanelLocation.js';
+import { UiPanelMeasurement } from './panels/UiPanelMeasurement.js';
 
 
 /**

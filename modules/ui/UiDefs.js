@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { utilFetchResponse } from '../util';
+import { utilFetchResponse } from '../util/index.js';
 
 
 /**

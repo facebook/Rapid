@@ -1,10 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { actionChangeTags } from '../../actions/change_tags';
-import { uiIcon } from '../icon';
-import { uiCombobox } from '../combobox';
-import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { actionChangeTags } from '../../actions/change_tags.js';
+import { uiIcon } from '../icon.js';
+import { uiCombobox } from '../combobox.js';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 
 export function uiFieldWikipedia(context, uifield) {

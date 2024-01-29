@@ -1,6 +1,6 @@
 import { utilObjectOmit, utilSafeString } from '@rapid-sdk/util';
 
-import { Collection } from './Collection';
+import { Collection } from './Collection.js';
 
 
 /**

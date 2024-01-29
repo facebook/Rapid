@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiSection } from '../section';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionGridDisplayOptions(context) {

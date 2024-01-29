@@ -1,7 +1,7 @@
 import { utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
-import throttle from 'lodash-es/throttle';
+import throttle from 'lodash-es/throttle.js';
 
-import { AbstractSystem } from './AbstractSystem';
+import { AbstractSystem } from './AbstractSystem.js';
 
 
 /**

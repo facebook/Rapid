@@ -2,9 +2,9 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { actionChangePreset } from '../../actions/change_preset';
-import { utilRebind } from '../../util';
-import { delayAsync, eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper';
+import { actionChangePreset } from '../../actions/change_preset.js';
+import { utilRebind } from '../../util/index.js';
+import { delayAsync, eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper.js';
 
 
 export function uiIntroBuilding(context, curtain) {

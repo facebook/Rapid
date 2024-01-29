@@ -1,5 +1,5 @@
-import { actionChangeTags } from '../actions/change_tags';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { actionChangeTags } from '../actions/change_tags.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationSuspiciousName(context) {

@@ -1,12 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
-import { AbstractMode } from './AbstractMode';
-import { uiCommit } from '../ui/commit';
-import { uiConfirm } from '../ui/confirm';
-import { uiConflicts } from '../ui/conflicts';
-import { uiLoading } from '../ui/loading';
-import { uiSuccess } from '../ui/success';
-import { utilKeybinding } from '../util';
+import { AbstractMode } from './AbstractMode.js';
+import { uiCommit } from '../ui/commit.js';
+import { uiConfirm } from '../ui/confirm.js';
+import { uiConflicts } from '../ui/conflicts.js';
+import { uiLoading } from '../ui/loading.js';
+import { uiSuccess } from '../ui/success.js';
+import { utilKeybinding } from '../util/index.js';
 
 const DEBUG = false;
 

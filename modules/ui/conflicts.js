@@ -3,10 +3,10 @@ import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
-import { JXON } from '../util/jxon';
-import { osmChangeset } from '../osm';
-import { uiIcon } from './icon';
-import { utilDetect, utilKeybinding, utilRebind, utilWrap } from '../util';
+import { JXON } from '../util/jxon.js';
+import { osmChangeset } from '../osm/index.js';
+import { uiIcon } from './icon.js';
+import { utilDetect, utilKeybinding, utilRebind, utilWrap } from '../util/index.js';
 
 
 export function uiConflicts(context) {

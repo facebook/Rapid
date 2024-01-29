@@ -1,7 +1,7 @@
 import { Extent, geomPointInPolygon } from '@rapid-sdk/math';
 import { utilArrayIntersection } from '@rapid-sdk/util';
 
-import { AbstractBehavior } from './AbstractBehavior';
+import { AbstractBehavior } from './AbstractBehavior.js';
 
 
 /**

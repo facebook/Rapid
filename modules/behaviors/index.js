@@ -1,13 +1,13 @@
-import { AbstractBehavior } from './AbstractBehavior';
-import { DragBehavior } from './DragBehavior';
-import { DrawBehavior } from './DrawBehavior';
-import { HoverBehavior } from './HoverBehavior';
-import { KeyOperationBehavior } from './KeyOperationBehavior';
-import { LassoBehavior } from './LassoBehavior';
-import { MapInteractionBehavior } from './MapInteractionBehavior';
-import { MapNudgingBehavior } from './MapNudgingBehavior';
-import { PasteBehavior } from './PasteBehavior';
-import { SelectBehavior } from './SelectBehavior';
+import { AbstractBehavior } from './AbstractBehavior.js';
+import { DragBehavior } from './DragBehavior.js';
+import { DrawBehavior } from './DrawBehavior.js';
+import { HoverBehavior } from './HoverBehavior.js';
+import { KeyOperationBehavior } from './KeyOperationBehavior.js';
+import { LassoBehavior } from './LassoBehavior.js';
+import { MapInteractionBehavior } from './MapInteractionBehavior.js';
+import { MapNudgingBehavior } from './MapNudgingBehavior.js';
+import { PasteBehavior } from './PasteBehavior.js';
+import { SelectBehavior } from './SelectBehavior.js';
 
 export {
   AbstractBehavior,

@@ -1,11 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { uiIcon } from './icon';
-
-import { uiOsmoseDetails } from './osmose_details';
-import { uiOsmoseHeader } from './osmose_header';
-import { uiViewOnOsmose } from './view_on_osmose';
-import { utilRebind } from '../util';
+import { uiOsmoseDetails } from './osmose_details.js';
+import { uiOsmoseHeader } from './osmose_header.js';
+import { uiIcon } from './icon.js';
+import { uiViewOnOsmose } from './view_on_osmose.js';
+import { utilRebind } from '../util/index.js';
 
 
 export function uiOsmoseEditor(context) {

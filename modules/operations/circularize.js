@@ -1,8 +1,8 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { actionCircularize } from '../actions/circularize';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { utilTotalExtent } from '../util';
+import { actionCircularize } from '../actions/circularize.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 export function operationCircularize(context, selectedIDs) {

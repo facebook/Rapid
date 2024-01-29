@@ -1,11 +1,11 @@
 import { vecLength } from '@rapid-sdk/math';
 
-import { AbstractBehavior } from './AbstractBehavior';
-import { osmEntity, osmNote, QAItem } from '../osm';
-import { actionAddMidpoint } from '../actions/add_midpoint';
-import { osmNode } from '../osm/node';
-import { osmWay } from '../osm/way';
-import { geoChooseEdge } from '../geo';
+import { AbstractBehavior } from './AbstractBehavior.js';
+import { osmEntity, osmNote, QAItem } from '../osm/index.js';
+import { actionAddMidpoint } from '../actions/add_midpoint.js';
+import { osmNode } from '../osm/node.js';
+import { osmWay } from '../osm/way.js';
+import { geoChooseEdge } from '../geo/index.js';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;

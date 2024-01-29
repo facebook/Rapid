@@ -2,15 +2,15 @@ import { select as d3_select } from 'd3-selection';
 import { geoBounds as d3_geoBounds } from 'd3-geo';
 import { Extent } from '@rapid-sdk/math';
 
-import { AbstractMode } from './AbstractMode';
-import { osmNote, QAItem } from '../osm';
-import { uiDataEditor } from '../ui/data_editor';
-import { uiImproveOsmEditor } from '../ui/improveOSM_editor';
-import { uiKeepRightEditor } from '../ui/keepRight_editor';
-import { uiNoteEditor } from '../ui/note_editor';
-import { uiOsmoseEditor } from '../ui/osmose_editor';
-import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector';
-import { utilKeybinding } from '../util';
+import { AbstractMode } from './AbstractMode.js';
+import { osmNote, QAItem } from '../osm/index.js';
+import { uiDataEditor } from '../ui/data_editor.js';
+import { uiImproveOsmEditor } from '../ui/improveOSM_editor.js';
+import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
+import { uiNoteEditor } from '../ui/note_editor.js';
+import { uiOsmoseEditor } from '../ui/osmose_editor.js';
+import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector.js';
+import { utilKeybinding } from '../util/index.js';
 
 const DEBUG = false;
 

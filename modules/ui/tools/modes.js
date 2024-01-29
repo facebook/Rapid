@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { uiIcon } from '../icon';
-import { uiTooltip } from '../tooltip';
+import { uiIcon } from '../icon.js';
+import { uiTooltip } from '../tooltip.js';
 
 
 export function uiToolDrawModes(context) {

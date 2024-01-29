@@ -2,11 +2,11 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayIdentical, utilTagDiff } from '@rapid-sdk/util';
 
-import { uiIcon } from '../icon';
-import { uiCombobox } from '../combobox';
-import { uiSection } from '../section';
-import { uiTagReference } from '../tag_reference';
-import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { uiIcon } from '../icon.js';
+import { uiCombobox } from '../combobox.js';
+import { uiSection } from '../section.js';
+import { uiTagReference } from '../tag_reference.js';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 
 export function uiSectionRawTagEditor(context, id) {

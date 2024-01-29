@@ -1,4 +1,4 @@
-import { uiModal } from './modal';
+import { uiModal } from './modal.js';
 
 
 export function uiConfirm(context, selection) {

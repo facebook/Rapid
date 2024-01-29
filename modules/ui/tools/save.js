@@ -1,8 +1,8 @@
 import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
 
-import { uiIcon } from '../icon';
-import { uiCmd } from '../cmd';
-import { uiTooltip } from '../tooltip';
+import { uiCmd } from '../cmd.js';
+import { uiIcon } from '../icon.js';
+import { uiTooltip } from '../tooltip.js';
 
 
 export function uiToolSave(context) {

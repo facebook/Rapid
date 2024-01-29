@@ -1,14 +1,15 @@
 import { vecEqual, vecLength } from '@rapid-sdk/math';
 
-import { AbstractMode } from './AbstractMode';
-import { actionAddEntity } from '../actions/add_entity';
-import { actionAddMidpoint } from '../actions/add_midpoint';
-import { actionAddVertex } from '../actions/add_vertex';
-import { actionMoveNode } from '../actions/move_node';
-import { geoChooseEdge } from '../geo';
-import { osmNode, osmWay } from '../osm';
+import { AbstractMode } from './AbstractMode.js';
+import { actionAddEntity } from '../actions/add_entity.js';
+import { actionAddMidpoint } from '../actions/add_midpoint.js';
+import { actionAddVertex } from '../actions/add_vertex.js';
+import { actionMoveNode } from '../actions/move_node.js';
+import { geoChooseEdge } from '../geo/index.js';
+import { osmNode, osmWay } from '../osm/index.js';
 
 const DEBUG = false;
+
 /**
  * `DrawLineMode`
  * In this mode, we are drawing a new line or continuing an existing line.

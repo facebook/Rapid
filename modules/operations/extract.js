@@ -1,8 +1,8 @@
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { actionExtract } from '../actions/extract';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { utilTotalExtent } from '../util';
+import { actionExtract } from '../actions/extract.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 export function operationExtract(context, selectedIDs) {

@@ -3,8 +3,8 @@ import { Tiler, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { utilFetchResponse, utilSetTransform } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { utilFetchResponse, utilSetTransform } from '../util/index.js';
 
 
 const KARTAVIEW_API = 'https://kartaview.org';

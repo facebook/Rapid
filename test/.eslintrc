@@ -5,7 +5,6 @@
     },
     "globals": {
         "expect": true,
-        "fakeFetch": true,
         "happen": false,
         "iD": false,
         "Rapid": false,

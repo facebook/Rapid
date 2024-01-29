@@ -1,8 +1,8 @@
 import { utilArrayUniq, utilGetAllNodes } from '@rapid-sdk/util';
 
-import { actionDisconnect } from '../actions/disconnect';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { utilTotalExtent } from '../util/util';
+import { actionDisconnect } from '../actions/disconnect.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 export function operationDisconnect(context, selectedIDs) {

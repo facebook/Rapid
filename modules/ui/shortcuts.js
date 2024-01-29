@@ -1,10 +1,10 @@
 import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { uiIcon } from './icon';
-import { uiCmd } from './cmd';
-import { uiModal } from './modal';
-import { utilDetect } from '../util/detect';
+import { uiIcon } from './icon.js';
+import { uiCmd } from './cmd.js';
+import { uiModal } from './modal.js';
+import { utilDetect } from '../util/detect.js';
 
 
 export function uiShortcuts(context) {

@@ -1,5 +1,5 @@
-import { osmEntity, osmNote } from '../osm';
-import { uiIcon } from './icon';
+import { osmEntity, osmNote } from '../osm/index.js';
+import { uiIcon } from './icon.js';
 
 
 export function uiViewOnOSM(context) {

@@ -1,10 +1,10 @@
 import { select as d3_select } from 'd3-selection';
 
-import { AbstractMode } from './AbstractMode';
-import { actionDeleteRelation } from '../actions/delete_relation';
-import * as Operations from '../operations/index';
-import { uiCmd } from '../ui/cmd';
-import { utilKeybinding, utilTotalExtent } from '../util';
+import { AbstractMode } from './AbstractMode.js';
+import { actionDeleteRelation } from '../actions/delete_relation.js';
+import * as Operations from '../operations/index.js';
+import { uiCmd } from '../ui/cmd.js';
+import { utilKeybinding, utilTotalExtent } from '../util/index.js';
 
 
 /**

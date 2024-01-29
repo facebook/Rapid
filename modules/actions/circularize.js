@@ -7,7 +7,7 @@ import {
 import { vecInterp, vecLength, vecLengthSquare } from '@rapid-sdk/math';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { osmNode } from '../osm/node';
+import { osmNode } from '../osm/node.js';
 
 
 export function actionCircularize(wayId, projection, maxAngle) {

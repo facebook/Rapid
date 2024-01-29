@@ -1,9 +1,9 @@
-import { uiPane } from '../pane';
+import { uiPane } from '../pane.js';
 
-import { uiSectionValidationIssues } from '../sections/validation_issues';
-import { uiSectionValidationOptions } from '../sections/validation_options';
-import { uiSectionValidationRules } from '../sections/validation_rules';
-import { uiSectionValidationStatus } from '../sections/validation_status';
+import { uiSectionValidationIssues } from '../sections/validation_issues.js';
+import { uiSectionValidationOptions } from '../sections/validation_options.js';
+import { uiSectionValidationRules } from '../sections/validation_rules.js';
+import { uiSectionValidationStatus } from '../sections/validation_status.js';
 
 
 export function uiPaneIssues(context) {

@@ -1,5 +1,5 @@
-import { uiIcon } from './icon';
-import { uiTooltip } from './tooltip';
+import { uiIcon } from './icon.js';
+import { uiTooltip } from './tooltip.js';
 
 
 // These are module variables so they are preserved through a ui.restart()

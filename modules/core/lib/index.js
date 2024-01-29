@@ -1,7 +1,7 @@
-export { Category } from './Category';
-export { Collection } from './Collection';
-export { Difference } from './Difference';
-export { Edit } from './Edit';
+export { Category } from './Category.js';
+export { Collection } from './Collection.js';
+export { Difference } from './Difference.js';
+export { Edit } from './Edit.js';
 
 export {
   ImagerySource,
@@ -9,11 +9,11 @@ export {
   ImagerySourceCustom,
   ImagerySourceEsri,
   ImagerySourceNone
-} from './ImagerySource';
+} from './ImagerySource.js';
 
-export { Field } from './Field';
-export { Graph } from './Graph';
-export { Preset } from './Preset';
-export { Tree } from './Tree';
-export { ValidationFix } from './ValidationFix';
-export { ValidationIssue } from './ValidationIssue';
+export { Field } from './Field.js';
+export { Graph } from './Graph.js';
+export { Preset } from './Preset.js';
+export { Tree } from './Tree.js';
+export { ValidationFix } from './ValidationFix.js';
+export { ValidationIssue } from './ValidationIssue.js';

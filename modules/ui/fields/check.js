@@ -1,10 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { utilRebind } from '../../util/rebind';
-import { actionReverse } from '../../actions/reverse';
-import { osmOneWayTags } from '../../osm';
-import { uiIcon } from '../icon';
+import { utilRebind } from '../../util/rebind.js';
+import { actionReverse } from '../../actions/reverse.js';
+import { osmOneWayTags } from '../../osm/tags.js';
+import { uiIcon } from '../icon.js';
 
 export { uiFieldCheck as uiFieldDefaultCheck };
 export { uiFieldCheck as uiFieldOnewayCheck };

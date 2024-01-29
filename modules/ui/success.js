@@ -1,11 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-
 import { resolveStrings } from 'osm-community-index';
 
-import { uiIcon } from './icon';
-import { uiDisclosure } from '../ui/disclosure';
-import { utilRebind } from '../util/rebind';
+import { uiIcon } from './icon.js';
+import { uiDisclosure } from '../ui/disclosure.js';
+import { utilRebind } from '../util/rebind.js';
 
 
 let _oci = null;

@@ -1,5 +1,5 @@
-import { AbstractLayer } from './AbstractLayer';
-import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import { AbstractLayer } from './AbstractLayer.js';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon.js';
 
 const MINZOOM = 4;
 

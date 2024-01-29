@@ -3,10 +3,10 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayUniq, utilUniqueString } from '@rapid-sdk/util';
 import { iso1A2Code } from '@rapideditor/country-coder';
 
-import { uiIcon } from '../icon';
-import { uiTooltip } from '../tooltip';
-import { uiCombobox } from '../combobox';
-import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { uiIcon } from '../icon.js';
+import { uiTooltip } from '../tooltip.js';
+import { uiCombobox } from '../combobox.js';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 var _languagesArray = [];
 

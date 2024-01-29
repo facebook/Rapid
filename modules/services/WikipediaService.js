@@ -1,7 +1,7 @@
 import { utilQsString } from '@rapid-sdk/util';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { utilFetchResponse } from '../util/index.js';
 
 const WIKIPEDIA_API = 'https://en.wikipedia.org/w/api.php?';
 

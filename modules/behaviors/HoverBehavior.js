@@ -1,5 +1,5 @@
-import { AbstractBehavior } from './AbstractBehavior';
-// import { geoChooseEdge } from '../geo';
+import { AbstractBehavior } from './AbstractBehavior.js';
+// import { geoChooseEdge } from '../geo/index.js';
 
 
 /**

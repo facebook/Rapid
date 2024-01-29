@@ -1,10 +1,10 @@
 import { utilHashcode, utilTagDiff } from '@rapid-sdk/util';
 
-import { actionChangePreset } from '../actions/change_preset';
-import { actionChangeTags } from '../actions/change_tags';
-import { actionUpgradeTags } from '../actions/upgrade_tags';
-import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { actionChangePreset } from '../actions/change_preset.js';
+import { actionChangeTags } from '../actions/change_tags.js';
+import { actionUpgradeTags } from '../actions/upgrade_tags.js';
+import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 const pathVals = new Set([

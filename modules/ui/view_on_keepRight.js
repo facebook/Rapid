@@ -1,5 +1,5 @@
-import { uiIcon } from './icon';
-import { QAItem } from '../osm';
+import { QAItem } from '../osm/index.js';
+import { uiIcon } from './icon.js';
 
 
 export function uiViewOnKeepRight(context) {

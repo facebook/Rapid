@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { utilRebind } from '../../util/rebind';
-import { utilGetDimensions } from '../../util/dimensions';
+import { utilRebind } from '../../util/rebind.js';
+import { utilGetDimensions } from '../../util/dimensions.js';
 
 
 export function uiFieldLanes(context, uifield) {

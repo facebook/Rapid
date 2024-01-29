@@ -1,5 +1,5 @@
-import { osmNote } from '../osm';
-import { uiIcon } from './icon';
+import { osmNote } from '../osm/note.js';
+import { uiIcon } from './icon.js';
 
 
 export function uiNoteReport(context) {

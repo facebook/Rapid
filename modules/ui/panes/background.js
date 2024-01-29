@@ -1,10 +1,10 @@
-import { uiPane } from '../pane';
-import { uiSectionBackgroundDisplayOptions } from '../sections/background_display_options';
-import { uiSectionBackgroundList } from '../sections/background_list';
-import { uiSectionBackgroundOffset } from '../sections/background_offset';
-import { uiSectionGridDisplayOptions } from '../sections/grid_display_options';
-import { uiSectionOverlayList } from '../sections/overlay_list';
-// import { uiSectionReactContainer } from '../sections/react_container';
+import { uiPane } from '../pane.js';
+import { uiSectionBackgroundDisplayOptions } from '../sections/background_display_options.js';
+import { uiSectionBackgroundList } from '../sections/background_list.js';
+import { uiSectionBackgroundOffset } from '../sections/background_offset.js';
+import { uiSectionGridDisplayOptions } from '../sections/grid_display_options.js';
+import { uiSectionOverlayList } from '../sections/overlay_list.js';
+// import { uiSectionReactContainer } from '../sections/react_container.jsx';
 
 
 export function uiPaneBackground(context) {

@@ -2,8 +2,8 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 
-import { AbstractFeature } from './AbstractFeature';
-import { getLineSegments, lineToPoly } from './helpers';
+import { AbstractFeature } from './AbstractFeature.js';
+import { getLineSegments, lineToPoly } from './helpers.js';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;

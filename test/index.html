@@ -28,113 +28,57 @@
 
   <script>
     var scripts = [
-      'spec/Context.test.js',
+      'browser/Context.test.js',
 
-      'spec/actions/add_entity.js',
-      'spec/actions/add_member.js',
-      'spec/actions/add_midpoint.js',
-      'spec/actions/change_member.js',
-      'spec/actions/change_preset.js',
-      'spec/actions/change_tags.js',
-      'spec/actions/circularize.js',
-      'spec/actions/connect.js',
-      'spec/actions/copy_entities.js',
-      'spec/actions/delete_member.js',
-      'spec/actions/delete_multiple.js',
-      'spec/actions/delete_node.js',
-      'spec/actions/delete_relation.js',
-      'spec/actions/delete_way.js',
-      'spec/actions/discard_tags.js',
-      'spec/actions/disconnect.js',
-      'spec/actions/join.js',
-      'spec/actions/merge.js',
-      'spec/actions/merge_nodes.js',
-      'spec/actions/merge_polygon.js',
-      'spec/actions/merge_remote_changes.js',
-      'spec/actions/move.js',
-      'spec/actions/move_node.js',
-      'spec/actions/noop.js',
-      'spec/actions/orthogonalize.js',
-      'spec/actions/restrict_turn.js',
-      'spec/actions/reverse.js',
-      'spec/actions/revert.js',
-      'spec/actions/split.js',
-      'spec/actions/straighten_nodes.js',
-      'spec/actions/straighten_way.js',
-      'spec/actions/unrestrict_turn.js',
-      'spec/actions/reflect.js',
-      'spec/actions/extract.js',
-      'spec/actions/upgrade_tags.js',
+      'browser/core/DataLoaderSystem.test.js',
+      'browser/core/EditSystem.test.js',
+      'browser/core/FilterSystem.test.js',
+      'browser/core/LocalizationSystem.test.js',
+      'browser/core/LocationSystem.test.js',
+      'browser/core/MapSystem.Test.js',
+      'browser/core/PresetSystem.test.js',
+      'browser/core/UrlHashSystem.test.js',
+      'browser/core/ValidationSystem.test.js',
 
-      'spec/core/DataLoaderSystem.test.js',
-      'spec/core/EditSystem.test.js',
-      'spec/core/FilterSystem.test.js',
-      'spec/core/LocalizationSystem.test.js',
-      'spec/core/LocationSystem.test.js',
-      'spec/core/MapSystem.Test.js',
-      'spec/core/PresetSystem.test.js',
-      'spec/core/UrlHashSystem.test.js',
-      'spec/core/ValidationSystem.test.js',
+      'browser/operations/extract.js',
+      'browser/operations/straighten.js',
 
-      'spec/core/lib/Category.test.js',
-      'spec/core/lib/Collection.test.js',
-      'spec/core/lib/Difference.test.js',
-      'spec/core/lib/Graph.test.js',
-      'spec/core/lib/ImagerySource.test.js',
-      'spec/core/lib/Preset.test.js',
-      'spec/core/lib/Tree.test.js',
+      'browser/services/KartaviewService.test.js',
+      'browser/services/MapillaryService.test.js',
+      'browser/services/NominatimService.test.js',
+      'browser/services/OsmService.test.js',
+      'browser/services/OsmWikibaseService.test.js',
+      'browser/services/StreetsideService.test.js',
+      'browser/services/TaginfoService.test.js',
 
-      'spec/geo/geom.js',
+      'browser/svg/tag_classes.js',
 
-      'spec/operations/extract.js',
-      'spec/operations/straighten.js',
+      'browser/ui/cmd.js',
+      'browser/ui/combobox.js',
+      'browser/ui/confirm.js',
+      'browser/ui/flash.js',
+      'browser/ui/icon.js',
+      'browser/ui/modal.js',
 
-      'spec/osm/changeset.js',
-      'spec/osm/entity.js',
-      'spec/osm/intersection.js',
-      'spec/osm/multipolygon.js',
-      'spec/osm/lanes.js',
-      'spec/osm/node.js',
-      'spec/osm/note.js',
-      'spec/osm/relation.js',
-      'spec/osm/way.js',
+      'browser/ui/sections/raw_tag_editor.js',
 
-      'spec/services/KartaviewService.test.js',
-      'spec/services/MapillaryService.test.js',
-      'spec/services/NominatimService.test.js',
-      'spec/services/OsmService.test.js',
-      'spec/services/OsmWikibaseService.test.js',
-      'spec/services/StreetsideService.test.js',
-      'spec/services/TaginfoService.test.js',
+      'browser/ui/fields/access.js',
+      'browser/ui/fields/localized.js',
+      'browser/ui/fields/wikipedia.js',
 
-      'spec/svg/tag_classes.js',
+      'browser/util/keybinding.js',
 
-      'spec/ui/cmd.js',
-      'spec/ui/combobox.js',
-      'spec/ui/confirm.js',
-      'spec/ui/flash.js',
-      'spec/ui/icon.js',
-      'spec/ui/modal.js',
-
-      'spec/ui/sections/raw_tag_editor.js',
-
-      'spec/ui/fields/access.js',
-      'spec/ui/fields/localized.js',
-      'spec/ui/fields/wikipedia.js',
-
-      'spec/util/keybinding.js',
-
-      'spec/validations/almost_junction.js',
-      'spec/validations/ambiguous_crossing_tags.js',
-      'spec/validations/crossing_ways.js',
-      'spec/validations/disconnected_way.js',
-      'spec/validations/incompatible_source.js',
-      'spec/validations/mismatched_geometry.js',
-      'spec/validations/missing_role.js',
-      'spec/validations/missing_tag.js',
-      'spec/validations/outdated_tags.js',
-      'spec/validations/private_data.js',
-      'spec/validations/suspicious_name.js'
+      'browser/validations/almost_junction.js',
+      'browser/validations/ambiguous_crossing_tags.js',
+      'browser/validations/crossing_ways.js',
+      'browser/validations/disconnected_way.js',
+      'browser/validations/incompatible_source.js',
+      'browser/validations/mismatched_geometry.js',
+      'browser/validations/missing_role.js',
+      'browser/validations/missing_tag.js',
+      'browser/validations/outdated_tags.js',
+      'browser/validations/private_data.js',
+      'browser/validations/suspicious_name.js'
     ];
 
     window.executionErrors = [];
@@ -145,8 +89,8 @@
 
     // Prepend scripts to run at the beginning.
 
-    // Second Script:  Always run spec helpers
-    scripts.unshift('spec/spec_helpers.js');
+    // Second Script:  Always run spec_helpers
+    scripts.unshift('browser/spec_helpers.js');
 
     // First script: app bundle
     scripts.unshift('../dist/rapid.js');

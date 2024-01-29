@@ -2,11 +2,11 @@ import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 import { Projection, vecLength, vecSubtract } from '@rapid-sdk/math';
 
-import { osmNote, QAItem } from '../osm';
-import { PixiEvents } from './PixiEvents';
-import { PixiScene } from './PixiScene';
-import { PixiTextures } from './PixiTextures';
-import { utilSetTransform } from '../util/util';
+import { osmNote, QAItem } from '../osm/index.js';
+import { PixiEvents } from './PixiEvents.js';
+import { PixiScene } from './PixiScene.js';
+import { PixiTextures } from './PixiTextures.js';
+import { utilSetTransform } from '../util/util.js';
 
 let _sharedTextures;   // singleton (for now)
 

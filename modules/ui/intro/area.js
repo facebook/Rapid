@@ -2,8 +2,8 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 
-import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { utilRebind } from '../../util/rebind.js';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper.js';
 
 
 export function uiIntroArea(context, curtain) {

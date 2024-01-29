@@ -1,5 +1,6 @@
 import { Color } from 'pixi.js';
-import { uiIcon } from './icon';
+
+import { uiIcon } from './icon.js';
 
 
 export function uiPresetIcon(context) {

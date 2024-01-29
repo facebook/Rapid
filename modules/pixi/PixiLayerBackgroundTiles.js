@@ -3,7 +3,7 @@ import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import { AdjustmentFilter, ConvolutionFilter } from 'pixi-filters';
 import { Tiler, geoScaleToZoom, vecScale } from '@rapid-sdk/math';
 
-import { AbstractLayer } from './AbstractLayer';
+import { AbstractLayer } from './AbstractLayer.js';
 
 const DEBUGCOLOR = 0xffff00;
 

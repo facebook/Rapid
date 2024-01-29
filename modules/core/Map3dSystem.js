@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { AbstractSystem } from './AbstractSystem';
+import { AbstractSystem } from './AbstractSystem.js';
 
 const MAPLIBRE_JS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@3/dist/maplibre-gl.min.js';
 const MAPLIBRE_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@3/dist/maplibre-gl.min.css';

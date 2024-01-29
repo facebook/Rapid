@@ -1,8 +1,9 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { uiTooltip } from '../tooltip';
-import { uiCmd } from '../cmd';
-import { uiRapidFeatureToggleDialog } from '../rapid_feature_toggle_dialog';
-import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dialog';
+
+import { uiCmd } from '../cmd.js';
+import { uiRapidFeatureToggleDialog } from '../rapid_feature_toggle_dialog.js';
+import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dialog.js';
+import { uiTooltip } from '../tooltip.js';
 
 
 export function uiToolRapidFeatures(context) {

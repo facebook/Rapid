@@ -1,18 +1,18 @@
 import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
-import { localize } from './helper';
-import { osmEntity } from '../../osm/entity';
-import { uiIcon } from '../icon';
+import { localize } from './helper.js';
+import { osmEntity } from '../../osm/entity.js';
+import { uiIcon } from '../icon.js';
+import { UiCurtain } from './UiCurtain.js';
 
-import { UiCurtain } from './UiCurtain';
-import { uiIntroWelcome } from './welcome';
-import { uiIntroNavigation } from './navigation';
-import { uiIntroPoint } from './point';
-import { uiIntroArea } from './area';
-import { uiIntroLine } from './line';
-import { uiIntroBuilding } from './building';
-import { uiIntroStartEditing } from './start_editing';
-import { uiIntroRapid } from './rapid';
+import { uiIntroWelcome } from './welcome.js';
+import { uiIntroNavigation } from './navigation.js';
+import { uiIntroPoint } from './point.js';
+import { uiIntroArea } from './area.js';
+import { uiIntroLine } from './line.js';
+import { uiIntroBuilding } from './building.js';
+import { uiIntroStartEditing } from './start_editing.js';
+import { uiIntroRapid } from './rapid.js';
 
 
 const INTRO_IMAGERY = 'EsriWorldImageryClarity';

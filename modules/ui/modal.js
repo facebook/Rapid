@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
-import { utilKeybinding } from '../util';
+import { uiIcon } from './icon.js';
+import { utilKeybinding } from '../util/index.js';
 
 
 export function uiModal(selection, blocking) {

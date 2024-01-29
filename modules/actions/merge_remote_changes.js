@@ -3,8 +3,8 @@ import { utilArrayUnion, utilArrayUniq } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 import { diff3Merge } from 'node-diff3';
 
-import { actionDeleteMultiple } from './delete_multiple';
-import { osmEntity } from '../osm';
+import { actionDeleteMultiple } from './delete_multiple.js';
+import { osmEntity } from '../osm/entity.js';
 
 
 export function actionMergeRemoteChanges(id, options = {}) {

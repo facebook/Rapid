@@ -1,10 +1,10 @@
 import { marked } from 'marked';
-import { uiIcon } from '../icon';
-import { uiIntro } from '../intro/intro';
-import { uiPane } from '../pane';
 
-import { uiTooltip } from '../tooltip';
-import { helpHtml } from '../intro/helper';
+import { uiIcon } from '../icon.js';
+import { uiIntro } from '../intro/intro.js';
+import { uiPane } from '../pane.js';
+import { uiTooltip } from '../tooltip.js';
+import { helpHtml } from '../intro/helper.js';
 
 
 export function uiPaneHelp(context) {

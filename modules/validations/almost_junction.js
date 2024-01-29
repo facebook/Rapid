@@ -3,12 +3,12 @@ import {
   geomLineIntersection, vecAngle, vecInterp
 } from '@rapid-sdk/math';
 
-import { actionAddMidpoint } from '../actions/add_midpoint';
-import { actionChangeTags } from '../actions/change_tags';
-import { actionMergeNodes } from '../actions/merge_nodes';
-import { geoHasSelfIntersections } from '../geo';
-import { osmRoutableHighwayTagValues } from '../osm/tags';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { actionAddMidpoint } from '../actions/add_midpoint.js';
+import { actionChangeTags } from '../actions/change_tags.js';
+import { actionMergeNodes } from '../actions/merge_nodes.js';
+import { geoHasSelfIntersections } from '../geo/index.js';
+import { osmRoutableHighwayTagValues } from '../osm/tags.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 /**

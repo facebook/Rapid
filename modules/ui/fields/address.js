@@ -4,9 +4,9 @@ import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { utilArrayUniqBy } from '@rapid-sdk/util';
 import { iso1A2Code } from '@rapideditor/country-coder';
 
-import { geoChooseEdge } from '../../geo';
-import { uiCombobox } from '../combobox';
-import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { geoChooseEdge } from '../../geo/index.js';
+import { uiCombobox } from '../combobox.js';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util/index.js';
 
 
 export function uiFieldAddress(context, uifield) {

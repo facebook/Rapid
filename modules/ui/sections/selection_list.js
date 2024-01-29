@@ -1,9 +1,9 @@
 import { select as d3_select } from 'd3-selection';
 
-import { osmEntity } from '../../osm';
-import { uiIcon } from '../icon';
-import { uiSection } from '../section';
-import { utilHighlightEntities } from '../../util';
+import { osmEntity } from '../../osm/entity.js';
+import { uiIcon } from '../icon.js';
+import { uiSection } from '../section.js';
+import { utilHighlightEntities } from '../../util/index.js';
 
 
 export function uiSectionSelectionList(context) {

@@ -1,7 +1,7 @@
 import { vecSubtract } from '@rapid-sdk/math';
 
-import { AbstractMode } from './AbstractMode';
-import { actionMove } from '../actions/move';
+import { AbstractMode } from './AbstractMode.js';
+import { actionMove } from '../actions/move.js';
 
 
 /**

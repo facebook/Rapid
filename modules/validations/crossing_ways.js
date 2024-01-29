@@ -4,13 +4,13 @@ import {
   vecAngle, vecLength
 } from '@rapid-sdk/math';
 
-import { actionAddMidpoint, actionChangeTags, actionMergeNodes, actionSplit, actionSyncCrossingTags } from '../actions';
-import { osmNode } from '../osm/node';
+import { actionAddMidpoint, actionChangeTags, actionMergeNodes, actionSplit, actionSyncCrossingTags } from '../actions/index.js';
+import { osmNode } from '../osm/node.js';
 import {
   osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
   osmRoutableAerowayTags, osmRoutableHighwayTagValues
-} from '../osm/tags';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+} from '../osm/tags.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationCrossingWays(context) {

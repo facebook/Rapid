@@ -1,7 +1,6 @@
-import { uiIcon } from './icon';
-
-import { uiDataHeader } from './data_header';
-import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
+import { uiIcon } from './icon.js';
+import { uiDataHeader } from './data_header.js';
+import { uiSectionRawTagEditor } from './sections/raw_tag_editor.js';
 
 
 export function uiDataEditor(context) {

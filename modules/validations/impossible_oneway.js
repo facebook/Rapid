@@ -1,8 +1,8 @@
 import { Extent } from '@rapid-sdk/math';
 
-import { actionReverse } from '../actions/reverse';
-import { osmFlowingWaterwayTagValues, osmRoutableHighwayTagValues } from '../osm/tags';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { actionReverse } from '../actions/reverse.js';
+import { osmFlowingWaterwayTagValues, osmRoutableHighwayTagValues } from '../osm/tags.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationImpossibleOneway(context) {

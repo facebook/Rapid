@@ -3,9 +3,9 @@ import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 import { marked } from 'marked';
 
-import { uiIcon } from './icon';
-import { uiCombobox} from './combobox';
-import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
+import { uiIcon } from './icon.js';
+import { uiCombobox} from './combobox.js';
+import { utilKeybinding, utilNoAuto, utilRebind } from '../util/index.js';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {

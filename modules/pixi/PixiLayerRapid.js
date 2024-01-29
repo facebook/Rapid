@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 
-import { AbstractLayer } from './AbstractLayer';
-import { PixiFeatureLine } from './PixiFeatureLine';
-import { PixiFeaturePoint } from './PixiFeaturePoint';
-import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import { AbstractLayer } from './AbstractLayer.js';
+import { PixiFeatureLine } from './PixiFeatureLine.js';
+import { PixiFeaturePoint } from './PixiFeaturePoint.js';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon.js';
 
 const MINZOOM = 12;
 

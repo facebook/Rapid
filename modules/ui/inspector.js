@@ -1,9 +1,9 @@
 import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
 
-import { uiEntityEditor } from './entity_editor';
-import { uiPresetList } from './preset_list';
-import { uiViewOnOSM } from './view_on_osm';
+import { uiEntityEditor } from './entity_editor.js';
+import { uiPresetList } from './preset_list.js';
+import { uiViewOnOSM } from './view_on_osm.js';
 
 
 // The Inspector is a UI component for viewing/editing OSM Entities in the sidebar.

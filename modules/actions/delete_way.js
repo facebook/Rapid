@@ -1,5 +1,5 @@
-import { osmNodeGeometriesForTags } from '../osm/tags';
-import { actionDeleteRelation } from './delete_relation';
+import { osmNodeGeometriesForTags } from '../osm/tags.js';
+import { actionDeleteRelation } from './delete_relation.js';
 
 
 // https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/DeleteWayAction.as

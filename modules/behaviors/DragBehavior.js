@@ -1,7 +1,7 @@
 import { vecLength } from '@rapid-sdk/math';
 
-import { AbstractBehavior } from './AbstractBehavior';
-import { osmNode } from '../osm';
+import { AbstractBehavior } from './AbstractBehavior.js';
+import { osmNode } from '../osm/node.js';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;

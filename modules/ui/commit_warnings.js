@@ -1,6 +1,6 @@
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
-import { uiIcon } from './icon';
+import { uiIcon } from './icon.js';
 
 
 export function uiCommitWarnings(context) {

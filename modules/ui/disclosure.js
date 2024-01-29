@@ -1,9 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { uiIcon } from './icon';
-import { utilFunctor } from '../util';
-import { utilRebind } from '../util/rebind';
-import { uiToggle } from './toggle';
+import { uiIcon } from './icon.js';
+import { uiToggle } from './toggle.js';
+import { utilFunctor, utilRebind } from '../util/index.js';
 
 
 // A Disclosure consists of a toggleable Label and Content

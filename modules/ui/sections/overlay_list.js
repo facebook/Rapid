@@ -1,9 +1,9 @@
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { uiTooltip } from '../tooltip';
-import { uiSection } from '../section';
+import { uiTooltip } from '../tooltip.js';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionOverlayList(context) {

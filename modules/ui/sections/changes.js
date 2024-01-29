@@ -1,12 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
-import { JXON } from '../../util/jxon';
-import { actionDiscardTags } from '../../actions/discard_tags';
-import { osmChangeset } from '../../osm';
-import { uiIcon } from '../icon';
-import { uiSection } from '../section';
-import { utilDetect } from '../../util';
+import { JXON } from '../../util/jxon.js';
+import { actionDiscardTags } from '../../actions/discard_tags.js';
+import { osmChangeset } from '../../osm/index.js';
+import { uiIcon } from '../icon.js';
+import { uiSection } from '../section.js';
+import { utilDetect } from '../../util/index.js';
 
 
 export function uiSectionChanges(context) {

@@ -2,8 +2,8 @@ import { polygonHull as d3_polygonHull, polygonCentroid as d3_polygonCentroid } 
 import { vecInterp, vecSubtract } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { AbstractMode } from './AbstractMode';
-import { actionRotate } from '../actions/rotate';
+import { AbstractMode } from './AbstractMode.js';
+import { actionRotate } from '../actions/rotate.js';
 
 
 /**

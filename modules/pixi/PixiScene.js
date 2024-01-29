@@ -1,22 +1,22 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 
-import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles';
-import { PixiLayerEditBlocks } from './PixiLayerEditBlocks';
-import { PixiLayerImproveOsm } from './PixiLayerImproveOsm';
-import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos';
-import { PixiLayerKeepRight } from './PixiLayerKeepRight';
-import { PixiLayerLabels } from './PixiLayerLabels';
-import { PixiLayerMapillaryFeatures } from './PixiLayerMapillaryFeatures';
-import { PixiLayerMapillaryPhotos } from './PixiLayerMapillaryPhotos';
-import { PixiLayerMapillarySigns } from './PixiLayerMapillarySigns';
-import { PixiLayerOsm } from './PixiLayerOsm';
-import { PixiLayerOsmNotes } from './PixiLayerOsmNotes';
-import { PixiLayerOsmose } from './PixiLayerOsmose';
-import { PixiLayerRapid } from './PixiLayerRapid';
-import { PixiLayerMapUI } from './PixiLayerMapUI';
-import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos';
-import { PixiLayerCustomData } from './PixiLayerCustomData';
+import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles.js';
+import { PixiLayerCustomData } from './PixiLayerCustomData.js';
+import { PixiLayerEditBlocks } from './PixiLayerEditBlocks.js';
+import { PixiLayerImproveOsm } from './PixiLayerImproveOsm.js';
+import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos.js';
+import { PixiLayerKeepRight } from './PixiLayerKeepRight.js';
+import { PixiLayerLabels } from './PixiLayerLabels.js';
+import { PixiLayerMapillaryFeatures } from './PixiLayerMapillaryFeatures.js';
+import { PixiLayerMapillaryPhotos } from './PixiLayerMapillaryPhotos.js';
+import { PixiLayerMapillarySigns } from './PixiLayerMapillarySigns.js';
+import { PixiLayerMapUI } from './PixiLayerMapUI.js';
+import { PixiLayerOsm } from './PixiLayerOsm.js';
+import { PixiLayerOsmNotes } from './PixiLayerOsmNotes.js';
+import { PixiLayerOsmose } from './PixiLayerOsmose.js';
+import { PixiLayerRapid } from './PixiLayerRapid.js';
+import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos.js';
 
 
 // Convert a single value, an Array of values, or a Set of values.

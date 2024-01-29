@@ -1,8 +1,8 @@
 import { Extent } from '@rapid-sdk/math';
 
-import { operationDelete } from '../operations/delete';
-import { osmRoutableHighwayTagValues } from '../osm/tags';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { operationDelete } from '../operations/delete.js';
+import { osmRoutableHighwayTagValues } from '../osm/tags.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationDisconnectedWay(context) {

@@ -3,12 +3,12 @@
 //import { Extent, Projection, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
 //import { utilEntitySelector } from '@rapid-sdk/util';
 //
-//import { actionRestrictTurn } from '../../actions/restrict_turn';
-//import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
-//import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
-//import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
-//import { utilFunctor, utilRebind } from '../../util';
-//import { utilGetDimensions, utilSetDimensions } from '../../util/dimensions';
+//import { actionRestrictTurn } from '../../actions/restrict_turn.js';
+//import { actionUnrestrictTurn } from '../../actions/unrestrict_turn.js';
+//import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm/index.js';
+//import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg/index.js';
+//import { utilFunctor, utilRebind } from '../../util/index.js';
+//import { utilGetDimensions, utilSetDimensions } from '../../util/dimensions.js';
 //
 //
 //export function uiFieldRestrictions(context, uifield) {

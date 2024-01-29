@@ -1,5 +1,5 @@
-import { uiIcon } from '../icon';
-import { uiSection } from '../section';
+import { uiIcon } from '../icon.js';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionBackgroundDisplayOptions(context) {

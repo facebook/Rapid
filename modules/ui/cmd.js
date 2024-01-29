@@ -1,4 +1,4 @@
-import { utilDetect } from '../util/detect';
+import { utilDetect } from '../util/detect.js';
 
 
 // Throughout Rapid we specify key combos in MacOS style.

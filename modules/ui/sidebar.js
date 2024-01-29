@@ -2,18 +2,18 @@ import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 import { utilArrayIdentical } from '@rapid-sdk/util';
-import _throttle from 'lodash-es/throttle';
+import _throttle from 'lodash-es/throttle.js';
 
-import { utilFastMouse } from '../util';
-import { osmEntity, osmNote, QAItem } from '../osm';
-import { uiDataEditor } from './data_editor';
-import { uiFeatureList } from './feature_list';
-import { uiInspector } from './inspector';
-import { uiImproveOsmEditor } from './improveOSM_editor';
-import { uiKeepRightEditor } from './keepRight_editor';
-import { uiOsmoseEditor } from './osmose_editor';
-import { uiNoteEditor } from './note_editor';
-import { uiRapidFeatureInspector } from './rapid_feature_inspector';
+import { osmEntity, osmNote, QAItem } from '../osm/index.js';
+import { uiDataEditor } from './data_editor.js';
+import { uiFeatureList } from './feature_list.js';
+import { uiInspector } from './inspector.js';
+import { uiImproveOsmEditor } from './improveOSM_editor.js';
+import { uiKeepRightEditor } from './keepRight_editor.js';
+import { uiOsmoseEditor } from './osmose_editor.js';
+import { uiNoteEditor } from './note_editor.js';
+import { uiRapidFeatureInspector } from './rapid_feature_inspector.js';
+import { utilFastMouse } from '../util/index.js';
 
 
 export function uiSidebar(context) {

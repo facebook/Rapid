@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiModal } from './modal';
+import { uiModal } from './modal.js';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {

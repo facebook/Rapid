@@ -1,7 +1,7 @@
 import { geoZoomToScale, vecLength } from '@rapid-sdk/math';
 
-import { AbstractBehavior } from './AbstractBehavior';
-import { osmNode } from '../osm';
+import { AbstractBehavior } from './AbstractBehavior.js';
+import { osmNode } from '../osm/node.js';
 
 // constants
 const TILESIZE = 256;
