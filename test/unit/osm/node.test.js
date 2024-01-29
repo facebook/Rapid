@@ -100,7 +100,7 @@ describe('osmNode', () => {
         });
 
 
-        it('returns false for a node with only area parent ways', function() {
+        it('returns false for a node with only area parent ways', () => {
             const node = Rapid.osmNode(),
                 w1 = Rapid.osmWay({nodes: [node.id], tags: {area: 'yes'}}),
                 w2 = Rapid.osmWay({nodes: [node.id], tags: {area: 'yes'}}),
