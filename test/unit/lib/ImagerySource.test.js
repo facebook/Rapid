@@ -6,7 +6,7 @@ import * as Rapid from '../../../modules/headless.js';
 if (!global.window) {  // mock window for Node
   global.window = {
     devicePixelRatio: 1
-  }
+  };
 }
 
 class MockLocalizationSystem {
