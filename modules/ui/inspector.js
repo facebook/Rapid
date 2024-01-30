@@ -28,12 +28,45 @@ export function uiInspector(context) {
   let wrap = d3_select(null);
   let presetPane = d3_select(null);
   let editorPane = d3_select(null);
+  let _selection;
   let _state = 'select';
   let _entityIDs;
   let _newFeature = false;
 
+  // Add or replace merge handler
+  editor.off('merge', _onMerge);
+  editor.on('merge', _onMerge);
+
+
+  // If the inspector is showing `_entityIDs` already,
+  // and we get new versions of them loaded from the server
+  // refresh this component and its children. Rapid#1311
+  function _onMerge(newIDs) {
+    if (!(newIDs instanceof Set)) return;
+    if (!(Array.isArray(_entityIDs))) return;
+
+    let needsRedraw = false;
+    for (const entityID of _entityIDs) {
+      if (newIDs.has(entityID)) {
+        needsRedraw = true;
+        break;
+      }
+    }
+
+    if (needsRedraw) {
+      render();
+    }
+  }
+
 
   function inspector(selection) {
+    _selection = selection;
+    render();
+  }
+
+
+  function render() {
+    if (!_selection) return;  // called too soon?
     const graph = editor.staging.graph;
 
     presetList
@@ -47,7 +80,7 @@ export function uiInspector(context) {
       .entityIDs(_entityIDs)
       .on('choose', selected => inspector.showPresetList(selected, true));  // true = animate in
 
-    wrap = selection.selectAll('.panewrap')
+    wrap = _selection.selectAll('.panewrap')
       .data([0]);
 
     let enter = wrap.enter()
@@ -72,7 +105,7 @@ export function uiInspector(context) {
       inspector.showEntityEditor();
     }
 
-    let footer = selection.selectAll('.footer')
+    let footer = _selection.selectAll('.footer')
       .data([0]);
 
     footer = footer.enter()
