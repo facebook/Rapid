@@ -311,6 +311,7 @@ export function uiSectionRawMembershipEditor(context) {
         callback(result);
     }
 
+
     function renderDisclosureContent(selection) {
         var memberships = getMemberships();
         var list = selection.selectAll('.member-list')
@@ -337,7 +338,8 @@ export function uiSectionRawMembershipEditor(context) {
             .attr('class', 'member-row member-row-normal form-field');
 
         // highlight the relation in the map while hovering on the list item
-        itemsEnter.on('mouseover', function(d3_event, d) {
+        itemsEnter
+            .on('mouseover', function(d3_event, d) {
                 utilHighlightEntities([d.relation.id], true, context);
             })
             .on('mouseout', function(d3_event, d) {

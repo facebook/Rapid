@@ -35,15 +35,31 @@ export function flatCoordsToPoints(coords) {
 
 
 // Adds or removes highlight styling for the specified entities
-export function utilHighlightEntities(ids, highlighted, context) {
-  const scene = context.scene();
+export function utilHighlightEntities(entityIDs, highlighted, context) {
+  const editor = context.systems.editor;
+  const map = context.systems.map;
+  const scene = map.scene;
+  if (!scene) return;  // called too soon?
 
   if (highlighted) {
-    ids.forEach(id => scene.classData('osm', id, 'highlighted'));
+    for (const entityID of entityIDs) {
+      scene.classData('osm', entityID, 'highlighted');
+
+      // When highlighting a relation, try to highlight its members.
+      if (entityID[0] === 'r') {
+        const relation = editor.staging.graph.hasEntity(entityID);
+        if (!relation) continue;
+        for (const member of relation.members) {
+          scene.classData('osm', member.id, 'highlighted');
+        }
+      }
+    }
+
   } else {
     scene.clearClass('highlighted');
   }
-  context.systems.map.immediateRedraw();
+
+  map.immediateRedraw();
 }
 
 
