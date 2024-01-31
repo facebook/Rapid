@@ -581,25 +581,28 @@ this.didRender = true;
   }
 
 
-
-  /* showEditMenu
-   * @param  anchorPoint  Array [x,y] screen coordinate where the menu should be anchored
-   * @param  triggerType  String  'touch', 'pen', or 'rightclick' that triggered the menu
-   * @param  operations   seems not passed in - code below figures it out.
+  /*
+   * showEditMenu
+   * This shows the contextual edit menu, called by the select behavior when the
+   *  user right clicks, or long presses, or presses the menu key.
+   * @param  {Array}   anchorPoint  - `[x,y]` screen coordinate where the menu should be anchored
+   * @param  {string}  triggerType  - (not used?)  'touch', 'pen', or 'rightclick' that triggered the menu
    */
-  showEditMenu(anchorPoint, triggerType, operations) {
+  showEditMenu(anchorPoint, triggerType) {
     this.editMenu.close();   // remove any displayed menu
 
     const context = this.context;
-    const mode = context.mode;
-    //TODO: Remove this after the mode rewrite has completed
-    if (!operations && mode.operations) operations = typeof mode.operations === 'function' ? mode.operations() : mode.operations;
-    if (!operations || !operations.length) return;
+    const map = context.systems.map;
+
+    // The mode decides which operations are available
+    const operations = context.mode?.operations ?? [];
+    if (!operations.length) return;
     if (!context.editable()) return;
 
-    let surfaceNode = context.surface().node();
+    // Focus the surface, otherwise clicking off the menu may not trigger browse mode
+    // (bhousel - I don't know whether this is needed anymore in 2024)
+    const surfaceNode = context.surface().node();
     if (surfaceNode.focus) {   // FF doesn't support it
-      // focus the surface or else clicking off the menu may not trigger browse mode
       surfaceNode.focus();
     }
 
@@ -615,18 +618,49 @@ this.didRender = true;
       .operations(operations);
 
     // render the menu
-    context.systems.map.overlay.call(this.editMenu);
+    map.overlay.call(this.editMenu);
   }
 
 
-  // remove any existing menu no matter how it was added
+  /*
+   * redrawEditMenu
+   * This just redraws the edit menu in place if it is already showing, used in
+   * situations where its available operations may have changed, such as Rapid#1311
+   */
+  redrawEditMenu() {
+    const context = this.context;
+    const map = context.systems.map;
+
+    // If the menu isn't showing, there's nothing to do
+    if (map.overlay.selectAll('.edit-menu').empty()) return;
+
+    // The mode decides which operations are available
+    const operations = context.mode?.operations ?? [];
+
+    if (operations.length && context.editable()) {
+      this.editMenu.operations(operations);
+      map.overlay.call(this.editMenu);   // redraw it
+    } else {
+      this.editMenu.close();
+    }
+  }
+
+
+  /*
+   * closeEditMenu
+   * Remove any existing menu
+   */
   closeEditMenu() {
     this.editMenu.close();
   }
 
 
+  /*
+   * _clickBugLink
+   * Opens GitHub to report a bug
+   */
   _clickBugLink() {
-    let link = new URL('https://github.com/facebook/Rapid/issues/new');
+    const link = new URL('https://github.com/facebook/Rapid/issues/new');
 
     // From the template we set up at https://github.com/facebook/Rapid/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
     link.searchParams.append('template', 'bug_report.yml');
