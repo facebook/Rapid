@@ -105,10 +105,6 @@ export function uiPopover(context, klass) {
             .on('pointerup.popover', null)
             .on('pointerdown.popover', null)
             .on('click.popover', null)
-            .attr('title', function() {
-                return this.getAttribute('data-original-title') || this.getAttribute('title');
-            })
-            .attr('data-original-title', null)
             .selectAll(selector)
             .remove();
     };
@@ -245,7 +241,6 @@ export function uiPopover(context, klass) {
 
 
     function updatePosition() {
-
         var anchor = d3_select(this);
         var popoverSelection = anchor.selectAll('.popover-' + _id);
 

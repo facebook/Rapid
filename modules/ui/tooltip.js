@@ -9,20 +9,10 @@ export function uiTooltip(context) {
   const l10n = context.systems.l10n;
   const tooltip = uiPopover(context, 'tooltip').displayType('hover');
 
-  let _title = function() {
-    var title = this.getAttribute('data-original-title');
-    if (title) {
-      return title;
-    } else {
-      title = this.getAttribute('title');
-      this.removeAttribute('title');
-      this.setAttribute('data-original-title', title);
-    }
-    return title;
-  };
-
+  let _title = utilFunctor(null);
   let _heading = utilFunctor(null);
   let _shortcut = utilFunctor(null);
+
 
   tooltip.title = function(val) {
     if (!arguments.length) return _title;

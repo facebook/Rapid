@@ -486,6 +486,7 @@ export class SelectBehavior extends AbstractBehavior {
 
     const context = this.context;
     const eventManager = context.systems.map.renderer.events;
+    const ui = context.systems.ui;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
@@ -497,13 +498,13 @@ export class SelectBehavior extends AbstractBehavior {
     }
 
     if (this._showsMenu) {   // menu is on, toggle it off
-      context.systems.ui.closeEditMenu();
+      ui.closeEditMenu();
       this._showsMenu = false;
 
     } else {                 // menu is off, toggle it on
       // Only attempt to display the context menu if we're focused on a non-Rapid OSM Entity.
       this._showsMenu = true;
-      context.systems.ui.showEditMenu(eventData.coord);
+      ui.showEditMenu(eventData.coord);
     }
   }
 

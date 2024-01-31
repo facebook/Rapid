@@ -63,7 +63,6 @@ export function uiToolDrawModes(context) {
       .on('click.mode-buttons', (d3_event, d) => {
         if (!context.editable()) return;
 
-        if (d.id === 'add-area') return; //Short-circuit area drawing temporarily.
         // When drawing, ignore accidental clicks on mode buttons - iD#4042
         const currMode = context.mode?.id;
         if (/^draw/.test(currMode)) return;
