@@ -93,10 +93,10 @@ describe('uiFieldWikipedia', () => {
       happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
 
       expect(spy.callCount).to.equal(4);
-      expect(spy.getCall(0)).to.have.been.calledWith({ wikipedia: undefined});  // lang on change
-      expect(spy.getCall(1)).to.have.been.calledWith({ wikipedia: undefined});  // lang on blur
-      expect(spy.getCall(2)).to.have.been.calledWith({ wikipedia: 'de:Title' });   // title on change
-      expect(spy.getCall(3)).to.have.been.calledWith({ wikipedia: 'de:Title' });   // title on blur
+      expect(spy.getCall(0).args[0]).to.deep.equal({ wikipedia: undefined});  // lang on change
+      expect(spy.getCall(1).args[0]).to.deep.equal({ wikipedia: undefined});  // lang on blur
+      expect(spy.getCall(2).args[0]).to.deep.equal({ wikipedia: 'de:Title' });   // title on change
+      expect(spy.getCall(3).args[0]).to.deep.equal({ wikipedia: 'de:Title' });   // title on blur
       done();
     }, 20);
   });

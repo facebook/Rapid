@@ -130,7 +130,6 @@
     "shelljs": "^0.8.5",
     "shx": "^0.3.4",
     "sinon": "^17.0.1",
-    "sinon-chai": "^3.7.0",
     "static-server": "^3.0.0",
     "svg-sprite": "2.0.2"
   },

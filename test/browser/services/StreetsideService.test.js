@@ -85,7 +85,7 @@ describe('StreetsideService', () => {
       _streetside.loadTiles();
 
       window.setTimeout(() => {
-        expect(spy).to.have.been.called;   // called many times because of margin tiles
+        expect(spy.called).to.be.ok;   // called many times because of margin tiles
         done();
       }, 20);
     });
@@ -117,7 +117,7 @@ describe('StreetsideService', () => {
       _streetside.loadTiles();
 
       window.setTimeout(() => {
-        expect(spy).to.have.been.not.called;
+        expect(spy.notCalled).to.be.ok;
         done();
       }, 20);
     });

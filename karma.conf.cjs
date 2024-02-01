@@ -19,7 +19,6 @@ module.exports = function (config) {
     files: [
       'node_modules/chai/chai.js',
       'node_modules/sinon/pkg/sinon.js',
-      'node_modules/sinon-chai/lib/sinon-chai.js',
       'node_modules/happen/happen.js',
       'node_modules/fetch-mock/es5/client-bundle.js',
       { pattern: 'dist/rapid.js', included: true },

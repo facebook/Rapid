@@ -271,7 +271,7 @@ describe('uiCombobox', () => {
       focusTypeahead(input);
       simulateKeypress('b');
       simulateKeypress('⎋');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.calledOnce).to.be.ok;
     });
 
     it('hides on ↩', () => {

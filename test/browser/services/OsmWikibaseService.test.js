@@ -280,10 +280,7 @@ describe('OsmWikibaseService', () => {
             format: 'json',
           }
         );
-        expect(callback).to.have.been.calledWith(null, {
-          key: keyData(),
-          tag: tagData()
-        });
+        expect(callback.calledOnceWithExactly(null, { key: keyData(), tag: tagData() })).to.be.ok;
         done();
       }, 20);
     });

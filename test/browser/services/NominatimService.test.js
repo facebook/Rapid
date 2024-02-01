@@ -53,7 +53,7 @@ describe('NominatimService', () => {
         expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           { zoom: '13', format: 'json', addressdetails: '1', lat: '48', lon: '16' }
         );
-        expect(callback).to.have.been.calledWithExactly(null, 'at');
+        expect(callback.calledOnceWithExactly(null, 'at')).to.be.ok;
         done();
       }, 20);
     });
@@ -69,7 +69,7 @@ describe('NominatimService', () => {
         expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           { zoom: '13', format: 'json', addressdetails: '1', lat: '48', lon: '16' }
         );
-        expect(callback).to.have.been.calledWithExactly(null, { address: { country_code:'at' }});
+        expect(callback.calledOnceWithExactly(null, { address: { country_code:'at' }})).to.be.ok;
 
         fetchMock.resetHistory();
         callback = sinon.spy();
@@ -79,7 +79,7 @@ describe('NominatimService', () => {
           expect(parseQueryString(fetchMock.lastUrl())).to.eql(
             { zoom: '13', format: 'json', addressdetails: '1', lat: '49', lon: '17' }
           );
-          expect(callback).to.have.been.calledWithExactly(null, { address: { country_code:'cz' }});
+          expect(callback.calledOnceWithExactly(null, { address: { country_code:'cz' }})).to.be.ok;
           done();
         }, 50);
       }, 50);
@@ -93,7 +93,7 @@ describe('NominatimService', () => {
         expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           { zoom: '13', format: 'json', addressdetails: '1', lat: '48', lon: '16' }
         );
-        expect(callback).to.have.been.calledWithExactly(null, { address: { country_code:'at' }});
+        expect(callback.calledOnceWithExactly(null, { address: { country_code:'at' }})).to.be.ok;
 
         fetchMock.resetHistory();
 
@@ -101,7 +101,7 @@ describe('NominatimService', () => {
         nominatim.reverse([16.000001, 48.000001], callback);
 
         window.setTimeout(() => {
-          expect(callback).to.have.been.calledWithExactly(null, { address: { country_code:'at' }});
+          expect(callback.calledOnceWithExactly(null, { address: { country_code:'at' }})).to.be.ok;
           done();
         }, 50);
       }, 50);
@@ -116,7 +116,7 @@ describe('NominatimService', () => {
         expect(parseQueryString(fetchMock.lastUrl())).to.eql(
           { zoom: '13', format: 'json', addressdetails: '1', lat: '1000', lon: '1000' }
         );
-        expect(callback).to.have.been.calledWithExactly('Unable to geocode');
+        expect(callback.calledOnceWithExactly('Unable to geocode')).to.be.ok;
         done();
       }, 50);
     });
@@ -136,7 +136,7 @@ describe('NominatimService', () => {
 
       window.setTimeout(() => {
         expect(parseQueryString(fetchMock.lastUrl())).to.eql({q: 'philadelphia', format: 'json', limit: '10' });
-        expect(callback).to.have.been.calledOnce;
+        expect(callback.calledOnce).to.be.ok;
         done();
       }, 50);
     });

@@ -162,7 +162,7 @@ describe('EditSystem', () => {
       const onMerge = sinon.spy();
       _editor.on('merge', onMerge);
       _editor.merge([n]);
-      expect(onMerge).to.have.been.calledOnceWith(new Set([n.id]));
+      expect(onMerge.calledOnceWith(new Set([n.id]))).to.be.ok;
     });
   });
 
@@ -200,8 +200,8 @@ describe('EditSystem', () => {
 
       const action = actionNoop();
       const difference = _editor.perform(action);
-      expect(onStagingChange).to.have.been.calledOnceWith(difference);
-      expect(onStableChange).to.have.been.not.called;
+      expect(onStagingChange.calledOnceWithExactly(difference)).to.be.ok;
+      expect(onStableChange.notCalled).to.be.ok;
     });
 
     it('performs multiple actions, emits a single stagingchange event', () => {
@@ -213,8 +213,8 @@ describe('EditSystem', () => {
       const action1 = actionAddNode('n-1');
       const action2 = actionAddNode('n-2');
       const difference = _editor.perform(action1, action2);
-      expect(onStagingChange).to.have.been.calledOnceWith(difference);
-      expect(onStableChange).to.have.been.not.called;
+      expect(onStagingChange.calledOnceWithExactly(difference)).to.be.ok;
+      expect(onStableChange.notCalled).to.be.ok;
     });
   });
 
@@ -259,7 +259,7 @@ describe('EditSystem', () => {
       return prom.then(
         () => {
           expect(onStagingChange.callCount).to.be.above(2);
-          expect(onStableChange).to.have.been.not.called;
+          expect(onStableChange.notCalled).to.be.ok;
         },
         () => {
           expect.fail('Promise was rejected but should have been fulfilled');

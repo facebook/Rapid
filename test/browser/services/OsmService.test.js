@@ -298,7 +298,7 @@ describe('OsmService', () => {
         apiUrl: 'https://api.example.com'
       };
       return _osm.switchAsync(newOpts)
-        .then(() => expect(spy).to.have.been.calledOnce);
+        .then(() => expect(spy.calledOnce).to.be.ok);
     });
   });
 
@@ -412,7 +412,7 @@ describe('OsmService', () => {
       _osm.on('authchange', spy);
       _osm.loadFromAPI(path, err => {
         expect(err).to.have.property('status', 509);
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.calledOnce).to.be.ok;
         done();
       });
     });
@@ -429,7 +429,7 @@ describe('OsmService', () => {
       _osm.on('authchange', spy);
       _osm.loadFromAPI(path, err => {
         expect(err).to.have.property('status', 429);
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.calledOnce).to.be.ok;
         done();
       });
     });
@@ -489,7 +489,7 @@ describe('OsmService', () => {
 
       window.setTimeout(() => {
         // was: calledOnce, now called multiple times as we fetch margin tiles
-        expect(spy).to.have.been.called;
+        expect(spy.called).to.be.ok;
         done();
       }, 50);
     });
@@ -766,7 +766,7 @@ describe('OsmService', () => {
 
       window.setTimeout(() => {
         // was: calledOnce, now called multiple times as we fetch margin tiles
-        expect(spy).to.have.been.called;
+        expect(spy.called).to.be.ok;
         done();
       }, 50);
     });

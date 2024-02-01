@@ -176,7 +176,7 @@ describe('MapillaryService', () => {
       _mapillary.loadTiles('images');
 
       window.setTimeout(() => {
-        expect(spy).to.have.been.not.called;
+        expect(spy.notCalled).to.be.ok;
         expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
         done();
       }, 20);
