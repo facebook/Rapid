@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import { Extent } from '@rapid-sdk/math';
 
 
@@ -22,15 +21,6 @@ export function utilTotalExtent(vals, graph) {
   }
 
   return extent;
-}
-
-
-export function flatCoordsToPoints(coords) {
-  let points = [];
-  for (let i = 0; i < coords.length; i += 2){
-    points.push(new PIXI.Point(coords[i], coords[i + 1]));
-  }
-  return points;
 }
 
 

@@ -332,6 +332,15 @@ if (isLimited && (span >= spacing * 100)) {
 }
 
 
+export function flatCoordsToPoints(coords) {
+  const points = new Array(coords.length / 2);
+  for (let i = 0; i < coords.length; i += 2) {
+    points[i / 2] = new PIXI.Point(coords[i], coords[i + 1]);
+  }
+  return points;
+}
+
+
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
   const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
   sprite.eventMode = 'none';

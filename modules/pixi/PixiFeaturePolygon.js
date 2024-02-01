@@ -3,9 +3,8 @@ import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
 
-import { flatCoordsToPoints } from '../util/util.js';
 import { AbstractFeature } from './AbstractFeature.js';
-import { lineToPoly } from './helpers.js';
+import { flatCoordsToPoints, lineToPoly } from './helpers.js';
 
 const PARTIALFILLWIDTH = 32;
 
