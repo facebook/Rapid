@@ -23,8 +23,8 @@ export class DataLoaderSystem extends AbstractSystem {
 
     const fileMap  = new Map();
     fileMap.set('address_formats', 'data/address_formats.min.json');
-    fileMap.set('deprecated', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.5/dist/deprecated.min.json');
-    fileMap.set('discarded', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.5/dist/discarded.min.json');
+    fileMap.set('deprecated', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/deprecated.min.json');
+    fileMap.set('discarded', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/discarded.min.json');
     fileMap.set('imagery', 'data/imagery.min.json');
     fileMap.set('intro_graph', 'data/intro_graph.min.json');
     fileMap.set('intro_rapid_graph', 'data/intro_rapid_graph.min.json');
@@ -35,10 +35,10 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('oci_features', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.6/dist/featureCollection.min.json');
     fileMap.set('oci_resources', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.6/dist/resources.min.json');
     fileMap.set('phone_formats', 'data/phone_formats.min.json');
-    fileMap.set('preset_categories', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.5/dist/preset_categories.min.json');
-    fileMap.set('preset_defaults', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.5/dist/preset_defaults.min.json');
-    fileMap.set('preset_fields', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.5/dist/fields.min.json');
-    fileMap.set('preset_presets', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.5/dist/presets.min.json');
+    fileMap.set('preset_categories', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_categories.min.json');
+    fileMap.set('preset_defaults', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_defaults.min.json');
+    fileMap.set('preset_fields', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/fields.min.json');
+    fileMap.set('preset_presets', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/presets.min.json');
     fileMap.set('preset_overrides', 'data/preset_overrides.min.json');
     fileMap.set('qa_data', 'data/qa_data.min.json');
     fileMap.set('shortcuts', 'data/shortcuts.min.json');
