@@ -20,10 +20,12 @@
   <div id='mocha'></div>
 
   <script src='../node_modules/mocha/mocha.js'></script>
-  <script src='../node_modules/chai/chai.js'></script>
   <script src='../node_modules/sinon/pkg/sinon.js'></script>
   <script src='../node_modules/happen/happen.js'></script>
   <script src='../node_modules/fetch-mock/es5/client-bundle.js'></script>
+  <script src='../dist/rapid.js'></script>
+
+  <script type='module' src='./spec_helpers.js'></script>
 
   <script>
     var scripts = [
@@ -83,28 +85,20 @@
     window.executionErrors = [];
 
     window.onerror = function (message, source, line, col) {
-      window.executionErrors.push("message" + message + " source" + source + " line" + line + " col" + col);
+      window.executionErrors.push(message + " source: " + source + " line: " + line + " col: " + col);
     };
 
-    // Prepend scripts to run at the beginning.
-
-    // Second Script:  Always run spec_helpers
-    scripts.unshift('browser/spec_helpers.js');
-
-    // First script: app bundle
-    scripts.unshift('../dist/rapid.js');
-
-    // Create and execute all scripts in specified order..
-    (function nextScript() {
+    // Create and execute all test scripts in specified order..
+    function nextScript() {
       if (!scripts.length) {
         window.mocha.run();
 
         if (window.executionErrors.length > 0){
-          console.log('\n\n[Execution errors exist] Please resolve the following: \n');
+          console.log('\n[Execution errors exist] Please resolve the following:');
           for (var i = 0; i < window.executionErrors.length; i++){
             console.log('[Execution error] ' + window.executionErrors[i]);
           }
-          console.log('\n Disposing mocha. Expect mocha dispose log like: \'Uncaught error outside test suite\'... \n');
+          console.log('Disposing mocha.');
           window.mocha.dispose();
         }
         return;
@@ -116,7 +110,10 @@
       newScript.src = src;
       newScript.onload = nextScript;
       document.getElementsByTagName('body')[0].appendChild(newScript);
-    })();
+    }
+
+    // Defer start, this allows `spec_helpers.js` to be run as a module
+    document.addEventListener('DOMContentLoaded', () => nextScript());
   </script>
 
 </body>

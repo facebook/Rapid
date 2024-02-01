@@ -98,7 +98,7 @@
     "benchmark": "^2.1.4",
     "btoa": "^1.2.1",
     "c8": "^9.1.0",
-    "chai": "^4.4.1",
+    "chai": "^5.0.3",
     "chalk": "^5.3.0",
     "cldr-core": "44.1.0",
     "cldr-localenames-full": "44.1.0",

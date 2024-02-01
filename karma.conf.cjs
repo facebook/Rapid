@@ -17,15 +17,15 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/chai/chai.js',
       'node_modules/sinon/pkg/sinon.js',
       'node_modules/happen/happen.js',
       'node_modules/fetch-mock/es5/client-bundle.js',
       { pattern: 'dist/rapid.js', included: true },
       { pattern: 'dist/rapid.css', included: true },
       { pattern: 'dist/**/*', included: false },
-      { pattern: 'test/browser/renderer/*.json', included: true, served: true},
-      'test/browser/spec_helpers.js',
+      { pattern: 'node_modules/chai/*', included: false },
+      { pattern: 'test/browser/renderer/*.json', included: false },
+      { type: 'module', pattern: 'test/spec_helpers.js' },
       'test/browser/**/*.js'
     ],
 
@@ -80,7 +80,7 @@ module.exports = function (config) {
 
     // Concurrency level
     // how many browser instances should be started simultaneously
-    concurrency: Infinity,
+    concurrency: 2,
 
     remapIstanbulReporter: {
       remapOptions: {

@@ -463,8 +463,8 @@ describe('OsmService', () => {
 
 
   describe('#loadTiles', () => {
-    const projection = new sdk.Projection()
-      .scale(sdk.geoZoomToScale(20))
+    const projection = new Rapid.sdk.Projection()
+      .scale(Rapid.sdk.geoZoomToScale(20))
       .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
       .dimensions([[0,0], [64,64]]);
 
@@ -725,8 +725,8 @@ describe('OsmService', () => {
 
 
   describe('#loadNotes', () => {
-    const projection = new sdk.Projection()
-      .scale(sdk.geoZoomToScale(14))
+    const projection = new Rapid.sdk.Projection()
+      .scale(Rapid.sdk.geoZoomToScale(14))
       .translate([-116508, 0])  // 10,0
       .dimensions([[0,0], [64,64]]);
 
@@ -774,8 +774,8 @@ describe('OsmService', () => {
 
 
   describe('#notes', () => {
-    const projection = new sdk.Projection()
-      .scale(sdk.geoZoomToScale(14))
+    const projection = new Rapid.sdk.Projection()
+      .scale(Rapid.sdk.geoZoomToScale(14))
       .translate([-116508, 0])  // 10,0
       .dimensions([[0,0], [64,64]]);
 

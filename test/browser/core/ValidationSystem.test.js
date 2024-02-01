@@ -31,7 +31,7 @@ describe('ValidationSystem', () => {
   class MockMapSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
-    extent()      { return new sdk.Extent(); }
+    extent()      { return new Rapid.sdk.Extent(); }
   }
 
   class MockPhotoSystem {
@@ -50,7 +50,7 @@ describe('ValidationSystem', () => {
 
   class MockContext {
     constructor()   {
-      this.projection = new sdk.Projection();
+      this.projection = new Rapid.sdk.Projection();
       this.systems = {
         dataloader: new Rapid.DataLoaderSystem(this),
         editor:     new Rapid.EditSystem(this),
