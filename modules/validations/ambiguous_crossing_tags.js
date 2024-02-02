@@ -160,9 +160,15 @@ export function validationAmbiguousCrossingTags(context) {
         t.cycleway === 'crossing' || t.bridleway === 'crossing'  || t.pedestrian === 'crossing';
 
       let type, tags;
-      if (markings !== '' && markings !== 'yes' && markings !== 'no') {  // only interesting values like 'lines', 'surface', etc
+      if (markings !== '' && markings !== 'yes' && markings !== 'no') {  // interesting values like 'lines', 'surface', etc
         type = markings;
         tags = { 'crossing:markings': markings };
+      } else if (markings === 'yes') {
+        type = 'marked';
+        tags = { 'crossing:markings': 'yes' };
+      } else if (markings === 'no') {
+        type = 'unmarked';
+        tags = { 'crossing:markings': 'no' };
       } else if (crossing !== '') {
         type = crossing;
         tags = { crossing: crossing };
