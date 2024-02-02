@@ -113,7 +113,6 @@ Optional properties:
 * `overlay` - If `true`, this is an overlay layer (a transparent layer rendered above base imagery layer). Defaults to `false`
 * `zoomExtent` - Allowable min and max zoom levels, defaults to `[0, 22]`
 * `polygon` - Array of coordinate rings within which imagery is valid.  If omitted, imagery is assumed to be valid worldwide
-* `overzoom` - Can this imagery be scaled up when zooming in beyond the max zoom?  Defaults to `true`
 * `terms_url` - Url to link to when displaying the imagery terms
 * `terms_html` - Html content to display in the imagery terms
 * `terms_text` - Text content to display in the imagery terms

@@ -28,7 +28,6 @@ export class ImagerySource {
     this.endDate = src.endDate;
     this.icon = src.icon;
     this.overlay = src.overlay;
-    this.overzoom = src.overzoom !== false;
     this.polygon = src.polygon;
     this.projection = src.projection;
     this.startDate = src.startDate;
@@ -76,7 +75,9 @@ export class ImagerySource {
 
 
   validZoom(z) {
-    return this.zoomExtent[0] <= z && (this.overzoom || this.zoomExtent[1] > z);
+    if (Number.isNaN(z)) return false;
+    const [min, max] = this.zoomExtent;
+    return (z >= min) && (z <= max);
   }
 
   isLocatorOverlay() {
@@ -89,7 +90,7 @@ export class ImagerySource {
 
 
   getMetadata(center, tileCoord, callback) {
-    let vintage = {
+    const vintage = {
       start: this._localeDateString(this.startDate),
       end: this._localeDateString(this.endDate)
     };

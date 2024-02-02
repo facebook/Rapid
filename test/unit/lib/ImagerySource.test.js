@@ -32,82 +32,87 @@ function closeTo(a, b, epsilon = 1e-3) {
 describe('ImagerySource', () => {
   const context = new MockContext();
 
-  it('does not error with blank template', () => {
-    const source = new Rapid.ImagerySource(context, { template: '', id:'anyid' });
-    assert.equal(source.url([0,1,2]), '');
-  });
-
-  it('supports tms replacement tokens', () => {
-    const source = new Rapid.ImagerySource(context, {
-      id: 'anyid',
-      type: 'tms',
-      template: '{z}/{x}/{y}'
-    });
-    assert.equal(source.url([0,1,2]), '2/0/1');
-  });
-
-  it('supports wms replacement tokens', () => {
-    const source = new Rapid.ImagerySource(context, {
-      id:'anyid',
-      type: 'wms',
-      projection: 'EPSG:3857',
-      template: 'SRS={proj}&imageSR={wkid}&bboxSR={wkid}&FORMAT=image/jpeg&WIDTH={width}&HEIGHT={height}&BBOX={bbox}'
+  describe('url', () => {
+    it('does not error with blank template', () => {
+      const source = new Rapid.ImagerySource(context, { template: '', id:'anyid' });
+      assert.equal(source.url([0,1,2]), '');
     });
 
-    const result = Rapid.sdk.utilStringQs(source.url([0,1,2]));
-    assert.equal(result.SRS, 'EPSG:3857');
-    assert.equal(result.imageSR, '3857');
-    assert.equal(result.bboxSR, '3857');
-    assert.equal(result.FORMAT, 'image/jpeg');
-    assert.equal(result.WIDTH, '256');
-    assert.equal(result.HEIGHT, '256');
+    it('supports tms replacement tokens', () => {
+      const source = new Rapid.ImagerySource(context, {
+        id: 'anyid',
+        type: 'tms',
+        template: '{z}/{x}/{y}'
+      });
+      assert.equal(source.url([0,1,2]), '2/0/1');
+    });
 
-    const bbox = result.BBOX.split(',');
-    assert.ok(closeTo(+bbox[0], -20037508.34));
-    assert.ok(closeTo(+bbox[1], 0));
-    assert.ok(closeTo(+bbox[2], -10018754.17));
-    assert.ok(closeTo(+bbox[3], 10018754.17));
+    it('supports wms replacement tokens', () => {
+      const source = new Rapid.ImagerySource(context, {
+        id:'anyid',
+        type: 'wms',
+        projection: 'EPSG:3857',
+        template: 'SRS={proj}&imageSR={wkid}&bboxSR={wkid}&FORMAT=image/jpeg&WIDTH={width}&HEIGHT={height}&BBOX={bbox}'
+      });
+
+      const result = Rapid.sdk.utilStringQs(source.url([0,1,2]));
+      assert.equal(result.SRS, 'EPSG:3857');
+      assert.equal(result.imageSR, '3857');
+      assert.equal(result.bboxSR, '3857');
+      assert.equal(result.FORMAT, 'image/jpeg');
+      assert.equal(result.WIDTH, '256');
+      assert.equal(result.HEIGHT, '256');
+
+      const bbox = result.BBOX.split(',');
+      assert.ok(closeTo(+bbox[0], -20037508.34));
+      assert.ok(closeTo(+bbox[1], 0));
+      assert.ok(closeTo(+bbox[2], -10018754.17));
+      assert.ok(closeTo(+bbox[3], 10018754.17));
+    });
+
+    it('supports subdomains', () => {
+      const source = new Rapid.ImagerySource(context, { id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}'});
+      assert.equal(source.url([0,1,2]), 'b/2/0/1');
+    });
+
+    it('distributes requests between subdomains', () => {
+      const source = new Rapid.ImagerySource(context, { id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}' });
+      assert.equal(source.url([0,1,1]), 'b/1/0/1');
+      assert.equal(source.url([0,2,1]), 'a/1/0/2');
+    });
   });
 
-  it('supports subdomains', () => {
-    const source = new Rapid.ImagerySource(context, { id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}'});
-    assert.equal(source.url([0,1,2]), 'b/2/0/1');
+
+  describe('validZoom', () => {
+    it('returns false if passed not a number', () => {
+      const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16] });
+      assert.equal(source.validZoom(), false);
+      assert.equal(source.validZoom(NaN), false);
+      assert.equal(source.validZoom(null), false);
+      assert.equal(source.validZoom('fake'), false);
+    });
+
+    it('correctly respects min/max zoomExtent', () => {
+      const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16] });
+      assert.equal(source.validZoom(-Infinity), false);
+      assert.equal(source.validZoom(5), false);
+      assert.equal(source.validZoom(6), true);
+      assert.equal(source.validZoom(16), true);
+      assert.equal(source.validZoom(17), false);
+      assert.equal(source.validZoom(Infinity), false);
+    });
   });
 
-  it('distributes requests between subdomains', () => {
-    const source = new Rapid.ImagerySource(context, { id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}' });
-    assert.equal(source.url([0,1,1]), 'b/1/0/1');
-    assert.equal(source.url([0,2,1]), 'a/1/0/2');
-  });
-
-  it('correctly displays an overlay with no overzoom specified', () => {
-    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16] });
-    assert.equal(source.validZoom(10), true);
-    assert.equal(source.validZoom(3), false);
-    assert.equal(source.validZoom(17), true);
-  });
-
-  it('correctly displays an overlay with an invalid overzoom', () => {
-    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16], overzoom: 'gibberish'});
-    assert.equal(source.validZoom(10), true);
-    assert.equal(source.validZoom(3), false);
-    assert.equal(source.validZoom(17), true);
-  });
-
-  it('correctly displays an overlay with overzoom:true', () => {
-    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16], overzoom: true});
-    assert.equal(source.validZoom(10), true);
-    assert.equal(source.validZoom(3), false);
-    assert.equal(source.validZoom(17), true);
-  });
-
-  it('correctly displays an overlay with overzoom:false', () => {
-    const source = new Rapid.ImagerySource(context, { id:'anyid', zoomExtent: [6,16], overzoom: false});
-    assert.equal(source.validZoom(10), true);
-    assert.equal(source.validZoom(3), false);
-    assert.equal(source.validZoom(17), false);
+  describe('isLocatorOverlay', () => {
+    it('returns true only for the locator overlay', () => {
+      const source1 = new Rapid.ImagerySource(context, { id:'anyid' });
+      const source2 = new Rapid.ImagerySource(context, { id:'mapbox_locator_overlay' });
+      assert.equal(source1.isLocatorOverlay(), false);
+      assert.equal(source2.isLocatorOverlay(), true);
+    });
   });
 });
+
 
 describe('ImagerySourceCustom', () => {
   const context = new MockContext();
