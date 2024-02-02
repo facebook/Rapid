@@ -1,4 +1,5 @@
 import { select as d3_select } from 'd3-selection';
+import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { AbstractMode } from './AbstractMode.js';
 import { actionDeleteRelation } from '../actions/delete_relation.js';
@@ -36,8 +37,8 @@ export class SelectOsmMode extends AbstractMode {
     // parents, and we want to remember which parent line we started on.
     this._focusedParentID = null;
 
-    // If we have a single thing selected, keep track of it here
-    this._singularDatum = null;
+    this._singularDatum = null;   // If we have a single thing selected, keep track of it here
+    this._lastSelectedIDs = [];   // Previous selection, used by arrow key nudge
 
     // Make sure the event handlers have `this` bound correctly
     this._hover = this._hover.bind(this);
@@ -80,6 +81,7 @@ export class SelectOsmMode extends AbstractMode {
     // For this mode, keep only the OSM data.
     this._selectedData = new Map();
     this._singularDatum = null;
+    this._lastSelectedIDs = [];
 
     for (const entityID of entityIDs) {
       const entity = graph.hasEntity(entityID);
@@ -117,12 +119,11 @@ export class SelectOsmMode extends AbstractMode {
       .on(['{', uiCmd('⌘['), 'home'], this._firstVertex)
       .on(['}', uiCmd('⌘]'), 'end'], this._lastVertex)
       .on(['\\', 'pause'], this._focusNextParent)
-      .on('⎋', this._esc, true);
-      this.keybinding
-      .on(uiCmd('←'), this.nudgeSelection([-10, 0]))
-      .on(uiCmd('↑'), this.nudgeSelection([0, -10]))
-      .on(uiCmd('→'), this.nudgeSelection([10, 0]))
-      .on(uiCmd('↓'), this.nudgeSelection([0, 10]));
+      .on('⎋', this._esc, true)
+      .on(uiCmd('←'), this.nudgeSelection([-5, 0]))
+      .on(uiCmd('↑'), this.nudgeSelection([0, -5]))
+      .on(uiCmd('→'), this.nudgeSelection([5, 0]))
+      .on(uiCmd('↓'), this.nudgeSelection([0, 5]));
 //      .on(uiCmd('⌘↑'), this._selectParent)    // tbh I dont know what these are
 //      .on(uiCmd('⌘↓'), this._selectChild)
 
@@ -172,6 +173,7 @@ export class SelectOsmMode extends AbstractMode {
     this._newFeature = false;
     this._singularDatum = null;
     this._selectedData.clear();
+    this._lastSelectedIDs = [];
 
     // disable operations
     for (const operation of this.operations) {
@@ -312,21 +314,41 @@ export class SelectOsmMode extends AbstractMode {
    */
   nudgeSelection(delta) {
     return () => {
-      const editor = this.context.systems.editor;
-      const projection = this.context.projection;
-      // prevent nudging during low zoom selection
-      if (!this.context.editable()) return [];
+      const context = this.context;
+      const editor = context.systems.editor;
+      const projection = context.projection;
+      const ui = context.systems.ui;
 
-      const moveOp = operationMove(this.context, this.selectedIDs);
+      // prevent nudging during low zoom selection
+      if (!context.editable()) return;
+
+      const selectedIDs = [...this._selectedData.keys()];
+      const moveOp = operationMove(context, selectedIDs);
+      if (!moveOp.available()) return;
+
       if (moveOp.disabled()) {
-        this.context.systems.ui.flash
+        ui.flash
           .duration(4000)
-          .iconName('#iD-operation-' + moveOp.id)
+          .iconName(`#rapid-operation-${moveOp.id}`)
           .iconClass('operation disabled')
           .label(moveOp.tooltip)();
+
       } else {
-        editor.perform(actionMove(this.selectedIDs, delta, projection));
-        editor.commit({ annotation: moveOp.annotation(), selectedIDs: this.selectedIDs });
+        // If the user has the same selection as before, we continue through the cycle..
+        const isSameSelection = utilArrayIdentical(selectedIDs, this._lastSelectedIDs);
+        if (!isSameSelection) {
+          this._lastSelectedIDs = selectedIDs.slice();  // take copy
+        }
+
+        const annotation = moveOp.annotation();
+        const options = { annotation: annotation, selectedIDs: selectedIDs };
+
+        editor.perform(actionMove(selectedIDs, delta, projection));
+        if (isSameSelection && editor.getUndoAnnotation() === annotation) {
+          editor.commitAppend(options);
+        } else {
+          editor.commit(options);
+        }
       }
     };
   }
