@@ -2,21 +2,21 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { actionChangePreset } from '../../actions/change_preset';
-import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { actionChangePreset } from '../../actions/change_preset.js';
+import { utilRebind } from '../../util/rebind.js';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper.js';
 
 
 export function uiIntroPoint(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.points.title' };
-  const editMenu = context.systems.ui.editMenu;
   const container = context.container();
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
   const ui = context.systems.ui;
+  const editMenu = ui.editMenu;
 
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);
   const cafePreset = presets.item('amenity/cafe');

@@ -1,11 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
-import { uiTooltip } from '../tooltip';
-import { utilRebind } from '../../util';
-import { uiPresetIcon } from '../preset_icon';
-import { uiSection } from '../section';
-import { uiTagReference } from '../tag_reference';
+import { uiTooltip } from '../tooltip.js';
+import { utilRebind } from '../../util/index.js';
+import { uiPresetIcon } from '../preset_icon.js';
+import { uiSection } from '../section.js';
+import { uiTagReference } from '../tag_reference.js';
 
 
 export function uiSectionFeatureType(context) {

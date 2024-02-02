@@ -1,7 +1,7 @@
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { uiIcon } from '../icon';
-import { uiSection } from '../section';
+import { uiIcon } from '../icon.js';
+import { uiSection } from '../section.js';
 
 
 export function uiSectionValidationStatus(context) {

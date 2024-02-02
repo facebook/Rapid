@@ -1,7 +1,7 @@
 import { Extent, vecAngle } from '@rapid-sdk/math';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { osmEntity } from './entity';
+import { osmEntity } from './entity.js';
 
 
 export function osmNode() {

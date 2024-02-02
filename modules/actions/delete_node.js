@@ -1,5 +1,5 @@
-import { actionDeleteRelation } from './delete_relation';
-import { actionDeleteWay } from './delete_way';
+import { actionDeleteRelation } from './delete_relation.js';
+import { actionDeleteWay } from './delete_way.js';
 
 
 // https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/DeleteNodeAction.as

@@ -1,4 +1,4 @@
-import { ValidationIssue, ValidationFix } from '../core/lib';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationIncompatibleSource(context) {
@@ -16,7 +16,7 @@ export function validationIncompatibleSource(context) {
     }, {
       id: 'google',
       regex: /google/i,
-      exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_Africa_Buildings)/i
+      exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/google)/i
     }
   ];
 

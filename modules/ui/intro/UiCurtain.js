@@ -2,7 +2,7 @@ import { Extent, vecAdd } from '@rapid-sdk/math';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 
-import { uiToggle } from '../toggle';
+import { uiToggle } from '../toggle.js';
 
 function clamp(num, min, max) {
   return Math.max(min, Math.min(num, max));

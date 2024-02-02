@@ -1,6 +1,6 @@
 import { EventEmitter } from '@pixi/utils';
 
-import { utilDetect } from '../util/detect';
+import { utilDetect } from '../util/detect.js';
 
 
 /**

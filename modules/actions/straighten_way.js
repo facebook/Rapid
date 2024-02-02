@@ -1,7 +1,7 @@
 import { vecDot, vecInterp, vecLength } from '@rapid-sdk/math';
 import { utilArrayDifference } from '@rapid-sdk/util';
 
-import { actionDeleteNode } from './delete_node';
+import { actionDeleteNode } from './delete_node.js';
 
 
 /*

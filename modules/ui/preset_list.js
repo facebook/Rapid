@@ -1,14 +1,14 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { actionChangePreset } from '../actions/change_preset';
-import { operationDelete } from '../operations/delete';
-import { uiIcon } from './icon';
-import { uiTooltip } from './tooltip';
-import { uiPresetIcon } from './preset_icon';
-import { uiTagReference } from './tag_reference';
-import { utilKeybinding, utilNoAuto, utilRebind, utilTotalExtent } from '../util';
+import { actionChangePreset } from '../actions/change_preset.js';
+import { operationDelete } from '../operations/delete.js';
+import { uiIcon } from './icon.js';
+import { uiPresetIcon } from './preset_icon.js';
+import { uiTagReference } from './tag_reference.js';
+import { uiTooltip } from './tooltip.js';
+import { utilKeybinding, utilNoAuto, utilRebind, utilTotalExtent } from '../util/index.js';
 
 
 export function uiPresetList(context) {

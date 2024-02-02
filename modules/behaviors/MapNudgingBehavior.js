@@ -1,5 +1,7 @@
 import { geomViewportNudge  } from '@rapid-sdk/math';
-import { AbstractBehavior } from './AbstractBehavior';
+
+import { AbstractBehavior } from './AbstractBehavior.js';
+
 
 // Scalar for how fast we want the map nudging to actually be.
 // Pixi returns mouse events pretty quickly,

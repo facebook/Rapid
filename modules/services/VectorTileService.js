@@ -8,8 +8,8 @@ import * as Polyclip from 'polyclip-ts';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { utilFetchResponse } from '../util/index.js';
 
 
 /**

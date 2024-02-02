@@ -1,5 +1,5 @@
-// uncomment imports if running outside browser env!
-// import Benchmark from 'benchmark';
+/* eslint-disable no-console */
+import Benchmark from 'benchmark';
 const suite = new Benchmark.Suite();
 
 const values = [];
@@ -42,6 +42,7 @@ let renderData;
 let graphEntities;
 let projection;
 let zoom;
+let tokyo_15, tokyo_17, tokyo_19;
 const timestamp = 1649012524130;
 
 //Now initialize context in a similar fashion to our unit tests.

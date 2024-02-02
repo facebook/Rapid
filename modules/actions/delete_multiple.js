@@ -1,6 +1,6 @@
-import { actionDeleteNode } from './delete_node';
-import { actionDeleteRelation } from './delete_relation';
-import { actionDeleteWay } from './delete_way';
+import { actionDeleteNode } from './delete_node.js';
+import { actionDeleteRelation } from './delete_relation.js';
+import { actionDeleteWay } from './delete_way.js';
 
 
 export function actionDeleteMultiple(ids) {

@@ -1,6 +1,6 @@
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { actionDeleteMultiple } from './delete_multiple';
+import { actionDeleteMultiple } from './delete_multiple.js';
 
 
 // https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/DeleteRelationAction.as

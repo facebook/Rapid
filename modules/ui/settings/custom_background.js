@@ -1,8 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { marked } from 'marked';
 
-import { uiConfirm } from '../confirm';
-import { utilNoAuto, utilRebind } from '../../util';
+import { uiConfirm } from '../confirm.js';
+import { utilNoAuto, utilRebind } from '../../util/index.js';
 
 
 export function uiSettingsCustomBackground(context) {

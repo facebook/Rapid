@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
-import { AbstractUiPanel } from './AbstractUiPanel';
-import { uiIcon } from '../icon';
+import { AbstractUiPanel } from './AbstractUiPanel.js';
+import { uiIcon } from '../icon.js';
 
 
 /**

@@ -1,4 +1,4 @@
-import { actionDeleteMember } from './delete_member';
+import { actionDeleteMember } from './delete_member.js';
 
 
 export function actionDeleteMembers(relationId, memberIndexes) {

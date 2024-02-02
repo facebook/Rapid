@@ -1,7 +1,7 @@
-//import { actionChangeTags } from '../actions/change_tags';
-import { actionOrthogonalize } from '../actions/orthogonalize';
-import { geoOrthoCanOrthogonalize } from '../geo/ortho';
-import { ValidationIssue, ValidationFix } from '../core/lib';
+//import { actionChangeTags } from '../actions/change_tags.js';
+import { actionOrthogonalize } from '../actions/orthogonalize.js';
+import { geoOrthoCanOrthogonalize } from '../geo/ortho.js';
+import { ValidationIssue, ValidationFix } from '../core/lib/index.js';
 
 
 export function validationUnsquareWay(context) {

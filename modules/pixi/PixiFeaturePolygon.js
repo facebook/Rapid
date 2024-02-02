@@ -2,9 +2,9 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
-import { flatCoordsToPoints } from '../util/util';
-import { AbstractFeature } from './AbstractFeature';
-import { lineToPoly } from './helpers';
+
+import { AbstractFeature } from './AbstractFeature.js';
+import { flatCoordsToPoints, lineToPoly } from './helpers.js';
 
 const PARTIALFILLWIDTH = 32;
 
@@ -57,7 +57,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     // When partially filling areas: we really want to define the mask as a line
     // drawn within the inside of the area shape.  Graphics defined as a line
-    // _can_ be used as a mask, but they do not participate in his testing!
+    // _can_ be used as a mask, but they do not participate in hit testing!
     // So we'll create the mask graphic and then copy its attributes into a mesh
     // which _does_ hit test properly.
     // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)

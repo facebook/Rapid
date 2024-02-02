@@ -3,14 +3,14 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayGroupBy, utilUniqueString } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { osmChangeset } from '../osm';
-import { uiIcon } from './icon';
-import { uiTooltip } from './tooltip';
-import { uiChangesetEditor } from './changeset_editor';
-import { uiSectionChanges } from './sections/changes';
-import { uiCommitWarnings } from './commit_warnings';
-import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
-import { utilDetect, utilRebind } from '../util';
+import { osmChangeset } from '../osm/index.js';
+import { uiIcon } from './icon.js';
+import { uiTooltip } from './tooltip.js';
+import { uiChangesetEditor } from './changeset_editor.js';
+import { uiSectionChanges } from './sections/changes.js';
+import { uiCommitWarnings } from './commit_warnings.js';
+import { uiSectionRawTagEditor } from './sections/raw_tag_editor.js';
+import { utilDetect, utilRebind } from '../util/index.js';
 
 
 const readOnlyTags = [

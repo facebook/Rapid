@@ -1,5 +1,5 @@
-import { uiCmd } from './cmd';
-import { utilDetect } from '../util/detect';
+import { uiCmd } from './cmd.js';
+import { utilDetect } from '../util/detect.js';
 
 export function uiFullScreen(context) {
     var element = context.container().node();

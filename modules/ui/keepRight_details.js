@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { utilHighlightEntities } from '../util';
+import { utilHighlightEntities } from '../util/index.js';
 
 
 export function uiKeepRightDetails(context) {

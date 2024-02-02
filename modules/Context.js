@@ -3,12 +3,12 @@ import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
 import { utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 
-import { behaviors } from './behaviors';
-import { modes } from './modes';
-import { services } from './services';
-import { systems } from './core';
+import { behaviors } from './behaviors/index.js';
+import { modes } from './modes/index.js';
+import { services } from './services/index.js';
+import { systems } from './core/index.js';
 
-import { utilKeybinding } from './util';
+import { utilKeybinding } from './util/keybinding.js';
 
 const MINZOOM = 15;
 const TILESIZE = 256;

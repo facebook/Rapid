@@ -1,27 +1,27 @@
-export { osmChangeset } from './changeset';
-export { osmEntity } from './entity';
-export { osmNode } from './node';
-export { osmNote } from './note';
-export { osmRelation } from './relation';
-export { osmWay } from './way';
-export { QAItem } from './qa_item';
+export { osmChangeset } from './changeset.js';
+export { osmEntity } from './entity.js';
+export { osmNode } from './node.js';
+export { osmNote } from './note.js';
+export { osmRelation } from './relation.js';
+export { osmWay } from './way.js';
+export { QAItem } from './qa_item.js';
 
 export {
     osmIntersection,
     osmTurn,
     osmInferRestriction
-} from './intersection';
+} from './intersection.js';
 
 export {
     osmLanes
-} from './lanes';
+} from './lanes.js';
 
 export {
     osmOldMultipolygonOuterMemberOfRelation,
     osmIsOldMultipolygonOuterMember,
     osmOldMultipolygonOuterMember,
     osmJoinWays
-} from './multipolygon';
+} from './multipolygon.js';
 
 export {
     osmAreaKeys,
@@ -40,4 +40,4 @@ export {
     osmRoutableHighwayTagValues,
     osmFlowingWaterwayTagValues,
     osmRailwayTrackTagValues
-} from './tags';
+} from './tags.js';

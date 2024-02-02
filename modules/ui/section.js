@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiDisclosure } from './disclosure';
-import { utilFunctor } from '../util';
+import { uiDisclosure } from './disclosure.js';
+import { utilFunctor } from '../util/index.js';
 
 
 // A Section is a box of content.

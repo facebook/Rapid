@@ -4,9 +4,9 @@ import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { QAItem } from '../osm';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { QAItem } from '../osm/index.js';
+import { utilFetchResponse } from '../util/index.js';
 
 
 const TILEZOOM = 14;

@@ -1,9 +1,9 @@
 import { utilArrayDifference, utilGetAllNodes } from '@rapid-sdk/util';
 
-import { actionStraightenNodes } from '../actions/straighten_nodes';
-import { actionStraightenWay } from '../actions/straighten_way';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { utilTotalExtent } from '../util/index';
+import { actionStraightenNodes } from '../actions/straighten_nodes.js';
+import { actionStraightenWay } from '../actions/straighten_way.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 export function operationStraighten(context, selectedIDs) {

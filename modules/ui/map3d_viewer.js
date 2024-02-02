@@ -1,8 +1,8 @@
 import { Color } from 'pixi.js';
+import { geomPolygonContainsPolygon } from '@rapid-sdk/math';
 import { select as d3_select } from 'd3-selection';
 
-import { uiCmd } from './cmd';
-import { geomPolygonContainsPolygon } from '@rapid-sdk/math';
+import { uiCmd } from './cmd.js';
 
 /*
  * uiMap3dViewer is a ui panel containing a maplibre 3D Map for visualizing buildings, roads, and areas.

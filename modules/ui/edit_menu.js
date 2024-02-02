@@ -1,15 +1,18 @@
 import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
 import { vecAdd } from '@rapid-sdk/math';
-import { uiTooltip } from './tooltip';
-import { utilRebind } from '../util/rebind';
-import { utilHighlightEntities } from '../util/util';
-import { uiIcon } from './icon';
+
+import { uiTooltip } from './tooltip.js';
+import { uiIcon } from './icon.js';
+import { utilHighlightEntities, utilRebind } from '../util/index.js';
 
 
 export function uiEditMenu(context) {
   const dispatch = d3_dispatch('toggled');
+
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
+  const ui = context.systems.ui;
 
   const VIEW_TOP_MARGIN = 85;     // viewport top margin
   const VIEW_BOTTOM_MARGIN = 45;  // viewport bottom margin
@@ -22,32 +25,31 @@ export function uiEditMenu(context) {
   // but needed later if the menu is repositioned
   let _menu = d3_select(null);
   let _operations = [];
+  let _tooltips = new Map;   // Map(id -> tooltip)
   let _anchorLoc = [0, 0];   // Array [lon,lat] wgs84 coordinate where the menu should be anchored
   let _initialScale = 0;
   let _triggerType = '';     // 'touch', 'pen', or 'rightclick'
   let _menuTop = false;
   let _menuHeight;
   let _menuWidth;
-  let _tooltips = [];
 
 
+  /* this is the render function */
   let editMenu = function(selection) {
     if (_triggerType === undefined) {
       _triggerType = 'rightclick';
     }
 
-    let isTouchMenu = _triggerType.includes('touch') || _triggerType.includes('pen');
-    let ops = _operations.filter(op => !isTouchMenu || !op.mouseOnly);
+    const isTouchMenu = _triggerType.includes('touch') || _triggerType.includes('pen');
+    const ops = _operations.filter(op => !isTouchMenu || !op.mouseOnly);
     if (!ops.length) return;
-
-    _tooltips = [];
 
     // Position the menu above the anchor for stylus and finger input
     // since the mapper's hand likely obscures the screen below the anchor
     _menuTop = isTouchMenu;
 
     // Show labels for touch input since there aren't hover tooltips
-    // bhousel 8/10/22 - this menu just always looks better with labels
+    // bhousel 8/10/22 - show always, this menu just looks better with labels
     let showLabels = true; // isTouchMenu;
 
     const buttonHeight = showLabels ? 32 : 34;
@@ -63,17 +65,26 @@ export function uiEditMenu(context) {
     _menuHeight = VERTICAL_PADDING * 2 + ops.length * buttonHeight;
     _initialScale = context.projection.scale();
 
-    _menu = selection
+    const wrap = selection.selectAll('.edit-menu')
+      .data([0]);
+
+    const wrapEnter = wrap.enter()
       .append('div')
       .attr('class', 'edit-menu')
       .classed('touch-menu', isTouchMenu)
       .style('padding', VERTICAL_PADDING + 'px 0');
 
-    let buttons = _menu.selectAll('.edit-menu-item')
-      .data(ops);
+    _menu = wrap.merge(wrapEnter);
 
-    // enter
-    let buttonsEnter = buttons.enter()
+    let buttons = _menu.selectAll('.edit-menu-item')
+      .data(ops, d => d.id);
+
+    // Exit
+    buttons.exit()
+      .remove();
+
+    // Enter
+    const buttonsEnter = buttons.enter()
       .append('button')
       .attr('class', d => `edit-menu-item edit-menu-item-${d.id}`)
       .style('height', `${buttonHeight}px`)
@@ -81,7 +92,7 @@ export function uiEditMenu(context) {
       // don't listen for `mouseup` because we only care about non-mouse pointer types
       .on('pointerup', _pointerup)
       .on('pointerdown mousedown', function(d3_event) {
-        // don't let button presses also act as map input - #1869
+        // don't let button presses also act as map input - iD#1869
         d3_event.stopPropagation();
       })
       .on('mouseenter.highlight', function(d3_event, d) {
@@ -93,34 +104,57 @@ export function uiEditMenu(context) {
         utilHighlightEntities(d.relatedEntityIds(), false, context);
       });
 
+    // create placeholder icon, label, tooltip
     buttonsEnter.each((d, i, nodes) => {
-      let tooltip = uiTooltip(context)
-        .heading(d.title)
-        .title(d.tooltip())
-        .shortcut(d.keys[0]);  // display the first key combo, if there are alternates
+      const buttonEnter = d3_select(nodes[i]);
 
-      _tooltips.push(tooltip);
-
-      d3_select(nodes[i])
-        .call(tooltip)
+      buttonEnter
         .append('div')
         .attr('class', 'icon-wrap')
-        .call(uiIcon(`#rapid-operation-${d.id}`, 'operation'));
+        .call(uiIcon('', 'operation'));
+
+      if (showLabels) {
+        buttonEnter
+          .append('span')
+          .attr('class', 'label');
+      }
+
+      const tooltip = uiTooltip(context);
+      _tooltips.set(d.id, tooltip);
+      buttonEnter
+        .call(tooltip);
     });
 
-    if (showLabels) {
-      buttonsEnter.append('span')
-        .attr('class', 'label')
+
+    // Update
+    buttons = buttons.merge(buttonsEnter);
+
+    // refresh with current data
+    buttons.each((d, i, nodes) => {
+      const button = d3_select(nodes[i]);
+
+      button
+        .classed('disabled', d => d.disabled());
+
+      button.selectAll('.icon-wrap use')
+        .attr('href', `#rapid-operation-${d.id}`);
+
+      button.selectAll('.label')
         .text(d => d.title);
-    }
 
-    // update
-    buttonsEnter
-      .merge(buttons)
-      .classed('disabled', d => d.disabled());
+      const tooltip = _tooltips.get(d.id);
+      if (tooltip) {
+        tooltip
+          .heading(d.title)
+          .title(d.tooltip())
+          .shortcut(d.keys[0]);  // display the first key combo, if there are alternates
+      }
+    });
 
+    // Update menu position (and keep it updated as the map moves)
     _updatePosition();
-    context.systems.map.on('move', _updatePosition);
+    map.off('move', _updatePosition);
+    map.on('move', _updatePosition);
 
 
     // `pointerup` is always called before `click`
@@ -139,7 +173,7 @@ export function uiEditMenu(context) {
       if (operation.disabled()) {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
           // there are no tooltips for touch interactions so flash feedback instead
-          context.systems.ui.flash
+          ui.flash
             .duration(4000)
             .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation disabled')
@@ -147,7 +181,7 @@ export function uiEditMenu(context) {
         }
       } else {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
-          context.systems.ui.flash
+          ui.flash
             .duration(2000)
             .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation')
@@ -214,11 +248,16 @@ export function uiEditMenu(context) {
       .style('top', `${top}px`);
 
     const tooltipSide = tooltipPosition(viewport, menuLeft);
-    _tooltips.forEach(tip => tip.placement(tooltipSide));
+    for (const tip of _tooltips.values()) {
+      tip.placement(tooltipSide);
+      if (tip.isShown()) {
+        tip.updateContent();  // refresh it
+      }
+    }
 
 
     function displayOnLeft(viewport) {
-      const isRTL = context.systems.l10n.isRTL();
+      const isRTL = l10n.isRTL();
       if (isRTL) {  // right to left
         if ((anchor[0] - MENU_SIDE_MARGIN - _menuWidth) < VIEW_SIDE_MARGIN) {
           return false;  // left menu would be too close to the left viewport edge, go right
@@ -236,7 +275,7 @@ export function uiEditMenu(context) {
 
 
     function tooltipPosition(viewport, menuLeft) {
-      const isRTL = context.systems.l10n.isRTL();
+      const isRTL = l10n.isRTL();
       if (isRTL) {  // right to left
         if (!menuLeft) {
           return 'right';
@@ -269,10 +308,10 @@ export function uiEditMenu(context) {
    * This removes the menu and unbinds the event handlers
    */
   editMenu.close = function () {
-     context.systems.map.off('move', _updatePosition);
+     map.off('move', _updatePosition);
 
     _menu.remove();
-    _tooltips = [];
+    _tooltips.clear();
 
     dispatch.call('toggled', this, false);
   };

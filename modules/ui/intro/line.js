@@ -1,14 +1,13 @@
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { utilRebind } from '../../util/rebind.js';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper.js';
 
 
 export function uiIntroLine(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.lines.title' };
-  const editMenu = context.systems.ui.editMenu;
   const container = context.container();
   const dragBehavior = context.behaviors.drag;
   const editor = context.systems.editor;
@@ -16,6 +15,7 @@ export function uiIntroLine(context, curtain) {
   const map = context.systems.map;
   const presets = context.systems.presets;
   const ui = context.systems.ui;
+  const editMenu = ui.editMenu;
 
   const flowerStreetID = 'w646';
   const tulipRoadStartExtent = new Extent([-85.63016, 41.95749], [-85.62937, 41.95843]);

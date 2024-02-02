@@ -4,9 +4,9 @@ import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPo
 import { utilArrayUnion, utilQsString, utilUniqueString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { jsonpRequest } from '../util/jsonp_request';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { jsonpRequest } from '../util/jsonp_request.js';
+import { utilFetchResponse } from '../util/index.js';
 
 const PANNELLUM_JS = 'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.js';
 const PANNELLUM_CSS = 'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.css';

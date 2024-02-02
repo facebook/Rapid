@@ -2,7 +2,7 @@ import LocationConflation from '@rapideditor/location-conflation';
 import whichPolygon from 'which-polygon';
 import calcArea from '@mapbox/geojson-area';
 
-import { AbstractSystem } from './AbstractSystem';
+import { AbstractSystem } from './AbstractSystem.js';
 
 const LOCO = new LocationConflation();    // shared instance of a location-conflation resolver
 

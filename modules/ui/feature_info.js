@@ -1,4 +1,4 @@
-import { uiTooltip } from './tooltip';
+import { uiTooltip } from './tooltip.js';
 
 
 export function uiFeatureInfo(context) {

@@ -1,4 +1,4 @@
-import { AbstractSystem } from './AbstractSystem';
+import { AbstractSystem } from './AbstractSystem.js';
 
 
 /**

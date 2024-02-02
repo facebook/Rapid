@@ -1,6 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { utilGetSetValue, utilRebind, utilTriggerEvent } from '../util';
+
+import { utilGetSetValue, utilRebind, utilTriggerEvent } from '../util/index.js';
 
 
 // This code assumes that the combobox values will not have duplicate entries.

@@ -1,12 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
-import { AbstractMode } from './AbstractMode';
-import { actionDeleteRelation } from '../actions/delete_relation';
-import { actionMove } from '../actions/move';
-import * as Operations from '../operations/index';
-import { operationMove } from '../operations/move';
-import { uiCmd } from '../ui/cmd';
-import { utilKeybinding, utilTotalExtent } from '../util';
+import { AbstractMode } from './AbstractMode.js';
+import { actionDeleteRelation } from '../actions/delete_relation.js';
+import { actionMove } from '../actions/move.js';
+import * as Operations from '../operations/index.js';
+import { operationMove } from '../operations/move.js';
+import { uiCmd } from '../ui/cmd.js';
+import { utilKeybinding, utilTotalExtent } from '../util/index.js';
 
 
 /**
@@ -40,6 +40,9 @@ export class SelectOsmMode extends AbstractMode {
     this._singularDatum = null;
 
     // Make sure the event handlers have `this` bound correctly
+    this._hover = this._hover.bind(this);
+    this._merge = this._merge.bind(this);
+
     this._esc = this._esc.bind(this);
     this._firstVertex = this._firstVertex.bind(this);
     this._focusNextParent = this._focusNextParent.bind(this);
@@ -91,47 +94,21 @@ export class SelectOsmMode extends AbstractMode {
     }
 
     if (!this._selectedData.size) return false;  // found nothing to select
-    entityIDs = [...this._selectedData.keys()];  // the ones we ended up keeping
+    entityIDs = [...this._selectedData.keys()];  // the entities we ended up keeping
 
     this._active = true;
+
     context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'lasso', 'paste']);
+    ui.closeEditMenu();
 
-    context.behaviors.hover
-      .on('hoverchange', this._hover);
-    // Compute the total extent of selected items
-    this.extent = utilTotalExtent(entityIDs, graph);
+    this.extent = utilTotalExtent(entityIDs, graph);  // Compute the total extent of selected items
+    urlhash.setParam('id', entityIDs.join(','));      // Put entityIDs into the url hash
+    filters.forceVisible(entityIDs);                  // Exclude entityIDs from being filtered
+    this._setupOperations(entityIDs);                 // Determine available operations on the edit menu
 
-    // Put entityIDs into the url hash
-    urlhash.setParam('id', entityIDs.join(','));
+    editor.on('merge', this._merge);
 
-    // Exclude these ids from filtering
-    filters.forceVisible(entityIDs);
-
-    // setup which operations are valid for this selection
-    for (const operation of this.operations) {
-      if (operation.behavior) {
-        operation.behavior.disable();
-      }
-    }
-
-    this.operations = Object.values(Operations)
-      .map(o => o(context, entityIDs))
-      .filter(o => (o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'))
-      .concat([
-        // group copy/downgrade/delete operation together at the end of the list
-        Operations.operationCopy(context, entityIDs),
-        Operations.operationDowngrade(context, entityIDs),
-        Operations.operationDelete(context, entityIDs)
-      ])
-      .filter(o => o.available());
-
-    for (const operation of this.operations) {
-      if (operation.behavior) {
-        operation.behavior.enable();
-      }
-    }
-
-    ui.closeEditMenu();   // remove any displayed menu
+    context.behaviors.hover.on('hoverchange', this._hover);
 
     this.keybinding = utilKeybinding('select');
     this.keybinding
@@ -191,7 +168,6 @@ export class SelectOsmMode extends AbstractMode {
       });
     }
 
-
     this.extent = null;
     this._newFeature = false;
     this._singularDatum = null;
@@ -215,8 +191,8 @@ export class SelectOsmMode extends AbstractMode {
       this.keybinding = null;
     }
 
-    this.context.behaviors.hover
-      .off('hoverchange', this._hover);
+    context.behaviors.hover.off('hoverchange', this._hover);
+    editor.off('merge', this._merge);
   }
 
 
@@ -228,6 +204,75 @@ export class SelectOsmMode extends AbstractMode {
     const context = this.context;
     if (context.container().select('.combobox').size()) return;
     context.enter('browse');
+  }
+
+
+  /**
+   * _merge
+   * If we have entities selected already, and we find new versions
+   * of them loaded from the server, the `operations` offered on
+   * the edit menu may be wrong and should be refreshed. Rapid#1311
+   */
+  _merge(newIDs) {
+    if (!(newIDs instanceof Set)) return;
+    const entityIDs = [...this._selectedData.keys()];
+
+    let needsRefresh = false;
+    for (const entityID of entityIDs) {
+      if (newIDs.has(entityID)) {
+        needsRefresh = true;
+        break;
+      }
+    }
+
+    if (needsRefresh) {
+      this._setupOperations(entityIDs);
+    }
+  }
+
+
+  /**
+   * _setupOperations
+   *  Called whever we have a need to reset the `operations` array.
+   *  @param  {Array}  entityIDs - the selected entityIDs
+   */
+  _setupOperations(entityIDs) {
+    const context = this.context;
+    const ui = context.systems.ui;
+
+    // disable any that were available before
+    for (const operation of this.operations) {
+      if (operation.behavior) {
+        operation.behavior.disable();
+      }
+    }
+
+    if (Array.isArray(entityIDs) && entityIDs.length) {
+      const order = {  // sort these to the end of the list
+        copy: 1,
+        downgrade: 2,
+        delete: 3
+      };
+
+      this.operations = Object.values(Operations)
+        .map(op => op(context, entityIDs))
+        .filter(op => op.available())
+        .sort((a, b) => {
+          const aOrder = order[a.id] || 0;
+          const bOrder = order[b.id] || 0;
+          return aOrder - bOrder;
+        });
+
+      // enable all available
+      for (const operation of this.operations) {
+        if (operation.behavior) {
+          operation.behavior.enable();
+        }
+      }
+    }
+
+    // Redraw the menu if it is already shown
+    ui.redrawEditMenu();
   }
 
 

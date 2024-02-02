@@ -1,8 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
-import { utilKeybinding, utilRebind } from '../util';
+import { uiIcon } from './icon.js';
+import { utilKeybinding, utilRebind } from '../util/index.js';
 
 
 export function uiRapidColorpicker(context, parentModal) {

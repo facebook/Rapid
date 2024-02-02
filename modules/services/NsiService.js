@@ -1,6 +1,6 @@
 import { Matcher } from 'name-suggestion-index';
 
-import { AbstractSystem } from '../core/AbstractSystem';
+import { AbstractSystem } from '../core/AbstractSystem.js';
 
 
 

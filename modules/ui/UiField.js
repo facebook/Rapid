@@ -2,12 +2,12 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilUniqueString } from '@rapid-sdk/util';
 
-import { uiIcon } from './icon';
-import { uiTooltip } from './tooltip';
-// import { uiFieldHelp } from './field_help';
-import { uiFields } from './fields';
-import { uiTagReference } from './tag_reference';
-import { utilRebind, utilTotalExtent } from '../util';
+import { uiIcon } from './icon.js';
+import { uiTooltip } from './tooltip.js';
+// import { uiFieldHelp } from './field_help.js';
+import { uiFields } from './fields/index.js';
+import { uiTagReference } from './tag_reference.js';
+import { utilRebind, utilTotalExtent } from '../util/index.js';
 
 
 /**

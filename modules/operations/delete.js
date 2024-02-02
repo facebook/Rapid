@@ -1,10 +1,10 @@
 import { geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { actionDeleteMultiple } from '../actions/delete_multiple';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { uiCmd } from '../ui/cmd';
-import { utilTotalExtent } from '../util';
+import { actionDeleteMultiple } from '../actions/delete_multiple.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
+import { uiCmd } from '../ui/cmd.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 export function operationDelete(context, selectedIDs) {

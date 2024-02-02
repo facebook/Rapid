@@ -3,14 +3,14 @@ import { select as d3_select } from 'd3-selection';
 import { vecLength, vecSubtract } from '@rapid-sdk/math';
 import { utilUniqueString } from '@rapid-sdk/util';
 
-import { actionChangeMember } from '../../actions/change_member';
-import { actionDeleteMember } from '../../actions/delete_member';
-import { actionMoveMember } from '../../actions/move_member';
-import { osmEntity } from '../../osm';
-import { uiIcon } from '../icon';
-import { uiCombobox } from '../combobox';
-import { uiSection } from '../section';
-import { utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../../util';
+import { actionChangeMember } from '../../actions/change_member.js';
+import { actionDeleteMember } from '../../actions/delete_member.js';
+import { actionMoveMember } from '../../actions/move_member.js';
+import { osmEntity } from '../../osm/entity.js';
+import { uiIcon } from '../icon.js';
+import { uiCombobox } from '../combobox.js';
+import { uiSection } from '../section.js';
+import { utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../../util/index.js';
 
 const MAX_MEMBERS = 1000;
 

@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiCombobox } from './combobox';
-import { utilGetSetValue, utilNoAuto } from '../util';
+import { uiCombobox } from './combobox.js';
+import { utilGetSetValue, utilNoAuto } from '../util/index.js';
 
 
 export function uiFormFields(context) {

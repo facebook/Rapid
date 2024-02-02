@@ -1,9 +1,9 @@
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
 
-import { uiTooltip } from './tooltip';
-import { uiIcon } from './icon';
-import { uiLoading } from './loading';
+import { uiIcon } from './icon.js';
+import { uiLoading } from './loading.js';
+import { uiTooltip } from './tooltip.js';
 
 const GEOLOCATE_TIMEOUT = 10000;  // 10 sec
 const GEOLOCATE_REPEAT = 2000;    // 2 sec

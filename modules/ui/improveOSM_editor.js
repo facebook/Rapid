@@ -1,11 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { uiIcon } from './icon';
-import { uiImproveOsmComments } from './improveOSM_comments';
-import { uiImproveOsmDetails } from './improveOSM_details';
-import { uiImproveOsmHeader } from './improveOSM_header';
-import { utilNoAuto, utilRebind } from '../util';
+import { uiIcon } from './icon.js';
+import { uiImproveOsmComments } from './improveOSM_comments.js';
+import { uiImproveOsmDetails } from './improveOSM_details.js';
+import { uiImproveOsmHeader } from './improveOSM_header.js';
+import { utilNoAuto, utilRebind } from '../util/index.js';
 
 
 export function uiImproveOsmEditor(context) {

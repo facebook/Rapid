@@ -1,13 +1,13 @@
 import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString } from '@rapid-sdk/util';
-import _throttle from 'lodash-es/throttle';
+import _throttle from 'lodash-es/throttle.js';
 import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { JXON } from '../util/jxon';
-import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { JXON } from '../util/jxon.js';
+import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm/index.js';
+import { utilFetchResponse } from '../util/index.js';
 
 
 /**

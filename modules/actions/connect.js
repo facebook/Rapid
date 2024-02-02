@@ -1,7 +1,7 @@
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { actionDeleteNode } from './delete_node';
-import { actionDeleteWay } from './delete_way';
+import { actionDeleteNode } from './delete_node.js';
+import { actionDeleteWay } from './delete_way.js';
 
 
 // Connect the ways at the given nodes.

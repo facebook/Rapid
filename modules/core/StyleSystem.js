@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
-import { osmPavedTags } from '../osm/tags';
-import { AbstractSystem } from './AbstractSystem';
+
+import { AbstractSystem } from './AbstractSystem.js';
+import { osmPavedTags } from '../osm/tags.js';
 
 //
 // A "style" is a bundle of properties to say how things should look.

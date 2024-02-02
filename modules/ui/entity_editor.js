@@ -2,17 +2,17 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayIdentical, utilCleanTags } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
-import { actionChangeTags, actionSyncCrossingTags } from '../actions';
-import { uiIcon } from './icon';
-import { utilRebind } from '../util';
+import { actionChangeTags, actionSyncCrossingTags } from '../actions/index.js';
+import { uiIcon } from './icon.js';
+import { utilRebind } from '../util/index.js';
 
-import { uiSectionEntityIssues } from './sections/entity_issues';
-import { uiSectionFeatureType } from './sections/feature_type';
-import { uiSectionPresetFields } from './sections/preset_fields';
-import { uiSectionRawMemberEditor } from './sections/raw_member_editor';
-import { uiSectionRawMembershipEditor } from './sections/raw_membership_editor';
-import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
-import { uiSectionSelectionList } from './sections/selection_list';
+import { uiSectionEntityIssues } from './sections/entity_issues.js';
+import { uiSectionFeatureType } from './sections/feature_type.js';
+import { uiSectionPresetFields } from './sections/preset_fields.js';
+import { uiSectionRawMemberEditor } from './sections/raw_member_editor.js';
+import { uiSectionRawMembershipEditor } from './sections/raw_membership_editor.js';
+import { uiSectionRawTagEditor } from './sections/raw_tag_editor.js';
+import { uiSectionSelectionList } from './sections/selection_list.js';
 
 
 let _wasSelectedIDs = [];

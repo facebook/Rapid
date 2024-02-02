@@ -1,8 +1,8 @@
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { actionReflect } from '../actions/reflect';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
-import { utilTotalExtent } from '../util/util';
+import { actionReflect } from '../actions/reflect.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
+import { utilTotalExtent } from '../util/util.js';
 
 
 export function operationReflectShort(context, selectedIDs) {

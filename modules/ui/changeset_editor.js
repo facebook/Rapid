@@ -1,11 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniqBy } from '@rapid-sdk/util';
 
-import { uiIcon } from './icon';
-import { uiCombobox} from './combobox';
-import { UiField } from './UiField';
-import { uiFormFields } from './form_fields';
-import { utilRebind, utilTriggerEvent } from '../util';
+import { uiIcon } from './icon.js';
+import { uiCombobox} from './combobox.js';
+import { UiField } from './UiField.js';
+import { uiFormFields } from './form_fields.js';
+import { utilRebind, utilTriggerEvent } from '../util/index.js';
 
 
 export function uiChangesetEditor(context) {

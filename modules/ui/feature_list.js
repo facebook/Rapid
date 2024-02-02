@@ -2,12 +2,11 @@ import { select as d3_select } from 'd3-selection';
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import * as sexagesimal from '@mapbox/sexagesimal';
 
-import { Graph } from '../core/lib';
-import { osmEntity } from '../osm/entity';
-import { uiIcon } from './icon';
-import { uiCmd } from './cmd';
-
-import { utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../util';
+import { Graph } from '../core/lib/index.js';
+import { osmEntity } from '../osm/entity.js';
+import { uiIcon } from './icon.js';
+import { uiCmd } from './cmd.js';
+import { utilHighlightEntities, utilIsColorValid, utilNoAuto } from '../util/index.js';
 
 
 export function uiFeatureList(context) {

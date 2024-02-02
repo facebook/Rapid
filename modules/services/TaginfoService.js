@@ -1,8 +1,8 @@
 import { utilObjectOmit, utilQsString } from '@rapid-sdk/util';
-import debounce from 'lodash-es/debounce';
+import debounce from 'lodash-es/debounce.js';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { utilFetchResponse } from '../util/index.js';
 
 
 const TAGINFO_API = 'https://taginfo.openstreetmap.org/api/4/';

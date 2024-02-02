@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { PixiGeometry } from './PixiGeometry';
+import { PixiGeometry } from './PixiGeometry.js';
 
 
 /**

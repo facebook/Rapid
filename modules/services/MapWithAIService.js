@@ -1,9 +1,10 @@
 import { Tiler } from '@rapid-sdk/math';
+import { utilStringQs } from '@rapid-sdk/util';
 
-import { AbstractSystem } from '../core/AbstractSystem';
-import { Graph, Tree } from '../core/lib';
-import { osmEntity, osmNode, osmWay } from '../osm';
-import { utilFetchResponse } from '../util';
+import { AbstractSystem } from '../core/AbstractSystem.js';
+import { Graph, Tree } from '../core/lib/index.js';
+import { osmEntity, osmNode, osmWay } from '../osm/index.js';
+import { utilFetchResponse } from '../util/index.js';
 
 
 const APIROOT = 'https://mapwith.ai/maps/ml_roads';
@@ -260,7 +261,10 @@ export class MapWithAIService extends AbstractSystem {
       qs.crop_bbox = taskExtent.toParam();
     }
 
-    const url = APIROOT + '?' + mapwithaiQsString(qs, true);  // true = noencode
+    const customUrlRoot = utilStringQs(window.location.hash).fb_ml_road_url;
+
+    const urlRoot = customUrlRoot || APIROOT;
+    const url = urlRoot + '?' + mapwithaiQsString(qs, true);  // true = noencode
     return url;
 
 

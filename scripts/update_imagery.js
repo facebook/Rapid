@@ -157,10 +157,6 @@ for (const [sourceID, source] of sources) {
     ]];
   }
 
-  if (sourceID === 'mapbox_locator_overlay') {
-    item.overzoom = false;
-  }
-
   const attribution = source.attribution || {};
   if (attribution.url) {
     item.terms_url = attribution.url;

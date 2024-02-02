@@ -2,21 +2,21 @@ import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
-import { actionChangePreset } from '../../actions/change_preset';
-import { utilRebind } from '../../util';
-import { delayAsync, eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper';
+import { actionChangePreset } from '../../actions/change_preset.js';
+import { utilRebind } from '../../util/index.js';
+import { delayAsync, eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper.js';
 
 
 export function uiIntroBuilding(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.buildings.title' };
-  const editMenu = context.systems.ui.editMenu;
   const container = context.container();
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const presets = context.systems.presets;
   const ui = context.systems.ui;
+  const editMenu = ui.editMenu;
 
   const houseExtent = new Extent([-85.62836, 41.95622], [-85.62791, 41.95654]);
   const tankExtent = new Extent([-85.62766, 41.95324], [-85.62695, 41.95372]);

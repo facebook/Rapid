@@ -1,10 +1,10 @@
 import { select as d3_select } from 'd3-selection';
 
-import { uiTooltip } from '../tooltip';
-import { uiIcon } from '../icon';
-import { uiCmd } from '../cmd';
-import { uiSection } from '../section';
-import { uiSettingsCustomData } from '../settings/custom_data';
+import { uiTooltip } from '../tooltip.js';
+import { uiIcon } from '../icon.js';
+import { uiCmd } from '../cmd.js';
+import { uiSection } from '../section.js';
+import { uiSettingsCustomData } from '../settings/custom_data.js';
 
 
 export function uiSectionDataLayers(context) {

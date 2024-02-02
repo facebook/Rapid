@@ -1,7 +1,7 @@
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
-import { actionChangePreset } from '../actions';
-import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior';
+import { actionChangePreset } from '../actions/change_preset.js';
+import { KeyOperationBehavior } from '../behaviors/KeyOperationBehavior.js';
 
 let _lastSelectedIDs = [];
 

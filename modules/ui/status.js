@@ -1,6 +1,6 @@
-import _throttle from 'lodash-es/throttle';
+import _throttle from 'lodash-es/throttle.js';
 
-import { uiIcon } from './icon';
+import { uiIcon } from './icon.js';
 
 
 export function uiStatus(context) {

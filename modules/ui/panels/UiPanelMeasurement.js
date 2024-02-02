@@ -3,8 +3,8 @@ import { geoLength as d3_geoLength, geoCentroid as d3_geoCentroid } from 'd3-geo
 import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
-import { AbstractUiPanel } from './AbstractUiPanel';
-import { osmNote } from '../../osm';
+import { AbstractUiPanel } from './AbstractUiPanel.js';
+import { osmNote } from '../../osm/index.js';
 
 
 // using WGS84 authalic radius (6371007.1809 m)
