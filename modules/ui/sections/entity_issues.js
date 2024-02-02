@@ -221,7 +221,9 @@ export function uiSectionEntityIssues(context) {
   };
 
 
-  // do we need to .off?  not sure!  I think this component stays around forever?
+  // Add or replace event handlers
+  validator.off('validated', _onValidated);
+  validator.off('focusedIssue', _onFocused);
   validator.on('validated', _onValidated);
   validator.on('focusedIssue', _onFocused);
 

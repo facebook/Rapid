@@ -506,6 +506,7 @@ export class ValidationSystem extends AbstractSystem {
    */
   ignoreIssue(issueID) {
     this._ignoredIssueIDs.add(issueID);
+    this.emit('validated');   // emit an event to redraw various UI things
   }
 
 
