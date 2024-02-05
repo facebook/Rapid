@@ -208,16 +208,19 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: PIXI.LINE_CAP.BUTT }
       },
       river: {
+        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
         casing: { width: 10, color: 0x444444 },
         stroke: { width: 8, color: 0x77dddd }
       },
       stream: {
+        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0x77dddd }
       },
       stream_intermittent: {
-        casing: { width: 7, color: 0x444444, cap: PIXI.LINE_CAP.BUTT },
-        stroke: { width: 5, color: 0x77dddd, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT, }
+        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
+        casing: { alpha: 0 },  // disable
+        stroke: { width: 5, color: 0x77dddd, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       },
       ridge: {
         stroke: { width: 2, color: 0x8cd05f}  // rgb(140, 208, 95)
@@ -232,9 +235,10 @@ export class StyleSystem extends AbstractSystem {
       },
       railway: {
         casing: { width: 7, color: 0x555555, cap: PIXI.LINE_CAP.BUTT },
-        stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
+        stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT }
       },
       railway_abandoned: {
+        casing: { alpha: 0 },  // disable
         stroke: { dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       },
       ferry: {
@@ -251,16 +255,16 @@ export class StyleSystem extends AbstractSystem {
       },
       barrier: {
         casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: PIXI.LINE_CAP.ROUND }
       },
       barrier_wall: {
         casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: PIXI.LINE_CAP.ROUND }
       },
       barrier_hedge: {
         fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
         casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+        stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 2, 5], cap: PIXI.LINE_CAP.ROUND }
       },
       tree_row: {
         casing: { width: 7, color: 0x444444 },
@@ -268,7 +272,7 @@ export class StyleSystem extends AbstractSystem {
       },
       construction: {
         casing: { width: 10, color: 0xffffff},
-        stroke: { width: 8, color: 0xfc6c14, dash: [10, 10], cap: PIXI.LINE_CAP.BUTT },
+        stroke: { width: 8, color: 0xfc6c14, dash: [10, 10], cap: PIXI.LINE_CAP.BUTT }
       },
       pipeline: {
         casing: { width: 7, color: 0x444444 },
@@ -279,6 +283,7 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: PIXI.LINE_CAP.BUTT }
       },
       abandoned: {
+        casing: { alpha: 0 },  // disable
         stroke: { width: 27, color: 0xcbd0d8, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       }
     };
