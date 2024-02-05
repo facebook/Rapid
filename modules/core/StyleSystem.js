@@ -3,55 +3,127 @@ import * as PIXI from 'pixi.js';
 import { AbstractSystem } from './AbstractSystem.js';
 import { osmPavedTags } from '../osm/tags.js';
 
-//
-// A "style" is a bundle of properties to say how things should look.
-// Each "style" looks like this:
-//
-// stylename: {
-//   fill:   { props },
-//   casing: { props },
-//   stroke: { props }
-// }
-//
-// Available property groups:
-//   `fill`   - properties used when drawing feature as a filled area
-//   `casing` - properties used when drawing feature as a line (casing draws below stroke)
-//   `stroke` - properties used when drawing feature as a line
-//
-// Available properties:
-//   `width` - line width in pixel (for fills, this is the width of the outline)
-//   `color` - the color
-//   `alpha` - 0 = transparent/invisible, 1 = filled
-//   `cap`   - `PIXI.LINE_CAP.` `BUTT`, `SQUARE`, or `ROUND`
-//   `join`  - `PIXI.LINE_JOIN.` `BEVEL`, `MITER`, or `ROUND`
-//   `dash`  - array of pixels on/off - e.g. `[20, 5, 5, 5]`
-//
-// The fill group also supports:
-//   `pattern` - supported pattern (see dist/img/pattern/* for these)
-//
-// Anything missing will just be pulled from the DEFAULT style.
-//
 
+const roadVals = new Set([
+  'motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'residential',
+  'motorway_link', 'trunk_link', 'primary_link', 'secondary_link', 'tertiary_link',
+  'unclassified', 'road', 'service', 'track', 'living_street', 'bus_guideway', 'busway',
+]);
+
+
+/**
+ * `StyleSystem` maintains the the rules about how map data should look.
+ *
+ * Events available:
+ *   `stylechange`  Fires on any change in style
+ */
 export class StyleSystem extends AbstractSystem {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
-  */
+   */
   constructor(context) {
     super(context);
     this.id = 'styles';
     this.context = context;
-    this.dependencies = new Set(['colors']);
+    this.dependencies = new Set(['dataloader']);
     this.autoStart = true;
 
-    this.DEFAULTS = {
-      fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-      casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
-      stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
-    };
+    // Experiment, see Rapid#1230
+    // matrix values from https://github.com/maputnik/editor
+    this.protanopiaMatrix = [
+      0.567,  0.433,  0,     0,  0,
+      0.558,  0.442,  0,     0,  0,
+      0,      0.242,  0.758, 0,  0,
+      0,      0,      0,     1,  0
+    ];
 
-    this.WAYS = {
+    this.deuteranopiaMatrix = [
+      0.625,  0.375,  0,     0,  0,
+      0.7,    0.3,    0,     0,  0,
+      0,      0.3,    0.7,   0,  0,
+      0,      0,      0,     1,  0
+    ];
+
+    this.tritanopiaMatrix = [
+      0.95,   0.05,   0,     0,  0,
+      0,      0.433,  0.567, 0,  0,
+      0,      0.475,  0.525, 0,  0,
+      0,      0,      0,     1,  0
+    ];
+
+
+    // A "Style Declaration" contains properties that describe how features should look.
+    // Each style declaration looks like this:
+    //
+    // styleID: {
+    //   fill:   { fill props… },
+    //   casing: { casing props… },
+    //   stroke: { stroke props… }
+    // }
+    //
+    // Available property groups:
+    //   `fill`   - properties used when drawing fill (fill draws at the bottom)
+    //   `casing` - properties used when drawing line (casing draws above fill)
+    //   `stroke` - properties used when drawing line (stroke draws above casing)
+    //
+    // Available properties:
+    //   `width` - line width in pixel (for fills, this is the width of the outline)
+    //   `color` - the color
+    //   `alpha` - 0 = transparent/invisible, 1 = filled
+    //   `cap`   - `PIXI.LINE_CAP.` `BUTT`, `SQUARE`, or `ROUND`
+    //   `join`  - `PIXI.LINE_JOIN.` `BEVEL`, `MITER`, or `ROUND`
+    //   `dash`  - array of pixels on/off - e.g. `[20, 5, 5, 5]`
+    //
+    // The fill group also supports:
+    //   `pattern` - supported pattern (see dist/img/pattern/* for these)
+    //
+
+    this.STYLE_DECLARATIONS = {
+      DEFAULTS: {
+        fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
+        casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
+        stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+      },
+
+      red: {
+        fill: { color: 0xe06e5f, alpha: 0.3 }   // rgb(224, 110, 95)
+      },
+      green: {
+        fill: { color: 0x8cd05f, alpha: 0.3 }   // rgb(140, 208, 95)
+      },
+      blue: {
+        fill: { color: 0x77d4de, alpha: 0.3 }   // rgb(119, 211, 222)
+      },
+      yellow: {
+        fill: { color: 0xffff94, alpha: 0.25 }  // rgb(255, 255, 148)
+      },
+      gold: {
+        fill: { color: 0xc4be19, alpha: 0.3 }   // rgb(196, 189, 25)
+      },
+      orange: {
+        fill: { color: 0xd6881a, alpha: 0.3 }   // rgb(214, 136, 26)
+      },
+      pink: {
+        fill: { color: 0xe3a4f5, alpha: 0.3 }   // rgb(228, 164, 245)
+      },
+      teal: {
+        fill: { color: 0x99e1aa, alpha: 0.3 }   // rgb(153, 225, 170)
+      },
+      lightgreen: {
+        fill: { color: 0xbee83f, alpha: 0.3 }   // rgb(191, 232, 63)
+      },
+      tan: {
+        fill: { color: 0xf5dcba, alpha: 0.3 }   // rgb(245, 220, 186)
+      },
+      darkgray: {
+        fill: { color: 0x8c8c8c, alpha: 0.5 }   // rgb(140, 140, 140)
+      },
+      lightgray: {
+        fill: { color: 0xaaaaaa, alpha: 0.3 }   // rgb(170, 170, 170)
+      },
+
       motorway: {
         casing: { width: 10, color: 0x70372f },
         stroke: { width: 8, color: 0xcf2081 }
@@ -208,15 +280,15 @@ export class StyleSystem extends AbstractSystem {
       },
       abandoned: {
         stroke: { width: 27, color: 0xcbd0d8, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
-      },
+      }
     };
 
     //
-    // A "style selector" contains OSM key/value tags to match to a style.
-    // Each "style selector" looks like this:
+    // A "Style Selector" contains OSM key/value tags to match to a style declaration.
+    // Each style selector looks like this:
     //
     // osmkey: {
-    //   osmvalue: stylename
+    //   osmvalue: styleID
     // }
     //
     // Can use the value '*' to match any osmvalue.
@@ -394,8 +466,8 @@ export class StyleSystem extends AbstractSystem {
       },
       waterway: {
         river: 'river',
-        dam: 'default',
-        weir: 'default',
+        dam: 'defaults',
+        weir: 'defaults',
         '*': 'stream'
       },
       service: {
@@ -406,23 +478,33 @@ export class StyleSystem extends AbstractSystem {
         '*': 'special_service'
       },
       intermittent: {
-        yes: 'stream_intermittent',
+        yes: 'stream_intermittent'
       },
       proposed: {
-        yes: 'proposed',
-      },
+        yes: 'proposed'
+      }
     };
 
 
     //
-    // "pattern selectors" work exactly like style selectors.
-    // They contain OSM key/value tags to match to a pattern.
+    // "Pattern Declarations" is just the list of supported `patternIDs`
+    // This needs to match the list of patterns loaded by `PixiTextures.js`
+    //
+    this.PATTERN_DECLARATIONS = [
+      'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
+      'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
+      'forest_needleleaved', 'grass', 'landfill', 'lines', 'orchard', 'pond', 'quarry', 'vineyard',
+      'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
+    ];
+
+    //
+    // "Pattern Selectors" work like style selectors.
+    // They contain OSM key/value tags to match to a `patternID`.
     //
     // osmkey: {
-    //   osmvalue: patternname
+    //   osmvalue: patternID
     // }
     //
-
     this.PATTERN_SELECTORS = {
       amenity: {
         fountain: 'water_standing',
@@ -484,29 +566,6 @@ export class StyleSystem extends AbstractSystem {
     };
 
 
-    this.ROADS = {
-      motorway: true,
-      motorway_link: true,
-      trunk: true,
-      trunk_link: true,
-      primary: true,
-      primary_link: true,
-      secondary: true,
-      secondary_link: true,
-      tertiary: true,
-      tertiary_link: true,
-      unclassified: true,
-      unclassified_link: true,
-      residential: true,
-      residential_link: true,
-      living_street: true,
-      living_street_link: true,
-      service: true,
-      service_link: true,
-      bus_guideway: true,
-      track: true
-    };
-
     this.styleMatch = this.styleMatch.bind(this);
   }
 
@@ -552,46 +611,47 @@ export class StyleSystem extends AbstractSystem {
    * @return {Object}  Styling info for the given tags
    */
   styleMatch(tags) {
-    let matched = this.DEFAULTS;
+    const defaults = this.STYLE_DECLARATIONS.DEFAULTS;
+    let matched = defaults;
     let selectivity = 999;
-    let context = this.context;
-    let colors = context.systems.colors.getColorScheme();
 
+    // First, match the tags to the best matching `styleID`..
     for (const [k, v] of Object.entries(tags)) {
-      const group = this.STYLE_SELECTORS[k];
-      if (!group || !v) continue;
+      const selector = this.STYLE_SELECTORS[k];
+      if (!selector || !v) continue;
 
       // Exception: only consider 'service' when a 'highway' tag is present (not 'railway') - Rapid#1252
       if (k === 'service' && getTag(tags, 'highway') === undefined) continue;
 
       // smaller groups are more selective
-      const groupsize = Object.keys(group).length;
-      const stylename = group[v] || group['*'];  // fallback value
+      const groupsize = Object.keys(selector).length;
+      const styleID = selector[v] ?? selector['*'];  // fallback value
 
-      if (stylename && groupsize <= selectivity) {
-        if (!colors[stylename] && !this.WAYS[stylename]) {
-          console.error(`invalid stylename: ${stylename}`);  // eslint-disable-line
+      if (styleID && groupsize <= selectivity) {
+        const declaration = this.STYLE_DECLARATIONS[styleID];
+        if (!declaration) {
+          console.error(`invalid styleID: ${styleID}`);  // eslint-disable-line
           continue;
         }
-        matched = !colors[stylename] ? this.WAYS[stylename] : colors[stylename];
+        matched = declaration;
         selectivity = groupsize;
         if (selectivity === 1) break;  // no need to keep looking at tags
       }
     }
 
-    // copy style, filling in defaults
-    let style = {};
+    // Copy props from the matched style declaration, applying defaults as needed..
+    const style = {};   // this will be our return value
     for (const group of ['fill', 'casing', 'stroke']) {
       style[group] = {};
       for (const prop of ['width', 'color', 'alpha', 'cap', 'dash']) {
-        let value = matched[group] && matched[group][prop];
+        const value = matched[group] && matched[group][prop];
         if (value !== undefined) {
           style[group][prop] = value;
-          continue;
-        }
-        let fallback = this.DEFAULTS[group] && this.DEFAULTS[group][prop];
-        if (fallback !== undefined) {
-          style[group][prop] = fallback;
+        } else {
+          const fallback = defaults[group] && defaults[group][prop];
+          if (fallback !== undefined) {
+            style[group][prop] = fallback;
+          }
         }
       }
     }
@@ -606,7 +666,7 @@ export class StyleSystem extends AbstractSystem {
     const tunnel = getTag(tags, 'tunnel');
     let surface = getTag(tags, 'surface');
     if (highway === 'track' && tracktype !== 'grade1') {
-      surface = surface || 'dirt';   // default unimproved (non-grade1) tracks to 'dirt' surface
+      surface = surface || 'dirt';   // assume unimproved (non-grade1) tracks have 'dirt' surface
     }
 
     if (bridge || embankment || cutting) {
@@ -621,30 +681,41 @@ export class StyleSystem extends AbstractSystem {
       style.stroke.alpha = 0.5;
     }
 
-    if (surface && this.ROADS[highway] && !osmPavedTags.surface[surface]) {
+    // Bumpy casing for roads with unpaved surface
+    if (surface && roadVals.has(highway) && !osmPavedTags.surface[surface]) {
       if (!bridge) style.casing.color = 0xcccccc;
       style.casing.cap = PIXI.LINE_CAP.BUTT;
       style.casing.dash = [4, 4];
     }
 
-    // Look for fill pattern
-    if (style.fill.pattern) return style;   // already has a pattern defined by the style
-    if (building) return style;             // don't apply patterns to buildings
+    // Finally look for fill pattern..
+    if (building) return style;   // exception: don't apply patterns to buildings
 
-    // Otherwise, look for a matching fill pattern.
+    // If the style declaration already contains a valid pattern, we can stop here
+    if (style.fill.pattern) {
+      if (!this.PATTERN_DECLARATIONS.includes(style.fill.pattern)) {
+        console.error(`invalid patternID: ${patternID}`);  // eslint-disable-line
+      } else {
+        return style;
+      }
+    }
+
+    // Match the tags to the best matching `patternID`..
     selectivity = 999;
-    for (const k in tags) {
-      const v = tags[k];
-      const group = this.PATTERN_SELECTORS[k];
-      if (!group || !v) continue;
+    for (const [k, v] of Object.entries(tags)) {
+      const selector = this.PATTERN_SELECTORS[k];
+      if (!selector || !v) continue;
 
       // smaller groups are more selective
-      let groupsize = Object.keys(group).length;
-      let patternname = group[v];
-      if (!patternname) patternname = group['*'];  // fallback value
+      const groupsize = Object.keys(selector).length;
+      const patternID = selector[v] ?? selector['*'];  // fallback value
 
-      if (patternname && groupsize <= selectivity) {
-        style.fill.pattern = patternname;
+      if (patternID && groupsize <= selectivity) {
+        if (!this.PATTERN_DECLARATIONS.includes(patternID)) {
+          console.error(`invalid patternID: ${patternID}`);  // eslint-disable-line
+          continue;
+        }
+        style.fill.pattern = patternID;
         selectivity = groupsize;
         if (selectivity === 1) break;  // no need to keep looking at tags
       }
@@ -653,7 +724,7 @@ export class StyleSystem extends AbstractSystem {
     return style;
 
 
-      // This just returns the value of the tag, but ignores 'no' values
+    // This just returns the value of the tag, but ignores 'no' values
     function getTag(tags, key) {
       return tags[key] === 'no' ? undefined : tags[key];
     }

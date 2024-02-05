@@ -6,7 +6,7 @@ import { utilNoAuto } from '../../util/index.js';
 
 export function uiSectionColorSelection(context) {
   const l10n = context.systems.l10n;
-  const colors = context.systems.colors;
+  const colors = context.systems.colors;  // todo: replace
 
   // Add or replace event handlers
   colors.off('colorsloaded', loadComboBoxData);

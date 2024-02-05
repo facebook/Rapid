@@ -86,18 +86,17 @@ function buildData() {
 
   writeEnJson();
 
-  minifySync('data/address_formats.json', 'dist/data/address_formats.min.json'),
-  minifySync('data/imagery.json', 'dist/data/imagery.min.json'),
-  minifySync('data/intro_graph.json', 'dist/data/intro_graph.min.json'),
-  minifySync('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json'),
-  minifySync('data/keepRight.json', 'dist/data/keepRight.min.json'),
-  minifySync('data/languages.json', 'dist/data/languages.min.json'),
-  minifySync('data/phone_formats.json', 'dist/data/phone_formats.min.json'),
-  minifySync('data/preset_overrides.json', 'dist/data/preset_overrides.min.json'),
-  minifySync('data/qa_data.json', 'dist/data/qa_data.min.json'),
-  minifySync('data/shortcuts.json', 'dist/data/shortcuts.min.json'),
-  minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json')
-  minifySync('data/colors.json', 'dist/data/colors.min.json')
+  minifySync('data/address_formats.json', 'dist/data/address_formats.min.json');
+  minifySync('data/imagery.json', 'dist/data/imagery.min.json');
+  minifySync('data/intro_graph.json', 'dist/data/intro_graph.min.json');
+  minifySync('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json');
+  minifySync('data/keepRight.json', 'dist/data/keepRight.min.json');
+  minifySync('data/languages.json', 'dist/data/languages.min.json');
+  minifySync('data/phone_formats.json', 'dist/data/phone_formats.min.json');
+  minifySync('data/preset_overrides.json', 'dist/data/preset_overrides.min.json');
+  minifySync('data/qa_data.json', 'dist/data/qa_data.min.json');
+  minifySync('data/shortcuts.json', 'dist/data/shortcuts.min.json');
+  minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json');
 
   return _currBuild = Promise.resolve(true)
     .then(() => {
