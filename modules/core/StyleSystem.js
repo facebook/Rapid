@@ -10,6 +10,14 @@ const roadVals = new Set([
   'unclassified', 'road', 'service', 'track', 'living_street', 'bus_guideway', 'busway',
 ]);
 
+const lifecycleVals = new Set([
+  'abandoned', 'construction', 'demolished', 'destroyed', 'dismantled', 'disused',
+  'intermittent', 'obliterated', 'planned', 'proposed', 'razed', 'removed', 'was'
+]);
+
+// matches these things as a tag prefix
+const lifecycleRegex = new RegExp('^(' + Array.from(lifecycleVals).join('|') + '):');
+
 
 /**
  * `StyleSystem` maintains the the rules about how map data should look.
@@ -85,6 +93,11 @@ export class StyleSystem extends AbstractSystem {
         fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
         casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
         stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+      },
+
+      LIFECYCLE: {   // e.g. planned, proposed, abandoned, disused, razed
+        casing: { alpha: 0 },  // disable
+        stroke: { dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       },
 
       red: {
@@ -168,9 +181,6 @@ export class StyleSystem extends AbstractSystem {
         casing: { width: 7, color: 0x746f6f },
         stroke: { width: 5, color: 0xc5b59f }
       },
-      proposed: {
-        stroke: { width: 8, color: 0xcccccc, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
-      },
       pedestrian: {
         casing: { width: 7, color: 0xffffff },
         stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: PIXI.LINE_CAP.BUTT }
@@ -217,11 +227,6 @@ export class StyleSystem extends AbstractSystem {
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0x77dddd }
       },
-      stream_intermittent: {
-        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
-        casing: { alpha: 0 },  // disable
-        stroke: { width: 5, color: 0x77dddd, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
-      },
       ridge: {
         stroke: { width: 2, color: 0x8cd05f}  // rgb(140, 208, 95)
       },
@@ -236,10 +241,6 @@ export class StyleSystem extends AbstractSystem {
       railway: {
         casing: { width: 7, color: 0x555555, cap: PIXI.LINE_CAP.BUTT },
         stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT }
-      },
-      railway_abandoned: {
-        casing: { alpha: 0 },  // disable
-        stroke: { dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       },
       ferry: {
         casing: { alpha: 0 },  // disable
@@ -281,10 +282,6 @@ export class StyleSystem extends AbstractSystem {
       roller_coaster: {
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: PIXI.LINE_CAP.BUTT }
-      },
-      abandoned: {
-        casing: { alpha: 0 },  // disable
-        stroke: { width: 27, color: 0xcbd0d8, dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
       }
     };
 
@@ -309,8 +306,6 @@ export class StyleSystem extends AbstractSystem {
 
     this.STYLE_SELECTORS = {
       aeroway: {
-        planned: 'proposed',
-        proposed: 'proposed',
         runway: 'runway',
         taxiway: 'taxiway'
       },
@@ -350,7 +345,6 @@ export class StyleSystem extends AbstractSystem {
         green: 'lightgreen'
       },
       highway: {
-        abandoned: 'abandoned',
         bridleway: 'bridleway',
         bus_guideway: 'railway',
         busway: 'special_service',
@@ -364,10 +358,8 @@ export class StyleSystem extends AbstractSystem {
         motorway_link: 'motorway',
         path: 'path',
         pedestrian: 'pedestrian',
-        planned: 'proposed',
         primary: 'primary',
         primary_link: 'primary',
-        proposed: 'proposed',
         residential: 'residential',
         residential_link: 'residential',
         secondary: 'secondary',
@@ -447,10 +439,7 @@ export class StyleSystem extends AbstractSystem {
         plant: 'pink'
       },
       railway: {
-        abandoned: 'railway_abandoned',
-        planned: 'proposed',
         platform: 'footway',
-        proposed: 'proposed',
         '*': 'railway'
       },
       roller_coaster: {
@@ -471,8 +460,8 @@ export class StyleSystem extends AbstractSystem {
       },
       waterway: {
         river: 'river',
-        dam: 'defaults',
-        weir: 'defaults',
+        dam: 'DEFAULTS',
+        weir: 'DEFAULTS',
         '*': 'stream'
       },
       service: {
@@ -481,12 +470,6 @@ export class StyleSystem extends AbstractSystem {
         'drive-through': 'special_service',
         parking_aisle: 'special_service',
         '*': 'special_service'
-      },
-      intermittent: {
-        yes: 'stream_intermittent'
-      },
-      proposed: {
-        yes: 'proposed'
       }
     };
 
@@ -617,34 +600,67 @@ export class StyleSystem extends AbstractSystem {
    */
   styleMatch(tags) {
     const defaults = this.STYLE_DECLARATIONS.DEFAULTS;
+
     let matched = defaults;
-    let selectivity = 999;
+    let styleScore = 999;   // lower numbers are better
+    let styleKey;           // the key controlling the styling, if any
+    let styleVal;           // the value controlling the styling, if any
 
     // First, match the tags to the best matching `styleID`..
     for (const [k, v] of Object.entries(tags)) {
       const selector = this.STYLE_SELECTORS[k];
       if (!selector || !v) continue;
 
-      // Exception: only consider 'service' when a 'highway' tag is present (not 'railway') - Rapid#1252
+      // Exception: only consider 'service' when a 'highway' tag is present (not 'railway'), see Rapid#1252
       if (k === 'service' && getTag(tags, 'highway') === undefined) continue;
 
-      // smaller groups are more selective
-      const groupsize = Object.keys(selector).length;
-      const styleID = selector[v] ?? selector['*'];  // fallback value
+      const styleID = selector[v] ?? selector['*'];  // '*' = fallback value
+      let score = Object.keys(selector).length;      // smaller groups are more selective
+      if (lifecycleVals.has(v)) score = 999;         // exception: lifecycle values
 
-      if (styleID && groupsize <= selectivity) {
+      if (styleID && score <= styleScore) {
         const declaration = this.STYLE_DECLARATIONS[styleID];
         if (!declaration) {
           console.error(`invalid styleID: ${styleID}`);  // eslint-disable-line
           continue;
         }
+
         matched = declaration;
-        selectivity = groupsize;
-        if (selectivity === 1) break;  // no need to keep looking at tags
+        styleScore = score;
+        styleKey = k;
+        styleVal = v;
+
+        if (styleScore === 1) break;  // no need to keep looking at tags
       }
     }
 
-    // Copy props from the matched style declaration, applying defaults as needed..
+    // Also scan for lifecycle keywords in any of their various forms.
+    // The feature will be drawn with dashed lines.
+    // see Rapid#1312, Rapid#1199, Rapid#791, Rapid #535
+    let hasLifecycleTag = false;
+    for (const [k, v] of Object.entries(tags)) {
+      // Lifecycle key, e.g. `demolished=yes`
+      // (applies to all tags, styleKey doesn't matter)
+      if (lifecycleVals.has(k) && v !== 'no') {
+        hasLifecycleTag = true;
+        break;
+
+      // Lifecycle value, e.g. `railway=demolished`
+      // (applies only if `k` is styleKey or there is no styleKey controlling styling)
+      } else if ((!styleKey || k === styleKey) && lifecycleVals.has(v)) {
+        hasLifecycleTag = true;
+        break;
+
+      // Lifecycle key prefix, e.g. `demolished:railway=rail`
+      // (applies only if there is no styleKey controlling the styling)
+      } else if (!styleKey && lifecycleRegex.test(k) && v !== 'no') {
+        hasLifecycleTag = true;
+        break;
+      }
+    }
+
+
+    // Copy style properties from the matched style declaration, fallback to defaults as needed..
     const style = {};   // this will be our return value
     for (const group of ['fill', 'casing', 'stroke']) {
       style[group] = {};
@@ -693,6 +709,21 @@ export class StyleSystem extends AbstractSystem {
       style.casing.dash = [4, 4];
     }
 
+    // After applying all other styling rules and overrides, perform lifecycle overrides.
+    // (This is for features that are not really existing - "abandoned", "proposed", etc.)
+    if (hasLifecycleTag) {
+      const lifecycle = this.STYLE_DECLARATIONS.LIFECYCLE;
+      for (const group of ['fill', 'casing', 'stroke']) {
+        for (const prop of ['width', 'color', 'alpha', 'cap', 'dash']) {
+          const value = lifecycle[group] && lifecycle[group][prop];
+          if (value !== undefined) {
+            style[group][prop] = value;
+          }
+        }
+      }
+    }
+
+
     // Finally look for fill pattern..
     if (building) return style;   // exception: don't apply patterns to buildings
 
@@ -706,23 +737,23 @@ export class StyleSystem extends AbstractSystem {
     }
 
     // Match the tags to the best matching `patternID`..
-    selectivity = 999;
+    let patternScore = 999;
     for (const [k, v] of Object.entries(tags)) {
       const selector = this.PATTERN_SELECTORS[k];
       if (!selector || !v) continue;
 
-      // smaller groups are more selective
-      const groupsize = Object.keys(selector).length;
-      const patternID = selector[v] ?? selector['*'];  // fallback value
+      const patternID = selector[v] ?? selector['*'];  // '*' = fallback value
+      let score = Object.keys(selector).length;        // smaller groups are more selective
+      if (lifecycleVals.has(v)) score = 999;           // exception: lifecycle values
 
-      if (patternID && groupsize <= selectivity) {
+      if (patternID && score <= patternScore) {
         if (!this.PATTERN_DECLARATIONS.includes(patternID)) {
           console.error(`invalid patternID: ${patternID}`);  // eslint-disable-line
           continue;
         }
         style.fill.pattern = patternID;
-        selectivity = groupsize;
-        if (selectivity === 1) break;  // no need to keep looking at tags
+        patternScore = score;
+        if (patternScore === 1) break;  // no need to keep looking at tags
       }
     }
 
