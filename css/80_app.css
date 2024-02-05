@@ -3206,6 +3206,13 @@ div.full-screen > button:focus {
     line-height: 2;
 }
 
+/* preferences: map color scheme */
+.color-select {
+    width: 100%;
+    border: none;
+    padding-left: 10px;
+}
+
 
 /* Issues
 ------------------------------------------------------- */

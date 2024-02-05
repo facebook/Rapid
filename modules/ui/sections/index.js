@@ -2,6 +2,8 @@ export { uiSectionBackgroundDisplayOptions } from './background_display_options.
 export { uiSectionBackgroundList } from './background_list.js';
 export { uiSectionBackgroundOffset } from './background_offset.js';
 export { uiSectionChanges } from './changes.js';
+export { uiSectionColorSelection } from './color_selection.js';
+export { uiSectionColorblindModeOptions } from './colorblind_mode_options.js';
 export { uiSectionDataLayers } from './data_layers.js';
 export { uiSectionEntityIssues } from './entity_issues.js';
 export { uiSectionFeatureType } from './feature_type.js';

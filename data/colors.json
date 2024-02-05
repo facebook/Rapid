@@ -1,38 +1,78 @@
 {
+  "default": {
     "red": {
-      "fill": { "color": "0xe06e5f", "alpha": 0.3 }  
+      "fill": { "color": "0xe06e5f", "alpha": 0.3 }
     },
     "green": {
-      "fill": { "color": "0x8cd05f", "alpha": 0.3 }  
+      "fill": { "color": "0x8cd05f", "alpha": 0.3 }
     },
     "blue": {
-      "fill": { "color": "0x77d4de", "alpha": 0.3 }   
+      "fill": { "color": "0x77d4de", "alpha": 0.3 }
     },
     "yellow": {
-      "fill": { "color": "0xffff94", "alpha": 0.25 }  
+      "fill": { "color": "0xffff94", "alpha": 0.25 }
     },
     "gold": {
-      "fill": { "color": "0xc4be19", "alpha": 0.3 }  
+      "fill": { "color": "0xc4be19", "alpha": 0.3 }
     },
     "orange": {
-      "fill": { "color": "0xd6881a", "alpha": 0.3 }  
+      "fill": { "color": "0xd6881a", "alpha": 0.3 }
     },
     "pink": {
-      "fill": { "color": "0xe3a4f5", "alpha": 0.3 }   
+      "fill": { "color": "0xe3a4f5", "alpha": 0.3 }
     },
     "teal": {
-      "fill": { "color": "0x99e1aa", "alpha": 0.3 }   
+      "fill": { "color": "0x99e1aa", "alpha": 0.3 }
     },
     "lightgreen": {
-      "fill": { "color": "0xbee83f", "alpha": 0.3 }  
+      "fill": { "color": "0xbee83f", "alpha": 0.3 }
     },
     "tan": {
-      "fill": { "color": "0xf5dcba", "alpha": 0.3 }   
+      "fill": { "color": "0xf5dcba", "alpha": 0.3 }
     },
     "darkgray": {
-      "fill": { "color": "0x8c8c8c", "alpha": 0.5 }   
+      "fill": { "color": "0x8c8c8c", "alpha": 0.5 }
     },
     "lightgray": {
-      "fill": { "color": "0xaaaaaa", "alpha": 0.3 }   
+      "fill": { "color": "0xaaaaaa", "alpha": 0.3 }
     }
- }
+  },
+  "example": {
+    "red": {
+      "fill": { "color": "0xFF0E41", "alpha": 0.3 }
+    },
+    "green": {
+      "fill": { "color": "0x09F04A", "alpha": 0.3 }
+    },
+    "blue": {
+      "fill": { "color": "0x0CBCFF", "alpha": 0.3 }
+    },
+    "yellow": {
+      "fill": { "color": "0xFFCA09", "alpha": 0.25 }
+    },
+    "gold": {
+      "fill": { "color": "0xFF0EBC", "alpha": 0.3 }
+    },
+    "orange": {
+      "fill": { "color": "0xFF510B", "alpha": 0.3 }
+    },
+    "pink": {
+      "fill": { "color": "0xF1C0E8", "alpha": 0.3 }
+    },
+    "teal": {
+      "fill": { "color": "0x12FFD1", "alpha": 0.3 }
+    },
+    "lightgreen": {
+      "fill": { "color": "0x540FFF", "alpha": 0.3 }
+    },
+    "tan": {
+      "fill": { "color": "0xAFFA1F", "alpha": 0.3 }
+    },
+    "darkgray": {
+      "fill": { "color": "0x0000FE", "alpha": 0.5 }
+    },
+    "lightgray": {
+      "fill": { "color": "0xE9AF1E", "alpha": 0.3 }
+    }
+  }
+}
