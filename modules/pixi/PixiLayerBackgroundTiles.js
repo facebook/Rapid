@@ -86,7 +86,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     let index = 0;
     for (const [sourceID, source] of showSources) {
       const sourceContainer = this.getSourceContainer(sourceID);
-      sourceContainer.zIndex = (sourceID === 'mapbox_locator_overlay' ? 999 : index++);
+      sourceContainer.zIndex = (source.isLocatorOverlay() ? 999 : index++);
 
       // If this is the base tile layer (and not minimap) apply the filters to it.
       if (!this.isMinimap && source === base) {
@@ -164,6 +164,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     let covered = false;
     for (let tryZoom = maxZoom; !covered && tryZoom >= minZoom; tryZoom--) {
       if (!source.validZoom(tryZoom)) continue;  // not valid here, zoom out
+      if (source.isLocatorOverlay() && maxZoom > 17) continue;   // overlay is blurry if zoomed in this far
 
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
@@ -173,7 +174,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       let hasHoles = false;
       for (const tile of result.tiles) {
         // skip locator overlay tiles where we have osm data loaded there
-        if (!this.isMinimap && tryZoom >= 10 && osm && source.id === 'mapbox_locator_overlay') {
+        if (!this.isMinimap && tryZoom >= 10 && osm && source.isLocatorOverlay()) {
           const loc = tile.wgs84Extent.center();
           if (osm.isDataLoaded(loc)) continue;
         }
