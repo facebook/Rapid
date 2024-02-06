@@ -359,8 +359,8 @@ export class PixiFeaturePoint extends AbstractFeature {
    * style
    * @param  obj  Style `Object` (contents depends on the Feature type)
    *
-   * 'point' - see PixiFeaturePoint.js
-   * 'line'/'polygon' - see styles.js
+   * 'point' - see `PixiFeaturePoint.js`
+   * 'line'/'polygon' - see `StyleSystem.js`
    */
   get style() {
     return this._style;

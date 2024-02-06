@@ -1,5 +1,3 @@
-import * as PIXI from 'pixi.js';
-
 import { AbstractSystem } from './AbstractSystem.js';
 import { osmPavedTags } from '../osm/tags.js';
 
@@ -80,8 +78,8 @@ export class StyleSystem extends AbstractSystem {
     //   `width` - line width in pixel (for fills, this is the width of the outline)
     //   `color` - the color
     //   `alpha` - 0 = transparent/invisible, 1 = filled
-    //   `cap`   - `PIXI.LINE_CAP.` `BUTT`, `SQUARE`, or `ROUND`
-    //   `join`  - `PIXI.LINE_JOIN.` `BEVEL`, `MITER`, or `ROUND`
+    //   `cap`   - one of 'butt', 'round', or 'square'  (see https://pixijs.download/dev/docs/PIXI.html#LINE_CAP)
+    //   `join`  - one of 'bevel', 'miter', or 'round', (see https://pixijs.download/dev/docs/PIXI.html#LINE_JOIN)
     //   `dash`  - array of pixels on/off - e.g. `[20, 5, 5, 5]`
     //
     // The fill group also supports:
@@ -91,13 +89,13 @@ export class StyleSystem extends AbstractSystem {
     this.STYLE_DECLARATIONS = {
       DEFAULTS: {
         fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-        casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
-        stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+        casing: { width: 5, color: 0x444444, alpha: 1, cap: 'round', join: 'round' },
+        stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: 'round', join: 'round' }
       },
 
       LIFECYCLE: {   // e.g. planned, proposed, abandoned, disused, razed
         casing: { alpha: 0 },  // disable
-        stroke: { dash: [7, 3], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { dash: [7, 3], cap: 'butt' }
       },
 
       red: {
@@ -183,39 +181,39 @@ export class StyleSystem extends AbstractSystem {
       },
       pedestrian: {
         casing: { width: 7, color: 0xffffff },
-        stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: 'butt' }
       },
       path: {
         casing: { width: 5, color: 0xddccaa },
-        stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: 'butt' }
       },
       footway: {
         casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: 'butt' }
       },
       crossing_marked: {
         casing: { width: 5, color: 0xddccaa },
-        stroke: { width: 3, color: 0x4c4444, dash: [6, 3], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0x4c4444, dash: [6, 3], cap: 'butt' }
       },
       crossing_unmarked: {
         casing: { width: 5, color: 0xddccaa },
-        stroke: { width: 3, color: 0x776a6a, dash: [6, 4], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0x776a6a, dash: [6, 4], cap: 'butt' }
       },
       cycleway: {
         casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x58a9ed, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0x58a9ed, dash: [6, 6], cap: 'butt' }
       },
       bridleway: {
         casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0xe06d5f, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0xe06d5f, dash: [6, 6], cap: 'butt' }
       },
       corridor: {
         casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x8cd05f, dash: [2, 8], cap: PIXI.LINE_CAP.ROUND }
+        stroke: { width: 3, color: 0x8cd05f, dash: [2, 8], cap: 'round' }
       },
       steps: {
         casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: 'butt' }
       },
       river: {
         fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
@@ -231,41 +229,41 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 2, color: 0x8cd05f}  // rgb(140, 208, 95)
       },
       runway: {
-        casing: { width: 10, color: 0x000000, cap: PIXI.LINE_CAP.BUTT },
-        stroke: { width: 8, color: 0xffffff, dash: [24, 48], cap: PIXI.LINE_CAP.BUTT }
+        casing: { width: 10, color: 0x000000, cap: 'butt' },
+        stroke: { width: 8, color: 0xffffff, dash: [24, 48], cap: 'butt' }
       },
       taxiway: {
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0xffff00 }
       },
       railway: {
-        casing: { width: 7, color: 0x555555, cap: PIXI.LINE_CAP.BUTT },
-        stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT }
+        casing: { width: 7, color: 0x555555, cap: 'butt' },
+        stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: 'butt' }
       },
       ferry: {
         casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0x58a9ed, dash: [12, 8], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 3, color: 0x58a9ed, dash: [12, 8], cap: 'butt' }
       },
       boundary: {
-        casing: { width: 6, color: 0x82b5fe, cap: PIXI.LINE_CAP.BUTT },
-        stroke: { width: 2, color: 0xffffff, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+        casing: { width: 6, color: 0x82b5fe, cap: 'butt' },
+        stroke: { width: 2, color: 0xffffff, dash: [20, 5, 5, 5], cap: 'butt' }
       },
       boundary_park: {
-        casing: { width: 6, color: 0x82b5fe, cap: PIXI.LINE_CAP.BUTT },
-        stroke: { width: 2, color: 0xb0e298, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+        casing: { width: 6, color: 0x82b5fe, cap: 'butt' },
+        stroke: { width: 2, color: 0xb0e298, dash: [20, 5, 5, 5], cap: 'butt' }
       },
       barrier: {
         casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: PIXI.LINE_CAP.ROUND }
+        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: 'round' }
       },
       barrier_wall: {
         casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: PIXI.LINE_CAP.ROUND }
+        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: 'round' }
       },
       barrier_hedge: {
         fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
         casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 2, 5], cap: PIXI.LINE_CAP.ROUND }
+        stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 2, 5], cap: 'round' }
       },
       tree_row: {
         casing: { width: 7, color: 0x444444 },
@@ -273,15 +271,15 @@ export class StyleSystem extends AbstractSystem {
       },
       construction: {
         casing: { width: 10, color: 0xffffff},
-        stroke: { width: 8, color: 0xfc6c14, dash: [10, 10], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 8, color: 0xfc6c14, dash: [10, 10], cap: 'butt' }
       },
       pipeline: {
         casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0xdddddd, dash: [80, 2], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 5, color: 0xdddddd, dash: [80, 2], cap: 'butt' }
       },
       roller_coaster: {
         casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: PIXI.LINE_CAP.BUTT }
+        stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: 'butt' }
       }
     };
 
@@ -693,7 +691,7 @@ export class StyleSystem extends AbstractSystem {
     if (bridge || embankment || cutting) {
       style.casing.width += 7;
       style.casing.color = 0x000000;
-      style.casing.cap = PIXI.LINE_CAP.BUTT;
+      style.casing.cap = 'butt';
       if (embankment || cutting) {
         style.casing.dash = [2, 4];
       }
@@ -705,7 +703,7 @@ export class StyleSystem extends AbstractSystem {
     // Bumpy casing for roads with unpaved surface
     if (surface && roadVals.has(highway) && !osmPavedTags.surface[surface]) {
       if (!bridge) style.casing.color = 0xcccccc;
-      style.casing.cap = PIXI.LINE_CAP.BUTT;
+      style.casing.cap = 'butt';
       style.casing.dash = [4, 4];
     }
 

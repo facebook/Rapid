@@ -3,7 +3,7 @@ import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
 
 import { AbstractFeature } from './AbstractFeature.js';
-import { getLineSegments, lineToPoly } from './helpers.js';
+import { getLineCapEnum, getLineJoinEnum, getLineSegments, lineToPoly } from './helpers.js';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;
@@ -238,16 +238,16 @@ export class PixiFeatureLine extends AbstractFeature {
           color: style[which].color,
           width: width,
           alpha: style[which].alpha || 1.0,
-          join: style[which].join || PIXI.LINE_JOIN.ROUND,
-          cap: style[which].cap || PIXI.LINE_CAP.ROUND,
+          join: getLineJoinEnum(style[which].join),
+          cap:  getLineCapEnum(style[which].cap),
         });
       } else {
         g = g.lineStyle({
           color: style[which].color,
           width: width,
           alpha: style[which].alpha || 1.0,
-          join: style[which].join || PIXI.LINE_JOIN.ROUND,
-          cap: style[which].cap || PIXI.LINE_CAP.ROUND,
+          join: getLineJoinEnum(style[which].join),
+          cap:  getLineCapEnum(style[which].cap),
         });
       }
 
@@ -358,8 +358,8 @@ export class PixiFeatureLine extends AbstractFeature {
    * style
    * @param  obj  Style `Object` (contents depends on the Feature type)
    *
-   * 'point' - see PixiFeaturePoint.js
-   * 'line'/'multipolygon' - see styles.js
+   * 'point' - see `PixiFeaturePoint.js`
+   * 'line'/'polygon' - see `StyleSystem.js`
    */
   get style() {
     return this._style;
@@ -378,7 +378,7 @@ const STYLE_DEFAULTS = {
   labelTint: 0xeeeeee,
 
   fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-  casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
-  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+  casing: { width: 5, color: 0x444444, alpha: 1, cap: 'round', join: 'round' },
+  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: 'round', join: 'round' }
 };
 

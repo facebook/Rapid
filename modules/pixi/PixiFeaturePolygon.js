@@ -290,26 +290,24 @@ export class PixiFeaturePolygon extends AbstractFeature {
     if (shape && this.stroke.visible) {
       const lineWidth = wireframeMode ? 1 : style.fill.width || 2;
 
-      // Solid lines
-      if (!dash) {
+      if (!dash) {  // Solid lines
         this.stroke
         .clear()
         .lineStyle({
           alpha: 1,
           width: lineWidth,
-          color: color,
+          color: color
         })
         .drawShape(shape.outer);
 
         shape.holes.forEach(hole => this.stroke.drawShape(hole));
 
-      } else {
-        //Dashed lines
+      } else {   // Dashed lines
         const DASH_STYLE = {
           alpha: 1.0,
           dash: dash,
-          width: lineWidth,   // px
-          color: color,
+          width: lineWidth, // px
+          color: color
         };
         this.stroke.clear();
         const dl = new DashLine(this.stroke, DASH_STYLE);
@@ -473,8 +471,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
    * style
    * @param  obj  Style `Object` (contents depends on the Feature type)
    *
-   * 'point' - see PixiFeaturePoint.js
-   * 'line'/'polygon' - see styles.js
+   * 'point' - see `PixiFeaturePoint.js`
+   * 'line'/'polygon' - see `StyleSystem.js`
    */
   get style() {
     return this._style;
@@ -494,6 +492,6 @@ const STYLE_DEFAULTS = {
   labelTint: 0xeeeeee,
 
   fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-  casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
-  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+  casing: { width: 5, color: 0x444444, alpha: 1, cap: 'round', join: 'round' },
+  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: 'round', join: 'round' }
 };

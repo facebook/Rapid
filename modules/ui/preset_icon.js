@@ -90,7 +90,7 @@ export function uiPresetIcon(context) {
     const color = new Color(style.fill.color).toHex();
     const alpha = style.fill.alpha;
 
-    let svg = container
+    const svg = container
       .append('svg')
       .attr('class', 'preset-icon-area-border')
       .attr('width', `${px}px`)
@@ -140,7 +140,7 @@ export function uiPresetIcon(context) {
     const dash = style.stroke.dash;
     const hasDash = Array.isArray(dash);
 
-    let svg = container
+    const svg = container
       .append('svg')
       .attr('class', 'preset-icon-line')
       .attr('width', `${px}px`)
@@ -158,7 +158,7 @@ export function uiPresetIcon(context) {
       .append('path')
       .attr('class', 'stroke')
       .attr('stroke', strokeColor)
-      .attr('stroke-dasharray', (hasDash ? dash.map(v => v * 0.75).join(' ') : null))
+      .attr('stroke-dasharray', (hasDash ? dash.map(v => v * 0.75).join(' ') : null))  // scale down the dashes
       .attr('d', `M${x1} ${y} L${x2} ${y}`);
 
     const rVertex = 3;
@@ -234,7 +234,7 @@ export function uiPresetIcon(context) {
     const isPreset = (typeof p.setTags === 'function');
     const isCategory = !isPreset;
 
-    let tags = isPreset ? p.setTags({}, geom) : {};
+    const tags = isPreset ? p.setTags({}, geom) : {};
     for (let k in tags) {
       if (tags[k] === '*') {
         tags[k] = 'yes';
