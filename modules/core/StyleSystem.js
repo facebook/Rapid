@@ -493,7 +493,7 @@ export class StyleSystem extends AbstractSystem {
     //
     this.PATTERN_SELECTORS = {
       amenity: {
-        fountain: 'water_standing',
+        fountain: 'pond',
         grave_yard: 'cemetery'
       },
       golf: {
