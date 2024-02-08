@@ -722,12 +722,11 @@ export class OsmService extends AbstractSystem {
   // Load data (entities) from the API in tiles
   // GET /api/0.6/map?bbox=
   loadTiles(projection, callback) {
-    if (this._paused) return;
+    if (this._paused || this.getRateLimit()) return;
 
     // determine the needed tiles to cover the view
     const tiles = this._tiler
       .zoomRange(this._tileZoom)
-      .margin(1)       // prefetch offscreen tiles as well
       .getTiles(projection)
       .tiles;
 
@@ -748,13 +747,13 @@ export class OsmService extends AbstractSystem {
 
   /**
    * setRateLimit
-   * This will start a rate limit for the given number of seconds.
-   * If a rate limit already exists, will extend the time if needed.
+   * This will establish a rate limit for the given duration in seconds.
+   * If a rate limit already exists, extend the time if needed.
    * @param  {number}   seconds - seconds to impose the rate limit (default 10 sec)
    * @return {Object?}  rate limit info, or `null` if `seconds` is junk
    */
   setRateLimit(seconds = 10) {
-    // If seconds makes no sense, just return the existing rate limit, if any..
+    // If `seconds` makes no sense, just return the existing rate limit, if any..
     if (isNaN(seconds) || !isFinite(seconds) || seconds <= 0) {
       return this._rateLimit;
     }
@@ -763,6 +762,12 @@ export class OsmService extends AbstractSystem {
     if (this._rateLimit && this._rateLimit.remaining >= seconds) {
       return this._rateLimit;
     }
+
+    // Stop loading tiles, and cancel any inflight
+    this._tileCache.toLoad = {};
+    this._noteCache.toLoad = {};
+    Object.values(this._tileCache.inflight).forEach(this._abortRequest);
+    Object.values(this._noteCache.inflight).forEach(this._abortRequest);
 
     return this._rateLimit = {
       start: Math.floor(Date.now() / 1000),  // epoch seconds
@@ -808,7 +813,7 @@ export class OsmService extends AbstractSystem {
   // Load a single data tile
   // GET /api/0.6/map?bbox=
   loadTile(tile, callback) {
-    if (this._paused) return;
+    if (this._paused || this.getRateLimit()) return;
 
     const cache = this._tileCache;
     if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
@@ -862,6 +867,7 @@ export class OsmService extends AbstractSystem {
 
   // load the tile that covers the given `loc`
   loadTileAtLoc(loc, callback) {
+    if (this._paused || this.getRateLimit()) return;
     const cache = this._tileCache;
 
     // Back off if the toLoad queue is filling up.. re iD#6417
@@ -886,7 +892,8 @@ export class OsmService extends AbstractSystem {
   // Load notes from the API in tiles
   // GET /api/0.6/notes?bbox=
   loadNotes(projection, noteOptions) {
-    if (this._paused) return;
+    if (this._paused || this.getRateLimit()) return;
+
     noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
 
     const cache = this._noteCache;
@@ -901,7 +908,6 @@ export class OsmService extends AbstractSystem {
     // determine the needed tiles to cover the view
     const tiles = this._tiler
       .zoomRange(this._noteZoom)
-      .margin(1)       // prefetch offscreen tiles as well
       .getTiles(projection)
       .tiles;
 
