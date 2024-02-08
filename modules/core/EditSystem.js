@@ -123,6 +123,8 @@ export class EditSystem extends AbstractSystem {
       }
     }
 
+    this._reset();
+
     const storage = this.context.systems.storage;
     const prerequisites = storage.initAsync();
 
@@ -153,7 +155,6 @@ export class EditSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-    this.reset();
     this._started = true;
     return Promise.resolve();
   }
@@ -165,20 +166,27 @@ export class EditSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    this.reset();
+    const prevIndex = this._index;
+    this._reset();
+
+    // Emit all events
+    this.emit('stagingchange', this._fullDifference);  // will be an empty Difference (this is ok)
+    this.emit('stablechange', this._fullDifference);
+    this.emit('historyjump', prevIndex, this._index);
+    this.emit('backup', true);  // emit `true` to clear any previous errors
+
     return Promise.resolve();
   }
 
 
   /**
-   * reset
-   * Called after completing an edit session to reset any internal state
+   * _reset
+   * Internal reset of all stored data
    */
-  reset() {
+  _reset() {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
     this.deferredBackup.cancel();
 
-    const prevIndex = this._index;
 
     // Create a new Base Graph / Base Edit.
     const baseGraph = new Graph();
@@ -200,12 +208,6 @@ export class EditSystem extends AbstractSystem {
     this._checkpoints.clear();
     this._inTransition = false;
     this._inTransaction = false;
-
-    // Emit all events
-    this.emit('stagingchange', this._fullDifference);  // will be an empty Difference (this is ok)
-    this.emit('stablechange', this._fullDifference);
-    this.emit('historyjump', prevIndex, this._index);
-    this.emit('backup', true);  // emit `true` to clear any previous errors
   }
 
 
@@ -1012,7 +1014,7 @@ export class EditSystem extends AbstractSystem {
     }
 
     // should we assert that the history has been reset?
-    // we expect to chain after context.resetAsync() ? we could just call this.reset() ?
+    // we expect to chain after context.resetAsync() ? we could just call this._reset() ?
 
     map.pause();  // block rendering
 

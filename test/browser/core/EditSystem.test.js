@@ -92,14 +92,17 @@ describe('EditSystem', () => {
   });
 
 
-  describe('#reset', () => {
+  describe('#resetAsync', () => {
     it('clears the history stack', () => {
       _editor.commit({ annotation: 'one' });
       _editor.commit({ annotation: 'two' });
       _editor.undo();
-      _editor.reset();
-      expect(_editor._history).to.be.an.instanceOf(Array).with.lengthOf(1);
-      expect(_editor._index).to.eql(0);
+
+      return _editor.resetAsync()
+        .then(() => {
+          expect(_editor._history).to.be.an.instanceOf(Array).with.lengthOf(1);
+          expect(_editor._index).to.eql(0);
+        });
     });
   });
 
