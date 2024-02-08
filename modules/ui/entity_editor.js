@@ -195,6 +195,7 @@ export function uiEntityEditor(context) {
    *
    */
   function _onStagingChange(difference) {
+    if (!difference) return;
     if (!_selection) return;     // called before first render
     if (_selection.selectAll('.entity-editor').empty()) return;
     if (_state === 'hide') return;
