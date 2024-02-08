@@ -582,8 +582,7 @@ en:
       error: Unable to reach the OpenStreetMap API. Your edits are safe locally. Check your network connection.
       offline: The OpenStreetMap API is offline. Your edits are safe locally. Please come back later.
       readonly: The OpenStreetMap API is currently read-only. You can continue editing, but must wait to save your changes.
-      ratelimit_auth: You have downloaded too much data from OpenStreetMap. You can fix this by logging in.
-      ratelimit_wait: You have downloaded too much data from OpenStreetMap. Please try again in {seconds} seconds.
+      ratelimit: You have downloaded too much data from OpenStreetMap. Please try again in {seconds} seconds or switch accounts.
       local_storage_full: You have made too many edits to back up. Consider saving your changes now.
     retry: Retry
   commit:

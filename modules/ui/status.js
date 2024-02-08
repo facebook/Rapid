@@ -11,7 +11,6 @@ export function uiStatus(context) {
 
   let _apiStatus;
   let _backupStatus;
-  let _rateLimitInfo;
 
 
   return function(selection) {
@@ -19,7 +18,7 @@ export function uiStatus(context) {
 
     // Count down once per second if we're under a rate limit..
     window.setInterval(() => {
-      if (_rateLimitInfo) {
+      if (_apiStatus === 'ratelimit') {
         render();
       }
     }, 1000);
@@ -45,16 +44,14 @@ export function uiStatus(context) {
 
     function _onStatusChange(err, apiStatus) {
       _apiStatus = apiStatus ?? 'error';
-      if (_apiStatus === 'ratelimit') {
-        _rateLimitInfo = err;
-      } else {
-        _rateLimitInfo = null;
-      }
       render();
     }
 
 
     function render() {
+      // When the rate limit has expired, this will return `null`
+      const rateLimit = osm.getRateLimit();
+
       // Empty out the DOM content and rebuild from scratch..
       selection.html('');
 
@@ -68,12 +65,13 @@ export function uiStatus(context) {
           .attr('class', 'api-status')
           .text(l10n.t('osm_api_status.message.offline'));
 
-      } else if (_apiStatus === 'ratelimit') {
+      } else if (_apiStatus === 'ratelimit' && rateLimit) {
+        selection
+          .attr('class', 'api-status error')
+          .text(l10n.t('osm_api_status.message.ratelimit', { seconds: rateLimit.remaining }));
 
         if (!osm.authenticated()) {   // Tell the user to log in
           selection
-            .attr('class', 'api-status error')
-            .text(l10n.t('osm_api_status.message.ratelimit_auth'))
             .append('a')
             .attr('href', '#')
             .attr('class', 'api-status-login')
@@ -85,31 +83,7 @@ export function uiStatus(context) {
               d3_event.preventDefault();
               osm.authenticate();
               _apiStatus = 'online';
-              _rateLimitInfo = null;
             });
-
-        } else {    // Tell the user to slow down
-          const now = Math.floor(Date.now() / 1000);  // epoch seconds
-          if (!_rateLimitInfo) {  // If missing, pick sensible defaults
-            _rateLimitInfo = { start: now, retry: 30 };
-          }
-
-          let elapsed = now - _rateLimitInfo.start;
-          // Check if something unexpected moved the clock more than 5 seconds backwards
-          if (elapsed < -5) { // time travel? leap seconds? epoch rollover?
-            _rateLimitInfo.start = now;  // restart the counter
-            elapsed = 0;
-          }
-
-          const remain = _rateLimitInfo.retry - elapsed;
-          if (remain > 0) {
-            selection
-              .attr('class', 'api-status error')
-              .text(l10n.t('osm_api_status.message.ratelimit_wait', { seconds: remain }));
-          } else {
-            _apiStatus = 'online';  // reset
-            _rateLimitInfo = null;  // reset
-          }
         }
 
       } else if (_apiStatus === 'error') {   // some other problem, "check your network connection"

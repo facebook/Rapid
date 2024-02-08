@@ -48,10 +48,10 @@ export class OsmService extends AbstractSystem {
     this._connectionID = 0;
     this._tileZoom = 16;
     this._noteZoom = 12;
-    this._rateLimitInfo = null;
+    this._cachedApiStatus = null;
+    this._rateLimit = null;
     this._userChangesets = null;
     this._userDetails = null;
-    this._cachedApiStatus = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._authLoading = this._authLoading.bind(this);
@@ -125,10 +125,10 @@ export class OsmService extends AbstractSystem {
     }
 
     this._connectionID++;
+    this._cachedApiStatus = null;
+    this._rateLimit = null;
     this._userChangesets = null;
     this._userDetails = null;
-    this._rateLimitInfo = null;
-    this._cachedApiStatus = null;
 
     Object.values(this._tileCache.inflight).forEach(this._abortRequest);
     Object.values(this._noteCache.inflight).forEach(this._abortRequest);
@@ -255,16 +255,13 @@ export class OsmService extends AbstractSystem {
           // 509 Bandwidth Limit Exceeded, 429 Too Many Requests
           if (err.status === 509 || err.status === 429) {
             err.response.text()   // capture the rate limit details
-              .then(val => {
-                let retry = 30;  // default 30sec, see if response contains a better value
-                const match = val.match(/ (\d+) seconds/);
+              .then(message => {
+                let duration = 10;  // default 10sec, see if response contains a better value
+                const match = message.match(/ (\d+) seconds/);
                 if (match) {
-                  retry = parseInt(match[1], 10);
+                  duration = parseInt(match[1], 10);
                 }
-                this._rateLimitInfo = {
-                  start: Math.floor(Date.now() / 1000),  // epoch seconds
-                  retry: retry                           // retry seconds
-                };
+                this.setRateLimit(duration);
               })
               .then(() => this.throttledReloadApiStatus());  // reload status / raise warning
 
@@ -277,12 +274,12 @@ export class OsmService extends AbstractSystem {
           }
 
         } else {  // no error
-          if (this._rateLimitInfo) {              // if had rate limit before
-            this._rateLimitInfo = null;           // clear rate limit details
-            this.throttledReloadApiStatus();      // reload status / clear warning
+          if (this._rateLimit) {               // if had rate limit before
+            this._rateLimit = null;            // clear rate limit
+            this.throttledReloadApiStatus();   // reload status / clear warning
           }
-          if (this._cachedApiStatus === 'error') {    // if had error before
-            this.throttledReloadApiStatus();          // reload status / clear warning
+          if (this._cachedApiStatus === 'error') {   // if had error before
+            this.throttledReloadApiStatus();         // reload status / clear warning
           }
         }
 
@@ -688,12 +685,12 @@ export class OsmService extends AbstractSystem {
     const gotResult = (err, result) => {
       if (err?.message === 'Connection Switched') {  // If connection was just switched,
         this._cachedApiStatus = null;                // reset cached status and try again
-        this.reloadApiStatus();
+        this.status(callback);
         return;
       } else if (err) {
         return callback(err, 'error');   // a network issue
-      } else if (this._rateLimitInfo) {
-        return callback(this._rateLimitInfo, 'ratelimit');
+      } else if (this._rateLimit) {
+        return callback(null, 'ratelimit');
       } else {
         const status = this._parseCapabilitiesJSON(result);
         return callback(null, status);
@@ -745,6 +742,65 @@ export class OsmService extends AbstractSystem {
     // issue new requests..
     for (const tile of tiles) {
       this.loadTile(tile, callback);
+    }
+  }
+
+
+  /**
+   * setRateLimit
+   * This will start a rate limit for the given number of seconds.
+   * If a rate limit already exists, will extend the time if needed.
+   * @param  {number}   seconds - seconds to impose the rate limit (default 10 sec)
+   * @return {Object?}  rate limit info, or `null` if `seconds` is junk
+   */
+  setRateLimit(seconds = 10) {
+    // If seconds makes no sense, just return the existing rate limit, if any..
+    if (isNaN(seconds) || !isFinite(seconds) || seconds <= 0) {
+      return this._rateLimit;
+    }
+
+    // If rate limit already exists for a longer duration, do nothing..
+    if (this._rateLimit && this._rateLimit.remaining >= seconds) {
+      return this._rateLimit;
+    }
+
+    return this._rateLimit = {
+      start: Math.floor(Date.now() / 1000),  // epoch seconds
+      duration: seconds,                     // retry-after seconds
+      remaining: seconds,
+      elapsed:  0
+    };
+  }
+
+
+  /**
+   * getRateLimit
+   * If there is currently a rate limit, return the information about it.
+   * This will also cancel the rate limit if we detect that it has expired.
+   * @return  {Object?}  rate limit info, or `null` if no current rate limit
+   */
+  getRateLimit() {
+    if (!this._rateLimit) return null;
+
+    const now = Math.floor(Date.now() / 1000);  // epoch seconds
+    const start = this._rateLimit.start ?? now;
+    const duration = this._rateLimit.duration ?? 10;
+    let elapsed = now - start;
+
+    // Check if something unexpected moved the clock more than 5 seconds backwards
+    if (elapsed < -5) {   // leap seconds? epoch rollover? time travel?
+      this._rateLimit.start = now;  // restart the counter
+      elapsed = 0;
+    }
+
+    const remaining = duration - elapsed;
+    if (remaining > 0) {
+      this._rateLimit.remaining = remaining;
+      this._rateLimit.elapsed = elapsed;
+      return this._rateLimit;
+    } else {
+      this._rateLimit = null;  // rate limit is over
+      return null;
     }
   }
 
@@ -1058,6 +1114,7 @@ export class OsmService extends AbstractSystem {
 
 
   logout() {
+    this._rateLimit = null;
     this._userChangesets = null;
     this._userDetails = null;
     this._oauth.logout();
@@ -1073,6 +1130,7 @@ export class OsmService extends AbstractSystem {
 
   authenticate(callback) {
     const cid = this._connectionID;
+    this._rateLimit = null;
     this._userChangesets = null;
     this._userDetails = null;
 
@@ -1085,10 +1143,8 @@ export class OsmService extends AbstractSystem {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
-      this._rateLimitInfo = null;
       this.reloadApiStatus();
       this.userChangesets(function() {});  // eagerly load user details/changesets
-
       this.emit('authchange');
       if (callback) callback(err, result);
     };
@@ -1367,7 +1423,6 @@ export class OsmService extends AbstractSystem {
 
     this._deferred.add(handle);
   }
-
 
 
   /**
@@ -1681,7 +1736,6 @@ export class OsmService extends AbstractSystem {
   // Logout if we receive 400, 401, 403
   // Raise an error if the connectionID has switched during the API call.
   // @param  callback
-  //
   _wrapcb(callback) {
     const cid = this._connectionID;
     return (err, results) => {

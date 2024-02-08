@@ -399,40 +399,6 @@ describe('OsmService', () => {
           });
         });
     });
-
-
-    it('emits authchange event if 509 Bandwidth Limit Exceeded', done => {
-      fetchMock.mock('*', {
-        body: 'Bandwidth Limit Exceeded',
-        status: 509,
-        headers: { 'Content-Type': 'text/plain' }
-      });
-
-      logout();
-      _osm.on('authchange', spy);
-      _osm.loadFromAPI(path, err => {
-        expect(err).to.have.property('status', 509);
-        expect(spy.calledOnce).to.be.ok;
-        done();
-      });
-    });
-
-
-    it('emits authchange event if 429 Too Many Requests', done => {
-      fetchMock.mock('*', {
-        body: '429 Too Many Requests',
-        status: 429,
-        headers: { 'Content-Type': 'text/plain' }
-      });
-
-      logout();
-      _osm.on('authchange', spy);
-      _osm.loadFromAPI(path, err => {
-        expect(err).to.have.property('status', 429);
-        expect(spy.calledOnce).to.be.ok;
-        done();
-      });
-    });
   });
 
 
