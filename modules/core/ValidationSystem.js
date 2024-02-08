@@ -115,13 +115,6 @@ export class ValidationSystem extends AbstractSystem {
         }
 
         // register event handlers:
-
-    // todo: find another way to reset this
-    //      .on('reset', () => {            // on reset - happens after save, or enter/exit walkthrough
-    //        this.reset(false);   // cached issues aren't valid any longer if the history has been reset
-    //        this.validateAsync();
-    //      });
-
         // WHEN TO RUN VALIDATION:
         editor
           .on('stablechange', () => this.validateAsync())
@@ -147,7 +140,28 @@ export class ValidationSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed resetting
    */
   resetAsync() {
-    this._reset(true);
+    // empty queues
+    this._base.queue = [];
+    this._head.queue = [];
+
+    // cancel deferred work and reject any pending promise
+    for (const [handle, reject] of this._deferredRIC) {
+      window.cancelIdleCallback(handle);
+      reject();
+    }
+    this._deferredRIC.clear();
+
+    for (const handle of this._deferredST) {
+      window.clearTimeout(handle);
+    }
+    this._deferredST.clear();
+
+    // clear caches
+    this._ignoredIssueIDs.clear();
+    this._resolvedIssueIDs.clear();
+    this._base = new ValidationCache('base');
+    this._head = new ValidationCache('head');
+    this._completeDiff = new Map();
     return Promise.resolve();
   }
 
@@ -177,38 +191,6 @@ export class ValidationSystem extends AbstractSystem {
       return new RegExp(`^${escaped}$`);
     }
   }
-
-
-  /**
-   * _reset
-   * Cancels deferred work and resets all caches
-   * @param  {boolean}  resetIgnored    `true` to also clear the list of user-ignored issues
-   */
-  _reset(resetIgnored = false) {
-    // empty queues
-    this._base.queue = [];
-    this._head.queue = [];
-
-    // cancel deferred work and reject any pending promise
-    for (const [handle, reject] of this._deferredRIC) {
-      window.cancelIdleCallback(handle);
-      reject();
-    }
-    this._deferredRIC.clear();
-
-    for (const handle of this._deferredST) {
-      window.clearTimeout(handle);
-    }
-    this._deferredST.clear();
-
-    // clear caches
-    if (resetIgnored) this._ignoredIssueIDs.clear();
-    this._resolvedIssueIDs.clear();
-    this._base = new ValidationCache('base');
-    this._head = new ValidationCache('head');
-    this._completeDiff = new Map();
-  }
-
 
 
   /**
