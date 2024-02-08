@@ -9,7 +9,6 @@ import { osmEntity } from '../osm/entity.js';
 import { uiLoading } from '../ui/loading.js';
 
 
-
 /**
  * `EditSystem` maintains the history of user edits.
  * (This used to be called 'history', but that word means something else in browsers)
@@ -72,7 +71,7 @@ import { uiLoading } from '../ui/loading.js';
  *      jump the user to a different part of the map and restore a different selection.
  *      Receives `prevIndex` and `currIndex`
  *   'merge'  - Fires when new base entities are merged into the base graph
- *   'storage_error'
+ *   'backup' - Fires when a backup is saved/failed
  */
 export class EditSystem extends AbstractSystem {
 
@@ -124,8 +123,6 @@ export class EditSystem extends AbstractSystem {
       }
     }
 
-    this.reset();
-
     const storage = this.context.systems.storage;
     const prerequisites = storage.initAsync();
 
@@ -156,6 +153,7 @@ export class EditSystem extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
+    this.reset();
     this._started = true;
     return Promise.resolve();
   }
@@ -180,6 +178,8 @@ export class EditSystem extends AbstractSystem {
     d3_select(document).interrupt('editTransition');    // complete any transition already in progress
     this.deferredBackup.cancel();
 
+    const prevIndex = this._index;
+
     // Create a new Base Graph / Base Edit.
     const baseGraph = new Graph();
     const base = new Edit({ graph: baseGraph });
@@ -200,7 +200,12 @@ export class EditSystem extends AbstractSystem {
     this._checkpoints.clear();
     this._inTransition = false;
     this._inTransaction = false;
-    this.emit('reset');
+
+    // Emit all events
+    this.emit('stagingchange', this._fullDifference);  // will be an empty Difference (this is ok)
+    this.emit('stablechange', this._fullDifference);
+    this.emit('historyjump', prevIndex, this._index);
+    this.emit('backup', true);  // emit `true` to clear any previous errors
   }
 
 
@@ -1159,7 +1164,6 @@ export class EditSystem extends AbstractSystem {
    * saveBackup
    * Backup the user's edits to a JSON string in localStorage.
    * This code runs occasionally as the user edits.
-   * @return  {boolean?}  `true` if a backup was saved
    */
   saveBackup() {
     const context = this.context;
@@ -1173,12 +1177,8 @@ export class EditSystem extends AbstractSystem {
     const storage = context.systems.storage;
     const json = this.toJSON();
     if (json) {
-      const success = storage.setItem(this._backupKey(), json);
-      if (success) {
-        return true;
-      } else {
-        this.emit('storage_error');
-      }
+      const wasSuccessful = storage.setItem(this._backupKey(), json);
+      this.emit('backup', wasSuccessful);
     }
   }
 
