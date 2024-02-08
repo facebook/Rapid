@@ -126,7 +126,6 @@ export function uiToolSave(context) {
 
     context.keybinding().on(key, save, true /* capture */);
     editor.on('stablechange', updateCount);
-    editor.on('reset', updateCount);
     context.on('modechange', updateDisabled);
   };
 
@@ -136,7 +135,6 @@ export function uiToolSave(context) {
 
     context.keybinding().off(key, true /* capture */);
     editor.off('stablechange', updateCount);
-    editor.off('reset', updateCount);
     context.off('modechange', updateDisabled);
     _button = null;
     _tooltip = null;
