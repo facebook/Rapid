@@ -48,10 +48,10 @@ export class OsmService extends AbstractSystem {
     this._connectionID = 0;
     this._tileZoom = 16;
     this._noteZoom = 12;
-    this._rateLimitError = undefined;
-    this._userChangesets = undefined;
-    this._userDetails = undefined;
-    this._cachedApiStatus = undefined;
+    this._rateLimitInfo = null;
+    this._userChangesets = null;
+    this._userDetails = null;
+    this._cachedApiStatus = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._authLoading = this._authLoading.bind(this);
@@ -125,10 +125,10 @@ export class OsmService extends AbstractSystem {
     }
 
     this._connectionID++;
-    this._userChangesets = undefined;
-    this._userDetails = undefined;
-    this._rateLimitError = undefined;
-    this._cachedApiStatus = undefined;
+    this._userChangesets = null;
+    this._userDetails = null;
+    this._rateLimitInfo = null;
+    this._cachedApiStatus = null;
 
     Object.values(this._tileCache.inflight).forEach(this._abortRequest);
     Object.values(this._noteCache.inflight).forEach(this._abortRequest);
@@ -232,39 +232,65 @@ export class OsmService extends AbstractSystem {
     options = Object.assign({ skipSeen: true }, options);
     const cid = this._connectionID;
 
-    const done = (err, results) => {
+    const gotResult = (err, results) => {
+      // The user switched connection while the request was inflight
+      // Ignore results and raise an error.
       if (this._connectionID !== cid) {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
 
-      // 400 Bad Request, 401 Unauthorized, 403 Forbidden
+      // 400 Bad Request, 401 Unauthorized, 403 Forbidden (while logged in)
+      // An issue has occurred with the user's credentials.
       // Logout and retry the request..
       const isAuthenticated = this.authenticated();
       if (isAuthenticated && (err?.status === 400 || err?.status === 401 || err?.status === 403)) {
         this.logout();
-        this.loadFromAPI(path, callback, options);
+        this.loadFromAPI(path, callback, options);  // retry
+        return;
 
-      // else, no retry..
-      } else {
-        // 509 Bandwidth Limit Exceeded, 429 Too Many Requests
-        // Set the rateLimitError flag and trigger a warning..
-        if (!isAuthenticated && !this._rateLimitError && (err?.status === 509 || err?.status === 429)) {
-          this._rateLimitError = err;
-          this.emit('authchange');
-          this.throttledReloadApiStatus();
+      } else {  // No retry.. We will relay any error and results to the callback.
 
-        } else if ((err && this._cachedApiStatus === 'online') || (!err && this._cachedApiStatus !== 'online')) {
-          // If the response's error state doesn't match the status,
-          // it's likely we lost or gained the connection so reload the status
-          this.throttledReloadApiStatus();
+        if (err) {
+          // 509 Bandwidth Limit Exceeded, 429 Too Many Requests
+          if (err.status === 509 || err.status === 429) {
+            err.response.text()   // capture the rate limit details
+              .then(val => {
+                let retry = 30;  // default 30sec, see if response contains a better value
+                const match = val.match(/ (\d+) seconds/);
+                if (match) {
+                  retry = parseInt(match[1], 10);
+                }
+                this._rateLimitInfo = {
+                  start: Math.floor(Date.now() / 1000),  // epoch seconds
+                  retry: retry                           // retry seconds
+                };
+              })
+              .then(() => this.throttledReloadApiStatus());  // reload status / raise warning
+
+          // Some other error.. Note that these are not automatically API issues.
+          // May be 404 Not Found, etc, but it is worth checking the API status now.
+          } else {
+            if (this._cachedApiStatus !== 'error') {  // if no error before
+              this.throttledReloadApiStatus();        // reload status / raise warning
+            }
+          }
+
+        } else {  // no error
+          if (this._rateLimitInfo) {              // if had rate limit before
+            this._rateLimitInfo = null;           // clear rate limit details
+            this.throttledReloadApiStatus();      // reload status / clear warning
+          }
+          if (this._cachedApiStatus === 'error') {    // if had error before
+            this.throttledReloadApiStatus();          // reload status / clear warning
+          }
         }
 
         if (callback) {
           if (err) {
             return callback(err);
           } else {
-            if (path.indexOf('.json') !== -1) {
+            if (path.includes('.json')) {
               return this._parseJSON(results, callback, options);
             } else {
               return this._parseXML(results, callback, options);
@@ -280,11 +306,11 @@ export class OsmService extends AbstractSystem {
 
     _fetch(resource, { signal: controller.signal })
       .then(utilFetchResponse)
-      .then(result => done(null, result))
+      .then(result => gotResult(null, result))
       .catch(err => {
         if (err.name === 'AbortError') return;  // ok
         if (err.name === 'FetchError') {
-          done(err);
+          gotResult(err);
           return;
         }
       });
@@ -556,13 +582,13 @@ export class OsmService extends AbstractSystem {
     }
 
     if (cached.length || !this.authenticated()) {
-      callback(undefined, cached);
+      callback(null, cached);
       if (!this.authenticated()) return;  // require auth
     }
 
     const gotUsers = (err, results) => {
       if (err) return callback(err);
-      callback(undefined, results.data);
+      callback(null, results.data);
     };
 
     const options = { skipSeen: true };
@@ -581,12 +607,12 @@ export class OsmService extends AbstractSystem {
   loadUser(uid, callback) {
     if (this._userCache.user[uid] || !this.authenticated()) {   // require auth
       delete this._userCache.toLoad[uid];
-      return callback(undefined, this._userCache.user[uid]);
+      return callback(null, this._userCache.user[uid]);
     }
 
     const gotUsers = (err, results) => {
       if (err) return callback(err);
-      callback(undefined, results.data[0]);
+      callback(null, results.data[0]);
     };
 
     const options = { skipSeen: true };
@@ -602,13 +628,13 @@ export class OsmService extends AbstractSystem {
   // GET /api/0.6/user/details
   userDetails(callback) {
     if (this._userDetails) {    // retrieve cached
-      return callback(undefined, this._userDetails);
+      return callback(null, this._userDetails);
     }
 
     const gotUsers = (err, results) => {
       if (err) return callback(err);
       this._userDetails = results.data[0];
-      callback(undefined, this._userDetails);
+      callback(null, this._userDetails);
     };
 
     const options = { skipSeen: false };
@@ -624,13 +650,13 @@ export class OsmService extends AbstractSystem {
   // GET /api/0.6/changesets?user=#id
   userChangesets(callback) {
     if (this._userChangesets) {    // retrieve cached
-      return callback(undefined, this._userChangesets);
+      return callback(null, this._userChangesets);
     }
 
     const gotChangesets = (err, results) => {
       if (err) return callback(err);
       this._userChangesets = results.data;
-      return callback(undefined, this._userChangesets);
+      return callback(null, this._userChangesets);
     };
 
     const options = { skipSeen: false };
@@ -647,18 +673,30 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  // Fetch the status of the OSM API
+  // Fetch the status of the OSM API.
   // GET /api/capabilities
+  // see: https://wiki.openstreetmap.org/wiki/API_v0.6#Response
+  //
+  // The status will be one of:
+  //   'online'      - working normally
+  //   'readonly'    - reachable but readonly
+  //   'offline'     - reachable but offline
+  //   'error'       - unreachable / network issue
+  //   'ratelimit'   - rate limit detected
+  //
   status(callback) {
-
     const gotResult = (err, result) => {
-      if (err) {
-        return callback(err, null);   // the status is null if no response could be retrieved
-      } else if (this._rateLimitError) {
-        return callback(this._rateLimitError, 'rateLimited');
+      if (err?.message === 'Connection Switched') {  // If connection was just switched,
+        this._cachedApiStatus = null;                // reset cached status and try again
+        this.reloadApiStatus();
+        return;
+      } else if (err) {
+        return callback(err, 'error');   // a network issue
+      } else if (this._rateLimitInfo) {
+        return callback(this._rateLimitInfo, 'ratelimit');
       } else {
         const status = this._parseCapabilitiesJSON(result);
-        return callback(undefined, status);
+        return callback(null, status);
       }
     };
 
@@ -867,7 +905,7 @@ export class OsmService extends AbstractSystem {
         if (err) {
           return callback(err);
         } else {
-          return callback(undefined, results.data[0]);
+          return callback(null, results.data[0]);
         }
       }, options);
     };
@@ -935,7 +973,7 @@ export class OsmService extends AbstractSystem {
         if (err) {
           return callback(err);
         } else {
-          return callback(undefined, results.data[0]);
+          return callback(null, results.data[0]);
         }
       }, options);
     };
@@ -1020,8 +1058,8 @@ export class OsmService extends AbstractSystem {
 
 
   logout() {
-    this._userChangesets = undefined;
-    this._userDetails = undefined;
+    this._userChangesets = null;
+    this._userDetails = null;
     this._oauth.logout();
     this.emit('authchange');
     return this;
@@ -1035,10 +1073,10 @@ export class OsmService extends AbstractSystem {
 
   authenticate(callback) {
     const cid = this._connectionID;
-    this._userChangesets = undefined;
-    this._userDetails = undefined;
+    this._userChangesets = null;
+    this._userDetails = null;
 
-    const done = (err, res) => {
+    const gotResult = (err, result) => {
       if (err) {
         if (callback) callback(err);
         return;
@@ -1047,13 +1085,15 @@ export class OsmService extends AbstractSystem {
         if (callback) callback({ message: 'Connection Switched', status: -1 });
         return;
       }
-      this._rateLimitError = undefined;
-      this.emit('authchange');
-      if (callback) callback(err, res);
+      this._rateLimitInfo = null;
+      this.reloadApiStatus();
       this.userChangesets(function() {});  // eagerly load user details/changesets
+
+      this.emit('authchange');
+      if (callback) callback(err, result);
     };
 
-    this._oauth.authenticate(done);
+    this._oauth.authenticate(gotResult);
   }
 
 
@@ -1592,7 +1632,7 @@ export class OsmService extends AbstractSystem {
     }
 
     // Return status
-    const apiStatus = json.api.status.api;
+    const apiStatus = json.api.status.api;  // 'online', 'readonly', or 'offline'
     return apiStatus;
   }
 
@@ -1623,7 +1663,7 @@ export class OsmService extends AbstractSystem {
 
     // Return status
     const apiStatus = xml.getElementsByTagName('status');
-    return apiStatus[0].getAttribute('api');
+    return apiStatus[0].getAttribute('api');   // 'online', 'readonly', or 'offline'
   }
 
 
