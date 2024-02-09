@@ -654,11 +654,11 @@ describe('OsmService', () => {
     describe('sets/gets caches', () => {
       it('sets/gets a tile', () => {
         const obj = {
-          tile: { loaded: { '1,2,16': true, '3,4,16': true } }
+          tile: { loaded: new Set(['1,2,16', '3,4,16']) }
         };
         _osm.caches(obj);
-        expect(_osm.caches().tile.loaded['1,2,16']).to.eql(true);
-        expect(Object.keys(_osm.caches().tile.loaded).length).to.eql(2);
+        expect(_osm.caches().tile.loaded.has('1,2,16')).to.eql(true);
+        expect(_osm.caches().tile.loaded.size).to.eql(2);
       });
 
       it('sets/gets a note', () => {

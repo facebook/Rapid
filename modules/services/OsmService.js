@@ -38,9 +38,9 @@ export class OsmService extends AbstractSystem {
     this._wwwroot = 'https://www.openstreetmap.org';
     this._apiroot = 'https://api.openstreetmap.org';
 
-    this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
-    this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
-    this._userCache = { toLoad: {}, user: {} };
+    this._tileCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, seen: new Set(), rtree: new RBush() };
+    this._noteCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
+    this._userCache = { toLoad: new Set(), user: {} };
     this._changeset = {};
 
     this._tiler = new Tiler();
@@ -135,9 +135,9 @@ export class OsmService extends AbstractSystem {
     Object.values(this._noteCache.inflightPost).forEach(this._abortRequest);
     if (this._changeset.inflight) this._abortRequest(this._changeset.inflight);
 
-    this._tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
-    this._noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
-    this._userCache = { toLoad: {}, user: {} };
+    this._tileCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, seen: new Set(), rtree: new RBush() };
+    this._noteCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
+    this._userCache = { toLoad: new Set(), user: {} };
     this._changeset = {};
 
     return Promise.resolve();
@@ -269,7 +269,7 @@ export class OsmService extends AbstractSystem {
           // May be 404 Not Found, etc, but it is worth checking the API status now.
           } else {
             if (this._apiStatus !== 'error') {  // if no error before
-              this.throttledReloadApiStatus();        // reload status / raise warning
+              this.throttledReloadApiStatus();  // reload status / raise warning
             }
           }
 
@@ -279,7 +279,7 @@ export class OsmService extends AbstractSystem {
             this.throttledReloadApiStatus();   // reload status / clear warning
           }
           if (this._apiStatus === 'error') {   // if had error before
-            this.throttledReloadApiStatus();         // reload status / clear warning
+            this.throttledReloadApiStatus();   // reload status / clear warning
           }
         }
 
@@ -571,7 +571,7 @@ export class OsmService extends AbstractSystem {
 
     for (const uid of utilArrayUniq(uids)) {
       if (this._userCache.user[uid]) {  // loaded already
-        delete this._userCache.toLoad[uid];
+        this._userCache.toLoad.delete(uid);
         cached.push(this._userCache.user[uid]);
       } else {
         toLoad.push(uid);
@@ -603,7 +603,7 @@ export class OsmService extends AbstractSystem {
   // GET /api/0.6/user/#id
   loadUser(uid, callback) {
     if (this._userCache.user[uid] || !this.authenticated()) {   // require auth
-      delete this._userCache.toLoad[uid];
+      this._userCache.toLoad.delete(uid);
       return callback(null, this._userCache.user[uid]);
     }
 
@@ -764,8 +764,8 @@ export class OsmService extends AbstractSystem {
     }
 
     // Stop loading tiles, and cancel any inflight
-    this._tileCache.toLoad = {};
-    this._noteCache.toLoad = {};
+    this._tileCache.toLoad.clear();
+    this._noteCache.toLoad.clear();
     Object.values(this._tileCache.inflight).forEach(this._abortRequest);
     Object.values(this._noteCache.inflight).forEach(this._abortRequest);
 
@@ -816,14 +816,14 @@ export class OsmService extends AbstractSystem {
     if (this._paused || this.getRateLimit()) return;
 
     const cache = this._tileCache;
-    if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
+    if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) return;
 
     // exit if this tile covers a blocked region (all corners are blocked)
     const locationSystem = this.context.systems.locations;
     const corners = tile.wgs84Extent.polygon().slice(0, 4);
     const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
     if (tileBlocked) {
-      cache.loaded[tile.id] = true;   // don't try again
+      cache.loaded.add(tile.id);   // don't try again
       return;
     }
 
@@ -834,8 +834,8 @@ export class OsmService extends AbstractSystem {
     const gotTile = (err, results) => {
       delete cache.inflight[tile.id];
       if (!err) {
-        delete cache.toLoad[tile.id];
-        cache.loaded[tile.id] = true;
+        cache.toLoad.delete(tile.id);
+        cache.loaded.add(tile.id);
         const bbox = tile.wgs84Extent.bbox();
         bbox.id = tile.id;
         cache.rtree.insert(bbox);
@@ -873,7 +873,7 @@ export class OsmService extends AbstractSystem {
     // Back off if the toLoad queue is filling up.. re iD#6417
     // (Currently `loadTileAtLoc` requests are considered low priority - used by operations to
     // let users safely edit geometries which extend to unloaded tiles.  We can drop some.)
-    if (Object.keys(cache.toLoad).length > 50) return;
+    if (cache.toLoad.size > 50) return;
 
     const k = geoZoomToScale(this._tileZoom + 1);
     const offset = new Projection().scale(k).project(loc);
@@ -881,9 +881,9 @@ export class OsmService extends AbstractSystem {
     const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(proj).tiles;
 
     for (const tile of tiles) {
-      if (cache.toLoad[tile.id] || cache.loaded[tile.id] || cache.inflight[tile.id]) continue;
+      if (cache.toLoad.has(tile.id) || cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
 
-      cache.toLoad[tile.id] = true;
+      cache.toLoad.add(tile.id);
       this.loadTile(tile, callback);
     }
   }
@@ -900,7 +900,7 @@ export class OsmService extends AbstractSystem {
     const that = this;
     const path = '/api/0.6/notes?limit=' + noteOptions.limit + '&closed=' + noteOptions.closed + '&bbox=';
     const deferLoadUsers = _throttle(() => {
-      const uids = Object.keys(that._userCache.toLoad);
+      const uids = [...that._userCache.toLoad.values()];
       if (!uids.length) return;
       that.loadUsers(uids, function() {});  // eagerly load user details
     }, 750);
@@ -916,14 +916,14 @@ export class OsmService extends AbstractSystem {
 
     // issue new requests..
     for (const tile of tiles) {
-      if (cache.loaded[tile.id] || cache.inflight[tile.id]) continue;
+      if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
 
       // Skip if this tile covers a blocked region (all corners are blocked)
       const locationSystem = this.context.systems.locations;
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
       const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
       if (tileBlocked) {
-        cache.loaded[tile.id] = true;   // don't try again
+        cache.loaded.add(tile.id);   // don't try again
         continue;
       }
 
@@ -933,7 +933,7 @@ export class OsmService extends AbstractSystem {
         function(err) {
           delete that._noteCache.inflight[tile.id];
           if (!err) {
-            that._noteCache.loaded[tile.id] = true;
+            that._noteCache.loaded.add(tile.id);
           }
           // deferLoadUsers();
           that.emit('loadedNotes');
@@ -1073,6 +1073,8 @@ export class OsmService extends AbstractSystem {
       for (const [k, v] of Object.entries(source)) {
         if (k === 'rtree') {
           target.rtree = new RBush().fromJSON(v.toJSON());  // clone rbush
+        } else if (k === 'toLoad' || k === 'loaded' || k === 'seen') {
+          target[k] = new Set(v);    // clone Set
         } else if (k === 'note') {
           target.note = {};
           for (const id of Object.keys(v)) {
@@ -1225,7 +1227,7 @@ export class OsmService extends AbstractSystem {
 
   _abortUnwantedRequests(cache, visibleTiles) {
     for (const k of Object.keys(cache.inflight)) {
-      if (cache.toLoad[k]) continue;
+      if (cache.toLoad.has(k)) continue;
       if (visibleTiles.find(tile => tile.id === k)) continue;
 
       this._abortRequest(cache.inflight[k]);
@@ -1306,7 +1308,7 @@ export class OsmService extends AbstractSystem {
           if (nodeName === 'uid') {
             const uid = node.textContent;
             if (uid && !this._userCache.user[uid]) {
-              this._userCache.toLoad[uid] = true;
+              this._userCache.toLoad.add(uid);
             }
           }
         }
@@ -1383,8 +1385,8 @@ export class OsmService extends AbstractSystem {
         results.seenIDs.add(uid);
 
         if (options.skipSeen) {
-          if (this._tileCache.seen[uid]) continue;  // avoid reparsing a "seen" entity
-          this._tileCache.seen[uid] = true;
+          if (this._tileCache.seen.has(uid)) continue;  // avoid reparsing a "seen" entity
+          this._tileCache.seen.add(uid);
         }
 
         const parsed = parser(element, uid);
@@ -1398,7 +1400,7 @@ export class OsmService extends AbstractSystem {
         const uid = user.id?.toString();
         if (!uid) continue;
 
-        delete this._userCache.toLoad[uid];
+        this._userCache.toLoad.delete(uid);
         results.seenIDs.add(uid);
 
         if (options.skipSeen && this._userCache.user[uid]) {  // avoid reparsing a "seen" entity
@@ -1477,7 +1479,7 @@ export class OsmService extends AbstractSystem {
           results.seenIDs.add(uid);
 
           if (options.skipSeen && this._userCache.user[uid]) {  // avoid reparsing a "seen" entity
-            delete this._userCache.toLoad[uid];
+            this._userCache.toLoad.delete(uid);
             continue;
           }
 
@@ -1490,8 +1492,8 @@ export class OsmService extends AbstractSystem {
           results.seenIDs.add(uid);
 
           if (options.skipSeen) {
-            if (this._tileCache.seen[uid]) continue;  // avoid reparsing a "seen" entity
-            this._tileCache.seen[uid] = true;
+            if (this._tileCache.seen.has(uid)) continue;  // avoid reparsing a "seen" entity
+            this._tileCache.seen.add(uid);
           }
         }
 
@@ -1665,7 +1667,7 @@ export class OsmService extends AbstractSystem {
     }
 
     this._userCache.user[uid] = user;
-    delete this._userCache.toLoad[uid];
+    this._userCache.toLoad.delete(uid);
     return user;
   }
 
