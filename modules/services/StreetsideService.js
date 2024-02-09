@@ -447,8 +447,7 @@ export class StreetsideService extends AbstractSystem {
       .text(l10n.t('streetside.report'));
 
 
-// const streetsideImagesApi = 'https://t.ssl.ak.tiles.virtualearth.net/tiles/';
-const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
+    const streetsideImagesApi = 'https://ecn.t0.tiles.virtualearth.net/tiles/';
 
     const asNumber = parseInt(d.id, 10);
     let bubbleIdQuadKey = asNumber.toString(4);
