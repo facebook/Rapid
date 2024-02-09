@@ -120,6 +120,7 @@ export function validationImpossibleOneway(context) {
      */
     function issuesForNode(way, nodeID) {
       const isHead = (nodeID === way.first() && way.tags.oneway !== '-1');
+      const isTail = !isHead;
       const wayType = typeForWay(way);
 
       // Skip checks if the way is self-connected at this node.
@@ -151,14 +152,22 @@ export function validationImpossibleOneway(context) {
       if (attachedOneways.length < attachedWaysOfSameType.length) return [];
 
       // Finally, check how this oneway attaches to the other oneways.
-      // tail->head or head->tail is ok, head-head or tail-tail is not
+      // Allow anything except for head-head or tail-tail.
+      //
+      // It is still possible to construct some unescapable geometries that satisfy this check.
+      // For example, where heads/tails attach to middles
+      //
+      //    a -> b -> c -> d               w1: [a,b,c,d,x]
+      //          \         \              w2: [w,x,y,z,b]
+      //           z <- y <- x <- w
+
       for (const other of attachedOneways) {
         // Again, skip checks on self-connected ways
         if (nodeOccursMoreThanOnce(other, nodeID)) return [];
 
         const otherHead = (other.tags.oneway === '-1') ? other.last() : other.first();
         const otherTail = (other.tags.oneway === '-1') ? other.first() : other.last();
-        if ((isHead && nodeID === otherTail) || (!isHead && nodeID === otherHead)) return [];
+        if ((isHead && nodeID !== otherHead) || (isTail && nodeID !== otherTail)) return [];
       }
 
       // If we get here, the way is not reachable / escapable.
