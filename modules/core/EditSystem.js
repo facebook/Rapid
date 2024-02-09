@@ -71,7 +71,7 @@ import { uiLoading } from '../ui/loading.js';
  *      jump the user to a different part of the map and restore a different selection.
  *      Receives `prevIndex` and `currIndex`
  *   'merge'  - Fires when new base entities are merged into the base graph
- *   'backup' - Fires when a backup is saved/failed
+ *   'backupstatuschange' - Fires when backup status changes, receives `true` if ok, `false` if failed
  */
 export class EditSystem extends AbstractSystem {
 
@@ -97,9 +97,10 @@ export class EditSystem extends AbstractSystem {
     this._inTransaction = false;
     this._tree = null;
 
+    this._backupStatus = true;
+    this._fullDifference = null;
     this._lastStableGraph = null;
     this._lastStagingGraph = null;
-    this._fullDifference = null;
 
     this._initPromise = null;
 
@@ -173,7 +174,7 @@ export class EditSystem extends AbstractSystem {
     this.emit('stagingchange', this._fullDifference);  // will be an empty Difference (this is ok)
     this.emit('stablechange', this._fullDifference);
     this.emit('historyjump', prevIndex, this._index);
-    this.emit('backup', true);  // emit `true` to clear any previous errors
+    this.emit('backupstatuschange', this._backupStatus);  // emit `true` to clear any previous errors
 
     return Promise.resolve();
   }
@@ -205,6 +206,7 @@ export class EditSystem extends AbstractSystem {
     this._lastStagingGraph = currGraph;
     this._fullDifference = new Difference(baseGraph, baseGraph);
 
+    this._backupStatus = true;
     this._checkpoints.clear();
     this._inTransition = false;
     this._inTransaction = false;
@@ -1179,8 +1181,12 @@ export class EditSystem extends AbstractSystem {
     const storage = context.systems.storage;
     const json = this.toJSON();
     if (json) {
-      const wasSuccessful = storage.setItem(this._backupKey(), json);
-      this.emit('backup', wasSuccessful);
+      // status will be `true` if the backup succeeded
+      const status = storage.setItem(this._backupKey(), json);
+      if (status !== this._backupStatus) {
+        this._backupStatus = status;
+        this.emit('backupstatuschange', this._backupStatus);
+      }
     }
   }
 

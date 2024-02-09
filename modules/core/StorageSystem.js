@@ -30,6 +30,7 @@ export class StorageSystem extends AbstractSystem {
     } catch (e) {
       this._mock = new Map();
       this._storage = {
+        isMocked: true,
         hasItem: (k) => this._mock.has(k),
         getItem: (k) => this._mock.get(k),
         setItem: (k, v) => this._mock.set(k, v),
@@ -100,12 +101,12 @@ export class StorageSystem extends AbstractSystem {
    * setItem
    * @param   k  String key to set the value for
    * @param   v  String value to set
-   * @return  `true` if it succeeded, `false` if it failed
+   * @return  `true` if the write to `localStorage` succeeded, `false` if it failed
    */
   setItem(k, v) {
     try {
       this._storage.setItem(k, v);
-      return true;
+      return !this._storage.isMocked;
     } catch (e) {
       console.error('localStorage quota exceeded');  // eslint-disable-line no-console
     }

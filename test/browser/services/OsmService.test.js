@@ -194,10 +194,6 @@ describe('OsmService', () => {
     });
   }
 
-  function logout() {
-    _osm.logout();
-  }
-
 
   describe('#connectionID', () => {
     it('changes the connectionID every time service is reset', () => {

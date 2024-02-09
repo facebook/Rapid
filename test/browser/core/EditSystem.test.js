@@ -104,7 +104,27 @@ describe('EditSystem', () => {
           expect(_editor._index).to.eql(0);
         });
     });
+
+    it('emits events', () => {
+      const onStagingChange = sinon.spy();
+      const onStableChange = sinon.spy();
+      const onHistoryJump = sinon.spy();
+      const onBackupStatusChange = sinon.spy();
+      _editor.on('stagingchange', onStagingChange);
+      _editor.on('stablechange', onStableChange);
+      _editor.on('historyjump', onHistoryJump);
+      _editor.on('backupstatuschange', onBackupStatusChange);
+
+      return _editor.resetAsync()
+        .then(() => {
+          expect(onStagingChange.calledOnceWithExactly(_editor._fullDifference)).to.be.ok;
+          expect(onStableChange.calledOnceWithExactly(_editor._fullDifference)).to.be.ok;
+          expect(onHistoryJump.calledOnceWithExactly(0, 0)).to.be.ok;
+          expect(onBackupStatusChange.calledOnceWithExactly(true)).to.be.ok;
+        });
+    });
   });
+
 
   describe('#base', () => {
     it('returns the base edit', () => {

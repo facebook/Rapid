@@ -11,38 +11,44 @@ export function uiStatus(context) {
 
   let _apiStatus;
   let _backupStatus;
+  let _rateLimitIntervalID;
+  let _apiStatusIntervalID;
 
 
   return function(selection) {
     if (!osm) return;
 
     // Count down once per second if we're under a rate limit..
-    window.setInterval(() => {
-      if (_apiStatus === 'ratelimit') {
-        render();
-      }
-    }, 1000);
+    if (!_rateLimitIntervalID) {
+      _rateLimitIntervalID = window.setInterval(() => {
+        if (_apiStatus === 'ratelimit') {
+          render();
+        }
+      }, 1000);
+    }
 
     // Refresh status periodically regardless of other factors..
-    window.setInterval(() => {
-      osm.reloadApiStatus();
-    }, 90000);
+    if (!_apiStatusIntervalID) {
+      _apiStatusIntervalID = window.setInterval(() => {
+        osm.reloadApiStatus();
+      }, 90000);
+    }
 
     // Load the initial status in case no OSM data was loaded yet
     osm.reloadApiStatus();
 
-    // add or replace event handlers
-    osm.off('apiStatusChange', _onStatusChange);
-    osm.on('apiStatusChange', _onStatusChange);
-    editor.off('backup', _onBackup);
-    editor.on('backup', _onBackup);
+    // Add or replace event handlers
+    osm.off('apistatuschange', _onApiStatusChange);
+    osm.on('apistatuschange', _onApiStatusChange);
+    editor.off('backupstatuschange', _onBackupStatusChange);
+    editor.on('backupstatuschange', _onBackupStatusChange);
 
-    function _onBackup(wasSuccessful) {
+    function _onBackupStatusChange(wasSuccessful) {
       _backupStatus = wasSuccessful ? 'ok' : 'error';
       render();
     }
 
-    function _onStatusChange(err, apiStatus) {
+    function _onApiStatusChange(err, apiStatus) {
       _apiStatus = apiStatus ?? 'error';
       render();
     }

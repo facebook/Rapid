@@ -14,7 +14,7 @@ import { utilFetchResponse } from '../util/index.js';
  * `OsmService`
  *
  * Events available:
- *   'apiStatusChange'
+ *   'apistatuschange'
  *   'authLoading'
  *   'authDone'
  *   'authchange'
@@ -48,7 +48,7 @@ export class OsmService extends AbstractSystem {
     this._connectionID = 0;
     this._tileZoom = 16;
     this._noteZoom = 12;
-    this._cachedApiStatus = null;
+    this._apiStatus = null;
     this._rateLimit = null;
     this._userChangesets = null;
     this._userDetails = null;
@@ -125,7 +125,7 @@ export class OsmService extends AbstractSystem {
     }
 
     this._connectionID++;
-    this._cachedApiStatus = null;
+    this._apiStatus = null;
     this._rateLimit = null;
     this._userChangesets = null;
     this._userDetails = null;
@@ -268,7 +268,7 @@ export class OsmService extends AbstractSystem {
           // Some other error.. Note that these are not automatically API issues.
           // May be 404 Not Found, etc, but it is worth checking the API status now.
           } else {
-            if (this._cachedApiStatus !== 'error') {  // if no error before
+            if (this._apiStatus !== 'error') {  // if no error before
               this.throttledReloadApiStatus();        // reload status / raise warning
             }
           }
@@ -278,7 +278,7 @@ export class OsmService extends AbstractSystem {
             this._rateLimit = null;            // clear rate limit
             this.throttledReloadApiStatus();   // reload status / clear warning
           }
-          if (this._cachedApiStatus === 'error') {   // if had error before
+          if (this._apiStatus === 'error') {   // if had error before
             this.throttledReloadApiStatus();         // reload status / clear warning
           }
         }
@@ -684,7 +684,7 @@ export class OsmService extends AbstractSystem {
   status(callback) {
     const gotResult = (err, result) => {
       if (err?.message === 'Connection Switched') {  // If connection was just switched,
-        this._cachedApiStatus = null;                // reset cached status and try again
+        this._apiStatus = null;                      // reset cached status and try again
         this.status(callback);
         return;
       } else if (err) {
@@ -707,13 +707,13 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  // Calls `status` and emits an `apiStatusChange` event if the returned
+  // Calls `status` and emits an `apistatuschange` event if the returned
   // status differs from the cached status.
   reloadApiStatus() {
-    this.status((err, status) => {
-      if (status !== this._cachedApiStatus) {
-        this._cachedApiStatus = status;
-        this.emit('apiStatusChange', err, status);
+    this.status((err, result) => {
+      if (result !== this._apiStatus) {
+        this._apiStatus = result;
+        this.emit('apistatuschange', err, result);
       }
     });
   }
