@@ -49,6 +49,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :sparkles: Usability & Accessibility
 * [#525] When features are selected, pressing the arrow keys should move the features, not pan the map
 
+#### :hammer: Development
+* [#1306] Collect code coverage stats and use Node's built-in test runner for tests that don't need to be run in a browser
+
 #### :bug: Bugfixes:
 * [#1321] Overzoom of imagery tiles was generateing unnecessary tile requests
 * [#1314] When hovering a relation in the sidebar, apply the highlighting to its members
@@ -73,6 +76,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1302]: https://github.com/facebook/Rapid/issues/1302
 [#1304]: https://github.com/facebook/Rapid/issues/1304
 [#1305]: https://github.com/facebook/Rapid/issues/1305
+[#1306]: https://github.com/facebook/Rapid/issues/1306
 [#1309]: https://github.com/facebook/Rapid/issues/1309
 [#1311]: https://github.com/facebook/Rapid/issues/1311
 [#1312]: https://github.com/facebook/Rapid/issues/1312
