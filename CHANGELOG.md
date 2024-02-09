@@ -36,6 +36,53 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.2.5](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.5)
+#### 2024-Feb-09
+
+#### :tada: New Features
+* [#1300], [#1309] Add support for Google Open Buildings provided by Esri
+* [#1301] Google Open Buildings should not trigger the 'proprietary data' validation
+
+#### :camera: Street-Level
+* [#1305], [#928], [iD#10100] Restored Bing Streetside images and data, thanks [@dankarran]!
+
+#### :sparkles: Usability & Accessibility
+* [#525] When features are selected, pressing the arrow keys should move the features, not pan the map
+
+#### :bug: Bugfixes:
+* [#1321] Overzoom of imagery tiles was generateing unnecessary tile requests
+* [#1314] When hovering a relation in the sidebar, apply the highlighting to its members
+* [#1312] Fix styling for `highway` combined with `railway=abandoned`
+* [#1311] Fix: Right click menu, preset picker, not updated after searching for an entity and jumping to a different part of the map
+* [#1304] Fix status display in situations when OSM API is unavailable or rate limited
+* [#1303] Fix: "Ignore This Issue" option does nothing
+* [#1302], [#1326] Fix impossible oneway validator - Road flagged as unreachable, but it is reachable
+* [#1298] Fix ambiguous crossing issue involving inferring the crossing type when tags conflict
+* [#1296] Fix: Style regression, water features with `intermittant` tag were displaying as grey, not blue
+* [#1128] Restored ability to debug Rapid with a custom conflation server
+* [#1120] Fix: "You have made too many edits" warning did not disappear on save
+
+[#525]: https://github.com/facebook/Rapid/issues/525
+[#928]: https://github.com/facebook/Rapid/issues/928
+[#1120]: https://github.com/facebook/Rapid/issues/1120
+[#1128]: https://github.com/facebook/Rapid/issues/1128
+[#1296]: https://github.com/facebook/Rapid/issues/1296
+[#1298]: https://github.com/facebook/Rapid/issues/1298
+[#1300]: https://github.com/facebook/Rapid/issues/1300
+[#1301]: https://github.com/facebook/Rapid/issues/1301
+[#1302]: https://github.com/facebook/Rapid/issues/1302
+[#1304]: https://github.com/facebook/Rapid/issues/1304
+[#1305]: https://github.com/facebook/Rapid/issues/1305
+[#1309]: https://github.com/facebook/Rapid/issues/1309
+[#1311]: https://github.com/facebook/Rapid/issues/1311
+[#1312]: https://github.com/facebook/Rapid/issues/1312
+[#1314]: https://github.com/facebook/Rapid/issues/1314
+[#1321]: https://github.com/facebook/Rapid/issues/1321
+[#1326]: https://github.com/facebook/Rapid/issues/1326
+[iD#10100]: https://github.com/openstreetmap/iD/pull/10100
+[@dankarran]: https://github.com/dankarran
+
+
 # [2.2.4](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.4)
 #### 2024-Jan-11
 
