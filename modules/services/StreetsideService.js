@@ -5,7 +5,6 @@ import { utilArrayUnion, utilQsString, utilUniqueString } from '@rapid-sdk/util'
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
-import { jsonpRequest } from '../util/jsonp_request.js';
 import { utilFetchResponse } from '../util/index.js';
 
 const PANNELLUM_JS = 'https://cdn.jsdelivr.net/npm/pannellum@2/build/pannellum.min.js';
@@ -267,12 +266,7 @@ export class StreetsideService extends AbstractSystem {
       if (this._cache.loaded.has(tileID) || this._cache.inflight.has(tileID)) continue;
 
       // Promise.all([this._fetchMetadataAsync(tile), this._loadTileAsync(tile)])
-      this._loadTileAsync(tile)
-        .then(results => this._processResults(results))
-        .catch(err => {
-          if (err.name === 'AbortError') return;          // ok
-          if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-        });
+      this._loadTileAsync(tile);
     }
   }
 
@@ -717,11 +711,11 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
 
 
   /**
-   * _processResults
+   * _loadedBubbleData
    * Processes the results of the tile data fetch.
    * @param  {Array}  results
    */
-  _processResults(results) {
+  _loadedBubbleData(results) {
     // const metadata = results[0];
     // this._cache.loaded.add(results[1].tile.id);
     // const bubbles = results[1].data;
@@ -920,37 +914,35 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
   /**
    * _loadTileAsync
    * bubbles:   undocumented / unsupported API?
+   * see Rapid#1305, iD#10100
    */
   _loadTileAsync(tile) {
-    const [w, s, e, n] = tile.wgs84Extent.rectangle();
-    const MAXRESULTS = 2000;
-
-    const bubbleURLBase = 'https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?';
-    const bubbleKey = 'AuftgJsO0Xs8Ts4M1xZUQJQXJNsvmh3IV8DkNieCiy3tCwCUMq76-WpkrBtNAuEm';
-    const bubbleURL = bubbleURLBase + utilQsString({ n: n, s: s, e: e, w: w, c: MAXRESULTS, appkey: bubbleKey, jsCallback: '{callback}' });
-
     const inflight = this._cache.inflight.get(tile.id);
     if (inflight) return inflight.promise;
 
-    // Wrap JSONP request in an abortable Promise
-    const controller = new AbortController();
-    const promise = new Promise((resolve, reject) => {
-      let onAbort;
-      const request = jsonpRequest(bubbleURL, data => {
-        if (onAbort) controller.signal.removeEventListener('abort', onAbort);
-        resolve({ data: data, tile: tile });
-      });
+    const [w, s, e, n] = tile.wgs84Extent.rectangle();
+    const MAXRESULTS = 2000;
 
-      onAbort = () => {
-        controller.signal.removeEventListener('abort', onAbort);
-        request.abort();
-        reject(new DOMException('Aborted', 'AbortError'));
-      };
-      controller.signal.addEventListener('abort', onAbort);
-    })
-    .finally(() => {
-      this._cache.inflight.delete(tile.id);
-    });
+    const bubbleURLBase = 'https://t.ssl.ak.tiles.virtualearth.net/tiles/cmd/StreetSideBubbleMetaData?';
+    const bubbleKey = 'AuftgJsO0Xs8Ts4M1xZUQJQXJNsvmh3IV8DkNieCiy3tCwCUMq76-WpkrBtNAuEm';
+    const bubbleURL = bubbleURLBase + utilQsString({ north: n, south: s, east: e, west: w, count: MAXRESULTS, key: bubbleKey });
+
+    const controller = new AbortController();
+    const promise = fetch(bubbleURL, { signal: controller.signal })
+      .then(utilFetchResponse)
+      .then(data => {
+        this._loadedBubbleData({
+          data: JSON.parse(data),  // Content-Type is 'text/plain' for some reason
+          tile: tile
+        });
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') return;  // ok
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+      })
+      .finally(() => {
+        this._cache.inflight.delete(tile.id);
+      });
 
     this._cache.inflight.set(tile.id, { promise: promise, controller: controller });
 

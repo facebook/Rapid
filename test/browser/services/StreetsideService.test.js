@@ -34,11 +34,6 @@ describe('StreetsideService', () => {
   });
 
 
-  afterEach(() => {
-    window.JSONP_FIX = undefined;
-  });
-
-
   describe('#initAsync', () => {
     it('initializes cache', () => {
       const cache = _streetside._cache;
@@ -64,8 +59,8 @@ describe('StreetsideService', () => {
       const spy = sinon.spy();
       _streetside.on('loadedData', spy);
 
-      window.JSONP_DELAY = 0;
-      window.JSONP_FIX = [{
+      const data = [
+        {
           elapsed: 0.001
         }, {
           id: 1, la: 0, lo: 10.001, al: 0, ro: 0, pi: 0, he: 0, bl: '',
@@ -82,6 +77,12 @@ describe('StreetsideService', () => {
         }
       ];
 
+      fetchMock.mock(/StreetSideBubbleMetaData/, {
+        body: JSON.stringify(data),
+        status: 200,
+        headers: { 'Content-Type': 'text/plain' }
+      });
+
       _streetside.loadTiles();
 
       window.setTimeout(() => {
@@ -90,14 +91,15 @@ describe('StreetsideService', () => {
       }, 20);
     });
 
+
     it('does not load tiles around Null Island', done => {
       _streetside.context.projection.translate([0, 0]);     // move map to Null Island
 
       const spy = sinon.spy();
       _streetside.on('loadedData', spy);
 
-      window.JSONP_DELAY = 0;
-      window.JSONP_FIX = [{
+      const data = [
+        {
           elapsed: 0.001
         }, {
           id: 1, la: 0, lo: 0, al: 0, ro: 0, pi: 0, he: 0, bl: '',
@@ -114,10 +116,17 @@ describe('StreetsideService', () => {
         }
       ];
 
+      fetchMock.mock(/StreetSideBubbleMetaData/, {
+        body: JSON.stringify(data),
+        status: 200,
+        headers: { 'Content-Type': 'text/plain' }
+      });
+
       _streetside.loadTiles();
 
       window.setTimeout(() => {
         expect(spy.notCalled).to.be.ok;
+        expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
         done();
       }, 20);
     });
