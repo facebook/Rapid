@@ -74,6 +74,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1300]: https://github.com/facebook/Rapid/issues/1300
 [#1301]: https://github.com/facebook/Rapid/issues/1301
 [#1302]: https://github.com/facebook/Rapid/issues/1302
+[#1303]: https://github.com/facebook/Rapid/issues/1303
 [#1304]: https://github.com/facebook/Rapid/issues/1304
 [#1305]: https://github.com/facebook/Rapid/issues/1305
 [#1306]: https://github.com/facebook/Rapid/issues/1306
