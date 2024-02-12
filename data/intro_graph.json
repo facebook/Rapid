@@ -64,11 +64,10 @@
       "addr:postcode": "49093",
       "addr:state": "MI",
       "addr:street": "Main Street",
-      "name": "Sherwin Williams",
+      "name": "Sherwin-Williams",
       "shop": "paint",
-      "brand": "Sherwin Williams",
-      "brand:wikidata": "Q48881",
-      "brand:wikipedia": "en:Sherwin-Williams"
+      "brand": "Sherwin-Williams",
+      "brand:wikidata": "Q48881"
     }
   },
   "n1011": {
@@ -122,7 +121,6 @@
       "name": "Dollar Tree",
       "brand": "Dollar Tree",
       "brand:wikidata": "Q5289230",
-      "brand:wikipedia": "en:Dollar Tree",
       "shop": "variety_store"
     }
   },
@@ -215,6 +213,7 @@
     "loc": [-85.634762, 41.946056],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -227,6 +226,7 @@
     "loc": [-85.634622, 41.946179],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -3928,7 +3928,8 @@
     "loc": [-85.63518, 41.942955],
     "tags": {
       "highway": "crossing",
-      "crossing": "unmarked"
+      "crossing": "unmarked",
+      "crossing:markings": "no"
     }
   },
   "n1852": {
@@ -5056,13 +5057,6 @@
   "n210": {
     "id": "n210",
     "loc": [-85.636354, 41.94239]
-  },
-  "n2100": {
-    "id": "n2100",
-    "loc": [-85.632903, 41.998429],
-    "tags": {
-      "railway": "level_crossing"
-    }
   },
   "n2101": {
     "id": "n2101",
@@ -6511,6 +6505,7 @@
     "loc": [-85.63456, 41.945731],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -8831,6 +8826,7 @@
     "loc": [-85.635818, 41.942677],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -9492,6 +9488,7 @@
     "loc": [-85.635777, 41.940183],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -11854,6 +11851,7 @@
     "loc": [-85.632915, 41.943981],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -11902,6 +11900,7 @@
     "loc": [-85.632724, 41.943969],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -11994,6 +11993,7 @@
     "loc": [-85.632684, 41.944109],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -12086,6 +12086,7 @@
     "loc": [-85.63287, 41.944135],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -15600,6 +15601,7 @@
     "loc": [-85.620103, 41.950884],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -16963,6 +16965,7 @@
     "loc": [-85.635883, 41.94012],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -16975,6 +16978,7 @@
     "loc": [-85.635774, 41.940051],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -16991,6 +16995,7 @@
     "loc": [-85.635661, 41.940107],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -19238,6 +19243,7 @@
     "loc": [-85.637038, 41.942543],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -19770,6 +19776,7 @@
     "loc": [-85.634363, 41.945548],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -19798,6 +19805,7 @@
     "loc": [-85.633568, 41.944829],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -19822,6 +19830,7 @@
     "loc": [-85.634344, 41.945699],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "highway": "crossing"
     }
   },
@@ -20562,8 +20571,7 @@
       "cuisine": "pizza",
       "name": "Pizza Hut",
       "brand": "Pizza Hut",
-      "brand:wikidata": "Q191615",
-      "brand:wikipedia": "en:Pizza Hut"
+      "brand:wikidata": "Q191615"
     }
   },
   "n893": {
@@ -21300,7 +21308,8 @@
     "id": "w110",
     "nodes": ["n492", "n493", "n494", "n495", "n496", "n497", "n492"],
     "tags": {
-      "building": "yes"
+      "building": "yes",
+      "layer": "1"
     }
   },
   "w111": {
@@ -21442,6 +21451,7 @@
     "nodes": ["n309", "n602", "n603"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -21706,6 +21716,7 @@
     "nodes": ["n714", "n720", "n721"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -21730,6 +21741,7 @@
     "nodes": ["n713", "n726", "n722"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -21739,6 +21751,7 @@
     "nodes": ["n727", "n2411", "n728"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -21748,6 +21761,7 @@
     "nodes": ["n729", "n730", "n731"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -22223,6 +22237,7 @@
     "nodes": ["n719", "n1026", "n1027"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -22239,6 +22254,7 @@
     "nodes": ["n1027", "n1028", "n1019"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -26155,6 +26171,7 @@
     "nodes": ["n240", "n293", "n294"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -26341,6 +26358,7 @@
     "nodes": ["n239", "n308", "n307"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -27675,7 +27693,8 @@
     "id": "w696",
     "nodes": ["n4050", "n4051", "n4052", "n4053", "n4050"],
     "tags": {
-      "building": "roof"
+      "building": "roof",
+      "layer": "1"
     }
   },
   "w697": {
@@ -28351,6 +28370,7 @@
     "nodes": ["n4462", "n4463", "n4464"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -28518,6 +28538,7 @@
     "nodes": ["n362", "n363", "n334"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -28614,6 +28635,7 @@
     "nodes": ["n334", "n364", "n365"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -28698,6 +28720,7 @@
     "nodes": ["n365", "n366", "n367"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -28751,6 +28774,7 @@
     "nodes": ["n239", "n4686", "n4687"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -28760,6 +28784,7 @@
     "nodes": ["n4687", "n4688", "n4689"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -28769,6 +28794,7 @@
     "nodes": ["n4689", "n4690", "n307"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
@@ -28785,6 +28811,7 @@
     "nodes": ["n724", "n368", "n369"],
     "tags": {
       "crossing": "marked",
+      "crossing:markings": "yes",
       "footway": "crossing",
       "highway": "footway"
     }
