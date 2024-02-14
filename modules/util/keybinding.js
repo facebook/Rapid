@@ -139,6 +139,21 @@ export function utilKeybinding(namespace) {
         return keybinding;
     };
 
+    // Add the trigger method to the returned object
+    keybinding.trigger = function(event) {
+        var d3_event = {
+            type: event.type,
+            key: event.key,
+            keyCode: event.keyCode,
+            shiftKey: event.shiftKey,
+            ctrlKey: event.ctrlKey,
+            altKey: event.altKey,
+            metaKey: event.metaKey
+        };
+        testBindings(d3_event, false);
+
+    return keybinding;
+    };
 
     // Add one or more keycode bindings.
     keybinding.on = function(codes, callback, capture) {
