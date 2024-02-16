@@ -101,27 +101,27 @@ describe('actionMergePolygon', () => {
 
 
   it('merges multipolygon tags', () => {
-    const graph2 = new Rapid.Graph([
-      Rapid.osmRelation({id: 'r1', tags: {type: 'multipolygon', a: 'a'}}),
-      Rapid.osmRelation({id: 'r2', tags: {type: 'multipolygon', b: 'b'}})
+    const graph = new Rapid.Graph([
+      Rapid.osmRelation({ id: 'r1', tags: { type: 'multipolygon', a: 'a' } }),
+      Rapid.osmRelation({ id: 'r2', tags: { type: 'multipolygon', b: 'b' } })
     ]);
 
-    const result = Rapid.actionMergePolygon(['r1', 'r2'])(graph2);
-    assert.ok(result instanceof Rapid.Graph);
-
-    const r1 = result.hasEntity('r1');
-    assert.ok(r1 instanceof Rapid.osmRelation);
-    assert.deepEqual(r1.tags,  {type: 'multipolygon', a: 'a', b: 'b'});
+    const result = Rapid.actionMergePolygon(['r1', 'r2'])(graph);
+    const r = result.entity('r1');
+    assert.deepEqual(r.tags, { type: 'multipolygon', a: 'a', b: 'b' });
   });
 
 
   it('merges tags from closed outer ways', () => {
-    const graph2 = graph.replace(graph.entity('w0').update({ tags: { 'building': 'yes' }}));
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n1'], tags: { building: 'yes' } })
+    ]);
 
-    const result = Rapid.actionMergePolygon(['w0', 'w5'], 'r')(graph2);
-    assert.ok(result instanceof Rapid.Graph);
-    assert.equal(result.entity('w0').tags.building, undefined);
-    assert.equal(result.entity('r').tags.building, 'yes');
+    const result = Rapid.actionMergePolygon(['w1'], 'r')(graph);
+    const r = result.entity('r');
+    assert.deepEqual(r.tags, { type: 'multipolygon', building: 'yes' });
   });
 
 
@@ -145,6 +145,19 @@ describe('actionMergePolygon', () => {
   });
 
 
+  it('does not merge tags from unclosed outer ways', () => {
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { building: 'yes' } })
+    ]);
+
+    const result = Rapid.actionMergePolygon(['w1'], 'r')(graph);
+    const w = result.entity('w1');
+    assert.deepEqual(w.tags, { building: 'yes' });
+  });
+
+
   it('merges no tags from inner ways', () => {
     const graph2 = graph.replace(graph.entity('w1').update({ tags: { 'natural': 'water' }}));
 
@@ -155,12 +168,41 @@ describe('actionMergePolygon', () => {
   });
 
 
+  it('does not merge tags from inner ways', () => {
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmNode({ id: 'n3', loc: [0.5, 0.5] }),
+      Rapid.osmNode({ id: 'n4', loc: [0.5, -0.5] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n1'], tags: { building: 'yes' } }),
+      Rapid.osmWay({ id: 'w2', nodes: ['n3', 'n4', 'n3'] })
+    ]);
+
+    const result = Rapid.actionMergePolygon(['w1', 'w2'], 'r')(graph);
+    const w = result.entity('w2');
+    assert.deepEqual(w.tags, {});
+  });
+
+
   it('doesn\'t copy area tags from ways', () => {
     const graph2 = graph.replace(graph.entity('w0').update({ tags: { 'area': 'yes' }}));
 
     const result = Rapid.actionMergePolygon(['w0', 'w1'], 'r')(graph2);
     assert.ok(result instanceof Rapid.Graph);
     assert.equal(result.entity('r').tags.area, undefined);
+  });
+
+
+  it('does not copy area tags from ways', () => {
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n1'], tags: { area: 'yes' } })
+    ]);
+
+    const result = Rapid.actionMergePolygon(['w1'], 'r')(graph);
+    const r = result.entity('r');
+    assert.deepEqual(r.tags, { type: 'multipolygon' });
   });
 
 
@@ -204,5 +246,60 @@ describe('actionMergePolygon', () => {
     assert.equal(r.memberById('w2').role, 'outer');
     assert.equal(r.memberById('w3').role, 'inner');
     assert.equal(r.memberById('w4').role, 'inner');
+  });
+
+
+  it('disables action when there are other entities', () => {
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'] }),  // This is an 'other' entity
+      Rapid.osmRelation({ id: 'r1', tags: { type: 'multipolygon' } })
+    ]);
+
+    const action = Rapid.actionMergePolygon(['w1', 'r1']);
+    const disabled = action.disabled(graph);
+    assert.strictEqual(disabled, 'not_eligible');
+  });
+
+
+  it('disables action when there are less than two closedWay and multipolygon entities', () => {
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n1'] })  // This is a 'closedWay' entity
+    ]);
+
+    const action = Rapid.actionMergePolygon(['w1']);
+    const disabled = action.disabled(graph);
+    assert.strictEqual(disabled, 'not_eligible');
+  });
+
+
+  it('disables action when creating a new multipolygon would be redundant', () => {
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n1'] }),  // This is a 'closedWay' entity
+      Rapid.osmRelation({ id: 'r1', tags: { type: 'multipolygon' }, members: [{ type: 'way', id: 'w1' }] })  // This is a 'multipolygon' entity
+    ]);
+
+    const action = Rapid.actionMergePolygon(['w1', 'r1']);
+    const disabled = action.disabled(graph);
+    assert.strictEqual(disabled, 'not_eligible');
+  });
+
+
+  it('disables action when a way is already a member of a multipolygon', () => {
+    const graph = new Rapid.Graph([
+      Rapid.osmNode({ id: 'n1', loc: [0, 0] }),
+      Rapid.osmNode({ id: 'n2', loc: [1, 0] }),
+      Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n1'] }),  // This is a 'closedWay' entity
+      Rapid.osmRelation({ id: 'r1', tags: { type: 'multipolygon' }, members: [{ type: 'way', id: 'w1' }] })  // This is a 'multipolygon' entity
+    ]);
+
+    const action = Rapid.actionMergePolygon(['w1', 'r1']);
+    const disabled = action.disabled(graph);
+    assert.strictEqual(disabled, 'not_eligible');
   });
 });
