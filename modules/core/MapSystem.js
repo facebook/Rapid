@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
+import { Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { PixiRenderer } from '../pixi/PixiRenderer.js';
@@ -420,7 +420,7 @@ export class MapSystem extends AbstractSystem {
   set dimensions(val) {
     const [w, h] = val;
     this._dimensions = val;
-    this.context.projection.dimensions([[0, 0], [w, h]]);
+    this.context.viewport.dimensions([[0, 0], [w, h]]);
     this._renderer.resize(w, h);
   }
 
@@ -441,7 +441,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [lon,lat] location at the center of the viewport
    */
   centerLoc() {
-    return this.context.projection.invert(this.centerPoint());
+    return this.context.viewport.unproject(this.centerPoint());
   }
 
 
@@ -463,14 +463,14 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [lon,lat] location of pointer (or center of the map)
    */
   mouseLoc() {
-    return this.context.projection.invert(this.mouse());
+    return this.context.viewport.unproject(this.mouse());
   }
 
 
   /**
    * transform
    * Set/Get the map transform
-   * IF setting, will schedule an update of map transform/projection.
+   * IF setting, will schedule an update of map transform.
    * All convenience methods for adjusting the map go through here.
    *   (the old way did a round trip through the d3-zoom event system)
    * @param  t2         Transform Object with `x`,`y`,`k` properties.
@@ -479,7 +479,7 @@ export class MapSystem extends AbstractSystem {
    */
   transform(t2, duration) {
     if (t2 === undefined) {
-      return this.context.projection.transform();
+      return this.context.viewport.transform();
     }
     if (duration === undefined) {
       duration = 0;
@@ -517,12 +517,11 @@ export class MapSystem extends AbstractSystem {
     }
 
     const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
-    let proj = new Projection();
-    proj.transform(this.context.projection.transform()); // make copy
-    proj.scale(k2);
+    const view = new Viewport(this.context.viewport.transform());  // make copy
+    view.scale(k2);
 
-    let t = proj.translate();
-    const point = proj.project(loc2);
+    let t = view.translate();
+    const point = view.project(loc2);
     const center = this.centerPoint();
     const delta = vecSubtract(center, point);
     t = vecAdd(t, delta);
@@ -543,16 +542,15 @@ export class MapSystem extends AbstractSystem {
     const c = this.center();
     const z = this.zoom();
     if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
-      return new Promise.resolve(this.context.projection.transform());
+      return new Promise.resolve(this.context.viewport.transform());
     }
 
     const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
-    let proj = new Projection();
-    proj.transform(this.context.projection.transform()); // make copy
-    proj.scale(k2);
+    const view = new Viewport(this.context.viewport.transform());
+    view.scale(k2);
 
-    let t = proj.translate();
-    const point = proj.project(loc2);
+    let t = view.translate();
+    const point = view.project(loc2);
     const center = this.centerPoint();
     const delta = vecSubtract(center, point);
     t = vecAdd(t, delta);
@@ -570,7 +568,7 @@ export class MapSystem extends AbstractSystem {
    */
   center(loc2, duration) {
     if (loc2 === undefined) {
-      return this.context.projection.invert(this.centerPoint());
+      return this.context.viewport.unproject(this.centerPoint());
     }
     if (duration === undefined) {
       duration = 0;
@@ -590,7 +588,7 @@ export class MapSystem extends AbstractSystem {
    */
   zoom(z2, duration) {
     if (z2 === undefined) {
-      return Math.max(0, geoScaleToZoom(this.context.projection.scale(), TILESIZE));
+      return Math.max(0, geoScaleToZoom(this.context.viewport.scale(), TILESIZE));
     }
     if (duration === undefined) {
       duration = 0;
@@ -608,7 +606,7 @@ export class MapSystem extends AbstractSystem {
    * @return this
    */
   pan(delta, duration = 0) {
-    const t = this.context.projection.transform();
+    const t = this.context.viewport.transform();
     return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
   }
 
@@ -732,10 +730,7 @@ export class MapSystem extends AbstractSystem {
    */
   extent(extent) {
     if (extent === undefined) {
-      return new Extent(
-        this.context.projection.invert([0, this._dimensions[1]]),
-        this.context.projection.invert([this._dimensions[0], 0])
-      );
+      return this.context.viewport.extent();
     } else {
       return this.centerZoom(extent.center(), this.extentZoom(extent));
     }
@@ -754,8 +749,8 @@ export class MapSystem extends AbstractSystem {
       const footerY = 30;
       const pad = 10;
       return new Extent(
-        this.context.projection.invert([pad, this._dimensions[1] - footerY - pad]),
-        this.context.projection.invert([this._dimensions[0] - pad, headerY + pad])
+        this.context.viewport.unproject([pad, this._dimensions[1] - footerY - pad]),
+        this.context.viewport.unproject([this._dimensions[0] - pad, headerY + pad])
       );
     } else {
       return this.centerZoom(extent.center(), this.trimmedExtentZoom(extent));
@@ -773,8 +768,8 @@ export class MapSystem extends AbstractSystem {
   extentZoom(extent, dimensions) {
     const [w, h] = dimensions || this._dimensions;
 
-    const tl = this.context.projection.project([extent.min[0], extent.max[1]]);
-    const br = this.context.projection.project([extent.max[0], extent.min[1]]);
+    const tl = this.context.viewport.project([extent.min[0], extent.max[1]]);
+    const br = this.context.viewport.project([extent.max[0], extent.min[1]]);
 
     // Calculate maximum zoom that fits extent
     const hFactor = (br[0] - tl[0]) / w;

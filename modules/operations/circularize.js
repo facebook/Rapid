@@ -22,7 +22,7 @@ export function operationCircularize(context, selectedIDs) {
 
   function getAction(entity) {
     if (entity.type !== 'way' || new Set(entity.nodes).size <= 1) return null;
-    return actionCircularize(entity.id, context.projection);
+    return actionCircularize(entity.id, context.viewport);
   }
 
 

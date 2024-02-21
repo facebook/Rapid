@@ -158,9 +158,9 @@ export class MapWithAIService extends AbstractSystem {
       this._datasets[datasetID] = ds;
     }
 
-    const locationSystem = this.context.systems.locations;
-    const projection = this.context.projection;
-    const tiles = this._tiler.getTiles(projection).tiles;
+    const locations = this.context.systems.locations;
+    const viewport = this.context.viewport;
+    const tiles = this._tiler.getTiles(viewport).tiles;
 
     // abort inflight requests that are no longer needed
     for (const k of Object.keys(cache.inflight)) {
@@ -176,7 +176,7 @@ export class MapWithAIService extends AbstractSystem {
 
       // exit if this tile covers a blocked region (all corners are blocked)
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
-      const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
+      const tileBlocked = corners.every(loc => locations.blocksAt(loc).length);
       if (tileBlocked) {
         cache.loaded.add(tile.id);  // don't try again
         continue;

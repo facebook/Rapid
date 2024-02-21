@@ -59,14 +59,14 @@ export function validationUnsquareWay(context) {
     const storedDegreeThreshold = storageSystem.getItem('validate-square-degrees');
     const degreeThreshold = isNaN(storedDegreeThreshold) ? DEFAULT_DEG_THRESHOLD : parseFloat(storedDegreeThreshold);
 
-    const points = nodes.map(node => context.projection.project(node.loc));
+    const points = nodes.map(node => context.viewport.project(node.loc));
     if (!geoOrthoCanOrthogonalize(points, isClosed, epsilon, degreeThreshold, true)) return [];
 
     let autoArgs;
     // don't allow autosquaring features linked to wikidata
     if (!entity.tags.wikidata) {
       // important to use the same `degreeThreshold` as for detection:
-      const action = actionOrthogonalize(entity.id, context.projection, undefined, degreeThreshold);
+      const action = actionOrthogonalize(entity.id, context.viewport, undefined, degreeThreshold);
       const annotation = l10n.t('operations.orthogonalize.annotation.feature', { n: 1 });
       autoArgs = [ action, annotation ];
     }
@@ -94,7 +94,7 @@ export function validationUnsquareWay(context) {
             onClick: function() {
               const entityID = this.issue.entityIds[0];
               // important to use the same `degreeThreshold` as for detection:
-              const action = actionOrthogonalize(entityID, context.projection, undefined, degreeThreshold);
+              const action = actionOrthogonalize(entityID, context.viewport, undefined, degreeThreshold);
               const annotation = l10n.t('operations.orthogonalize.annotation.feature', { n: 1 });
 
               editor

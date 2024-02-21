@@ -30,7 +30,7 @@ export function operationExtract(context, selectedIDs) {
       if (!preset.geometry.includes('point')) return null;
     }
 
-    return actionExtract(entity.id, context.projection);
+    return actionExtract(entity.id, context.viewport);
   }).filter(Boolean);
 
 
@@ -61,10 +61,10 @@ export function operationExtract(context, selectedIDs) {
 //
 //    // Move extracted features to where mouse pointer is..
 //    // (or center of map if there is no readily available pointer coordinate)
-//    const projection = context.projection;
-//    const extractPoint = projection.project(extent.center());
+//    const viewport = context.viewport;
+//    const extractPoint = viewport.project(extent.center());
 //    const delta = vecSubtract(map.mouse(), extractPoint);
-//    editor.perform(actionMove(extractedNodeIDs, delta, projection));
+//    editor.perform(actionMove(extractedNodeIDs, delta, viewport));
 //    editor.endTransaction();
 //    context.enter('move', { selection: { osm: extractedNodeIDs }} );
 

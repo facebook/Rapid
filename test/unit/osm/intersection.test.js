@@ -1634,7 +1634,7 @@ describe('osmIntersection', () => {
 
 
 describe('osmInferRestriction', () => {
-  const projection = new Rapid.sdk.Projection().scale(250 / Math.PI);
+  const viewport = new Rapid.sdk.Viewport().scale(250 / Math.PI);
 
   it('infers the restriction type based on the turn angle', () => {
     //
@@ -1655,37 +1655,37 @@ describe('osmInferRestriction', () => {
     const r1 = Rapid.osmInferRestriction(graph, {
       from: { node: 'u', way: '=', vertex: '*' },
       to: { node: 'x', way: '-', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(r1, 'no_right_turn');
 
     const r2 = Rapid.osmInferRestriction(graph, {
       from: { node: 'x', way: '-', vertex: '*' },
       to: { node: 'w', way: '~', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(r2, 'no_right_turn');
 
     const l1 = Rapid.osmInferRestriction(graph, {
       from: { node: 'x', way: '-', vertex: '*' },
       to: { node: 'u', way: '=', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(l1, 'no_left_turn');
 
     const l2 = Rapid.osmInferRestriction(graph, {
       from: { node: 'w', way: '~', vertex: '*' },
       to: { node: 'x', way: '-', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(l2, 'no_left_turn');
 
     const s = Rapid.osmInferRestriction(graph, {
       from: { node: 'u', way: '=', vertex: '*' },
       to: { node: 'w', way: '~', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(s, 'no_straight_on');
 
     const u = Rapid.osmInferRestriction(graph, {
       from: { node: 'u', way: '=', vertex: '*' },
       to: { node: 'u', way: '=', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(u, 'no_u_turn');
   });
 
@@ -1707,7 +1707,7 @@ describe('osmInferRestriction', () => {
     const r = Rapid.osmInferRestriction(graph, {
       from: { node: 'x', way: 'w1', vertex: '*' },
       to: { node: 'u', way: 'w2', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(r, 'no_u_turn');
   });
 
@@ -1729,7 +1729,7 @@ describe('osmInferRestriction', () => {
     const r = Rapid.osmInferRestriction(graph, {
       from: { node: 'x', way: 'w1', vertex: '*' },
       to: { node: 'u', way: 'w2', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(r, 'no_left_turn');
   });
 
@@ -1753,7 +1753,7 @@ describe('osmInferRestriction', () => {
     const r = Rapid.osmInferRestriction(graph, {
       from: { node: 'x', way: 'w1', vertex: '+' },
       to: { node: 'u', way: 'w2', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(r, 'no_u_turn');
   });
 
@@ -1777,7 +1777,7 @@ describe('osmInferRestriction', () => {
     const r = Rapid.osmInferRestriction(graph, {
       from: { node: 'x', way: 'w1', vertex: '+' },
       to: { node: 'u', way: 'w2', vertex: '*' }
-    }, projection);
+    }, viewport);
     assert.equal(r, 'no_u_turn');
   });
 });

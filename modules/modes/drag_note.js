@@ -37,7 +37,7 @@ export function modeDragNote(context) {
 
 
     function origin(note) {
-        return context.projection.project(note.loc);
+        return context.viewport.project(note.loc);
     }
 
 
@@ -62,7 +62,7 @@ export function modeDragNote(context) {
 
     function move(d3_event, entity, point) {
         d3_event.stopPropagation();
-        _lastLoc = context.projection.invert(point);
+        _lastLoc = context.viewport.unproject(point);
 
         doMove(d3_event);
         var nudge = geomViewportNudge(point, context.systems.map.dimensions);
@@ -77,9 +77,9 @@ export function modeDragNote(context) {
     function doMove(d3_event, nudge) {
         nudge = nudge || [0, 0];
 
-        var currPoint = (d3_event && d3_event.point) || context.projection.project(_lastLoc);
+        var currPoint = (d3_event && d3_event.point) || context.viewport.project(_lastLoc);
         var currMouse = vecSubtract(currPoint, nudge);
-        var loc = context.projection.invert(currMouse);
+        var loc = context.viewport.unproject(currMouse);
 
         _note = _note.move(loc);
 

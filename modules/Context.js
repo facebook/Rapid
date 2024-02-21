@@ -1,6 +1,6 @@
 import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
-import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
+import { geoScaleToZoom, Viewport } from '@rapid-sdk/math';
 import { utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 
 import { behaviors } from './behaviors/index.js';
@@ -45,8 +45,9 @@ export class Context extends EventEmitter {
     this.assetPath = '';
     this.assetMap = {};
 
-    // Projection
-    this.projection = new Projection();
+    // Viewport (was: Projection)
+    this.viewport = new Viewport();
+    this.projection = this.viewport;  // legacy name
 
     // "Systems" are the core components of Rapid.
     this.systems = {};
@@ -244,16 +245,16 @@ export class Context extends EventEmitter {
   }
 
 
-  loadTiles(projection, callback) {
+  loadTiles(viewport, callback) {
     const osm = this.services.osm;
     if (!osm) return;
 
-    const z = geoScaleToZoom(projection.scale(), TILESIZE);
+    const z = geoScaleToZoom(viewport.scale(), TILESIZE);
     if (z < MINZOOM) return;  // this would fire off too many API requests
 
     if (this.editable()) {
       const cid = osm.connectionID;
-      osm.loadTiles(projection, this._afterLoad(cid, callback));
+      osm.loadTiles(viewport, this._afterLoad(cid, callback));
     }
   }
 

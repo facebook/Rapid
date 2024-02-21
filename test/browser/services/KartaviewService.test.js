@@ -2,14 +2,9 @@ describe('KartaviewService', () => {
   let _kartaview;
 
   class MockMapSystem {
-    constructor(context)   { this.context = context; }
-    initAsync()            { return Promise.resolve(); }
-    extent() {
-      return new sdk.Extent(
-        this.context.projection.invert([0, 64]), // bottom left
-        this.context.projection.invert([64, 0])  // top right
-      );
-    }
+    constructor(context)  { this.context = context; }
+    initAsync()           { return Promise.resolve(); }
+    extent()              { return this._viewport.extent(); }
   }
 
   class MockContext {
@@ -18,9 +13,8 @@ describe('KartaviewService', () => {
         map: new MockMapSystem(this),
       };
 
-      this.projection = new sdk.Projection()
-        .scale(sdk.geoZoomToScale(14))
-        .translate([-116508, 0])  // 10,0
+      this.viewport = new sdk.Viewport()
+        .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
         .dimensions([[0,0], [64, 64]]);
     }
     container()       { return null; }
@@ -167,7 +161,7 @@ describe('KartaviewService', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      _kartaview.context.projection.translate([0, 0]);  // move map to Null Island
+      _kartaview.context.viewport.translate([0, 0]);  // move map to Null Island
       _kartaview.on('loadedData', spy);
       _kartaview.loadTiles();
 

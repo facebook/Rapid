@@ -5,9 +5,9 @@ import { geomLineIntersection, vecDot, vecEqual, vecLength, vecSubtract } from '
 // projection onto that edge, if such a projection exists, or the distance to
 // the closest vertex on that edge. Returns an object with the `index` of the
 // chosen edge, the chosen `loc` on that edge, and the `distance` to to it.
-export function geoChooseEdge(nodes, coord, projection, activeID) {
+export function geoChooseEdge(nodes, coord, viewport, activeID) {
     var dist = vecLength;
-    var coords = nodes.map(function(n) { return projection.project(n.loc); });
+    var coords = nodes.map(function(n) { return viewport.project(n.loc); });
     var ids = nodes.map(function(n) { return n.id; });
     var min = Infinity;
     var idx;
@@ -34,7 +34,7 @@ export function geoChooseEdge(nodes, coord, projection, activeID) {
         if (d < min) {
             min = d;
             idx = i + 1;
-            loc = projection.invert(p);
+            loc = viewport.unproject(p);
         }
     }
 

@@ -58,7 +58,7 @@ export function operationCopy(context, selectedIDs) {
 
     if (_point && (canCopy.length !== 1 || graph.entity(canCopy[0]).type !== 'node')) {
       // store the anchor coordinates if copying more than a single node
-      context.copyLoc = context.projection.invert(_point);
+      context.copyLoc = context.viewport.unproject(_point);
     } else {
       context.copyLoc = null;
     }

@@ -3,9 +3,9 @@ import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 describe('actionOrthogonalize', () => {
-    const projection = {
-        project: function (val) { return val; },
-        invert: function (val) { return val; }
+    const viewport = {
+      project:   val => val,
+      unproject: val => val
     };
 
     describe('closed paths', () => {
@@ -20,7 +20,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmNode({id: 'd', loc: [0, 2]}),
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 5);
         });
 
@@ -37,7 +37,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 5);
         });
 
@@ -54,7 +54,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 4);
         });
 
@@ -72,7 +72,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.equal(result.hasEntity('d'), undefined);
         });
 
@@ -90,7 +90,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 6);
             assert.notEqual(result.hasEntity('d'), undefined);
         });
@@ -112,7 +112,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport)(graph));
             assert.ok(diff.changes instanceof Map);
             assert.ok(!diff.changes.has('d'));
             assert.ok(!diff.changes.has('e'));
@@ -140,14 +140,14 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'd', 'a']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport)(graph));
             assert.notDeepEqual(Object.keys(diff.changes), ['d']);
             assert.ok(graph.hasEntity('d'));
         });
 
 
         it('preserves the shape of skinny quads', () => {
-            const projection = new Rapid.sdk.Projection();
+            const viewport = new Rapid.sdk.Viewport();
             const tests = [
                 [
                     [-77.0339864831478, 38.8616391227204],
@@ -172,7 +172,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
                 const initialWidth = Rapid.sdk.geoSphericalDistance(graph.entity('a').loc, graph.entity('b').loc);
-                const result = Rapid.actionOrthogonalize('-', projection)(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport)(graph);
                 const finalWidth = Rapid.sdk.geoSphericalDistance(result.entity('a').loc, result.entity('b').loc);
                 assert.ok(finalWidth / initialWidth >= 0.90 && finalWidth / initialWidth <= 1.10);
             }
@@ -193,7 +193,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 4);
         });
 
@@ -210,7 +210,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 4);
         });
 
@@ -227,7 +227,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 3);
         });
 
@@ -245,7 +245,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.equal(result.hasEntity('d'), undefined);
         });
 
@@ -263,7 +263,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph);
             assert.deepEqual(result.entity('-').nodes.length, 5);
             assert.ok(result.hasEntity('d'));
         });
@@ -285,7 +285,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport)(graph));
             assert.ok(diff.changes instanceof Map);
             assert.ok(!diff.changes.has('a'));
             assert.ok(!diff.changes.has('d'));
@@ -309,7 +309,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['c', 'd', 'e', 'f', 'g', 'd']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport)(graph));
             assert.ok(!Object.keys(diff.changes).includes('d'));
             assert.ok(graph.hasEntity('d'));
         });
@@ -329,7 +329,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport, 'b')(graph));
             assert.ok(diff.changes instanceof Map);
             assert.ok(!diff.changes.has('a'));
             assert.ok(diff.changes.has('b'));
@@ -349,7 +349,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport, 'b')(graph));
             assert.ok(diff.changes instanceof Map);
             assert.ok(!diff.changes.has('a'));
             assert.ok(diff.changes.has('b'));
@@ -369,7 +369,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport, 'b')(graph));
             assert.ok(diff.changes instanceof Map);
             assert.ok(!diff.changes.has('a'));
             assert.ok(diff.changes.has('b'));
@@ -390,7 +390,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
             ]);
 
-            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
+            const diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', viewport, 'b')(graph));
             assert.ok(diff.changes instanceof Map);
             assert.ok(!diff.changes.has('a'));
             assert.ok(diff.changes.has('b'));
@@ -414,7 +414,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, 'square_enough');
             });
 
@@ -431,7 +431,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -448,7 +448,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -466,7 +466,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -487,7 +487,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, 'not_squarish');
             });
 
@@ -509,7 +509,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'd', 'a']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
         });
@@ -528,7 +528,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, 'square_enough');
             });
 
@@ -545,7 +545,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -562,7 +562,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -580,7 +580,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -601,7 +601,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, 'not_squarish');
             });
 
@@ -619,7 +619,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['c', 'd', 'e', 'f', 'g', 'd']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport).disabled(graph);
                 assert.equal(result, false);
             });
         });
@@ -638,7 +638,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport, 'b').disabled(graph);
                 assert.equal(result, 'square_enough');
             });
 
@@ -655,7 +655,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport, 'b').disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -672,7 +672,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport, 'b').disabled(graph);
                 assert.equal(result, false);
             });
 
@@ -693,7 +693,7 @@ describe('actionOrthogonalize', () => {
                     Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
                 ]);
 
-                const result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                const result = Rapid.actionOrthogonalize('-', viewport, 'b').disabled(graph);
                 assert.equal(result, 'not_squarish');
             });
         });
@@ -720,7 +720,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph, 0);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph, 0);
             assert.deepEqual(result.entity('-').nodes, ['a', 'b', 'c', 'd', 'e', 'f', 'a']);
             assert.ok(Math.abs(result.entity('b').loc[0] - 1) < 1e-6);
             assert.ok(Math.abs(result.entity('b').loc[1] - 0.01) < 1e-6);
@@ -740,7 +740,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph, 0.5);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph, 0.5);
             assert.deepEqual(result.entity('-').nodes, ['a', 'b', 'c', 'd', 'e', 'f', 'a']);
             assert.ok(Math.abs(result.entity('b').loc[0] - 1) < 1e-3);
             assert.ok(Math.abs(result.entity('b').loc[1] - 0.005) < 1e-3);
@@ -760,7 +760,7 @@ describe('actionOrthogonalize', () => {
                 Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            const result = Rapid.actionOrthogonalize('-', projection)(graph, 1);
+            const result = Rapid.actionOrthogonalize('-', viewport)(graph, 1);
             assert.deepEqual(result.entity('-').nodes, ['a', 'b', 'd', 'e', 'f', 'a']);
             assert.ok(Math.abs(result.entity('b').loc[0] - 1) < 2e-3);
             assert.ok(Math.abs(result.entity('b').loc[1]) < 2e-3);

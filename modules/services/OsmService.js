@@ -1,4 +1,4 @@
-import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
+import { Extent, Tiler, Viewport, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle.js';
 import { osmAuth } from 'osm-auth';
@@ -721,13 +721,13 @@ export class OsmService extends AbstractSystem {
 
   // Load data (entities) from the API in tiles
   // GET /api/0.6/map?bbox=
-  loadTiles(projection, callback) {
+  loadTiles(viewport, callback) {
     if (this._paused || this.getRateLimit()) return;
 
     // determine the needed tiles to cover the view
     const tiles = this._tiler
       .zoomRange(this._tileZoom)
-      .getTiles(projection)
+      .getTiles(viewport)
       .tiles;
 
     // Abort inflight requests that are no longer needed
@@ -876,9 +876,9 @@ export class OsmService extends AbstractSystem {
     if (cache.toLoad.size > 50) return;
 
     const k = geoZoomToScale(this._tileZoom + 1);
-    const offset = new Projection().scale(k).project(loc);
-    const proj = new Projection().transform({ k: k, x: -offset[0], y: -offset[1] });
-    const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(proj).tiles;
+    const offset = new Viewport().scale(k).project(loc);
+    const viewport = new Viewport().transform({ k: k, x: -offset[0], y: -offset[1] });
+    const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(viewport).tiles;
 
     for (const tile of tiles) {
       if (cache.toLoad.has(tile.id) || cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
@@ -891,7 +891,7 @@ export class OsmService extends AbstractSystem {
 
   // Load notes from the API in tiles
   // GET /api/0.6/notes?bbox=
-  loadNotes(projection, noteOptions) {
+  loadNotes(viewport, noteOptions) {
     if (this._paused || this.getRateLimit()) return;
 
     noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
@@ -908,7 +908,7 @@ export class OsmService extends AbstractSystem {
     // determine the needed tiles to cover the view
     const tiles = this._tiler
       .zoomRange(this._noteZoom)
-      .getTiles(projection)
+      .getTiles(viewport)
       .tiles;
 
     // abort inflight requests that are no longer needed
@@ -1162,12 +1162,8 @@ export class OsmService extends AbstractSystem {
 
 
   // get all cached notes covering the viewport
-  notes(projection) {
-    const viewport = projection.dimensions();
-    const min = [viewport[0][0], viewport[1][1]];
-    const max = [viewport[1][0], viewport[0][1]];
-    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-
+  notes(viewport) {
+    const bbox = viewport.extent().bbox();
     return this._noteCache.rtree.search(bbox).map(d => d.data);
   }
 

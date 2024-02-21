@@ -1,6 +1,6 @@
 //import { dispatch as d3_dispatch } from 'd3-dispatch';
 //import { select as d3_select } from 'd3-selection';
-//import { Extent, Projection, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
+//import { Extent, Viewport, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
 //import { utilEntitySelector } from '@rapid-sdk/util';
 //
 //import { actionRestrictTurn } from '../../actions/restrict_turn.js';
@@ -201,7 +201,7 @@
 //
 //        var vgraph = _intersection.graph;
 //        var filter = utilFunctor(true);
-//        var projection = new Projection();
+//        var viewport = new Viewport();
 //
 //        // Reflow warning: `utilGetDimensions` calls `getBoundingClientRect`
 //        // Instead of asking the restriction-container for its dimensions,
@@ -214,7 +214,7 @@
 //        var c = vecScale(d, 0.5);
 //        var z = 22;
 //
-//        projection.scale(geoZoomToScale(z));
+//        viewport.scale(geoZoomToScale(z));
 //
 //        // Calculate extent of all key vertices
 //        var extent = _intersection.vertices.reduce((extent, node) => {
@@ -227,28 +227,28 @@
 //        // If this is a large intersection, adjust zoom to fit extent
 //        if (_intersection.vertices.length > 1) {
 //            var padding = 180;   // in z22 pixels
-//            var tl = projection.project([extent.min[0], extent.max[1]]);
-//            var br = projection.project([extent.max[0], extent.min[1]]);
+//            var tl = viewport.project([extent.min[0], extent.max[1]]);
+//            var br = viewport.project([extent.max[0], extent.min[1]]);
 //            var hFactor = (br[0] - tl[0]) / (d[0] - padding);
 //            var vFactor = (br[1] - tl[1]) / (d[1] - padding);
 //            var hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
 //            var vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
 //            z = z - Math.max(hZoomDiff, vZoomDiff);
-//            projection.scale(geoZoomToScale(z));
+//            viewport.scale(geoZoomToScale(z));
 //        }
 //
 //        var padTop = 35;   // reserve top space for hint text
-//        var extentCenter = projection.project(extent.center());
+//        var extentCenter = viewport.project(extent.center());
 //        extentCenter[1] = extentCenter[1] - padTop;
 //
-//        projection
+//        viewport
 //            .translate(vecSubtract(c, extentCenter))
 //            .dimensions([[0, 0], d]);
 //
-//        var drawLayers = svgLayers(projection, context).only(['osm','touch']).dimensions(d);
-//        var drawVertices = svgVertices(projection, context);
-//        var drawLines = svgLines(projection, context);
-//        var drawTurns = svgTurns(projection, context);
+//        var drawLayers = svgLayers(viewport, context).only(['osm','touch']).dimensions(d);
+//        var drawVertices = svgVertices(viewport, context);
+//        var drawLines = svgLines(viewport, context);
+//        var drawTurns = svgTurns(viewport, context);
 //
 //        var firstTime = selection.selectAll('.surface').empty();
 //
@@ -318,7 +318,7 @@
 //
 //            } else if (datum instanceof osmTurn) {
 //                var actions, extraActions, turns, i;
-//                var restrictionType = osmInferRestriction(vgraph, datum, projection);
+//                var restrictionType = osmInferRestriction(vgraph, datum, viewport);
 //
 //                if (datum.restrictionID && !datum.direct) {
 //                    return;
@@ -340,7 +340,7 @@
 //
 //                        if (turn.direct && turn.path[1] === datum.path[1]) {
 //                            seen[turns[i].restrictionID] = true;
-//                            turn.restrictionType = osmInferRestriction(vgraph, turn, projection);
+//                            turn.restrictionType = osmInferRestriction(vgraph, turn, viewport);
 //                            _oldTurns.push(turn);
 //                            extraActions.push(actionUnrestrictTurn(turn));
 //                        }
@@ -491,7 +491,7 @@
 //
 //            // Hovering a turn arrow
 //            } else if (datum instanceof osmTurn) {
-//                var restrictionType = osmInferRestriction(vgraph, datum, projection);
+//                var restrictionType = osmInferRestriction(vgraph, datum, viewport);
 //                var turnType = restrictionType.replace(/^(only|no)\_/, '');
 //                var indirect = (datum.direct === false ? l10n.tHtml('restriction.help.indirect') : '');
 //                var klass, turnText, nextText;

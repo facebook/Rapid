@@ -54,11 +54,11 @@ export class PixiLayerOsmose extends AbstractLayer {
 
   /**
    * renderMarkers
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  renderMarkers(frame, projection, zoom) {
+  renderMarkers(frame, viewport, zoom) {
     const service = this.context.services.osmose;
     if (!service?.started) return;
 
@@ -84,7 +84,7 @@ export class PixiLayerOsmose extends AbstractLayer {
       }
 
       this.syncFeatureClasses(feature);
-      feature.update(projection, zoom);
+      feature.update(viewport, zoom);
       if (!feature._isCircular) {  // offset the icon to fit better in the "osmose" pin
         feature.icon.position.set(0, -17);
       }
@@ -97,16 +97,16 @@ export class PixiLayerOsmose extends AbstractLayer {
   /**
    * render
    * Render any data we have, and schedule fetching more of it to cover the view
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, projection, zoom) {
+  render(frame, viewport, zoom) {
     const service = this.context.services.osmose;
     if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
     service.loadTiles();
-    this.renderMarkers(frame, projection, zoom);
+    this.renderMarkers(frame, viewport, zoom);
   }
 
 }

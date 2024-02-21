@@ -142,7 +142,7 @@ export class LassoBehavior extends AbstractBehavior {
   }
 
 
-  // After inverting the projection from screen coordintes to wgs84 coordinates
+  // After unprojecting from screen coordintes to wgs84 coordinates
   // we need to fix min/max (in screen +y is down, in wgs84 +y is up)
   _normalize(a, b) {
     return [

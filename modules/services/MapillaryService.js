@@ -202,8 +202,8 @@ export class MapillaryService extends AbstractSystem {
     if (!['images', 'signs', 'points'].includes(datasetID)) return;
 
     // determine the needed tiles to cover the view
-    const projection = this.context.projection;
-    const tiles = this._tiler.getTiles(projection).tiles;
+    const viewport = this.context.viewport;
+    const tiles = this._tiler.getTiles(viewport).tiles;
     for (const tile of tiles) {
       this._loadTile(datasetID, tile);
     }

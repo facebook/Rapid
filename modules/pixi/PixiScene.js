@@ -137,13 +137,13 @@ export class PixiScene extends EventEmitter {
    * - For proper label placement, we really need to cull the feature layers
    *   before we render the label layer, so we do these calls in layer order.
    *
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, projection, zoom) {
+  render(frame, viewport, zoom) {
     for (const layer of this.layers.values()) {
-      layer.render(frame, projection, zoom);
+      layer.render(frame, viewport, zoom);
       layer.cull(frame);
     }
   }

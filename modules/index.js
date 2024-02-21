@@ -32,8 +32,8 @@ export const d3 = {
 import * as SDKMATH from '@rapid-sdk/math';
 import * as SDKUTIL from '@rapid-sdk/util';
 export const sdk = {
-  Projection: SDKMATH.Projection,
   Extent: SDKMATH.Extent,
+  Viewport: SDKMATH.Viewport,
   geoSphericalDistance: SDKMATH.geoSphericalDistance,
   geoZoomToScale: SDKMATH.geoZoomToScale,
   vecLength: SDKMATH.vecLength,

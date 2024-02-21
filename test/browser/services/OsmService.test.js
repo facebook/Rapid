@@ -425,8 +425,8 @@ describe('OsmService', () => {
 
 
   describe('#loadTiles', () => {
-    const projection = new Rapid.sdk.Projection()
-      .scale(Rapid.sdk.geoZoomToScale(20))
+    const viewport = new sdk.Viewport()
+      .scale(sdk.geoZoomToScale(20))
       .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
       .dimensions([[0,0], [64,64]]);
 
@@ -447,7 +447,7 @@ describe('OsmService', () => {
       });
 
       const spy = sinon.spy();
-      _osm.loadTiles(projection, spy);
+      _osm.loadTiles(viewport, spy);
 
       window.setTimeout(() => {
         // was: calledOnce, now called multiple times as we fetch margin tiles
@@ -687,10 +687,9 @@ describe('OsmService', () => {
 
 
   describe('#loadNotes', () => {
-    const projection = new Rapid.sdk.Projection()
-      .scale(Rapid.sdk.geoZoomToScale(14))
-      .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], [64,64]]);
+    const viewport = new sdk.Viewport()
+      .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
+      .dimensions([[0,0], [64, 64]]);
 
     const notesBody =
 `<?xml version="1.0" encoding="UTF-8"?>
@@ -724,7 +723,7 @@ describe('OsmService', () => {
       });
 
       _osm.on('loadedNotes', spy);
-      _osm.loadNotes(projection, {});
+      _osm.loadNotes(viewport, {});
 
       window.setTimeout(() => {
         // was: calledOnce, now called multiple times as we fetch margin tiles
@@ -736,10 +735,9 @@ describe('OsmService', () => {
 
 
   describe('#notes', () => {
-    const projection = new Rapid.sdk.Projection()
-      .scale(Rapid.sdk.geoZoomToScale(14))
-      .translate([-116508, 0])  // 10,0
-      .dimensions([[0,0], [64,64]]);
+    const viewport = new sdk.Viewport()
+      .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
+      .dimensions([[0,0], [64, 64]]);
 
     it('returns notes in the visible map area', () => {
       const notes = [
@@ -749,7 +747,7 @@ describe('OsmService', () => {
       ];
 
       _osm.caches('get').note.rtree.load(notes);
-      const res = _osm.notes(projection);
+      const res = _osm.notes(viewport);
 
       expect(res).to.deep.eql([
         { key: '0', loc: [10,0] },

@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@rapid-sdk/math';
-import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
 import { JXON } from '../util/jxon.js';
 import { osmChangeset } from '../osm/index.js';

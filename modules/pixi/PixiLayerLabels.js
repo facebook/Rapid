@@ -174,17 +174,17 @@ export class PixiLayerLabels extends AbstractLayer {
    * - label placement - do the math of figuring our where labels should be
    * - label rendering - show or hide labels based on their visibility
    *
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, projection, zoom) {
+  render(frame, viewport, zoom) {
     if (this.enabled && zoom >= MINZOOM) {
       this.labelContainer.visible = true;
       this.debugContainer.visible = this.context.getDebug('label');
 
       // Reset all labels and avoids when scale changes
-      const k = projection.scale();
+      const k = viewport.scale();
       if (k !== this._oldk) {
         this.reset();
         this._oldk = k;
@@ -223,7 +223,7 @@ export class PixiLayerLabels extends AbstractLayer {
       this.labelLines(lines);
       this.labelPolygons(polygons);
 
-      this.renderObjects(projection);
+      this.renderObjects(viewport);
 
     } else {
       this.labelContainer.visible = false;
@@ -787,10 +787,10 @@ this.placeRopeLabel(feature, labelObj, coords);
 
   /**
    * renderObjects
-   * This renders any of the Lable objects in the view
-   * @param  projection  The Pixi projection
+   * This renders any of the Label objects in the view
+   * @param  viewport  The Pixi viewport
    */
-  renderObjects(projection) {
+  renderObjects(viewport) {
     const context = this.context;
     const SHOWDEBUG = context.getDebug('label');
 

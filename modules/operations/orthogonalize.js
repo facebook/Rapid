@@ -30,7 +30,7 @@ export function operationOrthogonalize(context, selectedIDs) {
     if (entity.type === 'way' && new Set(entity.nodes).size > 2) {
       if (_type && _type !== 'feature') return null;
       _type = 'feature';
-      return actionOrthogonalize(entity.id, context.projection);
+      return actionOrthogonalize(entity.id, context.viewport);
 
     // square a single vertex
     } else if (geometry === 'vertex') {
@@ -40,7 +40,7 @@ export function operationOrthogonalize(context, selectedIDs) {
       if (parents.length === 1) {
         const way = parents[0];
         if (way.nodes.indexOf(entity.id) !== -1) {
-          return actionOrthogonalize(way.id, context.projection, entity.id);
+          return actionOrthogonalize(way.id, context.viewport, entity.id);
         }
       }
     }

@@ -69,13 +69,13 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * update
-   * @param  projection  Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport  Pixi viewport to use for rendering
+   * @param  zoom      Effective zoom to use for rendering
    */
-  update(projection, zoom) {
+  update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    this.updateGeometry(projection, zoom);
+    this.updateGeometry(viewport, zoom);
     this.updateStyle(zoom);
 
     // Recalculate local and scene bounds
@@ -92,14 +92,14 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * updateGeometry
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  updateGeometry(projection, zoom) {
+  updateGeometry(viewport, zoom) {
     if (!this.geometry.dirty) return;
 
     // Reproject
-    this.geometry.update(projection, zoom);
+    this.geometry.update(viewport, zoom);
 
     const [x, y] = this.geometry.coords;
     this.container.position.set(x, y);

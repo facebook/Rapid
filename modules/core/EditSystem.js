@@ -410,7 +410,7 @@ export class EditSystem extends AbstractSystem {
     staging.annotation  = annotation;
     staging.selectedIDs = options.selectedIDs ?? [];
     staging.sources     = this._gatherSources(annotation);
-    staging.transform   = context.projection.transform();
+    staging.transform   = context.viewport.transform();
 
     // Discard forward/redo history if any, and add `staging` after `stable`
     this._history.splice(this._index + 1, Infinity, staging);
@@ -468,7 +468,7 @@ export class EditSystem extends AbstractSystem {
     staging.annotation  = annotation;
     staging.selectedIDs = options.selectedIDs ?? [];
     staging.sources     = this._gatherSources(annotation);
-    staging.transform   = context.projection.transform();
+    staging.transform   = context.viewport.transform();
 
     // Discard forward/redo history if any, and replace `stable` with `staging`.
     this._history.splice(this._index, Infinity, staging);

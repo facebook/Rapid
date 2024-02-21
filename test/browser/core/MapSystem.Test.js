@@ -30,7 +30,7 @@ describe('MapSystem', () => {
     on() { return this; }
     deferredRender() {}
     setTransformAsync(t) {
-      this.context.projection.transform(t);
+      this.context.viewport.transform(t);
       return Promise.resolve(t);
     }
   }
@@ -46,10 +46,9 @@ describe('MapSystem', () => {
         l10n:    new MockLocalizationSystem(),
         storage: new MockStorageSystem(),
         urlhash: new MockSystem(),
-        colors: new MockSystem(),
-        styles: new MockSystem(),
+        styles:  new MockSystem()
       };
-      this.projection = new sdk.Projection();
+      this.viewport = new sdk.Viewport();
     }
     container()   { return _container; }
     keybinding()  { return new MockSystem(); }
@@ -58,7 +57,7 @@ describe('MapSystem', () => {
 
   beforeEach(() => {
     _container = d3.select('body').append('div');
-    const context = new MockContext();  // get a fresh projection each time
+    const context = new MockContext();  // get a fresh viewport each time
     _mapSystem = new Rapid.MapSystem(context);
     _mapSystem._renderer = new MockRenderer(context);
 

@@ -69,16 +69,16 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 
   /**
    * renderMarkers
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  renderMarkers(frame, projection, zoom) {
+  renderMarkers(frame, viewport, zoom) {
     const service = this.context.services.osm;
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.notes(this.context.projection);
+    const items = service.notes(this.context.viewport);
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
@@ -112,7 +112,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
       }
 
       this.syncFeatureClasses(feature);
-      feature.update(projection, zoom);
+      feature.update(viewport, zoom);
       this.retainFeature(feature, frame);
     }
   }
@@ -121,16 +121,16 @@ export class PixiLayerOsmNotes extends AbstractLayer {
   /**
    * render
    * Render any data we have, and schedule fetching more of it to cover the view
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, projection, zoom) {
+  render(frame, viewport, zoom) {
     const service = this.context.services.osm;
     if (!this.enabled || !service?.started || zoom < MINZOOM) return;
 
-    service.loadNotes(this.context.projection);  // note: context.projection !== pixi projection
-    this.renderMarkers(frame, projection, zoom);
+    service.loadNotes(this.context.viewport);  // note: context.viewport !== pixi viewport
+    this.renderMarkers(frame, viewport, zoom);
   }
 
 }

@@ -74,9 +74,9 @@ export class AddNoteMode extends AbstractMode {
   _click(eventData) {
     const context = this.context;
     const osm = context.services.osm;
-    const projection = context.projection;
+    const viewport = context.viewport;
     const coord = eventData.coord;
-    const loc = projection.invert(coord);
+    const loc = viewport.unproject(coord);
 
     if (!osm) return;
 

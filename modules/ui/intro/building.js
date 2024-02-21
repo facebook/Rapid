@@ -154,7 +154,7 @@ export function uiIntroBuilding(context, curtain) {
           const graph = editor.staging.graph;
           const way = graph.entity(_houseID);
           const nodes = graph.childNodes(way);
-          const points = utilArrayUniq(nodes).map(n => context.projection.project(n.loc));
+          const points = utilArrayUniq(nodes).map(n => context.viewport.project(n.loc));
 
           if (isMostlySquare(points)) {
             resolve(chooseCategoryBuildingAsync);

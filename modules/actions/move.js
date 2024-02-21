@@ -7,7 +7,7 @@ import { osmNode } from '../osm/node.js';
 
 // https://github.com/openstreetmap/josm/blob/mirror/src/org/openstreetmap/josm/command/MoveCommand.java
 // https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/MoveNodeAction.as
-export function actionMove(moveIDs, tryDelta, projection, cache) {
+export function actionMove(moveIDs, tryDelta, viewport, cache) {
     var _delta = tryDelta;
 
     function setupCache(graph) {
@@ -159,24 +159,24 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
 
         var start, end;
         if (delta) {
-            start = projection.project(cache.startLoc[nodeId]);
-            end = projection.invert(vecAdd(start, delta));
+            start = viewport.project(cache.startLoc[nodeId]);
+            end = viewport.unproject(vecAdd(start, delta));
         } else {
             end = cache.startLoc[nodeId];
         }
         orig = orig.move(end);
 
-        var o = projection.project(orig.loc);
-        var a = projection.project(prev.loc);
-        var b = projection.project(next.loc);
+        var o = viewport.project(orig.loc);
+        var a = viewport.project(prev.loc);
+        var b = viewport.project(next.loc);
         var angle = Math.abs(vecAngle(o, a) - vecAngle(o, b)) * (180 / Math.PI);
 
         // Don't add orig vertex if it would just make a straight line..
         if (angle > 175 && angle < 185) return graph;
 
         // moving forward or backward along way?
-        var p1 = [prev.loc, orig.loc, moved.loc, next.loc].map(loc => projection.project(loc));
-        var p2 = [prev.loc, moved.loc, orig.loc, next.loc].map(loc => projection.project(loc));
+        var p1 = [prev.loc, orig.loc, moved.loc, next.loc].map(loc => viewport.project(loc));
+        var p2 = [prev.loc, moved.loc, orig.loc, next.loc].map(loc => viewport.project(loc));
         var d1 = geomPathLength(p1);
         var d2 = geomPathLength(p2);
         var insertAt = (d1 <= d2) ? movedIndex : nextIndex;
@@ -255,8 +255,8 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
         if (way1.isClosed() && way1.first() === vertex.id) nodes1.push(nodes1[0]);
         if (way2.isClosed() && way2.first() === vertex.id) nodes2.push(nodes2[0]);
 
-        var edge1 = !isEP1 && geoChooseEdge(nodes1, projection.project(vertex.loc), projection);
-        var edge2 = !isEP2 && geoChooseEdge(nodes2, projection.project(vertex.loc), projection);
+        var edge1 = !isEP1 && geoChooseEdge(nodes1, viewport.project(vertex.loc), viewport);
+        var edge2 = !isEP2 && geoChooseEdge(nodes2, viewport.project(vertex.loc), viewport);
         var loc;
 
         // snap vertex to nearest edge (or some point between them)..
@@ -264,8 +264,8 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
             var epsilon = 1e-6, maxIter = 10;
             for (var i = 0; i < maxIter; i++) {
                 loc = vecInterp(edge1.loc, edge2.loc, 0.5);
-                edge1 = geoChooseEdge(nodes1, projection.project(loc), projection);
-                edge2 = geoChooseEdge(nodes2, projection.project(loc), projection);
+                edge1 = geoChooseEdge(nodes1, viewport.project(loc), viewport);
+                edge2 = geoChooseEdge(nodes2, viewport.project(loc), viewport);
                 if (Math.abs(edge1.distance - edge2.distance) < epsilon) break;
             }
         } else if (!isEP1) {
@@ -307,7 +307,7 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
     // check if moving way endpoint can cross an unmoved way, if so limit delta..
     function limitDelta(graph) {
         function moveNode(loc) {
-            return vecAdd(projection.project(loc), _delta);
+            return vecAdd(viewport.project(loc), _delta);
         }
 
         for (var i = 0; i < cache.intersections.length; i++) {
@@ -319,18 +319,18 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
             if (!obj.movedIsEP) continue;
 
             var node = graph.entity(obj.nodeId);
-            var start = projection.project(node.loc);
+            var start = viewport.project(node.loc);
             var end = vecAdd(start, _delta);
             var movedNodes = graph.childNodes(graph.entity(obj.movedId));
             var movedPath = movedNodes.map(function(n) { return moveNode(n.loc); });
             var unmovedNodes = graph.childNodes(graph.entity(obj.unmovedId));
-            var unmovedPath = unmovedNodes.map(function(n) { return projection.project(n.loc); });
+            var unmovedPath = unmovedNodes.map(function(n) { return viewport.project(n.loc); });
             var hits = geomPathIntersections(movedPath, unmovedPath);
 
             for (var j = 0; i < hits.length; i++) {
                 if (vecEqual(hits[j], end)) continue;
-                var edge = geoChooseEdge(unmovedNodes, end, projection);
-                _delta = vecSubtract(projection.project(edge.loc), start);
+                var edge = geoChooseEdge(unmovedNodes, end, viewport);
+                _delta = vecSubtract(viewport.project(edge.loc), start);
             }
         }
     }
@@ -347,9 +347,9 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
 
         for (var i = 0; i < cache.nodes.length; i++) {
             var node = graph.entity(cache.nodes[i]);
-            var start = projection.project(node.loc);
+            var start = viewport.project(node.loc);
             var end = vecAdd(start, _delta);
-            graph = graph.replace(node.move(projection.invert(end)));
+            graph = graph.replace(node.move(viewport.unproject(end)));
         }
 
         if (cache.intersections.length) {

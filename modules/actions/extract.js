@@ -4,7 +4,7 @@ import { vecInterp } from '@rapid-sdk/math';
 import { osmNode } from '../osm/node.js';
 
 
-export function actionExtract(entityID, projection) {
+export function actionExtract(entityID, viewport) {
   let _extractedNodeID;
 
   let action = function(graph) {
@@ -44,7 +44,7 @@ export function actionExtract(entityID, projection) {
     const coords = geojson.type === 'LineString' ? geojson.coordinates :
       geojson.type === 'Polygon' ? geojson.coordinates[0] :
       geojson.type === 'MultiPolygon' ? geojson.coordinates[0][0] : [];
-    const points = coords.map(coord => projection.project(coord));
+    const points = coords.map(coord => viewport.project(coord));
 
     let centroid;
     if (!points.length) {
@@ -57,7 +57,7 @@ export function actionExtract(entityID, projection) {
       centroid = d3_polygonCentroid(points);
     }
 
-    let extractedLoc = projection.invert(centroid);
+    let extractedLoc = viewport.unproject(centroid);
     if (!extractedLoc  || !isFinite(extractedLoc[0]) || !isFinite(extractedLoc[1])) {
       extractedLoc = entity.extent(graph).center();
     }

@@ -3,7 +3,7 @@ import { utilGetAllNodes } from '@rapid-sdk/util';
 
 
 /* Reflect the given area around its axis of symmetry */
-export function actionReflect(reflectIds, projection) {
+export function actionReflect(reflectIds, viewport) {
     var _useLongAxis = true;
 
 
@@ -12,7 +12,7 @@ export function actionReflect(reflectIds, projection) {
         t = Math.min(Math.max(+t, 0), 1);
 
         var nodes = utilGetAllNodes(reflectIds, graph);
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
         var ssr = geomGetSmallestSurroundingRectangle(points);
 
         // Choose line pq = axis of symmetry.
@@ -41,12 +41,12 @@ export function actionReflect(reflectIds, projection) {
         var b = 2 * dx * dy / (dx * dx + dy * dy);
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
-            var c = projection.project(node.loc);
+            var c = viewport.project(node.loc);
             var c2 = [
                 a * (c[0] - p[0]) + b * (c[1] - p[1]) + p[0],
                 b * (c[0] - p[0]) - a * (c[1] - p[1]) + p[1]
             ];
-            var loc2 = projection.invert(c2);
+            var loc2 = viewport.unproject(c2);
             node = node.move(vecInterp(node.loc, loc2, t));
             graph = graph.replace(node);
         }

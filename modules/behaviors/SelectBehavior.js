@@ -455,9 +455,9 @@ export class SelectBehavior extends AbstractBehavior {
     let loc, edge;
     if (isOSMWay) {
       const graph = editor.staging.graph;
-      const projection = context.projection;
-      const choice = geoChooseEdge(graph.childNodes(data), coord, projection);
-      loc = projection.invert(coord);
+      const viewport = context.viewport;
+      const choice = geoChooseEdge(graph.childNodes(data), coord, viewport);
+      loc = viewport.unproject(coord);
       edge = [ data.nodes[choice.index - 1], data.nodes[choice.index] ];
 
     } else if (isMidpoint) {

@@ -286,9 +286,9 @@ export class DrawLineMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const projection = context.projection;
+    const viewport = context.viewport;
     const coord = eventData.coord;
-    let loc = projection.invert(coord);
+    let loc = viewport.unproject(coord);
 
     // How much has the pointer moved?
     const dist = this._lastCoord ? vecLength(coord, this._lastCoord) : 0;
@@ -329,7 +329,7 @@ export class DrawLineMode extends AbstractMode {
 //      loc = choice.loc;
 //    }
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, drawNode.id);
+      const choice = geoChooseEdge(graph.childNodes(target), coord, viewport, drawNode.id);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;
@@ -352,9 +352,9 @@ export class DrawLineMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const locations = context.systems.locations;
-    const projection = context.projection;
+    const viewport = context.viewport;
     const coord = eventData.coord;
-    let loc = projection.invert(coord);
+    let loc = viewport.unproject(coord);
 
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
@@ -397,7 +397,7 @@ export class DrawLineMode extends AbstractMode {
 //      return;
 //    }
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, this.drawNodeID);
+      const choice = geoChooseEdge(graph.childNodes(target), coord, viewport, this.drawNodeID);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;

@@ -23,12 +23,12 @@ export function uiMap3dViewer(context) {
 
     function redraw() {
       if (_isHidden) return;
-      updateProjection();
+      updateViewport();
       featuresToGeoJSON();
     }
 
 
-    function updateProjection() {
+    function updateViewport() {
       // Since the bounds are intended to wrap a box around a perfectly orthogonal view,
       // for a pitched, isometric view we need to enlarge the box a bit to display more buildings.
       const extent = map.extent();

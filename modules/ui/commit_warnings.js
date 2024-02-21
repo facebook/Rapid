@@ -1,5 +1,3 @@
-import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
-
 import { uiIcon } from './icon.js';
 
 
@@ -57,19 +55,19 @@ export function uiCommitWarnings(context) {
 
       let buttons = itemsEnter
         .append('button')
-        .on('mouseover', (d3_event, d) => {
-// todo replace legacy surface css class .hover
-          if (d.entityIds) {
-            const graph = editor.staging.graph;
-            context.surface().selectAll(utilEntityOrMemberSelector(d.entityIds, graph) )
-              .classed('hover', true);
-          }
-        })
-        .on('mouseout', () => {
-// todo replace legacy surface css class .hover
-          context.surface().selectAll('.hover')
-            .classed('hover', false);
-        })
+//        .on('mouseover', (d3_event, d) => {
+//// todo replace legacy surface css class .hover
+//          if (d.entityIds) {
+//            const graph = editor.staging.graph;
+//            context.surface().selectAll(utilEntityOrMemberSelector(d.entityIds, graph) )
+//              .classed('hover', true);
+//          }
+//        })
+//        .on('mouseout', () => {
+//// todo replace legacy surface css class .hover
+//          context.surface().selectAll('.hover')
+//            .classed('hover', false);
+//        })
         .on('click', (d3_event, d) => {
           validator.focusIssue(d);
         });

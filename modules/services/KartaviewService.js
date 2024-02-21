@@ -208,11 +208,11 @@ export class KartaviewService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles() {
-    const projection = this.context.projection;
-    const currZoom = Math.floor(geoScaleToZoom(projection.scale()));
+    const viewport = this.context.viewport;
+    const currZoom = Math.floor(geoScaleToZoom(viewport.scale()));
 
     // Determine the needed tiles to cover the view
-    const needTiles = this._tiler.getTiles(projection).tiles;
+    const needTiles = this._tiler.getTiles(viewport).tiles;
 
     // Abort inflight requests that are no longer needed
     for (const [k, inflight] of this._cache.inflight) {

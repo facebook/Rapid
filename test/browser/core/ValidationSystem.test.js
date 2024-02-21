@@ -50,7 +50,7 @@ describe('ValidationSystem', () => {
 
   class MockContext {
     constructor()   {
-      this.projection = new Rapid.sdk.Projection();
+      this.viewport = new Rapid.sdk.Viewport();
       this.systems = {
         dataloader: new Rapid.DataLoaderSystem(this),
         editor:     new Rapid.EditSystem(this),

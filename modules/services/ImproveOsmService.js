@@ -123,7 +123,7 @@ export class ImproveOsmService extends AbstractSystem {
     // determine the needed tiles to cover the view
     const context = this.context;
     const l10n = context.systems.l10n;
-    const tiles = this._tiler.getTiles(context.projection).tiles;
+    const tiles = this._tiler.getTiles(context.viewport).tiles;
 
     // abort inflight requests that are no longer needed
     this._abortUnwantedRequests(this._cache, tiles);

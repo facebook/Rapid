@@ -160,12 +160,12 @@ export class MoveMode extends AbstractMode {
       return;
     }
 
-    const startPoint = context.projection.project(this._startLoc);
-    const currPoint = context.projection.project(currLoc);
+    const startPoint = context.viewport.project(this._startLoc);
+    const currPoint = context.viewport.project(currLoc);
     const delta = vecSubtract(currPoint, startPoint);
 
     editor.revert();  // moves are relative to the start location, so revert before applying movement
-    editor.perform(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
+    editor.perform(actionMove(this._entityIDs, delta, context.viewport, this._movementCache));
     const graph = editor.staging.graph;  // after move
 
     // Update selected/active collections to contain the moved entities

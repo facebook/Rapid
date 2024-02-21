@@ -63,7 +63,7 @@ export function uiEditMenu(context) {
     }
 
     _menuHeight = VERTICAL_PADDING * 2 + ops.length * buttonHeight;
-    _initialScale = context.projection.scale();
+    _initialScale = context.viewport.scale();
 
     const wrap = selection.selectAll('.edit-menu')
       .data([0]);
@@ -207,21 +207,21 @@ export function uiEditMenu(context) {
 
     // close the menu if the scale (zoom) has changed
     // (this is because the menu will scale with the supersurface and look wrong)
-    if (_initialScale !== context.projection.scale()) {
+    if (_initialScale !== context.viewport.scale()) {
       editMenu.close();
       return;
     }
 
-    const anchor = context.projection.project(_anchorLoc);  // convert wgs84 [lon,lat] to screen [x,y]
-    const viewport = context.surfaceRect();
+    const anchor = context.viewport.project(_anchorLoc);  // convert wgs84 [lon,lat] to screen [x,y]
+    const surfaceRect = context.surfaceRect();
 
     // close the menu if it's gone offscreen
-    if (anchor[0] < 0 || anchor[0] > viewport.width || anchor[1] < 0 || anchor[1] > viewport.height) {
+    if (anchor[0] < 0 || anchor[0] > surfaceRect.width || anchor[1] < 0 || anchor[1] > surfaceRect.height) {
       editMenu.close();
       return;
     }
 
-    const menuLeft = displayOnLeft(viewport);
+    const menuLeft = displayOnLeft(surfaceRect);
     let offset = [0, 0];
 
     offset[0] = menuLeft ? -1 * (MENU_SIDE_MARGIN + _menuWidth) : MENU_SIDE_MARGIN;
@@ -234,9 +234,9 @@ export function uiEditMenu(context) {
         offset[1] = -_menuHeight;
       }
     } else {
-      if (anchor[1] + _menuHeight > (viewport.height - VIEW_BOTTOM_MARGIN)) {
+      if (anchor[1] + _menuHeight > (surfaceRect.height - VIEW_BOTTOM_MARGIN)) {
         // menu is near bottom viewport edge, shift upwards
-        offset[1] = -anchor[1] - _menuHeight + viewport.height - VIEW_BOTTOM_MARGIN;
+        offset[1] = -anchor[1] - _menuHeight + surfaceRect.height - VIEW_BOTTOM_MARGIN;
       } else {
         offset[1] = 0;
       }
@@ -247,7 +247,7 @@ export function uiEditMenu(context) {
       .style('left', `${left}px`)
       .style('top', `${top}px`);
 
-    const tooltipSide = tooltipPosition(viewport, menuLeft);
+    const tooltipSide = tooltipPosition(surfaceRect, menuLeft);
     for (const tip of _tooltips.values()) {
       tip.placement(tooltipSide);
       if (tip.isShown()) {
@@ -256,7 +256,7 @@ export function uiEditMenu(context) {
     }
 
 
-    function displayOnLeft(viewport) {
+    function displayOnLeft(surfaceRect) {
       const isRTL = l10n.isRTL();
       if (isRTL) {  // right to left
         if ((anchor[0] - MENU_SIDE_MARGIN - _menuWidth) < VIEW_SIDE_MARGIN) {
@@ -265,7 +265,7 @@ export function uiEditMenu(context) {
           return true;   // prefer left menu
         }
       } else {  // left to right
-        if ((anchor[0] + MENU_SIDE_MARGIN + _menuWidth) > (viewport.width - VIEW_SIDE_MARGIN)) {
+        if ((anchor[0] + MENU_SIDE_MARGIN + _menuWidth) > (surfaceRect.width - VIEW_SIDE_MARGIN)) {
           return true;   // right menu would be too close to the right viewport edge, go left
         } else {
           return false;  // prefer right menu
@@ -274,7 +274,7 @@ export function uiEditMenu(context) {
     }
 
 
-    function tooltipPosition(viewport, menuLeft) {
+    function tooltipPosition(surfaceRect, menuLeft) {
       const isRTL = l10n.isRTL();
       if (isRTL) {  // right to left
         if (!menuLeft) {
@@ -292,7 +292,7 @@ export function uiEditMenu(context) {
           // isn't room for right-side tooltips
           return 'left';
         }
-        if ((anchor[0] + MENU_SIDE_MARGIN + _menuWidth + TOOLTIP_WIDTH) > (viewport.width - VIEW_SIDE_MARGIN)) {
+        if ((anchor[0] + MENU_SIDE_MARGIN + _menuWidth + TOOLTIP_WIDTH) > (surfaceRect.width - VIEW_SIDE_MARGIN)) {
           // right tooltips would be too close to the right viewport edge, go left
           return 'left';
         }

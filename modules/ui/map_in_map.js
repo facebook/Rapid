@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Projection, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
+import { Viewport, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles.js';
 import { utilSetTransform } from '../util/index.js';
@@ -12,7 +12,7 @@ export function uiMapInMap(context) {
   const map = context.systems.map;
 
   function mapInMap(selection) {
-    let projection = new Projection();
+    let viewMini = new Viewport();
     let zoom = d3_zoom()
       .scaleExtent([geoZoomToScale(0.5), geoZoomToScale(24)])
       .on('start', zoomStarted)
@@ -42,7 +42,7 @@ export function uiMapInMap(context) {
      */
     function updateMinimap() {
       if (_isHidden) return;
-      updateProjection();
+      updateViewport();
       updateBoundingBox();
     }
 
@@ -53,7 +53,7 @@ export function uiMapInMap(context) {
      */
     function zoomStarted() {
       if (_skipEvents) return;
-      _tStart = _tCurr = projection.transform();
+      _tStart = _tCurr = viewMini.transform();
       _gesture = null;
     }
 
@@ -79,7 +79,7 @@ export function uiMapInMap(context) {
         _gesture = isZooming ? 'zoom' : 'pan';
       }
 
-      const tMini = projection.transform();
+      const tMini = viewMini.transform();
       let tX, tY, scale;
 
       if (_gesture === 'zoom') {
@@ -102,7 +102,7 @@ export function uiMapInMap(context) {
       _isTransformed = true;
       _tCurr = d3_zoomIdentity.translate(x, y).scale(k);
 
-      const zMain = geoScaleToZoom(context.projection.scale());
+      const zMain = geoScaleToZoom(context.viewport.scale());
       const zMini = geoScaleToZoom(k);
 
       _zDiff = zMain - zMini;
@@ -119,33 +119,33 @@ export function uiMapInMap(context) {
       if (_skipEvents) return;
       if (_gesture !== 'pan') return;
 
-      updateProjection();
+      updateViewport();
       _gesture = null;
-      map.center(projection.invert(_cMini)); // recenter main map..
+      map.center(viewMini.unproject(_cMini)); // recenter main map..
     }
 
 
     /**
-     * updateProjection
-     * Update the minimap projection and d3-zoom transform
+     * updateViewport
+     * Update the minimap viewport and d3-zoom transform
      */
-    function updateProjection() {
+    function updateViewport() {
       const loc = map.center();
-      const tMain = context.projection.transform();
+      const tMain = context.viewport.transform();
       const zMain = geoScaleToZoom(tMain.k);
       const zMini = Math.max(zMain - _zDiff, 0.5);
       const kMini = geoZoomToScale(zMini);
 
-      projection.translate([tMain.x, tMain.y]).scale(kMini);
+      viewMini.translate([tMain.x, tMain.y]).scale(kMini);
 
-      const point = projection.project(loc);
+      const point = viewMini.project(loc);
       const mouse = (_gesture === 'pan') ? vecSubtract([_tCurr.x, _tCurr.y], [_tStart.x, _tStart.y]) : [0, 0];
       const xMini = _cMini[0] - point[0] + tMain.x + mouse[0];
       const yMini = _cMini[1] - point[1] + tMain.y + mouse[1];
 
-      projection.translate([xMini, yMini]).dimensions([[0, 0], _dMini]);
+      viewMini.translate([xMini, yMini]).dimensions([[0, 0], _dMini]);
 
-      _tCurr = projection.transform();
+      _tCurr = viewMini.transform();
 
       if (_isTransformed) {
         _miniPixi.stage.x = 0;
@@ -168,8 +168,8 @@ export function uiMapInMap(context) {
      */
     function updateBoundingBox() {
       const bbox = map.extent().bbox();
-      const topLeftPoint = projection.project([bbox.minX, bbox.maxY]);
-      const bottomRightPoint = projection.project([bbox.maxX, bbox.minY]);
+      const topLeftPoint = viewMini.project([bbox.minX, bbox.maxY]);
+      const bottomRightPoint = viewMini.project([bbox.maxX, bbox.minY]);
       const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
       const boxHeight = Math.abs(bottomRightPoint[1] - topLeftPoint[1]);
 
@@ -254,7 +254,7 @@ export function uiMapInMap(context) {
       if (_isHidden) return;
       window.performance.mark('minimap-start');
       const frame = 0;    // not used
-      _miniTileLayer.render(frame, projection);   // APP
+      _miniTileLayer.render(frame, viewMini);     // APP
       _miniPixi.render();                         // DRAW
       window.performance.mark('minimap-end');
       window.performance.measure('minimap', 'minimap-start', 'minimap-end');

@@ -4,7 +4,7 @@ describe('PixiRenderer', () => {
   let map;
   let renderData;
   let graphEntities;
-  let projection;
+  let viewport;
   let zoom;
   let content;
 
@@ -43,10 +43,10 @@ describe('PixiRenderer', () => {
     // for details of how to obtain one of these canned data files.
     const staticData = window.__fixtures__['test/spec/renderer/canned_osm_data'];
 
-    //Re-marshal the parsed json data back into osm / projection objects.
+    // Reload the parsed json data back into osm objects.
     renderData = jsonToOSM(staticData.data);
     graphEntities = castEntities(staticData.entities);
-    projection = new Rapid.sdk.Projection(staticData.projection._x, staticData.projection._y, staticData.projection._k);
+    viewport = new Rapid.sdk.Viewport({ x: staticData.projection._x, y: staticData.projection._y, k: staticData.projection._k });
     zoom = staticData.zoom;
     done();
   });
@@ -70,10 +70,10 @@ describe('PixiRenderer', () => {
   describe('#osmRenderer', () => {
     it('renders the canned data scene', () => {
       const osmLayer = context.scene().layers.get('osm');
-      osmLayer.drawPoints(timestamp, projection, zoom, renderData.points);
-      osmLayer.drawVertices(timestamp, projection, zoom, renderData.vertices);
-      osmLayer.drawLines(timestamp, projection, zoom, renderData.lines);
-      osmLayer.drawPolygons(timestamp, projection, zoom, renderData.polygons);
+      osmLayer.drawPoints(timestamp, viewport, zoom, renderData.points);
+      osmLayer.drawVertices(timestamp, viewport, zoom, renderData.vertices);
+      osmLayer.drawLines(timestamp, viewport, zoom, renderData.lines);
+      osmLayer.drawPolygons(timestamp, viewport, zoom, renderData.polygons);
     });
   });
 

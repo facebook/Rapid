@@ -82,7 +82,7 @@ export class MapNudgingBehavior extends AbstractBehavior {
     const nudge = geomViewportNudge(point, this.context.systems.map.dimensions);
     if (nudge) {
       const [dX, dY] = [nudge[0] * nudgeFactor, nudge[1] * nudgeFactor];
-      const t = this.context.projection.transform();
+      const t = this.context.viewport.transform();
       const tNew = { x: t.x + dX, y: t.y + dY, k: t.k };
       this.context.systems.map.transform(tNew);
     }

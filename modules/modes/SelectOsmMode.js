@@ -316,7 +316,7 @@ export class SelectOsmMode extends AbstractMode {
     return () => {
       const context = this.context;
       const editor = context.systems.editor;
-      const projection = context.projection;
+      const viewport = context.viewport;
       const ui = context.systems.ui;
 
       // prevent nudging during low zoom selection
@@ -343,7 +343,7 @@ export class SelectOsmMode extends AbstractMode {
         const annotation = moveOp.annotation();
         const options = { annotation: annotation, selectedIDs: selectedIDs };
 
-        editor.perform(actionMove(selectedIDs, delta, projection));
+        editor.perform(actionMove(selectedIDs, delta, viewport));
         if (isSameSelection && editor.getUndoAnnotation() === annotation) {
           editor.commitAppend(options);
         } else {

@@ -90,10 +90,10 @@ export class PixiGeometry {
 
   /**
    * update
-   * @param  projection  Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport  Pixi viewport to use for rendering
+   * @param  zoom      Effective zoom to use for rendering
    */
-  update(projection) {
+  update(viewport) {
     if (!this.dirty || !this.origCoords || !this.origExtent) return;  // nothing to do
     this.dirty = false;
 
@@ -111,7 +111,7 @@ export class PixiGeometry {
 
     // Points are simple, just project once.
     if (this.type === 'point') {
-      this.coords = projection.project(this.origCoords);
+      this.coords = viewport.project(this.origCoords);
       this.extent = new Extent(this.coords);
       this.centroid = this.coords;
       this.width = 0;
@@ -126,8 +126,8 @@ export class PixiGeometry {
     this.extent = new Extent();
     // Watch out, we can't project min/max directly (because Y is flipped).
     // Construct topLeft, bottomRight corners and project those.
-    this.extent.min = projection.project([this.origExtent.min[0], this.origExtent.max[1]]);  // top-left
-    this.extent.max = projection.project([this.origExtent.max[0], this.origExtent.min[1]]);  // bottom-right
+    this.extent.min = viewport.project([this.origExtent.min[0], this.origExtent.max[1]]);  // top-left
+    this.extent.max = viewport.project([this.origExtent.max[0], this.origExtent.min[1]]);  // bottom-right
 
     const [minX, minY] = this.extent.min;
     const [maxX, maxY] = this.extent.max;
@@ -154,7 +154,7 @@ export class PixiGeometry {
       projFlatRings[i] = new Array(origRing.length * 2);
 
       for (let j = 0; j < origRing.length; ++j) {
-        const xy = projection.project(origRing[j]);
+        const xy = viewport.project(origRing[j]);
         projRings[i][j] = xy;
         projFlatRings[i][j * 2] = xy[0];
         projFlatRings[i][j * 2 + 1] = xy[1];
@@ -182,13 +182,13 @@ export class PixiGeometry {
 
     } else if (this.outer.length === 1) {   // single coordinate? - wrong but can happen
       this.centroid = this.outer[0];
-      this.origCentroid = projection.invert(this.centroid);
+      this.origCentroid = viewport.unproject(this.centroid);
       this.poi = this.centroid;
       this.origPoi = this.origCentroid;
 
     } else if (this.outer.length === 2) {   // 2 coordinate line
       this.centroid = vecInterp(this.outer[0], this.outer[1], 0.5);  // average the 2 points
-      this.origCentroid = projection.invert(this.centroid);
+      this.origCentroid = viewport.unproject(this.centroid);
       this.poi = this.centroid;
       this.origPoi = this.origCentroid;
 
@@ -198,50 +198,50 @@ export class PixiGeometry {
       if (this.origHull) {   // calculated already, reproject
         this.hull = new Array(this.origHull.length);
         for (let i = 0; i < this.origHull.length; ++i) {
-          this.hull[i] = projection.project(this.origHull[i]);
+          this.hull[i] = viewport.project(this.origHull[i]);
         }
       } else {               // recalculate and store as WGS84
         this.hull = d3_polygonHull(this.outer);
         if (this.hull) {
           this.origHull = new Array(this.hull.length);
           for (let i = 0; i < this.origHull.length; ++i) {
-            this.origHull[i] = projection.invert(this.hull[i]);
+            this.origHull[i] = viewport.unproject(this.hull[i]);
           }
         }
       }
 
       // Centroid
       if (this.origCentroid) {   // calculated already, reproject
-        this.centroid = projection.project(this.origCentroid);
+        this.centroid = viewport.project(this.origCentroid);
       } else if (this.hull) {    // recalculate and store as WGS84
         if (this.hull.length === 2) {
           this.centroid = vecInterp(this.hull[0], this.hull[1], 0.5);  // average the 2 points
         } else {
           this.centroid = d3_polygonCentroid(this.hull);
         }
-        this.origCentroid = projection.invert(this.centroid);
+        this.origCentroid = viewport.unproject(this.centroid);
       }
 
       // Pole of Inaccessability
       if (this.origPoi) {    // calculated already, reproject
-        this.poi = projection.project(this.origPoi);
+        this.poi = viewport.project(this.origPoi);
       } else {               // recalculate and store as WGS84
         this.poi = polylabel(this.coords);   // it expects outer + rings
-        this.origPoi = projection.invert(this.poi);
+        this.origPoi = viewport.unproject(this.poi);
       }
 
       // Smallest Surrounding Rectangle
       if (this.origSsr) {        // calculated already, reproject
         this.ssr = { angle: this.origSsr.angle, poly: new Array(this.origSsr.poly.length) };
         for (let i = 0; i < this.origSsr.poly.length; ++i) {
-          this.ssr.poly[i] = projection.project(this.origSsr.poly[i]);
+          this.ssr.poly[i] = viewport.project(this.origSsr.poly[i]);
         }
       } else if (this.hull) {    // recalculate and store as WGS84
         this.ssr = geomGetSmallestSurroundingRectangle(this.hull);
         if (this.ssr) {
           this.origSsr = { angle: this.ssr.angle, poly: new Array(this.ssr.poly.length) };
           for (let i = 0; i < this.ssr.poly.length; ++i) {
-            this.origSsr.poly[i] = projection.invert(this.ssr.poly[i]);
+            this.origSsr.poly[i] = viewport.unproject(this.ssr.poly[i]);
           }
         }
       }

@@ -89,10 +89,10 @@ export class AddPointMode extends AbstractMode {
     const editor = context.systems.editor;
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
-    const projection = context.projection;
+    const viewport = context.viewport;
     const coord = eventData.coord;
 
-    const loc = projection.invert(coord);
+    const loc = viewport.unproject(coord);
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -112,7 +112,7 @@ export class AddPointMode extends AbstractMode {
 //      return;
 //    }
     if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, projection);
+      const choice = geoChooseEdge(graph.childNodes(target), coord, viewport);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
         const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];

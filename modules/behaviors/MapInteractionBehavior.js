@@ -153,7 +153,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     }
 
     const [x, y] = [e.global.x, e.global.y];
-    const t = this.context.projection.transform();
+    const t = this.context.viewport.transform();
     const isShiftDown = e.getModifierState('Shift');
 
     // local mouse coord to transform origin (was: d3 `transform.invert`)
@@ -218,7 +218,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     if (this.gesture === 'pan') {
       const original = move.originalEvent;
-      const t = this.context.projection.transform();
+      const t = this.context.viewport.transform();
 
       const newX = original.clientX - this.was[0];
       const newY = original.clientY - this.was[1];
@@ -273,7 +273,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _wheel(e) {
     const [x, y] = [e.offsetX, e.offsetY];
     const [dX, dY] = [e._normalizedDeltaX, e._normalizedDeltaY];
-    const t = this.context.projection.transform();
+    const t = this.context.viewport.transform();
     let tNew;
 
     function clamp(num, min, max) {

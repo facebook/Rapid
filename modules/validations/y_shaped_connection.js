@@ -116,9 +116,9 @@ export function validationYShapedConnection(context) {
     const otherNodeIdx = connNodeIdx < edgeNodeIdx ? connNodeIdx - 1 : connNodeIdx + 1;
     const otherNid = way.nodes[otherNodeIdx];
     const otherNode = graph.entity(otherNid);
-    const other = context.projection.project(otherNode.loc);
-    const conn = context.projection.project(connNode.loc);
-    const edge = context.projection.project(edgeNode.loc);
+    const other = context.viewport.project(otherNode.loc);
+    const conn = context.viewport.project(connNode.loc);
+    const edge = context.viewport.project(edgeNode.loc);
     let prevEdgeAngle = 0;
     let nextEdgeAngle = 0;
     let angleBetweenEdges = 0;

@@ -611,7 +611,7 @@ export function validationCrossingWays(context) {
 
         const crossingLoc = this.issue.loc;
 
-        const projection = context.projection;
+        const viewport = context.viewport;
 
         const actionAddStructure = (graph) => {
           const edgeNodes = [ graph.entity(edge[0]), graph.entity(edge[1]) ];
@@ -633,8 +633,8 @@ export function validationCrossingWays(context) {
             structLengthMeters = 8;
           }
 
-          const a1 = vecAngle(projection.project(edgeNodes[0].loc), projection.project(edgeNodes[1].loc)) + Math.PI;
-          const a2 = vecAngle(projection.project(graph.entity(crossedEdge[0]).loc), projection.project(graph.entity(crossedEdge[1]).loc)) + Math.PI;
+          const a1 = vecAngle(viewport.project(edgeNodes[0].loc), viewport.project(edgeNodes[1].loc)) + Math.PI;
+          const a2 = vecAngle(viewport.project(graph.entity(crossedEdge[0]).loc), viewport.project(graph.entity(crossedEdge[1]).loc)) + Math.PI;
           let crossingAngle = Math.max(a1, a2) - Math.min(a1, a2);
           if (crossingAngle > Math.PI) crossingAngle -= Math.PI;
           // lengthen the structure to account for the angle of the crossing

@@ -249,8 +249,8 @@ export class StreetsideService extends AbstractSystem {
     // Determine the needed tiles to cover the view
     // By default: request 2 nearby tiles so we can connect sequences.
     const margin = 2;
-    const projection = this.context.projection;
-    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
+    const viewport = this.context.viewport;
+    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(viewport).tiles;
 
     // Abort inflight requests that are no longer needed
     for (const [tileID, inflight] of this._cache.inflight) {

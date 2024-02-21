@@ -282,8 +282,8 @@ export function uiSidebar(context) {
         sidebar.intersects = function(wgs84Extent) {
             var rect = selection.node().getBoundingClientRect();
             return wgs84Extent.intersects(new Extent(
-                context.projection.invert([0, rect.height]),
-                context.projection.invert([rect.width, 0])
+                context.viewport.unproject([0, rect.height]),
+                context.viewport.unproject([rect.width, 0])
             ));
         };
 

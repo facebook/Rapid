@@ -2,7 +2,7 @@ import { geomGetSmallestSurroundingRectangle, vecDot, vecLength, vecInterp } fro
 
 
 /* Align nodes along their common axis */
-export function actionStraightenNodes(nodeIDs, projection) {
+export function actionStraightenNodes(nodeIDs, viewport) {
 
     function positionAlongWay(a, o, b) {
         return vecDot(a, b, o) / vecDot(b, b, o);
@@ -33,7 +33,7 @@ export function actionStraightenNodes(nodeIDs, projection) {
         t = Math.min(Math.max(+t, 0), 1);
 
         var nodes = nodeIDs.map(function(id) { return graph.entity(id); });
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
         var endpoints = getEndpoints(points);
         var startPoint = endpoints[0];
         var endPoint = endpoints[1];
@@ -44,7 +44,7 @@ export function actionStraightenNodes(nodeIDs, projection) {
             var point = points[i];
             var u = positionAlongWay(point, startPoint, endPoint);
             var point2 = vecInterp(startPoint, endPoint, u);
-            var loc2 = projection.invert(point2);
+            var loc2 = viewport.unproject(point2);
             graph = graph.replace(node.move(vecInterp(node.loc, loc2, t)));
         }
 
@@ -55,7 +55,7 @@ export function actionStraightenNodes(nodeIDs, projection) {
     action.disabled = function(graph) {
 
         var nodes = nodeIDs.map(function(id) { return graph.entity(id); });
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
         var endpoints = getEndpoints(points);
         var startPoint = endpoints[0];
         var endPoint = endpoints[1];

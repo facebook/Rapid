@@ -63,10 +63,10 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * render
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
    */
-  render(frame, projection) {
+  render(frame, viewport) {
     const imagery = this.context.systems.imagery;
     const groupContainer = this.scene.groups.get('background');
 
@@ -100,7 +100,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       }
 
       const timestamp = window.performance.now();
-      this.renderSource(timestamp, projection, source, sourceContainer, tileMap);
+      this.renderSource(timestamp, viewport, source, sourceContainer, tileMap);
     }
 
     // Remove any sourceContainers and data not needed anymore
@@ -121,19 +121,20 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * renderSource
-   * @param timestamp          Timestamp in milliseconds
-   * @param projection         Pixi projection to use for rendering
-   * @param source             Imagery tile source Object
-   * @param sourceContainer    PIXI.Container to render the tiles to
-   * @param tileMap            Map(tile.id -> Tile) for this tile source
+   * @param timestamp        Timestamp in milliseconds
+   * @param viewport         Pixi viewport to use for rendering
+   * @param source           Imagery tile source Object
+   * @param sourceContainer  PIXI.Container to render the tiles to
+   * @param tileMap          Map(tile.id -> Tile) for this tile source
    */
-  renderSource(timestamp, projection, source, sourceContainer, tileMap) {
+  renderSource(timestamp, viewport, source, sourceContainer, tileMap) {
     const context = this.context;
     const textureManager = this.renderer.textures;
     const osm = context.services.osm;
+    const transform = viewport.transform();
 
-    // Defensive coding in case nominatim/other reasons cause us to get an invalid projection.
-    if (isNaN(projection._x) || isNaN(projection._y)) {
+    // Defensive coding in case nominatim/other reasons cause us to get an invalid view transform.
+    if (isNaN(transform.x) || isNaN(transform.y)) {
       return;
     }
 
@@ -148,8 +149,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     }
 
     const tileSize = source.tileSize || 256;
-    const k = projection.scale();
-    const z = geoScaleToZoom(k, tileSize);  // Use actual zoom for this, not effective zoom
+    const z = geoScaleToZoom(transform.k, tileSize);  // Use actual zoom for this, not effective zoom
 
     // Apply imagery offset (in pixels) to the source container
     const offset = vecScale(source.offset, Math.pow(2, z));
@@ -169,7 +169,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
         .zoomRange(tryZoom)
-        .getTiles(this.isMinimap ? projection : context.projection);  // minimap passes in its own projection
+        .getTiles(this.isMinimap ? viewport : context.viewport);  // minimap passes in its own viewport
 
       let hasHoles = false;
       for (const tile of result.tiles) {
@@ -248,7 +248,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       }
 
       if (keepTile) {   // Tile may be visible - update position and scale
-        const [x, y] = projection.project(tile.wgs84Extent.min);   // left, bottom
+        const [x, y] = viewport.project(tile.wgs84Extent.min);   // left, bottom
         tile.sprite.position.set(x, y);
         const size = tileSize * Math.pow(2, z - tile.xyz[2]);
         tile.sprite.width = size;

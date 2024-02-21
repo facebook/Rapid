@@ -175,7 +175,7 @@ export class RotateMode extends AbstractMode {
 
     // "new" - determine pointer movement dx,dy but relative to the pivot point
     if (this._lastPoint) {
-      const pivotPoint = context.projection.project(this._pivotLoc);
+      const pivotPoint = context.viewport.project(this._pivotLoc);
       const [dX, dY] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
       const [sX, sY] = [                                          // swap signs if needed
         (currPoint[0] > pivotPoint[0]) ? 1 : -1,   // right/left of pivot
@@ -184,16 +184,16 @@ export class RotateMode extends AbstractMode {
       const degrees = (sY * dX) + (sX * dY);   // Degrees rotation to apply: + clockwise, - counterclockwise
       const SPEED = 0.3;
       const angle = degrees * (Math.PI / 180) * SPEED;
-      editor.perform(actionRotate(this._entityIDs, pivotPoint, angle, context.projection));
+      editor.perform(actionRotate(this._entityIDs, pivotPoint, angle, context.viewport));
     }
     this._lastPoint = currPoint.slice();  // copy
 
     // "old" - rotational
-    // const pivotPoint = context.projection.project(this._pivotLoc);
+    // const pivotPoint = context.viewport.project(this._pivotLoc);
     // const currAngle = Math.atan2(currPoint[1] - pivotPoint[1], currPoint[0] - pivotPoint[0]);
     // if (this._lastAngle !== null) {
     //   const angle = currAngle - this._lastAngle;
-    //   editor.perform(actionRotate(entityIDs, pivotPoint, angle, context.projection));
+    //   editor.perform(actionRotate(entityIDs, pivotPoint, angle, context.viewport));
     // }
     // this._lastAngle = currAngle;
 
@@ -214,10 +214,10 @@ export class RotateMode extends AbstractMode {
    */
   _calcPivotLoc() {
     const context = this.context;
-    const projection = context.projection;
+    const viewport = context.viewport;
     const graph = context.systems.editor.staging.graph;
     const nodes = utilGetAllNodes(this._entityIDs, graph);
-    const points = nodes.map(node => projection.project(node.loc));
+    const points = nodes.map(node => viewport.project(node.loc));
 
     // Calculate in projected coordinates [x,y]
     let centroid;
@@ -235,8 +235,8 @@ export class RotateMode extends AbstractMode {
     }
 
     // Return spherical coordinates [lon,lat]
-    // (if projection changes later, we just reproject instead of recalculating)
-    return projection.invert(centroid);
+    // (if viewport changes later, we just reproject instead of recalculating)
+    return viewport.unproject(centroid);
   }
 
 

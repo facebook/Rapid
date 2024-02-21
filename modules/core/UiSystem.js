@@ -613,7 +613,7 @@ this.didRender = true;
     }
 
     this.editMenu
-      .anchorLoc(context.projection.invert(anchorPoint))
+      .anchorLoc(context.viewport.unproject(anchorPoint))
       .triggerType(triggerType)
       .operations(operations);
 

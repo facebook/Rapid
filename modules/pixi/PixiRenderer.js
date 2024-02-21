@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { Projection, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { Viewport, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { osmNote, QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
@@ -58,7 +58,7 @@ export class PixiRenderer extends EventEmitter {
     this._drawPending = false;
 
     // Properties used to manage the scene transform
-    this.pixiProjection = new Projection();
+    this.pixiViewport = new Viewport();
     this._transformDraw = null;      // transform at time of last draw
     this._isTransformed = false;     // is the supersurface transformed?
     this._transformEase = null;
@@ -294,19 +294,19 @@ export class PixiRenderer extends EventEmitter {
 
   /**
    * setTransformAsync
-   * Updates the transform and projection
+   * Updates the viewport transform
    * @param   t           A Transform Object with `x, y, k` properties
    * @param   duration?   Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return  Promise that resolves when the transform has finished changing
    */
   setTransformAsync(t, duration = 0) {
     const now = window.performance.now();
-    const tCurr = this.context.projection.transform();
+    const tCurr = this.context.viewport.transform();
     let promise;
 
     // If already easing, resolve before starting a new one
     if (this._transformEase) {
-      this.context.projection.transform(tCurr);
+      this.context.viewport.transform(tCurr);
       this._transformEase.resolve(tCurr);
       this._transformEase = null;
     }
@@ -325,7 +325,7 @@ export class PixiRenderer extends EventEmitter {
       };
 
     } else {   // change immediately
-      this.context.projection.transform(t);
+      this.context.viewport.transform(t);
       promise = Promise.resolve(t);
     }
 
@@ -372,7 +372,7 @@ export class PixiRenderer extends EventEmitter {
       const yNow = y0 + ((y1 - y0) * tween);
       const kNow = k0 + ((k1 - k0) * tween);
       const tNow = { x: xNow, y: yNow, k: kNow };
-      this.context.projection.transform(tNow);
+      this.context.viewport.transform(tNow);
 
       if (tween === 1) {  // we're done
         resolve(tNow);
@@ -383,7 +383,7 @@ export class PixiRenderer extends EventEmitter {
     }
 
     // Determine delta from last full draw and apply it to supersurface / overlay
-    const tCurr = this.context.projection.transform();
+    const tCurr = this.context.viewport.transform();
     const tDraw = this._transformDraw;
     if (!tDraw) return;  // haven't drawn yet!
 
@@ -414,9 +414,9 @@ export class PixiRenderer extends EventEmitter {
     if (map.paused) return;
 
     // Reproject the pixi geometries only whenever zoom changes
-    const pixiProjection = this.pixiProjection;
-    const pixiTransform = pixiProjection.transform();
-    const mapTransform = context.projection.transform();
+    const pixiViewport = this.pixiViewport;
+    const pixiTransform = pixiViewport.transform();
+    const mapTransform = context.viewport.transform();
     const effectiveZoom = map.effectiveZoom();
 
     const pixiXY = [pixiTransform.x, pixiTransform.y];
@@ -426,7 +426,7 @@ export class PixiRenderer extends EventEmitter {
 
     if (pixiTransform.k !== mapTransform.k || dist > 100000) {   // zoom has changed, or map has translated very far
       offset = [0, 0];
-      pixiProjection.transform(mapTransform);  // reset
+      pixiViewport.transform(mapTransform);  // reset
       this.scene.dirtyScene();                 // all geometry will be reprojected
     } else {
       offset = vecSubtract(pixiXY, mapXY);
@@ -436,7 +436,7 @@ export class PixiRenderer extends EventEmitter {
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 //
-    this.scene.render(this._frame, pixiProjection, effectiveZoom);
+    this.scene.render(this._frame, pixiViewport, effectiveZoom);
 
     // debugging the contents of the texture atlas
     // let screen = stage.getChildByName('screen');
@@ -487,7 +487,7 @@ export class PixiRenderer extends EventEmitter {
     // };
     // this.pixi.renderer.render(stage, options);
 //
-    this._transformDraw = this.context.projection.transform();
+    this._transformDraw = this.context.viewport.transform();
     this._timeToNextRender = THROTTLE;
 
     if (this._isTransformed) {
