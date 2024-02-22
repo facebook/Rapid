@@ -340,6 +340,7 @@ export class MapSystem extends AbstractSystem {
       lon = clamp(lon, -180, 180);
       rot = clamp(rot, 0, 360);
 
+      this.context.viewport.rotate(rot * (Math.PI / 180)); // deg2rad
       this.centerZoom([lon, lat], zoom);
     }
 
@@ -365,7 +366,7 @@ export class MapSystem extends AbstractSystem {
   _updateHash() {
     const [lon, lat] = this.center();
     const zoom = this.zoom();
-    const rot = 0;  // for now
+    const rot = this.context.viewport.rotate() * (180 / Math.PI);   // rad2deg
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
     const EPSILON = 0.1;
 
@@ -472,8 +473,7 @@ export class MapSystem extends AbstractSystem {
    * Set/Get the map transform
    * IF setting, will schedule an update of map transform.
    * All convenience methods for adjusting the map go through here.
-   *   (the old way did a round trip through the d3-zoom event system)
-   * @param  t2         Transform Object with `x`,`y`,`k` properties.
+   * @param  t2         Transform Object with `x`,`y`,`k`,`r` properties.
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return map transform -or- this
    */
@@ -492,7 +492,7 @@ export class MapSystem extends AbstractSystem {
   /**
    * setTransformAsync
    * Newer Promise-returning version of `transform()`
-   * @param   t2         Transform Object with `x`,`y`,`k` properties.
+   * @param   t2         Transform Object with `x`,`y`,`k`,`r` properties.
    * @param   duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return  Promise that resolves when the transform has finished changing
    */
@@ -555,7 +555,9 @@ export class MapSystem extends AbstractSystem {
     const delta = vecSubtract(center, point);
     t = vecAdd(t, delta);
 
-    return this.setTransformAsync({ x: t[0], y: t[1], k: k2 }, duration);
+    // note: because this function is currently used to move
+    // the user around the walkthrough, reset rotation to 0
+    return this.setTransformAsync({ x: t[0], y: t[1], k: k2, r: 0 }, duration);
   }
 
 

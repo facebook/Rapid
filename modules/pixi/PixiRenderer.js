@@ -12,6 +12,11 @@ let _sharedTextures;   // singleton (for now)
 
 const THROTTLE = 250;  // throttled rendering milliseconds (for now)
 
+function wrap(num, min, max) {
+  const d = max - min;
+  return ((num - min) % d + d) % d + min;
+}
+
 
 /**
  * PixiRenderer
@@ -371,7 +376,17 @@ export class PixiRenderer extends EventEmitter {
       const xNow = x0 + ((x1 - x0) * tween);
       const yNow = y0 + ((y1 - y0) * tween);
       const kNow = k0 + ((k1 - k0) * tween);
-      const tNow = { x: xNow, y: yNow, k: kNow };
+
+      // rotate, but pick whichever direction is shorter
+      const TAU = 2 * Math.PI;
+      const r0 = wrap(xform0.r, 0, TAU);
+      let r1 = wrap(xform1.r, 0, TAU);
+      if (Math.abs(r1 - r0) > Math.PI) {  // > 180°
+        r1 -= TAU;
+      }
+      const rNow = r0 + ((r1 - r0) * tween);
+
+      const tNow = { x: xNow, y: yNow, k: kNow, r: rNow };
       this.context.viewport.transform(tNow);
 
       if (tween === 1) {  // we're done
@@ -424,10 +439,11 @@ export class PixiRenderer extends EventEmitter {
     const dist = vecLength(pixiXY, mapXY);
     let offset;
 
-    if (pixiTransform.k !== mapTransform.k || dist > 100000) {   // zoom has changed, or map has translated very far
+     // zoom or rotation has changed, or map has translated very far
+     if (pixiTransform.k !== mapTransform.k || pixiTransform.r !== mapTransform.r || dist > 100000) {
       offset = [0, 0];
       pixiViewport.transform(mapTransform);  // reset
-      this.scene.dirtyScene();                 // all geometry will be reprojected
+      this.scene.dirtyScene();               // all geometry will be reprojected
     } else {
       offset = vecSubtract(pixiXY, mapXY);
     }
