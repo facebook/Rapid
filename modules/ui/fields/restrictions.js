@@ -217,12 +217,10 @@
 //        viewport.scale(geoZoomToScale(z));
 //
 //        // Calculate extent of all key vertices
-//        var extent = _intersection.vertices.reduce((extent, node) => {
-//          // update extent in place
-//          extent.min = [ Math.min(extent.min[0], node.loc[0]), Math.min(extent.min[1], node.loc[1]) ];
-//          extent.max = [ Math.max(extent.max[0], node.loc[0]), Math.max(extent.max[1], node.loc[1]) ];
-//          return extent;
-//        }, new Extent());
+//        const extent = new Extent();
+//        for (const node of _intersection.vertices) {
+//          extent.extendSelf(node.loc);
+//        }
 //
 //        // If this is a large intersection, adjust zoom to fit extent
 //        if (_intersection.vertices.length > 1) {

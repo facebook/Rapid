@@ -620,28 +620,22 @@ export class VectorTileService extends AbstractSystem {
       for (const polygon of parts) {
         const outer = polygon[0];  // No need to iterate over inners
         for (const point of outer) {
-          _extend(point);
+          extent.extendSelf(point);
         }
       }
     } else if (/LineString$/.test(type)) {
       for (const line of parts) {
         for (const point of line) {
-          _extend(point);
+          extent.extendSelf(point);
         }
       }
     } else if (/Point$/.test(type)) {
       for (const point of parts) {
-        _extend(point);
+        extent.extendSelf(point);
       }
     }
 
     return extent;
-
-    // update extent in place
-    function _extend(coord) {
-      extent.min = [ Math.min(extent.min[0], coord[0]), Math.min(extent.min[1], coord[1]) ];
-      extent.max = [ Math.max(extent.max[0], coord[0]), Math.max(extent.max[1], coord[1]) ];
-    }
   }
 
 

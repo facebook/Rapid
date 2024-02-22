@@ -4,7 +4,7 @@ describe('StreetsideService', () => {
   class MockMapSystem {
     constructor(context)  { this.context = context; }
     initAsync()           { return Promise.resolve(); }
-    extent()              { return this._viewport.extent(); }
+    extent()              { return this.context.viewport.extent(); }
   }
 
   class MockContext {

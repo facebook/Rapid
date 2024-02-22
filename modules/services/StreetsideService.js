@@ -659,12 +659,10 @@ export class StreetsideService extends AbstractSystem {
     const angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
     poly = geomRotatePoints(poly, -angle, origin);
 
-    let extent = poly.reduce((extent, point) => {
-      // update extent in place
-      extent.min = [ Math.min(extent.min[0], point[0]), Math.min(extent.min[1], point[1]) ];
-      extent.max = [ Math.max(extent.max[0], point[0]), Math.max(extent.max[1], point[1]) ];
-      return extent;
-    }, new Extent());
+    const extent = new Extent();
+    for (const point of poly) {
+      extent.extendSelf(point);
+    }
 
     // find nearest other bubble in the search polygon
     let minDist = Infinity;

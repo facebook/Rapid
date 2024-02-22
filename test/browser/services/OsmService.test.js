@@ -425,8 +425,8 @@ describe('OsmService', () => {
 
 
   describe('#loadTiles', () => {
-    const viewport = new sdk.Viewport()
-      .scale(sdk.geoZoomToScale(20))
+    const viewport = new Rapid.sdk.Viewport()
+      .scale(Rapid.sdk.geoZoomToScale(20))
       .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
       .dimensions([[0,0], [64,64]]);
 
@@ -687,8 +687,8 @@ describe('OsmService', () => {
 
 
   describe('#loadNotes', () => {
-    const viewport = new sdk.Viewport()
-      .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
+    const viewport = new Rapid.sdk.Viewport()
+      .transform({ x: -116508, y: 0, k: Rapid.sdk.geoZoomToScale(14) })  // [10°, 0°]
       .dimensions([[0,0], [64, 64]]);
 
     const notesBody =
@@ -735,8 +735,8 @@ describe('OsmService', () => {
 
 
   describe('#notes', () => {
-    const viewport = new sdk.Viewport()
-      .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
+    const viewport = new Rapid.sdk.Viewport()
+      .transform({ x: -116508, y: 0, k: Rapid.sdk.geoZoomToScale(14) })  // [10°, 0°]
       .dimensions([[0,0], [64, 64]]);
 
     it('returns notes in the visible map area', () => {

@@ -275,25 +275,17 @@ export class PixiGeometry {
     this.reset();
     this.type = type;
     this.origCoords = data;
-    this.origExtent = new Extent();
 
     // Determine extent (bounds)
-    const bounds = this.origExtent;
-
     if (type === 'point') {
-      bounds.min = data;
-      bounds.max = data;
+      this.origExtent = new Extent(data);
       this.origCentroid = data;
 
     } else {
-      const origRings = (this.type === 'line') ? [this.origCoords] : this.origCoords;
-      for (let i = 0; i < origRings.length; ++i) {
-        const origRing = origRings[i];
-        for (let j = 0; j < origRing.length; ++j) {
-          const [lon, lat] = origRing[j];
-          bounds.min = [ Math.min(bounds.min[0], lon), Math.min(bounds.min[1], lat) ];
-          bounds.max = [ Math.max(bounds.max[0], lon), Math.max(bounds.max[1], lat) ];
-        }
+      this.origExtent = new Extent();
+      const outer = (this.type === 'line') ? this.origCoords : this.origCoords[0];  // outer only
+      for (const loc of outer) {
+        this.origExtent.extendSelf(loc);
       }
     }
 
