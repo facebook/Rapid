@@ -1,12 +1,9 @@
-import { Extent, vecAdd } from '@rapid-sdk/math';
+import { Extent, numClamp, vecAdd } from '@rapid-sdk/math';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 
 import { uiToggle } from '../toggle.js';
 
-function clamp(num, min, max) {
-  return Math.max(min, Math.min(num, max));
-}
 
 /**
  * UiCurtain
@@ -243,10 +240,10 @@ export class UiCurtain {
 
       if (reveal) {
         // apply clamp and padding
-        reveal.left   = clamp(reveal.left - padding, clampTo.left, clampTo.right);
-        reveal.top    = clamp(reveal.top - padding, clampTo.top, clampTo.bottom);
-        reveal.right  = clamp(reveal.right + padding, clampTo.left, clampTo.right);
-        reveal.bottom = clamp(reveal.bottom + padding, clampTo.top, clampTo.bottom);
+        reveal.left   = numClamp(reveal.left - padding, clampTo.left, clampTo.right);
+        reveal.top    = numClamp(reveal.top - padding, clampTo.top, clampTo.bottom);
+        reveal.right  = numClamp(reveal.right + padding, clampTo.left, clampTo.right);
+        reveal.bottom = numClamp(reveal.bottom + padding, clampTo.top, clampTo.bottom);
         reveal.width = reveal.right - reveal.left;
         reveal.height = reveal.bottom - reveal.top;
 
@@ -368,10 +365,10 @@ export class UiCurtain {
       let placement, tipX, tipY;
 
       // Clamp reveal box to container
-      reveal.left   = clamp(reveal.left, container.left, container.right);
-      reveal.top    = clamp(reveal.top, container.top, container.bottom);
-      reveal.right  = clamp(reveal.right, container.left, container.right);
-      reveal.bottom = clamp(reveal.bottom, container.top, container.bottom);
+      reveal.left   = numClamp(reveal.left, container.left, container.right);
+      reveal.top    = numClamp(reveal.top, container.top, container.bottom);
+      reveal.right  = numClamp(reveal.right, container.left, container.right);
+      reveal.bottom = numClamp(reveal.bottom, container.top, container.bottom);
       reveal.width = reveal.right - reveal.left;
       reveal.height = reveal.bottom - reveal.top;
 

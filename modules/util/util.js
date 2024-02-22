@@ -94,22 +94,6 @@ export function utilFastMouse(container) {
 
 
 /**
- * utilWrap
- * Wraps an index to an interval [0..max-1]
- * (Essentially modulo/remainder that works for negative numbers also)
- * @param   {number}  index
- * @param   {number}  max
- * @return  {number}  result
- */
-export function utilWrap(index, max) {
-  if (index < 0) {
-    index += Math.ceil(-index / max) * max;
-  }
-  return index % max;
-}
-
-
-/**
  * utilFunctor
  * A functor is just a way of turning anything into a function.
  * This is particulary useful in places where D3 wants a function to be.

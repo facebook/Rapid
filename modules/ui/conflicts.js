@@ -1,11 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { Extent } from '@rapid-sdk/math';
+import { Extent, numWrap } from '@rapid-sdk/math';
 
 import { JXON } from '../util/jxon.js';
 import { osmChangeset } from '../osm/index.js';
 import { uiIcon } from './icon.js';
-import { utilDetect, utilKeybinding, utilRebind, utilWrap } from '../util/index.js';
+import { utilDetect, utilKeybinding, utilRebind } from '../util/index.js';
 
 
 export function uiConflicts(context) {
@@ -132,7 +132,7 @@ export function uiConflicts(context) {
 
 
   function showConflict(selection, index) {
-    index = utilWrap(index, _conflictList.length);
+    index = numWrap(index, 0, _conflictList.length);
     _shownConflictIndex = index;
 
     const parent = d3_select(selection.node().parentNode);

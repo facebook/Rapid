@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { Viewport, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { Viewport, numWrap, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { osmNote, QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
@@ -12,10 +12,6 @@ let _sharedTextures;   // singleton (for now)
 
 const THROTTLE = 250;  // throttled rendering milliseconds (for now)
 
-function wrap(num, min, max) {
-  const d = max - min;
-  return ((num - min) % d + d) % d + min;
-}
 
 
 /**
@@ -379,8 +375,8 @@ export class PixiRenderer extends EventEmitter {
 
       // rotate, but pick whichever direction is shorter
       const TAU = 2 * Math.PI;
-      const r0 = wrap(xform0.r, 0, TAU);
-      let r1 = wrap(xform1.r, 0, TAU);
+      const r0 = numWrap(xform0.r, 0, TAU);
+      let r1 = numWrap(xform1.r, 0, TAU);
       if (Math.abs(r1 - r0) > Math.PI) {  // > 180°
         r1 -= TAU;
       }

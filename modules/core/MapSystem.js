@@ -1,5 +1,8 @@
 import { select as d3_select } from 'd3-selection';
-import { Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
+import {
+  Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale,
+  numClamp, vecAdd, vecScale, vecSubtract
+} from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { PixiRenderer } from '../pixi/PixiRenderer.js';
@@ -8,15 +11,10 @@ import { utilGetDimensions, utilTotalExtent } from '../util/index.js';
 
 
 const TILESIZE = 256;
-const MINZOOM = 2;
-const MAXZOOM = 24;
-const MINK = geoZoomToScale(MINZOOM, TILESIZE);
-const MAXK = geoZoomToScale(MAXZOOM, TILESIZE);
-
-function clamp(num, min, max) {
-  return Math.max(min, Math.min(num, max));
-}
-
+const MIN_Z = 2;
+const MAX_Z = 24;
+const MIN_K = geoZoomToScale(MIN_Z, TILESIZE);
+const MAX_K = geoZoomToScale(MAX_Z, TILESIZE);
 
 /**
  * `MapSystem` maintains the map state and provides an interface for manipulating the map view.
@@ -335,10 +333,10 @@ export class MapSystem extends AbstractSystem {
       if (isNaN(lon) || !isFinite(lon)) lon = 0;
       if (isNaN(rot) || !isFinite(rot)) rot = 0;
 
-      zoom = clamp(zoom, 2, 24);
-      lat = clamp(lat, -90, 90);
-      lon = clamp(lon, -180, 180);
-      rot = clamp(rot, 0, 360);
+      zoom = numClamp(zoom, 2, 24);
+      lat = numClamp(lat, -90, 90);
+      lon = numClamp(lon, -180, 180);
+      rot = numClamp(rot, 0, 360);
 
       this.context.viewport.rotate(rot * (Math.PI / 180)); // deg2rad
       this.centerZoom([lon, lat], zoom);
@@ -516,7 +514,7 @@ export class MapSystem extends AbstractSystem {
       return this;
     }
 
-    const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
+    const k2 = numClamp(geoZoomToScale(z2, TILESIZE), MIN_K, MAX_K);
     const view = new Viewport(this.context.viewport.transform());  // make copy
     view.scale(k2);
 
@@ -545,7 +543,7 @@ export class MapSystem extends AbstractSystem {
       return new Promise.resolve(this.context.viewport.transform());
     }
 
-    const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
+    const k2 = numClamp(geoZoomToScale(z2, TILESIZE), MIN_K, MAX_K);
     const view = new Viewport(this.context.viewport.transform());
     view.scale(k2);
 
@@ -575,8 +573,8 @@ export class MapSystem extends AbstractSystem {
     if (duration === undefined) {
       duration = 0;
     }
-    loc2[0] = clamp(loc2[0] || 0, -180, 180);
-    loc2[1] = clamp(loc2[1] || 0, -90, 90);
+    loc2[0] = numClamp(loc2[0] || 0, -180, 180);
+    loc2[1] = numClamp(loc2[1] || 0, -90, 90);
     return this.centerZoom(loc2, this.zoom(), duration);
   }
 
@@ -595,7 +593,7 @@ export class MapSystem extends AbstractSystem {
     if (duration === undefined) {
       duration = 0;
     }
-    z2 = clamp(z2 || 0, MINZOOM, MAXZOOM);
+    z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
     return this.centerZoom(this.center(), z2, duration);
   }
 
@@ -633,7 +631,7 @@ export class MapSystem extends AbstractSystem {
     }
     if (!isFinite(extent.area())) return this;
 
-    const z2 = clamp(this.trimmedExtentZoom(extent), 0, 20);
+    const z2 = numClamp(this.trimmedExtentZoom(extent), 0, 20);
     return this.centerZoom(extent.center(), z2, duration);
   }
 
@@ -688,11 +686,11 @@ export class MapSystem extends AbstractSystem {
 
   zoomIn()        { return this._zoomIn(1); }
   zoomInFurther() { return this._zoomIn(4); }
-  canZoomIn()     { return this.zoom() < MAXZOOM; }
+  canZoomIn()     { return this.zoom() < MAX_Z; }
 
   zoomOut()        { return this._zoomOut(1); }
   zoomOutFurther() { return this._zoomOut(4); }
-  canZoomOut()     { return this.zoom() > MINZOOM; }
+  canZoomOut()     { return this.zoom() > MIN_Z; }
 
   // convenience methods for the above, but with easing
   transformEase(t2, duration = 250)          { return this.transform(t2, duration); }
@@ -720,7 +718,7 @@ export class MapSystem extends AbstractSystem {
     const atLatitude = geoMetersToLon(1, lat);
     const atEquator = geoMetersToLon(1, 0);
     const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
-    return Math.min(z + extraZoom, MAXZOOM);
+    return Math.min(z + extraZoom, MAX_Z);
   }
 
 

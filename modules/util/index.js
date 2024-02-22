@@ -13,5 +13,3 @@ export { utilSetDimensions } from './dimensions.js';
 export { utilSetTransform } from './util.js';
 export { utilTotalExtent } from './util.js';
 export { utilTriggerEvent } from './trigger_event.js';
-export { utilWrap } from './util.js';
-

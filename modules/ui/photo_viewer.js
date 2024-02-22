@@ -1,3 +1,4 @@
+import { numClamp } from '@rapid-sdk/math';
 import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
@@ -65,20 +66,16 @@ export function uiPhotoViewer(context) {
         const dims = context.systems.map.dimensions;
         if (resizeOnX) {
           const maxWidth = dims[0];
-          const newWidth = clamp((startWidth + d3_event.clientX - startX), minWidth, maxWidth);
+          const newWidth = numClamp((startWidth + d3_event.clientX - startX), minWidth, maxWidth);
           target.style('width', newWidth + 'px');
         }
         if (resizeOnY) {
           const maxHeight = dims[1] - 90;  // preserve space at top/bottom of map
-          const newHeight = clamp((startHeight + startY - d3_event.clientY), minHeight, maxHeight);
+          const newHeight = numClamp((startHeight + startY - d3_event.clientY), minHeight, maxHeight);
           target.style('height', newHeight + 'px');
         }
 
         dispatch.call(eventName, target, utilGetDimensions(target, true));
-      }
-
-      function clamp(num, min, max) {
-        return Math.max(min, Math.min(num, max));
       }
 
       function stopResize(d3_event) {

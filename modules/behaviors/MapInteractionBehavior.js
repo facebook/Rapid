@@ -1,14 +1,7 @@
-import { geoZoomToScale, vecLength } from '@rapid-sdk/math';
+import { MIN_K, MAX_K, geoZoomToScale, numClamp, vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
-
-// constants
-const TILESIZE = 256;
-const MINZOOM = 2;
-const MAXZOOM = 24;
-const MINK = geoZoomToScale(MINZOOM, TILESIZE);
-const MAXK = geoZoomToScale(MAXZOOM, TILESIZE);
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
@@ -148,10 +141,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (e.detail !== 2) return;    // double clicks only
     if (e.pointerType === 'mouse' && e.button !== 0) return;   // left click only (if a mouse)
 
-    function clamp(num, min, max) {
-      return Math.max(min, Math.min(num, max));
-    }
-
     const [x, y] = [e.global.x, e.global.y];
     const t = this.context.viewport.transform();
     const isShiftDown = e.getModifierState('Shift');
@@ -159,7 +148,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // local mouse coord to transform origin (was: d3 `transform.invert`)
     const p1 = [ (x - t.x) / t.k, (y - t.y) / t.k ];
     let k2 = t.k * (isShiftDown ? 0.5 : 2);  // rescale
-    k2 = clamp(k2, MINK, MAXK);
+    k2 = numClamp(k2, MIN_K, MAX_K);
 
     // transform origin back to local coord
     const x2 = x - p1[0] * k2;
@@ -276,10 +265,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const t = this.context.viewport.transform();
     let tNew;
 
-    function clamp(num, min, max) {
-      return Math.max(min, Math.min(num, max));
-    }
-
     // We aren't going to set `this.gesture` here, because that is for tracking what
     // the user is doing through a pointerdown-pointermove-pointerup situation..
 
@@ -290,7 +275,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
       // rescale
       let k2 = t.k * Math.pow(2, -dY / 500);
-      k2 = clamp(k2, MINK, MAXK);
+      k2 = numClamp(k2, MIN_K, MAX_K);
 
       // transform origin back to local coord
       const x2 = x - x1 * k2;

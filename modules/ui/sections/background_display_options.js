@@ -1,3 +1,5 @@
+import { numClamp } from '@rapid-sdk/math';
+
 import { uiIcon } from '../icon.js';
 import { uiSection } from '../section.js';
 
@@ -23,13 +25,10 @@ export function uiSectionBackgroundDisplayOptions(context) {
     sharpness: 1
   };
 
-  function clamp(x, min, max) {
-    return Math.max(min, Math.min(x, max));
-  }
 
 
   function updateValue(d, val) {
-    val = clamp(val, MINVAL, MAXVAL);
+    val = numClamp(val, MINVAL, MAXVAL);
 
     _options[d] = val;
     if (d === 'brightness') {
