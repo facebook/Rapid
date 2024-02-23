@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="50" height="50" viewBox="5 0 50 50">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="5 0 50 50">
   <defs>
     <linearGradient id="Gradient_1" gradientUnits="userSpaceOnUse" x1="-660.5" y1="157.987" x2="-662" y2="152.362" gradientTransform="matrix(1, 0, 0, 1, 701, -132.362)">
       <stop offset="0" stop-color="#444444"/>
