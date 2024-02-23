@@ -1,7 +1,11 @@
-export function utilTriggerEvent(target, type) {
+export function utilTriggerEvent(target, type, doc = document) {
     target.each(function() {
-        var evt = document.createEvent('HTMLEvents');
+        var evt = doc.createEvent('HTMLEvents');
         evt.initEvent(type, true, true);
-        this.dispatchEvent(evt);
+        if (typeof this.dispatchEvent === 'function') {
+            this.dispatchEvent(evt);
+        } else if (typeof this.emit === 'function') {
+            this.emit(type, evt);
+        }
     });
 }
