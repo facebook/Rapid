@@ -20,6 +20,7 @@ export function uiZoomToSelection(context) {
 
     let button = selection
       .append('button')
+      .attr('class', 'zoom-to-selection')
       .on('pointerup', d3_event => _lastPointerUpType = d3_event.pointerType)
       .on('click', onClick)
       .call(uiIcon('#rapid-icon-framed-dot', 'light'))

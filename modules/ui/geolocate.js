@@ -106,6 +106,7 @@ export function uiGeolocate(context) {
 
     _button = selection
       .append('button')
+      .attr('class', 'geolocate')
       .on('click', click)
       .call(uiIcon('#rapid-icon-geolocate', 'light'))
       .call(uiTooltip(context)

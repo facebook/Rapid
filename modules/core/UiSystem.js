@@ -5,7 +5,7 @@ import { utilDetect } from '../util/detect.js';
 import { utilGetDimensions } from '../util/dimensions.js';
 
 import {
-  uiAccount, uiAttribution, uiContributors, UiDefs, uiEditMenu,
+  uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
   uiFeatureInfo, uiFlash, uiFullScreen, uiGeolocate, uiIcon,
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
   uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
@@ -274,17 +274,22 @@ this.didRender = true;
 
     controls
       .append('div')
+      .attr('class', 'map-control bearing')
+      .call(uiBearing(context));
+
+    controls
+      .append('div')
       .attr('class', 'map-control zoombuttons')
       .call(uiZoom(context));
 
     controls
       .append('div')
-      .attr('class', 'map-control zoom-to-selection-control')
+      .attr('class', 'map-control zoom-to-selection')
       .call(uiZoomToSelection(context));
 
     controls
       .append('div')
-      .attr('class', 'map-control geolocate-control')
+      .attr('class', 'map-control geolocate')
       .call(uiGeolocate(context));
 
 

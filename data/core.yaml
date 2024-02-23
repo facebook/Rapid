@@ -1174,6 +1174,10 @@ en:
     disabled:
       in: Cannot zoom in further.
       out: Cannot zoom out further.
+  bearing:
+    title: Reset Bearing
+    disabled: North is up
+    n: 'N'
   cannot_zoom: "Cannot zoom out further in current mode."
   full_screen: Toggle Full Screen
   self_intersection:

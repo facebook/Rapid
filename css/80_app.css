@@ -2930,69 +2930,97 @@ img.tag-reference-wiki-image {
 /* Map Controls
 ------------------------------------------------------- */
 .map-controls {
-    right: 0;
-    top: 0;
-    width: 40px;
-    position: absolute;
-    z-index: 100;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 5px 0;
-    pointer-events: none;
+  right: 0;
+  top: 0;
+  width: 40px;
+  position: absolute;
+  z-index: 100;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+  pointer-events: none;
 }
 .map-controls:before {
-    content: '';
-    display: inline-block;
-    pointer-events: none;
-    width: 40px;
-    height: 100%;
-    max-height: 70px;
-    flex: 0 1 auto;
+  content: '';
+  display: inline-block;
+  pointer-events: none;
+  width: 40px;
+  height: 100%;
+  max-height: 70px;
+  flex: 0 1 auto;
 }
 .ideditor[dir='rtl'] .map-controls {
-    left: 0;
-    right: auto;
+  left: 0;
+  right: auto;
 }
 
 .map-control {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .map-control > button {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    background: rgba(0,0,0,.5);
-    border-radius: 0;
-    pointer-events: auto;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: rgba(0,0,0,.5);
+  border-radius: 0;
+  pointer-events: auto;
 }
 
 .map-control > button:not(.disabled):focus,
 .map-control > button:not(.disabled):active {
-    background: rgba(0, 0, 0, .8);
+  background: rgba(0, 0, 0, .8);
 }
 .map-control > button.active,
 .map-control > button.active:active {
-    background: #7092ff;
+  background: #7092ff;
 }
+
 @media (hover: hover) {
-    .map-control > button:not(.disabled):hover {
-        background: rgba(0, 0, 0, .8);
-    }
-    .map-control > button.active:hover {
-        background: #7092ff;
-    }
+  .map-control > button:not(.disabled):hover {
+    background: rgba(0, 0, 0, .8);
+  }
+  .map-control > button.active:hover {
+    background: #7092ff;
+  }
 }
 
 .map-control > button.disabled .icon {
-    color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
+.map-control > button.bearing {
+  border-radius: 4px 0 0 0;
+}
+button.bearing > .bearing_n {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+.ideditor[dir='rtl'] .map-control > button.bearing {
+  border-radius: 0 4px 0 0;
+}
 
-/* Fullscreen Button (disabled)
-------------------------------------------------------- */
+.map-control > button.geolocate {
+  border-radius: 0 0 0 4px;
+  margin-bottom: 10px;
+}
+.ideditor[dir='rtl'] .map-control > button.geolocate {
+  border-radius: 0 0 4px 0;
+  margin-bottom: 10px;
+}
+
+.map-control > button.zoom-to-selection .icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* Fullscreen Button (disabled) */
 div.full-screen {
     display: inline-block;
     width: 40px;
@@ -3017,35 +3045,6 @@ div.full-screen > button:focus {
     div.full-screen > button:hover {
         background-color: rgba(0, 0, 0, .8);
     }
-}
-
-
-/* Map Controls
-------------------------------------------------------- */
-
-/* Zoom in/out buttons */
-.zoombuttons > button.zoom-in {
-    border-radius: 4px 0 0 0;
-}
-.ideditor[dir='rtl'] .zoombuttons > button.zoom-in {
-    border-radius: 0 4px 0 0;
-}
-
-/* Geolocate button */
-.geolocate-control {
-    margin-bottom: 10px;
-}
-.geolocate-control > button {
-    border-radius: 0 0 0 4px;
-}
-.ideditor[dir='rtl'] .geolocate-control > button {
-    border-radius: 0 0 4px 0;
-}
-
-/* Zoom to selection button */
-.zoom-to-selection-control .icon {
-    width: 22px;
-    height: 22px;
 }
 
 

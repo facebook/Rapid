@@ -1,5 +1,6 @@
 export { uiAccount } from './account.js';
 export { uiAttribution } from './attribution.js';
+export { uiBearing } from './bearing.js';
 export { uiChangesetEditor } from './changeset_editor.js';
 export { uiCmd } from './cmd.js';
 export { uiCombobox } from './combobox.js';
