@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 import {
-  Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale,
-  numClamp, vecAdd, vecScale, vecSubtract
+  DEG2RAD, RAD2DEG, Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale,
+  numClamp, numWrap, vecAdd, vecRotate, vecScale, vecSubtract
 } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
@@ -58,7 +58,6 @@ export class MapSystem extends AbstractSystem {
     this._toggleFillMode = 'partial';  // the previous *non-wireframe* fill mode
 
     this._renderer = null;
-    this._dimensions = [1, 1];
     this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -273,7 +272,7 @@ export class MapSystem extends AbstractSystem {
         // Reposition the map if we've jumped to a different place.
         const t0 = this.transform();
         const t1 = edit.transform;
-        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
+        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
           this.transformEase(t1);
         }
 
@@ -336,10 +335,10 @@ export class MapSystem extends AbstractSystem {
       zoom = numClamp(zoom, 2, 24);
       lat = numClamp(lat, -90, 90);
       lon = numClamp(lon, -180, 180);
-      rot = numClamp(rot, 0, 360);
+      rot = numWrap(rot, 0, 360);
 
-      this.context.viewport.rotate(rot * (Math.PI / 180)); // deg2rad
-      this.centerZoom([lon, lat], zoom);
+      this.context.viewport.rotate(rot * DEG2RAD);
+      this.centerZoom([lon, lat], zoom);     // will eventually call setTransformAsync
     }
 
     // id
@@ -364,7 +363,7 @@ export class MapSystem extends AbstractSystem {
   _updateHash() {
     const [lon, lat] = this.center();
     const zoom = this.zoom();
-    const rot = this.context.viewport.rotate() * (180 / Math.PI);   // rad2deg
+    const rot = this.context.viewport.rotate() * RAD2DEG;
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
     const EPSILON = 0.1;
 
@@ -414,13 +413,10 @@ export class MapSystem extends AbstractSystem {
    * @param  val?  Array [width, height] to set the dimensions to
    */
   get dimensions() {
-    return this._dimensions;
+    return this.context.viewport.dimensions();
   }
   set dimensions(val) {
-    const [w, h] = val;
-    this._dimensions = val;
-    this.context.viewport.dimensions([[0, 0], [w, h]]);
-    this._renderer.resize(w, h);
+    this.context.viewport.dimensions(val);
   }
 
 
@@ -430,7 +426,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [x,y] pixel at the center of the viewport
    */
   centerPoint() {
-    return vecScale(this._dimensions, 0.5);
+    return vecScale(this.context.viewport.dimensions(), 0.5);
   }
 
 
@@ -515,16 +511,17 @@ export class MapSystem extends AbstractSystem {
     }
 
     const k2 = numClamp(geoZoomToScale(z2, TILESIZE), MIN_K, MAX_K);
-    const view = new Viewport(this.context.viewport.transform());  // make copy
+    const t = this.context.viewport.transform();
+    const view = new Viewport(t);
     view.scale(k2);
 
-    let t = view.translate();
+    let xy = view.translate();
     const point = view.project(loc2);
     const center = this.centerPoint();
     const delta = vecSubtract(center, point);
-    t = vecAdd(t, delta);
+    xy = vecAdd(xy, delta);
 
-    return this.transform({ x: t[0], y: t[1], k: k2 }, duration);
+    return this.transform({ x: xy[0], y: xy[1], k: k2, r: t.r }, duration);
   }
 
 
@@ -544,18 +541,19 @@ export class MapSystem extends AbstractSystem {
     }
 
     const k2 = numClamp(geoZoomToScale(z2, TILESIZE), MIN_K, MAX_K);
-    const view = new Viewport(this.context.viewport.transform());
+    const t = this.context.viewport.transform();
+    const view = new Viewport(t);
     view.scale(k2);
 
-    let t = view.translate();
+    let xy = view.translate();
     const point = view.project(loc2);
     const center = this.centerPoint();
     const delta = vecSubtract(center, point);
-    t = vecAdd(t, delta);
+    xy = vecAdd(xy, delta);
 
     // note: because this function is currently used to move
     // the user around the walkthrough, reset rotation to 0
-    return this.setTransformAsync({ x: t[0], y: t[1], k: k2, r: 0 }, duration);
+    return this.setTransformAsync({ x: xy[0], y: xy[1], k: k2, r: t.r }, duration);
   }
 
 
@@ -607,7 +605,7 @@ export class MapSystem extends AbstractSystem {
    */
   pan(delta, duration = 0) {
     const t = this.context.viewport.transform();
-    return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
+    return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k, r: t.r }, duration);
   }
 
 
@@ -748,9 +746,12 @@ export class MapSystem extends AbstractSystem {
       const headerY = 71;
       const footerY = 30;
       const pad = 10;
+      const view = this.context.viewport;
+      const [w, h] = view.dimensions();
+
       return new Extent(
-        this.context.viewport.unproject([pad, this._dimensions[1] - footerY - pad]),
-        this.context.viewport.unproject([this._dimensions[0] - pad, headerY + pad])
+        view.unproject([pad, h - footerY - pad]),  // bottom-left
+        view.unproject([w - pad, headerY + pad])   // top-right
       );
     } else {
       return this.centerZoom(extent.center(), this.trimmedExtentZoom(extent));
@@ -766,10 +767,11 @@ export class MapSystem extends AbstractSystem {
    * @return zoom
    */
   extentZoom(extent, dimensions) {
-    const [w, h] = dimensions || this._dimensions;
+    const view = this.context.viewport;
+    const [w, h] = dimensions || view.dimensions();
 
-    const tl = this.context.viewport.project([extent.min[0], extent.max[1]]);
-    const br = this.context.viewport.project([extent.max[0], extent.min[1]]);
+    const tl = view.project([extent.min[0], extent.max[1]]);
+    const br = view.project([extent.max[0], extent.min[1]]);
 
     // Calculate maximum zoom that fits extent
     const hFactor = (br[0] - tl[0]) / w;
@@ -795,7 +797,8 @@ export class MapSystem extends AbstractSystem {
   trimmedExtentZoom(extent) {
     const trimW = 40;
     const trimH = 140;
-    const trimmed = vecSubtract(this._dimensions, [trimW, trimH]);
+    const view = this.context.viewport;
+    const trimmed = vecSubtract(view.dimensions(), [trimW, trimH]);
     return this.extentZoom(extent, trimmed);
   }
 
@@ -869,6 +872,7 @@ export class MapSystem extends AbstractSystem {
   get scene() {
     return this._renderer?.scene;
   }
+
 
   /**
    * scene

@@ -69,8 +69,8 @@ export function utilIsColorValid(value) {
 // Applies a CSS transformation to the given selection
 export function utilSetTransform(selection, x, y, scale, rotate) {
   const t = `translate3d(${x}px,${y}px,0)`;
-  const s = scale ? ` scale(${scale})` : '';
-  const r = rotate ? ` rotate(${rotate}deg)` : '';
+  const s = (scale && scale !== 1) ? ` scale(${scale})` : '';
+  const r = rotate ? ` rotate(${rotate}rad)` : '';
   return selection.style('transform', `${t}${s}${r}`);
 }
 

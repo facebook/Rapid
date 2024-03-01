@@ -241,7 +241,7 @@
 //
 //        viewport
 //            .translate(vecSubtract(c, extentCenter))
-//            .dimensions([[0, 0], d]);
+//            .dimensions(d);
 //
 //        var drawLayers = svgLayers(viewport, context).only(['osm','touch']).dimensions(d);
 //        var drawVertices = svgVertices(viewport, context);

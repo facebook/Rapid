@@ -143,7 +143,7 @@ export function uiMapInMap(context) {
       const xMini = _cMini[0] - point[0] + tMain.x + mouse[0];
       const yMini = _cMini[1] - point[1] + tMain.y + mouse[1];
 
-      viewMini.translate([xMini, yMini]).dimensions([[0, 0], _dMini]);
+      viewMini.translate([xMini, yMini]).dimensions(_dMini);
 
       _tCurr = viewMini.transform();
 

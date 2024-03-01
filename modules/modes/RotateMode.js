@@ -1,5 +1,5 @@
 import { polygonHull as d3_polygonHull, polygonCentroid as d3_polygonCentroid } from 'd3-polygon';
-import { vecInterp, vecSubtract } from '@rapid-sdk/math';
+import { DEG2RAD, vecInterp, vecSubtract } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { AbstractMode } from './AbstractMode.js';
@@ -183,7 +183,7 @@ export class RotateMode extends AbstractMode {
       ];
       const degrees = (sY * dX) + (sX * dY);   // Degrees rotation to apply: + clockwise, - counterclockwise
       const SPEED = 0.3;
-      const angle = degrees * (Math.PI / 180) * SPEED;
+      const angle = degrees * DEG2RAD * SPEED;
       editor.perform(actionRotate(this._entityIDs, pivotPoint, angle, context.viewport));
     }
     this._lastPoint = currPoint.slice();  // copy

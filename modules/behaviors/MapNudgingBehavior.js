@@ -13,11 +13,6 @@ const nudgeFactor = 0.1;
  * `MapNudgingBehavior` listens to pointer events and converts those into small
  *  map panning 'nudges' when the pointer nears the edge of the screen
  *  useful during drawing modes
- *
- * Properties available:
- *   `enabled`             `true` if the event handlers are enabled, `false` if not.
- *   `lastDown`            `eventData` Object for the most recent down event
- *   `gesture`             String containing the current detected gesture ('pan')
  */
 export class MapNudgingBehavior extends AbstractBehavior {
 
@@ -46,7 +41,6 @@ export class MapNudgingBehavior extends AbstractBehavior {
 
   /**
    * allow
-   *
    * Call this method from your mode or your nudging behavior won't work.
    * unlike other behaviors, we want the modes to control exactly when
    * this behavior engages. For example, if a user clicks the 'add building'

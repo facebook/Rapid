@@ -1308,19 +1308,6 @@ a.hide-toggle {
 }
 
 
-/* Quick links
-------------------------------------------------------- */
-.quick-links {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
-    padding: 5px 0 0 0;
-}
-.quick-link {
-    margin: 0 5px;
-}
-
-
 /* Entity/Preset Editor
 ------------------------------------------------------- */
 .section .grouped-items-area {
@@ -3987,7 +3974,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* hide but preserve in layout */
 .inspector-hover .combobox-caret,
 .inspector-hover .header button,
-.inspector-hover .quick-links,
 .inspector-hover .form-field-input-multicombo .chip .remove,
 .inspector-hover .hide-toggle:before,
 .inspector-hover .more-fields,
@@ -4083,44 +4069,58 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* Map
 ------------------------------------------------------- */
 .main-map {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-    background: #000;
-    user-select: none;
-    touch-action: none;
-    -webkit-touch-callout: none;
-    z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  user-select: none;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  z-index: 0;
 }
 .main-map * {
-    touch-action: none;
+  touch-action: none;
 }
 
-.supersurface,
-.surface,
-.overlay {
-    transform-origin: 0 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+.supersurface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  place-content: center;
+
+  /* for testing */
+/*  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RCA_Indian_Head_Test_Pattern.svg/1200px-RCA_Indian_Head_Test_Pattern.svg.png');*/
+/*  background-size:     cover;*/
+/*  background-repeat:   no-repeat;*/
+/*  background-position: center center;*/
 }
 
 .surface {
-    z-index: 1;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
 }
+
 .overlay {
-    z-index: 2;
-    pointer-events: none;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
 }
+
 .overlay * {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 
@@ -4145,10 +4145,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     right: 10px;
 }
 
-.map-in-map-tiles {
-    transform-origin: 0 0;
-    user-select: none;
-}
 
 .map-in-map-background {
     position: absolute;

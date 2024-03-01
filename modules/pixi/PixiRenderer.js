@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { Viewport, numWrap, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { TAU, Viewport, numWrap, vecEqual, vecLength, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { osmNote, QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
@@ -302,12 +302,14 @@ export class PixiRenderer extends EventEmitter {
    */
   setTransformAsync(t, duration = 0) {
     const now = window.performance.now();
-    const tCurr = this.context.viewport.transform();
+    const context = this.context;
+    const view = context.viewport;
+    const tCurr = view.transform();
     let promise;
 
     // If already easing, resolve before starting a new one
     if (this._transformEase) {
-      this.context.viewport.transform(tCurr);
+      view.transform(tCurr);
       this._transformEase.resolve(tCurr);
       this._transformEase = null;
     }
@@ -326,7 +328,7 @@ export class PixiRenderer extends EventEmitter {
       };
 
     } else {   // change immediately
-      this.context.viewport.transform(t);
+      view.transform(t);
       promise = Promise.resolve(t);
     }
 
@@ -336,22 +338,11 @@ export class PixiRenderer extends EventEmitter {
 
 
   /**
-   * resize
-   * Resizes the canvas to the given dimensions
-   * @param  width    Width in pixels
-   * @param  height   Height in pixels
-   */
-  resize(width, height) {
-    this.pixi.renderer.resize(width, height);
-    this._appPending = true;
-  }
-
-
-  /**
    * _tform
    * On each tick, manage the scene's transform
    * The few things we do here involve:
    *  - if there is a transform ease in progress, compute the eased transform
+   *  - if the dimensions have changed, update the supersurface and overlay.
    *  - if the transform has changed from the last drawn transform,
    *    apply the difference to the supersurface and overlay
    */
@@ -360,51 +351,79 @@ export class PixiRenderer extends EventEmitter {
     // this shouldn't happen, but we check for it just in case.
     if (this._drawPending) return;
 
+    const context = this.context;
+    const mapViewport = context.viewport;
+    const pixiViewport = this.pixiViewport;
+
     // Calculate the transform easing, if any
     if (this._transformEase) {
+      const now = window.performance.now();
+
       const { time0, time1, xform0, xform1, resolve } = this._transformEase;
       const [x0, y0, k0] = [xform0.x, xform0.y, xform0.k];
       const [x1, y1, k1] = [xform1.x, xform1.y, xform1.k];
-      const now = window.performance.now();
+
+      // for rotation, pick whichever direction is shorter
+      const r0 = numWrap(xform0.r, 0, TAU);
+      let r1 = numWrap(xform1.r, 0, TAU);
+      if (Math.abs(r1 - r0) > Math.PI) {  // > 180°
+        r1 += TAU;
+      }
 
       // keep it simple - linear interpolate
       const tween = Math.max(0, Math.min(1, (now - time0) / (time1 - time0)));
       const xNow = x0 + ((x1 - x0) * tween);
       const yNow = y0 + ((y1 - y0) * tween);
       const kNow = k0 + ((k1 - k0) * tween);
-
-      // rotate, but pick whichever direction is shorter
-      const TAU = 2 * Math.PI;
-      const r0 = numWrap(xform0.r, 0, TAU);
-      let r1 = numWrap(xform1.r, 0, TAU);
-      if (Math.abs(r1 - r0) > Math.PI) {  // > 180°
-        r1 -= TAU;
-      }
       const rNow = r0 + ((r1 - r0) * tween);
-
       const tNow = { x: xNow, y: yNow, k: kNow, r: rNow };
-      this.context.viewport.transform(tNow);
+      mapViewport.transform(tNow);  // set
 
       if (tween === 1) {  // we're done
         resolve(tNow);
         this._transformEase = null;
       }
-
       this._appPending = true;  // needs occasional renders during/after easing
     }
 
+    // Determine if the visible dimensions have changed.
+    // (e.g. the window resized, or rotation is being applied)
+    const mapDims = mapViewport.dimensions();
+    const pixiDims = pixiViewport.dimensions();
+    const visibleDims = mapViewport.realDimensions();
+
+    if (!vecEqual(visibleDims, pixiDims)) {
+      pixiViewport.dimensions(visibleDims);
+
+      // Resize supersurface
+      // It needs to grow to cover the visible dimensions,
+      // and shift left/top by half the difference in size
+      const [dx, dy] = vecScale(vecSubtract(visibleDims, mapDims), 0.5);
+      const ssnode = this.supersurface.node();
+      ssnode.style.width = `${visibleDims[0]}px`;
+      ssnode.style.height = `${visibleDims[1]}px`;
+      ssnode.style.left = `-${dx}px`;
+      ssnode.style.top = `-${dy}px`;
+
+      // We'll need to resize pixi too, but this should be done later (at draw time probably)
+    }
+
     // Determine delta from last full draw and apply it to supersurface / overlay
-    const tCurr = this.context.viewport.transform();
+    const tCurr = mapViewport.transform();
     const tDraw = this._transformDraw;
     if (!tDraw) return;  // haven't drawn yet!
 
-    const isChanged = this._isTransformed || (tDraw.x !== tCurr.x || tDraw.y !== tCurr.y || tDraw.k !== tCurr.k);
+    const isChanged = this._isTransformed || (
+      tDraw.x !== tCurr.x || tDraw.y !== tCurr.y || tDraw.k !== tCurr.k || tDraw.r !== tCurr.r
+    );
     if (isChanged) {
       const scale = tCurr.k / tDraw.k;
       const dx = (tCurr.x / scale - tDraw.x) * scale;
       const dy = (tCurr.y / scale - tDraw.y) * scale;
-      utilSetTransform(this.supersurface, dx, dy, scale);
-      utilSetTransform(this.overlay, -dx, -dy);
+      // const dx = tCurr.x - tDraw.x;
+      // const dy = tCurr.y - tDraw.y;
+      utilSetTransform(this.supersurface, dx, dy, scale, tCurr.r);
+      utilSetTransform(this.overlay, -dx, -dy, null, -tCurr.r);
       this._isTransformed = true;
       this.emit('move');
     }
@@ -424,10 +443,22 @@ export class PixiRenderer extends EventEmitter {
     const map = context.systems.map;
     if (map.paused) return;
 
-    // Reproject the pixi geometries only whenever zoom changes
-    const pixiViewport = this.pixiViewport;
-    const pixiTransform = pixiViewport.transform();
+    // At this point, the map transform is settled
+    // (`_tform` is called immediately before `_app`)
     const mapTransform = context.viewport.transform();
+    const pixiViewport = this.pixiViewport;
+
+    // Determine if the visible dimensions have changed.
+    // (e.g. the window resized, or rotation is being applied)
+    const pixiDims = pixiViewport.dimensions();
+    const currDims = [this.pixi.screen.width, this.pixi.screen.height];
+    if (!vecEqual(currDims, pixiDims)) {
+      this.pixi.queueResize();
+    }
+
+
+    // Reproject the pixi geometries only whenever zoom changes
+    const pixiTransform = pixiViewport.transform();
     const effectiveZoom = map.effectiveZoom();
 
     const pixiXY = [pixiTransform.x, pixiTransform.y];
@@ -435,11 +466,11 @@ export class PixiRenderer extends EventEmitter {
     const dist = vecLength(pixiXY, mapXY);
     let offset;
 
-     // zoom or rotation has changed, or map has translated very far
-     if (pixiTransform.k !== mapTransform.k || pixiTransform.r !== mapTransform.r || dist > 100000) {
+    // zoom has changed, or map has translated very far
+    if (pixiTransform.k !== mapTransform.k || dist > 100000) {
       offset = [0, 0];
       pixiViewport.transform(mapTransform);  // reset
-      this.scene.dirtyScene();               // all geometry will be reprojected
+      this.scene.dirtyScene();               // all geometry must be reprojected
     } else {
       offset = vecSubtract(pixiXY, mapXY);
     }
@@ -449,6 +480,41 @@ export class PixiRenderer extends EventEmitter {
     stage.position.set(-offset[0], -offset[1]);
 //
     this.scene.render(this._frame, pixiViewport, effectiveZoom);
+
+
+    // debugging
+    let debug1 = stage.getChildByName('debug1');
+    if (!debug1) {
+      debug1 = new PIXI.Graphics();
+      debug1.lineStyle(0);
+      debug1.beginFill(0xffffff, 1);
+      debug1.drawCircle(0, 0, 20);
+      debug1.endFill();
+      debug1.name = 'debug1';
+      debug1.eventMode = 'none';
+      debug1.sortableChildren = false;
+      debug1.zIndex = 101;
+      stage.addChild(debug1);
+    }
+    const centerPoint = map.centerPoint();
+    debug1.position.set(offset[0] + centerPoint[0], offset[1] + centerPoint[1]);
+
+    let debug2 = stage.getChildByName('debug2');
+    if (!debug2) {
+      debug2 = new PIXI.Graphics();
+      debug2.lineStyle(0);
+      debug2.beginFill(0xff0000, 1);
+      debug2.drawCircle(0, 0, 10);
+      debug2.endFill();
+      debug2.name = 'debug2';
+      debug2.eventMode = 'none';
+      debug2.sortableChildren = false;
+      debug2.zIndex = 102;
+      stage.addChild(debug2);
+    }
+    const centerLoc = pixiViewport.project(map.centerLoc());
+    debug2.position.set(centerLoc[0], centerLoc[1]);
+
 
     // debugging the contents of the texture atlas
     // let screen = stage.getChildByName('screen');
@@ -489,6 +555,7 @@ export class PixiRenderer extends EventEmitter {
    * Where it converts Pixi geometries into WebGL instructions.
    */
   _draw() {
+
 // like this? (anti-offset in stage)
     this.pixi.render();
 //...or like this (anti-offset in matrix)?
@@ -499,12 +566,13 @@ export class PixiRenderer extends EventEmitter {
     // };
     // this.pixi.renderer.render(stage, options);
 //
-    this._transformDraw = this.context.viewport.transform();
+    const t = this.context.viewport.transform();
+    this._transformDraw = t;
     this._timeToNextRender = THROTTLE;
 
     if (this._isTransformed) {
-      utilSetTransform(this.supersurface, 0, 0);
-      utilSetTransform(this.overlay, 0, 0);
+      utilSetTransform(this.supersurface, 0, 0, null, t.r);
+      utilSetTransform(this.overlay, 0, 0, null, -t.r);
       this._isTransformed = false;
       this.emit('move');
     }
