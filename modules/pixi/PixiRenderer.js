@@ -60,7 +60,7 @@ export class PixiRenderer extends EventEmitter {
 
     // Properties used to manage the scene transform
     this.pixiViewport = new Viewport();
-    this._transformDraw = null;      // transform at time of last draw
+    this._prevTransform = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };    // transform at time of last draw
     this._isTransformed = false;     // is the supersurface transformed?
     this._transformEase = null;
 
@@ -284,6 +284,7 @@ export class PixiRenderer extends EventEmitter {
     this._appPending = true;
   }
 
+
   /**
    * render
    * Schedules an APP pass on the next available tick
@@ -292,6 +293,7 @@ export class PixiRenderer extends EventEmitter {
     this._timeToNextRender = 0;    // asap
     this._appPending = true;
   }
+
 
   /**
    * setTransformAsync
@@ -410,18 +412,17 @@ export class PixiRenderer extends EventEmitter {
 
     // Determine delta from last full draw and apply it to supersurface / overlay
     const tCurr = mapViewport.transform();
-    const tDraw = this._transformDraw;
-    if (!tDraw) return;  // haven't drawn yet!
+    const tPrev = this._prevTransform;
 
-    const isChanged = this._isTransformed || (
-      tDraw.x !== tCurr.x || tDraw.y !== tCurr.y || tDraw.k !== tCurr.k || tDraw.r !== tCurr.r
+    const hasChanges = this._isTransformed || (
+      tPrev.x !== tCurr.x || tPrev.y !== tCurr.y || tPrev.k !== tCurr.k || tPrev.r !== tCurr.r
     );
-    if (isChanged) {
-      const scale = tCurr.k / tDraw.k;
-      const dx = (tCurr.x / scale - tDraw.x) * scale;
-      const dy = (tCurr.y / scale - tDraw.y) * scale;
-      // const dx = tCurr.x - tDraw.x;
-      // const dy = tCurr.y - tDraw.y;
+    if (hasChanges) {
+      const scale = tCurr.k / tPrev.k;
+      const dx = (tCurr.x / scale - tPrev.x) * scale;
+      const dy = (tCurr.y / scale - tPrev.y) * scale;
+      // const dx = tCurr.x - tPrev.x;
+      // const dy = tCurr.y - tPrev.y;
       utilSetTransform(this.supersurface, dx, dy, scale, tCurr.r);
       utilSetTransform(this.overlay, -dx, -dy, null, -tCurr.r);
       this._isTransformed = true;
@@ -455,7 +456,6 @@ export class PixiRenderer extends EventEmitter {
     if (!vecEqual(currDims, pixiDims)) {
       this.pixi.queueResize();
     }
-
 
     // Reproject the pixi geometries only whenever zoom changes
     const pixiTransform = pixiViewport.transform();
@@ -567,7 +567,7 @@ export class PixiRenderer extends EventEmitter {
     // this.pixi.renderer.render(stage, options);
 //
     const t = this.context.viewport.transform();
-    this._transformDraw = t;
+    this._prevTransform = t;
     this._timeToNextRender = THROTTLE;
 
     if (this._isTransformed) {
