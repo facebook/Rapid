@@ -467,7 +467,7 @@ export class PixiRenderer extends EventEmitter {
     let offset;
 
     // zoom has changed, or map has translated very far
-    if (pixiTransform.k !== mapTransform.k || dist > 100000) {
+    if (pixiTransform.k !== mapTransform.k || pixiTransform.r !== mapTransform.r || dist > 100000) {
       offset = [0, 0];
       pixiViewport.transform(mapTransform);  // reset
       this.scene.dirtyScene();               // all geometry must be reprojected

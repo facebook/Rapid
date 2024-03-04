@@ -76,7 +76,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (!this.dirty) return;  // nothing to do
 
     this.updateGeometry(viewport, zoom);
-    this.updateStyle(zoom);
+    this.updateStyle(viewport, zoom);
 
     // Recalculate local and scene bounds
     // (note that the local bounds automatically includes children like viewfields too)
@@ -115,7 +115,7 @@ export class PixiFeaturePoint extends AbstractFeature {
    * updateStyle
    * @param  zoom  Effective zoom to use for rendering
    */
-  updateStyle(zoom) {
+  updateStyle(viewport, zoom) {
     if (!this._styleDirty) return;
 
     const context = this.context;
@@ -127,6 +127,9 @@ export class PixiFeaturePoint extends AbstractFeature {
     const marker = this.marker;
     const icon = this.icon;
     const latitude = this.geometry.origCoords[1];
+
+    // Apply anti-rotation to keep them facing up
+    this.container.rotation = -viewport.rotate();
 
     // Show marker, if any..
     if (style.markerTexture || style.markerName) {
@@ -226,7 +229,6 @@ export class PixiFeaturePoint extends AbstractFeature {
       marker.texture = style.markerTexture || textureManager.get(markerID);
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
-
 
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full
