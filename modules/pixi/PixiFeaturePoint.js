@@ -81,7 +81,8 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Recalculate local and scene bounds
     // (note that the local bounds automatically includes children like viewfields too)
     const position = this.container.position;
-    this.sceneBounds = this.container.getLocalBounds().clone();  // where 0,0 is the origin of the object
+    // this.sceneBounds = this.container.getLocalBounds().clone();  // where 0,0 is the origin of the object
+    this.sceneBounds = this.container.getBounds().clone();  // where 0,0 is the origin of the object
     this.sceneBounds.x += position.x;
     this.sceneBounds.y += position.y;
 

@@ -515,6 +515,20 @@ export class PixiRenderer extends EventEmitter {
     const centerLoc = pixiViewport.project(map.centerLoc());
     debug2.position.set(centerLoc[0], centerLoc[1]);
 
+    let debug3 = stage.getChildByName('debug3');
+    if (!debug3) {
+      debug3 = new PIXI.Graphics();
+      debug3.lineStyle(0);
+      debug3.beginFill(0x00ffff, 1);
+      debug3.drawCircle(0, 0, 20);
+      debug3.endFill();
+      debug3.name = 'debug3';
+      debug3.eventMode = 'none';
+      debug3.sortableChildren = false;
+      debug3.zIndex = 103;
+      stage.addChild(debug3);
+    }
+    debug3.position.set(0, 0);
 
     // debugging the contents of the texture atlas
     // let screen = stage.getChildByName('screen');

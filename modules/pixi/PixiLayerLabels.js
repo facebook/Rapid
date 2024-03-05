@@ -40,8 +40,7 @@ class Label {
     this.id = id;
     this.type = type;
     this.options = options;
-    this.displayObject = null;
-    this.debugObject = null;
+    this.dObjID = null;    // Display Object ID
   }
 }
 
@@ -84,14 +83,16 @@ export class PixiLayerLabels extends AbstractLayer {
     this._rbush = new RBush();
 
     // These Maps store "Boxes" which are indexed in the label placement RBush.
-    // We store them separately in 2 Maps because some features (like vertices)
+    // We store them in several maps because some features (like vertices)
     // can be both an avoidance but also have a label placed by it.
     this._avoidBoxes = new Map();   // Map (featureID -> Array[avoid Boxes] )
     this._labelBoxes = new Map();   // Map (featureID -> Array[label Boxes] )
 
     // After working out the placement math, we don't automatically render display objects,
     // since many objects would get placed far offscreen
-    this._labels = new Map();   // Map (labelID -> Label object)
+    this._labels = new Map();    // Map (labelID -> Label Object)
+    // Display Objects includes anything managed by this layer: labels and debug boxes
+    this._dObjs = new Map();     // Map (dObjID -> Display Object)
 
     // We reset the labeling when scale or rotation change
     this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
@@ -114,22 +115,22 @@ export class PixiLayerLabels extends AbstractLayer {
   reset() {
     super.reset();
 
+    this.labelContainer.removeChildren();
+    this.debugContainer.removeChildren();
+
+    for (const dObj of this._dObjs.values()) {
+      dObj.destroy({ children: true, texture: false, baseTexture: false });
+    }
     for (const label of this._labels.values()) {
+      label.dObjID = null;
 //      if (textureManager.get('text', label.str)) {
 //        textureManager.free('text', label.str);
 //      }
-      if (label.displayObject) {
-        label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
-        label.displayObject = null;
-      }
-      if (label.debugObject) {
-        label.debugObject.destroy({ children: true, texture: false, baseTexture: false });
-        label.debugObject = null;
-      }
     }
 
     this._avoidBoxes.clear();
     this._labelBoxes.clear();
+    this._dObjs.clear();
     this._labels.clear();
     this._rbush.clear();
   }
@@ -137,43 +138,53 @@ export class PixiLayerLabels extends AbstractLayer {
 
   /**
    * resetFeature
-   * Remove all label and debug objects from the scene and from all caches for the given feature
+   * Remove all data from the scene and from all caches for the given feature
    * @param  featureID  the feature ID to remove the label data
    */
   resetFeature(featureID) {
-    let boxes = new Set();
-    let labelIDs = new Set();
+    const boxes = new Set();
+    const labelIDs = new Set();
+    const dObjIDs = new Set();
 
-    // gather boxes related to this feature
-    (this._labelBoxes.get(featureID) || []).forEach(box => boxes.add(box));
+    // Gather all boxes related to this feature
     (this._avoidBoxes.get(featureID) || []).forEach(box => boxes.add(box));
+    (this._labelBoxes.get(featureID) || []).forEach(box => boxes.add(box));
 
-    // gather labels and remove boxes
-    for (const box of boxes.values()) {
+    // Remove Boxes, and gather Labels and Display Objects
+    for (const box of boxes) {
       this._rbush.remove(box);
       if (box.labelID) {
         labelIDs.add(box.labelID);
+        box.labelID = null;
+      }
+      if (box.dObjID)  {
+        dObjIDs.add(box.dObjID);
+        box.dObjID = null;
       }
     }
-    this._labelBoxes.delete(featureID);
-    this._avoidBoxes.delete(featureID);
 
-    // remove labels
-    for (const labelID of labelIDs.values()) {
-      let label = this._labels.get(labelID);
-      if (!label) continue;
-      if (label.displayObject) {
-//      if (textureManager.get('text', label.str)) {
-//        textureManager.free('text', label.str);
-//      }
-        label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
-        label.displayObject = null;
-      }
-      if (label.debugObject) {
-        label.debugObject.destroy({ children: true, texture: false, baseTexture: false });
-        label.debugObject = null;
+    this._avoidBoxes.delete(featureID);
+    this._labelBoxes.delete(featureID);
+
+
+    // Remove Labels, and gather Display Objects
+    for (const labelID of labelIDs) {
+      const label = this._labels.get(labelID);
+      if (label?.dObjID)  {
+        dObjIDs.add(label.dObjID);
+        label.dObjID = null;
       }
       this._labels.delete(labelID);
+    }
+
+
+    // Remove Display Objects (they automatically remove from parent containers)
+    for (const dObjID of dObjIDs) {
+      const dObj = this._dObjs.get(dObjID);
+      if (dObj) {
+        dObj.destroy({ children: true, texture: false, baseTexture: false });
+      }
+      this._dObjs.delete(dObjID);
     }
   }
 
@@ -182,7 +193,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * render
    * Render all the labels. This is a multi-step process:
    * - gather avoids - these are places in the scene that we don't want a label
-   * - label placement - do the math of figuring our where labels should be
+   * - label placement - do the math of figuring out where labels should be
    * - label rendering - show or hide labels based on their visibility
    *
    * @param  frame      Integer frame being rendered
@@ -190,36 +201,45 @@ export class PixiLayerLabels extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
+
+// not yet
+return;
+
+    // The label group should be kept unrotated so that it stays screen-up not north-up.
+    // The origin of this container will still be the origin of the Pixi scene.
+    const bearing = viewport.rotate();  // map might not be north-up
+    const groupContainer = this.scene.groups.get('labels');
+    groupContainer.rotation = -bearing;
+
     if (this.enabled && zoom >= MINZOOM) {
       this.labelContainer.visible = true;
-      this.debugContainer.visible = this.context.getDebug('label');
+      this.debugContainer.visible = true;  // this.context.getDebug('label');
 
-      // Reset all labels and avoids when scale or rotation changes
+      // Reset labels
       const tPrev = this._tPrev;
       const tCurr = viewport.transform();
-      if (tCurr.k !== tPrev.k || tCurr.r !== tPrev.r) {
-        this.reset();
-        this._tPrev = tCurr;
-      }
-
-      // Check for any features which have changed and need recalculation.
-      for (const feature of this.scene.features.values()) {
-        if (feature._labelDirty) {
-          this.resetFeature(feature.id);
-          feature._labelDirty = false;
+      if (tCurr.k !== tPrev.k || tCurr.r !== tPrev.r) {  // zoom or rotation changed
+        this.reset();                                    // reset all labels
+      } else {
+        for (const [featureID, feature] of this.scene.features) {
+          if (feature._labelDirty) {       // reset only the changed labels
+            this.resetFeature(featureID);
+            feature._labelDirty = false;
+          }
         }
       }
+      this._tPrev = tCurr;
 
       // Collect features to avoid.
-      this.gatherAvoids();
+      this.gatherAvoids(viewport);
 
       // Collect features to place labels on.
       let points = [];
       let lines = [];
       let polygons = [];
-      for (const feature of this.scene.features.values()) {
+      for (const [featureID, feature] of this.scene.features) {
         // If the feature can be labeled, and hasn't yet been, add it to the list for placement.
-        if (feature.label && feature.visible && !this._labelBoxes.has(feature.id)) {
+        if (feature.label && feature.visible && !this._labelBoxes.has(featureID)) {
           if (feature.type === 'point') {
             points.push(feature);
           } else if (feature.type === 'line') {
@@ -230,12 +250,12 @@ export class PixiLayerLabels extends AbstractLayer {
         }
       }
 
-      // Points first, then lines (so line labels can avoid point labels)
-      this.labelPoints(points, viewport);
-      this.labelLines(lines, viewport);
-      this.labelPolygons(polygons, viewport);
-
-      this.renderObjects(viewport);
+///      // Points first, then lines (so line labels can avoid point labels)
+///      this.labelPoints(points, viewport);
+///      this.labelLines(lines, viewport);
+///      this.labelPolygons(polygons, viewport);
+///
+///      this.renderObjects(viewport);
 
     } else {
       this.labelContainer.visible = false;
@@ -256,9 +276,9 @@ export class PixiLayerLabels extends AbstractLayer {
     let texture = textureManager.getTexture('text', textureID);
 
     if (!texture) {
-      // Add some extra padding if we detect unicode combining marks in the text - see #653
+      // Add some extra padding if we detect unicode combining marks in the text - see Rapid#653
       let pad = 0;
-      const marks = str.match(/\p{M}/gu);     // add /u to get a unicode-aware regex
+      const marks = str.match(/\p{M}/gu);        // add /u to get a unicode-aware regex
       if (marks && marks.length > 0)  pad = 10;  // Text with a few ascenders/descenders?
       if (marks && marks.length > 20) pad = 50;  // Zalgotext?
 
@@ -266,7 +286,7 @@ export class PixiLayerLabels extends AbstractLayer {
       if (pad) {   // make a new style
         const props = Object.assign({}, (style === 'normal' ? TEXT_NORMAL : TEXT_ITALIC), { padding: pad });
         textStyle = new PIXI.TextStyle(props);
-      } else {             // use a cached style
+      } else {     // use a cached style
         textStyle = (style === 'normal' ? this._textStyleNormal : this._textStyleItalic);
       }
 
@@ -277,7 +297,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
       // Copy the texture data into the atlas.
       // Also remove x-padding, as this will only end up pushing the label away from the pin.
-      // (We are mostly interested in y-padding diacritics, see #653)
+      // (We are mostly interested in y-padding diacritics, see Rapid#653)
       // Note: Whatever padding we set before got doubled because resolution = 2
       const [x, y] = [pad * 2, 0];
       const [w, h] = [text.canvas.width - (pad * 4), text.canvas.height];
@@ -309,8 +329,9 @@ export class PixiLayerLabels extends AbstractLayer {
    * If a new avoidance collides with an already placed label,
    *  destroy the label and flag the feature as labeldirty for relabeling
    */
-  gatherAvoids() {
-    const SHOWDEBUG = this.context.getDebug('label');
+  gatherAvoids(viewport) {
+    const renderer = this.renderer.stage.position;
+    const bearing = viewport.rotate();  // map might not be north-up
     const avoidObject = _avoidObject.bind(this);
 
     // Gather the containers that have avoidable stuff on them
@@ -328,7 +349,11 @@ export class PixiLayerLabels extends AbstractLayer {
 
     // For each container, gather the avoid boxes
     let toInsert = [];
-    avoidContainers.forEach(container => container.children.forEach(avoidObject));
+    for (const container of avoidContainers) {
+      for (const child of container.children) {
+        avoidObject(child);
+      }
+    }
 
     if (toInsert.length) {
       this._rbush.load(toInsert);  // bulk insert
@@ -339,27 +364,45 @@ export class PixiLayerLabels extends AbstractLayer {
     function _avoidObject(sourceObject) {
       if (!sourceObject.visible || !sourceObject.renderable) return;
       const featureID = sourceObject.name;
-
       if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
 
       const feature = this.scene.features.get(featureID);
-      const rect = feature && feature.sceneBounds;
-      if (!rect) return;
+      const fRect = feature?.sceneBounds;
+      if (!fRect) return;
 
-      // Boxes here are in "scene" coordinates
+      // The rectangle is in "scene" coordinates (i.e. north-up, origin stored in pixi stage)
+      // We need to rotate it to the coordintes used by the labels (screen-up)
       const EPSILON = 0.01;
+      const fMin = [fRect.x + EPSILON, fRect.y + EPSILON];
+      const fMax = [fRect.x + fRect.width - EPSILON, fRect.y + fRect.height - EPSILON];
+
+      let coords = [fMin, fMax];
+      coords = coords.map(coord => vecSubtract(coord, origin));  // to local coords
+      coords = geomRotatePoints(coords, -bearing, [0, 0]);       // undo map bearing
+      coords = coords.map(coord => vecAdd(coord, origin));       // back to scene coords
+
+      const [[minX, minY], [maxX, maxY]] = coords;
+      const [w, h] = [maxX - minX, maxY - minY];
+
+      const boxID = `${featureID}-avoid`;
+const sprite = getDebugBBox(minX, minY, w, h, 0xff0000, 0.75, boxID);
+this.debugContainer.addChild(sprite);
+this._dObjs.set(boxID, sprite);
+
       const box = {
         type: 'avoid',
-        boxID: `${featureID}-avoid`,
+        boxID: boxID,
+        dObjID: boxID,
         featureID: featureID,
-        minX: rect.x + EPSILON,
-        minY: rect.y + EPSILON,
-        maxX: rect.x + rect.width - EPSILON,
-        maxY: rect.y + rect.height - EPSILON
+        minX: minX,
+        minY: minY,
+        maxX: maxX,
+        maxY: maxY
       };
 
       this._avoidBoxes.set(featureID, [box]);
       toInsert.push(box);
+
 
       // If there is already a label where this avoid box is, we will need to redo that label.
       // This is somewhat common that a label will be placed somewhere, then as more map loads,
@@ -830,7 +873,7 @@ if (doDebug) {
     );
 
     // Collect labels in view
-    let labelIDs = new Set();
+    const labelIDs = new Set();
     const visible = this._rbush.search(mapExtent.bbox());
     for (const box of visible) {
       if (box.labelID) {
@@ -839,30 +882,31 @@ if (doDebug) {
     }
 
     // Create and add labels to the scene, if needed
-    for (const labelID of labelIDs.values()) {
+    for (const labelID of labelIDs) {
       const label = this._labels.get(labelID);
       if (!label) continue;  // bad labelID - shouldn't happen?
 
       const options = label.options;
-
-      if (label.displayObject) continue;   // done already
+      if (label.dObjID) continue;   // done already
 
       if (label.type === 'text') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText
         labelObj.tint = options.tint || 0xffffff;
         labelObj.position.set(options.x, options.y);
 
-        label.displayObject = labelObj;
+this._dObjs.set(labelObj.name, labelObj);
+label.dObjID = labelObj.name;
+        // label.displayObject = labelObj;
         this.labelContainer.addChild(labelObj);
 
-const box = options.box;
-const x = box.minX;
-const y = box.minY;
-const w = box.maxX - box.minX;
-const h = box.maxY - box.minY;
-const sprite = getDebugBBox(x, y, w, h, options.tint, 0.75, labelID);
-label.debugObject = sprite;
-this.debugContainer.addChild(sprite);
+//const box = options.box;
+//const x = box.minX;
+//const y = box.minY;
+//const w = box.maxX - box.minX;
+//const h = box.maxY - box.minY;
+//const sprite = getDebugBBox(x, y, w, h, options.tint, 0.75, labelID);
+//label.debugObject = sprite;
+//this.debugContainer.addChild(sprite);
 
       } else if (label.type === 'rope') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
@@ -873,7 +917,10 @@ this.debugContainer.addChild(sprite);
         rope.sortableChildren = false;
         rope.tint = options.tint || 0xffffff;
 
-        label.displayObject = rope;
+this._dObjs.set(rope.name, rope);
+label.dObjID = rope.name;
+
+        // label.displayObject = rope;
         this.labelContainer.addChild(rope);
       }
     }
