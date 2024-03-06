@@ -129,8 +129,10 @@ export class PixiFeaturePoint extends AbstractFeature {
     const icon = this.icon;
     const latitude = this.geometry.origCoords[1];
 
-    // Apply anti-rotation to keep them facing up
-    this.container.rotation = -viewport.rotate();
+    // Apply anti-rotation to keep the icons and markers facing up.
+    // (However viewfields container _should_ include the bearing, and will below)
+    const bearing = viewport.rotate();
+    this.container.rotation = -bearing;
 
     // Show marker, if any..
     if (style.markerTexture || style.markerName) {
@@ -191,6 +193,9 @@ export class PixiFeaturePoint extends AbstractFeature {
         }
         this._viewfieldCount = vfAngles.length;
       }
+
+      // Apply bearing correction to the viewfield container
+      this.viewfields.rotation = bearing;
 
       // Update viewfield angles and style
       for (let i = 0; i < vfAngles.length; i++) {
