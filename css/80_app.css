@@ -4077,6 +4077,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   overflow: hidden;
   height: 100%;
   width: 100%;
+
+  display: grid;
+  place-items: center;
+  place-content: center;
+
   background: #000;
   user-select: none;
   touch-action: none;
@@ -4088,18 +4093,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 .supersurface {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  width: 100%;
   display: grid;
   place-items: center;
   place-content: center;
 
-  /* for testing */
+/* for testing */
 /*  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RCA_Indian_Head_Test_Pattern.svg/1200px-RCA_Indian_Head_Test_Pattern.svg.png');*/
 /*  background-size:     cover;*/
 /*  background-repeat:   no-repeat;*/

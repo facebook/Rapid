@@ -1,13 +1,13 @@
 import { select as d3_select } from 'd3-selection';
 import {
   DEG2RAD, RAD2DEG, Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale,
-  numClamp, numWrap, vecAdd, vecRotate, vecScale, vecSubtract
+  numClamp, numWrap, vecAdd, vecSubtract
 } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { PixiRenderer } from '../pixi/PixiRenderer.js';
 import { uiCmd } from '../ui/cmd.js';
-import { utilGetDimensions, utilTotalExtent } from '../util/index.js';
+import { utilTotalExtent } from '../util/index.js';
 
 
 const TILESIZE = 256;
@@ -230,8 +230,6 @@ export class MapSystem extends AbstractSystem {
         });
     }
 
-    this.dimensions = utilGetDimensions(selection);
-
 
     // Setup events that cause the map to redraw...
     const editor = context.systems.editor;
@@ -426,7 +424,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [x,y] pixel at the center of the viewport
    */
   centerPoint() {
-    return vecScale(this.context.viewport.dimensions(), 0.5);
+    return this.context.viewport.visibleCenter();
   }
 
 

@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { TAU, Viewport, numWrap, vecEqual, vecLength, vecScale, vecSubtract } from '@rapid-sdk/math';
+import { TAU, Viewport, numWrap, vecEqual, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { osmNote, QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
@@ -390,23 +390,16 @@ export class PixiRenderer extends EventEmitter {
 
     // Determine if the visible dimensions have changed.
     // (e.g. the window resized, or rotation is being applied)
-    const mapDims = mapViewport.dimensions();
     const pixiDims = pixiViewport.dimensions();
-    const visibleDims = mapViewport.realDimensions();
+    const visibleDims = mapViewport.visibleDimensions();
 
-    if (!vecEqual(visibleDims, pixiDims)) {
+    if (!vecEqual(pixiDims, visibleDims)) {
       pixiViewport.dimensions(visibleDims);
 
-      // Resize supersurface
-      // It needs to grow to cover the visible dimensions,
-      // and shift left/top by half the difference in size
-      const [dx, dy] = vecScale(vecSubtract(visibleDims, mapDims), 0.5);
+      // Resize supersurface to cover the visible dimensions
       const ssnode = this.supersurface.node();
       ssnode.style.width = `${visibleDims[0]}px`;
       ssnode.style.height = `${visibleDims[1]}px`;
-      ssnode.style.left = `-${dx}px`;
-      ssnode.style.top = `-${dy}px`;
-
       // We'll need to resize pixi too, but this should be done later (at draw time probably)
     }
 
