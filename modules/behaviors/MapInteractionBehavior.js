@@ -105,33 +105,46 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const activeElement = document.activeElement?.tagName ?? 'BODY';
     if (activeElement !== 'BODY') return;
 
-    // IF the mapillary image viewer is showing, don't do this handler.
-    if (this.context.services.mapillary.viewerShowing) return;
-
     const context = this.context;
     const map = context.systems.map;
     const viewport = context.viewport;
     const EASE = 100;  // milliseconds
 
-    if (e.shiftKey) {
-      return;  // today, ignore - someday, rotate
+    // IF the mapillary image viewer is showing, don't do this handler.
+    if (context.services.mapillary.viewerShowing) return;
+    if (context.mode?.id === 'select-osm') return;
 
+    // rotate
+    if (e.shiftKey) {
+      const ROT_AMOUNT = 5 * DEG2RAD;   // ± 5°
+      const t = map.transform();
+      let delta;
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        delta = -ROT_AMOUNT;
+      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        delta = ROT_AMOUNT;
+      }
+
+      if (delta) {
+        e.preventDefault();
+        map.transformEase({ x: t.x, y: t.y, k: t.k, r: t.r + delta }, EASE);
+      }
+
+    // pan
     } else {
-      const PAN_PIXELS = 80;
+      const PAN_AMOUNT = 80;   // in pixels
       const [w, h] = map.dimensions;
       const panMore = (e.altKey || e.metaKey || e.ctrlKey);  // pan more if modifier down
 
       let delta;
-      if (context.mode?.id !== 'select-osm') {
-        if (e.key === 'ArrowLeft') {
-          delta = panMore ? [w / 2, 0] : [PAN_PIXELS, 0];
-        } else if (e.key === 'ArrowRight') {
-          delta = panMore ? [-w / 2, 0] : [-PAN_PIXELS, 0];
-        } else if (e.key === 'ArrowUp') {
-          delta = panMore ? [0, h / 2] : [0, PAN_PIXELS];
-        } else if (e.key === 'ArrowDown') {
-          delta = panMore ? [0, -h / 2] : [0, -PAN_PIXELS];
-        }
+      if (e.key === 'ArrowLeft') {
+        delta = panMore ? [w / 2, 0] : [PAN_AMOUNT, 0];
+      } else if (e.key === 'ArrowRight') {
+        delta = panMore ? [-w / 2, 0] : [-PAN_AMOUNT, 0];
+      } else if (e.key === 'ArrowUp') {
+        delta = panMore ? [0, h / 2] : [0, PAN_AMOUNT];
+      } else if (e.key === 'ArrowDown') {
+        delta = panMore ? [0, -h / 2] : [0, -PAN_AMOUNT];
       }
 
       if (delta) {
