@@ -84,13 +84,12 @@ export class AddPointMode extends AbstractMode {
    * Process whatever the user clicked on
    */
   _click(eventData) {
-    // console.log('HITTT');
     const context = this.context;
     const editor = context.systems.editor;
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const viewport = context.viewport;
-    const coord = eventData.coord;
+    const coord = eventData.coord.surface;
 
     const loc = viewport.unproject(coord);
     if (locations.blocksAt(loc).length) return;   // editing is blocked here

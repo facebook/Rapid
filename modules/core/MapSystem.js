@@ -445,7 +445,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [x,y] pixel location of pointer (or center of the map)
    */
   mouse() {
-    return this._renderer.events.coord || this.centerPoint();
+    return this._renderer.events?.coord?.surface || this.centerPoint();
   }
 
 

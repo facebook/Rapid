@@ -153,7 +153,7 @@ export class RotateMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const eventManager = context.systems.map.renderer.events;
-    const currPoint = eventManager.coord;
+    const currPoint = eventManager.coord.surface;
 
     // Some notes!
     // There are 2 approaches to converting user's pointer movement into a rotation.

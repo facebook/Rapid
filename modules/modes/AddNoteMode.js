@@ -75,7 +75,7 @@ export class AddNoteMode extends AbstractMode {
     const context = this.context;
     const osm = context.services.osm;
     const viewport = context.viewport;
-    const coord = eventData.coord;
+    const coord = eventData.coord.surface;
     const loc = viewport.unproject(coord);
 
     if (!osm) return;

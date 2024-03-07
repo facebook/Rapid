@@ -126,7 +126,7 @@ export class HoverBehavior extends AbstractBehavior {
 //          isActiveTarget = true;
 //          const graph = context.systems.editor.staging.graph;
 //          const viewport = context.viewport;
-//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, viewport, activeID);
+//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord.surface, viewport, activeID);
 //
 //          const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 //          if (choice && choice.distance < SNAP_DIST) {

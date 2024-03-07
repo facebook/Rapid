@@ -1,4 +1,4 @@
-import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
@@ -110,6 +110,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     const context = this.context;
     const map = context.systems.map;
+    const viewport = context.viewport;
     const EASE = 100;  // milliseconds
 
     if (e.shiftKey) {
@@ -117,21 +118,22 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     } else {
       const PAN_PIXELS = 80;
-      const [WIDTH, HEIGHT] = map.dimensions;
+      const [w, h] = map.dimensions;
       const panMore = (e.altKey || e.metaKey || e.ctrlKey);  // pan more if modifier down
 
       let delta;
       if (context.mode?.id !== 'select-osm') {
         if (e.key === 'ArrowLeft') {
-          delta = panMore ? [WIDTH / 2, 0] : [PAN_PIXELS, 0];
+          delta = panMore ? [w / 2, 0] : [PAN_PIXELS, 0];
         } else if (e.key === 'ArrowRight') {
-          delta = panMore ? [-WIDTH / 2, 0] : [-PAN_PIXELS, 0];
+          delta = panMore ? [-w / 2, 0] : [-PAN_PIXELS, 0];
         } else if (e.key === 'ArrowUp') {
-          delta = panMore ? [0, HEIGHT / 2] : [0, PAN_PIXELS];
+          delta = panMore ? [0, h / 2] : [0, PAN_PIXELS];
         } else if (e.key === 'ArrowDown') {
-          delta = panMore ? [0, -HEIGHT / 2] : [0, -PAN_PIXELS];
+          delta = panMore ? [0, -h / 2] : [0, -PAN_PIXELS];
         }
       }
+
       if (delta) {
         e.preventDefault();
         map.pan(delta, EASE);
@@ -150,7 +152,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (e.detail !== 2) return;    // double clicks only
     if (e.pointerType === 'mouse' && e.button !== 0) return;   // left click only (if a mouse)
 
-    const [x, y] = [e.global.x, e.global.y];
+    const click = this._getEventData(e);
+    const [x, y] = click.coord.surface;
     const t = this.context.viewport.transform();
     const isShiftDown = e.getModifierState('Shift');
 
@@ -221,8 +224,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const t = viewport.transform();
 
     if (!this.gesture) {   // start dragging?
-      const dist = vecLength(down.coord, move.coord);
+      const dist = vecLength(down.coord.screen, move.coord.screen);
       const tolerance = (down.originalEvent.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
+      // this._lastPoint = move.coord.screen;
       this._lastPoint = [move.originalEvent.clientX, move.originalEvent.clientY];
       this._lastAngle = t.r;
 
@@ -234,6 +238,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     if (this.gesture) {  // continue dragging
       const original = move.originalEvent;
+      // const currPoint = move.coord.screen;
       const currPoint = [original.clientX, original.clientY];
       const [dX, dY] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
       this._lastPoint = currPoint;
@@ -242,7 +247,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
         map.transform({ x: t.x + dX, y: t.y + dY, k: t.k, r: t.r });
 
       } else if (this.gesture === 'rotate') {        // see also `RotateMode.js`
-        const pivotPoint = map.centerPoint();
+        const pivotPoint = viewport.center();
         const [sX, sY] = [                           // swap signs if needed
           (currPoint[0] > pivotPoint[0]) ? 1 : -1,   // right/left of pivot
           (currPoint[1] > pivotPoint[1]) ? -1 : 1    // above/below pivot
@@ -304,7 +309,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A DOM WheelEvent
    */
   _wheel(e) {
-    const [x, y] = [e.offsetX, e.offsetY];
+    const [x, y] = e._coord.surface;
     const [dX, dY] = [e._normalizedDeltaX, e._normalizedDeltaY];
     const t = this.context.viewport.transform();
     let tNew;

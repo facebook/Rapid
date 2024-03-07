@@ -1,4 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
+import { vecRotate } from '@rapid-sdk/math';
 
 import { utilDetect } from '../util/detect.js';
 
@@ -9,7 +10,7 @@ import { utilDetect } from '../util/detect.js';
  *
  * Properties available:
  *   `enabled`              `true` if the event handlers are enabled, `false` if not.
- *   `coord`                `[x,y]` screen coordinate of the latest event (previously: `InteractionManager.mouse`)
+ *   `coord`                Object containing `screen` and `surface` [x,y] coordinates
  *   `pointerOverRenderer`  `true` if the pointer is over the renderer, `false` if not
  *   `modifierKeys`         Set containing the modifier keys that are currently down ('Alt', 'Control', 'Meta', 'Shift')
  *
@@ -41,7 +42,7 @@ export class PixiEvents extends EventEmitter {
 
     this.pointerOverRenderer = false;
     this.modifierKeys = new Set();
-    this.coord = [0, 0];
+    this.coord = { screen: [0, 0], surface: [0, 0] };
 
     this._wheelDefault = utilDetect().os === 'mac' ? 'auto' : 'zoom';
 
@@ -224,6 +225,24 @@ export class PixiEvents extends EventEmitter {
 
 
   /**
+   * _observeCoordinate
+   * Gather the coordinate data
+   * @param  `e`  A Pixi FederatedPointerEvent
+   */
+  _observeCoordinate(e) {
+    this.coord = {
+      screen: [e.screen.x, e.screen.y],
+      surface: [e.screen.x, e.screen.y]
+    };
+    const viewport = this.context.viewport;
+    const r = viewport.rotate();
+    if (r) {
+      this.coord.surface = vecRotate(this.coord.screen, r, viewport.visibleCenter());
+    }
+  }
+
+
+  /**
    * _keydown
    * Handler for keydown events on the window.
    * @param  `e`  A DOM KeyboardEvent
@@ -272,7 +291,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerdown(e) {
     this._observeModifierKeys(e);
-    this.coord = [e.global.x, e.global.y];
+    this._observeCoordinate(e);
     this.emit('pointerdown', e);
   }
 
@@ -283,7 +302,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointermove(e) {
     this._observeModifierKeys(e);
-    this.coord = [e.global.x, e.global.y];
+    this._observeCoordinate(e);
     this.emit('pointermove', e);
   }
 
@@ -294,7 +313,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerup(e) {
     this._observeModifierKeys(e);
-    this.coord = [e.global.x, e.global.y];
+    this._observeCoordinate(e);
     this.emit('pointerup', e);
   }
 
@@ -327,8 +346,11 @@ export class PixiEvents extends EventEmitter {
     e.preventDefault();             // don't scroll supersurface contents
     e.stopImmediatePropagation();   // don't scroll page contents either
 
+    const context = this.context;
+    const storage = context.systems.storage;
+    const viewport = context.viewport;
+
     let [dX, dY] = this._normalizeWheelDelta(e);
-    this.coord = [e.offsetX, e.offsetY];
 
     // There is some code in here to try to detect when the user is 2-finger scrolling
     // on a trackpad, and if so allow this gesture to 'pan' the map instead of zooming it.
@@ -360,8 +382,7 @@ export class PixiEvents extends EventEmitter {
       speed = 3;
 
     } else {  // consider user mouse_wheel preference
-      const prefs = this.context.systems.storage;
-      const wheelPref = prefs.getItem('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
+      const wheelPref = storage.getItem('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
 
       // User wants to 'pan' by default OR
       // We autodetect - either horizontal scroll present or vertical scroll is a round number...
@@ -377,10 +398,22 @@ export class PixiEvents extends EventEmitter {
       }
     }
 
+    // We don't call `this._observeCoordinate()`, because the wheel events are DOM events
+    // that have `offsetX`/`offsetY`, not Pixi Events that have `screen.x`/`screen.y`
+    this.coord = {
+      screen: [e.offsetX, e.offsetY],
+      surface: [e.offsetX, e.offsetY]
+    };
+    const r = viewport.rotate();
+    if (r) {
+      this.coord.surface = vecRotate(this.coord.screen, r, viewport.visibleCenter());
+    }
+
     // Decorate the wheel event with whatever we detected.
     e._gesture = gesture;
     e._normalizedDeltaX = dX * speed;
     e._normalizedDeltaY = dY * speed;
+    e._coord = this.coord;
 
     this.emit('wheel', e);
   }

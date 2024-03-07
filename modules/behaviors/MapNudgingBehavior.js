@@ -1,4 +1,4 @@
-import { geomViewportNudge  } from '@rapid-sdk/math';
+import { geomViewportNudge, vecScale } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 
@@ -7,7 +7,7 @@ import { AbstractBehavior } from './AbstractBehavior.js';
 // Pixi returns mouse events pretty quickly,
 // so we want to adjust the SDK - provided
 // vector values toned down.
-const nudgeFactor = 0.1;
+const NUDGE_SPEED = 0.1;
 
 /**
  * `MapNudgingBehavior` listens to pointer events and converts those into small
@@ -47,10 +47,10 @@ export class MapNudgingBehavior extends AbstractBehavior {
    * hotkey or button but hasn't started drawing anything, we don't want the
    * map to start nudging yet.
    */
-
   allow() {
     this._enabled = true;
   }
+
 
   /**
    * disable
@@ -72,13 +72,19 @@ export class MapNudgingBehavior extends AbstractBehavior {
   _pointermove(e) {
     if (!this._enabled) return;
 
-    const point = [e.global.x, e.global.y];
-    const nudge = geomViewportNudge(point, this.context.systems.map.dimensions);
+    const context = this.context;
+    const map = context.systems.map;
+    const viewport = context.viewport;
+
+    const move = this._getEventData(e);
+    const point = move.coord.screen;
+    const nudge = geomViewportNudge(point, viewport.dimensions);
+
     if (nudge) {
-      const [dX, dY] = [nudge[0] * nudgeFactor, nudge[1] * nudgeFactor];
-      const t = this.context.viewport.transform();
+      const [dX, dY] = vecScale(nudge, NUDGE_SPEED);
+      const t = viewport.transform();
       const tNew = { x: t.x + dX, y: t.y + dY, k: t.k };
-      this.context.systems.map.transform(tNew);
+      map.transform(tNew);
     }
   }
 

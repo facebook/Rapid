@@ -1,4 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
+import { vecRotate } from '@rapid-sdk/math';
 
 
 /**
@@ -102,11 +103,24 @@ export class AbstractBehavior extends EventEmitter {
 //      data: null,
 //    };
 
+    // Coordinate data.. In both cases [0,0] is top left, [w,h] is bottom right.
+    // The `screen` coordinate is relative to the Pixi canvas
+    // The `surface` may be rotated.
+    const coord = {
+      screen: [e.screen.x, e.screen.y],
+      surface: [e.screen.x, e.screen.y]
+    };
+//    const viewport = this.context.viewport;
+//    const r = viewport.rotate();
+//    if (r) {
+//      coord.surface = vecRotate(coord.screen, r, viewport.center());
+//    }
+
     const result = {
       id: e.pointerId ?? e.pointerType ?? 'unknown',
       event: e,
       originalEvent: e.originalEvent,
-      coord: [e.global.x, e.global.y],
+      coord: coord,
       time: e.timeStamp,
       isCancelled: false,
       target: null
