@@ -143,6 +143,6 @@
     "> 0.2%, last 3 major versions, Firefox ESR, maintained node versions"
   ],
   "volta": {
-    "node": "18.18"
+    "node": "18.19.1"
   }
 }

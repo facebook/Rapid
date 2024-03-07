@@ -1145,6 +1145,9 @@ en:
     fbRoads:
       label: Facebook Roads
       license_markdown: "[license](https://rapideditor.org/doc/license/MapWithAILicense.pdf)"
+    metaFootways:
+      label: Meta Footways
+      license_markdown: "[license](https://rapideditor.org/doc/license/MapWithAILicense.pdf)"
     msBuildings:
       label: Microsoft Buildings
       license_markdown: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENSE-DATA)"
