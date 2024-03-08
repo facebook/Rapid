@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { TAU, Viewport, numWrap, vecEqual, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
 
 import { osmNote, QAItem } from '../osm/index.js';
 import { PixiEvents } from './PixiEvents.js';
@@ -362,8 +362,8 @@ export class PixiRenderer extends EventEmitter {
    *    apply the difference to the supersurface and overlay
    */
   _tform() {
-    // Between APP and DRAW we dont want to change the transform at all
-    // this shouldn't happen, but we check for it just in case.
+    // Between APP and DRAW we dont want to change the transform at all.
+    // This shouldn't happen, but we check for it just in case.
     if (this._drawPending) return;
 
     const context = this.context;
@@ -404,10 +404,8 @@ export class PixiRenderer extends EventEmitter {
     // Determine if the visible dimensions have changed.
     const pixiDims = pixiViewport.dimensions();
     const mapDims = mapViewport.dimensions();
-
     if (!vecEqual(pixiDims, mapDims)) {
       pixiViewport.dimensions(mapDims);
-
       // Resize supersurface to cover the visible dimensions
       const ssnode = this.supersurface.node();
       ssnode.style.width = `${mapDims[0]}px`;
@@ -415,8 +413,11 @@ export class PixiRenderer extends EventEmitter {
       // We'll need to resize pixi too, but this should be done later (at draw time probably)
     }
 
-    // Determine delta from last full draw and apply it to supersurface / overlay
+    // Here we calculate a temporary CSS transform that includes
+    // whatever user interaction has occurred between full redraws.
+    // We apply this temporary transform to the supersurface and overlay.
     const tCurr = mapViewport.transform();
+    const center = mapViewport.center();
     const tPrev = this._prevTransform;
 
     const hasChanges = this._isTransformed || (
@@ -424,11 +425,12 @@ export class PixiRenderer extends EventEmitter {
     );
     if (hasChanges) {
       const scale = tCurr.k / tPrev.k;
-      const dx = (tCurr.x / scale - tPrev.x) * scale;
-      const dy = (tCurr.y / scale - tPrev.y) * scale;
+      let dx = (tCurr.x / scale - tPrev.x) * scale;
+      let dy = (tCurr.y / scale - tPrev.y) * scale;
       const dr = tCurr.r - tPrev.r;
-      // const dx = tCurr.x - tPrev.x;
-      // const dy = tCurr.y - tPrev.y;
+
+      [dx, dy] = vecRotate([dx, dy], tCurr.r, [0, 0]);
+
       utilSetTransform(this.supersurface, dx, dy, scale, dr);
       utilSetTransform(this.overlay, -dx, -dy, 1, -dr);
       this._isTransformed = true;

@@ -1,4 +1,4 @@
-import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
+import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
@@ -165,9 +165,13 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (e.detail !== 2) return;    // double clicks only
     if (e.pointerType === 'mouse' && e.button !== 0) return;   // left click only (if a mouse)
 
+    const context = this.context;
+    const map = context.systems.map;
+    const viewport = context.viewport;
+
     const click = this._getEventData(e);
     const [x, y] = click.coord;
-    const t = this.context.viewport.transform();
+    const t = viewport.transform();
     const isShiftDown = e.getModifierState('Shift');
 
     // local mouse coord to transform origin (was: d3 `transform.invert`)
@@ -179,7 +183,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const x2 = x - p1[0] * k2;
     const y2 = y - p1[1] * k2;
 
-    this.context.systems.map.transformEase({ x: x2, y: y2, k: k2, r: t.r });
+    map.transformEase({ x: x2, y: y2, k: k2, r: t.r });
   }
 
 
@@ -251,19 +255,19 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (this.gesture) {  // continue dragging
       const original = move.originalEvent;
       const currPoint = [original.clientX, original.clientY];
-      const [dX, dY] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
+      const [dx, dy] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
       this._lastPoint = currPoint;
 
       if (this.gesture === 'pan') {
-        map.transform({ x: t.x + dX, y: t.y + dY, k: t.k, r: t.r });
+        map.pan([dx, dy]);
 
       } else if (this.gesture === 'rotate') {        // see also `RotateMode.js`
         const pivotPoint = viewport.center();
-        const [sX, sY] = [                           // swap signs if needed
+        const [sx, sy] = [                           // swap signs if needed
           (currPoint[0] > pivotPoint[0]) ? 1 : -1,   // right/left of pivot
           (currPoint[1] > pivotPoint[1]) ? -1 : 1    // above/below pivot
         ];
-        const degrees = (sY * dX) + (sX * dY);   // Degrees rotation to apply: + clockwise, - counterclockwise
+        const degrees = (sy * dx) + (sx * dy);   // Degrees rotation to apply: + clockwise, - counterclockwise
         const SPEED = 0.3;
         const angle = this._lastAngle + (degrees * DEG2RAD * SPEED);
         this._lastAngle = angle;
@@ -320,9 +324,13 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A DOM WheelEvent
    */
   _wheel(e) {
+    const context = this.context;
+    const map = context.systems.map;
+    const viewport = context.viewport;
+
+    const [dx, dy] = [e._normalizedDeltaX, e._normalizedDeltaY];
     const [x, y] = e._coord;
-    const [dX, dY] = [e._normalizedDeltaX, e._normalizedDeltaY];
-    const t = this.context.viewport.transform();
+    const t = viewport.transform();
     let tNew;
 
     // We aren't going to set `this.gesture` here, because that is for tracking what
@@ -334,19 +342,18 @@ export class MapInteractionBehavior extends AbstractBehavior {
       const y1 = (y - t.y) / t.k;
 
       // rescale
-      let k2 = t.k * Math.pow(2, -dY / 500);
+      let k2 = t.k * Math.pow(2, -dy / 500);
       k2 = numClamp(k2, MIN_K, MAX_K);
 
       // transform origin back to local coord
       const x2 = x - x1 * k2;
       const y2 = y - y1 * k2;
       tNew = { x: x2, y: y2, k: k2, r: t.r };
+      map.transform(tNew);
 
     } else {  // pan
-      tNew = { x: t.x - dX, y: t.y - dY, k: t.k, r: t.r };
+      map.pan([-dx, -dy]);
     }
-
-    this.context.systems.map.transform(tNew);
   }
 
 }
