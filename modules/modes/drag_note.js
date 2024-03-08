@@ -22,7 +22,7 @@ export function modeDragNote(context) {
     function startNudge(d3_event, nudge) {
         if (_nudgeInterval) window.clearInterval(_nudgeInterval);
         _nudgeInterval = window.setInterval(function() {
-            context.systems.map.pan(nudge);
+            map.pan(nudge);
             doMove(d3_event, nudge);
         }, 50);
     }
@@ -62,10 +62,11 @@ export function modeDragNote(context) {
 
     function move(d3_event, entity, point) {
         d3_event.stopPropagation();
-        _lastLoc = context.viewport.unproject(point);
+        const viewport = context.viewport;
+        _lastLoc = viewport.unproject(point);
 
         doMove(d3_event);
-        var nudge = geomViewportNudge(point, context.systems.map.dimensions);
+        var nudge = geomViewportNudge(point, viewport.dimensions());
         if (nudge) {
             startNudge(d3_event, nudge);
         } else {
@@ -77,9 +78,10 @@ export function modeDragNote(context) {
     function doMove(d3_event, nudge) {
         nudge = nudge || [0, 0];
 
-        var currPoint = (d3_event && d3_event.point) || context.viewport.project(_lastLoc);
+        const viewport = context.viewport;
+        var currPoint = (d3_event && d3_event.point) || viewport.project(_lastLoc);
         var currMouse = vecSubtract(currPoint, nudge);
-        var loc = context.viewport.unproject(currMouse);
+        var loc = viewport.unproject(currMouse);
 
         _note = _note.move(loc);
 

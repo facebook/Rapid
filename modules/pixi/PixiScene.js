@@ -64,7 +64,7 @@ export class PixiScene extends EventEmitter {
     this.layers = new Map();     // Map (layerID -> Layer)
     this.features = new Map();   // Map (featureID -> Feature)
 
-    // Create Groups, and add them to the stage..
+    // Create Groups, and add them to the origin..
     // Groups are pre-established Containers that the Layers can add
     // their Features to, so that the scene can be sorted reasonably.
     [
@@ -81,7 +81,7 @@ export class PixiScene extends EventEmitter {
       container.name = groupID;
       container.sortableChildren = true;
       container.zIndex = i;
-      this.renderer.stage.addChild(container);
+      this.renderer.origin.addChild(container);
       this.groups.set(groupID, container);
     });
 

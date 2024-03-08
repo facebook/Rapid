@@ -2,11 +2,11 @@ import { geoLonToMeters, geoMetersToLon } from '@rapid-sdk/math';
 
 
 export function uiScale(context) {
-  const viewport = context.viewport;
   const MAXLENGTH = 180;
   const TICKHEIGHT = 8;
-
   const l10n = context.systems.l10n;
+  const viewport = context.viewport;
+
   let _isImperial = !l10n.usesMetric();
 
 
@@ -43,7 +43,7 @@ export function uiScale(context) {
 
   function update(selection) {
     // choose loc1, loc2 along bottom of viewport (near where the scale will be drawn)
-    const dims = context.systems.map.dimensions;
+    const dims = viewport.dimensions();
     const loc1 = viewport.unproject([0, dims[1]]);
     const loc2 = viewport.unproject([MAXLENGTH, dims[1]]);
     const scale = scaleDefs(loc1, loc2);

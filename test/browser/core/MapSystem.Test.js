@@ -48,7 +48,7 @@ describe('MapSystem', () => {
         urlhash: new MockSystem(),
         styles:  new MockSystem()
       };
-      this.viewport = new sdk.Viewport();
+      this.viewport = new sdk.Viewport().dimensions([100, 100]);
     }
     container()   { return _container; }
     keybinding()  { return new MockSystem(); }
@@ -142,7 +142,6 @@ describe('MapSystem', () => {
 
   describe('#extent', () => {
     it('gets and sets extent', () => {
-      _mapSystem.dimensions = [100,100];
       _mapSystem.center([0, 0]);
       let extent;
 

@@ -119,9 +119,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
       const ROT_AMOUNT = 5 * DEG2RAD;   // ± 5°
       const t = map.transform();
       let delta;
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      if (e.key === 'ArrowLeft') {
         delta = -ROT_AMOUNT;
-      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      } else if (e.key === 'ArrowRight') {
         delta = ROT_AMOUNT;
       }
 
@@ -133,7 +133,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // pan
     } else {
       const PAN_AMOUNT = 80;   // in pixels
-      const [w, h] = map.dimensions;
+      const [w, h] = viewport.dimensions();
       const panMore = (e.altKey || e.metaKey || e.ctrlKey);  // pan more if modifier down
 
       let delta;
@@ -166,7 +166,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (e.pointerType === 'mouse' && e.button !== 0) return;   // left click only (if a mouse)
 
     const click = this._getEventData(e);
-    const [x, y] = click.coord.surface;
+    const [x, y] = click.coord;
     const t = this.context.viewport.transform();
     const isShiftDown = e.getModifierState('Shift');
 
@@ -237,9 +237,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const t = viewport.transform();
 
     if (!this.gesture) {   // start dragging?
-      const dist = vecLength(down.coord.screen, move.coord.screen);
+      const dist = vecLength(down.coord, move.coord);
       const tolerance = (down.originalEvent.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
-      // this._lastPoint = move.coord.screen;
       this._lastPoint = [move.originalEvent.clientX, move.originalEvent.clientY];
       this._lastAngle = t.r;
 
@@ -251,7 +250,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     if (this.gesture) {  // continue dragging
       const original = move.originalEvent;
-      // const currPoint = move.coord.screen;
       const currPoint = [original.clientX, original.clientY];
       const [dX, dY] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
       this._lastPoint = currPoint;
@@ -322,7 +320,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A DOM WheelEvent
    */
   _wheel(e) {
-    const [x, y] = e._coord.surface;
+    const [x, y] = e._coord;
     const [dX, dY] = [e._normalizedDeltaX, e._normalizedDeltaY];
     const t = this.context.viewport.transform();
     let tNew;

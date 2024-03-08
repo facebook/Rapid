@@ -477,6 +477,7 @@ this.didRender = true;
     const context = this.context;
     const container = context.container();
     const map = context.systems.map;
+    const viewport = context.viewport;
 
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
@@ -489,7 +490,7 @@ this.didRender = true;
       map.pan(offset);
     }
 
-    map.dimensions = dims;
+    viewport.dimensions(dims);
     this.photoviewer.onMapResize();
 
     // check if header or footer have overflowed
@@ -598,6 +599,7 @@ this.didRender = true;
 
     const context = this.context;
     const map = context.systems.map;
+    const viewport = context.viewport;
 
     // The mode decides which operations are available
     const operations = context.mode?.operations ?? [];
@@ -618,7 +620,7 @@ this.didRender = true;
     }
 
     this.editMenu
-      .anchorLoc(context.viewport.unproject(anchorPoint))
+      .anchorLoc(viewport.unproject(anchorPoint))
       .triggerType(triggerType)
       .operations(operations);
 

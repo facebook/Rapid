@@ -192,7 +192,7 @@ export class SelectBehavior extends AbstractBehavior {
 
     // After spacebar click, user must move pointer or lift spacebar to allow another spacebar click
     if (this._spaceClickDisabled && this.lastSpace) {
-      const dist = vecLength(move.coord.surface, this.lastSpace.coord.surface);
+      const dist = vecLength(move.coord, this.lastSpace.coord);
       if (dist > FAR_TOLERANCE) {     // pointer moved far enough
         this._spaceClickDisabled = false;
       }
@@ -201,7 +201,7 @@ export class SelectBehavior extends AbstractBehavior {
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
     const down = this.lastDown;
     if (down && !down.isCancelled && down.id === move.id) {
-      const dist = vecLength(down.coord.surface, move.coord.surface);
+      const dist = vecLength(down.coord, move.coord);
       if (dist >= NEAR_TOLERANCE) {
         down.isCancelled = true;
       }
@@ -223,8 +223,8 @@ export class SelectBehavior extends AbstractBehavior {
 
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
-    const dist = vecLength(down.coord.surface, up.coord.surface);
-    const updist = vecLength(up.coord.surface, this.lastUp ? this.lastUp.coord.surface : 0);
+    const dist = vecLength(down.coord, up.coord);
+    const updist = vecLength(up.coord, this.lastUp ? this.lastUp.coord : 0);
     const lClick = up.event.button === 0;
     // Second left-click nearby, targeting the same target, within half a second of the last up event.
     // We got ourselves a double click!
@@ -446,7 +446,7 @@ export class SelectBehavior extends AbstractBehavior {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
 
-    const coord = this.lastUp.coord.surface;
+    const coord = this.lastUp.coord;
     const data = this.lastUp.target?.data;
 
     const isOSMWay = data instanceof osmWay && !data.__fbid__;
@@ -504,7 +504,7 @@ export class SelectBehavior extends AbstractBehavior {
     } else {                 // menu is off, toggle it on
       // Only attempt to display the context menu if we're focused on a non-Rapid OSM Entity.
       this._showsMenu = true;
-      ui.showEditMenu(eventData.coord.surface);
+      ui.showEditMenu(eventData.coord);
     }
   }
 

@@ -47,7 +47,6 @@ export class Context extends EventEmitter {
 
     // Viewport (was: Projection)
     this.viewport = new Viewport();
-    this.projection = this.viewport;  // legacy name
 
     // "Systems" are the core components of Rapid.
     this.systems = {};

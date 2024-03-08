@@ -248,7 +248,7 @@ export class DrawAreaMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const viewport = context.viewport;
-    const coord = eventData.coord.surface;
+    const coord = eventData.coord;
     let loc = viewport.unproject(coord);
 
     // How much has the pointer moved?
@@ -314,7 +314,7 @@ export class DrawAreaMode extends AbstractMode {
     const editor = context.systems.editor;
     const locations = context.systems.locations;
     const viewport = context.viewport;
-    const coord = eventData.coord.surface;
+    const coord = eventData.coord;
     let loc = viewport.unproject(coord);
 
     if (locations.blocksAt(loc).length) return;   // editing is blocked here

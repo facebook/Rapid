@@ -1,5 +1,4 @@
 import { EventEmitter } from '@pixi/utils';
-import { vecRotate } from '@rapid-sdk/math';
 
 import { utilDetect } from '../util/detect.js';
 
@@ -10,7 +9,7 @@ import { utilDetect } from '../util/detect.js';
  *
  * Properties available:
  *   `enabled`              `true` if the event handlers are enabled, `false` if not.
- *   `coord`                Object containing `screen` and `surface` [x,y] coordinates
+ *   `coord`                `[x,y]` screen coordinate of the latest event
  *   `pointerOverRenderer`  `true` if the pointer is over the renderer, `false` if not
  *   `modifierKeys`         Set containing the modifier keys that are currently down ('Alt', 'Control', 'Meta', 'Shift')
  *
@@ -42,7 +41,7 @@ export class PixiEvents extends EventEmitter {
 
     this.pointerOverRenderer = false;
     this.modifierKeys = new Set();
-    this.coord = { screen: [0, 0], surface: [0, 0] };
+    this.coord = [0, 0];
 
     this._wheelDefault = utilDetect().os === 'mac' ? 'auto' : 'zoom';
 
@@ -230,15 +229,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _observeCoordinate(e) {
-    this.coord = {
-      screen: [e.screen.x, e.screen.y],
-      surface: [e.screen.x, e.screen.y]
-    };
-    const viewport = this.context.viewport;
-    const r = viewport.rotate();
-    if (r) {
-      this.coord.surface = vecRotate(this.coord.screen, r, viewport.visibleCenter());
-    }
+    this.coord = [e.global.x, e.global.y];
   }
 
 
@@ -348,7 +339,6 @@ export class PixiEvents extends EventEmitter {
 
     const context = this.context;
     const storage = context.systems.storage;
-    const viewport = context.viewport;
 
     let [dX, dY] = this._normalizeWheelDelta(e);
 
@@ -399,15 +389,8 @@ export class PixiEvents extends EventEmitter {
     }
 
     // We don't call `this._observeCoordinate()`, because the wheel events are DOM events
-    // that have `offsetX`/`offsetY`, not Pixi Events that have `screen.x`/`screen.y`
-    this.coord = {
-      screen: [e.offsetX, e.offsetY],
-      surface: [e.offsetX, e.offsetY]
-    };
-    const r = viewport.rotate();
-    if (r) {
-      this.coord.surface = vecRotate(this.coord.screen, r, viewport.visibleCenter());
-    }
+    // that have `offsetX`/`offsetY`, not Pixi Events that have `global.x`/`global.y`
+    this.coord = [e.offsetX, e.offsetY];
 
     // Decorate the wheel event with whatever we detected.
     e._gesture = gesture;

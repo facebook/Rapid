@@ -157,7 +157,7 @@ export class DragBehavior extends AbstractBehavior {
       this._doMove();
 
     } else if (down.target) {  // start dragging if we've moved enough
-      const dist = vecLength(down.coord.surface, move.coord.surface);
+      const dist = vecLength(down.coord, move.coord);
       const tolerance = (e.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
 
       if (dist >= tolerance) {

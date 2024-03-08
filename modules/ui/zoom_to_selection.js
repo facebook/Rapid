@@ -6,6 +6,7 @@ export function uiZoomToSelection(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const ui = context.systems.ui;
+  const viewport = context.viewport;
 
   const shortcutKey = l10n.t('inspector.zoom_to.key');
   let _lastPointerUpType;
@@ -48,7 +49,7 @@ export function uiZoomToSelection(context) {
 
       } else if (extent) {   // zoom in on extent
         _lastTransform = map.transform();
-        const [w, h] = map.dimensions;
+        const [w, h] = viewport.dimensions();
         const z = map.extentZoom(extent, [w/2, h/2]);
         map.centerZoomEase(extent.center(), z);
 

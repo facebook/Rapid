@@ -24,6 +24,7 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `overlay`        D3 selection to the sibling `div` "overlay"
  *   `pixi`           PIXI.Application() created to render to the canvas
  *   `stage`          PIXI.Container() that lives at the root of this scene
+ *   `origin`         PIXI.Container() that lives beneath the stage, used to adjust map bearing
  *   `scene`          PixiScene manages the layers and features in the scene
  *   `events`         PixiEvents manages the events that other code might want to listen for
  *   `textures`       PixiTextures manages the textures
@@ -125,6 +126,8 @@ export class PixiRenderer extends EventEmitter {
     ticker.start();
 
     // Setup the stage
+    // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
+    // and this is the pivot point for map rotation.
     const stage = this.pixi.stage;
     stage.name = 'stage';
     stage.sortableChildren = true;
@@ -132,6 +135,16 @@ export class PixiRenderer extends EventEmitter {
     // Add a big hit area to `stage` so that clicks on nothing will generate events
     stage.hitArea = new PIXI.Rectangle(-10000000, -10000000, 20000000, 20000000);
     this.stage = stage;
+
+    // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
+    // so `project/unproject` continues to work.
+    // This also includes the `offset` which includes any panning that the user has done.
+    const origin = new PIXI.Container();
+    origin.name = 'origin';
+    origin.sortableChildren = true;
+    origin.eventMode = 'passive';
+    stage.addChild(origin);
+    this.origin = origin;
 
     // Setup other classes
     this.scene = new PixiScene(this);
@@ -298,7 +311,7 @@ export class PixiRenderer extends EventEmitter {
   /**
    * setTransformAsync
    * Updates the viewport transform
-   * @param   t           A Transform Object with `x, y, k` properties
+   * @param   t           A Transform Object with `x, y, k, r` properties
    * @param   duration?   Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return  Promise that resolves when the transform has finished changing
    */
@@ -349,7 +362,7 @@ export class PixiRenderer extends EventEmitter {
    *    apply the difference to the supersurface and overlay
    */
   _tform() {
-    // between APP and DRAW we dont want to change the transform at all
+    // Between APP and DRAW we dont want to change the transform at all
     // this shouldn't happen, but we check for it just in case.
     if (this._drawPending) return;
 
@@ -365,14 +378,14 @@ export class PixiRenderer extends EventEmitter {
       const [x0, y0, k0] = [xform0.x, xform0.y, xform0.k];
       const [x1, y1, k1] = [xform1.x, xform1.y, xform1.k];
 
-      // for rotation, pick whichever direction is shorter
+      // For rotation, pick whichever direction is shorter
       const r0 = numWrap(xform0.r, 0, TAU);
       let r1 = numWrap(xform1.r, 0, TAU);
       if (Math.abs(r1 - r0) > Math.PI) {  // > 180°
-        r1 += TAU;
+        r1 += (r1 < r0) ? TAU : -TAU;
       }
 
-      // keep it simple - linear interpolate
+      // Keep it simple - linear interpolate
       const tween = Math.max(0, Math.min(1, (now - time0) / (time1 - time0)));
       const xNow = x0 + ((x1 - x0) * tween);
       const yNow = y0 + ((y1 - y0) * tween);
@@ -389,17 +402,16 @@ export class PixiRenderer extends EventEmitter {
     }
 
     // Determine if the visible dimensions have changed.
-    // (e.g. the window resized, or rotation is being applied)
     const pixiDims = pixiViewport.dimensions();
-    const visibleDims = mapViewport.visibleDimensions();
+    const mapDims = mapViewport.dimensions();
 
-    if (!vecEqual(pixiDims, visibleDims)) {
-      pixiViewport.dimensions(visibleDims);
+    if (!vecEqual(pixiDims, mapDims)) {
+      pixiViewport.dimensions(mapDims);
 
       // Resize supersurface to cover the visible dimensions
       const ssnode = this.supersurface.node();
-      ssnode.style.width = `${visibleDims[0]}px`;
-      ssnode.style.height = `${visibleDims[1]}px`;
+      ssnode.style.width = `${mapDims[0]}px`;
+      ssnode.style.height = `${mapDims[1]}px`;
       // We'll need to resize pixi too, but this should be done later (at draw time probably)
     }
 
@@ -414,10 +426,11 @@ export class PixiRenderer extends EventEmitter {
       const scale = tCurr.k / tPrev.k;
       const dx = (tCurr.x / scale - tPrev.x) * scale;
       const dy = (tCurr.y / scale - tPrev.y) * scale;
+      const dr = tCurr.r - tPrev.r;
       // const dx = tCurr.x - tPrev.x;
       // const dy = tCurr.y - tPrev.y;
-      utilSetTransform(this.supersurface, dx, dy, scale, tCurr.r);
-      utilSetTransform(this.overlay, -dx, -dy, null, -tCurr.r);
+      utilSetTransform(this.supersurface, dx, dy, scale, dr);
+      utilSetTransform(this.overlay, -dx, -dy, 1, -dr);
       this._isTransformed = true;
       this.emit('move');
     }
@@ -437,119 +450,58 @@ export class PixiRenderer extends EventEmitter {
     const map = context.systems.map;
     if (map.paused) return;
 
-    // At this point, the map transform is settled
-    // (`_tform` is called immediately before `_app`)
-    const mapTransform = context.viewport.transform();
+    const mapViewport = context.viewport;
     const pixiViewport = this.pixiViewport;
 
+    // At this point, the map transform is settled
+    // (`_tform` is called immediately before `_app`)
+    const mapTransform = mapViewport.transform();
+    const pixiTransform = pixiViewport.transform();
+    const mapCenter = mapViewport.center();
+
     // Determine if the visible dimensions have changed.
-    // (e.g. the window resized, or rotation is being applied)
     const pixiDims = pixiViewport.dimensions();
     const currDims = [this.pixi.screen.width, this.pixi.screen.height];
     if (!vecEqual(currDims, pixiDims)) {
       this.pixi.queueResize();
     }
 
-    // Reproject the pixi geometries only whenever zoom changes
-    const pixiTransform = pixiViewport.transform();
-    const effectiveZoom = map.effectiveZoom();
-
+    // Determine "offset"
+    // We try to avoid reprojecting the pixi geometries unless zoom has changed, or map has translated very far.
+    // If the user is just panning, we can leave the geometries alone and add an offset translation to the origin.
     const pixiXY = [pixiTransform.x, pixiTransform.y];
     const mapXY = [mapTransform.x, mapTransform.y];
     const dist = vecLength(pixiXY, mapXY);
     let offset;
 
-    // zoom has changed, or map has translated very far
-    if (pixiTransform.k !== mapTransform.k || pixiTransform.r !== mapTransform.r || dist > 100000) {
-      offset = [0, 0];
-      pixiViewport.transform(mapTransform);  // reset
+    if (mapTransform.k !== pixiTransform.k || dist > 100000) {
+      offset = [0,0];
+      pixiViewport.transform(mapTransform);  // reset (set pixi = map)
       this.scene.dirtyScene();               // all geometry must be reprojected
     } else {
       offset = vecSubtract(pixiXY, mapXY);
     }
 
-// like this? (anti-offset in stage)
-    const stage = this.pixi.stage;
-    stage.position.set(-offset[0], -offset[1]);
-//
+    if (mapTransform.r !== pixiTransform.r) {
+      pixiViewport.rotate(mapTransform.r);
+      this.scene.dirtyScene();               // only really needs restyle
+    }
+
+    // The `stage` should be positioned so that `[0,0]` is at the center of the viewport,
+    // and this is the pivot point for map rotation.
+    this.stage.pivot.set(0, 0);
+    this.stage.position.set(mapCenter[0], mapCenter[1]);
+    this.stage.rotation = mapTransform.r;
+
+    // The `origin` returns `[0,0]` back to the `[top,left]` coordinate of the viewport,
+    // so `project/unproject` continues to work.
+    // This also includes the `offset`, which includes any panning that the user has done.
+    this.origin.position.set(-offset[0] - mapCenter[0], -offset[1] - mapCenter[1]);
+
+    // Let's go!
+    const effectiveZoom = map.effectiveZoom();
     this.scene.render(this._frame, pixiViewport, effectiveZoom);
-
-
-    // debugging
-    let debug1 = stage.getChildByName('debug1');
-    if (!debug1) {
-      debug1 = new PIXI.Graphics();
-      debug1.lineStyle(0);
-      debug1.beginFill(0xffffff, 1);
-      debug1.drawCircle(0, 0, 20);
-      debug1.endFill();
-      debug1.name = 'debug1';
-      debug1.eventMode = 'none';
-      debug1.sortableChildren = false;
-      debug1.zIndex = 101;
-      stage.addChild(debug1);
-    }
-    const centerPoint = map.centerPoint();
-    debug1.position.set(offset[0] + centerPoint[0], offset[1] + centerPoint[1]);
-
-    let debug2 = stage.getChildByName('debug2');
-    if (!debug2) {
-      debug2 = new PIXI.Graphics();
-      debug2.lineStyle(0);
-      debug2.beginFill(0xff0000, 1);
-      debug2.drawCircle(0, 0, 10);
-      debug2.endFill();
-      debug2.name = 'debug2';
-      debug2.eventMode = 'none';
-      debug2.sortableChildren = false;
-      debug2.zIndex = 102;
-      stage.addChild(debug2);
-    }
-    const centerLoc = pixiViewport.project(map.centerLoc());
-    debug2.position.set(centerLoc[0], centerLoc[1]);
-
-    let debug3 = stage.getChildByName('debug3');
-    if (!debug3) {
-      debug3 = new PIXI.Graphics();
-      debug3.lineStyle(0);
-      debug3.beginFill(0x00ffff, 1);
-      debug3.drawCircle(0, 0, 20);
-      debug3.endFill();
-      debug3.name = 'debug3';
-      debug3.eventMode = 'none';
-      debug3.sortableChildren = false;
-      debug3.zIndex = 103;
-      stage.addChild(debug3);
-    }
-    debug3.position.set(0, 0);
-
-    // debugging the contents of the texture atlas
-    // let screen = stage.getChildByName('screen');
-    // if (!screen) {
-    //   screen = new PIXI.Graphics();
-    //   screen.name = 'screen';
-    //   screen.eventMode = 'none';
-    //   screen.sortableChildren = false;
-    //   screen.zIndex = 100;
-    //   screen.beginFill({ r: 255, g: 255, b: 255, a: 0.5 });
-    //   screen.drawRect(0, 0, 512, 512);
-    //   screen.endFill();
-    //   stage.addChild(screen);
-    // }
-    // let debug = stage.getChildByName('debug');
-    // if (!debug) {
-    //   debug = new PIXI.Sprite();
-    //   debug.name = 'debug';
-    //   debug.eventMode = 'none';
-    //   debug.sortableChildren = false;
-    //   debug.zIndex = 101;
-    //   debug.height = 512;
-    //   debug.width = 512;
-    //   stage.addChild(debug);
-    // }
-    // debug.texture = this.textures.getDebugTexture('symbol');
-    // debug.position.set(offset[0] + 50, offset[1] + 100);  // stay put
-    // screen.position.set(offset[0] + 50, offset[1] + 100);  // stay put
+    // this._renderDebug();
 
     this._appPending = false;
     this._drawPending = true;
@@ -562,24 +514,15 @@ export class PixiRenderer extends EventEmitter {
    * Where it converts Pixi geometries into WebGL instructions.
    */
   _draw() {
-
-// like this? (anti-offset in stage)
+    // Let's go!
     this.pixi.render();
-//...or like this (anti-offset in matrix)?
-    // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
-    // const options = {
-    //   transform: m,
-    //   // skipUpdateTransform: true
-    // };
-    // this.pixi.renderer.render(stage, options);
-//
-    const t = this.context.viewport.transform();
-    this._prevTransform = t;
+
+    this._prevTransform = this.context.viewport.transform();
     this._timeToNextRender = THROTTLE;
 
     if (this._isTransformed) {
-      utilSetTransform(this.supersurface, 0, 0, null, t.r);
-      utilSetTransform(this.overlay, 0, 0, null, -t.r);
+      utilSetTransform(this.supersurface, 0, 0, 1, 0);
+      utilSetTransform(this.overlay, 0, 0, 1, 0);
       this._isTransformed = false;
       this.emit('move');
     }
@@ -588,4 +531,75 @@ export class PixiRenderer extends EventEmitter {
     this.emit('draw');
     this._frame++;
   }
+
+
+  /* renders some debug shapes */
+  _renderDebug() {
+    const context = this.context;
+    const map = context.systems.map;
+    const origin = this.origin;
+    const stage = this.stage;
+
+    let debug1 = origin.getChildByName('center_stage');   // center stage
+    if (!debug1) {
+      debug1 = new PIXI.Graphics();
+      debug1.lineStyle(0);
+      debug1.beginFill(0xffffff, 1);
+      debug1.drawCircle(0, 0, 20);
+      debug1.endFill();
+      debug1.name = 'center_stage';
+      debug1.eventMode = 'none';
+      debug1.sortableChildren = false;
+      debug1.zIndex = 101;
+      origin.addChild(debug1);
+    }
+    debug1.position.set(stage.position.x, stage.position.y);
+
+    let debug2 = origin.getChildByName('center_screen');  // projected center of viewport
+    if (!debug2) {
+      debug2 = new PIXI.Graphics();
+      debug2.lineStyle(0);
+      debug2.beginFill(0xff6666, 1);
+      debug2.drawCircle(0, 0, 15);
+      debug2.endFill();
+      debug2.name = 'center_screen';
+      debug2.eventMode = 'none';
+      debug2.sortableChildren = false;
+      debug2.zIndex = 102;
+      origin.addChild(debug2);
+    }
+    const centerLoc = this.pixiViewport.project(map.centerLoc());
+    debug2.position.set(centerLoc[0], centerLoc[1]);
+
+
+    // debugging the contents of the texture atlas
+    // let screen = origin.getChildByName('screen');
+    // if (!screen) {
+    //   screen = new PIXI.Graphics();
+    //   screen.name = 'screen';
+    //   screen.eventMode = 'none';
+    //   screen.sortableChildren = false;
+    //   screen.zIndex = 100;
+    //   screen.beginFill({ r: 255, g: 255, b: 255, a: 0.5 });
+    //   screen.drawRect(0, 0, 512, 512);
+    //   screen.endFill();
+    //   origin.addChild(screen);
+    // }
+    // let debug = origin.getChildByName('debug');
+    // if (!debug) {
+    //   debug = new PIXI.Sprite();
+    //   debug.name = 'debug';
+    //   debug.eventMode = 'none';
+    //   debug.sortableChildren = false;
+    //   debug.zIndex = 101;
+    //   debug.height = 512;
+    //   debug.width = 512;
+    //   origin.addChild(debug);
+    // }
+    // debug.texture = this.textures.getDebugTexture('symbol');
+    // debug.position.set(offset[0] + 50, offset[1] + 100);  // stay put
+    // screen.position.set(offset[0] + 50, offset[1] + 100);  // stay put
+
+  }
+
 }

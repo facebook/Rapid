@@ -109,7 +109,7 @@ export class DragNodeMode extends AbstractMode {
 
     // `_clickLoc` is used later to calculate a drag offset,
     // to correct for where "on the pin" the user grabbed the target.
-    const clickCoord = context.behaviors.drag.lastDown.coord.surface;
+    const clickCoord = context.behaviors.drag.lastDown.coord;
     this._clickLoc = context.viewport.unproject(clickCoord);
 
     context.enableBehaviors(['hover', 'drag', 'map-nudging']);
@@ -187,7 +187,7 @@ export class DragNodeMode extends AbstractMode {
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const viewport = context.viewport;
-    const coord = eventData.coord.surface;
+    const coord = eventData.coord;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -247,7 +247,7 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     const viewport = context.viewport;
-    const coord = eventData.coord.surface;
+    const coord = eventData.coord;
     let graph = editor.staging.graph;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)

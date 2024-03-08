@@ -406,25 +406,12 @@ export class MapSystem extends AbstractSystem {
 
 
   /**
-   * dimensions
-   * Set/Get the map viewport dimensions in pixels
-   * @param  val?  Array [width, height] to set the dimensions to
-   */
-  get dimensions() {
-    return this.context.viewport.dimensions();
-  }
-  set dimensions(val) {
-    this.context.viewport.dimensions(val);
-  }
-
-
-  /**
    * centerPoint
    * Returns the [x,y] pixel at the center of the viewport
    * @return  Array [x,y] pixel at the center of the viewport
    */
   centerPoint() {
-    return this.context.viewport.visibleCenter();
+    return this.context.viewport.center();
   }
 
 
@@ -564,7 +551,7 @@ export class MapSystem extends AbstractSystem {
    */
   center(loc2, duration) {
     if (loc2 === undefined) {
-      return this.context.viewport.unproject(this.centerPoint());
+      return this.centerLoc();
     }
     if (duration === undefined) {
       duration = 0;

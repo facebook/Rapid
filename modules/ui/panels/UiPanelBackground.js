@@ -148,6 +148,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     const selection = this._selection;
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
+    const map = context.systems.map;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -159,8 +160,8 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // Look for a loaded tile that covers the center of the map.
-    const center = context.systems.map.center();
-    const centerExtent = new Extent(center);
+    const centerLoc = map.centerLoc();
+    const centerExtent = new Extent(centerLoc);
     const layer = context.scene().layers.get('background');
     const tileMap = layer?._tileMaps.get(source.id);
     let tileCoord, tileZoom;
@@ -187,7 +188,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     if (!tileCoord) return;
 
     // attempt async update of the rest of the fields..
-    source.getMetadata(center, tileCoord, (err, result) => {
+    source.getMetadata(centerLoc, tileCoord, (err, result) => {
       if (err || this._currSourceID !== source.id) return;
 
       // update vintage

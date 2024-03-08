@@ -39,6 +39,7 @@ export class MapNudgingBehavior extends AbstractBehavior {
     eventManager.on('pointermove', this._pointermove);
   }
 
+
   /**
    * allow
    * Call this method from your mode or your nudging behavior won't work.
@@ -77,8 +78,7 @@ export class MapNudgingBehavior extends AbstractBehavior {
     const viewport = context.viewport;
 
     const move = this._getEventData(e);
-    const point = move.coord.screen;
-    const nudge = geomViewportNudge(point, viewport.dimensions);
+    const nudge = geomViewportNudge(move.coord, viewport.dimensions());
 
     if (nudge) {
       const [dX, dY] = vecScale(nudge, NUDGE_SPEED);

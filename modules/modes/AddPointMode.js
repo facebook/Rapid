@@ -89,7 +89,7 @@ export class AddPointMode extends AbstractMode {
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const viewport = context.viewport;
-    const coord = eventData.coord.surface;
+    const coord = eventData.coord;
 
     const loc = viewport.unproject(coord);
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
