@@ -115,7 +115,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
   update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    const wireframeMode = this.context.systems.map.wireframeMode;
+    const context = this.context;
+    const storage = context.systems.storage;
+    const wireframeMode = context.systems.map.wireframeMode;
+    const bearing = context.viewport.rotate();
 
     //
     // GEOMETRY
@@ -211,13 +214,13 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const dash = style.stroke.dash || null;
 
     let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
+    const textureMatrix = new PIXI.Matrix().rotate(-bearing);  // keep patterns face up
     let shape;
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
 
-    const prefs = this.context.systems.storage;
-    const fillstyle = prefs.getItem('area-fill') ?? 'partial';
+    const fillstyle = storage.getItem('area-fill') ?? 'partial';
     let doPartialFill = !style.requireFill && (fillstyle === 'partial');
 
     // If this shape is so small that partial filling makes no sense, fill fully (faster?)
@@ -338,7 +341,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
         .beginTextureFill({
           alpha: alpha,
           color: color,
-          texture: texture
+          texture: texture,
+          matrix: textureMatrix
         })
         .drawShape(shape.outer);
 
