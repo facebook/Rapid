@@ -245,10 +245,12 @@ export class MapWithAIService extends AbstractSystem {
     if (datasetID === 'fbRoads') {
       qs.result_type = 'road_vector_xml';
 
+    } else if (datasetID === 'metaFootways') {
+      qs.result_type = 'footway_vector_xml';
+      qs.sources = 'mapillary';
     } else if (datasetID === 'msBuildings') {
       qs.result_type = 'road_building_vector_xml';
       qs.building_source = 'microsoft';
-
     } else {
       qs.result_type = 'osm_xml';
       qs.sources = `esri_building.${datasetID}`;
