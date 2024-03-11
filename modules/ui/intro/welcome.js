@@ -33,7 +33,7 @@ export function uiIntroWelcome(context, curtain) {
   // Click Ok to advance
   function welcomeAsync() {
     return map
-      .setCenterZoomAsync(townHallExtent.center(), 19)
+      .setMapParamsAsync(townHallExtent.center(), 19, 0)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({

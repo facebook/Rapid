@@ -66,7 +66,7 @@ export function uiIntroRapid(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 18.5, msec)
+      .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
@@ -278,7 +278,7 @@ export function uiIntroRapid(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 18.5, msec)
+      .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
 

@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import {
-  DEG2RAD, RAD2DEG, Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale,
+  DEG2RAD, RAD2DEG, TAU, Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale,
   numClamp, numWrap, vecAdd, vecRotate, vecSubtract
 } from '@rapid-sdk/math';
 
@@ -9,12 +9,10 @@ import { PixiRenderer } from '../pixi/PixiRenderer.js';
 import { uiCmd } from '../ui/cmd.js';
 import { utilTotalExtent } from '../util/index.js';
 
-
 const TILESIZE = 256;
 const MIN_Z = 2;
 const MAX_Z = 24;
-const MIN_K = geoZoomToScale(MIN_Z, TILESIZE);
-const MAX_K = geoZoomToScale(MAX_Z, TILESIZE);
+
 
 /**
  * `MapSystem` maintains the map state and provides an interface for manipulating the map view.
@@ -335,8 +333,7 @@ export class MapSystem extends AbstractSystem {
       lon = numClamp(lon, -180, 180);
       rot = numWrap(rot, 0, 360);
 
-      this.context.viewport.rotate(rot * DEG2RAD);
-      this.centerZoom([lon, lat], zoom);     // will eventually call setTransformAsync
+      this.setMapParams([lon, lat], zoom, rot * DEG2RAD);   // will eventually call setTransformAsync
     }
 
     // id
@@ -432,7 +429,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [x,y] pixel location of pointer (or center of the map)
    */
   mouse() {
-    return this._renderer.events?.coord?.surface || this.centerPoint();
+    return this._renderer.events?.coord || this.centerPoint();
   }
 
 
@@ -460,10 +457,7 @@ export class MapSystem extends AbstractSystem {
     if (t2 === undefined) {
       return this.context.viewport.transform();
     }
-    if (duration === undefined) {
-      duration = 0;
-    }
-    this._renderer.setTransformAsync(t2, duration);
+    this._renderer.setTransformAsync(t2, duration ?? 0);
     return this;
   }
 
@@ -481,64 +475,90 @@ export class MapSystem extends AbstractSystem {
 
 
   /**
-   * centerZoom
-   * Set both center and zoom at the same time
+   * setMapParams
+   * Set loc, zoom, and bearing at the same time.
    * @param  loc2       Array [lon,lat] to set the center to
    * @param  z2         Number to set the zoom to
+   * @param  r2         Number to set the bearing (rotation) to
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
-  centerZoom(loc2, z2, duration = 0) {
-    const c = this.center();
-    const z = this.zoom();
-    if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
+  setMapParams(loc2, z2, r2, duration = 0) {
+    const context = this.context;
+    const view1 = context.viewport;
+    const t1 = view1.transform();
+    const loc1 = this.center();
+    const z1 = this.zoom();
+    const r1 = t1.r;
+
+    if (loc2 === undefined)  loc2 = loc1;
+    if (z2 === undefined)    z2 = z1;
+    if (r2 === undefined)    r2 = r1;
+
+    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
       return this;
     }
 
-    const k2 = numClamp(geoZoomToScale(z2, TILESIZE), MIN_K, MAX_K);
-    const t = this.context.viewport.transform();
-    const view = new Viewport(t);
-    view.scale(k2);
+    loc2[0] = numClamp(loc2[0] || 0, -180, 180);
+    loc2[1] = numClamp(loc2[1] || 0, -90, 90);
+    z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
+    r2 = numWrap(r2 || 0, 0, TAU);
 
-    let xy = view.translate();
-    const point = view.project(loc2);
+    const k2 = geoZoomToScale(z2, TILESIZE);
+    const view2 = new Viewport(t1, view1.dimensions());
+    view2.scale(k2);
+
+    let xy = view2.translate();
+    const point = view2.project(loc2);
     const center = this.centerPoint();
     const delta = vecSubtract(center, point);
     xy = vecAdd(xy, delta);
 
-    return this.transform({ x: xy[0], y: xy[1], k: k2, r: t.r }, duration);
+    return this.transform({ x: xy[0], y: xy[1], k: k2, r: r2 }, duration);
   }
 
 
   /**
-   * setCenterZoomAsync
-   * Newer Promise-returning version of `centerZoom()`
-   * @param   loc2       Array [lon,lat] to set the center to
-   * @param   z2         Number to set the zoom to
-   * @param   duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
-   * @return  Promise that resolves when the transform has finished changing
+   * setMapParamsAsync
+   * Promise-returning version of `setMapParams()`
+   * @param  loc2       Array [lon,lat] to set the center to
+   * @param  z2         Number to set the zoom to
+   * @param  r2         Number to set the bearing (rotation) to
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return Promise that resolves when the transform has finished changing
    */
-  setCenterZoomAsync(loc2, z2, duration = 0) {
-    const c = this.center();
-    const z = this.zoom();
-    if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
-      return new Promise.resolve(this.context.viewport.transform());
+  setMapParamsAsync(loc2, z2, r2, duration = 0) {
+    const context = this.context;
+    const view1 = context.viewport;
+    const t1 = view1.transform();
+    const loc1 = this.center();
+    const z1 = this.zoom();
+    const r1 = t1.r;
+
+    if (loc2 === undefined)  loc2 = loc1;
+    if (z2 === undefined)    z2 = z1;
+    if (r2 === undefined)    r2 = r1;
+
+    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
+      return new Promise.resolve(t1);
     }
 
-    const k2 = numClamp(geoZoomToScale(z2, TILESIZE), MIN_K, MAX_K);
-    const t = this.context.viewport.transform();
-    const view = new Viewport(t);
-    view.scale(k2);
+    loc2[0] = numClamp(loc2[0] || 0, -180, 180);
+    loc2[1] = numClamp(loc2[1] || 0, -90, 90);
+    z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
+    r2 = numWrap(r2 || 0, 0, TAU);
 
-    let xy = view.translate();
-    const point = view.project(loc2);
+    const k2 = geoZoomToScale(z2, TILESIZE);
+    const view2 = new Viewport(t1, view1.dimensions());
+    view2.scale(k2);
+
+    let xy = view2.translate();
+    const point = view2.project(loc2);
     const center = this.centerPoint();
     const delta = vecSubtract(center, point);
     xy = vecAdd(xy, delta);
 
-    // note: because this function is currently used to move
-    // the user around the walkthrough, reset rotation to 0
-    return this.setTransformAsync({ x: xy[0], y: xy[1], k: k2, r: t.r }, duration);
+    return this.setTransformAsync({ x: xy[0], y: xy[1], k: k2, r: r2 }, duration);
   }
 
 
@@ -552,13 +572,9 @@ export class MapSystem extends AbstractSystem {
   center(loc2, duration) {
     if (loc2 === undefined) {
       return this.centerLoc();
+    } else {
+      return this.setMapParams(loc2, undefined, undefined, duration ?? 0);
     }
-    if (duration === undefined) {
-      duration = 0;
-    }
-    loc2[0] = numClamp(loc2[0] || 0, -180, 180);
-    loc2[1] = numClamp(loc2[1] || 0, -90, 90);
-    return this.centerZoom(loc2, this.zoom(), duration);
   }
 
 
@@ -572,12 +588,9 @@ export class MapSystem extends AbstractSystem {
   zoom(z2, duration) {
     if (z2 === undefined) {
       return Math.max(0, geoScaleToZoom(this.context.viewport.scale(), TILESIZE));
+    } else {
+      return this.setMapParams(undefined, z2, undefined, duration ?? 0);
     }
-    if (duration === undefined) {
-      duration = 0;
-    }
-    z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
-    return this.centerZoom(this.center(), z2, duration);
   }
 
 
@@ -616,7 +629,7 @@ export class MapSystem extends AbstractSystem {
     if (!isFinite(extent.area())) return this;
 
     const z2 = numClamp(this.trimmedExtentZoom(extent), 0, 20);
-    return this.centerZoom(extent.center(), z2, duration);
+    return this.setMapParams(extent.center(), z2, undefined, duration);
   }
 
 
@@ -664,9 +677,9 @@ export class MapSystem extends AbstractSystem {
   }
 
 
-  // convenience methods for zomming in and out
-  _zoomIn(delta)  { return this.centerZoom(this.center(), ~~this.zoom() + delta, 250); }
-  _zoomOut(delta) { return this.centerZoom(this.center(), ~~this.zoom() - delta, 250); }
+  // convenience methods for zooming in and out
+  _zoomIn(delta)  { return this.setMapParams(undefined, ~~this.zoom() + delta, undefined, 250); }
+  _zoomOut(delta) { return this.setMapParams(undefined, ~~this.zoom() - delta, undefined, 250); }
 
   zoomIn()        { return this._zoomIn(1); }
   zoomInFurther() { return this._zoomIn(4); }
@@ -676,12 +689,14 @@ export class MapSystem extends AbstractSystem {
   zoomOutFurther() { return this._zoomOut(4); }
   canZoomOut()     { return this.zoom() > MIN_Z; }
 
+  centerZoom(loc2, z2, duration = 0)          { return this.setMapParams(loc2, z2, undefined, duration); }
+
   // convenience methods for the above, but with easing
-  transformEase(t2, duration = 250)          { return this.transform(t2, duration); }
-  centerZoomEase(loc2, z2, duration = 250)   { return this.centerZoom(loc2, z2, duration); }
-  centerEase(loc2, duration = 250)           { return this.center(loc2, duration); }
-  zoomEase(z2, duration = 250)               { return this.zoom(z2, duration); }
-  fitEntitiesEase(entities, duration = 250)  { return this.fitEntities(entities, duration); }
+  transformEase(t2, duration = 250)           { return this.transform(t2, duration); }
+  centerZoomEase(loc2, z2, duration = 250)    { return this.setMapParams(loc2, z2, undefined, duration); }
+  centerEase(loc2, duration = 250)            { return this.setMapParams(loc2, undefined, undefined, duration); }
+  zoomEase(z2, duration = 250)                { return this.setMapParams(undefined, z2, undefined, duration); }
+  fitEntitiesEase(entities, duration = 250)   { return this.fitEntities(entities, duration); }
 
 
   /**
@@ -716,7 +731,7 @@ export class MapSystem extends AbstractSystem {
     if (extent === undefined) {
       return this.context.viewport.extent();
     } else {
-      return this.centerZoom(extent.center(), this.extentZoom(extent));
+      return this.setMapParams(extent.center(), this.extentZoom(extent));
     }
   }
 
@@ -740,7 +755,7 @@ export class MapSystem extends AbstractSystem {
         view.unproject([w - pad, headerY + pad])   // top-right
       );
     } else {
-      return this.centerZoom(extent.center(), this.trimmedExtentZoom(extent));
+      return this.setMapParams(extent.center(), this.trimmedExtentZoom(extent));
     }
   }
 

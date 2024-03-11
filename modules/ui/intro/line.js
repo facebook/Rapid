@@ -125,7 +125,7 @@ export function uiIntroLine(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 18.5, msec)
+      .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(startLineAsync);
@@ -188,7 +188,7 @@ export function uiIntroLine(context, curtain) {
     const msec = transitionTime(loc, map.center());
 
     return map
-      .setCenterZoomAsync(loc, 18.5, msec)
+      .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist() || context.mode?.id !== 'draw-line') { resolve(addLineAsync); return; }
@@ -233,7 +233,7 @@ export function uiIntroLine(context, curtain) {
     const msec = transitionTime(loc, map.center());
 
     return map
-      .setCenterZoomAsync(loc, 18.5, msec)
+      .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (!_doesLineExist() || context.mode?.id !== 'draw-line') { resolve(addLineAsync); return; }
@@ -469,7 +469,7 @@ export function uiIntroLine(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
@@ -661,7 +661,7 @@ export function uiIntroLine(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 18, msec)
+      .setMapParamsAsync(loc, 18, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({

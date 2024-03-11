@@ -66,7 +66,7 @@ export function uiIntroArea(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19.5, msec)
+      .setMapParamsAsync(loc, 19.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(startPlaygroundAsync);

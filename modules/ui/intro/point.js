@@ -67,7 +67,7 @@ export function uiIntroPoint(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
+      .setMapParamsAsync(loc, 20, 0, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(placePointAsync);
@@ -309,7 +309,7 @@ export function uiIntroPoint(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
+      .setMapParamsAsync(loc, 20, undefined, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(updatePointAsync);

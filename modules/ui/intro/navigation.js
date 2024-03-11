@@ -93,7 +93,7 @@ export function uiIntroNavigation(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         const centerStart = map.center();
@@ -199,7 +199,7 @@ export function uiIntroNavigation(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, undefined, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
 
@@ -361,7 +361,7 @@ export function uiIntroNavigation(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
@@ -423,7 +423,7 @@ export function uiIntroNavigation(context, curtain) {
     const loc = springStreetExtent.center();
 
     return map
-      .setCenterZoomAsync(loc, 19, 0 /* asap */)
+      .setMapParamsAsync(loc, 19, 0, 0 /* asap */)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = reject;   // disallow mode change
