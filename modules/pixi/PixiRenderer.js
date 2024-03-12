@@ -24,7 +24,7 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `overlay`        D3 selection to the sibling `div` "overlay"
  *   `pixi`           PIXI.Application() created to render to the canvas
  *   `stage`          PIXI.Container() that lives at the root of this scene
- *   `origin`         PIXI.Container() that lives beneath the stage, used to adjust map bearing
+ *   `origin`         PIXI.Container() that lives beneath the stage, used to set origin to [0,0]
  *   `scene`          PixiScene manages the layers and features in the scene
  *   `events`         PixiEvents manages the events that other code might want to listen for
  *   `textures`       PixiTextures manages the textures
@@ -417,16 +417,20 @@ export class PixiRenderer extends EventEmitter {
     // whatever user interaction has occurred between full redraws.
     // We apply this temporary transform to the supersurface and overlay.
     const tCurr = mapViewport.transform();
-    const center = mapViewport.center();
     const tPrev = this._prevTransform;
 
     const hasChanges = this._isTransformed || (
       tPrev.x !== tCurr.x || tPrev.y !== tCurr.y || tPrev.k !== tCurr.k || tPrev.r !== tCurr.r
     );
     if (hasChanges) {
+      // Before, supersurface's transform-origin was "top left", now it is "center".
+      // So we need to shift the coordinates back to top-left to make the math correct.
+      const center = mapViewport.center();
+      const currxy = vecSubtract([tCurr.x, tCurr.y], center);
+      const prevxy = vecSubtract([tPrev.x, tPrev.y], center);
       const scale = tCurr.k / tPrev.k;
-      let dx = (tCurr.x / scale - tPrev.x) * scale;
-      let dy = (tCurr.y / scale - tPrev.y) * scale;
+      let dx = (currxy[0] / scale - prevxy[0]) * scale;
+      let dy = (currxy[1] / scale - prevxy[1]) * scale;
       const dr = tCurr.r - tPrev.r;
 
       [dx, dy] = vecRotate([dx, dy], tCurr.r, [0, 0]);

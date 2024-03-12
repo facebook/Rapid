@@ -1,4 +1,4 @@
-import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
@@ -168,15 +168,15 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const context = this.context;
     const map = context.systems.map;
     const viewport = context.viewport;
+    const t = viewport.transform();
 
     const click = this._getEventData(e);
-    const [x, y] = click.coord;
-    const t = viewport.transform();
+    const [x, y] = vecRotate(click.coord, -t.r, viewport.center());  // without rotation
     const isShiftDown = e.getModifierState('Shift');
 
     // local mouse coord to transform origin (was: d3 `transform.invert`)
     const p1 = [ (x - t.x) / t.k, (y - t.y) / t.k ];
-    let k2 = t.k * (isShiftDown ? 0.5 : 2);  // rescale
+    let k2 = t.k * (isShiftDown ? 0.5 : 2);  // zoom out / zoom in
     k2 = numClamp(k2, MIN_K, MAX_K);
 
     // transform origin back to local coord
@@ -326,17 +326,17 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _wheel(e) {
     const context = this.context;
     const map = context.systems.map;
-    const viewport = context.viewport;
 
     const [dx, dy] = [e._normalizedDeltaX, e._normalizedDeltaY];
-    const [x, y] = e._coord;
-    const t = viewport.transform();
-    let tNew;
 
     // We aren't going to set `this.gesture` here, because that is for tracking what
     // the user is doing through a pointerdown-pointermove-pointerup situation..
 
     if (e._gesture === 'zoom') {
+      const viewport = context.viewport;
+      const t = viewport.transform();
+      const [x, y] = vecRotate(e._coord, -t.r, viewport.center());  // without rotation
+
       // convert mouse coord to transform origin (was: d3 `transform.invert`)
       const x1 = (x - t.x) / t.k;
       const y1 = (y - t.y) / t.k;
@@ -348,8 +348,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
       // transform origin back to local coord
       const x2 = x - x1 * k2;
       const y2 = y - y1 * k2;
-      tNew = { x: x2, y: y2, k: k2, r: t.r };
-      map.transform(tNew);
+
+      map.transform({ x: x2, y: y2, k: k2, r: t.r });
 
     } else {  // pan
       map.pan([-dx, -dy]);
