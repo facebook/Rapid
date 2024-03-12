@@ -766,15 +766,15 @@ export class PixiLayerOsm extends AbstractLayer {
         nodeData.reverse();
       }
 
-      nodeData.slice(0, -1).forEach((_, i) => {
+      for (let i = 0; i < nodeData.length - 1; i++) {
         const a = nodeData[i];
         const b = nodeData[i + 1];
         const midpointID = [a.id, b.id].sort().join('-');
         const dist = vecLength(a.point, b.point);
-        if (dist < MIN_MIDPOINT_DIST) return;
+        if (dist < MIN_MIDPOINT_DIST) continue;
 
         const pos = vecInterp(a.point, b.point, 0.5);
-        const rot = vecAngle(a.point, b.point);
+        const rot = vecAngle(a.point, b.point) + viewport.rotate();
         const loc = viewport.unproject(pos);  // store as wgs84 lon/lat
         const midpoint = {
           type: 'midpoint',
@@ -789,7 +789,7 @@ export class PixiLayerOsm extends AbstractLayer {
         if (!midpoints.has(midpointID)) {
           midpoints.set(midpointID, midpoint);
         }
-      });
+      }
     }
 
     for (const [midpointID, midpoint] of midpoints) {
@@ -803,12 +803,15 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // Something about the midpoint has changed
-      // Here we use the midpoint location as it's "version"
-      // (This can happen if a sibling node has moved, the midpoint moves too)
-      if (feature.v !== midpoint.loc) {
-        feature.v = midpoint.loc;
+      const v = _midpointVersion(midpoint);
+      if (feature.v !== v) {
+        feature.v = v;
         feature.geometry.setCoords(midpoint.loc);
-        feature.container.rotation = midpoint.rot;  // remember to apply rotation
+
+        // Remember to apply rotation - it needs to go on the marker,
+        // because the container automatically rotates to be face up.
+        feature.marker.rotation = midpoint.rot;
+
         feature.setData(midpointID, midpoint);
         feature.addChildData(midpoint.way.id, midpointID);
       }
@@ -817,6 +820,14 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.update(viewport, zoom);
       this.retainFeature(feature, frame);
     }
+
+
+    // If any of these change, the midpoint needs to be redrawn.
+    // (This can happen if a sibling node has moved, the midpoint moves too)
+    function _midpointVersion(d) {
+      return d.loc[0] + d.loc[1] + d.rot;
+    }
+
   }
 
 }
