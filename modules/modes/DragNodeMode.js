@@ -109,8 +109,8 @@ export class DragNodeMode extends AbstractMode {
 
     // `_clickLoc` is used later to calculate a drag offset,
     // to correct for where "on the pin" the user grabbed the target.
-    const clickCoord = context.behaviors.drag.lastDown.coord;
-    this._clickLoc = context.viewport.unproject(clickCoord);
+    const point = context.behaviors.drag.lastDown.coord.map;
+    this._clickLoc = context.viewport.unproject(point);
 
     context.enableBehaviors(['hover', 'drag', 'map-nudging']);
     // Now that the user has clicked, let them nudge the map by moving to the edge.
@@ -187,7 +187,7 @@ export class DragNodeMode extends AbstractMode {
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const viewport = context.viewport;
-    const coord = eventData.coord;
+    const point = eventData.coord.map;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -204,7 +204,7 @@ export class DragNodeMode extends AbstractMode {
 //      loc = choice.loc;
 //    }
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, viewport, this.dragNode.id);
+      const choice = geoChooseEdge(graph.childNodes(target), point, viewport, this.dragNode.id);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;
@@ -217,10 +217,10 @@ export class DragNodeMode extends AbstractMode {
       // the marker/pin and where the location of the node actually is.
       // We calculate the drag offset each time because it's possible
       // the user may have changed zooms while dragging..
-      const clickCoord = context.viewport.project(this._clickLoc);
-      const startCoord = context.viewport.project(this._startLoc);
+      const clickCoord = viewport.project(this._clickLoc);
+      const startCoord = viewport.project(this._startLoc);
       const dragOffset = vecSubtract(startCoord, clickCoord);
-      const adjustedCoord = vecAdd(coord, dragOffset);
+      const adjustedCoord = vecAdd(point, dragOffset);
       loc = viewport.unproject(adjustedCoord);
     }
 
@@ -247,7 +247,7 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
     const viewport = context.viewport;
-    const coord = eventData.coord;
+    const point = eventData.coord.map;
     let graph = editor.staging.graph;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
@@ -267,7 +267,7 @@ export class DragNodeMode extends AbstractMode {
 //      editor.perform(actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode));
 //      annotation = this._connectAnnotation(target);
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, viewport, this.dragNode.id);
+      const choice = geoChooseEdge(graph.childNodes(target), point, viewport, this.dragNode.id);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see Rapid#719
       if (choice && choice.distance < SNAP_DIST) {
         const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];

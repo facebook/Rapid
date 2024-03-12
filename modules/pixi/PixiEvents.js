@@ -1,4 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
+import { vecRotate } from '@rapid-sdk/math';
 
 import { utilDetect } from '../util/detect.js';
 
@@ -9,7 +10,7 @@ import { utilDetect } from '../util/detect.js';
  *
  * Properties available:
  *   `enabled`              `true` if the event handlers are enabled, `false` if not.
- *   `coord`                `[x,y]` screen coordinate of the latest event
+ *   `coord`                `[x,y]` coordinates of the latest event (provided in "screen" and "map")
  *   `pointerOverRenderer`  `true` if the pointer is over the renderer, `false` if not
  *   `modifierKeys`         Set containing the modifier keys that are currently down ('Alt', 'Control', 'Meta', 'Shift')
  *
@@ -41,7 +42,10 @@ export class PixiEvents extends EventEmitter {
 
     this.pointerOverRenderer = false;
     this.modifierKeys = new Set();
-    this.coord = [0, 0];
+    this.coord = {
+      screen: [0,0],  // [0,0] is top,left of the screen
+      map: [0,0]      // [0,0] is the origin of the viewport (rotation removed)
+    };
 
     this._wheelDefault = utilDetect().os === 'mac' ? 'auto' : 'zoom';
 
@@ -228,8 +232,17 @@ export class PixiEvents extends EventEmitter {
    * Gather the coordinate data
    * @param  `e`  A Pixi FederatedPointerEvent
    */
-  _observeCoordinate(e) {
-    this.coord = [e.global.x, e.global.y];
+  _observeCoordinate(x, y) {
+    this.coord = {
+      screen: [x, y],  // [0,0] is top,left of the screen
+      map: [x, y]      // [0,0] is the origin of the viewport (rotation removed)
+    };
+
+    const viewport = this.context.viewport;
+    const r = viewport.rotate();
+    if (r) {
+      this.coord.map = vecRotate(this.coord.screen, -r, viewport.center());  // remove rotation
+    }
   }
 
 
@@ -282,7 +295,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerdown(e) {
     this._observeModifierKeys(e);
-    this._observeCoordinate(e);
+    this._observeCoordinate(e.global.x, e.global.y);
     this.emit('pointerdown', e);
   }
 
@@ -293,7 +306,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointermove(e) {
     this._observeModifierKeys(e);
-    this._observeCoordinate(e);
+    this._observeCoordinate(e.global.x, e.global.y);
     this.emit('pointermove', e);
   }
 
@@ -304,7 +317,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerup(e) {
     this._observeModifierKeys(e);
-    this._observeCoordinate(e);
+    this._observeCoordinate(e.global.x, e.global.y);
     this.emit('pointerup', e);
   }
 
@@ -340,6 +353,7 @@ export class PixiEvents extends EventEmitter {
     const context = this.context;
     const storage = context.systems.storage;
 
+    this._observeCoordinate(e.offsetX, e.offsetY);
     let [dX, dY] = this._normalizeWheelDelta(e);
 
     // There is some code in here to try to detect when the user is 2-finger scrolling
@@ -387,10 +401,6 @@ export class PixiEvents extends EventEmitter {
         speed = 3;
       }
     }
-
-    // We don't call `this._observeCoordinate()`, because the wheel events are DOM events
-    // that have `offsetX`/`offsetY`, not Pixi Events that have `global.x`/`global.y`
-    this.coord = [e.offsetX, e.offsetY];
 
     // Decorate the wheel event with whatever we detected.
     e._gesture = gesture;

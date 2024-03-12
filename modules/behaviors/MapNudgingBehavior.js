@@ -78,13 +78,10 @@ export class MapNudgingBehavior extends AbstractBehavior {
     const viewport = context.viewport;
 
     const move = this._getEventData(e);
-    const nudge = geomViewportNudge(move.coord, viewport.dimensions());
+    const nudge = geomViewportNudge(move.coord.screen, viewport.dimensions());
 
     if (nudge) {
-      const [dX, dY] = vecScale(nudge, NUDGE_SPEED);
-      const t = viewport.transform();
-      const tNew = { x: t.x + dX, y: t.y + dY, k: t.k };
-      map.transform(tNew);
+      map.pan(vecScale(nudge, NUDGE_SPEED));
     }
   }
 

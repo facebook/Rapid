@@ -1,4 +1,4 @@
-import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
+import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
@@ -171,7 +171,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const t = viewport.transform();
 
     const click = this._getEventData(e);
-    const [x, y] = vecRotate(click.coord, -t.r, viewport.center());  // without rotation
+    const [x, y] = click.coord.map;
     const isShiftDown = e.getModifierState('Shift');
 
     // local mouse coord to transform origin (was: d3 `transform.invert`)
@@ -238,12 +238,15 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const move = this._getEventData(e);
     if (!down || down.id !== move.id) return;   // not down, or different pointer
 
+    // Because the handler is listening on the Pixi surface, and the surface is itself
+    // getting transformed, we use `clientX`/`clientY` to avoid the map being jittery.
+    const currPoint = [move.originalEvent.clientX, move.originalEvent.clientY];
     const t = viewport.transform();
 
     if (!this.gesture) {   // start dragging?
-      const dist = vecLength(down.coord, move.coord);
+      const dist = vecLength(down.coord.screen, move.coord.screen);
       const tolerance = (down.originalEvent.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
-      this._lastPoint = [move.originalEvent.clientX, move.originalEvent.clientY];
+      this._lastPoint = currPoint;
       this._lastAngle = t.r;
 
       if (dist >= tolerance) {
@@ -253,8 +256,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
     }
 
     if (this.gesture) {  // continue dragging
-      const original = move.originalEvent;
-      const currPoint = [original.clientX, original.clientY];
       const [dx, dy] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
       this._lastPoint = currPoint;
 
@@ -262,10 +263,13 @@ export class MapInteractionBehavior extends AbstractBehavior {
         map.pan([dx, dy]);
 
       } else if (this.gesture === 'rotate') {        // see also `RotateMode.js`
-        const pivotPoint = viewport.center();
-        const [sx, sy] = [                           // swap signs if needed
-          (currPoint[0] > pivotPoint[0]) ? 1 : -1,   // right/left of pivot
-          (currPoint[1] > pivotPoint[1]) ? -1 : 1    // above/below pivot
+        // In here, we actually use `move.coord.screen`, not `clientX`/`clientY`
+        // because we need to compare it to the map center, not the container.
+        const point = move.coord.screen;
+        const pivot = viewport.center();
+        const [sx, sy] = [                  // swap signs if needed
+          (point[0] > pivot[0]) ? 1 : -1,   // right/left of pivot
+          (point[1] > pivot[1]) ? -1 : 1    // above/below pivot
         ];
         const degrees = (sy * dx) + (sx * dy);   // Degrees rotation to apply: + clockwise, - counterclockwise
         const SPEED = 0.3;
@@ -335,7 +339,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (e._gesture === 'zoom') {
       const viewport = context.viewport;
       const t = viewport.transform();
-      const [x, y] = vecRotate(e._coord, -t.r, viewport.center());  // without rotation
+      const [x, y] = e._coord.map;
 
       // convert mouse coord to transform origin (was: d3 `transform.invert`)
       const x1 = (x - t.x) / t.k;

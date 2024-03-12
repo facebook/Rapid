@@ -174,7 +174,7 @@ export class DrawBehavior extends AbstractBehavior {
 
     // After spacebar click, user must move pointer or lift spacebar to allow another spacebar click
     if (this._spaceClickDisabled && this.lastSpace) {
-      const dist = vecLength(move.coord, this.lastSpace.coord);
+      const dist = vecLength(move.coord.screen, this.lastSpace.coord.screen);
       if (dist > FAR_TOLERANCE) {     // pointer moved far enough
         this._spaceClickDisabled = false;
       }
@@ -183,7 +183,7 @@ export class DrawBehavior extends AbstractBehavior {
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
     const down = this.lastDown;
     if (down && !down.isCancelled && down.id === move.id) {
-      const dist = vecLength(down.coord, move.coord);
+      const dist = vecLength(down.coord.screen, move.coord.screen);
       if (dist >= NEAR_TOLERANCE) {
         down.isCancelled = true;
       }
@@ -207,7 +207,7 @@ export class DrawBehavior extends AbstractBehavior {
 
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
-    const dist = vecLength(down.coord, up.coord);
+    const dist = vecLength(down.coord.screen, up.coord.screen);
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = up;  // We will accept this as a click
       this._doClick();
@@ -283,7 +283,7 @@ export class DrawBehavior extends AbstractBehavior {
 //          isActiveTarget = true;
 //          const graph = context.systems.editor.staging.graph;
 //          const viewport = context.viewport;
-//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, viewport, activeID);
+//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord.map, viewport, activeID);
 //
 //          const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 //          if (choice && choice.distance < SNAP_DIST) {
@@ -343,7 +343,7 @@ export class DrawBehavior extends AbstractBehavior {
 //          isActiveTarget = true;
 //          const graph = context.systems.editor.staging.graph;
 //          const viewport = context.viewport;
-//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, viewport, activeID);
+//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord.map, viewport, activeID);
 //
 //          const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 //          if (choice && choice.distance < SNAP_DIST) {
