@@ -88,7 +88,6 @@ describe('MapSystem', () => {
       expect(_mapSystem.zoom(4)).to.equal(_mapSystem);
       _mapSystem.zoomIn();
       window.setTimeout(() => {
-        d3.timerFlush();
         expect(_mapSystem.zoom()).to.be.closeTo(5, 1e-6);
         done();
       }, 1);
@@ -100,7 +99,6 @@ describe('MapSystem', () => {
       expect(_mapSystem.zoom(4)).to.equal(_mapSystem);
       _mapSystem.zoomOut();
       window.setTimeout(() => {
-        d3.timerFlush();
         expect(_mapSystem.zoom()).to.be.closeTo(3, 1e-6);
         done();
       }, 1);
@@ -123,7 +121,6 @@ describe('MapSystem', () => {
       expect(_mapSystem.center([10, 10])).to.equal(_mapSystem);
       expect(_mapSystem.centerEase([20, 20], 1)).to.equal(_mapSystem);
       window.setTimeout(() => {
-        d3.timerFlush();
         expect(_mapSystem.center()[0]).to.be.closeTo(20, 1e-6);
         expect(_mapSystem.center()[1]).to.be.closeTo(20, 1e-6);
         done();

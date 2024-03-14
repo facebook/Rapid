@@ -105,7 +105,7 @@ export function uiFeatureList(context) {
 
     function features() {
       const graph = editor.staging.graph;
-      const centerLoc = map.centerLoc();
+      const centerLoc = context.viewport.centerLoc();
       const q = search.property('value').toLowerCase();
       let result = [];
 

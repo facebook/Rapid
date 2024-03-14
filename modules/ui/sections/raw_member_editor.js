@@ -21,6 +21,7 @@ export function uiSectionRawMemberEditor(context) {
   const map = context.systems.map;
   const presets = context.systems.presets;
   const taginfo = context.services.taginfo;
+  const viewport = context.viewport;
 
   let _entityIDs = [];
 
@@ -76,8 +77,8 @@ export function uiSectionRawMemberEditor(context) {
 
     const graph = editor.staging.graph;
     const entity = graph.entity(d.id);
-    const mapExtent = map.extent();
-    if (!entity.intersects(mapExtent, graph)) {
+    const extent = viewport.visibleExtent();
+    if (!entity.intersects(extent, graph)) {
       // zoom to the entity if its extent is not visible now
       map.fitEntitiesEase(entity);
     }

@@ -115,12 +115,13 @@ export class VectorTileService extends AbstractSystem {
     const source = this._sources.get(template);
     if (!source) return [];
 
-    const map = this.context.systems.map;
-    const extent = map.extent();
+    const context = this.context;
+    const viewport = context.viewport;
+    const bbox = viewport.visibleExtent().bbox();
 
-    // -1 because vector tiles are 512px, so they are offset by 1 zoom level
+    // Note that because vector tiles are 512px, they are offset by -1 zoom level
     // from the main map zoom, which follows 256px and OSM convention.
-    const zoom = Math.round(map.zoom()) - 1;
+    const zoom = Math.round(viewport.zoom(undefined, 512));
 
     // Because vector tiled data can be different at different zooms,
     // the caches and indexes need to be setup "per-zoom".
@@ -129,11 +130,11 @@ export class VectorTileService extends AbstractSystem {
     for (let diff = 0; diff < 12; diff++) {
       cache = source.zoomCache.get(zoom + diff);
       if (cache) {
-        return cache.rbush.search(extent.bbox()).map(d => d.data);
+        return cache.rbush.search(bbox).map(d => d.data);
       }
       cache = source.zoomCache.get(zoom - diff);
       if (cache) {
-        return cache.rbush.search(extent.bbox()).map(d => d.data);
+        return cache.rbush.search(bbox).map(d => d.data);
       }
     }
     return [];

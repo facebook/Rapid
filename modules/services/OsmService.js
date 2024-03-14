@@ -721,10 +721,11 @@ export class OsmService extends AbstractSystem {
 
   // Load data (entities) from the API in tiles
   // GET /api/0.6/map?bbox=
-  loadTiles(viewport, callback) {
+  loadTiles(callback) {
     if (this._paused || this.getRateLimit()) return;
 
     // determine the needed tiles to cover the view
+    const viewport = this.context.viewport;
     const tiles = this._tiler
       .zoomRange(this._tileZoom)
       .getTiles(viewport)
@@ -891,7 +892,7 @@ export class OsmService extends AbstractSystem {
 
   // Load notes from the API in tiles
   // GET /api/0.6/notes?bbox=
-  loadNotes(viewport, noteOptions) {
+  loadNotes(noteOptions) {
     if (this._paused || this.getRateLimit()) return;
 
     noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
@@ -906,6 +907,7 @@ export class OsmService extends AbstractSystem {
     }, 750);
 
     // determine the needed tiles to cover the view
+    const viewport = this.context.viewport;
     const tiles = this._tiler
       .zoomRange(this._noteZoom)
       .getTiles(viewport)
@@ -1162,9 +1164,9 @@ export class OsmService extends AbstractSystem {
 
 
   // get all cached notes covering the viewport
-  notes(viewport) {
-    const bbox = viewport.extent().bbox();
-    return this._noteCache.rtree.search(bbox).map(d => d.data);
+  getNotes() {
+    const extent = this.context.viewport.visibleExtent();
+    return this._noteCache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
 

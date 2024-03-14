@@ -48,7 +48,7 @@ export function uiZoomToSelection(context) {
         _lastTransform = null;
 
       } else if (extent) {   // zoom in on extent
-        _lastTransform = map.transform();
+        _lastTransform = viewport.transform();
         const [w, h] = viewport.dimensions();
         const z = map.extentZoom(extent, [w/2, h/2]);
         map.centerZoomEase(extent.center(), z);

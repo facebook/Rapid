@@ -160,7 +160,7 @@ export class KartaviewService extends AbstractSystem {
    * @return  {Array}  Array of image data
    */
   getImages() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
@@ -171,7 +171,7 @@ export class KartaviewService extends AbstractSystem {
    * @return  {Array}  Array of sequence data
    */
   getSequences() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     let sequenceIDs = new Set();
 
     // Gather sequences for images in viewport

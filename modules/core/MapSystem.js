@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import {
-  DEG2RAD, RAD2DEG, TAU, Extent, Viewport, geoMetersToLon, geoScaleToZoom, geoZoomToScale,
+  DEG2RAD, RAD2DEG, TAU, Extent, Viewport, geoMetersToLon, geoZoomToScale,
   numClamp, numWrap, vecAdd, vecRotate, vecSubtract
 } from '@rapid-sdk/math';
 
@@ -328,7 +328,7 @@ export class MapSystem extends AbstractSystem {
       if (isNaN(lon) || !isFinite(lon)) lon = 0;
       if (isNaN(rot) || !isFinite(rot)) rot = 0;
 
-      zoom = numClamp(zoom, 2, 24);
+      zoom = numClamp(zoom, MIN_Z, MAX_Z);
       lat = numClamp(lat, -90, 90);
       lon = numClamp(lon, -180, 180);
       rot = numWrap(rot, 0, 360);
@@ -356,9 +356,13 @@ export class MapSystem extends AbstractSystem {
    * Push changes in map state to the urlhash
    */
   _updateHash() {
-    const [lon, lat] = this.center();
-    const zoom = this.zoom();
-    const rot = this.context.viewport.rotate() * RAD2DEG;
+    const context = this.context;
+    const urlhash = context.systems.urlhash;
+    const viewport = context.viewport;
+
+    const [lon, lat] = viewport.centerLoc();
+    const zoom = viewport.zoom();
+    const rot = viewport.rotate() * RAD2DEG;
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
     const EPSILON = 0.1;
 
@@ -376,7 +380,8 @@ export class MapSystem extends AbstractSystem {
     if (Math.abs(rot) > EPSILON) {
       v += `/${rotStr}`;
     }
-    this.context.systems.urlhash.setParam('map', v);
+
+    urlhash.setParam('map', v);
   }
 
 
@@ -418,7 +423,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [lon,lat] location at the center of the viewport
    */
   centerLoc() {
-    return this.context.viewport.unproject(this.centerPoint());
+    return this.context.viewport.centerLoc();
   }
 
 
@@ -487,22 +492,22 @@ export class MapSystem extends AbstractSystem {
     const context = this.context;
     const view1 = context.viewport;
     const t1 = view1.transform();
-    const loc1 = this.center();
-    const z1 = this.zoom();
+    const loc1 = view1.centerLoc();
+    const z1 = view1.zoom();
     const r1 = t1.r;
 
     if (loc2 === undefined)  loc2 = loc1;
     if (z2 === undefined)    z2 = z1;
     if (r2 === undefined)    r2 = r1;
 
-    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
-      return this;
-    }
-
     loc2[0] = numClamp(loc2[0] || 0, -180, 180);
     loc2[1] = numClamp(loc2[1] || 0, -90, 90);
     z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
     r2 = numWrap(r2 || 0, 0, TAU);
+
+    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
+      return this;
+    }
 
     const k2 = geoZoomToScale(z2, TILESIZE);
     const view2 = new Viewport(t1, view1.dimensions());
@@ -531,22 +536,22 @@ export class MapSystem extends AbstractSystem {
     const context = this.context;
     const view1 = context.viewport;
     const t1 = view1.transform();
-    const loc1 = this.center();
-    const z1 = this.zoom();
+    const loc1 = view1.centerLoc();
+    const z1 = view1.zoom();
     const r1 = t1.r;
 
     if (loc2 === undefined)  loc2 = loc1;
     if (z2 === undefined)    z2 = z1;
     if (r2 === undefined)    r2 = r1;
 
-    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
-      return new Promise.resolve(t1);
-    }
-
     loc2[0] = numClamp(loc2[0] || 0, -180, 180);
     loc2[1] = numClamp(loc2[1] || 0, -90, 90);
     z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
     r2 = numWrap(r2 || 0, 0, TAU);
+
+    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
+      return new Promise.resolve(t1);
+    }
 
     const k2 = geoZoomToScale(z2, TILESIZE);
     const view2 = new Viewport(t1, view1.dimensions());
@@ -587,7 +592,7 @@ export class MapSystem extends AbstractSystem {
    */
   zoom(z2, duration) {
     if (z2 === undefined) {
-      return Math.max(0, geoScaleToZoom(this.context.viewport.scale(), TILESIZE));
+      return this.context.viewport.zoom(undefined, TILESIZE);
     } else {
       return this.setMapParams(undefined, z2, undefined, duration ?? 0);
     }
@@ -642,6 +647,7 @@ export class MapSystem extends AbstractSystem {
   selectEntityID(entityID, fitToEntity = false) {
     const context = this.context;
     const editor = context.systems.editor;
+    const viewport = context.viewport;
 
     const gotEntity = (entity) => {
       const selectedIDs = context.selectedIDs();
@@ -652,8 +658,8 @@ export class MapSystem extends AbstractSystem {
       const currGraph = editor.staging.graph;  // may have changed by the time we get in here
       const entityExtent = entity.extent(currGraph);
       const entityZoom = Math.min(this.trimmedExtentZoom(entityExtent), 20);  // the zoom that best shows the entity
-      const isOffscreen = (entityExtent.percentContainedIn(this.extent()) < 0.8);
-      const isTooSmall = (this.zoom() < entityZoom - 2);
+      const isOffscreen = (entityExtent.percentContainedIn(viewport.visibleExtent()) < 0.8);
+      const isTooSmall = (viewport.zoom() < entityZoom - 2);
 
       // Can't reasonably see it, or we're forcing the fit.
       if (fitToEntity || isOffscreen || isTooSmall) {
@@ -712,8 +718,9 @@ export class MapSystem extends AbstractSystem {
    * @return  effective zoom
    */
   effectiveZoom() {
-    const lat = this.center()[1];
-    const z = this.zoom();
+    const viewport = this.context.viewport;
+    const lat = viewport.centerLoc()[1];
+    const z = viewport.zoom();
     const atLatitude = geoMetersToLon(1, lat);
     const atEquator = geoMetersToLon(1, 0);
     const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
@@ -729,7 +736,7 @@ export class MapSystem extends AbstractSystem {
    */
   extent(extent) {
     if (extent === undefined) {
-      return this.context.viewport.extent();
+      return this.context.viewport.visibleExtent();
     } else {
       return this.setMapParams(extent.center(), this.extentZoom(extent));
     }
@@ -747,12 +754,12 @@ export class MapSystem extends AbstractSystem {
       const headerY = 71;
       const footerY = 30;
       const pad = 10;
-      const view = this.context.viewport;
-      const [w, h] = view.dimensions();
+      const viewport = this.context.viewport;
+      const [w, h] = viewport.dimensions();
 
       return new Extent(
-        view.unproject([pad, h - footerY - pad]),  // bottom-left
-        view.unproject([w - pad, headerY + pad])   // top-right
+        viewport.unproject([pad, h - footerY - pad]),  // bottom-left
+        viewport.unproject([w - pad, headerY + pad])   // top-right
       );
     } else {
       return this.setMapParams(extent.center(), this.trimmedExtentZoom(extent));
@@ -768,11 +775,11 @@ export class MapSystem extends AbstractSystem {
    * @return zoom
    */
   extentZoom(extent, dimensions) {
-    const view = this.context.viewport;
-    const [w, h] = dimensions || view.dimensions();
+    const viewport = this.context.viewport;
+    const [w, h] = dimensions || viewport.dimensions();
 
-    const tl = view.project([extent.min[0], extent.max[1]]);
-    const br = view.project([extent.max[0], extent.min[1]]);
+    const tl = viewport.project([extent.min[0], extent.max[1]]);
+    const br = viewport.project([extent.max[0], extent.min[1]]);
 
     // Calculate maximum zoom that fits extent
     const hFactor = (br[0] - tl[0]) / w;
@@ -781,7 +788,7 @@ export class MapSystem extends AbstractSystem {
     const vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
     const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
 
-    const currZoom = this.zoom();
+    const currZoom = viewport.zoom();
     const defaultZoom = Math.max(currZoom, 19);
 
     return isFinite(zoomDiff) ? (currZoom - zoomDiff) : defaultZoom;
@@ -798,8 +805,8 @@ export class MapSystem extends AbstractSystem {
   trimmedExtentZoom(extent) {
     const trimW = 40;
     const trimH = 140;
-    const view = this.context.viewport;
-    const trimmed = vecSubtract(view.dimensions(), [trimW, trimH]);
+    const viewport = this.context.viewport;
+    const trimmed = vecSubtract(viewport.dimensions(), [trimW, trimH]);
     return this.extentZoom(extent, trimmed);
   }
 

@@ -13,17 +13,12 @@ describe('operationExtract', () => {
     tHtml(id)     { return id; }
   }
 
-  class MockMapSystem {
-    constructor() { }
-    extent() { return new sdk.Extent([-180, -90], [180, 90]); }
-  }
-
   class MockContext {
     constructor() {
+      this.viewport = new Rapid.sdk.Viewport();
       this.systems = {
         editor:   new MockEditSystem(),
         l10n:     new MockLocalizationSystem(),
-        map:      new MockMapSystem(),
         presets:  new Rapid.PresetSystem(this),
         storage:  new Rapid.StorageSystem(this)
       };

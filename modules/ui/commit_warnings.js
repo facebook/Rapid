@@ -2,7 +2,6 @@ import { uiIcon } from './icon.js';
 
 
 export function uiCommitWarnings(context) {
-  const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const validator = context.systems.validator;
 

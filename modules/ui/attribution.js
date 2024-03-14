@@ -6,6 +6,7 @@ export function uiAttribution(context) {
   const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const viewport = context.viewport;
 
   let _selection = d3_select(null);
 
@@ -63,7 +64,7 @@ export function uiAttribution(context) {
 
     let copyright = attributions.selectAll('.copyright-notice')
       .data(d => {
-        let notice = d.copyrightNotices(map.zoom(), map.extent());
+        let notice = d.copyrightNotices(viewport.zoom(), viewport.visibleExtent());
         return notice ? [notice] : [];
       });
 
@@ -85,7 +86,7 @@ export function uiAttribution(context) {
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
-    const z = map.zoom();
+    const z = viewport.zoom();
     let overlays = imagery.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');

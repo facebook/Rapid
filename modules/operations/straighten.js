@@ -10,8 +10,8 @@ export function operationStraighten(context, selectedIDs) {
   const editor = context.systems.editor;
   const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
-  const map = context.systems.map;
   const storage = context.systems.storage;
+  const viewport = context.viewport;
 
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
   const isNew = entities.every(entity => entity.isNew());
@@ -115,7 +115,7 @@ export function operationStraighten(context, selectedIDs) {
     // If the selection is not 80% contained in view
     function tooLarge() {
       const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(viewport.visibleExtent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet

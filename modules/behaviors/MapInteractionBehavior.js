@@ -117,7 +117,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // rotate
     if (e.shiftKey) {
       const ROT_AMOUNT = 5 * DEG2RAD;   // ± 5°
-      const t = map.transform();
+      const t = viewport.transform();
       let delta;
       if (e.key === 'ArrowLeft') {
         delta = -ROT_AMOUNT;

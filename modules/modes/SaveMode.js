@@ -401,8 +401,7 @@ export class SaveMode extends AbstractMode {
 
     const context = this.context;
     const l10n = context.systems.l10n;
-    const map = context.systems.map;
-    const loc = map.center();
+    const loc = context.viewport.centerLoc();
 
     const nominatim = context.services.nominatim;
     if (!nominatim) return;

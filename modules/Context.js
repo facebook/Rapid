@@ -244,16 +244,17 @@ export class Context extends EventEmitter {
   }
 
 
-  loadTiles(viewport, callback) {
+  loadTiles(callback) {
     const osm = this.services.osm;
     if (!osm) return;
 
-    const z = geoScaleToZoom(viewport.scale(), TILESIZE);
+    const k = this.viewport.scale();
+    const z = geoScaleToZoom(k, TILESIZE);
     if (z < MINZOOM) return;  // this would fire off too many API requests
 
     if (this.editable()) {
       const cid = osm.connectionID;
-      osm.loadTiles(viewport, this._afterLoad(cid, callback));
+      osm.loadTiles(this._afterLoad(cid, callback));
     }
   }
 

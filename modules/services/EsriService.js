@@ -90,7 +90,7 @@ export class EsriService extends AbstractSystem {
     const ds = this._datasets[datasetID];
     if (!ds || !ds.tree || !ds.graph) return [];
 
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return ds.tree.intersects(extent, ds.graph);
   }
 

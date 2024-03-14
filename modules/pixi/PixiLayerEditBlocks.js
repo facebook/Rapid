@@ -41,21 +41,19 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    let blocks;
+    const context = this.context;
+    let blocks = [];
 
     if (zoom >= MINZOOM) {
-      const searchRect = this.context.systems.map.extent().rectangle();
-      const locations = this.context.systems.locations;
+      const locations = context.systems.locations;
+      const searchRect = context.viewport.visibleExtent().rectangle();  // context viewport !== pixi viewport
       blocks = locations.wpblocks().bbox(searchRect);
       this.renderEditBlocks(frame, viewport, zoom, blocks);
-
-    } else {
-      blocks = [];
     }
 
     // setup the explanation
     // add a special 'api-status' line to the map footer explain the block
-    const explanationRow = this.context.container().select('.main-content > .map-footer')
+    const explanationRow = context.container().select('.main-content > .map-footer')
       .selectAll('.api-status.blocks')
       .data(blocks, d => d.id);
 

@@ -13,9 +13,10 @@ export function uiMap3dViewer(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
-  const styles = context.systems.styles;
   const map3d = context.systems.map3d;
+  const styles = context.systems.styles;
   const urlhash = context.systems.urlhash;
+  const viewport = context.viewport;
 
   function render(selection) {
     let wrap = d3_select(null);
@@ -31,20 +32,21 @@ export function uiMap3dViewer(context) {
     function updateViewport() {
       // Since the bounds are intended to wrap a box around a perfectly orthogonal view,
       // for a pitched, isometric view we need to enlarge the box a bit to display more buildings.
-      const extent = map.extent();
-      const center = extent.center();
-      extent.padByMeters(100);
-
+// bhousel comment out for now - growing this extent will not change its center?
+//      const extent = viewport.visibleExtent();
+//      const center = extent.center();
+//      extent.padByMeters(100);
+//
       map3d.maplibre?.jumpTo({
-        center: center,
-        bearing: 0,
-        zoom: map.zoom() - 3,
+        center: viewport.centerLoc(),
+        bearing: viewport.rotate(),
+        zoom: viewport.zoom() - 3,
       });
     }
 
 
     function featuresToGeoJSON() {
-      const entities = editor.intersects(map.extent());
+      const entities = editor.intersects(viewport.visibleExtent());
       const noRelationEnts = entities.filter((ent) => !ent.id.startsWith('r'));
 
       const buildingEnts = noRelationEnts.filter((ent) => {

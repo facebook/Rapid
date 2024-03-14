@@ -78,7 +78,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
     if (!service?.started) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const items = service.notes(this.context.viewport);
+    const items = service.getNotes();
 
     for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;

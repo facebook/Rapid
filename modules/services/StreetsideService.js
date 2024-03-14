@@ -212,7 +212,7 @@ export class StreetsideService extends AbstractSystem {
    * @return  {Array}  Array of image data
    */
   getImages() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
@@ -224,7 +224,7 @@ export class StreetsideService extends AbstractSystem {
    */
   getSequences() {
     const cache = this._cache;
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     const result = new Map();  // Map(sequenceID -> sequence)
 
     // Gather sequences for the bubbles in viewport

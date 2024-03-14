@@ -97,7 +97,7 @@ export class OsmoseService extends AbstractSystem {
    * @return  {Array}  Array of data
    */
   getData() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 

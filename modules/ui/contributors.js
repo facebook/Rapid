@@ -9,6 +9,7 @@ export function uiContributors(context) {
     const l10n = context.systems.l10n;
     const map = context.systems.map;
     const osm = context.services.osm;
+    const viewport = context.viewport;
 
     var debouncedUpdate = debounce(function() { update(); }, 1000);
     var limit = 4;
@@ -20,7 +21,7 @@ export function uiContributors(context) {
         if (!osm) return;
 
         let users = {};
-        let entities = editor.intersects(map.extent());
+        let entities = editor.intersects(viewport.visibleExtent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;
@@ -51,7 +52,7 @@ export function uiContributors(context) {
             count.append('a')
                 .attr('target', '_blank')
                 .attr('href', function() {
-                    return osm.changesetsURL(map.center(), map.zoom());
+                    return osm.changesetsURL(viewport.centerLoc(), viewport.zoom());
                 })
                 .html(othersNum);
 

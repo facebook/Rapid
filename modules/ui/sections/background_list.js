@@ -14,9 +14,9 @@ import { uiSection } from '../section.js';
 
 
 export function uiSectionBackgroundList(context) {
-  const map = context.systems.map;
-  const l10n = context.systems.l10n;
   const imagery = context.systems.imagery;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
   const storage = context.systems.storage;
 
   const section = uiSection(context, 'background-list')
@@ -206,7 +206,7 @@ export function uiSectionBackgroundList(context) {
 
   function drawListItems(selection) {
     const sources = imagery
-      .sources(map.extent(), map.zoom())
+      .visibleSources()
       .filter(isNotOverlay);
 
     const layerLinks = selection.selectAll('li')
@@ -341,7 +341,7 @@ export function uiSectionBackgroundList(context) {
 
   function chooseBackgroundAtOffset(offset) {
     const backgrounds = imagery
-      .sources(map.extent(), map.zoom())
+      .visibleSources()
       .filter(isNotOverlay);
 
     backgrounds.sort(sortSources);

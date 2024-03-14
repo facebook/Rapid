@@ -7,6 +7,7 @@ import { uiTooltip } from './tooltip.js';
 export function uiBearing(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const viewport = context.viewport;
 
   const tooltip = uiTooltip(context);
   let _selection;
@@ -25,7 +26,7 @@ export function uiBearing(context) {
   function render() {
     if (!_selection) return;  // called too early
 
-    const bearing = map.transform().r;
+    const bearing = viewport.rotate();
     const isNorthUp = Math.abs(bearing) < 0.001;
 
     let button = _selection.selectAll('button.bearing')
@@ -52,7 +53,7 @@ export function uiBearing(context) {
       .on('click', d3_event => {
         d3_event.preventDefault();
         if (isNorthUp) return;
-        const t = context.viewport.transform();
+        const t = viewport.transform();
         map.transformEase(Object.assign(t, { r: 0 }));
       });
 

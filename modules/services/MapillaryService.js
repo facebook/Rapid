@@ -163,7 +163,7 @@ export class MapillaryService extends AbstractSystem {
   getData(datasetID) {
     if (!['images', 'signs', 'points'].includes(datasetID)) return [];
 
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     const cache = this._mlyCache[datasetID];
     return cache.rtree.search(extent.bbox()).map(d => d.data);
   }
@@ -175,7 +175,7 @@ export class MapillaryService extends AbstractSystem {
    * @return  {Array}
    */
   getSequences() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     let result = new Map();  // Map(sequenceID -> Array of LineStrings)
 
     for (const box of this._mlyCache.images.rtree.search(extent.bbox())) {

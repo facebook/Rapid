@@ -318,13 +318,13 @@ export class PixiRenderer extends EventEmitter {
   setTransformAsync(t, duration = 0) {
     const now = window.performance.now();
     const context = this.context;
-    const view = context.viewport;
-    const tCurr = view.transform();
+    const viewport = context.viewport;
+    const tCurr = viewport.transform();
     let promise;
 
     // If already easing, resolve before starting a new one
     if (this._transformEase) {
-      view.transform(tCurr);
+      viewport.transform(tCurr);
       this._transformEase.resolve(tCurr);
       this._transformEase = null;
     }
@@ -343,7 +343,7 @@ export class PixiRenderer extends EventEmitter {
       };
 
     } else {   // change immediately
-      view.transform(t);
+      viewport.transform(t);
       promise = Promise.resolve(t);
     }
 
@@ -542,7 +542,7 @@ export class PixiRenderer extends EventEmitter {
   /* renders some debug shapes */
   _renderDebug() {
     const context = this.context;
-    const map = context.systems.map;
+    const mapViewport = context.viewport;
     const origin = this.origin;
     const stage = this.stage;
 
@@ -574,7 +574,7 @@ export class PixiRenderer extends EventEmitter {
       debug2.zIndex = 102;
       origin.addChild(debug2);
     }
-    const centerLoc = this.pixiViewport.project(map.centerLoc());
+    const centerLoc = this.pixiViewport.project(mapViewport.centerLoc());
     debug2.position.set(centerLoc[0], centerLoc[1]);
 
 

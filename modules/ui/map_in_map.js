@@ -10,6 +10,7 @@ import { utilSetTransform } from '../util/index.js';
 export function uiMapInMap(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const viewMain = context.viewport;
 
   function mapInMap(selection) {
     let viewMini = new Viewport();
@@ -102,7 +103,7 @@ export function uiMapInMap(context) {
       _isTransformed = true;
       _tCurr = d3_zoomIdentity.translate(x, y).scale(k);
 
-      const zMain = geoScaleToZoom(context.viewport.scale());
+      const zMain = geoScaleToZoom(viewMain.scale());
       const zMini = geoScaleToZoom(k);
 
       _zDiff = zMain - zMini;
@@ -130,8 +131,8 @@ export function uiMapInMap(context) {
      * Update the minimap viewport and d3-zoom transform
      */
     function updateViewport() {
-      const loc = map.center();
-      const tMain = context.viewport.transform();
+      const loc = viewMain.centerLoc();
+      const tMain = viewMain.transform();
       const zMain = geoScaleToZoom(tMain.k);
       const zMini = Math.max(zMain - _zDiff, 0.5);
       const kMini = geoZoomToScale(zMini);
@@ -167,7 +168,7 @@ export function uiMapInMap(context) {
      * Recalculates the position and size of the bounding box rectangle on the minimap
      */
     function updateBoundingBox() {
-      const bbox = map.extent().bbox();
+      const bbox = viewMain.visibleExtent().bbox();
       const topLeftPoint = viewMini.project([bbox.minX, bbox.maxY]);
       const bottomRightPoint = viewMini.project([bbox.maxX, bbox.minY]);
       const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
