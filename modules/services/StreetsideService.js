@@ -62,6 +62,7 @@ export class StreetsideService extends AbstractSystem {
     this._setupCanvas = this._setupCanvas.bind(this);
 
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
   }
 
 
@@ -202,6 +203,8 @@ export class StreetsideService extends AbstractSystem {
       metadataPromise:  null
     };
 
+    this.lastv = null;
+
     return Promise.resolve();
   }
 
@@ -246,22 +249,25 @@ export class StreetsideService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles() {
-    // Determine the needed tiles to cover the view
-    // By default: request 2 nearby tiles so we can connect sequences.
-    const margin = 2;
     const viewport = this.context.viewport;
-    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(viewport).tiles;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
 
-    // Abort inflight requests that are no longer needed
+    // Determine the tiles needed to cover the view..
+    // By default: request 2 nearby tiles so we can connect sequences.
+    const MARGIN = 2;
+    const tiles = this._tiler.zoomRange(TILEZOOM).margin(MARGIN).getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed..
     for (const [tileID, inflight] of this._cache.inflight) {
-      const needed = needTiles.find(tile => tile.id === tileID);
+      const needed = tiles.find(tile => tile.id === tileID);
       if (!needed) {
         inflight.controller.abort();
       }
     }
 
-    // Fetch files that are needed
-    for (const tile of needTiles) {
+    // Issue new requests..
+    for (const tile of tiles) {
       const tileID = tile.id;
       if (this._cache.loaded.has(tileID) || this._cache.inflight.has(tileID)) continue;
 
@@ -270,8 +276,10 @@ export class StreetsideService extends AbstractSystem {
     }
   }
 
-  get viewerShowing()         { return this._showing; }
 
+  get viewerShowing() {
+    return this._showing;
+  }
 
 
   /**

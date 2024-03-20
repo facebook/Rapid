@@ -650,8 +650,8 @@ describe('OsmService', () => {
   describe('#caches', () => {
     it('loads reset caches', () => {
       const caches = _osm.caches();
-      expect(caches.tile).to.have.all.keys(['toLoad','loaded','inflight','seen','rtree']);
-      expect(caches.note).to.have.all.keys(['toLoad','loaded','inflight','inflightPost','note','closed','rtree']);
+      expect(caches.tile).to.have.all.keys(['lastv','toLoad','loaded','inflight','seen','rtree']);
+      expect(caches.note).to.have.all.keys(['lastv','toLoad','loaded','inflight','inflightPost','note','closed','rtree']);
       expect(caches.user).to.have.all.keys(['toLoad','user']);
     });
 

@@ -60,7 +60,8 @@ export class MapWithAIService extends AbstractSystem {
           id: datasetID,
           graph: graph,
           tree: tree,
-          cache: cache
+          cache: cache,
+          lastv: null
         };
         this._datasets[datasetID] = ds;
       });
@@ -93,6 +94,7 @@ export class MapWithAIService extends AbstractSystem {
       if (ds.cache.inflight) {
         Object.values(ds.cache.inflight).forEach(controller => this._abortRequest(controller));
       }
+      ds.lastv = null;
       ds.graph = new Graph();
       ds.tree = new Tree(ds.graph);
       ds.cache = {
@@ -153,16 +155,22 @@ export class MapWithAIService extends AbstractSystem {
         id: datasetID,
         graph: graph,
         tree: tree,
-        cache: cache
+        cache: cache,
+        lastv: null
       };
       this._datasets[datasetID] = ds;
     }
 
     const locations = this.context.systems.locations;
+
     const viewport = this.context.viewport;
+    if (ds.lastv === viewport.v) return;  // exit early if the view is unchanged
+    ds.lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
     const tiles = this._tiler.getTiles(viewport).tiles;
 
-    // abort inflight requests that are no longer needed
+    // Abort inflight requests that are no longer needed..
     for (const k of Object.keys(cache.inflight)) {
       const wanted = tiles.find(tile => tile.id === k);
       if (!wanted) {
@@ -174,7 +182,7 @@ export class MapWithAIService extends AbstractSystem {
     for (const tile of tiles) {
       if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
 
-      // exit if this tile covers a blocked region (all corners are blocked)
+      // Exit if this tile covers a blocked region (all corners are blocked)
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
       const tileBlocked = corners.every(loc => locations.blocksAt(loc).length);
       if (tileBlocked) {

@@ -46,6 +46,7 @@ export class ImproveOsmService extends AbstractSystem {
 
     this._cache = null;   // cache gets replaced on init/reset
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
   }
 
 
@@ -94,6 +95,9 @@ export class ImproveOsmService extends AbstractSystem {
       closed: {},
       rtree: new RBush()
     };
+
+    this._lastv = null;
+
     return Promise.resolve();
   }
 
@@ -120,12 +124,17 @@ export class ImproveOsmService extends AbstractSystem {
       zoom: '19' // Use a high zoom so that clusters aren't returned
     };
 
-    // determine the needed tiles to cover the view
     const context = this.context;
     const l10n = context.systems.l10n;
-    const tiles = this._tiler.getTiles(context.viewport).tiles;
 
-    // abort inflight requests that are no longer needed
+    const viewport = context.viewport;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
+    const tiles = this._tiler.getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed..
     this._abortUnwantedRequests(this._cache, tiles);
 
     // issue new requests..

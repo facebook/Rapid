@@ -63,6 +63,7 @@ export class KeepRightService extends AbstractSystem {
 
     this._cache = null;   // cache gets replaced on init/reset
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
   }
 
 
@@ -110,6 +111,8 @@ export class KeepRightService extends AbstractSystem {
       rtree: new RBush()
     };
 
+    this._lastv = null;
+
     return Promise.resolve();
   }
 
@@ -136,14 +139,17 @@ export class KeepRightService extends AbstractSystem {
       ch: KR_RULES
     };
 
-    // determine the needed tiles to cover the view
     const viewport = this.context.viewport;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
     const tiles = this._tiler.getTiles(viewport).tiles;
 
-    // abort inflight requests that are no longer needed
+    // Abort inflight requests that are no longer needed..
     this._abortUnwantedRequests(this._cache, tiles);
 
-    // issue new requests..
+    // Issue new requests..
     for (const tile of tiles) {
       if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
 

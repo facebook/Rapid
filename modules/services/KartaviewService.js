@@ -41,7 +41,9 @@ export class KartaviewService extends AbstractSystem {
     this._waitingForPhotoID = null;
     this._startPromise = null;
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
     this.fetchedSequences = new Set(); // Initialize an empty set
+
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._zoomPan = this._zoomPan.bind(this);
   }
@@ -149,6 +151,7 @@ export class KartaviewService extends AbstractSystem {
     };
 
     this._selectedImage = null;
+    this._lastv = null;
 
     return Promise.resolve();
   }
@@ -209,12 +212,13 @@ export class KartaviewService extends AbstractSystem {
    */
   loadTiles() {
     const viewport = this.context.viewport;
-    const currZoom = viewport.transform.zoom;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
 
-    // Determine the needed tiles to cover the view
+    // Determine the tiles needed to cover the view..
     const needTiles = this._tiler.getTiles(viewport).tiles;
 
-    // Abort inflight requests that are no longer needed
+    // Abort inflight requests that are no longer needed..
     for (const [k, inflight] of this._cache.inflight) {
       const needed = needTiles.find(tile => k.indexOf(tile.id) === 0);
       if (!needed) {
@@ -224,7 +228,7 @@ export class KartaviewService extends AbstractSystem {
 
     // Fetch files that are needed
     for (const tile of needTiles) {
-      this._loadNextTilePage(currZoom, tile);
+      this._loadNextTilePage(viewport.transform.zoom, tile);
     }
   }
 

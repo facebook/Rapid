@@ -38,9 +38,9 @@ export class OsmService extends AbstractSystem {
     this._wwwroot = 'https://www.openstreetmap.org';
     this._apiroot = 'https://api.openstreetmap.org';
 
-    this._tileCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, seen: new Set(), rtree: new RBush() };
-    this._noteCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
-    this._userCache = { toLoad: new Set(), user: {} };
+    this._tileCache = {};
+    this._noteCache = {};
+    this._userCache = {};
     this._changeset = {};
 
     this._tiler = new Tiler();
@@ -130,14 +130,44 @@ export class OsmService extends AbstractSystem {
     this._userChangesets = null;
     this._userDetails = null;
 
-    Object.values(this._tileCache.inflight).forEach(this._abortRequest);
-    Object.values(this._noteCache.inflight).forEach(this._abortRequest);
-    Object.values(this._noteCache.inflightPost).forEach(this._abortRequest);
-    if (this._changeset.inflight) this._abortRequest(this._changeset.inflight);
+    if (this._tileCache.inflight) {
+      Object.values(this._tileCache.inflight).forEach(this._abortRequest);
+    }
+    if (this._noteCache.inflight) {
+      Object.values(this._noteCache.inflight).forEach(this._abortRequest);
+    }
+    if (this._noteCache.inflightPost) {
+      Object.values(this._noteCache.inflightPost).forEach(this._abortRequest);
+    }
+    if (this._changeset.inflight) {
+      this._abortRequest(this._changeset.inflight);
+    }
 
-    this._tileCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, seen: new Set(), rtree: new RBush() };
-    this._noteCache = { toLoad: new Set(), loaded: new Set(), inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
-    this._userCache = { toLoad: new Set(), user: {} };
+    this._tileCache = {
+      lastv: null,
+      toLoad: new Set(),
+      loaded: new Set(),
+      inflight: {},
+      seen: new Set(),
+      rtree: new RBush()
+    };
+
+    this._noteCache = {
+      lastv: null,
+      toLoad: new Set(),
+      loaded: new Set(),
+      inflight: {},
+      inflightPost: {},
+      note: {},
+      closed: {},
+      rtree: new RBush()
+    };
+
+    this._userCache = {
+      toLoad: new Set(),
+      user: {}
+    };
+
     this._changeset = {};
 
     return Promise.resolve();
@@ -724,22 +754,22 @@ export class OsmService extends AbstractSystem {
   loadTiles(callback) {
     if (this._paused || this.getRateLimit()) return;
 
-    // determine the needed tiles to cover the view
-    const viewport = this.context.viewport;
-    const tiles = this._tiler
-      .zoomRange(this._tileZoom)
-      .getTiles(viewport)
-      .tiles;
-
-    // Abort inflight requests that are no longer needed
     const cache = this._tileCache;
+    const viewport = this.context.viewport;
+    if (cache.lastv === viewport.v) return;  // exit early if the view is unchanged
+    cache.lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
+    const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed..
     const hadRequests = this._hasInflightRequests(cache);
     this._abortUnwantedRequests(cache, tiles);
     if (hadRequests && !this._hasInflightRequests(cache)) {
       this.emit('loaded');    // stop the spinner
     }
 
-    // issue new requests..
+    // Issue new requests..
     for (const tile of tiles) {
       this.loadTile(tile, callback);
     }
@@ -819,7 +849,7 @@ export class OsmService extends AbstractSystem {
     const cache = this._tileCache;
     if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) return;
 
-    // exit if this tile covers a blocked region (all corners are blocked)
+    // Exit if this tile covers a blocked region (all corners are blocked)
     const locationSystem = this.context.systems.locations;
     const corners = tile.wgs84Extent.polygon().slice(0, 4);
     const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
@@ -866,7 +896,7 @@ export class OsmService extends AbstractSystem {
   }
 
 
-  // load the tile that covers the given `loc`
+  // Load the tile that covers the given `loc`
   loadTileAtLoc(loc, callback) {
     if (this._paused || this.getRateLimit()) return;
     const cache = this._tileCache;
@@ -906,17 +936,17 @@ export class OsmService extends AbstractSystem {
       that.loadUsers(uids, function() {});  // eagerly load user details
     }, 750);
 
-    // determine the needed tiles to cover the view
     const viewport = this.context.viewport;
-    const tiles = this._tiler
-      .zoomRange(this._noteZoom)
-      .getTiles(viewport)
-      .tiles;
+    if (cache.lastv === viewport.v) return;  // exit early if the view is unchanged
+    cache.lastv = viewport.v;
 
-    // abort inflight requests that are no longer needed
+    // Determine the tiles needed to cover the view..
+    const tiles = this._tiler.zoomRange(this._noteZoom).getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed
     this._abortUnwantedRequests(cache, tiles);
 
-    // issue new requests..
+    // Issue new requests..
     for (const tile of tiles) {
       if (cache.loaded.has(tile.id) || cache.inflight[tile.id]) continue;
 

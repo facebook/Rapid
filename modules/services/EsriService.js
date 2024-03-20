@@ -74,6 +74,7 @@ export class EsriService extends AbstractSystem {
       ds.graph = new Graph();
       ds.tree = new Tree(ds.graph);
       ds.cache = { inflight: {}, loaded: {}, seen: {} };
+      ds.lastv = null;
     }
 
     return Promise.resolve();
@@ -110,10 +111,15 @@ export class EsriService extends AbstractSystem {
 
     const cache = ds.cache;
     const locations = this.context.systems.locations;
+
     const viewport = this.context.viewport;
+    if (ds.lastv === viewport.v) return;  // exit early if the view is unchanged
+    ds.lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
     const tiles = this._tiler.getTiles(viewport).tiles;
 
-    // abort inflight requests that are no longer needed
+    // Abort inflight requests that are no longer needed..
     for (const k of Object.keys(cache.inflight)) {
       const wanted = tiles.find(tile => tile.id === k);
       if (!wanted) {
@@ -282,6 +288,7 @@ export class EsriService extends AbstractSystem {
     ds.graph = new Graph();
     ds.tree = new Tree(ds.graph);
     ds.cache = { inflight: {}, loaded: {}, seen: {} };
+    ds.lastv = null;
 
     // cleanup the `licenseInfo` field by removing styles  (not used currently)
     let license = d3_select(document.createElement('div'));

@@ -88,6 +88,7 @@ export class VectorTileService extends AbstractSystem {
         cache.rbush.clear();
       }
       source.zoomCache.clear();
+      source.lastv = null;
     }
     this._sources.clear();
 
@@ -158,19 +159,23 @@ export class VectorTileService extends AbstractSystem {
           }
         }
 
-        // Determine the needed tiles to cover the view
         const viewport = this.context.viewport;
-        const needTiles = this._tiler.getTiles(viewport).tiles;
+        if (source.lastv === viewport.v) return;  // exit early if the view is unchanged
+        source.lastv = viewport.v;
 
-        // Abort inflight requests that are no longer needed
+        // Determine the tiles needed to cover the view..
+        const tiles = this._tiler.getTiles(viewport).tiles;
+
+        // Abort inflight requests that are no longer needed..
         for (const [tileID, controller] of source.inflight) {
-          const needed = needTiles.find(tile => tile.id === tileID);
+          const needed = tiles.find(tile => tile.id === tileID);
           if (!needed) {
             controller.abort();
           }
         }
 
-        const fetches = needTiles.map(tile => this._loadTileAsync(source, tile));
+        // Issue new requests..
+        const fetches = tiles.map(tile => this._loadTileAsync(source, tile));
         return Promise.all(fetches)
           .then(() => this._processMergeQueue(source));
       });
@@ -199,7 +204,8 @@ export class VectorTileService extends AbstractSystem {
         template:     template,
         inflight:     new Map(),   // Map(tileID -> AbortController)
         loaded:       new Map(),   // Map(tileID -> Tile)
-        zoomCache:    new Map()    // Map(zoom -> Object zoomCache)
+        zoomCache:    new Map(),   // Map(zoom -> Object zoomCache)
+        lastv:        null         // viewport version last time we fetched data
       };
 
       this._sources.set(template, source);
