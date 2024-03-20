@@ -60,24 +60,6 @@ export function uiAttribution(context) {
           .text(terms_text);
       })
       .merge(attributions);
-
-
-    let copyright = attributions.selectAll('.copyright-notice')
-      .data(d => {
-        let notice = d.copyrightNotices(viewport.transform.zoom, viewport.visibleExtent());
-        return notice ? [notice] : [];
-      });
-
-    copyright.exit()
-      .remove();
-
-    copyright = copyright.enter()
-      .append('span')
-      .attr('class', 'copyright-notice')
-      .merge(copyright);
-
-    copyright
-      .text(String);
   }
 
 

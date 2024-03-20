@@ -84,10 +84,6 @@ export class ImagerySource {
     return this._id === 'mapbox_locator_overlay';
   }
 
-  copyrightNotices() {
-    /* noop */
-  }
-
 
   getMetadata(loc, tileCoord, callback) {
     const vintage = {
