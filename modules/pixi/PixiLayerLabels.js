@@ -207,7 +207,7 @@ return;
 
     // The label group should be kept unrotated so that it stays screen-up not north-up.
     // The origin of this container will still be the origin of the Pixi scene.
-    const bearing = viewport.rotate();  // map might not be north-up
+    const bearing = viewport.transform.rotation;  // map might not be north-up
     const groupContainer = this.scene.groups.get('labels');
     groupContainer.rotation = -bearing;
 
@@ -217,7 +217,7 @@ return;
 
       // Reset labels
       const tPrev = this._tPrev;
-      const tCurr = viewport.transform();
+      const tCurr = viewport.transform;
       if (tCurr.k !== tPrev.k || tCurr.r !== tPrev.r) {  // zoom or rotation changed
         this.reset();                                    // reset all labels
       } else {
@@ -331,7 +331,7 @@ return;
    */
   gatherAvoids(viewport) {
     const renderer = this.renderer.stage.position;
-    const bearing = viewport.rotate();  // map might not be north-up
+    const bearing = viewport.transform.rotation;  // map might not be north-up
     const avoidObject = _avoidObject.bind(this);
 
     // Gather the containers that have avoidable stuff on them
@@ -562,7 +562,7 @@ if (doDebug) {
 }
 
     // Apply anti-rotation to keep labels facing up
-    const bearing = viewport.rotate();  // map might not be north-up
+    const bearing = viewport.transform.rotation;  // map might not be north-up
     const localRect = labelObj.getLocalBounds();
     // labelObj.pivot.set(localRect.x, 0);  // pivot around left, not center
     labelObj.rotation = -bearing;
@@ -799,7 +799,7 @@ if (doDebug) {
 
       if (!coords.length) return;  // shouldn't happen, min numBoxes is 2 boxes
 
-      const bearing = viewport.rotate();  // map might not be north-up
+      const bearing = viewport.transform.rotation;  // map might not be north-up
       const sum = coords.reduce((acc, coord) => vecAdd(acc, coord), [0,0]);
       const origin = vecScale(sum, 1 / coords.length);  // pick local origin as the average of the points
       let angle = vecAngle(coords.at(0), coords.at(-1)) + bearing;

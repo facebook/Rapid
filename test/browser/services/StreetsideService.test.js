@@ -4,9 +4,9 @@ describe('StreetsideService', () => {
   class MockContext {
     constructor() {
       this.systems = { };
-      this.viewport = new sdk.Viewport()
-        .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
-        .dimensions([64, 64]);
+      this.viewport = new sdk.Viewport();
+      this.viewport.transform = { x: -116508, y: 0, k: sdk.geoZoomToScale(14) };  // [10°, 0°]
+      this.viewport.dimensions = [64, 64];
     }
     deferredRedraw() { }
   }
@@ -78,7 +78,7 @@ describe('StreetsideService', () => {
 
 
     it('does not load tiles around Null Island', done => {
-      _streetside.context.viewport.translate([0, 0]);     // move map to Null Island
+      _streetside.context.viewport.transform.translation = [0, 0];  // move map to Null Island
 
       const spy = sinon.spy();
       _streetside.on('loadedData', spy);

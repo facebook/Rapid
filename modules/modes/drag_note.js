@@ -66,7 +66,7 @@ export function modeDragNote(context) {
         _lastLoc = viewport.unproject(point);
 
         doMove(d3_event);
-        var nudge = geomViewportNudge(point, viewport.dimensions());
+        var nudge = geomViewportNudge(point, viewport.dimensions);
         if (nudge) {
             startNudge(d3_event, nudge);
         } else {

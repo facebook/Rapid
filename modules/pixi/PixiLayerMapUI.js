@@ -130,7 +130,7 @@ groupContainer.addChild(container);
    */
   render(frame, viewport) {
     // redraw if zoom changes
-    const k = viewport.scale();
+    const k = viewport.transform.scale;
     if (k !== this._oldk) {
       this._geolocationDirty = true;
       this._lassoPolygonDirty = true;

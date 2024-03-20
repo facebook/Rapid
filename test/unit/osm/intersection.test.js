@@ -1634,7 +1634,7 @@ describe('osmIntersection', () => {
 
 
 describe('osmInferRestriction', () => {
-  const viewport = new Rapid.sdk.Viewport().scale(250 / Math.PI);
+  const viewport = new Rapid.sdk.Viewport({ k: 250 / Math.PI });
 
   it('infers the restriction type based on the turn angle', () => {
     //

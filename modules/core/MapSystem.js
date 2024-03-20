@@ -20,7 +20,6 @@ const MAX_Z = 24;
  * Supports `pause()` / `resume()` - when paused, the the code in PixiRenderer.js will not render
  *
  * Properties available:
- *   `dimensions`      The pixel dimensions of the map viewport [width,height]
  *   `supersurface`    D3 selection to the parent `div` "supersurface"
  *   `surface`         D3 selection to the sibling `canvas` "surface"
  *   `overlay`         D3 selection to the sibling `div` "overlay"
@@ -361,27 +360,23 @@ export class MapSystem extends AbstractSystem {
     const viewport = context.viewport;
 
     const [lon, lat] = viewport.centerLoc();
-    const zoom = viewport.zoom();
-    const rot = viewport.rotate() * RAD2DEG;
+    const transform = viewport.transform;
+    const zoom = transform.zoom;
+    const rot = transform.r * RAD2DEG;
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
     const EPSILON = 0.1;
-
-    if (isNaN(zoom) || !isFinite(zoom)) return;
-    if (isNaN(lat) || !isFinite(lat)) return;
-    if (isNaN(lon) || !isFinite(lon)) return;
-    if (isNaN(rot) || !isFinite(rot)) return;
 
     const zoomStr = zoom.toFixed(2);
     const latStr = lat.toFixed(precision);
     const lonStr = lon.toFixed(precision);
     const rotStr = rot.toFixed(1);
 
-    let v = `${zoomStr}/${latStr}/${lonStr}`;
+    let val = `${zoomStr}/${latStr}/${lonStr}`;
     if (Math.abs(rot) > EPSILON) {
-      v += `/${rotStr}`;
+      val += `/${rotStr}`;
     }
 
-    urlhash.setParam('map', v);
+    urlhash.setParam('map', val);
   }
 
 
@@ -460,7 +455,7 @@ export class MapSystem extends AbstractSystem {
    */
   transform(t2, duration) {
     if (t2 === undefined) {
-      return this.context.viewport.transform();
+      return this.context.viewport.transform;
     }
     this._renderer.setTransformAsync(t2, duration ?? 0);
     return this;
@@ -491,14 +486,15 @@ export class MapSystem extends AbstractSystem {
   setMapParams(loc2, z2, r2, duration = 0) {
     const context = this.context;
     const view1 = context.viewport;
-    const t1 = view1.transform();
+    const center = view1.center();
     const loc1 = view1.centerLoc();
-    const z1 = view1.zoom();
+    const t1 = view1.transform;
+    const z1 = t1.zoom;
     const r1 = t1.r;
 
-    if (loc2 === undefined)  loc2 = loc1;
-    if (z2 === undefined)    z2 = z1;
-    if (r2 === undefined)    r2 = r1;
+    if (loc2 === undefined) loc2 = loc1;
+    if (z2 === undefined)   z2 = z1;
+    if (r2 === undefined)   r2 = r1;
 
     loc2[0] = numClamp(loc2[0] || 0, -180, 180);
     loc2[1] = numClamp(loc2[1] || 0, -90, 90);
@@ -510,12 +506,11 @@ export class MapSystem extends AbstractSystem {
     }
 
     const k2 = geoZoomToScale(z2, TILESIZE);
-    const view2 = new Viewport(t1, view1.dimensions());
-    view2.scale(k2);
+    const view2 = new Viewport(t1, view1.dimensions);
+    view2.transform.scale = k2;
 
-    let xy = view2.translate();
+    let xy = view2.transform.translation;
     const point = view2.project(loc2);
-    const center = this.centerPoint();
     const delta = vecSubtract(center, point);
     xy = vecAdd(xy, delta);
 
@@ -535,14 +530,15 @@ export class MapSystem extends AbstractSystem {
   setMapParamsAsync(loc2, z2, r2, duration = 0) {
     const context = this.context;
     const view1 = context.viewport;
-    const t1 = view1.transform();
+    const center = view1.center();
     const loc1 = view1.centerLoc();
-    const z1 = view1.zoom();
+    const t1 = view1.transform;
+    const z1 = t1.zoom;
     const r1 = t1.r;
 
-    if (loc2 === undefined)  loc2 = loc1;
-    if (z2 === undefined)    z2 = z1;
-    if (r2 === undefined)    r2 = r1;
+    if (loc2 === undefined) loc2 = loc1;
+    if (z2 === undefined)   z2 = z1;
+    if (r2 === undefined)   r2 = r1;
 
     loc2[0] = numClamp(loc2[0] || 0, -180, 180);
     loc2[1] = numClamp(loc2[1] || 0, -90, 90);
@@ -554,12 +550,11 @@ export class MapSystem extends AbstractSystem {
     }
 
     const k2 = geoZoomToScale(z2, TILESIZE);
-    const view2 = new Viewport(t1, view1.dimensions());
-    view2.scale(k2);
+    const view2 = new Viewport(t1, view1.dimensions);
+    view2.transform.scale = k2;
 
-    let xy = view2.translate();
+    let xy = view2.transform.translation;
     const point = view2.project(loc2);
-    const center = this.centerPoint();
     const delta = vecSubtract(center, point);
     xy = vecAdd(xy, delta);
 
@@ -592,7 +587,7 @@ export class MapSystem extends AbstractSystem {
    */
   zoom(z2, duration) {
     if (z2 === undefined) {
-      return this.context.viewport.zoom(undefined, TILESIZE);
+      return this.context.viewport.transform.zoom;
     } else {
       return this.setMapParams(undefined, z2, undefined, duration ?? 0);
     }
@@ -607,7 +602,7 @@ export class MapSystem extends AbstractSystem {
    * @return this
    */
   pan(delta, duration = 0) {
-    const t = this.context.viewport.transform();
+    const t = this.context.viewport.transform;
     const [dx, dy] = vecRotate(delta, -t.r, [0, 0]);   // remove any rotation
     return this.transform({ x: t.x + dx, y: t.y + dy, k: t.k, r: t.r }, duration);
   }
@@ -659,7 +654,7 @@ export class MapSystem extends AbstractSystem {
       const entityExtent = entity.extent(currGraph);
       const entityZoom = Math.min(this.trimmedExtentZoom(entityExtent), 20);  // the zoom that best shows the entity
       const isOffscreen = (entityExtent.percentContainedIn(viewport.visibleExtent()) < 0.8);
-      const isTooSmall = (viewport.zoom() < entityZoom - 2);
+      const isTooSmall = (viewport.transform.zoom < entityZoom - 2);
 
       // Can't reasonably see it, or we're forcing the fit.
       if (fitToEntity || isOffscreen || isTooSmall) {
@@ -720,7 +715,7 @@ export class MapSystem extends AbstractSystem {
   effectiveZoom() {
     const viewport = this.context.viewport;
     const lat = viewport.centerLoc()[1];
-    const z = viewport.zoom();
+    const z = viewport.transform.zoom;
     const atLatitude = geoMetersToLon(1, lat);
     const atEquator = geoMetersToLon(1, 0);
     const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
@@ -755,7 +750,7 @@ export class MapSystem extends AbstractSystem {
       const footerY = 30;
       const pad = 10;
       const viewport = this.context.viewport;
-      const [w, h] = viewport.dimensions();
+      const [w, h] = viewport.dimensions;
 
       return new Extent(
         viewport.unproject([pad, h - footerY - pad]),  // bottom-left
@@ -776,7 +771,7 @@ export class MapSystem extends AbstractSystem {
    */
   extentZoom(extent, dimensions) {
     const viewport = this.context.viewport;
-    const [w, h] = dimensions || viewport.dimensions();
+    const [w, h] = dimensions || viewport.dimensions;
 
     const tl = viewport.project([extent.min[0], extent.max[1]]);
     const br = viewport.project([extent.max[0], extent.min[1]]);
@@ -788,7 +783,7 @@ export class MapSystem extends AbstractSystem {
     const vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
     const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
 
-    const currZoom = viewport.zoom();
+    const currZoom = viewport.transform.zoom;
     const defaultZoom = Math.max(currZoom, 19);
 
     return isFinite(zoomDiff) ? (currZoom - zoomDiff) : defaultZoom;
@@ -806,7 +801,7 @@ export class MapSystem extends AbstractSystem {
     const trimW = 40;
     const trimH = 140;
     const viewport = this.context.viewport;
-    const trimmed = vecSubtract(viewport.dimensions(), [trimW, trimH]);
+    const trimmed = vecSubtract(viewport.dimensions, [trimW, trimH]);
     return this.extentZoom(extent, trimmed);
   }
 

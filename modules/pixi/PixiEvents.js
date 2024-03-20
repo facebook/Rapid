@@ -239,7 +239,7 @@ export class PixiEvents extends EventEmitter {
     };
 
     const viewport = this.context.viewport;
-    const r = viewport.rotate();
+    const r = viewport.transform.r;
     if (r) {
       this.coord.map = vecRotate(this.coord.screen, -r, viewport.center());  // remove rotation
     }

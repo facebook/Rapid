@@ -118,7 +118,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const context = this.context;
     const storage = context.systems.storage;
     const wireframeMode = context.systems.map.wireframeMode;
-    const bearing = context.viewport.rotate();
+    const bearing = context.viewport.transform.rotation;
 
     //
     // GEOMETRY

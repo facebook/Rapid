@@ -131,7 +131,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Apply anti-rotation to keep the icons and markers facing up.
     // (However viewfields container _should_ include the bearing, and will below)
-    const bearing = viewport.rotate();
+    const bearing = viewport.transform.rotation;
     this.container.rotation = -bearing;
 
     // Show marker, if any..

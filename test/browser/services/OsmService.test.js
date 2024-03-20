@@ -6,9 +6,9 @@ describe('OsmService', () => {
       this.systems = {
         locations: new Rapid.LocationSystem(this)
       };
-      this.viewport = new sdk.Viewport()
-        .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
-        .dimensions([64, 64]);
+      this.viewport = new sdk.Viewport();
+      this.viewport.transform = { x: -116508, y: 0, k: sdk.geoZoomToScale(14) };  // [10°, 0°]
+      this.viewport.dimensions = [64, 64];
     }
     deferredRedraw()  { }
   }
@@ -437,10 +437,10 @@ describe('OsmService', () => {
   ]
 }`;
     beforeEach(() => {
-      _osm.context.viewport
-        .scale(Rapid.sdk.geoZoomToScale(20))
-        .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
-        .dimensions([64, 64]);
+      const v = _osm.context.viewport;
+      v.transform.zoom = 20;
+      v.transform.translation = [55212042.434589595, 33248879.510193843];  // -74.0444216, 40.6694299
+      v.dimensions = [64, 64];
     });
 
     it('calls callback when data tiles are loaded', done => {

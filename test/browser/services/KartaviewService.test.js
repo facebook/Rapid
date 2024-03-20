@@ -5,9 +5,9 @@ describe('KartaviewService', () => {
     constructor() {
       this.systems = { };
 
-      this.viewport = new sdk.Viewport()
-        .transform({ x: -116508, y: 0, k: sdk.geoZoomToScale(14) })  // [10°, 0°]
-        .dimensions([64, 64]);
+      this.viewport = new sdk.Viewport();
+      this.viewport.transform = { x: -116508, y: 0, k: sdk.geoZoomToScale(14) };  // [10°, 0°]
+      this.viewport.dimensions = [64, 64];
     }
     container()       { return null; }
     deferredRedraw()  { }
@@ -153,7 +153,7 @@ describe('KartaviewService', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      _kartaview.context.viewport.translate([0, 0]);  // move map to Null Island
+      _kartaview.context.viewport.transform.translation = [0, 0];  // move map to Null Island
       _kartaview.on('loadedData', spy);
       _kartaview.loadTiles();
 

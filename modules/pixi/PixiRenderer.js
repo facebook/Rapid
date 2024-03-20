@@ -192,7 +192,6 @@ export class PixiRenderer extends EventEmitter {
       if (layerID) {
         this.scene.classData(layerID, datumID, 'selected');
       }
-
     }
 
     this.render();
@@ -319,12 +318,12 @@ export class PixiRenderer extends EventEmitter {
     const now = window.performance.now();
     const context = this.context;
     const viewport = context.viewport;
-    const tCurr = viewport.transform();
+    const tCurr = viewport.transform.props;
     let promise;
 
     // If already easing, resolve before starting a new one
     if (this._transformEase) {
-      viewport.transform(tCurr);
+      viewport.transform = tCurr;
       this._transformEase.resolve(tCurr);
       this._transformEase = null;
     }
@@ -343,7 +342,7 @@ export class PixiRenderer extends EventEmitter {
       };
 
     } else {   // change immediately
-      viewport.transform(t);
+      viewport.transform.props = t;
       promise = Promise.resolve(t);
     }
 
@@ -392,7 +391,7 @@ export class PixiRenderer extends EventEmitter {
       const kNow = k0 + ((k1 - k0) * tween);
       const rNow = r0 + ((r1 - r0) * tween);
       const tNow = { x: xNow, y: yNow, k: kNow, r: rNow };
-      mapViewport.transform(tNow);  // set
+      mapViewport.transform = tNow;  // set
 
       if (tween === 1) {  // we're done
         resolve(tNow);
@@ -402,10 +401,10 @@ export class PixiRenderer extends EventEmitter {
     }
 
     // Determine if the visible dimensions have changed.
-    const pixiDims = pixiViewport.dimensions();
-    const mapDims = mapViewport.dimensions();
+    const pixiDims = pixiViewport.dimensions;
+    const mapDims = mapViewport.dimensions;
     if (!vecEqual(pixiDims, mapDims)) {
-      pixiViewport.dimensions(mapDims);
+      pixiViewport.dimensions = mapDims;
       // Resize supersurface to cover the visible dimensions
       const ssnode = this.supersurface.node();
       ssnode.style.width = `${mapDims[0]}px`;
@@ -416,7 +415,7 @@ export class PixiRenderer extends EventEmitter {
     // Here we calculate a temporary CSS transform that includes
     // whatever user interaction has occurred between full redraws.
     // We apply this temporary transform to the supersurface and overlay.
-    const tCurr = mapViewport.transform();
+    const tCurr = mapViewport.transform.props;
     const tPrev = this._prevTransform;
 
     const hasChanges = this._isTransformed || (
@@ -461,12 +460,12 @@ export class PixiRenderer extends EventEmitter {
 
     // At this point, the map transform is settled
     // (`_tform` is called immediately before `_app`)
-    const mapTransform = mapViewport.transform();
-    const pixiTransform = pixiViewport.transform();
+    const mapTransform = mapViewport.transform;
+    const pixiTransform = pixiViewport.transform;
     const mapCenter = mapViewport.center();
 
     // Determine if the visible dimensions have changed.
-    const pixiDims = pixiViewport.dimensions();
+    const pixiDims = pixiViewport.dimensions;
     const currDims = [this.pixi.screen.width, this.pixi.screen.height];
     if (!vecEqual(currDims, pixiDims)) {
       this.pixi.queueResize();
@@ -482,14 +481,14 @@ export class PixiRenderer extends EventEmitter {
 
     if (mapTransform.k !== pixiTransform.k || dist > 100000) {
       offset = [0,0];
-      pixiViewport.transform(mapTransform);  // reset (set pixi = map)
-      this.scene.dirtyScene();               // all geometry must be reprojected
+      pixiViewport.transform = mapTransform;  // reset (set pixi = map)
+      this.scene.dirtyScene();                // all geometry must be reprojected
     } else {
       offset = vecSubtract(pixiXY, mapXY);
     }
 
     if (mapTransform.r !== pixiTransform.r) {
-      pixiViewport.rotate(mapTransform.r);
+      pixiTransform.rotation = mapTransform.r;
       this.scene.dirtyScene();               // only really needs restyle
     }
 
@@ -523,7 +522,7 @@ export class PixiRenderer extends EventEmitter {
     // Let's go!
     this.pixi.render();
 
-    this._prevTransform = this.context.viewport.transform();
+    this._prevTransform = this.context.viewport.transform.props;
     this._timeToNextRender = THROTTLE;
 
     if (this._isTransformed) {

@@ -26,7 +26,7 @@ export function uiBearing(context) {
   function render() {
     if (!_selection) return;  // called too early
 
-    const bearing = viewport.rotate();
+    const bearing = viewport.transform.rotation;
     const isNorthUp = Math.abs(bearing) < 0.001;
 
     let button = _selection.selectAll('button.bearing')
@@ -53,7 +53,7 @@ export function uiBearing(context) {
       .on('click', d3_event => {
         d3_event.preventDefault();
         if (isNorthUp) return;
-        const t = viewport.transform();
+        const t = viewport.transform.props;
         map.transformEase(Object.assign(t, { r: 0 }));
       });
 

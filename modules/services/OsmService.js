@@ -877,8 +877,8 @@ export class OsmService extends AbstractSystem {
     if (cache.toLoad.size > 50) return;
 
     const k = geoZoomToScale(this._tileZoom + 1);
-    const offset = new Viewport().scale(k).project(loc);
-    const viewport = new Viewport().transform({ k: k, x: -offset[0], y: -offset[1] });
+    const offset = new Viewport({ k: k }).project(loc);
+    const viewport = new Viewport({ k: k, x: -offset[0], y: -offset[1] });
     const tiles = this._tiler.zoomRange(this._tileZoom).getTiles(viewport).tiles;
 
     for (const tile of tiles) {

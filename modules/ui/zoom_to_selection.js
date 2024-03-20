@@ -48,9 +48,8 @@ export function uiZoomToSelection(context) {
         _lastTransform = null;
 
       } else if (extent) {   // zoom in on extent
-        _lastTransform = viewport.transform();
-        const [w, h] = viewport.dimensions();
-        const z = map.extentZoom(extent, [w/2, h/2]);
+        _lastTransform = viewport.transform.props;
+        const z = map.extentZoom(extent, viewport.center());
         map.centerZoomEase(extent.center(), z);
 
       } else {   // tool disabled

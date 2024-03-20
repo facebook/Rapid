@@ -1,5 +1,5 @@
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Tiler, geoScaleToZoom } from '@rapid-sdk/math';
+import { Tiler } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
@@ -209,7 +209,7 @@ export class KartaviewService extends AbstractSystem {
    */
   loadTiles() {
     const viewport = this.context.viewport;
-    const currZoom = Math.floor(geoScaleToZoom(viewport.scale()));
+    const currZoom = viewport.transform.zoom;
 
     // Determine the needed tiles to cover the view
     const needTiles = this._tiler.getTiles(viewport).tiles;

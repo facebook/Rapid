@@ -178,7 +178,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // update zoom
-    const zoom = tileZoom || Math.floor(viewport.zoom());
+    const zoom = tileZoom || Math.floor(viewport.transform.zoom);
     this._metadata.zoom = String(zoom);
     selection.selectAll('.background-info-list-zoom')
       .classed('hide', false)

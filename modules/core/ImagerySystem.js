@@ -309,7 +309,7 @@ export class ImagerySystem extends AbstractSystem {
     const context = this.context;
     const viewport = context.viewport;
     const extent = viewport.visibleExtent();
-    const zoom = viewport.zoom();
+    const zoom = viewport.transform.zoom;
 
     const visible = new Set();
     (this._imageryIndex.query.bbox(extent.rectangle(), true) || [])
@@ -475,7 +475,7 @@ export class ImagerySystem extends AbstractSystem {
    */
   nudge(delta, zoom) {
     if (this._baseLayer) {
-      const zoom = this.context.viewport.zoom();
+      const zoom = this.context.viewport.transform.zoom;
       this._baseLayer.nudge(delta, zoom);
       this.updateImagery();
       this.emit('imagerychange');

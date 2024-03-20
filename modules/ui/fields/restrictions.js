@@ -214,7 +214,8 @@
 //        var c = vecScale(d, 0.5);
 //        var z = 22;
 //
-//        viewport.scale(geoZoomToScale(z));
+//        viewport.transform.zoom = z;
+//        viewport.dimensions = d;
 //
 //        // Calculate extent of all key vertices
 //        const extent = new Extent();
@@ -232,16 +233,14 @@
 //            var hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
 //            var vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
 //            z = z - Math.max(hZoomDiff, vZoomDiff);
-//            viewport.scale(geoZoomToScale(z));
+//            viewport.transform.zoom = z;
 //        }
 //
 //        var padTop = 35;   // reserve top space for hint text
 //        var extentCenter = viewport.project(extent.center());
 //        extentCenter[1] = extentCenter[1] - padTop;
 //
-//        viewport
-//            .translate(vecSubtract(c, extentCenter))
-//            .dimensions(d);
+//        viewport.transform.translation = vecSubtract(c, extentCenter);
 //
 //        var drawLayers = svgLayers(viewport, context).only(['osm','touch']).dimensions(d);
 //        var drawVertices = svgVertices(viewport, context);

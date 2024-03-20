@@ -30,7 +30,7 @@ describe('MapSystem', () => {
     on() { return this; }
     deferredRender() {}
     setTransformAsync(t) {
-      this.context.viewport.transform(t);
+      this.context.viewport.transform = t;
       return Promise.resolve(t);
     }
   }
@@ -48,7 +48,7 @@ describe('MapSystem', () => {
         urlhash: new MockSystem(),
         styles:  new MockSystem()
       };
-      this.viewport = new sdk.Viewport().dimensions([100, 100]);
+      this.viewport = new sdk.Viewport(undefined, [100, 100]);
     }
     container()   { return _container; }
     keybinding()  { return new MockSystem(); }

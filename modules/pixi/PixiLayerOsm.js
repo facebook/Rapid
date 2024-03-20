@@ -773,7 +773,7 @@ export class PixiLayerOsm extends AbstractLayer {
         if (dist < MIN_MIDPOINT_DIST) continue;
 
         const pos = vecInterp(a.point, b.point, 0.5);
-        const rot = vecAngle(a.point, b.point) + viewport.rotate();
+        const rot = vecAngle(a.point, b.point) + viewport.transform.rotation;
         const loc = viewport.unproject(pos);  // store as wgs84 lon/lat
         const midpoint = {
           type: 'midpoint',

@@ -64,7 +64,7 @@ export function uiAttribution(context) {
 
     let copyright = attributions.selectAll('.copyright-notice')
       .data(d => {
-        let notice = d.copyrightNotices(viewport.zoom(), viewport.visibleExtent());
+        let notice = d.copyrightNotices(viewport.transform.zoom, viewport.visibleExtent());
         return notice ? [notice] : [];
       });
 
@@ -86,7 +86,7 @@ export function uiAttribution(context) {
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
-    const z = viewport.zoom();
+    const z = viewport.transform.zoom;
     let overlays = imagery.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');

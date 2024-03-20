@@ -13,6 +13,7 @@ export function uiEditMenu(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const ui = context.systems.ui;
+  const viewport = context.viewport;
 
   const VIEW_TOP_MARGIN = 85;     // viewport top margin
   const VIEW_BOTTOM_MARGIN = 45;  // viewport bottom margin
@@ -63,7 +64,7 @@ export function uiEditMenu(context) {
     }
 
     _menuHeight = VERTICAL_PADDING * 2 + ops.length * buttonHeight;
-    _initialScale = context.viewport.scale();
+    _initialScale = viewport.transform.scale;
 
     const wrap = selection.selectAll('.edit-menu')
       .data([0]);
@@ -207,12 +208,12 @@ export function uiEditMenu(context) {
 
     // close the menu if the scale (zoom) has changed
     // (this is because the menu will scale with the supersurface and look wrong)
-    if (_initialScale !== context.viewport.scale()) {
+    if (_initialScale !== viewport.transform.scale) {
       editMenu.close();
       return;
     }
 
-    const anchor = context.viewport.project(_anchorLoc);  // convert wgs84 [lon,lat] to screen [x,y]
+    const anchor = viewport.project(_anchorLoc);  // convert wgs84 [lon,lat] to screen [x,y]
     const surfaceRect = context.surfaceRect();
 
     // close the menu if it's gone offscreen

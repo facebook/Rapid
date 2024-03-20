@@ -52,7 +52,7 @@ export function uiContributors(context) {
             count.append('a')
                 .attr('target', '_blank')
                 .attr('href', function() {
-                    return osm.changesetsURL(viewport.centerLoc(), viewport.zoom());
+                    return osm.changesetsURL(viewport.centerLoc(), viewport.transform.zoom);
                 })
                 .html(othersNum);
 

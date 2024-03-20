@@ -43,9 +43,9 @@ export function uiScale(context) {
 
   function update(selection) {
     // choose loc1, loc2 along bottom of viewport (near where the scale will be drawn)
-    const dims = viewport.dimensions();
-    const loc1 = viewport.unproject([0, dims[1]]);
-    const loc2 = viewport.unproject([MAXLENGTH, dims[1]]);
+    const h = viewport.dimensions[1];  // height
+    const loc1 = viewport.unproject([0, h]);
+    const loc2 = viewport.unproject([MAXLENGTH, h]);
     const scale = scaleDefs(loc1, loc2);
     const isRTL = l10n.isRTL();
 

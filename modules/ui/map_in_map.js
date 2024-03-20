@@ -54,7 +54,7 @@ export function uiMapInMap(context) {
      */
     function zoomStarted() {
       if (_skipEvents) return;
-      _tStart = _tCurr = viewMini.transform();
+      _tStart = _tCurr = viewMini.transform.props;
       _gesture = null;
     }
 
@@ -80,7 +80,7 @@ export function uiMapInMap(context) {
         _gesture = isZooming ? 'zoom' : 'pan';
       }
 
-      const tMini = viewMini.transform();
+      const tMini = viewMini.transform.props;
       let tX, tY, scale;
 
       if (_gesture === 'zoom') {
@@ -103,7 +103,7 @@ export function uiMapInMap(context) {
       _isTransformed = true;
       _tCurr = d3_zoomIdentity.translate(x, y).scale(k);
 
-      const zMain = geoScaleToZoom(viewMain.scale());
+      const zMain = geoScaleToZoom(viewMain.transform.zoom);
       const zMini = geoScaleToZoom(k);
 
       _zDiff = zMain - zMini;
@@ -132,21 +132,22 @@ export function uiMapInMap(context) {
      */
     function updateViewport() {
       const loc = viewMain.centerLoc();
-      const tMain = viewMain.transform();
+      const tMain = viewMain.transform.props;
       const zMain = geoScaleToZoom(tMain.k);
       const zMini = Math.max(zMain - _zDiff, 0.5);
       const kMini = geoZoomToScale(zMini);
 
-      viewMini.translate([tMain.x, tMain.y]).scale(kMini);
+      viewMini.transform = { x: tMain.x, y: tMain.y, k: kMini };
 
       const point = viewMini.project(loc);
       const mouse = (_gesture === 'pan') ? vecSubtract([_tCurr.x, _tCurr.y], [_tStart.x, _tStart.y]) : [0, 0];
       const xMini = _cMini[0] - point[0] + tMain.x + mouse[0];
       const yMini = _cMini[1] - point[1] + tMain.y + mouse[1];
 
-      viewMini.translate([xMini, yMini]).dimensions(_dMini);
+      viewMini.transform = { x: xMini, y: yMini };
+      viewMini.dimensions = _dMini;
 
-      _tCurr = viewMini.transform();
+      _tCurr = viewMini.transform.props;
 
       if (_isTransformed) {
         _miniPixi.stage.x = 0;

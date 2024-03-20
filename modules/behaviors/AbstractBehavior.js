@@ -110,7 +110,7 @@ export class AbstractBehavior extends EventEmitter {
 
     const context = this.context;
     const viewport = context.viewport;
-    const r = viewport.rotate();
+    const r = viewport.transform.r;
     if (r) {
       coord.map = vecRotate(coord.screen, -r, viewport.center());  // remove rotation
     }

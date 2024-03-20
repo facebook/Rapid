@@ -117,7 +117,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // rotate
     if (e.shiftKey) {
       const ROT_AMOUNT = 5 * DEG2RAD;   // ± 5°
-      const t = viewport.transform();
+      const t = viewport.transform.props;
       let delta;
       if (e.key === 'ArrowLeft') {
         delta = -ROT_AMOUNT;
@@ -133,7 +133,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // pan
     } else {
       const PAN_AMOUNT = 80;   // in pixels
-      const [w, h] = viewport.dimensions();
+      const [w, h] = viewport.dimensions;
       const panMore = (e.altKey || e.metaKey || e.ctrlKey);  // pan more if modifier down
 
       let delta;
@@ -168,7 +168,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const context = this.context;
     const map = context.systems.map;
     const viewport = context.viewport;
-    const t = viewport.transform();
+    const t = viewport.transform.props;
 
     const click = this._getEventData(e);
     const [x, y] = click.coord.map;
@@ -241,7 +241,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // Because the handler is listening on the Pixi surface, and the surface is itself
     // getting transformed, we use `clientX`/`clientY` to avoid the map being jittery.
     const currPoint = [move.originalEvent.clientX, move.originalEvent.clientY];
-    const t = viewport.transform();
+    const t = viewport.transform.props;
 
     if (!this.gesture) {   // start dragging?
       const dist = vecLength(down.coord.screen, move.coord.screen);
@@ -338,7 +338,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     if (e._gesture === 'zoom') {
       const viewport = context.viewport;
-      const t = viewport.transform();
+      const t = viewport.transform.props;
       const [x, y] = e._coord.map;
 
       // convert mouse coord to transform origin (was: d3 `transform.invert`)

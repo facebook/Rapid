@@ -27,7 +27,7 @@ describe('actionMove', () => {
     //     });
     // });
 
-    const viewport = new Rapid.sdk.Viewport().scale(250 / Math.PI);
+    const viewport = new Rapid.sdk.Viewport({ k: 250 / Math.PI });
 
     it('moves all nodes in a way by the given amount', () => {
         const node1  = Rapid.osmNode({loc: [0, 0]}),

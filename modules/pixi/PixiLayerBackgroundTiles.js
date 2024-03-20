@@ -131,10 +131,10 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const context = this.context;
     const textureManager = this.renderer.textures;
     const osm = context.services.osm;
-    const transform = viewport.transform();
+    const t = viewport.transform.props;
 
     // Defensive coding in case nominatim/other reasons cause us to get an invalid view transform.
-    if (isNaN(transform.x) || isNaN(transform.y)) {
+    if (isNaN(t.x) || isNaN(t.y)) {
       return;
     }
 
@@ -149,7 +149,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     }
 
     const tileSize = source.tileSize || 256;
-    const z = geoScaleToZoom(transform.k, tileSize);  // Use actual zoom for this, not effective zoom
+    const z = geoScaleToZoom(t.k, tileSize);  // Use actual zoom for this, not effective zoom
 
     // Apply imagery offset (in pixels) to the source container
     const offset = vecScale(source.offset, Math.pow(2, z));

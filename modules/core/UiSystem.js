@@ -490,7 +490,7 @@ this.didRender = true;
       map.pan(offset);
     }
 
-    viewport.dimensions(dims);
+    viewport.dimensions = dims;
     this.photoviewer.onMapResize();
 
     // check if header or footer have overflowed

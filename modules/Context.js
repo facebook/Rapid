@@ -1,6 +1,6 @@
 import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
-import { geoScaleToZoom, Viewport } from '@rapid-sdk/math';
+import { Viewport } from '@rapid-sdk/math';
 import { utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 
 import { behaviors } from './behaviors/index.js';
@@ -11,7 +11,6 @@ import { systems } from './core/index.js';
 import { utilKeybinding } from './util/keybinding.js';
 
 const MINZOOM = 15;
-const TILESIZE = 256;
 
 
 /**
@@ -248,8 +247,7 @@ export class Context extends EventEmitter {
     const osm = this.services.osm;
     if (!osm) return;
 
-    const k = this.viewport.scale();
-    const z = geoScaleToZoom(k, TILESIZE);
+    const z = this.viewport.transform.zoom;
     if (z < MINZOOM) return;  // this would fire off too many API requests
 
     if (this.editable()) {

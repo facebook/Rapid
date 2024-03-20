@@ -21,9 +21,12 @@ export function uiMap3dViewer(context) {
   function render(selection) {
     let wrap = d3_select(null);
     let _isHidden = !urlhash.getParam('map3d'); // depends on URL hash
+    let _lastv;
 
     function redraw() {
       if (_isHidden) return;
+      if (viewport.v === _lastv) return;  // viewport hasn't changed
+      _lastv = viewport.v;
       updateViewport();
       featuresToGeoJSON();
     }
@@ -37,10 +40,11 @@ export function uiMap3dViewer(context) {
 //      const center = extent.center();
 //      extent.padByMeters(100);
 //
+      const transform = viewport.transform;
       map3d.maplibre?.jumpTo({
         center: viewport.centerLoc(),
-        bearing: viewport.rotate(),
-        zoom: viewport.zoom() - 3,
+        bearing: transform.rotation,
+        zoom: transform.zoom - 3,
       });
     }
 
