@@ -1,8 +1,9 @@
-import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
+import { geoMetersToOffset, geoOffsetToMeters} from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { ImagerySource, ImagerySourceBing, ImagerySourceCustom, ImagerySourceEsri, ImagerySourceNone } from './lib/ImagerySource.js';
+import { getWaybackItemsWithLocalChanges } from '@vannizhang/wayback-core';
 
 
 /**
@@ -32,6 +33,7 @@ export class ImagerySystem extends AbstractSystem {
 
     this._initPromise = null;
     this._imageryIndex = null;
+    this._waybackImageryIndex = null;
     this._baseLayer = null;
     this._overlayLayers = new Map();   // Map (sourceID -> source)
     this._checkedBlocklists = [];
@@ -80,9 +82,9 @@ export class ImagerySystem extends AbstractSystem {
       .then(() => urlhash.on('hashchange', this._hashchange))
       .then(() => dataloader.getDataAsync('imagery'))
       .then(data => this._initImageryIndex(data));
-      // .catch(e => {
-        // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
-      // });
+    // .catch(e => {
+    // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+    // });
   }
 
 
@@ -395,6 +397,98 @@ export class ImagerySystem extends AbstractSystem {
       this.getSource('Bing') ||
       first ||    // maybe this is a custom Rapid that doesn't include Bing?
       this.getSource('none');
+  }
+
+
+  /**
+   *
+   */
+  async getWaybackSource() {
+    const context = this.context;
+    const view = context.systems.map.extent();
+    const urlhash = this.context.systems.urlhash;
+    const zoomLatLng = urlhash.getParam('map');
+    const parts = zoomLatLng.split('/');
+    const zoom = parseInt(parts[0], 10);
+    const lat = parseFloat(parts[1]);
+    const lng = parseFloat(parts[2]);
+    const latLng = {
+      longitude: lng,
+      latitude: lat,
+    };
+    const waybackItems = await getWaybackItemsWithLocalChanges(latLng, zoom);
+    this._waybackImageryIndex = {
+      features: new Map(),
+      sources: new Map(),
+      query: null
+    };
+
+    const features = waybackItems.map(d => {
+      if (!d.polygon) return null;
+
+      // workaround for editor-layer-index weirdness..
+      // Add an extra array nest to each element in `d.polygon`
+      // so the rings are not treated as a bunch of holes:
+      //   what we get:  [ [[outer],[hole],[hole]] ]
+      //   what we want: [ [[outer]],[[outer]],[[outer]] ]
+      const rings = d.polygon.map(ring => [ring]);
+
+      const feature = {
+        type: 'Feature',
+        properties: { id: d.id },
+        geometry: { type: 'MultiPolygon', coordinates: rings }
+      };
+
+      this._waybackImageryIndex.features.set(d.id.toLowerCase(), feature);
+      return feature;
+    }).filter(Boolean);
+    this._waybackImageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
+
+    for (const item of waybackItems) {
+      // Convert the bounding box to a polygon.
+      const bbox = {
+        min_lon: view.min[0],
+        min_lat: view.min[1],
+        max_lon: view.max[0],
+        max_lat: view.max[1],
+      };
+      const polygon = [
+        [
+          [bbox.min_lon, bbox.min_lat],
+          [bbox.min_lon, bbox.max_lat],
+          [bbox.max_lon, bbox.max_lat],
+          [bbox.max_lon, bbox.min_lat],
+          [bbox.min_lon, bbox.min_lat],
+        ],
+      ];
+
+      // Convert placeholder tokens in the URL template from Esri's format to OSM's.
+      const template = item.itemURL
+        .replaceAll('{level}', '{zoom}')
+        .replaceAll('{row}', '{y}')
+        .replaceAll('{col}', '{x}');
+
+      // console.log(item);
+      const source = {
+        id: `EsriWorldImagery_${item.releaseDateLabel}`,
+        name: item.itemTitle,
+        type: 'tms',
+        template: template,
+        metadata: item.metadataLayerUrl,
+        startDate: new Date(item.releaseDatetime).toISOString(),
+        endDate: new Date(item.releaseDatetime).toISOString(),
+        polygon: polygon,
+        terms_text: null,
+        'default': true,
+        zoomExtent: [0, 22],
+        terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
+        icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
+      };
+      const imagerySource = new ImagerySource(context, source);
+      this._waybackImageryIndex.sources.set(item.itemID.toLowerCase(), imagerySource);
+    }
+    return this._waybackImageryIndex;
+
   }
 
 

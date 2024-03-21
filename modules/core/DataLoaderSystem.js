@@ -45,6 +45,7 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('territory_languages', 'data/territory_languages.min.json');
     fileMap.set('wmf_sitematrix', 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json');
 
+
     this.fileMap = fileMap;
     this._cachedData = {};
     this._inflight = {};
