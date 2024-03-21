@@ -96,6 +96,8 @@ export function uiSectionBackgroundList(context) {
           });
         } else {
           dropdown.selectAll('option').remove();
+          const defaultSource = imagery.chooseDefaultSource();
+          imagery.baseLayerSource(defaultSource);
         }
       });
 
