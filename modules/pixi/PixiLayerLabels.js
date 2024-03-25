@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import RBush from 'rbush';
-import { HALF_PI, TAU, Extent, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints
-} from '@rapid-sdk/math';
+import { HALF_PI, TAU, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
 import { getLineSegments, getDebugBBox, lineToPoly } from './helpers.js';
@@ -33,7 +32,9 @@ const TEXT_ITALIC = {
 
 
 /**
- *
+ *  These 'Labels' are placeholders for where a label can go.
+ *  The display objects are added to the scene lazily only after the user
+ *  has scrolled the placement box into view - see `renderObjects()`
  */
 class Label {
   constructor(id, type, options) {
@@ -96,7 +97,7 @@ export class PixiLayerLabels extends AbstractLayer {
     this._labelBoxes = new Map();   // Map (featureID -> Array[label Boxes] )
 
     // After working out the placement math, we don't automatically render display objects,
-    // since many objects would get placed far offscreen
+    // since many objects would get placed far offscreen.
     this._labels = new Map();    // Map (labelID -> Label Object)
     // Display Objects includes anything managed by this layer: labels and debug boxes
     this._dObjs = new Map();     // Map (dObjID -> Display Object)
@@ -104,7 +105,7 @@ export class PixiLayerLabels extends AbstractLayer {
     // We reset the labeling when scale or rotation change
     this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
     // Tracks the difference between the top left corner of the screen and the parent "origin" container
-    this._labelOffset = [0, 0];
+    this._labelOffset = new PIXI.Point();
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
     PIXI.BitmapFont.from('label-normal', TEXT_NORMAL, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
@@ -239,12 +240,12 @@ export class PixiLayerLabels extends AbstractLayer {
       const origin = this.renderer.origin.position;
       const bearing = viewport.transform.rotation;
 
-      // Determine the difference between the global/world/screen coordinate system (where [0,0] is top left)
-      // and the origin's coordinate system (which can be panned around or be under a rotation).
-      // We need to save this offset for use elsewhere, it is the basis for having a consistent coordinate
+      // Determine the difference between the global/screen coordinate system (where [0,0] is top left)
+      // and the `origin` coordinate system (which can be panned around or be under a rotation).
+      // We need to save this labeloffset for use elsewhere, it is the basis for having a consistent coordinate
       // system to track labels to place and objects to avoid. (we apply it to values we get from `getBounds`)
-      const labelOffset = this.renderer.origin.toGlobal({x: 0, y: 0});
-      this._labelOffset = [labelOffset.x, labelOffset.y];
+      const labelOffset = this._labelOffset;
+      this.renderer.origin.toGlobal({x: 0, y: 0}, labelOffset, true /*skip updates*/);
 
       const groupContainer = this.scene.groups.get('labels');
       groupContainer.position.set(-origin.x, -origin.y);     // undo origin - [0,0] is now center
@@ -254,7 +255,7 @@ export class PixiLayerLabels extends AbstractLayer {
       labelOriginContainer.position.set(-stage.x + labelOffset.x, -stage.y + labelOffset.y);  // replace origin
 
       // Collect features to avoid.
-      this.gatherAvoids(viewport);
+      this.gatherAvoids();
 
       // Collect features to place labels on.
       let points = [];
@@ -273,12 +274,12 @@ export class PixiLayerLabels extends AbstractLayer {
         }
       }
 
-///      // Points first, then lines (so line labels can avoid point labels)
-///      this.labelPoints(points, viewport);
-///      this.labelLines(lines, viewport);
-///      this.labelPolygons(polygons, viewport);
-///
-///      this.renderObjects(viewport);
+      // Points first, then lines (so line labels can avoid point labels)
+      this.labelPoints(points);
+      this.labelLines(lines);
+      this.labelPolygons(polygons);
+
+      this.renderObjects();
 
     } else {
       this.labelContainer.visible = false;
@@ -352,7 +353,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * If a new avoidance collides with an already placed label,
    *  destroy the label and flag the feature as labeldirty for relabeling
    */
-  gatherAvoids(viewport) {
+  gatherAvoids() {
     const avoidObject = _avoidObject.bind(this);
 
     // Gather the containers that have avoidable stuff on them
@@ -387,44 +388,35 @@ export class PixiLayerLabels extends AbstractLayer {
       const featureID = sourceObject.name;
       if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
 
-      const fRect = sourceObject.getBounds();
-      if (!fRect) return;
-
-      // The rectangle is in global/world/screen coordinates (where [0,0] is top left).
+      // The rectangle is in global/screen coordinates (where [0,0] is top left).
       // To work in a coordinate system that is consistent, remove the label offset.
       // If we didn't do this, as the user pans or rotates the map, the objects that leave
-      // and re-enter the scene would end up with different coordinates each time.
-      fRect.x -= this._labelOffset[0];
-      fRect.y -= this._labelOffset[1];
+      // and re-enter the scene would end up with different coordinates each time!
+      const fRect = sourceObject.getBounds();
+      fRect.x -= this._labelOffset.x;
+      fRect.y -= this._labelOffset.y;
 
       const EPSILON = 0.01;
       const boxID = `${featureID}-avoid`;
-      const fMin = [fRect.x + EPSILON, fRect.y + EPSILON];
-      const fMax = [fRect.x + fRect.width - EPSILON, fRect.y + fRect.height - EPSILON];
-      let coords = [fMin, fMax];
-
-      const [[minX, minY], [maxX, maxY]] = coords;
-      const [w, h] = [maxX - minX, maxY - minY];
-
-// console.log(`${boxID}: ${coords}`);
-const sprite = getDebugBBox(minX, minY, w, h, 0xff0000, 0.75, boxID);
-this.debugContainer.addChild(sprite);
-this._dObjs.set(boxID, sprite);
 
       const box = {
         type: 'avoid',
         boxID: boxID,
-        dObjID: boxID,
+        dObjID: boxID,   // for the debug sprite, if shown
         featureID: featureID,
-        minX: minX,
-        minY: minY,
-        maxX: maxX,
-        maxY: maxY
+        minX: fRect.x + EPSILON,
+        minY: fRect.y + EPSILON,
+        maxX: fRect.x + fRect.width - EPSILON,
+        maxY: fRect.y + fRect.height - EPSILON
       };
 
       this._avoidBoxes.set(featureID, [box]);
       toInsert.push(box);
 
+//const tint = 0xff0000;
+//const sprite = getDebugBBox(box.minX, box.minY, box.maxX - box.minX, box.maxY - box.minY, tint, 0.75, boxID);
+//this.debugContainer.addChild(sprite);
+//this._dObjs.set(boxID, sprite);
 
       // If there is already a label where this avoid box is, we will need to redo that label.
       // This is somewhat common that a label will be placed somewhere, then as more map loads,
@@ -448,7 +440,7 @@ this._dObjs.set(boxID, sprite);
    * This calculates the placement, but does not actually add the label to the scene.
    * @param  features  The features to place point labels on
    */
-  labelPoints(features, viewport) {
+  labelPoints(features) {
     features.sort((a, b) => b.geometry.origCoords[1] - a.geometry.origCoords[1]);
 
     for (const feature of features) {
@@ -468,7 +460,7 @@ this._dObjs.set(boxID, sprite);
         labelObj = this.getLabelSprite(feature.label, 'normal');
       }
 
-      this.placeTextLabel(feature, labelObj, viewport);
+      this.placeTextLabel(feature, labelObj);
     }
   }
 
@@ -479,7 +471,7 @@ this._dObjs.set(boxID, sprite);
    * This calculates the placement, but does not actually add the rope label to the scene.
    * @param  features  The features to place line labels on
    */
-  labelLines(features, viewport) {
+  labelLines(features) {
     // This is hacky, but we can sort the line labels by their parent container name.
     // It might be a level container with a name like "1", "-1", or just a name like "lines"
     // If `parseInt` fails, just sort the label above everything.
@@ -503,7 +495,7 @@ this._dObjs.set(boxID, sprite);
 
       const labelObj = this.getLabelSprite(feature.label, 'normal');
 
-      this.placeRopeLabel(feature, labelObj, feature.geometry.coords, viewport);
+      this.placeRopeLabel(feature, labelObj, feature.geometry.coords);
     }
   }
 
@@ -514,7 +506,7 @@ this._dObjs.set(boxID, sprite);
    * This calculates the placement, but does not actually add the rope label to the scene.
    * @param  features  The features to place line labels on
    */
-  labelPolygons(features, viewport) {
+  labelPolygons(features) {
     for (const feature of features) {
       const featureID = feature.id;
 
@@ -543,7 +535,7 @@ let coords = new Array(bufferdata.inner.length / 2);  // un-flatten :(
 for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
   coords[i] = [ bufferdata.inner[(i * 2)], bufferdata.inner[(i * 2) + 1] ];
 }
-this.placeRopeLabel(feature, labelObj, coords, viewport);
+this.placeRopeLabel(feature, labelObj, coords);
 
     }
   }
@@ -558,15 +550,22 @@ this.placeRopeLabel(feature, labelObj, coords, viewport);
    * @param  feature   The feature to place point labels on
    * @param  labelObj  a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText to use as the label
    */
-  placeTextLabel(feature, labelObj, viewport) {
+  placeTextLabel(feature, labelObj) {
     if (!feature || !feature.sceneBounds) return;
 
+    const featureID = feature.id;
     const container = feature.container;
     if (!container.visible || !container.renderable) return;
 
-    // `f` - feature, these bounds are in "scene" coordinates
-    const featureID = feature.id;
-    const fRect = feature.sceneBounds.clone().pad(1, 0);
+    // `f` - feature, these bounds are in "global" coordinates
+    // The rectangle is in global/screen coordinates (where [0,0] is top left).
+    // To work in a coordinate system that is consistent, remove the label offset.
+    // If we didn't do this, as the user pans or rotates the map, the objects that leave
+    // and re-enter the scene would end up with different coordinates each time!
+    const fRect = container.getBounds().clone().pad(1, 0);
+    fRect.x -= this._labelOffset.x;
+    fRect.y -= this._labelOffset.y;
+
     const fLeft = fRect.x;
     const fTop = fRect.y;
     const fWidth = fRect.width;
@@ -577,24 +576,10 @@ this.placeRopeLabel(feature, labelObj, coords, viewport);
     const fMidY = (feature.type === 'point') ? (fRect.y + fHeight - 14)  // next to marker
       : (fRect.y + (fHeight * 0.5));
 
-const doDebug = feature.label === 'Jurassic Park';
-let i;
-if (doDebug) {
-  i = 1;
-}
-
-    // Apply anti-rotation to keep labels facing up
-    const bearing = viewport.transform.rotation;  // map might not be north-up
-    const localRect = labelObj.getLocalBounds();
-    // labelObj.pivot.set(localRect.x, 0);  // pivot around left, not center
-    labelObj.rotation = -bearing;
-
     // `l` = label, these bounds are in "local" coordinates to the label,
     // 0,0 is the center of the label
     // (padY -1, because for some reason, calculated height seems higher than necessary)
-    // `getBounds` applies rotation - this can be slow for objects with a lot of descendants
-    // but in this case there is no tree, it's just a single label with no descendants.
-    const lRect = labelObj.getBounds().clone().pad(0, -1);
+    const lRect = labelObj.getLocalBounds().clone().pad(0, -1);
     const some = 5;
     const more = 10;
     const lWidth = lRect.width;
@@ -602,7 +587,7 @@ if (doDebug) {
     const lWidthHalf = lWidth * 0.5;
     const lHeightHalf = lHeight * 0.5;
 
-    // Attempt several placements (these are calculated in scene coordinates)
+    // Attempt several placements (these are calculated in "global" coordinates)
     const placements = {
       t1: [fMidX - more,  fTop - lHeightHalf],       //    t1 t2 t3 t4 t5
       t2: [fMidX - some,  fTop - lHeightHalf],       //      +---+---+
@@ -671,8 +656,10 @@ if (doDebug) {
         maxY: y + lHeightHalf - EPSILON
       };
 
+      // If we can render the label in this box..
+      // Create a new Label placeholder, and insert the box
+      // into the rbush so nothing else gets placed there.
       if (!this._rbush.collides(box)) {
-        // We can render the label in this box..
         const label = new Label(featureID, 'text', {
           str: feature.label,
           labelObj: labelObj,
@@ -681,6 +668,7 @@ if (doDebug) {
           y: y,
           tint: feature.style.labelTint || 0xeeeeee
         });
+
         this._labels.set(featureID, label);
         this._labelBoxes.get(featureID).push(box);
         this._rbush.insert(box);
@@ -702,9 +690,10 @@ if (doDebug) {
    *
    * @param  feature   The feature to place point labels on
    * @param  labelObj  a PIXI.Sprite to use as the label
+   * @param  origCoords    The coordinates to place a rope on (these are coords relative to 'origin' container)
    */
-  placeRopeLabel(feature, labelObj, coords, viewport) {
-    if (!feature || !labelObj || !coords) return;
+  placeRopeLabel(feature, labelObj, origCoords) {
+    if (!feature || !labelObj || !origCoords) return;
     if (!feature.container.visible || !feature.container.renderable) return;
 
     const featureID = feature.id;
@@ -727,6 +716,16 @@ if (doDebug) {
     const scaleX = lWidth / ((numBoxes-1) * boxsize);
     // We'll break long chains into smaller regions and center a label within each region
     const maxChainLength = numBoxes + 15;
+
+
+    // Convert from original projected coords to global coords..
+    const origin = this.renderer.origin;
+    const labelOffset = this._labelOffset;
+    const temp = new PIXI.Point();
+    const coords = origCoords.map(([x, y]) => {
+      origin.toGlobal({x: x, y: y}, temp, true /* skip updates */);
+      return [temp.x - labelOffset.x, temp.y - labelOffset.y];
+    });
 
     // Cover the line in bounding boxes
     const segments = getLineSegments(coords, boxsize);
@@ -759,11 +758,13 @@ if (doDebug) {
       const currAngle = numWrap(segment.angle, 0, TAU);  // normalize to 0…2π
 
       segment.coords.forEach((coord, coordIndex) => {
+        const boxID = `${featureID}-${segmentIndex}-${coordIndex}`;
         const [x, y] = coord;
         const EPSILON = 0.01;
         const box = {
           type: 'label',
-          boxID: `${featureID}-${segmentIndex}-${coordIndex}`,
+          boxID: boxID,
+          dObjID: boxID,   // for the debug sprite, if shown
           featureID: featureID,
           minX: x - boxhalf + EPSILON,
           minY: y - boxhalf + EPSILON,
@@ -771,7 +772,7 @@ if (doDebug) {
           maxY: y + boxhalf - EPSILON
         };
 
-        // Check bend angle and avoid placing labels where the line bends too much..
+        // Avoid placing labels where the line bends too much..
         let tooBendy = false;
         if (prevAngle !== null) {
           // compare angles properly: https://stackoverflow.com/a/1878936/7620
@@ -796,17 +797,23 @@ if (doDebug) {
             finishChain();
           }
         }
+
+//const tint = box.collides ? 0xff0000 : box.bendy ? 0xff33ff : 0x00ff00;
+//const sprite = getDebugBBox(box.minX, box.minY, box.maxX-box.minX, box.maxY-box.minY, tint, 0.75, boxID);
+//this.debugContainer.addChild(sprite);
+//this._dObjs.set(boxID, sprite);
+
       });
     });
 
     finishChain();
 
 
-    // Compute a label in the middle of each chain,
-    // and insert into the `_rbush` rbush.
+    // Compute a Label placement in the middle of each chain,
+    // and insert the boxes into the rbush so nothing else gets placed there.
     candidates.forEach((chain, chainIndex) => {
       // Set aside half any extra boxes at the beginning of the chain
-      // (This centers the label along the chain)
+      // (This centers the label within the chain)
       const startIndex = Math.floor((chain.length - numBoxes) / 2);
       const labelID = `${featureID}-rope-${chainIndex}`;
 
@@ -821,10 +828,9 @@ if (doDebug) {
 
       if (!coords.length) return;  // shouldn't happen, min numBoxes is 2 boxes
 
-      const bearing = viewport.transform.rotation;  // map might not be north-up
       const sum = coords.reduce((acc, coord) => vecAdd(acc, coord), [0,0]);
       const origin = vecScale(sum, 1 / coords.length);  // pick local origin as the average of the points
-      let angle = vecAngle(coords.at(0), coords.at(-1)) + bearing;
+      let angle = vecAngle(coords.at(0), coords.at(-1));
       angle = numWrap(angle, 0, TAU);  // angle from x-axis, normalize to 0…2π
       if (angle > HALF_PI && angle < (3 * HALF_PI)) {  // rope is upside down, flip it
         angle -= Math.PI;
@@ -834,12 +840,11 @@ if (doDebug) {
       // The `coords` array follows our bounding box chain, however it will be a little
       // longer than the label needs to be, which can cause stretching of small labels.
       // Here we will scale the points down to the desired label width.
-      angle -= bearing;   // remove map bearing for this part
       coords = coords.map(coord => vecSubtract(coord, origin));  // to local coords
       coords = geomRotatePoints(coords, -angle, [0,0]);          // rotate to x axis
       coords = coords.map(([x,y]) => [x * scaleX, y]);           // apply `scaleX`
       coords = geomRotatePoints(coords, angle, [0,0]);           // rotate back
-      coords = coords.map(coord => vecAdd(coord, origin));       // back to scene coords
+      coords = coords.map(coord => vecAdd(coord, origin));       // back to global coords
 
       const label = new Label(labelID, 'rope', {
         str: feature.label,
@@ -853,60 +858,39 @@ if (doDebug) {
 
     // we can destroy the sprite now, it's texture will remain on the rope?
     // sprite.destroy({ children: true });
-
-// figure you out later
-//    if (SHOWDEBUG) {
-//      boxes.forEach(box => {
-//        const alpha = 0.75;
-//        let color;
-//        if (box.bendy) {
-//          color = 0xff33ff;
-//        } else if (box.collides) {
-//          color = 0xff3333;
-//        } else if (box.candidate) {
-//          color = 0x33ff33;
-//        } else {
-//          color = 0xffff33;
-//        }
-//
-//        const sprite = getDebugBBox(box.minX, box.minY, boxsize, boxsize, color, alpha, box.boxID);
-//        this.debugContainer.addChild(sprite);
-//        this._labelDObjs.get(featureID).push(sprite);
-//      });
-//    }
   }
 
 
   /**
    * renderObjects
    * This renders any of the Label objects in the view
-   * @param  viewport  The Pixi viewport
    */
-  renderObjects(viewport) {
+  renderObjects() {
     const context = this.context;
-    // const SHOWDEBUG = context.getDebug('label');
 
-    // Get the viewport bounds in pixi scene coordinates.
+    // Get the display bounds in screen/global coordinates
     const screen = context.pixi.screen;
-    const offset = context.pixi.stage.position;
-    const mapExtent = new Extent(
-      [screen.x - offset.x,      screen.y - offset.y],        // min
-      [screen.width - offset.x,  screen.height - offset.y]    // max
-    );
+    const labelOffset = this._labelOffset;
+    const screenBounds = {
+      minX: screen.x - labelOffset.x,
+      minY: screen.y - labelOffset.y,
+      maxX: screen.width - labelOffset.x,
+      maxY: screen.height - labelOffset.y
+    };
 
-    // Collect labels in view
+    // Collect Labels in view
     const labelIDs = new Set();
-    const visible = this._rbush.search(mapExtent.bbox());
+    const visible = this._rbush.search(screenBounds);
     for (const box of visible) {
       if (box.labelID) {
         labelIDs.add(box.labelID);
       }
     }
 
-    // Create and add labels to the scene, if needed
+    // Create and add Labels to the scene, if needed
     for (const labelID of labelIDs) {
       const label = this._labels.get(labelID);
-      if (!label) continue;  // bad labelID - shouldn't happen?
+      if (!label) continue;  // unknown labelID - shouldn't happen?
 
       const options = label.options;
       if (label.dObjID) continue;   // done already
@@ -916,19 +900,9 @@ if (doDebug) {
         labelObj.tint = options.tint || 0xffffff;
         labelObj.position.set(options.x, options.y);
 
-this._dObjs.set(labelObj.name, labelObj);
-label.dObjID = labelObj.name;
-        // label.displayObject = labelObj;
+        this._dObjs.set(labelObj.name, labelObj);
+        label.dObjID = labelObj.name;
         this.labelContainer.addChild(labelObj);
-
-//const box = options.box;
-//const x = box.minX;
-//const y = box.minY;
-//const w = box.maxX - box.minX;
-//const h = box.maxY - box.minY;
-//const sprite = getDebugBBox(x, y, w, h, options.tint, 0.75, labelID);
-//label.debugObject = sprite;
-//this.debugContainer.addChild(sprite);
 
       } else if (label.type === 'rope') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
@@ -939,10 +913,8 @@ label.dObjID = labelObj.name;
         rope.sortableChildren = false;
         rope.tint = options.tint || 0xffffff;
 
-this._dObjs.set(rope.name, rope);
-label.dObjID = rope.name;
-
-        // label.displayObject = rope;
+        this._dObjs.set(rope.name, rope);
+        label.dObjID = rope.name;
         this.labelContainer.addChild(rope);
       }
     }
