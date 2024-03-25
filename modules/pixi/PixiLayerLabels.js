@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import RBush from 'rbush';
-import { HALF_PI, RAD2DEG, TAU, Extent, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints
+import { HALF_PI, TAU, Extent, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints
 } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
@@ -64,6 +64,11 @@ export class PixiLayerLabels extends AbstractLayer {
     const groupContainer = this.scene.groups.get('labels');
     groupContainer.eventMode = 'none';
 
+    const labelOriginContainer = new PIXI.Container();
+    labelOriginContainer.name = 'labelorigin';
+    labelOriginContainer.eventMode = 'none';
+    this.labelOriginContainer = labelOriginContainer;
+
     const debugContainer = new PIXI.Container();  //PIXI.ParticleContainer(50000);
     debugContainer.name = 'debug';
     debugContainer.eventMode = 'none';
@@ -77,7 +82,9 @@ export class PixiLayerLabels extends AbstractLayer {
     labelContainer.sortableChildren = true;
     this.labelContainer = labelContainer;
 
-    groupContainer.addChild(debugContainer, labelContainer);
+    groupContainer.addChild(labelOriginContainer);
+    labelOriginContainer.addChild(debugContainer, labelContainer);
+
 
     // A RBush spatial index that stores all the placement boxes
     this._rbush = new RBush();
@@ -96,6 +103,8 @@ export class PixiLayerLabels extends AbstractLayer {
 
     // We reset the labeling when scale or rotation change
     this._tPrev = { x: 0, y: 0, k: 256 / Math.PI, r: 0 };
+    // Tracks the difference between the top left corner of the screen and the parent "origin" container
+    this._labelOffset = [0, 0];
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
     PIXI.BitmapFont.from('label-normal', TEXT_NORMAL, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
@@ -133,6 +142,10 @@ export class PixiLayerLabels extends AbstractLayer {
     this._dObjs.clear();
     this._labels.clear();
     this._rbush.clear();
+
+    for (const feature of this.scene.features.values()) {
+      feature._labelDirty = false;
+    }
   }
 
 
@@ -166,7 +179,6 @@ export class PixiLayerLabels extends AbstractLayer {
     this._avoidBoxes.delete(featureID);
     this._labelBoxes.delete(featureID);
 
-
     // Remove Labels, and gather Display Objects
     for (const labelID of labelIDs) {
       const label = this._labels.get(labelID);
@@ -176,7 +188,6 @@ export class PixiLayerLabels extends AbstractLayer {
       }
       this._labels.delete(labelID);
     }
-
 
     // Remove Display Objects (they automatically remove from parent containers)
     for (const dObjID of dObjIDs) {
@@ -202,22 +213,13 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   render(frame, viewport, zoom) {
 
-// not yet
-return;
-
-    // The label group should be kept unrotated so that it stays screen-up not north-up.
-    // The origin of this container will still be the origin of the Pixi scene.
-    const bearing = viewport.transform.rotation;  // map might not be north-up
-    const groupContainer = this.scene.groups.get('labels');
-    groupContainer.rotation = -bearing;
-
     if (this.enabled && zoom >= MINZOOM) {
       this.labelContainer.visible = true;
       this.debugContainer.visible = true;  // this.context.getDebug('label');
 
       // Reset labels
       const tPrev = this._tPrev;
-      const tCurr = viewport.transform;
+      const tCurr = viewport.transform.props;
       if (tCurr.k !== tPrev.k || tCurr.r !== tPrev.r) {  // zoom or rotation changed
         this.reset();                                    // reset all labels
       } else {
@@ -229,6 +231,27 @@ return;
         }
       }
       this._tPrev = tCurr;
+
+
+      // The label container should be kept unrotated so that it stays screen-up not north-up.
+      // We need to counter the effects of the 'stage' and 'origin' containers that we are underneath.
+      const stage = this.renderer.stage.position;
+      const origin = this.renderer.origin.position;
+      const bearing = viewport.transform.rotation;
+
+      // Determine the difference between the global/world/screen coordinate system (where [0,0] is top left)
+      // and the origin's coordinate system (which can be panned around or be under a rotation).
+      // We need to save this offset for use elsewhere, it is the basis for having a consistent coordinate
+      // system to track labels to place and objects to avoid. (we apply it to values we get from `getBounds`)
+      const labelOffset = this.renderer.origin.toGlobal({x: 0, y: 0});
+      this._labelOffset = [labelOffset.x, labelOffset.y];
+
+      const groupContainer = this.scene.groups.get('labels');
+      groupContainer.position.set(-origin.x, -origin.y);     // undo origin - [0,0] is now center
+      groupContainer.rotation = -bearing;                    // undo rotation
+
+      const labelOriginContainer = this.labelOriginContainer;
+      labelOriginContainer.position.set(-stage.x + labelOffset.x, -stage.y + labelOffset.y);  // replace origin
 
       // Collect features to avoid.
       this.gatherAvoids(viewport);
@@ -330,8 +353,6 @@ return;
    *  destroy the label and flag the feature as labeldirty for relabeling
    */
   gatherAvoids(viewport) {
-    const renderer = this.renderer.stage.position;
-    const bearing = viewport.transform.rotation;  // map might not be north-up
     const avoidObject = _avoidObject.bind(this);
 
     // Gather the containers that have avoidable stuff on them
@@ -360,31 +381,32 @@ return;
     }
 
 
-    // Adds the given object as an avoidance
+    // Adds the given display object as an avoidance
     function _avoidObject(sourceObject) {
       if (!sourceObject.visible || !sourceObject.renderable) return;
       const featureID = sourceObject.name;
       if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
 
-      const feature = this.scene.features.get(featureID);
-      const fRect = feature?.sceneBounds;
+      const fRect = sourceObject.getBounds();
       if (!fRect) return;
 
-      // The rectangle is in "scene" coordinates (i.e. north-up, origin stored in pixi stage)
-      // We need to rotate it to the coordintes used by the labels (screen-up)
+      // The rectangle is in global/world/screen coordinates (where [0,0] is top left).
+      // To work in a coordinate system that is consistent, remove the label offset.
+      // If we didn't do this, as the user pans or rotates the map, the objects that leave
+      // and re-enter the scene would end up with different coordinates each time.
+      fRect.x -= this._labelOffset[0];
+      fRect.y -= this._labelOffset[1];
+
       const EPSILON = 0.01;
+      const boxID = `${featureID}-avoid`;
       const fMin = [fRect.x + EPSILON, fRect.y + EPSILON];
       const fMax = [fRect.x + fRect.width - EPSILON, fRect.y + fRect.height - EPSILON];
-
       let coords = [fMin, fMax];
-      coords = coords.map(coord => vecSubtract(coord, origin));  // to local coords
-      coords = geomRotatePoints(coords, -bearing, [0, 0]);       // undo map bearing
-      coords = coords.map(coord => vecAdd(coord, origin));       // back to scene coords
 
       const [[minX, minY], [maxX, maxY]] = coords;
       const [w, h] = [maxX - minX, maxY - minY];
 
-      const boxID = `${featureID}-avoid`;
+// console.log(`${boxID}: ${coords}`);
 const sprite = getDebugBBox(minX, minY, w, h, 0xff0000, 0.75, boxID);
 this.debugContainer.addChild(sprite);
 this._dObjs.set(boxID, sprite);

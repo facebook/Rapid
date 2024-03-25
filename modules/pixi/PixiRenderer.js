@@ -474,20 +474,20 @@ export class PixiRenderer extends EventEmitter {
     // Determine "offset"
     // We try to avoid reprojecting the pixi geometries unless zoom has changed, or map has translated very far.
     // If the user is just panning, we can leave the geometries alone and add an offset translation to the origin.
-    const pixiXY = [pixiTransform.x, pixiTransform.y];
-    const mapXY = [mapTransform.x, mapTransform.y];
+    const pixiXY = pixiTransform.translation;
+    const mapXY = mapTransform.translation;
     const dist = vecLength(pixiXY, mapXY);
     let offset;
 
-    if (mapTransform.k !== pixiTransform.k || dist > 100000) {
+    if (pixiTransform.k !== mapTransform.k || dist > 100000) {
       offset = [0,0];
-      pixiViewport.transform = mapTransform;  // reset (set pixi = map)
-      this.scene.dirtyScene();                // all geometry must be reprojected
+      pixiViewport.transform = mapTransform;   // reset (sync pixi = map)
+      this.scene.dirtyScene();                 // all geometry must be reprojected
     } else {
       offset = vecSubtract(pixiXY, mapXY);
     }
 
-    if (mapTransform.r !== pixiTransform.r) {
+    if (pixiTransform.r !== mapTransform.r) {
       pixiTransform.rotation = mapTransform.r;
       this.scene.dirtyScene();               // only really needs restyle
     }
