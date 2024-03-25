@@ -352,7 +352,9 @@ export class PixiFeaturePoint extends AbstractFeature {
       } else if (shape instanceof PIXI.Rectangle) {
         new DashLine(this.halo, HALO_STYLE).drawRect(shape.x, shape.y, shape.width, shape.height);
       }
+
       this.halo.position = this.container.position;
+      this.halo.rotation = this.container.rotation;
 
     } else {
       if (this.halo) {
