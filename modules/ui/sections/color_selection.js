@@ -6,15 +6,15 @@ import { utilNoAuto } from '../../util/index.js';
 
 export function uiSectionColorSelection(context) {
   const l10n = context.systems.l10n;
-  const colors = context.systems.colors;  // todo: replace
+  const colors = context.systems.styles;  // todo: replace
 
   // Add or replace event handlers
-  colors.off('colorsloaded', loadComboBoxData);
-  colors.on('colorsloaded', loadComboBoxData);
+  // colors.off('colorsloaded', loadComboBoxData);
+  // colors.on('colorsloaded', loadComboBoxData);
 
   let comboData = [];
 
-  function loadComboBoxData(){
+  function loadComboBoxData() {
     let colorSchemeKeys = Object.keys(colors.getAllColorSchemes());
 
     for (let i = 0; i < colorSchemeKeys.length; i++) {
@@ -27,9 +27,10 @@ export function uiSectionColorSelection(context) {
     return comboData;
   }
 
+  comboData = loadComboBoxData();
 
   const section = uiSection(context, 'preferences-color-selection')
-    .label(l10n.tHtml('preferences.color_selection.title'))
+    .label(l10n.t('preferences.color_selection.title'))
     .disclosureContent(renderDisclosureContent);
 
   const colorCombo = uiCombobox(context, 'color-selection');

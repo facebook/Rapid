@@ -7,7 +7,7 @@ import { utilNoAuto } from '../../util/index.js';
 
 export function uiSectionColorblindModeOptions(context) {
   const l10n = context.systems.l10n;
-  const colors = context.systems.colors;  // todo: replace
+  const colors = context.systems.styles;  // todo: replace
 
   let comboData = [{ title: 'default', value: l10n.t('preferences.colorblind_options.default') }];
 
@@ -29,7 +29,7 @@ export function uiSectionColorblindModeOptions(context) {
   deuteranopiaFilter.matrix = deuteranopiaMatrix;
   tritanopiaFilter.matrix = tritanopiaMatrix;
 
-  function loadComboBoxData(){
+  function loadComboBoxData() {
     let colorblindModes = Object.keys(filtersObject);
 
     for (let i = 0; i < colorblindModes.length; i++) {
@@ -45,7 +45,7 @@ export function uiSectionColorblindModeOptions(context) {
   loadComboBoxData();
 
   const section = uiSection(context, 'preferences-colorblind-mode-options')
-    .label(l10n.tHtml('preferences.colorblind_options.title'))
+    .label(l10n.t('preferences.colorblind_options.title'))
     .disclosureContent(renderDisclosureContent);
 
   const colorblindCombo = uiCombobox(context, 'colorblind-mode-options');

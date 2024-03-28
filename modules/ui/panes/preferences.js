@@ -1,7 +1,7 @@
 import { uiPane } from '../pane.js';
 import { uiSectionPrivacy } from '../sections/privacy.js';
-//import { uiSectionColorSelection } from '../sections/color_selection.js';
-//import { uiSectionColorblindModeOptions } from '../sections/colorblind_mode_options.js';
+import { uiSectionColorSelection } from '../sections/color_selection.js';
+import { uiSectionColorblindModeOptions } from '../sections/colorblind_mode_options.js';
 import { uiSectionMapInteractionOptions } from '../sections/map_interaction_options.js';
 
 
@@ -16,7 +16,7 @@ export function uiPanePreferences(context) {
     .sections([
       uiSectionPrivacy(context),
       uiSectionMapInteractionOptions(context),
-//      uiSectionColorSelection(context),
-//      uiSectionColorblindModeOptions(context)
+      uiSectionColorSelection(context),
+      uiSectionColorblindModeOptions(context)
     ]);
 }
