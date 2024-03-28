@@ -35,8 +35,6 @@ export class StyleSystem extends AbstractSystem {
     this.context = context;
     this.dependencies = new Set(['dataloader']);
     this.autoStart = true;
-
-    // To handle color schemes
     this.colorData = null;
     this.colorSchemes = null;
     this.currentColorScheme = null;
@@ -44,24 +42,24 @@ export class StyleSystem extends AbstractSystem {
     // Experiment, see Rapid#1230
     // matrix values from https://github.com/maputnik/editor
     this.protanopiaMatrix = [
-      0.567,  0.433,  0,     0,  0,
-      0.558,  0.442,  0,     0,  0,
-      0,      0.242,  0.758, 0,  0,
-      0,      0,      0,     1,  0
+      0.567, 0.433, 0, 0, 0,
+      0.558, 0.442, 0, 0, 0,
+      0, 0.242, 0.758, 0, 0,
+      0, 0, 0, 1, 0
     ];
 
     this.deuteranopiaMatrix = [
-      0.625,  0.375,  0,     0,  0,
-      0.7,    0.3,    0,     0,  0,
-      0,      0.3,    0.7,   0,  0,
-      0,      0,      0,     1,  0
+      0.625, 0.375, 0, 0, 0,
+      0.7, 0.3, 0, 0, 0,
+      0, 0.3, 0.7, 0, 0,
+      0, 0, 0, 1, 0
     ];
 
     this.tritanopiaMatrix = [
-      0.95,   0.05,   0,     0,  0,
-      0,      0.433,  0.567, 0,  0,
-      0,      0.475,  0.525, 0,  0,
-      0,      0,      0,     1,  0
+      0.95, 0.05, 0, 0, 0,
+      0, 0.433, 0.567, 0, 0,
+      0, 0.475, 0.525, 0, 0,
+      0, 0, 0, 1, 0
     ];
 
 
@@ -184,12 +182,12 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: 'butt' }
       },
       river: {
-        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
+        fill: { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
         casing: { width: 10, color: 0x444444 },
         stroke: { width: 8, color: 0x77dddd }
       },
       stream: {
-        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
+        fill: { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0x77dddd }
       },
@@ -229,7 +227,7 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: 'round' }
       },
       barrier_hedge: {
-        fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
+        fill: { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
         casing: { alpha: 0 },  // disable
         stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 2, 5], cap: 'round' }
       },
@@ -525,6 +523,7 @@ export class StyleSystem extends AbstractSystem {
     // To handle color schemes
     this.getColorScheme = this.getColorScheme.bind(this);
     this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
+    this.setColorScheme = this.setColorScheme.bind(this);
   }
 
 
@@ -640,7 +639,7 @@ export class StyleSystem extends AbstractSystem {
           continue;
         }
 
-        matched = declaration;
+        matched = declaration || currentScheme;
         styleScore = score;
         styleKey = k;
 //        styleVal = v;
@@ -660,14 +659,14 @@ export class StyleSystem extends AbstractSystem {
         hasLifecycleTag = true;
         break;
 
-      // Lifecycle value, e.g. `railway=demolished`
-      // (applies only if `k` is styleKey or there is no styleKey controlling styling)
+        // Lifecycle value, e.g. `railway=demolished`
+        // (applies only if `k` is styleKey or there is no styleKey controlling styling)
       } else if ((!styleKey || k === styleKey) && lifecycleVals.has(v)) {
         hasLifecycleTag = true;
         break;
 
-      // Lifecycle key prefix, e.g. `demolished:railway=rail`
-      // (applies only if there is no styleKey controlling the styling)
+        // Lifecycle key prefix, e.g. `demolished:railway=rail`
+        // (applies only if there is no styleKey controlling the styling)
       } else if (!styleKey && lifecycleRegex.test(k) && v !== 'no') {
         hasLifecycleTag = true;
         break;
@@ -778,6 +777,19 @@ export class StyleSystem extends AbstractSystem {
     // This just returns the value of the tag, but ignores 'no' values
     function getTag(tags, key) {
       return tags[key] === 'no' ? undefined : tags[key];
+    }
+  }
+
+  // Returns object containing all color scheme objects
+  getAllColorSchemes() {
+    return this.STYLE_SCHEMES;
+  }
+
+  // Sets map color scheme
+  setColorScheme(schemeName) {
+    let currentScheme = this.STYLE_SCHEMES[schemeName];
+    if (this.currentColorScheme !== currentScheme) {
+      this.currentColorScheme = currentScheme;
     }
   }
 }

@@ -29,7 +29,7 @@ export function uiSectionColorblindModeOptions(context) {
   deuteranopiaFilter.matrix = deuteranopiaMatrix;
   tritanopiaFilter.matrix = tritanopiaMatrix;
 
-  function loadComboBoxData(){
+  function loadComboBoxData() {
     let colorblindModes = Object.keys(filtersObject);
 
     for (let i = 0; i < colorblindModes.length; i++) {
