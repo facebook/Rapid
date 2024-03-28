@@ -13,7 +13,7 @@ export function uiSectionColorSelection(context) {
 
   let comboData = [];
 
-  function loadComboBoxData(){
+  function loadComboBoxData() {
     let colorSchemeKeys = Object.keys(styles.getAllColorSchemes());
 
     for (let i = 0; i < colorSchemeKeys.length; i++) {
@@ -26,6 +26,7 @@ export function uiSectionColorSelection(context) {
     return comboData;
   }
 
+  comboData = loadComboBoxData();
 
   const section = uiSection(context, 'preferences-color-selection')
     .label(l10n.t('preferences.color_selection.title'))
