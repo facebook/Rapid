@@ -65,14 +65,14 @@ export function helpHtml(context, id, replacements) {
       straighten_icon: icon('#rapid-operation-straighten', 'inline operation'),
 
       // interaction icons
-      leftclick: icon('#rapid-walkthrough-mouse-left', 'inline operation'),
-      rightclick: icon('#rapid-walkthrough-mouse-right', 'inline operation'),
-      mousewheel_icon: icon('#rapid-walkthrough-mousewheel', 'inline operation'),
-      tap_icon: icon('#rapid-walkthrough-tap', 'inline operation'),
-      doubletap_icon: icon('#rapid-walkthrough-doubletap', 'inline operation'),
-      longpress_icon: icon('#rapid-walkthrough-longpress', 'inline operation'),
-      touchdrag_icon: icon('#rapid-walkthrough-touchdrag', 'inline operation'),
-      pinch_icon: icon('#rapid-walkthrough-pinch-apart', 'inline operation'),
+      leftclick: icon('#rapid-mouse-left', 'inline operation'),
+      rightclick: icon('#rapid-mouse-right', 'inline operation'),
+      mousewheel_icon: icon('#rapid-mouse-wheel', 'inline operation'),
+      tap_icon: icon('#rapid-onefinger-tap-single', 'inline operation'),
+      doubletap_icon: icon('#rapid-onefinger-tap-double', 'inline operation'),
+      longpress_icon: icon('#rapid-onefinger-press', 'inline operation'),
+      touchdrag_icon: icon('#rapid-onefinger-press-and-drag', 'inline operation'),
+      pinch_icon: icon('#rapid-twofinger-zoom', 'inline operation'),
 
       // insert keys; may be localized and platform-dependent
       shift: uiCmd.display(context, '⇧'),

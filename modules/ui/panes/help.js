@@ -354,7 +354,7 @@ export function uiPaneHelp(context) {
 
     function clickShortcuts(d3_event) {
       d3_event.preventDefault();
-      context.container().call(ui.shortcuts, true);
+      ui.shortcuts.show();
     }
 
     let toc = content   // table of contents

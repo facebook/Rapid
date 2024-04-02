@@ -7,275 +7,298 @@ import { uiModal } from './modal.js';
 import { utilDetect } from '../util/detect.js';
 
 
+// This is a UI component for displaying the keyboard shortcuts (when the user presses '?')
+// It is a modified `uiModal` component.
+// We load the data from 'shortcuts.json' to populate this screen.
+//
+// +------------------------------+
+// | Keyboard Shortcuts         X |   `.shortcuts-heading`
+// +------------------------------+
+// |    Browsing Editing Tools    |   `.nav-bar` containing `.nav-items`
+// |                              |
+// |  +--column--+  +--column--+  |  \
+// |  | row      |  | row      |  |  |-- `.shortcuts-section`
+// |  | row      |  | row      |  |  |    contains multiple `.shortcut-tab` (one visible at a time)
+// |  | row      |  | row      |  |  |     each of those contains multiple `.shortcut-column`
+// |  +----------+  +----------+  |  |      each of those contains multiple `.shortcut-row`
+// +------------------------------+  /
+//
+
 export function uiShortcuts(context) {
-    const l10n = context.systems.l10n;
+  const dataloader = context.systems.dataloader;
+  const l10n = context.systems.l10n;
 
-    var detected = utilDetect();
-    var _activeTab = 0;
-    var _modalSelection;
-    var _selection = d3_select(null);
-    var _dataShortcuts;
-
-
-    function shortcutsModal(_modalSelection) {
-        _modalSelection.select('.modal')
-            .classed('modal-shortcuts', true);
-
-        var content = _modalSelection.select('.content');
-
-        content
-            .append('div')
-            .attr('class', 'modal-section')
-            .append('h3')
-            .html(l10n.tHtml('shortcuts.title'));
-
-        const dataloader = context.systems.dataloader;
-        dataloader.getDataAsync('shortcuts')
-          .then(data => {
-            _dataShortcuts = data;
-            content.call(render);
-          })
-          .catch(e => console.error(e));  // eslint-disable-line
-    }
+  const detected = utilDetect();
+  let _activeTab = 0;
+  let _selection = null;
+  let _modal = null;
+  let _dataShortcuts = null;
 
 
-    function render(selection) {
-        if (!_dataShortcuts) return;
+  //
+  function render() {
+    if (!_modal || !_dataShortcuts) return;  // called too early
 
-        var wrapper = selection
-            .selectAll('.wrapper')
-            .data([0]);
+    _modal.select('.modal')
+      .classed('modal-shortcuts', true);
 
-        var wrapperEnter = wrapper
-            .enter()
-            .append('div')
-            .attr('class', 'wrapper modal-section');
+    const content = _modal.select('.content');
 
-        var tabsBar = wrapperEnter
-            .append('div')
-            .attr('class', 'tabs-bar');
+    // enter
+    content
+      .selectAll('.shortcuts-heading')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'shortcuts-heading modal-section')
+      .append('h3')
+      .text(l10n.t('shortcuts.title'));
 
-        var shortcutsList = wrapperEnter
-            .append('div')
-            .attr('class', 'shortcuts-list');
+    const wrapperEnter = content
+      .selectAll('.shortcuts-wrapper')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'shortcuts-wrapper modal-section');
 
-        wrapper = wrapper.merge(wrapperEnter);
+    const navBarEnter = wrapperEnter
+      .append('div')
+      .attr('class', 'nav-bar');
 
-        var tabs = tabsBar
-            .selectAll('.tab')
-            .data(_dataShortcuts);
-
-        var tabsEnter = tabs
-            .enter()
-            .append('a')
-            .attr('class', 'tab')
-            .attr('href', '#')
-            .on('click', function (d3_event, d) {
-                d3_event.preventDefault();
-                var i = _dataShortcuts.indexOf(d);
-                _activeTab = i;
-                render(selection);
-            });
-
-        tabsEnter
-            .append('span')
-            .html(function (d) { return l10n.tHtml(d.text); });
-
-        // Update
-        wrapper.selectAll('.tab')
-            .classed('active', function (d, i) {
-                return i === _activeTab;
-            });
+    navBarEnter
+      .selectAll('.nav-item')
+      .data(_dataShortcuts)
+      .enter()
+      .append('a')
+      .attr('class', 'nav-item')
+      .attr('href', '#')
+      .on('click', (d3_event, d) => {
+        d3_event.preventDefault();
+        _activeTab = _dataShortcuts.indexOf(d);
+        render();
+      })
+      .append('span')
+      .text(d => l10n.t(d.text));
 
 
-        var shortcuts = shortcutsList
-            .selectAll('.shortcut-tab')
-            .data(_dataShortcuts);
+    const shortcutsSectionEnter = wrapperEnter
+      .append('div')
+      .attr('class', 'shortcuts-section');
 
-        var shortcutsEnter = shortcuts
-            .enter()
-            .append('div')
-            .attr('class', function(d) { return 'shortcut-tab shortcut-tab-' + d.tab; });
+    const tabsEnter = shortcutsSectionEnter
+      .selectAll('.shortcut-tab')
+      .data(_dataShortcuts)
+      .enter()
+      .append('div')
+      .attr('class', d => `shortcut-tab shortcut-tab-${d.tab}`);
 
-        var columnsEnter = shortcutsEnter
-            .selectAll('.shortcut-column')
-            .data(function (d) { return d.columns; })
-            .enter()
-            .append('table')
-            .attr('class', 'shortcut-column');
+    const columnsEnter = tabsEnter
+      .selectAll('.shortcut-column')
+      .data(d => d.columns)
+      .enter()
+      .append('table')
+      .attr('class', 'shortcut-column');
 
-        var rowsEnter = columnsEnter
-            .selectAll('.shortcut-row')
-            .data(function (d) { return d.rows; })
-            .enter()
-            .append('tr')
-            .attr('class', 'shortcut-row');
-
-
-        var sectionRows = rowsEnter
-            .filter(function (d) { return !d.shortcuts; });
-
-        sectionRows
-            .append('td');
-
-        sectionRows
-            .append('td')
-            .attr('class', 'shortcut-section')
-            .append('h3')
-            .html(function (d) { return l10n.tHtml(d.text); });
+    const rowsEnter = columnsEnter
+      .selectAll('.shortcut-row')
+      .data(d => d.rows)
+      .enter()
+      .append('tr')
+      .attr('class', 'shortcut-row');
 
 
-        var shortcutRows = rowsEnter
-            .filter(function (d) { return d.shortcuts; });
+    // Rows without a "shortcuts" property are the subsection headings
+    const sectionRows = rowsEnter
+      .filter(d => !d.shortcuts);
 
-        var shortcutKeys = shortcutRows
-            .append('td')
-            .attr('class', 'shortcut-keys');
+    // Each "section" row contains:
+    // +---`td.shortcut-keys`--+--`td.shortcut-desc`---+
+    // +      (empty)          |  h3 section heading   |
+    // +-----------------------+-----------------------+
 
-        var modifierKeys = shortcutKeys
-            .filter(function (d) { return d.modifiers; });
+    sectionRows
+      .append('td');  // empty
 
-        modifierKeys
-            .selectAll('kbd.modifier')
-            .data(function (d) {
-                if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
-                    return ['⌃'];
-                } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
-                    return [];
-                } else {
-                    return d.modifiers;
-                }
-            })
-            .enter()
-            .each(function () {
-                var selection = d3_select(this);
-
-                selection
-                    .append('kbd')
-                    .attr('class', 'modifier')
-                    .text(d => uiCmd.display(context, d));
-
-                selection
-                    .append('span')
-                    .text('+');
-            });
+    sectionRows
+      .append('td')
+      .attr('class', 'shortcut-section')
+      .append('h3')
+      .text(d => l10n.t(d.text));
 
 
-        shortcutKeys
-            .selectAll('kbd.shortcut')
-            .data(function (d) {
-                var arr = d.shortcuts;
-                if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
-                    arr = ['Y'];
-                } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
-                    arr = ['F11'];
-                }
+    // Rows with a "shortcuts" property are the actual shortcuts
+    const shortcutRows = rowsEnter
+      .filter(d => d.shortcuts);
 
-                // replace translations
-                arr = arr.map(s => {
-                    return uiCmd.display(context, s.indexOf('.') !== -1 ? l10n.t(s) : s);
-                });
+    // Each "shortcut" row contains:
+    // +---`td.shortcut-keys`--+--`td.shortcut-desc`---+
+    // +      modifiers, keys  |  description          |
+    // +-----------------------+-----------------------+
 
-                return utilArrayUniq(arr).map(function(s) {
-                    return {
-                        shortcut: s,
-                        separator: d.separator,
-                        suffix: d.suffix,
-                        rapid: d.rapid
-                    };
-                });
-            })
-            .enter()
-            .each(function (d, i, nodes) {
-                var selection = d3_select(this);
-                var click = d.shortcut.toLowerCase().match(/(.*).click/);
+    const shortcutKeys = shortcutRows
+      .append('td')
+      .attr('class', 'shortcut-keys');
 
-                if (click && click[1]) {   // replace "left_click", "right_click" with mouse icon
-                    selection
-                        .call(uiIcon('#rapid-walkthrough-mouse-' + click[1], 'operation'));
-                } else if (d.shortcut.toLowerCase() === 'long-press') {
-                    selection
-                        .call(uiIcon('#rapid-walkthrough-longpress', 'longpress operation'));
-                } else if (d.shortcut.toLowerCase() === 'tap') {
-                    selection
-                        .call(uiIcon('#rapid-walkthrough-tap', 'tap operation'));
-                } else {
-                    selection
-                        .append('kbd')
-                        .attr('class', 'shortcut')
-                        .html(function (d) { return d.shortcut; });
-                }
+    const modifierKeys = shortcutKeys
+      .filter(d => d.modifiers);
 
-                if (i < nodes.length - 1) {
-                    selection
-                        .append('span')
-                        .html(d.separator || '\u00a0' + l10n.tHtml('shortcuts.or') + '\u00a0');
-                } else if (i === nodes.length - 1 && d.suffix) {
-                    selection
-                        .append('span')
-                        .html(d.suffix);
-                }
-
-                if (d.rapid && i === 0){
-                    selection
-                        .append('svg')
-                        .lower()
-                        .attr('class', 'icon logo-rapid')
-                        .append('use')
-                        .attr('xlink:href', '#rapid-logo-rapid')
-                        .attr('class', '#rapid-logo-rapid');
-                }
-            });
-
-
-        shortcutKeys
-            .filter(function(d) { return d.gesture; })
-            .each(function () {
-                var selection = d3_select(this);
-
-                selection
-                    .append('span')
-                    .html('+');
-
-                selection
-                    .append('span')
-                    .attr('class', 'gesture')
-                    .html(function (d) { return l10n.tHtml(d.gesture); });
-            });
-
-
-        shortcutRows
-            .append('td')
-            .attr('class', 'shortcut-desc')
-            .html(function (d) { return d.text ? l10n.tHtml(d.text) : '\u00a0'; });
-
-
-        // Update
-        wrapper.selectAll('.shortcut-tab')
-            .style('display', function (d, i) {
-                return i === _activeTab ? 'flex' : 'none';
-            });
-    }
-
-
-    return function(selection, show) {
-        _selection = selection;
-        if (show) {
-            _modalSelection = uiModal(selection);
-            _modalSelection.call(shortcutsModal);
+    modifierKeys
+      .selectAll('kbd.modifier')
+      .data(d => {
+        if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
+          return ['⌃'];
+        } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
+          return [];
         } else {
-            context.keybinding()
-                .on([l10n.t('shortcuts.toggle.key'), '?'], function () {
-                    if (context.container().selectAll('.modal-shortcuts').size()) {  // already showing
-                        if (_modalSelection) {
-                            _modalSelection.close();
-                            _modalSelection = null;
-                        }
-                    } else {
-                        _modalSelection = uiModal(_selection);
-                        _modalSelection.call(shortcutsModal);
-                    }
-                });
+          return d.modifiers;
         }
-    };
+      })
+      .enter()
+      .each((d, i, nodes) => {
+        const selection = d3_select(nodes[i]);
+        selection
+          .append('kbd')
+          .attr('class', 'modifier')
+          .text(d => uiCmd.display(context, d));
+
+//        selection
+//          .append('span')
+//          .text('+');
+      });
+
+
+    shortcutKeys
+      .selectAll('kbd.shortcut')
+      .data(d => {
+        let arr = d.shortcuts;
+        if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
+          arr = ['Y'];
+        } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
+          arr = ['F11'];
+        }
+
+        // replace translations
+        arr = arr.map(s => {
+          return uiCmd.display(context, s.indexOf('.') !== -1 ? l10n.t(s) : s);
+        });
+
+        return utilArrayUniq(arr).map(s => {
+          return {
+            shortcut: s,
+            separator: d.separator,
+            suffix: d.suffix
+          };
+        });
+      })
+      .enter()
+      .each((d, i, nodes) => {
+        const selection = d3_select(nodes[i]);
+        const val = d.shortcut.toLowerCase();
+        const icon = val.match(/^\{(.*)\}$/);
+
+        if (icon) {
+          const altText = icon[1].replace('interaction-', '').replace(/\-/g, ' ');
+          selection
+           .call(uiIcon(`#rapid-${icon[1]}`, 'operation', altText));
+
+        } else {
+          selection
+            .append('kbd')
+            .attr('class', 'shortcut')
+            .text(d => d.shortcut);
+        }
+
+        if (i < nodes.length - 1) {
+          selection
+            .append('span')
+            .text(d.separator || '\u00a0' + l10n.t('shortcuts.or') + '\u00a0');
+          }
+      });
+
+
+    shortcutKeys
+      .filter(d => d.gesture)
+      .each((d, i, nodes) => {
+        const selection = d3_select(nodes[i]);
+
+//        selection
+//          .append('span')
+//          .text('+');
+
+        selection
+          .append('span')
+          .attr('class', 'gesture')
+          .text(d => l10n.t(d.gesture));
+      });
+
+
+    shortcutRows
+      .append('td')
+      .attr('class', 'shortcut-desc')
+      .text(d => d.text ? l10n.t(d.text) : '\u00a0');
+
+
+    // Update
+    const wrapper = content.selectAll('.shortcuts-wrapper');
+
+    wrapper.selectAll('.nav-item')
+      .classed('active', (d, i) => i === _activeTab);
+
+    wrapper.selectAll('.shortcut-tab')
+      .style('display', (d, i) => i === _activeTab ? 'flex' : 'none');
+  }
+
+
+
+  function shortcuts(selection) {
+    _selection = selection;  // capture parent
+
+    context.keybinding()
+      .on([l10n.t('shortcuts.toggle.key'), '?'], () => shortcuts.toggle());
+  }
+
+
+  //
+  shortcuts.show = function() {
+    const otherShowing = context.container().selectAll('.shaded > div:not(.modal-shortcuts)').size();
+    if (otherShowing) return;  // some other modal is already showing
+
+    const isShowing = context.container().selectAll('.shaded > div.modal-shortcuts').size();
+    if (isShowing) {  // remove any existing
+      shortcuts.hide();
+    }
+    _modal = uiModal(_selection);
+
+    dataloader.getDataAsync('shortcuts')
+      .then(data => {
+        _dataShortcuts = data;
+        render();
+      })
+      .catch(e => console.error(e));  // eslint-disable-line
+  };
+
+
+  //
+  shortcuts.hide = function() {
+    if (!_modal) return;
+    _modal.close();
+    _modal = null;
+  };
+
+
+  //
+  shortcuts.toggle = function() {
+    const otherShowing = context.container().selectAll('.shaded > div:not(.modal-shortcuts)').size();
+    if (otherShowing) return;  // some other modal is already showing
+
+    const isShowing = context.container().selectAll('.shaded > div.modal-shortcuts').size();
+    if (isShowing) {
+      shortcuts.hide();
+    } else {
+      shortcuts.show();
+    }
+  };
+
+
+  return shortcuts;
 }

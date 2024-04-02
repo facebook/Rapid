@@ -4898,92 +4898,94 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 ------------------------------------------------------- */
 .modal-actions .logo-walkthrough,
 .modal-actions .logo-features {
-    color: #7092ff;
+  color: #7092ff;
 }
 
 
 /* Shortcuts Modal
 ------------------------------------------------------- */
 .modal-shortcuts {
-    width: 90%;
-    max-width: 1050px;
+  width: 90%;
+  max-width: 1050px;
 }
 
 .modal-shortcuts .modal-section:last-child {
-    padding: 10px 15px 20px 15px;
-    min-height: 275px;
+  padding: 10px 15px 20px 15px;
+  min-height: 275px;
 }
 
-.modal-shortcuts .tabs-bar {
-    padding-bottom: 5px;
-    text-align: center;
+.modal-shortcuts .nav-bar {
+  padding-bottom: 5px;
+  text-align: center;
 }
 
-.modal-shortcuts a.tab {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 0 5px;
-    cursor: pointer;
-    color: #666;
-    font-size: 16px;
-    font-weight: bold;
+.modal-shortcuts a.nav-item {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  color: #666;
+  font-size: 16px;
+  font-weight: bold;
 }
-.modal-shortcuts a.tab.active {
-    color: #7092ff;
-    border-bottom: 2px solid;
+.modal-shortcuts a.nav-item.active {
+  color: #7092ff;
+  border-bottom: 2px solid;
 }
-.modal-shortcuts a.tab:focus,
-.modal-shortcuts a.tab:active {
-    color: #597be7;
-    background-color: #efefef;
+.modal-shortcuts a.nav-item:focus,
+.modal-shortcuts a.nav-item:active {
+  color: #597be7;
+  background-color: #efefef;
 }
 @media (hover: hover) {
-    .modal-shortcuts a.tab:hover {
-        color: #597be7;
-        background-color: #efefef;
-    }
+  .modal-shortcuts a.nav-item:hover {
+    color: #597be7;
+    background-color: #efefef;
+  }
 }
 
 .modal-shortcuts .shortcut-tab {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }
 
 .modal-shortcuts .shortcut-column {
-    width: auto;
+  width: auto;
 }
 
 .modal-shortcuts .shortcut-tab-tools .shortcut-column {
-    flex: 1 1 100%;
-    width: 100%;
+  flex: 1 1 100%;
+  width: 100%;
 }
 
 .modal-shortcuts td {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .modal-shortcuts .shortcut-section {
-    padding: 20px 0 10px 0;
+  padding: 20px 0 10px 0;
 }
 
 .modal-shortcuts .shortcut-keys {
-    padding: 0 10px;
-    color: #767676;
-    text-align: right;
-    white-space: nowrap;
+  padding: 0 10px;
+  color: #767676;
+  text-align: right;
+  white-space: nowrap;
 }
 .ideditor[dir='rtl'] .modal-shortcuts .shortcut-keys {
-    text-align: left;
+  text-align: left;
 }
 
 .modal-shortcuts .shortcut-keys kbd {
-    color: #555;
+  color: #555;
 }
-
+.modal-shortcuts .shortcut-keys svg {
+  margin: 0 3px;
+}
 .modal-shortcuts .shortcut-keys .gesture {
-    color: #333;
-    padding: 3px;
+  color: #333;
+  margin: 0 3px;
 }
 
 

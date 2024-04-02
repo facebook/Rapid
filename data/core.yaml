@@ -2510,14 +2510,10 @@ en:
       navigation:
         title: "Navigation"
         pan: "Pan map"
-        pan_more: "Pan map by one screenful"
-        zoom: "Zoom in / Zoom out"
-        zoom_more: "Zoom in / Zoom out by a lot"
-        geolocate: "Zoom to my location"
-      photo_navigation:
-        title: "Navigation (while photo viewer is open)"
-        forward: "Go to next image in sequence"
-        backward: "Go to previous image in sequence"
+        pan_more: "Pan map by a lot"
+        zoom: "Zoom in / out"
+        zoom_more: "Zoom in / out by a lot"
+        rotate: "Rotate map"
       help:
         title: "Help"
         help: "Show help/documentation"
@@ -2535,10 +2531,7 @@ en:
         sidebar: "Toggle sidebar"
         wireframe: "Toggle wireframe mode"
         osm_data: "Toggle OpenStreetMap data"
-        minimap: "Toggle minimap"
-        3dmap: "Toggle 3D map"
         rapid_features_data: "Toggle Rapid Features"
-        highlight_way_edits: "Highlight way edits in current session"
         highlight_edits: "Highlight unsaved edits"
       selecting:
         title: "Selecting features"
@@ -2546,14 +2539,17 @@ en:
         select_multi: "Select multiple features"
         lasso: "Draw a selection lasso around features"
         search: "Find features matching search text"
+      photo_selected:
+        title: "With photo selected"
+        sequence: "Step to next / previous photo in sequence"
       with_selected:
         title: "With features selected"
         edit_menu: "Toggle edit menu"
-        zoom_to: "Zoom to selected features"
+        zoom_to: "Zoom in/out on selected features"
       vertex_selected:
         title: "With node selected"
-        previous: "Jump to previous node"
-        next: "Jump to next node"
+        previous: "Step to previous node"
+        next: "Step to next node"
         first: "Jump to first node"
         last: "Jump to last node"
         parent: "Select parent way"
@@ -2597,11 +2593,15 @@ en:
         redo: "Redo last action"
         save: "Save changes"
       rapid:
-        title: "Rapid AI-Assist"
+        title: "With Rapid feature selected"
         accept_feature: "Add the selected feature"
         ignore_feature: "Ignore the selected feature"
     tools:
       title: "Tools"
+      viewers:
+        title: "Viewers"
+        minimap: "Toggle minimap"
+        3dmap: "Toggle 3D map"
       info:
         title: "Information"
         all: "Toggle all information panels"
