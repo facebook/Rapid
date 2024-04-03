@@ -31,15 +31,13 @@
             "text": "shortcuts.browsing.navigation.pan_more"
           },
           {
-            "shortcuts": ["+", "-"],
-            "text": "shortcuts.browsing.navigation.zoom",
-            "separator": "/"
+            "shortcuts": ["{interaction-mouse-wheel}", ["+", "-"]],
+            "text": "shortcuts.browsing.navigation.zoom"
           },
           {
             "modifiers": ["⌘"],
-            "shortcuts": ["+", "-"],
-            "text": "shortcuts.browsing.navigation.zoom_more",
-            "separator": "/"
+            "shortcuts": [["+", "-"]],
+            "text": "shortcuts.browsing.navigation.zoom_more"
           },
           {
             "modifiers": ["⇧"],
@@ -178,13 +176,13 @@
             "text": "shortcuts.browsing.vertex_selected.last"
           },
           {
+            "shortcuts": ["\\", "shortcuts.key.pause"],
+            "text": "shortcuts.browsing.vertex_selected.change_parent"
+          },
+          {
             "modifiers": ["⌘"],
             "shortcuts": ["{interaction-keyboard-arrows-up}"],
             "text": "shortcuts.browsing.vertex_selected.parent"
-          },
-          {
-            "shortcuts": ["\\", "shortcuts.key.pause"],
-            "text": "shortcuts.browsing.vertex_selected.change_parent"
           },
           {
             "section": "way_selected",

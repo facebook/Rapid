@@ -2521,7 +2521,7 @@ en:
       display_options:
         title: "Display options"
         background: "Toggle background imagery pane"
-        background_switch: "Switch back to last background"
+        background_switch: "Switch back to last used background"
         background_previous: "Switch to previous background in list"
         background_next: "Switch to next background in list"
         map_data: "Toggle map data pane"
@@ -2539,21 +2539,21 @@ en:
         select_multi: "Select multiple features"
         lasso: "Draw a selection lasso around features"
         search: "Find features matching search text"
-      photo_selected:
-        title: "With photo selected"
-        sequence: "Step to next / previous photo in sequence"
       with_selected:
         title: "With features selected"
         edit_menu: "Toggle edit menu"
         zoom_to: "Zoom in/out on selected features"
+      photo_selected:
+        title: "With photo selected"
+        sequence: "Step to next / previous photo in sequence"
       vertex_selected:
         title: "With node selected"
         previous: "Step to previous node"
         next: "Step to next node"
         first: "Jump to first node"
         last: "Jump to last node"
-        parent: "Select parent way"
         change_parent: "Switch parent way"
+        parent: "Select parent way"
       way_selected:
         title: "With way selected"
         child: "Select child nodes"
@@ -2568,8 +2568,19 @@ en:
         place_point: "Place a point or note"
         disable_snap: "Hold to disable point snapping"
         stop_line: "Finish drawing a line or area"
+      commands:
+        title: "Commands"
+        copy: "Copy selected features"
+        paste: "Paste copied features"
+        undo: "Undo last action"
+        redo: "Redo last action"
+        save: "Save changes"
+      rapid:
+        title: "With Rapid feature selected"
+        accept_feature: "Accept the feature"
+        ignore_feature: "Ignore the feature"
       operations:
-        title: "Operations"
+        title: "Editing Operations"
         continue_line: "Continue a line at the selected endpoint"
         merge: "Combine (merge) selected features"
         disconnect: "Disconnect selected features"
@@ -2584,18 +2595,7 @@ en:
         reflect_long: "Flip features across the longer axis"
         reflect_short: "Flip features across the shorter axis"
         delete: "Delete selected features"
-        cycle_highway_tag: "Change selected road type"
-      commands:
-        title: "Commands"
-        copy: "Copy selected features"
-        paste: "Paste copied features"
-        undo: "Undo last action"
-        redo: "Redo last action"
-        save: "Save changes"
-      rapid:
-        title: "With Rapid feature selected"
-        accept_feature: "Add the selected feature"
-        ignore_feature: "Ignore the selected feature"
+        cycle_highway_tag: "Cycle through common tags"
     tools:
       title: "Tools"
       viewers:

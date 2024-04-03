@@ -108,7 +108,7 @@ export function uiShortcuts(context) {
 
 
     // Rows without a "shortcuts" property are the subsection headings
-    const sectionRows = rowsEnter
+    const sectionRowEnter = rowsEnter
       .filter(d => !d.shortcuts);
 
     // Each "section" row contains:
@@ -116,10 +116,10 @@ export function uiShortcuts(context) {
     // +      (empty)          |  h3 section heading   |
     // +-----------------------+-----------------------+
 
-    sectionRows
+    sectionRowEnter
       .append('td');  // empty
 
-    sectionRows
+    sectionRowEnter
       .append('td')
       .attr('class', 'shortcut-section')
       .append('h3')
@@ -127,7 +127,7 @@ export function uiShortcuts(context) {
 
 
     // Rows with a "shortcuts" property are the actual shortcuts
-    const shortcutRows = rowsEnter
+    const shortcutRowEnter = rowsEnter
       .filter(d => d.shortcuts);
 
     // Each "shortcut" row contains:
@@ -135,104 +135,113 @@ export function uiShortcuts(context) {
     // +      modifiers, keys  |  description          |
     // +-----------------------+-----------------------+
 
-    const shortcutKeys = shortcutRows
+    shortcutRowEnter
       .append('td')
-      .attr('class', 'shortcut-keys');
-
-    const modifierKeys = shortcutKeys
-      .filter(d => d.modifiers);
-
-    modifierKeys
-      .selectAll('kbd.modifier')
-      .data(d => {
-        if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
-          return ['⌃'];
-        } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
-          return [];
-        } else {
-          return d.modifiers;
-        }
-      })
-      .enter()
+      .attr('class', 'shortcut-keys')
       .each((d, i, nodes) => {
         const selection = d3_select(nodes[i]);
-        selection
-          .append('kbd')
-          .attr('class', 'modifier')
-          .text(d => uiCmd.display(context, d));
 
-//        selection
-//          .append('span')
-//          .text('+');
-      });
-
-
-    shortcutKeys
-      .selectAll('kbd.shortcut')
-      .data(d => {
-        let arr = d.shortcuts;
+        // Add modifiers, if any..
+        let modifiers = d.modifiers || [];
         if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
-          arr = ['Y'];
+          modifiers = ['⌃'];
         } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
-          arr = ['F11'];
+          modifiers = [];
         }
 
-        // replace translations
-        arr = arr.map(s => {
-          return uiCmd.display(context, s.indexOf('.') !== -1 ? l10n.t(s) : s);
-        });
-
-        return utilArrayUniq(arr).map(s => {
-          return {
-            shortcut: s,
-            separator: d.separator,
-            suffix: d.suffix
-          };
-        });
-      })
-      .enter()
-      .each((d, i, nodes) => {
-        const selection = d3_select(nodes[i]);
-        const val = d.shortcut.toLowerCase();
-        const icon = val.match(/^\{(.*)\}$/);
-
-        if (icon) {
-          const altText = icon[1].replace('interaction-', '').replace(/\-/g, ' ');
-          selection
-           .call(uiIcon(`#rapid-${icon[1]}`, 'operation', altText));
-
-        } else {
+        for (const val of modifiers) {
           selection
             .append('kbd')
-            .attr('class', 'shortcut')
-            .text(d => d.shortcut);
-        }
+            .attr('class', 'modifier')
+            .text(d => uiCmd.display(context, val));
 
-        if (i < nodes.length - 1) {
           selection
             .append('span')
-            .text(d.separator || '\u00a0' + l10n.t('shortcuts.or') + '\u00a0');
+            .text('+');
+        }
+
+
+        // Add shortcuts, if any..
+        let shortcuts = d.shortcuts || [];
+        if (detected.os === 'win' && d.text === 'shortcuts.editing.commands.redo') {
+          shortcuts = ['Y'];
+        } else if (detected.os !== 'mac' && d.text === 'shortcuts.browsing.display_options.fullscreen') {
+          shortcuts = ['F11'];
+        }
+
+        // 'shortcuts' should be an Array containing strings and Array groups
+        // For example,  `['A', ['B', 'C'], 'D']`
+        //  will display a shortcut like "A -or- B,C -or- D"
+        // Preprocess this data to convert all the strings to display values and remove duplicates.
+        const s = new Set();
+        for (const item of shortcuts) {
+          let group = Array.isArray(item) ? item : [item];  // treat all items as arrays
+          group = group.map(s => {
+            if (s.includes('{')) return s;
+            else return uiCmd.display(context, s.includes('.') ? l10n.t(s) : s);
+          });
+          group = utilArrayUniq(group);
+
+          if (group.length === 0) {
+            continue;
+          } else if (group.length === 1) {
+            s.add(group[0]);
+          } else {
+            s.add(group);
           }
+        }
+
+        const arr = [...s];
+        for (let i = 0; i < arr.length; i++) {
+          const item = arr[i];
+          const group = Array.isArray(item) ? item : [item];  // treat all items as arrays
+
+          for (let j = 0; j < group.length; j++) {
+            const s = group[j];
+            if (typeof s !== 'string') continue;
+
+            const icon = s.toLowerCase().match(/^\{(.*)\}$/);
+            if (icon) {
+              const altText = icon[1].replace('interaction-', '').replace(/\-/g, ' ');
+              selection
+               .call(uiIcon(`#rapid-${icon[1]}`, 'operation', altText));
+
+            } else {
+              selection
+                .append('kbd')
+                .attr('class', 'shortcut')
+                .text(s);
+            }
+
+            if (j < group.length - 1) {
+              selection
+                .append('span')
+                .text('/');
+            }
+          }
+
+          if (i < arr.length - 1) {
+            selection
+              .append('span')
+              .text('\u00a0' + l10n.t('shortcuts.or') + '\u00a0');
+          }
+        }
+
+        // Add gesture word, if any..
+        if (d.gesture) {
+          selection
+            .append('span')
+            .text('+');
+
+          selection
+            .append('span')
+            .attr('class', 'gesture')
+            .text(d => l10n.t(d.gesture));
+        }
       });
 
 
-    shortcutKeys
-      .filter(d => d.gesture)
-      .each((d, i, nodes) => {
-        const selection = d3_select(nodes[i]);
-
-//        selection
-//          .append('span')
-//          .text('+');
-
-        selection
-          .append('span')
-          .attr('class', 'gesture')
-          .text(d => l10n.t(d.gesture));
-      });
-
-
-    shortcutRows
+    shortcutRowEnter
       .append('td')
       .attr('class', 'shortcut-desc')
       .text(d => d.text ? l10n.t(d.text) : '\u00a0');
