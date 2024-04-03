@@ -35,9 +35,6 @@ export class StyleSystem extends AbstractSystem {
     this.context = context;
     this.dependencies = new Set(['dataloader']);
     this.autoStart = true;
-
-    // To handle color schemes
-    this.colorData = null;
     this.colorSchemes = null;
     this.currentColorScheme = null;
 
@@ -521,10 +518,9 @@ export class StyleSystem extends AbstractSystem {
 
 
     this.styleMatch = this.styleMatch.bind(this);
-
-    // To handle color schemes
     this.getColorScheme = this.getColorScheme.bind(this);
     this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
+    this.setColorScheme = this.setColorScheme.bind(this);
   }
 
 
@@ -550,17 +546,16 @@ export class StyleSystem extends AbstractSystem {
   startAsync() {
     this._started = true;
 
-    // To handle color schemes
+    // Fetch the color scheme objects from colors.json
     const context = this.context;
     const dataloader = context.systems.dataloader;
 
     dataloader.getDataAsync('colors')
       .then((data) => {
         this.colorSchemes = data;
-        // set current scheme to default
-        this.colorData = data.default;
-        this.currentColorScheme = 'default';
-        this.emit('colorsloaded');  // emit copies
+        // Set the current color scheme to default
+        this.currentColorScheme = data.default;
+        this.emit('colorsloaded');
       });
 
     return Promise.resolve();
@@ -581,7 +576,7 @@ export class StyleSystem extends AbstractSystem {
    * @return {Object}  Default color scheme object
    */
   getColorScheme() {
-    return this.colorData;
+    return this.currentColorScheme;
   }
 
   /**
@@ -594,14 +589,13 @@ export class StyleSystem extends AbstractSystem {
 
   /**
    * setColorScheme
-   * Assigns the colorData var to the new scheme, if the selected scheme is not the current scheme
+   * Assigns the currentColorScheme var to the new scheme, if the selected scheme is not the current scheme
    * @param  {Object}  scheme - color scheme project
    */
   setColorScheme(scheme) {
     let currentScheme = this.colorSchemes[scheme];
-    if (this.colorData !== currentScheme) { 
-      this.currentColorScheme = scheme;
-      this.colorData = currentScheme;
+    if (this.currentColorScheme !== currentScheme) { 
+      this.currentColorScheme = currentScheme;
     }
   }
 

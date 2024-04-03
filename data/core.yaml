@@ -1000,7 +1000,7 @@ en:
       title: Map Color Scheme
       tooltip: Switch between color schemes
       default: Default
-      example: Example (High Contrast)
+      high_contrast: High Contrast
       placeholder: Select color scheme
     colorblind_options:
       title: Colorblind Mode
