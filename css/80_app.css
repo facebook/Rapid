@@ -5193,8 +5193,10 @@ button.conflicts-button {
 
 .tooltip .popover-inner {
     border-radius: 4px;
-    max-width: 200px;
-    min-width: 80px;
+/*    max-width: 200px;*/
+/*    min-width: 80px;*/
+    max-width: 240px;
+    min-width: 100px;
     padding: 10px;
     font-weight: normal;
     background-color: #fff;
@@ -5510,7 +5512,7 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 }
 
 .curtain-tooltip .popover-inner .button-section button {
-    width: 66.6666%;
+  width: 50%;
 }
 
 .curtain-tooltip .popover-inner .instruction:only-child {
@@ -5520,10 +5522,15 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 }
 
 .curtain-tooltip .popover-inner .icon.pre-text {
-    vertical-align: text-top;
-    margin-right: 0;
-    margin-left: 0;
-    display: inline-block;
+  vertical-align: text-top;
+  margin-right: 0;
+  margin-left: 0;
+  display: inline-block;
+}
+
+.curtain-tooltip .popover-inner .icon.success {
+  color: #55bb00;
+  margin: 0 3px;
 }
 
 .curtain-tooltip.intro-points-describe ,

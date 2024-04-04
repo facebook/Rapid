@@ -103,7 +103,7 @@
           },
           {
             "modifiers": ["⇧"],
-            "shortcuts": [ "map_data.layers.ai-features.key"],
+            "shortcuts": [ "map_data.layers.rapid.key"],
             "text": "shortcuts.browsing.display_options.rapid_features_data",
             "rapid": true
           }

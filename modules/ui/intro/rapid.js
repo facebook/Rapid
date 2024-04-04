@@ -72,7 +72,7 @@ export function uiIntroRapid(context, curtain) {
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
           tipHtml: helpHtml(context, 'intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-          buttonText: l10n.tHtml('intro.ok'),
+          buttonText: l10n.t('intro.ok'),
           buttonCallback: () => resolve(showHideRoadsAsync)
         });
       }));
@@ -87,7 +87,7 @@ export function uiIntroRapid(context, curtain) {
       curtain.reveal({
         revealSelector: 'button.rapid-features',
         tipHtml: helpHtml(context, 'intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(selectRoadAsync)
       });
     });
@@ -353,7 +353,7 @@ export function uiIntroRapid(context, curtain) {
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-startEditing',
       tipHtml: helpHtml(context, 'intro.rapid.done', { next: l10n.t('intro.startediting.title') }),
-      buttonText: l10n.tHtml('intro.ok'),
+      buttonText: l10n.t('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

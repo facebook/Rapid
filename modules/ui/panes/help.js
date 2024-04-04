@@ -24,8 +24,9 @@ export function uiPaneHelp(context) {
     ]],
     ['overview', [
       'navigation_h',
-      'navigation_drag',
+      'navigation_pan',
       'navigation_zoom',
+      'navigation_rotate',
       'features_h',
       'features',
       'nodes_ways'

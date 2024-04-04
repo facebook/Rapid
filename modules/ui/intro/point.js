@@ -196,7 +196,7 @@ export function uiIntroPoint(context, curtain) {
           revealSelector: '.entity-editor-pane',
           tipHtml: helpHtml(context, 'intro.points.feature_editor'),
           tipClass: 'intro-points-describe',
-          buttonText: l10n.tHtml('intro.ok'),
+          buttonText: l10n.t('intro.ok'),
           buttonCallback: () => resolve(addNameAsync)
         });
       }))
@@ -230,7 +230,7 @@ export function uiIntroPoint(context, curtain) {
           const tooltip = curtain.reveal({
             revealSelector: '.entity-editor-pane',
             tipHtml: helpHtml(context, 'intro.points.fields_info'),
-            buttonText: l10n.tHtml('intro.ok'),
+            buttonText: l10n.t('intro.ok'),
             buttonCallback: () => resolve(addCloseEditorAsync)
           });
 
@@ -459,7 +459,7 @@ export function uiIntroPoint(context, curtain) {
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-area',
       tipHtml: helpHtml(context, 'intro.points.play', { next: l10n.t('intro.areas.title') }),
-      buttonText: l10n.tHtml('intro.ok'),
+      buttonText: l10n.t('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

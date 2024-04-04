@@ -157,9 +157,7 @@ export function uiSidebar(context) {
         var hoverModeSelect = function(targets) {
             context.container().selectAll('.feature-list-item button').classed('hover', false);
 
-            if (context.selectedIDs().length > 1 &&
-                targets && targets.length) {
-
+            if (context.selectedIDs().length > 1 && targets && targets.length) {
                 var elements = context.container().selectAll('.feature-list-item button')
                     .filter(function(node) {
                         return targets.indexOf(node) !== -1;
@@ -229,9 +227,6 @@ export function uiSidebar(context) {
                     errEditor = improveOsmEditor;
                 }
 
-                context.container().selectAll('.qaItem.' + datum.service)
-                    .classed('hover', function(d) { return d.id === datum.id; });
-
                 sidebar
                     .show(errEditor.error(datum));
 
@@ -269,9 +264,6 @@ export function uiSidebar(context) {
                 _wasNote = false;
                 _wasData = false;
                 _wasQaItem = false;
-                context.container().selectAll('.layer-ai-features .hover').classed('hover', false);
-                context.container().selectAll('.note').classed('hover', false);
-                context.container().selectAll('.qaItem').classed('hover', false);
                 sidebar.hide();
             }
         }
@@ -417,9 +409,6 @@ export function uiSidebar(context) {
                         // hide the sidebar's content after it transitions offscreen
                         selection.classed('collapsed', isCollapsing);
                     }
-// pixirenderer handles this now?
-//                    const resizeNode = context.pixi.view.parentNode;
-//                    context.pixi.resize(resizeNode.clientWidth, resizeNode.clientHeight);
                     // switch back from px to %
                     if (!isCollapsing) {
                         var containerWidth = container.node().getBoundingClientRect().width;

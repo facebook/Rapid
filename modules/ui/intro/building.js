@@ -192,7 +192,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_building'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(addHouseAsync)
       });
     });
@@ -395,7 +395,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_square'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(rightClickHouseAsync)
       });
     });
@@ -412,7 +412,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.done_square'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(addTankAsync)
       });
     });
@@ -685,7 +685,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: tankExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_circle'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(rightClickTankAsync)
       });
     });
@@ -700,7 +700,7 @@ export function uiIntroBuilding(context, curtain) {
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-rapid',
       tipHtml: helpHtml(context, 'intro.buildings.play', { next: l10n.t('intro.rapid.title') }),
-      buttonText: l10n.tHtml('intro.ok'),
+      buttonText: l10n.t('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

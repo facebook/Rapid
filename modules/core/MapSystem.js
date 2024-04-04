@@ -546,7 +546,7 @@ export class MapSystem extends AbstractSystem {
     r2 = numWrap(r2 || 0, 0, TAU);
 
     if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
-      return new Promise.resolve(t1);
+      return Promise.resolve(t1);
     }
 
     const k2 = geoZoomToScale(z2, TILESIZE);
