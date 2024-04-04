@@ -3874,9 +3874,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     border-radius: 4px 4px 0 0;
 }
 
-/* walkthrough disabled */
-/*.help-pane .toc li:nth-last-child(3) a {*/
-.help-pane .toc li:nth-last-child(2) a {
+.help-pane .toc li:nth-last-child(3) a {
     border-bottom: 1px solid #ccc;
     border-radius: 0 0 4px 4px
 }
