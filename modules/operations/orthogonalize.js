@@ -97,7 +97,7 @@ export function operationOrthogonalize(context, selectedIDs) {
     // If the selection is not 80% contained in view
     function tooLarge() {
       const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(viewport.extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(viewport.visibleExtent()) < 0.8;
     }
 
     // If fhe selection spans tiles that haven't been downloaded yet
