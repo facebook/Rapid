@@ -228,7 +228,7 @@
             "text": "shortcuts.editing.drawing.place_point"
           },
           {
-            "shortcuts": ["⌥"],
+            "shortcuts": ["⌥", "⌃"],
             "text": "shortcuts.editing.drawing.disable_snap"
           },
           {

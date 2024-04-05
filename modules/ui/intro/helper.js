@@ -91,9 +91,10 @@ export function helpHtml(context, id, replacements) {
 
       // insert keys; may be localized and platform-dependent
       shift: uiCmd.display(context, '⇧'),
-      alt: uiCmd.display(context, '⌥'),
+      option: uiCmd.display(context, '⌥'),
+      control: uiCmd.display(context, '⌃'),
       return: uiCmd.display(context, '↵'),
-      esc: l10n.t('shortcuts.key.esc'),
+      esc: uiCmd.display(context, '⎋'),
       space: l10n.t('shortcuts.key.space'),
       add_note_key: l10n.t('modes.add_note.key'),
       help_key: l10n.t('help.key'),
