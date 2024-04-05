@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Viewport, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
+import { HALF_PI, Viewport, geoScaleToZoom, geoZoomToScale, vecInterp, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles.js';
 import { utilSetTransform } from '../util/index.js';
@@ -43,6 +43,7 @@ export function uiMapInMap(context) {
      */
     function updateMinimap() {
       if (_isHidden) return;
+      if (!map.renderer?.textures?.loaded) return;
       updateViewport();
       updateBoundingBox();
     }
@@ -169,25 +170,55 @@ export function uiMapInMap(context) {
      * Recalculates the position and size of the bounding box rectangle on the minimap
      */
     function updateBoundingBox() {
-      const bbox = viewMain.visibleExtent().bbox();
-      const topLeftPoint = viewMini.project([bbox.minX, bbox.maxY]);
-      const bottomRightPoint = viewMini.project([bbox.maxX, bbox.minY]);
-      const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
-      const boxHeight = Math.abs(bottomRightPoint[1] - topLeftPoint[1]);
+      const [w, h] = viewMain.dimensions;
+      const mainPoints = [[0, 0], [0, h], [w, h], [w, 0], [0, 0]];
+      const miniPoints = new Array(mainPoints.length);
+      const flatPoints = new Array(mainPoints.length * 2);  // as a flattened array
 
-      const stage = _miniPixi.stage;
-      let bboxGraphic = stage.getChildByName('bbox');
-      if (!bboxGraphic) {
-        bboxGraphic = new PIXI.Graphics();
-        bboxGraphic.name = 'bbox';
-        bboxGraphic.eventMode = 'none';
-        stage.addChild(bboxGraphic);
+      // Compute the viewport bounding box coordinates..
+      for (let i = 0; i < mainPoints.length; i++) {
+        // Unproject from the original screen coords to lon/lat (true = consider rotation)
+        // Then project to the coordinates used by the minimap.
+        const [x, y] = viewMini.project(viewMain.unproject(mainPoints[i], true));
+        miniPoints[i] = [x, y];
+        flatPoints[(i * 2)] = x;
+        flatPoints[(i * 2) + 1] = y;
       }
 
-      bboxGraphic
+      const stage = _miniPixi.stage;
+      let bbox = stage.getChildByName('bbox');
+      if (!bbox) {
+        bbox = new PIXI.Graphics();
+        bbox.name = 'bbox';
+        bbox.eventMode = 'none';
+        stage.addChild(bbox);
+      }
+
+      let arrow = stage.getChildByName('arrow');
+      if (!arrow) {
+        arrow = new PIXI.Container();
+        arrow.name = 'arrow';
+        arrow.eventMode = 'none';
+        stage.addChild(arrow);
+
+        // We're repurposing the 'sided' arrow, so we need to turn it -90°
+        const textures = map.renderer.textures;
+        const sprite = new PIXI.Sprite(textures.get('sided'));
+        sprite.tint = 0xffff00;
+        sprite.anchor.set(0, 0.5); // left, middle
+        sprite.rotation = -HALF_PI;
+        arrow.addChild(sprite);
+      }
+
+      bbox
         .clear()
         .lineStyle(2, 0xffff00)
-        .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
+        .drawShape(new PIXI.Polygon(flatPoints));
+
+      // Place an "up" arrow at the "top" of the box.
+      const [arrowX, arrowY] = vecInterp(miniPoints[3], miniPoints[4], 0.5);
+      arrow.position.set(arrowX, arrowY);
+      arrow.rotation = -viewMain.transform.rotation;
     }
 
 
@@ -237,10 +268,7 @@ export function uiMapInMap(context) {
      */
     function clear() {
       const stage = _miniPixi.stage;
-      const bboxGraphic = stage.getChildByName('bbox');
-      if (bboxGraphic) {
-        stage.removeChild(bboxGraphic);
-      }
+      stage.removeChildren();
 
       if (_miniTileLayer) {
         _miniTileLayer.destroyAll();
@@ -254,6 +282,8 @@ export function uiMapInMap(context) {
      */
     function tick() {
       if (_isHidden) return;
+      if (!map.renderer?.textures?.loaded) return;
+
       window.performance.mark('minimap-start');
       const frame = 0;    // not used
       _miniTileLayer.render(frame, viewMini);     // APP
@@ -312,14 +342,12 @@ export function uiMapInMap(context) {
       stage.eventMode = 'none';
       stage.sortableChildren = false;
 
-      const mainRenderer = map.renderer;
-
       // Construct the scene..
       const miniRenderer = {    // Mock Renderer
         context: context,
         pixi: _miniPixi,
         stage: stage,
-        textures: mainRenderer.textures
+        textures: map.renderer.textures
       };
 
       const miniScene = {   // Mock Scene
