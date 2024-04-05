@@ -4066,6 +4066,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 /* Map
 ------------------------------------------------------- */
+/* `main-map` is a container that takes up all the space where the map will go. */
 .main-map {
   position: absolute;
   top: 0;
@@ -4077,8 +4078,9 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   width: 100%;
 
   display: grid;
-  place-items: center;
   place-content: center;
+  place-items: center;
+  grid-template: 1fr / 1fr;
 
   background: #000;
   user-select: none;
@@ -4090,11 +4092,12 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
   touch-action: none;
 }
 
+/* `supersurface` contains temporary transforms from the user interacting with the map between full redraws */
 .supersurface {
   display: grid;
-  place-items: center;
+  grid-template: 1fr / 1fr;
   place-content: center;
-
+  place-items: center;
 /* for testing */
 /*  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RCA_Indian_Head_Test_Pattern.svg/1200px-RCA_Indian_Head_Test_Pattern.svg.png');*/
 /*  background-size:     cover;*/
@@ -4102,15 +4105,23 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /*  background-position: center center;*/
 }
 
-.surface {
+.main-map > *,
+.supersurface > * {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
   height: 100%;
   width: 100%;
+}
+
+/*`surface` is the actual map canvas, managed by Pixi. */
+.surface {
   z-index: 1;
 }
 
+/* `overlay` is a div that floats over the map but stays transformed with it.
+ *  (this is where we draw the edit menu)
+ */
 .overlay {
-  height: 100%;
-  width: 100%;
   z-index: 2;
   pointer-events: none;
 }

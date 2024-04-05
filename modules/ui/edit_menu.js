@@ -213,7 +213,7 @@ export function uiEditMenu(context) {
       return;
     }
 
-    const anchor = viewport.project(_anchorLoc);  // convert wgs84 [lon,lat] to screen [x,y]
+    const anchor = viewport.project(_anchorLoc, true);  // convert wgs84 [lon,lat] to screen [x,y]
     const surfaceRect = context.surfaceRect();
 
     // close the menu if it's gone offscreen

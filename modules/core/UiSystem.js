@@ -1,4 +1,5 @@
 import { select as d3_select } from 'd3-selection';
+import { vecAdd } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { utilDetect } from '../util/detect.js';
@@ -482,13 +483,20 @@ this.didRender = true;
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
     //  but the values will be cached for later use.
-    const dims = utilGetDimensions(container.select('.main-content'), true);
+    let dims = utilGetDimensions(container.select('.main-content'), true);
     utilGetDimensions(container.select('.sidebar'), true);
 
     // When adjusting the sidebar width, pan the map so it stays centered on the same location.
     if (offset !== undefined) {
       map.pan(offset);
     }
+
+// experiment:
+// Previously, the map surfaces were anchored to the top left of the main-map.
+// Now, the map surfaces are centered in a CSS Grid, to support rotation around the center.
+// We can extend the map dimensions a little bit so that as the user pans, we dont see seams at the edges of the map.
+const overscan = 50;
+dims = vecAdd(dims, [overscan * 2, overscan * 2]);
 
     viewport.dimensions = dims;
     this.photoviewer.onMapResize();

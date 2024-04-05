@@ -403,13 +403,20 @@ export class PixiRenderer extends EventEmitter {
     // Determine if the visible dimensions have changed.
     const pixiDims = pixiViewport.dimensions;
     const mapDims = mapViewport.dimensions;
+
     if (!vecEqual(pixiDims, mapDims)) {
       pixiViewport.dimensions = mapDims;
-      // Resize supersurface to cover the visible dimensions
+
+      // Resize supersurface and overlay to cover the screen dimensions
       const ssnode = this.supersurface.node();
       ssnode.style.width = `${mapDims[0]}px`;
       ssnode.style.height = `${mapDims[1]}px`;
-      // We'll need to resize pixi too, but this should be done later (at draw time probably)
+      const onode = this.overlay.node();
+      onode.style.width = `${mapDims[0]}px`;
+      onode.style.height = `${mapDims[1]}px`;
+
+      // We'll need to resize pixi too, but this is expensive, so will be done later.
+      // The Pixi resize is queued in `_app` so that it might be done by `_draw`.
     }
 
     // Here we calculate a temporary CSS transform that includes
