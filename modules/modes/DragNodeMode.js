@@ -35,6 +35,7 @@ export class DragNodeMode extends AbstractMode {
     this._move = this._move.bind(this);
     this._end = this._end.bind(this);
     this._cancel = this._cancel.bind(this);
+    this._nudge = this._nudge.bind(this);
   }
 
 
@@ -113,13 +114,15 @@ export class DragNodeMode extends AbstractMode {
     this._clickLoc = context.viewport.unproject(point);
 
     context.enableBehaviors(['hover', 'drag', 'map-nudging']);
-    // Now that the user has clicked, let them nudge the map by moving to the edge.
     context.behaviors['map-nudging'].allow();
 
     context.behaviors.drag
       .on('move', this._move)
       .on('end', this._end)
       .on('cancel', this._cancel);
+
+    context.behaviors['map-nudging']
+      .on('nudge', this._nudge);
 
     return true;
   }
@@ -148,6 +151,9 @@ export class DragNodeMode extends AbstractMode {
       .off('move', this._move)
       .off('end', this._end)
       .off('cancel', this._cancel);
+
+    context.behaviors['map-nudging']
+      .off('nudge', this._nudge);
   }
 
 
@@ -223,6 +229,34 @@ export class DragNodeMode extends AbstractMode {
       const adjustedCoord = vecAdd(point, dragOffset);
       loc = viewport.unproject(adjustedCoord);
     }
+
+    if (locations.blocksAt(loc).length) {  // editing is blocked here
+      this._cancel();
+      return;
+    }
+
+    editor.perform(actionMoveNode(this.dragNode.id, loc));
+    this._refreshEntities();
+  }
+
+
+  /**
+   * _nudge
+   * This event fires on map pans at the edge of the screen.
+   * We want to move the dragging node opposite of the pixels panned to keep it in the same place.
+   * @param  nudge - [x,y] amount of map pan in pixels
+   */
+  _nudge(nudge) {
+    if (!this.dragNode) return;
+
+    const context = this.context;
+    const editor = context.systems.editor;
+    const locations = context.systems.locations;
+    const viewport = context.viewport;
+
+    const currPoint = viewport.project(this.dragNode.loc);
+    const destPoint = vecSubtract(currPoint, nudge);
+    const loc = viewport.unproject(destPoint);
 
     if (locations.blocksAt(loc).length) {  // editing is blocked here
       this._cancel();

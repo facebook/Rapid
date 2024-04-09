@@ -1,4 +1,4 @@
-import { vecEqual, vecLength } from '@rapid-sdk/math';
+import { vecEqual, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
 import { actionAddEntity } from '../actions/add_entity.js';
@@ -61,6 +61,7 @@ export class DrawAreaMode extends AbstractMode {
     this._finish = this._finish.bind(this);
     this._hover = this._hover.bind(this);
     this._move = this._move.bind(this);
+    this._nudge = this._nudge.bind(this);
     this._restoreSnapshot = this._restoreSnapshot.bind(this);
   }
 
@@ -100,6 +101,9 @@ export class DrawAreaMode extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
+    context.behaviors['map-nudging']
+      .on('nudge', this._nudge);
+
     editor
       .on('historyjump', this._restoreSnapshot);
 
@@ -138,6 +142,9 @@ export class DrawAreaMode extends AbstractMode {
       .off('click', this._click)
       .off('finish', this._finish)
       .off('cancel', this._cancel);
+
+    context.behaviors['map-nudging']
+      .off('nudge', this._nudge);
 
     editor
       .off('historyjump', this._restoreSnapshot);
@@ -301,6 +308,36 @@ export class DrawAreaMode extends AbstractMode {
 
     this._refreshEntities();
     editor.endTransaction();
+  }
+
+
+  /**
+   * _nudge
+   * This event fires on map pans at the edge of the screen.
+   * We want to move the drawing node opposite of the pixels panned to keep it in the same place.
+   * @param  nudge - [x,y] amount of map pan in pixels
+   */
+  _nudge(nudge) {
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const locations = context.systems.locations;
+    const viewport = context.viewport;
+
+    const drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
+    if (!drawNode) return;
+
+    const currPoint = viewport.project(drawNode.loc);
+    const destPoint = vecSubtract(currPoint, nudge);
+    const loc = viewport.unproject(destPoint);
+
+    if (locations.blocksAt(loc).length) {  // editing is blocked here
+      this._cancel();
+      return;
+    }
+
+    editor.perform(actionMoveNode(drawNode.id, loc));
+    this._refreshEntities();
   }
 
 

@@ -119,8 +119,6 @@ export class AddPointMode extends AbstractMode {
         return;
       }
     }
-    // Now that the user has clicked, let them nudge the map by moving to the edge.
-    context.behaviors['map-nudging'].allow();
     this._clickNothing(loc);
   }
 

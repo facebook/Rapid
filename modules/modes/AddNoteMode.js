@@ -35,14 +35,12 @@ export class AddNoteMode extends AbstractMode {
 
     this._active = true;
     const context = this.context;
-    context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
+    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
 
     context.behaviors.draw
       .on('click', this._click)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
-
-    context.behaviors['map-nudging'].allow();
 
     return true;
   }
