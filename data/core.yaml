@@ -687,6 +687,7 @@ en:
     view_on_osm: View on openstreetmap.org
     view_on_osmose: View on osmose.openstreetmap.fr
     view_on_keepRight: View on keepright.at
+    view_on_maproulette: View on maproulette.org
     feature_type: Feature Type
     fields: Fields
     tags: Tags
@@ -1196,6 +1197,16 @@ en:
       elems_title: Features
       fix_title: Fix Guidelines
       trap_title: Common Mistakes
+    maproulette:
+      title: MapRoulette Challenge
+      detail_title: Details
+      id_title: Task Id
+      instruction_title: Instructions
+      fixedIt: I fixed it! 
+      cantComplete: Can't Complete
+      alreadyFixed: Already Fixed
+      notAnIssue: Not an Issue
+      login: You must log in to change Maproulette challenge.
     improveOSM:
       title: ImproveOSM Detection
       geometry_types:

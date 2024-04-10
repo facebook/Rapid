@@ -4,14 +4,14 @@ import { Color } from 'pixi.js';
 export function uiMapRouletteHeader(context) {
   const l10n = context.systems.l10n;
   const maproulette = context.services.maproulette;
-  let _qaItem;
+  let _maprouletteTask;
 
 
   function issueTitle(d) {
     const unknown = l10n.t('inspector.unknown');
     if (!maproulette || !d) return unknown;
 
-    return ('title' in d) ? d.title : unknown;
+    return d.task.parentName !== undefined ? d.task.parentName : unknown;
   }
 
 
@@ -20,7 +20,7 @@ export function uiMapRouletteHeader(context) {
 
     const header = selection.selectAll('.qa-header')
       .data(
-        (_qaItem ? [_qaItem] : []),
+        (_maprouletteTask ? [_maprouletteTask] : []),
         d => `${d.id}-${d.status || 0}`
       );
 
@@ -61,8 +61,8 @@ export function uiMapRouletteHeader(context) {
   }
 
   maprouletteHeader.issue = function(val) {
-    if (!arguments.length) return _qaItem;
-    _qaItem = val;
+    if (!arguments.length) return _maprouletteTask;
+    _maprouletteTask = val;
     return maprouletteHeader;
   };
 

@@ -2,9 +2,9 @@ import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
-import { Task } from '../maproulette/Task';
+import { Task as MapRouletteTask } from '../maproulette/Task';
 import { utilFetchResponse } from '../util';
-
+import { marked } from 'marked';
 
 const TILEZOOM = 14;
 const MAPROULETTE_API = 'https://maproulette.org/api/v2';
@@ -125,7 +125,7 @@ export class MapRouletteService extends AbstractSystem {
               let loc = [task.point.lng, task.point.lat];
               loc = this._preventCoincident(loc);
 
-              let d = new Task(loc, this, id, { task });
+              let d = new MapRouletteTask(loc, this, id, { task });
 
               this._cache.tasks.set(d.id, d);
               this._cache.rtree.insert(this._encodeIssueRtree(d));
@@ -151,16 +151,11 @@ export class MapRouletteService extends AbstractSystem {
    * @return  Promise
    */
   loadTaskDetailAsync(task) {
-    // Issue details only need to be fetched once
-    if (task.elems !== undefined) return Promise.resolve(task);
-
-    const localeCode = this.context.systems.l10n.localeCode();
-    const url = `${MAPROULETTE_API}/task/${task.id}?langs=${localeCode}`;
+    if (task.details !== undefined) return Promise.resolve(task);
+    const url = `${MAPROULETTE_API}/challenge/${task.task.parentId}`;
     const handleResponse = (data) => {
-      // Associated elements used for highlighting
-      // Assign directly for immediate use in the callback
-      task.details = data;
-      this.replaceTask(task);
+      task.instruction = marked.parse(data.instruction) || '';
+      task.details = marked.parse(data.description) || '';
     };
 
     return fetch(url)
@@ -186,10 +181,22 @@ export class MapRouletteService extends AbstractSystem {
    * @param   callback
    */
   postUpdate(issue, callback) {
+    // already fixed API
+    // /task/{id}/tags/update
+    // looks like this for fixed it
+    // https://maproulette.org/api/v2/task/222008948/tags/update?tags
+    // comment API (POST)
+    // https://maproulette.org/api/v2/task/222011306/comment?actionId=2
+    // comments API (GET)
+    // https://maproulette.org/api/v2/task/222011306/comments
+    // user (GET)
+    // https://maproulette.org/api/v2/user/5220
+    // release API (GET)
+    // https://maproulette.org/api/v2/task/222011306/release
+    // update -> comment (POST) -> comments (GET) -> user -> release
     if (this._cache.inflightPost[issue.id]) {
       return callback({ message: 'Issue update already inflight', status: -2 }, issue);
     }
-
     // UI sets the status to either 'done' or 'false'
     const url = `${MAPROULETTE_API}/issue/${issue.id}/${issue.newStatus}`;
     const controller = new AbortController();
@@ -236,7 +243,7 @@ export class MapRouletteService extends AbstractSystem {
    * @return  the task, or `null` if it couldn't be replaced
    */
   replaceTask(task) {
-    if (!(task instanceof Task) || !task.id) return;
+    if (!(task instanceof MapRouletteTask) || !task.id) return;
 
     this._cache.tasks.set(task.id, task);
     this._updateRtree(this._encodeIssueRtree(task), true); // true = replace
@@ -250,7 +257,7 @@ export class MapRouletteService extends AbstractSystem {
    * @param   task to remove
    */
   removeTask(task) {
-    if (!(task instanceof Task) || !task.id) return;
+    if (!(task instanceof MapRouletteTask) || !task.id) return;
 
     this._cache.isseus.delete(task.id);
     this._updateRtree(this._encodeIssueRtree(task), false); // false = remove
@@ -264,6 +271,16 @@ export class MapRouletteService extends AbstractSystem {
    */
   getClosedCounts() {
     return this._cache.closed;
+  }
+
+    /**
+   * itemURL
+   * Returns the url to link to task about a challenge
+   * @param   task
+   * @return  the url
+   */
+  itemURL(task) {
+    return `https://maproulette.org/challenge/${task.task.parentId}/task/${task.id}`;
   }
 
 

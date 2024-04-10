@@ -38,6 +38,7 @@ export { uiKeepRightHeader } from './keepRight_header.js';
 export { uiLoading } from './loading.js';
 export { uiMap3dViewer } from './map3d_viewer.js';
 export { uiMapInMap } from './map_in_map.js';
+export { uiViewOnMapRoulette } from './view_on_maproulette.js';
 export { uiModal } from './modal.js';
 export { uiNoteComments } from './note_comments.js';
 export { uiNoteEditor } from './note_editor.js';
