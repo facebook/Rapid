@@ -68,8 +68,8 @@ export class MoveMode extends AbstractMode {
     this._active = true;
 
     filters.forceVisible(this._entityIDs);
-    context.enableBehaviors(['map-interaction', 'map-nudging']);
-    context.behaviors['map-nudging'].allow();
+    context.enableBehaviors(['mapInteraction', 'mapNudge']);
+    context.behaviors.mapNudge.allow();
 
     this._startLoc = map.mouseLoc();
     this._movementCache = {};

@@ -114,7 +114,7 @@ export class DrawLineMode extends AbstractMode {
     const eventManager = context.systems.map.renderer.events;
     eventManager.setCursor('crosshair');
 
-    context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
+    context.enableBehaviors(['hover', 'draw', 'mapInteraction', 'mapNudge']);
 
     context.behaviors.hover
       .on('hoverchange', this._hover);
@@ -125,13 +125,13 @@ export class DrawLineMode extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
-    context.behaviors['map-nudging']
+    context.behaviors.mapNudge
       .on('nudge', this._nudge);
 
     editor
       .on('historyjump', this._restoreSnapshot);
 
-    context.behaviors['map-interaction'].doubleClickEnabled = false;
+    context.behaviors.mapInteraction.doubleClickEnabled = false;
 
     editor.setCheckpoint('beginDraw');
     this._editIndex = editor.index;
@@ -179,7 +179,7 @@ export class DrawLineMode extends AbstractMode {
       .off('finish', this._finish)
       .off('cancel', this._cancel);
 
-    context.behaviors['map-nudging']
+    context.behaviors.mapNudge
       .off('nudge', this._nudge);
 
     editor
@@ -217,7 +217,7 @@ export class DrawLineMode extends AbstractMode {
     scene.clearClass('drawing');
 
     window.setTimeout(() => {
-      context.behaviors['map-interaction'].doubleClickEnabled = true;
+      context.behaviors.mapInteraction.doubleClickEnabled = true;
     }, 1000);
 
     editor.endTransaction();
@@ -416,7 +416,7 @@ export class DrawLineMode extends AbstractMode {
     }
 
     // Now that the user has clicked, let them nudge the map by moving to the edge.
-    context.behaviors['map-nudging'].allow();
+    context.behaviors.mapNudge.allow();
 
     // Calculate snap, if any..
     // Allow snapping only for OSM Entities in the current graph (i.e. not Rapid features)

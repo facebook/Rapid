@@ -167,12 +167,6 @@ export function uiIntroNavigation(context, curtain) {
         if (context.viewport.transform.zoom !== startZoom) {  // zoom changed
           const instruction = d3_select('.curtain-tooltip span.instruction');
           instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
-//          instruction.selectAll('.success')
-//            .data([0])
-//            .enter()
-//            .append('span')
-//            .attr('class', 'success')
-//            .text('YES');
         }
       };
 
@@ -226,12 +220,6 @@ export function uiIntroNavigation(context, curtain) {
         if (context.viewport.transform.rotation !== startRotation) {  // rotation changed
           const instruction = d3_select('.curtain-tooltip span.instruction');
           instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
-//          instruction.selectAll('.success')
-//            .data([0])
-//            .enter()
-//            .append('span')
-//            .attr('class', 'success')
-//            .text('YES');
         }
       };
 

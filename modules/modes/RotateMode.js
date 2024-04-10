@@ -70,7 +70,7 @@ export class RotateMode extends AbstractMode {
     this._active = true;
 
     filters.forceVisible(this._entityIDs);
-    context.enableBehaviors(['map-interaction']);
+    context.enableBehaviors(['mapInteraction']);
 
     this._lastPoint = null;
     this._pivotLoc = this._calcPivotLoc();

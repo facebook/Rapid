@@ -104,7 +104,7 @@ export function modeDragNote(context) {
 
 
     mode.enter = function() {
-      context.enableBehaviors(['hover', 'drag', 'map-interaction']);
+      context.enableBehaviors(['hover', 'drag', 'mapInteraction']);
       return true;
     };
 

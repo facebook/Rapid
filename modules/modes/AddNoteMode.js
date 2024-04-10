@@ -35,7 +35,7 @@ export class AddNoteMode extends AbstractMode {
 
     this._active = true;
     const context = this.context;
-    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
+    context.enableBehaviors(['hover', 'draw', 'mapInteraction']);
 
     context.behaviors.draw
       .on('click', this._click)

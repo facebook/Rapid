@@ -5,7 +5,7 @@ import { HoverBehavior } from './HoverBehavior.js';
 import { KeyOperationBehavior } from './KeyOperationBehavior.js';
 import { LassoBehavior } from './LassoBehavior.js';
 import { MapInteractionBehavior } from './MapInteractionBehavior.js';
-import { MapNudgingBehavior } from './MapNudgingBehavior.js';
+import { MapNudgeBehavior } from './MapNudgeBehavior.js';
 import { PasteBehavior } from './PasteBehavior.js';
 import { SelectBehavior } from './SelectBehavior.js';
 
@@ -17,7 +17,7 @@ export {
   KeyOperationBehavior,
   LassoBehavior,
   MapInteractionBehavior,
-  MapNudgingBehavior,
+  MapNudgeBehavior,
   PasteBehavior,
   SelectBehavior
 };
@@ -31,7 +31,7 @@ behaviors.available.set('drag', DragBehavior);
 behaviors.available.set('draw', DrawBehavior);
 behaviors.available.set('hover', HoverBehavior);
 behaviors.available.set('lasso', LassoBehavior);
-behaviors.available.set('map-interaction', MapInteractionBehavior);
-behaviors.available.set('map-nudging', MapNudgingBehavior);
+behaviors.available.set('mapInteraction', MapInteractionBehavior);
+behaviors.available.set('mapNudge', MapNudgeBehavior);
 behaviors.available.set('paste', PasteBehavior);
 behaviors.available.set('select', SelectBehavior);

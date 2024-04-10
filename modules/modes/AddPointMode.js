@@ -46,7 +46,7 @@ export class AddPointMode extends AbstractMode {
     const eventManager = context.systems.map.renderer.events;
     eventManager.setCursor('crosshair');
 
-    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
+    context.enableBehaviors(['hover', 'draw', 'mapInteraction']);
     context.behaviors.draw
       .on('click', this._click)
       .on('cancel', this._cancel)

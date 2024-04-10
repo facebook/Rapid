@@ -112,15 +112,15 @@ export class DragNodeMode extends AbstractMode {
     const point = context.behaviors.drag.lastDown.coord.map;
     this._clickLoc = context.viewport.unproject(point);
 
-    context.enableBehaviors(['hover', 'drag', 'map-nudging']);
-    context.behaviors['map-nudging'].allow();
+    context.enableBehaviors(['hover', 'drag', 'mapNudge']);
+    context.behaviors.mapNudge.allow();
 
     context.behaviors.drag
       .on('move', this._move)
       .on('end', this._end)
       .on('cancel', this._cancel);
 
-    context.behaviors['map-nudging']
+    context.behaviors.mapNudge
       .on('nudge', this._nudge);
 
     return true;
@@ -151,7 +151,7 @@ export class DragNodeMode extends AbstractMode {
       .off('end', this._end)
       .off('cancel', this._cancel);
 
-    context.behaviors['map-nudging']
+    context.behaviors.mapNudge
       .off('nudge', this._nudge);
   }
 

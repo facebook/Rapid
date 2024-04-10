@@ -6,7 +6,7 @@ export function uiSectionMapInteractionOptions(context) {
   const storage = context.systems.storage;
   const l10n = context.systems.l10n;
 
-  const section = uiSection(context, 'map-interaction')
+  const section = uiSection(context, 'map_interaction')
     .label(l10n.t('preferences.map_interaction.title'))
     .disclosureContent(renderDisclosureContent);
 

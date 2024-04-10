@@ -9,14 +9,14 @@ const MAP_NUDGE_INTERVAL = 16;
 
 
 /**
- * `MapNudgingBehavior` listens to pointer events and converts those into
+ * `MapNudgeBehavior` listens to pointer events and converts those into
  *  map panning 'nudges' when the pointer nears the edge of the screen.
  *  Useful during drawing and dragging modes.
  *
  * Events available:
  *   `nudge`    Fires when the map nudges - receives the [x,y] amount panned in pixels
  */
-export class MapNudgingBehavior extends AbstractBehavior {
+export class MapNudgeBehavior extends AbstractBehavior {
 
   /**
    * @constructor
@@ -24,7 +24,7 @@ export class MapNudgingBehavior extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
-    this.id = 'map-nudging';
+    this.id = 'mapNudge';
 
     this._nudge = [0, 0];      // amount to pan the map during the next interval
     this._intervalID = null;
@@ -55,11 +55,10 @@ export class MapNudgingBehavior extends AbstractBehavior {
 
   /**
    * allow
-   * Call this method from your mode or your nudging behavior won't work.
-   * unlike other behaviors, we want the modes to control exactly when
-   * this behavior engages. For example, if a user clicks the 'add building'
-   * hotkey or button but hasn't started drawing anything, we don't want the
-   * map to start nudging yet.
+   * This behavior doesn't start automatically!
+   * You need to call `allow()` to actually enable nudging.
+   * This is because: the "Add Line" "Add Area" buttons are in the top toolbar, and if
+   * the user clicks one of those, we don't want the map to immediately start nudging up.
    */
   allow() {
     this._enabled = true;

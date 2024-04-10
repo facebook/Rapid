@@ -310,7 +310,7 @@ export class SelectBehavior extends AbstractBehavior {
 
     // If we're clicking on something real, we want to pause doubleclick zooms
     if (data) {
-      const behavior = this.context.behaviors['map-interaction'];
+      const behavior = this.context.behaviors.mapInteraction;
       behavior.doubleClickEnabled = false;
       window.setTimeout(() => behavior.doubleClickEnabled = true, 500);
     }

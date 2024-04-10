@@ -24,7 +24,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
-    this.id = 'map-interaction';
+    this.id = 'mapInteraction';
 
     this.lastDown = null;
     this.gesture = null;

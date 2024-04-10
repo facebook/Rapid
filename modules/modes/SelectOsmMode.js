@@ -100,7 +100,7 @@ export class SelectOsmMode extends AbstractMode {
 
     this._active = true;
 
-    context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'lasso', 'paste']);
+    context.enableBehaviors(['hover', 'select', 'drag', 'mapInteraction', 'lasso', 'paste']);
     ui.closeEditMenu();
 
     this.extent = utilTotalExtent(entityIDs, graph);  // Compute the total extent of selected items

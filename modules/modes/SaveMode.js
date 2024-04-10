@@ -92,7 +92,7 @@ export class SaveMode extends AbstractMode {
       .classed('inactive', true);
 
     this._keybindingOn();
-    context.enableBehaviors(['map-interaction']);
+    context.enableBehaviors(['mapInteraction']);
 
     uploader
       .on('progressChanged', this._progressChanged)
