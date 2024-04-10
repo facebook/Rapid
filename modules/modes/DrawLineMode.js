@@ -251,9 +251,12 @@ export class DrawLineMode extends AbstractMode {
       return;
     }
 
-    // drawNode may or may not exist, it will be recreated after the user moves the pointer.
+    // `drawNode` may or may not exist, it will be recreated after the user moves the pointer.
     if (drawNode) {
       scene.classData('osm', drawNode.id, 'drawing');
+
+      // Nudging at the edge of the map is allowed after the drawNode exists.
+      context.behaviors.mapNudge.allow();
     }
 
     // todo - we do want to allow connecting a line to itself in some situations
@@ -414,9 +417,6 @@ export class DrawLineMode extends AbstractMode {
       drawNode = this._addDrawNode();
       graph = editor.staging.graph;
     }
-
-    // Now that the user has clicked, let them nudge the map by moving to the edge.
-    context.behaviors.mapNudge.allow();
 
     // Calculate snap, if any..
     // Allow snapping only for OSM Entities in the current graph (i.e. not Rapid features)
