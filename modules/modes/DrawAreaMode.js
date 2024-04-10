@@ -1,4 +1,4 @@
-import { vecEqual, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { vecEqual, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
 import { actionAddEntity } from '../actions/add_entity.js';
@@ -323,6 +323,10 @@ export class DrawAreaMode extends AbstractMode {
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const viewport = context.viewport;
+    const t = context.viewport.transform;
+    if (t.r) {
+      nudge = vecRotate(nudge, -t.r, [0, 0]);   // remove any rotation
+    }
 
     const drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
     if (!drawNode) return;

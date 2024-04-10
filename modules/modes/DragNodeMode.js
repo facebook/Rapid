@@ -1,4 +1,4 @@
-import { vecAdd, vecSubtract } from '@rapid-sdk/math';
+import { vecAdd, vecRotate, vecSubtract } from '@rapid-sdk/math';
 import { utilArrayIntersection } from '@rapid-sdk/util';
 
 import { AbstractMode } from './AbstractMode.js';
@@ -7,7 +7,6 @@ import { actionConnect } from '../actions/connect.js';
 import { actionMoveNode } from '../actions/move_node.js';
 import { geoChooseEdge } from '../geo/index.js';
 import { osmNode } from '../osm/node.js';
-
 
 
 /**
@@ -253,6 +252,10 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const locations = context.systems.locations;
     const viewport = context.viewport;
+    const t = context.viewport.transform;
+    if (t.r) {
+      nudge = vecRotate(nudge, -t.r, [0, 0]);   // remove any rotation
+    }
 
     const currPoint = viewport.project(this.dragNode.loc);
     const destPoint = vecSubtract(currPoint, nudge);

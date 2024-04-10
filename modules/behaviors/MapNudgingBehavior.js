@@ -95,7 +95,6 @@ export class MapNudgingBehavior extends AbstractBehavior {
     const map = context.systems.map;
     const move = this._getEventData(e);
 
-
     const [x, y] = move.coord.screen;
     const [w, h] = context.viewport.dimensions;
 

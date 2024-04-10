@@ -1,4 +1,4 @@
-import { vecEqual, vecLength, vecSubtract } from '@rapid-sdk/math';
+import { vecEqual, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
 import { actionAddEntity } from '../actions/add_entity.js';
@@ -9,6 +9,7 @@ import { geoChooseEdge } from '../geo/index.js';
 import { osmNode, osmWay } from '../osm/index.js';
 
 const DEBUG = false;
+
 
 /**
  * `DrawLineMode`
@@ -360,6 +361,10 @@ export class DrawLineMode extends AbstractMode {
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
     const viewport = context.viewport;
+    const t = context.viewport.transform;
+    if (t.r) {
+      nudge = vecRotate(nudge, -t.r, [0, 0]);   // remove any rotation
+    }
 
     const drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
     if (!drawNode) return;
