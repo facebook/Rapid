@@ -614,7 +614,7 @@ button.save .count {
     text-align: center;
 }
 
-.help-pane svg.icon.inline.add-note,
+.help-pane svg.icon.add-note,
 button.add-note svg.icon {
     height: 15px;
     width: 15px;
@@ -631,7 +631,7 @@ button.add-note svg.icon {
     margin-left: 4px;
     margin-right: unset;
 }
-.help-pane svg.icon.inline.add-note {
+.help-pane svg.icon.add-note {
     margin-left: 3px;
     margin-right: 3px;
 }
@@ -3824,14 +3824,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 .help-pane p {
     font-size: 15px;
     margin-bottom: 20px;
-}
-
-.help-pane .left-content .icon.inline,
-.curtain-tooltip .icon.inline {
-    margin-right: 0;
-    margin-left: 0;
-    height: 1.34em;
-    width: 1.34em;
 }
 
 .help-pane .toc {

@@ -204,7 +204,7 @@ export function uiShortcuts(context) {
             if (icon) {
               const altText = icon[1].replace('interaction-', '').replace(/\-/g, ' ');
               selection
-               .call(uiIcon(`#rapid-${icon[1]}`, 'operation inline', altText));
+               .call(uiIcon(`#rapid-${icon[1]}`, 'operation', altText));
 
             } else {
               selection

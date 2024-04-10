@@ -33,7 +33,7 @@ export function uiFeatureList(context) {
       .attr('class', 'search-header');
 
     searchWrap
-      .call(uiIcon('#rapid-icon-search', 'pre-text'));
+      .call(uiIcon('#rapid-icon-search'));
 
     let search = searchWrap
       .append('input')
