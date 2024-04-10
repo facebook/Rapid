@@ -265,7 +265,7 @@ export class MapSystem extends AbstractSystem {
         const edit = (didUndo && prevEdit) ?? currEdit;
 
         // Reposition the map if we've jumped to a different place.
-        const t0 = this.transform();
+        const t0 = context.viewport.transform.props;
         const t1 = edit.transform;
         if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
           this.transformEase(t1);
@@ -455,7 +455,7 @@ export class MapSystem extends AbstractSystem {
    */
   transform(t2, duration) {
     if (t2 === undefined) {
-      return this.context.viewport.transform;
+      return this.context.viewport.transform.props;
     }
     this._renderer.setTransformAsync(t2, duration ?? 0);
     return this;
