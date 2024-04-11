@@ -6,17 +6,18 @@ import { uiIcon } from './icon';
 import { uiMapRouletteDetails } from './maproulette_details';
 import { uiMapRouletteHeader } from './maproulette_header';
 import { uiViewOnMapRoulette } from './view_on_maproulette';
-import { utilRebind } from '../util';
+import { utilNoAuto, utilRebind } from '../util';
 
 
 export function uiMapRouletteEditor(context) {
   const l10n = context.systems.l10n;
   const maproulette = context.services.maproulette;
   const dispatch = d3_dispatch('change');
-  const qaDetails = uiMapRouletteDetails(context);
-  const qaHeader = uiMapRouletteHeader(context);
-  // let _qaItem;
+  const mapRouletteDetails = uiMapRouletteDetails(context);
+  const mapRouletteHeader = uiMapRouletteHeader(context);
   let _maprouletteTask;
+  var _comment;
+  var _newComment;
 
 
   function maprouletteEditor(selection) {
@@ -35,7 +36,7 @@ export function uiMapRouletteEditor(context) {
 
     headerEnter
       .append('h3')
-      .html(l10n.tHtml('QA.maproulette.title'));
+      .html(l10n.tHtml('map_data.layers.maproulette.title'));
 
     let body = selection.selectAll('.body')
       .data([0]);
@@ -52,9 +53,10 @@ export function uiMapRouletteEditor(context) {
       .append('div')
       .attr('class', 'modal-section qa-editor')
       .merge(editor)
-      .call(qaHeader.issue(_maprouletteTask))
-      .call(qaDetails.issue(_maprouletteTask))
-      .call(maprouletteSaveSection);
+      .call(mapRouletteHeader.task(_maprouletteTask))
+      .call(mapRouletteDetails.task(_maprouletteTask))
+      .call(maprouletteSaveSection)
+      .call(commentSaveSection);
 
     const footer = selection.selectAll('.footer')
       .data([0]);
@@ -86,8 +88,105 @@ export function uiMapRouletteEditor(context) {
     saveSection = saveSectionEnter
       .merge(saveSection)
       .call(userDetails)
-      .call(qaSaveButtons);
+      .call(mRSaveButtons);
   }
+
+  function commentSaveSection(selection) {
+        const errID = _maprouletteTask?.id;
+        const isSelected = errID && context.selectedData().has(errID);
+        const showNoteSaveSection = _maprouletteTask?.showNoteSaveSection;
+        // var commentSave = selection.selectAll('.note-save')
+        //     .data((isSelected ? [_comment] : []), function(d) { return d.status + d.id; });
+        let commentSave = selection.selectAll('.note-save')
+          .data((isSelected && showNoteSaveSection ? [_maprouletteTask] : []), d => d.status + d.id);
+
+        // exit
+        commentSave.exit()
+            .remove();
+
+        // enter
+        var commentSaveEnter = commentSave.enter()
+            .append('div')
+            .attr('class', 'note-save save-section cf');
+
+        commentSaveEnter
+            .append('h4')
+            .attr('class', '.note-save-header')
+            .html(l10n.t('map_data.layers.maproulette.comment'));
+            // .html(function() {
+            //     return _note.isNew() ? l10n.t('note.newDescription') : l10n.t('note.newComment');
+            // });
+
+        var commentTextarea = commentSaveEnter
+            .append('textarea')
+            .attr('class', 'new-comment-input')
+            .attr('placeholder', l10n.t('map_data.layers.maproulette.inputPlaceholder'))
+            .attr('maxlength', 1000)
+            .property('value', function(d) { return d.newComment; })
+            .call(utilNoAuto)
+            .on('keydown.note-input', keydown)
+            .on('input.note-input', changeInput)
+            .on('blur.note-input', changeInput);
+
+        if (!commentTextarea.empty() && _newComment) {
+            // autofocus the comment field for new notes
+            commentTextarea.node().focus();
+        }
+
+        // update
+        commentSave = commentSaveEnter
+            .merge(commentSave)
+            .call(userDetails);
+            // .call(noteSaveButtons);
+
+
+        // fast submit if user presses cmd+enter
+        function keydown(d3_event) {
+            if (!(d3_event.keyCode === 13 && // ↩ Return
+                d3_event.metaKey)) return;
+
+            var osm = context.services.osm;
+            if (!osm) return;
+
+            var hasAuth = osm.authenticated();
+            if (!hasAuth) return;
+
+            // if (!_note.newComment) return;
+
+            d3_event.preventDefault();
+
+            d3_select(this)
+                .on('keydown.note-input', null);
+
+            // focus on button and submit
+            // window.setTimeout(function() {
+            //     if (_comment.isNew()) {
+            //         commentSave.selectAll('.save-button').node().focus();
+            //         // clickSave(_note);
+            //     } else  {
+            //         commentSave.selectAll('.comment-button').node().focus();
+            //         // clickComment(_note);
+            //     }
+            // }, 10);
+        }
+
+
+        function changeInput() {
+            var input = d3_select(this);
+            var val = input.property('value').trim() || undefined;
+
+            // store the unsaved comment with the note itself
+            _comment = _comment.update({ _newComment: val });
+
+            var osm = context.services.osm;
+            if (osm) {
+                osm.replaceNote(_comment);  // update note cache
+            }
+
+            // commentSave
+            //     .call(noteSaveButtons);
+        }
+    }
 
   function userDetails(selection) {
         var detailSection = selection.selectAll('.detail-section')
@@ -122,7 +221,7 @@ export function uiMapRouletteEditor(context) {
 
         authEnter
             .append('span')
-            .html(l10n.tHtml('QA.maproulette.login'));
+            .html(l10n.tHtml('map_data.layers.maproulette.login'));
 
         authEnter
             .append('a')
@@ -163,7 +262,7 @@ export function uiMapRouletteEditor(context) {
         });
     }
 
-  function qaSaveButtons(selection) {
+  function mRSaveButtons(selection) {
     var osm = context.services.osm;
     var hasAuth = osm && osm.authenticated();
     const errID = _maprouletteTask?.id;
@@ -202,45 +301,53 @@ export function uiMapRouletteEditor(context) {
 
     buttonSection.select('.fixedIt-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
-      .html(l10n.tHtml('QA.maproulette.fixedIt'))
+      .html(l10n.tHtml('map_data.layers.maproulette.fixedIt'))
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
-          d.newStatus = 'done';
-          maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+          d.showNoteSaveSection = true;
+          commentSaveSection(selection);
+          // d.newStatus = 'done';
+          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
     buttonSection.select('.cantComplete-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
-      .html(l10n.tHtml('QA.maproulette.cantComplete'))
+      .html(l10n.tHtml('map_data.layers.maproulette.cantComplete'))
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
-          d.newStatus = 'false';
-          maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+          d.showNoteSaveSection = true;
+          commentSaveSection(selection);
+          // d.newStatus = 'false';
+          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
     buttonSection.select('.alreadyFixed-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
-      .html(l10n.tHtml('QA.maproulette.alreadyFixed'))
+      .html(l10n.tHtml('map_data.layers.maproulette.alreadyFixed'))
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
-          d.newStatus = 'false';
-          maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+          d.showNoteSaveSection = true;
+          commentSaveSection(selection);
+          // d.newStatus = 'false';
+          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 
     buttonSection.select('.notAnIssue-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
-      .html(l10n.tHtml('QA.maproulette.notAnIssue'))
+      .html(l10n.tHtml('map_data.layers.maproulette.notAnIssue'))
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
-          d.newStatus = 'false';
-          maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+          d.showNoteSaveSection = true;
+          commentSaveSection(selection);
+          // d.newStatus = 'false';
+          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 

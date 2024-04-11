@@ -821,6 +821,18 @@ en:
       maproulette:
         tooltip: Tasks from maproulette.org
         title: MapRoulette Tasks
+        detail_title: Details
+        id_title: Task Id
+        instruction_title: Instructions
+        fixedIt: I fixed it! 
+        cantComplete: Can't Complete
+        alreadyFixed: Already Fixed
+        notAnIssue: Not an Issue
+        login: You must log in to change Maproulette challenge.
+        inputPlaceholder: Your change comment
+        comment: Please confirm
+        cancel: Cancel
+        submit: Submit
       keepRight:
         tooltip: Data issues detected by keepright.at
         title: KeepRight Issues
@@ -1197,16 +1209,6 @@ en:
       elems_title: Features
       fix_title: Fix Guidelines
       trap_title: Common Mistakes
-    maproulette:
-      title: MapRoulette Challenge
-      detail_title: Details
-      id_title: Task Id
-      instruction_title: Instructions
-      fixedIt: I fixed it! 
-      cantComplete: Can't Complete
-      alreadyFixed: Already Fixed
-      notAnIssue: Not an Issue
-      login: You must log in to change Maproulette challenge.
     improveOSM:
       title: ImproveOSM Detection
       geometry_types:

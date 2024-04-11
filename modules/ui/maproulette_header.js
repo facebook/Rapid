@@ -7,7 +7,7 @@ export function uiMapRouletteHeader(context) {
   let _maprouletteTask;
 
 
-  function issueTitle(d) {
+  function taskTitle(d) {
     const unknown = l10n.t('inspector.unknown');
     if (!maproulette || !d) return unknown;
 
@@ -57,10 +57,10 @@ export function uiMapRouletteHeader(context) {
     headerEnter
       .append('div')
       .attr('class', 'qa-header-label')
-      .html(issueTitle);
+      .html(taskTitle);
   }
 
-  maprouletteHeader.issue = function(val) {
+  maprouletteHeader.task = function(val) {
     if (!arguments.length) return _maprouletteTask;
     _maprouletteTask = val;
     return maprouletteHeader;

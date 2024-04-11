@@ -6,7 +6,7 @@ export function uiMapRouletteDetails(context) {
   let _maprouletteTask;
 
 
-  function issueString(d) {
+  function taskString(d) {
     if (!maproulette || !d) return '';
   }
 
@@ -24,7 +24,7 @@ export function uiMapRouletteDetails(context) {
 
 
     // Description
-    if (issueString(_maprouletteTask, 'detail')) {
+    if (taskString(_maprouletteTask, 'detail')) {
       const div = detailsEnter
         .append('div')
         .attr('class', 'qa-details-subsection');
@@ -36,7 +36,7 @@ export function uiMapRouletteDetails(context) {
       div
         .append('p')
         .attr('class', 'qa-details-description-text')
-        .html(d => issueString(d, 'detail'))
+        .html(d => taskString(d, 'detail'))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -48,36 +48,36 @@ export function uiMapRouletteDetails(context) {
       .attr('class', 'qa-details-subsection');
 
     // Suggested Fix (mustn't exist for every issue type)
-    if (issueString(_maprouletteTask, 'fix')) {
+    if (taskString(_maprouletteTask, 'fix')) {
       const div = detailsEnter
         .append('div')
         .attr('class', 'qa-details-subsection');
 
       div
         .append('h4')
-        .html(l10n.tHtml('QA.maproulette.fix_title'));
+        .html(l10n.tHtml('map_data.layers.maproulette.fix_title'));
 
       div
         .append('p')
-        .html(d => issueString(d, 'fix'))
+        .html(d => taskString(d, 'fix'))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
     }
 
     // Common Pitfalls (mustn't exist for every issue type)
-    if (issueString(_maprouletteTask, 'trap')) {
+    if (taskString(_maprouletteTask, 'trap')) {
       const div = detailsEnter
         .append('div')
         .attr('class', 'qa-details-subsection');
 
       div
         .append('h4')
-        .html(l10n.tHtml('QA.maproulette.trap_title'));
+        .html(l10n.tHtml('map_data.layers.maproulette.trap_title'));
 
       div
         .append('p')
-        .html(d => issueString(d, 'trap'))
+        .html(d => taskString(d, 'trap'))
         .selectAll('a')
         .attr('rel', 'noopener')
         .attr('target', '_blank');
@@ -99,7 +99,7 @@ export function uiMapRouletteDetails(context) {
 
           detailsDiv
             .append('h4')
-            .html(l10n.tHtml('QA.maproulette.id_title'));
+            .html(l10n.tHtml('map_data.layers.maproulette.id_title'));
 
           detailsDiv
             .append('p')
@@ -114,7 +114,7 @@ export function uiMapRouletteDetails(context) {
 
           detailsDiv
             .append('h4')
-            .html(l10n.tHtml('QA.maproulette.detail_title'));
+            .html(l10n.tHtml('map_data.layers.maproulette.detail_title'));
 
           detailsDiv
             .append('p')
@@ -129,7 +129,7 @@ export function uiMapRouletteDetails(context) {
 
           detailsDiv
             .append('h4')
-            .html(l10n.tHtml('QA.maproulette.instruction_title'));
+            .html(l10n.tHtml('map_data.layers.maproulette.instruction_title'));
 
           detailsDiv
             .append('p')
@@ -145,7 +145,7 @@ export function uiMapRouletteDetails(context) {
   }
 
 
-  maprouletteDetails.issue = function(val) {
+  maprouletteDetails.task = function(val) {
     if (!arguments.length) return _maprouletteTask;
     _maprouletteTask = val;
     return maprouletteDetails;
