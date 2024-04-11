@@ -1,4 +1,4 @@
-import { geoMetersToOffset, geoOffsetToMeters} from '@rapid-sdk/math';
+import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
 import { AbstractSystem } from './AbstractSystem.js';
@@ -82,9 +82,9 @@ export class ImagerySystem extends AbstractSystem {
       .then(() => urlhash.on('hashchange', this._hashchange))
       .then(() => dataloader.getDataAsync('imagery'))
       .then(data => this._initImageryIndex(data));
-    // .catch(e => {
-    // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
-    // });
+      // .catch(e => {
+        // if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+      // });
   }
 
 
@@ -401,17 +401,18 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
-   *
+   * getWaybackSource
+   * Resolves to an object containing the fetched Wayback imagery sources
+   * @async
+   * @returns {Promise<Object>}
    */
   async getWaybackSource() {
     const context = this.context;
     const view = context.systems.map.extent();
-    const urlhash = this.context.systems.urlhash;
-    const zoomLatLng = urlhash.getParam('map');
-    const parts = zoomLatLng.split('/');
-    const zoom = parseInt(parts[0], 10);
-    const lat = parseFloat(parts[1]);
-    const lng = parseFloat(parts[2]);
+    const map = context.systems.map;
+    const zoom = map.zoom();
+    const lng = map.center()[0];
+    const lat = map.center()[1];
     const latLng = {
       longitude: lng,
       latitude: lat,
@@ -480,7 +481,7 @@ export class ImagerySystem extends AbstractSystem {
         polygon: polygon,
         terms_text: null,
         'default': true,
-        zoomExtent: [0, 22],
+        zoomExtent: [0, 19],
         terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
         icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
       };

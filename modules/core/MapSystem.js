@@ -682,7 +682,7 @@ export class MapSystem extends AbstractSystem {
   }
 
 
-  // convenience methods for zomming in and out
+  // convenience methods for zoomming in and out
   _zoomIn(delta)  { return this.centerZoom(this.center(), ~~this.zoom() + delta, 250); }
   _zoomOut(delta) { return this.centerZoom(this.center(), ~~this.zoom() - delta, 250); }
 
