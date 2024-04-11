@@ -136,6 +136,223 @@ export class PixiLayerOsm extends AbstractLayer {
     let entities = editor.intersects(context.viewport.visibleExtent());   // Gather data in view
     entities = filters.filter(entities, graph);   // Apply feature filters
 
+    // -----------------------------------DEBUGGING {START}-------------------------------------------------
+
+    // AIM: Count all the tags (OSM keys and values) from `entities` loaded for the data in view
+    // STRUCTURE OF ENTITY (w/ tags):  { changeset:... , id:... , tags:{} , ... }
+    let STYLE_SELECTORS = {
+      aeroway: {
+        runway: 'runway',
+        taxiway: 'taxiway'
+      },
+      amenity: {
+        childcare: 'yellow',
+        college: 'yellow',
+        fountain: 'blue',
+        kindergarten: 'yellow',
+        parking: 'darkgray',
+        research_institute: 'yellow',
+        school: 'yellow',
+        university: 'yellow'
+      },
+      building: {
+        '*': 'red'
+      },
+      barrier: {
+        city_wall: 'barrier_wall',
+        hedge: 'barrier_hedge',
+        retaining_wall: 'barrier_wall',
+        wall: 'barrier_wall',
+        '*': 'barrier'
+      },
+      boundary: {
+        protected_area: 'boundary_park',
+        national_park: 'boundary_park',
+        '*': 'boundary'
+      },
+      crossing: {
+        marked: 'crossing_marked',
+        traffic_signals: 'crossing_marked',
+        uncontrolled: 'crossing_marked',
+        zebra: 'crossing_marked',
+        '*': 'crossing_unmarked'
+      },
+      golf: {
+        green: 'lightgreen'
+      },
+      highway: {
+        bridleway: 'bridleway',
+        bus_guideway: 'railway',
+        busway: 'special_service',
+        corridor: 'corridor',
+        construction: 'construction',
+        cycleway: 'cycleway',
+        footway: 'footway',
+        living_street: 'living_street',
+        living_street_link: 'living_street',
+        motorway: 'motorway',
+        motorway_link: 'motorway',
+        path: 'path',
+        pedestrian: 'pedestrian',
+        primary: 'primary',
+        primary_link: 'primary',
+        residential: 'residential',
+        residential_link: 'residential',
+        secondary: 'secondary',
+        secondary_link: 'secondary',
+        service: 'service',
+        service_link: 'service',
+        steps: 'steps',
+        tertiary: 'tertiary',
+        tertiary_link: 'tertiary',
+        track: 'track',
+        trunk: 'trunk',
+        trunk_link: 'trunk',
+        unclassified: 'unclassified',
+        unclassified_link: 'unclassified'
+      },
+      landuse: {
+        cemetery: 'lightgreen',
+        commercial: 'orange',
+        construction: 'gold',
+        farmland: 'lightgreen',
+        farmyard: 'tan',
+        flowerbed: 'green',
+        forest: 'green',
+        grass: 'green',
+        industrial: 'pink',
+        landfill: 'orange',
+        meadow: 'lightgreen',
+        military: 'orange',
+        orchard: 'lightgreen',
+        quarry: 'darkgray',
+        railway: 'darkgray',
+        recreation_ground: 'green',
+        residential: 'gold',
+        retail: 'orange',
+        village_green: 'green',
+        vineyard: 'lightgreen'
+      },
+      leisure: {
+        garden: 'green',
+        golf_course: 'green',
+        nature_reserve: 'green',
+        park: 'green',
+        pitch: 'green',
+        swimming_pool: 'blue',
+        track: 'yellow'
+      },
+      man_made: {
+        adit: 'darkgray',
+        breakwater: 'barrier_wall',
+        groyne: 'barrier_wall',
+        pipeline: 'pipeline'
+      },
+      military: {
+        '*': 'orange'
+      },
+      natural: {
+        bare_rock: 'darkgray',
+        bay: 'blue',
+        beach: 'yellow',
+        cave_entrance: 'darkgray',
+        cliff: 'darkgray',
+        glacier: 'lightgray',
+        ridge: 'ridge',
+        rock: 'darkgray',
+        sand: 'yellow',
+        scree: 'darkgray',
+        scrub: 'yellow',
+        shingle: 'darkgray',
+        stone: 'darkgray',
+        strait: 'blue',
+        tree_row: 'tree_row',
+        water: 'blue',
+        wetland: 'teal',
+        '*': 'green'
+      },
+      power: {
+        plant: 'pink'
+      },
+      railway: {
+        platform: 'footway',
+        '*': 'railway'
+      },
+      roller_coaster: {
+        track: 'roller_coaster'
+      },
+      route: {
+        ferry: 'ferry'
+      },
+      sport: {
+        baseball: 'yellow',
+        basketball: 'darkgray',
+        beachvolleyball: 'yellow',
+        skateboard: 'darkgray',
+        softball: 'yellow'
+      },
+      type: {
+        waterway: 'river'
+      },
+      waterway: {
+        river: 'river',
+        dam: 'DEFAULTS',
+        weir: 'DEFAULTS',
+        '*': 'stream'
+      },
+      service: {
+        alley: 'special_service',
+        driveway: 'special_service',
+        'drive-through': 'special_service',
+        parking_aisle: 'special_service',
+        '*': 'special_service'
+      }
+    };
+    let counter = {};
+    
+    for (let entity of entities) {
+      // Only address the entity if it has `tags`
+      if (Object.keys(entity.tags).length != 0) {
+
+        // Get the tag_pairs for that entity
+        // REMEMBER: Entities have 0 or more tag_pairs + Each tag_pair is a key-value pair (both of which are string)
+        let tag_pairs = entity.tags;
+
+        // Iterate through the OSM tag (key) and specific (value) for each tag_pair
+        Object.entries(tag_pairs).forEach( tag_pair  => {
+          // Extract the tag_pair using array destructuring
+          const [tag, specific] = tag_pair;
+
+          // Only address the tag if it is in STYLE_SELECTORS
+          if (Object.keys(STYLE_SELECTORS).includes(tag)) {
+
+            // Add an object if the tag (key) is not in counter's keys
+            if (!Object.keys(counter).includes(tag)) {
+              counter[tag] = {};
+            }
+
+            // Get all specifics (values) associated with this tag (key)
+            let specifics = Object.keys(STYLE_SELECTORS[tag]);
+
+            // If the current specific (value) is in specifics, add it or increment it 
+            if (specifics.includes(specific)) {
+              counter[tag][specific] = (counter[tag][specific] ?? 0) + 1;
+            } else {
+              // Else, add or increment the default, "*"
+              // console.log(`${specific} is NOT a key of ${tag}`);
+              counter[tag]["*"] = (counter[tag]["*"] ?? 0) + 1;
+            }
+
+          }
+        });
+      }
+    }
+    
+    // NOTE: Wait until the entire layer is rendered then refer to the last object in the console
+    console.log(counter);
+
+    // -----------------------------------DEBUGGING {END}-------------------------------------------------
+
     const data = {
       polygons: new Map(),
       lines: new Map(),
