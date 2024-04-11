@@ -137,9 +137,10 @@ export class RotateMode extends AbstractMode {
     } else if (['Backspace', 'Delete', 'Del', 'Escape', 'Esc'].includes(e.key)) {
       e.preventDefault();
       this._cancel();
+
     } else if (['m', 'M'].includes(e.key)) {
       e.preventDefault();
-      this._moveMode();
+      this.context.enter('move', { selection: { osm: this._entityIDs }} );
     }
   }
 
@@ -246,15 +247,6 @@ export class RotateMode extends AbstractMode {
    */
   _finish() {
     this.context.enter('select-osm', { selection: { osm: this._entityIDs }} );
-  }
-
-
-  /**
-   * _rotateMode
-   * Return to move mode if e.key is pressed
-   */
-  _moveMode() {
-    this.context.enter('move', { selection: { osm: this._entityIDs }} );
   }
 
 

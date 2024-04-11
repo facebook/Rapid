@@ -91,7 +91,6 @@ export class MapNudgeBehavior extends AbstractBehavior {
     if (!this._enabled) return;
 
     const context = this.context;
-    const map = context.systems.map;
     const move = this._getEventData(e);
 
     const [x, y] = move.coord.screen;
