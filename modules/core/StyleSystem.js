@@ -91,165 +91,7 @@ export class StyleSystem extends AbstractSystem {
     //   `pattern` - supported pattern (see dist/img/pattern/* for these)
     //
 
-    this.STYLE_DECLARATIONS = {
-      DEFAULTS: {
-        fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-        casing: { width: 5, color: 0x444444, alpha: 1, cap: 'round', join: 'round' },
-        stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: 'round', join: 'round' }
-      },
-
-      LIFECYCLE: {   // e.g. planned, proposed, abandoned, disused, razed
-        casing: { alpha: 0 },  // disable
-        stroke: { dash: [7, 3], cap: 'butt' }
-      },
-
-      motorway: {
-        casing: { width: 10, color: 0x70372f },
-        stroke: { width: 8, color: 0xcf2081 }
-      },
-      trunk: {
-        casing: { width: 10, color: 0x70372f },
-        stroke: { width: 8, color: 0xdd2f22 }
-      },
-      primary: {
-        casing: { width: 10, color: 0x70372f },
-        stroke: { width: 8, color: 0xf99806 }
-      },
-      secondary: {
-        casing: { width: 10, color: 0x70372f },
-        stroke: { width: 8, color: 0xf3f312 }
-      },
-      tertiary: {
-        casing: { width: 10, color: 0x70372f },
-        stroke: { width: 8, color: 0xfff9b3 }
-      },
-      unclassified: {
-        casing: { width: 10, color: 0x444444 },
-        stroke: { width: 8, color: 0xddccaa }
-      },
-      residential: {
-        casing: { width: 10, color: 0x444444 },
-        stroke: { width: 8, color: 0xffffff }
-      },
-      living_street: {
-        casing: { width: 7, color: 0xffffff },
-        stroke: { width: 5, color: 0xcccccc }
-      },
-      service: {
-        casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0xffffff }
-      },
-      special_service: {
-        casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0xddccaa }
-      },
-      track: {
-        casing: { width: 7, color: 0x746f6f },
-        stroke: { width: 5, color: 0xc5b59f }
-      },
-      pedestrian: {
-        casing: { width: 7, color: 0xffffff },
-        stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: 'butt' }
-      },
-      path: {
-        casing: { width: 5, color: 0xddccaa },
-        stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: 'butt' }
-      },
-      footway: {
-        casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: 'butt' }
-      },
-      crossing_marked: {
-        casing: { width: 5, color: 0xddccaa },
-        stroke: { width: 3, color: 0x4c4444, dash: [6, 3], cap: 'butt' }
-      },
-      crossing_unmarked: {
-        casing: { width: 5, color: 0xddccaa },
-        stroke: { width: 3, color: 0x776a6a, dash: [6, 4], cap: 'butt' }
-      },
-      cycleway: {
-        casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x58a9ed, dash: [6, 6], cap: 'butt' }
-      },
-      bridleway: {
-        casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0xe06d5f, dash: [6, 6], cap: 'butt' }
-      },
-      corridor: {
-        casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x8cd05f, dash: [2, 8], cap: 'round' }
-      },
-      steps: {
-        casing: { width: 5, color: 0xffffff },
-        stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: 'butt' }
-      },
-      river: {
-        fill: { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
-        casing: { width: 10, color: 0x444444 },
-        stroke: { width: 8, color: 0x77dddd }
-      },
-      stream: {
-        fill: { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
-        casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0x77dddd }
-      },
-      ridge: {
-        stroke: { width: 2, color: 0x8cd05f }  // rgb(140, 208, 95)
-      },
-      runway: {
-        casing: { width: 10, color: 0x000000, cap: 'butt' },
-        stroke: { width: 8, color: 0xffffff, dash: [24, 48], cap: 'butt' }
-      },
-      taxiway: {
-        casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0xffff00 }
-      },
-      railway: {
-        casing: { width: 7, color: 0x555555, cap: 'butt' },
-        stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: 'butt' }
-      },
-      ferry: {
-        casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0x58a9ed, dash: [12, 8], cap: 'butt' }
-      },
-      boundary: {
-        casing: { width: 6, color: 0x82b5fe, cap: 'butt' },
-        stroke: { width: 2, color: 0xffffff, dash: [20, 5, 5, 5], cap: 'butt' }
-      },
-      boundary_park: {
-        casing: { width: 6, color: 0x82b5fe, cap: 'butt' },
-        stroke: { width: 2, color: 0xb0e298, dash: [20, 5, 5, 5], cap: 'butt' }
-      },
-      barrier: {
-        casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: 'round' }
-      },
-      barrier_wall: {
-        casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: 'round' }
-      },
-      barrier_hedge: {
-        fill: { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
-        casing: { alpha: 0 },  // disable
-        stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 2, 5], cap: 'round' }
-      },
-      tree_row: {
-        casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0x8cd05f }
-      },
-      construction: {
-        casing: { width: 10, color: 0xffffff },
-        stroke: { width: 8, color: 0xfc6c14, dash: [10, 10], cap: 'butt' }
-      },
-      pipeline: {
-        casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0xdddddd, dash: [80, 2], cap: 'butt' }
-      },
-      roller_coaster: {
-        casing: { width: 7, color: 0x444444 },
-        stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: 'butt' }
-      }
-    };
+    this.STYLE_DECLARATIONS = {};
 
     //
     // A "Style Selector" contains OSM key/value tags to match to a style declaration.
@@ -276,17 +118,17 @@ export class StyleSystem extends AbstractSystem {
         taxiway: 'taxiway'
       },
       amenity: {
-        childcare: 'yellow',
-        college: 'yellow',
-        fountain: 'blue',
-        kindergarten: 'yellow',
-        parking: 'darkgray',
-        research_institute: 'yellow',
-        school: 'yellow',
-        university: 'yellow'
+        childcare: 'common-yellow',
+        college: 'common-yellow',
+        fountain: 'common-blue',
+        kindergarten: 'common-yellow',
+        parking: 'common-darkgray',
+        research_institute: 'common-yellow',
+        school: 'common-yellow',
+        university: 'common-yellow'
       },
       building: {
-        '*': 'red'
+        '*': 'common-red'
       },
       barrier: {
         city_wall: 'barrier_wall',
@@ -308,7 +150,7 @@ export class StyleSystem extends AbstractSystem {
         '*': 'crossing_unmarked'
       },
       golf: {
-        green: 'lightgreen'
+        green: 'common-lightgreen'
       },
       highway: {
         bridleway: 'bridleway',
@@ -342,67 +184,67 @@ export class StyleSystem extends AbstractSystem {
         unclassified_link: 'unclassified'
       },
       landuse: {
-        cemetery: 'lightgreen',
-        commercial: 'orange',
-        construction: 'gold',
-        farmland: 'lightgreen',
-        farmyard: 'tan',
-        flowerbed: 'green',
-        forest: 'green',
-        grass: 'green',
-        industrial: 'pink',
-        landfill: 'orange',
-        meadow: 'lightgreen',
-        military: 'orange',
-        orchard: 'lightgreen',
-        quarry: 'darkgray',
-        railway: 'darkgray',
-        recreation_ground: 'green',
-        residential: 'gold',
-        retail: 'orange',
-        village_green: 'green',
-        vineyard: 'lightgreen'
+        cemetery: 'common-lightgreen',
+        commercial: 'common-orange',
+        construction: 'common-gold',
+        farmland: 'common-lightgreen',
+        farmyard: 'common-tan',
+        flowerbed: 'common-green',
+        forest: 'common-green',
+        grass: 'common-green',
+        industrial: 'common-pink',
+        landfill: 'common-orange',
+        meadow: 'common-lightgreen',
+        military: 'common-orange',
+        orchard: 'common-lightgreen',
+        quarry: 'common-darkgray',
+        railway: 'common-darkgray',
+        recreation_ground: 'common-green',
+        residential: 'common-gold',
+        retail: 'common-orange',
+        village_green: 'common-green',
+        vineyard: 'common-lightgreen'
       },
       leisure: {
-        garden: 'green',
-        golf_course: 'green',
-        nature_reserve: 'green',
-        park: 'green',
-        pitch: 'green',
-        swimming_pool: 'blue',
-        track: 'yellow'
+        garden: 'common-green',
+        golf_course: 'common-green',
+        nature_reserve: 'common-green',
+        park: 'common-green',
+        pitch: 'common-green',
+        swimming_pool: 'common-blue',
+        track: 'common-yellow'
       },
       man_made: {
-        adit: 'darkgray',
+        adit: 'common-darkgray',
         breakwater: 'barrier_wall',
         groyne: 'barrier_wall',
         pipeline: 'pipeline'
       },
       military: {
-        '*': 'orange'
+        '*': 'common-orange'
       },
       natural: {
-        bare_rock: 'darkgray',
-        bay: 'blue',
-        beach: 'yellow',
-        cave_entrance: 'darkgray',
-        cliff: 'darkgray',
-        glacier: 'lightgray',
+        bare_rock: 'common-darkgray',
+        bay: 'common-blue',
+        beach: 'common-yellow',
+        cave_entrance: 'common-darkgray',
+        cliff: 'common-darkgray',
+        glacier: 'common-lightgray',
         ridge: 'ridge',
-        rock: 'darkgray',
-        sand: 'yellow',
-        scree: 'darkgray',
-        scrub: 'yellow',
-        shingle: 'darkgray',
-        stone: 'darkgray',
-        strait: 'blue',
+        rock: 'common-darkgray',
+        sand: 'common-yellow',
+        scree: 'common-darkgray',
+        scrub: 'common-yellow',
+        shingle: 'common-darkgray',
+        stone: 'common-darkgray',
+        strait: 'common-blue',
         tree_row: 'tree_row',
-        water: 'blue',
-        wetland: 'teal',
-        '*': 'green'
+        water: 'common-blue',
+        wetland: 'common-teal',
+        '*': 'common-green'
       },
       power: {
-        plant: 'pink'
+        plant: 'common-pink'
       },
       railway: {
         platform: 'footway',
@@ -415,11 +257,11 @@ export class StyleSystem extends AbstractSystem {
         ferry: 'ferry'
       },
       sport: {
-        baseball: 'yellow',
-        basketball: 'darkgray',
-        beachvolleyball: 'yellow',
-        skateboard: 'darkgray',
-        softball: 'yellow'
+        baseball: 'common-yellow',
+        basketball: 'common-darkgray',
+        beachvolleyball: 'common-yellow',
+        skateboard: 'common-darkgray',
+        softball: 'common-yellow'
       },
       type: {
         waterway: 'river'
@@ -550,17 +392,29 @@ export class StyleSystem extends AbstractSystem {
   startAsync() {
     this._started = true;
 
-    // To handle color schemes
+    // Fetch the color scheme objects from color_schemes.json
     const context = this.context;
     const dataloader = context.systems.dataloader;
 
-    dataloader.getDataAsync('colors')
+    dataloader.getDataAsync('color_schemes')
       .then((data) => {
         this.colorSchemes = data;
         // set current scheme to default
         this.colorData = data.default;
         this.currentColorScheme = 'default';
         this.emit('colorsloaded');  // emit copies
+      });
+
+    // Fetch the style objects from styles.json
+    dataloader.getDataAsync('styles')
+      .then((data) => {
+        this.STYLE_DECLARATIONS = data;
+      });
+
+    // Fetch the style objects from styles.json
+    dataloader.getDataAsync('styles')
+      .then((data) => {
+        this.STYLE_DECLARATIONS = data;
       });
 
     return Promise.resolve();
@@ -632,7 +486,7 @@ export class StyleSystem extends AbstractSystem {
       if (lifecycleVals.has(v)) score = 999;         // exception: lifecycle values
 
       if (styleID && score <= styleScore) {
-        const declaration = this.STYLE_DECLARATIONS[styleID] || colorScheme[styleID];
+        const declaration = this.STYLE_DECLARATIONS[styleID];
         if (!declaration) {
           console.error(`invalid styleID: ${styleID}`);  // eslint-disable-line
           continue;
@@ -678,14 +532,13 @@ export class StyleSystem extends AbstractSystem {
     for (const group of ['fill', 'casing', 'stroke']) {
       style[group] = {};
       for (const prop of ['width', 'color', 'alpha', 'cap', 'dash']) {
-        const value = matched[group] && matched[group][prop];
-        if (value !== undefined) {
-          style[group][prop] = value;
-        } else {
-          const fallback = defaults[group] && defaults[group][prop];
-          if (fallback !== undefined) {
-            style[group][prop] = fallback;
-          }
+        // Get the style match OR the default if a style match does not exist
+        const value = matched[group]?.[prop] ?? defaults[group]?.[prop];
+
+        // Set the property to the fetched value if the fetched value exists
+        // NOTE: The actual color code has to be fetched from `this.currentColorScheme`
+        if (value) {
+          style[group][prop] = (prop !== 'color') ? value : this.currentColorScheme[value.split("-")[0]][value];
         }
       }
     }

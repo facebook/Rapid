@@ -1,0 +1,196 @@
+{
+    "DEFAULTS": {
+        "fill": { "width": 2, "color": "gray-4", "alpha": 0.3 },
+        "casing": { "width": 5, "color": "gray-7", "alpha": 1, "cap": "round", "join": "round" },
+        "stroke": { "width": 3, "color": "gray-3", "alpha": 1, "cap": "round", "join": "round" }
+    },
+
+    "LIFECYCLE": {
+        "casing": { "alpha": 0 }, 
+        "stroke": { "dash": [7, 3], "cap": "butt" }
+    },
+
+    "common-red": {
+        "fill": { "color": "red-1", "alpha": 0.3 }
+    },
+    "common-green": {
+        "fill": { "color": "green-3", "alpha": 0.3 }
+    },
+    "common-blue": {
+        "fill": { "color": "blue-2", "alpha": 0.3 }
+    },
+    "common-yellow": {
+        "fill": { "color": "yellow-2", "alpha": 0.25 }
+    },
+    "common-gold": {
+        "fill": { "color": "yellow-5", "alpha": 0.3 }
+    },
+    "common-orange": {
+        "fill": { "color": "orange-2", "alpha": 0.3 }
+    },
+    "common-pink": {
+        "fill": { "color": "pink-1", "alpha": 0.3 }
+    },
+    "common-teal": {
+        "fill": { "color": "green-1", "alpha": 0.3 }
+    },
+    "common-lightgreen": {
+        "fill": { "color": "green-5", "alpha": 0.3 }
+    },
+    "common-tan": {
+        "fill": { "color": "tan-1", "alpha": 0.3 }
+    },
+    "common-darkgray": {
+        "fill": { "color": "gray-6", "alpha": 0.5 }
+    },
+    "common-lightgray": {
+        "fill": { "color": "gray-7", "alpha": 0.3 }
+    },
+
+    "motorway": {
+        "casing": { "width": 10, "color": "red-4" },
+        "stroke": { "width": 8, "color": "pink-2" }
+    },
+    "trunk": {
+        "casing": { "width": 10, "color": "red-4" },
+        "stroke": { "width": 8, "color": "red-3" }
+    },
+    "primary": {
+        "casing": { "width": 10, "color": "red-4" },
+        "stroke": { "width": 8, "color": "orange-1" }
+    },
+    "secondary": {
+        "casing": { "width": 10, "color": "red-4" },
+        "stroke": { "width": 8, "color": "yellow-4" }
+    },
+    "tertiary": {
+        "casing": { "width": 10, "color": "red-4" },
+        "stroke": { "width": 8, "color": "yellow-1" }
+    },
+    "unclassified": {
+        "casing": { "width": 10, "color": "gray-7" },
+        "stroke": { "width": 8, "color": "tan-2" }
+    },
+    "residential": {
+        "casing": { "width": 10, "color": "gray-7" },
+        "stroke": { "width": 8, "color": "white-0" }
+    },
+    "living_street": {
+        "casing": { "width": 7, "color": "white-0" },
+        "stroke": { "width": 5, "color": "gray-3" }
+    },
+    "service": {
+        "casing": { "width": 7, "color": "gray-7" },
+        "stroke": { "width": 5, "color": "white-0" }
+    },
+    "special_service": {
+        "casing": { "width": 7, "color": "gray-7" },
+        "stroke": { "width": 5, "color": "tan-2" }
+    },
+    "track": {
+        "casing": { "width": 7, "color": "brown-3" },
+        "stroke": { "width": 5, "color": "tan-3" }
+    },
+    "pedestrian": {
+        "casing": { "width": 7, "color": "white-0" },
+        "stroke": { "width": 5, "color": "brown-1", "dash": [8, 8], "cap": "butt" }
+    },
+    "path": {
+        "casing": { "width": 5, "color": "tan-2" },
+        "stroke": { "width": 3, "color": "brown-1", "dash": [6, 6], "cap": "butt" }
+    },
+    "footway": {
+        "casing": { "width": 5, "color": "white-0" },
+        "stroke": { "width": 3, "color": "brown-1", "dash": [6, 6], "cap": "butt" }
+    },
+    "crossing_marked": {
+        "casing": { "width": 5, "color": "tan-2" },
+        "stroke": { "width": 3, "color": "brown-4", "dash": [6, 3], "cap": "butt" }
+    },
+    "crossing_unmarked": {
+        "casing": { "width": 5, "color": "tan-2" },
+        "stroke": { "width": 3, "color": "brown-2", "dash": [6, 4], "cap": "butt" }
+    },
+    "cycleway": {
+        "casing": { "width": 5, "color": "white-0" },
+        "stroke": { "width": 3, "color": "blue-4", "dash": [6, 6], "cap": "butt" }
+    },
+    "bridleway": {
+        "casing": { "width": 5, "color": "white-0" },
+        "stroke": { "width": 3, "color": "red-2", "dash": [6, 6], "cap": "butt" }
+    },
+    "corridor": {
+        "casing": { "width": 5, "color": "white-0" },
+        "stroke": { "width": 3, "color": "green-3", "dash": [2, 8], "cap": "round" }
+    },
+    "steps": {
+        "casing": { "width": 5, "color": "white-0" },
+        "stroke": { "width": 3, "color": "green-4", "dash": [3, 3], "cap": "butt" }
+    },
+    "river": {
+        "fill": { "color": "blue-2", "alpha": 0.3 },
+        "casing": { "width": 10, "color": "gray-7" },
+        "stroke": { "width": 8, "color": "blue-1" }
+    },
+    "stream": {
+        "fill": { "color": "blue-2", "alpha": 0.3 },
+        "casing": { "width": 7, "color": "gray-7" },
+        "stroke": { "width": 5, "color": "blue-1" }
+    },
+    "ridge": {
+        "stroke": { "width": 2, "color": "green-3" }
+    },
+    "runway": {
+        "casing": { "width": 10, "color": "black-0", "cap": "butt" },
+        "stroke": { "width": 8, "color": "white-0", "dash": [24, 48], "cap": "butt" }
+    },
+    "taxiway": {
+        "casing": { "width": 7, "color": "gray-7" },
+        "stroke": { "width": 5, "color": "yellow-3" }
+    },
+    "railway": {
+        "casing": { "width": 7, "color": "gray-6", "cap": "butt" },
+        "stroke": { "width": 2, "color": "gray-1", "dash": [12, 12], "cap": "butt" }
+    },
+    "ferry": {
+        "casing": { "alpha": 0 }, 
+        "stroke": { "width": 3, "color": "blue-4", "dash": [12, 8], "cap": "butt" }
+    },
+    "boundary": {
+        "casing": { "width": 6, "color": "blue-3", "cap": "butt" },
+        "stroke": { "width": 2, "color": "white-0", "dash": [20, 5, 5, 5], "cap": "butt" }
+    },
+    "boundary_park": {
+        "casing": { "width": 6, "color": "blue-3", "cap": "butt" },
+        "stroke": { "width": 2, "color": "green-2", "dash": [20, 5, 5, 5], "cap": "butt" }
+    },
+    "barrier": {
+        "casing": { "alpha": 0 },
+        "stroke": { "width": 3, "color": "gray-2", "dash": [10, 5, 2, 5], "cap": "round" }
+    },
+    "barrier_wall": {
+        "casing": { "alpha": 0 },
+        "stroke": { "width": 3, "color": "gray-2", "dash": [10, 5, 2, 5], "cap": "round" }
+    },
+    "barrier_hedge": {
+        "fill": { "color": "green-3", "alpha": 0.3 },
+        "casing": { "alpha": 0 },  
+        "stroke": { "width": 3, "color": "green-3", "dash": [10, 5, 2, 5], "cap": "round" }
+    },
+    "tree_row": {
+        "casing": { "width": 7, "color": "gray-7" },
+        "stroke": { "width": 5, "color": "green-3" }
+    },
+    "construction": {
+        "casing": { "width": 10, "color": "white-0" },
+        "stroke": { "width": 8, "color": "orange-3", "dash": [10, 10], "cap": "butt" }
+    },
+    "pipeline": {
+        "casing": { "width": 7, "color": "gray-7" },
+        "stroke": { "width": 5, "color": "gray-2", "dash": [80, 2], "cap": "butt" }
+    },
+    "roller_coaster": {
+        "casing": { "width": 7, "color": "gray-7" },
+        "stroke": { "width": 5, "color": "gray-2", "dash": [10, 1], "cap": "butt" }
+    }
+}

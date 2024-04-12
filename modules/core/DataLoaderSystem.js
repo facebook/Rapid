@@ -23,6 +23,7 @@ export class DataLoaderSystem extends AbstractSystem {
 
     const fileMap  = new Map();
     fileMap.set('address_formats', 'data/address_formats.min.json');
+    fileMap.set('color_schemes', 'data/color_schemes.min.json');
     fileMap.set('colors', 'data/colors.min.json');
     fileMap.set('deprecated', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/deprecated.min.json');
     fileMap.set('discarded', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/discarded.min.json');
@@ -43,6 +44,7 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('preset_overrides', 'data/preset_overrides.min.json');
     fileMap.set('qa_data', 'data/qa_data.min.json');
     fileMap.set('shortcuts', 'data/shortcuts.min.json');
+    fileMap.set('styles', 'data/styles.min.json');
     fileMap.set('territory_languages', 'data/territory_languages.min.json');
     fileMap.set('wmf_sitematrix', 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json');
 
