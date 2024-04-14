@@ -40,6 +40,7 @@ export class StyleSystem extends AbstractSystem {
     this.colorData = null;
     this.colorSchemes = null;
     this.currentColorScheme = null;
+    this.focusMode = 'default';
 
     // Experiment, see Rapid#1230
     // matrix values from https://github.com/maputnik/editor
@@ -250,6 +251,10 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: 'butt' }
       }
     };
+
+
+    // will show everything else in grey / 50% alpha blend
+    this.pedestrianMode = ['path', 'cycleway', 'bridleway', 'steps', 'pedestrian', 'sidewalk', 'footway'];
 
     //
     // A "Style Selector" contains OSM key/value tags to match to a style declaration.
@@ -525,6 +530,9 @@ export class StyleSystem extends AbstractSystem {
     // To handle color schemes
     this.getColorScheme = this.getColorScheme.bind(this);
     this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
+    this.setColorScheme = this.setColorScheme.bind(this);
+    this.setMode = this.setMode.bind(this);
+    this.getMode = this.getMode.bind(this);
   }
 
 
@@ -599,10 +607,18 @@ export class StyleSystem extends AbstractSystem {
    */
   setColorScheme(scheme) {
     let currentScheme = this.colorSchemes[scheme];
-    if (this.colorData !== currentScheme) {
-      this.currentColorScheme = scheme;
-      this.colorData = currentScheme;
+    if (this.currentColorScheme !== currentScheme) {
+      this.currentColorScheme = currentScheme;
     }
+  }
+
+  setMode(mode) {
+    this.focusMode = mode;
+  }
+
+
+  getMode() {
+    return this.focusMode;
   }
 
   /**
@@ -610,6 +626,7 @@ export class StyleSystem extends AbstractSystem {
    * @param  {Object}  tags - OSM tags to match to a display style
    * @return {Object}  Styling info for the given tags
    */
+  // eslint-disable-next-line complexity
   styleMatch(tags) {
     const defaults = this.STYLE_DECLARATIONS.DEFAULTS;
 

@@ -3,6 +3,7 @@ import { uiSectionPrivacy } from '../sections/privacy.js';
 import { uiSectionMapInteractionOptions } from '../sections/map_interaction_options.js';
 import { uiSectionColorSelection } from '../sections/color_selection.js';
 import { uiSectionColorblindModeOptions } from '../sections/colorblind_mode_options.js';
+import { uiSectionFocusModes } from '../sections/focus_modes.js';
 
 
 export function uiPanePreferences(context) {
@@ -17,6 +18,7 @@ export function uiPanePreferences(context) {
                   uiSectionPrivacy(context),
                   uiSectionMapInteractionOptions(context),
                   uiSectionColorSelection(context),
-                  uiSectionColorblindModeOptions(context)
+                  uiSectionColorblindModeOptions(context),
+                  uiSectionFocusModes(context)
             ]);
 }
