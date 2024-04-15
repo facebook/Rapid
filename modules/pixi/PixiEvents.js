@@ -88,16 +88,18 @@ export class PixiEvents extends EventEmitter {
     window.addEventListener('keydown', this._keydown);
     window.addEventListener('keyup', this._keyup);
 
+    const renderer = this.renderer;
+
     // Attach wheel to supersurface so that content on the overlay (like the edit menu)
     // doesn't receive the wheel events and prevent panning and zooming.
-    const supersurface = this.renderer.supersurface.node();
+    const supersurface = renderer.supersurface.node();
     supersurface.addEventListener('wheel', this._wheel, { passive: false });  // false allows preventDefault
 
-    const canvas = this.context.pixi.view;
-    canvas.addEventListener('pointerover', this._pointerover);
-    canvas.addEventListener('pointerout', this._pointerout);
+    const view = renderer.pixi.view;
+    view.addEventListener('pointerover', this._pointerover);
+    view.addEventListener('pointerout', this._pointerout);
 
-    const stage = this.context.pixi.stage;
+    const stage = renderer.pixi.stage;
     stage.addEventListener('click', this._click);
     stage.addEventListener('pointerdown', this._pointerdown);
     stage.addEventListener('pointermove', this._pointermove);
@@ -120,14 +122,16 @@ export class PixiEvents extends EventEmitter {
     window.removeEventListener('keydown', this._keydown);
     window.removeEventListener('keyup', this._keyup);
 
-    const supersurface = this.renderer.supersurface.node();
+    const renderer = this.renderer;
+
+    const supersurface = renderer.supersurface.node();
     supersurface.removeEventListener('wheel', this._wheel);
 
-    const canvas = this.context.pixi.view;
-    canvas.removeEventListener('pointerover', this._pointerover);
-    canvas.removeEventListener('pointerout', this._pointerout);
+    const view = renderer.pixi.view;
+    view.removeEventListener('pointerover', this._pointerover);
+    view.removeEventListener('pointerout', this._pointerout);
 
-    const stage = this.context.pixi.stage;
+    const stage = renderer.pixi.stage;
     stage.removeEventListener('click', this._click);
     stage.removeEventListener('pointerdown', this._pointerdown);
     stage.removeEventListener('pointermove', this._pointermove);
@@ -145,47 +149,50 @@ export class PixiEvents extends EventEmitter {
    * @param  `style` String for one of the given CSS cursor styles (pass 'inherit' to reset)
    */
   setCursor(style) {
-  // Pixi doesn't make this easy
-  // On next pointerover event, the root event boundary will reset its perferred cursor
-  // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
-  // We don't know when that event will be, next time user happens to shake the mouse?
-  // So we'll also set it directly on the canvas so it locks in now
-  const context = this.context;
-  const cursors = {
-    areaCursor:`url(${context.assetPath}img/cursor-select-area.png), pointer`,
-    connectLineCursor:`url(${context.assetPath}img/cursor-draw-connect-line.png) 9 9, crosshair`,
-    connectVertexCursor:`url(${context.assetPath}img/cursor-draw-connect-vertex.png) 9 9, crosshair`,
-    lineCursor:`url(${context.assetPath}img/cursor-select-line.png), pointer`,
-    pointCursor:`url(${context.assetPath}img/cursor-select-point.png), pointer`,
-    selectSplitCursor:`url(${context.assetPath}img/cursor-select-split.png), pointer`,
-    vertexCursor:`url(${context.assetPath}img/cursor-select-vertex.png), pointer`,
-  };
-  switch (style) {
-    case 'areaCursor':
-      this.renderer.pixi.view.style.cursor = cursors.areaCursor;
-      break;
-    case 'connectLineCursor':
-      this.renderer.pixi.view.style.cursor = cursors.connectLineCursor;
-      break;
-    case 'connectVertexCursor':
-      this.renderer.pixi.view.style.cursor = cursors.connectVertexCursor;
-      break;
-    case 'lineCursor':
-      this.renderer.pixi.view.style.cursor = cursors.lineCursor;
-      break;
-    case 'pointCursor':
-      this.renderer.pixi.view.style.cursor = cursors.pointCursor;
-      break;
-    case 'selectSplitCursor':
-      this.renderer.pixi.view.style.cursor = cursors.selectSplitCursor;
-      break;
-    case 'vertexCursor':
-      this.renderer.pixi.view.style.cursor = cursors.vertexCursor;
-      break;
-    default:
-      this.renderer.pixi.view.style.cursor = style;
-      break;
-    }
+    // Pixi doesn't make this easy
+    // On next pointerover event, the root event boundary will reset its perferred cursor
+    // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
+    // We don't know when that event will be, next time user happens to shake the mouse?
+    // So we'll also set it directly on the canvas so it locks in now
+    const path = this.context.assetPath;
+    const view = this.renderer.pixi.view;
+
+    const cursors = {
+      areaCursor: `url(${path}img/cursor-select-area.png), pointer`,
+      connectLineCursor: `url(${path}img/cursor-draw-connect-line.png) 9 9, crosshair`,
+      connectVertexCursor: `url(${path}img/cursor-draw-connect-vertex.png) 9 9, crosshair`,
+      lineCursor: `url(${path}img/cursor-select-line.png), pointer`,
+      pointCursor: `url(${path}img/cursor-select-point.png), pointer`,
+      selectSplitCursor: `url(${path}img/cursor-select-split.png), pointer`,
+      vertexCursor: `url(${path}img/cursor-select-vertex.png), pointer`,
+    };
+
+    switch (style) {
+      case 'areaCursor':
+        view.style.cursor = cursors.areaCursor;
+        break;
+      case 'connectLineCursor':
+        view.style.cursor = cursors.connectLineCursor;
+        break;
+      case 'connectVertexCursor':
+        view.style.cursor = cursors.connectVertexCursor;
+        break;
+      case 'lineCursor':
+        view.style.cursor = cursors.lineCursor;
+        break;
+      case 'pointCursor':
+        view.style.cursor = cursors.pointCursor;
+        break;
+      case 'selectSplitCursor':
+        view.style.cursor = cursors.selectSplitCursor;
+        break;
+      case 'vertexCursor':
+        view.style.cursor = cursors.vertexCursor;
+        break;
+      default:
+        view.style.cursor = style;
+        break;
+      }
   }
 
 
