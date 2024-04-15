@@ -1,40 +1,42 @@
 import * as PIXI from 'pixi.js';
-import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { HALF_PI, Viewport, geoScaleToZoom, geoZoomToScale, vecInterp, vecScale, vecSubtract } from '@rapid-sdk/math';
+import { HALF_PI, Viewport, geoZoomToScale, numClamp, vecAdd, vecInterp, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles.js';
-import { utilSetTransform } from '../util/index.js';
+//import { PixiEvents } from '../pixi/PixiEvents.js';
 
 
 export function uiMapInMap(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const viewMain = context.viewport;
+  const viewMini = new Viewport();
+
+  const MIN_Z = 0.5;
+  const MAX_Z = 24;
+  const MIN_K = geoZoomToScale(MIN_Z);
+  const MAX_K = geoZoomToScale(MAX_Z);
+
+  let _wrap = null;
+  let _supersurface = null;
+  let _surface = null;
+
+  let _isHidden = true;          // start out hidden
+  let _skipEvents = false;
+  let _gesture = null;
+  let _zDiff = 6;        // by default, minimap renders at (main zoom - 6)
+  let _tStart;           // d3-zoom transform at start of gesture
+
+  let _miniPixi = null;        // Pixi application for the minimap
+  let _miniTileLayer = null;   // Background Tile layer for the minimap
+
 
   function mapInMap(selection) {
-    let viewMini = new Viewport();
-    let zoom = d3_zoom()
-      .scaleExtent([geoZoomToScale(0.5), geoZoomToScale(24)])
-      .on('start', zoomStarted)
-      .on('zoom', zoomed)
-      .on('end', zoomEnded);
-
-    let wrap = d3_select(null);
-    let canvas = d3_select(null);
-
-    let _isHidden = true;          // start out hidden
-    let _isTransformed = false;
-    let _skipEvents = false;
-    let _gesture = null;
-    let _zDiff = 6;        // by default, minimap renders at (main zoom - 6)
-    let _dMini;            // dimensions of minimap
-    let _cMini;            // center pixel of minimap
-    let _tStart;           // transform at start of gesture
-    let _tCurr;            // transform at most recent event
-
-    let _miniPixi = null;        // Pixi application for the minimap
-    let _miniTileLayer = null;   // Background Tile layer for the minimap
+    const zoom = d3_zoom()
+      .scaleExtent([MIN_K, MAX_K])
+      .on('start', _zoomStarted)
+      .on('zoom', _zoomed)
+      .on('end', _zoomEnded);
 
 
     /**
@@ -44,148 +46,142 @@ export function uiMapInMap(context) {
     function updateMinimap() {
       if (_isHidden) return;
       if (!map.renderer?.textures?.loaded) return;
-      updateViewport();
-      updateBoundingBox();
+      updateTransform();
+      renderBoundingBox();
     }
 
 
     /**
-     * zoomEnded
+     * _zoomEnded
      * d3-zoom callback for when a zoom/pan starts
      */
-    function zoomStarted() {
+    function _zoomStarted() {
       if (_skipEvents) return;
-      _tStart = _tCurr = viewMini.transform.props;
+
+      const t = viewMini.transform.props;
+      _tStart = d3_zoomIdentity.translate(t.x, t.y).scale(t.k);
       _gesture = null;
     }
 
 
     /**
-     * zoomEnded
+     * _zoomed
      * d3-zoom callback that receives zoom/pan events
      * @param  d3_event   A d3-zoom event, transform contains details about what changed
      */
-    function zoomed(d3_event) {
+    function _zoomed(d3_event) {
       if (_skipEvents) return;
 
-      let x = d3_event.transform.x;
-      let y = d3_event.transform.y;
-      let k = d3_event.transform.k;
-      const isZooming = (k !== _tStart.k);
-      const isPanning = (x !== _tStart.x || y !== _tStart.y);
+      const {x, y, k} = d3_event.transform;
 
-      if (!isZooming && !isPanning) return;   // no change
-
-      // lock in either zooming or panning, don't allow both in minimap.
       if (!_gesture) {
-        _gesture = isZooming ? 'zoom' : 'pan';
+        _gesture = (k !== _tStart.k) ? 'zoom' : 'pan';
       }
 
-      const tMini = viewMini.transform.props;
-      let tX, tY, scale;
-
+      // Remove translations from zooms - all zooms should occur at the minimap center.
       if (_gesture === 'zoom') {
-        scale = k / tMini.k;
-        tX = (_cMini[0] / scale - _cMini[0]) * scale;
-        tY = (_cMini[1] / scale - _cMini[1]) * scale;
+        const loc = viewMain.centerLoc();
+        const tMain = viewMain.transform.props;
+        const cMini = viewMini.center();
+
+        viewMini.transform = { x: tMain.x, y: tMain.y, k: k };
+        let xy = viewMini.transform.translation;
+        const point = viewMini.project(loc);
+        const delta = vecSubtract(cMini, point);
+        xy = vecAdd(xy, delta);
+
+        viewMini.transform = { x: xy[0], y: xy[1], k: k };
       } else {
-        k = tMini.k;
-        scale = 1;
-        tX = x - tMini.x;
-        tY = y - tMini.y;
+        viewMini.transform = { x: x, y: y, k: k };
       }
 
-      if (_gesture === 'pan') {
-        _miniPixi.stage.x += tX;
-        _miniPixi.stage.y += tY;
-      } else {
-        utilSetTransform(canvas, 0, 0, scale);
-      }
-      _isTransformed = true;
-      _tCurr = d3_zoomIdentity.translate(x, y).scale(k);
-
-      const zMain = geoScaleToZoom(viewMain.transform.zoom);
-      const zMini = geoScaleToZoom(k);
-
-      _zDiff = zMain - zMini;
+      // update `_zDiff` (difference in zoom between main and mini)
+      _zDiff = viewMain.transform.zoom - viewMini.transform.zoom;
 
       updateMinimap();
     }
 
 
     /**
-     * zoomEnded
+     * _zoomEnded
      * d3-zoom callback for when the zoom/pan ends
      */
-    function zoomEnded() {
+    function _zoomEnded() {
       if (_skipEvents) return;
-      if (_gesture !== 'pan') return;
 
-      updateViewport();
+      if (_gesture === 'pan') {
+        map.center(viewMini.centerLoc());  // recenter main map..
+      }
+
+      _tStart = null;
       _gesture = null;
-      map.center(viewMini.unproject(_cMini)); // recenter main map..
+
+      updateMinimap();
     }
 
 
     /**
-     * updateViewport
+     * updateTransform
      * Update the minimap viewport and d3-zoom transform
      */
-    function updateViewport() {
+    function updateTransform() {
+      // If mini map is changing, skip..
+      // The transform was already set in `zoomed`
+      if (_tStart) return;
+
       const loc = viewMain.centerLoc();
       const tMain = viewMain.transform.props;
-      const zMain = geoScaleToZoom(tMain.k);
-      const zMini = Math.max(zMain - _zDiff, 0.5);
+      const zMain = viewMain.transform.zoom;
+      const zMini = numClamp(zMain - _zDiff, MIN_Z, MAX_Z);
       const kMini = geoZoomToScale(zMini);
+      const cMini = viewMini.center();
 
+      // update minimap transform
       viewMini.transform = { x: tMain.x, y: tMain.y, k: kMini };
-
+      let xy = viewMini.transform.translation;
       const point = viewMini.project(loc);
-      const mouse = (_gesture === 'pan') ? vecSubtract([_tCurr.x, _tCurr.y], [_tStart.x, _tStart.y]) : [0, 0];
-      const xMini = _cMini[0] - point[0] + tMain.x + mouse[0];
-      const yMini = _cMini[1] - point[1] + tMain.y + mouse[1];
+      const delta = vecSubtract(cMini, point);
+      xy = vecAdd(xy, delta);
+      viewMini.transform = { x: xy[0], y: xy[1], k: kMini };
 
-      viewMini.transform = { x: xMini, y: yMini };
-      viewMini.dimensions = _dMini;
-
-      _tCurr = viewMini.transform.props;
-
-      if (_isTransformed) {
-        _miniPixi.stage.x = 0;
-        _miniPixi.stage.y = 0;
-        utilSetTransform(canvas, 0, 0);
-        _isTransformed = false;
-      }
-
-      zoom.scaleExtent([geoZoomToScale(0.5), geoZoomToScale(zMain - 3)]);
-
+      // update d3-zoom transform
       _skipEvents = true;
-      wrap.call(zoom.transform, _tCurr);
+      zoom.scaleExtent([MIN_K, geoZoomToScale(zMain - 3)]);
+      _supersurface.call(zoom.transform, d3_zoomIdentity.translate(xy[0], xy[1]).scale(kMini));
       _skipEvents = false;
     }
 
 
     /**
-     * updateBoundingBox
+     * renderBoundingBox
      * Recalculates the position and size of the bounding box rectangle on the minimap
      */
-    function updateBoundingBox() {
+    function renderBoundingBox() {
       const [w, h] = viewMain.dimensions;
       const mainPoints = [[0, 0], [0, h], [w, h], [w, 0], [0, 0]];
       const miniPoints = new Array(mainPoints.length);
       const flatPoints = new Array(mainPoints.length * 2);  // as a flattened array
+
+      const stage = _miniPixi.stage;
+
+      // If user is currently panning, keep the bbox in the center
+      // so they can see where the map will translate to.
+      let offset = [0, 0];
+      const tCurr = viewMini.transform.props;
+      if (_tStart && _tStart.k === tCurr.k) {   // `k` unchanged, so user is not zooming
+        offset = [tCurr.x - _tStart.x, tCurr.y - _tStart.y];
+      }
 
       // Compute the viewport bounding box coordinates..
       for (let i = 0; i < mainPoints.length; i++) {
         // Unproject from the original screen coords to lon/lat (true = consider rotation)
         // Then project to the coordinates used by the minimap.
         const [x, y] = viewMini.project(viewMain.unproject(mainPoints[i], true));
-        miniPoints[i] = [x, y];
-        flatPoints[(i * 2)] = x;
-        flatPoints[(i * 2) + 1] = y;
+        miniPoints[i] = vecSubtract([x, y], offset);
+        flatPoints[(i * 2)] = x - offset[0];
+        flatPoints[(i * 2) + 1] = y - offset[1];
       }
 
-      const stage = _miniPixi.stage;
       let bbox = stage.getChildByName('bbox');
       if (!bbox) {
         bbox = new PIXI.Graphics();
@@ -229,6 +225,7 @@ export function uiMapInMap(context) {
      */
     function toggle(d3_event) {
       if (d3_event) d3_event.preventDefault();
+      if (!_wrap) return;   // called too early?
 
       _isHidden = !_isHidden;
 
@@ -240,7 +237,7 @@ export function uiMapInMap(context) {
         .property('checked', !_isHidden);
 
       if (_isHidden) {
-        wrap
+        _wrap
           .style('display', 'block')
           .style('opacity', '1')
           .transition()
@@ -250,9 +247,10 @@ export function uiMapInMap(context) {
             selection.selectAll('.map-in-map').style('display', 'none');
             clear();
           });
+
       } else {
         updateMinimap();
-        wrap
+        _wrap
           .style('display', 'block')
           .style('opacity', '0')
           .transition()
@@ -264,12 +262,9 @@ export function uiMapInMap(context) {
 
     /**
      * clear
-     * Removes all resources used by the minimap when it goes invisible
+     * Removes resources used by the minimap when it goes invisible
      */
     function clear() {
-      const stage = _miniPixi.stage;
-      stage.removeChildren();
-
       if (_miniTileLayer) {
         _miniTileLayer.destroyAll();
       }
@@ -277,10 +272,10 @@ export function uiMapInMap(context) {
 
 
     /**
-     * tick
+     * _tick
      * Draw the minimap
      */
-    function tick() {
+    function _tick() {
       if (_isHidden) return;
       if (!map.renderer?.textures?.loaded) return;
 
@@ -293,21 +288,13 @@ export function uiMapInMap(context) {
     }
 
 
-    /* setup */
-    uiMapInMap.toggle = toggle;
+    /**
+     * _initMiniPixi
+     * Create a separate Pixi application for the minimap
+     */
+    function _initMiniPixi() {
+      if (!_supersurface || !_surface)  return;   // called too early?
 
-    wrap = selection.selectAll('.map-in-map')
-      .data([0]);
-
-    let wrapEnter = wrap.enter()
-      .append('div')
-      .attr('class', 'map-in-map')
-      .style('display', _isHidden ? 'none' : 'block')
-      .call(zoom)
-      .on('dblclick.zoom', null);
-
-    if (!_miniPixi) {
-      // Create a separate Pixi application for the minimap
       _miniPixi = new PIXI.Application({
         antialias: true,
         autoDensity: true,
@@ -320,11 +307,14 @@ export function uiMapInMap(context) {
         },
         resolution: window.devicePixelRatio,
         sharedLoader: true,
-        sharedTicker: false
+        sharedTicker: false,
+        view: _surface.node()
       });
 
-      const [width, height] = [200, 150];
-      _miniPixi.renderer.resize(width, height);
+      // hardcoded dimensions for now
+      const [w, h] = [200, 150];
+      viewMini.dimensions = [w, h];
+      _miniPixi.renderer.resize(w, h);
 
       // Setup the Ticker
       // Replace the default Ticker listener (which just renders the scene each frame)
@@ -333,7 +323,7 @@ export function uiMapInMap(context) {
       ticker.maxFPS = 10;      // minimap can be slowed down
       const defaultListener = ticker._head.next;
       ticker.remove(defaultListener.fn, defaultListener.context);
-      ticker.add(tick, this);
+      ticker.add(_tick, this);
       ticker.start();
 
       // Setup the stage..
@@ -342,13 +332,16 @@ export function uiMapInMap(context) {
       stage.eventMode = 'none';
       stage.sortableChildren = false;
 
-      // Construct the scene..
       const miniRenderer = {    // Mock Renderer
         context: context,
+        supersurface: _supersurface,
+        surface: _surface,
         pixi: _miniPixi,
         stage: stage,
         textures: map.renderer.textures
       };
+// maybe someday, if we want to replace d3-zoom, we can use Pixi events instead
+//      miniRenderer.events = new PixiEvents(miniRenderer);
 
       const miniScene = {   // Mock Scene
         context: context,
@@ -368,23 +361,51 @@ export function uiMapInMap(context) {
       _miniTileLayer = new PixiLayerBackgroundTiles(miniScene, 'minimap-background', true);  // isMinimap = true
       miniScene.layers.set(_miniTileLayer.id, _miniTileLayer);
 
-      // Hardcode dimensions - currently can't resize it anyway..
-      _dMini = [width, height];
-      _cMini = vecScale(_dMini, 0.5);
-
-      map.on('draw', () => updateMinimap());
+      // replace event listener
+      map.off('draw', updateMinimap);
+      map.on('draw', updateMinimap);
     }
 
-    wrapEnter
-      .each((d, i, nodes) => {
-        nodes[i].appendChild(_miniPixi.view);
-      });
 
-    wrap = wrapEnter
-      .merge(wrap);
+    /* setup */
+    uiMapInMap.toggle = toggle;
 
-    // canvas = wrap.selectAll('canvas');
-    canvas = d3_select(_miniPixi.view);
+    const wrap = selection.selectAll('.map-in-map')
+      .data([0]);
+
+    const wrapEnter = wrap.enter()
+      .append('div')
+      .attr('class', 'map-in-map')
+      .style('display', _isHidden ? 'none' : 'block');
+
+    _wrap = wrap.merge(wrapEnter);
+
+
+    const supersurface = _wrap.selectAll('.supersurface')
+      .data([0]);
+
+    const supersurfaceEnter = supersurface.enter()
+      .append('div')
+      .attr('class', 'supersurface')
+      .call(zoom)
+      .on('dblclick.zoom', null);
+
+    _supersurface = supersurface.merge(supersurfaceEnter);
+
+
+    const surface = _supersurface.selectAll('.surface')
+      .data([0]);
+
+    const surfaceEnter = surface.enter()
+      .append('canvas')
+      .attr('class', 'surface');
+
+    _surface = surface.merge(surfaceEnter);
+
+
+    if (!_miniPixi) {
+      _initMiniPixi();
+    }
 
     updateMinimap();
 
