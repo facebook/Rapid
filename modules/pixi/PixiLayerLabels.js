@@ -245,7 +245,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // We need to save this labeloffset for use elsewhere, it is the basis for having a consistent coordinate
       // system to track labels to place and objects to avoid. (we apply it to values we get from `getBounds`)
       const labelOffset = this._labelOffset;
-      this.renderer.origin.toGlobal({x: 0, y: 0}, labelOffset, true /*skip updates*/);
+      this.renderer.origin.toGlobal({ x: 0, y: 0 }, labelOffset, true /*skip updates*/);
 
       const groupContainer = this.scene.groups.get('labels');
       groupContainer.position.set(-origin.x, -origin.y);     // undo origin - [0,0] is now center
@@ -617,11 +617,11 @@ this.placeRopeLabel(feature, labelObj, coords);
     // In order of preference (If left-to-right language, prefer the right of the pin)
     // Prefer placements that are more "visually attached" to the pin (right,bottom,left,top)
     // over placements that are further away (corners)
-    let preferences;
+    let attempts;
     const isRTL = this.context.systems.l10n.isRTL();
 
     if (isRTL) {   // right to left
-      preferences = [
+      attempts = [
         'l3', 'l4', 'l2',
         'b3', 'b2', 'b4', 'b1', 'b5',
         't3', 't2', 't4', 't1', 't5',
@@ -630,7 +630,7 @@ this.placeRopeLabel(feature, labelObj, coords);
         'r5', 'r1'
       ];
     } else {   // left to right
-      preferences = [
+      attempts = [
         'r3', 'r4', 'r2',
         'b3', 'b4', 'b2', 'b5', 'b1',
         'l3', 'l4', 'l2',
@@ -641,8 +641,7 @@ this.placeRopeLabel(feature, labelObj, coords);
     }
 
     let picked = null;
-    for (let i = 0; !picked && i < preferences.length; i++) {
-      const placement = preferences[i];
+    for (const placement of attempts) {
       const [x, y] = placements[placement];
       const EPSILON = 0.01;
       const box = {
@@ -673,6 +672,7 @@ this.placeRopeLabel(feature, labelObj, coords);
         this._labelBoxes.get(featureID).push(box);
         this._rbush.insert(box);
         picked = placement;
+        break;
       }
     }
 
@@ -890,18 +890,19 @@ this.placeRopeLabel(feature, labelObj, coords);
     // Create and add Labels to the scene, if needed
     for (const labelID of labelIDs) {
       const label = this._labels.get(labelID);
-      if (!label) continue;  // unknown labelID - shouldn't happen?
+      if (!label) continue;         // unknown labelID - shouldn't happen?
+      if (label.dObjID) continue;   // done already
 
       const options = label.options;
-      if (label.dObjID) continue;   // done already
+      const dObjID = labelID;
 
       if (label.type === 'text') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText
         labelObj.tint = options.tint || 0xffffff;
         labelObj.position.set(options.x, options.y);
 
-        this._dObjs.set(labelObj.name, labelObj);
-        label.dObjID = labelObj.name;
+        this._dObjs.set(dObjID, labelObj);
+        label.dObjID = dObjID;
         this.labelContainer.addChild(labelObj);
 
       } else if (label.type === 'rope') {
@@ -913,8 +914,8 @@ this.placeRopeLabel(feature, labelObj, coords);
         rope.sortableChildren = false;
         rope.tint = options.tint || 0xffffff;
 
-        this._dObjs.set(rope.name, rope);
-        label.dObjID = rope.name;
+        this._dObjs.set(dObjID, rope);
+        label.dObjID = dObjID;
         this.labelContainer.addChild(rope);
       }
     }
