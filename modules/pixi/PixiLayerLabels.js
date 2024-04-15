@@ -245,7 +245,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // We need to save this labeloffset for use elsewhere, it is the basis for having a consistent coordinate
       // system to track labels to place and objects to avoid. (we apply it to values we get from `getBounds`)
       const labelOffset = this._labelOffset;
-      this.renderer.origin.toGlobal({ x: 0, y: 0 }, labelOffset, true /*skip updates*/);
+      this.renderer.origin.toGlobal({ x: 0, y: 0 }, labelOffset);
 
       const groupContainer = this.scene.groups.get('labels');
       groupContainer.position.set(-origin.x, -origin.y);     // undo origin - [0,0] is now center
@@ -723,7 +723,7 @@ this.placeRopeLabel(feature, labelObj, coords);
     const labelOffset = this._labelOffset;
     const temp = new PIXI.Point();
     const coords = origCoords.map(([x, y]) => {
-      origin.toGlobal({x: x, y: y}, temp, true /* skip updates */);
+      origin.toGlobal({x: x, y: y}, temp, true /* skip updates ok? - we called toGlobal already */);
       return [temp.x - labelOffset.x, temp.y - labelOffset.y];
     });
 
