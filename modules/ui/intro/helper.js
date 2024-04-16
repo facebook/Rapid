@@ -88,6 +88,7 @@ export function helpHtml(context, id, replacements) {
       twofinger_tap_and_drag_icon: icon('#rapid-interaction-twofinger-tap-and-drag', 'operation'),
       twofinger_pinch_icon: icon('#rapid-interaction-twofinger-pinch', 'operation'),
       twofinger_zoom_icon: icon('#rapid-interaction-twofinger-zoom', 'operation'),
+      twofinger_rotate_icon: icon('#rapid-interaction-twofinger-rotate', 'operation'),
 
       // insert keys; may be localized and platform-dependent
       shift: uiCmd.display(context, '⇧'),
