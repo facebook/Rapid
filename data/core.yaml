@@ -826,6 +826,9 @@ en:
       osmose:
         tooltip: Data issues detected by osmose.openstreetmap.fr
         title: Osmose Issues
+      geoScribble:
+        tooltip: Freehand annotations done by EveryDoor users
+        title: GeoScribble Annotations
       custom:
         tooltip: "Drag and drop a data file onto the page, or click the button to setup"
         title: Custom Map Data

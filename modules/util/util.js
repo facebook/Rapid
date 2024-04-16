@@ -20,6 +20,68 @@ export function utilTotalExtent(vals, graph) {
   return extent;
 }
 
+  /**
+   * geojsonFeatures
+   * The given GeoJSON may be a single Feature or a FeatureCollection.
+   * Here we expand it to an Array of Features.
+   * @return {Array}  GeoJSON Features
+   */
+  export function geojsonFeatures(geojson) {
+    if (!geojson) return [];
+    return (geojson.type === 'FeatureCollection') ? geojson.features : [geojson];
+  }
+
+
+
+ /**
+   * geojsonExtent
+   * @param  {Object}  geojson - a GeoJSON Feature or FeatureCollection
+   * @return {Extent}
+   */
+ export function geojsonExtent(geojson) {
+  const extent = new Extent();
+  if (!geojson) return extent;
+
+  for (const feature of geojsonFeatures(geojson)) {
+    const geometry = feature.geometry;
+    if (!geometry) continue;
+
+    const type = geometry.type;
+    const coords = geometry.coordinates;
+
+    // Treat single types as multi types to keep the code simple
+    const parts = /^Multi/.test(type) ? coords : [coords];
+
+    if (/Polygon$/.test(type)) {
+      for (const polygon of parts) {
+        const outer = polygon[0];  // No need to iterate over inners
+        for (const point of outer) {
+          _extend(point);
+        }
+      }
+    } else if (/LineString$/.test(type)) {
+      for (const line of parts) {
+        for (const point of line) {
+          _extend(point);
+        }
+      }
+    } else if (/Point$/.test(type)) {
+      for (const point of parts) {
+        _extend(point);
+      }
+    }
+  }
+
+  return extent;
+
+  // update extent in place
+  function _extend(coord) {
+    extent.min = [ Math.min(extent.min[0], coord[0]), Math.min(extent.min[1], coord[1]) ];
+    extent.max = [ Math.max(extent.max[0], coord[0]), Math.max(extent.max[1], coord[1]) ];
+  }
+}
+
+
 
 // Adds or removes highlight styling for the specified entities
 export function utilHighlightEntities(entityIDs, highlighted, context) {

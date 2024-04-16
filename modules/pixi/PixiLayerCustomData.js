@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { gpx, kml } from '@tmcw/togeojson';
-import { Extent } from '@rapid-sdk/math';
+import { geojsonExtent, geojsonFeatures } from '../util/util.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 
 import { AbstractLayer } from './AbstractLayer.js';
@@ -88,7 +88,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       }
       geoData = vtService.getData(this._template).map(d => d.geojson);
     } else {
-      geoData = this._getFeatures(this._geojson);
+      geoData = geojsonFeatures(this._geojson);
     }
 
     const polygons = geoData.filter(d => d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon');
@@ -510,7 +510,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       this._dataUsed = `${extension} data file`;
       this._geojson = this._ensureIDs(geojson);
       geojsonRewind(this._geojson);
-      this._geojsonExtent = this._calcExtent(geojson);
+      this._geojsonExtent = geojsonExtent(geojson);
       this.fitZoom();
       this.scene.enableLayers(this.layerID);  // emits 'layerchange', so UI gets updated
     }
@@ -531,7 +531,7 @@ export class PixiLayerCustomData extends AbstractLayer {
   _ensureIDs(geojson) {
     if (!geojson) return null;
 
-    for (const feature of this._getFeatures(geojson)) {
+    for (const feature of geojsonFeatures(geojson)) {
       this._ensureFeatureID(feature);
     }
     return geojson;
@@ -555,60 +555,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     return feature;
   }
 
-
-  /**
-   * _getFeatures
-   * The given GeoJSON may be a single Feature or a FeatureCollection.
-   * Here we expand it to an Array of Features.
-   * @return {Array}  GeoJSON Features
-   */
-  _getFeatures(geojson) {
-    if (!geojson) return [];
-    return (geojson.type === 'FeatureCollection') ? geojson.features : [geojson];
-  }
-
-
- /**
-   * _calcExtent
-   * @param  {Object}  geojson - a GeoJSON Feature or FeatureCollection
-   * @return {Extent}
-   */
-  _calcExtent(geojson) {
-    const extent = new Extent();
-    if (!geojson) return extent;
-
-    for (const feature of this._getFeatures(geojson)) {
-      const geometry = feature.geometry;
-      if (!geometry) continue;
-
-      const type = geometry.type;
-      const coords = geometry.coordinates;
-
-      // Treat single types as multi types to keep the code simple
-      const parts = /^Multi/.test(type) ? coords : [coords];
-
-      if (/Polygon$/.test(type)) {
-        for (const polygon of parts) {
-          const outer = polygon[0];  // No need to iterate over inners
-          for (const point of outer) {
-            extent.extendSelf(point);
-          }
-        }
-      } else if (/LineString$/.test(type)) {
-        for (const line of parts) {
-          for (const point of line) {
-            extent.extendSelf(point);
-          }
-        }
-      } else if (/Point$/.test(type)) {
-        for (const point of parts) {
-          extent.extendSelf(point);
-        }
-      }
-    }
-
-    return extent;
-  }
 
 
   /**

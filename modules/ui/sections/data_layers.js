@@ -122,7 +122,7 @@ export function uiSectionDataLayers(context) {
 
 
   function drawQAItems(selection) {
-    const qaKeys = ['keepRight', 'improveOSM', 'osmose'];
+    const qaKeys = ['keepRight', 'improveOSM', 'osmose', 'geoScribble'];
     const qaLayers = qaKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
 
     let ul = selection

@@ -17,6 +17,7 @@ import { PixiLayerOsmNotes } from './PixiLayerOsmNotes.js';
 import { PixiLayerOsmose } from './PixiLayerOsmose.js';
 import { PixiLayerRapid } from './PixiLayerRapid.js';
 import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos.js';
+import { PixiLayerGeoScribble } from './PixiLayerGeoScribble.js';
 
 
 // Convert a single value, an Array of values, or a Set of values.
@@ -88,6 +89,7 @@ export class PixiScene extends EventEmitter {
     // Create Layers
     [
       new PixiLayerBackgroundTiles(this, 'background'),
+      new PixiLayerGeoScribble(this, 'geoScribble'),
       new PixiLayerOsm(this, 'osm'),
       new PixiLayerRapid(this, 'rapid'),
 

@@ -14,6 +14,7 @@ import { TaginfoService } from './TaginfoService.js';
 import { VectorTileService } from './VectorTileService.js';
 import { WikidataService } from './WikidataService.js';
 import { WikipediaService } from './WikipediaService.js';
+import { GeoScribbleService } from './GeoScribbleService.js';
 
 export {
   EsriService,
@@ -40,6 +41,7 @@ export const services = {
 };
 
 services.available.set('esri', EsriService);
+services.available.set('geoScribble', GeoScribbleService);
 services.available.set('improveOSM', ImproveOsmService);
 services.available.set('kartaview', KartaviewService);
 services.available.set('keepRight', KeepRightService);
