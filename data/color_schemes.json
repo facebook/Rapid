@@ -49,5 +49,209 @@
     "gray-5":   "0x8c8c8c",
     "gray-6":   "0x555555",
     "gray-7":   "0x444444"
+  },
+  "ibm": {
+    "red-1":    "0xe06e5f",
+    "red-2":    "0xe06d5f",
+    "red-3":    "0x648fff",
+    "red-4":    "0x785ef0",
+
+    "orange-1": "0xfe6100",
+    "orange-2": "0xd6881a",
+    "orange-3": "0xfc6c14",
+
+    "yellow-1": "0xfff9b3",
+    "yellow-2": "0xffb000",
+    "yellow-3": "0xffff00",
+    "yellow-4": "0xf3f312",
+    "yellow-5": "0xc4be19",
+
+    "green-1":  "0x99e1aa",
+    "green-2":  "0xb0e298",
+    "green-3":  "0x8cd05f",
+    "green-4":  "0x81d25c",
+    "green-5":  "0xbee83f",
+
+    "blue-1":   "0x77dddd",
+    "blue-2":   "0x77d4de",
+    "blue-3":   "0x82b5fe",
+    "blue-4":   "0x58a9ed",
+
+    "pink-1":   "0xe3a4f5",
+    "pink-2":   "0xcf2081",
+
+    "brown-1":  "0x998888",
+    "brown-2":  "0x776a6a",
+    "brown-3":  "0x746f6f",
+    "brown-4":  "0x4c4444",
+
+    "tan-1":    "0xf5dcba",
+    "tan-2":    "0xddccaa",
+    "tan-3":    "0xc5b59f",
+
+    "white-0":  "0xffffff",
+
+    "black-0":  "0x000000",
+    
+    "gray-1":   "0xeeeeee",
+    "gray-2":   "0xdddddd",
+    "gray-3":   "0xcccccc",
+    "gray-4":   "0xaaaaaa",
+    "gray-5":   "0x8c8c8c",
+    "gray-6":   "0x555555",
+    "gray-7":   "0x444444"
+  },
+  "okabe_ito": {
+    "red-1":    "0xcc79a7",
+    "red-2":    "0xe06d5f",
+    "red-3":    "0xd55e00",
+    "red-4":    "0x70372f",
+
+    "orange-1": "0xe69f00",
+    "orange-2": "0xd6881a",
+    "orange-3": "0xfc6c14",
+
+    "yellow-1": "0xfff9b3",
+    "yellow-2": "0xf0e442",
+    "yellow-3": "0xffff00",
+    "yellow-4": "0xf3f312",
+    "yellow-5": "0xc4be19",
+
+    "green-1":  "0x99e1aa",
+    "green-2":  "0xb0e298",
+    "green-3":  "0x009e73",
+    "green-4":  "0x81d25c",
+    "green-5":  "0xbee83f",
+
+    "blue-1":   "0x77dddd",
+    "blue-2":   "0x56b4e9",
+    "blue-3":   "0x82b5fe",
+    "blue-4":   "0x58a9ed",
+
+    "pink-1":   "0xe3a4f5",
+    "pink-2":   "0xcf2081",
+
+    "brown-1":  "0x998888",
+    "brown-2":  "0x776a6a",
+    "brown-3":  "0x746f6f",
+    "brown-4":  "0x4c4444",
+
+    "tan-1":    "0xf5dcba",
+    "tan-2":    "0xddccaa",
+    "tan-3":    "0xc5b59f",
+
+    "white-0":  "0xffffff",
+
+    "black-0":  "0x000000",
+    
+    "gray-1":   "0xeeeeee",
+    "gray-2":   "0xdddddd",
+    "gray-3":   "0xcccccc",
+    "gray-4":   "0xaaaaaa",
+    "gray-5":   "0x8c8c8c",
+    "gray-6":   "0x555555",
+    "gray-7":   "0x444444"
+  },
+  "paul_tol_vibrant": {
+    "red-1":    "0xe06e5f",
+    "red-2":    "0xe06d5f",
+    "red-3":    "0xcc3311",
+    "red-4":    "0xee3377",
+
+    "orange-1": "0xee7733",
+    "orange-2": "0xd6881a",
+    "orange-3": "0xfc6c14",
+
+    "yellow-1": "0xfff9b3",
+    "yellow-2": "0xffff94",
+    "yellow-3": "0xffff00",
+    "yellow-4": "0xf3f312",
+    "yellow-5": "0xc4be19",
+
+    "green-1":  "0x99e1aa",
+    "green-2":  "0xb0e298",
+    "green-3":  "0x009988",
+    "green-4":  "0x81d25c",
+    "green-5":  "0xbee83f",
+
+    "blue-1":   "0x77dddd",
+    "blue-2":   "0x33bbee",
+    "blue-3":   "0x82b5fe",
+    "blue-4":   "0x58a9ed",
+
+    "pink-1":   "0xe3a4f5",
+    "pink-2":   "0xcf2081",
+
+    "brown-1":  "0x998888",
+    "brown-2":  "0x776a6a",
+    "brown-3":  "0x746f6f",
+    "brown-4":  "0x4c4444",
+
+    "tan-1":    "0xf5dcba",
+    "tan-2":    "0xddccaa",
+    "tan-3":    "0xc5b59f",
+
+    "white-0":  "0xffffff",
+
+    "black-0":  "0x000000",
+    
+    "gray-1":   "0xeeeeee",
+    "gray-2":   "0xdddddd",
+    "gray-3":   "0xcccccc",
+    "gray-4":   "0xaaaaaa",
+    "gray-5":   "0x8c8c8c",
+    "gray-6":   "0x555555",
+    "gray-7":   "0x444444"
+  },
+  "paul_tol_muted": {
+    "red-1":    "0xcc6677",
+    "red-2":    "0xe06d5f",
+    "red-3":    "0xaa4499",
+    "red-4":    "0x882255",
+
+    "orange-1": "0xf99806",
+    "orange-2": "0xd6881a",
+    "orange-3": "0xfc6c14",
+
+    "yellow-1": "0xfff9b3",
+    "yellow-2": "0xffff94",
+    "yellow-3": "0xffff00",
+    "yellow-4": "0xf3f312",
+    "yellow-5": "0xc4be19",
+
+    "green-1":  "0x99e1aa",
+    "green-2":  "0xb0e298",
+    "green-3":  "0x117733",
+    "green-4":  "0x999933",
+    "green-5":  "0xbee83f",
+
+    "blue-1":   "0x44aa99",
+    "blue-2":   "0x88ccee",
+    "blue-3":   "0x82b5fe",
+    "blue-4":   "0x58a9ed",
+
+    "pink-1":   "0xe3a4f5",
+    "pink-2":   "0xcf2081",
+
+    "brown-1":  "0x998888",
+    "brown-2":  "0x776a6a",
+    "brown-3":  "0x746f6f",
+    "brown-4":  "0x4c4444",
+
+    "tan-1":    "0xf5dcba",
+    "tan-2":    "0xddcc77",
+    "tan-3":    "0xc5b59f",
+
+    "white-0":  "0xffffff",
+
+    "black-0":  "0x000000",
+    
+    "gray-1":   "0xeeeeee",
+    "gray-2":   "0xdddddd",
+    "gray-3":   "0xcccccc",
+    "gray-4":   "0xaaaaaa",
+    "gray-5":   "0x8c8c8c",
+    "gray-6":   "0x555555",
+    "gray-7":   "0x444444"
   }
 }

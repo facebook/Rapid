@@ -1002,7 +1002,11 @@ en:
       title: Map Color Scheme
       tooltip: Switch between color schemes
       default: Default
-      example: Example (High Contrast)
+      # high_contrast: High Contrast
+      ibm: IBM
+      okabe_ito: Okabe-Ito
+      paul_tol_vibrant: Paul Tol (Vibrant)
+      paul_tol_muted: Paul Tol (Muted)
       placeholder: Select color scheme
     colorblind_options:
       title: Colorblind Mode

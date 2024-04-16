@@ -538,7 +538,7 @@ export class StyleSystem extends AbstractSystem {
         // Set the property to the fetched value if the fetched value exists
         // NOTE: The actual color code has to be fetched from `this.currentColorScheme`
         if (value) {
-          style[group][prop] = (prop !== 'color') ? value : this.currentColorScheme[value.split("-")[0]][value];
+          style[group][prop] = (prop !== 'color') ? value : this.currentColorScheme[value];
         }
       }
     }
