@@ -18,7 +18,7 @@ export function uiMapRouletteEditor(context) {
   let _maprouletteTask;
   var _comment;
   var _newComment;
-
+  let _actionTaken;
 
   function maprouletteEditor(selection) {
     const header = selection.selectAll('.header')
@@ -46,12 +46,12 @@ export function uiMapRouletteEditor(context) {
       .attr('class', 'body')
       .merge(body);
 
-    let editor = body.selectAll('.qa-editor')
+    let editor = body.selectAll('.mr-editor')
       .data([0]);
 
     editor.enter()
       .append('div')
-      .attr('class', 'modal-section qa-editor')
+      .attr('class', 'modal-section mr-editor')
       .merge(editor)
       .call(mapRouletteHeader.task(_maprouletteTask))
       .call(mapRouletteDetails.task(_maprouletteTask))
@@ -72,7 +72,7 @@ export function uiMapRouletteEditor(context) {
     const errID = _maprouletteTask?.id;
     const isSelected = errID && context.selectedData().has(errID);
     const isShown = (_maprouletteTask && isSelected);
-    let saveSection = selection.selectAll('.qa-save')
+    let saveSection = selection.selectAll('.mr-save')
       .data((isShown ? [_maprouletteTask] : []), d => `${d.id}-${d.status || 0}` );
 
     // exit
@@ -82,7 +82,7 @@ export function uiMapRouletteEditor(context) {
     // enter
     const saveSectionEnter = saveSection.enter()
       .append('div')
-      .attr('class', 'qa-save save-section cf');
+      .attr('class', 'mr-save save-section cf');
 
     // update
     saveSection = saveSectionEnter
@@ -91,100 +91,83 @@ export function uiMapRouletteEditor(context) {
       .call(mRSaveButtons);
   }
 
-  function commentSaveSection(selection) {
-        const errID = _maprouletteTask?.id;
-        const isSelected = errID && context.selectedData().has(errID);
-        const showNoteSaveSection = _maprouletteTask?.showNoteSaveSection;
-        // var commentSave = selection.selectAll('.note-save')
-        //     .data((isSelected ? [_comment] : []), function(d) { return d.status + d.id; });
-        let commentSave = selection.selectAll('.note-save')
-          .data((isSelected && showNoteSaveSection ? [_maprouletteTask] : []), d => d.status + d.id);
 
+  function getActionColor(action) {
+    switch (action) {
+      case 'FIXED':
+        return '#62c9d3';
+      case `CAN'T COMPLETE`:
+        return '#fe5e63';
+      case 'ALREADY FIXED':
+        return '#ccb185';
+      case 'NOT AN ISSUE':
+        return '#f7ba59';
+      default:
+        return 'black';
+    }
+  }
+
+
+  function commentSaveSection(selection) {
+    const errID = _maprouletteTask?.id;
+    const isSelected = errID && context.selectedData().has(errID);
+    const showNoteSaveSection = _maprouletteTask?.showNoteSaveSection;
+
+    let commentSave = selection.selectAll('.note-save')
+      .data((isSelected && showNoteSaveSection ? [_maprouletteTask] : []), d => d.status + d.id);
         // exit
         commentSave.exit()
             .remove();
 
         // enter
         var commentSaveEnter = commentSave.enter()
-            .append('div')
-            .attr('class', 'note-save save-section cf');
-
+          .append('div')
+          .attr('class', 'note-save save-section cf');
         commentSaveEnter
-            .append('h4')
-            .attr('class', '.note-save-header')
-            .html(l10n.t('map_data.layers.maproulette.comment'));
-            // .html(function() {
-            //     return _note.isNew() ? l10n.t('note.newDescription') : l10n.t('note.newComment');
-            // });
+          .append('h4')
+          .attr('class', 'note-save-header');
+        // update
+        commentSave = commentSaveEnter.merge(commentSave);
+        commentSave.select('.note-save-header')  // Corrected class name
+          .html(l10n.t('map_data.layers.maproulette.comment') + ' <span style="color: ' + getActionColor(_actionTaken) + ';">' + _actionTaken + '</span>');
 
         var commentTextarea = commentSaveEnter
-            .append('textarea')
-            .attr('class', 'new-comment-input')
-            .attr('placeholder', l10n.t('map_data.layers.maproulette.inputPlaceholder'))
-            .attr('maxlength', 1000)
-            .property('value', function(d) { return d.newComment; })
-            .call(utilNoAuto)
-            .on('keydown.note-input', keydown)
-            .on('input.note-input', changeInput)
-            .on('blur.note-input', changeInput);
+          .append('textarea')
+          .attr('class', 'new-comment-input')
+          .attr('placeholder', l10n.t('map_data.layers.maproulette.inputPlaceholder'))
+          .attr('maxlength', 1000)
+          .property('value', function(d) { return d.newComment; })
+          .call(utilNoAuto)
+          .on('input.note-input', changeInput)
+          .on('blur.note-input', changeInput)
+          .style('resize', 'none');
 
         if (!commentTextarea.empty() && _newComment) {
             // autofocus the comment field for new notes
             commentTextarea.node().focus();
         }
-
-        // update
-        commentSave = commentSaveEnter
-            .merge(commentSave)
-            .call(userDetails);
-            // .call(noteSaveButtons);
-
-
-        // fast submit if user presses cmd+enter
-        function keydown(d3_event) {
-            if (!(d3_event.keyCode === 13 && // ↩ Return
-                d3_event.metaKey)) return;
-
-            var osm = context.services.osm;
-            if (!osm) return;
-
-            var hasAuth = osm.authenticated();
-            if (!hasAuth) return;
-
-            // if (!_note.newComment) return;
-
-            d3_event.preventDefault();
-
-            d3_select(this)
-                .on('keydown.note-input', null);
-
-            // focus on button and submit
-            // window.setTimeout(function() {
-            //     if (_comment.isNew()) {
-            //         commentSave.selectAll('.save-button').node().focus();
-            //         // clickSave(_note);
-            //     } else  {
-            //         commentSave.selectAll('.comment-button').node().focus();
-            //         // clickComment(_note);
-            //     }
-            // }, 10);
-        }
-
+      // update
+      commentSave = commentSaveEnter
+          .merge(commentSave)
+          .call(userDetails)
+          .call(submitButtons);
 
         function changeInput() {
-            var input = d3_select(this);
-            var val = input.property('value').trim() || undefined;
+          var input = d3_select(this);
+          var val = input.property('value').trim() || undefined;
 
-            // store the unsaved comment with the note itself
+          // Check if _comment is defined before calling the update method
+          if (_comment) {
             _comment = _comment.update({ _newComment: val });
+          }
 
-            var osm = context.services.osm;
-            if (osm) {
-                osm.replaceNote(_comment);  // update note cache
-            }
+          var osm = context.services.osm;
+          if (osm) {
+            osm.replaceNote(_comment);  // update note cache
+          }
 
-            // commentSave
-            //     .call(noteSaveButtons);
+          commentSave
+              .call(mRSaveButtons);
         }
     }
 
@@ -305,10 +288,10 @@ export function uiMapRouletteEditor(context) {
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          _actionTaken = 'FIXED';
           d.showNoteSaveSection = true;
-          commentSaveSection(selection);
-          // d.newStatus = 'done';
-          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+          selection.call(commentSaveSection);
         }
       });
 
@@ -318,10 +301,10 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          _actionTaken = `CAN'T COMPLETE`;
           d.showNoteSaveSection = true;
-          commentSaveSection(selection);
-          // d.newStatus = 'false';
-          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+          selection.call(commentSaveSection);
         }
       });
 
@@ -331,10 +314,10 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          _actionTaken = 'ALREADY FIXED';
           d.showNoteSaveSection = true;
-          commentSaveSection(selection);
-          // d.newStatus = 'false';
-          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+          selection.call(commentSaveSection);
         }
       });
 
@@ -344,8 +327,10 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          _actionTaken = 'NOT AN ISSUE';
           d.showNoteSaveSection = true;
-          commentSaveSection(selection);
+          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+          selection.call(commentSaveSection);
           // d.newStatus = 'false';
           // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
@@ -357,9 +342,81 @@ export function uiMapRouletteEditor(context) {
     }
   }
 
+
+  function updateMRSaveButtonsVisibility(showNoteSaveSection) {
+    if (showNoteSaveSection) {
+      d3_select('.note-save').style('display', 'block');   // Show the commentSaveSection
+      d3_select('.mr-save .buttons').style('display', 'none');  // Hide the buttons
+    } else {
+      d3_select('.note-save').style('display', 'none');  // Hide the commentSaveSection
+      d3_select('.mr-save .buttons').style('display', '');  // Show the buttons
+    }
+  }
+
+
+  function submitButtons(selection) {
+    const errID = _maprouletteTask?.id;
+    const isSelected = errID && context.selectedData().has(errID);
+    let buttonSection = selection.selectAll('.buttons')
+      .data((isSelected ? [_maprouletteTask] : []), d => d.status + d.id);
+
+    // exit
+    buttonSection.exit()
+      .remove();
+
+    // enter
+    const buttonEnter = buttonSection.enter()
+      .append('div')
+      .attr('class', 'buttons');
+
+    buttonEnter
+      .append('button')
+      .attr('class', 'button cancel-button action');
+
+    buttonEnter
+      .append('button')
+      .attr('class', 'button submit-button action')
+      .attr('disabled', true);
+
+    // update
+    buttonSection = buttonSection
+      .merge(buttonEnter);
+
+    buttonSection.select('.cancel-button')
+      .html(l10n.tHtml('map_data.layers.maproulette.cancel'))
+      .on('click.close', function(d3_event, d) {
+        _actionTaken = '';
+        d.showNoteSaveSection = false;
+        updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+        selection.call(commentSaveSection);
+      });
+
+    buttonSection.select('.submit-button')
+      .html(l10n.tHtml('map_data.layers.maproulette.submit'))
+      .on('click.ignore', function(d3_event, d) {
+        this.blur();    // avoid keeping focus on the button - iD#4641
+        if (maproulette) {
+          d.showNoteSaveSection = false;
+          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+        }
+      });
+
+      selection.select('.new-comment-input')
+        .on('input.note-input', function() {
+          var comment = d3_select(this).property('value').trim();
+          var button = selection.select('.submit-button');
+          if (comment !== '') {
+            button.attr('disabled', null); // Enable the button if the comment is not empty
+          } else {
+            button.attr('disabled', true); // Disable the button if the comment is empty
+          }
+        });
+  }
+
   maprouletteEditor.error = function(val) {
     if (!arguments.length) return _maprouletteTask;
     _maprouletteTask = val;
+    _maprouletteTask.showNoteSaveSection = false;
     return maprouletteEditor;
   };
 
