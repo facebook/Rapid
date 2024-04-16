@@ -318,21 +318,21 @@ export class MapSystem extends AbstractSystem {
     const newMap = currParams.get('map');
     const oldMap = prevParams.get('map');
     if (!newMap || newMap !== oldMap) {
-      let zoom, lat, lon, rot;
+      let zoom, lat, lon, ang;
       if (typeof newMap === 'string') {
-        [zoom, lat, lon, rot] = newMap.split('/', 4).map(Number);
+        [zoom, lat, lon, ang] = newMap.split('/', 4).map(Number);
       }
       if (isNaN(zoom) || !isFinite(zoom)) zoom = 2;
       if (isNaN(lat) || !isFinite(lat)) lat = 0;
       if (isNaN(lon) || !isFinite(lon)) lon = 0;
-      if (isNaN(rot) || !isFinite(rot)) rot = 0;
+      if (isNaN(ang) || !isFinite(ang)) ang = 0;
 
       zoom = numClamp(zoom, MIN_Z, MAX_Z);
       lat = numClamp(lat, -90, 90);
       lon = numClamp(lon, -180, 180);
-      rot = numWrap(rot, 0, 360);
+      ang = numWrap(ang, 0, 360);
 
-      this.setMapParams([lon, lat], zoom, rot * DEG2RAD);   // will eventually call setTransformAsync
+      this.setMapParams([lon, lat], zoom, ang * DEG2RAD);   // will eventually call setTransformAsync
     }
 
     // id
@@ -362,18 +362,18 @@ export class MapSystem extends AbstractSystem {
     const [lon, lat] = viewport.centerLoc();
     const transform = viewport.transform;
     const zoom = transform.zoom;
-    const rot = transform.r * RAD2DEG;
+    const ang = transform.r * RAD2DEG;
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
     const EPSILON = 0.1;
 
     const zoomStr = zoom.toFixed(2);
     const latStr = lat.toFixed(precision);
     const lonStr = lon.toFixed(precision);
-    const rotStr = rot.toFixed(1);
+    const angStr = ang.toFixed(1);  // degrees
 
     let val = `${zoomStr}/${latStr}/${lonStr}`;
-    if (Math.abs(rot) > EPSILON) {
-      val += `/${rotStr}`;
+    if (Math.abs(ang) > EPSILON) {
+      val += `/${angStr}`;
     }
 
     urlhash.setParam('map', val);
@@ -457,6 +457,9 @@ export class MapSystem extends AbstractSystem {
     if (t2 === undefined) {
       return this.context.viewport.transform.props;
     }
+
+    // Avoid tiny or out of bounds rotations
+    t2.r = numWrap((+(t2.r || 0).toFixed(3)), 0, TAU);   // radians
     this._renderer.setTransformAsync(t2, duration ?? 0);
     return this;
   }
@@ -470,6 +473,8 @@ export class MapSystem extends AbstractSystem {
    * @return  Promise that resolves when the transform has finished changing
    */
   setTransformAsync(t2, duration = 0) {
+    // Avoid tiny or out of bounds rotations
+    t2.r = numWrap((+(t2.r || 0).toFixed(3)), 0, TAU);   // radians
     return this._renderer.setTransformAsync(t2, duration);
   }
 
@@ -479,7 +484,7 @@ export class MapSystem extends AbstractSystem {
    * Set loc, zoom, and bearing at the same time.
    * @param  loc2       Array [lon,lat] to set the center to
    * @param  z2         Number to set the zoom to
-   * @param  r2         Number to set the bearing (rotation) to
+   * @param  r2         Number to set the bearing (rotation) to (in radians)
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
@@ -496,10 +501,11 @@ export class MapSystem extends AbstractSystem {
     if (z2 === undefined)   z2 = z1;
     if (r2 === undefined)   r2 = r1;
 
+    // Bounds and precision checks
     loc2[0] = numClamp(loc2[0] || 0, -180, 180);
     loc2[1] = numClamp(loc2[1] || 0, -90, 90);
-    z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
-    r2 = numWrap(r2 || 0, 0, TAU);
+    z2 = numClamp((+(z2 || 0).toFixed(2)), MIN_Z, MAX_Z);
+    r2 = numWrap((+(r2 || 0).toFixed(3)), 0, TAU);  // radians
 
     if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
       return this;
@@ -540,10 +546,11 @@ export class MapSystem extends AbstractSystem {
     if (z2 === undefined)   z2 = z1;
     if (r2 === undefined)   r2 = r1;
 
+    // Bounds and precision checks
     loc2[0] = numClamp(loc2[0] || 0, -180, 180);
     loc2[1] = numClamp(loc2[1] || 0, -90, 90);
-    z2 = numClamp(z2 || 0, MIN_Z, MAX_Z);
-    r2 = numWrap(r2 || 0, 0, TAU);
+    z2 = numClamp((+(z2 || 0).toFixed(2)), MIN_Z, MAX_Z);
+    r2 = numWrap((+(r2 || 0).toFixed(3)), 0, TAU);  // radians
 
     if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
       return Promise.resolve(t1);

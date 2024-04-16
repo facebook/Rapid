@@ -26,8 +26,8 @@ export function uiBearing(context) {
   function render() {
     if (!_selection) return;  // called too early
 
-    const bearing = viewport.transform.rotation;
-    const isNorthUp = Math.abs(bearing) < 0.001;
+    const rot = viewport.transform.rotation;
+    const isNorthUp = (rot === 0);
 
     let button = _selection.selectAll('button.bearing')
       .data([0]);
@@ -52,7 +52,6 @@ export function uiBearing(context) {
     button = button.merge(buttonEnter)
       .on('click', d3_event => {
         d3_event.preventDefault();
-        if (isNorthUp) return;
         const t = viewport.transform.props;
         map.transformEase(Object.assign(t, { r: 0 }));
       });
@@ -63,14 +62,12 @@ export function uiBearing(context) {
       // .shortcut(d => d.key);
 
     // Translate the 'N' around opposite of the compass pointer
-    const npos = vecRotate([0, 8], bearing, [0, 0]);
+    const npos = vecRotate([0, 8], rot, [0, 0]);
     button.selectAll('.bearing_n')
       .style('transform', `translate(${npos[0]}px, ${npos[1]}px)`);
 
     button.selectAll('.icon use')
-      .style('transform-origin', isNorthUp ? null : 'center');
-
-    button.selectAll('.icon use')
-      .style('transform', isNorthUp ? null : `rotate(${bearing}rad)`);
+      .style('transform-origin', isNorthUp ? null : 'center')
+      .style('transform', isNorthUp ? null : `rotate(${rot}rad)`);
   }
 }
