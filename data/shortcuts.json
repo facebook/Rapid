@@ -31,7 +31,7 @@
             "text": "shortcuts.browsing.navigation.pan_more"
           },
           {
-            "shortcuts": ["{interaction-mouse-wheel}", ["+", "-"]],
+            "shortcuts": ["{interaction-mouse-wheel}", "{interaction-twofinger-zoom}", ["+", "-"]],
             "text": "shortcuts.browsing.navigation.zoom"
           },
           {
