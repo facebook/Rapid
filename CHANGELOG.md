@@ -36,6 +36,38 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.3.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.0)
+#### 2024-Apr-?? (coming soon)
+
+#### :tada: New Features
+* [#1209], [#1351] Add support for Esri Wayback Imagery
+* [#1363] Map Rotation now supported!
+  * Use <kbd>Option</kbd>+ click-and-drag or <kbd>Shift</kbd>+Left/Right arrow keys.
+  * The `map=` url param now supports a bearing like: `#map=zoom/lat/lng/bearing` (in degrees)
+  * There is a new bearing control above the existing zoom buttons that will display a North arrow. You can click this button to return the map back to North-up.
+  * Improve the map navigation content in the walkthrough, built-in help, and keyboard shortcuts.
+
+#### :sparkles: Usability & Accessibility
+* [#1364] Fix walkthrough step to ensure that the user can find the playground description field
+* [#1368] Improve map "nudging" behavior when drawing near the edge of the map
+
+#### :bug: Bugfixes:
+* [#1334] Double clicking a line to create a midpoint should not alter the line shape
+
+#### :hammer: Development
+* [#1328] Add more test coverage for core classes
+* [#1329] Walkthrough should not show any issues about "outdated tags"
+
+[#1209]: https://github.com/facebook/Rapid/issues/1209
+[#1328]: https://github.com/facebook/Rapid/issues/1328
+[#1329]: https://github.com/facebook/Rapid/issues/1329
+[#1334]: https://github.com/facebook/Rapid/issues/1334
+[#1351]: https://github.com/facebook/Rapid/issues/1351
+[#1363]: https://github.com/facebook/Rapid/issues/1363
+[#1364]: https://github.com/facebook/Rapid/issues/1364
+[#1368]: https://github.com/facebook/Rapid/issues/1368
+
+
 # [2.2.5](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.5)
 #### 2024-Feb-09
 
