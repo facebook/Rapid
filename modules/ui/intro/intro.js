@@ -103,6 +103,7 @@ export function uiIntro(context, skipToRapid) {
     osm?.pause();          // disable network
     mapwithai?.pause();    // disable network
 
+    context.container().classed('inIntro', true);
     context.inIntro = true;
     context.enter('browse');
 
@@ -284,6 +285,7 @@ export function uiIntro(context, skipToRapid) {
     map.transform(_original.transform);
     window.location.replace(_original.hash);
 
+    context.container().classed('inIntro', false);
     context.inIntro = false;
     osm?.resume();
     mapwithai?.resume();

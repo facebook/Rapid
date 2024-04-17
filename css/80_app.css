@@ -5562,3 +5562,12 @@ li.hide + li.version .badge .tooltip .popover-arrow {
     width: 100px;
     color: #7092ff;
 }
+
+/* overrides that will only be active during the walkthrough */
+/* see Rapid#1364 */
+.ideditor.inIntro .wrap-form-field-playground_theme,
+.ideditor.inIntro .wrap-form-field-access_simple,
+.ideditor.inIntro .wrap-form-field-min_age,
+.ideditor.inIntro .wrap-form-field-max_age {
+  display: none;
+}
