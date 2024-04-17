@@ -62,29 +62,6 @@ This will launch Chrome on whatever address you provided to `url` on `launch.jso
 
 > **Note:** Again, you are welcome to try your own debugging method, such as [Chrome DevTools](https://developer.chrome.com/docs/devtools/javascript/breakpoints/).
 
-### Debugging example
-
-When coding Rapid, it will be useful to watch the code execute line-by-line. To do this, you can set up inline breakpoints. You can learn all about it in [the official documentation](https://code.visualstudio.com/docs/editor/debugging).
-
-A good place to start is the `/index.html` file. Set a breakpoint on the `context.initAsync();` call from it's last few lines:
-
-```javascript
-...
-          window.context = context;  // for debugging
-          context.initAsync();
-        }
-      }
-    </script>
-  </body>
-</html>
-```
-Then run `npm run quickstart` and press **F5** to launch Chrome along with the VSCode debugger.
-
-This will freeze execution right at the moment of Rapid initialization. Click on the **Step in** :arrow_down: button on the debugger controls (the arrow pointing down into a point) to enter the `context.initAsync()` function. Then click on **Step over** :arrow_heading_down: repeatedly to watch the code execute line-by-line.
-
-This will be a good primer on what's going on under the hood of Rapid. You can set up breakpoints anywhere in the code to figure out the call stack, live changes in variable values, or any other detail you may need.
-
-Please see [the official documentation](https://code.visualstudio.com/docs/editor/debugging) to learn all the details debugging can show you.
 
 ## Directory structure
 
