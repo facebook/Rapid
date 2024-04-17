@@ -35,9 +35,7 @@ export class StyleSystem extends AbstractSystem {
     this.context = context;
     this.dependencies = new Set(['dataloader']);
     this.autoStart = true;
-
-    // To handle color schemes
-    this.colorData = null;
+    this.defaultColorScheme = null;
     this.colorSchemes = null;
     this.currentColorScheme = null;
 
@@ -367,6 +365,8 @@ export class StyleSystem extends AbstractSystem {
     // To handle color schemes
     this.getColorScheme = this.getColorScheme.bind(this);
     this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
+    this.setColorScheme = this.setColorScheme.bind(this);
+    this.getHexColorCode = this.getHexColorCode.bind(this);
   }
 
 
@@ -399,9 +399,9 @@ export class StyleSystem extends AbstractSystem {
     dataloader.getDataAsync('color_schemes')
       .then((data) => {
         this.colorSchemes = data;
-        // set current scheme to default
-        this.colorData = data.default;
-        this.currentColorScheme = 'default';
+        // Set the current color scheme to default
+        this.defaultColorScheme = data.default;
+        this.currentColorScheme = data.default;
         this.emit('colorsloaded');  // emit copies
       });
 
@@ -439,7 +439,7 @@ export class StyleSystem extends AbstractSystem {
   }
 
   /**
-   * getAllColorSchemeas
+   * getAllColorSchemes
    * @return {Object}  All color scheme objects
    */
   getAllColorSchemes() {
@@ -460,6 +460,22 @@ export class StyleSystem extends AbstractSystem {
   }
 
   /**
+   * getHexColorCode
+   * @return {String}  HEX color code
+   */
+  getHexColorCode(colorName) {    
+    return this.currentColorScheme[colorName] ?? this.defaultColorScheme[colorName];
+  }
+
+  /**
+   * getHexColorCode
+   * @return {String}  HEX color code
+   */
+  getHexColorCode(colorName) {    
+    return this.currentColorScheme[colorName] ?? this.defaultColorScheme[colorName];
+  }
+
+  /**
    * styleMatch
    * @param  {Object}  tags - OSM tags to match to a display style
    * @return {Object}  Styling info for the given tags
@@ -471,7 +487,6 @@ export class StyleSystem extends AbstractSystem {
     let styleScore = 999;   // lower numbers are better
     let styleKey;           // the key controlling the styling, if any
     let styleVal;           // the value controlling the styling, if any
-    let colorScheme = this.getColorScheme();
 
     // First, match the tags to the best matching `styleID`..
     for (const [k, v] of Object.entries(tags)) {
@@ -538,7 +553,7 @@ export class StyleSystem extends AbstractSystem {
         // Set the property to the fetched value if the fetched value exists
         // NOTE: The actual color code has to be fetched from `this.currentColorScheme`
         if (value) {
-          style[group][prop] = (prop !== 'color') ? value : this.currentColorScheme[value];
+          style[group][prop] = (prop !== 'color') ? value : this.getHexColorCode(value);
         }
       }
     }

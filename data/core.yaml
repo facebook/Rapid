@@ -1007,6 +1007,7 @@ en:
       okabe_ito: Okabe-Ito
       paul_tol_vibrant: Paul Tol (Vibrant)
       paul_tol_muted: Paul Tol (Muted)
+      colorblind_friendly: Colorblind-Friendly
       placeholder: Select color scheme
     colorblind_options:
       title: Colorblind Mode
