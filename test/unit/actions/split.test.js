@@ -2,20 +2,22 @@ import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
-describe('actionSplit', t => {
-  describe('#disabled', t => {
+
+describe('actionSplit', () => {
+
+  describe('#disabled', () => {
     it('returns falsy for a non-end node of a single way', () => {
       //
       //  a ---> b ---> c         split at 'b' not disabled
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [2, 0] }),
         Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] })
       ]);
 
-      assert.equal(!Rapid.actionSplit('b').disabled(graph), true);
+      assert.strictEqual(!Rapid.actionSplit('b').disabled(graph), true);
     });
 
     it('returns falsy for an intersection of two ways', () => {
@@ -26,7 +28,7 @@ describe('actionSplit', t => {
       //         |
       //         d
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [0, 1] }),
@@ -36,7 +38,7 @@ describe('actionSplit', t => {
         Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
       ]);
 
-      assert.equal(!Rapid.actionSplit('*').disabled(graph), true);
+      assert.strictEqual(!Rapid.actionSplit('*').disabled(graph), true);
     });
 
     it('returns falsy for an intersection of two ways with parent way specified', () => {
@@ -47,7 +49,7 @@ describe('actionSplit', t => {
       //         |
       //         d
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [0, 1] }),
@@ -57,7 +59,7 @@ describe('actionSplit', t => {
         Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
       ]);
 
-      assert.equal(!Rapid.actionSplit('*').limitWays(['-']).disabled(graph), true);
+      assert.strictEqual(!Rapid.actionSplit('*').limitWays(['-']).disabled(graph), true);
     });
 
     it('returns falsy for a self-intersection', () => {
@@ -68,7 +70,7 @@ describe('actionSplit', t => {
       //  | /
       //  a -- b
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [0, 2] }),
         Rapid.osmNode({ id: 'c', loc: [1, 2] }),
@@ -76,31 +78,31 @@ describe('actionSplit', t => {
         Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'a', 'd'] })
       ]);
 
-      assert.equal(!Rapid.actionSplit('a').disabled(graph), true);
+      assert.strictEqual(!Rapid.actionSplit('a').disabled(graph), true);
     });
 
     it('returns \'not_eligible\' for the first node of a single way', () => {
       //
       //  a ---> b                split at 'a' disabled - 'not eligible'
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmWay({ id: '-', nodes: ['a', 'b'] })
       ]);
-      assert.equal(Rapid.actionSplit('a').disabled(graph), 'not_eligible');
+      assert.strictEqual(Rapid.actionSplit('a').disabled(graph), 'not_eligible');
     });
 
     it('returns \'not_eligible\' for the last node of a single way', () => {
       //
       //  a ---> b                split at 'b' disabled - 'not eligible'
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmWay({ id: '-', nodes: ['a', 'b'] })
       ]);
-      assert.equal(Rapid.actionSplit('b').disabled(graph), 'not_eligible');
+      assert.strictEqual(Rapid.actionSplit('b').disabled(graph), 'not_eligible');
     });
 
     it('returns \'not_eligible\' for an intersection of two ways with non-parent way specified', () => {
@@ -111,7 +113,7 @@ describe('actionSplit', t => {
       //         |                (there is no '=' here)
       //         d
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [0, 1] }),
@@ -121,13 +123,14 @@ describe('actionSplit', t => {
         Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
       ]);
 
-      assert.equal(Rapid.actionSplit('*').limitWays(['-', '=']).disabled(graph), 'not_eligible');
+      assert.strictEqual(Rapid.actionSplit('*').limitWays(['-', '=']).disabled(graph), 'not_eligible');
     });
   });
 
+
   describe('ways', () => {
     it('creates a new way with the appropriate nodes', () => {
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -142,7 +145,7 @@ describe('actionSplit', t => {
 
     it('copies tags to the new way', () => {
       const tags = { highway: 'residential' };
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -156,7 +159,7 @@ describe('actionSplit', t => {
     });
 
     it('splits a way at a T-junction', () => {
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
         Rapid.osmNode({ id: 'b', loc: [0, 0] }),
         Rapid.osmNode({ id: 'c', loc: [1, 0] }),
@@ -173,7 +176,7 @@ describe('actionSplit', t => {
     });
 
     it('splits multiple ways at an intersection', () => {
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [0, 1] }),
@@ -192,7 +195,7 @@ describe('actionSplit', t => {
     });
 
     it('splits the specified ways at an intersection', () => {
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [0, 1] }),
@@ -220,7 +223,7 @@ describe('actionSplit', t => {
     });
 
     it('splits self-intersecting ways', () => {
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [0, 2] }),
         Rapid.osmNode({ id: 'c', loc: [-1, 0] }),
@@ -235,7 +238,7 @@ describe('actionSplit', t => {
     });
 
     it('splits a closed way at the given point and its antipode', () => {
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 1] }),
         Rapid.osmNode({ id: 'b', loc: [1, 1] }),
         Rapid.osmNode({ id: 'c', loc: [1, 0] }),
@@ -263,6 +266,7 @@ describe('actionSplit', t => {
 
 
   describe('relations', () => {
+
     function members(graph) {
       return graph.entity('r').members.map(function(m) { return m.id; });
     }
@@ -277,7 +281,7 @@ describe('actionSplit', t => {
       //    a ---> b ===> c
       //    Relation: ['~', '-', '=']
       //
-      var graph = new Rapid.Graph([
+      let graph = new Rapid.Graph([
         Rapid.osmNode({ id: 'a', loc: [0, 0] }),
         Rapid.osmNode({ id: 'b', loc: [1, 0] }),
         Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -308,7 +312,7 @@ describe('actionSplit', t => {
         //    a ---> b ===> c
         //    Relation: ['-', '=']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -339,7 +343,7 @@ describe('actionSplit', t => {
         //    a ---> b ===> c ~~~> d
         //    Relation: ['-', '=', '~']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -369,7 +373,7 @@ describe('actionSplit', t => {
         //    a ---> b ===> c ~~~> d
         //    Relation: ['~', '=', '-']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -390,7 +394,7 @@ describe('actionSplit', t => {
       });
 
       it('reorders members as node, way, relation (for Public Transport routing)', () => {
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -418,8 +422,8 @@ describe('actionSplit', t => {
       });
     });
 
-    describe('splitting out-and-back routes', () => {
 
+    describe('splitting out-and-back routes', () => {
       it('splits out-and-back1 route at b', () => {
         //
         // Situation:
@@ -430,7 +434,7 @@ describe('actionSplit', t => {
         //    a ---> b ===> c ~~~> d
         //    Relation: ['-', '=', '~', '~', '=', '-']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -462,7 +466,7 @@ describe('actionSplit', t => {
         //    a <=== b <--- c ~~~> d
         //    Relation: ['=', '-', '~', '~', '-', '=']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -494,7 +498,7 @@ describe('actionSplit', t => {
         //    a ---> b ===> c <~~~ d
         //    Relation: ['-', '=', '~', '~', '=', '-']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -526,7 +530,7 @@ describe('actionSplit', t => {
         //    a <=== b <--- c <~~~ d
         //    Relation: ['=', '-', '~', '~', '-', '=']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 0] }),
           Rapid.osmNode({ id: 'b', loc: [1, 0] }),
           Rapid.osmNode({ id: 'c', loc: [2, 0] }),
@@ -549,6 +553,7 @@ describe('actionSplit', t => {
       });
     });
 
+
     describe('splitting hat routes', () => {
       const a = Rapid.osmNode({ id: 'a', loc: [0, 0] });
       const b = Rapid.osmNode({ id: 'b', loc: [1, 0] });
@@ -564,7 +569,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['-', '#', '*', '~', '#', '*', '=']
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           a, b, c, d, e,
           Rapid.osmWay({ id: '-', nodes: ['a', 'b'] }),
           Rapid.osmWay({ id: '#', nodes: ['b', 'c', 'd'] }),
@@ -749,7 +754,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['-', '#', '*', '~', '#', '*', '=']
         //
-        var graph = hat1a;
+        let graph = hat1a;
         graph = Rapid.actionSplit('c', ['*'])(graph);
         assert.deepEqual(graph.entity('#').nodes, ['b', 'c']);
         assert.deepEqual(graph.entity('*').nodes, ['c', 'd']);
@@ -765,7 +770,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['-', '~', '*', '#', '~', '=']
         //
-        var graph = hat1b;
+        let graph = hat1b;
         graph = Rapid.actionSplit('c', ['*'])(graph);
 
         assert.deepEqual(graph.entity('#').nodes, ['b', 'c']);
@@ -782,7 +787,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['-', '*', '#', '~', '*', '#', '=']
         //
-        var graph = hat2;
+        let graph = hat2;
         graph = Rapid.actionSplit('c', ['*'])(graph);
 
         assert.deepEqual(graph.entity('#').nodes, ['d', 'c']);
@@ -799,7 +804,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['-', '*', '#', '~', '*', '#', '=']
         //
-        var graph = hat3;
+        let graph = hat3;
         graph = Rapid.actionSplit('c', ['*'])(graph);
 
         assert.deepEqual(graph.entity('#').nodes, ['d', 'c']);
@@ -816,7 +821,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['-', '*', '#', '~', '*', '#', '=']
         //
-        var graph = hat4;
+        let graph = hat4;
         graph = Rapid.actionSplit('c', ['*'])(graph);
 
         assert.deepEqual(graph.entity('#').nodes, ['b', 'c']);
@@ -833,14 +838,16 @@ describe('actionSplit', t => {
         //
         //    Relation: ['-', '#', '*', '~', '#', '*', '=']
         //
-        var graph = hat5;
+        let graph = hat5;
         graph = Rapid.actionSplit('c', ['*'])(graph);
 
         assert.deepEqual(graph.entity('#').nodes, ['b', 'c']);
         assert.deepEqual(graph.entity('*').nodes, ['c', 'd']);
         assert.deepEqual(members(graph), ['-', '#', '*', '~', '#', '*', '=']);
       });
+
     });
+
 
     describe('splitting spoon routes', () => {
       const a = Rapid.osmNode({ id: 'a', loc: [0, 0] });
@@ -849,7 +856,6 @@ describe('actionSplit', t => {
       const d = Rapid.osmNode({ id: 'd', loc: [1, 0] });
       const e = Rapid.osmNode({ id: 'e', loc: [2, 0] });
       const f = Rapid.osmNode({ id: 'f', loc: [3, 0] });
-
       //
       // Situation:
       //    b --> c
@@ -893,7 +899,6 @@ describe('actionSplit', t => {
           ]
         })
       ]);
-
       //
       // Situation:
       //    b --> c
@@ -915,7 +920,6 @@ describe('actionSplit', t => {
           ]
         })
       ]);
-
       //
       // Situation:
       //    b <-- c
@@ -947,7 +951,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['~', '-', '=', '~']
         //
-        var graph = spoon1;
+        let graph = spoon1;
         graph = Rapid.actionSplit('d', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['d', 'a', 'b']);
@@ -965,7 +969,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['~', '-', '=', '~']
         //
-        var graph = spoon2;
+        let graph = spoon2;
         graph = Rapid.actionSplit('d', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['b', 'a', 'd']);
@@ -983,7 +987,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['~', '-', '=', '~']
         //
-        var graph = spoon3;
+        let graph = spoon3;
         graph = Rapid.actionSplit('d', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['d', 'a', 'b']);
@@ -1001,7 +1005,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['~', '-', '=', '~']
         //
-        var graph = spoon4;
+        let graph = spoon4;
         graph = Rapid.actionSplit('d', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['b', 'a', 'd']);
@@ -1019,7 +1023,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['=', '~', '-', '~', '=']
         //
-        var graph = spoon1;
+        let graph = spoon1;
         graph = Rapid.actionSplit('e', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['d', 'a', 'b', 'c', 'd']);
@@ -1037,7 +1041,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['=', '~', '-', '~', '=']
         //
-        var graph = spoon2;
+        let graph = spoon2;
         graph = Rapid.actionSplit('e', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['d', 'c', 'b', 'a', 'd']);
@@ -1055,7 +1059,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['~', '=', '-', '=', '~']
         //
-        var graph = spoon3;
+        let graph = spoon3;
         graph = Rapid.actionSplit('e', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['d', 'a', 'b', 'c', 'd']);
@@ -1073,7 +1077,7 @@ describe('actionSplit', t => {
         //
         //    Relation: ['~', '=', '-', '=', '~']
         //
-        var graph = spoon4;
+        let graph = spoon4;
         graph = Rapid.actionSplit('e', ['='])(graph);
 
         assert.deepEqual(graph.entity('-').nodes, ['d', 'c', 'b', 'a', 'd']);
@@ -1081,7 +1085,6 @@ describe('actionSplit', t => {
         assert.deepEqual(graph.entity('=').nodes, ['e', 'd']);
         assert.deepEqual(members(graph), ['~', '=', '-', '=', '~']);
       });
-
     });
 
 
@@ -1099,7 +1102,7 @@ describe('actionSplit', t => {
         //    ||     |
         //    d ==== c
         //
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 1] }),
           Rapid.osmNode({ id: 'b', loc: [1, 1] }),
           Rapid.osmNode({ id: 'c', loc: [1, 0] }),
@@ -1108,20 +1111,20 @@ describe('actionSplit', t => {
         ]);
 
         graph = Rapid.actionSplit('a', ['='])(graph);
-        assert.deepEqual(graph.entity('-').tags, {});
-        assert.deepEqual(graph.entity('=').tags, {});
-        assert.equal(graph.parentRelations(graph.entity('-')).length, 1, 'graph.entity("-") has one parent relation');
+        assert.deepStrictEqual(graph.entity('-').tags, {});
+        assert.deepStrictEqual(graph.entity('=').tags, {});
+        assert.strictEqual(graph.parentRelations(graph.entity('-')).length, 1, 'graph.entity("-") has one parent relation');
 
         const relation = graph.parentRelations(graph.entity('-'))[0];
-        assert.deepEqual(relation.tags, { type: 'multipolygon', area: 'yes' });
-        assert.deepEqual(relation.members, [
+        assert.deepStrictEqual(relation.tags, { type: 'multipolygon', area: 'yes' });
+        assert.deepStrictEqual(relation.members, [
           { id: '-', role: 'outer', type: 'way' },
           { id: '=', role: 'outer', type: 'way' }
         ]);
       });
 
       it('splits only the line of a node shared by a line and an area', () => {
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a', loc: [0, 1] }),
           Rapid.osmNode({ id: 'b', loc: [1, 1] }),
           Rapid.osmNode({ id: 'c', loc: [1, 0] }),
@@ -1130,14 +1133,18 @@ describe('actionSplit', t => {
         ]);
 
         graph = Rapid.actionSplit('b', ['~'])(graph);
-        // assert.deepEqual(graph.entity('-').nodes, ['b', 'c'], 'graph.entity("-").nodes should be ["b", "c"]');
-        // assert.deepEqual(graph.entity('~').nodes, ['a', 'b'], 'graph.entity("~").nodes should be ["a", "b"]');
-        assert.deepEqual(graph.entity('=').nodes, ['a', 'b', 'c', 'a'], 'graph.entity("=").nodes should be ["a", "b", "c", "a"]');
-        assert.equal(graph.parentRelations(graph.entity('=')).length, 0, 'graph.entity("=") should have no parent relations');
+
+// todo bhousel 4/17/24 - I commented these out in 7c737eec but can't remember why
+// Need to look into it and find out what this part was supposed to test.
+// (The area `=` does not split, which is what we want)
+//        assert.deepStrictEqual(graph.entity('-').nodes, ['b', 'c'], 'graph.entity("-").nodes should be ["b", "c"]');
+//        assert.deepStrictEqual(graph.entity('~').nodes, ['a', 'b'], 'graph.entity("~").nodes should be ["a", "b"]');
+        assert.deepStrictEqual(graph.entity('=').nodes, ['a', 'b', 'c', 'a'], 'graph.entity("=").nodes should be ["a", "b", "c", "a"]');
+        assert.strictEqual(graph.parentRelations(graph.entity('=')).length, 0, 'graph.entity("=") should have no parent relations');
       });
 
       it('converts simple multipolygon to a proper multipolygon', () => {
-        var graph = new Rapid.Graph([
+        let graph = new Rapid.Graph([
           Rapid.osmNode({ id: 'a' }),
           Rapid.osmNode({ id: 'b' }),
           Rapid.osmNode({ id: 'c' }),
@@ -1154,10 +1161,9 @@ describe('actionSplit', t => {
       });
     });
 
-    const types = ['restriction', 'restriction:bus', 'manoeuvre'];
+    ['restriction', 'restriction:bus', 'manoeuvre'].forEach(function(type) {
+      describe('type = ' + type, function() {
 
-    for (const type of types) {
-      describe(`type = ${type}`, () => {
         it('updates a restriction\'s \'from\' role - via node', () => {
           // Situation:
           //    a ----> b ----> c ~~~~ d
@@ -1169,7 +1175,7 @@ describe('actionSplit', t => {
           //    a ----> b ====> c ~~~~ d
           // A restriction from ==== to ~~~~ via node c.
           //
-          var graph = new Rapid.Graph([
+          let graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'a' }),
             Rapid.osmNode({ id: 'b' }),
             Rapid.osmNode({ id: 'c' }),
@@ -1206,7 +1212,7 @@ describe('actionSplit', t => {
           //    a ----> b ====> c ~~~~ d
           // A restriction from ~~~~ to ==== via node c.
           //
-          var graph = new Rapid.Graph([
+          let graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'a' }),
             Rapid.osmNode({ id: 'b' }),
             Rapid.osmNode({ id: 'c' }),
@@ -1245,7 +1251,7 @@ describe('actionSplit', t => {
           //    a ----> b ====> c ~~~~ d
           // A restriction from ==== to ==== via node c.
           //
-          var graph = new Rapid.Graph([
+          let graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'a' }),
             Rapid.osmNode({ id: 'b' }),
             Rapid.osmNode({ id: 'c' }),
@@ -1292,7 +1298,7 @@ describe('actionSplit', t => {
           //
           // A restriction from ==== to ~~~~ via way |
           //
-          var graph = new Rapid.Graph([
+          let graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'a' }),
             Rapid.osmNode({ id: 'b' }),
             Rapid.osmNode({ id: 'c' }),
@@ -1341,7 +1347,7 @@ describe('actionSplit', t => {
           //
           // A restriction from ~~~~ to ==== via way |
           //
-          var graph = new Rapid.Graph([
+          let graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'a' }),
             Rapid.osmNode({ id: 'b' }),
             Rapid.osmNode({ id: 'c' }),
@@ -1370,7 +1376,6 @@ describe('actionSplit', t => {
           ]);
         });
 
-
         it('updates a restriction\'s \'via\' role when splitting via way', () => {
           //
           // Situation:
@@ -1391,7 +1396,7 @@ describe('actionSplit', t => {
           //
           // A restriction from | to ‖ via ways ----, ====
           //
-          var graph = new Rapid.Graph([
+          let graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'a' }),
             Rapid.osmNode({ id: 'b' }),
             Rapid.osmNode({ id: 'c' }),
@@ -1433,7 +1438,7 @@ describe('actionSplit', t => {
           //    a <==== b <---- c ~~~~ d
           // A restriction from ---- to ~~~~ via c.
           //
-          var graph = new Rapid.Graph([
+          let graph = new Rapid.Graph([
             Rapid.osmNode({ id: 'a' }),
             Rapid.osmNode({ id: 'b' }),
             Rapid.osmNode({ id: 'c' }),
@@ -1460,7 +1465,6 @@ describe('actionSplit', t => {
           ]);
         });
       });
-    }
-
+    });
   });
 });

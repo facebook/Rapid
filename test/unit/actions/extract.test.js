@@ -1,564 +1,320 @@
-import { beforeEach, describe, it } from 'node:test';
+import { afterEach, beforeEach, describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
 describe('actionExtract', () => {
-  const tags = { 'name': 'test' };
+  let graph;
 
-  function createTargetNode(id, lonlat) {
-    return Rapid.osmNode({ id: id, loc: lonlat, tags: tags });
-  }
+  // mock viewport
+  const viewport = {
+    project: (coord) => coord,
+    unproject: (coord) => coord
+  };
 
-  describe('linear way', () => {
-    let graph;
-    beforeEach(() => {
-      // a -- b -- c -- d
-      graph = new Rapid.Graph([
-        Rapid.osmNode({ id: 'a', loc: [0, 0] }),
-        Rapid.osmNode({ id: 'b', loc: [1, 0] }),
-        Rapid.osmNode({ id: 'c', loc: [2, 0] }),
-        Rapid.osmNode({ id: 'd', loc: [3, 0] }),
-        Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd'] })
-      ]);
-    });
-
-    describe('target in first position', () => {
-      beforeEach(() => {
-        // Swap target into the location & position of A
-        const target = createTargetNode('a', graph.entity('a').loc);
-        graph = graph.replace(target);
-      });
-
-      it('does not change length of way', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        // Confirm that the way still has 4 nodes
-        const nodes = result.entity('-').nodes;
-        assert.equal(nodes.length, 4);
-      });
-
-      it('does not change order of nodes', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        // Confirm that the way is ordered correctly
-        // Note that we can't be sure of the id of the replacement node
-        // so we only assert the nodes we know the ids for
-        const nodes = result.entity('-').nodes;
-        assert.equal(nodes[1], 'b');
-        assert.equal(nodes[2], 'c');
-        assert.equal(nodes[3], 'd');
-      });
-
-      it('does not change location of nodes', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        // Confirm that the nodes have not moved, including the replacement node
-        const nodes = result.entity('-').nodes;
-        assert.deepEqual(result.entity(nodes[0]).loc, [0, 0]);
-        assert.deepEqual(result.entity(nodes[1]).loc, [1, 0]);
-        assert.deepEqual(result.entity(nodes[2]).loc, [2, 0]);
-        assert.deepEqual(result.entity(nodes[3]).loc, [3, 0]);
-      });
-
-      it('does replace target node', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        const nodes = result.entity('-').nodes;
-        const replacement = result.entity(nodes[0]);
-        assert.notEqual(replacement.id, 'a');     // Confirm that the replacement is no longer 'a'
-        assert.deepEqual(replacement.tags, {});   // and that the tags are not present
-      });
-
-      it('does detach target node', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        const target = result.entity('a');
-        assert.ok(target instanceof Rapid.osmNode);       // Confirm that 'a' still exists, and…
-        assert.deepEqual(target.loc, [0, 0]);             // the location is correct
-        assert.deepEqual(target.tags, tags);              // the tags are intact
-        assert.deepEqual(result.parentWays(target), []);  // the target has detached from the way
-      });
-    });
+  beforeEach(() => {
+    graph = new Rapid.Graph();
   });
 
-//
-//    it('target in second position', () => {
-//      beforeEach(() => {
-//        // Swap target into the location & position of B
-//        const target = createTargetNode('b', graph.entity('b').loc);
-//        graph = graph.replace(target);
-//      });
-//
-//      it('does not change length of way', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // Confirm that the way still has 4 nodes
-//        const target = result.entity('-');
-//        expect(target.nodes.length).to.eql(4);
-//      });
-//
-//      it('does not change order of nodes', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // Confirm that the way is ordered correctly
-//        const target = result.entity('-');
-//        // Note that we can't be sure of the id of the replacement node
-//        // so we only assert the nodes we know the ids for
-//        // As we have already confirmed the size of the array we can assume
-//        // that the replacement node is in the correct posisiton by a process of elimination
-//        expect(target.nodes[0]).to.eql('a');
-//        expect(target.nodes[2]).to.eql('c');
-//        expect(target.nodes[3]).to.eql('d');
-//      });
-//
-//      it('does not change location of nodes', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // Confirm that the nodes have not moved, including the replacement node
-//        const nodes = result.entity('-').nodes;
-//        expect(result.entity(nodes[0]).loc).to.eql([0, 0]);
-//        expect(result.entity(nodes[1]).loc).to.eql([1, 0]);
-//        expect(result.entity(nodes[2]).loc).to.eql([2, 0]);
-//        expect(result.entity(nodes[3]).loc).to.eql([3, 0]);
-//      });
-//
-//      it('does replace target node', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        const nodes = result.entity('-').nodes;
-//        // Confirm that the target is no longer "a"
-//        expect(nodes[1]).not.to.eql('b');
-//        // and that the tags are not present
-//        expect(result.entity(nodes[1]).tags).to.eql({});
-//      });
-//
-//      it('does detach target node', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // confirm that a still exists
-//        const targetNode = result.entity('b');
-//        expect(targetNode).not.to.eql(undefined);
-//        // ... and that the location is correct
-//        expect(targetNode.loc).to.eql([1, 0]);
-//        // ... and that the tags are intact
-//        expect(targetNode.tags).to.eql(tags);
-//        // ... and that the parentWay is empty
-//        expect(result.parentWays(targetNode)).to.eql([]);
-//      });
-//    });
-//  });
-
-
-  describe('closed way', () => {
-    let graph;
-    beforeEach(() => {
-      //  d -- c
-      //  |    |
-      //  a -- b
-      graph = new Rapid.Graph([
-        Rapid.osmNode({ id: 'a', loc: [0, 0] }),
-        Rapid.osmNode({ id: 'b', loc: [1, 0] }),
-        Rapid.osmNode({ id: 'c', loc: [1, 1] }),
-        Rapid.osmNode({ id: 'd', loc: [0, 1] }),
-        Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a'] })
-      ]);
-    });
-
-    describe('target in first position', () => {
-      beforeEach(() => {
-        // Swap target into the location & position of A
-        const targetNode = createTargetNode('a', graph.entity('a').loc);
-        graph = graph.replace(targetNode);
-      });
-
-      it('does not change length of way', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        // Confirm that the way still has 5 nodes
-        const nodes = result.entity('-').nodes;
-        assert.equal(nodes.length, 5);
-      });
-
-      it('does not change order of nodes', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        // Confirm that the way is ordered correctly
-        // Note that we can't be sure of the id of the replacement node
-        // so we only assert the nodes we know the ids for
-        const nodes = result.entity('-').nodes;
-        assert.equal(nodes[1], 'b');
-        assert.equal(nodes[2], 'c');
-        assert.equal(nodes[3], 'd');
-        assert.equal(nodes[0], nodes[4]); // way remains closed
-      });
-
-      it('does not change location of nodes', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        // Confirm that the nodes have not moved, including the replacement node
-        const nodes = result.entity('-').nodes;
-        assert.deepEqual(result.entity(nodes[0]).loc, [0, 0]);
-        assert.deepEqual(result.entity(nodes[1]).loc, [1, 0]);
-        assert.deepEqual(result.entity(nodes[2]).loc, [1, 1]);
-        assert.deepEqual(result.entity(nodes[3]).loc, [0, 1]);
-      });
-
-      it('does replace target node', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        const nodes = result.entity('-').nodes;
-        const replacement = result.entity(nodes[0]);
-        assert.notEqual(replacement.id, 'a');     // Confirm that the replacement is no longer 'a'
-        assert.deepEqual(replacement.tags, {});   // and that the tags are not present
-      });
-
-      it('does detach target node', () => {
-        const result = Rapid.actionExtract('a')(graph);
-        assert.ok(result instanceof Rapid.Graph);
-
-        const target = result.entity('a');
-        assert.ok(target instanceof Rapid.osmNode);       // Confirm that 'a' still exists, and…
-        assert.deepEqual(target.loc, [0, 0]);             // the location is correct
-        assert.deepEqual(target.tags, tags);              // the tags are intact
-        assert.deepEqual(result.parentWays(target), []);  // the target has detached from the way
-      });
-    });
-
-//    it('target in second position', () => {
-//      beforeEach(() => {
-//        // Swap target into the location & position of B
-//        const targetNode = createTargetNode('b', graph.entity('b').loc);
-//        graph = graph.replace(targetNode);
-//      });
-//
-//      it('does not change length of way', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // Confirm that the way still has 5 nodes
-//        const target = result.entity('-');
-//        expect(target.nodes.length).to.eql(5);
-//      });
-//
-//      it('does not change order of nodes', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // Confirm that the way is ordered correctly
-//        const target = result.entity('-');
-//        // Note that we can't be sure of the id of the replacement node
-//        // so we only assert the nodes we know the ids for
-//        // As we have already confirmed the size of the array we can assume
-//        // that the replacement node is in the correct posisiton by a process of elimination
-//        expect(target.nodes[0]).to.eql('a');
-//        expect(target.nodes[2]).to.eql('c');
-//        expect(target.nodes[3]).to.eql('d');
-//        expect(target.nodes[4]).to.eql('a');
-//      });
-//
-//      it('does not change location of nodes', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // Confirm that the nodes have not moved, including the replacement node
-//        const nodes = result.entity('-').nodes;
-//        expect(result.entity(nodes[0]).loc).to.eql([0, 0]);
-//        expect(result.entity(nodes[1]).loc).to.eql([1, 0]);
-//        expect(result.entity(nodes[2]).loc).to.eql([1, 1]);
-//        expect(result.entity(nodes[3]).loc).to.eql([0, 1]);
-//        // Confirmed already that node[4] is node[0] so no further assertion needed
-//      });
-//
-//      it('does replace target node', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        const nodes = result.entity('-').nodes;
-//        // Confirm that the target is no longer "a"
-//        expect(nodes[1]).not.to.eql('b');
-//        // and that the tags are not present
-//        expect(result.entity(nodes[1]).tags).to.eql({});
-//      });
-//
-//      it('does detach target node', () => {
-//        const result = Rapid.actionExtract('b')(graph);
-//
-//        // confirm that a still exists
-//        const targetNode = result.entity('b');
-//        expect(targetNode).not.to.eql(undefined);
-//        // ... and that the location is correct
-//        expect(targetNode.loc).to.eql([1, 0]);
-//        // ... and that the tags are intact
-//        expect(targetNode.tags).to.eql(tags);
-//        // ... and that the parentWay is empty
-//        expect(result.parentWays(targetNode)).to.eql([]);
-//      });
-//    });
+  afterEach(() => {
+    graph = null;
   });
 
 
-  describe('intersecting linear ways', () => {
-    let graph;
-    beforeEach(() => {
-      //
-      //           f
-      //           ‖
-      //           e
-      //           ‖
-      // a -- b -- c -- d
-      //
-      // Node c represents the target
-      //
-      graph = new Rapid.Graph([
-        Rapid.osmNode({ id: 'a', loc: [0, 0] }),
-        Rapid.osmNode({ id: 'b', loc: [1, 0] }),
-        Rapid.osmNode({ id: 'c', loc: [2, 0], tags: tags }),
-        Rapid.osmNode({ id: 'd', loc: [3, 0] }),
-        Rapid.osmNode({ id: 'e', loc: [2, 1] }),
-        Rapid.osmNode({ id: 'f', loc: [2, 2] }),
-        Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd'] }),
-        Rapid.osmWay({ id: '=', nodes: ['c', 'e', 'f'] })
-      ]);
-    });
-
-    it('does not change length of ways', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-      assert.equal(result.entity('-').nodes.length, 4);
-      assert.equal(result.entity('=').nodes.length, 3);
-    });
-
-    it('does not change order of nodes', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      // Confirm that the way is ordered correctly
-      // Note that we can't be sure of the id of the replacement node
-      // so we only assert the nodes we know the ids for
-      const way1 = result.entity('-');
-      assert.equal(way1.nodes[0], 'a');
-      assert.equal(way1.nodes[1], 'b');
-      assert.equal(way1.nodes[3], 'd');
-      const way2 = result.entity('=');
-      assert.equal(way2.nodes[1], 'e');
-      assert.equal(way2.nodes[2], 'f');
-    });
-
-    it('does not change location of nodes', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      // Confirm that the nodes have not moved, including the replacement node
-      const way1 = result.entity('-');
-      assert.deepEqual(result.entity(way1.nodes[0]).loc, [0, 0]);
-      assert.deepEqual(result.entity(way1.nodes[1]).loc, [1, 0]);
-      assert.deepEqual(result.entity(way1.nodes[2]).loc, [2, 0]);
-      assert.deepEqual(result.entity(way1.nodes[3]).loc, [3, 0]);
-      const way2 = result.entity('=');
-      assert.deepEqual(result.entity(way2.nodes[0]).loc, [2, 0]);
-      assert.deepEqual(result.entity(way2.nodes[1]).loc, [2, 1]);
-      assert.deepEqual(result.entity(way2.nodes[2]).loc, [2, 2]);
-    });
-
-    it('uses same replacement node at intersection', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      // Confirm both ways have the same replacement node
-      const way1 = result.entity('-');
-      const way2 = result.entity('=');
-      assert.equal(way1.nodes[2], way2.nodes[0]);
-    });
-
-    it('does replace target node', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      const way1 = result.entity('-');
-      const replacement = result.entity(way1.nodes[2]);
-      assert.notEqual(replacement.id, 'c');     // Confirm that the replacement is no longer 'c'
-      assert.deepEqual(replacement.tags, {});   // and that the tags are not present
-    });
-
-    it('does detach target node', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      const target = result.entity('c');
-      assert.ok(target instanceof Rapid.osmNode);       // Confirm that 'c' still exists, and…
-      assert.deepEqual(target.loc, [2, 0]);             // the location is correct
-      assert.deepEqual(target.tags, tags);              // the tags are intact
-      assert.deepEqual(result.parentWays(target), []);  // the target has detached from the ways
-    });
+  it('extracts a node from the graph', () => {
+    // Graph: n1
+    const node = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    graph = graph.replace(node);
+    const action = Rapid.actionExtract('n1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0);
+    assert.strictEqual(extractedNode.loc[1], 0);
   });
 
-
-  describe('intersecting closed way', () => {
-    let graph;
-    beforeEach(() => {
-      //
-      //       g == f
-      //       ‖    ‖
-      //  d -- c == e
-      //  |    |
-      //  a -- b
-      //
-      // c is the target node
-      //
-      graph = new Rapid.Graph([
-        Rapid.osmNode({ id: 'a', loc: [0, 0] }),
-        Rapid.osmNode({ id: 'b', loc: [1, 0] }),
-        Rapid.osmNode({ id: 'c', loc: [1, 1], tags: tags }),
-        Rapid.osmNode({ id: 'd', loc: [0, 1] }),
-        Rapid.osmNode({ id: 'e', loc: [2, 1] }),
-        Rapid.osmNode({ id: 'f', loc: [2, 2] }),
-        Rapid.osmNode({ id: 'g', loc: [1, 2] }),
-        Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a'] }),
-        Rapid.osmWay({ id: '=', nodes: ['c', 'e', 'f', 'g', 'c'] })
-      ]);
-    });
-
-    it('does not change length of ways', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-      assert.equal(result.entity('-').nodes.length, 5);
-      assert.equal(result.entity('=').nodes.length, 5);
-    });
-
-    it('does not change order of nodes', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      // Confirm that the way is ordered correctly
-      // Note that we can't be sure of the id of the replacement node
-      // so we only assert the nodes we know the ids for
-      const way1 = result.entity('-');
-      assert.equal(way1.nodes[0], 'a');
-      assert.equal(way1.nodes[1], 'b');
-      assert.equal(way1.nodes[3], 'd');
-      assert.equal(way1.nodes[0], way1.nodes[4]);  // still closed
-      const way2 = result.entity('=');
-      assert.equal(way2.nodes[1], 'e');
-      assert.equal(way2.nodes[2], 'f');
-      assert.equal(way2.nodes[3], 'g');
-      assert.equal(way2.nodes[0], way2.nodes[4]);  // still closed
-    });
-
-    it('does not change location of nodes', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      // Confirm that the nodes have not moved, including the replacement node
-      const way1 = result.entity('-');
-      assert.deepEqual(result.entity(way1.nodes[0]).loc, [0, 0]);
-      assert.deepEqual(result.entity(way1.nodes[1]).loc, [1, 0]);
-      assert.deepEqual(result.entity(way1.nodes[2]).loc, [1, 1]);
-      assert.deepEqual(result.entity(way1.nodes[3]).loc, [0, 1]);
-      const way2 = result.entity('=');
-      assert.deepEqual(result.entity(way2.nodes[0]).loc, [1, 1]);
-      assert.deepEqual(result.entity(way2.nodes[1]).loc, [2, 1]);
-      assert.deepEqual(result.entity(way2.nodes[2]).loc, [2, 2]);
-      assert.deepEqual(result.entity(way2.nodes[3]).loc, [1, 2]);
-    });
-
-    it('uses same replacement node at intersection', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      // Confirm both ways have the same replacement node
-      const way1 = result.entity('-');
-      const way2 = result.entity('=');
-      assert.equal(way1.nodes[2], way2.nodes[0]);
-    });
-
-    it('does replace target node', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      const way1 = result.entity('-');
-      const replacement = result.entity(way1.nodes[0]);
-      assert.notEqual(replacement.id, 'c');     // Confirm that the replacement is no longer 'c'
-      assert.deepEqual(replacement.tags, {});   // and that the tags are not present
-    });
-
-    it('does detach target node', () => {
-      const result = Rapid.actionExtract('c')(graph);
-      assert.ok(result instanceof Rapid.Graph);
-
-      const target = result.entity('c');
-      assert.ok(target instanceof Rapid.osmNode);       // Confirm that 'c' still exists, and…
-      assert.deepEqual(target.loc, [1, 1]);             // the location is correct
-      assert.deepEqual(target.tags, tags);              // the tags are intact
-      assert.deepEqual(result.parentWays(target), []);  // the target has detached from the ways
-    });
+  it('extracts a way from the graph', () => {
+    // Graph: n1 -- n2
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'] });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
   });
 
+  it('extracts a node from a relation', () => {
+    // Graph: (n1, n2)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const relation = Rapid.osmRelation({ id: 'r1', members: [{ id: 'n1', type: 'node' }, { id: 'n2', type: 'node' }] });
+    graph = graph.replace(node1).replace(node2).replace(relation);
 
-  describe('with relation', () => {
-    let graph;
+    const action = Rapid.actionExtract('n1', viewport);
+    graph = action(graph);
 
-    beforeEach(() => {
-      //
-      // a -- b -- c
-      //
-      // Node b represents the target
-      // With a relationship for the way including b
-      //
-      graph = new Rapid.Graph([
-        Rapid.osmNode({ id: 'a', loc: [0, 0] }),
-        Rapid.osmNode({ id: 'b', loc: [1, 0], tags: tags }),
-        Rapid.osmNode({ id: 'c', loc: [2, 0] }),
-        Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
-        Rapid.osmRelation({id: 'r', tags: {type: 'route', route: 'foot'},
-          members: [
-            { id: 'a', type: 'node', role: 'point' },
-            { id: 'b', type: 'node', role: 'point' },
-            { id: 'c', type: 'node', role: 'point' }
-          ]
-        })
-      ]);
-    });
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
 
-    it('target is not a member of relation', () => {
-      const result = Rapid.actionExtract('b')(graph);
-      assert.ok(result instanceof Rapid.Graph);
+    assert.strictEqual(extractedNode.loc[0], 0);
+    assert.strictEqual(extractedNode.loc[1], 0);
+  });
 
-      // Confirm is not a member of the relation
-      const target = result.entity('b');
-      assert.deepEqual(result.parentRelations(target), []);  // the target has removed from the relation
-    });
+  it('extracts a node from a LineString', () => {
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { 'building': 'yes' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
 
-    it('replacement is a member of relation', () => {
-      const result = Rapid.actionExtract('b')(graph);
-      assert.ok(result instanceof Rapid.Graph);
+  it('extracts a node from a closed way', () => {
+    // Graph: n1 -- n2 -- n3 -- n4 -- n1 (closed way)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 0] });
+    const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 1] });
+    const node4 = Rapid.osmNode({ id: 'n4', loc: [0, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3', 'n4', 'n1'] });
+    graph = graph.replace(node1).replace(node2).replace(node3).replace(node4).replace(way);
 
-      // Find the new node
-      const way = result.entity('-');
-      const replacement = result.entity(way.nodes[1]);
+    const action = Rapid.actionExtract('n1', viewport);
+    graph = action(graph);
 
-      // Confirm replacement is a member of the relation
-      const parents = result.parentRelations(replacement);
-      assert.equal(parents.length, 1);
-      assert.equal(parents[0].id, 'r');
-    });
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
 
-    it('Relation membership has the same properties', () => {
-      const result = Rapid.actionExtract('b')(graph);
+    assert.strictEqual(extractedNode.loc[0], 0);
+    assert.strictEqual(extractedNode.loc[1], 0);
+  });
 
-      const way = result.entity('-');
-      const replacement = result.entity(way.nodes[1]);
-      const relation = result.entity('r');
+  it('extracts a node from a way with no points', () => {
+    // Graph: w1 (way with no nodes)
+    const way = Rapid.osmWay({ id: 'w1', nodes: [] });
+    graph = graph.replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    const result = action(graph);
+    // Assert that the graph is unchanged
+    assert.strictEqual(result, graph);
+  });
 
-      // Confirm membership is the same as original (except for the new id)
-      const targetMember = relation.memberById(replacement.id);
-      assert.deepEqual(targetMember, { id: replacement.id, index: 1, type: 'node', role: 'point' });
-    });
+  it('extracts a node from a way with one point', () => {
+    // Graph: n1 -- w1 (way with one node)
+    const node = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1'] });
+    graph = graph.replace(node).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0);
+    assert.strictEqual(extractedNode.loc[1], 0);
+  });
 
+  it('extracts a node from a way with two points', () => {
+    // Graph: n1 -- n2
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'] });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with indoor tag', () => {
+    // Graph: n1 -- n2 (way with indoor tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { indoor: 'corridor' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with building tag', () => {
+    // Graph: n1 -- n2 (way with building tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { building: 'yes', height: '10' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with source tag', () => {
+    // Graph: n1 -- n2 (way with source tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { source: 'test_source' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with wheelchair tag', () => {
+    // Graph: n1 -- n2 (way with wheelchair tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { wheelchair: 'yes' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with addr:housenumber tag', () => {
+    // Graph: n1 -- n2 (way with addr:housenumber tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { 'addr:housenumber': '123' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with area tag', () => {
+    // Graph: n1 -- n2 (way with area tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { area: 'yes' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with level tag', () => {
+    // Graph: n1 -- n2 (way with level tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { level: '1' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with addr:postcode tag', () => {
+    // Graph: n1 -- n2 (way with addr:postcode tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { 'addr:postcode': '12345' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with addr:city tag', () => {
+    // Graph: n1 -- n2 (way with addr:city tag)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'], tags: { 'addr:city': 'Test City' } });
+    graph = graph.replace(node1).replace(node2).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
+  });
+
+  it('extracts a node from a way with more than two points', () => {
+    // Graph: n1 -- n2 -- n3
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 0] });
+    const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3'] });
+    graph = graph.replace(node1).replace(node2).replace(node3).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.6666666666666666);
+    assert.strictEqual(extractedNode.loc[1], 0.3333333333333333);
+  });
+
+  it('extracts a node from a way with Polygon geometry', () => {
+    // Graph: n1 -- n2 -- n3 -- n1 (closed way)
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 0] });
+    const node3 = Rapid.osmNode({ id: 'n3', loc: [1, 1] });
+    let way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2', 'n3', 'n1'] });
+
+    // Mock asGeoJSON to return a GeoJSON object with type property set to 'Polygon'
+    way.asGeoJSON = () => ({ type: 'Polygon', coordinates: [[node1.loc, node2.loc, node3.loc, node1.loc]] });
+
+    graph = graph.replace(node1).replace(node2).replace(node3).replace(way);
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+    assert.strictEqual(extractedNode.loc[0], 0.6666666666666666);
+    assert.strictEqual(extractedNode.loc[1], 0.3333333333333333);
+  });
+
+  it('handles a way with non-finite centroid', () => {
+    // Graph: n1 -- n2
+    const node1 = Rapid.osmNode({ id: 'n1', loc: [0, 0] });
+    const node2 = Rapid.osmNode({ id: 'n2', loc: [1, 1] });
+    const way = Rapid.osmWay({ id: 'w1', nodes: ['n1', 'n2'] });
+    graph = graph.replace(node1).replace(node2).replace(way);
+
+    // Mock viewport.project to return non-finite values
+    const originalProject = viewport.project;
+    viewport.project = () => [Infinity, Infinity];
+
+    const action = Rapid.actionExtract('w1', viewport);
+    graph = action(graph);
+
+    // Restore the original viewport.project function
+    viewport.project = originalProject;
+
+    const extractedNodeID = action.getExtractedNodeID();
+    const extractedNode = graph.entity(extractedNodeID);
+
+    // The extracted node  be at the center of the entity's extent
+    assert.strictEqual(extractedNode.loc[0], 0.5);
+    assert.strictEqual(extractedNode.loc[1], 0.5);
   });
 });

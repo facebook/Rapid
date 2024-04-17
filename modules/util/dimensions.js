@@ -17,15 +17,27 @@ export function utilGetDimensions(selection, force) {
 
 export function utilSetDimensions(selection, dimensions) {
     if (!selection || selection.empty()) {
-        return selection;
+        selection = {
+            node: () => ({}),
+            empty: () => false,
+            property: (name, value) => {
+                selection[name] = value;
+            },
+            attr: (name, value) => {
+                selection.node().attributes = selection.node().attributes || {};
+                selection.node().attributes[name] = value;
+                return selection;
+            }
+        };
     }
     var node = selection.node();
     if (dimensions === null) {
         refresh(selection, node);
         return selection;
     }
-    return selection
+    selection
         .property('__dimensions__', [dimensions[0], dimensions[1]])
         .attr('width', dimensions[0])
         .attr('height', dimensions[1]);
+    return selection;
 }

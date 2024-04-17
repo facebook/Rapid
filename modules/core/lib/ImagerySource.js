@@ -217,12 +217,10 @@ export class ImagerySource {
 
   _localeDateString(s) {
     if (!s) return null;
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    const d = new Date(s);
+    const d = new Date(s + 'T00:00:00Z');  // Add 'T00:00:00Z' to create the date in UTC
     if (isNaN(d.getTime())) return null;
 
-    const localeCode = this.context.systems.l10n.localeCode();
-    return d.toLocaleDateString(localeCode, options);
+    return d.toISOString().split('T')[0];  // Return the date part of the ISO string
   }
 
 
@@ -384,7 +382,6 @@ export class ImagerySourceEsri extends ImagerySource {
           // 0 means an individual tile in the grid doesn't exist
           if (!tilemap.data[i]) {
             hasTiles = false;
-            break;
           }
         }
         // if any tiles are missing at level 20 we restrict maxZoom to 19
