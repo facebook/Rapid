@@ -331,8 +331,6 @@ export function uiMapRouletteEditor(context) {
           d.showNoteSaveSection = true;
           updateMRSaveButtonsVisibility(d.showNoteSaveSection);
           selection.call(commentSaveSection);
-          // d.newStatus = 'false';
-          // maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
         }
       });
 

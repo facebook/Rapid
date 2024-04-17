@@ -332,4 +332,18 @@ export class MapRouletteService extends AbstractSystem {
     }
   }
 
+  // Issues shouldn't obscure each other
+  _preventCoincident(loc) {
+    let coincident = false;
+    do {
+      // first time, move marker up. after that, move marker right.
+      let delta = coincident ? [0.00001, 0] : [0, 0.00001];
+      loc = vecAdd(loc, delta);
+      const bbox = new Extent(loc).bbox();
+      coincident = this._cache.rtree.search(bbox).length;
+    } while (coincident);
+
+    return loc;
+  }
+
 }
