@@ -457,7 +457,7 @@ export class SelectBehavior extends AbstractBehavior {
       const graph = editor.staging.graph;
       const viewport = context.viewport;
       const choice = geoChooseEdge(graph.childNodes(data), point, viewport);
-      loc = viewport.unproject(point);
+      loc = choice.loc;
       edge = [ data.nodes[choice.index - 1], data.nodes[choice.index] ];
 
     } else if (isMidpoint) {
