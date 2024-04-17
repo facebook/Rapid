@@ -80,7 +80,7 @@ export function uiEntityEditor(context) {
       .append('button')
       .attr('class', 'close')
       .on('click', () => context.enter('browse'))
-      .call(uiIcon(_modified ? '#rapid-icon-apply' : '#rapid-icon-close'));
+      .call(uiIcon('#rapid-icon-close'));
 
     headerEnter
       .append('h3');

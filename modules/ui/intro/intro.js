@@ -109,7 +109,7 @@ export function uiIntro(context, skipToRapid) {
     // Save current state
     _original = {
       hash: window.location.hash,
-      transform: map.transform(),
+      transform: context.viewport.transform.props,
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),

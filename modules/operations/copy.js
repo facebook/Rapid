@@ -9,8 +9,8 @@ export function operationCopy(context, selectedIDs) {
   const editor = context.systems.editor;
   const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
-  const map = context.systems.map;
   const storage = context.systems.storage;
+  const viewport = context.viewport;
 
   const entities = selectedIDs
     .map(entityID => graph.hasEntity(entityID))
@@ -58,7 +58,7 @@ export function operationCopy(context, selectedIDs) {
 
     if (_point && (canCopy.length !== 1 || graph.entity(canCopy[0]).type !== 'node')) {
       // store the anchor coordinates if copying more than a single node
-      context.copyLoc = context.projection.invert(_point);
+      context.copyLoc = context.viewport.unproject(_point);
     } else {
       context.copyLoc = null;
     }
@@ -104,7 +104,7 @@ export function operationCopy(context, selectedIDs) {
     // If the selection is not 80% contained in view
     function tooLarge() {
       const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(viewport.visibleExtent()) < 0.8;
     }
   };
 

@@ -54,7 +54,9 @@ export class MapillaryService extends AbstractSystem {
     this._keydown = this._keydown.bind(this);
     this.navigateForward = this.navigateForward.bind(this);
     this.navigateBackward = this.navigateBackward.bind(this);
+
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
   }
 
 
@@ -149,6 +151,7 @@ export class MapillaryService extends AbstractSystem {
     };
 
     this._mlyActiveImage = null;
+    this._lastv = null;
 
     return Promise.resolve();
   }
@@ -163,7 +166,7 @@ export class MapillaryService extends AbstractSystem {
   getData(datasetID) {
     if (!['images', 'signs', 'points'].includes(datasetID)) return [];
 
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     const cache = this._mlyCache[datasetID];
     return cache.rtree.search(extent.bbox()).map(d => d.data);
   }
@@ -175,7 +178,7 @@ export class MapillaryService extends AbstractSystem {
    * @return  {Array}
    */
   getSequences() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     let result = new Map();  // Map(sequenceID -> Array of LineStrings)
 
     for (const box of this._mlyCache.images.rtree.search(extent.bbox())) {
@@ -201,9 +204,12 @@ export class MapillaryService extends AbstractSystem {
   loadTiles(datasetID) {
     if (!['images', 'signs', 'points'].includes(datasetID)) return;
 
-    // determine the needed tiles to cover the view
-    const projection = this.context.projection;
-    const tiles = this._tiler.getTiles(projection).tiles;
+    const viewport = this.context.viewport;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
+    const tiles = this._tiler.getTiles(viewport).tiles;
     for (const tile of tiles) {
       this._loadTile(datasetID, tile);
     }

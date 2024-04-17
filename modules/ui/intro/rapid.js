@@ -66,13 +66,13 @@ export function uiIntroRapid(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 18.5, msec)
+      .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
           tipHtml: helpHtml(context, 'intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-          buttonText: l10n.tHtml('intro.ok'),
+          buttonText: l10n.t('intro.ok'),
           buttonCallback: () => resolve(showHideRoadsAsync)
         });
       }));
@@ -87,7 +87,7 @@ export function uiIntroRapid(context, curtain) {
       curtain.reveal({
         revealSelector: 'button.rapid-features',
         tipHtml: helpHtml(context, 'intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(selectRoadAsync)
       });
     });
@@ -233,7 +233,7 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealNode: undoButton.node(),
-        tipHtml: helpHtml(context, 'intro.rapid.undo_road_add', { button: icon('#rapid-icon-undo', 'pre-text') })
+        tipHtml: helpHtml(context, 'intro.rapid.undo_road_add', { button: icon('#rapid-icon-undo', 'inline') })
       });
       undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
     })
@@ -278,7 +278,7 @@ export function uiIntroRapid(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 18.5, msec)
+      .setMapParamsAsync(loc, 18.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
 
@@ -335,7 +335,7 @@ export function uiIntroRapid(context, curtain) {
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml(context, 'intro.rapid.help', {
           rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
-          button: icon('#rapid-icon-help', 'pre-text'),
+          button: icon('#rapid-icon-help', 'inline'),
           key: l10n.t('help.key')
         }),
         buttonText: l10n.t('intro.ok'),
@@ -353,7 +353,7 @@ export function uiIntroRapid(context, curtain) {
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-startEditing',
       tipHtml: helpHtml(context, 'intro.rapid.done', { next: l10n.t('intro.startediting.title') }),
-      buttonText: l10n.tHtml('intro.ok'),
+      buttonText: l10n.t('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

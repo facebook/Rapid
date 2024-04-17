@@ -37,7 +37,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml(context, 'intro.startediting.help'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(shortcutsAsync)
       });
     });
@@ -52,7 +52,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml(context, 'intro.startediting.shortcuts'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(showSaveAsync)
       });
     });
@@ -69,7 +69,7 @@ export function uiIntroStartEditing(context, curtain) {
       curtain.reveal({
         revealSelector: '.top-toolbar button.save',
         tipHtml: helpHtml(context, 'intro.startediting.save'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(showStartMappingAsync)
       });
     });

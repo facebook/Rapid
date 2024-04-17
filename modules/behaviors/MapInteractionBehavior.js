@@ -1,14 +1,7 @@
-import { geoZoomToScale, vecLength } from '@rapid-sdk/math';
+import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
-
-// constants
-const TILESIZE = 256;
-const MINZOOM = 2;
-const MAXZOOM = 24;
-const MINK = geoZoomToScale(MINZOOM, TILESIZE);
-const MAXK = geoZoomToScale(MAXZOOM, TILESIZE);
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
@@ -21,7 +14,7 @@ const FAR_TOLERANCE = 4;
  *   `enabled`             `true` if the event handlers are enabled, `false` if not.
  *   `doubleClickEnabled`  `true` if double clicks can zoom, `false` if not.
  *   `lastDown`            `eventData` Object for the most recent down event
- *   `gesture`             String containing the current detected gesture ('pan')
+ *   `gesture`             String containing the current detected gesture ('pan' or 'rotate')
  */
 export class MapInteractionBehavior extends AbstractBehavior {
 
@@ -31,11 +24,14 @@ export class MapInteractionBehavior extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
-    this.id = 'map-interaction';
+    this.id = 'mapInteraction';
 
     this.lastDown = null;
     this.gesture = null;
     this.doubleClickEnabled = true;
+
+    this._lastPoint = null;
+    this._lastAngle = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
@@ -59,6 +55,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.lastDown = null;
     this.gesture = null;
 
+    this._lastPoint = null;
+    this._lastAngle = null;
+
     const eventManager = this.context.systems.map.renderer.events;
     eventManager.on('click', this._click);
     eventManager.on('keydown', this._keydown);
@@ -80,6 +79,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._enabled = false;
     this.lastDown = null;
     this.gesture = null;
+
+    this._lastPoint = null;
+    this._lastAngle = null;
 
     const eventManager = this.context.systems.map.renderer.events;
     eventManager.off('click', this._click);
@@ -103,33 +105,48 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const activeElement = document.activeElement?.tagName ?? 'BODY';
     if (activeElement !== 'BODY') return;
 
-    // IF the mapillary image viewer is showing, don't do this handler.
-    if (this.context.services.mapillary.viewerShowing) return;
-
     const context = this.context;
     const map = context.systems.map;
+    const viewport = context.viewport;
     const EASE = 100;  // milliseconds
 
-    if (e.shiftKey) {
-      return;  // today, ignore - someday, rotate
+    // IF the mapillary image viewer is showing, don't do this handler.
+    if (context.services.mapillary.viewerShowing) return;
+    if (context.mode?.id === 'select-osm') return;
 
+    // rotate
+    if (e.shiftKey) {
+      const ROT_AMOUNT = 5 * DEG2RAD;   // ± 5°
+      const t = viewport.transform.props;
+      let delta;
+      if (e.key === 'ArrowLeft') {
+        delta = -ROT_AMOUNT;
+      } else if (e.key === 'ArrowRight') {
+        delta = ROT_AMOUNT;
+      }
+
+      if (delta) {
+        e.preventDefault();
+        map.transformEase({ x: t.x, y: t.y, k: t.k, r: t.r + delta }, EASE);
+      }
+
+    // pan
     } else {
-      const PAN_PIXELS = 80;
-      const [WIDTH, HEIGHT] = map.dimensions;
+      const PAN_AMOUNT = 80;   // in pixels
+      const [w, h] = viewport.dimensions;
       const panMore = (e.altKey || e.metaKey || e.ctrlKey);  // pan more if modifier down
 
       let delta;
-      if (context.mode?.id !== 'select-osm') {
-        if (e.key === 'ArrowLeft') {
-          delta = panMore ? [WIDTH / 2, 0] : [PAN_PIXELS, 0];
-        } else if (e.key === 'ArrowRight') {
-          delta = panMore ? [-WIDTH / 2, 0] : [-PAN_PIXELS, 0];
-        } else if (e.key === 'ArrowUp') {
-          delta = panMore ? [0, HEIGHT / 2] : [0, PAN_PIXELS];
-        } else if (e.key === 'ArrowDown') {
-          delta = panMore ? [0, -HEIGHT / 2] : [0, -PAN_PIXELS];
-        }
+      if (e.key === 'ArrowLeft') {
+        delta = panMore ? [w / 2, 0] : [PAN_AMOUNT, 0];
+      } else if (e.key === 'ArrowRight') {
+        delta = panMore ? [-w / 2, 0] : [-PAN_AMOUNT, 0];
+      } else if (e.key === 'ArrowUp') {
+        delta = panMore ? [0, h / 2] : [0, PAN_AMOUNT];
+      } else if (e.key === 'ArrowDown') {
+        delta = panMore ? [0, -h / 2] : [0, -PAN_AMOUNT];
       }
+
       if (delta) {
         e.preventDefault();
         map.pan(delta, EASE);
@@ -148,24 +165,25 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (e.detail !== 2) return;    // double clicks only
     if (e.pointerType === 'mouse' && e.button !== 0) return;   // left click only (if a mouse)
 
-    function clamp(num, min, max) {
-      return Math.max(min, Math.min(num, max));
-    }
+    const context = this.context;
+    const map = context.systems.map;
+    const viewport = context.viewport;
+    const t = viewport.transform.props;
 
-    const [x, y] = [e.global.x, e.global.y];
-    const t = this.context.projection.transform();
+    const click = this._getEventData(e);
+    const [x, y] = click.coord.map;
     const isShiftDown = e.getModifierState('Shift');
 
     // local mouse coord to transform origin (was: d3 `transform.invert`)
     const p1 = [ (x - t.x) / t.k, (y - t.y) / t.k ];
-    let k2 = t.k * (isShiftDown ? 0.5 : 2);  // rescale
-    k2 = clamp(k2, MINK, MAXK);
+    let k2 = t.k * (isShiftDown ? 0.5 : 2);  // zoom out / zoom in
+    k2 = numClamp(k2, MIN_K, MAX_K);
 
     // transform origin back to local coord
     const x2 = x - p1[0] * k2;
     const y2 = y - p1[1] * k2;
 
-    this.context.systems.map.transformEase({ x: x2, y: y2, k: k2 });
+    map.transformEase({ x: x2, y: y2, k: k2, r: t.r });
   }
 
 
@@ -178,8 +196,11 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _pointerdown(e) {
     if (this.lastDown) return;   // a pointer is already down
 
+    const context = this.context;
+    const map = context.systems.map;
+    const eventManager = map.renderer.events;
+
     // If shift is pressed it's a lasso, not a map drag
-    const eventManager = this.context.systems.map.renderer.events;
     if (eventManager.modifierKeys.has('Shift')) return;
 
     const down = this._getEventData(e);
@@ -190,10 +211,15 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     this.lastDown = down;
     this.gesture = null;
-    const mode = this.context.mode.id;
+    this._lastPoint = null;
+    this._lastAngle = null;
+
+    const mode = context.mode.id;
     if (mode === 'draw-area' || mode === 'draw-line') {
       eventManager.setCursor('crosshair');
-    } else eventManager.setCursor('grabbing');
+    } else {
+      eventManager.setCursor('grabbing');
+    }
   }
 
 
@@ -203,30 +229,55 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
+    const context = this.context;
+    const map = context.systems.map;
+    const eventManager = map.renderer.events;
+    const viewport = context.viewport;
+
     const down = this.lastDown;
     const move = this._getEventData(e);
     if (!down || down.id !== move.id) return;   // not down, or different pointer
 
+    // Because the handler is listening on the Pixi surface, and the surface is itself
+    // getting transformed, we use `clientX`/`clientY` to avoid the map being jittery.
+    const currPoint = [move.originalEvent.clientX, move.originalEvent.clientY];
+    const t = viewport.transform.props;
+
     if (!this.gesture) {   // start dragging?
-      const dist = vecLength(down.coord, move.coord);
+      const dist = vecLength(down.coord.screen, move.coord.screen);
       const tolerance = (down.originalEvent.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
-      this.was = [move.originalEvent.clientX, move.originalEvent.clientY];
+      this._lastPoint = currPoint;
+      this._lastAngle = t.r;
+
       if (dist >= tolerance) {
-        this.gesture = 'pan';
+        const modifiers = eventManager.modifierKeys;
+        this.gesture = modifiers.has('Alt') || modifiers.has('Control') ? 'rotate' : 'pan';
       }
     }
 
-    if (this.gesture === 'pan') {
-      const original = move.originalEvent;
-      const t = this.context.projection.transform();
+    if (this.gesture) {  // continue dragging
+      const [dx, dy] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
+      this._lastPoint = currPoint;
 
-      const newX = original.clientX - this.was[0];
-      const newY = original.clientY - this.was[1];
-      this.was = [original.clientX, original.clientY];
+      if (this.gesture === 'pan') {
+        map.pan([dx, dy]);
 
-      const tNew = { x: t.x + newX, y: t.y + newY, k: t.k };
+      } else if (this.gesture === 'rotate') {        // see also `RotateMode.js`
+        // In here, we actually use `move.coord.screen`, not `clientX`/`clientY`
+        // because we need to compare it to the map center, not the container.
+        const point = move.coord.screen;
+        const pivot = viewport.center();
+        const [sx, sy] = [                  // swap signs if needed
+          (point[0] > pivot[0]) ? 1 : -1,   // right/left of pivot
+          (point[1] > pivot[1]) ? -1 : 1    // above/below pivot
+        ];
+        const degrees = (sy * dx) + (sx * dy);   // Degrees rotation to apply: + clockwise, - counterclockwise
+        const SPEED = 0.3;
+        const angle = this._lastAngle + (degrees * DEG2RAD * SPEED);
+        this._lastAngle = angle;
 
-      this.context.systems.map.transform(tNew);
+        map.transform({ x: t.x, y: t.y, k: t.k, r: angle });
+      }
     }
   }
 
@@ -243,12 +294,16 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     this.lastDown = null;
     this.gesture = null;
+    this._lastPoint = null;
+    this._lastAngle = null;
 
     const eventManager = this.context.systems.map.renderer.events;
     const mode = this.context.mode.id;
     if (mode === 'draw-area' || mode === 'draw-line') {
       eventManager.setCursor('crosshair');
-    } else eventManager.setCursor('grab');
+    } else {
+      eventManager.setCursor('grab');
+    }
   }
 
 
@@ -262,6 +317,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
     this.lastDown = null;
     this.gesture = null;
+    this._lastPoint = null;
+    this._lastAngle = null;
   }
 
 
@@ -271,37 +328,36 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A DOM WheelEvent
    */
   _wheel(e) {
-    const [x, y] = [e.offsetX, e.offsetY];
-    const [dX, dY] = [e._normalizedDeltaX, e._normalizedDeltaY];
-    const t = this.context.projection.transform();
-    let tNew;
+    const context = this.context;
+    const map = context.systems.map;
 
-    function clamp(num, min, max) {
-      return Math.max(min, Math.min(num, max));
-    }
+    const [dx, dy] = [e._normalizedDeltaX, e._normalizedDeltaY];
 
     // We aren't going to set `this.gesture` here, because that is for tracking what
     // the user is doing through a pointerdown-pointermove-pointerup situation..
 
     if (e._gesture === 'zoom') {
+      const viewport = context.viewport;
+      const t = viewport.transform.props;
+      const [x, y] = e._coord.map;
+
       // convert mouse coord to transform origin (was: d3 `transform.invert`)
       const x1 = (x - t.x) / t.k;
       const y1 = (y - t.y) / t.k;
 
       // rescale
-      let k2 = t.k * Math.pow(2, -dY / 500);
-      k2 = clamp(k2, MINK, MAXK);
+      let k2 = t.k * Math.pow(2, -dy / 500);
+      k2 = numClamp(k2, MIN_K, MAX_K);
 
       // transform origin back to local coord
       const x2 = x - x1 * k2;
       const y2 = y - y1 * k2;
-      tNew = { x: x2, y: y2, k: k2 };
+
+      map.transform({ x: x2, y: y2, k: k2, r: t.r });
 
     } else {  // pan
-      tNew = { x: t.x - dX, y: t.y - dY, k: t.k };
+      map.pan([-dx, -dy]);
     }
-
-    this.context.systems.map.transform(tNew);
   }
 
 }

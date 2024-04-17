@@ -69,19 +69,20 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * update
-   * @param  projection  Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport  Pixi viewport to use for rendering
+   * @param  zoom      Effective zoom to use for rendering
    */
-  update(projection, zoom) {
+  update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    this.updateGeometry(projection, zoom);
-    this.updateStyle(zoom);
+    this.updateGeometry(viewport, zoom);
+    this.updateStyle(viewport, zoom);
 
     // Recalculate local and scene bounds
     // (note that the local bounds automatically includes children like viewfields too)
     const position = this.container.position;
-    this.sceneBounds = this.container.getLocalBounds().clone();  // where 0,0 is the origin of the object
+    // this.sceneBounds = this.container.getLocalBounds().clone();  // where 0,0 is the origin of the object
+    this.sceneBounds = this.container.getBounds().clone();  // where 0,0 is the origin of the object
     this.sceneBounds.x += position.x;
     this.sceneBounds.y += position.y;
 
@@ -92,14 +93,14 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * updateGeometry
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  updateGeometry(projection, zoom) {
+  updateGeometry(viewport, zoom) {
     if (!this.geometry.dirty) return;
 
     // Reproject
-    this.geometry.update(projection, zoom);
+    this.geometry.update(viewport, zoom);
 
     const [x, y] = this.geometry.coords;
     this.container.position.set(x, y);
@@ -115,7 +116,7 @@ export class PixiFeaturePoint extends AbstractFeature {
    * updateStyle
    * @param  zoom  Effective zoom to use for rendering
    */
-  updateStyle(zoom) {
+  updateStyle(viewport, zoom) {
     if (!this._styleDirty) return;
 
     const context = this.context;
@@ -127,6 +128,11 @@ export class PixiFeaturePoint extends AbstractFeature {
     const marker = this.marker;
     const icon = this.icon;
     const latitude = this.geometry.origCoords[1];
+
+    // Apply anti-rotation to keep the icons and markers facing up.
+    // (However viewfields container _should_ include the bearing, and will below)
+    const bearing = viewport.transform.rotation;
+    this.container.rotation = -bearing;
 
     // Show marker, if any..
     if (style.markerTexture || style.markerName) {
@@ -188,6 +194,9 @@ export class PixiFeaturePoint extends AbstractFeature {
         this._viewfieldCount = vfAngles.length;
       }
 
+      // Apply bearing correction to the viewfield container
+      this.viewfields.rotation = bearing;
+
       // Update viewfield angles and style
       for (let i = 0; i < vfAngles.length; i++) {
         const vfSprite = this.viewfields.getChildAt(i);
@@ -226,7 +235,6 @@ export class PixiFeaturePoint extends AbstractFeature {
       marker.texture = style.markerTexture || textureManager.get(markerID);
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
-
 
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full
@@ -344,7 +352,9 @@ export class PixiFeaturePoint extends AbstractFeature {
       } else if (shape instanceof PIXI.Rectangle) {
         new DashLine(this.halo, HALO_STYLE).drawRect(shape.x, shape.y, shape.width, shape.height);
       }
+
       this.halo.position = this.container.position;
+      this.halo.rotation = this.container.rotation;
 
     } else {
       if (this.halo) {

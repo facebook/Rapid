@@ -9,9 +9,9 @@ export function operationExtract(context, selectedIDs) {
   const editor = context.systems.editor;
   const graph = editor.staging.graph;
   const l10n = context.systems.l10n;
-  const map = context.systems.map;
   const presets = context.systems.presets;
   const storage = context.systems.storage;
+  const viewport = context.viewport;
 
   const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
   const entities = selectedIDs.map(entityID => graph.hasEntity(entityID)).filter(Boolean);
@@ -30,7 +30,7 @@ export function operationExtract(context, selectedIDs) {
       if (!preset.geometry.includes('point')) return null;
     }
 
-    return actionExtract(entity.id, context.projection);
+    return actionExtract(entity.id, context.viewport);
   }).filter(Boolean);
 
 
@@ -61,10 +61,10 @@ export function operationExtract(context, selectedIDs) {
 //
 //    // Move extracted features to where mouse pointer is..
 //    // (or center of map if there is no readily available pointer coordinate)
-//    const projection = context.projection;
-//    const extractPoint = projection.project(extent.center());
+//    const viewport = context.viewport;
+//    const extractPoint = viewport.project(extent.center());
 //    const delta = vecSubtract(map.mouse(), extractPoint);
-//    editor.perform(actionMove(extractedNodeIDs, delta, projection));
+//    editor.perform(actionMove(extractedNodeIDs, delta, viewport));
 //    editor.endTransaction();
 //    context.enter('move', { selection: { osm: extractedNodeIDs }} );
 
@@ -92,7 +92,7 @@ export function operationExtract(context, selectedIDs) {
     // If the selection is not 80% contained in view
     function tooLarge() {
       const allowLargeEdits = storage.getItem('rapid-internal-feature.allowLargeEdits') === 'true';
-      return !allowLargeEdits && extent.percentContainedIn(map.extent()) < 0.8;
+      return !allowLargeEdits && extent.percentContainedIn(viewport.visibleExtent()) < 0.8;
     }
   };
 

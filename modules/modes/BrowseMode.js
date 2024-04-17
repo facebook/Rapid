@@ -38,7 +38,7 @@ export class BrowseMode extends AbstractMode {
     this._active = true;
 
     this.operations = [ operationPaste(context) ];
-    context.enableBehaviors(['hover', 'select', 'drag', 'paste', 'lasso', 'map-interaction']);
+    context.enableBehaviors(['hover', 'select', 'drag', 'paste', 'lasso', 'mapInteraction']);
 
     context.behaviors.hover
       .on('hoverchange', this._hover);

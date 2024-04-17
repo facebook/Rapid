@@ -18,6 +18,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
     this.enabled = true;   // this layer should always be enabled
+    this._lastv = null;
   }
 
 
@@ -36,26 +37,29 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   /**
    * render
    * Render any edit blocking polygons that are visible in the viewport
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame          Integer frame being rendered
+   * @param  pixiViewport   Pixi viewport to use for rendering
+   * @param  zoom           Effective zoom to use for rendering (not used here)
    */
-  render(frame, projection, zoom) {
-    let blocks;
+  render(frame, pixiViewport) {
+    const context = this.context;
+    const locations = context.systems.locations;
+    const mapViewport = context.viewport;  // context viewport !== pixi viewport (they are offset)
+    const zoom = mapViewport.transform.zoom;   // use real zoom for this, not "effective" zoom
 
+    if (this._lastv === mapViewport.v) return;  // exit early if the view is unchanged
+    this._lastv = mapViewport.v;
+
+    let blocks = [];
     if (zoom >= MINZOOM) {
-      const viewport = this.context.systems.map.extent().rectangle();
-      const locationSystem = this.context.systems.locations;
-      blocks = locationSystem.wpblocks().bbox(viewport);
-      this.renderEditBlocks(frame, projection, zoom, blocks);
-
-    } else {
-      blocks = [];
+      const searchRect = mapViewport.visibleExtent().rectangle();
+      blocks = locations.wpblocks().bbox(searchRect);
+      this.renderEditBlocks(frame, pixiViewport, zoom, blocks);
     }
 
     // setup the explanation
     // add a special 'api-status' line to the map footer explain the block
-    const explanationRow = this.context.container().select('.main-content > .map-footer')
+    const explanationRow = context.container().select('.main-content > .map-footer')
       .selectAll('.api-status.blocks')
       .data(blocks, d => d.id);
 
@@ -81,13 +85,13 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
   /**
    * renderEditBlocks
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
-   * @param  blocks       Array of block data visible in the view
+   * @param  frame         Integer frame being rendered
+   * @param  pixiViewport  Pixi viewport to use for rendering
+   * @param  zoom          Effective zoom to use for rendering
+   * @param  blocks        Array of block data visible in the view
    */
-  renderEditBlocks(frame, projection, zoom, blocks) {
-    const locationSystem = this.context.systems.locations;
+  renderEditBlocks(frame, pixiViewport, zoom, blocks) {
+    const locations = this.context.systems.locations;
     const parentContainer = this.scene.groups.get('blocks');
     const BLOCK_STYLE = {
       requireFill: true,    // no partial fill option - must fill fully
@@ -95,7 +99,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     };
 
     for (const d of blocks) {
-      const geometry = locationSystem.feature(d.locationSetID).geometry;  // get GeoJSON
+      const geometry = locations.feature(d.locationSetID).geometry;  // get GeoJSON
       if (!geometry) continue;
 
       const parts = (geometry.type === 'Polygon') ? [geometry.coordinates]
@@ -116,7 +120,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         }
 
         this.syncFeatureClasses(feature);
-        feature.update(projection, zoom);
+        feature.update(pixiViewport, zoom);
         this.retainFeature(feature, frame);
       }
     }

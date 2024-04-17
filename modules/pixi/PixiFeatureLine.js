@@ -72,10 +72,10 @@ export class PixiFeatureLine extends AbstractFeature {
 
   /**
    * update
-   * @param  projection  Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport  Pixi viewport to use for rendering
+   * @param  zoom      Effective zoom to use for rendering
    */
-  update(projection, zoom) {
+  update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
 
     const wireframeMode = this.context.systems.map.wireframeMode;
@@ -86,7 +86,7 @@ export class PixiFeatureLine extends AbstractFeature {
     // GEOMETRY
     //
     if (this.geometry.dirty) {
-      this.geometry.update(projection, zoom);
+      this.geometry.update(viewport, zoom);
 
       // Calculate bounds
       const [minX, minY] = this.geometry.extent.min;

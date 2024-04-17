@@ -151,11 +151,11 @@ export class PixiLayerRapid extends AbstractLayer {
   /**
    * render
    * Render any data we have, and schedule fetching more of it to cover the view
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, projection, zoom) {
+  render(frame, viewport, zoom) {
     const rapid = this.context.systems.rapid;
     if (!this.enabled || !rapid.datasets.size || zoom < MINZOOM) return;
 
@@ -166,7 +166,7 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.u_time = frame/10;
 
     for (const dataset of rapid.datasets.values()) {
-      this.renderDataset(dataset, frame, projection, zoom);
+      this.renderDataset(dataset, frame, viewport, zoom);
     }
   }
 
@@ -175,12 +175,12 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderDataset
    * Render any data we have, and schedule fetching more of it to cover the view
    *
-   * @param  dataset      Object
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  dataset    Object
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  renderDataset(dataset, frame, projection, zoom) {
+  renderDataset(dataset, frame, viewport, zoom) {
     const context = this.context;
     const rapid = context.systems.rapid;
 
@@ -271,16 +271,16 @@ export class PixiLayerRapid extends AbstractLayer {
       basemapContainer.addChild(linesContainer);
     }
 
-    this.renderPolygons(areasContainer, dataset, dsGraph, frame, projection, zoom, data);
-    this.renderLines(linesContainer, dataset, dsGraph, frame, projection, zoom, data);
-    this.renderPoints(pointsContainer, dataset, dsGraph, frame, projection, zoom, data);
+    this.renderPolygons(areasContainer, dataset, dsGraph, frame, viewport, zoom, data);
+    this.renderLines(linesContainer, dataset, dsGraph, frame, viewport, zoom, data);
+    this.renderPoints(pointsContainer, dataset, dsGraph, frame, viewport, zoom, data);
   }
 
 
   /**
    * renderPolygons
    */
-  renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
+  renderPolygons(parentContainer, dataset, graph, frame, viewport, zoom, data) {
     const color = new PIXI.Color(dataset.color);
     const l10n = this.context.systems.l10n;
 
@@ -330,7 +330,7 @@ export class PixiLayerRapid extends AbstractLayer {
           };
           feature.style = style;
           feature.label = l10n.displayName(entity.tags);
-          feature.update(projection, zoom);
+          feature.update(viewport, zoom);
         }
 
         this.retainFeature(feature, frame);
@@ -342,7 +342,7 @@ export class PixiLayerRapid extends AbstractLayer {
   /**
    * renderLines
    */
-  renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
+  renderLines(parentContainer, dataset, graph, frame, viewport, zoom, data) {
     const color = new PIXI.Color(dataset.color);
     const l10n = this.context.systems.l10n;
 
@@ -375,7 +375,7 @@ export class PixiLayerRapid extends AbstractLayer {
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
         feature.label = l10n.displayName(entity.tags);
-        feature.update(projection, zoom);
+        feature.update(viewport, zoom);
       }
 
       this.retainFeature(feature, frame);
@@ -386,7 +386,7 @@ export class PixiLayerRapid extends AbstractLayer {
   /**
    * renderPoints
    */
-  renderPoints(parentContainer, dataset, graph, frame, projection, zoom, data) {
+  renderPoints(parentContainer, dataset, graph, frame, viewport, zoom, data) {
     const color = new PIXI.Color(dataset.color);
     const l10n = this.context.systems.l10n;
 
@@ -424,7 +424,7 @@ export class PixiLayerRapid extends AbstractLayer {
         if (!feature.label && housenumber) {
           feature.label = housenumber;
         }
-        feature.update(projection, zoom);
+        feature.update(viewport, zoom);
       }
 
       this.retainFeature(feature, frame);
@@ -454,7 +454,7 @@ export class PixiLayerRapid extends AbstractLayer {
         if (!feature.label && housenumber) {
           feature.label = housenumber;
         }
-        feature.update(projection, zoom);
+        feature.update(viewport, zoom);
       }
 
       this.retainFeature(feature, frame);

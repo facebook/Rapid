@@ -6,6 +6,7 @@ export function uiAttribution(context) {
   const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const viewport = context.viewport;
 
   let _selection = d3_select(null);
 
@@ -59,24 +60,6 @@ export function uiAttribution(context) {
           .text(terms_text);
       })
       .merge(attributions);
-
-
-    let copyright = attributions.selectAll('.copyright-notice')
-      .data(d => {
-        let notice = d.copyrightNotices(map.zoom(), map.extent());
-        return notice ? [notice] : [];
-      });
-
-    copyright.exit()
-      .remove();
-
-    copyright = copyright.enter()
-      .append('span')
-      .attr('class', 'copyright-notice')
-      .merge(copyright);
-
-    copyright
-      .text(String);
   }
 
 
@@ -85,7 +68,7 @@ export function uiAttribution(context) {
     _selection
       .call(render, (baselayer ? [baselayer] : []), 'base-layer-attribution');
 
-    const z = map.zoom();
+    const z = viewport.transform.zoom;
     let overlays = imagery.overlayLayerSources() || [];
     _selection
       .call(render, overlays.filter(s => s.validZoom(z)), 'overlay-layer-attribution');

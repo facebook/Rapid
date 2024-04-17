@@ -1,11 +1,12 @@
 import { select as d3_select } from 'd3-selection';
+import { vecAdd } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { utilDetect } from '../util/detect.js';
 import { utilGetDimensions } from '../util/dimensions.js';
 
 import {
-  uiAccount, uiAttribution, uiContributors, UiDefs, uiEditMenu,
+  uiAccount, uiAttribution, uiBearing, uiContributors, UiDefs, uiEditMenu,
   uiFeatureInfo, uiFlash, uiFullScreen, uiGeolocate, uiIcon,
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
   uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
@@ -274,17 +275,22 @@ this.didRender = true;
 
     controls
       .append('div')
+      .attr('class', 'map-control bearing')
+      .call(uiBearing(context));
+
+    controls
+      .append('div')
       .attr('class', 'map-control zoombuttons')
       .call(uiZoom(context));
 
     controls
       .append('div')
-      .attr('class', 'map-control zoom-to-selection-control')
+      .attr('class', 'map-control zoom-to-selection')
       .call(uiZoomToSelection(context));
 
     controls
       .append('div')
-      .attr('class', 'map-control geolocate-control')
+      .attr('class', 'map-control geolocate')
       .call(uiGeolocate(context));
 
 
@@ -472,11 +478,12 @@ this.didRender = true;
     const context = this.context;
     const container = context.container();
     const map = context.systems.map;
+    const viewport = context.viewport;
 
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
     //  but the values will be cached for later use.
-    const dims = utilGetDimensions(container.select('.main-content'), true);
+    let dims = utilGetDimensions(container.select('.main-content'), true);
     utilGetDimensions(container.select('.sidebar'), true);
 
     // When adjusting the sidebar width, pan the map so it stays centered on the same location.
@@ -484,7 +491,14 @@ this.didRender = true;
       map.pan(offset);
     }
 
-    map.dimensions = dims;
+// experiment:
+// Previously, the map surfaces were anchored to the top left of the main-map.
+// Now, the map surfaces are centered in a CSS Grid, to support rotation around the center.
+// We can extend the map dimensions a little bit so that as the user pans, we dont see seams at the edges of the map.
+const overscan = 50;
+dims = vecAdd(dims, [overscan * 2, overscan * 2]);
+
+    viewport.dimensions = dims;
     this.photoviewer.onMapResize();
 
     // check if header or footer have overflowed
@@ -593,6 +607,7 @@ this.didRender = true;
 
     const context = this.context;
     const map = context.systems.map;
+    const viewport = context.viewport;
 
     // The mode decides which operations are available
     const operations = context.mode?.operations ?? [];
@@ -613,7 +628,7 @@ this.didRender = true;
     }
 
     this.editMenu
-      .anchorLoc(context.projection.invert(anchorPoint))
+      .anchorLoc(viewport.unproject(anchorPoint))
       .triggerType(triggerType)
       .operations(operations);
 

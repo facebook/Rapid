@@ -7,8 +7,8 @@ import { uiSection } from '../section.js';
 
 
 export function uiSectionReactContainer(context) {
-  const map = context.systems.map;
   const imagery = context.systems.imagery;
+  const map = context.systems.map;
   let reRenderCount = 0;
 
   const section = uiSection(context, 'react-container')
@@ -21,7 +21,7 @@ export function uiSectionReactContainer(context) {
 
   const renderContent = (selection) => {
     const sources = imagery
-      .sources(map.extent(), map.zoom())
+      .visibleSources()
       .filter(d => !d.overlay);
 
     selection

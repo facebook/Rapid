@@ -84,12 +84,8 @@ export class ImagerySource {
     return this._id === 'mapbox_locator_overlay';
   }
 
-  copyrightNotices() {
-    /* noop */
-  }
 
-
-  getMetadata(center, tileCoord, callback) {
+  getMetadata(loc, tileCoord, callback) {
     const vintage = {
       start: this._localeDateString(this.startDate),
       end: this._localeDateString(this.endDate)
@@ -353,16 +349,16 @@ export class ImagerySourceEsri extends ImagerySource {
 
     this._cache = {};
     this._inflight = {};
-    this._prevCenter = null;
+    this._prevLoc = null;
   }
 
 
   // use a tilemap service to set maximum zoom for esri tiles dynamically
   // https://developers.arcgis.com/documentation/tiled-elevation-service/
-  fetchTilemap(center) {
+  fetchTilemap(loc) {
     // skip if we have already fetched a tilemap within 5km
-    if (this._prevCenter && geoSphericalDistance(center, this._prevCenter) < 5000) return;
-    this._prevCenter = center;
+    if (this._prevLoc && geoSphericalDistance(loc, this._prevLoc) < 5000) return;
+    this._prevLoc = loc;
 
     // tiles are available globally to zoom level 19, afterward they may or may not be present
     // first generate a random url using the template
@@ -370,8 +366,8 @@ export class ImagerySourceEsri extends ImagerySource {
 
     // calculate url z/y/x from the lat/long of the center of the map
     const z = 20;
-    const x = (Math.floor((center[0] + 180) / 360 * Math.pow(2, z)));
-    const y = (Math.floor((1 - Math.log(Math.tan(center[1] * Math.PI / 180) + 1 / Math.cos(center[1] * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, z)));
+    const x = (Math.floor((loc[0] + 180) / 360 * Math.pow(2, z)));
+    const y = (Math.floor((1 - Math.log(Math.tan(loc[1] * Math.PI / 180) + 1 / Math.cos(loc[1] * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, z)));
 
     // fetch an 8x8 grid to leverage cache
     let tilemapUrl = dummyUrl.replace(/tile\/[0-9]+\/[0-9]+\/[0-9]+\?blankTile=false/, 'tilemap') + '/' + z + '/' + y + '/' + x + '/8/8';
@@ -398,10 +394,9 @@ export class ImagerySourceEsri extends ImagerySource {
   }
 
 
-  getMetadata(center, tileCoord, callback) {
+  getMetadata(loc, tileCoord, callback) {
     const tileID = tileCoord.slice(0, 3).join('/');
     const zoom = Math.min(tileCoord[2], this.zoomExtent[1]);
-    const centerPoint = center[0] + ',' + center[1];  // long, lat (as it should be)
     const unknown = this.context.systems.l10n.t('info_panels.background.unknown');
 
     if (this._inflight[tileID]) return;
@@ -434,7 +429,7 @@ export class ImagerySourceEsri extends ImagerySource {
       return;
     }
 
-    url += metadataLayer + '/query?returnGeometry=false&geometry=' + centerPoint + '&inSR=4326&geometryType=esriGeometryPoint&outFields=*&f=json';
+    url += metadataLayer + '/query?returnGeometry=false&geometry=' + loc.join(',') + '&inSR=4326&geometryType=esriGeometryPoint&outFields=*&f=json';
 
     if (!this._cache[tileID]) {
       this._cache[tileID] = {};

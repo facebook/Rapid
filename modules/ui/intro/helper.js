@@ -2,16 +2,23 @@ import { geoSphericalDistance, vecNormalizedDot } from '@rapid-sdk/math';
 import { uiCmd } from '../cmd.js';
 
 /**
- * insert an icon
+ * Insert an icon
  */
 export function icon(name, klass) {
+  // Generate alt text for interaction icons
+  let title = '';
+  const matched = name.toLowerCase().match(/^#rapid-interaction-(.*)$/);
+  if (matched) {
+    title = '<title>' + matched[1].replace(/\-/g, ' ') + '</title>';
+  }
+
   const svgklass = 'icon' + (klass ? ` ${klass}` : '');
-  return `<svg class="${svgklass}"><use xlink:href="${name}"></use></svg>`;
+  return `<svg class="${svgklass}">${title}<use xlink:href="${name}"></use></svg>`;
 }
 
 
 /**
- * event handler that just cancels the event
+ * Event handler that just cancels the event
  */
 export function eventCancel(d3_event) {
   d3_event.stopPropagation();
@@ -46,84 +53,94 @@ export function helpHtml(context, id, replacements) {
       save_icon: icon('#rapid-icon-save', 'inline'),
 
       // operation icons
-      circularize_icon: icon('#rapid-operation-circularize', 'inline operation'),
-      continue_icon: icon('#rapid-operation-continue', 'inline operation'),
-      copy_icon: icon('#rapid-operation-copy', 'inline operation'),
-      delete_icon: icon('#rapid-operation-delete', 'inline operation'),
-      disconnect_icon: icon('#rapid-operation-disconnect', 'inline operation'),
-      downgrade_icon: icon('#rapid-operation-downgrade', 'inline operation'),
-      extract_icon: icon('#rapid-operation-extract', 'inline operation'),
-      merge_icon: icon('#rapid-operation-merge', 'inline operation'),
-      move_icon: icon('#rapid-operation-move', 'inline operation'),
-      orthogonalize_icon: icon('#rapid-operation-orthogonalize', 'inline operation'),
-      paste_icon: icon('#rapid-operation-paste', 'inline operation'),
-      reflect_long_icon: icon('#rapid-operation-reflect-long', 'inline operation'),
-      reflect_short_icon: icon('#rapid-operation-reflect-short', 'inline operation'),
-      reverse_icon: icon('#rapid-operation-reverse', 'inline operation'),
-      rotate_icon: icon('#rapid-operation-rotate', 'inline operation'),
-      split_icon: icon('#rapid-operation-split', 'inline operation'),
-      straighten_icon: icon('#rapid-operation-straighten', 'inline operation'),
+      circularize_icon: icon('#rapid-operation-circularize', 'operation'),
+      continue_icon: icon('#rapid-operation-continue', 'operation'),
+      copy_icon: icon('#rapid-operation-copy', 'operation'),
+      delete_icon: icon('#rapid-operation-delete', 'operation'),
+      disconnect_icon: icon('#rapid-operation-disconnect', 'operation'),
+      downgrade_icon: icon('#rapid-operation-downgrade', 'operation'),
+      extract_icon: icon('#rapid-operation-extract', 'operation'),
+      merge_icon: icon('#rapid-operation-merge', 'operation'),
+      move_icon: icon('#rapid-operation-move', 'operation'),
+      orthogonalize_icon: icon('#rapid-operation-orthogonalize', 'operation'),
+      paste_icon: icon('#rapid-operation-paste', 'operation'),
+      reflect_long_icon: icon('#rapid-operation-reflect-long', 'operation'),
+      reflect_short_icon: icon('#rapid-operation-reflect-short', 'operation'),
+      reverse_icon: icon('#rapid-operation-reverse', 'operation'),
+      rotate_icon: icon('#rapid-operation-rotate', 'operation'),
+      split_icon: icon('#rapid-operation-split', 'operation'),
+      straighten_icon: icon('#rapid-operation-straighten', 'operation'),
 
       // interaction icons
-      leftclick: icon('#rapid-walkthrough-mouse-left', 'inline operation'),
-      rightclick: icon('#rapid-walkthrough-mouse-right', 'inline operation'),
-      mousewheel_icon: icon('#rapid-walkthrough-mousewheel', 'inline operation'),
-      tap_icon: icon('#rapid-walkthrough-tap', 'inline operation'),
-      doubletap_icon: icon('#rapid-walkthrough-doubletap', 'inline operation'),
-      longpress_icon: icon('#rapid-walkthrough-longpress', 'inline operation'),
-      touchdrag_icon: icon('#rapid-walkthrough-touchdrag', 'inline operation'),
-      pinch_icon: icon('#rapid-walkthrough-pinch-apart', 'inline operation'),
+      keyboard_arrows_all: icon('#rapid-interaction-keyboard-arrows-all', 'operation'),
+      keyboard_arrows_down: icon('#rapid-interaction-keyboard-arrows-down', 'operation'),
+      keyboard_arrows_left: icon('#rapid-interaction-keyboard-arrows-left', 'operation'),
+      keyboard_arrows_right: icon('#rapid-interaction-keyboard-arrows-right', 'operation'),
+      keyboard_arrows_up: icon('#rapid-interaction-keyboard-arrows-up', 'operation'),
+      keyboard_arrows_up_down: icon('#rapid-interaction-keyboard-arrows-up-down', 'operation'),
+      keyboard_arrows_left_right: icon('#rapid-interaction-keyboard-arrows-left-right', 'operation'),
+      mouse_left_icon: icon('#rapid-interaction-mouse-left', 'operation'),
+      mouse_right_icon: icon('#rapid-interaction-mouse-right', 'operation'),
+      mouse_wheel_icon: icon('#rapid-interaction-mouse-wheel', 'operation'),
+      onefinger_tap_icon: icon('#rapid-interaction-onefinger-tap', 'operation'),
+      onefinger_tap_and_hold_icon: icon('#rapid-interaction-onefinger-tap-and-hold', 'operation'),
+      onefinger_tap_and_drag_icon: icon('#rapid-interaction-onefinger-tap-and-drag', 'operation'),
+      twofinger_tap_and_drag_icon: icon('#rapid-interaction-twofinger-tap-and-drag', 'operation'),
+      twofinger_pinch_icon: icon('#rapid-interaction-twofinger-pinch', 'operation'),
+      twofinger_zoom_icon: icon('#rapid-interaction-twofinger-zoom', 'operation'),
+      twofinger_rotate_icon: icon('#rapid-interaction-twofinger-rotate', 'operation'),
 
       // insert keys; may be localized and platform-dependent
       shift: uiCmd.display(context, '⇧'),
-      alt: uiCmd.display(context, '⌥'),
+      option: uiCmd.display(context, '⌥'),
+      control: uiCmd.display(context, '⌃'),
       return: uiCmd.display(context, '↵'),
-      esc: l10n.tHtml('shortcuts.key.esc'),
-      space: l10n.tHtml('shortcuts.key.space'),
-      add_note_key: l10n.tHtml('modes.add_note.key'),
-      help_key: l10n.tHtml('help.key'),
-      shortcuts_key: l10n.tHtml('shortcuts.toggle.key'),
+      esc: uiCmd.display(context, '⎋'),
+      space: l10n.t('shortcuts.key.space'),
+      add_note_key: l10n.t('modes.add_note.key'),
+      help_key: l10n.t('help.key'),
+      shortcuts_key: l10n.t('shortcuts.toggle.key'),
 
       // reference localized UI labels directly so that they'll always match
-      save: l10n.tHtml('save.title'),
-      undo: l10n.tHtml('undo.title'),
-      redo: l10n.tHtml('redo.title'),
-      upload: l10n.tHtml('commit.save'),
-      point: l10n.tHtml('modes.add_point.title'),
-      line: l10n.tHtml('modes.add_line.title'),
-      area: l10n.tHtml('modes.add_area.title'),
-      note: l10n.tHtml('modes.add_note.label'),
+      save: l10n.t('save.title'),
+      undo: l10n.t('undo.title'),
+      redo: l10n.t('redo.title'),
+      upload: l10n.t('commit.save'),
+      point: l10n.t('modes.add_point.title'),
+      line: l10n.t('modes.add_line.title'),
+      area: l10n.t('modes.add_area.title'),
+      note: l10n.t('modes.add_note.label'),
 
-      circularize: l10n.tHtml('operations.circularize.title'),
-      continue: l10n.tHtml('operations.continue.title'),
-      copy: l10n.tHtml('operations.copy.title'),
-      delete: l10n.tHtml('operations.delete.title'),
-      disconnect: l10n.tHtml('operations.disconnect.title'),
-      downgrade: l10n.tHtml('operations.downgrade.title'),
-      extract: l10n.tHtml('operations.extract.title'),
-      merge: l10n.tHtml('operations.merge.title'),
-      move: l10n.tHtml('operations.move.title'),
-      orthogonalize: l10n.tHtml('operations.orthogonalize.title'),
-      paste: l10n.tHtml('operations.paste.title'),
-      reflect_long: l10n.tHtml('operations.reflect.title.long'),
-      reflect_short: l10n.tHtml('operations.reflect.title.short'),
-      reverse: l10n.tHtml('operations.reverse.title'),
-      rotate: l10n.tHtml('operations.rotate.title'),
-      split: l10n.tHtml('operations.split.title'),
-      straighten: l10n.tHtml('operations.straighten.title'),
+      circularize: l10n.t('operations.circularize.title'),
+      continue: l10n.t('operations.continue.title'),
+      copy: l10n.t('operations.copy.title'),
+      delete: l10n.t('operations.delete.title'),
+      disconnect: l10n.t('operations.disconnect.title'),
+      downgrade: l10n.t('operations.downgrade.title'),
+      extract: l10n.t('operations.extract.title'),
+      merge: l10n.t('operations.merge.title'),
+      move: l10n.t('operations.move.title'),
+      orthogonalize: l10n.t('operations.orthogonalize.title'),
+      paste: l10n.t('operations.paste.title'),
+      reflect_long: l10n.t('operations.reflect.title.long'),
+      reflect_short: l10n.t('operations.reflect.title.short'),
+      reverse: l10n.t('operations.reverse.title'),
+      rotate: l10n.t('operations.rotate.title'),
+      split: l10n.t('operations.split.title'),
+      straighten: l10n.t('operations.straighten.title'),
 
-      map_data: l10n.tHtml('map_data.title'),
-      osm_notes: l10n.tHtml('map_data.layers.notes.title'),
-      fields: l10n.tHtml('inspector.fields'),
-      tags: l10n.tHtml('inspector.tags'),
-      relations: l10n.tHtml('inspector.relations'),
-      new_relation: l10n.tHtml('inspector.new_relation'),
-      turn_restrictions: l10n.tHtml('_tagging.presets.fields.restrictions.label'),
-      background_settings: l10n.tHtml('background.description'),
-      imagery_offset: l10n.tHtml('background.fix_misalignment'),
-      start_the_walkthrough: l10n.tHtml('splash.walkthrough'),
-      help: l10n.tHtml('help.title'),
-      ok: l10n.tHtml('intro.ok')
+      map_data: l10n.t('map_data.title'),
+      osm_notes: l10n.t('map_data.layers.notes.title'),
+      fields: l10n.t('inspector.fields'),
+      tags: l10n.t('inspector.tags'),
+      relations: l10n.t('inspector.relations'),
+      new_relation: l10n.t('inspector.new_relation'),
+      turn_restrictions: l10n.t('_tagging.presets.fields.restrictions.label'),
+      background_settings: l10n.t('background.description'),
+      imagery_offset: l10n.t('background.fix_misalignment'),
+      start_the_walkthrough: l10n.t('splash.walkthrough'),
+      help: l10n.t('help.title'),
+      ok: l10n.t('intro.ok')
     };
   }
 

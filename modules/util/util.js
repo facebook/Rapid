@@ -13,10 +13,7 @@ export function utilTotalExtent(vals, graph) {
   for (const val of vals) {
     const entity = (typeof val === 'string' ? graph.hasEntity(val) : val);
     if (entity) {
-      const other = entity.extent(graph);
-      // update extent in place
-      extent.min = [ Math.min(extent.min[0], other.min[0]), Math.min(extent.min[1], other.min[1]) ];
-      extent.max = [ Math.max(extent.max[0], other.max[0]), Math.max(extent.max[1], other.max[1]) ];
+      extent.extendSelf(entity.extent(graph));
     }
   }
 
@@ -72,8 +69,8 @@ export function utilIsColorValid(value) {
 // Applies a CSS transformation to the given selection
 export function utilSetTransform(selection, x, y, scale, rotate) {
   const t = `translate3d(${x}px,${y}px,0)`;
-  const s = scale ? ` scale(${scale})` : '';
-  const r = rotate ? ` rotate(${rotate}deg)` : '';
+  const s = (scale && scale !== 1) ? ` scale(${scale})` : '';
+  const r = rotate ? ` rotate(${rotate}rad)` : '';
   return selection.style('transform', `${t}${s}${r}`);
 }
 
@@ -93,22 +90,6 @@ export function utilFastMouse(container) {
       e.clientY - rectTop - clientTop
     ];
   };
-}
-
-
-/**
- * utilWrap
- * Wraps an index to an interval [0..max-1]
- * (Essentially modulo/remainder that works for negative numbers also)
- * @param   {number}  index
- * @param   {number}  max
- * @return  {number}  result
- */
-export function utilWrap(index, max) {
-  if (index < 0) {
-    index += Math.ceil(-index / max) * max;
-  }
-  return index % max;
 }
 
 

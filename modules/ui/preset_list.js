@@ -75,7 +75,7 @@ export function uiPresetList(context) {
       .attr('class', 'search-header');
 
     searchEnter
-      .call(uiIcon('#rapid-icon-search', 'pre-text'));
+      .call(uiIcon('#rapid-icon-search'));
 
     searchEnter
       .append('input')

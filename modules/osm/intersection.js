@@ -595,7 +595,7 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
 }
 
 
-export function osmInferRestriction(graph, turn, projection) {
+export function osmInferRestriction(graph, turn, viewport) {
     var fromWay = graph.entity(turn.from.way);
     var fromNode = graph.entity(turn.from.node);
     var fromVertex = graph.entity(turn.from.vertex);
@@ -607,8 +607,8 @@ export function osmInferRestriction(graph, turn, projection) {
     var toOneWay = (toWay.tags.oneway === 'yes');
 
     var angle = (
-        vecAngle(projection.project(fromVertex.loc), projection.project(fromNode.loc)) -
-        vecAngle(projection.project(toVertex.loc), projection.project(toNode.loc))
+        vecAngle(viewport.project(fromVertex.loc), viewport.project(fromNode.loc)) -
+        vecAngle(viewport.project(toVertex.loc), viewport.project(toNode.loc))
     ) * (180 / Math.PI);
 
     while (angle < 0) {

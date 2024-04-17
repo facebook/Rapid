@@ -1,7 +1,8 @@
-import { Extent, vecEqual } from '@rapid-sdk/math';
+import { DEG2RAD, Extent, vecEqual } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
+import { uiIcon } from '../icon.js';
 import { utilRebind } from '../../util/rebind.js';
 import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper.js';
 
@@ -83,8 +84,8 @@ export function uiIntroNavigation(context, curtain) {
 
 
   // "The main map area shows OpenStreetMap data on top of a background."
-  // Drag the map to advance
-  function dragMapAsync() {
+  // Click Ok to advance
+  function navigationIntroAsync() {
     context.enter('browse');
     editor.restoreCheckpoint('initial');
 
@@ -93,54 +94,180 @@ export function uiIntroNavigation(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
-        const centerStart = map.center();
-        const textID = context.lastPointerType === 'mouse' ? 'drag' : 'drag_touch';
-        const dragString = helpHtml(context, 'intro.navigation.map_info') + '{br}' + helpHtml(context, `intro.navigation.${textID}`);
-
-        _onMapMove = () => {
-          if (!vecEqual(centerStart, map.center())) {  // map moved
-            resolve(zoomMapAsync);
-          }
-        };
+        const tipHtml = helpHtml(context, 'intro.navigation.map_info') + '{br}' +
+          helpHtml(context, 'intro.navigation.map_info2');
 
         curtain.reveal({
           revealSelector: '.main-map',
-          tipHtml: dragString
+          tipHtml: tipHtml,
+          buttonText: l10n.t('intro.ok'),
+          buttonCallback: () => resolve(panMapAsync)
         });
-      }))
-      .finally(() => {
-        _onMapMove = null;
-      })
-      .then(nextStep => delayAsync(2000).then(nextStep));
+      }));
   }
 
 
-  // Zoom the map to advance
-  function zoomMapAsync() {
+  // "There are several ways to pan the map:"
+  // User can experiment, then click Ok to advance
+  function panMapAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      const zoomStart = map.zoom();
-      const textID = context.lastPointerType === 'mouse' ? 'zoom' : 'zoom_touch';
-      const zoomString = helpHtml(context, `intro.navigation.${textID}`);
+      const startCenter = map.center();
+      const pointerType = context.lastPointerType === 'mouse' ? 'mouse' : 'touch';
+
+      const tipHtml = helpHtml(context, 'intro.navigation.pan') + '{br}' +
+        (pointerType === 'touch' ? helpHtml(context, 'intro.navigation.pan_touch') + '{br}' : '') +
+        (pointerType === 'mouse' ? helpHtml(context, 'intro.navigation.pan_mouse') + '{br}' : '') +
+        (pointerType === 'mouse' ? helpHtml(context, 'intro.navigation.pan_touchpad') + '{br}' : '') +
+        helpHtml(context, 'intro.navigation.pan_keyboard') + '{br}' +
+        helpHtml(context, 'intro.navigation.pan_the_map');
 
       _onMapMove = () => {
-        if (zoomStart !== map.zoom()) {  // map zoomed
-          resolve(featuresAsync);
+        if (!vecEqual(map.center(), startCenter)) {  // center changed
+          const instruction = d3_select('.curtain-tooltip span.instruction');
+          instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
         }
       };
 
       curtain.reveal({
         revealSelector: '.main-map',
-        tipHtml: zoomString
+        tipHtml: tipHtml,
+        buttonText: l10n.t('intro.ok'),
+        buttonCallback: () => resolve(zoomMapAsync)
       });
     })
     .finally(() => {
       _onMapMove = null;
+    });
+  }
+
+
+  // "There are several ways to zoom the map:"
+  // User can experiment, then click Ok to advance
+  function zoomMapAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      const startZoom = context.viewport.transform.zoom;
+      const pointerType = context.lastPointerType === 'mouse' ? 'mouse' : 'touch';
+
+      const tipHtml = helpHtml(context, 'intro.navigation.zoom') + '{br}' +
+        (pointerType === 'touch' ? helpHtml(context, 'intro.navigation.zoom_touch_pinch') + '{br}' : '') +
+        (pointerType === 'touch' ? helpHtml(context, 'intro.navigation.zoom_touch_doubletap') + '{br}' : '') +
+        (pointerType === 'mouse' ? helpHtml(context, 'intro.navigation.zoom_mouse_scroll') + '{br}' : '') +
+        (pointerType === 'mouse' ? helpHtml(context, 'intro.navigation.zoom_mouse_doubleclick') + '{br}' : '') +
+        (pointerType === 'mouse' ? helpHtml(context, 'intro.navigation.zoom_touchpad') + '{br}' : '') +
+        helpHtml(context, 'intro.navigation.zoom_keyboard') + '{br}' +
+        helpHtml(context, 'intro.navigation.zoom_buttons') + '{br}' +
+        helpHtml(context, 'intro.navigation.zoom_the_map');
+
+      _onMapMove = () => {
+        if (context.viewport.transform.zoom !== startZoom) {  // zoom changed
+          const instruction = d3_select('.curtain-tooltip span.instruction');
+          instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
+        }
+      };
+
+      curtain.reveal({
+        revealSelector: '.main-map',
+        tipHtml: tipHtml,
+        buttonText: l10n.t('intro.ok'),
+        buttonCallback: () => resolve(userSettingsAsync)
+      });
     })
-    .then(nextStep => delayAsync(2000).then(nextStep));
+    .finally(() => {
+      _onMapMove = null;
+    });
+  }
+
+
+  // "If the touchpad or mouse wheel doesn't zoom as expected..."
+  // Ok to advance
+  function userSettingsAsync() {
+    ui.togglePanes(context.container().select('.map-panes .preferences-pane'));  // show preferences pane
+
+    return delayAsync()    // after preferences pane visible
+      .then(() => new Promise((resolve, reject) => {
+        curtain.reveal({
+          revealSelector: '.map-panes .preferences-pane',
+          tipHtml: helpHtml(context, 'intro.navigation.user_settings'),
+          buttonText: l10n.t('intro.ok'),
+          buttonCallback: () => {
+            ui.togglePanes();   // hide preferences pane
+            resolve(rotateMapAsync);
+          }
+        });
+      }));
+  }
+
+
+  // "There are several ways to rotate the map:"
+  // User can experiment, then click Ok to advance
+  function rotateMapAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      const startRotation = context.viewport.transform.rotation;
+      const pointerType = context.lastPointerType === 'mouse' ? 'mouse' : 'touch';
+
+      const tipHtml = helpHtml(context, 'intro.navigation.rotate') + '{br}' +
+        helpHtml(context, `intro.navigation.rotate_${pointerType}`) + '{br}' +
+        helpHtml(context, 'intro.navigation.rotate_keyboard') + '{br}' +
+        helpHtml(context, 'intro.navigation.rotate_the_map');
+
+      _onMapMove = () => {
+        if (context.viewport.transform.rotation !== startRotation) {  // rotation changed
+          const instruction = d3_select('.curtain-tooltip span.instruction');
+          instruction.call(uiIcon('#rapid-icon-apply', 'inline success'));
+        }
+      };
+
+      curtain.reveal({
+        revealSelector: '.main-map',
+        tipHtml: tipHtml,
+        buttonText: l10n.t('intro.ok'),
+        buttonCallback: () => resolve(resetBearingAsync)
+      });
+    })
+    .finally(() => {
+      _onMapMove = null;
+    });
+  }
+
+
+  // "This compass button shows you the current rotation..."
+  // Reset the map bearing to advance
+  function resetBearingAsync() {
+    // For the bearing to appear to reset, it needs to start out at not zero.
+    // Introduce some rotation if the user entered this step with no rotation.
+    let rot = context.viewport.transform.rotation;
+    let msec = 0;
+    if (rot < 5 * DEG2RAD) {
+      rot = 45 * DEG2RAD;
+      msec = 100;
+    }
+
+    return map
+      .setMapParamsAsync(undefined, undefined, rot, msec)
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+
+        _onMapMove = () => {
+          if (context.viewport.transform.rotation === 0) {  // rotation reset
+            resolve(featuresAsync);
+          }
+        };
+
+        curtain.reveal({
+          revealSelector: '.main-map',
+          tipSelector: '.map-control.bearing',
+          tipHtml: helpHtml(context, 'intro.navigation.reset_bearing')
+        });
+      }))
+      .finally(() => {
+        _onMapMove = null;
+      });
   }
 
 
@@ -152,7 +279,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.main-map',
         tipHtml: helpHtml(context, 'intro.navigation.features'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(pointsLinesAreasAsync)
       });
     });
@@ -167,7 +294,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.main-map',
         tipHtml: helpHtml(context, 'intro.navigation.points_lines_areas'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(nodesWaysAsync)
       });
     });
@@ -182,7 +309,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.main-map',
         tipHtml: helpHtml(context, 'intro.navigation.nodes_ways'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(clickTownHallAsync)
       });
     });
@@ -199,7 +326,7 @@ export function uiIntroNavigation(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, undefined, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
 
@@ -230,7 +357,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealExtent: townHallExtent,
         tipHtml: helpHtml(context, 'intro.navigation.selected_townhall'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(editorTownHallAsync)
       });
     })
@@ -255,7 +382,7 @@ export function uiIntroNavigation(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml(context, 'intro.navigation.editor_townhall'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(presetTownHallAsync)
       });
     })
@@ -287,7 +414,7 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.entity-editor-pane .section-feature-type',
         revealPadding: 5,
         tipHtml: helpHtml(context, 'intro.navigation.preset_townhall', { preset: preset.name() }),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(fieldsTownHallAsync)
       });
     })
@@ -314,7 +441,7 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.entity-editor-pane .section-preset-fields',
         revealPadding: 5,
         tipHtml: helpHtml(context, 'intro.navigation.fields_townhall'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(closeTownHallAsync)
       });
     })
@@ -361,7 +488,7 @@ export function uiIntroNavigation(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
@@ -423,7 +550,7 @@ export function uiIntroNavigation(context, curtain) {
     const loc = springStreetExtent.center();
 
     return map
-      .setCenterZoomAsync(loc, 19, 0 /* asap */)
+      .setMapParamsAsync(loc, 19, 0, 0 /* asap */)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = reject;   // disallow mode change
@@ -434,7 +561,7 @@ export function uiIntroNavigation(context, curtain) {
           revealExtent: springStreetExtent,
           revealPadding: 40,
           tipHtml: helpHtml(context, 'intro.navigation.selected_street', { name: l10n.t('intro.graph.name.spring-street') }),
-          buttonText: l10n.tHtml('intro.ok'),
+          buttonText: l10n.t('intro.ok'),
           buttonCallback: () => resolve(editorStreetAsync)
         });
       }))
@@ -482,7 +609,7 @@ export function uiIntroNavigation(context, curtain) {
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-point',
       tipHtml: helpHtml(context, 'intro.navigation.play', { next: l10n.t('intro.points.title') }),
-      buttonText: l10n.tHtml('intro.ok'),
+      buttonText: l10n.t('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();
@@ -498,7 +625,7 @@ export function uiIntroNavigation(context, curtain) {
     context.on('modechange', _modeChangeListener);
     map.on('move', _mapMoveListener);
 
-    runAsync(dragMapAsync)
+    runAsync(navigationIntroAsync)
       .catch(e => { if (e instanceof Error) console.error(e); })   // eslint-disable-line no-console
       .finally(() => {
         context.off('modechange', _modeChangeListener);

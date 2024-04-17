@@ -125,12 +125,12 @@ groupContainer.addChild(container);
   /**
    * render
    * Render any of the child containers for UI that should float over the map.
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
    */
-  render(frame, projection) {
+  render(frame, viewport) {
     // redraw if zoom changes
-    const k = projection.scale();
+    const k = viewport.transform.scale;
     if (k !== this._oldk) {
       this._geolocationDirty = true;
       this._lassoPolygonDirty = true;
@@ -138,11 +138,11 @@ groupContainer.addChild(container);
     }
 
     if (this._geolocationDirty) {
-      this.renderGeolocation(frame, projection);
+      this.renderGeolocation(frame, viewport);
     }
 
     if (this._lassoPolygonDirty) {
-      this.renderLasso(frame, projection);
+      this.renderLasso(frame, viewport);
     }
 
   }
@@ -150,10 +150,10 @@ groupContainer.addChild(container);
   /**
    * renderLasso
    * Render the lasso polygon
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
    */
-  renderLasso(frame, projection) {
+  renderLasso(frame, viewport) {
     if (this._lassoPolygonDirty) {
       this._lassoPolygonDirty = false;
     }
@@ -185,7 +185,7 @@ groupContainer.addChild(container);
 
       // Render the data only as long as we have something meaningful.
       if (this._lassoPolygonData?.length > 0) {
-        const projectedCoords = this._lassoPolygonData.map(coord => projection.project(coord));
+        const projectedCoords = this._lassoPolygonData.map(coord => viewport.project(coord));
         new DashLine(this._lassoLineGraphics, LASSO_STYLE).drawPolygon(projectedCoords.flat());
         this._lassoFillGraphics.beginFill(0xaaaaaa, 0.5).drawPolygon(projectedCoords.flat()).endFill();
       }
@@ -195,10 +195,10 @@ groupContainer.addChild(container);
   /**
    * renderGeolocation
    * Render the geoloation data
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
    */
-  renderGeolocation(frame, projection) {
+  renderGeolocation(frame, viewport) {
     if (this._geolocationDirty) {
       this._geolocationDirty = false;
       this.geolocationContainer.removeChildren();
@@ -206,12 +206,12 @@ groupContainer.addChild(container);
       if (this.geolocationData && this.geolocationData.coords) {
         const d = this.geolocationData.coords;
         const coord = [d.longitude, d.latitude];
-        const [x, y] = projection.project(coord);
+        const [x, y] = viewport.project(coord);
 
         // Calculate the radius of the accuracy aura (convert meters -> pixels)
         const dLon = geoMetersToLon(d.accuracy, coord[1]);  // coord[1] = at this latitude
         const edge = [d.longitude + dLon, d.latitude];
-        const x2 = projection.project(edge)[0];
+        const x2 = viewport.project(edge)[0];
         const r = Math.max(Math.abs(x2 - x), 15);
         const BLUE = 0xe60ff;
 

@@ -3,23 +3,20 @@ import { strict as assert } from 'node:assert';
 import * as Rapid from '../../../modules/headless.js';
 
 
-class MockProjection {
-  constructor() {}
-  project(val)  { return val; }
-  invert(val)   { return val; }
-}
-
 describe('geoChooseEdge', () => {
-  const projection = new MockProjection();
+  const viewport = {
+    project:   val => val,
+    unproject: val => val
+  };
 
   it('returns null for a degenerate way (no nodes)', () => {
-    const choice = Rapid.geoChooseEdge([], [0, 0], projection);
+    const choice = Rapid.geoChooseEdge([], [0, 0], viewport);
     assert.equal(choice, null);
   });
 
   it('returns null for a degenerate way (single node)', () => {
     const node = Rapid.osmNode({loc: [0, 0]});
-    const choice = Rapid.geoChooseEdge([node], [0, 0], projection);
+    const choice = Rapid.geoChooseEdge([node], [0, 0], viewport);
     assert.equal(choice, null);
   });
 
@@ -33,7 +30,7 @@ describe('geoChooseEdge', () => {
     const b = [5, 0];
     const c = [2, 1];
     const nodes = [ Rapid.osmNode({loc: a}), Rapid.osmNode({loc: b}) ];
-    const choice = Rapid.geoChooseEdge(nodes, c, projection);
+    const choice = Rapid.geoChooseEdge(nodes, c, viewport);
     assert.equal(choice.index, 1);
     assert.equal(choice.distance, 1);
     assert.deepEqual(choice.loc, [2, 0]);
@@ -44,7 +41,7 @@ describe('geoChooseEdge', () => {
     const b = [5, 0];
     const c = [-3, 4];
     const nodes = [ Rapid.osmNode({loc: a}), Rapid.osmNode({loc: b}) ];
-    const choice = Rapid.geoChooseEdge(nodes, c, projection);
+    const choice = Rapid.geoChooseEdge(nodes, c, viewport);
     assert.equal(choice.index, 1);
     assert.equal(choice.distance, 5);
     assert.deepEqual(choice.loc, [0, 0]);
@@ -55,7 +52,7 @@ describe('geoChooseEdge', () => {
     const b = [5, 0];
     const c = [8, 4];
     const nodes = [ Rapid.osmNode({loc: a}), Rapid.osmNode({loc: b}) ];
-    const choice = Rapid.geoChooseEdge(nodes, c, projection);
+    const choice = Rapid.geoChooseEdge(nodes, c, viewport);
     assert.equal(choice.index, 1);
     assert.equal(choice.distance, 5);
     assert.deepEqual(choice.loc, [5, 0]);
@@ -81,7 +78,7 @@ describe('geoChooseEdge', () => {
       Rapid.osmNode({id: 'd', loc: d}),
       Rapid.osmNode({id: 'e', loc: e})
     ];
-    const choice = Rapid.geoChooseEdge(nodes, e, projection, 'e');
+    const choice = Rapid.geoChooseEdge(nodes, e, viewport, 'e');
     assert.equal(choice.index, 1);
     assert.equal(choice.distance, 0.1);
     assert.deepEqual(choice.loc, [2, 0]);
@@ -107,7 +104,7 @@ describe('geoChooseEdge', () => {
       Rapid.osmNode({id: 'd', loc: d}),
       Rapid.osmNode({id: 'e', loc: e})
     ];
-    const choice = Rapid.geoChooseEdge(nodes, d, projection, 'd');
+    const choice = Rapid.geoChooseEdge(nodes, d, viewport, 'd');
     assert.equal(choice.index, 1);
     assert.equal(choice.distance, 0.1);
     assert.deepEqual(choice.loc, [2, 0]);
@@ -118,7 +115,7 @@ describe('geoChooseEdge', () => {
       Rapid.osmNode({id: 'a', loc: [0, 0]}),
       Rapid.osmNode({id: 'b', loc: [5, 0]})
     ];
-    const choice = Rapid.geoChooseEdge(nodes, [2, 2], projection, 'a');
+    const choice = Rapid.geoChooseEdge(nodes, [2, 2], viewport, 'a');
     assert.equal(choice, null);
   });
 });

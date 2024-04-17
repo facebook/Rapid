@@ -10,7 +10,7 @@ import { utilArrayUniq } from '@rapid-sdk/util';
 import { osmNode } from '../osm/node.js';
 
 
-export function actionCircularize(wayId, projection, maxAngle) {
+export function actionCircularize(wayId, viewport, maxAngle) {
     maxAngle = (maxAngle || 20) * Math.PI / 180;
 
 
@@ -31,8 +31,8 @@ export function actionCircularize(wayId, projection, maxAngle) {
 
         var nodes = utilArrayUniq(graph.childNodes(way));
         var keyNodes = nodes.filter(function(n) { return graph.parentWays(n).length !== 1; });
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
-        var keyPoints = keyNodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
+        var keyPoints = keyNodes.map(function(n) { return viewport.project(n.loc); });
         var centroid = (points.length === 2) ? vecInterp(points[0], points[1], 0.5) : d3_polygonCentroid(points);
         var radius = d3_median(points, function(p) { return vecLength(centroid, p); });
         var sign = d3_polygonArea(points) > 0 ? 1 : -1;
@@ -79,7 +79,7 @@ export function actionCircularize(wayId, projection, maxAngle) {
                 centroid[0] + (keyPoints[i][0] - centroid[0]) / distance * radius,
                 centroid[1] + (keyPoints[i][1] - centroid[1]) / distance * radius
             ];
-            loc = projection.invert(keyPoints[i]);
+            loc = viewport.unproject(keyPoints[i]);
             node = keyNodes[i];
             origNode = origNodes[node.id];
             node = node.move(vecInterp(origNode.loc, loc, t));
@@ -104,7 +104,7 @@ export function actionCircularize(wayId, projection, maxAngle) {
             // move existing nodes
             for (j = 1; j < indexRange; j++) {
                 angle = startAngle + j * eachAngle;
-                loc = projection.invert([
+                loc = viewport.unproject([
                     centroid[0] + Math.cos(angle) * radius,
                     centroid[1] + Math.sin(angle) * radius
                 ]);
@@ -120,7 +120,7 @@ export function actionCircularize(wayId, projection, maxAngle) {
             // add new in between nodes if necessary
             for (j = 0; j < numberNewPoints; j++) {
                 angle = startAngle + (indexRange + j) * eachAngle;
-                loc = projection.invert([
+                loc = viewport.unproject([
                     centroid[0] + Math.cos(angle) * radius,
                     centroid[1] + Math.sin(angle) * radius
                 ]);
@@ -192,7 +192,7 @@ export function actionCircularize(wayId, projection, maxAngle) {
     action.makeConvex = function(graph) {
         var way = graph.entity(wayId);
         var nodes = utilArrayUniq(graph.childNodes(way));
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
         var sign = d3_polygonArea(points) > 0 ? 1 : -1;
         var hull = d3_polygonHull(points);
         var i, j;
@@ -215,7 +215,7 @@ export function actionCircularize(wayId, projection, maxAngle) {
             // move interior nodes to the surface of the convex hull..
             for (j = 1; j < indexRange; j++) {
                 var point = vecInterp(hull[i], hull[i+1], j / indexRange);
-                var node = nodes[(j + startIndex) % nodes.length].move(projection.invert(point));
+                var node = nodes[(j + startIndex) % nodes.length].move(viewport.unproject(point));
                 graph = graph.replace(node);
             }
         }
@@ -231,7 +231,7 @@ export function actionCircularize(wayId, projection, maxAngle) {
         //disable when already circular
         var way = graph.entity(wayId);
         var nodes = utilArrayUniq(graph.childNodes(way));
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
         var hull = d3_polygonHull(points);
         var epsilonAngle =  Math.PI / 180;
         if (hull.length !== points.length || hull.length < 3){

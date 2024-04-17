@@ -1,5 +1,4 @@
 import { select as d3_select } from 'd3-selection';
-import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
 import { JXON } from '../../util/jxon.js';
 import { actionDiscardTags } from '../../actions/discard_tags.js';
@@ -129,24 +128,25 @@ export function uiSectionChanges(context) {
 
 
     function mouseover(d) {
-      if (d.entity) {
-        context.surface().selectAll(
-          utilEntityOrMemberSelector([d.entity.id], editor.staging.graph)
-        ).classed('hover', true);
-      }
+// todo replace legacy surface css class .hover
+//      if (d.entity) {
+//        context.surface().selectAll(
+//          utilEntityOrMemberSelector([d.entity.id], editor.staging.graph)
+//        ).classed('hover', true);
+//      }
     }
 
     function mouseout() {
-      context.surface().selectAll('.hover')
-        .classed('hover', false);
+//      context.surface().selectAll('.hover')
+//        .classed('hover', false);
     }
 
     function click(d3_event, change) {
       if (change.changeType !== 'deleted') {
         let entity = change.entity;
         context.systems.map.fitEntitiesEase(entity);
-        context.surface().selectAll(utilEntityOrMemberSelector([entity.id], editor.staging.graph))
-          .classed('hover', true);
+//        context.surface().selectAll(utilEntityOrMemberSelector([entity.id], editor.staging.graph))
+//          .classed('hover', true);
       }
     }
   }

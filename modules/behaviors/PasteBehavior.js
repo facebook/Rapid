@@ -121,13 +121,13 @@ export class PasteBehavior extends AbstractBehavior {
 
     // Move pasted features to where mouse pointer is..
     // (or center of map if there is no readily available pointer coordinate)
-    const projection = context.projection;
+    const viewport = context.viewport;
     const copyLoc = context.copyLoc;
-    const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
+    const copyPoint = (copyLoc && viewport.project(copyLoc)) || viewport.project(extent.center());
     const delta = vecSubtract(map.mouse(), copyPoint);
     const annotation = l10n.t('operations.paste.annotation', { n: newIDs.length });
 
-    editor.perform(actionMove(newIDs, delta, projection));
+    editor.perform(actionMove(newIDs, delta, viewport));
     editor.commit({ annotation: annotation, selectedIDs: newIDs });
     editor.endTransaction();
 

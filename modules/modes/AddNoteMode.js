@@ -35,14 +35,12 @@ export class AddNoteMode extends AbstractMode {
 
     this._active = true;
     const context = this.context;
-    context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
+    context.enableBehaviors(['hover', 'draw', 'mapInteraction']);
 
     context.behaviors.draw
       .on('click', this._click)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
-
-    context.behaviors['map-nudging'].allow();
 
     return true;
   }
@@ -74,9 +72,9 @@ export class AddNoteMode extends AbstractMode {
   _click(eventData) {
     const context = this.context;
     const osm = context.services.osm;
-    const projection = context.projection;
-    const coord = eventData.coord;
-    const loc = projection.invert(coord);
+    const viewport = context.viewport;
+    const point = eventData.coord.map;
+    const loc = viewport.unproject(point);
 
     if (!osm) return;
 

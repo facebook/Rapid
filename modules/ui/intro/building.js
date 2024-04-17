@@ -82,7 +82,7 @@ export function uiIntroBuilding(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19, msec)
+      .setMapParamsAsync(loc, 19, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(startHouseAsync);
@@ -110,7 +110,7 @@ export function uiIntroBuilding(context, curtain) {
     _houseID = null;
 
     return map
-      .setCenterZoomAsync(houseExtent.center(), 20, 200)
+      .setMapParamsAsync(houseExtent.center(), 20, 0, 200)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         if (context.mode?.id !== 'draw-area') { resolve(addHouseAsync); return; }
@@ -154,7 +154,7 @@ export function uiIntroBuilding(context, curtain) {
           const graph = editor.staging.graph;
           const way = graph.entity(_houseID);
           const nodes = graph.childNodes(way);
-          const points = utilArrayUniq(nodes).map(n => context.projection.project(n.loc));
+          const points = utilArrayUniq(nodes).map(n => context.viewport.project(n.loc));
 
           if (isMostlySquare(points)) {
             resolve(chooseCategoryBuildingAsync);
@@ -192,7 +192,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_building'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(addHouseAsync)
       });
     });
@@ -309,7 +309,7 @@ export function uiIntroBuilding(context, curtain) {
     const setZoom = Math.max(map.zoom(), 20);
 
     return map
-      .setCenterZoomAsync(houseExtent.center(), setZoom, 100)
+      .setMapParamsAsync(houseExtent.center(), setZoom, 0, 100)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onStableChange = reject;  // disallow doing anything else
@@ -395,7 +395,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_square'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(rightClickHouseAsync)
       });
     });
@@ -412,7 +412,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: houseExtent,
         tipHtml: helpHtml(context, 'intro.buildings.done_square'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(addTankAsync)
       });
     });
@@ -431,7 +431,7 @@ export function uiIntroBuilding(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19.5, msec)
+      .setMapParamsAsync(loc, 19.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(startTankAsync);
@@ -685,7 +685,7 @@ export function uiIntroBuilding(context, curtain) {
       curtain.reveal({
         revealExtent: tankExtent,
         tipHtml: helpHtml(context, 'intro.buildings.retry_circle'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(rightClickTankAsync)
       });
     });
@@ -700,7 +700,7 @@ export function uiIntroBuilding(context, curtain) {
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-rapid',
       tipHtml: helpHtml(context, 'intro.buildings.play', { next: l10n.t('intro.rapid.title') }),
-      buttonText: l10n.tHtml('intro.ok'),
+      buttonText: l10n.t('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

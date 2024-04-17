@@ -22,6 +22,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   const storage = context.systems.storage;
   const urlhash = context.systems.urlhash;
   const validator = context.systems.validator;
+  const viewport = context.viewport;
 
   const section = uiSection(context, sectionID)
     .label(sectionLabel)
@@ -45,14 +46,14 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
   // Accepts a d3-selection to render the content into
   function renderDisclosureContent(selection) {
-    const center = map.center();
     const graph = editor.staging.graph;
+    const centerLoc = viewport.centerLoc();
 
     // sort issues by distance away from the center of the map
     let issues = _issues
       .map(function withDistance(issue) {
         const extent = issue.extent(graph);
-        const dist = extent ? geoSphericalDistance(center, extent.center()) : 0;
+        const dist = extent ? geoSphericalDistance(centerLoc, extent.center()) : 0;
         return Object.assign(issue, { dist: dist });
       })
       .sort((a, b) => a.dist - b.dist);   // nearest to farthest

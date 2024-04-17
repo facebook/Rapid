@@ -40,7 +40,7 @@ function instantiateEntities(data) {
 //This staticData variable looks like it's not declared anywhere, but it is a global var loaded by the <script src='canned_osm_data.js'> declaration in bench.html
 let renderData;
 let graphEntities;
-let projection;
+let viewport;
 let zoom;
 let tokyo_15, tokyo_17, tokyo_19;
 const timestamp = 1649012524130;
@@ -57,10 +57,10 @@ content.call(map);
 function renderTest() {
   const scene = context.scene();
   const layer = scene.layers.get('osm');
-  layer.drawPoints(timestamp, projection, zoom, renderData.points);
-  layer.drawVertices(timestamp, projection, zoom, renderData.vertices);
-  layer.drawLines(timestamp, projection, zoom, renderData.lines);
-  layer.drawPolygons(timestamp, projection, zoom, renderData.polygons);
+  layer.drawPoints(timestamp, viewport, zoom, renderData.points);
+  layer.drawVertices(timestamp, viewport, zoom, renderData.vertices);
+  layer.drawLines(timestamp, viewport, zoom, renderData.lines);
+  layer.drawPolygons(timestamp, viewport, zoom, renderData.polygons);
   scene.dirtyScene();  // Dirty the scene so that subsequent runs of this same test don't operate at warp speed
 }
 
@@ -68,7 +68,7 @@ function setup(dataBlob) {
   //This dataBlob variable should be the json blob exported in bench.html from a <script src='canned_osm_data.js'> declaration
   renderData = jsonToOSM(dataBlob.data);
   graphEntities = instantiateEntities(dataBlob.entities);
-  projection = new Rapid.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
+  viewport = new Rapid.sdk.Viewport({ x: dataBlob.projection._x, y: dataBlob.projection._y, k: dataBlob.projection._k });
   zoom = dataBlob.zoom;
   const graph = editor.staging.graph;
   graph.rebase(graphEntities, [graph], false);

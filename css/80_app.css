@@ -614,7 +614,7 @@ button.save .count {
     text-align: center;
 }
 
-.help-pane svg.icon.inline.add-note,
+.help-pane svg.icon.add-note,
 button.add-note svg.icon {
     height: 15px;
     width: 15px;
@@ -631,7 +631,7 @@ button.add-note svg.icon {
     margin-left: 4px;
     margin-right: unset;
 }
-.help-pane svg.icon.inline.add-note {
+.help-pane svg.icon.add-note {
     margin-left: 3px;
     margin-right: 3px;
 }
@@ -1305,19 +1305,6 @@ a.hide-toggle {
     height: 0;
     margin-left: 50%;
     margin-left: calc(50% - 10px);
-}
-
-
-/* Quick links
-------------------------------------------------------- */
-.quick-links {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
-    padding: 5px 0 0 0;
-}
-.quick-link {
-    margin: 0 5px;
 }
 
 
@@ -2930,69 +2917,97 @@ img.tag-reference-wiki-image {
 /* Map Controls
 ------------------------------------------------------- */
 .map-controls {
-    right: 0;
-    top: 0;
-    width: 40px;
-    position: absolute;
-    z-index: 100;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 5px 0;
-    pointer-events: none;
+  right: 0;
+  top: 0;
+  width: 40px;
+  position: absolute;
+  z-index: 100;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+  pointer-events: none;
 }
 .map-controls:before {
-    content: '';
-    display: inline-block;
-    pointer-events: none;
-    width: 40px;
-    height: 100%;
-    max-height: 70px;
-    flex: 0 1 auto;
+  content: '';
+  display: inline-block;
+  pointer-events: none;
+  width: 40px;
+  height: 100%;
+  max-height: 70px;
+  flex: 0 1 auto;
 }
 .ideditor[dir='rtl'] .map-controls {
-    left: 0;
-    right: auto;
+  left: 0;
+  right: auto;
 }
 
 .map-control {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .map-control > button {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    background: rgba(0,0,0,.5);
-    border-radius: 0;
-    pointer-events: auto;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: rgba(0,0,0,.5);
+  border-radius: 0;
+  pointer-events: auto;
 }
 
 .map-control > button:not(.disabled):focus,
 .map-control > button:not(.disabled):active {
-    background: rgba(0, 0, 0, .8);
+  background: rgba(0, 0, 0, .8);
 }
 .map-control > button.active,
 .map-control > button.active:active {
-    background: #7092ff;
+  background: #7092ff;
 }
+
 @media (hover: hover) {
-    .map-control > button:not(.disabled):hover {
-        background: rgba(0, 0, 0, .8);
-    }
-    .map-control > button.active:hover {
-        background: #7092ff;
-    }
+  .map-control > button:not(.disabled):hover {
+    background: rgba(0, 0, 0, .8);
+  }
+  .map-control > button.active:hover {
+    background: #7092ff;
+  }
 }
 
 .map-control > button.disabled .icon {
-    color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
+.map-control > button.bearing {
+  border-radius: 4px 0 0 0;
+}
+button.bearing > .bearing_n {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+.ideditor[dir='rtl'] .map-control > button.bearing {
+  border-radius: 0 4px 0 0;
+}
 
-/* Fullscreen Button (disabled)
-------------------------------------------------------- */
+.map-control > button.geolocate {
+  border-radius: 0 0 0 4px;
+  margin-bottom: 10px;
+}
+.ideditor[dir='rtl'] .map-control > button.geolocate {
+  border-radius: 0 0 4px 0;
+  margin-bottom: 10px;
+}
+
+.map-control > button.zoom-to-selection .icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* Fullscreen Button (disabled) */
 div.full-screen {
     display: inline-block;
     width: 40px;
@@ -3017,35 +3032,6 @@ div.full-screen > button:focus {
     div.full-screen > button:hover {
         background-color: rgba(0, 0, 0, .8);
     }
-}
-
-
-/* Map Controls
-------------------------------------------------------- */
-
-/* Zoom in/out buttons */
-.zoombuttons > button.zoom-in {
-    border-radius: 4px 0 0 0;
-}
-.ideditor[dir='rtl'] .zoombuttons > button.zoom-in {
-    border-radius: 0 4px 0 0;
-}
-
-/* Geolocate button */
-.geolocate-control {
-    margin-bottom: 10px;
-}
-.geolocate-control > button {
-    border-radius: 0 0 0 4px;
-}
-.ideditor[dir='rtl'] .geolocate-control > button {
-    border-radius: 0 0 4px 0;
-}
-
-/* Zoom to selection button */
-.zoom-to-selection-control .icon {
-    width: 22px;
-    height: 22px;
 }
 
 
@@ -3840,14 +3826,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     margin-bottom: 20px;
 }
 
-.help-pane .left-content .icon.inline,
-.curtain-tooltip .icon.inline {
-    margin-right: 0;
-    margin-left: 0;
-    height: 1.34em;
-    width: 1.34em;
-}
-
 .help-pane .toc {
     width: 100%;
     max-width: 200px;
@@ -3888,9 +3866,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     border-radius: 4px 4px 0 0;
 }
 
-/* walkthrough disabled */
-/*.help-pane .toc li:nth-last-child(3) a {*/
-.help-pane .toc li:nth-last-child(2) a {
+.help-pane .toc li:nth-last-child(3) a {
     border-bottom: 1px solid #ccc;
     border-radius: 0 0 4px 4px
 }
@@ -3988,7 +3964,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* hide but preserve in layout */
 .inspector-hover .combobox-caret,
 .inspector-hover .header button,
-.inspector-hover .quick-links,
 .inspector-hover .form-field-input-multicombo .chip .remove,
 .inspector-hover .hide-toggle:before,
 .inspector-hover .more-fields,
@@ -4083,45 +4058,68 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 /* Map
 ------------------------------------------------------- */
+/* `main-map` is a container that takes up all the space where the map will go. */
 .main-map {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-    background: #000;
-    user-select: none;
-    touch-action: none;
-    -webkit-touch-callout: none;
-    z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+
+  display: grid;
+  place-content: center;
+  place-items: center;
+  grid-template: 1fr / 1fr;
+
+  background: #000;
+  user-select: none;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  z-index: 0;
 }
 .main-map * {
-    touch-action: none;
+  touch-action: none;
 }
 
-.supersurface,
-.surface,
-.overlay {
-    transform-origin: 0 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+/* `supersurface` contains temporary transforms from the user interacting with the map between full redraws */
+.supersurface {
+  display: grid;
+  grid-template: 1fr / 1fr;
+  place-content: center;
+  place-items: center;
+/* for testing */
+/*  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RCA_Indian_Head_Test_Pattern.svg/1200px-RCA_Indian_Head_Test_Pattern.svg.png');*/
+/*  background-size:     cover;*/
+/*  background-repeat:   no-repeat;*/
+/*  background-position: center center;*/
 }
 
+.main-map > *,
+.supersurface > * {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  height: 100%;
+  width: 100%;
+}
+
+/*`surface` is the actual map canvas, managed by Pixi. */
 .surface {
-    z-index: 1;
+  z-index: 1;
 }
+
+/* `overlay` is a div that floats over the map but stays transformed with it.
+ *  (this is where we draw the edit menu)
+ */
 .overlay {
-    z-index: 2;
-    pointer-events: none;
+  z-index: 2;
+  pointer-events: none;
 }
+
 .overlay * {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 
@@ -4146,10 +4144,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     right: 10px;
 }
 
-.map-in-map-tiles {
-    transform-origin: 0 0;
-    user-select: none;
-}
 
 .map-in-map-background {
     position: absolute;
@@ -4905,92 +4899,94 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 ------------------------------------------------------- */
 .modal-actions .logo-walkthrough,
 .modal-actions .logo-features {
-    color: #7092ff;
+  color: #7092ff;
 }
 
 
 /* Shortcuts Modal
 ------------------------------------------------------- */
 .modal-shortcuts {
-    width: 90%;
-    max-width: 1050px;
+  width: 90%;
+  max-width: 1050px;
 }
 
 .modal-shortcuts .modal-section:last-child {
-    padding: 10px 15px 20px 15px;
-    min-height: 275px;
+  padding: 10px 15px 20px 15px;
+  min-height: 275px;
 }
 
-.modal-shortcuts .tabs-bar {
-    padding-bottom: 5px;
-    text-align: center;
+.modal-shortcuts .nav-bar {
+  padding-bottom: 5px;
+  text-align: center;
 }
 
-.modal-shortcuts a.tab {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 0 5px;
-    cursor: pointer;
-    color: #666;
-    font-size: 16px;
-    font-weight: bold;
+.modal-shortcuts a.nav-item {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  color: #666;
+  font-size: 16px;
+  font-weight: bold;
 }
-.modal-shortcuts a.tab.active {
-    color: #7092ff;
-    border-bottom: 2px solid;
+.modal-shortcuts a.nav-item.active {
+  color: #7092ff;
+  border-bottom: 2px solid;
 }
-.modal-shortcuts a.tab:focus,
-.modal-shortcuts a.tab:active {
-    color: #597be7;
-    background-color: #efefef;
+.modal-shortcuts a.nav-item:focus,
+.modal-shortcuts a.nav-item:active {
+  color: #597be7;
+  background-color: #efefef;
 }
 @media (hover: hover) {
-    .modal-shortcuts a.tab:hover {
-        color: #597be7;
-        background-color: #efefef;
-    }
+  .modal-shortcuts a.nav-item:hover {
+    color: #597be7;
+    background-color: #efefef;
+  }
 }
 
 .modal-shortcuts .shortcut-tab {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }
 
 .modal-shortcuts .shortcut-column {
-    width: auto;
+  width: auto;
 }
 
 .modal-shortcuts .shortcut-tab-tools .shortcut-column {
-    flex: 1 1 100%;
-    width: 100%;
+  flex: 1 1 100%;
+  width: 100%;
 }
 
 .modal-shortcuts td {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .modal-shortcuts .shortcut-section {
-    padding: 20px 0 10px 0;
+  padding: 20px 0 10px 0;
 }
 
 .modal-shortcuts .shortcut-keys {
-    padding: 0 10px;
-    color: #767676;
-    text-align: right;
-    white-space: nowrap;
+  padding: 0 10px;
+  color: #767676;
+  text-align: right;
+  white-space: nowrap;
 }
 .ideditor[dir='rtl'] .modal-shortcuts .shortcut-keys {
-    text-align: left;
+  text-align: left;
 }
 
 .modal-shortcuts .shortcut-keys kbd {
-    color: #555;
+  color: #555;
 }
-
+.modal-shortcuts .shortcut-keys svg {
+  margin: 0 3px;
+}
 .modal-shortcuts .shortcut-keys .gesture {
-    color: #333;
-    padding: 3px;
+  color: #333;
+  margin: 0 3px;
 }
 
 
@@ -5200,8 +5196,10 @@ button.conflicts-button {
 
 .tooltip .popover-inner {
     border-radius: 4px;
-    max-width: 200px;
-    min-width: 80px;
+/*    max-width: 200px;*/
+/*    min-width: 80px;*/
+    max-width: 240px;
+    min-width: 100px;
     padding: 10px;
     font-weight: normal;
     background-color: #fff;
@@ -5517,7 +5515,7 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 }
 
 .curtain-tooltip .popover-inner .button-section button {
-    width: 66.6666%;
+  width: 50%;
 }
 
 .curtain-tooltip .popover-inner .instruction:only-child {
@@ -5527,10 +5525,15 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 }
 
 .curtain-tooltip .popover-inner .icon.pre-text {
-    vertical-align: text-top;
-    margin-right: 0;
-    margin-left: 0;
-    display: inline-block;
+  vertical-align: text-top;
+  margin-right: 0;
+  margin-left: 0;
+  display: inline-block;
+}
+
+.curtain-tooltip .popover-inner .icon.success {
+  color: #55bb00;
+  margin: 0 3px;
 }
 
 .curtain-tooltip.intro-points-describe ,

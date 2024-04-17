@@ -37,6 +37,7 @@ export class OsmoseService extends AbstractSystem {
 
     this._cache = null;   // cache gets replaced on init/reset
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
   }
 
 
@@ -87,6 +88,8 @@ export class OsmoseService extends AbstractSystem {
       rtree: new RBush()
     };
 
+    this._lastv = null;
+
     return Promise.resolve();
   }
 
@@ -97,7 +100,7 @@ export class OsmoseService extends AbstractSystem {
    * @return  {Array}  Array of data
    */
   getData() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
@@ -107,14 +110,17 @@ export class OsmoseService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles() {
-    // determine the needed tiles to cover the view
-    const projection = this.context.projection;
-    const tiles = this._tiler.getTiles(projection).tiles;
+    const viewport = this.context.viewport;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
 
-    // abort inflight requests that are no longer needed
+    // Determine the tiles needed to cover the view..
+    const tiles = this._tiler.getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed..
     this._abortUnwantedRequests(this._cache, tiles);
 
-    // issue new requests..
+    // Issue new requests..
     for (const tile of tiles) {
       if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
 

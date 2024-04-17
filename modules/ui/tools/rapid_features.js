@@ -12,7 +12,7 @@ export function uiToolRapidFeatures(context) {
   const urlhash = context.systems.urlhash;
 
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
-  const rapidFeaturesToggleKey = '⇧' + l10n.t('map_data.layers.ai-features.key');
+  const rapidFeaturesToggleKey = '⇧' + l10n.t('map_data.layers.rapid.key');
   const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
 

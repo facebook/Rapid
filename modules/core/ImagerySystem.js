@@ -299,14 +299,17 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
-   *  sources
+   *  visibleSources
    *  Returns array of known imagery sources that are valid at the given extent and zoom
-   *  @param   extent
-   *  @param   zoom
    *  @return  Array
    */
-  sources(extent, zoom) {
+  visibleSources() {
     if (!this._imageryIndex) return [];   // called before init()?
+
+    const context = this.context;
+    const viewport = context.viewport;
+    const extent = viewport.visibleExtent();
+    const zoom = viewport.transform.zoom;
 
     const visible = new Set();
     (this._imageryIndex.query.bbox(extent.rectangle(), true) || [])
@@ -316,7 +319,7 @@ export class ImagerySystem extends AbstractSystem {
     const sources = [...this._imageryIndex.sources.values()];
 
     // Recheck blocked sources only if we detect new blocklists pulled from the OSM API.
-    const osm = this.context.services.osm;
+    const osm = context.services.osm;
     const blocklists = osm?.imageryBlocklists ?? [];
     const blocklistChanged = (blocklists.length !== this._checkedBlocklists.length) ||
       blocklists.some((regex, index) => String(regex) !== this._checkedBlocklists[index]);
@@ -329,11 +332,11 @@ export class ImagerySystem extends AbstractSystem {
     }
 
     return sources.filter(source => {
-      if (currSource === source) return true;       // always include the current imagery
-      if (source.isBlocked) return false;           // even bundled sources may be blocked - iD#7905
-      if (!source.polygon) return true;             // always include imagery with worldwide coverage
-      if (zoom && zoom < 6) return false;           // optionally exclude local imagery at low zooms
-      return visible.has(source.id);                // include imagery visible in given extent
+      if (currSource === source) return true;  // always include the current imagery
+      if (source.isBlocked) return false;      // even bundled sources may be blocked - iD#7905
+      if (!source.polygon) return true;        // always include imagery with worldwide coverage
+      if (zoom && zoom < 6) return false;      // optionally exclude local imagery at low zooms
+      return visible.has(source.id);           // include imagery visible in given extent
     });
   }
 
@@ -380,11 +383,12 @@ export class ImagerySystem extends AbstractSystem {
    * this tries several options to pick an appropriate imagery to use.
    */
   chooseDefaultSource() {
-    const map = this.context.systems.map;
-    const available = this.sources(map.extent(), map.zoom());
+    const context = this.context;
+    const storage = context.systems.storage;
+
+    const available = this.visibleSources();
     const first = available[0];
     const best = available.find(s => s.best);
-    const storage = this.context.systems.storage;
 
     // consider previously chosen imagery unless it was 'none'
     const prevUsed = storage.getItem('background-last-used') || 'none';
@@ -471,6 +475,7 @@ export class ImagerySystem extends AbstractSystem {
    */
   nudge(delta, zoom) {
     if (this._baseLayer) {
+      const zoom = this.context.viewport.transform.zoom;
       this._baseLayer.nudge(delta, zoom);
       this.updateImagery();
       this.emit('imagerychange');

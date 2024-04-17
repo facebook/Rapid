@@ -7,9 +7,9 @@ import { uiSection } from '../section.js';
 
 
 export function uiSectionOverlayList(context) {
-  const map = context.systems.map;
-  const l10n = context.systems.l10n;
   const imagery = context.systems.imagery;
+  const l10n = context.systems.l10n;
+  const map = context.systems.map;
 
   const section = uiSection(context, 'overlay-list')
     .label(l10n.t('background.overlays'))
@@ -51,7 +51,7 @@ export function uiSectionOverlayList(context) {
 
   function drawListItems(selection) {
     let sources = imagery
-      .sources(map.extent(), map.zoom())
+      .visibleSources()
       .filter(isOverlay);
 
     let layerLinks = selection.selectAll('li')

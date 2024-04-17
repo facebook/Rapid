@@ -6,6 +6,7 @@ export function uiZoomToSelection(context) {
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const ui = context.systems.ui;
+  const viewport = context.viewport;
 
   const shortcutKey = l10n.t('inspector.zoom_to.key');
   let _lastPointerUpType;
@@ -20,6 +21,7 @@ export function uiZoomToSelection(context) {
 
     let button = selection
       .append('button')
+      .attr('class', 'zoom-to-selection')
       .on('pointerup', d3_event => _lastPointerUpType = d3_event.pointerType)
       .on('click', onClick)
       .call(uiIcon('#rapid-icon-framed-dot', 'light'))
@@ -46,9 +48,8 @@ export function uiZoomToSelection(context) {
         _lastTransform = null;
 
       } else if (extent) {   // zoom in on extent
-        _lastTransform = map.transform();
-        const [w, h] = map.dimensions;
-        const z = map.extentZoom(extent, [w/2, h/2]);
+        _lastTransform = viewport.transform.props;
+        const z = map.extentZoom(extent, viewport.center());
         map.centerZoomEase(extent.center(), z);
 
       } else {   // tool disabled

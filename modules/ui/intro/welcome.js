@@ -33,13 +33,13 @@ export function uiIntroWelcome(context, curtain) {
   // Click Ok to advance
   function welcomeAsync() {
     return map
-      .setCenterZoomAsync(townHallExtent.center(), 19)
+      .setMapParamsAsync(townHallExtent.center(), 19, 0)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-welcome',
           tipHtml: helpHtml(context, 'intro.welcome.welcome'),
-          buttonText: l10n.tHtml('intro.ok'),
+          buttonText: l10n.t('intro.ok'),
           buttonCallback: () => resolve(practiceAsync)
         });
       }));
@@ -53,7 +53,7 @@ export function uiIntroWelcome(context, curtain) {
       curtain.reveal({
         revealSelector: '.intro-nav-wrap .chapter-welcome',
         tipHtml: helpHtml(context, 'intro.welcome.practice'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(wordsAsync)
       });
     });
@@ -67,7 +67,7 @@ export function uiIntroWelcome(context, curtain) {
       curtain.reveal({
         revealSelector: '.intro-nav-wrap .chapter-welcome',
         tipHtml: helpHtml(context, 'intro.welcome.words'),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(chaptersAsync)
       });
     });

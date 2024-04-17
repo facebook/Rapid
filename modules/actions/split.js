@@ -1,11 +1,10 @@
-import { geoSphericalDistance } from '@rapid-sdk/math';
+import { geoSphericalDistance, numWrap } from '@rapid-sdk/math';
 import { utilArrayIntersection, utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionAddMember } from './add_member.js';
 import { osmIsOldMultipolygonOuterMember } from '../osm/multipolygon.js';
 import { osmRelation } from '../osm/relation.js';
 import { osmWay } from '../osm/way.js';
-import { utilWrap } from '../util/index.js';
 
 
 // Split a way at the given node.
@@ -56,7 +55,7 @@ export function actionSplit(nodeIds, newWayIDs) {
         var idxB;
 
         function wrap(index) {
-            return utilWrap(index, nodes.length);
+          return numWrap(index, 0, nodes.length);
         }
 
         // calculate lengths

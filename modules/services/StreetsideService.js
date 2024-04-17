@@ -62,6 +62,7 @@ export class StreetsideService extends AbstractSystem {
     this._setupCanvas = this._setupCanvas.bind(this);
 
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
   }
 
 
@@ -202,6 +203,8 @@ export class StreetsideService extends AbstractSystem {
       metadataPromise:  null
     };
 
+    this.lastv = null;
+
     return Promise.resolve();
   }
 
@@ -212,7 +215,7 @@ export class StreetsideService extends AbstractSystem {
    * @return  {Array}  Array of image data
    */
   getImages() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
@@ -224,7 +227,7 @@ export class StreetsideService extends AbstractSystem {
    */
   getSequences() {
     const cache = this._cache;
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     const result = new Map();  // Map(sequenceID -> sequence)
 
     // Gather sequences for the bubbles in viewport
@@ -246,22 +249,25 @@ export class StreetsideService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles() {
-    // Determine the needed tiles to cover the view
-    // By default: request 2 nearby tiles so we can connect sequences.
-    const margin = 2;
-    const projection = this.context.projection;
-    const needTiles = this._tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
+    const viewport = this.context.viewport;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
 
-    // Abort inflight requests that are no longer needed
+    // Determine the tiles needed to cover the view..
+    // By default: request 2 nearby tiles so we can connect sequences.
+    const MARGIN = 2;
+    const tiles = this._tiler.zoomRange(TILEZOOM).margin(MARGIN).getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed..
     for (const [tileID, inflight] of this._cache.inflight) {
-      const needed = needTiles.find(tile => tile.id === tileID);
+      const needed = tiles.find(tile => tile.id === tileID);
       if (!needed) {
         inflight.controller.abort();
       }
     }
 
-    // Fetch files that are needed
-    for (const tile of needTiles) {
+    // Issue new requests..
+    for (const tile of tiles) {
       const tileID = tile.id;
       if (this._cache.loaded.has(tileID) || this._cache.inflight.has(tileID)) continue;
 
@@ -270,8 +276,10 @@ export class StreetsideService extends AbstractSystem {
     }
   }
 
-  get viewerShowing()         { return this._showing; }
 
+  get viewerShowing() {
+    return this._showing;
+  }
 
 
   /**
@@ -659,12 +667,10 @@ export class StreetsideService extends AbstractSystem {
     const angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
     poly = geomRotatePoints(poly, -angle, origin);
 
-    let extent = poly.reduce((extent, point) => {
-      // update extent in place
-      extent.min = [ Math.min(extent.min[0], point[0]), Math.min(extent.min[1], point[1]) ];
-      extent.max = [ Math.max(extent.max[0], point[0]), Math.max(extent.max[1], point[1]) ];
-      return extent;
-    }, new Extent());
+    const extent = new Extent();
+    for (const point of poly) {
+      extent.extendSelf(point);
+    }
 
     // find nearest other bubble in the search polygon
     let minDist = Infinity;

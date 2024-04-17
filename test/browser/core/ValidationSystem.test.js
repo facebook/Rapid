@@ -28,12 +28,6 @@ describe('ValidationSystem', () => {
     tHtml(id)     { return id; }
   }
 
-  class MockMapSystem {
-    constructor() { }
-    initAsync()   { return Promise.resolve(); }
-    extent()      { return new Rapid.sdk.Extent(); }
-  }
-
   class MockPhotoSystem {
     constructor() { }
     initAsync()   { return Promise.resolve(); }
@@ -50,13 +44,13 @@ describe('ValidationSystem', () => {
 
   class MockContext {
     constructor()   {
-      this.projection = new Rapid.sdk.Projection();
+      this.viewport = new Rapid.sdk.Viewport();
       this.systems = {
         dataloader: new Rapid.DataLoaderSystem(this),
         editor:     new Rapid.EditSystem(this),
         imagery:    new MockImagerySystem(),
         l10n:       new MockLocalizationSystem(),
-        map:        new MockMapSystem(),
+        map:        new MockSystem(),
         photos:     new MockPhotoSystem(),
         presets:    new MockSystem(),
         rapid:      new MockSystem(),

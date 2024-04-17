@@ -64,7 +64,7 @@ export class PixiScene extends EventEmitter {
     this.layers = new Map();     // Map (layerID -> Layer)
     this.features = new Map();   // Map (featureID -> Feature)
 
-    // Create Groups, and add them to the stage..
+    // Create Groups, and add them to the origin..
     // Groups are pre-established Containers that the Layers can add
     // their Features to, so that the scene can be sorted reasonably.
     [
@@ -81,7 +81,7 @@ export class PixiScene extends EventEmitter {
       container.name = groupID;
       container.sortableChildren = true;
       container.zIndex = i;
-      this.renderer.stage.addChild(container);
+      this.renderer.origin.addChild(container);
       this.groups.set(groupID, container);
     });
 
@@ -137,13 +137,13 @@ export class PixiScene extends EventEmitter {
    * - For proper label placement, we really need to cull the feature layers
    *   before we render the label layer, so we do these calls in layer order.
    *
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, projection, zoom) {
+  render(frame, viewport, zoom) {
     for (const layer of this.layers.values()) {
-      layer.render(frame, projection, zoom);
+      layer.render(frame, viewport, zoom);
       layer.cull(frame);
     }
   }

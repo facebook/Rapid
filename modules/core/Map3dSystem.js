@@ -21,7 +21,7 @@ export class Map3dSystem extends AbstractSystem {
     super(context);
     this.id = 'map3d';
     this.autoStart = false;
-    this.dependencies = new Set(['map', 'urlhash']);
+    this.dependencies = new Set(['urlhash']);
     this.containerID = '3d-buildings';
     this.maplibre = null;
 
@@ -64,8 +64,6 @@ export class Map3dSystem extends AbstractSystem {
         const maplibregl = window.maplibregl;
         if (!maplibregl) throw new Error('maplibre-gl not loaded');
 
-        const map = this.context.systems.map;
-
         const maplibre = this.maplibre = new maplibregl.Map({
           container: this.containerID,
           pitch: 30,
@@ -93,10 +91,12 @@ export class Map3dSystem extends AbstractSystem {
               intensity: 0.3,
             });
 
-            maplibre.jumpTo({
-              zoom: map.zoom() - 3,
-              center: map.extent().center(),
-            });
+// code in map3d_viewer will do this?
+//            const map = this.context.systems.map;
+//            maplibre.jumpTo({
+//              zoom: map.zoom() - 3,
+//              center: map.extent().center(),
+//            });
 
             // sources
             maplibre.addSource('osmareas', {

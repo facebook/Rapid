@@ -1,27 +1,13 @@
 describe('MapillaryService', () => {
   let _mapillary;
 
-  class MockMapSystem {
-    constructor(context)  { this.context = context; }
-    initAsync()           { return Promise.resolve(); }
-    extent() {
-      return new sdk.Extent(
-        this.context.projection.invert([0, 64]), // bottom left
-        this.context.projection.invert([64, 0])  // top right
-      );
-    }
-  }
-
   class MockContext {
     constructor() {
-      this.systems = {
-        map: new MockMapSystem(this),
-      };
+      this.systems = { };
 
-      this.projection = new sdk.Projection()
-        .scale(sdk.geoZoomToScale(14))
-        .translate([-116508, 0])  // 10,0
-        .dimensions([[0,0], [64, 64]]);
+      this.viewport = new sdk.Viewport();
+      this.viewport.transform = { x: -116508, y: 0, k: sdk.geoZoomToScale(14) };  // [10°, 0°]
+      this.viewport.dimensions = [64, 64];
     }
     deferredRedraw() { }
   }
@@ -171,7 +157,7 @@ describe('MapillaryService', () => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      _mapillary.context.projection.translate([0, 0]);  // move map to Null Island
+      _mapillary.context.viewport.transform.translation = [0, 0];  // move map to Null Island
       _mapillary.on('loadedImages', spy);
       _mapillary.loadTiles('images');
 

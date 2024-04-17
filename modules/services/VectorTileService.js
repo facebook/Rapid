@@ -1,4 +1,4 @@
-import { Extent, Tiler, vecEqual } from '@rapid-sdk/math';
+import { Extent, Tiler, geoScaleToZoom, vecEqual } from '@rapid-sdk/math';
 import { utilHashcode } from '@rapid-sdk/util';
 import { VectorTile } from '@mapbox/vector-tile';
 import geojsonRewind from '@mapbox/geojson-rewind';
@@ -88,6 +88,7 @@ export class VectorTileService extends AbstractSystem {
         cache.rbush.clear();
       }
       source.zoomCache.clear();
+      source.lastv = null;
     }
     this._sources.clear();
 
@@ -115,12 +116,14 @@ export class VectorTileService extends AbstractSystem {
     const source = this._sources.get(template);
     if (!source) return [];
 
-    const map = this.context.systems.map;
-    const extent = map.extent();
+    const context = this.context;
+    const viewport = context.viewport;
+    const bbox = viewport.visibleExtent().bbox();
 
-    // -1 because vector tiles are 512px, so they are offset by 1 zoom level
+    // Note that because vector tiles are 512px, they are offset by -1 zoom level
     // from the main map zoom, which follows 256px and OSM convention.
-    const zoom = Math.round(map.zoom()) - 1;
+    const scale = viewport.transform.scale;
+    const zoom = Math.round(geoScaleToZoom(scale, 512));
 
     // Because vector tiled data can be different at different zooms,
     // the caches and indexes need to be setup "per-zoom".
@@ -129,11 +132,11 @@ export class VectorTileService extends AbstractSystem {
     for (let diff = 0; diff < 12; diff++) {
       cache = source.zoomCache.get(zoom + diff);
       if (cache) {
-        return cache.rbush.search(extent.bbox()).map(d => d.data);
+        return cache.rbush.search(bbox).map(d => d.data);
       }
       cache = source.zoomCache.get(zoom - diff);
       if (cache) {
-        return cache.rbush.search(extent.bbox()).map(d => d.data);
+        return cache.rbush.search(bbox).map(d => d.data);
       }
     }
     return [];
@@ -156,19 +159,23 @@ export class VectorTileService extends AbstractSystem {
           }
         }
 
-        // Determine the needed tiles to cover the view
-        const projection = this.context.projection;
-        const needTiles = this._tiler.getTiles(projection).tiles;
+        const viewport = this.context.viewport;
+        if (source.lastv === viewport.v) return;  // exit early if the view is unchanged
+        source.lastv = viewport.v;
 
-        // Abort inflight requests that are no longer needed
+        // Determine the tiles needed to cover the view..
+        const tiles = this._tiler.getTiles(viewport).tiles;
+
+        // Abort inflight requests that are no longer needed..
         for (const [tileID, controller] of source.inflight) {
-          const needed = needTiles.find(tile => tile.id === tileID);
+          const needed = tiles.find(tile => tile.id === tileID);
           if (!needed) {
             controller.abort();
           }
         }
 
-        const fetches = needTiles.map(tile => this._loadTileAsync(source, tile));
+        // Issue new requests..
+        const fetches = tiles.map(tile => this._loadTileAsync(source, tile));
         return Promise.all(fetches)
           .then(() => this._processMergeQueue(source));
       });
@@ -197,7 +204,8 @@ export class VectorTileService extends AbstractSystem {
         template:     template,
         inflight:     new Map(),   // Map(tileID -> AbortController)
         loaded:       new Map(),   // Map(tileID -> Tile)
-        zoomCache:    new Map()    // Map(zoom -> Object zoomCache)
+        zoomCache:    new Map(),   // Map(zoom -> Object zoomCache)
+        lastv:        null         // viewport version last time we fetched data
       };
 
       this._sources.set(template, source);
@@ -620,28 +628,22 @@ export class VectorTileService extends AbstractSystem {
       for (const polygon of parts) {
         const outer = polygon[0];  // No need to iterate over inners
         for (const point of outer) {
-          _extend(point);
+          extent.extendSelf(point);
         }
       }
     } else if (/LineString$/.test(type)) {
       for (const line of parts) {
         for (const point of line) {
-          _extend(point);
+          extent.extendSelf(point);
         }
       }
     } else if (/Point$/.test(type)) {
       for (const point of parts) {
-        _extend(point);
+        extent.extendSelf(point);
       }
     }
 
     return extent;
-
-    // update extent in place
-    function _extend(coord) {
-      extent.min = [ Math.min(extent.min[0], coord[0]), Math.min(extent.min[1], coord[1]) ];
-      extent.max = [ Math.max(extent.max[0], coord[0]), Math.max(extent.max[1], coord[1]) ];
-    }
   }
 
 

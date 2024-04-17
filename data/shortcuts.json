@@ -6,44 +6,43 @@
       {
         "rows": [
           {
+            "section": "help",
+            "text": "shortcuts.browsing.help.title"
+          },
+          {
+            "shortcuts": ["help.key"],
+            "text": "shortcuts.browsing.help.help"
+          },
+          {
+            "shortcuts": ["shortcuts.toggle.key", "?"],
+            "text": "shortcuts.browsing.help.keyboard"
+          },
+          {
             "section": "navigation",
             "text": "shortcuts.browsing.navigation.title"
           },
           {
-            "shortcuts": ["↓", "↑", "←", "→"],
-            "text": "shortcuts.browsing.navigation.pan",
-            "separator": ","
+            "shortcuts": ["{interaction-twofinger-tap-and-drag}", "{interaction-keyboard-arrows-all}"],
+            "text": "shortcuts.browsing.navigation.pan"
           },
           {
-            "modifiers": ["⌥"],
-            "shortcuts": ["↓", "↑", "←", "→"],
-            "text": "shortcuts.browsing.navigation.pan_more",
-            "separator": ","
+            "modifiers": ["⌘"],
+            "shortcuts": ["{interaction-keyboard-arrows-all}"],
+            "text": "shortcuts.browsing.navigation.pan_more"
           },
           {
-            "shortcuts": ["+", "-"],
-            "text": "shortcuts.browsing.navigation.zoom",
-            "separator": ","
+            "shortcuts": ["{interaction-mouse-wheel}", "{interaction-twofinger-zoom}", ["+", "-"]],
+            "text": "shortcuts.browsing.navigation.zoom"
           },
           {
-            "modifiers": ["⌥"],
-            "shortcuts": ["+", "-"],
-            "text": "shortcuts.browsing.navigation.zoom_more",
-            "separator": ","
+            "modifiers": ["⌘"],
+            "shortcuts": [["+", "-"]],
+            "text": "shortcuts.browsing.navigation.zoom_more"
           },
           {
-            "section": "navigation",
-            "text": "shortcuts.browsing.photo_navigation.title"
-          },
-          {
-            "shortcuts": ["↑", "→"],
-            "text": "shortcuts.browsing.photo_navigation.forward",
-            "rapid": true
-          },
-          {
-            "shortcuts": ["↓", "←"],
-            "text": "shortcuts.browsing.photo_navigation.backward",
-            "rapid": true
+            "modifiers": ["⇧"],
+            "shortcuts": ["{interaction-keyboard-arrows-left-right}"],
+            "text": "shortcuts.browsing.navigation.rotate"
           },
           {
             "section": "display_options",
@@ -99,22 +98,12 @@
             "text": "shortcuts.browsing.display_options.osm_data"
           },
           {
-            "shortcuts": ["background.minimap.key"],
-            "text": "shortcuts.browsing.display_options.minimap"
-          },
-          {
-            "modifiers": ["⌘"],
-            "shortcuts": ["background.3dmap.key"],
-            "text": "shortcuts.browsing.display_options.3dmap",
-            "rapid": true
-          },
-          {
             "shortcuts": ["map_data.highlight_edits.key"],
             "text": "shortcuts.browsing.display_options.highlight_edits"
           },
           {
             "modifiers": ["⇧"],
-            "shortcuts": [ "map_data.layers.ai-features.key"],
+            "shortcuts": [ "map_data.layers.rapid.key"],
             "text": "shortcuts.browsing.display_options.rapid_features_data",
             "rapid": true
           }
@@ -123,33 +112,21 @@
       {
         "rows": [
           {
-            "section": "help",
-            "text": "shortcuts.browsing.help.title"
-          },
-          {
-            "shortcuts": ["help.key"],
-            "text": "shortcuts.browsing.help.help"
-          },
-          {
-            "shortcuts": ["shortcuts.toggle.key", "?"],
-            "text": "shortcuts.browsing.help.keyboard"
-          },
-          {
             "section": "selecting",
             "text": "shortcuts.browsing.selecting.title"
           },
           {
-            "shortcuts": ["Left-click", "Tap", "shortcuts.key.space"],
+            "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
             "text": "shortcuts.browsing.selecting.select_one"
           },
           {
             "modifiers": ["⇧"],
-            "shortcuts": ["Left-click"],
+            "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
             "text": "shortcuts.browsing.selecting.select_multi"
           },
           {
             "modifiers": ["⇧"],
-            "shortcuts": ["Left-click"],
+            "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap-and-drag}"],
             "gesture": "shortcuts.gesture.drag",
             "text": "shortcuts.browsing.selecting.lasso"
           },
@@ -163,12 +140,20 @@
             "text": "shortcuts.browsing.with_selected.title"
           },
           {
-            "shortcuts": ["Right-click", "Long-press", "☰"],
+            "shortcuts": ["{interaction-mouse-right}", "{interaction-onefinger-tap-and-hold}", "☰"],
             "text": "shortcuts.browsing.with_selected.edit_menu"
           },
           {
             "shortcuts": ["inspector.zoom_to.key"],
             "text": "shortcuts.browsing.with_selected.zoom_to"
+          },
+          {
+            "section": "photo_selected",
+            "text": "shortcuts.browsing.photo_selected.title"
+          },
+          {
+            "shortcuts": ["{interaction-keyboard-arrows-up-down}"],
+            "text": "shortcuts.browsing.photo_selected.sequence"
           },
           {
             "section": "vertex_selected",
@@ -191,13 +176,13 @@
             "text": "shortcuts.browsing.vertex_selected.last"
           },
           {
-            "modifiers": ["⌘"],
-            "shortcuts": ["↑"],
-            "text": "shortcuts.browsing.vertex_selected.parent"
-          },
-          {
             "shortcuts": ["\\", "shortcuts.key.pause"],
             "text": "shortcuts.browsing.vertex_selected.change_parent"
+          },
+          {
+            "modifiers": ["⌘"],
+            "shortcuts": ["{interaction-keyboard-arrows-up}"],
+            "text": "shortcuts.browsing.vertex_selected.parent"
           },
           {
             "section": "way_selected",
@@ -205,7 +190,7 @@
           },
           {
             "modifiers": ["⌘"],
-            "shortcuts": ["↓"],
+            "shortcuts": ["{interaction-keyboard-arrows-down}"],
             "text": "shortcuts.browsing.way_selected.child"
           }
         ]
@@ -239,11 +224,11 @@
             "text": "shortcuts.editing.drawing.add_note"
           },
           {
-            "shortcuts": ["Left-click", "Tap", "shortcuts.key.space"],
+            "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}", "shortcuts.key.space"],
             "text": "shortcuts.editing.drawing.place_point"
           },
           {
-            "shortcuts": ["⌥"],
+            "shortcuts": ["⌥", "⌃"],
             "text": "shortcuts.editing.drawing.disable_snap"
           },
           {
@@ -302,6 +287,27 @@
             "text": "shortcuts.editing.operations.title"
           },
           {
+            "shortcuts": ["{interaction-keyboard-arrows-all}", "operations.move.key"],
+            "text": "shortcuts.editing.operations.move"
+          },
+          {
+            "modifiers": ["⇧"],
+            "shortcuts": ["{interaction-keyboard-arrows-left-right}", "operations.rotate.key"],
+            "text": "shortcuts.editing.operations.rotate"
+          },
+          {
+            "shortcuts": ["operations.orthogonalize.key"],
+            "text": "shortcuts.editing.operations.orthogonalize"
+          },
+          {
+            "shortcuts": ["operations.straighten.key"],
+            "text": "shortcuts.editing.operations.straighten"
+          },
+          {
+            "shortcuts": ["operations.circularize.key"],
+            "text": "shortcuts.editing.operations.circularize"
+          },
+          {
             "shortcuts": ["operations.continue.key"],
             "text": "shortcuts.editing.operations.continue_line"
           },
@@ -324,26 +330,6 @@
           {
             "shortcuts": ["operations.reverse.key"],
             "text": "shortcuts.editing.operations.reverse"
-          },
-          {
-            "shortcuts": ["operations.move.key"],
-            "text": "shortcuts.editing.operations.move"
-          },
-          {
-            "shortcuts": ["operations.rotate.key"],
-            "text": "shortcuts.editing.operations.rotate"
-          },
-          {
-            "shortcuts": ["operations.orthogonalize.key"],
-            "text": "shortcuts.editing.operations.orthogonalize"
-          },
-          {
-            "shortcuts": ["operations.straighten.key"],
-            "text": "shortcuts.editing.operations.straighten"
-          },
-          {
-            "shortcuts": ["operations.circularize.key"],
-            "text": "shortcuts.editing.operations.circularize"
           },
           {
             "shortcuts": ["operations.reflect.key.long"],
@@ -374,6 +360,20 @@
     "columns": [
       {
         "rows": [
+          {
+            "section": "viewers",
+            "text": "shortcuts.tools.viewers.title"
+          },
+          {
+            "shortcuts": ["background.minimap.key"],
+            "text": "shortcuts.tools.viewers.minimap"
+          },
+          {
+            "modifiers": ["⌘"],
+            "shortcuts": ["background.3dmap.key"],
+            "text": "shortcuts.tools.viewers.3dmap",
+            "rapid": true
+          },
           {
             "section": "info",
             "text": "shortcuts.tools.info.title"

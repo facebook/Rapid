@@ -74,6 +74,7 @@ export class EsriService extends AbstractSystem {
       ds.graph = new Graph();
       ds.tree = new Tree(ds.graph);
       ds.cache = { inflight: {}, loaded: {}, seen: {} };
+      ds.lastv = null;
     }
 
     return Promise.resolve();
@@ -90,7 +91,7 @@ export class EsriService extends AbstractSystem {
     const ds = this._datasets[datasetID];
     if (!ds || !ds.tree || !ds.graph) return [];
 
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return ds.tree.intersects(extent, ds.graph);
   }
 
@@ -109,11 +110,16 @@ export class EsriService extends AbstractSystem {
     if (!ds || !ds.layer) return;
 
     const cache = ds.cache;
-    const locationSystem = this.context.systems.locations;
-    const projection = this.context.projection;
-    const tiles = this._tiler.getTiles(projection).tiles;
+    const locations = this.context.systems.locations;
 
-    // abort inflight requests that are no longer needed
+    const viewport = this.context.viewport;
+    if (ds.lastv === viewport.v) return;  // exit early if the view is unchanged
+    ds.lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
+    const tiles = this._tiler.getTiles(viewport).tiles;
+
+    // Abort inflight requests that are no longer needed..
     for (const k of Object.keys(cache.inflight)) {
       const wanted = tiles.find(tile => tile.id === k);
       if (!wanted) {
@@ -127,7 +133,7 @@ export class EsriService extends AbstractSystem {
 
       // exit if this tile covers a blocked region (all corners are blocked)
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
-      const tileBlocked = corners.every(loc => locationSystem.blocksAt(loc).length);
+      const tileBlocked = corners.every(loc => locations.blocksAt(loc).length);
       if (tileBlocked) {
         cache.loaded[tile.id] = true;  // don't try again
         continue;
@@ -282,6 +288,7 @@ export class EsriService extends AbstractSystem {
     ds.graph = new Graph();
     ds.tree = new Tree(ds.graph);
     ds.cache = { inflight: {}, loaded: {}, seen: {} };
+    ds.lastv = null;
 
     // cleanup the `licenseInfo` field by removing styles  (not used currently)
     let license = d3_select(document.createElement('div'));

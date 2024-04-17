@@ -45,8 +45,8 @@ export function uiFieldAddress(context, uifield) {
     const streets = editor.intersects(box)
       .filter(isAddressableStreet)
       .map(d => {
-        const loc = context.projection.project(center);
-        const choice = geoChooseEdge(editor.staging.graph.childNodes(d), loc, context.projection);
+        const loc = context.viewport.project(center);
+        const choice = geoChooseEdge(editor.staging.graph.childNodes(d), loc, context.viewport);
         return {
           title: d.tags.name,
           value: d.tags.name,

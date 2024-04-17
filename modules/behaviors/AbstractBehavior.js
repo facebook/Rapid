@@ -1,4 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
+import { vecRotate } from '@rapid-sdk/math';
 
 
 /**
@@ -102,11 +103,23 @@ export class AbstractBehavior extends EventEmitter {
 //      data: null,
 //    };
 
+    const coord = {
+      screen: [e.global.x, e.global.y],  // [0,0] is top,left of the screen
+      map: [e.global.x, e.global.y]      // [0,0] is the origin of the viewport (rotation removed)
+    };
+
+    const context = this.context;
+    const viewport = context.viewport;
+    const r = viewport.transform.r;
+    if (r) {
+      coord.map = vecRotate(coord.screen, -r, viewport.center());  // remove rotation
+    }
+
     const result = {
       id: e.pointerId ?? e.pointerType ?? 'unknown',
       event: e,
       originalEvent: e.originalEvent,
-      coord: [e.global.x, e.global.y],
+      coord: coord,
       time: e.timeStamp,
       isCancelled: false,
       target: null

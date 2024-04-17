@@ -123,17 +123,17 @@ export class AbstractFeature {
 
   /**
    * update
-   * Every Feature should have an `update()` function that redraws the Feature at the given projection and zoom.
+   * Every Feature should have an `update()` function that redraws the Feature at the given viewport and zoom.
    * When the Feature is updated, its `dirty` flags should be set to `false`.
    * Override in a subclass with needed logic. It will be passed:
-   * @param  projection  Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport  Pixi viewport to use for rendering
+   * @param  zoom      Effective zoom to use for rendering
    * @abstract
    */
-  update(projection, zoom) {
+  update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    this.geometry.update(projection, zoom);
+    this.geometry.update(viewport, zoom);
     this._styleDirty = false;
     // The labeling code will decide what to do with the `_labelDirty` flag
   }

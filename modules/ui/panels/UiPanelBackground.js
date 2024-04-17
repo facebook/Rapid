@@ -148,6 +148,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     const selection = this._selection;
     const imagery = context.systems.imagery;
     const l10n = context.systems.l10n;
+    const viewport = context.viewport;
 
     const source = imagery.baseLayerSource();
     if (!source) return;
@@ -158,9 +159,9 @@ export class UiPanelBackground extends AbstractUiPanel {
       this._metadata = {};
     }
 
-    // Look for a loaded tile that covers the center of the map.
-    const center = context.systems.map.center();
-    const centerExtent = new Extent(center);
+    // Look for a loaded tile that covers the center of the viewport.
+    const centerLoc = viewport.centerLoc();
+    const centerExtent = new Extent(centerLoc);
     const layer = context.scene().layers.get('background');
     const tileMap = layer?._tileMaps.get(source.id);
     let tileCoord, tileZoom;
@@ -177,7 +178,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     }
 
     // update zoom
-    const zoom = tileZoom || Math.floor(context.systems.map.zoom());
+    const zoom = tileZoom || Math.floor(viewport.transform.zoom);
     this._metadata.zoom = String(zoom);
     selection.selectAll('.background-info-list-zoom')
       .classed('hide', false)
@@ -187,12 +188,12 @@ export class UiPanelBackground extends AbstractUiPanel {
     if (!tileCoord) return;
 
     // attempt async update of the rest of the fields..
-    source.getMetadata(center, tileCoord, (err, result) => {
+    source.getMetadata(centerLoc, tileCoord, (err, result) => {
       if (err || this._currSourceID !== source.id) return;
 
       // update vintage
       const vintage = result.vintage;
-      this._metadata.vintage = (vintage && vintage.range) || l10n.t('info_panels.background.unknown');
+      this._metadata.vintage = vintage?.range || l10n.t('info_panels.background.unknown');
       selection.selectAll('.background-info-list-vintage')
         .classed('hide', false)
         .selectAll('.background-info-span-vintage')

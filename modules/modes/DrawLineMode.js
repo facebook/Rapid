@@ -1,4 +1,4 @@
-import { vecEqual, vecLength } from '@rapid-sdk/math';
+import { vecEqual, vecLength, vecRotate, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
 import { actionAddEntity } from '../actions/add_entity.js';
@@ -9,6 +9,7 @@ import { geoChooseEdge } from '../geo/index.js';
 import { osmNode, osmWay } from '../osm/index.js';
 
 const DEBUG = false;
+
 
 /**
  * `DrawLineMode`
@@ -47,7 +48,7 @@ export class DrawLineMode extends AbstractMode {
     this._editIndex = null;
 
     // Watch coordinates to determine if we have moved enough
-    this._lastCoord = null;
+    this._lastPoint = null;
 
     // To deal with undo/redo, we take snapshots on every commit, keyed to the stable graph.
     // If we ever find ourself in an edit where we can't retrieve this information, leave `DrawLineMode`.
@@ -61,6 +62,7 @@ export class DrawLineMode extends AbstractMode {
     this._finish = this._finish.bind(this);
     this._hover = this._hover.bind(this);
     this._move = this._move.bind(this);
+    this._nudge = this._nudge.bind(this);
     this._restoreSnapshot = this._restoreSnapshot.bind(this);
   }
 
@@ -106,15 +108,13 @@ export class DrawLineMode extends AbstractMode {
     this.lastNodeID = null;
     this.firstNodeID = null;
     this._insertIndex = undefined;
-    this._lastCoord = null;
+    this._lastPoint = null;
     this._selectedData.clear();
 
     const eventManager = context.systems.map.renderer.events;
     eventManager.setCursor('crosshair');
 
-    context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
-    // Now that the user has clicked, let them nudge the map by moving to the edge.
-    context.behaviors['map-nudging'].allow();
+    context.enableBehaviors(['hover', 'draw', 'mapInteraction', 'mapNudge']);
 
     context.behaviors.hover
       .on('hoverchange', this._hover);
@@ -125,10 +125,13 @@ export class DrawLineMode extends AbstractMode {
       .on('finish', this._finish)
       .on('cancel', this._cancel);
 
+    context.behaviors.mapNudge
+      .on('nudge', this._nudge);
+
     editor
       .on('historyjump', this._restoreSnapshot);
 
-    context.behaviors['map-interaction'].doubleClickEnabled = false;
+    context.behaviors.mapInteraction.doubleClickEnabled = false;
 
     editor.setCheckpoint('beginDraw');
     this._editIndex = editor.index;
@@ -176,6 +179,9 @@ export class DrawLineMode extends AbstractMode {
       .off('finish', this._finish)
       .off('cancel', this._cancel);
 
+    context.behaviors.mapNudge
+      .off('nudge', this._nudge);
+
     editor
       .off('historyjump', this._restoreSnapshot);
 
@@ -205,13 +211,13 @@ export class DrawLineMode extends AbstractMode {
     this.firstNodeID = null;
     this._insertIndex = undefined;
     this._editIndex = null;
-    this._lastCoord = null;
+    this._lastPoint = null;
 
     this._selectedData.clear();
     scene.clearClass('drawing');
 
     window.setTimeout(() => {
-      context.behaviors['map-interaction'].doubleClickEnabled = true;
+      context.behaviors.mapInteraction.doubleClickEnabled = true;
     }, 1000);
 
     editor.endTransaction();
@@ -245,9 +251,12 @@ export class DrawLineMode extends AbstractMode {
       return;
     }
 
-    // drawNode may or may not exist, it will be recreated after the user moves the pointer.
+    // `drawNode` may or may not exist, it will be recreated after the user moves the pointer.
     if (drawNode) {
       scene.classData('osm', drawNode.id, 'drawing');
+
+      // Nudging at the edge of the map is allowed after the drawNode exists.
+      context.behaviors.mapNudge.allow();
     }
 
     // todo - we do want to allow connecting a line to itself in some situations
@@ -286,13 +295,13 @@ export class DrawLineMode extends AbstractMode {
 
     const context = this.context;
     const editor = context.systems.editor;
-    const projection = context.projection;
-    const coord = eventData.coord;
-    let loc = projection.invert(coord);
+    const viewport = context.viewport;
+    const point = eventData.coord.map;
+    let loc = viewport.unproject(point);
 
     // How much has the pointer moved?
-    const dist = this._lastCoord ? vecLength(coord, this._lastCoord) : 0;
-    this._lastCoord = coord;
+    const dist = this._lastPoint ? vecLength(point, this._lastPoint) : 0;
+    this._lastPoint = point;
 
     let graph = editor.staging.graph;
     let drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
@@ -329,7 +338,7 @@ export class DrawLineMode extends AbstractMode {
 //      loc = choice.loc;
 //    }
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, drawNode.id);
+      const choice = geoChooseEdge(graph.childNodes(target), point, viewport, drawNode.id);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;
@@ -344,6 +353,40 @@ export class DrawLineMode extends AbstractMode {
 
 
   /**
+   * _nudge
+   * This event fires on map pans at the edge of the screen.
+   * We want to move the drawing node opposite of the pixels panned to keep it in the same place.
+   * @param  nudge - [x,y] amount of map pan in pixels
+   */
+  _nudge(nudge) {
+    const context = this.context;
+    const editor = context.systems.editor;
+    const graph = editor.staging.graph;
+    const locations = context.systems.locations;
+    const viewport = context.viewport;
+    const t = context.viewport.transform;
+    if (t.r) {
+      nudge = vecRotate(nudge, -t.r, [0, 0]);   // remove any rotation
+    }
+
+    const drawNode = this.drawNodeID && graph.hasEntity(this.drawNodeID);
+    if (!drawNode) return;
+
+    const currPoint = viewport.project(drawNode.loc);
+    const destPoint = vecSubtract(currPoint, nudge);
+    const loc = viewport.unproject(destPoint);
+
+    if (locations.blocksAt(loc).length) {  // editing is blocked here
+      this._cancel();
+      return;
+    }
+
+    editor.perform(actionMoveNode(drawNode.id, loc));
+    this._refreshEntities();
+  }
+
+
+  /**
    * _click
    * Process whatever the user clicked on.
    * @param  {Object}  eventData - Object containing data about the event and what was targeted
@@ -352,9 +395,9 @@ export class DrawLineMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const locations = context.systems.locations;
-    const projection = context.projection;
-    const coord = eventData.coord;
-    let loc = projection.invert(coord);
+    const viewport = context.viewport;
+    const point = eventData.coord.map;
+    let loc = viewport.unproject(point);
 
     if (locations.blocksAt(loc).length) return;   // editing is blocked here
 
@@ -375,9 +418,6 @@ export class DrawLineMode extends AbstractMode {
       graph = editor.staging.graph;
     }
 
-    // Now that the user has clicked, let them nudge the map by moving to the edge.
-    context.behaviors['map-nudging'].allow();
-
     // Calculate snap, if any..
     // Allow snapping only for OSM Entities in the current graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -397,7 +437,7 @@ export class DrawLineMode extends AbstractMode {
 //      return;
 //    }
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, this.drawNodeID);
+      const choice = geoChooseEdge(graph.childNodes(target), point, viewport, this.drawNodeID);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;

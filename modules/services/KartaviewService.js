@@ -1,5 +1,5 @@
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Tiler, geoScaleToZoom } from '@rapid-sdk/math';
+import { Tiler } from '@rapid-sdk/math';
 import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
@@ -41,7 +41,9 @@ export class KartaviewService extends AbstractSystem {
     this._waitingForPhotoID = null;
     this._startPromise = null;
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
+    this._lastv = null;
     this.fetchedSequences = new Set(); // Initialize an empty set
+
     // Ensure methods used as callbacks always have `this` bound correctly.
     this._zoomPan = this._zoomPan.bind(this);
   }
@@ -149,6 +151,7 @@ export class KartaviewService extends AbstractSystem {
     };
 
     this._selectedImage = null;
+    this._lastv = null;
 
     return Promise.resolve();
   }
@@ -160,7 +163,7 @@ export class KartaviewService extends AbstractSystem {
    * @return  {Array}  Array of image data
    */
   getImages() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     return this._cache.rtree.search(extent.bbox()).map(d => d.data);
   }
 
@@ -171,7 +174,7 @@ export class KartaviewService extends AbstractSystem {
    * @return  {Array}  Array of sequence data
    */
   getSequences() {
-    const extent = this.context.systems.map.extent();
+    const extent = this.context.viewport.visibleExtent();
     let sequenceIDs = new Set();
 
     // Gather sequences for images in viewport
@@ -208,13 +211,14 @@ export class KartaviewService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles() {
-    const projection = this.context.projection;
-    const currZoom = Math.floor(geoScaleToZoom(projection.scale()));
+    const viewport = this.context.viewport;
+    if (this._lastv === viewport.v) return;  // exit early if the view is unchanged
+    this._lastv = viewport.v;
 
-    // Determine the needed tiles to cover the view
-    const needTiles = this._tiler.getTiles(projection).tiles;
+    // Determine the tiles needed to cover the view..
+    const needTiles = this._tiler.getTiles(viewport).tiles;
 
-    // Abort inflight requests that are no longer needed
+    // Abort inflight requests that are no longer needed..
     for (const [k, inflight] of this._cache.inflight) {
       const needed = needTiles.find(tile => k.indexOf(tile.id) === 0);
       if (!needed) {
@@ -224,7 +228,7 @@ export class KartaviewService extends AbstractSystem {
 
     // Fetch files that are needed
     for (const tile of needTiles) {
-      this._loadNextTilePage(currZoom, tile);
+      this._loadNextTilePage(viewport.transform.zoom, tile);
     }
   }
 

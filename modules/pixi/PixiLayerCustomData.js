@@ -72,12 +72,12 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * render
-   * Render the geojson custom data
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
+   * Render the GeoJSON custom data
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
    */
-  render(frame, projection, zoom) {
+  render(frame, viewport, zoom) {
     if (!this.enabled || !this.hasData()) return;
 
     const vtService = this.context.services.vectortile;
@@ -95,12 +95,12 @@ export class PixiLayerCustomData extends AbstractLayer {
     const lines = geoData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');
     const points = geoData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
-    this.renderPolygons(frame, projection, zoom, polygons);
+    this.renderPolygons(frame, viewport, zoom, polygons);
     const gridLines = this.createGridLines(lines);
     const gridStyle = { stroke: { width: 0.5, color: 0x00ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
-    this.renderLines(frame, projection, zoom, lines);
-    this.renderLines(frame, projection, zoom, gridLines, gridStyle);
-    this.renderPoints(frame, projection, zoom, points);
+    this.renderLines(frame, viewport, zoom, lines);
+    this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
+    this.renderPoints(frame, viewport, zoom, points);
   }
 
 
@@ -164,12 +164,12 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * renderPolygons
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
-   * @param  polygons     Array of polygon data
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
+   * @param  polygons   Array of polygon data
    */
-  renderPolygons(frame, projection, zoom, polygons) {
+  renderPolygons(frame, viewport, zoom, polygons) {
     const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
 
@@ -211,7 +211,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         }
 
         this.syncFeatureClasses(feature);
-        feature.update(projection, zoom);
+        feature.update(viewport, zoom);
         this.retainFeature(feature, frame);
       }
     }
@@ -220,13 +220,13 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * renderLines
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
-   * @param  lines        Array of line data
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
+   * @param  lines      Array of line data
    * @param styleOverride Custom style
    */
-  renderLines(frame, projection, zoom, lines, styleOverride) {
+  renderLines(frame, viewport, zoom, lines, styleOverride) {
     const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
 
@@ -267,7 +267,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         }
 
         this.syncFeatureClasses(feature);
-        feature.update(projection, zoom);
+        feature.update(viewport, zoom);
         this.retainFeature(feature, frame);
       }
     }
@@ -276,12 +276,12 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * renderPoints
-   * @param  frame        Integer frame being rendered
-   * @param  projection   Pixi projection to use for rendering
-   * @param  zoom         Effective zoom to use for rendering
-   * @param  lines        Array of point data
+   * @param  frame      Integer frame being rendered
+   * @param  viewport   Pixi viewport to use for rendering
+   * @param  zoom       Effective zoom to use for rendering
+   * @param  lines      Array of point data
    */
-  renderPoints(frame, projection, zoom, points) {
+  renderPoints(frame, viewport, zoom, points) {
     const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('points');
 
@@ -324,7 +324,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         }
 
         this.syncFeatureClasses(feature);
-        feature.update(projection, zoom);
+        feature.update(viewport, zoom);
         this.retainFeature(feature, frame);
       }
     }
@@ -591,29 +591,23 @@ export class PixiLayerCustomData extends AbstractLayer {
         for (const polygon of parts) {
           const outer = polygon[0];  // No need to iterate over inners
           for (const point of outer) {
-            _extend(point);
+            extent.extendSelf(point);
           }
         }
       } else if (/LineString$/.test(type)) {
         for (const line of parts) {
           for (const point of line) {
-            _extend(point);
+            extent.extendSelf(point);
           }
         }
       } else if (/Point$/.test(type)) {
         for (const point of parts) {
-          _extend(point);
+          extent.extendSelf(point);
         }
       }
     }
 
     return extent;
-
-    // update extent in place
-    function _extend(coord) {
-      extent.min = [ Math.min(extent.min[0], coord[0]), Math.min(extent.min[1], coord[1]) ];
-      extent.max = [ Math.max(extent.max[0], coord[0]), Math.max(extent.max[1], coord[1]) ];
-    }
   }
 
 

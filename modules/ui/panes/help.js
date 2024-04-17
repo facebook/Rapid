@@ -24,8 +24,9 @@ export function uiPaneHelp(context) {
     ]],
     ['overview', [
       'navigation_h',
-      'navigation_drag',
+      'navigation_pan',
       'navigation_zoom',
+      'navigation_rotate',
       'features_h',
       'features',
       'nodes_ways'
@@ -354,7 +355,7 @@ export function uiPaneHelp(context) {
 
     function clickShortcuts(d3_event) {
       d3_event.preventDefault();
-      context.container().call(ui.shortcuts, true);
+      ui.shortcuts.show();
     }
 
     let toc = content   // table of contents

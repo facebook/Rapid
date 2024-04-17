@@ -70,7 +70,7 @@ describe('EditSystem', () => {
 
   class MockContext {
     constructor()   {
-      this.projection = new Rapid.sdk.Projection();
+      this.viewport = new Rapid.sdk.Viewport();
       this.systems = {
         imagery:  new MockImagerySystem(),
         map:      new MockSystem(),

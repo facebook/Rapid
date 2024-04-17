@@ -1,5 +1,5 @@
 import { polygonHull as d3_polygonHull, polygonCentroid as d3_polygonCentroid } from 'd3-polygon';
-import { vecInterp, vecSubtract } from '@rapid-sdk/math';
+import { DEG2RAD, vecInterp, vecSubtract } from '@rapid-sdk/math';
 import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { AbstractMode } from './AbstractMode.js';
@@ -70,7 +70,7 @@ export class RotateMode extends AbstractMode {
     this._active = true;
 
     filters.forceVisible(this._entityIDs);
-    context.enableBehaviors(['map-interaction']);
+    context.enableBehaviors(['mapInteraction']);
 
     this._lastPoint = null;
     this._pivotLoc = this._calcPivotLoc();
@@ -137,9 +137,10 @@ export class RotateMode extends AbstractMode {
     } else if (['Backspace', 'Delete', 'Del', 'Escape', 'Esc'].includes(e.key)) {
       e.preventDefault();
       this._cancel();
+
     } else if (['m', 'M'].includes(e.key)) {
       e.preventDefault();
-      this._moveMode();
+      this.context.enter('move', { selection: { osm: this._entityIDs }} );
     }
   }
 
@@ -153,7 +154,7 @@ export class RotateMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const eventManager = context.systems.map.renderer.events;
-    const currPoint = eventManager.coord;
+    const currPoint = eventManager.coord.map;
 
     // Some notes!
     // There are 2 approaches to converting user's pointer movement into a rotation.
@@ -175,7 +176,7 @@ export class RotateMode extends AbstractMode {
 
     // "new" - determine pointer movement dx,dy but relative to the pivot point
     if (this._lastPoint) {
-      const pivotPoint = context.projection.project(this._pivotLoc);
+      const pivotPoint = context.viewport.project(this._pivotLoc);
       const [dX, dY] = vecSubtract(currPoint, this._lastPoint);   // delta pointer movement
       const [sX, sY] = [                                          // swap signs if needed
         (currPoint[0] > pivotPoint[0]) ? 1 : -1,   // right/left of pivot
@@ -183,17 +184,17 @@ export class RotateMode extends AbstractMode {
       ];
       const degrees = (sY * dX) + (sX * dY);   // Degrees rotation to apply: + clockwise, - counterclockwise
       const SPEED = 0.3;
-      const angle = degrees * (Math.PI / 180) * SPEED;
-      editor.perform(actionRotate(this._entityIDs, pivotPoint, angle, context.projection));
+      const angle = degrees * DEG2RAD * SPEED;
+      editor.perform(actionRotate(this._entityIDs, pivotPoint, angle, context.viewport));
     }
     this._lastPoint = currPoint.slice();  // copy
 
     // "old" - rotational
-    // const pivotPoint = context.projection.project(this._pivotLoc);
+    // const pivotPoint = context.viewport.project(this._pivotLoc);
     // const currAngle = Math.atan2(currPoint[1] - pivotPoint[1], currPoint[0] - pivotPoint[0]);
     // if (this._lastAngle !== null) {
     //   const angle = currAngle - this._lastAngle;
-    //   editor.perform(actionRotate(entityIDs, pivotPoint, angle, context.projection));
+    //   editor.perform(actionRotate(entityIDs, pivotPoint, angle, context.viewport));
     // }
     // this._lastAngle = currAngle;
 
@@ -214,10 +215,10 @@ export class RotateMode extends AbstractMode {
    */
   _calcPivotLoc() {
     const context = this.context;
-    const projection = context.projection;
+    const viewport = context.viewport;
     const graph = context.systems.editor.staging.graph;
     const nodes = utilGetAllNodes(this._entityIDs, graph);
-    const points = nodes.map(node => projection.project(node.loc));
+    const points = nodes.map(node => viewport.project(node.loc));
 
     // Calculate in projected coordinates [x,y]
     let centroid;
@@ -235,8 +236,8 @@ export class RotateMode extends AbstractMode {
     }
 
     // Return spherical coordinates [lon,lat]
-    // (if projection changes later, we just reproject instead of recalculating)
-    return projection.invert(centroid);
+    // (if viewport changes later, we just reproject instead of recalculating)
+    return viewport.unproject(centroid);
   }
 
 
@@ -246,15 +247,6 @@ export class RotateMode extends AbstractMode {
    */
   _finish() {
     this.context.enter('select-osm', { selection: { osm: this._entityIDs }} );
-  }
-
-
-  /**
-   * _rotateMode
-   * Return to move mode if e.key is pressed
-   */
-  _moveMode() {
-    this.context.enter('move', { selection: { osm: this._entityIDs }} );
   }
 
 

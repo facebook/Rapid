@@ -1,15 +1,7 @@
+import { numClamp, numWrap } from '@rapid-sdk/math';
+
 import { AbstractSystem } from './AbstractSystem.js';
 import { utilDetect } from '../util/detect.js';
-
-
-function wrap(x, min, max) {
-  const d = max - min;
-  return ((x - min) % d + d) % d + min;
-}
-
-function clamp(x, min, max) {
-  return Math.max(min, Math.min(x, max));
-}
 
 
 /**
@@ -732,8 +724,8 @@ export class LocalizationSystem extends AbstractSystem {
    */
   dmsCoordinatePair(coord) {
     return this.t('units.coordinate_pair', {
-      latitude: this._displayCoordinate(clamp(coord[1], -90, 90), 'north', 'south'),
-      longitude: this._displayCoordinate(wrap(coord[0], -180, 180), 'east', 'west')
+      latitude: this._displayCoordinate(numClamp(coord[1], -90, 90), 'north', 'south'),
+      longitude: this._displayCoordinate(numWrap(coord[0], -180, 180), 'east', 'west')
     });
   }
 
@@ -747,8 +739,8 @@ export class LocalizationSystem extends AbstractSystem {
   decimalCoordinatePair(coord) {
     const OSM_PRECISION = 7;
     return this.t('units.coordinate_pair', {
-      latitude: clamp(coord[1], -90, 90).toFixed(OSM_PRECISION),
-      longitude: wrap(coord[0], -180, 180).toFixed(OSM_PRECISION)
+      latitude: numClamp(coord[1], -90, 90).toFixed(OSM_PRECISION),
+      longitude: numWrap(coord[0], -180, 180).toFixed(OSM_PRECISION)
     });
   }
 

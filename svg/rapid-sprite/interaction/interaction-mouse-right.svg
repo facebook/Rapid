@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20">
+  <path d="M10,0.5 L10,8.5 L15.5,8.5 L15.5,6 C15.5,2.5 13,0.5 10,0.5 z" fill="currentColor"/>
+  <path d="M9.5,1 C7.5,1 5,2.5 5,6 L5,8 L9.5,8 L9.5,1 z M10.5,1 C10.5,1 10.5,8 10.5,8 L15,8 C15,8 15,6 15,6 C15,2.5 12.5,1 10.5,1 z M5,9 L5,14 C5,17.5 7.5,19 10,19 C12.5,19 15,17.5 15,14 L15,9 L5,9 z M10,0 C13,0 16,2 16,6 L16,14 C16,18 13,20 10,20 C7,20 4,18 4,14 L4,6 C4,2 7,0 10,0 z" fill="inherit"/>
+</svg>

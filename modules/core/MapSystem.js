@@ -1,21 +1,17 @@
 import { select as d3_select } from 'd3-selection';
-import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
+import {
+  DEG2RAD, RAD2DEG, TAU, Extent, Viewport, geoMetersToLon, geoZoomToScale,
+  numClamp, numWrap, vecAdd, vecRotate, vecSubtract
+} from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 import { PixiRenderer } from '../pixi/PixiRenderer.js';
 import { uiCmd } from '../ui/cmd.js';
-import { utilGetDimensions, utilTotalExtent } from '../util/index.js';
-
+import { utilTotalExtent } from '../util/index.js';
 
 const TILESIZE = 256;
-const MINZOOM = 2;
-const MAXZOOM = 24;
-const MINK = geoZoomToScale(MINZOOM, TILESIZE);
-const MAXK = geoZoomToScale(MAXZOOM, TILESIZE);
-
-function clamp(num, min, max) {
-  return Math.max(min, Math.min(num, max));
-}
+const MIN_Z = 2;
+const MAX_Z = 24;
 
 
 /**
@@ -24,7 +20,6 @@ function clamp(num, min, max) {
  * Supports `pause()` / `resume()` - when paused, the the code in PixiRenderer.js will not render
  *
  * Properties available:
- *   `dimensions`      The pixel dimensions of the map viewport [width,height]
  *   `supersurface`    D3 selection to the parent `div` "supersurface"
  *   `surface`         D3 selection to the sibling `canvas` "surface"
  *   `overlay`         D3 selection to the sibling `div` "overlay"
@@ -60,7 +55,6 @@ export class MapSystem extends AbstractSystem {
     this._toggleFillMode = 'partial';  // the previous *non-wireframe* fill mode
 
     this._renderer = null;
-    this._dimensions = [1, 1];
     this._initPromise = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -233,8 +227,6 @@ export class MapSystem extends AbstractSystem {
         });
     }
 
-    this.dimensions = utilGetDimensions(selection);
-
 
     // Setup events that cause the map to redraw...
     const editor = context.systems.editor;
@@ -273,9 +265,9 @@ export class MapSystem extends AbstractSystem {
         const edit = (didUndo && prevEdit) ?? currEdit;
 
         // Reposition the map if we've jumped to a different place.
-        const t0 = this.transform();
+        const t0 = context.viewport.transform.props;
         const t1 = edit.transform;
-        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k)) {
+        if (t1 && (t0.x !== t1.x || t0.y !== t1.y || t0.k !== t1.k || t0.r !== t1.r)) {
           this.transformEase(t1);
         }
 
@@ -326,21 +318,21 @@ export class MapSystem extends AbstractSystem {
     const newMap = currParams.get('map');
     const oldMap = prevParams.get('map');
     if (!newMap || newMap !== oldMap) {
-      let zoom, lat, lon, rot;
+      let zoom, lat, lon, ang;
       if (typeof newMap === 'string') {
-        [zoom, lat, lon, rot] = newMap.split('/', 4).map(Number);
+        [zoom, lat, lon, ang] = newMap.split('/', 4).map(Number);
       }
       if (isNaN(zoom) || !isFinite(zoom)) zoom = 2;
       if (isNaN(lat) || !isFinite(lat)) lat = 0;
       if (isNaN(lon) || !isFinite(lon)) lon = 0;
-      if (isNaN(rot) || !isFinite(rot)) rot = 0;
+      if (isNaN(ang) || !isFinite(ang)) ang = 0;
 
-      zoom = clamp(zoom, 2, 24);
-      lat = clamp(lat, -90, 90);
-      lon = clamp(lon, -180, 180);
-      rot = clamp(rot, 0, 360);
+      zoom = numClamp(zoom, MIN_Z, MAX_Z);
+      lat = numClamp(lat, -90, 90);
+      lon = numClamp(lon, -180, 180);
+      ang = numWrap(ang, 0, 360);
 
-      this.centerZoom([lon, lat], zoom);
+      this.setMapParams([lon, lat], zoom, ang * DEG2RAD);   // will eventually call setTransformAsync
     }
 
     // id
@@ -363,27 +355,28 @@ export class MapSystem extends AbstractSystem {
    * Push changes in map state to the urlhash
    */
   _updateHash() {
-    const [lon, lat] = this.center();
-    const zoom = this.zoom();
-    const rot = 0;  // for now
+    const context = this.context;
+    const urlhash = context.systems.urlhash;
+    const viewport = context.viewport;
+
+    const [lon, lat] = viewport.centerLoc();
+    const transform = viewport.transform;
+    const zoom = transform.zoom;
+    const ang = transform.r * RAD2DEG;
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
     const EPSILON = 0.1;
-
-    if (isNaN(zoom) || !isFinite(zoom)) return;
-    if (isNaN(lat) || !isFinite(lat)) return;
-    if (isNaN(lon) || !isFinite(lon)) return;
-    if (isNaN(rot) || !isFinite(rot)) return;
 
     const zoomStr = zoom.toFixed(2);
     const latStr = lat.toFixed(precision);
     const lonStr = lon.toFixed(precision);
-    const rotStr = rot.toFixed(1);
+    const angStr = ang.toFixed(1);  // degrees
 
-    let v = `${zoomStr}/${latStr}/${lonStr}`;
-    if (Math.abs(rot) > EPSILON) {
-      v += `/${rotStr}`;
+    let val = `${zoomStr}/${latStr}/${lonStr}`;
+    if (Math.abs(ang) > EPSILON) {
+      val += `/${angStr}`;
     }
-    this.context.systems.urlhash.setParam('map', v);
+
+    urlhash.setParam('map', val);
   }
 
 
@@ -410,28 +403,12 @@ export class MapSystem extends AbstractSystem {
 
 
   /**
-   * dimensions
-   * Set/Get the map viewport dimensions in pixels
-   * @param  val?  Array [width, height] to set the dimensions to
-   */
-  get dimensions() {
-    return this._dimensions;
-  }
-  set dimensions(val) {
-    const [w, h] = val;
-    this._dimensions = val;
-    this.context.projection.dimensions([[0, 0], [w, h]]);
-    this._renderer.resize(w, h);
-  }
-
-
-  /**
    * centerPoint
    * Returns the [x,y] pixel at the center of the viewport
    * @return  Array [x,y] pixel at the center of the viewport
    */
   centerPoint() {
-    return vecScale(this._dimensions, 0.5);
+    return this.context.viewport.center();
   }
 
 
@@ -441,7 +418,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [lon,lat] location at the center of the viewport
    */
   centerLoc() {
-    return this.context.projection.invert(this.centerPoint());
+    return this.context.viewport.centerLoc();
   }
 
 
@@ -452,7 +429,7 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [x,y] pixel location of pointer (or center of the map)
    */
   mouse() {
-    return this._renderer.events.coord || this.centerPoint();
+    return this._renderer.events?.coord?.map || this.centerPoint();
   }
 
 
@@ -463,28 +440,27 @@ export class MapSystem extends AbstractSystem {
    * @return  Array [lon,lat] location of pointer (or center of the map)
    */
   mouseLoc() {
-    return this.context.projection.invert(this.mouse());
+    return this.context.viewport.unproject(this.mouse());
   }
 
 
   /**
    * transform
    * Set/Get the map transform
-   * IF setting, will schedule an update of map transform/projection.
+   * IF setting, will schedule an update of map transform.
    * All convenience methods for adjusting the map go through here.
-   *   (the old way did a round trip through the d3-zoom event system)
-   * @param  t2         Transform Object with `x`,`y`,`k` properties.
+   * @param  t2         Transform Object with `x`,`y`,`k`,`r` properties.
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return map transform -or- this
    */
   transform(t2, duration) {
     if (t2 === undefined) {
-      return this.context.projection.transform();
+      return this.context.viewport.transform.props;
     }
-    if (duration === undefined) {
-      duration = 0;
-    }
-    this._renderer.setTransformAsync(t2, duration);
+
+    // Avoid tiny or out of bounds rotations
+    t2.r = numWrap((+(t2.r || 0).toFixed(3)), 0, TAU);   // radians
+    this._renderer.setTransformAsync(t2, duration ?? 0);
     return this;
   }
 
@@ -492,72 +468,104 @@ export class MapSystem extends AbstractSystem {
   /**
    * setTransformAsync
    * Newer Promise-returning version of `transform()`
-   * @param   t2         Transform Object with `x`,`y`,`k` properties.
+   * @param   t2         Transform Object with `x`,`y`,`k`,`r` properties.
    * @param   duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return  Promise that resolves when the transform has finished changing
    */
   setTransformAsync(t2, duration = 0) {
+    // Avoid tiny or out of bounds rotations
+    t2.r = numWrap((+(t2.r || 0).toFixed(3)), 0, TAU);   // radians
     return this._renderer.setTransformAsync(t2, duration);
   }
 
 
   /**
-   * centerZoom
-   * Set both center and zoom at the same time
+   * setMapParams
+   * Set loc, zoom, and bearing at the same time.
    * @param  loc2       Array [lon,lat] to set the center to
    * @param  z2         Number to set the zoom to
+   * @param  r2         Number to set the bearing (rotation) to (in radians)
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
-  centerZoom(loc2, z2, duration = 0) {
-    const c = this.center();
-    const z = this.zoom();
-    if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
+  setMapParams(loc2, z2, r2, duration = 0) {
+    const context = this.context;
+    const view1 = context.viewport;
+    const center = view1.center();
+    const loc1 = view1.centerLoc();
+    const t1 = view1.transform;
+    const z1 = t1.zoom;
+    const r1 = t1.r;
+
+    if (loc2 === undefined) loc2 = loc1;
+    if (z2 === undefined)   z2 = z1;
+    if (r2 === undefined)   r2 = r1;
+
+    // Bounds and precision checks
+    loc2[0] = numClamp(loc2[0] || 0, -180, 180);
+    loc2[1] = numClamp(loc2[1] || 0, -90, 90);
+    z2 = numClamp((+(z2 || 0).toFixed(2)), MIN_Z, MAX_Z);
+    r2 = numWrap((+(r2 || 0).toFixed(3)), 0, TAU);  // radians
+
+    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
       return this;
     }
 
-    const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
-    let proj = new Projection();
-    proj.transform(this.context.projection.transform()); // make copy
-    proj.scale(k2);
+    const k2 = geoZoomToScale(z2, TILESIZE);
+    const view2 = new Viewport(t1, view1.dimensions);
+    view2.transform.scale = k2;
 
-    let t = proj.translate();
-    const point = proj.project(loc2);
-    const center = this.centerPoint();
+    let xy = view2.transform.translation;
+    const point = view2.project(loc2);
     const delta = vecSubtract(center, point);
-    t = vecAdd(t, delta);
+    xy = vecAdd(xy, delta);
 
-    return this.transform({ x: t[0], y: t[1], k: k2 }, duration);
+    return this.transform({ x: xy[0], y: xy[1], k: k2, r: r2 }, duration);
   }
 
 
   /**
-   * setCenterZoomAsync
-   * Newer Promise-returning version of `centerZoom()`
-   * @param   loc2       Array [lon,lat] to set the center to
-   * @param   z2         Number to set the zoom to
-   * @param   duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
-   * @return  Promise that resolves when the transform has finished changing
+   * setMapParamsAsync
+   * Promise-returning version of `setMapParams()`
+   * @param  loc2       Array [lon,lat] to set the center to
+   * @param  z2         Number to set the zoom to
+   * @param  r2         Number to set the bearing (rotation) to
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return Promise that resolves when the transform has finished changing
    */
-  setCenterZoomAsync(loc2, z2, duration = 0) {
-    const c = this.center();
-    const z = this.zoom();
-    if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
-      return new Promise.resolve(this.context.projection.transform());
+  setMapParamsAsync(loc2, z2, r2, duration = 0) {
+    const context = this.context;
+    const view1 = context.viewport;
+    const center = view1.center();
+    const loc1 = view1.centerLoc();
+    const t1 = view1.transform;
+    const z1 = t1.zoom;
+    const r1 = t1.r;
+
+    if (loc2 === undefined) loc2 = loc1;
+    if (z2 === undefined)   z2 = z1;
+    if (r2 === undefined)   r2 = r1;
+
+    // Bounds and precision checks
+    loc2[0] = numClamp(loc2[0] || 0, -180, 180);
+    loc2[1] = numClamp(loc2[1] || 0, -90, 90);
+    z2 = numClamp((+(z2 || 0).toFixed(2)), MIN_Z, MAX_Z);
+    r2 = numWrap((+(r2 || 0).toFixed(3)), 0, TAU);  // radians
+
+    if (loc2[0] === loc1[0] && loc2[1] === loc1[1] && z2 === z1 && r2 === r1) {  // nothing to do
+      return Promise.resolve(t1);
     }
 
-    const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
-    let proj = new Projection();
-    proj.transform(this.context.projection.transform()); // make copy
-    proj.scale(k2);
+    const k2 = geoZoomToScale(z2, TILESIZE);
+    const view2 = new Viewport(t1, view1.dimensions);
+    view2.transform.scale = k2;
 
-    let t = proj.translate();
-    const point = proj.project(loc2);
-    const center = this.centerPoint();
+    let xy = view2.transform.translation;
+    const point = view2.project(loc2);
     const delta = vecSubtract(center, point);
-    t = vecAdd(t, delta);
+    xy = vecAdd(xy, delta);
 
-    return this.setTransformAsync({ x: t[0], y: t[1], k: k2 }, duration);
+    return this.setTransformAsync({ x: xy[0], y: xy[1], k: k2, r: r2 }, duration);
   }
 
 
@@ -570,14 +578,10 @@ export class MapSystem extends AbstractSystem {
    */
   center(loc2, duration) {
     if (loc2 === undefined) {
-      return this.context.projection.invert(this.centerPoint());
+      return this.centerLoc();
+    } else {
+      return this.setMapParams(loc2, undefined, undefined, duration ?? 0);
     }
-    if (duration === undefined) {
-      duration = 0;
-    }
-    loc2[0] = clamp(loc2[0] || 0, -180, 180);
-    loc2[1] = clamp(loc2[1] || 0, -90, 90);
-    return this.centerZoom(loc2, this.zoom(), duration);
   }
 
 
@@ -590,13 +594,10 @@ export class MapSystem extends AbstractSystem {
    */
   zoom(z2, duration) {
     if (z2 === undefined) {
-      return Math.max(0, geoScaleToZoom(this.context.projection.scale(), TILESIZE));
+      return this.context.viewport.transform.zoom;
+    } else {
+      return this.setMapParams(undefined, z2, undefined, duration ?? 0);
     }
-    if (duration === undefined) {
-      duration = 0;
-    }
-    z2 = clamp(z2 || 0, MINZOOM, MAXZOOM);
-    return this.centerZoom(this.center(), z2, duration);
   }
 
 
@@ -608,8 +609,9 @@ export class MapSystem extends AbstractSystem {
    * @return this
    */
   pan(delta, duration = 0) {
-    const t = this.context.projection.transform();
-    return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
+    const t = this.context.viewport.transform;
+    const [dx, dy] = vecRotate(delta, -t.r, [0, 0]);   // remove any rotation
+    return this.transform({ x: t.x + dx, y: t.y + dy, k: t.k, r: t.r }, duration);
   }
 
 
@@ -633,8 +635,8 @@ export class MapSystem extends AbstractSystem {
     }
     if (!isFinite(extent.area())) return this;
 
-    const z2 = clamp(this.trimmedExtentZoom(extent), 0, 20);
-    return this.centerZoom(extent.center(), z2, duration);
+    const z2 = numClamp(this.trimmedExtentZoom(extent), 0, 20);
+    return this.setMapParams(extent.center(), z2, undefined, duration);
   }
 
 
@@ -647,6 +649,7 @@ export class MapSystem extends AbstractSystem {
   selectEntityID(entityID, fitToEntity = false) {
     const context = this.context;
     const editor = context.systems.editor;
+    const viewport = context.viewport;
 
     const gotEntity = (entity) => {
       const selectedIDs = context.selectedIDs();
@@ -657,8 +660,8 @@ export class MapSystem extends AbstractSystem {
       const currGraph = editor.staging.graph;  // may have changed by the time we get in here
       const entityExtent = entity.extent(currGraph);
       const entityZoom = Math.min(this.trimmedExtentZoom(entityExtent), 20);  // the zoom that best shows the entity
-      const isOffscreen = (entityExtent.percentContainedIn(this.extent()) < 0.8);
-      const isTooSmall = (this.zoom() < entityZoom - 2);
+      const isOffscreen = (entityExtent.percentContainedIn(viewport.visibleExtent()) < 0.8);
+      const isTooSmall = (viewport.transform.zoom < entityZoom - 2);
 
       // Can't reasonably see it, or we're forcing the fit.
       if (fitToEntity || isOffscreen || isTooSmall) {
@@ -682,24 +685,26 @@ export class MapSystem extends AbstractSystem {
   }
 
 
-  // convenience methods for zomming in and out
-  _zoomIn(delta)  { return this.centerZoom(this.center(), ~~this.zoom() + delta, 250); }
-  _zoomOut(delta) { return this.centerZoom(this.center(), ~~this.zoom() - delta, 250); }
+  // convenience methods for zooming in and out
+  _zoomIn(delta)  { return this.setMapParams(undefined, ~~this.zoom() + delta, undefined, 250); }
+  _zoomOut(delta) { return this.setMapParams(undefined, ~~this.zoom() - delta, undefined, 250); }
 
   zoomIn()        { return this._zoomIn(1); }
   zoomInFurther() { return this._zoomIn(4); }
-  canZoomIn()     { return this.zoom() < MAXZOOM; }
+  canZoomIn()     { return this.zoom() < MAX_Z; }
 
   zoomOut()        { return this._zoomOut(1); }
   zoomOutFurther() { return this._zoomOut(4); }
-  canZoomOut()     { return this.zoom() > MINZOOM; }
+  canZoomOut()     { return this.zoom() > MIN_Z; }
+
+  centerZoom(loc2, z2, duration = 0)          { return this.setMapParams(loc2, z2, undefined, duration); }
 
   // convenience methods for the above, but with easing
-  transformEase(t2, duration = 250)          { return this.transform(t2, duration); }
-  centerZoomEase(loc2, z2, duration = 250)   { return this.centerZoom(loc2, z2, duration); }
-  centerEase(loc2, duration = 250)           { return this.center(loc2, duration); }
-  zoomEase(z2, duration = 250)               { return this.zoom(z2, duration); }
-  fitEntitiesEase(entities, duration = 250)  { return this.fitEntities(entities, duration); }
+  transformEase(t2, duration = 250)           { return this.transform(t2, duration); }
+  centerZoomEase(loc2, z2, duration = 250)    { return this.setMapParams(loc2, z2, undefined, duration); }
+  centerEase(loc2, duration = 250)            { return this.setMapParams(loc2, undefined, undefined, duration); }
+  zoomEase(z2, duration = 250)                { return this.setMapParams(undefined, z2, undefined, duration); }
+  fitEntitiesEase(entities, duration = 250)   { return this.fitEntities(entities, duration); }
 
 
   /**
@@ -715,12 +720,13 @@ export class MapSystem extends AbstractSystem {
    * @return  effective zoom
    */
   effectiveZoom() {
-    const lat = this.center()[1];
-    const z = this.zoom();
+    const viewport = this.context.viewport;
+    const lat = viewport.centerLoc()[1];
+    const z = viewport.transform.zoom;
     const atLatitude = geoMetersToLon(1, lat);
     const atEquator = geoMetersToLon(1, 0);
     const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
-    return Math.min(z + extraZoom, MAXZOOM);
+    return Math.min(z + extraZoom, MAX_Z);
   }
 
 
@@ -732,12 +738,9 @@ export class MapSystem extends AbstractSystem {
    */
   extent(extent) {
     if (extent === undefined) {
-      return new Extent(
-        this.context.projection.invert([0, this._dimensions[1]]),
-        this.context.projection.invert([this._dimensions[0], 0])
-      );
+      return this.context.viewport.visibleExtent();
     } else {
-      return this.centerZoom(extent.center(), this.extentZoom(extent));
+      return this.setMapParams(extent.center(), this.extentZoom(extent));
     }
   }
 
@@ -753,12 +756,15 @@ export class MapSystem extends AbstractSystem {
       const headerY = 71;
       const footerY = 30;
       const pad = 10;
+      const viewport = this.context.viewport;
+      const [w, h] = viewport.dimensions;
+
       return new Extent(
-        this.context.projection.invert([pad, this._dimensions[1] - footerY - pad]),
-        this.context.projection.invert([this._dimensions[0] - pad, headerY + pad])
+        viewport.unproject([pad, h - footerY - pad]),  // bottom-left
+        viewport.unproject([w - pad, headerY + pad])   // top-right
       );
     } else {
-      return this.centerZoom(extent.center(), this.trimmedExtentZoom(extent));
+      return this.setMapParams(extent.center(), this.trimmedExtentZoom(extent));
     }
   }
 
@@ -771,10 +777,11 @@ export class MapSystem extends AbstractSystem {
    * @return zoom
    */
   extentZoom(extent, dimensions) {
-    const [w, h] = dimensions || this._dimensions;
+    const viewport = this.context.viewport;
+    const [w, h] = dimensions || viewport.dimensions;
 
-    const tl = this.context.projection.project([extent.min[0], extent.max[1]]);
-    const br = this.context.projection.project([extent.max[0], extent.min[1]]);
+    const tl = viewport.project([extent.min[0], extent.max[1]]);
+    const br = viewport.project([extent.max[0], extent.min[1]]);
 
     // Calculate maximum zoom that fits extent
     const hFactor = (br[0] - tl[0]) / w;
@@ -783,7 +790,7 @@ export class MapSystem extends AbstractSystem {
     const vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
     const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
 
-    const currZoom = this.zoom();
+    const currZoom = viewport.transform.zoom;
     const defaultZoom = Math.max(currZoom, 19);
 
     return isFinite(zoomDiff) ? (currZoom - zoomDiff) : defaultZoom;
@@ -800,7 +807,8 @@ export class MapSystem extends AbstractSystem {
   trimmedExtentZoom(extent) {
     const trimW = 40;
     const trimH = 140;
-    const trimmed = vecSubtract(this._dimensions, [trimW, trimH]);
+    const viewport = this.context.viewport;
+    const trimmed = vecSubtract(viewport.dimensions, [trimW, trimH]);
     return this.extentZoom(extent, trimmed);
   }
 
@@ -874,6 +882,7 @@ export class MapSystem extends AbstractSystem {
   get scene() {
     return this._renderer?.scene;
   }
+
 
   /**
    * scene

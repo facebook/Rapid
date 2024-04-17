@@ -66,7 +66,7 @@ export function uiIntroArea(context, curtain) {
     if (msec > 0) curtain.hide();
 
     return map
-      .setCenterZoomAsync(loc, 19.5, msec)
+      .setMapParamsAsync(loc, 19.5, 0, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
         _onModeChange = () => resolve(startPlaygroundAsync);
@@ -403,7 +403,7 @@ export function uiIntroArea(context, curtain) {
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml(context, 'intro.areas.retry_add_field', { field: descriptionField.label() }),
-        buttonText: l10n.tHtml('intro.ok'),
+        buttonText: l10n.t('intro.ok'),
         buttonCallback: () => resolve(clickAddFieldAsync)
       });
     })
@@ -421,7 +421,7 @@ export function uiIntroArea(context, curtain) {
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-line',
       tipHtml: helpHtml(context, 'intro.areas.play', { next: l10n.t('intro.lines.title') }),
-      buttonText: l10n.tHtml('intro.ok'),
+      buttonText: l10n.t('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
     return Promise.resolve();

@@ -1,4 +1,4 @@
-import { vecAdd, vecSubtract } from '@rapid-sdk/math';
+import { vecAdd, vecRotate, vecSubtract } from '@rapid-sdk/math';
 import { utilArrayIntersection } from '@rapid-sdk/util';
 
 import { AbstractMode } from './AbstractMode.js';
@@ -7,7 +7,6 @@ import { actionConnect } from '../actions/connect.js';
 import { actionMoveNode } from '../actions/move_node.js';
 import { geoChooseEdge } from '../geo/index.js';
 import { osmNode } from '../osm/node.js';
-
 
 
 /**
@@ -35,6 +34,7 @@ export class DragNodeMode extends AbstractMode {
     this._move = this._move.bind(this);
     this._end = this._end.bind(this);
     this._cancel = this._cancel.bind(this);
+    this._nudge = this._nudge.bind(this);
   }
 
 
@@ -109,17 +109,19 @@ export class DragNodeMode extends AbstractMode {
 
     // `_clickLoc` is used later to calculate a drag offset,
     // to correct for where "on the pin" the user grabbed the target.
-    const clickCoord = context.behaviors.drag.lastDown.coord;
-    this._clickLoc = context.projection.invert(clickCoord);
+    const point = context.behaviors.drag.lastDown.coord.map;
+    this._clickLoc = context.viewport.unproject(point);
 
-    context.enableBehaviors(['hover', 'drag', 'map-nudging']);
-    // Now that the user has clicked, let them nudge the map by moving to the edge.
-    context.behaviors['map-nudging'].allow();
+    context.enableBehaviors(['hover', 'drag', 'mapNudge']);
+    context.behaviors.mapNudge.allow();
 
     context.behaviors.drag
       .on('move', this._move)
       .on('end', this._end)
       .on('cancel', this._cancel);
+
+    context.behaviors.mapNudge
+      .on('nudge', this._nudge);
 
     return true;
   }
@@ -148,6 +150,9 @@ export class DragNodeMode extends AbstractMode {
       .off('move', this._move)
       .off('end', this._end)
       .off('cancel', this._cancel);
+
+    context.behaviors.mapNudge
+      .off('nudge', this._nudge);
   }
 
 
@@ -186,8 +191,8 @@ export class DragNodeMode extends AbstractMode {
     const editor = context.systems.editor;
     const graph = editor.staging.graph;
     const locations = context.systems.locations;
-    const projection = context.projection;
-    const coord = eventData.coord;
+    const viewport = context.viewport;
+    const point = eventData.coord.map;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
@@ -204,7 +209,7 @@ export class DragNodeMode extends AbstractMode {
 //      loc = choice.loc;
 //    }
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, this.dragNode.id);
+      const choice = geoChooseEdge(graph.childNodes(target), point, viewport, this.dragNode.id);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;
@@ -217,12 +222,44 @@ export class DragNodeMode extends AbstractMode {
       // the marker/pin and where the location of the node actually is.
       // We calculate the drag offset each time because it's possible
       // the user may have changed zooms while dragging..
-      const clickCoord = context.projection.project(this._clickLoc);
-      const startCoord = context.projection.project(this._startLoc);
+      const clickCoord = viewport.project(this._clickLoc);
+      const startCoord = viewport.project(this._startLoc);
       const dragOffset = vecSubtract(startCoord, clickCoord);
-      const adjustedCoord = vecAdd(coord, dragOffset);
-      loc = projection.invert(adjustedCoord);
+      const adjustedCoord = vecAdd(point, dragOffset);
+      loc = viewport.unproject(adjustedCoord);
     }
+
+    if (locations.blocksAt(loc).length) {  // editing is blocked here
+      this._cancel();
+      return;
+    }
+
+    editor.perform(actionMoveNode(this.dragNode.id, loc));
+    this._refreshEntities();
+  }
+
+
+  /**
+   * _nudge
+   * This event fires on map pans at the edge of the screen.
+   * We want to move the dragging node opposite of the pixels panned to keep it in the same place.
+   * @param  nudge - [x,y] amount of map pan in pixels
+   */
+  _nudge(nudge) {
+    if (!this.dragNode) return;
+
+    const context = this.context;
+    const editor = context.systems.editor;
+    const locations = context.systems.locations;
+    const viewport = context.viewport;
+    const t = context.viewport.transform;
+    if (t.r) {
+      nudge = vecRotate(nudge, -t.r, [0, 0]);   // remove any rotation
+    }
+
+    const currPoint = viewport.project(this.dragNode.loc);
+    const destPoint = vecSubtract(currPoint, nudge);
+    const loc = viewport.unproject(destPoint);
 
     if (locations.blocksAt(loc).length) {  // editing is blocked here
       this._cancel();
@@ -246,6 +283,8 @@ export class DragNodeMode extends AbstractMode {
     const context = this.context;
     const editor = context.systems.editor;
     const l10n = context.systems.l10n;
+    const viewport = context.viewport;
+    const point = eventData.coord.map;
     let graph = editor.staging.graph;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
@@ -265,7 +304,7 @@ export class DragNodeMode extends AbstractMode {
 //      editor.perform(actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode));
 //      annotation = this._connectAnnotation(target);
     } else if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, this.dragNode.id);
+      const choice = geoChooseEdge(graph.childNodes(target), point, viewport, this.dragNode.id);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see Rapid#719
       if (choice && choice.distance < SNAP_DIST) {
         const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];

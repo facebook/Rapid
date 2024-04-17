@@ -1,4 +1,4 @@
-export function uiIcon(href, klass = '') {
+export function uiIcon(href, klass = '', title = '') {
   const iconID = href.replace('#', '');
 
   return function render(selection) {
@@ -6,11 +6,19 @@ export function uiIcon(href, klass = '') {
     if (iconID) classList.push(`icon-${iconID}`);
     if (klass)  classList.push(klass);
 
-    selection.selectAll(`svg.icon-${iconID}`)
+    const svgEnter = selection.selectAll(`svg.icon-${iconID}`)
       .data([iconID], d => d)
       .enter()
       .append('svg')
-      .attr('class', classList.join(' '))
+      .attr('class', classList.join(' '));
+
+    if (title) {
+      svgEnter
+        .append('title')
+        .text(title);
+    }
+
+    svgEnter
       .append('use')
       .attr('xlink:href', href);
   };

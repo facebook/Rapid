@@ -255,7 +255,7 @@ export class ValidationSystem extends AbstractSystem {
     // because that is the Graph that the calling code will be using.
     const opts = Object.assign({ what: 'all', where: 'all', includeIgnored: false, includeDisabledRules: false }, options);
     const context = this.context;
-    const view = context.systems.map.extent();
+    const visibleExtent = context.viewport.visibleExtent();
     const graph = context.systems.editor.staging.graph;
     let seen = new Set();
     let results = [];
@@ -277,7 +277,7 @@ export class ValidationSystem extends AbstractSystem {
 
       if (opts.where === 'visible') {
         const extent = issue.extent(graph);
-        if (!view.intersects(extent)) return false;
+        if (!visibleExtent.intersects(extent)) return false;
       }
 
       return true;

@@ -68,8 +68,8 @@ export class MoveMode extends AbstractMode {
     this._active = true;
 
     filters.forceVisible(this._entityIDs);
-    context.enableBehaviors(['map-interaction', 'map-nudging']);
-    context.behaviors['map-nudging'].allow();
+    context.enableBehaviors(['mapInteraction', 'mapNudge']);
+    context.behaviors.mapNudge.allow();
 
     this._startLoc = map.mouseLoc();
     this._movementCache = {};
@@ -136,9 +136,10 @@ export class MoveMode extends AbstractMode {
     } else if (['Backspace', 'Delete', 'Del', 'Escape', 'Esc'].includes(e.key)) {
       e.preventDefault();
       this._cancel();
+
     } else if (['r', 'R'].includes(e.key)) {
       e.preventDefault();
-      this._rotateMode();
+      this.context.enter('rotate', { selection: { osm: this._entityIDs }} );
     }
   }
 
@@ -160,12 +161,12 @@ export class MoveMode extends AbstractMode {
       return;
     }
 
-    const startPoint = context.projection.project(this._startLoc);
-    const currPoint = context.projection.project(currLoc);
+    const startPoint = context.viewport.project(this._startLoc);
+    const currPoint = context.viewport.project(currLoc);
     const delta = vecSubtract(currPoint, startPoint);
 
     editor.revert();  // moves are relative to the start location, so revert before applying movement
-    editor.perform(actionMove(this._entityIDs, delta, context.projection, this._movementCache));
+    editor.perform(actionMove(this._entityIDs, delta, context.viewport, this._movementCache));
     const graph = editor.staging.graph;  // after move
 
     // Update selected/active collections to contain the moved entities
@@ -182,14 +183,6 @@ export class MoveMode extends AbstractMode {
    */
   _finish() {
     this.context.enter('select-osm', { selection: { osm: this._entityIDs }} );
-  }
-
-  /**
-   * _rotateMode
-   * Return to roate mode if e.key is pressed
-   */
-  _rotateMode() {
-    this.context.enter('rotate', { selection: { osm: this._entityIDs }} );
   }
 
 

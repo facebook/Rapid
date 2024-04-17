@@ -6,7 +6,7 @@ import { actionDeleteNode } from './delete_node.js';
 import { geoOrthoNormalizedDotProduct, geoOrthoCalcScore, geoOrthoCanOrthogonalize } from '../geo/index.js';
 
 
-export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) {
+export function actionOrthogonalize(wayID, viewport, vertexID, degThresh, ep) {
     var epsilon = ep || 1e-4;
     var threshold = degThresh || 13;  // degrees within right or straight to alter
 
@@ -50,7 +50,7 @@ export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) 
         for (i = 0; i < nodes.length; i++) {
             node = nodes[i];
             nodeCount[node.id] = (nodeCount[node.id] || 0) + 1;
-            points.push({ id: node.id, coord: projection.project(node.loc) });
+            points.push({ id: node.id, coord: viewport.project(node.loc) });
         }
 
 
@@ -66,7 +66,7 @@ export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) 
             }
 
             node = graph.entity(nodes[corner.i].id);
-            loc = projection.invert(points[corner.i].coord);
+            loc = viewport.unproject(points[corner.i].coord);
             graph = graph.replace(node.move(vecInterp(node.loc, loc, t)));
 
         } else {
@@ -120,7 +120,7 @@ export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) 
                 point = bestPoints[i];
                 if (!vecEqual(originalPoints[i].coord, point.coord)) {
                     node = graph.entity(point.id);
-                    loc = projection.invert(point.coord);
+                    loc = viewport.unproject(point.coord);
                     graph = graph.replace(node.move(vecInterp(node.loc, loc, t)));
                 }
             }
@@ -144,7 +144,7 @@ export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) 
                     // move interesting points to the nearest edge..
                     var choice = vecProject(point.coord, bestCoords);
                     if (choice) {
-                        loc = projection.invert(choice.target);
+                        loc = viewport.unproject(choice.target);
                         graph = graph.replace(node.move(vecInterp(node.loc, loc, t)));
                     }
                 }
@@ -228,7 +228,7 @@ export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) 
             if (nodes.length !== 3) return 'end_vertex';
         }
 
-        var coords = nodes.map(function(n) { return projection.project(n.loc); });
+        var coords = nodes.map(function(n) { return viewport.project(n.loc); });
         var score = geoOrthoCanOrthogonalize(coords, isClosed, epsilon, threshold, allowStraightAngles);
 
         if (score === null) {

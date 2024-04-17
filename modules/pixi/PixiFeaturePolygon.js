@@ -109,19 +109,22 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
   /**
    * update
-   * @param  projection  Pixi projection to use for rendering
-   * @param  zoom        Effective zoom to use for rendering
+   * @param  viewport  Pixi viewport to use for rendering
+   * @param  zoom      Effective zoom to use for rendering
    */
-  update(projection, zoom) {
+  update(viewport, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    const wireframeMode = this.context.systems.map.wireframeMode;
+    const context = this.context;
+    const storage = context.systems.storage;
+    const wireframeMode = context.systems.map.wireframeMode;
+    const bearing = context.viewport.transform.rotation;
 
     //
     // GEOMETRY
     //
     if (this.geometry.dirty) {
-      this.geometry.update(projection, zoom);
+      this.geometry.update(viewport, zoom);
 
       // Redo ssr (move more of this into PixiGeometry later)
       this._ssrdata = null;
@@ -164,9 +167,9 @@ export class PixiFeaturePolygon extends AbstractFeature {
         this._ssrdata = {
           ssr: this.geometry.ssr,
           origSsr: this.geometry.origSsr,
-          origAxis1: axis1.map(coord => projection.invert(coord)),
-          origAxis2: axis2.map(coord => projection.invert(coord)),
-          origCenter: projection.invert(center),
+          origAxis1: axis1.map(coord => viewport.unproject(coord)),
+          origAxis2: axis2.map(coord => viewport.unproject(coord)),
+          origCenter: viewport.unproject(center),
           shapeType: (cornersInSSR ? 'square' : 'circle')
         };
       }
@@ -211,13 +214,13 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const dash = style.stroke.dash || null;
 
     let texture = pattern && textureManager.getPatternTexture(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
+    const textureMatrix = new PIXI.Matrix().rotate(-bearing);  // keep patterns face up
     let shape;
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
 
-    const prefs = this.context.systems.storage;
-    const fillstyle = prefs.getItem('area-fill') ?? 'partial';
+    const fillstyle = storage.getItem('area-fill') ?? 'partial';
     let doPartialFill = !style.requireFill && (fillstyle === 'partial');
 
     // If this shape is so small that partial filling makes no sense, fill fully (faster?)
@@ -256,10 +259,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
       const filling = wireframeMode ? '-unfilled' : '';
       const textureName = `lowres${filling}-${ssrdata.shapeType}`;
-      const [x, y] = projection.project(ssrdata.origCenter);
+      const [x, y] = viewport.project(ssrdata.origCenter);
       const rotation = ssrdata.ssr.angle;
-      const axis1 = ssrdata.origAxis1.map(coord => projection.project(coord));
-      const axis2 = ssrdata.origAxis2.map(coord => projection.project(coord));
+      const axis1 = ssrdata.origAxis1.map(coord => viewport.project(coord));
+      const axis2 = ssrdata.origAxis2.map(coord => viewport.project(coord));
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
@@ -338,7 +341,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
         .beginTextureFill({
           alpha: alpha,
           color: color,
-          texture: texture
+          texture: texture,
+          matrix: textureMatrix
         })
         .drawShape(shape.outer);
 

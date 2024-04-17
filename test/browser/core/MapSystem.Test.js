@@ -30,7 +30,7 @@ describe('MapSystem', () => {
     on() { return this; }
     deferredRender() {}
     setTransformAsync(t) {
-      this.context.projection.transform(t);
+      this.context.viewport.transform = t;
       return Promise.resolve(t);
     }
   }
@@ -46,10 +46,9 @@ describe('MapSystem', () => {
         l10n:    new MockLocalizationSystem(),
         storage: new MockStorageSystem(),
         urlhash: new MockSystem(),
-        colors: new MockSystem(),
-        styles: new MockSystem(),
+        styles:  new MockSystem()
       };
-      this.projection = new sdk.Projection();
+      this.viewport = new sdk.Viewport(undefined, [100, 100]);
     }
     container()   { return _container; }
     keybinding()  { return new MockSystem(); }
@@ -58,7 +57,7 @@ describe('MapSystem', () => {
 
   beforeEach(() => {
     _container = d3.select('body').append('div');
-    const context = new MockContext();  // get a fresh projection each time
+    const context = new MockContext();  // get a fresh viewport each time
     _mapSystem = new Rapid.MapSystem(context);
     _mapSystem._renderer = new MockRenderer(context);
 
@@ -89,7 +88,6 @@ describe('MapSystem', () => {
       expect(_mapSystem.zoom(4)).to.equal(_mapSystem);
       _mapSystem.zoomIn();
       window.setTimeout(() => {
-        d3.timerFlush();
         expect(_mapSystem.zoom()).to.be.closeTo(5, 1e-6);
         done();
       }, 1);
@@ -101,7 +99,6 @@ describe('MapSystem', () => {
       expect(_mapSystem.zoom(4)).to.equal(_mapSystem);
       _mapSystem.zoomOut();
       window.setTimeout(() => {
-        d3.timerFlush();
         expect(_mapSystem.zoom()).to.be.closeTo(3, 1e-6);
         done();
       }, 1);
@@ -124,7 +121,6 @@ describe('MapSystem', () => {
       expect(_mapSystem.center([10, 10])).to.equal(_mapSystem);
       expect(_mapSystem.centerEase([20, 20], 1)).to.equal(_mapSystem);
       window.setTimeout(() => {
-        d3.timerFlush();
         expect(_mapSystem.center()[0]).to.be.closeTo(20, 1e-6);
         expect(_mapSystem.center()[1]).to.be.closeTo(20, 1e-6);
         done();
@@ -143,7 +139,6 @@ describe('MapSystem', () => {
 
   describe('#extent', () => {
     it('gets and sets extent', () => {
-      _mapSystem.dimensions = [100,100];
       _mapSystem.center([0, 0]);
       let extent;
 

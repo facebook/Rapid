@@ -7,7 +7,7 @@ import { actionDeleteNode } from './delete_node.js';
 /*
  * Based on https://github.com/openstreetmap/potlatch2/net/systemeD/potlatch2/tools/Straighten.as
  */
-export function actionStraightenWay(selectedIDs, projection) {
+export function actionStraightenWay(selectedIDs, viewport) {
 
     function positionAlongWay(a, o, b) {
         return vecDot(a, b, o) / vecDot(b, b, o);
@@ -94,7 +94,7 @@ export function actionStraightenWay(selectedIDs, projection) {
         t = Math.min(Math.max(+t, 0), 1);
 
         var nodes = allNodes(graph);
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
         var startPoint = points[0];
         var endPoint = points[points.length-1];
         var toDelete = [];
@@ -107,7 +107,7 @@ export function actionStraightenWay(selectedIDs, projection) {
             if (t < 1 || shouldKeepNode(node, graph)) {
                 var u = positionAlongWay(point, startPoint, endPoint);
                 var p = vecInterp(startPoint, endPoint, u);
-                var loc2 = projection.invert(p);
+                var loc2 = viewport.unproject(p);
                 graph = graph.replace(node.move(vecInterp(node.loc, loc2, t)));
 
             } else {
@@ -129,7 +129,7 @@ export function actionStraightenWay(selectedIDs, projection) {
     action.disabled = function(graph) {
         // check way isn't too bendy
         var nodes = allNodes(graph);
-        var points = nodes.map(function(n) { return projection.project(n.loc); });
+        var points = nodes.map(function(n) { return viewport.project(n.loc); });
         var startPoint = points[0];
         var endPoint = points[points.length-1];
         var threshold = 0.2 * vecLength(startPoint, endPoint);
