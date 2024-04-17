@@ -61,6 +61,78 @@ export function uiSectionBackgroundList(context) {
       .append('ul')
       .attr('class', 'layer-list bg-extras-list');
 
+    const wayBackImageryEnter = bgExtrasListEnter
+      .append('li')
+      .attr('class', 'background.wayback_imagery.tooltip')
+      .append('div')
+      .style('display', 'flex');
+
+    const label = wayBackImageryEnter
+      .append('label')
+      .call(uiTooltip(context)
+        .title(l10n.t('background.wayback_imagery.tooltip'))
+        .placement('top')
+      );
+
+    label
+      .append('input')
+      .attr('type', 'checkbox')
+      .on('change', updateWaybackDates);
+
+
+    function updateWaybackDates() {
+      const checkbox = d3_select('input[type="checkbox"]');
+      const isChecked = checkbox.property('checked');
+
+      dropdown.style('display', isChecked ? 'block' : 'none');
+
+      if (isChecked) {
+        imagery.getWaybackSource().then(sourceMap => {
+          const sources = Array.from(sourceMap.sources.values());
+          const dates = sources.map(source => {
+            const date = source.id.split('_')[1];
+            return { value: date };
+          });
+          dates.sort((a, b) => b.value.localeCompare(a.value));
+          dates.forEach(date => {
+            dropdown.append('option').text(date.value);
+          });
+          dropdown.node().dispatchEvent(new Event('change'));
+        });
+      } else {
+        dropdown.selectAll('option').remove();
+        const defaultSource = imagery.chooseDefaultSource();
+        imagery.baseLayerSource(defaultSource);
+      }
+    }
+
+    map.on('zoom', updateWaybackDates);
+
+    function handleDropdownChange(d3_event) {
+      const selectedDate = d3_event.target.value;
+      imagery.getWaybackSource().then(sourceMap => {
+        // Find the sourceId that corresponds to the selected date
+        const sourceId = Array.from(sourceMap.sources.entries())
+          .find(([_, source]) => source.id.split('_')[1] === selectedDate)[0];
+        const imagerySource = sourceMap.sources.get(sourceId);
+        imagery.baseLayerSource(imagerySource);
+      });
+    }
+
+    const dropdown = wayBackImageryEnter
+      .append('select')
+      .style('display', 'none')
+      .style('vertical-align', 'middle')
+      .style('height', '20px')
+      .style('width', '120px')
+      .style('margin', 'auto')
+      .style('cursor', 'pointer')
+      .on('change', handleDropdownChange);
+
+    label
+      .append('span')
+      .text(l10n.t('background.wayback_imagery.title'));
+
     const minimapLabelEnter = bgExtrasListEnter
       .append('li')
       .attr('class', 'minimap-toggle-item')

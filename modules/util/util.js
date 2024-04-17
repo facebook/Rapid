@@ -120,7 +120,7 @@ export function utilNoAuto(selection) {
   // https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
 
   return selection
-    .attr('autocomplete', 'new-password')
+    .attr('autocomplete',  'new-password')
     .attr('autocorrect', 'off')
     .attr('autocapitalize', 'off')
     .attr('data-1p-ignore', '')      // Rapid#1085
