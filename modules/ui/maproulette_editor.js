@@ -355,6 +355,8 @@ export function uiMapRouletteEditor(context) {
 
 
   function submitButtons(selection) {
+    const osm = context.services.osm;
+    const userID = osm._userDetails.id;
     const errID = _maprouletteTask?.id;
     const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
@@ -396,6 +398,11 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          d.newStatus = 'done';
+          d.comment = d3_select('.new-comment-input').property('value').trim();
+          d.taskId = d.id;
+          d.userId = userID;
+          maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
           d.showNoteSaveSection = false;
           updateMRSaveButtonsVisibility(d.showNoteSaveSection);
         }

@@ -177,51 +177,71 @@ export class MapRouletteService extends AbstractSystem {
 
   /**
    * postUpdate
-   * @param   issue
+   * @param   task
    * @param   callback
    */
-  postUpdate(issue, callback) {
-    // already fixed API
-    // /task/{id}/tags/update
-    // looks like this for fixed it
-    // https://maproulette.org/api/v2/task/222008948/tags/update?tags
-    // comment API (POST)
-    // https://maproulette.org/api/v2/task/222011306/comment?actionId=2
-    // comments API (GET)
-    // https://maproulette.org/api/v2/task/222011306/comments
-    // user (GET)
-    // https://maproulette.org/api/v2/user/5220
-    // release API (GET)
-    // https://maproulette.org/api/v2/task/222011306/release
-    // update -> comment (POST) -> comments (GET) -> user -> release
-    if (this._cache.inflightPost[issue.id]) {
-      return callback({ message: 'Issue update already inflight', status: -2 }, issue);
+  postUpdate(task, callback) {
+    console.log('postUpdate called with task:', task);
+
+    if (this._cache.inflightPost[task.id]) {
+      console.log('Issue update already inflight for task:', task);
+      return callback({ message: 'Issue update already inflight', status: -2 }, task);
     }
-    // UI sets the status to either 'done' or 'false'
-    const url = `${MAPROULETTE_API}/issue/${issue.id}/${issue.newStatus}`;
+
+    const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
+    const userUrl = `${MAPROULETTE_API}/user/${task.userId}`;
+    const releaseTaskUrl = `${MAPROULETTE_API}/task/${task.taskId}/release`;
     const controller = new AbortController();
-    const after = () => {
-      delete this._cache.inflightPost[issue.id];
 
-      this.removeTask(issue);
-      if (issue.newStatus === 'done') {
-        // Keep track of the number of issues closed per `item` to tag the changeset
-        if (!(issue.item in this._cache.closed)) {
-          this._cache.closed[issue.item] = 0;
+    this._cache.inflightPost[task.id] = controller;
+
+    // Post comment
+    fetch(commentUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ actionId: 2, text: task.comment }),
+      signal: controller.signal
+    })
+    .then(response => {
+      if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
+      return response.json();
+    })
+    .then(() => {
+      // Get user
+      return fetch(userUrl, { signal: controller.signal });
+    })
+    .then(response => {
+      if (!response.ok) throw new Error(`Error getting user: ${response.statusText}`);
+      return response.json();
+    })
+    .then(() => {
+      // Release task
+      return fetch(releaseTaskUrl, { signal: controller.signal });
+    })
+    .then(response => {
+      if (!response.ok) throw new Error(`Error releasing task: ${response.statusText}`);
+      return response.json();
+    })
+    .then(() => {
+      // All requests completed successfully
+      delete this._cache.inflightPost[task.id];
+      this.removeItem(task);
+      if (task.newStatus === 'done') {
+        console.log('Task marked as done:', task);
+        if (!(task.item in this._cache.closed)) {
+          console.log('Adding new item to closed cache:', task.item);
+          this._cache.closed[task.item] = 0;
         }
-        this._cache.closed[issue.item] += 1;
+        this._cache.closed[task.item] += 1;
+        console.log('Updated closed cache:', this._cache.closed);
       }
-      if (callback) callback(null, issue);
-    };
-
-    this._cache.inflightPost[issue.id] = controller;
-
-    fetch(url, { signal: controller.signal })
-      .then(after)
-      .catch(err => {
-        delete this._cache.inflightPost[issue.id];
-        if (callback) callback(err.message);
-      });
+      if (callback) callback(null, task);
+    })
+    .catch(err => {
+      // Handle any errors
+      delete this._cache.inflightPost[task.id];
+      if (callback) callback(err.message);
+    });
   }
 
 
@@ -266,7 +286,7 @@ export class MapRouletteService extends AbstractSystem {
 
   /**
    * getClosedCounts
-   * Used to populate closed changeset tags
+   * Used to populate `closed:maproulette:*` changeset tags
    * @return   the closed cache
    */
   getClosedCounts() {
@@ -311,20 +331,5 @@ export class MapRouletteService extends AbstractSystem {
       this._cache.rtree.insert(task);
     }
   }
-
-  // Issues shouldn't obscure each other
-  _preventCoincident(loc) {
-    let coincident = false;
-    do {
-      // first time, move marker up. after that, move marker right.
-      let delta = coincident ? [0.00001, 0] : [0, 0.00001];
-      loc = vecAdd(loc, delta);
-      const bbox = new Extent(loc).bbox();
-      coincident = this._cache.rtree.search(bbox).length;
-    } while (coincident);
-
-    return loc;
-  }
-
 
 }

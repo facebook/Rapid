@@ -143,14 +143,14 @@ export class SelectMode extends AbstractMode {
     } else if (datum instanceof MapRouletteTask && datum.service === 'maproulette') {
       sidebarContent = uiMapRouletteEditor(context).error(datum);
       sidebarContent
-      .on('change', () => {
-        context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-        const maproulette = context.services.maproulette;
-        const error = maproulette?.getError(datumID);
-        if (!(error instanceof MapRouletteTask)) return;  // or - go to browse mode?
-        context.systems.ui.sidebar.show(sidebarContent.error(error));
-        this._selectedData.set(datumID, error);  // update selectedData after a change happens?
-      });
+        .on('change', () => {
+          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          const maproulette = context.services.maproulette;
+          const error = maproulette?.getError(datumID);
+          if (!(error instanceof MapRouletteTask)) return;  // or - go to browse mode?
+          context.systems.ui.sidebar.show(sidebarContent.error(error));
+          this._selectedData.set(datumID, error);  // update selectedData after a change happens?
+        });
       // Selected custom data (e.g. gpx track)...
     } else if (datum.__featurehash__) {
       const dataEditor = uiDataEditor(context).datum(datum);
