@@ -898,7 +898,7 @@ export class StreetsideService extends AbstractSystem {
    * _fetchMetadataAsync
    * https://learn.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
    */
-  _fetchMetadataAsync(tile) {  // eslint-disable-line  no-unused-vars
+  _fetchMetadataAsync(tile) {
     // only fetch it once
     if (this._cache.metadataPromise) return this._cache.metadataPromise;
 

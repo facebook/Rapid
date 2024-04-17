@@ -3,7 +3,7 @@ import RBush from 'rbush';
 import { HALF_PI, TAU, numWrap, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer.js';
-import { getLineSegments, getDebugBBox, lineToPoly } from './helpers.js';
+import { getLineSegments, /*getDebugBBox,*/ lineToPoly } from './helpers.js';
 
 
 const MINZOOM = 12;
@@ -640,7 +640,7 @@ this.placeRopeLabel(feature, labelObj, coords);
       ];
     }
 
-    let picked = null;
+//    let picked = null;
     for (const placement of attempts) {
       const [x, y] = placements[placement];
       const EPSILON = 0.01;
@@ -671,14 +671,14 @@ this.placeRopeLabel(feature, labelObj, coords);
         this._labels.set(featureID, label);
         this._labelBoxes.get(featureID).push(box);
         this._rbush.insert(box);
-        picked = placement;
+//        picked = placement;
         break;
       }
     }
 
-    // if (!picked) {
-    //   labelObj.destroy({ children: true });  // didn't place it
-    // }
+//    if (!picked) {
+//      labelObj.destroy({ children: true });  // didn't place it
+//    }
   }
 
 
