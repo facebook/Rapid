@@ -28,7 +28,7 @@ This section suggests a toolset and method to start contributing to Rapid. Howev
 5. Make sure you are using [the latest `node`](https://nodejs.org/en/download) by running `node --version`. If not, then running `nvm install node` will set it up for you.
 6. Install all required dependencies with `npm install`
 7. Then run `npm run all` to set up Rapid.
-8. Finally, run `npm run quickstart` to start the server on port 8080.
+8. Finally, run `npm run start` to start the server on port 8080.
 
 Congrats! 🎉 You should now be able to use rapid by navigating to [http://127.0.0.1:8080/](http://localhost:8080/) on Chrome.
 
@@ -56,7 +56,7 @@ VSCode provides a debugging mode using Chrome. To use it, follow these steps:
 }
 ```
 
-Great! You should now be able to run the Rapid server with `npm run quickstart` and then the debugger by either pressing **F5** on your keyboard, or clicking on **Run>Start Debugging**.
+Great! You should now be able to run the Rapid server with `npm run start` and then the debugger by either pressing **F5** on your keyboard, or clicking on **Run>Start Debugging**.
 
 This will launch Chrome on whatever address you provided to `url` on `launch.json`, allowing you to use Rapid as well as entering debugging mode on VSCode.
 
