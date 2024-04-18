@@ -2,6 +2,7 @@ import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
+import { utilDetect } from '../util/detect.js';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
@@ -256,6 +257,10 @@ export class DragBehavior extends AbstractBehavior {
     }
   }
 
+
+  /**
+   * _snappingDisabled
+   */
   _snappingDisabled() {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
@@ -263,10 +268,11 @@ export class DragBehavior extends AbstractBehavior {
     if (!eventManager.pointerOverRenderer) return false;
 
     const modifiers = eventManager.modifierKeys;
-    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
-
+    const isMac = utilDetect().os === 'mac';
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Meta') || (!isMac && modifiers.has('Control'));
     return disableSnap;
   }
+
 
   /**
    * _doMove

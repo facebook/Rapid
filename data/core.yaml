@@ -1654,7 +1654,7 @@ en:
       connect_line_h: "Connecting Lines"
       connect_line: "Having roads connected properly is important for the map and essential for providing driving directions."
       connect_line_display: "The connections between roads are drawn with gray circles. The endpoints of a line are drawn with larger white circles if they don't connect to anything."
-      connect_line_drag: "To connect a line to another feature, drag one of the line's nodes onto the other feature until both features snap together. Tip: You can hold down the `{option}` or `{control}` key to prevent nodes from connecting to other features."
+      connect_line_drag: "To connect a line to another feature, drag one of the line's nodes onto the other feature until both features snap together. Tip: You can hold down the `{option}` key to prevent nodes from connecting to other features."
       connect_line_tag: "If you know that the connection has traffic lights or crosswalks, you can add them by selecting the connecting node and using the feature editor to select the correct feature's type."
       disconnect_line_h: "Disconnecting Lines"
       disconnect_line_command: "To disconnect a road from another feature, {mouse_right_icon} right-click or {onefinger_tap_and_hold_icon} long-press the connecting node and choose the {disconnect_icon} **{disconnect}** operation from the edit menu."

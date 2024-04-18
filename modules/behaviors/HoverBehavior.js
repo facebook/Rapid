@@ -1,5 +1,6 @@
 import { AbstractBehavior } from './AbstractBehavior.js';
 // import { geoChooseEdge } from '../geo/index.js';
+import { utilDetect } from '../util/detect.js';
 
 
 /**
@@ -104,7 +105,8 @@ export class HoverBehavior extends AbstractBehavior {
     const context = this.context;
     const eventManager = context.systems.map.renderer.events;
     const modifiers = eventManager.modifierKeys;
-    const hasModifierKey = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const isMac = utilDetect().os === 'mac';
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Meta') || (!isMac && modifiers.has('Control'));
     const eventData = Object.assign({}, this.lastMove);  // shallow copy
 
     // Handle situations where we don't want to hover a target way...
@@ -143,7 +145,7 @@ export class HoverBehavior extends AbstractBehavior {
 
     // If a modifier key is down, or pointer is not over the renderer, discard the target..
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    if (hasModifierKey || isActiveTarget || !eventManager.pointerOverRenderer) {
+    if (disableSnap || isActiveTarget || !eventManager.pointerOverRenderer) {
       eventData.target = null;
     }
 

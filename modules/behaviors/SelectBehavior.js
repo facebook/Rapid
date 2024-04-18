@@ -6,6 +6,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint.js';
 import { osmNode } from '../osm/node.js';
 import { osmWay } from '../osm/way.js';
 import { geoChooseEdge } from '../geo/index.js';
+import { utilDetect } from '../util/detect.js';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -226,21 +227,22 @@ export class SelectBehavior extends AbstractBehavior {
     const dist = vecLength(down.coord.screen, up.coord.screen);
     const updist = vecLength(up.coord.screen, this.lastUp ? this.lastUp.coord.screen : 0);
     const lClick = up.event.button === 0;
+
     // Second left-click nearby, targeting the same target, within half a second of the last up event.
     // We got ourselves a double click!
-    if ( lClick && this.lastUp?.target?.dataID && updist < NEAR_TOLERANCE && this.lastUp?.target?.dataID === up.target?.dataID && up.time - (this.lastUp ? this.lastUp.time : 0) < 500) {
-      this.lastClick = this.lastUp = up;  // We will accept this as a click
+    if (lClick && this.lastUp?.target?.dataID && updist < NEAR_TOLERANCE && this.lastUp?.target?.dataID === up.target?.dataID && up.time - (this.lastUp ? this.lastUp.time : 0) < 500) {
+      this.lastClick = this.lastUp = up;  // We will accept this as a double-click
       this._doDoubleClick();
+
     } else if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = this.lastUp = up;  // We will accept this as a click
 
-      if (down.originalEvent.button === 2) {   // right click
-        //If we right click on something that's not already selected, go ahead and select the item being right clicked on.
+      if (up.event.button === 2) {   // right click
         if (!this.context.selectedIDs().includes(down.target.dataID)) {
-          this._doSelect();
+          this._doSelect();    // Select it first, if needed
         }
-        //Then, show the context menu.
-        this._doContextMenu();
+        this._doContextMenu(); // Then show the context menu.
+
       } else {
         this._doSelect();
       }
@@ -294,7 +296,8 @@ export class SelectBehavior extends AbstractBehavior {
     const eventManager = context.systems.map.renderer.events;
 
     const modifiers = eventManager.modifierKeys;
-    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const isMac = utilDetect().os === 'mac';
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Meta') || (!isMac && modifiers.has('Control'));
     const isMultiselect = modifiers.has('Shift');
     const eventData = Object.assign({}, this.lastClick);  // shallow copy
 
@@ -489,7 +492,8 @@ export class SelectBehavior extends AbstractBehavior {
     const ui = context.systems.ui;
 
     const modifiers = eventManager.modifierKeys;
-    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const isMac = utilDetect().os === 'mac';
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Meta') || (!isMac && modifiers.has('Control'));
     const eventData = Object.assign({}, this.lastClick);  // shallow copy
 
     // If a modifier key is down, discard the target to prevent snap/hover.

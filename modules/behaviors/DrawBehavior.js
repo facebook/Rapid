@@ -2,6 +2,7 @@ import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 // import { geoChooseEdge } from '../geo/index.js';
+import { utilDetect } from '../util/detect.js';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -261,7 +262,8 @@ export class DrawBehavior extends AbstractBehavior {
     if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
-    const hasModifierKey = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const isMac = utilDetect().os === 'mac';
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Meta') || (!isMac && modifiers.has('Control'));
     const eventData = Object.assign({}, this.lastMove);  // shallow copy
 
     // Handle situations where we don't want to hover a target way...
@@ -299,7 +301,7 @@ export class DrawBehavior extends AbstractBehavior {
 //    }
 
     // If a modifier key is down, discard the target to prevent snap/hover.
-    if (hasModifierKey || isActiveTarget) {
+    if (disableSnap || isActiveTarget) {
       eventData.target = null;
     }
 
@@ -321,7 +323,8 @@ export class DrawBehavior extends AbstractBehavior {
     // if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
-    const hasModifierKey = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const isMac = utilDetect().os === 'mac';
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Meta') || (!isMac && modifiers.has('Control'));
     const eventData = Object.assign({}, this.lastClick);  // shallow copy
 
     // Handle situations where we don't want to hover a target way...
@@ -359,7 +362,7 @@ export class DrawBehavior extends AbstractBehavior {
 //    }
 
     // If a modifier key is down, discard the target to prevent snap/hover.
-    if (hasModifierKey || isActiveTarget) {
+    if (disableSnap || isActiveTarget) {
       eventData.target = null;
     }
 

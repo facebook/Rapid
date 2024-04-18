@@ -101,6 +101,7 @@ export class PixiEvents extends EventEmitter {
 
     const stage = renderer.pixi.stage;
     stage.addEventListener('click', this._click);
+    stage.addEventListener('rightclick', this._click);   // pixi has a special 'rightclick' event
     stage.addEventListener('pointerdown', this._pointerdown);
     stage.addEventListener('pointermove', this._pointermove);
     stage.addEventListener('pointerup', this._pointerup);
@@ -133,10 +134,11 @@ export class PixiEvents extends EventEmitter {
 
     const stage = renderer.pixi.stage;
     stage.removeEventListener('click', this._click);
+    stage.removeEventListener('rightclick', this._click);
     stage.removeEventListener('pointerdown', this._pointerdown);
     stage.removeEventListener('pointermove', this._pointermove);
     stage.removeEventListener('pointerup', this._pointerup);
-    stage.removeEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
+    stage.removeEventListener('pointerupoutside', this._pointercancel);
     stage.removeEventListener('pointercancel', this._pointercancel);
   }
 
@@ -254,6 +256,25 @@ export class PixiEvents extends EventEmitter {
 
 
   /**
+   * _checkButtons
+   * On Mac, consider a control + left-click as a right-click - Rapid#920
+   * https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+   * https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
+   * @param  `e`  A Pixi FederatedPointerEvent
+   */
+  _checkButtons(e) {
+    if (e.ctrlKey && utilDetect().os === 'mac') {
+      if (e.button === 0) {   // left button
+        e.button = 2;         // right button
+      }
+      if ((e.buttons & 0b11) === 0b01) {  // left and not right
+        e.buttons ^= 0b11;                // swap left and right
+      }
+    }
+  }
+
+
+  /**
    * _keydown
    * Handler for keydown events on the window.
    * @param  `e`  A DOM KeyboardEvent
@@ -280,6 +301,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerover(e) {
     this._observeModifierKeys(e);
+    this._checkButtons(e);
     this.pointerOverRenderer = true;
     this.emit('pointerover', e);
   }
@@ -291,6 +313,7 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerout(e) {
     this._observeModifierKeys(e);
+    this._checkButtons(e);
     this.pointerOverRenderer = false;
     this.emit('pointerout', e);
   }
@@ -303,6 +326,7 @@ export class PixiEvents extends EventEmitter {
   _pointerdown(e) {
     this._observeModifierKeys(e);
     this._observeCoordinate(e.global.x, e.global.y);
+    this._checkButtons(e);
     this.emit('pointerdown', e);
   }
 
@@ -314,6 +338,7 @@ export class PixiEvents extends EventEmitter {
   _pointermove(e) {
     this._observeModifierKeys(e);
     this._observeCoordinate(e.global.x, e.global.y);
+    this._checkButtons(e);
     this.emit('pointermove', e);
   }
 
@@ -325,6 +350,7 @@ export class PixiEvents extends EventEmitter {
   _pointerup(e) {
     this._observeModifierKeys(e);
     this._observeCoordinate(e.global.x, e.global.y);
+    this._checkButtons(e);
     this.emit('pointerup', e);
   }
 
@@ -344,6 +370,7 @@ export class PixiEvents extends EventEmitter {
    */
   _click(e) {
     // no need to _observeModifierKeys here, 'click' fires immediately after 'pointerup'
+    this._checkButtons(e);
     this.emit('click', e);
   }
 
