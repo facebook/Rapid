@@ -48,6 +48,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
   * Improve the map navigation content in the walkthrough, built-in help, and keyboard shortcuts.
 
 #### :sparkles: Usability & Accessibility
+* [#485] Dragging in minimap keeps the view rectangle centered, allowing user to recenter the map easily
 * [#920] Treat Control-click on MacOS as a right click
 * [#1364] Fix walkthrough step to ensure that the user can find the playground description field
 * [#1368] Improve map "nudging" behavior when drawing near the edge of the map
@@ -60,6 +61,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * [#1329] Walkthrough should not show any issues about "outdated tags"
 * [#1370] Fix login credentials for OpenStreetMap development environment
 
+[#485]: https://github.com/facebook/Rapid/issues/485
 [#920]: https://github.com/facebook/Rapid/issues/920
 [#1209]: https://github.com/facebook/Rapid/issues/1209
 [#1328]: https://github.com/facebook/Rapid/issues/1328
