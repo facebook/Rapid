@@ -158,7 +158,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     // Determine tiles needed to cover the view at the zoom we want,
     // including any zoomed out tiles if this field contains any holes
     const needTiles = new Map();                // Map(tileID -> tile)
-    const maxZoom = Math.round(z);              // the zoom we want
+    const maxZoom = Math.ceil(z);               // the zoom we want (round up for sharper imagery)
     const minZoom = Math.max(0, maxZoom - 5);   // the mininimum zoom we'll accept
 
     let covered = false;
