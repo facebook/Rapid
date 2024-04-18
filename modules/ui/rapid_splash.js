@@ -8,6 +8,8 @@ export function uiRapidSplash(context) {
   const storage = context.systems.storage;
 
   return function render(selection) {
+return;  // restore with image for v2.3
+
     if (storage.getItem('sawRapidSplash')) return;
     storage.setItem('sawRapidSplash', true);
 
