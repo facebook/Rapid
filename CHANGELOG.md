@@ -57,6 +57,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :hammer: Development
 * [#1328] Add more test coverage for core classes
 * [#1329] Walkthrough should not show any issues about "outdated tags"
+* [#1370] Fix login credentials for OpenStreetMap development environment
 
 [#1209]: https://github.com/facebook/Rapid/issues/1209
 [#1328]: https://github.com/facebook/Rapid/issues/1328
@@ -66,6 +67,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1363]: https://github.com/facebook/Rapid/issues/1363
 [#1364]: https://github.com/facebook/Rapid/issues/1364
 [#1368]: https://github.com/facebook/Rapid/issues/1368
+[#1370]: https://github.com/facebook/Rapid/issues/1370
 
 
 # [2.2.5](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.5)
