@@ -226,7 +226,7 @@ export class UiCurtain {
         let min = view.project([opts.revealExtent.min[0], opts.revealExtent.max[1]], true);  // topLeft
         let max = view.project([opts.revealExtent.max[0], opts.revealExtent.min[1]], true);  // bottomRight
 
-        // Convert map coords on the mainmap to global coords in the container
+        // Convert map coords on the supersurface to global coords in the container
         min = vecAdd(min, [supersurface.left, supersurface.top]);
         max = vecAdd(max, [supersurface.left, supersurface.top]);
 
