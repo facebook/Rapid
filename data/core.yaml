@@ -1002,7 +1002,7 @@ en:
       title: Map Color Scheme
       tooltip: Switch between color schemes
       default: Default
-      # high_contrast: High Contrast
+      high_contrast: High Contrast
       ibm: IBM
       okabe_ito: Okabe-Ito
       paul_tol_vibrant: Paul Tol (Vibrant)

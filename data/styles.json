@@ -26,7 +26,7 @@
         "fill": { "color": "yellow-5", "alpha": 0.3 }
     },
     "orange-fill": {
-        "fill": { "color": "orange-2", "alpha": 0.3 }
+        "fill": { "color": "orange-1", "alpha": 0.3 }
     },
     "pink-fill": {
         "fill": { "color": "pink-1", "alpha": 0.3 }
@@ -57,7 +57,7 @@
     },
     "primary": {
         "casing": { "width": 10, "color": "red-4" },
-        "stroke": { "width": 8, "color": "orange-1" }
+        "stroke": { "width": 8, "color": "orange-2" }
     },
     "secondary": {
         "casing": { "width": 10, "color": "red-4" },

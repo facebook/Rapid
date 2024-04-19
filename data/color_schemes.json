@@ -5,8 +5,8 @@
     "red-3":    "0xdd2f22",
     "red-4":    "0x70372f",
 
-    "orange-1": "0xf99806",
-    "orange-2": "0xd6881a",
+    "orange-1": "0xd6881a",
+    "orange-2": "0xf99806",
     "orange-3": "0xfc6c14",
 
     "yellow-1": "0xfff9b3",
@@ -50,6 +50,20 @@
     "gray-6":   "0x555555",
     "gray-7":   "0x444444"
   },
+  "high_contrast": {
+    "red-1":    "0xff0e41",
+    "green-3":  "0x09f04a",
+    "blue-2":   "0x0cbcff",
+    "yellow-2": "0xffca09",
+    "yellow-5": "0xff0ebc",
+    "orange-1": "0xff510b",
+    "pink-1":   "0xf1c0e8",
+    "green-1":  "0x12ffd1",
+    "green-5":  "0x540fff",
+    "tan-1":    "0xaffa1f",
+    "gray-5":   "0x0000fe",
+    "gray-4":   "0xe9af1e" 
+  },
   "ibm": {
     "red-3":    "0x648fff",
     "red-4":    "0x785ef0",
@@ -87,5 +101,5 @@
     "orange-1": "0xfe6100",
     "green-3":  "0x09f04a",
     "green-4":  "0x09e04a"
-  }
+  } 
 }
