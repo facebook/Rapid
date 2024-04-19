@@ -1003,11 +1003,9 @@ en:
       tooltip: Switch between color schemes
       default: Default
       high_contrast: High Contrast
-      ibm: IBM
-      okabe_ito: Okabe-Ito
-      paul_tol_vibrant: Paul Tol (Vibrant)
-      paul_tol_muted: Paul Tol (Muted)
-      colorblind_friendly: Colorblind-Friendly
+      colorblind_general: Colorblind Mode - General
+      colorblind_ibm: Colorblind Mode - IBM
+      colorblind_paul_tol_vibrant: Colorblind Mode - Paul Tol (Vibrant)
       placeholder: Select color scheme
     colorblind_options:
       title: Colorblind Mode
