@@ -24,7 +24,6 @@ export class DataLoaderSystem extends AbstractSystem {
     const fileMap  = new Map();
     fileMap.set('address_formats', 'data/address_formats.min.json');
     fileMap.set('color_schemes', 'data/color_schemes.min.json');
-    fileMap.set('colors', 'data/colors.min.json');
     fileMap.set('deprecated', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/deprecated.min.json');
     fileMap.set('discarded', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/discarded.min.json');
     fileMap.set('imagery', 'data/imagery.min.json');
