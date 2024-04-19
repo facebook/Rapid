@@ -22,8 +22,8 @@ import { utilDetect } from '../util/detect.js';
  *   `pointercancel`     Fires on stage.pointercancel, receives a Pixi FederatedPointerEvent
  *   `pointerdown`       Fires on stage.pointerdown, receives a Pixi FederatedPointerEvent
  *   `pointermove`       Fires on stage.pointermove, receives a Pixi FederatedPointerEvent
- *   `pointerout`        Fires on canvas.pointerout, receives a Pixi FederatedPointerEvent
- *   `pointerover`       Fires on canvas.pointerover, receives a Pixi FederatedPointerEvent
+ *   `pointerout`        Fires on canvas.pointerout, receives a DOM PointerEvent
+ *   `pointerover`       Fires on canvas.pointerover, receives a DOM PointerEvent
  *   `pointerup`         Fires on stage.pointerup, receives a Pixi FederatedPointerEvent
  *   `wheel`             Fires on supersurface.wheel, receives a DOM WheelEvent + some properties containing normalized wheel delta values
  */
@@ -257,7 +257,7 @@ export class PixiEvents extends EventEmitter {
 
   /**
    * _checkButtons
-   * On Mac, consider a control + left-click as a right-click - Rapid#920
+   * On Mac, consider a control-left-click as a right-click - Rapid#920
    * https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
    * https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons
    * @param  `e`  A Pixi FederatedPointerEvent
@@ -301,7 +301,9 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerover(e) {
     this._observeModifierKeys(e);
-    this._checkButtons(e);
+    // Don't call `_checkButtons(e)` here.
+    // The DOM PointerEvent button properties are readonly.
+    // and we don't really need to remap control-left-click to right-click in this situation.
     this.pointerOverRenderer = true;
     this.emit('pointerover', e);
   }
@@ -313,7 +315,9 @@ export class PixiEvents extends EventEmitter {
    */
   _pointerout(e) {
     this._observeModifierKeys(e);
-    this._checkButtons(e);
+    // Don't call `_checkButtons(e)` here.
+    // The DOM PointerEvent button properties are readonly.
+    // and we don't really need to remap control-left-click to right-click in this situation.
     this.pointerOverRenderer = false;
     this.emit('pointerout', e);
   }
