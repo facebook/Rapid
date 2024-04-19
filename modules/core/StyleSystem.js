@@ -116,17 +116,17 @@ export class StyleSystem extends AbstractSystem {
         taxiway: 'taxiway'
       },
       amenity: {
-        childcare: 'common-yellow',
-        college: 'common-yellow',
-        fountain: 'common-blue',
-        kindergarten: 'common-yellow',
-        parking: 'common-darkgray',
-        research_institute: 'common-yellow',
-        school: 'common-yellow',
-        university: 'common-yellow'
+        childcare: 'yellow-fill',
+        college: 'yellow-fill',
+        fountain: 'blue-fill',
+        kindergarten: 'yellow-fill',
+        parking: 'darkgray-fill',
+        research_institute: 'yellow-fill',
+        school: 'yellow-fill',
+        university: 'yellow-fill'
       },
       building: {
-        '*': 'common-red'
+        '*': 'red-fill'
       },
       barrier: {
         city_wall: 'barrier_wall',
@@ -148,7 +148,7 @@ export class StyleSystem extends AbstractSystem {
         '*': 'crossing_unmarked'
       },
       golf: {
-        green: 'common-lightgreen'
+        green: 'lightgreen-fill'
       },
       highway: {
         bridleway: 'bridleway',
@@ -182,67 +182,67 @@ export class StyleSystem extends AbstractSystem {
         unclassified_link: 'unclassified'
       },
       landuse: {
-        cemetery: 'common-lightgreen',
-        commercial: 'common-orange',
-        construction: 'common-gold',
-        farmland: 'common-lightgreen',
-        farmyard: 'common-tan',
-        flowerbed: 'common-green',
-        forest: 'common-green',
-        grass: 'common-green',
-        industrial: 'common-pink',
-        landfill: 'common-orange',
-        meadow: 'common-lightgreen',
-        military: 'common-orange',
-        orchard: 'common-lightgreen',
-        quarry: 'common-darkgray',
-        railway: 'common-darkgray',
-        recreation_ground: 'common-green',
-        residential: 'common-gold',
-        retail: 'common-orange',
-        village_green: 'common-green',
-        vineyard: 'common-lightgreen'
+        cemetery: 'lightgreen-fill',
+        commercial: 'orange-fill',
+        construction: 'gold-fill',
+        farmland: 'lightgreen-fill',
+        farmyard: 'tan-fill',
+        flowerbed: 'green-fill',
+        forest: 'green-fill',
+        grass: 'green-fill',
+        industrial: 'pink-fill',
+        landfill: 'orange-fill',
+        meadow: 'lightgreen-fill',
+        military: 'orange-fill',
+        orchard: 'lightgreen-fill',
+        quarry: 'darkgray-fill',
+        railway: 'darkgray-fill',
+        recreation_ground: 'green-fill',
+        residential: 'gold-fill',
+        retail: 'orange-fill',
+        village_green: 'green-fill',
+        vineyard: 'lightgreen-fill'
       },
       leisure: {
-        garden: 'common-green',
-        golf_course: 'common-green',
-        nature_reserve: 'common-green',
-        park: 'common-green',
-        pitch: 'common-green',
-        swimming_pool: 'common-blue',
-        track: 'common-yellow'
+        garden: 'green-fill',
+        golf_course: 'green-fill',
+        nature_reserve: 'green-fill',
+        park: 'green-fill',
+        pitch: 'green-fill',
+        swimming_pool: 'blue-fill',
+        track: 'yellow-fill'
       },
       man_made: {
-        adit: 'common-darkgray',
+        adit: 'darkgray-fill',
         breakwater: 'barrier_wall',
         groyne: 'barrier_wall',
         pipeline: 'pipeline'
       },
       military: {
-        '*': 'common-orange'
+        '*': 'orange-fill'
       },
       natural: {
-        bare_rock: 'common-darkgray',
-        bay: 'common-blue',
-        beach: 'common-yellow',
-        cave_entrance: 'common-darkgray',
-        cliff: 'common-darkgray',
-        glacier: 'common-lightgray',
+        bare_rock: 'darkgray-fill',
+        bay: 'blue-fill',
+        beach: 'yellow-fill',
+        cave_entrance: 'darkgray-fill',
+        cliff: 'darkgray-fill',
+        glacier: 'lightgray-fill',
         ridge: 'ridge',
-        rock: 'common-darkgray',
-        sand: 'common-yellow',
-        scree: 'common-darkgray',
-        scrub: 'common-yellow',
-        shingle: 'common-darkgray',
-        stone: 'common-darkgray',
-        strait: 'common-blue',
+        rock: 'darkgray-fill',
+        sand: 'yellow-fill',
+        scree: 'darkgray-fill',
+        scrub: 'yellow-fill',
+        shingle: 'darkgray-fill',
+        stone: 'darkgray-fill',
+        strait: 'blue-fill',
         tree_row: 'tree_row',
-        water: 'common-blue',
-        wetland: 'common-teal',
-        '*': 'common-green'
+        water: 'blue-fill',
+        wetland: 'teal-fill',
+        '*': 'green-fill'
       },
       power: {
-        plant: 'common-pink'
+        plant: 'pink-fill'
       },
       railway: {
         platform: 'footway',
@@ -255,11 +255,11 @@ export class StyleSystem extends AbstractSystem {
         ferry: 'ferry'
       },
       sport: {
-        baseball: 'common-yellow',
-        basketball: 'common-darkgray',
-        beachvolleyball: 'common-yellow',
-        skateboard: 'common-darkgray',
-        softball: 'common-yellow'
+        baseball: 'yellow-fill',
+        basketball: 'darkgray-fill',
+        beachvolleyball: 'yellow-fill',
+        skateboard: 'darkgray-fill',
+        softball: 'yellow-fill'
       },
       type: {
         waterway: 'river'

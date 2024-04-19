@@ -10,40 +10,40 @@
         "stroke": { "dash": [7, 3], "cap": "butt" }
     },
 
-    "common-red": {
+    "red-fill": {
         "fill": { "color": "red-1", "alpha": 0.3 }
     },
-    "common-green": {
+    "green-fill": {
         "fill": { "color": "green-3", "alpha": 0.3 }
     },
-    "common-blue": {
+    "blue-fill": {
         "fill": { "color": "blue-2", "alpha": 0.3 }
     },
-    "common-yellow": {
+    "yellow-fill": {
         "fill": { "color": "yellow-2", "alpha": 0.25 }
     },
-    "common-gold": {
+    "gold-fill": {
         "fill": { "color": "yellow-5", "alpha": 0.3 }
     },
-    "common-orange": {
+    "orange-fill": {
         "fill": { "color": "orange-2", "alpha": 0.3 }
     },
-    "common-pink": {
+    "pink-fill": {
         "fill": { "color": "pink-1", "alpha": 0.3 }
     },
-    "common-teal": {
+    "teal-fill": {
         "fill": { "color": "green-1", "alpha": 0.3 }
     },
-    "common-lightgreen": {
+    "lightgreen-fill": {
         "fill": { "color": "green-5", "alpha": 0.3 }
     },
-    "common-tan": {
+    "tan-fill": {
         "fill": { "color": "tan-1", "alpha": 0.3 }
     },
-    "common-darkgray": {
+    "darkgray-fill": {
         "fill": { "color": "gray-6", "alpha": 0.5 }
     },
-    "common-lightgray": {
+    "lightgray-fill": {
         "fill": { "color": "gray-7", "alpha": 0.3 }
     },
 
