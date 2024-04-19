@@ -21,7 +21,8 @@ export class UiCurtain {
 
     this._revealOptions = null;
     this._containerRect = null;     // The container rectangle covers the entire Rapid application
-    this._mapRect = null;           // The map rectangle covers just the map part
+    this._mapRect = null;           // The map rectangle is the div in which the map will be drawn
+    this._supersurfaceRect = null;  // The supersurface contains the drawing canvas, may be expanded/rotated
     this._revealRect = null;        // The hole in the curtain being revealed
 
     this._darknessDirty = true;     // need to recompute the darkness?
@@ -52,6 +53,7 @@ export class UiCurtain {
     this._revealOptions = null;
     this._containerRect = null;
     this._mapRect = null;
+    this._supersurfaceRect = null;
     this._revealRect = null;
 
     this._darknessDirty = true;
@@ -76,6 +78,10 @@ export class UiCurtain {
       .append('div')
       .attr('class', 'popover-inner');
 
+// bhousel todo
+// I think if the use resizes the sidebar, it will affect the size of mainmap
+// and the math of things will be wrong.  We might need to build some UiSystem
+// resize event instead of just listening to the `window` resize event.
     // register event handlers
     d3_select(window).on('resize.curtain', this.resize);
     this.context.systems.map.on('move', this.redraw);
@@ -101,6 +107,7 @@ export class UiCurtain {
     this._revealOptions = null;
     this._containerRect = null;
     this._mapRect = null;
+    this._supersurfaceRect = null;
     this._revealRect = null;
 
     // unregister event handlers
@@ -114,11 +121,15 @@ export class UiCurtain {
    * Recalculate the dimensions of container and map rectangles and redraw everything
    */
   resize() {
-    const containerNode = this.context.container().node();
+    const container = this.context.container();
+    const containerNode = container.node();
     this._containerRect = this._copyRect(containerNode.getBoundingClientRect());
 
-    const mapNode = this.context.container().select('.main-map').node();
+    const mapNode = container.select('.main-map').node();
     this._mapRect = this._copyRect(mapNode.getBoundingClientRect());
+
+    const supersurfaceNode = container.select('.main-map > .supersurface').node();
+    this._supersurfaceRect = this._copyRect(supersurfaceNode.getBoundingClientRect());
 
     const [w, h] = [this._containerRect.width, this._containerRect.height];
     this._curtain
@@ -195,7 +206,8 @@ export class UiCurtain {
 
     const container = this._containerRect;
     const mainmap = this._mapRect;
-    if (!container || !mainmap) return;   // called too early
+    const supersurface = this._supersurfaceRect;
+    if (!container || !mainmap || !supersurface) return;   // called too early
 
     const opts = this._revealOptions;
     const padding = opts?.revealPadding ?? 0;
@@ -204,16 +216,19 @@ export class UiCurtain {
 
     // Determine what to reveal in the hole..
     if (opts) {
-      if (opts.revealExtent instanceof Extent) {    // An Extent in lon/lat coords
+
+      // An Extent in lon/lat coords
+      if (opts.revealExtent instanceof Extent) {
         // Watch out, we can't project min/max directly (because Y is flipped).
         // Construct topLeft, bottomRight corners and project those.
+        // `true` = consider rotation and project to screen coordinates, not surface coordinates
         const view = this.context.viewport;
-        let min = view.project([opts.revealExtent.min[0], opts.revealExtent.max[1]]);  // topLeft
-        let max = view.project([opts.revealExtent.max[0], opts.revealExtent.min[1]]);  // bottomRight
+        let min = view.project([opts.revealExtent.min[0], opts.revealExtent.max[1]], true);  // topLeft
+        let max = view.project([opts.revealExtent.max[0], opts.revealExtent.min[1]], true);  // bottomRight
 
         // Convert map coords on the mainmap to global coords in the container
-        min = vecAdd(min, [mainmap.left, mainmap.top]);
-        max = vecAdd(max, [mainmap.left, mainmap.top]);
+        min = vecAdd(min, [supersurface.left, supersurface.top]);
+        max = vecAdd(max, [supersurface.left, supersurface.top]);
 
         // For extent reveals, clamp the dimensions to just the portion that fits in the map mainmap..
         // (otherwise we could pan a point off the map but still reveal a square of sidebar)
@@ -228,6 +243,7 @@ export class UiCurtain {
           height: max[1] - min[1]
         };
 
+      // A D3-selector selector or a DOMElement (in screen coordinates)
       } else {
         if (opts.revealSelector && !opts.revealNode) {   // d3-select an element
           opts.revealNode = d3_select(opts.revealSelector).node();
