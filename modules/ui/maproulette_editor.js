@@ -19,6 +19,7 @@ export function uiMapRouletteEditor(context) {
   var _comment;
   var _newComment;
   let _actionTaken;
+  let _mapRouletteApiKey;
 
   function maprouletteEditor(selection) {
     const header = selection.selectAll('.header')
@@ -355,6 +356,13 @@ export function uiMapRouletteEditor(context) {
   function submitButtons(selection) {
     const osm = context.services.osm;
     const userID = osm._userDetails.id;
+    osm.loadMapRouletteKey((err, preferences) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      _mapRouletteApiKey = preferences.maproulette_apikey_v2;
+    });
     const errID = _maprouletteTask?.id;
     const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
@@ -397,6 +405,7 @@ export function uiMapRouletteEditor(context) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
           d.newStatus = 'done';
+          d.mapRouletteApiKey = _mapRouletteApiKey;
           d.comment = d3_select('.new-comment-input').property('value').trim();
           d.taskId = d.id;
           d.userId = userID;

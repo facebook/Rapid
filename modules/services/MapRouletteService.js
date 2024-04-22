@@ -181,42 +181,45 @@ export class MapRouletteService extends AbstractSystem {
    * @param   callback
    */
   postUpdate(task, callback) {
-    console.log('postUpdate called with task:', task);
-
     if (this._cache.inflightPost[task.id]) {
       console.log('Issue update already inflight for task:', task);
       return callback({ message: 'Issue update already inflight', status: -2 }, task);
     }
-
     const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
     const userUrl = `${MAPROULETTE_API}/user/${task.userId}`;
     const releaseTaskUrl = `${MAPROULETTE_API}/task/${task.taskId}/release`;
     const controller = new AbortController();
-
     this._cache.inflightPost[task.id] = controller;
-
     // Post comment
     fetch(commentUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ actionId: 2, text: task.comment }),
+      headers: {
+        'Content-Type': 'application/json',
+        'apiKey': task.mapRouletteApiKey
+      },
+      body: JSON.stringify({ actionId: 2, comment: task.comment }),
       signal: controller.signal
     })
     .then(response => {
       if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
       return response.json();
     })
-    .then(() => {
-      // Get user
-      return fetch(userUrl, { signal: controller.signal });
-    })
-    .then(response => {
-      if (!response.ok) throw new Error(`Error getting user: ${response.statusText}`);
-      return response.json();
-    })
+    // .then(() => {
+    //   // Get user
+    //   return fetch(userUrl, { signal: controller.signal });
+    // })
+    // .then(response => {
+    //   if (!response.ok) throw new Error(`Error getting user: ${response.statusText}`);
+    //   return response.json();
+    // })
     .then(() => {
       // Release task
-      return fetch(releaseTaskUrl, { signal: controller.signal });
+      return fetch(releaseTaskUrl, {
+        signal: controller.signal,
+        headers: {
+          'apiKey': task.mapRouletteApiKey
+        }
+      });
     })
     .then(response => {
       if (!response.ok) throw new Error(`Error releasing task: ${response.statusText}`);
