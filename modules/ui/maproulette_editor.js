@@ -289,6 +289,7 @@ export function uiMapRouletteEditor(context) {
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          d._status = 1;
           _actionTaken = 'FIXED';
           d.showNoteSaveSection = true;
           updateMRSaveButtonsVisibility(d.showNoteSaveSection);
@@ -302,6 +303,7 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          d._status = 6;
           _actionTaken = `CAN'T COMPLETE`;
           d.showNoteSaveSection = true;
           updateMRSaveButtonsVisibility(d.showNoteSaveSection);
@@ -315,6 +317,7 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          d._status = 5;
           _actionTaken = 'ALREADY FIXED';
           d.showNoteSaveSection = true;
           updateMRSaveButtonsVisibility(d.showNoteSaveSection);
@@ -328,6 +331,7 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          d._status = 2;
           _actionTaken = 'NOT AN ISSUE';
           d.showNoteSaveSection = true;
           updateMRSaveButtonsVisibility(d.showNoteSaveSection);
@@ -394,6 +398,7 @@ export function uiMapRouletteEditor(context) {
       .html(l10n.tHtml('map_data.layers.maproulette.cancel'))
       .on('click.close', function(d3_event, d) {
         _actionTaken = '';
+        d._status = '';
         d.showNoteSaveSection = false;
         updateMRSaveButtonsVisibility(d.showNoteSaveSection);
         selection.call(commentSaveSection);
@@ -404,6 +409,7 @@ export function uiMapRouletteEditor(context) {
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
+          d.taskStatus = d._status;
           d.newStatus = 'done';
           d.mapRouletteApiKey = _mapRouletteApiKey;
           d.comment = d3_select('.new-comment-input').property('value').trim();

@@ -187,6 +187,7 @@ export class MapRouletteService extends AbstractSystem {
     }
     const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
     const userUrl = `${MAPROULETTE_API}/user/${task.userId}`;
+    const updateTaskUrl = `${MAPROULETTE_API}/task/${task.id}/${task.taskStatus}`;
     const releaseTaskUrl = `${MAPROULETTE_API}/task/${task.taskId}/release`;
     const controller = new AbortController();
     this._cache.inflightPost[task.id] = controller;
@@ -201,6 +202,21 @@ export class MapRouletteService extends AbstractSystem {
       signal: controller.signal
     })
     .then(response => {
+      console.log('After commentUrl fetch', response);
+      if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
+      return response.json();
+    });
+
+    fetch(updateTaskUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'apiKey': task.mapRouletteApiKey
+      },
+      signal: controller.signal
+    })
+    .then(response => {
+      console.log('After updateTaskUrl fetch', response);
       if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
       return response.json();
     })
@@ -214,6 +230,7 @@ export class MapRouletteService extends AbstractSystem {
     // })
     .then(() => {
       // Release task
+      console.log('Before releaseTaskUrl fetch');
       return fetch(releaseTaskUrl, {
         signal: controller.signal,
         headers: {
@@ -222,13 +239,15 @@ export class MapRouletteService extends AbstractSystem {
       });
     })
     .then(response => {
+      console.log('After releaseTaskUrl fetch', response);
       if (!response.ok) throw new Error(`Error releasing task: ${response.statusText}`);
       return response.json();
     })
     .then(() => {
+      console.log('In final then block');
       // All requests completed successfully
-      delete this._cache.inflightPost[task.id];
-      this.removeItem(task);
+      delete this._cache.inflightPost[task.id]; // Move this line up
+      this.removeTask(task);
       if (task.newStatus === 'done') {
         console.log('Task marked as done:', task);
         if (!(task.item in this._cache.closed)) {
@@ -241,6 +260,7 @@ export class MapRouletteService extends AbstractSystem {
       if (callback) callback(null, task);
     })
     .catch(err => {
+      console.log('In catch block', err);
       // Handle any errors
       delete this._cache.inflightPost[task.id];
       if (callback) callback(err.message);
@@ -282,8 +302,8 @@ export class MapRouletteService extends AbstractSystem {
   removeTask(task) {
     if (!(task instanceof MapRouletteTask) || !task.id) return;
 
-    this._cache.isseus.delete(task.id);
-    this._updateRtree(this._encodeIssueRtree(task), false); // false = remove
+    this._cache.tasks.delete(task.id);
+    this._updateRtree(this._encodeIssueRtree(task), false);
   }
 
 
