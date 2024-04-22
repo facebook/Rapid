@@ -1,6 +1,7 @@
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
+import { numWrap } from '@rapid-sdk/math';
 import debounce from 'lodash-es/debounce.js';
 
 import { uiTooltip } from '../tooltip.js';
@@ -21,7 +22,7 @@ export function uiSectionBackgroundList(context) {
 
   const section = uiSection(context, 'background-list')
     .label(l10n.t('background.backgrounds'))
-    .disclosureContent(renderDisclosureContent);
+    .disclosureContent(render);
 
   let _backgroundList = d3_select(null);
 
@@ -29,8 +30,10 @@ export function uiSectionBackgroundList(context) {
   const settingsCustomBackground = uiSettingsCustomBackground(context)
     .on('change', customChanged);
 
-  const favoriteBackgroundsJSON = storage.getItem('background-favorites');
-  const _favoriteBackgrounds = favoriteBackgroundsJSON ? JSON.parse(favoriteBackgroundsJSON) : {};
+  const stored = JSON.parse(storage.getItem('background-favorites')) || [];
+  // note: older versions stored favorites as an object, but we only need the keys of this object
+  const vals = Array.isArray(stored) ? stored : Object.keys(stored);
+  const _favoriteIDs = new Set(vals);
 
 
   function previousBackgroundID() {
@@ -42,8 +45,20 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function renderDisclosureContent(selection) {
-    // the background list
+  /* renderIfVisible
+   * This calls render on the Disclosure commponent.
+   * It skips actual rendering if the disclosure is closed
+   */
+  function renderIfVisible() {
+    section.reRender();
+  }
+
+
+  /* render
+   * Render the background list and the checkboxes below it
+   */
+  function render(selection) {
+    // the main background list
     const container = selection.selectAll('.layer-background-list')
       .data([0]);
 
@@ -53,15 +68,14 @@ export function uiSectionBackgroundList(context) {
       .attr('dir', 'auto')
       .merge(container);
 
-
-    // add minimap toggle below list
-    const bgExtrasListEnter = selection.selectAll('.bg-extras-list')
+    // extra checkboxes below the list
+    const extrasListEnter = selection.selectAll('.bg-extras-list')
       .data([0])
       .enter()
       .append('ul')
       .attr('class', 'layer-list bg-extras-list');
 
-//    const wayBackImageryEnter = bgExtrasListEnter
+//    const wayBackImageryEnter = extrasListEnter
 //      .append('li')
 //      .attr('class', 'background.wayback_imagery.tooltip')
 //      .append('div')
@@ -133,7 +147,7 @@ export function uiSectionBackgroundList(context) {
 //      .append('span')
 //      .text(l10n.t('background.wayback_imagery.title'));
 
-    const minimapLabelEnter = bgExtrasListEnter
+    const minimapLabelEnter = extrasListEnter
       .append('li')
       .attr('class', 'minimap-toggle-item')
       .append('label')
@@ -156,7 +170,7 @@ export function uiSectionBackgroundList(context) {
       .text(l10n.t('background.minimap.description'));
 
 
-    const threeDmapLabelEnter = bgExtrasListEnter
+    const threeDmapLabelEnter = extrasListEnter
       .append('li')
       .attr('class', 'three-d-map-toggle-item')
       .append('label')
@@ -179,7 +193,7 @@ export function uiSectionBackgroundList(context) {
       .text(l10n.t('background.3dmap.description'));
 
 
-    const panelLabelEnter = bgExtrasListEnter
+    const panelLabelEnter = extrasListEnter
       .append('li')
       .attr('class', 'background-panel-toggle-item')
       .append('label')
@@ -201,7 +215,7 @@ export function uiSectionBackgroundList(context) {
       .append('span')
       .text(l10n.t('background.panel.description'));
 
-    const locPanelLabelEnter = bgExtrasListEnter
+    const locPanelLabelEnter = extrasListEnter
       .append('li')
       .attr('class', 'location-panel-toggle-item')
       .append('label')
@@ -242,6 +256,9 @@ export function uiSectionBackgroundList(context) {
   }
 
 
+  /*
+   * setTooltips
+   */
   function setTooltips(selection) {
     selection.each((d, i, nodes) => {
       const item = d3_select(nodes[i]).select('label');
@@ -267,32 +284,41 @@ export function uiSectionBackgroundList(context) {
   }
 
 
+  /*
+   * sortSources
+   */
   function sortSources(a, b) {
-    return _favoriteBackgrounds[a.id] && !_favoriteBackgrounds[b.id] ? -1
-      : _favoriteBackgrounds[b.id] && !_favoriteBackgrounds[a.id] ? 1
+    return _favoriteIDs.has(a.id) && !_favoriteIDs.has(b.id) ? -1
+      : _favoriteIDs.has(b.id) && !_favoriteIDs.has(a.id) ? 1
       : a.best && !b.best ? -1
       : b.best && !a.best ? 1
       : d3_descending(a.area, b.area) || d3_ascending(a.name, b.name) || 0;
   }
 
 
+  /*
+   * drawListItems
+   * @param selection - d3-selection to the background list `ul`
+   */
   function drawListItems(selection) {
     const sources = imagery
       .visibleSources()
       .filter(isNotOverlay);
 
-    const layerLinks = selection.selectAll('li')
+    let listItems = selection.selectAll('li')
       .data(sources, d => d.id);
 
-    layerLinks.exit()
+    // exit
+    listItems.exit()
       .remove();
 
-    const layerLinksEnter = layerLinks.enter()
+    // enter
+    const listItemsEnter = listItems.enter()
       .append('li')
       .classed('layer-custom', d => d.id === 'custom')
       .classed('best', d => d.best);
 
-    const label = layerLinksEnter
+    const label = listItemsEnter
       .append('label');
 
     label
@@ -306,83 +332,62 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'background-name')
       .text(d => d.name);
 
-    layerLinksEnter
+    listItemsEnter
       .append('button')
-      .attr('class', 'background-favorite-button')
-      .classed('active', d => !!_favoriteBackgrounds[d.id])
+      .attr('class', 'favorite-background')
       .attr('tabindex', -1)
-      .call(uiIcon('#rapid-icon-favorite'))
-      .on('click', (d3_event, d) => {
-        if (_favoriteBackgrounds[d.id]) {
-          d3_select(d3_event.currentTarget).classed('active', false);
-          delete _favoriteBackgrounds[d.id];
-        } else {
-          d3_select(d3_event.currentTarget).classed('active', true);
-          _favoriteBackgrounds[d.id] = true;
-        }
-        storage.setItem('background-favorites', JSON.stringify(_favoriteBackgrounds));
+      .call(uiIcon('', undefined, l10n.t('icons.favorite')))
+      .on('click', toggleFavorite);
 
-        d3_select(d3_event.currentTarget.parentElement)
-          .transition()
-          .duration(300)
-          .ease(d3_easeCubicInOut)
-          .style('background-color', 'orange')
-            .transition()
-            .duration(300)
-            .ease(d3_easeCubicInOut)
-            .style('background-color', null);
-
-        selection.selectAll('li')
-          .sort(sortSources);
-        selection
-          .call(updateLayerSelections);
-      });
-
-    layerLinksEnter.filter(d => d.id === 'custom')
+    listItemsEnter.filter(d => d.id === 'custom')
       .append('button')
       .attr('class', 'layer-browse')
       .call(uiTooltip(context)
         .title(l10n.t('settings.custom_background.tooltip'))
         .placement(l10n.isRTL() ? 'right' : 'left')
       )
-      .on('click', editCustom)
+      .on('click', clickCustom)
       .call(uiIcon('#rapid-icon-more'));
 
-    layerLinksEnter.filter(d => d.best)
+    listItemsEnter.filter(d => d.best)
       .selectAll('label')
       .append('span')
       .attr('class', 'best')
-      .call(uiTooltip(context)
-        .title(l10n.t('background.best_imagery'))
-        .placement('bottom')
-      )
-      .call(uiIcon('#rapid-icon-best-background'));
+      .call(uiIcon('#rapid-icon-best-background', undefined, l10n.t('background.best_imagery')));
 
-    selection.selectAll('li')
+    // update
+    listItems = listItems
+      .merge(listItemsEnter)
       .sort(sortSources);
 
-    selection
-      .call(updateLayerSelections);
+    listItems
+      .each((d, i, nodes) => {
+        const li = d3_select(nodes[i]);
 
+        li
+          .classed('active', d => imagery.showsLayer(d))
+          .classed('switch', d => d.id === previousBackgroundID())
+          .call(setTooltips)
+          .selectAll('input')
+          .property('checked', d => imagery.showsLayer(d));
+
+        const isFavorite = _favoriteIDs.has(d.id);
+        li.selectAll('button.favorite-background svg.icon')
+          .classed('favorite', isFavorite)
+          .selectAll('use')
+          .attr('href', isFavorite ? '#fas-star' : '#far-star');
+      });
   }
 
-  function updateLayerSelections(selection) {
-    function active(d) {
-      return imagery.showsLayer(d);
-    }
 
-    selection.selectAll('li')
-      .classed('active', active)
-      .classed('switch', d => d.id === previousBackgroundID())
-      .call(setTooltips)
-      .selectAll('input')
-      .property('checked', active);
-  }
-
-
+  /*
+   * chooseBackground
+   * @param  d3_event - change event, if called from a change handler (unused)
+   * @param  d        - ImagerySource being chosen
+   */
   function chooseBackground(d3_event, d) {
     if (d.id === 'custom' && !d.template) {
-      return editCustom();
+      return clickCustom();
     }
 
     const previousBackground = imagery.baseLayerSource();
@@ -394,6 +399,10 @@ export function uiSectionBackgroundList(context) {
   }
 
 
+  /*
+   * customChanged
+   * @param  data - Object containing settings for the custom imagery
+   */
   function customChanged(d) {
     if (d?.template) {
       customSource.template = d.template;
@@ -405,50 +414,105 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function editCustom(d3_event) {
-    d3_event.preventDefault();
-    context.container()
-      .call(settingsCustomBackground);
+  /*
+   * clickCustom
+   * @param  d3_event - click event, if called by a click handler
+   */
+  function clickCustom(d3_event) {
+    if (d3_event) d3_event.preventDefault();
+    context.container().call(settingsCustomBackground);
   }
 
-  function chooseBackgroundAtOffset(offset) {
+
+  /*
+   * toggleFavorite
+   * @param  d3_event - click event, if called from a click handler
+   * @param  d        - ImagerySource being chosen
+   */
+  function toggleFavorite(d3_event, d) {
+    d3_event.preventDefault();
+
+    const target = d3_event.currentTarget;
+    const selection = d3_select(target);
+    selection.node().blur();  // remove focus after click
+
+    if (_favoriteIDs.has(d.id)) {
+      selection.classed('favorite', false);
+      _favoriteIDs.delete(d.id);
+    } else {
+      selection.classed('favorite', true);
+      _favoriteIDs.add(d.id);
+    }
+
+    const vals = [..._favoriteIDs];
+    storage.setItem('background-favorites', JSON.stringify(vals));
+
+    d3_select(target.parentElement)
+      .transition()
+      .duration(300)
+      .ease(d3_easeCubicInOut)
+      .style('background-color', 'orange')
+        .transition()
+        .duration(300)
+        .ease(d3_easeCubicInOut)
+        .style('background-color', null);
+
+    renderIfVisible();
+  }
+
+
+  /*
+   * stepBackground
+   * This is used to cycle through imagery sources in the list
+   * @param step -  item to step to '1' or '-1'
+   */
+  function stepBackground(step) {
     const backgrounds = imagery
       .visibleSources()
       .filter(isNotOverlay);
 
     backgrounds.sort(sortSources);
     const currentBackground = imagery.baseLayerSource();
-    const foundIndex = backgrounds.indexOf(currentBackground);
-    if (foundIndex === -1) {
-      // Can't find the current background, so just do nothing
-      return;
+    const currIndex = backgrounds.indexOf(currentBackground);
+
+    // Can't find the current background, bail out (shouldn't happen)
+    if (currIndex === -1) return;
+
+    let index = numWrap(currIndex + step, 0, backgrounds.length);
+    let choice = backgrounds[index];
+    if (choice.id === 'custom' && !choice.template) {   // step past empty custom imagery
+      index = numWrap(index + step, 0, backgrounds.length);
+      choice = backgrounds[index];
     }
 
-    let nextBackgroundIndex = (foundIndex + offset + backgrounds.length) % backgrounds.length;
-    let nextBackground = backgrounds[nextBackgroundIndex];
-    if (nextBackground.id === 'custom' && !nextBackground.template) {
-      nextBackgroundIndex = (nextBackgroundIndex + offset + backgrounds.length) % backgrounds.length;
-      nextBackground = backgrounds[nextBackgroundIndex];
-    }
-    chooseBackground(undefined, nextBackground);
+    chooseBackground(undefined, choice);
   }
 
+
+  /*
+   * nextBackground
+   * Step to the next background in the list
+   */
   function nextBackground() {
-    chooseBackgroundAtOffset(1);
+    stepBackground(1);
   }
 
+  /*
+   * previousBackground
+   * Step to the previous background in the list
+   */
   function previousBackground() {
-    chooseBackgroundAtOffset(-1);
+    stepBackground(-1);
   }
 
 
   imagery
-    .on('imagerychange', () => _backgroundList.call(updateLayerSelections));
+    .on('imagerychange', renderIfVisible);
 
   map
     .on('draw', debounce(() => {
         // layers in-view may have changed due to map move
-        window.requestIdleCallback(section.reRender);
+        window.requestIdleCallback(renderIfVisible);
       }, 1000, { leading: true, trailing: true })
     );
 

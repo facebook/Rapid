@@ -66,10 +66,12 @@ function buildData() {
   // Gather icons from various places that we need assembled into a spritesheet.
   // Start with icons we want to use in the UI that aren't tied to other data.
   const icons = new Set([
+    'far-star',
     'fas-filter',
     'fas-i-cursor',
     'fas-lock',
     'fas-palette',
+    'fas-star',
     'fas-th-list',
     'fas-user-cog'
   ]);

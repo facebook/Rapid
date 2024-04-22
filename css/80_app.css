@@ -3110,6 +3110,12 @@ div.full-screen > button:focus {
     align-self: center;
 }
 
+.best > svg {
+  color: #e98733;
+  height: 19px;
+}
+
+
 .ideditor[dir='rtl'] .list-item-data-browse svg {
     transform: rotateY(180deg);
 }
@@ -3177,6 +3183,10 @@ div.full-screen > button:focus {
 .ideditor[dir='rtl'] .map-data-pane .layer-list button:last-of-type,
 .ideditor[dir='rtl'] .background-pane .layer-list button:last-of-type {
     border-radius: 3px 0 0 3px;
+}
+
+.background-pane .layer-list button.favorite-background {
+  border: 0;
 }
 
 .map-data-pane .vectortile-container .vectortile-header {
@@ -3814,13 +3824,14 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     padding: 10px 20px 20px 50px;
 }
 
+
+/* Help
+------------------------------------------------------- */
+
 .help-pane .pane-content > div {
     padding-bottom: 15px;
 }
 
-
-/* Help
-------------------------------------------------------- */
 .help-pane p {
     font-size: 15px;
     margin-bottom: 20px;
@@ -4126,61 +4137,40 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 /* Map-In-Map
 ------------------------------------------------------- */
 .map-in-map {
-    position: absolute;
-    overflow: hidden;
-    top: 10px;
-    width: 200px;
-    height: 150px;
-    z-index: 2;
-    background: #000;
-    border: #aaa 1px solid;
-    border-radius: 6px;
-    box-shadow: rgb(0 0 0 / 42%) 0px 0px 0px 3px;
+  position: absolute;
+  overflow: hidden;
+  top: 10px;
+  width: 200px;
+  height: 150px;
+  z-index: 2;
+  background: #000;
+  border: #aaa 1px solid;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 42%) 0px 0px 0px 3px;
 }
 .ideditor[dir='ltr'] .map-in-map {
-    left: 10px;
+  left: 10px;
 }
 .ideditor[dir='rtl'] .map-in-map {
-    right: 10px;
+  right: 10px;
 }
 
 
-.map-in-map-background {
-    position: absolute;
-    z-index: 1;
-}
-.map-in-map-overlay {
-    position: absolute;
-    z-index: 2;
-}
-.map-in-map-viewport,
-.map-in-map-data {
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-}
 
-.map-in-map-data {
-    position: relative;
-    z-index: 3;
-}
-
-.map-in-map-viewport {
-    position: absolute;
-    z-index: 4;
-}
-
-.map-in-map-bbox {
-    fill: none;
-    stroke: rgba(255, 255, 0, 0.75);
-    stroke-width: 1.5;
-    shape-rendering: crispEdges;
-}
-
-.map-in-map-bbox.thick {
-    stroke-width: 5;
+/* 3D Map
+------------------------------------------------------- */
+.three-d-map {
+  position: absolute;
+  overflow: hidden;
+  width: 300px;
+  height: 300px;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  margin-right: 30px;
+  border: #aaa 1px solid;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 42%) 0px 0px 0px 3px;
 }
 
 
