@@ -782,8 +782,7 @@ en:
     wayback_imagery:
       title: Esri Wayback Imagery
       tooltip: Imagery listing from the Esri Wayback archive
-      example_item_text: Choose a historical date
-      placeholder: Please select a vintage
+      latest: latest
     brightness: Brightness
     contrast: Contrast
     saturation: Saturation

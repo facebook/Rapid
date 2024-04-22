@@ -351,7 +351,7 @@ export class ImagerySourceEsri extends ImagerySource {
   }
 
 
-  // use a tilemap service to set maximum zoom for esri tiles dynamically
+  // Use a tilemap service to set maximum zoom for Esri tiles dynamically
   // https://developers.arcgis.com/documentation/tiled-elevation-service/
   fetchTilemap(loc) {
     // skip if we have already fetched a tilemap within 5km
