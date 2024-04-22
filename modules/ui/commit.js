@@ -252,7 +252,9 @@ export function uiCommit(context) {
     if (maproulette) {
       const maprouletteClosed = maproulette.getClosedCounts();
       for (let itemType in maproulette) {
-        tags[`closed:maproulette:${itemType}`] = context.cleanTagValue(maprouletteClosed[itemType].toString());
+        if (maprouletteClosed[itemType] !== undefined) {
+          tags[`closed:maproulette:${itemType}`] = context.cleanTagValue(maprouletteClosed[itemType].toString());
+        }
       }
     }
 

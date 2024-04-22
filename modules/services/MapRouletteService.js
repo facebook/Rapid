@@ -202,7 +202,6 @@ export class MapRouletteService extends AbstractSystem {
       signal: controller.signal
     })
     .then(response => {
-      console.log('After commentUrl fetch', response);
       if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
       return response.json();
     });
@@ -216,7 +215,6 @@ export class MapRouletteService extends AbstractSystem {
       signal: controller.signal
     })
     .then(response => {
-      console.log('After updateTaskUrl fetch', response);
       if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
       return response.json();
     })
@@ -230,7 +228,6 @@ export class MapRouletteService extends AbstractSystem {
     // })
     .then(() => {
       // Release task
-      console.log('Before releaseTaskUrl fetch');
       return fetch(releaseTaskUrl, {
         signal: controller.signal,
         headers: {
@@ -239,16 +236,15 @@ export class MapRouletteService extends AbstractSystem {
       });
     })
     .then(response => {
-      console.log('After releaseTaskUrl fetch', response);
       if (!response.ok) throw new Error(`Error releasing task: ${response.statusText}`);
       return response.json();
     })
     .then(() => {
       console.log('In final then block');
       // All requests completed successfully
-      delete this._cache.inflightPost[task.id]; // Move this line up
+      delete this._cache.inflightPost[task.id];
       this.removeTask(task);
-      if (task.newStatus === 'done') {
+      // if (task.newStatus === 'done') {
         console.log('Task marked as done:', task);
         if (!(task.item in this._cache.closed)) {
           console.log('Adding new item to closed cache:', task.item);
@@ -256,7 +252,7 @@ export class MapRouletteService extends AbstractSystem {
         }
         this._cache.closed[task.item] += 1;
         console.log('Updated closed cache:', this._cache.closed);
-      }
+      // }
       if (callback) callback(null, task);
     })
     .catch(err => {

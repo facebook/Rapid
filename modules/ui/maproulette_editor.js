@@ -410,7 +410,6 @@ export function uiMapRouletteEditor(context) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
           d.taskStatus = d._status;
-          d.newStatus = 'done';
           d.mapRouletteApiKey = _mapRouletteApiKey;
           d.comment = d3_select('.new-comment-input').property('value').trim();
           d.taskId = d.id;
