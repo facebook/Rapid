@@ -10,7 +10,9 @@ export function uiIcon(href, klass = '', title = '') {
       .data([iconID], d => d)
       .enter()
       .append('svg')
-      .attr('class', classList.join(' '));
+      .attr('class', classList.join(' '))
+      .attr('role', 'img')
+      .attr('aria-labelledby', title);
 
     if (title) {
       svgEnter
