@@ -77,14 +77,14 @@ export function uiSectionBackgroundList(context) {
 
 //    const wayBackImageryEnter = extrasListEnter
 //      .append('li')
-//      .attr('class', 'background.wayback_imagery.tooltip')
+//      .attr('class', 'background.wayback.tooltip')
 //      .append('div')
 //      .style('display', 'flex');
 //
 //    const label = wayBackImageryEnter
 //      .append('label')
 //      .call(uiTooltip(context)
-//        .title(l10n.t('background.wayback_imagery.tooltip'))
+//        .title(l10n.t('background.wayback.tooltip'))
 //        .placement('top')
 //      );
 //
@@ -145,7 +145,7 @@ export function uiSectionBackgroundList(context) {
 //
 //    label
 //      .append('span')
-//      .text(l10n.t('background.wayback_imagery.title'));
+//      .text(l10n.t('background.wayback.title'));
 
     const minimapLabelEnter = extrasListEnter
       .append('li')
@@ -262,23 +262,23 @@ export function uiSectionBackgroundList(context) {
   function setTooltips(selection) {
     selection.each((d, i, nodes) => {
       const item = d3_select(nodes[i]).select('label');
-      const span = item.select('span');
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
-      const isOverflowing = (span.property('clientWidth') !== span.property('scrollWidth'));
 
-      item.call(uiTooltip(context).destroyAny);
+      const tooltip = uiTooltip(context).placement(placement);
+      item.call(tooltip.destroyAny);
 
+      let titleHtml = '';
+      if (d.description) {
+        titleHtml += d.description;
+      };
       if (d.id === previousBackgroundID()) {
-        item.call(uiTooltip(context)
-          .placement(placement)
-          .title(l10n.t('background.switch'))
-          .shortcut(uiCmd('⌘' + l10n.t('background.key')))
-        );
-      } else if (d.description || isOverflowing) {
-        item.call(uiTooltip(context)
-          .placement(placement)
-          .title(d.description || d.name)
-        );
+        titleHtml += '<br/><br/>' + l10n.t('background.switch');
+        tooltip.shortcut(uiCmd('⌘' + l10n.t('background.key')));
+      }
+
+      if (titleHtml) {
+        tooltip.title(titleHtml);
+        item.call(tooltip);
       }
     });
   }
@@ -490,6 +490,21 @@ export function uiSectionBackgroundList(context) {
 
 
   /*
+   * swapBackground
+   * Swap to last used background
+   */
+  function swapBackground() {
+    const sourceID = previousBackgroundID();
+    if (!sourceID) return;
+
+    const source = imagery.getSource(sourceID);
+    if (!source) return;
+
+    chooseBackground(undefined, source);
+  }
+
+
+  /*
    * nextBackground
    * Step to the next background in the list
    */
@@ -517,6 +532,7 @@ export function uiSectionBackgroundList(context) {
     );
 
   context.keybinding()
+    .on(uiCmd('⌘' + l10n.t('background.key')), swapBackground)
     .on(l10n.t('background.next_background.key'), nextBackground)
     .on(l10n.t('background.previous_background.key'), previousBackground);
 
