@@ -1,4 +1,26 @@
-# Color-Style System Documentation
+# Color-Style System Documentation<!-- omit in toc -->
+
+**TABLE OF CONTENTS**
+- [Rapid Colors](#rapid-colors)
+  - [Initial Color Approach](#initial-color-approach)
+    - [1. Named Color Definition](#1-named-color-definition)
+    - [2. Direct HEX Color Definition](#2-direct-hex-color-definition)
+    - [3. Rapid Color Definition](#3-rapid-color-definition)
+    - [4. Map Colors](#4-map-colors)
+  - [Current Color Approach](#current-color-approach)
+    - [System Aims](#system-aims)
+    - [System Organization](#system-organization)
+    - [(Proposed) Color System](#proposed-color-system)
+    - [Relevant Refactoring](#relevant-refactoring)
+  - [Adding New Color Schemes](#adding-new-color-schemes)
+- [Rapid Styling](#rapid-styling)
+  - [Overview](#overview)
+    - [Instance Variables](#instance-variables)
+    - [Usage](#usage)
+  - [Initial vs Current Structure](#initial-vs-current-structure)
+    - [Relevant Refactoring](#relevant-refactoring-1)
+- [Future Possibilities](#future-possibilities)
+
 
 ## Rapid Colors
 
@@ -135,9 +157,9 @@ These are the colors which show in the satellite imagery rendered by WebGL which
 #### Relevant Refactoring
 To accomodate for the changes to the application, certain things were changed:
 1. The `/data/color_schemes.json` file was minified and added to the file system of Rapid in `/scripts/build_data.js` and `/modules/core/DataLoaderSystem.js`, respectively
-2. `DataLoaderSystem` is added as a dependency of `StyleSystem`
+2. `DataLoaderSystem` was added as a dependency of `StyleSystem`
 3. Variables to hold the default color scheme, current color scheme and all color schemes were created and added the the constructor of `StyleSystem`
-4. In the `startAsync()` function, `DataLoaderSystem` is used to fetch the color schemes from the `/data/` folder
+4. In the `startAsync()` function, `DataLoaderSystem` was used to fetch the color schemes from the `/data/` folder
 5. A helper function called `getHexColorCode()` was added to `StyleSystem` to get the HEX color code based on the current color scheme selected. This function is used severally in the `styleMatch()` function
 6. All references to colors through named and directly-defined colors in `this.STYLE_DECLARATIONS` were renamed to match the new system
 
@@ -192,3 +214,92 @@ Here is an example of
    
 
 ## Rapid Styling
+### Overview
+Now that we have an understanding of how color is organised, let's zoom out to consider defining feature styling. For future reference, all styling is handled by `StyleSystem.js`, located in the `/modules/core/` folder, regardless of the approach.
+
+***NOTE**: In this section, we will be assuming the use of the proposed color system, to maintain focus on styling outside of color definition.*
+
+#### Instance Variables
+The `StyleSystem` class has two instance variables in its constructor which are described in comments as follows:
+1. `this.STYLE_DECLARATIONS`: A "Style Declaration" contains properties that describe how features should look. Each style declaration has the following structure:
+    ```
+    <styleID>: {
+        fill:   { <fill props…> },
+        casing: { <casing props…> },
+        stroke: { <stroke props…> }
+    }
+    ```
+    One or more of three declaration properties - `fill`, `casing` and `stroke` - need to be defined. 
+
+2. `this.STYLE_SELECTORS`: A "Style Selector" contains OSM key/value tags to match to a style declaration. Each style selector has the following structure:
+    ```
+    <osmkey>: {
+        <osmvalue>: styleID
+    }
+    ```
+
+#### Usage
+To illustrate usage, we will use this example of a style declaration and selector, respectively.
+```JSON
+"residential": {
+    "casing": { "width": 10, "color": "gray-7" },
+    "stroke": { "width": 8, "color": "white-0" }
+}
+```
+```JS
+highway: {
+    // Other key-value pairs...
+    residential: 'residential',
+    residential_link: 'residential'
+    // Other key-value pairs...
+}
+```
+
+In order for Pixi to render features within the current map extent (see the `render()` function in `/modules/pixi/PixiLayerOsm.js` file), it follows this stripped process:
+1. It loads the entities within the current map extent
+2. It divides the entities into `polygons`, `lines`, `points` and `vertices`
+3. Sub-functions to render each entity type are called e.g. `renderPolygons()`
+4. In these sub-functions, the `styleMatch()` function from the `StyleSystem` class is called on the tags of the entity. An example of such a group of tags is as follows:
+    ```JS
+    {
+        // Other feature properties...
+        tags: {
+            highway: 'residential',
+            oneway: 'no'
+        },
+        // Other feature properties...
+    }
+    ```
+    Let's continue with the OSM tag key `highway` and OSM tag value `residential`
+5. The `styleMatch()` function checks if the OSM tag key is in the keys `this.STYLE_SELECTORS` e.g. we can see that `highway` is a part of these keys and `oneway` is not
+6. The object which is set to the value of that OSM tag key is fetched and queried for the OSM tag value. In this case, the object assigned to the `highway` key is fetched and then the value of the `residential` key within that object is fetched; in this case, that is `residential`. What we have fetched is the style ID which is defined in `this.STYLE_DECLARATIONS`. Thus, style ID for this use case is set to:
+    ```JSON
+        "residential": {
+            "casing": { "width": 10, "color": "gray-7" },
+            "stroke": { "width": 8, "color": "white-0" }
+        }
+    ```
+7. We have now successfully connected the OSM tag and value to its assigned style definition!
+
+There is more to the style matching and rendering process but this is all that is relevant to this explanation.
+
+### Initial vs Current Structure
+Originally, style declarations are defined directly in `StyleSystem.js`. Now, the style declarations have been extracted to a file called `styles.json` which is located in the `/data/` folder.
+
+This was done with the aim to:
+1. Reduce the amount of information in `StyleSystem.js`
+2. Abstracting style declaration away from style manipulation
+
+#### Relevant Refactoring
+To accomodate for the changes to the application, certain things were changed:
+1. Because the `this.STYLE_DECLARATIONS` now started as a JSON object instead of a JS object, all the keys were surrounded in quotation marks
+2. The `/data/styles.json` file was minified and added to the file system of Rapid in `/scripts/build_data.js` and `/modules/core/DataLoaderSystem.js`, respectively
+3. The `this.STYLE_DECLARATIONS` variable was initialised to `None`
+4. In the `startAsync()` function, `DataLoaderSystem` was used to fetch the style declarations from the `/data/` folder
+
+## Future Possibilities
+1. Consider direct HEX color code usage outside of `this.STYLE_DECLARATIONS` e.g.
+   * `styleMatch()` in `/modules/core/StyleSystem.js`
+   * `renderPolygons()` in `/modules/pixi/PixiLayerOsm.js`
+2. Incorporate Rapid colors into the color system (as new color entries, NOT a new color scheme) 
+3. Carry out dedicated research to determine the most intuitive method to order colors
