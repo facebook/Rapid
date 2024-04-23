@@ -38,6 +38,8 @@ export { uiKeepRightHeader } from './keepRight_header.js';
 export { uiLoading } from './loading.js';
 export { uiMap3dViewer } from './map3d_viewer.js';
 export { uiMapInMap } from './map_in_map.js';
+export { uiMapRouletteDetails } from './maproulette_details.js';
+export { uiMapRouletteEditor } from './maproulette_editor.js';
 export { uiViewOnMapRoulette } from './view_on_maproulette.js';
 export { uiModal } from './modal.js';
 export { uiNoteComments } from './note_comments.js';

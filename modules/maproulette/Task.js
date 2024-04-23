@@ -4,25 +4,25 @@ export class Task {
     this.loc = loc;
     this.service = service.id;
 
-    // All issues must have an ID for selection, use generic if none specified
+    // All tasks must have an ID for selection, use generic if none specified
     this.id = id ? id : `${Task.id()}`;
 
     this.update(props);
   }
 
   update(props) {
-    // You can't override this initial information
-    const { loc, service, itemType, id } = this;
+  // You can't override this initial information
+  const { loc, service, id } = this;
 
-    Object.keys(props).forEach(prop => this[prop] = props[prop]);
+  Object.keys(props).forEach(prop => this[prop] = props[prop]);
 
-    this.loc = loc;
-    this.service = service;
-    this.itemType = itemType;
-    this.id = id;
+  this.loc = loc;
+  this.service = service;
+  this.id = id;
+  this.type = props.type;
 
-    return this;
-  }
+  return this;
+}
 
   // Generic handling for newly created QAItems
   static id() {

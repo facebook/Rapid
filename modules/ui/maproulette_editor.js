@@ -162,9 +162,10 @@ export function uiMapRouletteEditor(context) {
             _comment = _comment.update({ _newComment: val });
           }
 
-          var osm = context.services.osm;
-          if (osm) {
-            osm.replaceNote(_comment);  // update note cache
+          _maprouletteTask.update({newComment: val});
+
+          if (maproulette) {
+            maproulette.replaceTask(_maprouletteTask);  // update note cache
           }
 
           commentSave
