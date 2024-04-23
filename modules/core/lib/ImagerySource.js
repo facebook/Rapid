@@ -25,12 +25,12 @@ export class ImagerySource {
     this._template = src.encrypted ? utilAesDecrypt(src.template) : src.template;
 
     this.best = !!src.best;
-    this.endDate = src.endDate;
+    this.endDate = src.endDate;       // dates are stored as strings
     this.icon = src.icon;
     this.overlay = src.overlay;
     this.polygon = src.polygon;
     this.projection = src.projection;
-    this.startDate = src.startDate;
+    this.startDate = src.startDate;   // dates are stored as strings
     this.terms_html = src.terms_html;
     this.terms_text = src.terms_text;
     this.terms_url = src.terms_url;
@@ -538,8 +538,24 @@ export class ImagerySourceEsriWayback extends ImagerySource {
   get description() {
     return this.context.systems.l10n.t('background.wayback.description', { default: this._description });
   }
+
   get imageryUsed() {
-    return this._name || this._id;   // todo: include the date here
+    let s = this._name;
+    const date = this.date;
+    if (date) {
+      s += ` (${date})`;
+    }
+    return s;
   }
+
+  set date(val) {
+    this.startDate = val;
+    this.endDate = val;
+  }
+
+  get date() {
+    return this.startDate ? this._localeDateString(this.startDate) : null;
+  }
+
 }
 

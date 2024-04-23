@@ -26,7 +26,7 @@ export function uiSectionBackgroundList(context) {
 
   let _backgroundList = d3_select(null);
 
-  const customSource = imagery.getSource('custom');
+  const customSource = imagery.getSourceByID('custom');
   const settingsCustomBackground = uiSettingsCustomBackground(context)
     .on('change', customChanged);
 
@@ -385,11 +385,20 @@ export function uiSectionBackgroundList(context) {
 
   /*
    * chooseBackground
-   * @param  d3_event - change event, if called from a change handler (unused)
-   * @param  d        - ImagerySource being chosen
+   * @param  d3_event          - change event, if called from a change handler (unused)
+   * @param  sourceOrSourceID  - `string` or `ImagerySource` being chosen
    */
-  function chooseBackground(d3_event, d) {
-    if (d.id === 'custom' && !d.template) {
+  function chooseBackground(d3_event, sourceOrSourceID) {
+    let source, sourceID;
+    if (sourceOrSourceID instanceof ImagerySource) {
+      source = sourceOrSourceID;
+      sourceID = sourceOrSourceID.id;
+    } else {
+      sourceID = sourceOrSourceID;
+    }
+
+    // If no custom template, open the custom settings dialog..
+    if (sourceID === 'custom' && !source?.template) {
       return clickCustom();
     }
 
@@ -397,8 +406,8 @@ export function uiSectionBackgroundList(context) {
     if (previousBackground instanceof ImagerySource) {
       storage.setItem('background-last-used-toggle', previousBackground.id);
     }
-    storage.setItem('background-last-used', d.id);
-    imagery.baseLayerSource(d);
+    storage.setItem('background-last-used', sourceID);
+    imagery.setSourceByID(sourceID);
   }
 
 
@@ -412,7 +421,7 @@ export function uiSectionBackgroundList(context) {
       chooseBackground(undefined, customSource);
     } else {
       customSource.template = '';
-      chooseBackground(undefined, imagery.getSource('none'));
+      chooseBackground(undefined, 'none');
     }
   }
 
@@ -432,8 +441,13 @@ export function uiSectionBackgroundList(context) {
    * @param  d3_event - change event, if called from a change handler
    */
   function waybackDateChange(d3_event) {
+    let sourceID = 'EsriWayback';
     const selectedDate = d3_event.target.value;
-console.log(`picked ${selectedDate}`);
+    if (selectedDate) {
+      sourceID += '_' + selectedDate;
+    }
+
+    chooseBackground(undefined, sourceID);
 //    imagery.getWaybackSource().then(sourceMap => {
 //      // Find the sourceId that corresponds to the selected date
 //      const sourceId = Array.from(sourceMap.sources.entries())
@@ -515,12 +529,7 @@ console.log(`picked ${selectedDate}`);
    */
   function swapBackground() {
     const sourceID = previousBackgroundID();
-    if (!sourceID) return;
-
-    const source = imagery.getSource(sourceID);
-    if (!source) return;
-
-    chooseBackground(undefined, source);
+    if (sourceID) chooseBackground(undefined, sourceID);
   }
 
 

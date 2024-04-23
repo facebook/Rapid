@@ -152,7 +152,7 @@ export function uiIntro(context, skipToRapid) {
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
     // Setup imagery
-    const introSource = imagery.getSource(INTRO_IMAGERY) || imagery.getSource('Bing');
+    const introSource = imagery.getSourceByID(INTRO_IMAGERY) || imagery.getSourceByID('Bing');
     imagery.baseLayerSource(introSource);
     _original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.brightness = 1;

@@ -210,14 +210,15 @@ export class ImagerySystem extends AbstractSystem {
     const newBackground = currParams.get('background');
     const oldBackground = prevParams.get('background');
     if (!newBackground || newBackground !== oldBackground) {
-      let setBaseLayer;
+      let foundSource;
       if (typeof newBackground === 'string') {
-        setBaseLayer = this.getSource(newBackground);
+        foundSource = this.getSourceByID(newBackground);
       }
-      if (!setBaseLayer) {
-        setBaseLayer = this.chooseDefaultSource();
+      if (foundSource) {
+        this.setSourceByID(newBackground);
+      } else {
+        this.baseLayerSource(this.chooseDefaultSource());
       }
-      this.baseLayerSource(setBaseLayer);
     }
 
     // overlays
@@ -257,9 +258,14 @@ export class ImagerySystem extends AbstractSystem {
     if (this.context.inIntro || !baseLayer) return;
 
     // Gather info about enabled base imagery
-    let baseID = baseLayer.id;
-    if (baseID === 'custom') {
-      baseID = `custom:${baseLayer.template}`;
+    let baseLayerID = baseLayer.id;
+    if (baseLayerID === 'custom') {
+      baseLayerID = `custom:${baseLayer.template}`;
+    } else if (baseLayerID === 'EsriWayback') {    // append start date, if any
+      const date = baseLayer.date;
+      if (date) {
+        baseLayerID += `_${date}`;
+      }
     }
 
     // Gather info about enabled overlay imagery (ignore locator)
@@ -271,7 +277,7 @@ export class ImagerySystem extends AbstractSystem {
 
     // Update hash params: 'background', 'overlays', 'offset'
     const urlhash = this.context.systems.urlhash;
-    urlhash.setParam('background', baseID);
+    urlhash.setParam('background', baseLayerID);
     urlhash.setParam('overlays', overlayIDs.length ? overlayIDs.join(',') : null);
 
     const meters = geoOffsetToMeters(baseLayer.offset);
@@ -378,7 +384,7 @@ export class ImagerySystem extends AbstractSystem {
       fail = regex.test(template);
     }
 
-    this._baseLayer = (!fail ? source : this.getSource('none'));
+    this._baseLayer = (!fail ? source : this.getSourceByID('none'));
 
     this.updateImagery();
     this.emit('imagerychange');
@@ -399,15 +405,15 @@ export class ImagerySystem extends AbstractSystem {
     const first = available[0];
     const best = available.find(s => s.best);
 
-    // consider previously chosen imagery unless it was 'none'
-    const prevUsed = storage.getItem('background-last-used') || 'none';
-    const previous = (prevUsed !== 'none') && this.getSource(prevUsed);
+    // Consider previously chosen imagery unless it was 'none'
+    let previousID = storage.getItem('background-last-used') || 'none';
+    const previous = (previousID !== 'none') && this.getSourceByID(previousID);
 
     return best ||
       previous ||
-      this.getSource('Bing') ||
+      this.getSourceByID('Bing') ||
       first ||    // maybe this is a custom Rapid that doesn't include Bing?
-      this.getSource('none');
+      this.getSourceByID('none');
   }
 
 
@@ -506,11 +512,43 @@ export class ImagerySystem extends AbstractSystem {
 
 
   /**
-   *
+   * getSource
+   * Returns an ImagerySource for the given `sourceID`
+   * @param   {string}  sourceID -  The sourceID to get
+   * @return  {ImagerySource?}  The `ImagerySource` with the given ID, or `null` if not found
    */
-  getSource(sourceID) {
+  getSourceByID(sourceID) {
     if (!this._imageryIndex) return null;   // called before init()?
+
+    if (/^EsriWayback/i.test(sourceID)) {   // ignore start date, if any
+      sourceID = 'EsriWayback';
+    }
     return this._imageryIndex.sources.get(sourceID.toLowerCase());
+  }
+
+
+  /**
+   * setSourceByID
+   * Activates the base layer with the given `sourceID`
+   * This function will correctly handle IDs like `EsriWayback_<DATE>`.
+   * @param   {string}  sourceID -  The sourceID to activate
+   * @return  {ImagerySource?}  The `ImagerySource` with the given ID, or `null` if not found
+   */
+  setSourceByID(sourceID) {
+    if (!this._imageryIndex) return null;   // called before init()?
+
+    let date;
+    const match = sourceID.match(/^EsriWayback\_?(.*)$/i);   // get start date, if any
+    if (match) {
+      sourceID = 'EsriWayback';
+      date = match[1];
+    }
+
+    const source = this.getSourceByID(sourceID);
+    if (source) {
+      source.date = date;
+      this.baseLayerSource(source);
+    }
   }
 
 
@@ -558,8 +596,8 @@ export class ImagerySystem extends AbstractSystem {
       this._overlayLayers.delete(sourceID);     // remove all others
     }
 
-    for (const enableID of enableIDs) {         // add what belongs
-      const source = this.getSource(enableID);  // note that enableID is case insensitive
+    for (const enableID of enableIDs) {             // add what belongs
+      const source = this.getSourceByID(enableID);  // note that enableID is case insensitive
       if (source) {
         this._overlayLayers.set(source.id, source);
       }
@@ -672,6 +710,5 @@ export class ImagerySystem extends AbstractSystem {
     this._numGridSplits = val;
     this.emit('imagerychange');
   }
-
 
 }

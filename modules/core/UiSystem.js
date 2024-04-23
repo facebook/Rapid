@@ -202,25 +202,10 @@ this.didRender = true;
       .attr('class', 'sidebar')
       .call(this.sidebar);
 
-    //Now that the sidebar has been insantiated, it's safe to bind the keypress handlers
-
+    // Now that the sidebar has been insantiated, it's safe to bind the keypress handlers
+// bhousel - todo: not sure why this is here - the sidebar should be responsible for this
     context.keybinding()
-      .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle)   // iD#5663, iD#6864 - common QWERTY, AZERTY
-      .on(uiCmd('⌘' + l10n.t('background.key')), e => {
-        if (e) {
-          e.stopImmediatePropagation();
-          e.preventDefault();
-        }
-        const imagery = context.systems.imagery;
-        const storage = context.systems.storage;
-        const previousBackground = imagery.getSource(storage.getItem('background-last-used-toggle'));
-        if (previousBackground) {
-          const currentBackground = imagery.baseLayerSource();
-          storage.setItem('background-last-used-toggle', currentBackground.id);
-          storage.setItem('background-last-used', previousBackground.id);
-          imagery.baseLayerSource(previousBackground);
-        }
-      });
+      .on([l10n.t('sidebar.key'), '`', '²', '@'], this.sidebar.toggle);   // iD#5663, iD#6864 - common QWERTY, AZERTY
 
     const content = container
       .append('div')
