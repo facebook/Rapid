@@ -508,3 +508,38 @@ export class ImagerySourceEsri extends ImagerySource {
   }
 
 }
+
+
+/**
+ * `ImagerySourceEsriWayback`
+ * A special imagery source that allows users to choose available dates in the Esri Wayback Archive.
+ */
+export class ImagerySourceEsriWayback extends ImagerySource {
+  constructor(context) {
+    super(context, {
+      id: 'EsriWayback',
+      name: 'Esri Wayback',
+      type: 'tms',
+      template: '',
+      zoomExtent: [0, 22],
+      terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
+      terms_text: 'Terms & Feedback',
+      description: 'Esri Wayback contains archived snapshots of Esri World Imagery created over time.',
+      icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
+      polygon: null,    // worldwide
+      startDate: null,  // user will choose
+      endDate: null     // user will choose
+    });
+  }
+
+  get name() {
+    return this.context.systems.l10n.t('background.wayback.name', { default: this._name });
+  }
+  get description() {
+    return this.context.systems.l10n.t('background.wayback.description', { default: this._description });
+  }
+  get imageryUsed() {
+    return this._name || this._id;   // todo: include the date here
+  }
+}
+

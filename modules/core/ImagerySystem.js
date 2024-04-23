@@ -3,7 +3,10 @@ import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
 import { AbstractSystem } from './AbstractSystem.js';
-import { ImagerySource, ImagerySourceBing, ImagerySourceCustom, ImagerySourceEsri, ImagerySourceNone } from './lib/ImagerySource.js';
+import {
+  ImagerySource, ImagerySourceBing, ImagerySourceCustom,
+  ImagerySourceEsri, ImagerySourceEsriWayback, ImagerySourceNone
+} from './lib/ImagerySource.js';
 
 
 /**
@@ -145,15 +148,19 @@ export class ImagerySystem extends AbstractSystem {
       this._imageryIndex.sources.set(d.id.toLowerCase(), source);
     }
 
+    // Add 'Esri Wayback'
+    const wayback = new ImagerySourceEsriWayback(context);
+    this._imageryIndex.sources.set(wayback.id.toLowerCase(), wayback);
+
     // Add 'None'
     const none = new ImagerySourceNone(context);
-    this._imageryIndex.sources.set(none.id, none);
+    this._imageryIndex.sources.set(none.id.toLowerCase(), none);
 
     // Add 'Custom' - seed it with whatever template the user has used previously
     const custom = new ImagerySourceCustom(context);
     const storage = this.context.systems.storage;
     custom.template = storage.getItem('background-custom-template') || '';
-    this._imageryIndex.sources.set(custom.id, custom);
+    this._imageryIndex.sources.set(custom.id.toLowerCase(), custom);
 
     // Default the locator overlay to "on"..
     const locator = this._imageryIndex.sources.get('mapbox_locator_overlay');

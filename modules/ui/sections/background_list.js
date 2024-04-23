@@ -122,16 +122,6 @@ export function uiSectionBackgroundList(context) {
 //
 //    map.on('zoom', updateWaybackDates);
 //
-//    function handleDropdownChange(d3_event) {
-//      const selectedDate = d3_event.target.value;
-//      imagery.getWaybackSource().then(sourceMap => {
-//        // Find the sourceId that corresponds to the selected date
-//        const sourceId = Array.from(sourceMap.sources.entries())
-//          .find(([_, source]) => source.id.split('_')[1] === selectedDate)[0];
-//        const imagerySource = sourceMap.sources.get(sourceId);
-//        imagery.baseLayerSource(imagerySource);
-//      });
-//    }
 //
 //    const dropdown = wayBackImageryEnter
 //      .append('select')
@@ -332,13 +322,25 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'background-name')
       .text(d => d.name);
 
-    listItemsEnter
+    // Wayback gets an extra dropdown
+    listItemsEnter.filter(d => d.id === 'EsriWayback')
+      .selectAll('label')
+      .append('select')
+      .attr('class', 'wayback-date')
+      .on('change', waybackDateChange)
+      .append('option')
+      .attr('value', '')
+      .text(l10n.t('background.wayback.latest'));
+
+    // Add favorite button
+    listItemsEnter.filter(d => d.id !== 'custom')
       .append('button')
       .attr('class', 'favorite-background')
       .attr('tabindex', -1)
       .call(uiIcon('', undefined, l10n.t('icons.favorite')))
       .on('click', toggleFavorite);
 
+    // Custom gets a different button: '...'
     listItemsEnter.filter(d => d.id === 'custom')
       .append('button')
       .attr('class', 'layer-browse')
@@ -349,6 +351,7 @@ export function uiSectionBackgroundList(context) {
       .on('click', clickCustom)
       .call(uiIcon('#rapid-icon-more'));
 
+    // "Best" backgrounds get a badge
     listItemsEnter.filter(d => d.best)
       .selectAll('label')
       .append('span')
@@ -421,6 +424,23 @@ export function uiSectionBackgroundList(context) {
   function clickCustom(d3_event) {
     if (d3_event) d3_event.preventDefault();
     context.container().call(settingsCustomBackground);
+  }
+
+
+  /*
+   * waybackDateChange
+   * @param  d3_event - change event, if called from a change handler
+   */
+  function waybackDateChange(d3_event) {
+    const selectedDate = d3_event.target.value;
+console.log(`picked ${selectedDate}`);
+//    imagery.getWaybackSource().then(sourceMap => {
+//      // Find the sourceId that corresponds to the selected date
+//      const sourceId = Array.from(sourceMap.sources.entries())
+//        .find(([_, source]) => source.id.split('_')[1] === selectedDate)[0];
+//      const imagerySource = sourceMap.sources.get(sourceId);
+//      imagery.baseLayerSource(imagerySource);
+//    });
   }
 
 

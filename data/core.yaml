@@ -779,9 +779,9 @@ en:
     reset: reset
     reset_all: Reset All
     display_options: Display Options
-    wayback_imagery:
-      title: Esri Wayback Imagery
-      tooltip: Imagery listing from the Esri Wayback archive
+    wayback:
+      name: Esri Wayback
+      description: Esri Wayback contains archived snapshots of Esri World Imagery created over time.
       latest: latest
     brightness: Brightness
     contrast: Contrast
