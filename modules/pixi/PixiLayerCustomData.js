@@ -103,8 +103,9 @@ export class PixiLayerCustomData extends AbstractLayer {
     const gridLines = this.createGridLines(lines);
 
     const gridStyle = { stroke: { width: 0.5, color: 0x00ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
+    const wktStyle = { stroke: { width: 4, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }};
 
-    this.renderLines(frame, viewport, zoom, this._wktLines);
+    this.renderLines(frame, viewport, zoom, this._wktLines, wktStyle);
     this.renderLines(frame, viewport, zoom, lines);
     this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
     this.renderPoints(frame, viewport, zoom, points);
