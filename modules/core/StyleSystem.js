@@ -13,8 +13,13 @@ const lifecycleVals = new Set([
   'intermittent', 'obliterated', 'planned', 'proposed', 'razed', 'removed', 'was'
 ]);
 
+const pedestrianTags = new Set([
+  'path', 'steps', 'pedestrian', 'sidewalk', 'footway', 'garden', 'nature_reserve', 'track', 'pitch', 'golf_course', 'park', 'dog_park'
+]);
+
 // matches these things as a tag prefix
 const lifecycleRegex = new RegExp('^(' + Array.from(lifecycleVals).join('|') + '):');
+
 
 
 /**
@@ -249,12 +254,10 @@ export class StyleSystem extends AbstractSystem {
       roller_coaster: {
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: 'butt' }
-      }
+      },
     };
 
 
-    // will show everything else in grey / 50% alpha blend
-    this.pedestrianMode = ['path', 'cycleway', 'bridleway', 'steps', 'pedestrian', 'sidewalk', 'footway'];
 
     //
     // A "Style Selector" contains OSM key/value tags to match to a style declaration.
@@ -612,11 +615,20 @@ export class StyleSystem extends AbstractSystem {
     }
   }
 
+  /**
+     * setMode
+     * Assigns Focus mode
+     * @param  {String}  mode - Mode Name
+     */
   setMode(mode) {
     this.focusMode = mode;
   }
 
-
+  /**
+      * getMode
+      * Retrive Focus mode name
+      * @return  {String}  mode - Mode Name
+      */
   getMode() {
     return this.focusMode;
   }
@@ -634,6 +646,7 @@ export class StyleSystem extends AbstractSystem {
     let styleScore = 999;   // lower numbers are better
     let styleKey;           // the key controlling the styling, if any
     let styleVal;           // the value controlling the styling, if any
+    let tagName;
     let colorScheme = this.getColorScheme();
 
     // First, match the tags to the best matching `styleID`..
@@ -658,7 +671,8 @@ export class StyleSystem extends AbstractSystem {
         matched = declaration || currentScheme;
         styleScore = score;
         styleKey = k;
-        styleVal = v;
+        styleVal = styleID;
+        tagName = v;
 
         if (styleScore === 1) break;  // no need to keep looking at tags
       }
@@ -739,6 +753,28 @@ export class StyleSystem extends AbstractSystem {
       style.casing.dash = [4, 4];
     }
 
+    // If a focus mode is enabled, reduce alpha of all elements not in focus
+    if (this.focusMode === 'pedestrian') {
+
+      if (!pedestrianTags.has(tagName)) {
+        style.fill.alpha = 0.1;
+        style.fill.color = 0x848884;
+
+        style.casing.alpha = 0.1;
+        style.casing.color = 0x848884;
+
+        style.stroke.alpha = 0.1;
+        style.stroke.color = 0x848884;
+      } else {
+        // Highlight footpaths
+        if (tagName === 'footway') {
+          style.casing.color = 0xffff94;
+          style.casing.width = 7;
+          style.stroke.color = 0x000000;
+        }
+      }
+    }
+
     // After applying all other styling rules and overrides, perform lifecycle overrides.
     // (This is for features that are not really existing - "abandoned", "proposed", etc.)
     if (hasLifecycleTag) {
@@ -786,6 +822,8 @@ export class StyleSystem extends AbstractSystem {
         if (patternScore === 1) break;  // no need to keep looking at tags
       }
     }
+
+
 
     return style;
 
