@@ -82,7 +82,8 @@
     "polyclip-ts": "~0.16.5",
     "prop-types": "^15.8.1",
     "rbush": "3.0.1",
-    "which-polygon": "2.2.1"
+    "which-polygon": "2.2.1",
+    "wkt": "^0.1.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
