@@ -8,6 +8,8 @@ import { PixiFeatureLine } from './PixiFeatureLine.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon.js';
 import { utilFetchResponse } from '../util/index.js';
+import { parse as wktParse } from 'wkt';
+import { parse } from 'postcss';
 
 const CUSTOM_COLOR = 0x00ffff;
 
@@ -33,6 +35,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     this._template = null;
     this._url = null;
     this._geojson = null;
+    this._wktLines = null;
     this._geojsonExtent = null;
     this._fileReader = new FileReader();
 
@@ -78,7 +81,8 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    if (!this.enabled || !this.hasData()) return;
+
+    if (!this.enabled || !(this.hasData() || this.hasWkt())) return;
 
     const vtService = this.context.services.vectortile;
     let geoData = [];
@@ -97,10 +101,42 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     this.renderPolygons(frame, viewport, zoom, polygons);
     const gridLines = this.createGridLines(lines);
+
     const gridStyle = { stroke: { width: 0.5, color: 0x00ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
+
+    this.renderLines(frame, viewport, zoom, this._wktLines);
     this.renderLines(frame, viewport, zoom, lines);
     this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
     this.renderPoints(frame, viewport, zoom, points);
+  }
+
+
+  /**
+   * createWktLines
+   * creates WKT lines from a raw string supplied on the url (if specified) from param 'wkt'.
+   * 
+   * @param wktString - the line string(s) in wkt format
+   * i.e. 'POLYGON((-2.23%2012.93,%20-2.3%2011.72,%20-0.81%2011.72,%20-0.81%2012.92,%20-2.28%2012.93))'
+   * @returns a list containing a single linestring to draw as a custom line.
+  */
+  createWktLines(wktString) {
+    const parsedWkt = wktParse(wktString);
+
+    let polyLines = [];
+
+    let newPoly = {
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: parsedWkt.coordinates,
+      },
+      id: 'customWktPoly',
+    };
+
+    this._ensureIDs(newPoly);
+
+    polyLines.push(newPoly);
+    return polyLines;
   }
 
 
@@ -262,7 +298,9 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = l10n.displayName(d.properties);
+          if (d.properties){
+            feature.label = l10n.displayName(d.properties);
+          }
           feature.setData(dataID, d);
         }
 
@@ -340,6 +378,16 @@ export class PixiLayerCustomData extends AbstractLayer {
     return !!(this._template || this._geojson);
   }
 
+  /**
+   * hasWkt
+   * Return true if there is custom data to display
+   * @return {boolean}  `true` if there is a vector tile template or geojson to display
+   */
+  hasWkt() {
+    const urlhash = context.systems.urlhash;
+    const hasWkt = urlhash.getParam('wkt');
+    return !!hasWkt;
+  }
 
   /**
    * dataUsed
@@ -640,6 +688,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (newData !== oldData) {
       this.setUrl(newData);
     }
+
+    const newWkt = currParams.get('wkt'); 
+
+    if (newWkt) {
+      this.scene.enableLayers(this.layerID);
+    }
+    this._wktLines = this.createWktLines(newWkt);
   }
 
 
