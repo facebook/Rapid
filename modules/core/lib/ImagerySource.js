@@ -51,6 +51,12 @@ export class ImagerySource {
     return this._idtx;
   }
 
+  // `key` can be used to uniquely identify this imagery source.
+  // It is usually just the `id`, but for 'wayback' it will also include the `date`.
+  get key() {
+    return this._id;
+  }
+
   get name() {
     return this.context.systems.l10n.t(`imagery.${this._idtx}.name`, { default: this._name });
   }
@@ -514,24 +520,22 @@ export class ImagerySourceEsri extends ImagerySource {
  * `ImagerySourceEsriWayback`
  * A special imagery source that allows users to choose available dates in the Esri Wayback Archive.
  */
-export class ImagerySourceEsriWayback extends ImagerySource {
-  constructor(context) {
-    super(context, {
-      id: 'EsriWayback',
-      name: 'Esri Wayback',
-      type: 'tms',
-      template: '',
-      zoomExtent: [0, 22],
-      terms_url: 'https://wiki.openstreetmap.org/wiki/Esri',
-      terms_text: 'Terms & Feedback',
-      description: 'Esri Wayback contains archived snapshots of Esri World Imagery created over time.',
-      icon: 'https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png',
-      polygon: null,    // worldwide
-      startDate: null,  // user will choose
-      endDate: null     // user will choose
-    });
+export class ImagerySourceEsriWayback extends ImagerySourceEsri {
+  constructor(context, src) {
+    super(context, src);
   }
 
+  // Append the date to the `id` if there is one, e.g. `EsriWayback_2024-01-01`
+  get key() {
+    let s = this._id;
+    const date = this.date;
+    if (date) {
+      s += `_${date}`;
+    }
+    return s;
+  }
+
+  // `wayback` will not be in the imagery index, so we localize these strings differently
   get name() {
     return this.context.systems.l10n.t('background.wayback.name', { default: this._name });
   }
@@ -539,6 +543,7 @@ export class ImagerySourceEsriWayback extends ImagerySource {
     return this.context.systems.l10n.t('background.wayback.description', { default: this._description });
   }
 
+  // Append the date to `imageryUsed` if there is one, e.g. `Esri Wayback (2024-01-01)`
   get imageryUsed() {
     let s = this._name;
     const date = this.date;
@@ -548,11 +553,13 @@ export class ImagerySourceEsriWayback extends ImagerySource {
     return s;
   }
 
+  // accept any value here
   set date(val) {
     this.startDate = val;
     this.endDate = val;
   }
 
+  // return only values that are actually datelike, and localize as an ISO string
   get date() {
     return this.startDate ? this._localeDateString(this.startDate) : null;
   }

@@ -146,11 +146,19 @@ export class ImagerySystem extends AbstractSystem {
         source = new ImagerySource(context, d);
       }
       this._imageryIndex.sources.set(d.id.toLowerCase(), source);
-    }
 
-    // Add 'Esri Wayback'
-    const wayback = new ImagerySourceEsriWayback(context);
-    this._imageryIndex.sources.set(wayback.id.toLowerCase(), wayback);
+      // Add 'EsriWayback' as a special copy of 'EsriWorldImagery'
+      if (d.id === 'EsriWorldImagery') {
+        const props = Object.assign({}, d);
+        props.id = 'EsriWayback';
+        props.name = 'Esri Wayback';
+        props.description = 'Esri Wayback contains archived snapshots of Esri World Imagery created over time.';
+        props.startDate = null;  // user will choose
+        props.endDate = null;    // user will choose
+        const wayback = new ImagerySourceEsriWayback(context, props);
+        this._imageryIndex.sources.set(props.id.toLowerCase(), wayback);
+      }
+    }
 
     // Add 'None'
     const none = new ImagerySourceNone(context);
@@ -258,14 +266,9 @@ export class ImagerySystem extends AbstractSystem {
     if (this.context.inIntro || !baseLayer) return;
 
     // Gather info about enabled base imagery
-    let baseLayerID = baseLayer.id;
+    let baseLayerID = baseLayer.key;  // note: use `key` here - for Wayback it will include the date
     if (baseLayerID === 'custom') {
       baseLayerID = `custom:${baseLayer.template}`;
-    } else if (baseLayerID === 'EsriWayback') {    // append start date, if any
-      const date = baseLayer.date;
-      if (date) {
-        baseLayerID += `_${date}`;
-      }
     }
 
     // Gather info about enabled overlay imagery (ignore locator)
@@ -546,7 +549,9 @@ export class ImagerySystem extends AbstractSystem {
 
     const source = this.getSourceByID(sourceID);
     if (source) {
-      source.date = date;
+      if (date) {
+        source.date = date;
+      }
       this.baseLayerSource(source);
     }
   }

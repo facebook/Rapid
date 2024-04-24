@@ -74,8 +74,9 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const showSources = new Map();   // Map (sourceID -> source)
 
     const base = imagery.baseLayerSource();
-    if (base && base.id !== 'none') {
-      showSources.set(base.id, base);
+    const baseID = base?.key;   // note: use `key` here - for Wayback it will include the date
+    if (base && baseID !== 'none') {
+      showSources.set(baseID, base);
     }
 
     for (const overlay of imagery.overlayLayerSources()) {
@@ -132,6 +133,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const textureManager = this.renderer.textures;
     const osm = context.services.osm;
     const t = viewport.transform.props;
+    const sourceID = source.key;   // note: use `key` here, for Wayback it will include the date
 
     // Defensive coding in case nominatim/other reasons cause us to get an invalid view transform.
     if (isNaN(t.x) || isNaN(t.y)) {
@@ -194,7 +196,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     for (const [tileID, tile] of needTiles) {
       if (tileMap.has(tileID)) continue;   // we made it already
 
-      const tileName = `${source.id}-${tileID}`;
+      const tileName = `${sourceID}-${tileID}`;
       const sprite = new PIXI.Sprite();
       sprite.name = tileName;
       sprite.anchor.set(0, 1);    // left, bottom

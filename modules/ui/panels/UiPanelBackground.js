@@ -89,11 +89,12 @@ export class UiPanelBackground extends AbstractUiPanel {
     const l10n = context.systems.l10n;
 
     const source = imagery.baseLayerSource();
+    const sourceID = source?.key;  // note: use `key` here, for Wayback it will include the date
     if (!source) return;
 
     // Empty out metadata if source has changed..
-    if (this._currSourceID !== source.id) {
-      this._currSourceID = source.id;
+    if (this._currSourceID !== sourceID) {
+      this._currSourceID = sourceID;
       this._metadata = {};
     }
 
@@ -107,6 +108,16 @@ export class UiPanelBackground extends AbstractUiPanel {
     list
       .append('li')
       .text(source.name);
+
+    // The metadata fetching is not currently working for the Esri sources.
+    // todo: We should get that working, but for now just show the date we have.
+    if (source.id === 'EsriWayback') {
+      list
+        .append('li')
+        .text(l10n.t('background.wayback.date') + ':')
+        .append('span')
+        .text(source.date || l10n.t('info_panels.background.unknown'));
+    }
 
     // Add list items for all the imagery metadata
     METADATA_KEYS.forEach(k => {
@@ -151,11 +162,12 @@ export class UiPanelBackground extends AbstractUiPanel {
     const viewport = context.viewport;
 
     const source = imagery.baseLayerSource();
+    const sourceID = source?.key;  // note: use `key` here, for Wayback it will include the date
     if (!source) return;
 
     // Empty out metadata if source has changed..
-    if (this._currSourceID !== source.id) {
-      this._currSourceID = source.id;
+    if (this._currSourceID !== sourceID) {
+      this._currSourceID = sourceID;
       this._metadata = {};
     }
 
@@ -163,7 +175,7 @@ export class UiPanelBackground extends AbstractUiPanel {
     const centerLoc = viewport.centerLoc();
     const centerExtent = new Extent(centerLoc);
     const layer = context.scene().layers.get('background');
-    const tileMap = layer?._tileMaps.get(source.id);
+    const tileMap = layer?._tileMaps.get(sourceID);
     let tileCoord, tileZoom;
 
     if (tileMap) {
@@ -189,7 +201,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     // attempt async update of the rest of the fields..
     source.getMetadata(centerLoc, tileCoord, (err, result) => {
-      if (err || this._currSourceID !== source.id) return;
+      if (err || this._currSourceID !== sourceID) return;
 
       // update vintage
       const vintage = result.vintage;

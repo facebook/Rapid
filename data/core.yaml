@@ -628,8 +628,6 @@ en:
       unknown: Unknown
       show_tiles: Show Tiles
       hide_tiles: Hide Tiles
-      show_vintage: Show Vintage
-      hide_vintage: Hide Vintage
     history:
       key: H
       title: History
@@ -782,6 +780,7 @@ en:
     wayback:
       name: Esri Wayback
       description: Esri Wayback contains archived snapshots of Esri World Imagery created over time.
+      date: Date
       latest: latest
     brightness: Brightness
     contrast: Contrast
