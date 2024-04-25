@@ -146,6 +146,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     this._ensureIDs(newPoly);
 
+    newPoly.properties = {};
     polys.push(newPoly);
     return polys;
   }
@@ -253,9 +254,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          if (d.properties){
-            feature.label = l10n.displayName(d.properties);
-          }
+          feature.label = l10n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
@@ -311,9 +310,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          if (d.properties){
-            feature.label = l10n.displayName(d.properties);
-          }
+          feature.label = l10n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
