@@ -518,11 +518,8 @@ export function uiSectionBackgroundList(context) {
    * Redraw the list sometimes if the map has moved
    */
   function onMapDraw() {
-    // If EsriWayback is the source, refresh the list of dates
-    const source = imagery.baseLayerSource();
-    if (source.id === 'EsriWayback') {
-      source.refreshLocalReleaseDatesAsync();
-    }
+    const wayback = imagery.getSourceByID('EsriWayback');
+    wayback.refreshLocalReleaseDatesAsync();
 
     window.requestIdleCallback(() => {
       renderIfVisible();

@@ -1,7 +1,8 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
-import { geoSphericalDistance } from '@rapid-sdk/math';
+import { geoSphericalDistance, geoZoomToScale, Tiler, Viewport } from '@rapid-sdk/math';
 import { getWaybackItems, getWaybackItemsWithLocalChanges } from '@vannizhang/wayback-core';
+import RBush from 'rbush';
 
 import { utilFetchResponse } from '../../util/index.js';
 
@@ -530,9 +531,10 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
     super(context, src);
     this._initPromise = null;
     this._refreshPromise = null;
+    this._tiler = new Tiler();
 
     this._waybackData = new Map();        // Map (releaseDate -> data)
-    this._localReleaseDates = new Set();  // Set (releaseDate) changed locally
+    this._releaseDateCache = new RBush();
     this._oldestDate = null;
     this._newestDate = null;
   }
@@ -583,14 +585,23 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
   // While all dates are valid, these are the interesting ones where the map has changed.
   // Copy to an Array for when we need to make the dropdown options list
   get localReleaseDates() {
-    const releaseDates = new Set(this._localReleaseDates);
+    let results;
+
+    // Include any release dates we have fetched for this location
+    const [lon, lat] = this.context.viewport.centerLoc();
+    const hit = this._releaseDateCache.search({ minX: lon, minY: lat, maxX: lon, maxY: lat });
+    if (hit.length) {
+      results = new Set(hit[0].releaseDates);
+    } else {
+      results = new Set();
+    }
 
     // always include oldest, newest, and current selection
-    if (this._oldestDate)  releaseDates.add(this._oldestDate);
-    if (this._newestDate)  releaseDates.add(this._newestDate);
-    if (this.startDate)    releaseDates.add(this.startDate);
+    if (this._oldestDate)  results.add(this._oldestDate);
+    if (this._newestDate)  results.add(this._newestDate);
+    if (this.startDate)    results.add(this.startDate);
 
-    return [...releaseDates].sort().reverse();   // sort as strings decending
+    return [...results].sort().reverse();   // sort as strings decending
   }
 
 
@@ -663,30 +674,48 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
   /**
    * refreshLocalReleaseDatesAsync
    * Refresh the list of localReleaseDates that appear changed in the current view.
+   * Because this is expensive, we cache the result for a given zoomed out tile.
    * Do this sometimes but not too often.
    * @return {Promise} Promise resolved when the localReleaseDates have been loaded
    */
   refreshLocalReleaseDatesAsync() {
-    if (this._refreshPromise) return this._refreshPromise;  // refresh in progress
+    // If we have already fetched the release dates for this box, resolve immediately
+    const [lon, lat] = this.context.viewport.centerLoc();
+    const hit = this._releaseDateCache.search({ minX: lon, minY: lat, maxX: lon, maxY: lat });
+    if (hit.length) {
+      return Promise.resolve(hit[0].releaseDates);
+    }
 
-    const viewport = this.context.viewport;
-    const [lon, lat] = viewport.centerLoc();
-    const zoom = viewport.transform.zoom;
+    // If a refresh is in progress, return that instead
+    if (this._refreshPromise) {
+      return this._refreshPromise;
+    }
+
+    // Get a single tile at this location
+    const TILEZOOM = 14;
+    const k = geoZoomToScale(TILEZOOM);
+    const [x, y] = new Viewport({ k: k }).project([lon, lat]);
+    const viewport = new Viewport({ k: k, x: -x, y: -y });
+    const tile = this._tiler.zoomRange(TILEZOOM).getTiles(viewport).tiles[0];
 
     return this._refreshPromise = new Promise(resolve => {
-      getWaybackItemsWithLocalChanges({ latitude: lat, longitude: lon }, zoom)
+      getWaybackItemsWithLocalChanges({ latitude: lat, longitude: lon }, TILEZOOM)
         .then(data => {
           if (!Array.isArray(data) || !data.length) throw new Error('No locally changed Wayback data');
 
-          this._localReleaseDates = new Set();
-          for (const d of data) {
-            this._localReleaseDates.add(d.releaseDateLabel);
-          }
+          const box = tile.wgs84Extent.bbox();
+          box.id = tile.id;
+          box.releaseDates = new Set(data.map(d => d.releaseDateLabel));
+          this._releaseDateCache.insert(box);
+          return box.releaseDates;
         })
-        .catch(e => console.error(e))  // eslint-disable-line no-console
-        .finally(() => {
+        .catch(e => {
+          console.error(e);  // eslint-disable-line no-console
+          return new Set();
+        })
+        .then(val => {
           this._refreshPromise = null;
-          resolve(this.localReleaseDates);
+          resolve(val);
         });
     });
   }
