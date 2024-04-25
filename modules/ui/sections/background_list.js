@@ -75,68 +75,6 @@ export function uiSectionBackgroundList(context) {
       .append('ul')
       .attr('class', 'layer-list bg-extras-list');
 
-//    const wayBackImageryEnter = extrasListEnter
-//      .append('li')
-//      .attr('class', 'background.wayback.tooltip')
-//      .append('div')
-//      .style('display', 'flex');
-//
-//    const label = wayBackImageryEnter
-//      .append('label')
-//      .call(uiTooltip(context)
-//        .title(l10n.t('background.wayback.tooltip'))
-//        .placement('top')
-//      );
-//
-//    label
-//      .append('input')
-//      .attr('type', 'checkbox')
-//      .on('change', updateWaybackDates);
-//
-//
-//    function updateWaybackDates() {
-//      const checkbox = d3_select('input[type="checkbox"]');
-//      const isChecked = checkbox.property('checked');
-//
-//      dropdown.style('display', isChecked ? 'block' : 'none');
-//
-//      if (isChecked) {
-//        imagery.getWaybackSource().then(sourceMap => {
-//          const sources = Array.from(sourceMap.sources.values());
-//          const dates = sources.map(source => {
-//            const date = source.id.split('_')[1];
-//            return { value: date };
-//          });
-//          dates.sort((a, b) => b.value.localeCompare(a.value));
-//          dates.forEach(date => {
-//            dropdown.append('option').text(date.value);
-//          });
-//          dropdown.node().dispatchEvent(new Event('change'));
-//        });
-//      } else {
-//        dropdown.selectAll('option').remove();
-//        const defaultSource = imagery.chooseDefaultSource();
-//        imagery.baseLayerSource(defaultSource);
-//      }
-//    }
-//
-//    map.on('zoom', updateWaybackDates);
-//
-//
-//    const dropdown = wayBackImageryEnter
-//      .append('select')
-//      .style('display', 'none')
-//      .style('vertical-align', 'middle')
-//      .style('height', '20px')
-//      .style('width', '120px')
-//      .style('margin', 'auto')
-//      .style('cursor', 'pointer')
-//      .on('change', handleDropdownChange);
-//
-//    label
-//      .append('span')
-//      .text(l10n.t('background.wayback.title'));
-
     const minimapLabelEnter = extrasListEnter
       .append('li')
       .attr('class', 'minimap-toggle-item')
@@ -322,41 +260,52 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'background-name')
       .text(d => d.name);
 
-    // Wayback gets an extra dropdown
-    listItemsEnter.filter(d => d.id === 'EsriWayback')
-      .selectAll('label')
-      .append('select')
-      .attr('class', 'wayback-date')
-      .on('change', waybackDateChange)
-      .append('option')
-      .attr('value', '')
-      .text(l10n.t('background.wayback.latest'));
+    listItemsEnter
+      .each((d, i, nodes) => {
+        const li = d3_select(nodes[i]);
 
-    // Add favorite button
-    listItemsEnter.filter(d => d.id !== 'custom')
-      .append('button')
-      .attr('class', 'favorite-background')
-      .attr('tabindex', -1)
-      .call(uiIcon('', undefined, l10n.t('icons.favorite')))
-      .on('click', toggleFavorite);
+        // Wayback gets an extra dropdown for picking the date
+        if (d.id === 'EsriWayback') {
+          li
+            .selectAll('label')
+            .append('select')
+            .attr('class', 'wayback-date')
+            .on('change', waybackDateChange);
+        }
 
-    // Custom gets a different button: '...'
-    listItemsEnter.filter(d => d.id === 'custom')
-      .append('button')
-      .attr('class', 'layer-browse')
-      .call(uiTooltip(context)
-        .title(l10n.t('settings.custom_background.tooltip'))
-        .placement(l10n.isRTL() ? 'right' : 'left')
-      )
-      .on('click', clickCustom)
-      .call(uiIcon('#rapid-icon-more'));
+        // Add favorite button
+        if (d.id !== 'custom') {
+          li
+            .append('button')
+            .attr('class', 'favorite-background')
+            .attr('tabindex', -1)
+            .call(uiIcon('', undefined, l10n.t('icons.favorite')))
+            .on('click', toggleFavorite);
+        }
 
-    // "Best" backgrounds get a badge
-    listItemsEnter.filter(d => d.best)
-      .selectAll('label')
-      .append('span')
-      .attr('class', 'best')
-      .call(uiIcon('#rapid-icon-best-background', undefined, l10n.t('background.best_imagery')));
+        // Custom gets a different button: '...'
+        if (d.id === 'custom') {
+          li
+            .append('button')
+            .attr('class', 'layer-browse')
+            .call(uiTooltip(context)
+              .title(l10n.t('settings.custom_background.tooltip'))
+              .placement(l10n.isRTL() ? 'right' : 'left')
+            )
+            .on('click', clickCustom)
+            .call(uiIcon('#rapid-icon-more'));
+        }
+
+        // "Best" backgrounds get a badge
+        if (d.best) {
+          li
+            .selectAll('label')
+            .append('span')
+            .attr('class', 'best')
+            .call(uiIcon('#rapid-icon-best-background', undefined, l10n.t('background.best_imagery')));
+        }
+      });
+
 
     // update
     listItems = listItems
@@ -374,6 +323,27 @@ export function uiSectionBackgroundList(context) {
           .selectAll('input')
           .property('checked', d => imagery.showsLayer(d));
 
+        // Update the Wayback release date options
+        if (d.id === 'EsriWayback') {
+          const currDate = d.date;
+          const dropdown = li.selectAll('.wayback-date');
+          const options = dropdown.selectAll('option')
+            .data(d.localReleaseDates, d => d);
+
+          options.exit()
+            .remove();
+
+          const optionsEnter = options.enter()
+            .append('option')
+            .attr('value', d => d)
+            .text(d => d);
+
+          options.merge(optionsEnter)
+            .attr('selected', d => (d === currDate ? '' : null))
+            .order();
+        }
+
+        // Update the favorite button
         const isFavorite = _favoriteIDs.has(d.id);
         li.selectAll('button.favorite-background svg.icon')
           .classed('favorite', isFavorite)
@@ -448,13 +418,6 @@ export function uiSectionBackgroundList(context) {
     }
 
     chooseBackground(undefined, sourceID);
-//    imagery.getWaybackSource().then(sourceMap => {
-//      // Find the sourceId that corresponds to the selected date
-//      const sourceId = Array.from(sourceMap.sources.entries())
-//        .find(([_, source]) => source.id.split('_')[1] === selectedDate)[0];
-//      const imagerySource = sourceMap.sources.get(sourceId);
-//      imagery.baseLayerSource(imagerySource);
-//    });
   }
 
 
@@ -550,15 +513,30 @@ export function uiSectionBackgroundList(context) {
   }
 
 
+  /*
+   * onMapDraw
+   * Redraw the list sometimes if the map has moved
+   */
+  function onMapDraw() {
+    // If EsriWayback is the source, refresh the list of dates
+    const source = imagery.baseLayerSource();
+    if (source.id === 'EsriWayback') {
+      source.refreshLocalReleaseDatesAsync();
+    }
+
+    window.requestIdleCallback(() => {
+      renderIfVisible();
+    });
+  }
+
+
+  const deferredOnMapDraw = debounce(onMapDraw, 1000, { leading: true, trailing: true });
+
   imagery
     .on('imagerychange', renderIfVisible);
 
   map
-    .on('draw', debounce(() => {
-        // layers in-view may have changed due to map move
-        window.requestIdleCallback(renderIfVisible);
-      }, 1000, { leading: true, trailing: true })
-    );
+    .on('draw', deferredOnMapDraw);
 
   context.keybinding()
     .on(uiCmd('⌘' + l10n.t('background.key')), swapBackground)

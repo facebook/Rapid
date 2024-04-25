@@ -1,6 +1,7 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import { geoSphericalDistance } from '@rapid-sdk/math';
+import { getWaybackItems, getWaybackItemsWithLocalChanges } from '@vannizhang/wayback-core';
 
 import { utilFetchResponse } from '../../util/index.js';
 
@@ -111,7 +112,8 @@ export class ImagerySource {
 
 
   url(coord) {
-    let result = this._template;
+    const urlTemplate = this.template;
+    let result = urlTemplate;
     if (result === '') return result;   // source 'none'
 
     function _tileToProjectedCoords(proj, x, y, z) {
@@ -139,12 +141,12 @@ export class ImagerySource {
     // Guess a type based on the tokens present in the template
     // (This is for 'custom' source, where we don't know)
     if (!this.type) {
-      if (/SERVICE=WMS|\{(proj|wkid|bbox)\}/.test(this._template)) {
+      if (/SERVICE=WMS|\{(proj|wkid|bbox)\}/.test(urlTemplate)) {
         this.type = 'wms';
         this.projection = 'EPSG:3857';  // guess
-      } else if (/\{(x|y)\}/.test(this._template)) {
+      } else if (/\{(x|y)\}/.test(urlTemplate)) {
         this.type = 'tms';
-      } else if (/\{u\}/.test(this._template)) {
+      } else if (/\{u\}/.test(urlTemplate)) {
         this.type = 'bing';
       }
     }
@@ -167,7 +169,7 @@ export class ImagerySource {
           case 'bbox':
             // WMS 1.3 flips x/y for some coordinate systems including EPSG:4326 - iD#7557
             // The CRS parameter implies version 1.3 (prior versions use SRS)
-            if (projection === 'EPSG:4326' && /VERSION=1.3|CRS={proj}/.test(this._template.toUpperCase())) {
+            if (projection === 'EPSG:4326' && /VERSION=1.3|CRS={proj}/.test(urlTemplate.toUpperCase())) {
               return maxXminY.y + ',' + minXmaxY.x + ',' + minXmaxY.y + ',' + maxXminY.x;
             } else {
               return minXmaxY.x + ',' + maxXminY.y + ',' + maxXminY.x + ',' + minXmaxY.y;
@@ -282,7 +284,7 @@ export class ImagerySourceCustom extends ImagerySource {
 
   get imageryUsed() {
     // Sanitize personal connection tokens - iD#6801
-    let cleaned = this._template;
+    let cleaned = this.template;
 
     // Sanitize query string parameters
     let [url, params] = cleaned.split('?', 2);
@@ -519,10 +521,20 @@ export class ImagerySourceEsri extends ImagerySource {
 /**
  * `ImagerySourceEsriWayback`
  * A special imagery source that allows users to choose available dates in the Esri Wayback Archive.
+ * The actual date that the user wants to view is stored in `this.startDate` (and `this.endDate`)
+ * Note that all "dates" in imagery sources are actually stored as ISO strings like `2024-01-01`
  */
 export class ImagerySourceEsriWayback extends ImagerySourceEsri {
+
   constructor(context, src) {
     super(context, src);
+    this._initPromise = null;
+    this._refreshPromise = null;
+
+    this._waybackData = new Map();        // Map (releaseDate -> data)
+    this._localReleaseDates = new Set();  // Set (releaseDate) changed locally
+    this._oldestDate = null;
+    this._newestDate = null;
   }
 
   // Append the date to the `id` if there is one, e.g. `EsriWayback_2024-01-01`
@@ -543,6 +555,11 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
     return this.context.systems.l10n.t('background.wayback.description', { default: this._description });
   }
 
+  get template() {
+    const current = this._waybackData.get(this.startDate);
+    return current?.template || this._template;
+  }
+
   // Append the date to `imageryUsed` if there is one, e.g. `Esri Wayback (2024-01-01)`
   get imageryUsed() {
     let s = this._name;
@@ -553,15 +570,125 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
     return s;
   }
 
-  // accept any value here
-  set date(val) {
-    this.startDate = val;
-    this.endDate = val;
+  get oldestDate() {
+    return this._oldestDate;
   }
 
-  // return only values that are actually datelike, and localize as an ISO string
+  get newestDate() {
+    return this._newestDate;
+  }
+
+  // getter only, no setter
+  // `localReleaseDates` contains only the dates when the imagery has changed locally.
+  // While all dates are valid, these are the interesting ones where the map has changed.
+  // Copy to an Array for when we need to make the dropdown options list
+  get localReleaseDates() {
+    const releaseDates = new Set(this._localReleaseDates);
+
+    // always include oldest, newest, and current selection
+    if (this._oldestDate)  releaseDates.add(this._oldestDate);
+    if (this._newestDate)  releaseDates.add(this._newestDate);
+    if (this.startDate)    releaseDates.add(this.startDate);
+
+    return [...releaseDates].sort().reverse();   // sort as strings decending
+  }
+
+
+  // Pick the closest date available within range of valid dates
+  set date(val) {
+    const requestDate = this._localeDateString(val);
+    if (!requestDate) return;
+
+    const allDates = [...this._waybackData.keys()].sort();  // sort as strings ascending
+
+    let chooseDate = allDates[0];
+    for (let i = 1; i < allDates.length; i++) {   // can skip oldest, it is already in chooseDate
+      const cmp = requestDate.localeCompare(chooseDate);
+      if (cmp <= 0) break;        // stop looking
+      chooseDate = allDates[i];   // try next date
+    }
+
+    this.startDate = chooseDate;
+    this.endDate = chooseDate;
+  }
+
+
   get date() {
-    return this.startDate ? this._localeDateString(this.startDate) : null;
+    return this.startDate;
+  }
+
+
+  /**
+   * initWaybackAsync
+   * Fetch all available Wayback imagery sources.
+   * If the wayback data is not available, just resolve anyway.
+   * We do this at init time so that if the url contains a wayback source, the user can use it.
+   * This seems to complete in around 300-400ms, which is fine.
+   * @return {Promise} Promise resolved when this data has been loaded
+   */
+  initWaybackAsync() {
+    if (this._initPromise) return this._initPromise;
+
+    return this._initPromise = new Promise(resolve => {
+      // `getWaybackItems` returns a list of `WaybackItem` for all World Imagery Wayback releases
+      // from the Wayback archive. The output list is sorted by release date in descending order
+      // (newest release is the first item).
+      getWaybackItems()
+        .then(data => {
+          if (!Array.isArray(data) || !data.length) throw new Error('No Wayback data');
+
+          this._oldestDate = data.at(-1).releaseDateLabel;
+          this._newestDate = data.at(0).releaseDateLabel;
+          this.startDate = this.endDate = this._newestDate;  // default to showing the newest one
+
+          for (const d of data) {
+            // Convert placeholder tokens in the URL template from Esri's format to ours.
+            d.template = d.itemURL
+              .replaceAll('{level}', '{zoom}')
+              .replaceAll('{row}', '{y}')
+              .replaceAll('{col}', '{x}');
+
+            // Use `releaseDateLabel` as the date, it's an ISO date string like `2024-01-01`
+            d.startDate = d.endDate = d.releaseDateLabel;
+
+            this._waybackData.set(d.releaseDateLabel, d);
+          }
+        })
+        .catch(e => console.error(e))  // eslint-disable-line no-console
+        .finally(() => resolve());
+    });
+  }
+
+
+  /**
+   * refreshLocalReleaseDatesAsync
+   * Refresh the list of localReleaseDates that appear changed in the current view.
+   * Do this sometimes but not too often.
+   * @return {Promise} Promise resolved when the localReleaseDates have been loaded
+   */
+  refreshLocalReleaseDatesAsync() {
+    if (this._refreshPromise) return this._refreshPromise;  // refresh in progress
+
+    const viewport = this.context.viewport;
+    const [lon, lat] = viewport.centerLoc();
+    const zoom = viewport.transform.zoom;
+
+    return this._refreshPromise = new Promise(resolve => {
+      getWaybackItemsWithLocalChanges({ latitude: lat, longitude: lon }, zoom)
+        .then(data => {
+          if (!Array.isArray(data) || !data.length) throw new Error('No locally changed Wayback data');
+
+          this._localReleaseDates = new Set();
+          for (const d of data) {
+            this._localReleaseDates.add(d.releaseDateLabel);
+          }
+        })
+        .catch(e => console.error(e))  // eslint-disable-line no-console
+        .finally(() => {
+          this._refreshPromise = null;
+          resolve(this.localReleaseDates);
+        });
+    });
   }
 
 }
