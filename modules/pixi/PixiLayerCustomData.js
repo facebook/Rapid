@@ -129,7 +129,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       type: 'Feature',
       geometry: {
         type: 'LineString',
-        coordinates: parsedWkt.coordinates,
+        coordinates: parsedWkt.coordinates[0], //wkt parses as a single polygon, so just return that.
       },
       id: 'customWktPoly',
     };
