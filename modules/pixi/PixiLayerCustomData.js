@@ -116,7 +116,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * createWktPolys
-   * creates WKT lines from a raw string supplied on the url (if specified) from param 'wkt'.
+   * creates WKT Polys from a raw string supplied on the url (if specified) from param 'wktPoly'.
    * 
    * @param wktString - the poly or multipoly string(s) in wkt format
    * i.e. 'POLYGON((-2.2 1.9, -2.3 1.7, -0.8 1.7, -0.8 1.9, -2.2 1.9))'
@@ -139,7 +139,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       type: 'Feature',
       geometry: {
         type: parsedWkt.type,
-        coordinates: parsedWkt.coordinates, //wkt parses as a single polygon, so just return that.
+        coordinates: parsedWkt.coordinates, 
       },
       id: 'customWktPoly',
     };

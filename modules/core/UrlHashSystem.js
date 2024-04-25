@@ -61,7 +61,7 @@ export class UrlHashSystem extends AbstractSystem {
 * __`id`__ - An OSM ID to select.
 * __`map`__ - A slash-separated `zoom/lat/lon/rot`.
 * __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.
-* __`wkt`__ - Well-known text string to render as custom data.
+* __`wktPoly`__ - Well-known POLYGON or MULTIPOLYGON text string to render as custom data.
 
 **/
 
