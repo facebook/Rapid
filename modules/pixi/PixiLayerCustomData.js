@@ -9,7 +9,6 @@ import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon.js';
 import { utilFetchResponse } from '../util/index.js';
 import { parse as wktParse } from 'wkt';
-import { parse } from 'postcss';
 
 const CUSTOM_COLOR = 0x00ffff;
 
@@ -35,7 +34,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     this._template = null;
     this._url = null;
     this._geojson = null;
-    this._wktLines = null;
+    this._wktPolys = null;
     this._geojsonExtent = null;
     this._fileReader = new FileReader();
 
@@ -100,44 +99,55 @@ export class PixiLayerCustomData extends AbstractLayer {
     const points = geoData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
     this.renderPolygons(frame, viewport, zoom, polygons);
-    const gridLines = this.createGridLines(lines);
-
-    const gridStyle = { stroke: { width: 0.5, color: 0x00ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
-    const wktStyle = { stroke: { width: 4, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }};
-
-    this.renderLines(frame, viewport, zoom, this._wktLines, wktStyle);
     this.renderLines(frame, viewport, zoom, lines);
-    this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
     this.renderPoints(frame, viewport, zoom, points);
+
+
+    //Now render any extras, like gridlines in square bounding boxes or arbitrary WKT polygons/multipolys.
+    const gridLines = this.createGridLines(lines);
+    const gridStyle = { stroke: { width: 0.5, color: 0x0ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
+    this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
+
+    const wktStyle = { stroke: { width: 4, color: 0x0afaf, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
+    this.renderPolygons(frame, viewport, zoom, this._wktPolys, wktStyle);
+
   }
 
 
   /**
-   * createWktLines
+   * createWktPolys
    * creates WKT lines from a raw string supplied on the url (if specified) from param 'wkt'.
    * 
-   * @param wktString - the line string(s) in wkt format
-   * i.e. 'POLYGON((-2.23%2012.93,%20-2.3%2011.72,%20-0.81%2011.72,%20-0.81%2012.92,%20-2.28%2012.93))'
-   * @returns a list containing a single linestring to draw as a custom line.
+   * @param wktString - the poly or multipoly string(s) in wkt format
+   * i.e. 'POLYGON((-2.2 1.9, -2.3 1.7, -0.8 1.7, -0.8 1.9, -2.2 1.9))'
+   * or
+   *  'MULTIPOLYGON (((-1.5 1.3, -1.5 1.3, -1.5 1.3, -1.5 1.3, -1.4 1.3, -1.4 1.3, -1.5 1.3)),
+  *   ((-1.5 1.3, -1.5 1.3, -1.5 1.3, -1.4 1.3, -1.5 1.3)))'
+   * @returns a list containing polygons to draw as a custom shape.
   */
-  createWktLines(wktString) {
+  createWktPolys(wktString) {
     const parsedWkt = wktParse(wktString);
+    let polys = [];
 
-    let polyLines = [];
+    if (!parsedWkt || parsedWkt.type === 'Point' || parsedWkt.type === 'LineString') {
+      console.error("Unable to parse wktPoly param");
+      return polys;
+    }
+
 
     let newPoly = {
       type: 'Feature',
       geometry: {
-        type: 'LineString',
-        coordinates: parsedWkt.coordinates[0], //wkt parses as a single polygon, so just return that.
+        type: parsedWkt.type,
+        coordinates: parsedWkt.coordinates, //wkt parses as a single polygon, so just return that.
       },
       id: 'customWktPoly',
     };
 
     this._ensureIDs(newPoly);
 
-    polyLines.push(newPoly);
-    return polyLines;
+    polys.push(newPoly);
+    return polys;
   }
 
 
@@ -207,7 +217,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  polygons   Array of polygon data
    */
   renderPolygons(frame, viewport, zoom, polygons) {
-    const l10n = this.context.systems.l10n;
+    const l1n = this.context.systems.l1n;
     const parentContainer = this.scene.groups.get('basemap');
 
     const polygonStyle = {
@@ -243,7 +253,9 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = l10n.displayName(d.properties);
+          if (d.properties){
+            feature.label = l1n.displayName(d.properties);
+          }
           feature.setData(dataID, d);
         }
 
@@ -264,7 +276,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param styleOverride Custom style
    */
   renderLines(frame, viewport, zoom, lines, styleOverride) {
-    const l10n = this.context.systems.l10n;
+    const l1n = this.context.systems.l1n;
     const parentContainer = this.scene.groups.get('basemap');
 
     const lineStyle = styleOverride || {
@@ -300,7 +312,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.v = version;
           feature.geometry.setCoords(coords);
           if (d.properties){
-            feature.label = l10n.displayName(d.properties);
+            feature.label = l1n.displayName(d.properties);
           }
           feature.setData(dataID, d);
         }
@@ -321,7 +333,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines      Array of point data
    */
   renderPoints(frame, viewport, zoom, points) {
-    const l10n = this.context.systems.l10n;
+    const l1n = this.context.systems.l1n;
     const parentContainer = this.scene.groups.get('points');
 
     const pointStyle = {
@@ -358,7 +370,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = l10n.displayName(d.properties);
+          feature.label = l1n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
@@ -385,8 +397,8 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @return {boolean}  `true` if there is a vector tile template or geojson to display
    */
   hasWkt() {
-    const urlhash = context.systems.urlhash;
-    const hasWkt = urlhash.getParam('wkt');
+    const urlhash = this.context.systems.urlhash;
+    const hasWkt = urlhash.getParam('wktPoly');
     return !!hasWkt;
   }
 
@@ -690,12 +702,12 @@ export class PixiLayerCustomData extends AbstractLayer {
       this.setUrl(newData);
     }
 
-    const newWkt = currParams.get('wkt'); 
+    const newWkt = currParams.get('wktPoly');
 
     if (newWkt) {
       this.scene.enableLayers(this.layerID);
+      this._wktPolys = this.createWktPolys(newWkt);
     }
-    this._wktLines = this.createWktLines(newWkt);
   }
 
 
