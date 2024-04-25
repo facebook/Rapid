@@ -217,7 +217,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  polygons   Array of polygon data
    */
   renderPolygons(frame, viewport, zoom, polygons) {
-    const l1n = this.context.systems.l1n;
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
 
     const polygonStyle = {
@@ -254,7 +254,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.v = version;
           feature.geometry.setCoords(coords);
           if (d.properties){
-            feature.label = l1n.displayName(d.properties);
+            feature.label = l10n.displayName(d.properties);
           }
           feature.setData(dataID, d);
         }
@@ -276,7 +276,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param styleOverride Custom style
    */
   renderLines(frame, viewport, zoom, lines, styleOverride) {
-    const l1n = this.context.systems.l1n;
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('basemap');
 
     const lineStyle = styleOverride || {
@@ -312,7 +312,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.v = version;
           feature.geometry.setCoords(coords);
           if (d.properties){
-            feature.label = l1n.displayName(d.properties);
+            feature.label = l10n.displayName(d.properties);
           }
           feature.setData(dataID, d);
         }
@@ -333,7 +333,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines      Array of point data
    */
   renderPoints(frame, viewport, zoom, points) {
-    const l1n = this.context.systems.l1n;
+    const l10n = this.context.systems.l10n;
     const parentContainer = this.scene.groups.get('points');
 
     const pointStyle = {
@@ -370,7 +370,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = l1n.displayName(d.properties);
+          feature.label = l10n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
