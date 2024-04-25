@@ -67,6 +67,7 @@ export class MapRouletteService extends AbstractSystem {
       inflightTile: {},
       inflightPost: {},
       closed: {},
+      comment: {},
       rtree: new RBush()
     };
 
@@ -180,7 +181,7 @@ export class MapRouletteService extends AbstractSystem {
    */
   postUpdate(task, callback) {
     if (this._cache.inflightPost[task.id]) {
-      console.log('Issue update already inflight for task:', task);
+      console.log('Task update already inflight for task:', task);
       return callback({ message: 'Issue update already inflight', status: -2 }, task);
     }
     const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
@@ -189,66 +190,65 @@ export class MapRouletteService extends AbstractSystem {
     const controller = new AbortController();
     this._cache.inflightPost[task.id] = controller;
 
-    // fetch(commentUrl, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'apiKey': task.mapRouletteApiKey
-    //   },
-    //   body: JSON.stringify({ actionId: 2, comment: task.comment }),
-    //   signal: controller.signal
-    // })
-    // .then(response => {
-    //   if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
-    //   return response.json();
-    // });
+    fetch(commentUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apiKey': task.mapRouletteApiKey
+      },
+      body: JSON.stringify({ actionId: 2, comment: task.comment }),
+      signal: controller.signal
+    })
+    .then(response => {
+      if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
+      return response.json();
+    });
 
-    // fetch(updateTaskUrl, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'apiKey': task.mapRouletteApiKey
-    //   },
-    //   signal: controller.signal
-    // })
-    // .then(response => {
-    //   if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
-    //   return response.json();
-    // })
-    // .then(() => {
-    //   // Release task
-    //   return fetch(releaseTaskUrl, {
-    //     signal: controller.signal,
-    //     headers: {
-    //       'apiKey': task.mapRouletteApiKey
-    //     }
-    //   });
-    // })
-    // .then(response => {
-    //   if (!response.ok) throw new Error(`Error releasing task: ${response.statusText}`);
-    //   return response.json();
-    // })
-    // .then(() => {
-    //   // All requests completed successfully
-    //   delete this._cache.inflightPost[task.id];
-    //   this.removeTask(task);
-    //   // if (task.newStatus === 'done') {
-    //     console.log('Task marked as done:', task);
-    //     if (!(task.item in this._cache.closed)) {
-    //       console.log('Adding new item to closed cache:', task.item);
-    //       this._cache.closed[task.item] = 0;
-    //     }
-    //     this._cache.closed[task.item] += 1;
-    //     console.log('Updated closed cache:', this._cache.closed);
-    //   // }
-    //   if (callback) callback(null, task);
-    // })
-    // .catch(err => {
-    //   console.log('In catch block', err);
-    //   // Handle any errors
-    //   delete this._cache.inflightPost[task.id];
-    //   if (callback) callback(err.message);
-    // });
+    fetch(updateTaskUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'apiKey': task.mapRouletteApiKey
+      },
+      signal: controller.signal
+    })
+    .then(response => {
+      if (!response.ok) throw new Error(`Error updating task: ${response.statusText}`);
+      return response.text();  // get the response text
+    })
+    .then(() => {
+      // Release task
+      return fetch(releaseTaskUrl, {
+        signal: controller.signal,
+        headers: {
+          'apiKey': task.mapRouletteApiKey
+        }
+      });
+    })
+    .then(response => {
+      if (!response.ok) throw new Error(`Error releasing task: ${response.statusText}`);
+      return response.json();
+    })
+    .then(() => {
+      // All requests completed successfully
+      delete this._cache.inflightPost[task.id];
+      this.removeTask(task);
+      if (!(task.task.type in this._cache.closed)) {
+        this._cache.closed[task.task.type] = 0;
+        if (task.comment) {
+          task.comment += ` #maproulette mpr.lt/c/${task.task.parentId}/t/${task.taskId}`;
+          this._cache.comment[task.comment] = task.comment;
+        }
+      }
+      this._cache.closed[task.task.type] += 1;
+      if (callback) callback(null, task);
+    })
+    .catch(err => {
+      console.log('In catch block', err);
+      // Handle any errors
+      delete this._cache.inflightPost[task.id];
+      if (callback) callback(err.message);
+    });
   }
 
 
@@ -285,19 +285,29 @@ export class MapRouletteService extends AbstractSystem {
    */
   removeTask(task) {
     if (!(task instanceof MapRouletteTask) || !task.id) return;
-
     this._cache.tasks.delete(task.id);
     this._updateRtree(this._encodeIssueRtree(task), false);
   }
 
 
   /**
-   * getClosedCounts
-   * Used to populate `closed:maproulette:*` changeset tags
-   * @return   the closed cache
+   * getClosedIDs
+   * Get an array of issues closed during this session.
+   * Used to populate `closed:maproulette` changeset tag
+   * @return  Array of closed item ids
    */
-  getClosedCounts() {
-    return this._cache.closed;
+  getClosedIDs() {
+    return Object.keys(this._cache.closed).sort();
+  }
+
+  /**
+   * getClosedIDs
+   * Get an array of issues closed during this session.
+   * Used to populate `closed:maproulette` changeset tag
+   * @return  Array of closed item ids
+   */
+  getClosedComment() {
+    return Object.values(this._cache.comment);
   }
 
     /**

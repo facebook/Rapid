@@ -287,7 +287,7 @@ export function uiMapRouletteEditor(context) {
     buttonSection.select('.fixedIt-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.fixedIt'))
-      .on('click.close', function(d3_event, d) {
+      .on('click.fixedIt', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
           d._status = 1;
@@ -301,7 +301,7 @@ export function uiMapRouletteEditor(context) {
     buttonSection.select('.cantComplete-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.cantComplete'))
-      .on('click.ignore', function(d3_event, d) {
+      .on('click.cantComplete', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
           d._status = 6;
@@ -315,7 +315,7 @@ export function uiMapRouletteEditor(context) {
     buttonSection.select('.alreadyFixed-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.alreadyFixed'))
-      .on('click.ignore', function(d3_event, d) {
+      .on('click.alreadyFixed', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
           d._status = 5;
@@ -329,7 +329,7 @@ export function uiMapRouletteEditor(context) {
     buttonSection.select('.notAnIssue-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.notAnIssue'))
-      .on('click.ignore', function(d3_event, d) {
+      .on('click.notAnIssue', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
           d._status = 2;
@@ -397,7 +397,7 @@ export function uiMapRouletteEditor(context) {
 
     buttonSection.select('.cancel-button')
       .html(l10n.tHtml('map_data.layers.maproulette.cancel'))
-      .on('click.close', function(d3_event, d) {
+      .on('click.cancel', function(d3_event, d) {
         _actionTaken = '';
         d._status = '';
         d.showNoteSaveSection = false;
@@ -407,7 +407,7 @@ export function uiMapRouletteEditor(context) {
 
     buttonSection.select('.submit-button')
       .html(l10n.tHtml('map_data.layers.maproulette.submit'))
-      .on('click.ignore', function(d3_event, d) {
+      .on('click.submit', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (maproulette) {
           d.taskStatus = d._status;

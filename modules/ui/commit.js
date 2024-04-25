@@ -250,11 +250,13 @@ export function uiCommit(context) {
     }
     const maproulette = context.services.maproulette;
     if (maproulette) {
-      const maprouletteClosed = maproulette.getClosedCounts();
-      for (let itemType in maproulette) {
-        if (maprouletteClosed[itemType] !== undefined) {
-          tags[`closed:maproulette:${itemType}`] = context.cleanTagValue(maprouletteClosed[itemType].toString());
+      const maprouletteClosed = maproulette.getClosedIDs();
+      const maprouletteComment = maproulette.getClosedComment();
+      if (maprouletteClosed.length) {
+        if (maprouletteComment.length) {
+          tags.comment += ' ' + maprouletteComment.join(';');
         }
+        tags.hashtags = (tags.hashtags || '') + ';#maproulette';
       }
     }
 
