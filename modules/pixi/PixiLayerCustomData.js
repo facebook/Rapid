@@ -111,7 +111,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * createWktPolys
-   * creates WKT Polys from a raw string supplied on the url (if specified) from param 'wktPoly'.
+   * creates WKT Polys from a raw string supplied by the data url param'.
    * 
    * @param wktString - the poly or multipoly string(s) in wkt format
    * i.e. 'POLYGON((-2.2 1.9, -2.3 1.7, -0.8 1.7, -0.8 1.9, -2.2 1.9))'
@@ -126,7 +126,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     let poly = {};
     // If it couldn't be parsed, or if it isn't a poly/multipoly, we can't render it. Issue an error.
     if (!parsedWkt || (parsedWkt.type !== 'Polygon' && parsedWkt.type !== 'MultiPolygon')) {
-      console.error("Unable to parse wkt Poly string");
       return poly;
     }
 
@@ -379,17 +378,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    */
   hasData() {
     return !!(this._template || this._geojson);
-  }
-
-  /**
-   * hasWkt
-   * Return true if there is custom data to display
-   * @return {boolean}  `true` if there is a vector tile template or geojson to display
-   */
-  hasWkt() {
-    const urlhash = this.context.systems.urlhash;
-    const hasWkt = urlhash.getParam('wktPoly');
-    return !!hasWkt;
   }
 
   /**
@@ -689,15 +677,16 @@ export class PixiLayerCustomData extends AbstractLayer {
     const newData = currParams.get('data') || currParams.get('gpx');
     const oldData = prevParams.get('data') || prevParams.get('gpx');
     if (newData !== oldData) {
-      this.setUrl(newData);
-    }
 
-    const newWkt = currParams.get('wktPoly');
+      //First attempt to parse the data string as a WKT.
+      const wktPolys = this.createWktPolys(newData);
 
-    if (newWkt) {
-      this.scene.enableLayers(this.layerID);
-      const wktPolys = this.createWktPolys(newWkt);
-      this._setFile(wktPolys, '.geojson');
+      // If it is, treat it as such. If not, treat it as a URL.
+      if (wktPolys) {
+        this._setFile(wktPolys, '.geojson');
+      } else {
+        this.setUrl(newData);
+      }
     }
   }
 
