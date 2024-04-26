@@ -1,7 +1,7 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import { geoSphericalDistance, geoZoomToScale, Tiler, Viewport } from '@rapid-sdk/math';
-import { getWaybackItems, getWaybackItemsWithLocalChanges } from '@vannizhang/wayback-core';
+import * as Wayback from '@vannizhang/wayback-core';
 import RBush from 'rbush';
 
 import { utilFetchResponse } from '../../util/index.js';
@@ -644,7 +644,7 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
       // `getWaybackItems` returns a list of `WaybackItem` for all World Imagery Wayback releases
       // from the Wayback archive. The output list is sorted by release date in descending order
       // (newest release is the first item).
-      getWaybackItems()
+      Wayback.getWaybackItems()
         .then(data => {
           if (!Array.isArray(data) || !data.length) throw new Error('No Wayback data');
 
@@ -699,7 +699,7 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
     const tile = this._tiler.zoomRange(TILEZOOM).getTiles(viewport).tiles[0];
 
     return this._refreshPromise = new Promise(resolve => {
-      getWaybackItemsWithLocalChanges({ latitude: lat, longitude: lon }, TILEZOOM)
+      Wayback.getWaybackItemsWithLocalChanges({ latitude: lat, longitude: lon }, TILEZOOM)
         .then(data => {
           if (!Array.isArray(data) || !data.length) throw new Error('No locally changed Wayback data');
 
@@ -718,6 +718,57 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
           resolve(val);
         });
     });
+  }
+
+
+  /**
+   * getMetadata
+   * The wayback-core library has a helpful function to get the metadata for us
+   */
+  getMetadata(loc, tileCoord, callback) {
+    const point = { longitude: loc[0], latitude: loc[1] };
+    const zoom = Math.min(tileCoord[2], this.zoomExtent[1]);
+    const current = this._waybackData.get(this.startDate);
+    if (!current) {
+      callback(null, {});
+      return;
+    }
+
+    Wayback.getMetadata(point, zoom, current.releaseNum)
+      .then(data => {
+        const unknown = this.context.systems.l10n.t('info_panels.background.unknown');
+        const captureDate = new Date(data.date).toISOString().split('T')[0];
+        const vintage = {
+          start: captureDate,
+          end: captureDate,
+          range: captureDate
+        };
+        const metadata = {
+          vintage: vintage,
+          source: clean(data.source),
+          description: clean(data.provider),
+          resolution: clean(+parseFloat(data.resolution).toFixed(4)),
+          accuracy: clean(+parseFloat(data.accuracy).toFixed(4))
+        };
+
+        // append units - meters
+        if (isFinite(metadata.resolution)) {
+          metadata.resolution += ' m';
+        }
+        if (isFinite(metadata.accuracy)) {
+          metadata.accuracy += ' m';
+        }
+
+        callback(null, metadata);
+
+        function clean(val) {
+          return String(val).trim() || unknown;
+        }
+      })
+      .catch(e => {
+        console.error(e);  // eslint-disable-line no-console
+        callback(e);
+      });
   }
 
 }
