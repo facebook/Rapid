@@ -180,6 +180,8 @@ export class MapRouletteService extends AbstractSystem {
    * @param   callback
    */
   postUpdate(task, callback) {
+    const context = this.context;
+    const sidebar = context.systems.ui.sidebar;
     if (this._cache.inflightPost[task.id]) {
       console.log('Task update already inflight for task:', task);
       return callback({ message: 'Issue update already inflight', status: -2 }, task);
@@ -233,6 +235,7 @@ export class MapRouletteService extends AbstractSystem {
       // All requests completed successfully
       delete this._cache.inflightPost[task.id];
       this.removeTask(task);
+      sidebar.hide();
       if (!(task.id in this._cache.closed)) {
         this._cache.closed[task.id] = 0;
         if (task.comment) {
@@ -284,10 +287,7 @@ export class MapRouletteService extends AbstractSystem {
    * @param   task to remove
    */
   removeTask(task) {
-    const context = this.context;
-    const sidebar = context.systems.ui.sidebar;
     if (!(task instanceof MapRouletteTask) || !task.id) return;
-    sidebar.hide();
     this._cache.tasks.delete(task.id);
     this._updateRtree(this._encodeIssueRtree(task), false);
   }

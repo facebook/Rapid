@@ -454,9 +454,15 @@ export function uiMapRouletteEditor(context) {
       d.comment = d3_select('.new-comment-input').property('value').trim();
       d.taskId = d.id;
       d.userId = userID;
-      maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
-      d.showNoteSaveSection = false;
-      updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+      maproulette.postUpdate(d, (err, item) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        // Update the UI only after all API requests have completed successfully
+        maproulette.removeTask(d);
+        dispatch.call('change', item);
+      });
     }
   }
 
