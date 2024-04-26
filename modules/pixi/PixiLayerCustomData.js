@@ -34,7 +34,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     this._template = null;
     this._url = null;
     this._geojson = null;
-    this._wktPolys = null;
     this._geojsonExtent = null;
     this._fileReader = new FileReader();
 
@@ -107,10 +106,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     const gridLines = this.createGridLines(lines);
     const gridStyle = { stroke: { width: 0.5, color: 0x0ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
     this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
-
-    const wktStyle = { stroke: { width: 4, color: 0x0afaf, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
-    this.renderPolygons(frame, viewport, zoom, this._wktPolys, wktStyle);
-
   }
 
 
@@ -127,28 +122,26 @@ export class PixiLayerCustomData extends AbstractLayer {
   */
   createWktPolys(wktString) {
     const parsedWkt = wktParse(wktString);
-    let polys = [];
 
-    if (!parsedWkt || parsedWkt.type === 'Point' || parsedWkt.type === 'LineString') {
-      console.error("Unable to parse wktPoly param");
-      return polys;
+    let poly = {};
+    // If it couldn't be parsed, or if it isn't a poly/multipoly, we can't render it. Issue an error.
+    if (!parsedWkt || (parsedWkt.type !== 'Polygon' && parsedWkt.type !== 'MultiPolygon')) {
+      console.error("Unable to parse wkt Poly string");
+      return poly;
     }
 
 
-    let newPoly = {
+    poly = {
       type: 'Feature',
       geometry: {
         type: parsedWkt.type,
-        coordinates: parsedWkt.coordinates, 
+        coordinates: parsedWkt.coordinates,
       },
       id: 'customWktPoly',
+      properties: {}
     };
 
-    this._ensureIDs(newPoly);
-
-    newPoly.properties = {};
-    polys.push(newPoly);
-    return polys;
+    return poly;
   }
 
 
@@ -703,7 +696,8 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     if (newWkt) {
       this.scene.enableLayers(this.layerID);
-      this._wktPolys = this.createWktPolys(newWkt);
+      const wktPolys = this.createWktPolys(newWkt);
+      this._setFile(wktPolys, '.geojson');
     }
   }
 
