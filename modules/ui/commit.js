@@ -251,7 +251,7 @@ export function uiCommit(context) {
     const maproulette = context.services.maproulette;
     if (maproulette) {
       const maprouletteClosedComments = maproulette.getClosedComment();
-      for (const { id, comment } of maprouletteClosedComments) {
+      for (const {comment} of maprouletteClosedComments) {
 
         tags.comment += ' ' + comment;
       }
@@ -699,3 +699,4 @@ export function uiCommit(context) {
 
   return utilRebind(commit, dispatch, 'on');
 }
+
