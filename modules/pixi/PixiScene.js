@@ -11,7 +11,7 @@ import { PixiLayerLabels } from './PixiLayerLabels.js';
 import { PixiLayerMapillaryFeatures } from './PixiLayerMapillaryFeatures.js';
 import { PixiLayerMapillaryPhotos } from './PixiLayerMapillaryPhotos.js';
 import { PixiLayerMapillarySigns } from './PixiLayerMapillarySigns.js';
-import { PixiLayerMapRoulette } from './PixiLayerMapRoulette';
+import { PixiLayerMapRoulette } from './PixiLayerMapRoulette.js';
 import { PixiLayerMapUI } from './PixiLayerMapUI.js';
 import { PixiLayerOsm } from './PixiLayerOsm.js';
 import { PixiLayerOsmNotes } from './PixiLayerOsmNotes.js';

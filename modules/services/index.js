@@ -3,7 +3,7 @@ import { ImproveOsmService } from './ImproveOsmService.js';
 import { KartaviewService } from './KartaviewService.js';
 import { KeepRightService } from './KeepRightService.js';
 import { MapillaryService } from './MapillaryService.js';
-import { MapRouletteService } from './MapRouletteService';
+import { MapRouletteService } from './MapRouletteService.js';
 import { MapWithAIService } from './MapWithAIService.js';
 import { NominatimService } from './NominatimService.js';
 import { NsiService } from './NsiService.js';

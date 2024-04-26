@@ -92,8 +92,8 @@ export class MapRouletteService extends AbstractSystem {
    */
   loadTiles() {
     // determine the needed tiles to cover the view
-    const projection = this.context.projection;
-    const tiles = this._tiler.getTiles(projection).tiles;
+    const viewport = this.context.viewport;
+    const tiles = this._tiler.getTiles(viewport).tiles;
 
     // abort inflight requests that are no longer needed
     this._abortUnwantedRequests(this._cache, tiles);
