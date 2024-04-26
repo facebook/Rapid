@@ -48,7 +48,8 @@ export class UrlHashSystem extends AbstractSystem {
 *
 * Responsive (user can change)
 * __`background`__ - Imagery sourceID for the background imagery layer
-* __`data`__ - A custom data URL for loading a gpx track or connecting to a vector data source
+* __`data`__ - A custom data URL for loading a gpx track, vector data source, 
+*   or well-known POLYGON or MULTIPOLYGON text string to render as custom data.
 * __`gpx`__ - Same as `data`, it's just the legacy name for the same thing
 * __`datasets`__ - A comma-separated list of Rapid/Esri datasetIDs to enable
 * __`disable_features`__ - Disables features in the list.
@@ -61,7 +62,6 @@ export class UrlHashSystem extends AbstractSystem {
 * __`id`__ - An OSM ID to select.
 * __`map`__ - A slash-separated `zoom/lat/lon/rot`.
 * __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.
-* __`wktPoly`__ - Well-known POLYGON or MULTIPOLYGON text string to render as custom data.
 
 **/
 
