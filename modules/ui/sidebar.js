@@ -275,11 +275,6 @@ export function uiSidebar(context) {
                 inspector
                     .state('hide');
 
-            } else if (_wasMapRoulette) {
-                _wasMapRoulette = false;
-                context.container().selectAll('.qaItem.' + datum.service)
-                    .classed('hover', false);
-                sidebar.hide();
             } else if (_wasRapid || _wasData || _wasNote || _wasQaItem || _wasMapRoulette) {
                 _wasRapid = false;
                 _wasNote = false;
