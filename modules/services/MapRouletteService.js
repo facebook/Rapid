@@ -233,14 +233,14 @@ export class MapRouletteService extends AbstractSystem {
       // All requests completed successfully
       delete this._cache.inflightPost[task.id];
       this.removeTask(task);
-      if (!(task.task.type in this._cache.closed)) {
-        this._cache.closed[task.task.type] = 0;
+      if (!(task.id in this._cache.closed)) {
+        this._cache.closed[task.id] = 0;
         if (task.comment) {
           task.comment += ` #maproulette mpr.lt/c/${task.task.parentId}/t/${task.taskId}`;
-          this._cache.comment[task.comment] = task.comment;
+          this._cache.comment[task.id] = { id: task.id, comment: task.comment };
         }
       }
-      this._cache.closed[task.task.type] += 1;
+      this._cache.closed[task.id] += 1;
       if (callback) callback(null, task);
     })
     .catch(err => {

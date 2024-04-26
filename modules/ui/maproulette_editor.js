@@ -288,56 +288,28 @@ export function uiMapRouletteEditor(context) {
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.fixedIt'))
       .on('click.fixedIt', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - iD#4641
-        if (maproulette) {
-          d._status = 1;
-          _actionTaken = 'FIXED';
-          d.showNoteSaveSection = true;
-          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
-          selection.call(commentSaveSection);
-        }
+        fixedIt(d3_event, d, selection);
       });
 
     buttonSection.select('.cantComplete-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.cantComplete'))
       .on('click.cantComplete', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - iD#4641
-        if (maproulette) {
-          d._status = 6;
-          _actionTaken = `CAN'T COMPLETE`;
-          d.showNoteSaveSection = true;
-          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
-          selection.call(commentSaveSection);
-        }
+        cantComplete(d3_event, d, selection);
       });
 
     buttonSection.select('.alreadyFixed-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.alreadyFixed'))
       .on('click.alreadyFixed', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - iD#4641
-        if (maproulette) {
-          d._status = 5;
-          _actionTaken = 'ALREADY FIXED';
-          d.showNoteSaveSection = true;
-          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
-          selection.call(commentSaveSection);
-        }
+        alreadyFixed(d3_event, d, selection);
       });
 
     buttonSection.select('.notAnIssue-button')
       .attr('disabled', isSaveDisabled(_maprouletteTask))
       .html(l10n.tHtml('map_data.layers.maproulette.notAnIssue'))
       .on('click.notAnIssue', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - iD#4641
-        if (maproulette) {
-          d._status = 2;
-          _actionTaken = 'NOT AN ISSUE';
-          d.showNoteSaveSection = true;
-          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
-          selection.call(commentSaveSection);
-        }
+        notAnIssue(d3_event, d, selection);
       });
 
 
@@ -360,7 +332,6 @@ export function uiMapRouletteEditor(context) {
 
   function submitButtons(selection) {
     const osm = context.services.osm;
-    const userID = osm._userDetails.id;
     osm.loadMapRouletteKey((err, preferences) => {
       if (err) {
         console.error(err);
@@ -396,30 +367,16 @@ export function uiMapRouletteEditor(context) {
       .merge(buttonEnter);
 
     buttonSection.select('.cancel-button')
-      .html(l10n.tHtml('map_data.layers.maproulette.cancel'))
-      .on('click.cancel', function(d3_event, d) {
-        _actionTaken = '';
-        d._status = '';
-        d.showNoteSaveSection = false;
-        updateMRSaveButtonsVisibility(d.showNoteSaveSection);
-        selection.call(commentSaveSection);
-      });
+    .html(l10n.tHtml('map_data.layers.maproulette.cancel'))
+    .on('click.cancel', function(d3_event, d) {
+      clickCancel(d3_event, d, selection);
+    });
 
     buttonSection.select('.submit-button')
       .html(l10n.tHtml('map_data.layers.maproulette.submit'))
       .on('click.submit', function(d3_event, d) {
-        this.blur();    // avoid keeping focus on the button - iD#4641
-        if (maproulette) {
-          d.taskStatus = d._status;
-          d.mapRouletteApiKey = _mapRouletteApiKey;
-          d.comment = d3_select('.new-comment-input').property('value').trim();
-          d.taskId = d.id;
-          d.userId = userID;
-          maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
-          d.showNoteSaveSection = false;
-          updateMRSaveButtonsVisibility(d.showNoteSaveSection);
-        }
-      });
+          clickSumbit(d3_event, d, selection);
+        });
 
       selection.select('.new-comment-input')
         .on('input.note-input', function() {
@@ -431,6 +388,76 @@ export function uiMapRouletteEditor(context) {
             button.attr('disabled', true); // Disable the button if the comment is empty
           }
         });
+  }
+
+
+  function fixedIt(d3_event, d, selection) {
+    this.blur();    // avoid keeping focus on the button - iD#4641
+      if (maproulette) {
+        d._status = 1;
+        _actionTaken = 'FIXED';
+        d.showNoteSaveSection = true;
+        updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+        selection.call(commentSaveSection);
+      }
+  }
+
+
+  function cantComplete(d3_event, d, selection) {
+    this.blur();    // avoid keeping focus on the button - iD#4641
+    if (maproulette) {
+      d._status = 6;
+      _actionTaken = `CAN'T COMPLETE`;
+      d.showNoteSaveSection = true;
+      updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+      selection.call(commentSaveSection);
+    }
+  }
+
+  function alreadyFixed(d3_event, d, selection) {
+    this.blur();    // avoid keeping focus on the button - iD#4641
+    if (maproulette) {
+      d._status = 5;
+      _actionTaken = 'ALREADY FIXED';
+      d.showNoteSaveSection = true;
+      updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+      selection.call(commentSaveSection);
+    }
+  }
+
+  function notAnIssue(d3_event, d, selection) {
+    this.blur();    // avoid keeping focus on the button - iD#4641
+    if (maproulette) {
+      d._status = 2;
+      _actionTaken = 'NOT AN ISSUE';
+      d.showNoteSaveSection = true;
+      updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+      selection.call(commentSaveSection);
+    }
+  }
+
+  function clickCancel(d3_event, d, selection) {
+    _actionTaken = '';
+    d._status = '';
+    d.showNoteSaveSection = false;
+    updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+    selection.call(commentSaveSection);
+  }
+
+  function clickSumbit(d3_event, d) {
+    this.blur();    // avoid keeping focus on the button - iD#4641
+    const osm = context.services.osm;
+    const userID = osm._userDetails.id;
+    if (maproulette) {
+      d.taskStatus = d._status;
+      d.mapRouletteApiKey = _mapRouletteApiKey;
+      d.comment = d3_select('.new-comment-input').property('value').trim();
+      d.taskId = d.id;
+      d.userId = userID;
+      maproulette.postUpdate(d, (err, item) => dispatch.call('change', item));
+      d.showNoteSaveSection = false;
+      updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+    }
   }
 
   maprouletteEditor.error = function(val) {
