@@ -40,7 +40,8 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### 2024-Apr-?? (coming soon)
 
 #### :tada: New Features
-* [#1209], [#1351] Add support for Esri Wayback Imagery
+* [#1386], [#1387] Add support for [WKT geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) in `data=` url parameter
+* [#1209], [#1351], [#1388] Add support for Esri Wayback Imagery
 * [#1363] Map Rotation now supported!
   * Use <kbd>Option</kbd>+ click-and-drag or <kbd>Shift</kbd>+Left/Right arrow keys.
   * The `map=` url param now supports a bearing like: `#map=zoom/lat/lng/bearing` (in degrees)
@@ -72,6 +73,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1364]: https://github.com/facebook/Rapid/issues/1364
 [#1368]: https://github.com/facebook/Rapid/issues/1368
 [#1370]: https://github.com/facebook/Rapid/issues/1370
+[#1386]: https://github.com/facebook/Rapid/issues/1386
+[#1387]: https://github.com/facebook/Rapid/issues/1387
+[#1388]: https://github.com/facebook/Rapid/issues/1388
 
 
 # [2.2.5](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.5)
