@@ -284,7 +284,10 @@ export class MapRouletteService extends AbstractSystem {
    * @param   task to remove
    */
   removeTask(task) {
+    const context = this.context;
+    const sidebar = context.systems.ui.sidebar;
     if (!(task instanceof MapRouletteTask) || !task.id) return;
+    sidebar.hide();
     this._cache.tasks.delete(task.id);
     this._updateRtree(this._encodeIssueRtree(task), false);
   }
