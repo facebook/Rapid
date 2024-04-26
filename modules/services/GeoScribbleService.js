@@ -160,6 +160,13 @@ export class GeoScribbleService extends AbstractSystem {
   }
 
 
+  _abortRequest(requests) {
+    for (const controller of Object.values(requests)) {
+      controller.abort();
+    }
+  }
+
+
   _abortUnwantedRequests(cache, tiles) {
     Object.keys(cache.inflightTile).forEach(k => {
       const wanted = tiles.find(tile => k === tile.id);
