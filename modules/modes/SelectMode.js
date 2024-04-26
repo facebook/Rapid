@@ -4,12 +4,13 @@ import { Extent } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
 import { osmNote, QAItem } from '../osm/index.js';
-import { Task as MapRouletteTask } from '../maproulette/Task';
+import { Task as MapRouletteTask } from '../maproulette/Task.js';
+import { uiOsmoseEditor } from '../ui/osmose_editor.js';
 import { uiDataEditor } from '../ui/data_editor.js';
 import { uiImproveOsmEditor } from '../ui/improveOSM_editor.js';
 import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
 import { uiNoteEditor } from '../ui/note_editor.js';
-import { uiOsmoseEditor } from '../ui/osmose_editor.js';
+import { uiMapRouletteEditor } from '../ui/maproulette_editor.js';
 import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector.js';
 import { utilKeybinding } from '../util/index.js';
 
