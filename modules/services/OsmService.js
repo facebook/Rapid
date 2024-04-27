@@ -1189,7 +1189,14 @@ export class OsmService extends AbstractSystem {
       if (callback) callback(err, result);
     };
 
+    // Ensure the locale is correctly set before opening the popup
+    const locale = this.context.systems.l10n.localeCode();
+    this._oauth.options({
+      ...this._oauth.options(),
+      locale: locale
+    });
     this._oauth.authenticate(gotResult);
+    this._oauth.bringPopupWindowToFront();  // no guarantees, but we can try
   }
 
 
