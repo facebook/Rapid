@@ -80,6 +80,11 @@
             "text": "shortcuts.browsing.display_options.preferences"
           },
           {
+            "modifiers": ["⌥", "⇧"],
+            "shortcuts": ["preferences.color_selection.switch_color_scheme.key"],
+            "text": "shortcuts.browsing.display_options.switch_color_scheme"
+          },
+          {
             "modifiers": ["⌃", "⌘"],
             "shortcuts": ["F"],
             "text": "shortcuts.browsing.display_options.fullscreen"

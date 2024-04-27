@@ -1007,6 +1007,8 @@ en:
       colorblind_ibm: Colorblind Mode - IBM
       colorblind_paul_tol_vibrant: Colorblind Mode - Paul Tol (Vibrant)
       placeholder: Select color scheme
+      switch_color_scheme:
+        key: C
     colorblind_options:
       title: Colorblind Mode
       tooltip: Switch between colorblind modes
