@@ -145,17 +145,20 @@ export function actionJoin(ids, options = {}) {
         // All joined ways must belong to the same set of (non-restriction) relations.
         // Restriction relations have different logic, below, which allows some cases
         // this prohibits, and prohibits some cases this allows.
-        var sortedParentRelations = function (id) {
-            return graph.parentRelations(graph.entity(id))
-                .filter((rel) => !rel.isRestriction() && !rel.isConnectivity())
-                .sort((a, b) => a.id - b.id);
-        };
-        var relsA = sortedParentRelations(ids[0]);
+        // Important: compare sorted parentIDs, not sorted parents, see iD#10089 et al
+        function _sortedParentIDs(id) {
+          return graph.parentRelations(graph.entity(id))
+            .filter((rel) => !rel.isRestriction() && !rel.isConnectivity())
+            .map(rel => rel.id)
+            .sort();   // sort as strings
+        }
+
+        const aParentIDs = _sortedParentIDs(ids[0]);
         for (i = 1; i < ids.length; i++) {
-            var relsB = sortedParentRelations(ids[i]);
-            if (!utilArrayIdentical(relsA, relsB)) {
-                return 'conflicting_relations';
-            }
+          const bParentIDs = _sortedParentIDs(ids[i]);
+          if (!utilArrayIdentical(aParentIDs, bParentIDs)) {
+            return 'conflicting_relations';
+          }
         }
 
         // Loop through all combinations of path-pairs

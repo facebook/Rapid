@@ -256,6 +256,67 @@ describe('actionJoin', () => {
       assert.equal(disabled, 'conflicting_relations');
     });
 
+    it('returns falsy if they belong to same order-independent relations (same ordering)', () => {
+      // a --> b ==> c
+      // both '-' and '=' are members of r1, r2
+      // r1, r2 are not restriction or connectivity relations
+      let graph = new Rapid.Graph([
+        Rapid.osmNode({id: 'a', loc: [0,0]}),
+        Rapid.osmNode({id: 'b', loc: [2,0]}),
+        Rapid.osmNode({id: 'c', loc: [4,0]}),
+        Rapid.osmWay({id: '-', nodes: ['a', 'b']}),
+        Rapid.osmWay({id: '=', nodes: ['b', 'c']}),
+        Rapid.osmRelation({id: 'r1', tags: {}, members: []}),
+        Rapid.osmRelation({id: 'r2', tags: {}, members: []})
+      ]);
+
+      // Add members '-', and '=' in same order
+      let r1 = graph.entity('r1');
+      let r2 = graph.entity('r2');
+
+      r1 = r1.addMember({type: 'way', id: '-'});
+      r2 = r2.addMember({type: 'way', id: '-'});
+      graph = graph.replace(r1).replace(r2);
+
+      r1 = r1.addMember({type: 'way', id: '='});
+      r2 = r2.addMember({type: 'way', id: '='});
+      graph = graph.replace(r1).replace(r2);
+
+      const disabled = Rapid.actionJoin(['-', '=']).disabled(graph);
+      assert.ok(!disabled);
+    });
+
+    it('returns falsy if they belong to same order-independent relations (different ordering)', () => {
+      // a --> b ==> c
+      // both '-' and '=' are members of r1, r2
+      // r1, r2 are not restriction or connectivity relations
+      let graph = new Rapid.Graph([
+        Rapid.osmNode({id: 'a', loc: [0,0]}),
+        Rapid.osmNode({id: 'b', loc: [2,0]}),
+        Rapid.osmNode({id: 'c', loc: [4,0]}),
+        Rapid.osmWay({id: '-', nodes: ['a', 'b']}),
+        Rapid.osmWay({id: '=', nodes: ['b', 'c']}),
+        Rapid.osmRelation({id: 'r1', tags: {}, members: []}),
+        Rapid.osmRelation({id: 'r2', tags: {}, members: []})
+      ]);
+
+      // Add members '-', and '=' in opposite order
+      // Do it this way to get `graph.parentRelations` to return out-of-order results?
+      let r1 = graph.entity('r1');
+      let r2 = graph.entity('r2');
+
+      r1 = r1.addMember({type: 'way', id: '-'});
+      r2 = r2.addMember({type: 'way', id: '='});
+      graph = graph.replace(r1).replace(r2);
+
+      r1 = r1.addMember({type: 'way', id: '='});
+      r2 = r2.addMember({type: 'way', id: '-'});
+      graph = graph.replace(r1).replace(r2);
+
+      const disabled = Rapid.actionJoin(['-', '=']).disabled(graph);
+      assert.ok(!disabled);
+    });
+
     it('returns \'paths_intersect\' if resulting way intersects itself', () => {
       //   d
       //   |
