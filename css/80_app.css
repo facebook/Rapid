@@ -1324,24 +1324,24 @@ a.hide-toggle {
 }
 
 /*
-    The parts of a field:
-    - `.form-field` is a `div` wraps the entire thing
-    - `.field-label` is a `label` that wraps the top part, it contains;
-       - `span` classed `label-text`
-       - 0..n buttons for "remove", "modified", "tag reference"
-    - `.form-field-input-wrap` is a `label` or `div` that wraps the bottom part, it contains;
-       - usually an `input`
-       - sometimes some buttons (translate, increment, decrement)
-       - or could just be a `div` with anything really
-    - `.tag-reference-body` at the bottom (usually hidden)
+  The parts of a field:
+  - `.form-field` is a `div` wraps the entire thing
+  - `.field-label` is a `label` that wraps the top part, it contains;
+   - `span` classed `label-text`
+   - 0..n buttons for "remove", "modified", "tag reference"
+  - `.form-field-input-wrap` is a `label` or `div` that wraps the bottom part, it contains;
+   - usually an `input`
+   - sometimes some buttons (translate, increment, decrement)
+   - or could just be a `div` with anything really
+  - `.tag-reference-body` at the bottom (usually hidden)
 
-   .------------------.                             -
-   |  Name        | i |  <- .field-label        |
-   +------------------+                               |
-   |  Starbucks   | + |  <- .form-field-input-wrap     >  .form-field
-   '------------------'                               |
-     tag reference       <- .tag-reference-body      |
-                                                    -
+ .------------------.                           -
+ |  Name        | i |  <- .field-label           |
+ +------------------+                             |
+ |  Starbucks   | + |  <- .form-field-input-wrap   >  .form-field
+ '------------------'                             |
+   tag reference       <- .tag-reference-body    |
+                                                -
 */
 
 .form-field {
@@ -1517,11 +1517,11 @@ a.hide-toggle {
     display: flex;
     flex-flow: row nowrap;
 }
-.form-field ul.rows li.labeled-input > span,
 .form-field ul.rows li.labeled-input > div {
     flex: 1 1 auto;
     width: 100%;
     border-radius: 0;
+    line-height: 0.95rem;
 }
 .form-field ul.rows li input {
     border-radius: 0;
@@ -1538,6 +1538,28 @@ a.hide-toggle {
 .ideditor[dir='rtl'] .form-field ul.rows li.labeled-input input,
 .ideditor[dir='rtl'] .form-field ul.rows li button {
     border-right-width: 1px;
+}
+
+/* Field - lists with labeled input items as table
+------------------------------------------------------- */
+.form-field ul.rows.rows-table {
+    display: table;
+    width: 100%;
+}
+.form-field ul.rows.rows-table li.labeled-input {
+    display: table-row;
+}
+.form-field ul.rows.rows-table li.labeled-input > div:first-child {
+    display: table-cell;
+    width: auto;
+    max-width: 170px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.form-field ul.rows.rows-table li.labeled-input > div:nth-child(2) {
+    display: table-cell;
+    width: auto;
 }
 
 
@@ -2166,9 +2188,8 @@ div.combobox {
     display: block;
     padding: 5px 10px;
     border-top: 1px solid #ccc;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    line-height: 0.95rem;
+    break: all;
 }
 
 .combobox a.selected,

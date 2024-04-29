@@ -126,7 +126,7 @@ export function uiFieldRadio(context, uifield) {
             .attr('class', 'labeled-input structure-type-item');
 
         typeEnter
-            .append('span')
+            .append('div')
             .attr('class', 'label structure-label-type')
             .attr('for', 'preset-input-' + selected)
             .html(l10n.tHtml('inspector.radio.structure.type'));
@@ -171,7 +171,7 @@ export function uiFieldRadio(context, uifield) {
             .attr('class', 'labeled-input structure-layer-item');
 
         layerEnter
-            .append('span')
+            .append('div')
             .attr('class', 'label structure-label-layer')
             .attr('for', 'preset-input-layer')
             .html(l10n.tHtml('inspector.radio.structure.layer'));
