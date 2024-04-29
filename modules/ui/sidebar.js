@@ -241,8 +241,6 @@ export function uiSidebar(context) {
                 _wasMapRoulette = true;
                 var service = context.services[datum.service];
                 service = maprouletteEdiotr;
-                context.container().selectAll('.qaItem.' + datum.service)
-                    .classed('hover', function(d) { return d.id === datum.id; });
 
                 sidebar
                     .show(service.error(datum));
@@ -284,6 +282,7 @@ export function uiSidebar(context) {
                 context.container().selectAll('.layer-ai-features .hover').classed('hover', false);
                 context.container().selectAll('.note').classed('hover', false);
                 context.container().selectAll('.qaItem').classed('hover', false);
+                context.container().selectAll('.layer.maproulette').classed('hover', false);
                 sidebar.hide();
             }
         }

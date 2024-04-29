@@ -87,11 +87,9 @@ export function uiMapRouletteDetails(context) {
     if (!maproulette) return;
     maproulette.loadTaskDetailAsync(_maprouletteTask)
       .then(d => {
+        console.log('d', d);
         // Do nothing if _maprouletteTask has changed by the time Promise resolves
         if (_maprouletteTask.id !== d.id) return;
-
-        // // No details to add if there are no associated issue elements
-        if (!d.details || d.details.length === 0) return;
 
         // Things like keys and values are dynamically added to a subtitle string
         if (d.id) {
@@ -109,7 +107,7 @@ export function uiMapRouletteDetails(context) {
             .attr('target', '_blank');
         }
 
-        if (d.details) {
+        if (d.details && !d.details.includes('Lorem')) {
           const details = d.details;
 
           detailsDiv
@@ -124,7 +122,7 @@ export function uiMapRouletteDetails(context) {
             .attr('target', '_blank');
         }
 
-        if (d.instruction) {
+        if (d.instruction && !d.instruction.includes('Lorem')) {
           const instruction = d.instruction;
 
           detailsDiv
