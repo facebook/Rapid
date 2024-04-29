@@ -56,6 +56,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 #### :bug: Bugfixes:
 * [#1334] Double clicking a line to create a midpoint should not alter the line shape
+* [#1337] Restore Mapillary viewer username and link to viewed image
 
 #### :hammer: Development
 * [#1328] Add more test coverage for core classes
@@ -68,6 +69,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1328]: https://github.com/facebook/Rapid/issues/1328
 [#1329]: https://github.com/facebook/Rapid/issues/1329
 [#1334]: https://github.com/facebook/Rapid/issues/1334
+[#1337]: https://github.com/facebook/Rapid/issues/1337
 [#1351]: https://github.com/facebook/Rapid/issues/1351
 [#1363]: https://github.com/facebook/Rapid/issues/1363
 [#1364]: https://github.com/facebook/Rapid/issues/1364
