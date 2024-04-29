@@ -268,16 +268,9 @@ export function uiFieldWikipedia(context, uifield) {
       const nativeLangName = tagLangInfo[1];
       utilGetSetValue(_langInput, nativeLangName);
       utilGetSetValue(_titleInput, tagArticleTitle + (anchor ? ('#' + anchor) : ''));
-      if (anchor) {
-        try {
-          // Best-effort `anchorencode:` implementation
-          anchor = encodeURIComponent(anchor.replace(/ /g, '_')).replace(/%/g, '.');
-        } catch (e) {
-          anchor = anchor.replace(/ /g, '_');
-        }
-      }
-      _wikiURL = 'https://' + tagLang + '.wikipedia.org/wiki/' +
-        tagArticleTitle.replace(/ /g, '_') + (anchor ? ('#' + anchor) : '');
+
+      const path = wiki.encodePath(tagArticleTitle, anchor);
+      _wikiURL = `https://${tagLang}.wikipedia.org/wiki/${path}`;
 
     // unrecognized value format
     } else {
@@ -293,6 +286,21 @@ export function uiFieldWikipedia(context, uifield) {
       }
     }
   }
+
+
+  wiki.encodePath = (tagArticleTitle, anchor) => {
+    const underscoredTitle = tagArticleTitle.replace(/ /g, '_');
+    const uriEncodedUnderscoredTitle = encodeURIComponent(underscoredTitle);
+    const uriEncodedAnchorFragment = wiki.encodeURIAnchorFragment(anchor);
+    return `${uriEncodedUnderscoredTitle}${uriEncodedAnchorFragment}`;
+  };
+
+
+  wiki.encodeURIAnchorFragment = (anchor) => {
+    if (!anchor) return '';
+    const underscoredAnchor = anchor.replace(/ /g, '_');
+    return '#' + encodeURIComponent(underscoredAnchor);
+  };
 
 
   wiki.entityIDs = (val) => {
