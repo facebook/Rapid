@@ -305,26 +305,23 @@ label.streetside-hires {
     top: -25px;
 }
 
-.mly-wrapper .mapillary-attribution-container {
-    display: flex;
-    align-items: center;
+.mly-wrapper .mapillary-attribution-container,
+.mly-wrapper .mapillary-attribution-container .mapillary-attribution-icon-container,
+.mly-wrapper .mapillary-attribution-container .mapillary-attribution-image-container {
+  display: flex;
+  align-items: center;
 }
 
-.mly-wrapper .mapillary-attribution-container .mapillary-attribution-icon-container {
-    display: flex;
-    align-items: center;
+.mly-wrapper .mapillary-attribution-container {
+  padding: 2px;
 }
 
 .mly-wrapper .mapillary-attribution-container .mapillary-attribution-username {
-    display: none;
-}
-
-.mly-wrapper .mapillary-attribution-container .mapillary-attribution-date {
-    margin-right: 6px;
+  margin: 0 8px;
 }
 
 .mly-wrapper .mapillary-zoom-compact.mapillary-zoom-container {
-    bottom: 90px;
+  bottom: 90px;
 }
 
 .mly-wrapper .mapillary-bearing-north {
