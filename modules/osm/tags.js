@@ -42,6 +42,9 @@ export function osmRemoveLifecyclePrefix(key) {
 
 
 export var osmAreaKeysExceptions = {
+    amenity: {
+        bicycle_parking: true
+    },
     highway: {
         elevator: true,
         rest_area: true,
