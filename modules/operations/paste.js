@@ -18,6 +18,11 @@ export function operationPaste(context) {
     const copyIDs = context.copyIDs;
     if (!copyIDs.length) return;   // Nothing to copy..
 
+    // Prevent paste if the pasted object would be invisible (see iD#10000)
+    const osmLayer = context.scene().layers.get('osm');
+    const isOsmLayerEnabled = context.layers().layer('osm').enabled();
+    if (!isOsmLayerEnabled) return;
+
     const action = actionCopyEntities(copyIDs, copyGraph);
     editor.beginTransaction();
     editor.perform(action);

@@ -83,6 +83,10 @@ export class PasteBehavior extends AbstractBehavior {
     const copyIDs = context.copyIDs;
     if (!copyIDs.length) return;   // Nothing to copy..
 
+    // Prevent paste if the pasted object would be invisible (see iD#10000)
+    const osmLayer = context.scene().layers.get('osm');
+    if (!osmLayer?.enabled) return;
+
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const eventManager = map.renderer.events;
