@@ -12,7 +12,7 @@ import {
   uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
   uiRapidWhatsNew, uiRapidSplash, uiRestore, uiScale, uiShortcuts,
   uiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
-  uiTopToolbar, uiVersion, uiZoom, uiZoomToSelection, uiCmd,
+  uiTopToolbar, uiVersion, uiZoom, uiZoomToSelection
 } from '../ui/index.js';
 
 import {
