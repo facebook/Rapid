@@ -427,7 +427,7 @@ export class StyleSystem extends AbstractSystem {
    * @return {Object}  Default color scheme object
    */
   getColorScheme() {
-    return this.colorData;
+    return this.currentColorScheme;
   }
 
   /**
@@ -440,14 +440,14 @@ export class StyleSystem extends AbstractSystem {
 
   /**
    * setColorScheme
-   * Assigns the colorData var to the new scheme, if the selected scheme is not the current scheme
+   * Assigns the currentColorScheme var to the new scheme, if the selected scheme is not the current scheme
    * @param  {Object}  scheme - color scheme project
    */
   setColorScheme(scheme) {
     let currentScheme = this.colorSchemes[scheme];
-    if (this.colorData !== currentScheme) { 
+    if (this.currentColorScheme !== currentScheme) {
       this.currentColorScheme = scheme;
-      this.colorData = currentScheme;
+      this.currentColorScheme = currentScheme;
     }
   }
 
@@ -455,7 +455,7 @@ export class StyleSystem extends AbstractSystem {
    * getHexColorCode
    * @return {String}  HEX color code
    */
-  getHexColorCode(colorName) {    
+  getHexColorCode(colorName) {
     return this.currentColorScheme[colorName] ?? this.defaultColorScheme[colorName];
   }
 
@@ -622,19 +622,6 @@ export class StyleSystem extends AbstractSystem {
     // This just returns the value of the tag, but ignores 'no' values
     function getTag(tags, key) {
       return tags[key] === 'no' ? undefined : tags[key];
-    }
-  }
-
-  // Returns object containing all color scheme objects
-  getAllColorSchemes() {
-    return this.STYLE_SCHEMES;
-  }
-
-  // Sets map color scheme
-  setColorScheme(schemeName) {
-    let currentScheme = this.STYLE_SCHEMES[schemeName];
-    if (this.currentColorScheme !== currentScheme) {
-      this.currentColorScheme = currentScheme;
     }
   }
 }

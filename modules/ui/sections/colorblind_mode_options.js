@@ -7,7 +7,7 @@ import { utilNoAuto } from '../../util/index.js';
 
 export function uiSectionColorblindModeOptions(context) {
   const l10n = context.systems.l10n;
-  const styles = context.systems.styles; 
+  const styles = context.systems.styles;
 
   let comboData = [{ title: 'default', value: l10n.t('preferences.colorblind_options.default') }];
 

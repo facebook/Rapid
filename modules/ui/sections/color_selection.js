@@ -106,8 +106,8 @@ export function uiSectionColorSelection(context) {
     const allColorSchemes = styles.getAllColorSchemes();
 
     // Identify the name and index of the current color scheme
-    const currentColorSchemeName = colorSchemesOrdered.find( item => allColorSchemes[item] == styles.getColorScheme() );
-    const currentColorSchemeIndex = colorSchemesOrdered.findIndex( item => item == currentColorSchemeName);
+    const currentColorSchemeName = colorSchemesOrdered.find( item => allColorSchemes[item] === styles.getColorScheme() );
+    const currentColorSchemeIndex = colorSchemesOrdered.findIndex( item => item === currentColorSchemeName);
 
     // Use the index of the current color scheme to identify the next one
     const numColorSchemes = Object.keys(styles.getAllColorSchemes()).length;
@@ -121,7 +121,7 @@ export function uiSectionColorSelection(context) {
   }
 
   context.keybinding()
-    .on(uiCmd('⌥⇧' + l10n.t('preferences.color_selection.switch_color_scheme.key')), switchColorScheme)
+    .on(uiCmd('⌥⇧' + l10n.t('preferences.color_selection.switch_color_scheme.key')), switchColorScheme);
 
   return section;
 }
