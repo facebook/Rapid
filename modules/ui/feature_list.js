@@ -13,6 +13,7 @@ export function uiFeatureList(context) {
   const editor = context.systems.editor;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const osm = context.services.osm;
   const nominatim = context.services.nominatim;
   const presets = context.systems.presets;
 
@@ -26,7 +27,7 @@ export function uiFeatureList(context) {
 
     header
       .append('h3')
-      .html(l10n.tHtml('inspector.feature_list'));
+      .text(l10n.t('inspector.feature_list'));
 
     let searchWrap = selection
       .append('div')
@@ -124,17 +125,28 @@ export function uiFeatureList(context) {
         });
       }
 
-      // User typed something that looks like an OSM entity id (node/way/relation)
-      const idMatch = !locationMatch && q.match(/(?:^|\W)(node|way|relation|[nwr])\W?0*([1-9]\d*)(?:\W|$)/i);
+      // User typed something that looks like an OSM entity id (node/way/relation/note)
+      const idMatch = !locationMatch && q.match(/(?:^|\W)(node|way|relation|note|[nwr])\W?0*([1-9]\d*)(?:\W|$)/i);
       if (idMatch) {
-        const entityType = idMatch[1].charAt(0);
+        const entityType = idMatch[1].charAt(0);  // n,w,r
         const entityID = idMatch[2];
-        result.push({
-          id: entityType + entityID,
-          geometry: entityType === 'n' ? 'point' : entityType === 'w' ? 'line' : 'relation',
-          type: l10n.displayType(entityType),
-          name: entityID
-        });
+
+        if (idMatch[1] === 'note') {
+          result.push({
+            id: -1,
+            noteID: entityID,
+            geometry: 'note',
+            type: l10n.t('note.note'),
+            name: entityID
+          });
+        } else {
+          result.push({
+            id: entityType + entityID,
+            geometry: entityType === 'n' ? 'point' : entityType === 'w' ? 'line' : 'relation',
+            type: l10n.displayType(entityType),
+            name: entityID
+          });
+        }
       }
 
       // Search for what the user typed in the local and base graphs
@@ -224,6 +236,13 @@ export function uiFeatureList(context) {
           type: l10n.t('inspector.relation'),
           name: q
         });
+        result.push({
+          id: -1,
+          noteID: q,
+          geometry: 'note',
+          type: l10n.t('note.note'),
+          name: q
+        });
       }
 
       return result;
@@ -248,7 +267,7 @@ export function uiFeatureList(context) {
         .attr('class', 'entity-name');
 
       list.selectAll('.no-results-item .entity-name')
-        .html(l10n.tHtml('geocoder.no_results_worldwide'));
+        .text(l10n.t('geocoder.no_results_worldwide'));
 
       if (nominatim) {
         list.selectAll('.geocode-item')
@@ -261,7 +280,7 @@ export function uiFeatureList(context) {
           .attr('class', 'label')
           .append('span')
           .attr('class', 'entity-name')
-          .html(l10n.tHtml('geocoder.search'));
+          .text(l10n.t('geocoder.search'));
       }
 
       list.selectAll('.no-results-item')
@@ -342,9 +361,30 @@ export function uiFeatureList(context) {
       if (d.location) {
         map.centerZoomEase([d.location[1], d.location[0]], 19);
 
-      } else if (d.id !== -1) {
+      } else if (d.id !== -1) {  // looks like an OSM ID
         utilHighlightEntities([d.id], false, context);
         map.selectEntityID(d.id, true);   // select and fit , download first if necessary
+
+      } else if (osm && d.noteID) {
+        const selectNote = (note) => {
+          map.scene.enableLayers('notes');
+          map.centerZoomEase(note.loc, 19);
+          const selection = new Map().set(note.id, note);
+          context.enter('select', { selection: selection });
+        };
+
+        let note = osm.getNote(d.noteID);
+        if (note) {
+          selectNote(note);
+        } else {
+          osm.loadNote(d.noteID, (err) => {
+            if (err) return;
+            note = osm.getNote(d.noteID);
+            if (note) {
+              selectNote(note);
+            }
+          });
+        }
       }
     }
 

@@ -975,6 +975,23 @@ export class OsmService extends AbstractSystem {
     }
   }
 
+  // Load a single note by id, XML format
+  // GET /api/0.6/notes/#id
+  loadNote(noteID, callback) {
+    const options = { skipSeen: false };
+    const gotNote = (err, results) => {
+      if (callback) {
+        callback(err, { data: results });
+      }
+    };
+
+    this.loadFromAPI(
+      `/api/0.6/notes/${noteID}`,
+      gotNote,
+      options
+    );
+  }
+
 
   // Create a note
   // POST /api/0.6/notes?params
