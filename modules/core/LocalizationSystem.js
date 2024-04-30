@@ -731,10 +731,45 @@ export class LocalizationSystem extends AbstractSystem {
 
 
   /**
+   * Return some parsed values in DMS formats that @mapbox/sexagesimal can't parse, see iD#10066
+   * Note that `@mapbox/sexagesimal` returns [lat,lon], so this code does too.
+   * @param  {string}         q - string to attempt to parse
+   * @return {Array<Number>?} The location formatted as `[lat,lon]`, or `null` it can't be parsed
+   */
+  dmsMatcher(q) {
+    let match;
+
+    // DD MM SS , DD MM SS  ex: 35 11 10.1 , 136 49 53.8
+    const DMS_DMS = /^\s*(-?)\s*(\d+)\s+(\d+)\s+(\d+\.?\d*)\s*\,\s*(-?)\s*(\d+)\s+(\d+)\s+(\d+\.?\d*)\s*$/;
+    match = q.match(DMS_DMS);
+    if (match) {
+      let lat = (+match[2]) + (+match[3]) / 60 + (+match[4]) / 3600;
+      let lon = (+match[6]) + (+match[7]) / 60 + (+match[8]) / 3600;
+      if (match[1] === '-') lat *= -1;
+      if (match[5] === '-') lon *= -1;
+      return [lat, lon];
+    }
+
+    // DD MM , DD MM  ex: 35 11 10.1 , 136 49 53.8
+    const DM_DM = /^\s*(-?)\s*(\d+)\s+(\d+\.?\d*)\s*\,\s*(-?)\s*(\d+)\s+(\d+\.?\d*)\s*$/;
+    match = q.match(DM_DM);
+    if (match) {
+      let lat = +match[2] + (+match[3]) / 60;
+      let lon = +match[5] + (+match[6]) / 60;
+      if (match[1] === '-') lat *= -1;
+      if (match[4] === '-') lon *= -1;
+      return [lat, lon];
+    }
+
+    return null;
+  }
+
+
+  /**
    * Returns the given coordinate pair in decimal format.
    * note: unlocalized to avoid comma ambiguity - see iD#4765
-   * @param {Array<Number>} coord longitude and latitude
-   * @return {string}  Text to display
+   * @param  {Array<Number>}   coord - longitude and latitude
+   * @return {string}          Text to display
    */
   decimalCoordinatePair(coord) {
     const OSM_PRECISION = 7;
@@ -745,26 +780,38 @@ export class LocalizationSystem extends AbstractSystem {
   }
 
 
+  /**
+   * Format a degree coordinate as DMS (degree minute second)for display
+   * @param  {number}  degrees - degrees to convert to DMS
+   * @param  {string}  pos - string to use for positive values (either 'north' or 'east')
+   * @param  (string)  neg - string to use for negative values (either 'south' or 'west')
+   * @return {string}  Text to display
+   */
   _displayCoordinate(deg, pos, neg) {
+    const EPSILON = 0.01;
     const locale = this._currLocaleCode;
     const min = (Math.abs(deg) - Math.floor(Math.abs(deg))) * 60;
-    const sec = (min - Math.floor(min)) * 60;
+    let sec = (min - Math.floor(min)) * 60;
+
+    // If you input 45°,90°0'0.5" , sec should be 0.5 instead 0.499999…
+    // To mitigate precision errors after calculating, round again, see iD#10066
+    sec = +sec.toFixed(8);   // 0.499999… => 0.5
+
     const displayDegrees = this.t('units.arcdegrees', {
       quantity: Math.floor(Math.abs(deg)).toLocaleString(locale)
     });
 
     let displayCoordinate;
 
-    if (Math.floor(sec) > 0) {
+    if (Math.abs(sec) > EPSILON) {
       displayCoordinate = displayDegrees +
         this.t('units.arcminutes', { quantity: Math.floor(min).toLocaleString(locale) }) +
         this.t('units.arcseconds', { quantity: Math.round(sec).toLocaleString(locale) });
-    } else if (Math.floor(min) > 0) {
+    } else if (Math.abs(min) > EPSILON) {
       displayCoordinate = displayDegrees +
         this.t('units.arcminutes', { quantity: Math.round(min).toLocaleString(locale) });
     } else {
-      displayCoordinate =
-        this.t('units.arcdegrees', { quantity: Math.round(Math.abs(deg)).toLocaleString(locale) });
+      displayCoordinate = displayDegrees;
     }
 
     if (deg === 0) {

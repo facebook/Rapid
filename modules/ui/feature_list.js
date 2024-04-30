@@ -112,7 +112,7 @@ export function uiFeatureList(context) {
       if (!q) return result;
 
       // User typed something that looks like a coordinate pair
-      const locationMatch = sexagesimal.pair(q.toUpperCase()) || q.match(/^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)$/);
+      const locationMatch = sexagesimal.pair(q.toUpperCase()) || l10n.dmsMatcher(q);
       if (locationMatch) {
         const loc = [ parseFloat(locationMatch[0]), parseFloat(locationMatch[1]) ];
         result.push({

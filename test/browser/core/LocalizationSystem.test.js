@@ -33,6 +33,29 @@ describe('LocalizationSystem', () => {
               network_ref_from_to: '{network} {ref} from {from} to {to}',
               network_ref_from_to_via: '{network} {ref} from {from} to {to} via {via}'
             }
+          },
+          units: {
+            feet: '{quantity} ft',
+            miles: '{quantity} mi',
+            square_feet: '{quantity} sq ft',
+            square_miles: '{quantity} sq mi',
+            acres: '{quantity} ac',
+            meters: '{quantity} m',
+            kilometers: '{quantity} km',
+            square_meters: '{quantity} m²',
+            square_kilometers: '{quantity} km²',
+            hectares: '{quantity} ha',
+            area_pair: '{area1} ({area2})',
+            arcdegrees: '{quantity}°',
+            arcminutes: '{quantity}′',
+            arcseconds: '{quantity}″',
+            north: 'N',
+            south: 'S',
+            east: 'E',
+            west: 'W',
+            coordinate: '{coordinate}{direction}',
+            coordinate_pair: '{latitude}, {longitude}',
+            year_month_day: 'YYYY-MM-DD'
           }
         }
       }
@@ -106,4 +129,58 @@ describe('LocalizationSystem', () => {
       expect(_l10n.displayName(tags5)).to.eql('BART Yellow from Antioch to Millbrae via Pittsburg/Bay Point;San Francisco International Airport');
     });
   });
+
+  describe('dmsMatcher', () => {
+    it('parses D M SS format', () => {
+      const result = _l10n.dmsMatcher('35 11 10.1 , 136 49 53.8');
+      expect(result[0]).to.be.closeTo( 35.18614, 0.00001);
+      expect(result[1]).to.be.closeTo(136.83161, 0.00001);
+    });
+    it('parses D M SS format, with negative value', () => {
+      const result = _l10n.dmsMatcher('-35 11 10.1 , -136 49 53.8');
+      expect(result[0]).to.be.closeTo( -35.18614, 0.00001);
+      expect(result[1]).to.be.closeTo(-136.83161, 0.00001);
+    });
+
+    it('parses D MM format', () => {
+      const result = _l10n.dmsMatcher('35 11.1683 , 136 49.8966');
+      expect(result[0]).to.be.closeTo( 35.18614, 0.00001);
+      expect(result[1]).to.be.closeTo(136.83161, 0.00001);
+    });
+    it('parses D MM format, with negative value', () => {
+      const result = _l10n.dmsMatcher('-35 11.1683 , -136 49.8966');
+      expect(result[0]).to.be.closeTo( -35.18614, 0.00001);
+      expect(result[1]).to.be.closeTo(-136.83161, 0.00001);
+    });
+
+    it('handles invalid input', () => {
+      const result = _l10n.dmsMatcher('!@#$');
+      expect(result).to.be.null;
+    });
+  });
+
+  describe('dmsCoordinatePair', () => {
+    it('formats coordinate pair', () => {
+      const result = _l10n.dmsCoordinatePair([90 + 0.5/3600, 45]);
+      expect(result).to.be.eql('45°N, 90°0′1″E');
+    });
+    it('formats 0°', () => {
+      const result = _l10n.dmsCoordinatePair([0, 0]);
+      expect(result).to.be.eql('0°, 0°');
+    });
+    it('formats negative value', () => {
+      const result = _l10n.dmsCoordinatePair([-179, -90]);
+      expect(result).to.be.eql('90°S, 179°W');
+    });
+    it('formats 180° lng, should be E or W', () => {
+      // The longitude at this line can be given as either east or west.
+      const result = _l10n.dmsCoordinatePair([180, 0]);
+      expect(result).to.be.oneOf(['0°, 180°W', '0°, 180E°']);
+    });
+    it('formats value over 90°lat or 180°lng', () => {
+      const result = _l10n.dmsCoordinatePair([181, 91]);
+      expect(result).to.be.oneOf(['90°N, 179°W']);
+    });
+  });
+
 });
