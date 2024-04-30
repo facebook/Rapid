@@ -14,7 +14,8 @@ const lifecycleVals = new Set([
 ]);
 
 const pedestrianTags = new Set([
-  'path', 'steps', 'pedestrian', 'sidewalk', 'footway', 'garden', 'nature_reserve', 'track', 'pitch', 'golf_course', 'park', 'dog_park'
+  'path', 'steps', 'pedestrian', 'sidewalk', 'footway', 'garden', 'nature_reserve',
+  'pitch', 'golf_course', 'park', 'dog_park', 'grass'
 ]);
 
 // matches these things as a tag prefix
@@ -730,6 +731,7 @@ export class StyleSystem extends AbstractSystem {
     const tracktype = getTag(tags, 'tracktype');
     const tunnel = getTag(tags, 'tunnel');
     let surface = getTag(tags, 'surface');
+
     if (highway === 'track' && tracktype !== 'grade1') {
       surface = surface || 'dirt';   // assume unimproved (non-grade1) tracks have 'dirt' surface
     }
@@ -755,8 +757,7 @@ export class StyleSystem extends AbstractSystem {
 
     // If a focus mode is enabled, reduce alpha of all elements not in focus
     if (this.focusMode === 'pedestrian') {
-
-      if (!pedestrianTags.has(tagName)) {
+      if (!pedestrianTags.has(tagName) && getTag(tags, 'foot') === undefined) {
         style.fill.alpha = 0.1;
         style.fill.color = 0x848884;
 
@@ -765,12 +766,10 @@ export class StyleSystem extends AbstractSystem {
 
         style.stroke.alpha = 0.1;
         style.stroke.color = 0x848884;
+
       } else {
-        // Highlight footpaths
-        if (tagName === 'footway') {
-          style.casing.color = 0xffff94;
-          style.casing.width = 7;
-          style.stroke.color = 0x000000;
+        if (tagName === 'sidewalk' || tagName === 'footway' || tagName === 'path') {
+          style.casing.width = 8;
         }
       }
     }
@@ -822,7 +821,6 @@ export class StyleSystem extends AbstractSystem {
         if (patternScore === 1) break;  // no need to keep looking at tags
       }
     }
-
 
 
     return style;

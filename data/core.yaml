@@ -2564,6 +2564,7 @@ en:
         osm_data: "Toggle OpenStreetMap data"
         rapid_features_data: "Toggle Rapid Features"
         highlight_edits: "Highlight unsaved edits"
+        pedestrian_mode: "Toggle Pedestrian Mode"
       selecting:
         title: "Selecting features"
         select_one: "Select a single feature"

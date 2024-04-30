@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 import { uiTooltip } from '../tooltip.js';
 import { uiSection } from '../section.js';
-
+import { uiCmd } from '../cmd.js';
 
 export function uiSectionFocusModes(context) {
     const styles = context.systems.styles;
@@ -12,7 +12,6 @@ export function uiSectionFocusModes(context) {
         .disclosureContent(renderDisclosureContent);
 
     const FOCUS_OPTIONS = ['default', 'pedestrian'];
-
 
     function renderDisclosureContent(selection) {
         let container = selection.selectAll('.focus-mode-options')
@@ -65,15 +64,34 @@ export function uiSectionFocusModes(context) {
             .text(d => l10n.t(`preferences.focus_modes.${d}.title`));
 
         // Update
-        items.merge(enter)
-            .classed('active', isModeActive)
-            .selectAll('input')
-            .property('checked', isModeActive)
-            .property('indeterminate', false);
+        items = items
+            .merge(enter);
+
+        update();
+
+        function update() {
+            items
+                .classed('active', isModeActive)
+                .selectAll('input')
+                .property('checked', isModeActive)
+                .property('indeterminate', false);
+        }
+
+        const preferenceKey = l10n.t('preferences.key');
+
+        context.keybinding()
+            .on(uiCmd('⌥' + preferenceKey), e => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const currMode = styles.getMode();
+                const newMode = currMode === 'default' ? 'pedestrian' : 'default';
+                setFocusMode(null, newMode);
+                update();
+            });
     }
 
 
-    // saving Focus Mode to Local Storage
     function isModeActive(d) {
         const curr = styles.getMode();
         return curr === d;
