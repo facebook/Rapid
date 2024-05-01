@@ -61,6 +61,27 @@ export function uiSectionDataLayers(context) {
   }
 
 
+  function setTooltips(selection) {
+    selection.each((d, i, nodes) => {
+      const item = d3_select(nodes[i]).select('label');
+      const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
+
+      const tooltip = uiTooltip(context).placement(placement);
+      item.call(tooltip.destroyAny);
+
+      let titleHtml = '';
+      if (d.id) {
+        titleHtml += d.id;
+      };
+
+      if (titleHtml) {
+        tooltip.title(l10n.t(`map_data.layers.${d.id}.tooltip`));
+        item.call(tooltip);
+      }
+    });
+  }
+
+
   function drawOsmItems(selection) {
     const osmKeys = ['osm', 'notes'];
     const osmLayers = osmKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
@@ -146,13 +167,7 @@ export function uiSectionDataLayers(context) {
 
     let labelEnter = liEnter
       .append('label')
-      .each((d, i, nodes) => {
-        d3_select(nodes[i])
-          .call(uiTooltip(context)
-            .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
-            .placement('bottom')
-          );
-      });
+      .attr('class', 'content-label');
 
     labelEnter
       .append('input')
@@ -163,11 +178,20 @@ export function uiSectionDataLayers(context) {
       .append('span')
       .text(d => l10n.t(`map_data.layers.${d.id}.title`));
 
+    // Add input box for MapRoulette challenge ID
+    labelEnter.filter(d => d.id === 'maproulette')
+      .append('input')
+      .attr('type', 'text')
+      .attr('placeholder', 'Enter challenge Id')
+      .attr('class', 'challenge-id-input')
+      .style('margin-left', '10px');
+
     // Update
     li
       .merge(liEnter)
       .classed('active', d => d.enabled)
-      .selectAll('input')
+      .call(setTooltips)
+      .selectAll('input[type="checkbox"]')
       .property('checked', d => d.enabled);
   }
 

@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
 import RBush from 'rbush';
 
@@ -82,7 +83,11 @@ export class MapRouletteService extends AbstractSystem {
    */
   getData() {
     const extent = this.context.systems.map.extent();
-    return this._cache.rtree.search(extent.bbox()).map(d => d.data);
+    let challengeId = d3_select('.challenge-id-input').property('value');
+    challengeId = challengeId ? Number(challengeId) : null;
+    return this._cache.rtree.search(extent.bbox())
+      .map(d => d.data)
+      .filter(task => !challengeId || task.task.parentId === challengeId);
   }
 
 
@@ -98,6 +103,8 @@ export class MapRouletteService extends AbstractSystem {
     // abort inflight requests that are no longer needed
     this._abortUnwantedRequests(this._cache, tiles);
 
+    // get the challenge ID entered by the user
+    let challengeId = Number(d3_select('.challenge-id-input').property('value'));
     // issue new requests..
     for (const tile of tiles) {
       if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
@@ -118,8 +125,7 @@ export class MapRouletteService extends AbstractSystem {
           this._cache.loadedTile[tile.id] = true;
 
           for (const task of (data ?? [])) {
-            // MapRoulette tasks are uniquely identified by an
-            // `id`
+            if (!challengeId || task.parentId === challengeId) {
               const id = task.id;
               let loc = [task.point.lng, task.point.lat];
               loc = this._preventCoincident(loc);
@@ -128,6 +134,7 @@ export class MapRouletteService extends AbstractSystem {
               let d = new MapRouletteTask(loc, this, id, { task, type: itemType });
               this._cache.tasks.set(d.id, d);
               this._cache.rtree.insert(this._encodeIssueRtree(d));
+            }
           }
 
           this.context.deferredRedraw();
@@ -161,16 +168,6 @@ export class MapRouletteService extends AbstractSystem {
       .then(utilFetchResponse)
       .then(handleResponse)
       .then(() => task);
-  }
-
-
-  /**
-   * getIcon
-   * Get the default icon to use
-   * @return  icon name
-   */
-  getIcon() {
-    return 'maki-circle-stroked';
   }
 
 
@@ -303,6 +300,8 @@ export class MapRouletteService extends AbstractSystem {
     return Object.keys(this._cache.closed).sort();
   }
 
+
+
   /**
    * getClosedIDs
    * Get an array of issues closed during this session.
@@ -313,7 +312,8 @@ export class MapRouletteService extends AbstractSystem {
     return Object.values(this._cache.comment);
   }
 
-    /**
+
+  /**
    * itemURL
    * Returns the url to link to task about a challenge
    * @param   task
@@ -330,6 +330,7 @@ export class MapRouletteService extends AbstractSystem {
     }
   }
 
+
   _abortUnwantedRequests(cache, tiles) {
     Object.keys(cache.inflightTile).forEach(k => {
       const wanted = tiles.find(tile => k === tile.id);
@@ -340,9 +341,11 @@ export class MapRouletteService extends AbstractSystem {
     });
   }
 
+
   _encodeIssueRtree(d) {
     return { minX: d.loc[0], minY: d.loc[1], maxX: d.loc[0], maxY: d.loc[1], data: d };
   }
+
 
   // Replace or remove Task from rtree
   _updateRtree(task, replace) {
@@ -351,6 +354,7 @@ export class MapRouletteService extends AbstractSystem {
       this._cache.rtree.insert(task);
     }
   }
+
 
   // Issues shouldn't obscure each other
   _preventCoincident(loc) {
@@ -365,5 +369,4 @@ export class MapRouletteService extends AbstractSystem {
 
     return loc;
   }
-
 }

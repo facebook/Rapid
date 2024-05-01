@@ -94,6 +94,7 @@ export function uiMapRouletteDetails(context) {
         // Things like keys and values are dynamically added to a subtitle string
         if (d.id) {
           const id = d.id;
+          const parentId = d.task.parentId;
 
           detailsDiv
             .append('h4')
@@ -101,7 +102,7 @@ export function uiMapRouletteDetails(context) {
 
           detailsDiv
             .append('p')
-            .html(id)
+            .html(`${parentId} / ${id}`)
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
