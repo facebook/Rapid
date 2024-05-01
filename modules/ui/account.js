@@ -85,7 +85,9 @@ export function uiAccount(context) {
   function tryLogout()  {
     if (!osm) return;
 
-    const url = osm.wwwroot + '/logout?referer=%2Flogin';
+    const locale = l10n.localeCode();
+    const url = osm.wwwroot + `/logout?locale=${locale}&referer=` + encodeURIComponent(`/login?locale=${locale}`);
+
     // Create a 600x550 popup window in the center of the screen
     const w = 600;
     const h = 550;

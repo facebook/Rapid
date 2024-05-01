@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js';
 import { gpx, kml } from '@tmcw/togeojson';
-import { geojsonExtent, geojsonFeatures } from '../util/util.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
+import { parse as wktParse } from 'wkt';
 
+import { geojsonExtent, geojsonFeatures } from '../util/util.js';
 import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeatureLine } from './PixiFeatureLine.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
@@ -28,12 +29,7 @@ export class PixiLayerCustomData extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
 
-    this._dataUsed = null;
-    this._fileList = null;
-    this._template = null;
-    this._url = null;
-    this._geojson = null;
-    this._geojsonExtent = null;
+    this._clear();
     this._fileReader = new FileReader();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
@@ -78,7 +74,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom       Effective zoom to use for rendering
    */
   render(frame, viewport, zoom) {
-    if (!this.enabled || !this.hasData()) return;
+    if (!this.enabled || !(this.hasData())) return;
 
     const vtService = this.context.services.vectortile;
     let geoData = [];
@@ -96,11 +92,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     const points = geoData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
     this.renderPolygons(frame, viewport, zoom, polygons);
-    const gridLines = this.createGridLines(lines);
-    const gridStyle = { stroke: { width: 0.5, color: 0x00ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
     this.renderLines(frame, viewport, zoom, lines);
-    this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
     this.renderPoints(frame, viewport, zoom, points);
+
+    // Now render any extras, like gridlines in square bounding boxes or arbitrary WKT polygons/multipolys.
+    const gridLines = this.createGridLines(lines);
+    const gridStyle = { stroke: { width: 0.5, color: 0x0ffff, alpha: 0.5, cap: PIXI.LINE_CAP.ROUND }};
+    this.renderLines(frame, viewport, zoom, gridLines, gridStyle);
   }
 
 
@@ -111,11 +109,15 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @returns a list of linestrings to draw as gridlines.
   */
   createGridLines(lines) {
-    const numSplits = this.context.systems.imagery.numGridSplits;
+    const context = this.context;
+    const imagery = context.systems.imagery;
+    const rapid = context.systems.rapid;
+
+    const numSplits = imagery.numGridSplits;
     let gridLines = [];
 
-    //'isTaskRectangular' implies one and only one rectangular linestring.
-    if (this.context.systems.rapid.isTaskRectangular && numSplits > 0) {
+    // 'isTaskRectangular' implies one and only one rectangular linestring.
+    if (rapid.isTaskRectangular && numSplits > 0) {
       const box = lines[0];
 
       const lats = box.geometry.coordinates.map((f) => f[0]);
@@ -340,7 +342,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     return !!(this._template || this._geojson);
   }
 
-
   /**
    * dataUsed
    * @return  {Array}  Array of single element for the data layer currently enabled
@@ -383,12 +384,8 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  {FileList|null} fileList  Files to process (only first one is used), or null to reset
    */
   setFileList(fileList) {
+    this._clear();
     this._fileList = fileList;
-    this._dataUsed = null;
-    this._geojson = null;
-    this._geojsonExtent = null;
-    this._template = null;
-    this._url = null;
     this.scene.disableLayers(this.layerID);  // emits 'layerchange', so UI gets updated
 
     if (!fileList || !fileList.length) return;
@@ -411,12 +408,8 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  {string}  url
    */
   setUrl(url) {
+    this._clear();
     this._url = url;
-    this._dataUsed = null;
-    this._fileList = null;
-    this._geojson = null;
-    this._geojsonExtent = null;
-    this._template = null;
     this.scene.disableLayers(this.layerID);  // emits 'layerchange', so UI gets updated
 
     if (!url) return;
@@ -556,7 +549,6 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
-
   /**
    * _getExtension
    * Return the extension at the end of a filename or url.
@@ -584,7 +576,19 @@ export class PixiLayerCustomData extends AbstractLayer {
     const newData = currParams.get('data') || currParams.get('gpx');
     const oldData = prevParams.get('data') || prevParams.get('gpx');
     if (newData !== oldData) {
-      this.setUrl(newData);
+      this._clear();
+      if (typeof newData === 'string') {
+        // Attempt to parse the data string as a WKT.
+        // If it is, treat it as such. If not, treat it as a URL.
+        const geojson = this._parseAsWkt(newData);
+        if (geojson) {
+          this._wkt = newData.toUpperCase();  // convention is to use uppercase
+          this._setFile(geojson, '.geojson');
+          this._dataUsed = null;  // A wkt area of interest is not really a data source
+        } else {
+          this.setUrl(newData);
+        }
+      }
     }
   }
 
@@ -600,14 +604,65 @@ export class PixiLayerCustomData extends AbstractLayer {
     urlhash.setParam('gpx', null);
     urlhash.setParam('data', null);
 
-    if (!this.enabled || typeof this._url !== 'string') return;
+    if (!this.enabled) return;
 
-    // 'gpx' is considered a "legacy" param..
-    // We'll only set it if the url really does seem to be for a gpx file
-    if (/gpx/i.test(this._url)) {
-      urlhash.setParam('gpx', this._url);
-    } else {
-      urlhash.setParam('data', this._url);
+    if (typeof this._wkt === 'string') {
+      urlhash.setParam('data', this._wkt);
+    } else if (typeof this._url === 'string') {
+      // 'gpx' is considered a "legacy" param..
+      // We'll only set it if the url really does seem to be for a gpx file
+      if (/gpx/i.test(this._url)) {
+        urlhash.setParam('gpx', this._url);
+      } else {
+        urlhash.setParam('data', this._url);
+      }
     }
   }
+
+
+  /**
+   * _parseAsWkt
+   * creates WKT Polys from a raw string supplied by the `data` url param.
+   *
+   * @param wktString - the poly or multipoly string(s) in wkt format
+   * i.e. 'POLYGON((-10 10, -10 -10, 10 -10, 10 10, -10 10))'
+   * or
+   *  'MULTIPOLYGON (((-1.5 1.3, -1.5 1.3, -1.5 1.3, -1.5 1.3, -1.4 1.3, -1.4 1.3, -1.5 1.3)),
+   *   ((-1.5 1.3, -1.5 1.3, -1.5 1.3, -1.4 1.3, -1.5 1.3)))'
+   * @returns a list containing polygons to draw as a custom shape, or null
+   */
+  _parseAsWkt(wktString) {
+    const parsedWkt = wktParse(wktString);
+
+    // If it couldn't be parsed, or if it isn't a poly/multipoly, we can't render it.
+    if (!parsedWkt || (parsedWkt.type !== 'Polygon' && parsedWkt.type !== 'MultiPolygon')) {
+      return null;
+    }
+
+    return {
+      type: 'Feature',
+      geometry: {
+        type: parsedWkt.type,
+        coordinates: parsedWkt.coordinates,
+      },
+      id: 'customWktPoly',
+      properties: {}
+    };
+  }
+
+
+  /**
+   * _clear
+   * Clear state to prepare for new custom data
+   */
+  _clear() {
+    this._dataUsed = null;
+    this._fileList = null;
+    this._template = null;
+    this._wkt = null;
+    this._url = null;
+    this._geojson = null;
+    this._geojsonExtent = null;
+  }
+
 }

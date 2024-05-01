@@ -753,9 +753,12 @@ export class MapSystem extends AbstractSystem {
    */
   trimmedExtent(extent) {
     if (extent === undefined) {
-      const headerY = 71;
+      const headerY = 72;
       const footerY = 30;
-      const pad = 10;
+// Add 50px overscan experiment, see UISystem.js
+// Maybe find a nicer way to include overscan and view padding into places like this.
+      // const pad = 10;
+      const pad = 70;
       const viewport = this.context.viewport;
       const [w, h] = viewport.dimensions;
 
@@ -805,8 +808,13 @@ export class MapSystem extends AbstractSystem {
    * @return zoom
    */
   trimmedExtentZoom(extent) {
-    const trimW = 40;
-    const trimH = 140;
+// Add 50px overscan experiment, see UISystem.js
+// Maybe find a nicer way to include overscan and view padding into places like this.
+    const trimW = 140;
+    const trimH = 240;
+    //const trimW = 40;
+    //const trimH = 140;
+
     const viewport = this.context.viewport;
     const trimmed = vecSubtract(viewport.dimensions, [trimW, trimH]);
     return this.extentZoom(extent, trimmed);

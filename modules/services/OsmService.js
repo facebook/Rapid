@@ -975,6 +975,23 @@ export class OsmService extends AbstractSystem {
     }
   }
 
+  // Load a single note by id, XML format
+  // GET /api/0.6/notes/#id
+  loadNote(noteID, callback) {
+    const options = { skipSeen: false };
+    const gotNote = (err, results) => {
+      if (callback) {
+        callback(err, { data: results });
+      }
+    };
+
+    this.loadFromAPI(
+      `/api/0.6/notes/${noteID}`,
+      gotNote,
+      options
+    );
+  }
+
 
   // Create a note
   // POST /api/0.6/notes?params
@@ -1189,7 +1206,14 @@ export class OsmService extends AbstractSystem {
       if (callback) callback(err, result);
     };
 
+    // Ensure the locale is correctly set before opening the popup
+    const locale = this.context.systems.l10n.localeCode();
+    this._oauth.options({
+      ...this._oauth.options(),
+      locale: locale
+    });
     this._oauth.authenticate(gotResult);
+    this._oauth.bringPopupWindowToFront();  // no guarantees, but we can try
   }
 
 

@@ -40,7 +40,8 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### 2024-Apr-?? (coming soon)
 
 #### :tada: New Features
-* [#1209], [#1351] Add support for Esri Wayback Imagery
+* [#1386], [#1387] Add support for [WKT geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) in `data=` url parameter
+* [#1209], [#1351], [#1388] Add support for Esri Wayback Imagery
 * [#1363] Map Rotation now supported!
   * Use <kbd>Option</kbd>+ click-and-drag or <kbd>Shift</kbd>+Left/Right arrow keys.
   * The `map=` url param now supports a bearing like: `#map=zoom/lat/lng/bearing` (in degrees)
@@ -55,6 +56,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 #### :bug: Bugfixes:
 * [#1334] Double clicking a line to create a midpoint should not alter the line shape
+* [#1337] Restore Mapillary viewer username and link to viewed image
 
 #### :hammer: Development
 * [#1328] Add more test coverage for core classes
@@ -67,11 +69,15 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1328]: https://github.com/facebook/Rapid/issues/1328
 [#1329]: https://github.com/facebook/Rapid/issues/1329
 [#1334]: https://github.com/facebook/Rapid/issues/1334
+[#1337]: https://github.com/facebook/Rapid/issues/1337
 [#1351]: https://github.com/facebook/Rapid/issues/1351
 [#1363]: https://github.com/facebook/Rapid/issues/1363
 [#1364]: https://github.com/facebook/Rapid/issues/1364
 [#1368]: https://github.com/facebook/Rapid/issues/1368
 [#1370]: https://github.com/facebook/Rapid/issues/1370
+[#1386]: https://github.com/facebook/Rapid/issues/1386
+[#1387]: https://github.com/facebook/Rapid/issues/1387
+[#1388]: https://github.com/facebook/Rapid/issues/1388
 
 
 # [2.2.5](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.5)

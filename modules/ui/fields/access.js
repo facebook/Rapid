@@ -38,7 +38,7 @@ export function uiFieldAccess(context, uifield) {
       .attr('class', d => `labeled-input preset-access-${d}`);
 
     enter
-      .append('span')
+      .append('div')
       .attr('class', 'label preset-label-access')
       .attr('for', d => `preset-input-access-${d}`)
       .html(d => uifield.tHtml(`types.${d}`));

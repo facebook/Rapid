@@ -34,7 +34,7 @@ export function uiFieldCycleway(context, uifield) {
 
         div = div.enter()
             .append('ul')
-            .attr('class', 'rows')
+            .attr('class', 'rows rows-table')
             .merge(div);
 
         var keys = ['cycleway:left', 'cycleway:right'];
@@ -47,7 +47,7 @@ export function uiFieldCycleway(context, uifield) {
             .attr('class', function(d) { return 'labeled-input preset-cycleway-' + stripcolon(d); });
 
         enter
-            .append('span')
+            .append('div')
             .attr('class', 'label preset-label-cycleway')
             .attr('for', function(d) { return 'preset-input-cycleway-' + stripcolon(d); })
             .html(function(d) { return uifield.tHtml('types.' + d); });
