@@ -25,7 +25,6 @@ export class PixiLayerGeoScribble extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
 
-
     const geoscribbles = new PIXI.Container();
     geoscribbles.name = `${this.layerID}-geoscribbles`;
     geoscribbles.sortableChildren = false;
@@ -34,9 +33,8 @@ export class PixiLayerGeoScribble extends AbstractLayer {
 
     const basemapContainer = this.scene.groups.get('basemap');
     basemapContainer.addChild(geoscribbles);
-
-
   }
+
 
   /**
    * supported
@@ -93,18 +91,18 @@ export class PixiLayerGeoScribble extends AbstractLayer {
     this.renderPoints(frame, viewport, zoom, points);
   }
 
-/**
- * getLineStyle
- * @param styleOverride Custom style
- * @param line the geojson formatted scribble object with the following useful (but optional) style properties: 
- * `thin` (boolean) 
- * `dashed` (boolean)
- * `color` (hex code string like `#FFEECC`)
- * `style` One of: "scribble", "eraser", "road", "track", "footway", "path", "cycleway", "cycleway_shared", 
- *          "wall", "fence", "power","stream", "drain", etc.
- * @return a style object that can be given to the pixi renderer
- */
 
+  /**
+   * getLineStyle
+   * @param styleOverride Custom style
+   * @param line the geojson formatted scribble object with the following useful (but optional) style properties:
+   * `thin` (boolean)
+   * `dashed` (boolean)
+   * `color` (hex code string like `#FFEECC`)
+   * `style` One of: "scribble", "eraser", "road", "track", "footway", "path", "cycleway", "cycleway_shared",
+   *          "wall", "fence", "power","stream", "drain", etc.
+   * @return a style object that can be given to the pixi renderer
+   */
   getLineStyle(styleOverride, line) {
     // Start with the default style object.
     const lineStyle = styleOverride || {
@@ -112,11 +110,11 @@ export class PixiLayerGeoScribble extends AbstractLayer {
       labelTint: CUSTOM_COLOR
     };
 
-      const color = line.properties.color ? new Color(line.properties.color) : CUSTOM_COLOR;
-      const thin = line.properties.thin;
-      const dashed = line.properties.dashed;
+    const color = line.properties.color ? new Color(line.properties.color) : CUSTOM_COLOR;
+    const thin = line.properties.thin;
+    const dashed = line.properties.dashed;
 
-      //Modify the alpha down a bit to add to 'scribble' factor.
+    // Modify the alpha down a bit to add to 'scribble' factor.
     lineStyle.stroke.alpha = 0.70;
     lineStyle.stroke.color = color;
     lineStyle.stroke.width =  thin ? 4 : 8;
@@ -125,6 +123,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
     }
     return lineStyle;
   }
+
 
   /**
    * renderLines
@@ -137,7 +136,6 @@ export class PixiLayerGeoScribble extends AbstractLayer {
   renderLines(frame, viewport, zoom, lines, styleOverride) {
     const l10n = this.context.systems.l10n;
     const parentContainer = this.scribblesContainer;
-
 
     for (const d of lines) {
       const dataID = d.__featurehash__;

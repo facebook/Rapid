@@ -12,11 +12,14 @@ const GEOSCRIBBLE_API = 'https://geoscribble.osmz.ru/geojson';
 
 /**
  * `GeoScribbleService`
+ * GeoScribble is a service that allows users to collaboratively draw on the map.
+ * see also:
+ *  https://wiki.openstreetmap.org/wiki/GeoScribble
+ *  https://geoscribble.osmz.ru/docs
+ *  https://github.com/Zverik/geoscribble
  *
  * Events available:
- *   `imageChanged`
  *   'loadedData'
- *   'viewerChanged'
  */
 export class GeoScribbleService extends AbstractSystem {
 
@@ -51,9 +54,7 @@ export class GeoScribbleService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-
     this._started = true;
-
   }
 
 
@@ -73,11 +74,8 @@ export class GeoScribbleService extends AbstractSystem {
       shapes: {},
       loadedTile: {},
       inflightTile: {},
-      inflightPost: {},
-      closed: {},
       rtree: new RBush()
     };
-
 
     return Promise.resolve();
   }
@@ -91,11 +89,6 @@ export class GeoScribbleService extends AbstractSystem {
   getData() {
     const extent = this.context.viewport.visibleExtent();
     return this._cache.rtree.search(extent.bbox()).map(d => d.data);
-  }
-
-
-  _encodeScribbleRtree(d, extent) {
-    return { minX: extent.min[0], minY: extent.min[1], maxX: extent.max[0], maxY: extent.max[1], data: d };
   }
 
 
@@ -114,36 +107,43 @@ export class GeoScribbleService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles() {
+    const cache = this._cache;
+
     // determine the needed tiles to cover the view
     const viewport = this.context.viewport;
     const tiles = this._tiler.getTiles(viewport).tiles;
 
-    // abort inflight requests that are no longer needed
-    this._abortUnwantedRequests(this._cache, tiles);
+    // Abort inflight requests that are no longer needed
+    this._abortUnwantedRequests(cache, tiles);
 
-    // issue new requests..
+    // Issue new requests..
     for (const tile of tiles) {
-      if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
+      if (cache.loadedTile[tile.id] || cache.inflightTile[tile.id]) continue;
 
-      const bbox = tile.wgs84Extent.bbox();
-      const scribbleUrl = GEOSCRIBBLE_API + '?' + utilQsString({ bbox: [ bbox.minX, bbox.minY, bbox.maxX, bbox.maxY].join(',') });
+      const rect = tile.wgs84Extent.rectangle().join(',');
+      const url = GEOSCRIBBLE_API + '?' + utilQsString({ bbox: rect });
 
       const controller = new AbortController();
-      this._cache.inflightTile[tile.id] = controller;
+      cache.inflightTile[tile.id] = controller;
 
-      fetch(scribbleUrl, { signal: controller.signal })
+      fetch(url, { signal: controller.signal })
         .then(utilFetchResponse)
         .then(data => {
-          this._cache.loadedTile[tile.id] = true;
-          this._cache.shapes = data;
+          cache.loadedTile[tile.id] = true;
+          cache.shapes = data;
 
           for (const shape of data.features) {
-            // Generate a unique id for this feature
-            const featureID = this.getNextID();
+            const featureID = this.getNextID();   // Generate a unique id for this feature
             shape.id = featureID;
-            shape.__featurehash__ = featureID;  // legacy
+            shape.__featurehash__ = featureID;    // legacy
 
-            this._cache.rtree.insert(this._encodeScribbleRtree(shape, geojsonExtent(shape)));
+            // afaict the shapes never get updates, so the version can just be 0
+            // (if we ever need to stitch partial geometries together, this will bump their version)
+            shape.v = 0;
+
+            const box = geojsonExtent(shape).bbox();
+            box.data = shape;
+            cache.rtree.insert(box);
           }
 
           this.context.deferredRedraw();
@@ -151,10 +151,10 @@ export class GeoScribbleService extends AbstractSystem {
         })
         .catch(err => {
           if (err.name === 'AbortError') return;    // ok
-          this._cache.loadedTile[tile.id] = true;   // don't retry
+          cache.loadedTile[tile.id] = true;         // don't retry
         })
         .finally(() => {
-          delete this._cache.inflightTile[tile.id];
+          delete cache.inflightTile[tile.id];
         });
     }
   }
@@ -175,10 +175,6 @@ export class GeoScribbleService extends AbstractSystem {
         delete cache.inflightTile[k];
       }
     });
-  }
-
-  _encodeShapeRtree(d) {
-    return { minX: d.loc[0], minY: d.loc[1], maxX: d.loc[0], maxY: d.loc[1], data: d };
   }
 
 }
