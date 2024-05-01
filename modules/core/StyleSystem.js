@@ -41,9 +41,6 @@ export class StyleSystem extends AbstractSystem {
     this.context = context;
     this.dependencies = new Set(['dataloader']);
     this.autoStart = true;
-
-    // To handle color schemes
-    this.colorData = null;
     this.colorSchemes = null;
     this.currentColorScheme = null;
     this.focusMode = 'default';
@@ -530,8 +527,6 @@ export class StyleSystem extends AbstractSystem {
 
 
     this.styleMatch = this.styleMatch.bind(this);
-
-    // To handle color schemes
     this.getColorScheme = this.getColorScheme.bind(this);
     this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
     this.setColorScheme = this.setColorScheme.bind(this);
@@ -570,8 +565,7 @@ export class StyleSystem extends AbstractSystem {
       .then((data) => {
         this.colorSchemes = data;
         // set current scheme to default
-        this.colorData = data.default;
-        this.currentColorScheme = 'default';
+        this.currentColorScheme = data.default;
         this.emit('colorsloaded');  // emit copies
       });
 
@@ -593,7 +587,7 @@ export class StyleSystem extends AbstractSystem {
    * @return {Object}  Default color scheme object
    */
   getColorScheme() {
-    return this.colorData;
+    return this.currentColorScheme;
   }
 
   /**
@@ -669,7 +663,7 @@ export class StyleSystem extends AbstractSystem {
           continue;
         }
 
-        matched = declaration || currentScheme;
+        matched = declaration;
         styleScore = score;
         styleKey = k;
         styleVal = styleID;
@@ -829,19 +823,6 @@ export class StyleSystem extends AbstractSystem {
     // This just returns the value of the tag, but ignores 'no' values
     function getTag(tags, key) {
       return tags[key] === 'no' ? undefined : tags[key];
-    }
-  }
-
-  // Returns object containing all color scheme objects
-  getAllColorSchemes() {
-    return this.STYLE_SCHEMES;
-  }
-
-  // Sets map color scheme
-  setColorScheme(schemeName) {
-    let currentScheme = this.STYLE_SCHEMES[schemeName];
-    if (this.currentColorScheme !== currentScheme) {
-      this.currentColorScheme = currentScheme;
     }
   }
 }
