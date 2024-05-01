@@ -28,7 +28,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
     const geoscribbles = new PIXI.Container();
     geoscribbles.name = `${this.layerID}-geoscribbles`;
     geoscribbles.sortableChildren = false;
-    geoscribbles.interactiveChildren = false;
+    geoscribbles.interactiveChildren = true;
     this.scribblesContainer = geoscribbles;
 
     const basemapContainer = this.scene.groups.get('basemap');
@@ -78,10 +78,10 @@ export class PixiLayerGeoScribble extends AbstractLayer {
   render(frame, viewport, zoom) {
     if (!this.enabled) return;
 
-    const gsService = this.context.services.geoScribble;
-    gsService.loadTiles();
+    const service = this.context.services.geoScribble;
+    service.loadTiles();
 
-    const geoData = gsService.getData();
+    const geoData = service.getData();
 
     // No polygons will be returned by the service, so we don't need to consider those types.
     const lines = geoData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');
@@ -165,7 +165,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = l10n.displayName(d.properties);
+          feature.label = d.properties.text;
           feature.setData(dataID, d);
         }
 
@@ -222,7 +222,7 @@ export class PixiLayerGeoScribble extends AbstractLayer {
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = l10n.displayName(d.properties);
+          feature.label = d.properties.text;
           feature.setData(dataID, d);
         }
 
