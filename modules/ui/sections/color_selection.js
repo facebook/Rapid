@@ -27,8 +27,6 @@ export function uiSectionColorSelection(context) {
     return comboData;
   }
 
-  comboData = loadComboBoxData();
-
   const section = uiSection(context, 'preferences-color-selection')
     .label(l10n.t('preferences.color_selection.title'))
     .disclosureContent(renderDisclosureContent);
