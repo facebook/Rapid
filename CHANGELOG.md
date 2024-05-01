@@ -27,6 +27,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :hourglass: Performance
 #### :mortar_board: Walkthrough / Help
 #### :rocket: Presets
+#### :popcorn: OSM
 ###### New Presets
 ###### Changed Presets
 ###### New and Changed Fields
@@ -37,7 +38,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 -->
 
 # [2.3.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.0)
-#### 2024-Apr-?? (coming soon)
+#### 2024-May-?? (coming soon)
 
 #### :tada: New Features
 * [#1386], [#1387] Add support for [WKT geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) in `data=` url parameter
@@ -52,17 +53,37 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :sparkles: Usability & Accessibility
 * [#485] Dragging in minimap keeps the view rectangle centered, allowing user to recenter the map easily
 * [#920] Treat Control-click on MacOS as a right click
-* [#1364] Fix walkthrough step to ensure that the user can find the playground description field
 * [#1368] Improve map "nudging" behavior when drawing near the edge of the map
+* [iD#7618], [iD#10062] Search OSM Notes by their note ID
+* [iD#10000] Prevent paste when OSM Data layer is hidden
+* [iD#10127], [iD#10144] Adjust combobox display style
+
+#### :camera: Street-Level
+* [#1337], [iD#10135], [iD#10141] Restore Mapillary viewer username and link to viewed image
+
+#### :mortar_board: Walkthrough / Help
+* [#1329] Walkthrough should not show any issues about "outdated tags"
+* [#1364] Fix walkthrough step to ensure that the user can find the playground description field
+* [iD#10215] Remove white background from walkthrough tooltip images
 
 #### :bug: Bugfixes:
 * [#1334] Double clicking a line to create a midpoint should not alter the line shape
-* [#1337] Restore Mapillary viewer username and link to viewed image
+* [iD#5144], [iD#10066] Fix rounding errors and improve parsing of degree-minute-second search coords
+* [iD#9502], [iD#9788], [iD#10089] Allow merging lines when parent relations are ordered differently
+* [iD#10065], [iD#10165] Properly encode Wikipedia links containing '?' symbol
+
+#### :earth_asia: Localization
+* [iD#9501] Improve localization in Nominatim queries
+* [iD#10121] Improve localization of Login popup
+* [iD#10123] Add adddress format for New Zealand
 
 #### :hammer: Development
 * [#1328] Add more test coverage for core classes
-* [#1329] Walkthrough should not show any issues about "outdated tags"
 * [#1370] Fix login credentials for OpenStreetMap development environment
+
+#### :popcorn: OSM:
+* [id-tagging-schema#1114] Allow `amenity=bicycle_parking` to render as area without `area=yes`
+
 
 [#485]: https://github.com/facebook/Rapid/issues/485
 [#920]: https://github.com/facebook/Rapid/issues/920
@@ -81,6 +102,25 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1386]: https://github.com/facebook/Rapid/issues/1386
 [#1387]: https://github.com/facebook/Rapid/issues/1387
 [#1388]: https://github.com/facebook/Rapid/issues/1388
+[iD#5144]: https://github.com/openstreetmap/iD/issues/5144
+[iD#7618]: https://github.com/openstreetmap/iD/issues/7618
+[iD#9501]: https://github.com/openstreetmap/iD/pull/9501
+[iD#9502]: https://github.com/openstreetmap/iD/issues/9502
+[iD#9788]: https://github.com/openstreetmap/iD/issues/9788
+[iD#10000]: https://github.com/openstreetmap/iD/pull/10000
+[iD#10062]: https://github.com/openstreetmap/iD/pull/10062
+[iD#10065]: https://github.com/openstreetmap/iD/issues/10065
+[iD#10066]: https://github.com/openstreetmap/iD/pull/10066
+[iD#10089]: https://github.com/openstreetmap/iD/pull/10089
+[iD#10121]: https://github.com/openstreetmap/iD/pull/10121
+[iD#10123]: https://github.com/openstreetmap/iD/pull/10123
+[iD#10127]: https://github.com/openstreetmap/iD/pull/10127
+[iD#10135]: https://github.com/openstreetmap/iD/issues/10135
+[iD#10141]: https://github.com/openstreetmap/iD/pull/10141
+[iD#10144]: https://github.com/openstreetmap/iD/pull/10144
+[iD#10165]: https://github.com/openstreetmap/iD/pull/10165
+[iD#10215]: https://github.com/openstreetmap/iD/pull/10215
+[id-tagging-schema#1114]: https://github.com/openstreetmap/id-tagging-schema/issues/1114
 
 
 # [2.2.5](https://github.com/facebook/Rapid/releases/tag/rapid-v2.2.5)
