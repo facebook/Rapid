@@ -1180,8 +1180,8 @@ en:
       in: Cannot zoom in further.
       out: Cannot zoom out further.
   bearing:
-    title: Reset Bearing
-    disabled: North is up
+    reset_bearing: Reset Bearing
+    rotate_the_map: "Rotate the map:"
     n: 'N'
   cannot_zoom: "Cannot zoom out further in current mode."
   full_screen: Toggle Full Screen

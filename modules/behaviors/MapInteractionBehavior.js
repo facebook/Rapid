@@ -102,8 +102,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _keydown(e) {
     // Only allow key navigation if the user doesn't have something
     // more important focused - like a input, textarea, menu, etc.
-    const activeElement = document.activeElement?.tagName ?? 'BODY';
-    if (activeElement !== 'BODY') return;
+    // (buttons are ok, but not preset buttons)
+    const tagName = document.activeElement?.tagName ?? 'BODY';
+    if (!(['BODY', 'BUTTON'].includes(tagName))) return;
+    if (document.activeElement?.classList?.contains('preset-list-button')) return;
 
     const context = this.context;
     const map = context.systems.map;

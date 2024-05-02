@@ -302,15 +302,16 @@ table.tags, table.tags td, table.tags th {
 .al { left: 0; }
 .ar { right: 0; }
 
-input.hide,
-textarea.hide,
+a.hide,
+button.hide,
 div.hide,
 form.hide,
+input.hide,
+kbd.hide,
+li.hide,
 span.hide,
-button.hide,
-a.hide,
-ul.hide,
-li.hide {
+textarea.hide,
+ul.hide {
   display: none;
 }
 
@@ -3016,6 +3017,13 @@ button.bearing > .bearing_n {
 .ideditor[dir='rtl'] .map-control > button.bearing {
   border-radius: 0 4px 0 0;
 }
+button.bearing .tooltip-keyhint .rotate-the-map {
+  margin-bottom: 5px;
+}
+button.bearing .tooltip-keys svg.icon {
+  margin: 0 3px;
+}
+
 
 .map-control > button.geolocate {
   border-radius: 0 0 0 4px;

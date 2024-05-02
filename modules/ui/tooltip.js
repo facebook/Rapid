@@ -75,7 +75,7 @@ export function uiTooltip(context) {
       const shortcutWrapEnter = shortcutWrap.enter()
         .append('div')
         .attr('class', 'tooltip-keyhint')
-        .text(d => d.length === 1 ? l10n.t('tooltip_keyhint') : null);  // "Shortcut:"
+        .text(d => d.length === 1 ? l10n.t('tooltip_keyhint') : null);  // "Key:"
 
       const shortcutKeysEnter = shortcutWrapEnter
         .append('span')
