@@ -3,19 +3,18 @@ import { uiCombobox } from '../combobox.js';
 import { uiSection } from '../section.js';
 import { utilNoAuto } from '../../util/index.js';
 
-
 export function uiSectionColorSelection(context) {
   const l10n = context.systems.l10n;
-  const colors = context.systems.colors;  // todo: replace
+  const styles = context.systems.styles;
 
   // Add or replace event handlers
-  colors.off('colorsloaded', loadComboBoxData);
-  colors.on('colorsloaded', loadComboBoxData);
+  styles.off('colorsloaded', loadComboBoxData);
+  styles.on('colorsloaded', loadComboBoxData);
 
   let comboData = [];
 
-  function loadComboBoxData(){
-    let colorSchemeKeys = Object.keys(colors.getAllColorSchemes());
+  function loadComboBoxData() {
+    let colorSchemeKeys = Object.keys(styles.getAllColorSchemes());
 
     for (let i = 0; i < colorSchemeKeys.length; i++) {
       let colorObject = {};
@@ -27,9 +26,8 @@ export function uiSectionColorSelection(context) {
     return comboData;
   }
 
-
   const section = uiSection(context, 'preferences-color-selection')
-    .label(l10n.tHtml('preferences.color_selection.title'))
+    .label(l10n.t('preferences.color_selection.title'))
     .disclosureContent(renderDisclosureContent);
 
   const colorCombo = uiCombobox(context, 'color-selection');
@@ -63,8 +61,8 @@ export function uiSectionColorSelection(context) {
           _colorSelectedId = val;
           let colorSchemeName = getColorSchemeName(_colorSelectedId);
 
-          if (colors.currentColorScheme !== colorSchemeName) {
-            colors.setColorScheme(colorSchemeName);
+          if (styles.currentColorScheme !== colorSchemeName) {
+            styles.setColorScheme(colorSchemeName);
             context.scene().dirtyScene();
             context.systems.map.deferredRedraw();
           }

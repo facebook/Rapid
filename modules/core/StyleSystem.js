@@ -13,8 +13,14 @@ const lifecycleVals = new Set([
   'intermittent', 'obliterated', 'planned', 'proposed', 'razed', 'removed', 'was'
 ]);
 
+const pedestrianTags = new Set([
+  'path', 'steps', 'pedestrian', 'sidewalk', 'footway', 'garden', 'nature_reserve',
+  'pitch', 'golf_course', 'park', 'dog_park', 'grass'
+]);
+
 // matches these things as a tag prefix
 const lifecycleRegex = new RegExp('^(' + Array.from(lifecycleVals).join('|') + '):');
+
 
 
 /**
@@ -35,28 +41,31 @@ export class StyleSystem extends AbstractSystem {
     this.context = context;
     this.dependencies = new Set(['dataloader']);
     this.autoStart = true;
+    this.colorSchemes = null;
+    this.currentColorScheme = null;
+    this.focusMode = 'default';
 
     // Experiment, see Rapid#1230
     // matrix values from https://github.com/maputnik/editor
     this.protanopiaMatrix = [
-      0.567,  0.433,  0,     0,  0,
-      0.558,  0.442,  0,     0,  0,
-      0,      0.242,  0.758, 0,  0,
-      0,      0,      0,     1,  0
+      0.567, 0.433, 0, 0, 0,
+      0.558, 0.442, 0, 0, 0,
+      0, 0.242, 0.758, 0, 0,
+      0, 0, 0, 1, 0
     ];
 
     this.deuteranopiaMatrix = [
-      0.625,  0.375,  0,     0,  0,
-      0.7,    0.3,    0,     0,  0,
-      0,      0.3,    0.7,   0,  0,
-      0,      0,      0,     1,  0
+      0.625, 0.375, 0, 0, 0,
+      0.7, 0.3, 0, 0, 0,
+      0, 0.3, 0.7, 0, 0,
+      0, 0, 0, 1, 0
     ];
 
     this.tritanopiaMatrix = [
-      0.95,   0.05,   0,     0,  0,
-      0,      0.433,  0.567, 0,  0,
-      0,      0.475,  0.525, 0,  0,
-      0,      0,      0,     1,  0
+      0.95, 0.05, 0, 0, 0,
+      0, 0.433, 0.567, 0, 0,
+      0, 0.475, 0.525, 0, 0,
+      0, 0, 0, 1, 0
     ];
 
 
@@ -88,7 +97,7 @@ export class StyleSystem extends AbstractSystem {
 
     this.STYLE_DECLARATIONS = {
       DEFAULTS: {
-        fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
+        fill: { width: 2, color: 0xaaaaaa, alpha: 0.3 },
         casing: { width: 5, color: 0x444444, alpha: 1, cap: 'round', join: 'round' },
         stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: 'round', join: 'round' }
       },
@@ -96,43 +105,6 @@ export class StyleSystem extends AbstractSystem {
       LIFECYCLE: {   // e.g. planned, proposed, abandoned, disused, razed
         casing: { alpha: 0 },  // disable
         stroke: { dash: [7, 3], cap: 'butt' }
-      },
-
-      red: {
-        fill: { color: 0xe06e5f, alpha: 0.3 }   // rgb(224, 110, 95)
-      },
-      green: {
-        fill: { color: 0x8cd05f, alpha: 0.3 }   // rgb(140, 208, 95)
-      },
-      blue: {
-        fill: { color: 0x77d4de, alpha: 0.3 }   // rgb(119, 211, 222)
-      },
-      yellow: {
-        fill: { color: 0xffff94, alpha: 0.25 }  // rgb(255, 255, 148)
-      },
-      gold: {
-        fill: { color: 0xc4be19, alpha: 0.3 }   // rgb(196, 189, 25)
-      },
-      orange: {
-        fill: { color: 0xd6881a, alpha: 0.3 }   // rgb(214, 136, 26)
-      },
-      pink: {
-        fill: { color: 0xe3a4f5, alpha: 0.3 }   // rgb(228, 164, 245)
-      },
-      teal: {
-        fill: { color: 0x99e1aa, alpha: 0.3 }   // rgb(153, 225, 170)
-      },
-      lightgreen: {
-        fill: { color: 0xbee83f, alpha: 0.3 }   // rgb(191, 232, 63)
-      },
-      tan: {
-        fill: { color: 0xf5dcba, alpha: 0.3 }   // rgb(245, 220, 186)
-      },
-      darkgray: {
-        fill: { color: 0x8c8c8c, alpha: 0.5 }   // rgb(140, 140, 140)
-      },
-      lightgray: {
-        fill: { color: 0xaaaaaa, alpha: 0.3 }   // rgb(170, 170, 170)
       },
 
       motorway: {
@@ -216,17 +188,17 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: 'butt' }
       },
       river: {
-        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
+        fill: { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
         casing: { width: 10, color: 0x444444 },
         stroke: { width: 8, color: 0x77dddd }
       },
       stream: {
-        fill:   { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
+        fill: { color: 0x77d4de, alpha: 0.3 },   // rgb(119, 211, 222)
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0x77dddd }
       },
       ridge: {
-        stroke: { width: 2, color: 0x8cd05f}  // rgb(140, 208, 95)
+        stroke: { width: 2, color: 0x8cd05f }  // rgb(140, 208, 95)
       },
       runway: {
         casing: { width: 10, color: 0x000000, cap: 'butt' },
@@ -261,7 +233,7 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 2, 5], cap: 'round' }
       },
       barrier_hedge: {
-        fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
+        fill: { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
         casing: { alpha: 0 },  // disable
         stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 2, 5], cap: 'round' }
       },
@@ -270,7 +242,7 @@ export class StyleSystem extends AbstractSystem {
         stroke: { width: 5, color: 0x8cd05f }
       },
       construction: {
-        casing: { width: 10, color: 0xffffff},
+        casing: { width: 10, color: 0xffffff },
         stroke: { width: 8, color: 0xfc6c14, dash: [10, 10], cap: 'butt' }
       },
       pipeline: {
@@ -280,8 +252,10 @@ export class StyleSystem extends AbstractSystem {
       roller_coaster: {
         casing: { width: 7, color: 0x444444 },
         stroke: { width: 5, color: 0xdddddd, dash: [10, 1], cap: 'butt' }
-      }
+      },
     };
+
+
 
     //
     // A "Style Selector" contains OSM key/value tags to match to a style declaration.
@@ -553,6 +527,11 @@ export class StyleSystem extends AbstractSystem {
 
 
     this.styleMatch = this.styleMatch.bind(this);
+    this.getColorScheme = this.getColorScheme.bind(this);
+    this.getAllColorSchemes = this.getAllColorSchemes.bind(this);
+    this.setColorScheme = this.setColorScheme.bind(this);
+    this.setMode = this.setMode.bind(this);
+    this.getMode = this.getMode.bind(this);
   }
 
 
@@ -561,10 +540,10 @@ export class StyleSystem extends AbstractSystem {
    * Called after all core objects have been constructed.
    * @return {Promise} Promise resolved when this component has completed initialization
    */
-  initAsync(){
+  initAsync() {
     for (const id of this.dependencies) {
       if (!this.context.systems[id]) {
-          return Promise.reject(`Cannot init: ${this.id} requires ${id}`);
+        return Promise.reject(`Cannot init: ${this.id} requires ${id}`);
       }
     }
     return Promise.resolve();
@@ -577,6 +556,19 @@ export class StyleSystem extends AbstractSystem {
    */
   startAsync() {
     this._started = true;
+
+    // To handle color schemes
+    const context = this.context;
+    const dataloader = context.systems.dataloader;
+
+    dataloader.getDataAsync('colors')
+      .then((data) => {
+        this.colorSchemes = data;
+        // set current scheme to default
+        this.currentColorScheme = data.default;
+        this.emit('colorsloaded');  // emit copies
+      });
+
     return Promise.resolve();
   }
 
@@ -590,12 +582,58 @@ export class StyleSystem extends AbstractSystem {
     return Promise.resolve();
   }
 
+  /**
+   * getColorScheme
+   * @return {Object}  Default color scheme object
+   */
+  getColorScheme() {
+    return this.currentColorScheme;
+  }
+
+  /**
+   * getAllColorSchemeas
+   * @return {Object}  All color scheme objects
+   */
+  getAllColorSchemes() {
+    return this.colorSchemes;
+  }
+
+  /**
+   * setColorScheme
+   * Assigns the colorData var to the new scheme, if the selected scheme is not the current scheme
+   * @param  {Object}  scheme - color scheme project
+   */
+  setColorScheme(scheme) {
+    let currentScheme = this.colorSchemes[scheme];
+    if (this.currentColorScheme !== currentScheme) {
+      this.currentColorScheme = currentScheme;
+    }
+  }
+
+  /**
+     * setMode
+     * Assigns Focus mode
+     * @param  {String}  mode - Mode Name
+     */
+  setMode(mode) {
+    this.focusMode = mode;
+  }
+
+  /**
+      * getMode
+      * Retrive Focus mode name
+      * @return  {String}  mode - Mode Name
+      */
+  getMode() {
+    return this.focusMode;
+  }
 
   /**
    * styleMatch
    * @param  {Object}  tags - OSM tags to match to a display style
    * @return {Object}  Styling info for the given tags
    */
+  // eslint-disable-next-line complexity
   styleMatch(tags) {
     const defaults = this.STYLE_DECLARATIONS.DEFAULTS;
 
@@ -603,6 +641,8 @@ export class StyleSystem extends AbstractSystem {
     let styleScore = 999;   // lower numbers are better
     let styleKey;           // the key controlling the styling, if any
     let styleVal;           // the value controlling the styling, if any
+    let tagName;
+    let colorScheme = this.getColorScheme();
 
     // First, match the tags to the best matching `styleID`..
     for (const [k, v] of Object.entries(tags)) {
@@ -617,7 +657,7 @@ export class StyleSystem extends AbstractSystem {
       if (lifecycleVals.has(v)) score = 999;         // exception: lifecycle values
 
       if (styleID && score <= styleScore) {
-        const declaration = this.STYLE_DECLARATIONS[styleID];
+        const declaration = this.STYLE_DECLARATIONS[styleID] || colorScheme[styleID];
         if (!declaration) {
           console.error(`invalid styleID: ${styleID}`);  // eslint-disable-line
           continue;
@@ -626,7 +666,8 @@ export class StyleSystem extends AbstractSystem {
         matched = declaration;
         styleScore = score;
         styleKey = k;
-        styleVal = v;
+        styleVal = styleID;
+        tagName = v;
 
         if (styleScore === 1) break;  // no need to keep looking at tags
       }
@@ -643,14 +684,14 @@ export class StyleSystem extends AbstractSystem {
         hasLifecycleTag = true;
         break;
 
-      // Lifecycle value, e.g. `railway=demolished`
-      // (applies only if `k` is styleKey or there is no styleKey controlling styling)
+        // Lifecycle value, e.g. `railway=demolished`
+        // (applies only if `k` is styleKey or there is no styleKey controlling styling)
       } else if ((!styleKey || k === styleKey) && lifecycleVals.has(v)) {
         hasLifecycleTag = true;
         break;
 
-      // Lifecycle key prefix, e.g. `demolished:railway=rail`
-      // (applies only if there is no styleKey controlling the styling)
+        // Lifecycle key prefix, e.g. `demolished:railway=rail`
+        // (applies only if there is no styleKey controlling the styling)
       } else if (!styleKey && lifecycleRegex.test(k) && v !== 'no') {
         hasLifecycleTag = true;
         break;
@@ -684,6 +725,7 @@ export class StyleSystem extends AbstractSystem {
     const tracktype = getTag(tags, 'tracktype');
     const tunnel = getTag(tags, 'tunnel');
     let surface = getTag(tags, 'surface');
+
     if (highway === 'track' && tracktype !== 'grade1') {
       surface = surface || 'dirt';   // assume unimproved (non-grade1) tracks have 'dirt' surface
     }
@@ -705,6 +747,25 @@ export class StyleSystem extends AbstractSystem {
       if (!bridge) style.casing.color = 0xcccccc;
       style.casing.cap = 'butt';
       style.casing.dash = [4, 4];
+    }
+
+    // If a focus mode is enabled, reduce alpha of all elements not in focus
+    if (this.focusMode === 'pedestrian') {
+      if (!pedestrianTags.has(tagName) && getTag(tags, 'foot') === undefined) {
+        style.fill.alpha = 0.1;
+        style.fill.color = 0x848884;
+
+        style.casing.alpha = 0.1;
+        style.casing.color = 0x848884;
+
+        style.stroke.alpha = 0.1;
+        style.stroke.color = 0x848884;
+
+      } else {
+        if (tagName === 'sidewalk' || tagName === 'footway' || tagName === 'path') {
+          style.casing.width = 8;
+        }
+      }
     }
 
     // After applying all other styling rules and overrides, perform lifecycle overrides.
@@ -754,6 +815,7 @@ export class StyleSystem extends AbstractSystem {
         if (patternScore === 1) break;  // no need to keep looking at tags
       }
     }
+
 
     return style;
 
