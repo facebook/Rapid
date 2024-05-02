@@ -29,6 +29,7 @@ export class MapRouletteService extends AbstractSystem {
     this.autoStart = false;
 
     this._cache = null;   // cache gets replaced on init/reset
+    this._deletedChallenges = {};
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
@@ -71,7 +72,7 @@ export class MapRouletteService extends AbstractSystem {
       comment: {},
       rtree: new RBush()
     };
-
+    this._deletedChallenges = {};
     return Promise.resolve();
   }
 
@@ -126,14 +127,24 @@ export class MapRouletteService extends AbstractSystem {
 
           for (const task of (data ?? [])) {
             if (!challengeId || task.parentId === challengeId) {
-              const id = task.id;
-              let loc = [task.point.lng, task.point.lat];
-              loc = this._preventCoincident(loc);
-              const itemType = task.type;
+              // fetch the challenge data
+              fetch(`${MAPROULETTE_API}/challenge/${task.parentId}`)
+                .then(response => response.json())
+                .then(challengeData => {
+                  // Update the cache with the deleted status of the challenge
+                  this._deletedChallenges[challengeData.id] = challengeData.deleted;
+                  // if the challenge is deleted, skip the rest of the loop iteration
+                  if (challengeData.deleted) return;
 
-              let d = new MapRouletteTask(loc, this, id, { task, type: itemType });
-              this._cache.tasks.set(d.id, d);
-              this._cache.rtree.insert(this._encodeIssueRtree(d));
+                  const id = task.id;
+                  let loc = [task.point.lng, task.point.lat];
+                  loc = this._preventCoincident(loc);
+                  const itemType = task.type;
+
+                  let d = new MapRouletteTask(loc, this, id, { task, type: itemType });
+                  this._cache.tasks.set(d.id, d);
+                  this._cache.rtree.insert(this._encodeIssueRtree(d));
+                });
             }
           }
 
@@ -162,6 +173,7 @@ export class MapRouletteService extends AbstractSystem {
     const handleResponse = (data) => {
       task.instruction = marked.parse(data.instruction) || '';
       task.details = marked.parse(data.description) || '';
+      this._deletedChallenges[data.id] = data.deleted;
     };
 
     return fetch(url)

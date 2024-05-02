@@ -87,7 +87,6 @@ export function uiMapRouletteDetails(context) {
     if (!maproulette) return;
     maproulette.loadTaskDetailAsync(_maprouletteTask)
       .then(d => {
-        console.log('d', d);
         // Do nothing if _maprouletteTask has changed by the time Promise resolves
         if (_maprouletteTask.id !== d.id) return;
 
