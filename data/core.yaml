@@ -822,7 +822,7 @@ en:
         tooltip: Tasks from maproulette.org
         title: MapRoulette Tasks
         detail_title: Details
-        id_title: Task Id
+        id_title: Challenge Id / Task Id
         instruction_title: Instructions
         fixedIt: I fixed it! 
         cantComplete: Can't Complete

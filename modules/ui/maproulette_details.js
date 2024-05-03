@@ -87,13 +87,13 @@ export function uiMapRouletteDetails(context) {
     if (!maproulette) return;
     maproulette.loadTaskDetailAsync(_maprouletteTask)
       .then(d => {
-        console.log('d', d);
         // Do nothing if _maprouletteTask has changed by the time Promise resolves
         if (_maprouletteTask.id !== d.id) return;
 
         // Things like keys and values are dynamically added to a subtitle string
         if (d.id) {
           const id = d.id;
+          const parentId = d.task.parentId;
 
           detailsDiv
             .append('h4')
@@ -101,7 +101,7 @@ export function uiMapRouletteDetails(context) {
 
           detailsDiv
             .append('p')
-            .html(id)
+            .html(`${parentId} / ${id}`)
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');

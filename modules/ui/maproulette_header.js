@@ -1,4 +1,3 @@
-import { Color } from 'pixi.js';
 
 
 export function uiMapRouletteHeader(context) {
@@ -16,7 +15,6 @@ export function uiMapRouletteHeader(context) {
 
 
   function maprouletteHeader(selection) {
-    let iconFill = 0xffffff;
 
     const header = selection.selectAll('.qa-header')
       .data(
@@ -37,12 +35,11 @@ export function uiMapRouletteHeader(context) {
       .append('svg')
       .attr('width', '20px')
       .attr('height', '27px')
-      .attr('viewbox', '0 0 20 27')
-      .attr('class', d => `qaItem ${d.service}`);
+      .attr('viewbox', '0 0 20 27');
 
     svgEnter
       .append('polygon')
-      .attr('fill', new Color(iconFill).toHex())
+      .attr('fill', '#01ff00')
       .attr('stroke', '#333')
       .attr('points', '16,3 4,3 1,6 1,17 4,20 7,20 10,27 13,20 16,20 19,17.033 19,6');
 
@@ -52,7 +49,7 @@ export function uiMapRouletteHeader(context) {
       .attr('width', '13px')
       .attr('height', '13px')
       .attr('transform', 'translate(3.5, 5)')
-      .attr('xlink:href', d => d.icon ? `#${d.icon}` : '');
+      .attr('fill', '#01ff00');
 
     headerEnter
       .append('div')
