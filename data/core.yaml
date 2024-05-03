@@ -687,6 +687,7 @@ en:
     view_on_osm: View on openstreetmap.org
     view_on_osmose: View on osmose.openstreetmap.fr
     view_on_keepRight: View on keepright.at
+    view_on_maproulette: View on maproulette.org
     feature_type: Feature Type
     fields: Fields
     tags: Tags
@@ -817,6 +818,21 @@ en:
       notes:
         tooltip: Note data from OpenStreetMap
         title: OpenStreetMap Notes
+      maproulette:
+        tooltip: Tasks from maproulette.org
+        title: MapRoulette Tasks
+        detail_title: Details
+        id_title: Task Id
+        instruction_title: Instructions
+        fixedIt: I fixed it! 
+        cantComplete: Can't Complete
+        alreadyFixed: Already Fixed
+        notAnIssue: Not an Issue
+        login: You must log in to change Maproulette challenge.
+        inputPlaceholder: Your change comment
+        comment: Please confirm
+        cancel: Cancel
+        submit: Submit
       keepRight:
         tooltip: Data issues detected by keepright.at
         title: KeepRight Issues

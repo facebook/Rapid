@@ -4,6 +4,8 @@ import { Extent } from '@rapid-sdk/math';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle.js';
 
+import { uiMapRouletteEditor } from './maproulette_editor.js';
+import { Task as MapRouletteTask } from '../maproulette/Task.js';
 import { osmEntity, osmNote, QAItem } from '../osm/index.js';
 import { uiDataEditor } from './data_editor.js';
 import { uiFeatureList } from './feature_list.js';
@@ -28,12 +30,14 @@ export function uiSidebar(context) {
   const improveOsmEditor = uiImproveOsmEditor(context);
   const keepRightEditor = uiKeepRightEditor(context);
   const osmoseEditor = uiOsmoseEditor(context);
+  const maprouletteEdiotr = uiMapRouletteEditor(context);
 
   let _current;
   let _wasRapid = false;
   let _wasData = false;
   let _wasNote = false;
   let _wasQaItem = false;
+  let _wasMapRoulette = false;
 
 
     function sidebar(selection) {
@@ -233,6 +237,16 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
+            } else if (datum instanceof MapRouletteTask) {
+                _wasMapRoulette = true;
+                var service = context.services[datum.service];
+                service = maprouletteEdiotr;
+
+                sidebar
+                    .show(service.error(datum));
+
+                selection.selectAll('.sidebar-component')
+                    .classed('inspector-hover', true);
             } else if (!_current && (datum instanceof osmEntity) && graph.hasEntity(datum)) {
                 featureListWrap
                     .classed('inspector-hidden', true);
@@ -259,11 +273,16 @@ export function uiSidebar(context) {
                 inspector
                     .state('hide');
 
-            } else if (_wasRapid || _wasData || _wasNote || _wasQaItem) {
+            } else if (_wasRapid || _wasData || _wasNote || _wasQaItem || _wasMapRoulette) {
                 _wasRapid = false;
                 _wasNote = false;
                 _wasData = false;
                 _wasQaItem = false;
+                _wasMapRoulette = false;
+                context.container().selectAll('.layer-ai-features .hover').classed('hover', false);
+                context.container().selectAll('.note').classed('hover', false);
+                context.container().selectAll('.qaItem').classed('hover', false);
+                context.container().selectAll('.layer.maproulette').classed('hover', false);
                 sidebar.hide();
             }
         }

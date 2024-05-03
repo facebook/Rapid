@@ -651,6 +651,55 @@ export class OsmService extends AbstractSystem {
   }
 
 
+  /**
+   * _parseUserPreferencesXML
+   * @param xml
+   * @param callback
+   */
+  _parseUserPreferencesXML(xml, callback) {
+    const preferences = {};
+    const preferenceElems = xml.getElementsByTagName('preference');
+
+    for (let i = 0; i < preferenceElems.length; i++) {
+      const elem = preferenceElems[i];
+      const key = elem.getAttribute('k');
+      const value = elem.getAttribute('v');
+      if (key && value) {
+        preferences[key] = value;
+      }
+    }
+
+    callback(null, { data: preferences });
+  }
+
+
+  // Load maproulette api key from OSM preferences
+  // GET /api/0.6/user/preferences
+  loadMapRouletteKey(callback) {
+    if (!this.authenticated()) {   // require auth
+      return callback(null, {});
+    }
+
+    this._oauth.xhr({
+      method: 'GET',
+      path: '/api/0.6/user/preferences'
+    }, (err, data) => {
+      if (err) {
+        console.error('Error in loadUserPreferences:', err);
+        return callback(err);
+      }
+
+      this._parseUserPreferencesXML(data, (err, result) => {
+        if (err) {
+          return callback(err);
+        } else {
+          return callback(null, result.data);
+        }
+      });
+    });
+  }
+
+
   // Load the details of the logged-in user
   // GET /api/0.6/user/details
   userDetails(callback) {
