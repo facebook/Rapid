@@ -2554,6 +2554,7 @@ en:
         map_data: "Toggle map data pane"
         issues: "Toggle validation issues pane"
         preferences: "Toggle user preferences pane"
+        switch_color_scheme: "Switch to next color scheme in list"
         fullscreen: "Toggle full screen mode"
         sidebar: "Toggle sidebar"
         wireframe: "Toggle wireframe mode"
