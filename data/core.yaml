@@ -999,24 +999,24 @@ en:
           title: Pan the Map
           tooltip: Scrolling with the wheel will pan the map.  Holding down Shift will zoom and unzoom the map.
     color_selection:
-      title: Map Color Scheme
+      title: Color Scheme
       tooltip: Switch between color schemes
       default: Default
       high_contrast: High Contrast
-      colorblind_general: Colorblind Mode - General
-      colorblind_ibm: Colorblind Mode - IBM
-      colorblind_paul_tol_vibrant: Colorblind Mode - Paul Tol (Vibrant)
+      colorblind_general: Colorblind Palette - General
+      colorblind_ibm: Colorblind Palette - IBM
+      colorblind_paul_tol_vibrant: Colorblind Palette - Paul Tol (Vibrant)
       placeholder: Select color scheme
       switch_color_scheme:
         key: C
     colorblind_options:
-      title: Colorblind Mode
-      tooltip: Switch between colorblind modes
+      title: Colorblind Simulator
+      tooltip: Switch between colorblind simulators
       default: Default (None)
       protanopia: Protanopia
       deuteranopia: Deuteranopia
       tritanopia: Tritanopia
-      placeholder: Select colorblind mode
+      placeholder: Select colorblind simulator
   restore:
     heading: You have unsaved changes
     description: "Do you wish to restore unsaved changes from a previous editing session?"
