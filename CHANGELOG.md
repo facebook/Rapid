@@ -43,12 +43,22 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :tada: New Features
 * [#1386], [#1387] Add support for [WKT geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) in `data=` url parameter
 * [#1372], [#1373] Add initial support for viewing [GeoScribble annotations](https://wiki.openstreetmap.org/wiki/GeoScribble)
-* [#1209], [#1351], [#1388] Add support for Esri Wayback Imagery
-* [#1363] Map Rotation now supported!
+  * GeoScribble is a new service that allows mappers to take field notes while surveying with the EveryDoor mobile app.
+  * Open the "Map Data" pane to enable this new data layer.
+* [#1209], [#1351], [#1388] Add support for [Esri Wayback Imagery](https://livingatlas.arcgis.com/wayback/)
+  * We added a new background layer called "Esri Wayback" to view historical releases of the Esri World Imagery layer.
+  * This background source also has a date picker to help you pick from dates likely to include changes in the current map view.
+  * Open the "Background" pane to explore this new feature.
+* [#1150], [#1221], [#1369] Add initial integration with [MapRoulette](https://maproulette.org/) challenges
+  * You can view active MapRoulette tasks in the current map view, or filter the results by challenge id.
+  * After making your edits, select the task and click "I fixed it!", "Can't Complete", "Already Fixed", and "Not an Issue".
+  * Remember to save your edits.  Your changeset will automatically include a description about any MapRoulette tasks that you've completed.
+  * Open the "Map Data" pane and click "MapRoulette Tasks" to try it out!
+* [iD#4954], [#1363] Map Rotation now supported!
   * Use <kbd>Option</kbd>+ click-and-drag or <kbd>Shift</kbd>+Left/Right arrow keys.
   * The `map=` url param now supports a bearing like: `#map=zoom/lat/lng/bearing` (in degrees)
-  * There is a new bearing control above the existing zoom buttons that will display a North arrow. You can click this button to return the map back to North-up.
-  * Improve the map navigation content in the walkthrough, built-in help, and keyboard shortcuts.
+  * There is a new bearing control above the existing zoom buttons that displays a North arrow. You can click this button to return the map back to North-up.
+  * We also improved the map navigation content in the walkthrough, built-in help, and keyboard shortcuts screen.
 
 #### :sparkles: Usability & Accessibility
 * [#485] Dragging in minimap keeps the view rectangle centered, allowing user to recenter the map easily
@@ -102,6 +112,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1386]: https://github.com/facebook/Rapid/issues/1386
 [#1387]: https://github.com/facebook/Rapid/issues/1387
 [#1388]: https://github.com/facebook/Rapid/issues/1388
+[iD#4954]: https://github.com/openstreetmap/iD/issues/4954
 [iD#5144]: https://github.com/openstreetmap/iD/issues/5144
 [iD#7618]: https://github.com/openstreetmap/iD/issues/7618
 [iD#9501]: https://github.com/openstreetmap/iD/pull/9501
