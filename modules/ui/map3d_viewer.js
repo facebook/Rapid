@@ -1,11 +1,13 @@
 import { Color } from 'pixi.js';
-import { geomPolygonContainsPolygon } from '@rapid-sdk/math';
 import { select as d3_select } from 'd3-selection';
+import { RAD2DEG, geomPolygonContainsPolygon } from '@rapid-sdk/math';
+import throttle from 'lodash-es/throttle.js';
 
 import { uiCmd } from './cmd.js';
 
+
 /**
- * uiMap3dViewer is a ui panel containing a maplibre 3D Map
+ * uiMap3dViewer is a ui panel containing a MapLibre 3D Map
  * @param {*} context
  * @returns
  */
@@ -23,32 +25,38 @@ export function uiMap3dViewer(context) {
     let _isHidden = !urlhash.getParam('map3d'); // depends on URL hash
     let _lastv;
 
+
     function redraw() {
       if (_isHidden) return;
-      if (viewport.v === _lastv) return;  // viewport hasn't changed
-      _lastv = viewport.v;
       updateViewport();
       featuresToGeoJSON();
     }
 
 
+    /**
+     * updateViewport
+     * Adjust the 3d map to follow the main map, applying any zoom and rotation offsets.
+     */
     function updateViewport() {
-      // Since the bounds are intended to wrap a box around a perfectly orthogonal view,
-      // for a pitched, isometric view we need to enlarge the box a bit to display more buildings.
-// bhousel comment out for now - growing this extent will not change its center?
-//      const extent = viewport.visibleExtent();
-//      const center = extent.center();
-//      extent.padByMeters(100);
-//
+      const maplibre = map3d.maplibre;
+      if (!maplibre) return;              // called too soon?
+      if (maplibre.isMoving()) return;    // already moving for other reasons (user interaction?)
+      if (viewport.v === _lastv) return;  // main map view hasn't changed
+
+      _lastv = viewport.v;
       const transform = viewport.transform;
-      map3d.maplibre?.jumpTo({
+      maplibre.jumpTo({
         center: viewport.centerLoc(),
-        bearing: transform.rotation,
-        zoom: transform.zoom - 3,
+        bearing: (RAD2DEG * transform.rotation) - map3d.rDiff,
+        zoom: transform.zoom - map3d.zDiff
       });
     }
 
 
+    /**
+     * featuresToGeoJSON
+     * Collect features in view and issue `setData` calls to update the data in the 3d map.
+     */
     function featuresToGeoJSON() {
       const entities = editor.intersects(viewport.visibleExtent());
       const noRelationEnts = entities.filter((ent) => !ent.id.startsWith('r'));
@@ -277,8 +285,11 @@ export function uiMap3dViewer(context) {
     wrap = wrapEnter.merge(wrap);
     map3d.startAsync();
 
-    map.on('draw', () => redraw());
-    map.on('move', () => redraw());
+
+    const deferredRedraw = throttle(redraw, 50, { leading: true, trailing: true });
+
+    map.on('draw', deferredRedraw);
+    map.on('move', deferredRedraw);
     context.keybinding().on([uiCmd('⌘' + l10n.t('background.3dmap.key'))], toggle);
 
     redraw();

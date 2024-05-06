@@ -1,4 +1,5 @@
 import { select as d3_select } from 'd3-selection';
+import { RAD2DEG, vecEqual } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 
@@ -28,11 +29,18 @@ export class Map3dSystem extends AbstractSystem {
     this._loadPromise = null;
     this._startPromise = null;
 
+    // The 3d Map will stay close to the main map, but with an offset zoom and rotation
+    this.zDiff = 3;   // by default, 3dmap will be at main zoom - 3
+    this.rDiff = 0;   // by default, 3dmap bearing will match main map bearing
+
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
     this.roadCasinglayerSpec = this.getRoadCasingLayerSpec('Roads', 'osmroads');
     this.roadSelectedlayerSpec = this.getRoadSelectedLayerSpec('Roads', 'osmroads');
     this.areaLayerSpec = this.getAreaLayerSpec('Areas', 'osmareas');
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    this._moved = this._moved.bind(this);
   }
 
 
@@ -83,6 +91,9 @@ export class Map3dSystem extends AbstractSystem {
         });
 
         return new Promise(resolve => {
+          maplibre.on('move', this._moved);
+          maplibre.on('moveend', this._moved);
+
           maplibre.on('load', () => {
             maplibre.setLight({
               anchor: 'viewport',
@@ -90,13 +101,6 @@ export class Map3dSystem extends AbstractSystem {
               position: [1, 200, 30],
               intensity: 0.3,
             });
-
-// code in map3d_viewer will do this?
-//            const map = this.context.systems.map;
-//            maplibre.jumpTo({
-//              zoom: map.zoom() - 3,
-//              center: map.extent().center(),
-//            });
 
             // sources
             maplibre.addSource('osmareas', {
@@ -130,6 +134,38 @@ export class Map3dSystem extends AbstractSystem {
         if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
         this._startPromise = null;
       });
+  }
+
+
+  /**
+   * _moved
+   * Respond to changes in the maplibre viewer
+   */
+  _moved() {
+    const context = this.context;
+    const map = context.systems.map;
+    const maplibre = this.maplibre;
+    const viewport = context.viewport;
+    const transform = viewport.transform;
+
+    if (!maplibre) return;  // called too early?
+
+    const mlCenter = maplibre.getCenter();
+    const mlCenterLoc = [mlCenter.lng, mlCenter.lat];
+    const mlZoom = maplibre.getZoom();
+    const mlBearing = maplibre.getBearing();
+
+    const mainCenterLoc = viewport.centerLoc();
+    const mainZoom = transform.zoom;
+    const mainBearing = transform.rotation * RAD2DEG;
+
+    this.zDiff = mainZoom - mlZoom;
+    this.rDiff = mainBearing - mlBearing;
+
+    // Recenter main map, if 3dmap center moved
+    if (!vecEqual(mainCenterLoc, mlCenterLoc, 1e-6)) {
+      map.center(mlCenterLoc);
+    }
   }
 
 
