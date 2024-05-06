@@ -7,19 +7,52 @@ import { uiSection } from '../section.js';
 import { uiSettingsCustomData } from '../settings/custom_data.js';
 
 
+/** uiSectionDataLayers
+ *  This collapsable section displays various checkboxes for toggleable data layers.
+ *  (and some other checkboxes below it)
+ *  There was some attempt made at grouping them logically.
+ *  It lives in the Map Data pane.
+ *
+ *  ⋁ Data Layers
+ *    ◻ OpenStreetMap Data
+ *    ◻ OpenStreetMap Notes
+ *
+ *    ◻ KeepRight Issues
+ *    ◻ ImproveOSM Issues
+ *    …
+ *
+ *    ◻ Custom Map Data      …
+ *
+ *    ◻ Show History Panel
+ *    ◻ Show Measurement Panel
+ */
 export function uiSectionDataLayers(context) {
   const l10n = context.systems.l10n;
+  const scene = context.scene();
+  const ui = context.systems.ui;
+
   const section = uiSection(context, 'data-layers')
     .label(l10n.t('map_data.data_layers'))
-    .disclosureContent(renderDisclosureContent);
+    .disclosureContent(render);
 
   const settingsCustomData = uiSettingsCustomData(context)
     .on('change', customChanged);
 
-  const scene = context.scene();
 
 
-  function renderDisclosureContent(selection) {
+  /* renderIfVisible
+   * This calls render on the Disclosure commponent.
+   * It skips actual rendering if the disclosure is closed
+   */
+  function renderIfVisible() {
+    section.reRender();
+  }
+
+
+  /* render
+   * Render the data layer list and the checkboxes below it
+   */
+  function render(selection) {
     let container = selection.selectAll('.data-layer-container')
       .data([0]);
 
@@ -182,9 +215,8 @@ export function uiSectionDataLayers(context) {
     labelEnter.filter(d => d.id === 'maproulette')
       .append('input')
       .attr('type', 'text')
-      .attr('placeholder', 'Enter challenge Id')
-      .attr('class', 'challenge-id-input')
-      .style('margin-left', '10px');
+      .attr('placeholder', 'challenge ID')
+      .attr('class', 'challenge-id');
 
     // Update
     li
@@ -319,7 +351,7 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.systems.ui.info.toggle('history');
+        ui.info.toggle('history');
       });
 
     historyPanelLabelEnter
@@ -341,7 +373,7 @@ export function uiSectionDataLayers(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.systems.ui.info.toggle('measurement');
+        ui.info.toggle('measurement');
       });
 
     measurementPanelLabelEnter
@@ -350,7 +382,7 @@ export function uiSectionDataLayers(context) {
   }
 
 
-  context.scene().on('layerchange', section.reRender);
+  scene.on('layerchange', renderIfVisible);
 
   return section;
 }

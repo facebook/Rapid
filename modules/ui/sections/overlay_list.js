@@ -6,6 +6,16 @@ import { uiTooltip } from '../tooltip.js';
 import { uiSection } from '../section.js';
 
 
+/** uiSectionOverlayList
+ *  This collapsable section displays a checkbox list of background overlays
+ *  It lives in the Background Settings pane.
+ *
+ *  ⋁ Overlays
+ *    ◻ Locator Overlay
+ *    ◻ OpenRailwayMap Maxspeeds
+ *    ◻ TIGER Roads 2022
+ *    …
+ */
 export function uiSectionOverlayList(context) {
   const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
@@ -13,10 +23,45 @@ export function uiSectionOverlayList(context) {
 
   const section = uiSection(context, 'overlay-list')
     .label(l10n.t('background.overlays'))
-    .disclosureContent(renderDisclosureContent);
+    .disclosureContent(render);
 
   let _overlayList = d3_select(null);
 
+
+  function isOverlay(d) {
+    return !!d.overlay;
+  }
+
+  /* renderIfVisible
+   * This calls render on the Disclosure commponent.
+   * It skips actual rendering if the disclosure is closed
+   */
+  function renderIfVisible() {
+    section.reRender();
+  }
+
+
+  /* render
+   * Render the overlay list
+   */
+  function render(selection) {
+    let container = selection.selectAll('.layer-overlay-list')
+      .data([0]);
+
+    _overlayList = container.enter()
+      .append('ul')
+      .attr('class', 'layer-list layer-overlay-list')
+      .attr('dir', 'auto')
+      .merge(container);
+
+    _overlayList
+      .call(drawListItems);
+  }
+
+
+  /*
+   * setTooltips
+   */
   function setTooltips(selection) {
     selection.each((d, i, nodes) => {
       const item = d3_select(nodes[i]).select('label');
@@ -85,9 +130,7 @@ export function uiSectionOverlayList(context) {
 
 
     function sortSources(a, b) {
-      return a.best && !b.best ? -1
-        : b.best && !a.best ? 1
-        : d3_descending(a.area, b.area) || d3_ascending(a.name, b.name) || 0;
+      return d3_descending(a.area, b.area) || d3_ascending(a.name, b.name) || 0;
     }
   }
 
@@ -98,34 +141,22 @@ export function uiSectionOverlayList(context) {
     _overlayList.call(updateLayerSelections);
   }
 
-  function isOverlay(d) {
-    return !!d.overlay;
-  }
 
-  function renderDisclosureContent(selection) {
-    let container = selection.selectAll('.layer-overlay-list')
-      .data([0]);
-
-    _overlayList = container.enter()
-      .append('ul')
-      .attr('class', 'layer-list layer-overlay-list')
-      .attr('dir', 'auto')
-      .merge(container);
-
-    _overlayList
-      .call(drawListItems);
+  /*
+   * onMapDraw
+   * Redraw the list sometimes if the map has moved
+   */
+  function onMapDraw() {
+    window.requestIdleCallback(() => {
+      renderIfVisible();
+    });
   }
 
 
-  imagery
-    .on('imagerychange', () => section.reRender);
+  const deferredOnMapDraw = debounce(onMapDraw, 1000, { leading: true, trailing: true });
 
-  map
-    .on('draw', debounce(() => {
-      // layers in-view may have changed due to map move
-      window.requestIdleCallback(section.reRender);
-    }, 1000, { leading: true, trailing: true })
-  );
+  imagery.on('imagerychange', renderIfVisible);
+  map.on('draw', deferredOnMapDraw);
 
   return section;
 }

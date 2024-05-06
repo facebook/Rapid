@@ -6,18 +6,19 @@ import { uiPresetList } from './preset_list.js';
 import { uiViewOnOSM } from './view_on_osm.js';
 
 
-// The Inspector is a UI component for viewing/editing OSM Entities in the sidebar.
-// It consists of two divs that can slide side to side (only one will be visible at a time):
-//
-// +--------+--------+
-// |        |        |
-// | Preset | Entity |
-// |  List  | Editor |
-// |        |        |
-// |        |        |
-// +--------+--------+
-//
-
+/**
+ * uiInspector
+ * The Inspector is a UI component for viewing/editing OSM Entities in the sidebar.
+ * It consists of two divs that can slide side to side (only one will be visible at a time):
+ *
+ * +--------+--------+
+ * |        |        |
+ * | Preset | Entity |
+ * |  List  | Editor |
+ * |        |        |
+ * |        |        |
+ * +--------+--------+
+ */
 export function uiInspector(context) {
   const editor = context.systems.editor;
   const validator = context.systems.validator;

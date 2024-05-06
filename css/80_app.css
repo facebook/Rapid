@@ -3153,6 +3153,16 @@ div.full-screen > button:focus {
   cursor: pointer;
 }
 
+.layer-list .list-item-maproulette > label > span {
+  flex: 1 1 auto;
+}
+.layer-list .list-item-maproulette .challenge-id {
+  color: #333;
+  height: 20px;
+  width: 100px;
+  cursor: pointer;
+}
+
 .ideditor[dir='rtl'] .list-item-data-browse svg {
     transform: rotateY(180deg);
 }

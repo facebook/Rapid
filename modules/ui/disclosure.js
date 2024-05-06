@@ -8,8 +8,8 @@ import { utilFunctor, utilRebind } from '../util/index.js';
 // A Disclosure consists of a toggleable Label and Content
 // Clicking on the label toggles the visibility of the content below it.
 //
-//   > Label     V Label
-//               Content
+//   > Label     ⋁ Label
+//                 Content
 //
 export function uiDisclosure(context, key) {
   const l10n = context.systems.l10n;

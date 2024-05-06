@@ -14,11 +14,30 @@ import { uiMap3dViewer } from '../map3d_viewer.js';
 import { uiSection } from '../section.js';
 
 
+/** uiSectionBackgroundList
+ *  This collapsable section displays a radio button list of background imagery.
+ *  (and some other checkboxes below it)
+ *  Each list item also adds star buttons so users can select their favorite items.
+ *  It lives in the Background Settings pane.
+ *
+ *  ⋁ Backgrounds
+ *    ○ Bing Maps Aerial    ☆
+ *    ○ Esri Wayback        ☆
+ *    ○ Esri World Imagery  ☆
+ *    …
+ *    ○ None                ☆
+ *    ○ Custom              …
+ *
+ *    ◻ Show Minimap
+ *    ◻ Show 3d Map
+ *    …
+ */
 export function uiSectionBackgroundList(context) {
   const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
   const storage = context.systems.storage;
+  const ui = context.systems.ui;
 
   const section = uiSection(context, 'background-list')
     .label(l10n.t('background.backgrounds'))
@@ -136,7 +155,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.systems.ui.info.toggle('background');
+        ui.info.toggle('background');
       });
 
     panelLabelEnter
@@ -158,7 +177,7 @@ export function uiSectionBackgroundList(context) {
       .attr('type', 'checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        context.systems.ui.info.toggle('location');
+        ui.info.toggle('location');
       });
 
     locPanelLabelEnter
@@ -529,11 +548,8 @@ export function uiSectionBackgroundList(context) {
 
   const deferredOnMapDraw = debounce(onMapDraw, 1000, { leading: true, trailing: true });
 
-  imagery
-    .on('imagerychange', renderIfVisible);
-
-  map
-    .on('draw', deferredOnMapDraw);
+  imagery.on('imagerychange', renderIfVisible);
+  map.on('draw', deferredOnMapDraw);
 
   context.keybinding()
     .on(uiCmd('⌘' + l10n.t('background.key')), swapBackground)

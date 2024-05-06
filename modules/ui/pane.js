@@ -60,15 +60,23 @@ export function uiPane(context, id) {
   pane.togglePane = function(d3_event) {
     if (d3_event) d3_event.preventDefault();
     _paneTooltip.hide();
-    const shown = !_paneSelection.classed('shown');
-    ui.togglePanes(shown ? _paneSelection : undefined);
 
-    // Rapid#655: Since firing the validator is so expensive,
-    // only do it when we're right about to open the validation pane.
-    if (pane.id === 'issues' && shown) {
-      validator.validateAsync();
+    const show = !_paneSelection.classed('shown');
+    ui.togglePanes(show ? _paneSelection : undefined);
+
+    // We are showing the pane, rerender its content
+    if (show) {
+      _paneSelection.selectAll('.pane-content')
+        .call(pane.renderContent);
+
+      // Rapid#655: Since firing the validator is so expensive,
+      // only do it when we're right about to open the validation pane.
+      if (pane.id === 'issues') {
+        validator.validateAsync();
+      }
     }
   };
+
 
   pane.renderToggleButton = function(selection) {
     if (!_paneTooltip) {
@@ -86,6 +94,7 @@ export function uiPane(context, id) {
       .call(_paneTooltip);
   };
 
+
   pane.renderContent = function(selection) {
     // override to fully customize content
     if (_sections) {
@@ -94,6 +103,7 @@ export function uiPane(context, id) {
       }
     }
   };
+
 
   pane.renderPane = function(selection) {
     _paneSelection = selection
@@ -113,7 +123,6 @@ export function uiPane(context, id) {
       .append('button')
       .on('click', hidePane)
       .call(uiIcon('#rapid-icon-close'));
-
 
     _paneSelection
       .append('div')

@@ -309,9 +309,9 @@ export class PhotoSystem extends AbstractSystem {
       // If we're selecting a photo then make sure its layer is enabled too.
       scene.enableLayers(layerID);
 
-    // renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
-    scene.classData(layerID, photoID, 'selected');
-    scene.classData(layerID, photoID, 'active');
+      // renderer is not yet listening to photochange, so just manually tell the renderer to select-style it, for now
+      scene.classData(layerID, photoID, 'selected');
+      scene.classData(layerID, photoID, 'active');
 
       // Try to show the viewer with the image selected..
       service.startAsync()

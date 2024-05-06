@@ -5,18 +5,47 @@ import { uiSection } from '../section.js';
 import { utilGetSetValue, utilNoAuto } from '../../util/index.js';
 
 
+/** uiSectionPhotoOverlays
+ *  This collapsable section displays various checkboxes for toggleable photo layers.
+ *  (and some other fields below it to set filtering options)
+ *  It lives in the Map Data pane.
+ *
+ *  ⋁ Photo Overlays
+ *    ◻ Bing Streetside
+ *    ◻ Mapillary
+ *      ◻ Map Features
+ *      ◻ Traffic Signs
+ *    ◻ KartaView
+ *
+ *    ◻ Flat Photos
+ *    ◻ Panoramic Photos
+ *
+ *    From  mm/dd/yyyy
+ *    To    mm/dd/yyyy
+ */
 export function uiSectionPhotoOverlays(context) {
   const l10n = context.systems.l10n;
   const photos = context.systems.photos;
+  const scene = context.scene();
 
   const section = uiSection(context, 'photo-overlays')
     .label(l10n.t('photo_overlays.title'))
-    .disclosureContent(renderDisclosureContent);
-
-  const scene = context.scene();
+    .disclosureContent(render);
 
 
-  function renderDisclosureContent(selection) {
+  /* renderIfVisible
+   * This calls render on the Disclosure commponent.
+   * It skips actual rendering if the disclosure is closed
+   */
+  function renderIfVisible() {
+    section.reRender();
+  }
+
+
+  /* render
+   * Render the overlay list
+   */
+  function render(selection) {
     let container = selection.selectAll('.photo-overlay-container')
       .data([0]);
 
@@ -252,8 +281,8 @@ export function uiSectionPhotoOverlays(context) {
       .classed('active', filterEnabled);
   }
 
-  context.scene().on('layerchange', section.reRender);
-  photos.on('photochange', section.reRender);
+  scene.on('layerchange', renderIfVisible);
+  photos.on('photochange', renderIfVisible);
 
   return section;
 }
