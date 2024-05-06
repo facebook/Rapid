@@ -78,6 +78,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 #### :bug: Bugfixes:
 * [#1334] Double clicking a line to create a midpoint should not alter the line shape
+* [#1405] Photo overlay (Mapillary, Bing, Kartaview) checkboxes not checked when Rapid starts
 * [iD#5144], [iD#10066] Fix rounding errors and improve parsing of degree-minute-second search coords
 * [iD#9502], [iD#9788], [iD#10089] Allow merging lines when parent relations are ordered differently
 * [iD#10065], [iD#10165] Properly encode Wikipedia links containing '?' symbol
@@ -112,6 +113,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#1386]: https://github.com/facebook/Rapid/issues/1386
 [#1387]: https://github.com/facebook/Rapid/issues/1387
 [#1388]: https://github.com/facebook/Rapid/issues/1388
+[#1405]: https://github.com/facebook/Rapid/issues/1405
 [iD#4954]: https://github.com/openstreetmap/iD/issues/4954
 [iD#5144]: https://github.com/openstreetmap/iD/issues/5144
 [iD#7618]: https://github.com/openstreetmap/iD/issues/7618
