@@ -49,10 +49,6 @@ export function uiPane(context, id) {
     return pane;
   };
 
-  pane.selection = function() {
-    return _paneSelection;
-  };
-
   function hidePane() {
     ui.togglePanes();
   }

@@ -3916,7 +3916,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     }
 }
 
-.help-pane .toc li a.selected {
+.help-pane .toc li.selected {
     background: #e8ebff;
 }
 

@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { marked } from 'marked';
 
 import { uiIcon } from '../icon.js';
@@ -10,6 +11,9 @@ import { helpHtml } from '../intro/helper.js';
 export function uiPaneHelp(context) {
   const l10n = context.systems.l10n;
   const ui = context.systems.ui;
+
+  let _selection = null;
+  let _currIndex = 0;
 
   const docSections = [
     ['help', [
@@ -287,94 +291,37 @@ export function uiPaneHelp(context) {
     .iconName('rapid-icon-help');
 
 
-  helpPane.renderContent = function(content) {
 
-    function clickHelp(d, i) {
-      const isRTL = l10n.isRTL();
-      content.property('scrollTop', 0);
-      helpPane.selection().select('.pane-heading h2').text(d.title);
+  /**
+   * renderContent
+   * All panes have a `renderContent` function that will render this pane's
+   * content into the given parent selection.
+   * (this is the render function)
+   */
+  helpPane.renderContent = function(selection) {
+    _selection = selection;
 
-      body.html(d.contentHtml);
-      body.selectAll('a').attr('target', '_blank');
-      menuItems.classed('selected', item => item.title === d.title);
-
-      nav.html('');
-      if (isRTL) {
-        nav.call(drawNext).call(drawPrevious);
-      } else {
-        nav.call(drawPrevious).call(drawNext);
-      }
-
-
-      function drawNext(selection) {
-        if (i === docs.length - 1) return;
-
-        let nextLink = selection
-          .append('a')
-          .attr('href', '#')
-          .attr('class', 'next')
-          .on('click', function(d3_event) {
-            d3_event.preventDefault();
-            clickHelp(docs[i + 1], i + 1);
-          });
-
-        nextLink
-          .append('span')
-          .text(docs[i + 1].title)
-          .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
-      }
-
-
-      function drawPrevious(selection) {
-        if (i === 0) return;
-
-        let prevLink = selection
-          .append('a')
-          .attr('href', '#')
-          .attr('class', 'previous')
-          .on('click', function(d3_event) {
-            d3_event.preventDefault();
-            clickHelp(docs[i - 1], i - 1);
-          });
-
-        prevLink
-          .call(uiIcon((isRTL ? '#rapid-icon-forward' : '#rapid-icon-backward'), 'inline'))
-          .append('span')
-          .text(docs[i - 1].title);
-      }
-    }
-
-
-    function clickWalkthrough(d3_event) {
-      d3_event.preventDefault();
-      if (context.inIntro) return;
-      context.container().call(uiIntro(context));
-      ui.togglePanes();
-    }
-
-
-    function clickShortcuts(d3_event) {
-      d3_event.preventDefault();
-      ui.shortcuts.show();
-    }
-
-    let toc = content   // table of contents
+    // table of contents
+    const tocEnter = selection.selectAll('.toc')
+      .data([0])
+      .enter()
       .append('ul')
       .attr('class', 'toc');
 
-    let menuItems = toc.selectAll('li')
+    tocEnter.selectAll('li')
       .data(docs)
       .enter()
       .append('li')
       .append('a')
       .attr('href', '#')
       .text(d => d.title)
-      .on('click', function(d3_event, d) {
+      .on('click', (d3_event, d) => {
         d3_event.preventDefault();
-        clickHelp(d, docs.indexOf(d));
+        clickChapter(d, docs.indexOf(d));
       });
 
-    let shortcuts = toc
+    // button for the shortcuts
+    const shortcutsEnter = tocEnter
       .append('li')
       .attr('class', 'shortcuts')
       .call(uiTooltip(context)
@@ -386,41 +333,129 @@ export function uiPaneHelp(context) {
       .attr('href', '#')
       .on('click', clickShortcuts);
 
-    shortcuts
+    shortcutsEnter
       .append('div')
       .text(l10n.t('shortcuts.title'));
 
-    let walkthrough = toc
+    // button for the walkthrough
+    const walkthroughEnter = tocEnter
       .append('li')
       .attr('class', 'walkthrough')
       .append('a')
       .attr('href', '#')
       .on('click', clickWalkthrough);
 
-    walkthrough
+    walkthroughEnter
       .append('svg')
       .attr('class', 'logo logo-walkthrough')
       .append('use')
       .attr('xlink:href', '#rapid-logo-walkthrough');
 
-    walkthrough
+    walkthroughEnter
       .append('div')
       .text(l10n.t('splash.walkthrough'));
 
-    let helpContent = content
+    // help content (everything that's not the table of contents)
+    const wrapEnter = selection.selectAll('.help-content-wrap')
+      .data([0])
+      .enter()
       .append('div')
-      .attr('class', 'left-content');
+      .attr('class', 'help-content-wrap');
 
-    let body = helpContent
+    wrapEnter
       .append('div')
-      .attr('class', 'body');
+      .attr('class', 'help-content');
 
-    let nav = helpContent
+    wrapEnter
       .append('div')
       .attr('class', 'nav');
 
-    clickHelp(docs[0], 0);
+    clickChapter(docs[_currIndex], _currIndex);
   };
+
+
+  /**
+   * clickChapter
+   */
+  function clickChapter(d, i) {
+    if (!_selection) return;  // called too early
+
+    _currIndex = i;
+
+    const isRTL = l10n.isRTL();
+    _selection.property('scrollTop', 0);
+
+    const helpPane = d3_select(_selection.node().parentElement);
+    helpPane.selectAll('.pane-heading > h2').text(d.title);
+
+    const content = _selection.selectAll('.help-content');
+    content.html(d.contentHtml);
+    content.selectAll('a').attr('target', '_blank');  // outbound links should open in new tab
+
+    _selection.selectAll('.toc > li')
+      .classed('selected', item => item === d);
+
+    const nav = _selection.selectAll('.nav');
+    nav.html('');    // empty innerHtml and replace it
+    if (isRTL) {
+      nav.call(drawNext).call(drawPrevious);
+    } else {
+      nav.call(drawPrevious).call(drawNext);
+    }
+
+
+    function drawNext(selection) {
+      if (i === docs.length - 1) return;
+
+      const nextLink = selection
+        .append('a')
+        .attr('href', '#')
+        .attr('class', 'next')
+        .on('click', d3_event => {
+          d3_event.preventDefault();
+          clickChapter(docs[i + 1], i + 1);
+        });
+
+      nextLink
+        .append('span')
+        .text(docs[i + 1].title)
+        .call(uiIcon((isRTL ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
+    }
+
+
+    function drawPrevious(selection) {
+      if (i === 0) return;
+
+      const prevLink = selection
+        .append('a')
+        .attr('href', '#')
+        .attr('class', 'previous')
+        .on('click', d3_event => {
+          d3_event.preventDefault();
+          clickChapter(docs[i - 1], i - 1);
+        });
+
+      prevLink
+        .call(uiIcon((isRTL ? '#rapid-icon-forward' : '#rapid-icon-backward'), 'inline'))
+        .append('span')
+        .text(docs[i - 1].title);
+    }
+  }
+
+
+  function clickWalkthrough(d3_event) {
+    d3_event.preventDefault();
+    if (context.inIntro) return;
+    context.container().call(uiIntro(context));
+    ui.togglePanes();
+  }
+
+
+  function clickShortcuts(d3_event) {
+    d3_event.preventDefault();
+    ui.shortcuts.show();
+  }
+
 
   return helpPane;
 }
