@@ -84,7 +84,7 @@ export class MapRouletteService extends AbstractSystem {
    */
   getData() {
     const extent = this.context.systems.map.extent();
-    let challengeId = d3_select('.challenge-id-input').property('value');
+    let challengeId = d3_select('.challenge-id').property('value');
     challengeId = challengeId ? Number(challengeId) : null;
     return this._cache.rtree.search(extent.bbox())
       .map(d => d.data)
@@ -105,7 +105,7 @@ export class MapRouletteService extends AbstractSystem {
     this._abortUnwantedRequests(this._cache, tiles);
 
     // get the challenge ID entered by the user
-    let challengeId = Number(d3_select('.challenge-id-input').property('value'));
+    let challengeId = Number(d3_select('.challenge-id').property('value'));
     // issue new requests..
     for (const tile of tiles) {
       if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
