@@ -138,7 +138,6 @@ export class MapRouletteService extends AbstractSystem {
                 .then(challengeData => {
                   // Update the cache with the deleted status of the challenge
                   this._deletedChallenges[challengeData.id] = challengeData.deleted;
-                  // if the challenge is deleted, skip the rest of the loop iteration
                   if (challengeData.deleted) return;
 
                   const id = task.id;
@@ -154,7 +153,6 @@ export class MapRouletteService extends AbstractSystem {
                 })
                 .catch(err => {
                   console.error(`Error fetching challenge data for task ${task.id}:`, err);
-                  // Remove the challenge ID from the set of inflight challenges
                   this._cache.inflightChallengeIds.delete(task.parentId);
                 });
             }
