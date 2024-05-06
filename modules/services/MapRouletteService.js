@@ -67,6 +67,7 @@ export class MapRouletteService extends AbstractSystem {
       tasks: new Map(),    // Map (taskID -> Task)
       loadedTile: {},
       inflightTile: {},
+      inflightChallengeIds: new Set(),
       inflightPost: {},
       closed: {},
       comment: {},
@@ -127,6 +128,10 @@ export class MapRouletteService extends AbstractSystem {
 
           for (const task of (data ?? [])) {
             if (!challengeId || task.parentId === challengeId) {
+              // Check if a request for this challenge is already in progress
+              if (this._cache.inflightChallengeIds.has(task.parentId)) continue;
+              // Add the challenge ID to the set of inflight challenges
+              this._cache.inflightChallengeIds.add(task.parentId);
               // fetch the challenge data
               fetch(`${MAPROULETTE_API}/challenge/${task.parentId}`)
                 .then(response => response.json())
@@ -144,6 +149,13 @@ export class MapRouletteService extends AbstractSystem {
                   let d = new MapRouletteTask(loc, this, id, { task, type: itemType });
                   this._cache.tasks.set(d.id, d);
                   this._cache.rtree.insert(this._encodeIssueRtree(d));
+                  // Remove the challenge ID from the set of inflight challenges
+                  this._cache.inflightChallengeIds.delete(task.parentId);
+                })
+                .catch(err => {
+                  console.error(`Error fetching challenge data for task ${task.id}:`, err);
+                  // Remove the challenge ID from the set of inflight challenges
+                  this._cache.inflightChallengeIds.delete(task.parentId);
                 });
             }
           }
