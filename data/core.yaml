@@ -2555,6 +2555,7 @@ en:
         zoom: "Zoom in / out"
         zoom_more: "Zoom in / out by a lot"
         rotate: "Rotate map"
+        rotate_incremental: "Rotate Map Incrementally"
       help:
         title: "Help"
         help: "Show help/documentation"

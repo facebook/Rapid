@@ -40,9 +40,14 @@
             "text": "shortcuts.browsing.navigation.zoom_more"
           },
           {
+            "modifiers": ["⌥"],
+            "shortcuts": ["{interaction-mouse-left}", "{interaction-onefinger-tap}"],
+            "text": "shortcuts.browsing.navigation.rotate"
+          },
+          {
             "modifiers": ["⇧"],
             "shortcuts": ["{interaction-keyboard-arrows-left-right}"],
-            "text": "shortcuts.browsing.navigation.rotate"
+            "text": "shortcuts.browsing.navigation.rotate_incremental"
           },
           {
             "section": "display_options",
