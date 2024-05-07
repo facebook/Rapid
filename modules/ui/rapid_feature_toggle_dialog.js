@@ -76,7 +76,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     _modalSelection = uiModal(selection);
 
     _modalSelection.select('.modal')
-      .attr('class', 'modal rapid-modal');   // Rapid styling
+      .attr('class', 'modal rapid-modal');
 
     _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
       .on('done', () => _content.call(renderModalContent));
@@ -222,7 +222,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     // enter
     let rowsEnter = rows.enter()
       .append('div')
-      .attr('class', 'modal-section rapid-checkbox rapid-checkbox-dataset');
+      .attr('class', 'rapid-checkbox rapid-checkbox-dataset');
 
     rowsEnter
       .append('div')

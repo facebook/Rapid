@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { actionNoop, actionRapidAcceptFeature } from '../actions/index.js';
 import { uiIcon } from './icon.js';
 import { uiFlash } from './flash.js';
-import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog.js';
+//import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog.js';
 import { uiTooltip } from './tooltip.js';
 
 const ACCEPT_FEATURES_LIMIT = 50;
@@ -68,11 +68,13 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
     window.sessionStorage.setItem('acknowledgedLogin', 'true');
 
-    const osm = context.services.osm;
-    if (!osm.authenticated()) {
-      context.container()
-        .call(uiRapidFirstEditDialog(context));
-    }
+// This dialog box looks kind of old and could use a refresh
+// It it to tell new users that they need to log into OSM.
+//    const osm = context.services.osm;
+//    if (!osm.authenticated()) {
+//      context.container()
+//        .call(uiRapidFirstEditDialog(context));
+//    }
   }
 
 

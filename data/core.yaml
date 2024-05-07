@@ -824,7 +824,7 @@ en:
         detail_title: Details
         id_title: Challenge Id / Task Id
         instruction_title: Instructions
-        fixedIt: I fixed it! 
+        fixedIt: I fixed it!
         cantComplete: Can't Complete
         alreadyFixed: Already Fixed
         notAnIssue: Not an Issue
@@ -1091,13 +1091,16 @@ en:
     okay: "OK"
     cancel: "Cancel"
   splash:
-    welcome: Welcome to the iD OpenStreetMap editor
-    text: "iD is a friendly but powerful tool for contributing to the world's best free world map. This is version {version}. For more information see {website} and report bugs at {github}."
-    privacy_update: "Our privacy policy has recently been updated."
-    privacy_policy: iD privacy policy
-    privacy: "{updateMessage} By using this software, you agree to do so in accordance with the {privacyLink}."
-    walkthrough: "Start the Walkthrough"
+    welcome: "Welcome to {rapidicon}!"
+    text: "Rapid is a friendly but powerful editor for OpenStreetMap, a free map of the world. If this is your first time here, click the button below to start the tutorial. Anyone can be a mapper!\n\nThis is Rapid version **{version}**. For more information visit our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍"
+    privacy_update: "*Our privacy policy has recently been updated.*"
+    privacy: "By using this software, you agree to do so in accordance with the [Rapid privacy policy](https://github.com/facebook/Rapid/blob/main/PRIVACY.md)."
+    walkthrough: "Start the Tutorial"
     start: "Edit now"
+  whats_new:
+    welcome: "Welcome to {rapidicon} v2.3!"
+    text: "🌸 **Happy Spring 2024!**  We've added support for GeoScribble field notes, Esri Wayback Imagery, and completing MapRoulette tasks right from within Rapid. And, you can now rotate the map to make editing easier!\n\nFor all the details check out our [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) and [issue tracker](https://github.com/facebook/Rapid/issues) on GitHub. Happy Mapping! 👍"
+    dontshowagain: "Hide this screen until the next version"
   source_switch:
     live: live
     lose_changes: "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?"
@@ -1109,12 +1112,6 @@ en:
     walkthrough: "Start the whole walkthrough"
     skip_to_rapid: "Learn about Rapid!"
     start: "No thanks, just start mapping"
-  rapid_whats_new:
-    welcome: "Welcome to {rapidicon} v2.2!"
-    text: "In this release:  New validations to detect mismatched crossing tags, improvements to Mapillary and KartaView streetview imagery, Cycle Tags operation now cycles through crossing types, and many other enhancements and fixes.<p> Check out the [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md) for more details.  Happy Mapping!"
-    ok: Okay
-    nope: No thanks, just take me to Rapid
-    dontshowagain: Don't show this again
   rapid_first_edit:
     nice: You just added your first {rapidicon} AI-Assisted feature, nice.
     text: You'll need an OpenStreetMap account to save your work. Would you like to log in with OSM now or keep exploring?

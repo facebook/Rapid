@@ -83,7 +83,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     _modalSelection = uiModal(selection);
 
     _modalSelection.select('.modal')
-      .attr('class', 'modal rapid-modal');   // Rapid styling
+      .attr('class', 'modal rapid-modal');
 
     _content = _modalSelection.select('.content')
       .append('div')
@@ -155,7 +155,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     // enter
     let rowsEnter = rows.enter()
       .append('div')
-      .attr('class', 'modal-section rapid-checkbox rapid-checkbox-feature');
+      .attr('class', 'rapid-checkbox rapid-checkbox-feature');
 
     rowsEnter
       .append('div')

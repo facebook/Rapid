@@ -83,7 +83,7 @@ button.bugnub {
 .rapid-inspector button,
 .modal.rapid-modal button {
     border: 0;
-    background: #da26d3;
+    background: #c000c0;  /* rapid magenta is just too bold for giant buttons: #da26d3;*/
     color: #eee;
     font-size: 16px;
     border-radius: 30px;
@@ -371,17 +371,17 @@ button.bugnub {
 
 /* Rapid modal dialogs */
 .modal.rapid-modal {
-    top: 80px;
-    min-width: 650px;
-    max-width: 650px;
-    max-height: 85%;
-    background: rgba(25, 25, 25, 0.9);
-    -webkit-backdrop-filter: blur(2.5px);
-    backdrop-filter: blur(2.5px);
-    color: #ddd;
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    border: 1px solid #888a;
+  top: 80px;
+  min-width: 650px;
+  max-width: 650px;
+  max-height: 85%;
+  background: rgba(25, 25, 25, 0.9);
+  -webkit-backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+  color: #ddd;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  border: 1px solid #888a;
 }
 
 .modal.rapid-modal h1,
@@ -389,131 +389,110 @@ button.bugnub {
 .modal.rapid-modal h3,
 .modal.rapid-modal h4,
 .modal.rapid-modal h5 {
-    color: #fff;
+  color: #fff;
 }
 
 .modal.rapid-modal .modal-section.buttons {
-    flex-flow: column;
-    padding: 20px;
-    border-top: 1px solid #888a;
-    width: 100%;
+  flex-flow: column;
+  padding: 20px;
+  width: 100%;
 }
 
 .modal.rapid-modal .modal-section {
-    border: 0px;
+  border-bottom: 1px solid #aaaa;
 }
+.modal.rapid-modal .modal-section:last-child {
+  border-bottom: 0;
+}
+
 .modal.rapid-modal .modal-section .logo-rapid {
-    fill: white;
-    margin: 4px 9px 0 9px;
+  fill: white;
+  margin: 4px 9px 0 9px;
 }
 .modal.rapid-modal p {
-    font-size: 14px;
+  font-size: 14px;
 }
 .modal.rapid-modal button.close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: transparent;
-    height: 40px;
-    border-radius: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: transparent;
+  height: 40px;
+  border-radius: 0;
 }
 .modal.rapid-modal button.close svg {
-    color: #da26d3;
+  color: #da26d3;
 }
 .modal.rapid-modal button.close:hover {
-    background: #8885;
+  background: #8885;
 }
 
 /* Splash, Whats New, Login to OSM */
 .modal.rapid-modal .modal-section .icon.pre-text.rapid {
-    color: #da26d3;
-    fill: #fff;
-    vertical-align: middle;
+  color: #da26d3;
+  fill: #fff;
+  vertical-align: middle;
 }
 .modal.rapid-modal .modal-section h1 .icon.pre-text.rapid,
 .modal.rapid-modal .modal-section h2 .icon.pre-text.rapid {
-    height: 27px;
-    width: 100px;
-    margin: 0 2px;
+  height: 27px;
+  width: 100px;
+  margin: 0 2px;
 }
 .modal.rapid-modal .modal-section h3 .icon.pre-text.rapid,
 .modal.rapid-modal .modal-section h4 .icon.pre-text.rapid,
 .modal.rapid-modal .modal-section h5 .icon.pre-text.rapid,
 .modal.rapid-modal .modal-section p .icon.pre-text.rapid {
-    height: 20px;
-    width: 60px;
-    margin: 0 2px;
+  height: 20px;
+  width: 60px;
+  margin: 0 2px;
 }
 .modal.rapid-modal .modal-actions > button {
-    width: 100%;
-    margin: 20px;
+  width: 100%;
+  margin: 20px;
 }
 .modal.rapid-modal.modal-splash .modal-actions > button {
-    height: unset;  /* big buttons */
-    padding: 10px;
+  height: unset;  /* big buttons */
+  padding: 10px;
 }
-.modal-splash.modal-whatsnew div.modal-actions {
-    justify-content: flex-end;
-}
-
 .modal.rapid-modal.modal-whatsnew .modal-actions > button {
-    height: 50px;
-    width: 25%;
-    min-height: unset;
-}
-
-.modal.rapid-modal .modal-actions > button.whats-new-nothanks,
-.modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
-    background: #eee;
-    color: #111;
-    height: 160px;
-}
-.modal.rapid-modal .modal-actions > button.whats-new-nothanks:hover,
-.modal.rapid-modal .modal-actions > button.rapid-login-to-osm:hover {
-    background: #ccc;
+  height: 50px;
+  width: 25%;
+  min-height: unset;
 }
 
 .modal.rapid-modal.modal-whatsnew div.whatsnew-images {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .modal.rapid-modal.modal-whatsnew img.whatsnew-image {
-    margin-top: 20px;
-    max-height: 350px;
-    align-items: center;
+  max-height: 350px;
+  align-items: center;
 }
 
-.modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
-    font-size: 16px;
-    padding: 0 30px;
+.modal.rapid-modal.modal-whatsnew .whatsnew-dontshow {
+  margin-top: 20px;
+  font-size: 16px;
 }
 .modal.rapid-modal.modal-whatsnew .rapid-checkbox-label {
-    display: flex;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 .modal.rapid-modal.modal-whatsnew .rapid-checkbox-text {
-    flex: 1 1 auto;
-    display: flex;
-    justify-content: flex-end;
-    margin: 0px 20px;
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0px 20px;
 }
 .modal.rapid-modal.modal-whatsnew .rapid-checkbox-custom {
-    display: flex;
-    flex: 0 0 36px;
+  display: flex;
+  flex: 0 0 36px;
 }
 
-.modal.rapid-modal.modal-whatsnew div.body.modal-section {
-    display: flex;
-    flex-direction: column;
-    padding-top: 0;
-}
-
-.modal.rapid-modal.modal-whatsnew div.body.modal-section svg.icon.bugnub {
-    color: #ff26db;
-}
 
 /* dark scrollbars */
 .modal.rapid-modal {
@@ -538,7 +517,7 @@ button.bugnub {
 
 
 /* Toggle Features */
-.modal.rapid-modal .modal-section.rapid-checkbox {
+.modal.rapid-modal .rapid-checkbox {
     font-size: 24px;
     display: flex;
     justify-content: flex-start;
@@ -546,7 +525,7 @@ button.bugnub {
     padding: 5px 10px;
     width: 100%;
 }
-.modal.rapid-modal .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+.modal.rapid-modal .rapid-datasets-container > .rapid-checkbox:last-of-type {
     padding-bottom: 15px;
 }
 
@@ -556,16 +535,16 @@ button.bugnub {
     width: 100%;
 }
 
-.rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
+.rapid-stack .rapid-checkbox.rapid-toggle-all {
     border-bottom: 1px solid #888a;
     padding: 45px 10px 10px 10px;
 }
-.rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
+.rapid-stack .rapid-checkbox.rapid-manage-datasets {
     border-top: 1px solid #888a;
     padding: 10px;
     cursor: pointer;
 }
-.rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+.rapid-stack .rapid-checkbox.rapid-manage-datasets:hover {
     color: #ddd;
     background: #8885;
 }
@@ -614,14 +593,14 @@ button.bugnub {
 .rapid-feature-license p {
     font-size: 10px;
 }
-.modal-section.rapid-checkbox.disabled {
+.rapid-checkbox.disabled {
     opacity: .5;
 }
 .rapid-feature-checkbox {
     margin-left: auto;
 }
 
-.modal-section.rapid-checkbox.section-divider {
+.rapid-checkbox.section-divider {
     width: 100%;
     height: 1px;
     background: #888a;
@@ -631,7 +610,7 @@ button.bugnub {
     margin-bottom: 3px;
 }
 
-.modal-section.rapid-checkbox.section-divider.strong {
+.rapid-checkbox.section-divider.strong {
     background: #fffa;
 }
 
@@ -755,7 +734,7 @@ hide this one and style something on top of it.  */
     width: 100%;
     border-top: 1px solid #888a;
 }
-.rapid-stack.poweruser .rapid-features-container > .modal-section.rapid-checkbox:last-of-type {
+.rapid-stack.poweruser .rapid-features-container > .rapid-checkbox:last-of-type {
     padding-bottom: 15px;
 }
 .rapid-stack.poweruser .rapid-features-container .rapid-feature-label {
@@ -907,7 +886,7 @@ div.combobox.combobox-dataset-categories a:focus {
     font-size: 20px;
 }
 
-.modal-view-manage .modal-section.rapid-view-manage-datasets-section {
+.modal-view-manage .rapid-view-manage-datasets-section {
     display: flex;
     flex-flow: column nowrap;
     align-items: stretch;

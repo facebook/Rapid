@@ -1,81 +1,72 @@
+import { marked } from 'marked';
+
+import { icon } from './intro/helper.js';
 import { uiIntro } from './intro/intro.js';
 import { uiModal } from './modal.js';
 
 
+/**
+ * uiRapidSplash
+ * This is the screen we show to the users if:
+ *   - They have never used Rapid before, or
+ *   - We have an updated privacy policy to tell them about
+ */
 export function uiSplash(context) {
-  const editor = context.systems.editor;
+  const dataloader = context.systems.dataloader;
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
 
-  return (selection) => {
-    // Exception - if there are restorable changes, skip the splash screen.
-    // This is because we currently only support one `uiModal` at a time
-    //  and we need to show them `uiRestore` instead of this one.
-    if (editor.canRestoreBackup) return;
+  const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
 
-    // If user has not seen this version of the privacy policy, show the splash again.
-    let updateMessage = '';
-    const sawPrivacyVersion = storage.getItem('sawPrivacyVersion');
-    let showSplash = !storage.getItem('sawSplash');
-    if (sawPrivacyVersion !== context.privacyVersion) {
-      updateMessage = l10n.t('splash.privacy_update');
-      showSplash = true;
-    }
 
-    if (!showSplash) return;
-
-    storage.setItem('sawSplash', true);
+  return function render(selection) {
     storage.setItem('sawPrivacyVersion', context.privacyVersion);
 
-    // fetch intro graph data now, while user is looking at the splash screen
-    const dataloader = context.systems.dataloader;
+    // prefetch intro graph data now, while user is looking at the splash screen
     dataloader.getDataAsync('intro_graph');
 
-    let modalSelection = uiModal(selection);
+    const modal = uiModal(selection);
+    modal.select('.modal')
+      .attr('class', 'modal rapid-modal modal-splash');
 
-    modalSelection.select('.modal')
-      .attr('class', 'modal-splash modal');
-
-    let introModal = modalSelection.select('.content')
+    const content = modal.select('.content');
+    content
       .append('div')
-      .attr('class', 'fillL');
+      .attr('class', 'modal-section')
+      .append('h2')
+      .html(l10n.t('splash.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
 
-    introModal
+
+    let markdown = l10n.t('splash.text', { version: context.version }) + '\n\n';
+
+    // If they have seen some privacy version, but not the current one,
+    // prepend with "Our privacy policy has recently been updated."
+    if (sawPrivacyVersion > 0) {
+      markdown += l10n.t('splash.privacy_update') + ' ';
+    }
+    markdown += l10n.t('splash.privacy');
+
+
+    content
       .append('div')
-      .attr('class','modal-section')
-      .append('h3')
-      .text(l10n.t('splash.welcome'));
+      .attr('class', 'modal-section')
+      .html(marked.parse(markdown));
 
-    let modalSection = introModal
-      .append('div')
-      .attr('class','modal-section');
+    // outbound links should open in new tab
+    content.selectAll('a')
+      .attr('target', '_blank');
 
-    modalSection
-      .append('p')
-      .html(l10n.tHtml('splash.text', {
-        version: context.version,
-        website: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#whats-new">changelog</a>',
-        github: '<a target="_blank" href="https://github.com/openstreetmap/iD/issues">github.com</a>'
-      }));
 
-    modalSection
-      .append('p')
-      .html(l10n.tHtml('splash.privacy', {
-        updateMessage: updateMessage,
-        privacyLink: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/release/PRIVACY.md">' +
-          l10n.t('splash.privacy_policy') + '</a>'
-      }));
-
-    let buttonWrap = introModal
+    const buttonWrap = content
       .append('div')
       .attr('class', 'modal-actions');
 
-    let walkthrough = buttonWrap
+    const walkthrough = buttonWrap
       .append('button')
       .attr('class', 'walkthrough')
       .on('click', () => {
         context.container().call(uiIntro(context));
-        modalSelection.close();
+        modal.close();
       });
 
     walkthrough
@@ -86,12 +77,12 @@ export function uiSplash(context) {
 
     walkthrough
       .append('div')
-      .html(l10n.tHtml('splash.walkthrough'));
+      .text(l10n.t('splash.walkthrough'));
 
-    let startEditing = buttonWrap
+    const startEditing = buttonWrap
       .append('button')
       .attr('class', 'start-editing')
-      .on('click', modalSelection.close);
+      .on('click', modal.close);
 
     startEditing
       .append('svg')
@@ -101,9 +92,6 @@ export function uiSplash(context) {
 
     startEditing
       .append('div')
-      .html(l10n.tHtml('splash.start'));
-
-    modalSelection.select('button.close')
-      .attr('class','hide');
+      .text(l10n.t('splash.start'));
   };
 }

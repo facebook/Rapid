@@ -28,8 +28,12 @@ export class Context extends EventEmitter {
   constructor() {
     super();
 
-    this.privacyVersion = '20201202';
     this.version = '2.3.0-pre.0';     // see https://semver.org/ for examples
+
+    // If user has not seen this version of our software, we will show them a modal at startup.
+    // Just bump these dates to a higher number to get the screen to come back.
+    this.privacyVersion = 20201202;   // whether to show the "welcome" screen
+    this.whatsNewVersion = 20240507;  // whether show the "what's new" screen
 
     // These may be set by our continuous deployment scripts, or left empty
     this.buildID = '';

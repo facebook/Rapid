@@ -10,9 +10,9 @@ import {
   uiFeatureInfo, uiFlash, uiFullScreen, uiGeolocate, uiIcon,
   uiInfo, uiIntro, uiIssuesInfo, uiLoading, uiMapInMap,
   uiMap3dViewer, uiPhotoViewer, uiRapidServiceLicense,
-  uiRapidWhatsNew, uiRapidSplash, uiRestore, uiScale, uiShortcuts,
+  uiSplash, uiRestore, uiScale, uiShortcuts,
   uiSidebar, uiSourceSwitch, uiSpinner, uiStatus, uiTooltip,
-  uiTopToolbar, uiVersion, uiZoom, uiZoomToSelection
+  uiTopToolbar, uiVersion, uiWhatsNew, uiZoom, uiZoomToSelection
 } from '../ui/index.js';
 
 import {
@@ -426,20 +426,21 @@ this.didRender = true;
 
     // What to show first?
     const editor = context.systems.editor;
+    const storage = context.systems.storage;
     const urlhash = context.systems.urlhash;
+
     const startWalkthrough = urlhash.initialHashParams.get('walkthrough') === 'true';
+    const sawPrivacyVersion = parseInt(storage.getItem('sawPrivacyVersion'), 10) || 0;
+    const sawWhatsNewVersion = parseInt(storage.getItem('sawWhatsNewVersion'), 10) || 0;
 
     if (startWalkthrough) {
-      container.call(uiIntro(context));   // Jump right into walkthrough..
+      container.call(uiIntro(context));          // Jump right into walkthrough..
     } else if (editor.canRestoreBackup) {
-      container.call(uiRestore(context));   // Offer to restore backup edits..
-    } else {
-// uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew
-//      if (context.systems.storage.getItem('sawRapidSplash')) {
-       container.call(uiRapidWhatsNew(context));    // Show "Whats New"
-//      } else {
-//        container.call(uiRapidSplash(context));      // Show "Welcome to Rapid"
-//      }
+      container.call(uiRestore(context));        // Offer to restore backup edits..
+    } else if (sawPrivacyVersion !== context.privacyVersion) {
+      container.call(uiSplash(context));         // Show "Welcome to Rapid" / Privacy Policy
+    } else if (sawWhatsNewVersion !== context.whatsNewVersion) {
+      container.call(uiWhatsNew(context));       // Show "Whats New"
     }
   }
 

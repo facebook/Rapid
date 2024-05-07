@@ -3,14 +3,17 @@ import { uiIntro } from './intro/intro.js';
 import { uiModal } from './modal.js';
 
 
+/**
+ * uiRapidSplash
+ * This is the screen we show to the users if they have never used Rapid before.
+ */
 export function uiRapidSplash(context) {
   const l10n = context.systems.l10n;
   const storage = context.systems.storage;
 
-  return function render(selection) {
-return;  // restore with image for v2.3
 
-    if (storage.getItem('sawRapidSplash')) return;
+  return function render(selection) {
+    if (storage.hasItem('sawRapidSplash')) return;
     storage.setItem('sawRapidSplash', true);
 
     const modalSelection = uiModal(selection);
