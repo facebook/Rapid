@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { RAD2DEG, vecEqual } from '@rapid-sdk/math';
+import { RAD2DEG, numWrap, vecEqual } from '@rapid-sdk/math';
 
 import { AbstractSystem } from './AbstractSystem.js';
 
@@ -31,7 +31,7 @@ export class Map3dSystem extends AbstractSystem {
 
     // The 3d Map will stay close to the main map, but with an offset zoom and rotation
     this.zDiff = 3;   // by default, 3dmap will be at main zoom - 3
-    this.rDiff = 0;   // by default, 3dmap bearing will match main map bearing
+    this.bDiff = 0;   // by default, 3dmap bearing will match main map bearing
 
     this.building3dlayerSpec = this.get3dBuildingLayerSpec('3D Buildings', 'osmbuildings');
     this.roadStrokelayerSpec = this.getRoadStrokeLayerSpec('Roads', 'osmroads');
@@ -74,7 +74,8 @@ export class Map3dSystem extends AbstractSystem {
 
         const maplibre = this.maplibre = new maplibregl.Map({
           container: this.containerID,
-          pitch: 30,
+          pitch: 60,
+          scrollZoom: { around: 'center' },
           style: {
             version: 8, sources: {}, layers: [
               {
@@ -86,13 +87,22 @@ export class Map3dSystem extends AbstractSystem {
                 'paint': {
                   'background-color': 'white'
                 }
-              },
+              }
           ]}
         });
 
+        maplibre.on('move', this._moved);
+        maplibre.on('moveend', this._moved);
+
+        // Add zoom and rotation controls to the map.
+        const navOptions = {
+          showCompass: true,
+          showZoom: true,
+          visualizePitch: false
+        };
+        maplibre.addControl(new maplibregl.NavigationControl(navOptions));
+
         return new Promise(resolve => {
-          maplibre.on('move', this._moved);
-          maplibre.on('moveend', this._moved);
 
           maplibre.on('load', () => {
             maplibre.setLight({
@@ -157,10 +167,11 @@ export class Map3dSystem extends AbstractSystem {
 
     const mainCenterLoc = viewport.centerLoc();
     const mainZoom = transform.zoom;
-    const mainBearing = transform.rotation * RAD2DEG;
+    // Why a '-' here?  Because "bearing" is the angle that the user points, not the angle that north points.
+    const mainBearing = numWrap(-transform.rotation * RAD2DEG, 0, 360);
 
     this.zDiff = mainZoom - mlZoom;
-    this.rDiff = mainBearing - mlBearing;
+    this.bDiff = mainBearing - mlBearing;
 
     // Recenter main map, if 3dmap center moved
     if (!vecEqual(mainCenterLoc, mlCenterLoc, 1e-6)) {

@@ -1,6 +1,6 @@
 import { Color } from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
-import { RAD2DEG, geomPolygonContainsPolygon } from '@rapid-sdk/math';
+import { RAD2DEG, numWrap, geomPolygonContainsPolygon } from '@rapid-sdk/math';
 import throttle from 'lodash-es/throttle.js';
 
 import { uiCmd } from './cmd.js';
@@ -45,9 +45,13 @@ export function uiMap3dViewer(context) {
 
       _lastv = viewport.v;
       const transform = viewport.transform;
+
+      // Why a '-' here?  Because "bearing" is the angle that the user points, not the angle that north points.
+      const bearing = numWrap(-transform.r * RAD2DEG, 0, 360);
+
       maplibre.jumpTo({
         center: viewport.centerLoc(),
-        bearing: (RAD2DEG * transform.rotation) - map3d.rDiff,
+        bearing: bearing - map3d.bDiff,
         zoom: transform.zoom - map3d.zDiff
       });
     }

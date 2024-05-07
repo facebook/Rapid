@@ -330,7 +330,8 @@ export class MapSystem extends AbstractSystem {
       zoom = numClamp(zoom, MIN_Z, MAX_Z);
       lat = numClamp(lat, -90, 90);
       lon = numClamp(lon, -180, 180);
-      ang = numWrap(ang, 0, 360);
+      // Why a '-' here?  Because "bearing" is the angle that the user points, not the angle that north points.
+      ang = numWrap(-ang, 0, 360);
 
       this.setMapParams([lon, lat], zoom, ang * DEG2RAD);   // will eventually call setTransformAsync
     }
@@ -362,7 +363,8 @@ export class MapSystem extends AbstractSystem {
     const [lon, lat] = viewport.centerLoc();
     const transform = viewport.transform;
     const zoom = transform.zoom;
-    const ang = transform.r * RAD2DEG;
+    // Why a '-' here?  Because "bearing" is the angle that the user points, not the angle that north points.
+    const ang = numWrap(-transform.r * RAD2DEG, 0, 360);
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
     const EPSILON = 0.1;
 
@@ -481,10 +483,10 @@ export class MapSystem extends AbstractSystem {
 
   /**
    * setMapParams
-   * Set loc, zoom, and bearing at the same time.
+   * Set loc, zoom, and rotation at the same time.
    * @param  loc2       Array [lon,lat] to set the center to
    * @param  z2         Number to set the zoom to
-   * @param  r2         Number to set the bearing (rotation) to (in radians)
+   * @param  r2         Number to set the rotation to (in radians)
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
@@ -529,7 +531,7 @@ export class MapSystem extends AbstractSystem {
    * Promise-returning version of `setMapParams()`
    * @param  loc2       Array [lon,lat] to set the center to
    * @param  z2         Number to set the zoom to
-   * @param  r2         Number to set the bearing (rotation) to
+   * @param  r2         Number to set the rotation to (in radians)
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return Promise that resolves when the transform has finished changing
    */
