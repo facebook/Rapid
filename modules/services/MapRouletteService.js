@@ -67,6 +67,7 @@ export class MapRouletteService extends AbstractSystem {
       tasks: new Map(),    // Map (taskID -> Task)
       loadedTile: {},
       inflightTile: {},
+      fetchedChallengeIds: new Set(),
       inflightPost: {},
       closed: {},
       comment: {},
@@ -127,13 +128,18 @@ export class MapRouletteService extends AbstractSystem {
 
           for (const task of (data ?? [])) {
             if (!challengeId || task.parentId === challengeId) {
+              // Check if we've already fetched this challenge
+              if (this._cache.fetchedChallengeIds.has(task.parentId)) continue;
+
+              // Add the challenge ID to the set of fetched challenges
+              this._cache.fetchedChallengeIds.add(task.parentId);
+
               // fetch the challenge data
               fetch(`${MAPROULETTE_API}/challenge/${task.parentId}`)
                 .then(response => response.json())
                 .then(challengeData => {
                   // Update the cache with the deleted status of the challenge
                   this._deletedChallenges[challengeData.id] = challengeData.deleted;
-                  // if the challenge is deleted, skip the rest of the loop iteration
                   if (challengeData.deleted) return;
 
                   const id = task.id;
@@ -144,6 +150,9 @@ export class MapRouletteService extends AbstractSystem {
                   let d = new MapRouletteTask(loc, this, id, { task, type: itemType });
                   this._cache.tasks.set(d.id, d);
                   this._cache.rtree.insert(this._encodeIssueRtree(d));
+                })
+                .catch(err => {
+                  console.error(`Error fetching challenge data for task ${task.id}:`, err);
                 });
             }
           }
