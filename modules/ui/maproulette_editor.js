@@ -334,7 +334,7 @@ export function uiMapRouletteEditor(context) {
     const osm = context.services.osm;
     osm.loadMapRouletteKey((err, preferences) => {
       if (err) {
-        console.error(err);
+        console.error(err); // eslint-disable-line no-console
         return;
       }
       _mapRouletteApiKey = preferences.maproulette_apikey_v2;
@@ -456,7 +456,7 @@ export function uiMapRouletteEditor(context) {
       d.userId = userID;
       maproulette.postUpdate(d, (err, item) => {
         if (err) {
-          console.error(err);
+          console.error(err);  // eslint-disable-line no-console
           return;
         }
         // Update the UI only after all API requests have completed successfully

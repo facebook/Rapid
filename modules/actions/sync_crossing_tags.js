@@ -83,16 +83,16 @@ export function actionSyncCrossingTags(entityID) {
   }
 
 
-  /**
-   * _isPathWay
-   * Is the way tagged with something that would indicate that it is a path,
-   *   for example `highway=footway` (with or without the crossing)
-   * @param   {Object}   tags - tags to check
-   * @return  {boolean}  true if the way is considered a path (with or without crossing tags)
-   */
-  function _isPathWay(tags) {
-    return pathVals.has(tags.highway);
-  }
+//  /**
+//   * _isPathWay
+//   * Is the way tagged with something that would indicate that it is a path,
+//   *   for example `highway=footway` (with or without the crossing)
+//   * @param   {Object}   tags - tags to check
+//   * @return  {boolean}  true if the way is considered a path (with or without crossing tags)
+//   */
+//  function _isPathWay(tags) {
+//    return pathVals.has(tags.highway);
+//  }
 
 
   /**

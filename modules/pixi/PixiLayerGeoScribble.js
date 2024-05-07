@@ -134,7 +134,6 @@ export class PixiLayerGeoScribble extends AbstractLayer {
    * @param styleOverride Custom style
    */
   renderLines(frame, viewport, zoom, lines, styleOverride) {
-    const l10n = this.context.systems.l10n;
     const parentContainer = this.scribblesContainer;
 
     for (const d of lines) {
@@ -185,7 +184,6 @@ export class PixiLayerGeoScribble extends AbstractLayer {
    * @param  lines        Array of point data
    */
   renderPoints(frame, viewport, zoom, points) {
-    const l10n = this.context.systems.l10n;
     const parentContainer = this.scribblesContainer;
 
     const pointStyle = {

@@ -499,7 +499,7 @@ export class KartaviewService extends AbstractSystem {
     })
     .catch(err => {
       if (err.name === 'AbortError') return;
-      if (err instanceof Error) console.error(err);
+      if (err instanceof Error) console.error(err);  // eslint-disable-line no-console
     })
     .finally(() => {
       this._cache.inflight.delete(k);
@@ -510,7 +510,7 @@ export class KartaviewService extends AbstractSystem {
 
 _fetchImagesForSequence(sequenceID) {
   if (!sequenceID) {
-    console.error('Invalid sequenceID:', sequenceID);
+    console.error('Invalid sequenceID:', sequenceID);   // eslint-disable-line no-console
     return; // Abort the operation if sequenceID is not defined
   }
 
@@ -566,7 +566,7 @@ _fetchImagesForSequence(sequenceID) {
       }
     })
     .catch(err => {
-      if (err instanceof Error) console.error(err);
+      if (err instanceof Error) console.error(err);  // eslint-disable-line no-console
     });
   }
 

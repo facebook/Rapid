@@ -685,7 +685,7 @@ export class OsmService extends AbstractSystem {
       path: '/api/0.6/user/preferences'
     }, (err, data) => {
       if (err) {
-        console.error('Error in loadUserPreferences:', err);
+        console.error('Error in loadUserPreferences:', err);  // eslint-disable-line no-console
         return callback(err);
       }
 

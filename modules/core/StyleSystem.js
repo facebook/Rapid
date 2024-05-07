@@ -601,8 +601,10 @@ export class StyleSystem extends AbstractSystem {
 
     let matched = defaults;
     let styleScore = 999;   // lower numbers are better
+// eventually expose this to the caller?
+// it may be useful to know what `k=v` pair matched
     let styleKey;           // the key controlling the styling, if any
-    let styleVal;           // the value controlling the styling, if any
+//    let styleVal;           // the value controlling the styling, if any
 
     // First, match the tags to the best matching `styleID`..
     for (const [k, v] of Object.entries(tags)) {
@@ -626,7 +628,7 @@ export class StyleSystem extends AbstractSystem {
         matched = declaration;
         styleScore = score;
         styleKey = k;
-        styleVal = v;
+//        styleVal = v;
 
         if (styleScore === 1) break;  // no need to keep looking at tags
       }

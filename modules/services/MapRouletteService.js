@@ -152,7 +152,7 @@ export class MapRouletteService extends AbstractSystem {
                   this._cache.rtree.insert(this._encodeIssueRtree(d));
                 })
                 .catch(err => {
-                  console.error(`Error fetching challenge data for task ${task.id}:`, err);
+                  console.error(`Error fetching challenge data for task ${task.id}:`, err);  // eslint-disable-line no-console
                 });
             }
           }
@@ -201,7 +201,7 @@ export class MapRouletteService extends AbstractSystem {
     const context = this.context;
     const sidebar = context.systems.ui.sidebar;
     if (this._cache.inflightPost[task.id]) {
-      console.log('Task update already inflight for task:', task);
+//      console.log('Task update already inflight for task:', task);
       return callback({ message: 'Issue update already inflight', status: -2 }, task);
     }
     const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
@@ -265,7 +265,7 @@ export class MapRouletteService extends AbstractSystem {
       if (callback) callback(null, task);
     })
     .catch(err => {
-      console.log('In catch block', err);
+//      console.log('In catch block', err);
       // Handle any errors
       delete this._cache.inflightPost[task.id];
       if (callback) callback(err.message);
