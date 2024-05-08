@@ -461,14 +461,14 @@ button.bugnub {
   min-height: unset;
 }
 
-.modal.rapid-modal.modal-whatsnew div.whatsnew-images {
+.modal.rapid-modal.modal-whatsnew .whatsnew-images {
   margin-top: 20px;
   display: flex;
   justify-content: space-around;
   width: 100%;
 }
 
-.modal.rapid-modal.modal-whatsnew img.whatsnew-image {
+.modal.rapid-modal.modal-whatsnew .whatsnew-image {
   max-height: 350px;
   align-items: center;
 }

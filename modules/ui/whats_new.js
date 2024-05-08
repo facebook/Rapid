@@ -43,9 +43,20 @@ export function uiWhatsNew(context) {
     mainSection
       .append('div')
       .attr('class', 'whatsnew-images')
-      .append('img')
+      .append('video')
       .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/rapid-v22-splash.jpg'));
+      .attr('width', '660')
+      .attr('autoplay', 'true')
+      .attr('disablepictureinpicture', 'true')
+      .attr('disableremoteplayback', 'true')
+      .attr('loop', 'true')
+      .attr('muted', 'true')
+      .attr('playsinline', 'true')
+      .attr('poster', context.asset('img/rapid-v23-rotation.jpg'))
+      .attr('src', context.asset('img/rapid-v23-rotation.mp4'));
+//      .append('img')
+//      .attr('class', 'whatsnew-image')
+//      .attr('src', context.asset('img/rapid-v22-splash.jpg'));
 
     const checkbox = mainSection
       .append('div')
