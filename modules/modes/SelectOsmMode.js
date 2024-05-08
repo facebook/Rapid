@@ -211,14 +211,7 @@ export class SelectOsmMode extends AbstractMode {
     const ui = context.systems.ui;
     const viewport = context.viewport;
 
-    // Escape key
-    if (['Esc'].includes(e.key)) {
-      if (context.container().select('.combobox').size()) return;
-      context.enter('browse');
-      return;
-    }
-
-    // For the rest of the keys, only do it if the user doesn't have something
+    // Only match these keys if the user doesn't have something
     // more important focused - like a input, textarea, menu, etc.
     const activeElement = document.activeElement?.tagName ?? 'BODY';
     if (activeElement !== 'BODY') return;

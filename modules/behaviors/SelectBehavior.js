@@ -126,7 +126,16 @@ export class SelectBehavior extends AbstractBehavior {
     // if any key is pressed the user is probably doing something other than long-pressing
     this._cancelLongPress();
 
-    if (e.key === 'ContextMenu') {
+    const context = this.context;
+
+    // Escape key
+    if (['Escape', 'Esc'].includes(e.key)) {
+      if (context.container().select('.combobox').size()) return;
+      e.preventDefault();
+      context.enter('browse');
+      return;
+
+    } else if (e.key === 'ContextMenu') {
       e.preventDefault();
       this._doContextMenu();
       return;
