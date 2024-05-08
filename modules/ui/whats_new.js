@@ -48,13 +48,12 @@ export function uiWhatsNew(context) {
       .attr('width', '660')
       .attr('muted', '')
       .attr('controls', '')
-      .attr('disablepictureinpicture', '')
       .attr('loop', '')
       .attr('playsinline', '')
-      .attr('autoplay', '')
+      .attr('disablepictureinpicture', '')
       .attr('poster', context.asset('img/rapid-v23-rotation.jpg'))
       .attr('src', context.asset('img/rapid-v23-rotation.mp4'))
-      .attr('onload', 'this.play()');
+      .attr('autoplay', '');
 //      .append('img')
 //      .attr('class', 'whatsnew-image')
 //      .attr('src', context.asset('img/rapid-v22-splash.jpg'));
