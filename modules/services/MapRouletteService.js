@@ -121,41 +121,69 @@ export class MapRouletteService extends AbstractSystem {
       const controller = new AbortController();
       this._cache.inflightTile[tile.id] = controller;
 
+
+      // A Map of challenge IDs to lists of prospective tasks
+      let pTasks = new Map();
+      let challengeIdsToQuery = new Set();
+
       fetch(url, { signal: controller.signal })
         .then(utilFetchResponse)
         .then(data => {
           this._cache.loadedTile[tile.id] = true;
 
+          //First, fetch all the tasks in the bbox and stick 'em in a map by challenge ID.
           for (const task of (data ?? [])) {
             if (!challengeId || task.parentId === challengeId) {
-              // Check if we've already fetched this challenge
-              if (this._cache.fetchedChallengeIds.has(task.parentId)) continue;
-
-              // Add the challenge ID to the set of fetched challenges
-              this._cache.fetchedChallengeIds.add(task.parentId);
-
-              // fetch the challenge data
-              fetch(`${MAPROULETTE_API}/challenge/${task.parentId}`)
-                .then(response => response.json())
-                .then(challengeData => {
-                  // Update the cache with the deleted status of the challenge
-                  this._deletedChallenges[challengeData.id] = challengeData.deleted;
-                  if (challengeData.deleted) return;
-
                   const id = task.id;
                   let loc = [task.point.lng, task.point.lat];
                   loc = this._preventCoincident(loc);
                   const itemType = task.type;
 
                   let d = new MapRouletteTask(loc, this, id, { task, type: itemType });
-                  this._cache.tasks.set(d.id, d);
-                  this._cache.rtree.insert(this._encodeIssueRtree(d));
-                })
-                .catch(err => {
-                  console.error(`Error fetching challenge data for task ${task.id}:`, err);  // eslint-disable-line no-console
-                });
+
+                  if (pTasks.get(task.parentId)) {
+                    pTasks.get(task.parentId).push(d); //subsequent items growing the list
+                  } else {
+                    pTasks.set(task.parentId, [d]); // first item in the list
+                  }
             }
           }
+
+          // Assemble the set of challenge IDs
+          for (const [challengeId, _] of pTasks) {
+            challengeIdsToQuery.add(challengeId);
+          }
+
+          for (const challengeId of challengeIdsToQuery) {
+            // Check if we've already fetched this challenge, perhaps even in another tile
+            if (this._cache.fetchedChallengeIds.has(challengeId)) {
+              continue;
+            }
+            // Add the challenge ID to the set of fetched challenges
+            this._cache.fetchedChallengeIds.add(challengeId);
+
+            // fetch the challenge data
+            fetch(`${MAPROULETTE_API}/challenge/${challengeId}`)
+            .then(response => response.json())
+            .then(challengeData => {
+              // Update the cache with the deleted status of the challenge
+              this._deletedChallenges[challengeData.id] = challengeData.deleted;
+              if (challengeData.deleted) {
+                return;
+              }
+
+              let challengeTasks = pTasks.get(challengeId);
+
+              for (const task of challengeTasks) {
+                this._cache.tasks.set(task.id, task);
+                this._cache.rtree.insert(this._encodeIssueRtree(task));
+              }
+            })
+            .catch(err => {
+              console.error(`Error fetching challenge data for task ${challengeId}:`, err);  // eslint-disable-line no-console
+            });
+          }
+
 
           this.context.deferredRedraw();
           this.emit('loadedData');
