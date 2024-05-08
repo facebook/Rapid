@@ -67,7 +67,6 @@ export class MapRouletteService extends AbstractSystem {
       tasks: new Map(),    // Map (taskID -> Task)
       loadedTile: {},
       inflightTile: {},
-      fetchedChallengeIds: new Set(),
       inflightPost: {},
       closed: {},
       comment: {},
@@ -155,13 +154,6 @@ export class MapRouletteService extends AbstractSystem {
           }
 
           for (const challengeId of challengeIdsToQuery) {
-            // Check if we've already fetched this challenge, perhaps even in another tile
-            if (this._cache.fetchedChallengeIds.has(challengeId)) {
-              continue;
-            }
-            // Add the challenge ID to the set of fetched challenges
-            this._cache.fetchedChallengeIds.add(challengeId);
-
             // fetch the challenge data
             fetch(`${MAPROULETTE_API}/challenge/${challengeId}`)
             .then(response => response.json())
