@@ -45,15 +45,16 @@ export function uiWhatsNew(context) {
       .attr('class', 'whatsnew-images')
       .append('video')
       .attr('class', 'whatsnew-image')
-      .attr('controls', '')
       .attr('width', '660')
-      .attr('autoplay', '')
+      .attr('muted', '')
+      .attr('controls', '')
       .attr('disablepictureinpicture', '')
       .attr('loop', '')
-      .attr('muted', '')
       .attr('playsinline', '')
+      .attr('autoplay', '')
       .attr('poster', context.asset('img/rapid-v23-rotation.jpg'))
-      .attr('src', context.asset('img/rapid-v23-rotation.mp4'));
+      .attr('src', context.asset('img/rapid-v23-rotation.mp4'))
+      .attr('onload', 'this.play()');
 //      .append('img')
 //      .attr('class', 'whatsnew-image')
 //      .attr('src', context.asset('img/rapid-v22-splash.jpg'));
