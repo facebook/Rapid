@@ -35,6 +35,7 @@ const discard = [
   /^OpenStreetMap-turistautak$/,          // 'OpenStreetMap (turistautak)'
 
   /^cyclosm$/,                            // 'CyclOSM'
+  /^geoscribble$/,                        // 'GeoScribble' overlays (we built a service for this instead)
   /^hike_n_bike$/,                        // 'Hike & Bike'
   /^landsat$/,                            // 'Landsat'
   /^skobbler$/,                           // 'Skobbler'
