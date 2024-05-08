@@ -38,7 +38,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 -->
 
 # [2.3.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.0)
-#### 2024-May-?? (coming soon)
+#### 2024-May-08
 
 #### :tada: New Features
 * [#1386], [#1387] Add support for [WKT geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) in `data=` url parameter
