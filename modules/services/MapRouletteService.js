@@ -29,7 +29,6 @@ export class MapRouletteService extends AbstractSystem {
     this.autoStart = false;
 
     this._cache = null;   // cache gets replaced on init/reset
-    this._deletedChallenges = {};
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
   }
 
@@ -72,7 +71,6 @@ export class MapRouletteService extends AbstractSystem {
       comment: {},
       rtree: new RBush()
     };
-    this._deletedChallenges = {};
     return Promise.resolve();
   }
 
@@ -123,7 +121,6 @@ export class MapRouletteService extends AbstractSystem {
 
       // A Map of challenge IDs to lists of prospective tasks
       let pTasks = new Map();
-      let challengeIdsToQuery = new Set();
 
       fetch(url, { signal: controller.signal })
         .then(utilFetchResponse)
@@ -148,19 +145,14 @@ export class MapRouletteService extends AbstractSystem {
             }
           }
 
-          // Assemble the set of challenge IDs
-          for (const [challengeId, _] of pTasks) {
-            challengeIdsToQuery.add(challengeId);
-          }
-
-          for (const challengeId of challengeIdsToQuery) {
+          for (const [challengeId] of pTasks) {
             // fetch the challenge data
             fetch(`${MAPROULETTE_API}/challenge/${challengeId}`)
             .then(response => response.json())
             .then(challengeData => {
-              // Update the cache with the deleted status of the challenge
-              this._deletedChallenges[challengeData.id] = challengeData.deleted;
-              if (challengeData.deleted) {
+
+              // If the parent challenge is deleted or not enabled, don't show the task.
+              if (challengeData.deleted || !challengeData.enabled) {
                 return;
               }
 
@@ -202,7 +194,6 @@ export class MapRouletteService extends AbstractSystem {
     const handleResponse = (data) => {
       task.instruction = marked.parse(data.instruction) || '';
       task.details = marked.parse(data.description) || '';
-      this._deletedChallenges[data.id] = data.deleted;
     };
 
     return fetch(url)
