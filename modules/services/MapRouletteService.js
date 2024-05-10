@@ -282,88 +282,89 @@ export class MapRouletteService extends AbstractSystem {
     const cache = this._cache;
     const sidebar = context.systems.ui.sidebar;
 
+    // A comment is optional, but if we have one, POST it..
     const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
-    if (cache.inflight.has(commentUrl)) {
-      return callback({ message: 'Issue update already inflight', status: -2 }, task);
-    }
-    const commentController = new AbortController();
-    cache.inflight.set(commentUrl, commentController);
+    if (task.comment && !cache.inflight.has(commentUrl)) {
+      const commentController = new AbortController();
+      cache.inflight.set(commentUrl, commentController);
 
-    fetch(commentUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apiKey': task.mapRouletteApiKey
-      },
-      body: JSON.stringify({ actionId: 2, comment: task.comment }),
-      signal: commentController.signal
-    })
-    .then(utilFetchResponse)
-    .catch(err => {
-      if (err.name === 'AbortError') {
-        return;  // ok
-      } else {  // real error
-        console.error(err);  // eslint-disable-line
-      }
-    })
-    .finally(() => {
-      cache.inflight.delete(commentUrl);
-    });
-
-
-    const updateTaskUrl = `${MAPROULETTE_API}/task/${task.id}/${task.taskStatus}`;
-    const updateTaskController = new AbortController();
-    cache.inflight.set(updateTaskUrl, updateTaskController);
-
-    const releaseTaskUrl = `${MAPROULETTE_API}/task/${task.taskId}/release`;
-    const releaseTaskController = new AbortController();
-    cache.inflight.set(releaseTaskUrl, releaseTaskController);
-
-    fetch(updateTaskUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'apiKey': task.mapRouletteApiKey
-      },
-      signal: updateTaskController.signal
-    })
-    .then(utilFetchResponse)
-    .then(() => {
-      return fetch(releaseTaskUrl, {
-        signal: releaseTaskController.signal,
+      fetch(commentUrl, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'apiKey': task.mapRouletteApiKey
+        },
+        body: JSON.stringify({ actionId: 2, comment: task.comment }),
+        signal: commentController.signal
+      })
+      .then(utilFetchResponse)
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          return;  // ok
+        } else {  // real error
+          console.error(err);  // eslint-disable-line
         }
+      })
+      .finally(() => {
+        cache.inflight.delete(commentUrl);
       });
-    })
-    .then(utilFetchResponse)
-    .then(() => {
-      // All requests completed successfully
-      if (!(task.id in this._cache.closed)) {
-        this._cache.closed[task.id] = 0;
-        if (task.comment) {
-          task.comment += ` #maproulette mpr.lt/c/${task.parentId}/t/${task.taskId}`;
-          this._cache.comment[task.id] = { id: task.id, comment: task.comment };
-        }
-      }
-      this._cache.closed[task.id] += 1;
-      this.removeTask(task);
-      this.context.enter('browse');
-      if (callback) callback(null, task);
-    })
-    .catch(err => {
-      if (err.name === 'AbortError') {
-        return;  // ok
-      } else {  // real error
-        console.error(err);  // eslint-disable-line
-        if (callback) callback(err.message);
-      }
-    })
-    .finally(() => {
-      cache.inflight.delete(updateTaskUrl);
-      cache.inflight.delete(releaseTaskUrl);
-    });
+    }
 
+    // update the status and release the task
+    const updateTaskUrl = `${MAPROULETTE_API}/task/${task.id}/${task.taskStatus}`;
+    const releaseTaskUrl = `${MAPROULETTE_API}/task/${task.id}/release`;
+
+    if (!cache.inflight.has(updateTaskUrl) && !cache.inflight.has(releaseTaskUrl)) {
+      const updateTaskController = new AbortController();
+      const releaseTaskController = new AbortController();
+      cache.inflight.set(updateTaskUrl, updateTaskController);
+      cache.inflight.set(releaseTaskUrl, releaseTaskController);
+
+      fetch(updateTaskUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'apiKey': task.mapRouletteApiKey
+        },
+        signal: updateTaskController.signal
+      })
+      .then(utilFetchResponse)
+      .then(() => {
+        return fetch(releaseTaskUrl, {
+          signal: releaseTaskController.signal,
+          headers: {
+            'apiKey': task.mapRouletteApiKey
+          }
+        });
+      })
+      .then(utilFetchResponse)
+      .then(() => {
+        // All requests completed successfully
+        if (!(task.id in this._cache.closed)) {
+          this._cache.closed[task.id] = 0;
+          if (task.comment) {
+            task.comment += ` #maproulette mpr.lt/c/${task.parentId}/t/${task.id}`;
+            this._cache.comment[task.id] = { id: task.id, comment: task.comment };
+          }
+        }
+        this._cache.closed[task.id] += 1;
+        this.removeTask(task);
+        this.context.enter('browse');
+        if (callback) callback(null, task);
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          return;  // ok
+        } else {  // real error
+          console.error(err);  // eslint-disable-line
+          if (callback) callback(err.message);
+        }
+      })
+      .finally(() => {
+        cache.inflight.delete(updateTaskUrl);
+        cache.inflight.delete(releaseTaskUrl);
+      });
+    }
   }
 
 

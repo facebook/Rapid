@@ -830,7 +830,7 @@ en:
         alreadyFixed: Already Fixed
         notAnIssue: Not an Issue
         login: You must log in to change Maproulette challenge.
-        inputPlaceholder: Your change comment
+        inputPlaceholder: Change comment (optional)
         comment: Please confirm
         cancel: Cancel
         submit: Submit

@@ -17,8 +17,6 @@ export function uiMapRouletteEditor(context) {
   const mapRouletteHeader = uiMapRouletteHeader(context);
 
   let _qaItem;
-  let _comment;
-  let _newComment;
   let _actionTaken;
   let _mapRouletteApiKey;
 
@@ -96,6 +94,9 @@ export function uiMapRouletteEditor(context) {
   }
 
 
+  /**
+   * pick a color for the given action
+   */
   function getActionColor(action) {
     switch (action) {
       case 'FIXED':
@@ -112,13 +113,15 @@ export function uiMapRouletteEditor(context) {
   }
 
 
+  /**
+   * render the comment save section
+   */
   function commentSaveSection(selection) {
     const errID = _qaItem?.id;
     const isSelected = errID && context.selectedData().has(errID);
-    const showNoteSaveSection = _qaItem?.showNoteSaveSection;
 
     let commentSave = selection.selectAll('.note-save')
-      .data(isSelected && showNoteSaveSection ? [_qaItem] : [], d => d.key);
+      .data(isSelected && _actionTaken ? [_qaItem] : [], d => d.key);
 
     // exit
     commentSave.exit()
@@ -135,8 +138,11 @@ export function uiMapRouletteEditor(context) {
 
     // update
     commentSave = commentSaveEnter.merge(commentSave);
+
     commentSave.select('.note-save-header')  // Corrected class name
-      .html(l10n.t('map_data.layers.maproulette.comment') + ' <span style="color: ' + getActionColor(_actionTaken) + ';">' + _actionTaken + '</span>');
+      .html(l10n.t('map_data.layers.maproulette.comment') +
+        ' <span style="color: ' + getActionColor(_actionTaken) + ';">' + _actionTaken + '</span>'
+      );
 
     let commentTextarea = commentSaveEnter
       .append('textarea')
@@ -149,11 +155,6 @@ export function uiMapRouletteEditor(context) {
       .on('blur.note-input', changeInput)
       .style('resize', 'none');
 
-    if (!commentTextarea.empty() && _newComment) {
-      // autofocus the comment field for new notes
-      commentTextarea.node().focus();
-    }
-
     // update
     commentSave = commentSaveEnter
       .merge(commentSave)
@@ -163,11 +164,6 @@ export function uiMapRouletteEditor(context) {
     function changeInput() {
       let input = d3_select(this);
       let val = input.property('value').trim() || undefined;
-
-      // Check if _comment is defined before calling the update method
-      if (_comment) {
-        _comment = _comment.update({ _newComment: val });
-      }
 
       _qaItem.update({ newComment: val });
 
@@ -255,6 +251,11 @@ export function uiMapRouletteEditor(context) {
   }
 
 
+  /**
+   *  Render the MapRoulette action buttons
+   *  "I Fixed It", "Can't Complete", "Already Fixed", "Not an Issue"
+   *  These buttons are available only after the user has completed authentication.
+   */
   function mRSaveButtons(selection) {
     const osm = context.services.osm;
     const hasAuth = osm && osm.authenticated();
@@ -328,8 +329,8 @@ export function uiMapRouletteEditor(context) {
   }
 
 
-  function updateMRSaveButtonsVisibility(showNoteSaveSection) {
-    if (showNoteSaveSection) {
+  function setSaveButtonVisibility(isVisible) {
+    if (isVisible) {
       d3_select('.note-save').style('display', 'block');   // Show the commentSaveSection
       d3_select('.mr-save .buttons').style('display', 'none');  // Hide the buttons
     } else {
@@ -339,6 +340,11 @@ export function uiMapRouletteEditor(context) {
   }
 
 
+  /**
+   *  Render the MapRoulette submit buttons
+   *  "Cancel" "Save"
+   *  These buttons are available only after the user has clicked an action button
+   */
   function submitButtons(selection) {
     const osm = context.services.osm;
     osm.loadMapRouletteKey((err, preferences) => {
@@ -369,35 +375,23 @@ export function uiMapRouletteEditor(context) {
 
     buttonEnter
       .append('button')
-      .attr('class', 'button submit-button action')
-      .attr('disabled', true);
+      .attr('class', 'button submit-button action');
 
     // update
     buttonSection = buttonSection
       .merge(buttonEnter);
 
     buttonSection.select('.cancel-button')
-    .text(l10n.t('map_data.layers.maproulette.cancel'))
-    .on('click.cancel', function(d3_event, d) {
-      clickCancel(d3_event, d, selection);
-    });
+      .text(l10n.t('map_data.layers.maproulette.cancel'))
+      .on('click.cancel', function(d3_event, d) {
+        clickCancel(d3_event, d, selection);
+      });
 
     buttonSection.select('.submit-button')
       .text(l10n.t('map_data.layers.maproulette.submit'))
       .on('click.submit', function(d3_event, d) {
         clickSumbit(d3_event, d, selection);
       });
-
-      selection.select('.new-comment-input')
-        .on('input.note-input', function() {
-          let comment = d3_select(this).property('value').trim();
-          let button = selection.select('.submit-button');
-          if (comment !== '') {
-            button.attr('disabled', null); // Enable the button if the comment is not empty
-          } else {
-            button.attr('disabled', true); // Disable the button if the comment is empty
-          }
-        });
   }
 
 
@@ -405,8 +399,7 @@ export function uiMapRouletteEditor(context) {
     this.blur();    // avoid keeping focus on the button - iD#4641
     d._status = 1;
     _actionTaken = 'FIXED';
-    d.showNoteSaveSection = true;
-    updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+    setSaveButtonVisibility(true);
     selection.call(commentSaveSection);
   }
 
@@ -415,8 +408,7 @@ export function uiMapRouletteEditor(context) {
     this.blur();    // avoid keeping focus on the button - iD#4641
     d._status = 6;
     _actionTaken = `CAN'T COMPLETE`;
-    d.showNoteSaveSection = true;
-    updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+    setSaveButtonVisibility(true);
     selection.call(commentSaveSection);
   }
 
@@ -424,8 +416,7 @@ export function uiMapRouletteEditor(context) {
     this.blur();    // avoid keeping focus on the button - iD#4641
     d._status = 5;
     _actionTaken = 'ALREADY FIXED';
-    d.showNoteSaveSection = true;
-    updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+    setSaveButtonVisibility(true);
     selection.call(commentSaveSection);
   }
 
@@ -433,16 +424,15 @@ export function uiMapRouletteEditor(context) {
     this.blur();    // avoid keeping focus on the button - iD#4641
     d._status = 2;
     _actionTaken = 'NOT AN ISSUE';
-    d.showNoteSaveSection = true;
-    updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+    setSaveButtonVisibility(true);
     selection.call(commentSaveSection);
   }
 
   function clickCancel(d3_event, d, selection) {
+    this.blur();    // avoid keeping focus on the button - iD#4641
     _actionTaken = '';
     d._status = '';
-    d.showNoteSaveSection = false;
-    updateMRSaveButtonsVisibility(d.showNoteSaveSection);
+    setSaveButtonVisibility(false);
     selection.call(commentSaveSection);
   }
 
@@ -461,8 +451,6 @@ export function uiMapRouletteEditor(context) {
           console.error(err);  // eslint-disable-line no-console
           return;
         }
-        // Update the UI only after all API requests have completed successfully
-        maproulette.removeTask(d);
         dispatch.call('change', item);
       });
     }
@@ -471,7 +459,7 @@ export function uiMapRouletteEditor(context) {
   render.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    _qaItem.showNoteSaveSection = false;
+    _actionTaken = '';
     return render;
   };
 
