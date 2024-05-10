@@ -821,6 +821,7 @@ en:
       maproulette:
         tooltip: Tasks from maproulette.org
         title: MapRoulette Tasks
+        loading_task_details: Loading Task Details...
         detail_title: Details
         id_title: Challenge Id / Task Id
         instruction_title: Instructions

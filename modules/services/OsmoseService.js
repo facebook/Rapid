@@ -5,7 +5,7 @@ import { marked } from 'marked';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem.js';
-import { QAItem } from '../osm/index.js';
+import { QAItem } from '../osm/qa_item.js';
 import { utilFetchResponse } from '../util/index.js';
 
 
