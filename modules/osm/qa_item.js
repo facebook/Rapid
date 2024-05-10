@@ -9,6 +9,9 @@ export class QAItem {
     // All issues must have an ID for selection, use generic if none specified
     this.id = id ? id : `${QAItem.id()}`;
 
+    // Internal version
+    this.v = 0;
+
     this.update(props);
 
     // Some QA services have marker icons to differentiate issues
@@ -17,6 +20,15 @@ export class QAItem {
     }
   }
 
+
+  // Bump internal version in place
+  touch() {
+    this.v++;
+    return this;
+  }
+
+
+  // Replace props in place
   update(props) {
     // You can't override this initial information
     const { loc, service, itemType, id } = this;
@@ -28,7 +40,12 @@ export class QAItem {
     this.itemType = itemType;
     this.id = id;
 
-    return this;
+    return this.touch();
+  }
+
+  // A function suitable for use as the second argument to d3.selection#data().
+  get key() {
+    return this.id + 'v' + (this.v || 0);
   }
 
   // Generic handling for newly created QAItems

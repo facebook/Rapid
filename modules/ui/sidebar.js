@@ -4,14 +4,13 @@ import { Extent } from '@rapid-sdk/math';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle.js';
 
-import { uiMapRouletteEditor } from './maproulette_editor.js';
-import { Task as MapRouletteTask } from '../maproulette/Task.js';
 import { osmEntity, osmNote, QAItem } from '../osm/index.js';
 import { uiDataEditor } from './data_editor.js';
 import { uiFeatureList } from './feature_list.js';
 import { uiInspector } from './inspector.js';
 import { uiImproveOsmEditor } from './improveOSM_editor.js';
 import { uiKeepRightEditor } from './keepRight_editor.js';
+import { uiMapRouletteEditor } from './maproulette_editor.js';
 import { uiOsmoseEditor } from './osmose_editor.js';
 import { uiNoteEditor } from './note_editor.js';
 import { uiRapidFeatureInspector } from './rapid_feature_inspector.js';
@@ -30,14 +29,13 @@ export function uiSidebar(context) {
   const improveOsmEditor = uiImproveOsmEditor(context);
   const keepRightEditor = uiKeepRightEditor(context);
   const osmoseEditor = uiOsmoseEditor(context);
-  const maprouletteEdiotr = uiMapRouletteEditor(context);
+  const mapRouletteEditor = uiMapRouletteEditor(context);
 
   let _current;
   let _wasRapid = false;
   let _wasData = false;
   let _wasNote = false;
   let _wasQaItem = false;
-  let _wasMapRoulette = false;
 
 
     function sidebar(selection) {
@@ -213,40 +211,33 @@ export function uiSidebar(context) {
                     .classed('inspector-hover', true);
 
             } else if (datum instanceof QAItem) {
-                _wasQaItem = true;
+              _wasQaItem = true;
 
-                var errService = context.services[datum.service];
-                if (errService) {
-                    // marker may contain stale data - get latest
-                    datum = errService.getError(datum.id);
+              const service = context.services[datum.service];
+              let sidebarComponent;
+
+              if (service) {
+                datum = service.getError(datum.id);  // marker may contain stale data - get latest
+
+                if (service.id === 'keepRight') {
+                  sidebarComponent = keepRightEditor;
+                } else if (service.id === 'osmose') {
+                  sidebarComponent = osmoseEditor;
+                } else if (service.id === 'improveOSM') {
+                  sidebarComponent = improveOsmEditor;
+                } else if (service.id === 'maproulette') {
+                  sidebarComponent = mapRouletteEditor;
                 }
+              }
 
-                // Currently only three possible services
-                var errEditor;
-                if (datum.service === 'keepRight') {
-                    errEditor = keepRightEditor;
-                } else if (datum.service === 'osmose') {
-                    errEditor = osmoseEditor;
-                } else {
-                    errEditor = improveOsmEditor;
-                }
-
+              if (sidebarComponent) {
                 sidebar
-                    .show(errEditor.error(datum));
+                  .show(sidebarComponent.error(datum));
+              }
 
-                selection.selectAll('.sidebar-component')
-                    .classed('inspector-hover', true);
+              selection.selectAll('.sidebar-component')
+                  .classed('inspector-hover', true);
 
-            } else if (datum instanceof MapRouletteTask) {
-                _wasMapRoulette = true;
-                var service = context.services[datum.service];
-                service = maprouletteEdiotr;
-
-                sidebar
-                    .show(service.error(datum));
-
-                selection.selectAll('.sidebar-component')
-                    .classed('inspector-hover', true);
             } else if (!_current && (datum instanceof osmEntity) && graph.hasEntity(datum)) {
                 featureListWrap
                     .classed('inspector-hidden', true);
@@ -273,12 +264,11 @@ export function uiSidebar(context) {
                 inspector
                     .state('hide');
 
-            } else if (_wasRapid || _wasData || _wasNote || _wasQaItem || _wasMapRoulette) {
+            } else if (_wasRapid || _wasData || _wasNote || _wasQaItem) {
                 _wasRapid = false;
                 _wasNote = false;
                 _wasData = false;
                 _wasQaItem = false;
-                _wasMapRoulette = false;
                 context.container().selectAll('.layer-ai-features .hover').classed('hover', false);
                 context.container().selectAll('.note').classed('hover', false);
                 context.container().selectAll('.qaItem').classed('hover', false);

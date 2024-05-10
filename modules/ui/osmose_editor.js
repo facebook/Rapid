@@ -16,7 +16,7 @@ export function uiOsmoseEditor(context) {
   let _qaItem;
 
 
-  function osmoseEditor(selection) {
+  function render(selection) {
     const header = selection.selectAll('.header')
       .data([0]);
 
@@ -32,7 +32,7 @@ export function uiOsmoseEditor(context) {
 
     headerEnter
       .append('h3')
-      .html(l10n.tHtml('QA.osmose.title'));
+      .text(l10n.t('QA.osmose.title'));
 
     let body = selection.selectAll('.body')
       .data([0]);
@@ -68,7 +68,7 @@ export function uiOsmoseEditor(context) {
     const isSelected = errID && context.selectedData().has(errID);
     const isShown = (_qaItem && isSelected);
     let saveSection = selection.selectAll('.qa-save')
-      .data((isShown ? [_qaItem] : []), d => `${d.id}-${d.status || 0}` );
+      .data(isShown ? [_qaItem] : [], d => d.key);
 
     // exit
     saveSection.exit()
@@ -89,7 +89,7 @@ export function uiOsmoseEditor(context) {
     const errID = _qaItem?.id;
     const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
-      .data((isSelected ? [_qaItem] : []), d => d.status + d.id);
+      .data(isSelected ? [_qaItem] : [], d => d.key);
 
     // exit
     buttonSection.exit()
@@ -113,7 +113,7 @@ export function uiOsmoseEditor(context) {
       .merge(buttonEnter);
 
     buttonSection.select('.close-button')
-      .html(l10n.tHtml('QA.keepRight.close'))
+      .text(l10n.t('QA.keepRight.close'))
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (osmose) {
@@ -123,7 +123,7 @@ export function uiOsmoseEditor(context) {
       });
 
     buttonSection.select('.ignore-button')
-      .html(l10n.tHtml('QA.keepRight.ignore'))
+      .text(l10n.t('QA.keepRight.ignore'))
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - iD#4641
         if (osmose) {
@@ -133,11 +133,11 @@ export function uiOsmoseEditor(context) {
       });
   }
 
-  osmoseEditor.error = function(val) {
+  render.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return osmoseEditor;
+    return render;
   };
 
-  return utilRebind(osmoseEditor, dispatch, 'on');
+  return utilRebind(render, dispatch, 'on');
 }

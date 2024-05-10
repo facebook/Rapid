@@ -13,43 +13,40 @@ export function uiImproveOsmDetails(context) {
   let _qaItem;
 
 
-  function issueDetail(d) {
+  function issueDetailHTML(d) {
     if (d.desc) return d.desc;
     const issueKey = d.issueKey;
-    d.replacements = d.replacements || {};
-    d.replacements.default = l10n.tHtml('inspector.unknown');  // special key `default` works as a fallback string
-    return l10n.tHtml(`QA.improveOSM.error_types.${issueKey}.description`, d.replacements);
+    d.replacements = d.replacements || {};   // some replacements are html linkified
+    d.replacements.default = l10n.t('inspector.unknown');  // special key `default` works as a fallback string
+    return l10n.t(`QA.improveOSM.error_types.${issueKey}.description`, d.replacements);
   }
 
 
-  function improveOsmDetails(selection) {
+  function render(selection) {
     const details = selection.selectAll('.error-details')
-      .data(
-        (_qaItem ? [_qaItem] : []),
-        d => `${d.id}-${d.status || 0}`
-      );
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     details.exit()
       .remove();
 
     const detailsEnter = details.enter()
       .append('div')
-        .attr('class', 'error-details qa-details-container');
+      .attr('class', 'error-details qa-details-container');
 
 
     // description
     const descriptionEnter = detailsEnter
       .append('div')
-        .attr('class', 'qa-details-subsection');
+      .attr('class', 'qa-details-subsection');
 
     descriptionEnter
       .append('h4')
-        .html(l10n.tHtml('QA.keepRight.detail_description'));
+      .text(l10n.t('QA.keepRight.detail_description'));
 
     descriptionEnter
       .append('div')
-        .attr('class', 'qa-details-description-text')
-        .text(issueDetail);
+      .attr('class', 'qa-details-description-text')
+      .html(issueDetailHTML);
 
     // If there are entity links in the error message..
     let relatedEntities = [];
@@ -104,11 +101,11 @@ export function uiImproveOsmDetails(context) {
   }
 
 
-  improveOsmDetails.issue = function(val) {
+  render.issue = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return improveOsmDetails;
+    return render;
   };
 
-  return improveOsmDetails;
+  return render;
 }

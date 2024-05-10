@@ -177,8 +177,8 @@ export class PixiRenderer extends EventEmitter {
       // hacky - improve?
       if (datum instanceof osmNote) {
         layerID = 'notes';
-      } else if (datum instanceof QAItem && datum.service === 'improveOSM') {
-        layerID = datum.service; // 'improveOSM', 'keepRight', 'osmose'
+      } else if (datum instanceof QAItem) {
+        layerID = datum.service; // 'improveOSM', 'keepRight', 'osmose', 'maproulette'
       } else if (datum.__fbid__) {           // a Rapid feature
         layerID = 'rapid';
       } else if (datum.__featurehash__) {  // custom data

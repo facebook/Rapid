@@ -2,25 +2,12 @@
 
 export function uiMapRouletteHeader(context) {
   const l10n = context.systems.l10n;
-  const maproulette = context.services.maproulette;
-  let _maprouletteTask;
+  let _qaItem;
 
 
-  function taskTitle(d) {
-    const unknown = l10n.t('inspector.unknown');
-    if (!maproulette || !d) return unknown;
-
-    return d.task.parentName !== undefined ? d.task.parentName : unknown;
-  }
-
-
-  function maprouletteHeader(selection) {
-
+  function render(selection) {
     const header = selection.selectAll('.qa-header')
-      .data(
-        (_maprouletteTask ? [_maprouletteTask] : []),
-        d => `${d.id}-${d.status || 0}`
-      );
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     header.exit()
       .remove();
@@ -51,17 +38,18 @@ export function uiMapRouletteHeader(context) {
       .attr('transform', 'translate(3.5, 5)')
       .attr('fill', '#01ff00');
 
+    // `parentName` contains the name of the challenge
     headerEnter
       .append('div')
       .attr('class', 'qa-header-label')
-      .html(taskTitle);
+      .text(d => d.parentName || l10n.t('inspector.unknown'));
   }
 
-  maprouletteHeader.task = function(val) {
-    if (!arguments.length) return _maprouletteTask;
-    _maprouletteTask = val;
-    return maprouletteHeader;
+  render.task = function(val) {
+    if (!arguments.length) return _qaItem;
+    _qaItem = val;
+    return render;
   };
 
-  return maprouletteHeader;
+  return render;
 }

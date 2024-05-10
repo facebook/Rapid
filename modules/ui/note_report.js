@@ -6,7 +6,8 @@ export function uiNoteReport(context) {
   const l10n = context.systems.l10n;
   let _note;
 
-  function noteReport(selection) {
+
+  function render(selection) {
     let url;
     const osm = context.services.osm;
     if (osm && (_note instanceof osmNote) && !_note.isNew()) {
@@ -34,11 +35,11 @@ export function uiNoteReport(context) {
   }
 
 
-  noteReport.note = function(val) {
+  render.note = function(val) {
     if (!arguments.length) return _note;
     _note = val;
-    return noteReport;
+    return render;
   };
 
-  return noteReport;
+  return render;
 }

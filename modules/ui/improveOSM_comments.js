@@ -8,13 +8,16 @@ export function uiImproveOsmComments(context) {
   let _qaItem;
 
 
-  function issueComments(selection) {
+  function render(selection) {
     const improveosm = context.services.improveOSM;
     if (!improveosm) return;
 
     // make the div immediately so it appears above the buttons
     let comments = selection.selectAll('.comments-container')
-      .data([0]);
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
+
+    comments.exit()
+      .remove();
 
     comments = comments.enter()
       .append('div')
@@ -30,12 +33,12 @@ export function uiImproveOsmComments(context) {
           .data(d.comments)
           .enter()
           .append('div')
-            .attr('class', 'comment');
+          .attr('class', 'comment');
 
         commentEnter
           .append('div')
-            .attr('class', 'comment-avatar')
-            .call(uiIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
+          .attr('class', 'comment-avatar')
+          .call(uiIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
 
         const mainEnter = commentEnter
           .append('div')
@@ -43,35 +46,35 @@ export function uiImproveOsmComments(context) {
 
         const metadataEnter = mainEnter
           .append('div')
-            .attr('class', 'comment-metadata');
+          .attr('class', 'comment-metadata');
 
         metadataEnter
           .append('div')
-            .attr('class', 'comment-author')
-            .each(function(d) {
-              const osm = context.services.osm;
-              let selection = d3_select(this);
-              if (osm && d.username) {
-                selection = selection
-                  .append('a')
-                  .attr('class', 'comment-author-link')
-                  .attr('href', osm.userURL(d.username))
-                  .attr('target', '_blank');
-              }
-              selection
-                .text(d => d.username);
-            });
+          .attr('class', 'comment-author')
+          .each((d, i, nodes) => {
+            const osm = context.services.osm;
+            let selection = d3_select(nodes[i]);
+            if (osm && d.username) {
+              selection = selection
+                .append('a')
+                .attr('class', 'comment-author-link')
+                .attr('href', osm.userURL(d.username))
+                .attr('target', '_blank');
+            }
+            selection
+              .text(d => d.username);
+          });
 
         metadataEnter
           .append('div')
-            .attr('class', 'comment-date')
-            .html(d => l10n.tHtml('note.status.commented', { when: localeDateString(d.timestamp) }));
+          .attr('class', 'comment-date')
+          .text(d => l10n.t('note.status.commented', { when: localeDateString(d.timestamp) }));
 
         mainEnter
           .append('div')
-            .attr('class', 'comment-text')
+          .attr('class', 'comment-text')
           .append('p')
-            .text(d => d.text);
+          .text(d => d.text);
     })
     .catch(e => console.log(e)); // eslint-disable-line no-console
   }
@@ -88,11 +91,11 @@ export function uiImproveOsmComments(context) {
   }
 
 
-  issueComments.issue = function(val) {
+  render.issue = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return issueComments;
+    return render;
   };
 
-  return issueComments;
+  return render;
 }

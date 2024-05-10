@@ -1,4 +1,4 @@
-import { QAItem } from '../osm/index.js';
+import { QAItem } from '../osm/qa_item.js';
 import { uiIcon } from './icon.js';
 
 

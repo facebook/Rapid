@@ -1,9 +1,8 @@
-import { select as d3_select } from 'd3-selection';
 import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
 import RBush from 'rbush';
 
 import { AbstractSystem } from '../core/AbstractSystem';
-import { Task as MapRouletteTask } from '../maproulette/Task';
+import { QAItem } from '../osm/qa_item.js';
 import { utilFetchResponse } from '../util';
 import { marked } from 'marked';
 
@@ -13,7 +12,7 @@ const MAPROULETTE_API = 'https://maproulette.org/api/v2';
 
 /**
  * `MapRouletteService`
-
+ *
  * Events available:
  *   'loadedData'
  */
@@ -27,6 +26,8 @@ export class MapRouletteService extends AbstractSystem {
     super(context);
     this.id = 'maproulette';
     this.autoStart = false;
+
+    this._challengeID = null;  // if we want to filter only a specific challengeID
 
     this._cache = null;   // cache gets replaced on init/reset
     this._tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
@@ -49,7 +50,7 @@ export class MapRouletteService extends AbstractSystem {
    * @return {Promise} Promise resolved when this component has completed startup
    */
   startAsync() {
-      this._started = true;
+    this._started = true;
   }
 
 
@@ -60,18 +61,36 @@ export class MapRouletteService extends AbstractSystem {
    */
   resetAsync() {
     if (this._cache) {
-      Object.values(this._cache.inflightTile).forEach(controller => this._abortRequest(controller));
+      for (const controller of this._cache.inflight) {
+        controller.abort();
+      }
     }
+
     this._cache = {
-      tasks: new Map(),    // Map (taskID -> Task)
-      loadedTile: {},
-      inflightTile: {},
-      inflightPost: {},
-      closed: {},
-      comment: {},
-      rtree: new RBush()
+      lastv: null,
+      tasks: new Map(),             // Map (taskID -> Task)
+      challenges: new Map(),        // Map (challengeID -> Challenge)
+      tileRequest: new Map(),       // Map (tileID -> { status, controller, url })
+      challengeRequest: new Map(),  // Map (challengeID -> { status, controller, url })
+      inflight: new Map(),          // Map (url -> controller)
+      closed: [],                   // Array ({ challengeID, taskID })
+      rbush: new RBush()
     };
+
     return Promise.resolve();
+  }
+
+
+  /**
+   * challengeID
+   * set/get the challengeID
+   */
+  get challengeID() {
+    return this._challengeID;
+  }
+  set challengeID(val) {
+    if (val === this._challengeID) return;  // no change
+    this._challengeID = val;
   }
 
 
@@ -81,12 +100,31 @@ export class MapRouletteService extends AbstractSystem {
    * @return  {Array}  Array of data
    */
   getData() {
-    const extent = this.context.systems.map.extent();
-    let challengeId = d3_select('.challenge-id').property('value');
-    challengeId = challengeId ? Number(challengeId) : null;
-    return this._cache.rtree.search(extent.bbox())
+    const extent = this.context.viewport.visibleExtent();
+    return this._cache.rbush.search(extent.bbox())
       .map(d => d.data)
-      .filter(task => !challengeId || task.task.parentId === challengeId);
+      .filter(task => !this._challengeID || task.parentId === this._challengeID)
+      .filter(task => task.isVisible);
+  }
+
+
+  /**
+   * getTask
+   * @param   {string}  taskID
+   * @return  {Task?}   the task with that id, or `undefined` if not found
+   */
+  getTask(taskID) {
+    return this._cache.tasks.get(taskID);
+  }
+
+
+  /**
+   * getChallenge
+   * @param   {string}  challengeID
+   * @return  {Task?}   the task with that id, or `undefined` if not found
+   */
+  getChallenge(challengeID) {
+    return this._cache.challenges.get(challengeID);
   }
 
 
@@ -95,92 +133,141 @@ export class MapRouletteService extends AbstractSystem {
    * Schedule any data requests needed to cover the current map view
    */
   loadTiles() {
-    // determine the needed tiles to cover the view
+    if (this._paused) return;
+
+    const cache = this._cache;
     const viewport = this.context.viewport;
+    if (cache.lastv === viewport.v) return;  // exit early if the view is unchanged
+    cache.lastv = viewport.v;
+
+    // Determine the tiles needed to cover the view..
     const tiles = this._tiler.getTiles(viewport).tiles;
+    this._abortUnwantedRequests(tiles);
 
-    // abort inflight requests that are no longer needed
-    this._abortUnwantedRequests(this._cache, tiles);
-
-    // get the challenge ID entered by the user
-    let challengeId = Number(d3_select('.challenge-id').property('value'));
-    // issue new requests..
+    // Issue new requests..
     for (const tile of tiles) {
-      if (this._cache.loadedTile[tile.id] || this._cache.inflightTile[tile.id]) continue;
+      this.loadTile(tile);
+    }
+  }
 
-      const extent = this.context.systems.map.extent();
-      const bbox = extent.bbox();
 
-      const urlBboxSpecifier = `${bbox.minX}/${bbox.minY}/${bbox.maxX}/${bbox.maxY}`;
+  /**
+   * loadTile
+   * Schedule any data requests needed to cover the current map view
+   * @param {object}  tile - Tile to load
+   */
+  loadTile(tile) {
+    const cache = this._cache;
+    if (cache.tileRequest.has(tile.id)) return;
 
-      const url = `${MAPROULETTE_API}/tasks/box/` + urlBboxSpecifier;
+    const extent = tile.wgs84Extent;
+    const bbox = extent.rectangle().join('/');  // minX/minY/maxX/maxY
+    const url = `${MAPROULETTE_API}/tasks/box/${bbox}`;
+
+    const controller = new AbortController();
+    cache.inflight.set(url, controller);
+    cache.tileRequest.set(tile.id, { status: 'inflight', controller: controller, url: url });
+
+    fetch(url, { signal: controller.signal })
+      .then(utilFetchResponse)
+      .then(data => {
+        cache.tileRequest.set(tile.id, { status: 'loaded' });
+
+        for (const task of (data ?? [])) {
+          const taskID = task.id.toString();
+          const challengeID = task.parentId.toString();
+          if (cache.tasks.has(taskID)) continue;  // seen it already
+
+          // Have we seen this challenge before?
+          const challenge = cache.challenges.get(challengeID);
+          if (!challenge) {
+            cache.challengeRequest.set(challengeID, {});  // queue fetching it
+            task.isVisible = false;
+          } else {
+            task.isVisible = challenge.isVisible;
+          }
+
+          task.id = taskID;               // force to string
+          task.parentId = challengeID;    // force to string
+
+          let loc = [task.point.lng, task.point.lat];
+          loc = this._preventCoincident(loc);
+
+          // save the task
+          const d = new QAItem(loc, this, null, taskID, task);
+          cache.tasks.set(taskID, d);
+          cache.rbush.insert(this._encodeIssueRbush(d));
+        }
+
+        this.loadChallenges();   // call this sometimes
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          cache.tileRequest.delete(tile.id);  // allow retry
+        } else {  // real error
+          console.error(err);  // eslint-disable-line
+          cache.tileRequest.set(tile.id, { status: 'error' });  // don't retry
+        }
+      })
+      .finally(() => {
+        cache.inflight.delete(url);
+      });
+  }
+
+
+
+  /**
+   * loadChallenges
+   * Schedule any data requests needed for challenges we are interested in
+   */
+  loadChallenges() {
+    if (this._paused) return;
+
+    const cache = this._cache;
+
+    for (const [challengeID, val] of cache.challengeRequest) {
+      if (val.status) return;  // processed already
+
+      const url = `${MAPROULETTE_API}/challenge/${challengeID}`;
 
       const controller = new AbortController();
-      this._cache.inflightTile[tile.id] = controller;
-
-
-      // A Map of challenge IDs to lists of prospective tasks
-      let pTasks = new Map();
+      cache.inflight.set(url, controller);
+      cache.challengeRequest.set(challengeID, { status: 'inflight', controller: controller, url: url });
 
       fetch(url, { signal: controller.signal })
         .then(utilFetchResponse)
-        .then(data => {
-          this._cache.loadedTile[tile.id] = true;
+        .then(challenge => {
+          cache.challengeRequest.set(challengeID, { status: 'loaded' });
 
-          //First, fetch all the tasks in the bbox and stick 'em in a map by challenge ID.
-          for (const task of (data ?? [])) {
-            if (!challengeId || task.parentId === challengeId) {
-                  const id = task.id;
-                  let loc = [task.point.lng, task.point.lat];
-                  loc = this._preventCoincident(loc);
-                  const itemType = task.type;
+          challenge.isVisible = challenge.enabled && !challenge.deleted;
 
-                  let d = new MapRouletteTask(loc, this, id, { task, type: itemType });
-
-                  if (pTasks.get(task.parentId)) {
-                    pTasks.get(task.parentId).push(d); //subsequent items growing the list
-                  } else {
-                    pTasks.set(task.parentId, [d]); // first item in the list
-                  }
+          // update task statuses
+          for (const task of cache.tasks.values()) {
+            if (task.parentId === challengeID) {
+              task.isVisible = challenge.isVisible;
             }
           }
 
-          for (const [challengeId] of pTasks) {
-            // fetch the challenge data
-            fetch(`${MAPROULETTE_API}/challenge/${challengeId}`)
-            .then(response => response.json())
-            .then(challengeData => {
-
-              // If the parent challenge is deleted or not enabled, don't show the task.
-              if (challengeData.deleted || !challengeData.enabled) {
-                return;
-              }
-
-              let challengeTasks = pTasks.get(challengeId);
-
-              for (const task of challengeTasks) {
-                this._cache.tasks.set(task.id, task);
-                this._cache.rtree.insert(this._encodeIssueRtree(task));
-              }
-            })
-            .catch(err => {
-              console.error(`Error fetching challenge data for task ${challengeId}:`, err);  // eslint-disable-line no-console
-            });
-          }
-
+          // save the challenge
+          cache.challenges.set(challengeID, challenge);
 
           this.context.deferredRedraw();
           this.emit('loadedData');
         })
         .catch(err => {
-          if (err.name === 'AbortError') return;    // ok
-          this._cache.loadedTile[tile.id] = true;   // don't retry
+          if (err.name === 'AbortError') {
+            cache.challengeRequest.delete(challengeID);  // allow retry
+          } else {  // real error
+            console.error(err);  // eslint-disable-line
+            cache.challengeRequest.set(challengeID, { status: 'error' });  // don't retry
+          }
         })
         .finally(() => {
-          delete this._cache.inflightTile[tile.id];
+          cache.inflight.delete(url);
         });
     }
   }
+
 
 
   /**
@@ -189,17 +276,18 @@ export class MapRouletteService extends AbstractSystem {
    * @return  Promise
    */
   loadTaskDetailAsync(task) {
-    if (task.details !== undefined) return Promise.resolve(task);
-    const url = `${MAPROULETTE_API}/challenge/${task.task.parentId}`;
+    if (task.description !== undefined) return Promise.resolve(task);  // already done
+
+    const url = `${MAPROULETTE_API}/challenge/${task.parentId}`;
     const handleResponse = (data) => {
       task.instruction = marked.parse(data.instruction) || '';
-      task.details = marked.parse(data.description) || '';
+      task.description = marked.parse(data.description) || '';
+      return task;
     };
 
     return fetch(url)
       .then(utilFetchResponse)
-      .then(handleResponse)
-      .then(() => task);
+      .then(handleResponse);
   }
 
 
@@ -210,88 +298,107 @@ export class MapRouletteService extends AbstractSystem {
    */
   postUpdate(task, callback) {
     const context = this.context;
-    const sidebar = context.systems.ui.sidebar;
-    if (this._cache.inflightPost[task.id]) {
-//      console.log('Task update already inflight for task:', task);
-      return callback({ message: 'Issue update already inflight', status: -2 }, task);
-    }
+    const cache = this._cache;
+
+    // A comment is optional, but if we have one, POST it..
     const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
-    const updateTaskUrl = `${MAPROULETTE_API}/task/${task.id}/${task.taskStatus}`;
-    const releaseTaskUrl = `${MAPROULETTE_API}/task/${task.taskId}/release`;
-    const controller = new AbortController();
-    this._cache.inflightPost[task.id] = controller;
+    if (task.comment && !cache.inflight.has(commentUrl)) {
+      const commentController = new AbortController();
+      cache.inflight.set(commentUrl, commentController);
 
-    fetch(commentUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apiKey': task.mapRouletteApiKey
-      },
-      body: JSON.stringify({ actionId: 2, comment: task.comment }),
-      signal: controller.signal
-    })
-    .then(response => {
-      if (!response.ok) throw new Error(`Error posting comment: ${response.statusText}`);
-      return response.json();
-    });
-
-    fetch(updateTaskUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'apiKey': task.mapRouletteApiKey
-      },
-      signal: controller.signal
-    })
-    .then(response => {
-      if (!response.ok) throw new Error(`Error updating task: ${response.statusText}`);
-      return response.text();  // get the response text
-    })
-    .then(() => {
-      // Release task
-      return fetch(releaseTaskUrl, {
-        signal: controller.signal,
+      fetch(commentUrl, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'apiKey': task.mapRouletteApiKey
+        },
+        body: JSON.stringify({ actionId: 2, comment: task.comment }),
+        signal: commentController.signal
+      })
+      .then(utilFetchResponse)
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          return;  // ok
+        } else {  // real error
+          console.error(err);  // eslint-disable-line
         }
+      })
+      .finally(() => {
+        cache.inflight.delete(commentUrl);
       });
-    })
-    .then(response => {
-      if (!response.ok) throw new Error(`Error releasing task: ${response.statusText}`);
-      return response.json();
-    })
-    .then(() => {
-      // All requests completed successfully
-      delete this._cache.inflightPost[task.id];
-      this.removeTask(task);
-      sidebar.hide();
-      if (!(task.id in this._cache.closed)) {
-        this._cache.closed[task.id] = 0;
-        if (task.comment) {
-          task.comment += ` #maproulette mpr.lt/c/${task.task.parentId}/t/${task.taskId}`;
-          this._cache.comment[task.id] = { id: task.id, comment: task.comment };
+    }
+
+    // update the status and release the task
+    const updateTaskUrl = `${MAPROULETTE_API}/task/${task.id}/${task.taskStatus}`;
+    const releaseTaskUrl = `${MAPROULETTE_API}/task/${task.id}/release`;
+
+    if (!cache.inflight.has(updateTaskUrl) && !cache.inflight.has(releaseTaskUrl)) {
+      const updateTaskController = new AbortController();
+      const releaseTaskController = new AbortController();
+      cache.inflight.set(updateTaskUrl, updateTaskController);
+      cache.inflight.set(releaseTaskUrl, releaseTaskController);
+
+      fetch(updateTaskUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'apiKey': task.mapRouletteApiKey
+        },
+        signal: updateTaskController.signal
+      })
+      .then(utilFetchResponse)
+      .then(() => {
+        return fetch(releaseTaskUrl, {
+          signal: releaseTaskController.signal,
+          headers: {
+            'apiKey': task.mapRouletteApiKey
+          }
+        });
+      })
+      .then(utilFetchResponse)
+      .then(() => {
+        // All requests completed successfully
+        if (task.taskStatus === 1) {  // only counts if the use chose "I Fixed It".
+          this._cache.closed.push({ taskID: task.id, challengeID: task.parentId });
         }
-      }
-      this._cache.closed[task.id] += 1;
-      if (callback) callback(null, task);
-    })
-    .catch(err => {
-//      console.log('In catch block', err);
-      // Handle any errors
-      delete this._cache.inflightPost[task.id];
-      if (callback) callback(err.message);
-    });
+
+// commit.js will take care of the changeset comment
+//        if (!(task.id in this._cache.closed)) {
+//          this._cache.closed[task.id] = 0;
+//          if (task.comment) {
+//            task.comment += ` #maproulette mpr.lt/c/${task.parentId}/t/${task.id}`;
+//            this._cache.comment[task.id] = { id: task.id, comment: task.comment };
+//          }
+//        }
+//        this._cache.closed[task.id] += 1;
+        this.removeTask(task);
+        this.context.enter('browse');
+        if (callback) callback(null, task);
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          return;  // ok
+        } else {  // real error
+          console.error(err);  // eslint-disable-line
+          if (callback) callback(err.message);
+        }
+      })
+      .finally(() => {
+        cache.inflight.delete(updateTaskUrl);
+        cache.inflight.delete(releaseTaskUrl);
+      });
+    }
   }
 
 
   /**
    * getError
    * Get a Task from cache
-   * @param   issueID
+   * @param   taskID
    * @return  Task
    */
-  getError(issueID) {
-    return this._cache.tasks.get(issueID);
+  getError(taskID) {
+    return this._cache.tasks.get(taskID);
   }
 
 
@@ -302,10 +409,10 @@ export class MapRouletteService extends AbstractSystem {
    * @return  the task, or `null` if it couldn't be replaced
    */
   replaceTask(task) {
-    if (!(task instanceof MapRouletteTask) || !task.id) return;
+    if (!(task instanceof QAItem) || !task.id) return;
 
     this._cache.tasks.set(task.id, task);
-    this._updateRtree(this._encodeIssueRtree(task), true); // true = replace
+    this._updateRbush(this._encodeIssueRbush(task), true); // true = replace
     return task;
   }
 
@@ -316,32 +423,19 @@ export class MapRouletteService extends AbstractSystem {
    * @param   task to remove
    */
   removeTask(task) {
-    if (!(task instanceof MapRouletteTask) || !task.id) return;
+    if (!(task instanceof QAItem) || !task.id) return;
     this._cache.tasks.delete(task.id);
-    this._updateRtree(this._encodeIssueRtree(task), false);
+    this._updateRbush(this._encodeIssueRbush(task), false);
   }
 
 
   /**
-   * getClosedIDs
-   * Get an array of issues closed during this session.
-   * Used to populate `closed:maproulette` changeset tag
-   * @return  Array of closed item ids
+   * getClosed
+   * Get details about all taskks closed in this session
+   * @return  Array of objects
    */
-  getClosedIDs() {
-    return Object.keys(this._cache.closed).sort();
-  }
-
-
-
-  /**
-   * getClosedIDs
-   * Get an array of issues closed during this session.
-   * Used to populate `closed:maproulette` changeset tag
-   * @return  Array of closed item ids
-   */
-  getClosedComment() {
-    return Object.values(this._cache.comment);
+  getClosed() {
+    return this._cache.closed;
   }
 
 
@@ -352,43 +446,38 @@ export class MapRouletteService extends AbstractSystem {
    * @return  the url
    */
   itemURL(task) {
-    return `https://maproulette.org/challenge/${task.task.parentId}/task/${task.id}`;
+    return `https://maproulette.org/challenge/${task.parentId}/task/${task.id}`;
   }
 
 
-  _abortRequest(controller) {
-    if (controller) {
-      controller.abort();
+  _abortUnwantedRequests(tiles) {
+    const cache = this._cache;
+    for (const [tileID, request] of cache.tileRequest) {
+      if (request.status !== 'inflight') continue;
+      const wanted = tiles.find(tile => tile.id === tileID);
+      if (!wanted) {
+        request.controller.abort();
+        cache.inflight.delete(request.url);
+      }
     }
   }
 
 
-  _abortUnwantedRequests(cache, tiles) {
-    Object.keys(cache.inflightTile).forEach(k => {
-      const wanted = tiles.find(tile => k === tile.id);
-      if (!wanted) {
-        this._abortRequest(cache.inflightTile[k]);
-        delete cache.inflightTile[k];
-      }
-    });
-  }
-
-
-  _encodeIssueRtree(d) {
+  _encodeIssueRbush(d) {
     return { minX: d.loc[0], minY: d.loc[1], maxX: d.loc[0], maxY: d.loc[1], data: d };
   }
 
 
-  // Replace or remove Task from rtree
-  _updateRtree(task, replace) {
-    this._cache.rtree.remove(task, (a, b) => a.data.id === b.data.id);
+  // Replace or remove Task from rbush
+  _updateRbush(task, replace) {
+    this._cache.rbush.remove(task, (a, b) => a.data.id === b.data.id);
     if (replace) {
-      this._cache.rtree.insert(task);
+      this._cache.rbush.insert(task);
     }
   }
 
 
-  // Issues shouldn't obscure each other
+  // Markers shouldn't obscure each other
   _preventCoincident(loc) {
     let coincident = false;
     do {
@@ -396,7 +485,7 @@ export class MapRouletteService extends AbstractSystem {
       let delta = coincident ? [0.00001, 0] : [0, 0.00001];
       loc = vecAdd(loc, delta);
       const bbox = new Extent(loc).bbox();
-      coincident = this._cache.rtree.search(bbox).length;
+      coincident = this._cache.rbush.search(bbox).length;
     } while (coincident);
 
     return loc;

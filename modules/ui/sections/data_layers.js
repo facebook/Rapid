@@ -178,6 +178,7 @@ export function uiSectionDataLayers(context) {
   function drawQAItems(selection) {
     const qaKeys = ['maproulette', 'keepRight', 'improveOSM', 'osmose', 'geoScribble'];
     const qaLayers = qaKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
+    const maproulette = context.services.maproulette;
 
     let ul = selection
       .selectAll('.layer-list-qa')
@@ -216,15 +217,22 @@ export function uiSectionDataLayers(context) {
       .append('input')
       .attr('type', 'text')
       .attr('placeholder', 'challenge ID')
-      .attr('class', 'challenge-id');
+      .attr('class', 'challenge-id')
+      .on('change', mapRouletteIDChanged);
+
 
     // Update
+    li = li.merge(liEnter);
+
     li
-      .merge(liEnter)
       .classed('active', d => d.enabled)
       .call(setTooltips)
       .selectAll('input[type="checkbox"]')
       .property('checked', d => d.enabled);
+
+    li
+      .selectAll('input.challenge-id')
+      .attr('value', maproulette.challengeID);
   }
 
 
@@ -326,6 +334,16 @@ export function uiSectionDataLayers(context) {
     } else if (d?.fileList) {
       customLayer.setFileList(d.fileList);
     }
+  }
+
+
+  /*
+   * mapRouletteIDChanged
+   * @param  d3_event - change event, if called from a change handler
+   */
+  function mapRouletteIDChanged(d3_event) {
+    const maproulette = context.services.maproulette;
+    maproulette.challengeID = d3_event.target.value;
   }
 
 

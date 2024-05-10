@@ -4,7 +4,6 @@ import { Extent } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode.js';
 import { osmNote, QAItem } from '../osm/index.js';
-import { Task as MapRouletteTask } from '../maproulette/Task.js';
 import { uiOsmoseEditor } from '../ui/osmose_editor.js';
 import { uiDataEditor } from '../ui/data_editor.js';
 import { uiImproveOsmEditor } from '../ui/improveOSM_editor.js';
@@ -141,14 +140,14 @@ export class SelectMode extends AbstractMode {
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
-    } else if (datum instanceof MapRouletteTask && datum.service === 'maproulette') {
+    } else if (datum instanceof QAItem && datum.service === 'maproulette') {
       sidebarContent = uiMapRouletteEditor(context).error(datum);
       sidebarContent
         .on('change', () => {
           context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           const maproulette = context.services.maproulette;
           const error = maproulette?.getError(datumID);
-          if (!(error instanceof MapRouletteTask)) return;  // or - go to browse mode?
+          if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.systems.ui.sidebar.show(sidebarContent.error(error));
           this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });

@@ -17,22 +17,23 @@ export function uiKeepRightEditor(context) {
 
   let _qaItem;
 
-  function keepRightEditor(selection) {
+
+  function render(selection) {
     const headerEnter = selection.selectAll('.header')
       .data([0])
       .enter()
       .append('div')
-        .attr('class', 'header fillL');
+      .attr('class', 'header fillL');
 
     headerEnter
       .append('button')
-        .attr('class', 'close')
-        .on('click', () => context.enter('browse'))
-        .call(uiIcon('#rapid-icon-close'));
+      .attr('class', 'close')
+      .on('click', () => context.enter('browse'))
+      .call(uiIcon('#rapid-icon-close'));
 
     headerEnter
       .append('h3')
-        .html(l10n.tHtml('QA.keepRight.title'));
+      .text(l10n.t('QA.keepRight.title'));
 
 
     let body = selection.selectAll('.body')
@@ -40,7 +41,7 @@ export function uiKeepRightEditor(context) {
 
     body = body.enter()
       .append('div')
-        .attr('class', 'body')
+      .attr('class', 'body')
       .merge(body);
 
     const editor = body.selectAll('.qa-editor')
@@ -48,11 +49,11 @@ export function uiKeepRightEditor(context) {
 
     editor.enter()
       .append('div')
-        .attr('class', 'modal-section qa-editor')
+      .attr('class', 'modal-section qa-editor')
       .merge(editor)
-        .call(qaHeader.issue(_qaItem))
-        .call(qaDetails.issue(_qaItem))
-        .call(keepRightSaveSection);
+      .call(qaHeader.issue(_qaItem))
+      .call(qaDetails.issue(_qaItem))
+      .call(keepRightSaveSection);
 
 
     const footer = selection.selectAll('.footer')
@@ -62,7 +63,7 @@ export function uiKeepRightEditor(context) {
       .append('div')
       .attr('class', 'footer')
       .merge(footer)
-      .call(uiViewOnKeepRight(context).what(_qaItem));
+      .call(uiViewOnKeepRight(context).issue(_qaItem));
   }
 
 
@@ -71,10 +72,7 @@ export function uiKeepRightEditor(context) {
     const isSelected = errID && context.selectedData().has(errID);
     const isShown = (_qaItem && (isSelected || _qaItem.newComment || _qaItem.comment));
     let saveSection = selection.selectAll('.qa-save')
-      .data(
-        (isShown ? [_qaItem] : []),
-        d => `${d.id}-${d.status || 0}`
-      );
+      .data(isShown ? [_qaItem] : [], d => d.key);
 
     // exit
     saveSection.exit()
@@ -83,27 +81,27 @@ export function uiKeepRightEditor(context) {
     // enter
     const saveSectionEnter = saveSection.enter()
       .append('div')
-        .attr('class', 'qa-save save-section cf');
+      .attr('class', 'qa-save save-section cf');
 
     saveSectionEnter
       .append('h4')
-        .attr('class', '.qa-save-header')
-        .html(l10n.tHtml('QA.keepRight.comment'));
+      .attr('class', '.qa-save-header')
+      .text(l10n.t('QA.keepRight.comment'));
 
     saveSectionEnter
       .append('textarea')
-        .attr('class', 'new-comment-input')
-        .attr('placeholder', l10n.t('QA.keepRight.comment_placeholder'))
-        .attr('maxlength', 1000)
-        .property('value', d => d.newComment || d.comment)
-        .call(utilNoAuto)
-        .on('input', changeInput)
-        .on('blur', changeInput);
+      .attr('class', 'new-comment-input')
+      .attr('placeholder', l10n.t('QA.keepRight.comment_placeholder'))
+      .attr('maxlength', 1000)
+      .property('value', d => d.newComment || d.comment)
+      .call(utilNoAuto)
+      .on('input', changeInput)
+      .on('blur', changeInput);
 
     // update
     saveSection = saveSectionEnter
       .merge(saveSection)
-        .call(qaSaveButtons);
+      .call(qaSaveButtons);
 
     function changeInput() {
       const input = d3_select(this);
@@ -130,7 +128,7 @@ export function uiKeepRightEditor(context) {
     const errID = _qaItem?.id;
     const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
-      .data((isSelected ? [_qaItem] : []), d => d.status + d.id);
+      .data(isSelected ? [_qaItem] : [], d => d.key);
 
     // exit
     buttonSection.exit()
@@ -143,16 +141,16 @@ export function uiKeepRightEditor(context) {
 
     buttonEnter
       .append('button')
-        .attr('class', 'button comment-button action')
-        .html(l10n.tHtml('QA.keepRight.save_comment'));
+      .attr('class', 'button comment-button action')
+      .text(l10n.t('QA.keepRight.save_comment'));
 
     buttonEnter
       .append('button')
-        .attr('class', 'button close-button action');
+      .attr('class', 'button close-button action');
 
     buttonEnter
       .append('button')
-        .attr('class', 'button ignore-button action');
+      .attr('class', 'button ignore-button action');
 
     // update
     buttonSection = buttonSection
@@ -168,9 +166,9 @@ export function uiKeepRightEditor(context) {
       });
 
     buttonSection.select('.close-button')   // select and propagate data
-      .html(d => {
+      .text(d => {
         const andComment = (d.newComment ? '_comment' : '');
-        return l10n.tHtml(`QA.keepRight.close${andComment}`);
+        return l10n.t(`QA.keepRight.close${andComment}`);
       })
       .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
@@ -181,9 +179,9 @@ export function uiKeepRightEditor(context) {
       });
 
     buttonSection.select('.ignore-button')   // select and propagate data
-      .html(d => {
+      .text(d => {
         const andComment = (d.newComment ? '_comment' : '');
-        return l10n.tHtml(`QA.keepRight.ignore${andComment}`);
+        return l10n.t(`QA.keepRight.ignore${andComment}`);
       })
       .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
@@ -194,11 +192,11 @@ export function uiKeepRightEditor(context) {
       });
   }
 
-  keepRightEditor.error = function(val) {
+  render.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return keepRightEditor;
+    return render;
   };
 
-  return utilRebind(keepRightEditor, dispatch, 'on');
+  return utilRebind(render, dispatch, 'on');
 }

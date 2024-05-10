@@ -1,19 +1,13 @@
 export function uiMapRouletteDetails(context) {
   const l10n = context.systems.l10n;
-  const map = context.systems.map;
   const maproulette = context.services.maproulette;
 
-  let _maprouletteTask;
+  let _qaItem;
 
 
-  function taskString(d) {
-    if (!maproulette || !d) return '';
-  }
-
-
-  function maprouletteDetails(selection) {
-    const details = selection.selectAll('.error-details')
-      .data(_maprouletteTask ? [_maprouletteTask] : [], d => `${d.id}-${d.status || 0}` );
+  function render(selection) {
+    let details = selection.selectAll('.error-details')
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     details.exit()
       .remove();
@@ -22,133 +16,73 @@ export function uiMapRouletteDetails(context) {
       .append('div')
       .attr('class', 'error-details qa-details-container');
 
-
-    // Description
-    if (taskString(_maprouletteTask, 'detail')) {
-      const div = detailsEnter
-        .append('div')
-        .attr('class', 'qa-details-subsection');
-
-      div
-        .append('h4')
-        .html(l10n.tHtml('QA.keepRight.detail_description'));
-
-      div
-        .append('p')
-        .attr('class', 'qa-details-description-text')
-        .html(d => taskString(d, 'detail'))
-        .selectAll('a')
-        .attr('rel', 'noopener')
-        .attr('target', '_blank');
-    }
-
-    // Elements (populated later as data is requested)
-    const detailsDiv = detailsEnter
+    detailsEnter
       .append('div')
-      .attr('class', 'qa-details-subsection');
+      .attr('class', 'qa-details-subsection')
+      .text(l10n.t('map_data.layers.maproulette.loading_task_details'));
 
-    // Suggested Fix (mustn't exist for every issue type)
-    if (taskString(_maprouletteTask, 'fix')) {
-      const div = detailsEnter
-        .append('div')
-        .attr('class', 'qa-details-subsection');
+    // update
+    details = details.merge(detailsEnter);
 
-      div
-        .append('h4')
-        .html(l10n.tHtml('map_data.layers.maproulette.fix_title'));
 
-      div
-        .append('p')
-        .html(d => taskString(d, 'fix'))
-        .selectAll('a')
-        .attr('rel', 'noopener')
-        .attr('target', '_blank');
-    }
+    maproulette.loadTaskDetailAsync(_qaItem)
+      .then(task => {
+        // Do nothing if _qaItem has changed by the time Promise resolves
+        if (_qaItem.id !== task.id) return;
 
-    // Common Pitfalls (mustn't exist for every issue type)
-    if (taskString(_maprouletteTask, 'trap')) {
-      const div = detailsEnter
-        .append('div')
-        .attr('class', 'qa-details-subsection');
-
-      div
-        .append('h4')
-        .html(l10n.tHtml('map_data.layers.maproulette.trap_title'));
-
-      div
-        .append('p')
-        .html(d => taskString(d, 'trap'))
-        .selectAll('a')
-        .attr('rel', 'noopener')
-        .attr('target', '_blank');
-    }
-
-    // Save current item to check if UI changed by time request resolves
-    if (!maproulette) return;
-    maproulette.loadTaskDetailAsync(_maprouletteTask)
-      .then(d => {
-        // Do nothing if _maprouletteTask has changed by the time Promise resolves
-        if (_maprouletteTask.id !== d.id) return;
+        const selection = details.selectAll('.qa-details-subsection');
+        selection.html('');   // replace contents
 
         // Things like keys and values are dynamically added to a subtitle string
-        if (d.id) {
-          const id = d.id;
-          const parentId = d.task.parentId;
-
-          detailsDiv
+        if (task.id) {
+          selection
             .append('h4')
-            .html(l10n.tHtml('map_data.layers.maproulette.id_title'));
+            .text(l10n.t('map_data.layers.maproulette.id_title'));
 
-          detailsDiv
+          selection
             .append('p')
-            .html(`${parentId} / ${id}`)
+            .text(`${task.parentId} / ${task.id}`)
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
         }
 
-        if (d.details && !d.details.includes('Lorem')) {
-          const details = d.details;
-
-          detailsDiv
+        if (task.description && !task.description.includes('Lorem')) {
+          selection
             .append('h4')
-            .html(l10n.tHtml('map_data.layers.maproulette.detail_title'));
+            .text(l10n.t('map_data.layers.maproulette.detail_title'));
 
-          detailsDiv
+          selection
             .append('p')
-            .html(details)
+            .html(task.description)  // parsed markdown
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
         }
 
-        if (d.instruction && !d.instruction.includes('Lorem')) {
-          const instruction = d.instruction;
-
-          detailsDiv
+        if (task.instruction && !task.instruction.includes('Lorem') && task.instruction !== task.description) {
+          selection
             .append('h4')
-            .html(l10n.tHtml('map_data.layers.maproulette.instruction_title'));
+            .text(l10n.t('map_data.layers.maproulette.instruction_title'));
 
-          detailsDiv
+          selection
             .append('p')
-            .html(instruction)
+            .html(task.instruction)  // parsed markdown
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
         }
-
-        map.immediateRedraw();
       })
       .catch(e => console.error(e));  // eslint-disable-line
   }
 
 
-  maprouletteDetails.task = function(val) {
-    if (!arguments.length) return _maprouletteTask;
-    _maprouletteTask = val;
-    return maprouletteDetails;
+  render.task = function(val) {
+    if (!arguments.length) return _qaItem;
+    _qaItem = val;
+    return render;
   };
 
 
-  return maprouletteDetails;
+  return render;
 }

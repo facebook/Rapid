@@ -9,12 +9,12 @@ export function uiImproveOsmHeader(context) {
   function issueTitle(d) {
     const issueKey = d.issueKey;
     d.replacements = d.replacements || {};
-    d.replacements.default = l10n.tHtml('inspector.unknown');  // special key `default` works as a fallback string
-    return l10n.tHtml(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
+    d.replacements.default = l10n.t('inspector.unknown');  // special key `default` works as a fallback string
+    return l10n.t(`QA.improveOSM.error_types.${issueKey}.title`, d.replacements);
   }
 
 
-  function improveOsmHeader(selection) {
+  function render(selection) {
     let iconFill = 0xffffff;
     const improveosm = context.services.improveOSM;
     if (improveosm) {
@@ -22,10 +22,7 @@ export function uiImproveOsmHeader(context) {
     }
 
     const header = selection.selectAll('.qa-header')
-      .data(
-        (_qaItem ? [_qaItem] : []),
-        d => `${d.id}-${d.status || 0}`
-      );
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     header.exit()
       .remove();
@@ -63,11 +60,11 @@ export function uiImproveOsmHeader(context) {
       .text(issueTitle);
   }
 
-  improveOsmHeader.issue = function(val) {
+  render.issue = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return improveOsmHeader;
+    return render;
   };
 
-  return improveOsmHeader;
+  return render;
 }

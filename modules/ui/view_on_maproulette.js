@@ -1,17 +1,17 @@
-import { uiIcon } from './icon';
-import { Task } from '../maproulette/Task';
+import { QAItem } from '../osm/qa_item.js';
+import { uiIcon } from './icon.js';
 
 
 export function uiViewOnMapRoulette(context) {
   const l10n = context.systems.l10n;
   const maproulette = context.services.maproulette;
-  let _task;
+  let _qaitem;
 
 
-  function viewOnMapRoulette(selection) {
+  function render(selection) {
     let url;
-    if (maproulette && (_task instanceof Task)) {
-      url = maproulette.itemURL(_task);
+    if (maproulette && (_qaitem instanceof QAItem)) {
+      url = maproulette.itemURL(_qaitem);
     }
 
     const link = selection.selectAll('.view-on-maproulette')
@@ -36,11 +36,11 @@ export function uiViewOnMapRoulette(context) {
   }
 
 
-  viewOnMapRoulette.what = function(val) {
-    if (!arguments.length) return _task;
-    _task = val;
-    return viewOnMapRoulette;
+  render.task = function(val) {
+    if (!arguments.length) return _qaitem;
+    _qaitem = val;
+    return render;
   };
 
-  return viewOnMapRoulette;
+  return render;
 }

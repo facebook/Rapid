@@ -13,26 +13,23 @@ export function uiKeepRightDetails(context) {
   let _qaItem;
 
 
-  function issueDetail(d) {
+  function issueDetailHTML(d) {
     const { itemType, parentIssueType } = d;
-    const unknown = l10n.tHtml('inspector.unknown');
-    let replacements = d.replacements || {};
+    const unknown = l10n.t('inspector.unknown');
+    let replacements = d.replacements || {};  // some replacements are html linkified
     replacements.default = unknown;  // special key `default` works as a fallback string
 
-    let detail = l10n.tHtml(`QA.keepRight.errorTypes.${itemType}.description`, replacements);
+    let detail = l10n.t(`QA.keepRight.errorTypes.${itemType}.description`, replacements);
     if (detail === unknown) {
-      detail = l10n.tHtml(`QA.keepRight.errorTypes.${parentIssueType}.description`, replacements);
+      detail = l10n.t(`QA.keepRight.errorTypes.${parentIssueType}.description`, replacements);
     }
     return detail;
   }
 
 
-  function keepRightDetails(selection) {
+  function render(selection) {
     const details = selection.selectAll('.error-details')
-      .data(
-        (_qaItem ? [_qaItem] : []),
-        d => `${d.id}-${d.status || 0}`
-      );
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     details.exit()
       .remove();
@@ -48,12 +45,12 @@ export function uiKeepRightDetails(context) {
 
     descriptionEnter
       .append('h4')
-      .html(l10n.tHtml('QA.keepRight.detail_description'));
+      .text(l10n.t('QA.keepRight.detail_description'));
 
     descriptionEnter
       .append('div')
       .attr('class', 'qa-details-description-text')
-      .html(issueDetail);
+      .html(issueDetailHTML);
 
     // If there are entity links in the error message..
     let relatedEntities = [];
@@ -108,11 +105,11 @@ export function uiKeepRightDetails(context) {
   }
 
 
-  keepRightDetails.issue = function(val) {
+  render.issue = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return keepRightDetails;
+    return render;
   };
 
-  return keepRightDetails;
+  return render;
 }

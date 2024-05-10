@@ -19,7 +19,7 @@ export function uiNoteEditor(context) {
   var _newNote;
 
 
-    function noteEditor(selection) {
+    function render(selection) {
         var header = selection.selectAll('.header')
             .data([0]);
 
@@ -37,7 +37,7 @@ export function uiNoteEditor(context) {
 
         headerEnter
             .append('h3')
-            .html(l10n.tHtml('note.title'));
+            .text(l10n.t('note.title'));
 
 
         var body = selection.selectAll('.body')
@@ -74,7 +74,7 @@ export function uiNoteEditor(context) {
         var osm = context.services.osm;
         if (osm) {
             osm.on('authchange', function() {
-                selection.call(noteEditor);
+                selection.call(render);
             });
         }
     }
@@ -97,7 +97,7 @@ export function uiNoteEditor(context) {
         noteSaveEnter
             .append('h4')
             .attr('class', '.note-save-header')
-            .html(function() {
+            .text(function() {
                 return _note.isNew() ? l10n.t('note.newDescription') : l10n.t('note.newComment');
             });
 
@@ -206,14 +206,14 @@ export function uiNoteEditor(context) {
 
         authEnter
             .append('span')
-            .html(l10n.tHtml('note.login'));
+            .text(l10n.t('note.login'));
 
         authEnter
             .append('a')
             .attr('target', '_blank')
             .call(uiIcon('#rapid-icon-out-link', 'inline'))
             .append('span')
-            .html(l10n.tHtml('login'))
+            .text(l10n.t('login'))
             .on('click.note-login', function(d3_event) {
                 d3_event.preventDefault();
                 osm.authenticate();
@@ -234,7 +234,7 @@ export function uiNoteEditor(context) {
         prose = prose.enter()
             .append('p')
             .attr('class', 'note-save-prose')
-            .html(l10n.tHtml('note.upload_explanation'))
+            .text(l10n.t('note.upload_explanation'))
             .merge(prose);
 
         osm.userDetails(function(err, user) {
@@ -283,12 +283,12 @@ export function uiNoteEditor(context) {
             buttonEnter
                 .append('button')
                 .attr('class', 'button cancel-button secondary-action')
-                .html(l10n.tHtml('confirm.cancel'));
+                .text(l10n.t('confirm.cancel'));
 
             buttonEnter
                 .append('button')
                 .attr('class', 'button save-button action')
-                .html(l10n.tHtml('note.save'));
+                .text(l10n.t('note.save'));
 
         } else {
             buttonEnter
@@ -298,7 +298,7 @@ export function uiNoteEditor(context) {
             buttonEnter
                 .append('button')
                 .attr('class', 'button comment-button action')
-                .html(l10n.tHtml('note.comment'));
+                .text(l10n.t('note.comment'));
         }
 
 
@@ -315,7 +315,7 @@ export function uiNoteEditor(context) {
 
         buttonSection.select('.status-button')   // select and propagate data
             .attr('disabled', (hasAuth ? null : true))
-            .html(function(d) {
+            .text(function(d) {
                 var action = (d.status === 'open' ? 'close' : 'open');
                 var andComment = (d.newComment ? '_comment' : '');
                 return l10n.t('note.' + action + andComment);
@@ -378,18 +378,18 @@ export function uiNoteEditor(context) {
     }
 
 
-    noteEditor.note = function(val) {
+    render.note = function(val) {
         if (!arguments.length) return _note;
         _note = val;
-        return noteEditor;
+        return render;
     };
 
-    noteEditor.newNote = function(val) {
+    render.newNote = function(val) {
         if (!arguments.length) return _newNote;
         _newNote = val;
-        return noteEditor;
+        return render;
     };
 
 
-    return utilRebind(noteEditor, dispatch, 'on');
+    return utilRebind(render, dispatch, 'on');
 }
