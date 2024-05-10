@@ -73,8 +73,7 @@ export class MapRouletteService extends AbstractSystem {
       tileRequest: new Map(),       // Map (tileID -> { status, controller, url })
       challengeRequest: new Map(),  // Map (challengeID -> { status, controller, url })
       inflight: new Map(),          // Map (url -> controller)
-      closed: {},
-      comment: {},
+      closed: [],                   // Array ({ challengeID, taskID })
       rbush: new RBush()
     };
 
@@ -106,6 +105,26 @@ export class MapRouletteService extends AbstractSystem {
       .map(d => d.data)
       .filter(task => !this._challengeID || task.parentId === this._challengeID)
       .filter(task => task.isVisible);
+  }
+
+
+  /**
+   * getTask
+   * @param   {string}  taskID
+   * @return  {Task?}   the task with that id, or `undefined` if not found
+   */
+  getTask(taskID) {
+    return this._cache.tasks.get(taskID);
+  }
+
+
+  /**
+   * getChallenge
+   * @param   {string}  challengeID
+   * @return  {Task?}   the task with that id, or `undefined` if not found
+   */
+  getChallenge(challengeID) {
+    return this._cache.challenges.get(challengeID);
   }
 
 
@@ -280,7 +299,6 @@ export class MapRouletteService extends AbstractSystem {
   postUpdate(task, callback) {
     const context = this.context;
     const cache = this._cache;
-    const sidebar = context.systems.ui.sidebar;
 
     // A comment is optional, but if we have one, POST it..
     const commentUrl = `${MAPROULETTE_API}/task/${task.id}/comment`;
@@ -340,14 +358,19 @@ export class MapRouletteService extends AbstractSystem {
       .then(utilFetchResponse)
       .then(() => {
         // All requests completed successfully
-        if (!(task.id in this._cache.closed)) {
-          this._cache.closed[task.id] = 0;
-          if (task.comment) {
-            task.comment += ` #maproulette mpr.lt/c/${task.parentId}/t/${task.id}`;
-            this._cache.comment[task.id] = { id: task.id, comment: task.comment };
-          }
+        if (task.taskStatus === 1) {  // only counts if the use chose "I Fixed It".
+          this._cache.closed.push({ taskID: task.id, challengeID: task.parentId });
         }
-        this._cache.closed[task.id] += 1;
+
+// commit.js will take care of the changeset comment
+//        if (!(task.id in this._cache.closed)) {
+//          this._cache.closed[task.id] = 0;
+//          if (task.comment) {
+//            task.comment += ` #maproulette mpr.lt/c/${task.parentId}/t/${task.id}`;
+//            this._cache.comment[task.id] = { id: task.id, comment: task.comment };
+//          }
+//        }
+//        this._cache.closed[task.id] += 1;
         this.removeTask(task);
         this.context.enter('browse');
         if (callback) callback(null, task);
@@ -407,24 +430,12 @@ export class MapRouletteService extends AbstractSystem {
 
 
   /**
-   * getClosedIDs
-   * Get an array of issues closed during this session.
-   * Used to populate `closed:maproulette` changeset tag
-   * @return  Array of closed item ids
+   * getClosed
+   * Get details about all taskks closed in this session
+   * @return  Array of objects
    */
-  getClosedIDs() {
-    return Object.keys(this._cache.closed).sort();
-  }
-
-
-  /**
-   * getClosedComment
-   * Get an array of comments for the closed tasks
-   * Used to populate `closed:maproulette` changeset tag
-   * @return  Array of closed item ids
-   */
-  getClosedComment() {
-    return Object.values(this._cache.comment);
+  getClosed() {
+    return this._cache.closed;
   }
 
 

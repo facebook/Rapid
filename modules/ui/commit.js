@@ -138,6 +138,46 @@ export function uiCommit(context) {
       delete tags['rapid:poweruser'];
     }
 
+    // If the user has completed any MapRoulette tasks, we may have sources or comments to use.
+    // (do this before we set sources below)
+    const mrComments = new Set();
+    const mrSources = new Set();
+    let usedMapRoulette = false;
+    const maproulette = context.services.maproulette;
+    if (maproulette) {
+      const mapRouletteClosed = maproulette.getClosed();
+      const seen = new Set();
+      for (const { challengeID } of mapRouletteClosed) {
+        if (seen.has(challengeID)) continue;
+        seen.add(challengeID);
+
+        const challenge = maproulette.getChallenge(challengeID);
+        if (!challenge) continue;
+
+        if (challenge.checkinComment) {
+          mrComments.add(challenge.checkinComment);
+        }
+        if (challenge.checkinSource) {
+          mrSources.add(challenge.checkinSource);
+        }
+      }
+      if (mapRouletteClosed.length) {
+        usedMapRoulette = true;
+      }
+    }
+
+    // Replace `comment` tag, if MapRoulette service has provided any...
+    if (mrComments.size) {
+      tags.comment = [...mrComments].join('\n');
+    }
+
+    // Include '#maproulette' `hashtag`, if Maproulette was used..
+    if (usedMapRoulette) {
+      const hashtags = new Set((tags.hashtags || '').split(';'));
+      hashtags.add('#maproulette');
+      tags.hashtags = context.cleanTagValue([...hashtags].join(';'));
+    }
+
     // Update `source` tag,
     // also `imagery_used`, `photos_used`, `data_used`
     const used = editor.sourcesUsed();
@@ -151,6 +191,11 @@ export function uiCommit(context) {
     ];
     for (const v of toRemove) {
       sources.delete(v);
+    }
+
+    // Include MapRoulette `sources`, if MapRoulette service has provided any...
+    for (const v of mrSources) {
+      sources.add(v);
     }
 
     // Aerial Imagery
@@ -246,17 +291,6 @@ export function uiCommit(context) {
       const osmoseClosed = osmose.getClosedCounts();
       for (let itemType in osmoseClosed) {
         tags[`closed:osmose:${itemType}`] = context.cleanTagValue(osmoseClosed[itemType].toString());
-      }
-    }
-    const maproulette = context.services.maproulette;
-    if (maproulette) {
-      const maprouletteClosedComments = maproulette.getClosedComment();
-      for (const {comment} of maprouletteClosedComments) {
-
-        tags.comment += ' ' + comment;
-      }
-      if (maprouletteClosedComments.length > 0 ) {
-        tags.hashtags = (tags.hashtags || '') + ';#maproulette';
       }
     }
 

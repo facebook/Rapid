@@ -144,7 +144,7 @@ export function uiMapRouletteEditor(context) {
         ' <span style="color: ' + getActionColor(_actionTaken) + ';">' + _actionTaken + '</span>'
       );
 
-    let commentTextarea = commentSaveEnter
+    commentSaveEnter
       .append('textarea')
       .attr('class', 'new-comment-input')
       .attr('placeholder', l10n.t('map_data.layers.maproulette.inputPlaceholder'))
