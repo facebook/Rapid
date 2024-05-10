@@ -2,12 +2,12 @@ export function uiMapRouletteDetails(context) {
   const l10n = context.systems.l10n;
   const maproulette = context.services.maproulette;
 
-  let _qaitem;
+  let _qaItem;
 
 
   function render(selection) {
     let details = selection.selectAll('.error-details')
-      .data(_qaitem ? [_qaitem] : [], d => `${d.id}-${d.status || 0}`);
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     details.exit()
       .remove();
@@ -25,10 +25,10 @@ export function uiMapRouletteDetails(context) {
     details = details.merge(detailsEnter);
 
 
-    maproulette.loadTaskDetailAsync(_qaitem)
+    maproulette.loadTaskDetailAsync(_qaItem)
       .then(task => {
-        // Do nothing if _qaitem has changed by the time Promise resolves
-        if (_qaitem.id !== task.id) return;
+        // Do nothing if _qaItem has changed by the time Promise resolves
+        if (_qaItem.id !== task.id) return;
 
         const selection = details.selectAll('.qa-details-subsection');
         selection.html('');   // replace contents
@@ -54,7 +54,7 @@ export function uiMapRouletteDetails(context) {
 
           selection
             .append('p')
-            .html(task.description)
+            .html(task.description)  // parsed markdown
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
@@ -67,7 +67,7 @@ export function uiMapRouletteDetails(context) {
 
           selection
             .append('p')
-            .html(task.instruction)
+            .html(task.instruction)  // parsed markdown
             .selectAll('a')
             .attr('rel', 'noopener')
             .attr('target', '_blank');
@@ -78,8 +78,8 @@ export function uiMapRouletteDetails(context) {
 
 
   render.task = function(val) {
-    if (!arguments.length) return _qaitem;
-    _qaitem = val;
+    if (!arguments.length) return _qaItem;
+    _qaItem = val;
     return render;
   };
 

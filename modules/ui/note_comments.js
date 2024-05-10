@@ -8,7 +8,7 @@ export function uiNoteComments(context) {
   let _note;
 
 
-  function noteComments(selection) {
+  function render(selection) {
     if (_note.isNew()) return;  // new notes won't have a comment section
 
     let comments = selection.selectAll('.comments-container')
@@ -111,12 +111,12 @@ export function uiNoteComments(context) {
   }
 
 
-  noteComments.note = function(val) {
+  render.note = function(val) {
     if (!arguments.length) return _note;
     _note = val;
-    return noteComments;
+    return render;
   };
 
 
-  return noteComments;
+  return render;
 }

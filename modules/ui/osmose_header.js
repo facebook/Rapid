@@ -17,17 +17,14 @@ export function uiOsmoseHeader(context) {
   }
 
 
-  function osmoseHeader(selection) {
+  function render(selection) {
     let iconFill = 0xffffff;
     if (osmose) {
       iconFill = osmose.getColor(_qaItem?.item);
     }
 
     const header = selection.selectAll('.qa-header')
-      .data(
-        (_qaItem ? [_qaItem] : []),
-        d => `${d.id}-${d.status || 0}`
-      );
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     header.exit()
       .remove();
@@ -62,14 +59,14 @@ export function uiOsmoseHeader(context) {
     headerEnter
       .append('div')
       .attr('class', 'qa-header-label')
-      .html(issueTitle);
+      .text(issueTitle);
   }
 
-  osmoseHeader.issue = function(val) {
+  render.issue = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return osmoseHeader;
+    return render;
   };
 
-  return osmoseHeader;
+  return render;
 }

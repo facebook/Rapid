@@ -23,9 +23,9 @@ export function uiOsmoseDetails(context) {
   }
 
 
-  function osmoseDetails(selection) {
+  function render(selection) {
     const details = selection.selectAll('.error-details')
-      .data(_qaItem ? [_qaItem] : [], d => `${d.id}-${d.status || 0}` );
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     details.exit()
       .remove();
@@ -43,7 +43,7 @@ export function uiOsmoseDetails(context) {
 
       div
         .append('h4')
-        .html(l10n.tHtml('QA.keepRight.detail_description'));
+        .text(l10n.t('QA.keepRight.detail_description'));
 
       div
         .append('p')
@@ -71,7 +71,7 @@ export function uiOsmoseDetails(context) {
 
       div
         .append('h4')
-        .html(l10n.tHtml('QA.osmose.fix_title'));
+        .text(l10n.t('QA.osmose.fix_title'));
 
       div
         .append('p')
@@ -89,7 +89,7 @@ export function uiOsmoseDetails(context) {
 
       div
         .append('h4')
-        .html(l10n.tHtml('QA.osmose.trap_title'));
+        .text(l10n.t('QA.osmose.trap_title'));
 
       div
         .append('p')
@@ -113,7 +113,7 @@ export function uiOsmoseDetails(context) {
         if (d.detail) {
           detailsDiv
             .append('h4')
-            .html(l10n.tHtml('QA.osmose.detail_title'));
+            .text(l10n.t('QA.osmose.detail_title'));
 
           detailsDiv
             .append('p')
@@ -126,7 +126,7 @@ export function uiOsmoseDetails(context) {
         // Create list of linked issue elements
         elemsDiv
           .append('h4')
-          .html(l10n.tHtml('QA.osmose.elems_title'));
+          .text(l10n.t('QA.osmose.elems_title'));
 
         elemsDiv
           .append('ul').selectAll('li')
@@ -185,12 +185,12 @@ export function uiOsmoseDetails(context) {
   }
 
 
-  osmoseDetails.issue = function(val) {
+  render.issue = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return osmoseDetails;
+    return render;
   };
 
 
-  return osmoseDetails;
+  return render;
 }

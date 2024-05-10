@@ -263,12 +263,12 @@ export class MapRouletteService extends AbstractSystem {
     const handleResponse = (data) => {
       task.instruction = marked.parse(data.instruction) || '';
       task.description = marked.parse(data.description) || '';
+      return task;
     };
 
     return fetch(url)
       .then(utilFetchResponse)
-      .then(handleResponse)
-      .then(() => task);
+      .then(handleResponse);
   }
 
 
@@ -339,18 +339,16 @@ export class MapRouletteService extends AbstractSystem {
     .then(utilFetchResponse)
     .then(() => {
       // All requests completed successfully
-      this.removeTask(task);
-
-      sidebar.hide();
       if (!(task.id in this._cache.closed)) {
         this._cache.closed[task.id] = 0;
         if (task.comment) {
-          task.comment += ` #maproulette mpr.lt/c/${task.task.parentId}/t/${task.taskId}`;
+          task.comment += ` #maproulette mpr.lt/c/${task.parentId}/t/${task.taskId}`;
           this._cache.comment[task.id] = { id: task.id, comment: task.comment };
         }
       }
-
       this._cache.closed[task.id] += 1;
+      this.removeTask(task);
+      this.context.enter('browse');
       if (callback) callback(null, task);
     })
     .catch(err => {

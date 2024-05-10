@@ -411,7 +411,6 @@ export class ImproveOsmService extends AbstractSystem {
               newComment: undefined
             }));
           } else {
-            this.removeItem(d);
             if (d.newStatus === 'SOLVED') {
               // Keep track of the number of issues closed per type to tag the changeset
               if (!(d.issueKey in this._cache.closed)) {
@@ -419,6 +418,8 @@ export class ImproveOsmService extends AbstractSystem {
               }
               this._cache.closed[d.issueKey] += 1;
             }
+            this.removeItem(d);
+            this.context.enter('browse');
           }
           if (callback) callback(null, d);
         })

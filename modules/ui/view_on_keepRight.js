@@ -8,7 +8,7 @@ export function uiViewOnKeepRight(context) {
   let _qaItem;
 
 
-  function viewOnKeepRight(selection) {
+  function render(selection) {
     let url;
     if (keepright && (_qaItem instanceof QAItem)) {
       url = keepright.issueURL(_qaItem);
@@ -36,11 +36,11 @@ export function uiViewOnKeepRight(context) {
   }
 
 
-  viewOnKeepRight.what = function(val) {
+  render.issue = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;
-    return viewOnKeepRight;
+    return render;
   };
 
-  return viewOnKeepRight;
+  return render;
 }

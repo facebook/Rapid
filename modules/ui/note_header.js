@@ -6,7 +6,7 @@ export function uiNoteHeader(context) {
   let _note;
 
 
-  function noteHeader(selection) {
+  function render(selection) {
     let header = selection.selectAll('.note-header')
       .data((_note ? [_note] : []), d => d.status + d.id );
 
@@ -57,12 +57,12 @@ export function uiNoteHeader(context) {
   }
 
 
-  noteHeader.note = function(val) {
+  render.note = function(val) {
     if (!arguments.length) return _note;
     _note = val;
-    return noteHeader;
+    return render;
   };
 
 
-  return noteHeader;
+  return render;
 }

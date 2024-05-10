@@ -16,7 +16,7 @@ export function uiMapRouletteEditor(context) {
   const mapRouletteDetails = uiMapRouletteDetails(context);
   const mapRouletteHeader = uiMapRouletteHeader(context);
 
-  let _qaitem;
+  let _qaItem;
   let _comment;
   let _newComment;
   let _actionTaken;
@@ -56,8 +56,8 @@ export function uiMapRouletteEditor(context) {
       .append('div')
       .attr('class', 'modal-section mr-editor')
       .merge(editor)
-      .call(mapRouletteHeader.task(_qaitem))
-      .call(mapRouletteDetails.task(_qaitem))
+      .call(mapRouletteHeader.task(_qaItem))
+      .call(mapRouletteDetails.task(_qaItem))
       .call(maprouletteSaveSection)
       .call(commentSaveSection);
 
@@ -68,16 +68,16 @@ export function uiMapRouletteEditor(context) {
       .append('div')
       .attr('class', 'footer')
       .merge(footer)
-      .call(uiViewOnMapRoulette(context).task(_qaitem));
+      .call(uiViewOnMapRoulette(context).task(_qaItem));
   }
 
 
   function maprouletteSaveSection(selection) {
-    const errID = _qaitem?.id;
+    const errID = _qaItem?.id;
     const isSelected = errID && context.selectedData().has(errID);
-    const isShown = (_qaitem && isSelected);
+    const isShown = (_qaItem && isSelected);
     let saveSection = selection.selectAll('.mr-save')
-      .data((isShown ? [_qaitem] : []), d => `${d.id}-${d.status || 0}` );
+      .data(isShown ? [_qaItem] : [], d => d.key);
 
     // exit
     saveSection.exit()
@@ -113,12 +113,12 @@ export function uiMapRouletteEditor(context) {
 
 
   function commentSaveSection(selection) {
-    const errID = _qaitem?.id;
+    const errID = _qaItem?.id;
     const isSelected = errID && context.selectedData().has(errID);
-    const showNoteSaveSection = _qaitem?.showNoteSaveSection;
+    const showNoteSaveSection = _qaItem?.showNoteSaveSection;
 
     let commentSave = selection.selectAll('.note-save')
-      .data((isSelected && showNoteSaveSection ? [_qaitem] : []), d => d.status + d.id);
+      .data(isSelected && showNoteSaveSection ? [_qaItem] : [], d => d.key);
 
     // exit
     commentSave.exit()
@@ -169,10 +169,10 @@ export function uiMapRouletteEditor(context) {
         _comment = _comment.update({ _newComment: val });
       }
 
-      _qaitem.update({ newComment: val });
+      _qaItem.update({ newComment: val });
 
       if (maproulette) {
-        maproulette.replaceTask(_qaitem);  // update note cache
+        maproulette.replaceTask(_qaItem);  // update note cache
       }
 
       commentSave
@@ -258,11 +258,11 @@ export function uiMapRouletteEditor(context) {
   function mRSaveButtons(selection) {
     const osm = context.services.osm;
     const hasAuth = osm && osm.authenticated();
-    const errID = _qaitem?.id;
+    const errID = _qaItem?.id;
 
     const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
-      .data((isSelected ? [_qaitem] : []), d => d.status + d.id);
+      .data(isSelected ? [_qaItem] : [], d => d.key);
 
     // exit
     buttonSection.exit()
@@ -294,28 +294,28 @@ export function uiMapRouletteEditor(context) {
       .merge(buttonEnter);
 
     buttonSection.select('.fixedIt-button')
-      .attr('disabled', isSaveDisabled(_qaitem))
+      .attr('disabled', isSaveDisabled(_qaItem))
       .text(l10n.t('map_data.layers.maproulette.fixedIt'))
       .on('click.fixedIt', function(d3_event, d) {
         fixedIt(d3_event, d, selection);
       });
 
     buttonSection.select('.cantComplete-button')
-      .attr('disabled', isSaveDisabled(_qaitem))
+      .attr('disabled', isSaveDisabled(_qaItem))
       .text(l10n.t('map_data.layers.maproulette.cantComplete'))
       .on('click.cantComplete', function(d3_event, d) {
         cantComplete(d3_event, d, selection);
       });
 
     buttonSection.select('.alreadyFixed-button')
-      .attr('disabled', isSaveDisabled(_qaitem))
+      .attr('disabled', isSaveDisabled(_qaItem))
       .text(l10n.t('map_data.layers.maproulette.alreadyFixed'))
       .on('click.alreadyFixed', function(d3_event, d) {
         alreadyFixed(d3_event, d, selection);
       });
 
     buttonSection.select('.notAnIssue-button')
-      .attr('disabled', isSaveDisabled(_qaitem))
+      .attr('disabled', isSaveDisabled(_qaItem))
       .text(l10n.t('map_data.layers.maproulette.notAnIssue'))
       .on('click.notAnIssue', function(d3_event, d) {
         notAnIssue(d3_event, d, selection);
@@ -349,10 +349,10 @@ export function uiMapRouletteEditor(context) {
       _mapRouletteApiKey = preferences.maproulette_apikey_v2;
     });
 
-    const errID = _qaitem?.id;
+    const errID = _qaItem?.id;
     const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
-      .data((isSelected ? [_qaitem] : [], d => `${d.id}-${d.status || 0}`));
+      .data(isSelected ? [_qaItem] : [], d => d.key);
 
     // exit
     buttonSection.exit()
@@ -385,8 +385,8 @@ export function uiMapRouletteEditor(context) {
     buttonSection.select('.submit-button')
       .text(l10n.t('map_data.layers.maproulette.submit'))
       .on('click.submit', function(d3_event, d) {
-          clickSumbit(d3_event, d, selection);
-        });
+        clickSumbit(d3_event, d, selection);
+      });
 
       selection.select('.new-comment-input')
         .on('input.note-input', function() {
@@ -469,9 +469,9 @@ export function uiMapRouletteEditor(context) {
   }
 
   render.error = function(val) {
-    if (!arguments.length) return _qaitem;
-    _qaitem = val;
-    _qaitem.showNoteSaveSection = false;
+    if (!arguments.length) return _qaItem;
+    _qaItem = val;
+    _qaItem.showNoteSaveSection = false;
     return render;
   };
 

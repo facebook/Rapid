@@ -2,12 +2,12 @@
 
 export function uiMapRouletteHeader(context) {
   const l10n = context.systems.l10n;
-  let _qaitem;
+  let _qaItem;
 
 
   function render(selection) {
     const header = selection.selectAll('.qa-header')
-      .data(_qaitem ? [_qaitem] : [], d => `${d.id}-${d.status || 0}`);
+      .data(_qaItem ? [_qaItem] : [], d => d.key);
 
     header.exit()
       .remove();
@@ -46,8 +46,8 @@ export function uiMapRouletteHeader(context) {
   }
 
   render.task = function(val) {
-    if (!arguments.length) return _qaitem;
-    _qaitem = val;
+    if (!arguments.length) return _qaItem;
+    _qaItem = val;
     return render;
   };
 
