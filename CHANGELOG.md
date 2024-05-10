@@ -37,6 +37,24 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.3.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.1)
+#### 2024-May-??  (coming soon)
+
+#### :bug: Bugfixes:
+* Various issues with MapRoulette integration:
+* [#1412] Network activity causing performance issues
+* [#1413] Some Maproulette tasks showing up as missing
+* [#1415] `#maproulette` hashtag being applied even when no MapRoulette tasks completed
+* [#1418] Should not show markers for tasks/challenges not-yet-enabled
+* [#1420] Comments shouldn't be required, also should use default comment and sources attached to the challenge
+
+[#1412]: https://github.com/facebook/Rapid/issues/1412
+[#1413]: https://github.com/facebook/Rapid/issues/1413
+[#1415]: https://github.com/facebook/Rapid/issues/1415
+[#1418]: https://github.com/facebook/Rapid/issues/1418
+[#1420]: https://github.com/facebook/Rapid/issues/1420
+
+
 # [2.3.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.0)
 #### 2024-May-08
 
