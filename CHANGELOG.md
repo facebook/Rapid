@@ -38,7 +38,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 -->
 
 # [2.3.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.3.1)
-#### 2024-May-??  (coming soon)
+#### 2024-May-12
 
 #### :bug: Bugfixes:
 * Various issues with MapRoulette integration:
