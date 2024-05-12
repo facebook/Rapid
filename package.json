@@ -91,7 +91,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@mapbox/maki": "^8.0.1",
-    "@openstreetmap/id-tagging-schema": "~6.6.0",
+    "@openstreetmap/id-tagging-schema": "~6.7.3",
     "@pixi/jsdoc-template": "^2.6.0",
     "@playwright/test": "^1.44.0",
     "@rapideditor/mapillary_sprite_source": "^1.8.0",
