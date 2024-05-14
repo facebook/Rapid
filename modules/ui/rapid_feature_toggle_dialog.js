@@ -47,6 +47,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.color = color;
 
       context.scene().dirtyLayers('rapid');
+      context.scene().dirtyLayers('rapid-overlay');
       context.systems.map.immediateRedraw();
       _content.call(renderModalContent);
 
