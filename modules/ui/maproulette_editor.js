@@ -69,6 +69,19 @@ export function uiMapRouletteEditor(context) {
       .call(uiViewOnMapRoulette(context).task(_qaItem));
   }
 
+  function getMapRouletteApiKey(context, callback) {
+    const osm = context.services.osm;
+    osm.loadMapRouletteKey((err, preferences) => {
+      if (typeof callback === 'function') {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, preferences.maproulette_apikey_v2);
+        }
+      }
+    });
+  }
+
 
   function maprouletteSaveSection(selection) {
     const errID = _qaItem?.id;
@@ -185,49 +198,32 @@ export function uiMapRouletteEditor(context) {
       .append('div')
       .attr('class', 'detail-section')
       .merge(detailSection);
-
     const osm = context.services.osm;
     if (!osm) return;
 
-    // Add warning if user is not logged in
-    const hasAuth = osm.authenticated();
+    // Check if user is authenticated with OSM
+    const osmAuth = osm.authenticated();
     let authWarning = detailSection.selectAll('.auth-warning')
-      .data(hasAuth ? [] : [0]);
-
-    authWarning.exit()
-      .transition()
-      .duration(200)
-      .style('opacity', 0)
-      .remove();
-
-    let authEnter = authWarning.enter()
-      .insert('div', '.tag-reference-body')
-      .attr('class', 'field-warning auth-warning')
-      .style('opacity', 0);
-
-    authEnter
-      .call(uiIcon('#rapid-icon-alert', 'inline'));
-
-    authEnter
-      .append('span')
-      .text(l10n.t('map_data.layers.maproulette.login'));
-
-    authEnter
-      .append('a')
-      .attr('target', '_blank')
-      .call(uiIcon('#rapid-icon-out-link', 'inline'))
-      .append('span')
-      .text(l10n.t('login'))
-      .on('click.note-login', d3_event => {
-        d3_event.preventDefault();
-        osm.authenticate();
-      });
-
-    authEnter
-      .transition()
-      .duration(200)
-      .style('opacity', 1);
-
+      .data(osmAuth ? [] : [0]);
+    // If not authenticated with OSM, show OSM login prompt
+    if (!osmAuth) {
+      showAuthWarning(authWarning, 'map_data.layers.maproulette.login');
+    }
+    // Check if _mapRouletteApiKey is defined
+    getMapRouletteApiKey(context, (err, apiKey) => {
+      if (err) {
+        console.error(err); // eslint-disable-line no-console
+        return;
+      }
+      _mapRouletteApiKey = apiKey;
+      const mrAuth = _mapRouletteApiKey !== undefined;
+      authWarning = detailSection.selectAll('.auth-warning')
+        .data(mrAuth ? [] : [0]);
+      // If _mapRouletteApiKey is not defined, show MapRoulette login prompt
+      if (!mrAuth) {
+        showAuthWarning(authWarning, 'map_data.layers.maproulette.loginMaproulette');
+      }
+    });
 
     osm.userDetails(function(err, user) {
       if (err) return;
@@ -248,6 +244,53 @@ export function uiMapRouletteEditor(context) {
         .attr('href', osm.userURL(user.display_name))
         .attr('target', '_blank');
     });
+
+    function showAuthWarning(selection, messageKey) {
+      selection.exit()
+        .transition()
+        .duration(200)
+        .style('opacity', 0)
+        .remove();
+
+      let authEnter = selection.enter()
+        .insert('div', '.tag-reference-body')
+        .attr('class', 'field-warning auth-warning')
+        .style('opacity', 0);
+
+      authEnter
+        .call(uiIcon('#rapid-icon-alert', 'inline'));
+
+      authEnter
+        .append('span')
+        .text(l10n.t(messageKey));
+
+      if (messageKey === 'map_data.layers.maproulette.loginMaproulette') {
+        // If the message is for MapRoulette login, change the link destination
+        authEnter
+          .append('a')
+          .attr('target', '_blank')
+          .attr('href', 'https://maproulette.org/dashboard')
+          .call(uiIcon('#rapid-icon-out-link', 'inline'))
+          .append('span')
+          .text(l10n.t('login'));
+      } else {
+        authEnter
+          .append('a')
+          .attr('target', '_blank')
+          .call(uiIcon('#rapid-icon-out-link', 'inline'))
+          .append('span')
+          .text(l10n.t('login'))
+          .on('click.note-login', d3_event => {
+            d3_event.preventDefault();
+            osm.authenticate();
+          });
+      }
+
+      authEnter
+        .transition()
+        .duration(200)
+        .style('opacity', 1);
+    }
   }
 
 
@@ -257,75 +300,83 @@ export function uiMapRouletteEditor(context) {
    *  These buttons are available only after the user has completed authentication.
    */
   function mRSaveButtons(selection) {
-    const osm = context.services.osm;
-    const hasAuth = osm && osm.authenticated();
-    const errID = _qaItem?.id;
+    getMapRouletteApiKey(context, (err, apiKey) => {
+      if (err) {
+        console.error(err); // eslint-disable-line no-console
+        return;
+      }
+      _mapRouletteApiKey = apiKey;
+      const osm = context.services.osm;
+      const hasOSMAuth = osm && osm.authenticated();
+      const hasMapRouletteAuth = _mapRouletteApiKey !== undefined;
+      const hasAuth = hasOSMAuth && hasMapRouletteAuth;
+      const errID = _qaItem?.id;
+      const isSelected = errID && context.selectedData().has(errID);
+      let buttonSection = selection.selectAll('.buttons')
+        .data(isSelected ? [_qaItem] : [], d => d.key);
 
-    const isSelected = errID && context.selectedData().has(errID);
-    let buttonSection = selection.selectAll('.buttons')
-      .data(isSelected ? [_qaItem] : [], d => d.key);
+      // exit
+      buttonSection.exit()
+        .remove();
 
-    // exit
-    buttonSection.exit()
-      .remove();
+      // enter
+      const buttonEnter = buttonSection.enter()
+        .append('div')
+        .attr('class', 'buttons');
 
-    // enter
-    const buttonEnter = buttonSection.enter()
-      .append('div')
-      .attr('class', 'buttons');
+      buttonEnter
+        .append('button')
+        .attr('class', 'button fixedIt-button action');
 
-    buttonEnter
-      .append('button')
-      .attr('class', 'button fixedIt-button action');
+      buttonEnter
+        .append('button')
+        .attr('class', 'button cantComplete-button action');
 
-    buttonEnter
-      .append('button')
-      .attr('class', 'button cantComplete-button action');
+      buttonEnter
+        .append('button')
+        .attr('class', 'button alreadyFixed-button action');
 
-    buttonEnter
-      .append('button')
-      .attr('class', 'button alreadyFixed-button action');
+      buttonEnter
+        .append('button')
+        .attr('class', 'button notAnIssue-button action');
 
-    buttonEnter
-      .append('button')
-      .attr('class', 'button notAnIssue-button action');
+      // update
+      buttonSection = buttonSection
+        .merge(buttonEnter);
 
-    // update
-    buttonSection = buttonSection
-      .merge(buttonEnter);
+      buttonSection.select('.fixedIt-button')
+        .attr('disabled', isSaveDisabled(_qaItem))
+        .text(l10n.t('map_data.layers.maproulette.fixedIt'))
+        .on('click.fixedIt', function(d3_event, d) {
+          fixedIt(d3_event, d, selection);
+        });
 
-    buttonSection.select('.fixedIt-button')
-      .attr('disabled', isSaveDisabled(_qaItem))
-      .text(l10n.t('map_data.layers.maproulette.fixedIt'))
-      .on('click.fixedIt', function(d3_event, d) {
-        fixedIt(d3_event, d, selection);
-      });
+      buttonSection.select('.cantComplete-button')
+        .attr('disabled', isSaveDisabled(_qaItem))
+        .text(l10n.t('map_data.layers.maproulette.cantComplete'))
+        .on('click.cantComplete', function(d3_event, d) {
+          cantComplete(d3_event, d, selection);
+        });
 
-    buttonSection.select('.cantComplete-button')
-      .attr('disabled', isSaveDisabled(_qaItem))
-      .text(l10n.t('map_data.layers.maproulette.cantComplete'))
-      .on('click.cantComplete', function(d3_event, d) {
-        cantComplete(d3_event, d, selection);
-      });
+      buttonSection.select('.alreadyFixed-button')
+        .attr('disabled', isSaveDisabled(_qaItem))
+        .text(l10n.t('map_data.layers.maproulette.alreadyFixed'))
+        .on('click.alreadyFixed', function(d3_event, d) {
+          alreadyFixed(d3_event, d, selection);
+        });
 
-    buttonSection.select('.alreadyFixed-button')
-      .attr('disabled', isSaveDisabled(_qaItem))
-      .text(l10n.t('map_data.layers.maproulette.alreadyFixed'))
-      .on('click.alreadyFixed', function(d3_event, d) {
-        alreadyFixed(d3_event, d, selection);
-      });
-
-    buttonSection.select('.notAnIssue-button')
-      .attr('disabled', isSaveDisabled(_qaItem))
-      .text(l10n.t('map_data.layers.maproulette.notAnIssue'))
-      .on('click.notAnIssue', function(d3_event, d) {
-        notAnIssue(d3_event, d, selection);
-      });
+      buttonSection.select('.notAnIssue-button')
+        .attr('disabled', isSaveDisabled(_qaItem))
+        .text(l10n.t('map_data.layers.maproulette.notAnIssue'))
+        .on('click.notAnIssue', function(d3_event, d) {
+          notAnIssue(d3_event, d, selection);
+        });
 
 
-    function isSaveDisabled(d) {
-      return (hasAuth && d.service === 'maproulette') ? null : true;
-    }
+      function isSaveDisabled(d) {
+        return (hasAuth && d.service === 'maproulette') ? null : true;
+      }
+    });
   }
 
 
