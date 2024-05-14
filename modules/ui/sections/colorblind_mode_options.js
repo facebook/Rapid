@@ -46,6 +46,7 @@ export function uiSectionColorblindModeOptions(context) {
 
   const section = uiSection(context, 'preferences-colorblind-mode-options')
     .label(l10n.t('preferences.colorblind_options.title'))
+    .initHide(true)
     .disclosureContent(renderDisclosureContent);
 
   const colorblindCombo = uiCombobox(context, 'colorblind-mode-options');

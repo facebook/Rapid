@@ -13,6 +13,7 @@ export function uiSection(context, sectionID) {
   let _classes = utilFunctor('');
   let _container = d3_select(null);
 
+  let _initHide;
   let _shouldDisplay;
   let _content;
   let _disclosure;
@@ -37,6 +38,12 @@ export function uiSection(context, sectionID) {
   section.label = function(val) {
     if (!arguments.length) return _label;
     _label = utilFunctor(val);
+    return section;
+  };
+
+  section.initHide = function(val) {
+    if (!arguments.length) return _initHide;
+    _initHide = utilFunctor(val);
     return section;
   };
 
@@ -100,6 +107,12 @@ export function uiSection(context, sectionID) {
         selection.html('');
         return;
       }
+    }
+
+    // If there is a _initHide() function, we call it to determine if it should be hidden.
+    if (typeof _initHide === 'function') {
+      const initHide = _initHide();
+      selection.classed('hide', initHide);
     }
 
     // Render the content inside a Disclosure

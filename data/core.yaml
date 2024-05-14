@@ -1169,6 +1169,9 @@ en:
     allowLargeEdits:
       label: Allow large edits
       description: Remove the limitations about editing features that are not currently visible
+    showColorblindSimulators:
+      label: Enable colorblind simulators
+      description: Enable the colorblind simulator combo box on the Preference pane for simulating three color vision deficiencies
   version:
     whats_new: "What's new in Rapid {version}"
   tag_reference:
