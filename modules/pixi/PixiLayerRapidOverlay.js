@@ -31,6 +31,93 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     super(scene, layerID);
     this._clear();
     this._enabled = true;
+
+    const overlays = new PIXI.Container();
+    overlays.name = `${this.layerID}-overlays`;
+    overlays.sortableChildren = false;
+    overlays.interactiveChildren = true;
+    this.overlaysContainer = overlays;
+
+
+    const basemapContainer = this.scene.groups.get('basemap');
+    basemapContainer.addChild(overlays);
+
+//// shader experiment:
+//this._uniforms = {
+// u_resolution: [300.0, 300.0],
+// u_time: 0.0,
+// tint: new Float32Array([1, 1, 1, 1]),
+// translationMatrix: new PIXI.Matrix(),
+// default: this.context.pixi.renderer.plugins.batch._shader.uniformGroup
+//};
+//
+//const vert = `
+//precision highp float;
+//attribute vec2 aVertexPosition;
+//
+//uniform mat3 projectionMatrix;
+//uniform mat3 translationMatrix;
+//
+//void main(void) {
+//  gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
+//}
+//`;
+//
+//const frag =`
+//// varying vec2 vTextureCoord;
+//// uniform sampler2D uSampler;
+//// void main() {
+////   // gl_FragColor *= texture2D(uSampler, vTextureCoord);
+////  gl_FragColor = vec4(gl_FragCoord.x/1000.0, gl_FragCoord.y/1000.0, 0.0, 1.0);
+//// }
+////
+//// https://thebookofshaders.com/examples/?chapter=proceduralTexture
+//// Title: Cellular Noise
+//
+//#ifdef GL_ES
+//precision mediump float;
+//#endif
+//
+//uniform vec2 u_resolution;
+//uniform float u_time;
+//uniform vec4 tint;
+//
+//vec2 random2(vec2 p) {
+//  return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*u_time);
+//}
+//
+//float cellular(vec2 p) {
+//  vec2 i_st = floor(p);
+//  vec2 f_st = fract(p);
+//  float m_dist = 10.;
+//  for (int j=-1; j<=1; j++ ) {
+//    for (int i=-1; i<=1; i++ ) {
+//      vec2 neighbor = vec2(float(i),float(j));
+//      vec2 point = random2(i_st + neighbor);
+//      point = 0.5 + 0.5*sin(6.2831*point);
+//      vec2 diff = neighbor + point - f_st;
+//      float dist = length(diff);
+//      if ( dist < m_dist ) {
+//        m_dist = dist;
+//      }
+//    }
+//  }
+//  return m_dist;
+//}
+//
+//void main() {
+//  vec4 magenta = vec4(218.0/255.0, 38.0/255.0, 211.0/255.0, 0.7);
+//  vec2 st = gl_FragCoord.xy / u_resolution.xy;
+//  st.x *= u_resolution.x / u_resolution.y;
+//  st *= 10.0;
+//
+//  float v = cellular(st);
+//  gl_FragColor = vec4(vec3(v),1.0) * magenta;
+//}
+//`;
+//
+//this._customshader = new PIXI.Shader.from(vert, frag, this._uniforms);
+
   }
 
 
@@ -65,8 +152,8 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     const lines = overlayData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');
     const points = overlayData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
-    this.renderPolygons(frame, viewport, zoom, polygons, customColor);
-    this.renderLines(frame, viewport, zoom, lines, customColor);
+     this.renderPolygons(frame, viewport, zoom, polygons, customColor);
+     this.renderLines(frame, viewport, zoom, lines, customColor);
     this.renderPoints(frame, viewport, zoom, points, customColor);
   }
 
@@ -81,7 +168,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    */
   renderPolygons(frame, viewport, zoom, polygons, color) {
     const l10n = this.context.systems.l10n;
-    const parentContainer = this.scene.groups.get('basemap');
+    const parentContainer = this.overlaysContainer;
 
     const polygonStyle = {
       fill: { color: color, alpha: 0.3, },
@@ -139,7 +226,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    */
   renderLines(frame, viewport, zoom, lines, color, styleOverride) {
     const l10n = this.context.systems.l10n;
-    const parentContainer = this.scene.groups.get('basemap');
+    const parentContainer = this.overlaysContainer;
 
     const lineStyle = styleOverride || {
       stroke: { width: 2, color: color, alpha: 1, cap: PIXI.LINE_CAP.ROUND },
@@ -195,7 +282,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    */
   renderPoints(frame, viewport, zoom, points, color) {
     const l10n = this.context.systems.l10n;
-    const parentContainer = this.scene.groups.get('points');
+    const parentContainer = this.overlaysContainer;
 
     const pointStyle = {
       markerName: 'largeCircle',

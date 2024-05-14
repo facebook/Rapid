@@ -96,6 +96,14 @@ export class PixiRenderer extends EventEmitter {
       view: surface.node()
     });
 
+    window.__PIXI_DEVTOOLS__ = {
+      pixi: PIXI,
+      app: this.pixi,
+      // If you are not using a pixi app, you can pass the renderer and stage directly
+      // renderer: myRenderer,
+      // stage: myStage,
+    };
+
     // Register Pixi with the pixi-inspector extension if it is installed
     // https://github.com/bfanger/pixi-inspector
     globalThis.__PIXI_APP__ = this.pixi;
