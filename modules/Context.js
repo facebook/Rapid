@@ -67,6 +67,10 @@ export class Context extends EventEmitter {
     this.services = {};
 
 
+    this._initPromise = null;
+    this._resetPromise = null;
+
+
     // User interface and keybinding
     // AFAICT `lastPointerType` is just used to localize the intro? for now - instead get this from pixi?
     // this.lastPointerType = () => _uiSystem.lastPointerType;
@@ -108,6 +112,8 @@ export class Context extends EventEmitter {
    * @return {Promise} Promise resolved when Rapid is ready
    */
   initAsync() {
+    if (this._initPromise) return this._initPromise;
+
     // -------------------------------
     // Construct all the core classes
     // -------------------------------
@@ -165,7 +171,7 @@ export class Context extends EventEmitter {
     const allSystems = Object.values(this.systems);
     const allServices = Object.values(this.services);
 
-    return Promise.resolve()
+    return this._initPromise = Promise.resolve()
       .then(() => Promise.all( allSystems.map(s => s.initAsync()) ))
       .then(() => Promise.all( allServices.map(s => s.initAsync()) ))
       .then(() => {
@@ -184,12 +190,15 @@ export class Context extends EventEmitter {
    * @return {Promise} Promise resolved when Rapid is finished resetting
    */
   resetAsync() {
+    if (this._resetPromise) return this._resetPromise;
+
     const allSystems = Object.values(this.systems);
     const allServices = Object.values(this.services);
 
-    return Promise.resolve()
+    return this._resetPromise = Promise.resolve()
       .then(() => Promise.all( allSystems.map(s => s.resetAsync()) ))
-      .then(() => Promise.all( allServices.map(s => s.resetAsync()) ));
+      .then(() => Promise.all( allServices.map(s => s.resetAsync()) ))
+      .finally(() => this._resetPromise = null);
   }
 
 
