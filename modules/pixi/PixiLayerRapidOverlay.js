@@ -1,17 +1,11 @@
 import * as PIXI from 'pixi.js';
-import { gpx, kml } from '@tmcw/togeojson';
-import geojsonRewind from '@mapbox/geojson-rewind';
-import { parse as wktParse } from 'wkt';
-import { Color } from 'pixi.js';
 
-import { geojsonExtent, geojsonFeatures } from '../util/util.js';
+import { geojsonFeatures } from '../util/util.js';
 import { AbstractLayer } from './AbstractLayer.js';
 import { PixiFeatureLine } from './PixiFeatureLine.js';
 import { PixiFeaturePoint } from './PixiFeaturePoint.js';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon.js';
-import { utilFetchResponse } from '../util/index.js';
 
-const CUSTOM_COLOR = 0x00ffff;
 
 
 /**
@@ -148,12 +142,12 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
       overlayData = vtService.getData(overlay.url).map(d => d.geojson);
     }
 
-    const polygons = overlayData.filter(d => d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon');
-    const lines = overlayData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');
+    // const polygons = overlayData.filter(d => d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon');
+    // const lines = overlayData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');
     const points = overlayData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
-     this.renderPolygons(frame, viewport, zoom, polygons, customColor);
-     this.renderLines(frame, viewport, zoom, lines, customColor);
+    //  this.renderPolygons(frame, viewport, zoom, polygons, customColor);
+    //  this.renderLines(frame, viewport, zoom, lines, customColor);
     this.renderPoints(frame, viewport, zoom, points, customColor);
   }
 
@@ -281,15 +275,8 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    * @param  color      The color to use
    */
   renderPoints(frame, viewport, zoom, points, color) {
-    const l10n = this.context.systems.l10n;
     const parentContainer = this.overlaysContainer;
 
-    const pointStyle = {
-      markerName: 'largeCircle',
-      markerTint: color,
-      iconName: 'maki-circle-stroked',
-      labelTint: color
-    };
 
     for (const d of points) {
       const dataID = d.__featurehash__;
@@ -309,22 +296,28 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
         }
 
         if (!feature) {
-          feature = new PixiFeaturePoint(this, featureID);
-          feature.style = pointStyle;
-          feature.parentContainer = parentContainer;
+
+          const xyCoords = viewport.project(coords);
+          feature = new PIXI.Graphics().
+          beginFill(0xff26db, 0.05).
+          drawCircle(0, 0, 40).
+          endFill();
+
+          feature.x = xyCoords[0];
+          feature.y = xyCoords[1];
+          parentContainer.addChild(feature);
         }
 
         // If data has changed.. Replace it.
         if (feature.v !== version) {
           feature.v = version;
           feature.geometry.setCoords(coords);
-          feature.label = l10n.displayName(d.properties);
           feature.setData(dataID, d);
         }
 
-        this.syncFeatureClasses(feature);
-        feature.update(viewport, zoom);
-        this.retainFeature(feature, frame);
+         this.syncFeatureClasses(feature);
+         feature.update(viewport, zoom);
+         this.retainFeature(feature, frame);
       }
     }
   }
