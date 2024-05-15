@@ -19,23 +19,18 @@
       </div>
 
       <div id='sidebar'>
-        <div id='logo'>
-          <h1><img src="./rapid-logo.svg"/> iframe demo</h1>
-        </div>
+        <h1><img src="./rapid-logo.svg"/> iframe demo</h1>
 
         <div id='rapid-info'>
           Waiting for the iframe to be ready...
         </div>
 
         <div id='map-info'>
-          mapinfo
         </div>
 
-        <div id='controls'>
-          controls
+        <div id='tour'>
         </div>
       </div>
-
     </div>
 
     <script>
@@ -44,7 +39,7 @@
 const viewer = document.getElementById('viewer');
 const rapidInfo = document.getElementById('rapid-info');
 const mapInfo = document.getElementById('map-info');
-const controls = document.getElementById('controls');
+const tour = document.getElementById('tour');
 
 // create the iframe, inject it into document
 const iframe = document.createElement('iframe');
@@ -54,36 +49,155 @@ iframe.onload = iframeLoaded;
 iframe.src = './latest.html';
 viewer.appendChild(iframe);
 
+// Properties in the inner iframe
 let _innerDocument;
 let _innerWindow
-let _rapidContext;
 let _rapidStarted = false;
 
-// handlers
+// Rapid systems we can work with
+let _context;
+let _editor;
+let _map;
+let _imagery;
+let _urlhash;
+
+
 function iframeLoaded() {
-  // get access to the rapid stuff in the iframe
+  // Access stuff in the iframe
   _innerDocument = iframe.contentDocument || iframe.contentWindow.document;
   _innerWindow = iframe.contentWindow;
-  window.rapidContext = _rapidContext = _innerWindow.rapidContext;
-  setRapidInfo();
+  _context = window.rapidContext = _innerWindow.rapidContext;
+  updateSidebar();
 
-  // Rapid should already be initting, we can chain off that promise to know when it's done.
-  _rapidContext.initAsync()
+  // Rapid should already be initting.
+  // We can chain off that Promise to know when it's done.
+  _context.initAsync()
     .then(() => {
       _rapidStarted = true;
-      setRapidInfo();
+      _editor = _context.systems.editor;
+      _map = _context.systems.map;
+      _imagery = _context.systems.imagery;
+      _urlhash = _context.systems.urlhash;
+
+      _editor.on('stablechange', updateSidebar);
+      _imagery.on('imagerychange', updateSidebar);
+      _map.on('draw', updateSidebar);
+      setupTour();
+      updateSidebar();
     });
 }
 
-function setRapidInfo() {
-  let msg;
-  if (!_rapidContext) {
-    msg = 'Waiting for the iframe to be ready...';
+
+function updateSidebar() {
+  let rapidInfoHTML = '';
+
+  if (!_context) {
+    rapidInfoHTML = 'Waiting for the iframe to be ready...';
   } else {
-    msg = 'Rapid is ' + (_rapidStarted ? 'started' : 'starting up') + '.'
-      + ' Loaded version <b>' + _rapidContext.version + '</b>';
+    rapidInfoHTML = 'Rapid is ' + (_rapidStarted ? 'started' : 'starting up') + '.'
+      + ' Loaded version <b>' + _context.version + '</b>';
   }
-  rapidInfo.innerHTML = msg;
+  rapidInfo.innerHTML = rapidInfoHTML;
+
+
+  let mapInfoHTML = '<table>';
+  if (_imagery) {
+    const source = _imagery.baseLayerSource();
+    mapInfoHTML += '<tr><td><b>Imagery:</b></td><td>' + source.name + '</td></tr>';
+  }
+  if (_urlhash) {
+    const mapParam = _urlhash.getParam('map');
+    mapInfoHTML += '<tr><td><b>Map:</b></td><td>' + mapParam + '</td></tr>';
+  }
+  if (_editor) {
+    const editCount = _editor.difference().summary().size;
+    mapInfoHTML += '<tr><td><b>Edits:</b></td><td>' + editCount;
+    if (editCount) {
+      mapInfoHTML += "<a class='save-link' href='javascript:clickSave()'>save</a>";
+    }
+    mapInfoHTML += '</td></tr>';
+  }
+  mapInfoHTML += '</table>'
+  mapInfo.innerHTML = mapInfoHTML;
+}
+
+
+function clickSave() {
+  if (!_context.inIntro && _context.mode?.id !== 'save' && _editor.hasChanges()) {
+    _context.enter('save');
+  }
+}
+
+
+
+const landmarks = [
+  {
+    name: "Lucy the Elephant",
+    mapParams: [-74.51161, 39.32085, 19, 53],
+    osmID: 'n367683980',
+    wikipedia: "https://en.wikipedia.org/wiki/Lucy_the_Elephant"
+  },
+  { name: "Sandy Hook Lighthouse",
+    mapParams: [-74.00202, 40.46173, 20, 356],
+    osmID: "w411135029",
+    wikipedia: "https://en.wikipedia.org/wiki/Sandy_Hook_Light"
+  },
+  { name: "USS New Jersey",
+    mapParams: [-75.13306, 39.93946, 18.5, 20],
+    osmID: "w29667862",
+    wikipedia: "https://en.wikipedia.org/wiki/USS_New_Jersey_(BB-62)"
+  },
+  { name: "High Point Monument",
+    mapParams: [-74.66162, 41.32095, 19.5, 23],
+    osmID: "w236342206",
+    wikipedia: "https://en.wikipedia.org/wiki/High_Point_(New_Jersey)"
+  },
+  { name: "The Stone Pony",
+    mapParams: [-74.00096, 40.21998, 19, 15],
+    osmID: "w266206944",
+    wikipedia: "https://en.wikipedia.org/wiki/The_Stone_Pony"
+  },
+  { name: "The Steel Pier",
+    mapParams: [-74.41917, 39.35752, 18, 20],
+    osmID: "w229939911",
+    wikipedia: "https://en.wikipedia.org/wiki/Steel_Pier"
+  }
+];
+
+
+function chooseLandmark(index) {
+  const landmark = landmarks[index];
+  if (_map && landmark) {
+    const [lon, lat, zoom, bearing] = landmark.mapParams;
+    const rot = -bearing * (Math.PI / 180);  // Degrees to radians
+    _map.setMapParams([lon, lat], zoom, rot, 0);
+    _map.selectEntityID(landmark.osmID);   // OSM IDs can change, but we can try.
+  }
+}
+
+
+function setupTour() {
+  const h3 = document.createElement('h3');
+  h3.appendChild(document.createTextNode('Take a tour of New Jersey! 💪'));
+  tour.appendChild(h3);
+
+  for (let i = 0; i < landmarks.length; i++) {
+    const landmark = landmarks[i];
+    const choose = document.createElement('a');
+    choose.appendChild(document.createTextNode(landmark.name));
+    choose.setAttribute('class', 'choose-link');
+    choose.setAttribute('href', 'javascript:chooseLandmark(' + i + ')');
+
+    const about = document.createElement('a');
+    about.appendChild(document.createTextNode('[info]'));
+    about.setAttribute('class', 'about-link');
+    about.setAttribute('target', '_blank');
+    about.setAttribute('href', landmark.wikipedia);
+
+    tour.appendChild(choose);
+    tour.appendChild(about);
+    tour.appendChild(document.createElement('br'));
+  }
 }
 
     </script>

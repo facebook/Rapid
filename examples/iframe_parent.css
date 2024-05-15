@@ -17,6 +17,28 @@ h1, h2, h3, h4, h5 {
   color: #eee;
 }
 
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td, th {
+  padding-right: 10px;
+}
+
+
+a,
+a:visited,
+a:active {
+  color: #7092ff;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:focus {
+  color: #597be7;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 
 #wrap {
   display: flex;
@@ -52,9 +74,18 @@ h1, h2, h3, h4, h5 {
   padding-top: 10px;
 }
 
-#logo > h1 > img {
+h1 > img {
   display: inline;
   height: 1em;
   margin: 0 2px;
   vertical-align: text-bottom;
+}
+
+.about-link {
+  font-size: smaller;
+  margin-left: 10px
+}
+
+.save-link {
+  margin-left: 10px
 }
