@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'/>
+    <title>Rapid iframe example</title>
+    <link rel='icon' type='image/svg' href='https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/img/rapid_favicon.svg'>
+    <link rel='stylesheet' href='./iframe_parent.css'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
+    <meta name='apple-mobile-web-app-capable' content='yes'/>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
+  </head>
+
+  <body>
+    <script>var $buoop={required:{i:15,e:-4,f:-3,o:-3,s:-1,c:-3},reminder:0,noclose:true,no_permanent_hide:true,insecure:true,api:2021.06};</script>
+    <script src='https://browser-update.org/update.js'></script>
+
+    <div id='wrap'>
+      <div id='viewer'>
+      </div>
+
+      <div id='sidebar'>
+        <div id='logo'>
+          <h1><img src="./rapid-logo.svg"/> iframe demo</h1>
+        </div>
+
+        <div id='rapid-info'>
+          Waiting for the iframe to be ready...
+        </div>
+
+        <div id='map-info'>
+          mapinfo
+        </div>
+
+        <div id='controls'>
+          controls
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+
+// DOM elements
+const viewer = document.getElementById('viewer');
+const rapidInfo = document.getElementById('rapid-info');
+const mapInfo = document.getElementById('map-info');
+const controls = document.getElementById('controls');
+
+// create the iframe, inject it into document
+const iframe = document.createElement('iframe');
+iframe.setAttribute('allowfullscreen', 'true');
+iframe.setAttribute('frameborder', '0');
+iframe.onload = iframeLoaded;
+iframe.src = './latest.html';
+viewer.appendChild(iframe);
+
+let _innerDocument;
+let _innerWindow
+let _rapidContext;
+let _rapidStarted = false;
+
+// handlers
+function iframeLoaded() {
+  // get access to the rapid stuff in the iframe
+  _innerDocument = iframe.contentDocument || iframe.contentWindow.document;
+  _innerWindow = iframe.contentWindow;
+  window.rapidContext = _rapidContext = _innerWindow.rapidContext;
+  setRapidInfo();
+
+  // Rapid should already be initting, we can chain off that promise to know when it's done.
+  _rapidContext.initAsync()
+    .then(() => {
+      _rapidStarted = true;
+      setRapidInfo();
+    });
+}
+
+function setRapidInfo() {
+  let msg;
+  if (!_rapidContext) {
+    msg = 'Waiting for the iframe to be ready...';
+  } else {
+    msg = 'Rapid is ' + (_rapidStarted ? 'started' : 'starting up') + '.'
+      + ' Loaded version <b>' + _rapidContext.version + '</b>';
+  }
+  rapidInfo.innerHTML = msg;
+}
+
+    </script>
+  </body>
+</html>
