@@ -337,7 +337,7 @@ export class SelectBehavior extends AbstractBehavior {
     // Clicked on nothing
     if (!data) {
       context.systems.photos.selectPhoto(null);
-      if (context.mode?.id !== 'browse' && !this._multiSelection.size) {
+      if (context.mode?.id !== 'browse' && !isMultiselect) {
         context.enter('browse');
       }
       return;
