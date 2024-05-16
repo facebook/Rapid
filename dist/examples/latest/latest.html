@@ -7,7 +7,7 @@ This file is an example of how to load the latest published-to-npm release of Ra
 
 This method can allow your project to always run the latest Rapid code without needing to install updates!
 Copy this file to your own HTTP server, or use the code below as the basis for embedding Rapid in your project.
-It will also work from a localhost HTTP server:  `http://127.0.0.1:8080/examples/latest.html`
+It will also work from a localhost HTTP server:  `http://127.0.0.1:8080/dist/examples/latest/latest.html`
 
 Note that JSDelivr serves HTML files with `Content-Type: text/plain` for security reasons.
 So a link to _this file_ in JSDelivr CDN will not run Rapid, it will just view the source of this file.
@@ -44,14 +44,13 @@ You can adjust the URLs elsewhere in this file if you want to limit Rapid to a s
     <div id='rapid-container'></div>
 
     <script>
-      var container = document.getElementById('rapid-container');
-      var newScript = document.createElement('script');
+      const container = document.getElementById('rapid-container');
+      const newScript = document.createElement('script');
       newScript.type = 'text/javascript';
       newScript.onload = checkScript;
       newScript.onerror = checkScript;
 
-newScript.src = '../dist/rapid.js';
-//      newScript.src = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.js';         // debug
+     newScript.src = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.js';         // debug
 //      newScript.src = 'https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/rapid.min.js';   // production
 
       document.getElementsByTagName('head')[0].appendChild(newScript);
