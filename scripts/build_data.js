@@ -99,7 +99,7 @@ function buildData() {
   minifySync('data/qa_data.json', 'dist/data/qa_data.min.json');
   minifySync('data/shortcuts.json', 'dist/data/shortcuts.min.json');
   minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json');
-  minifySync('data/colors.json', 'dist/data/colors.min.json')
+  minifySync('data/colors.json', 'dist/data/colors.min.json');
 
   return _currBuild = Promise.resolve(true)
     .then(() => {

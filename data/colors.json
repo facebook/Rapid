@@ -37,7 +37,7 @@
       "fill": { "color": "0xaaaaaa", "alpha": 0.3 }
     }
   },
-  "example": {
+  "high_contrast": {
     "red": {
       "fill": { "color": "0xFF0E41", "alpha": 0.3 }
     },
