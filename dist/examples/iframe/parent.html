@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+<!--
+This file is an example of how to load and interact with Rapid in an `iframe`.
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe
+https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy
+Because of browser's Same Origin policy, the parent and child files should be served from the same server.
+The child code can still fetch the latest published Rapid bundle from a CDN.
+-->
     <meta charset='utf-8'/>
     <title>Rapid iframe example</title>
     <link rel='icon' type='image/svg' href='https://cdn.jsdelivr.net/npm/@rapideditor/rapid@2/dist/img/rapid_favicon.svg'>
-    <link rel='stylesheet' href='./iframe_parent.css'>
+    <link rel='stylesheet' href='./parent.css'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
     <meta name='apple-mobile-web-app-capable' content='yes'/>
     <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
@@ -55,7 +62,7 @@ const iframe = document.createElement('iframe');
 iframe.setAttribute('allowfullscreen', 'true');
 iframe.setAttribute('frameborder', '0');
 iframe.onload = iframeLoaded;
-iframe.src = './latest.html' + _currhash;
+iframe.src = './child.html' + _currhash;
 viewer.appendChild(iframe);
 
 // Properties in the inner iframe
