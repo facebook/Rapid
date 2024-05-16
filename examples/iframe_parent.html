@@ -35,18 +35,27 @@
 
     <script>
 
+const DEG2RAD = Math.PI / 180;
+const RAD2DEG = 180 / Math.PI;
+
 // DOM elements
 const viewer = document.getElementById('viewer');
 const rapidInfo = document.getElementById('rapid-info');
 const mapInfo = document.getElementById('map-info');
 const tour = document.getElementById('tour');
 
-// create the iframe, inject it into document
+
+// We will watch the url hash to keep it in sync between parent and child
+let _currhash = window.location.hash;
+window.addEventListener('hashchange', syncHashes);
+
+// Create the iframe, inject it into document
+// If the parent has a hash, share it with the child.
 const iframe = document.createElement('iframe');
 iframe.setAttribute('allowfullscreen', 'true');
 iframe.setAttribute('frameborder', '0');
 iframe.onload = iframeLoaded;
-iframe.src = './latest.html';
+iframe.src = './latest.html' + _currhash;
 viewer.appendChild(iframe);
 
 // Properties in the inner iframe
@@ -59,9 +68,12 @@ let _context;
 let _editor;
 let _map;
 let _imagery;
-let _urlhash;
 
 
+// When the iframe is available,
+// 1. Get the Rapid context from the iframe window
+// 2. Wait for Rapid to finish initializing
+// 3. Perform setup steps on the parent document
 function iframeLoaded() {
   // Access stuff in the iframe
   _innerDocument = iframe.contentDocument || iframe.contentWindow.document;
@@ -77,17 +89,38 @@ function iframeLoaded() {
       _editor = _context.systems.editor;
       _map = _context.systems.map;
       _imagery = _context.systems.imagery;
-      _urlhash = _context.systems.urlhash;
 
-      _editor.on('stablechange', updateSidebar);
-      _imagery.on('imagerychange', updateSidebar);
-      _map.on('draw', updateSidebar);
+      _map.on('draw', () => {
+        syncHashes();
+        updateSidebar()
+      });
+
       setupTour();
       updateSidebar();
     });
 }
 
 
+// Keep the url hashes in sync between parent and child
+function syncHashes() {
+  // Parent hash changed, push change to child
+  if (window.location.hash !== _currhash) {
+    _currhash = window.location.hash;
+    if (_innerWindow) {
+      _innerWindow.location.hash = _currhash;
+    }
+  }
+
+  // Child hash has changed, update parent
+  // This updates the URL hash without affecting the browser navigation stack.
+  if (_innerWindow && _innerWindow.location.hash !== _currhash) {
+    _currhash = _innerWindow.location.hash;
+    window.history.replaceState(null, '', _currhash);
+  }
+}
+
+
+// Redraw the info in the sidebar
 function updateSidebar() {
   let rapidInfoHTML = '';
 
@@ -101,14 +134,35 @@ function updateSidebar() {
 
 
   let mapInfoHTML = '<table>';
+
+  if (_map) {
+    const viewport = _context.viewport;
+    const transform = viewport.transform;
+    const [lon, lat] = viewport.centerLoc();
+    const zoom = transform.zoom;
+    // Why a '-' here?  Because "bearing" is the angle that the user points, not the angle that north points.
+    const ang = numWrap(-transform.r * RAD2DEG, 0, 360);
+    const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
+    const EPSILON = 0.1;
+
+    const zoomStr = zoom.toFixed(2);
+    const latStr = lat.toFixed(precision);
+    const lonStr = lon.toFixed(precision);
+    const angStr = ang.toFixed(1);  // degrees
+
+    let mapParam = `${zoomStr}/${latStr}/${lonStr}`;
+    if (Math.abs(ang) > EPSILON) {
+      mapParam += `/${angStr}`;
+    }
+
+    mapInfoHTML += '<tr><td><b>Map:</b></td><td>' + mapParam + '</td></tr>';
+  }
+
   if (_imagery) {
     const source = _imagery.baseLayerSource();
     mapInfoHTML += '<tr><td><b>Imagery:</b></td><td>' + source.name + '</td></tr>';
   }
-  if (_urlhash) {
-    const mapParam = _urlhash.getParam('map');
-    mapInfoHTML += '<tr><td><b>Map:</b></td><td>' + mapParam + '</td></tr>';
-  }
+
   if (_editor) {
     const editCount = _editor.difference().summary().size;
     mapInfoHTML += '<tr><td><b>Edits:</b></td><td>' + editCount;
@@ -117,17 +171,26 @@ function updateSidebar() {
     }
     mapInfoHTML += '</td></tr>';
   }
+
   mapInfoHTML += '</table>'
   mapInfo.innerHTML = mapInfoHTML;
 }
 
 
+// When user clicks save, try to enter save mode
 function clickSave() {
   if (!_context.inIntro && _context.mode?.id !== 'save' && _editor.hasChanges()) {
     _context.enter('save');
   }
 }
 
+
+// Wrap a number around a min..max range
+// Similar to modulo, but works for negative numbers too.
+function numWrap(num, min, max) {
+  const d = max - min;
+  return ((num - min) % d + d) % d + min;
+}
 
 
 const landmarks = [
@@ -169,7 +232,7 @@ function chooseLandmark(index) {
   const landmark = landmarks[index];
   if (_map && landmark) {
     const [lon, lat, zoom, bearing] = landmark.mapParams;
-    const rot = -bearing * (Math.PI / 180);  // Degrees to radians
+    const rot = -bearing * DEG2RAD;
     _map.setMapParams([lon, lat], zoom, rot, 0);
     _map.selectEntityID(landmark.osmID);   // OSM IDs can change, but we can try.
   }
