@@ -381,9 +381,9 @@ export class VectorTileService extends AbstractSystem {
           geojson.__featurehash__ = featureID;  // legacy
 
 // add a few extra props for debugging
-geojson.properties['__featureID'] = featureID;
-geojson.properties['__tileID'] = tile.id;
-geojson.properties['__prophash'] = prophash;
+// geojson.properties['__featureID'] = featureID;
+// geojson.properties['__tileID'] = tile.id;
+// geojson.properties['__prophash'] = prophash;
 
           // For Polygons only, determine if this feature clips to a tile edge.
           // If so, we'll try to merge it with similar features on the neighboring tile
@@ -393,15 +393,6 @@ geojson.properties['__prophash'] = prophash;
             if (extent.min[1] < tileExtent.min[1]) { this._queueMerge(cache, featureID, prophash, bottomEdge); }
             if (extent.max[1] > tileExtent.max[1]) { this._queueMerge(cache, featureID, prophash, topEdge); }
           }
-
-          if (geojson.geometry.type === 'Point') {
-            console.log(`got a point, layer ${layerID}`);
-          } else if (geojson.geometry.type === 'Polygon') {
-            console.log(`got a Polygon, layer ${layerID}`);
-          } else if (geojson.geometry.type === 'Line') {
-            console.log(`got a Line, layer ${layerID}`);
-          }
-
 
           newFeatures.push({
             id: featureID,

@@ -92,11 +92,6 @@ export class RapidSystem extends AbstractSystem {
           enabled: false,      // whether the user has checked it on
           conflated: true,
           service: 'mapwithai',
-          overlay: {
-            url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
-            minZoom: 1,
-            maxZoom: 15,
-          },
           color: RAPID_MAGENTA,
           dataUsed: ['mapwithai', 'Facebook Roads'],
           label: l10n.t('rapid_feature_toggle.fbRoads.label'),
@@ -123,6 +118,11 @@ export class RapidSystem extends AbstractSystem {
           enabled: false,      // whether the user has checked it on
           conflated: true,
           service: 'mapwithai',
+          overlay: {
+            url: 'https://external.xx.fbcdn.net/maps/vtp/rapid_overlay_footways/1/{z}/{x}/{y}/',
+            minZoom: 1,
+            maxZoom: 15,
+          },
           color: RAPID_MAGENTA,
           dataUsed: ['mapwithai', 'Meta Footways'],
           label: l10n.t('rapid_feature_toggle.metaFootways.label'),
