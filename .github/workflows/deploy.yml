@@ -85,5 +85,6 @@ jobs:
     - name: 🐤  Set as canary build
       if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
       run: |
+        aws s3 sync dist s3://world.ai.rapid/canary/ --delete --only-show-errors
         aws s3 cp dist/index.html  s3://world.ai.rapid/canary  --only-show-errors
         echo "This is latest build on main, so it is available here: https://rapideditor.org/canary"
