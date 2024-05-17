@@ -70,13 +70,45 @@ export class OsmService extends AbstractSystem {
     this.reloadApiStatus = this.reloadApiStatus.bind(this);
     this.throttledReloadApiStatus = _throttle(this.reloadApiStatus, 500);
 
-
+    // Calculate the deafult OAuth2 `redirect_uri`.
+    // - `redirect_uri` should be a page that the authorizing server (e.g. `openstreetmap.org`)
+    //   can redirect the user back to as the final step in the OAuth2 handshake.
+    // - By convention we redirect back to a file `land.html` on the same server that Rapid is served from.
+    // - The `redirect_uri` value can be overridden by an option to `switchAsync`.
+    // - Because OAuth2 requires applications to register their allowable `redirect_uri` values,
+    //   there is a short list of `redirect_uris` that will work. Redirecting anywhere else will
+    //   result in "The requested redirect uri is malformed or doesn't match client redirect URI".
+    // This means:
+    // - If you have a custom Rapid installed somewhere, you will need to register your own
+    //   OAuth2 application on `openstreetmap.org` for it.
+    // - If your custom Rapid installation wants to use OSM's dev server 'api06.dev.openstreetmap.org',
+    //   you will need to register a custom application on their dev server too.
+    // - For more info see:  https://github.com/osmlab/osm-auth?tab=readme-ov-file#registering-an-application
+    let redirect_uri;
     const origin = window.location.origin;
-    let pathname = window.location.pathname;
-    // We often deploy different builds to other pathnames (e.g. /rapid-test/), but we can always
-    // redirect to the common /rapid/land.html redirect_uri to complete OAuth2 on that domain.
-    if (origin === 'https://mapwith.ai' || origin === 'https://rapideditor.org') {
-      pathname = '/rapid/';
+
+    // Anything served from `https://mapwith.ai` or `https://rapideditor.org`,
+    // redirect to the common `/rapid/land.html` on that same origin
+    if (/^https:\/\/(mapwith\.ai|rapideditor\.org)/i.test(origin)) {
+      redirect_uri = `${origin}/rapid/land.html`;
+
+    // Local testing, redirect to `dist/land.html`
+    } else if (/^https?:\/\/127.0.0.1:8080/i.test(origin)) {
+      redirect_uri = `${origin}/dist/land.html`;
+
+    // Pick a reasonable default, expect a `land.html` file to exist in the same folder as `index.html`.
+    // You'll need to register your own OAuth2 application, our OAuth2 application won't redirect to your origin.
+    } else {
+      let pathname = window.location.pathname;
+      let path = pathname.split('/');
+      if (path.at(-1).includes('.')) {   // looks like a filename, like `index.html`
+        path.pop();                      // we want the path without that file
+        pathname = path.join('/') || '/';
+      }
+      if (pathname.charAt(pathname.length - 1) !== '/') {
+        pathname += '/';   // make sure it ends with '/'
+      }
+      redirect_uri = `${origin}${pathname}land.html`;
     }
 
     this._oauth = osmAuth({
@@ -85,7 +117,7 @@ export class OsmService extends AbstractSystem {
       client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
       client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
       scope: 'read_prefs write_prefs write_api read_gpx write_notes',
-      redirect_uri: `${origin}${pathname}land.html`,
+      redirect_uri: redirect_uri,
       loading: this._authLoading,
       done: this._authDone
     });
