@@ -44,7 +44,6 @@ function buildData() {
 
   // Create symlinks if necessary..  { 'target': 'source' }
   const symlinks = {
-    'land.html': 'dist/land.html',
     img: 'dist/img'
   };
 
