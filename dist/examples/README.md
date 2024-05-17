@@ -1,4 +1,4 @@
-These folders contain some example code to help you learn how to integrate Rapid editor into your project.
+These folders contain example code to help you learn how to integrate Rapid editor into your project.
 
 ### `latest/`
 
