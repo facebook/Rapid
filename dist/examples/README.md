@@ -8,7 +8,7 @@ See JSDelivr docs:  https://www.jsdelivr.com/documentation
 This method can allow your project to always run the latest Rapid code without needing to install updates! <br/>
 Copy this file to your own HTTP server, or use the code below as the basis for embedding Rapid in your project. <br/>
 
-Live link: http://rapideditor.org/canary/dist/examples/latest/latest.html <br/>
+Live link: http://rapideditor.org/canary/examples/latest/latest.html <br/>
 Or `npm run start` then run locally: http://127.0.0.1:8080/dist/examples/latest/latest.html <br/>
 
 
@@ -36,5 +36,5 @@ This example demonstrates:
 * listenting to events emitted from Rapid systems
 * parent and child url hashes being kept in sync
 
-Live link: http://rapideditor.org/canary/dist/examples/iframe/parent.html <br/>
+Live link: http://rapideditor.org/canary/examples/iframe/parent.html <br/>
 Or `npm run start` then run locally:  http://127.0.0.1:8080/dist/examples/iframe/parent.html <br/>
