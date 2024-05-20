@@ -829,7 +829,7 @@ en:
         cantComplete: Can't Complete
         alreadyFixed: Already Fixed
         notAnIssue: Not an Issue
-        login: You must log in to change Maproulette challenge.
+        login: You must log in to change MapRoulette challenge.
         loginMaproulette: You must log in to Maproulette to edit this task.
         inputPlaceholder: Change comment (optional)
         comment: Please confirm

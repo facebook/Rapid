@@ -204,11 +204,8 @@ export function uiMapRouletteEditor(context) {
     // Check if user is authenticated with OSM
     const osmAuth = osm.authenticated();
     let authWarning = detailSection.selectAll('.auth-warning')
-      .data(osmAuth ? [] : [0]);
-    // If not authenticated with OSM, show OSM login prompt
-    if (!osmAuth) {
-      showAuthWarning(authWarning, 'map_data.layers.maproulette.login');
-    }
+      .data([0]);
+    showAuthWarning(authWarning, osmAuth, 'map_data.layers.maproulette.login');
     // Check if _mapRouletteApiKey is defined
     getMapRouletteApiKey(context, (err, apiKey) => {
       if (err) {
@@ -218,11 +215,8 @@ export function uiMapRouletteEditor(context) {
       _mapRouletteApiKey = apiKey;
       const mrAuth = _mapRouletteApiKey !== undefined;
       authWarning = detailSection.selectAll('.auth-warning')
-        .data(mrAuth ? [] : [0]);
-      // If _mapRouletteApiKey is not defined, show MapRoulette login prompt
-      if (!mrAuth) {
-        showAuthWarning(authWarning, 'map_data.layers.maproulette.loginMaproulette');
-      }
+        .data([0]);
+      showAuthWarning(authWarning, mrAuth, 'map_data.layers.maproulette.loginMaproulette');
     });
 
     osm.userDetails(function(err, user) {
@@ -245,12 +239,14 @@ export function uiMapRouletteEditor(context) {
         .attr('target', '_blank');
     });
 
-    function showAuthWarning(selection, messageKey) {
-      selection.exit()
-        .transition()
-        .duration(200)
-        .style('opacity', 0)
-        .remove();
+    function showAuthWarning(selection, isAuthenticated, messageKey) {
+      if (isAuthenticated) {
+        selection.exit()
+          .transition()
+          .duration(200)
+          .style('opacity', 0)
+          .remove();
+      } else {
 
       let authEnter = selection.enter()
         .insert('div', '.tag-reference-body')
@@ -290,8 +286,10 @@ export function uiMapRouletteEditor(context) {
         .transition()
         .duration(200)
         .style('opacity', 1);
+
     }
   }
+}
 
 
   /**
