@@ -103,8 +103,7 @@ export class MapRouletteService extends AbstractSystem {
     const extent = this.context.viewport.visibleExtent();
     return this._cache.rbush.search(extent.bbox())
       .map(d => d.data)
-      .filter(task => !this._challengeID || task.parentId === this._challengeID)
-      .filter(task => task.isVisible);
+      .filter(task => (this._challengeID && task.parentId === this._challengeID) || (!this._challengeID && task.isVisible));
   }
 
 
