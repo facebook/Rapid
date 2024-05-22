@@ -183,3 +183,16 @@ imagery.sort((a, b) => a.name.localeCompare(b.name));
 
 fs.writeFileSync('data/imagery.json', prettyStringify(imagery));
 fs.writeFileSync('dist/data/imagery.min.json', JSON.stringify(imagery));
+
+
+// We'll mirror the wayback config file, it's not available everywhere - see Rapid#1445
+fetch('https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconfig.json')
+  .then(response => {
+    if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
+    if (response.status === 204 || response.status === 205) return;
+    return response.json();
+  })
+  .then(data => {
+    fs.writeFileSync('data/wayback.json', prettyStringify(data));
+    fs.writeFileSync('dist/data/wayback.min.json', JSON.stringify(data));
+  });

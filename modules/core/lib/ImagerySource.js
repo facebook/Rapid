@@ -1,7 +1,7 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
 import { utilAesDecrypt, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import { geoSphericalDistance, geoZoomToScale, Tiler, Viewport } from '@rapid-sdk/math';
-import * as Wayback from '@vannizhang/wayback-core';
+import * as Wayback from '@rapideditor/wayback-core';
 import RBush from 'rbush';
 
 import { utilFetchResponse } from '../../util/index.js';
@@ -634,36 +634,41 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
    * Fetch all available Wayback imagery sources.
    * If the wayback data is not available, just resolve anyway.
    * We do this at init time so that if the url contains a wayback source, the user can use it.
-   * This seems to complete in around 300-400ms, which is fine.
    * @return {Promise} Promise resolved when this data has been loaded
    */
   initWaybackAsync() {
     if (this._initPromise) return this._initPromise;
 
     return this._initPromise = new Promise(resolve => {
-      // `getWaybackItems` returns a list of `WaybackItem` for all World Imagery Wayback releases
-      // from the Wayback archive. The output list is sorted by release date in descending order
-      // (newest release is the first item).
-      Wayback.getWaybackItems()
-        .then(data => {
-          if (!Array.isArray(data) || !data.length) throw new Error('No Wayback data');
+      const context = this.context;
+      const dataloader = context.systems.dataloader;
+      dataloader.getDataAsync('wayback')
+        .then(config => Wayback.setWaybackConfigData(config))
+        .then(() => {
+          // `getWaybackItems` returns a `Promise` that resolves to a list of `WaybackItem` for all
+          // World Imagery Wayback releases from the Wayback archive. The output list is sorted by
+          // release date in descending order (newest release is the first item).
+          return Wayback.getWaybackItems()
+            .then(data => {
+              if (!Array.isArray(data) || !data.length) throw new Error('No Wayback data');
 
-          this._oldestDate = data.at(-1).releaseDateLabel;
-          this._newestDate = data.at(0).releaseDateLabel;
-          this.startDate = this.endDate = this._newestDate;  // default to showing the newest one
+              this._oldestDate = data.at(-1).releaseDateLabel;
+              this._newestDate = data.at(0).releaseDateLabel;
+              this.startDate = this.endDate = this._newestDate;  // default to showing the newest one
 
-          for (const d of data) {
-            // Convert placeholder tokens in the URL template from Esri's format to ours.
-            d.template = d.itemURL
-              .replaceAll('{level}', '{zoom}')
-              .replaceAll('{row}', '{y}')
-              .replaceAll('{col}', '{x}');
+              for (const d of data) {
+                // Convert placeholder tokens in the URL template from Esri's format to ours.
+                d.template = d.itemURL
+                  .replaceAll('{level}', '{zoom}')
+                  .replaceAll('{row}', '{y}')
+                  .replaceAll('{col}', '{x}');
 
-            // Use `releaseDateLabel` as the date, it's an ISO date string like `2024-01-01`
-            d.startDate = d.endDate = d.releaseDateLabel;
+                // Use `releaseDateLabel` as the date, it's an ISO date string like `2024-01-01`
+                d.startDate = d.endDate = d.releaseDateLabel;
 
-            this._waybackData.set(d.releaseDateLabel, d);
-          }
+                this._waybackData.set(d.releaseDateLabel, d);
+              }
+            });
         })
         .catch(e => console.error(e))  // eslint-disable-line no-console
         .finally(() => resolve());

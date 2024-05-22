@@ -43,6 +43,7 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('qa_data', 'data/qa_data.min.json');
     fileMap.set('shortcuts', 'data/shortcuts.min.json');
     fileMap.set('territory_languages', 'data/territory_languages.min.json');
+    fileMap.set('wayback', 'data/wayback.min.json');
     fileMap.set('wmf_sitematrix', 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@0.1/wikipedia.min.json');
 
     this.fileMap = fileMap;
