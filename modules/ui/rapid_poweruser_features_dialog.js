@@ -10,7 +10,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
   const urlhash = context.systems.urlhash;
 
   const featureFlags = [
-    'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits'
+    'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits', 'showColorblindSimulators'
   ];
 
   let _modalSelection = d3_select(null);
@@ -74,6 +74,16 @@ export function uiRapidPowerUserFeaturesDialog(context) {
       context.enter('browse');   // return to browse mode (in case something was selected)
       context.systems.map.immediateRedraw();
     }
+
+    if (featureFlag === 'showColorblindSimulators') {
+        let colorblindSimulators = d3_select('.section-preferences-colorblind-mode-options');
+  
+        if (enabled) {
+          colorblindSimulators.classed('hide', false);
+        } else {
+          colorblindSimulators.classed('hide', true);
+        }
+      }
   }
 
 

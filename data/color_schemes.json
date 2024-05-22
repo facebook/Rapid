@@ -1,0 +1,87 @@
+{
+  "default": {
+    "red-1":    "0xe06e5f",
+    "red-2":    "0xe06d5f",
+    "red-3":    "0xdd2f22",
+    "red-4":    "0x70372f",
+
+    "orange-1": "0xd6881a",
+    "orange-2": "0xf99806",
+    "orange-3": "0xfc6c14",
+
+    "yellow-1": "0xfff9b3",
+    "yellow-2": "0xffff94",
+    "yellow-3": "0xffff00",
+    "yellow-4": "0xf3f312",
+    "yellow-5": "0xc4be19",
+
+    "green-1":  "0x99e1aa",
+    "green-2":  "0xb0e298",
+    "green-3":  "0x8cd05f",
+    "green-4":  "0x81d25c",
+    "green-5":  "0xbee83f",
+
+    "blue-1":   "0x77dddd",
+    "blue-2":   "0x77d4de",
+    "blue-3":   "0x82b5fe",
+    "blue-4":   "0x58a9ed",
+
+    "pink-1":   "0xe3a4f5",
+    "pink-2":   "0xcf2081",
+
+    "brown-1":  "0x998888",
+    "brown-2":  "0x776a6a",
+    "brown-3":  "0x746f6f",
+    "brown-4":  "0x4c4444",
+
+    "tan-1":    "0xf5dcba",
+    "tan-2":    "0xddccaa",
+    "tan-3":    "0xc5b59f",
+
+    "white-0":  "0xffffff",
+
+    "black-0":  "0x000000",
+    
+    "gray-1":   "0xeeeeee",
+    "gray-2":   "0xdddddd",
+    "gray-3":   "0xcccccc",
+    "gray-4":   "0xaaaaaa",
+    "gray-5":   "0x8c8c8c",
+    "gray-6":   "0x555555",
+    "gray-7":   "0x444444"
+  },
+  "high_contrast": {
+    "red-1":    "0xff0e41",
+    "green-3":  "0x09f04a",
+    "blue-2":   "0x0cbcff",
+    "yellow-2": "0xffca09",
+    "yellow-5": "0xff0ebc",
+    "orange-1": "0xff510b",
+    "pink-1":   "0xf1c0e8",
+    "green-1":  "0x12ffd1",
+    "green-5":  "0x540fff",
+    "tan-1":    "0xaffa1f",
+    "gray-5":   "0x0000fe",
+    "gray-4":   "0xe9af1e" 
+  },
+  "colorblind_general": {
+    "red-1":    "0x648fff",
+    "red-3":    "0x530000",
+    "orange-1": "0x179714",
+    "green-3":  "0x09f04a",
+    "green-4":  "0x09e04a"
+  },
+  "colorblind_ibm": {
+    "red-3":    "0x648fff",
+    "red-4":    "0x785ef0",
+    "orange-1": "0xfe6100",
+    "yellow-2": "0xffb000"
+  },
+  "colorblind_paul_tol_vibrant": {
+    "red-3":    "0xcc3311",
+    "red-4":    "0xee3377",
+    "orange-1": "0xee7733",
+    "green-3":  "0x009988",
+    "blue-2":   "0x33bbee"
+  }
+}
