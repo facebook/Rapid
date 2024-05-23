@@ -12,8 +12,8 @@ export function uiToolRapidFeatures(context) {
   const urlhash = context.systems.urlhash;
 
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
-  const rapidFeaturesToggleKey = '⇧' + l10n.t('map_data.layers.rapid.key');
-  const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
+  const rapidFeaturesToggleKey = uiCmd('⇧' + l10n.t('map_data.layers.rapid.key'));
+  const datasetDialog = uiRapidFeatureToggleDialog(context, rapidFeaturesToggleKey, toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
 
   let _wrap;
@@ -104,7 +104,7 @@ export function uiToolRapidFeatures(context) {
 
   tool.install = (selection) => {
     context.keybinding()
-      .on(uiCmd(rapidFeaturesToggleKey), d3_event => {
+      .on(rapidFeaturesToggleKey, d3_event => {
         d3_event.preventDefault();
         d3_event.stopPropagation();
         toggleFeatures();
@@ -123,7 +123,7 @@ export function uiToolRapidFeatures(context) {
 
 
   tool.uninstall = function () {
-    context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
+    context.keybinding().off(rapidFeaturesToggleKey);
     urlhash.off('hashchange', update);
     map.scene.off('layerchange', update);
     context.off('modechange', update);

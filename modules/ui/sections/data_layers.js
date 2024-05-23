@@ -16,6 +16,7 @@ import { uiSettingsCustomData } from '../settings/custom_data.js';
  *  ⋁ Data Layers
  *    ◻ OpenStreetMap Data
  *    ◻ OpenStreetMap Notes
+ *    ◻ Rapid Data
  *
  *    ◻ KeepRight Issues
  *    ◻ ImproveOSM Issues
@@ -60,7 +61,7 @@ export function uiSectionDataLayers(context) {
       .append('div')
       .attr('class', 'data-layer-container')
       .merge(container)
-      .call(drawOsmItems)
+      .call(drawBaseItems)
       .call(drawQAItems)
       .call(drawCustomDataItems)
       .call(drawPanelItems);
@@ -115,8 +116,8 @@ export function uiSectionDataLayers(context) {
   }
 
 
-  function drawOsmItems(selection) {
-    const osmKeys = ['osm', 'notes'];
+  function drawBaseItems(selection) {
+    const osmKeys = ['osm', 'notes', 'rapid'];
     const osmLayers = osmKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
 
     let ul = selection
@@ -141,15 +142,23 @@ export function uiSectionDataLayers(context) {
     let labelEnter = liEnter
       .append('label')
       .each((d, i, nodes) => {
+        const selection = d3_select(nodes[i]);
         if (d.id === 'osm') {
-          d3_select(nodes[i])
+          selection
             .call(uiTooltip(context)
-              .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
+              .title(l10n.t(`map_data.layers.osm.tooltip`))
               .shortcut(uiCmd('⌥' + l10n.t('area_fill.wireframe.key')))
               .placement('bottom')
             );
+        } else if (d.id === 'rapid') {
+          selection
+            .call(uiTooltip(context)
+              .title(l10n.t(`map_data.layers.rapid.tooltip`))
+              .shortcut(uiCmd('⇧' + l10n.t('map_data.layers.rapid.key')))
+              .placement('bottom')
+            );
         } else {
-          d3_select(nodes[i])
+          selection
             .call(uiTooltip(context)
               .title(l10n.t(`map_data.layers.${d.id}.tooltip`))
               .placement('bottom')

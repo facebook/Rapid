@@ -315,7 +315,7 @@ export function uiIntroRapid(context, curtain) {
       }))
       .then(() => {    // check undo annotation to see what the user did
         if (editor.getUndoAnnotation()?.type === 'rapid_ignore_feature') {
-          return showHelpAsync;
+          return playAsync;
         } else {
           return selectRoadAgainAsync;
         }
@@ -323,25 +323,6 @@ export function uiIntroRapid(context, curtain) {
       .finally(() => {
         _onModeChange = null;
       });
-  }
-
-
-  // "Once you have had some practice, be sure to look in the Help button..."
-  // Click Ok to advance
-  function showHelpAsync() {
-    return new Promise((resolve, reject) => {
-      _rejectStep = reject;
-      curtain.reveal({
-        revealSelector: '.map-control.help-control',
-        tipHtml: helpHtml(context, 'intro.rapid.help', {
-          rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
-          button: icon('#rapid-icon-help', 'inline'),
-          key: l10n.t('help.key')
-        }),
-        buttonText: l10n.t('intro.ok'),
-        buttonCallback: () => resolve(playAsync)
-      });
-    });
   }
 
 
