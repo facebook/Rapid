@@ -42,7 +42,7 @@ export class MapSystem extends AbstractSystem {
   constructor(context) {
     super(context);
     this.id = 'map';
-    this.dependencies = new Set(['editor', 'filters', 'imagery', 'photos', 'storage', 'l10n', 'urlhash', 'styles']);
+    this.dependencies = new Set(['editor', 'filters', 'imagery', 'l10n', 'photos', 'storage', 'styles', 'urlhash']);
 
     this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
     this.surface = d3_select(null);       // sibling `canvas`
@@ -84,11 +84,12 @@ export class MapSystem extends AbstractSystem {
     const context = this.context;
     const storage = context.systems.storage;
     const l10n = context.systems.l10n;
+    const urlhash = context.systems.urlhash;
 
     // Note: We want MapSystem's hashchange listener registered as early as possible
     // because so many other parts of Rapid rely on the map location being set correctly.
     // Other systems should register their hashchange listener after MapSystem.initAsync.
-    context.systems.urlhash.on('hashchange', this._hashchange);
+    urlhash.on('hashchange', this._hashchange);
 
     const prerequisites = Promise.all([
       storage.initAsync(),

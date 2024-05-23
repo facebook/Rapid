@@ -10,7 +10,6 @@ import { uiIcon } from '../icon.js';
 import { uiCmd } from '../cmd.js';
 import { uiSettingsCustomBackground } from '../settings/custom_background.js';
 import { uiMapInMap } from '../map_in_map.js';
-import { uiMap3dViewer } from '../map3d_viewer.js';
 import { uiSection } from '../section.js';
 
 
@@ -36,6 +35,7 @@ export function uiSectionBackgroundList(context) {
   const imagery = context.systems.imagery;
   const l10n = context.systems.l10n;
   const map = context.systems.map;
+  const map3d = context.systems.map3d;
   const storage = context.systems.storage;
   const ui = context.systems.ui;
 
@@ -117,9 +117,9 @@ export function uiSectionBackgroundList(context) {
       .text(l10n.t('background.minimap.description'));
 
 
-    const threeDmapLabelEnter = extrasListEnter
+    const map3dLabelEnter = extrasListEnter
       .append('li')
-      .attr('class', 'three-d-map-toggle-item')
+      .attr('class', 'map3d-toggle-item')
       .append('label')
       .call(uiTooltip(context)
         .title(l10n.t('background.3dmap.tooltip'))
@@ -127,15 +127,17 @@ export function uiSectionBackgroundList(context) {
         .placement('top')
       );
 
-    threeDmapLabelEnter
+    map3dLabelEnter
       .append('input')
       .attr('type', 'checkbox')
+      .attr('class', 'map3d-toggle-checkbox')
       .on('change', d3_event => {
         d3_event.preventDefault();
-        uiMap3dViewer.toggle();
+        const input = d3_event.currentTarget;
+        map3d.visible = input.checked;
       });
 
-    threeDmapLabelEnter
+    map3dLabelEnter
       .append('span')
       .text(l10n.t('background.3dmap.description'));
 
@@ -200,6 +202,15 @@ export function uiSectionBackgroundList(context) {
 
     _backgroundList
       .call(drawListItems);
+
+
+    // update
+    const extrasList = selection.selectAll('.bg-extras-list');
+
+    extrasList.selectAll('.map3d-toggle-item')
+      .classed('active', d => map3d.visible)
+      .selectAll('.map3d-toggle-checkbox')
+      .property('checked', d => map3d.visible);
   }
 
 

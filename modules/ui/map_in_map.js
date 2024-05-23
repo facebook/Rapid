@@ -238,8 +238,6 @@ export function uiMapInMap(context) {
 
       if (_isHidden) {
         _wrap
-          .style('display', 'block')
-          .style('opacity', '1')
           .transition()
           .duration(200)
           .style('opacity', '0')

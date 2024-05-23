@@ -4206,7 +4206,7 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 
 /* 3D Map
 ------------------------------------------------------- */
-.three-d-map {
+#map3d_container {
   position: absolute;
   overflow: hidden;
   width: 300px;
