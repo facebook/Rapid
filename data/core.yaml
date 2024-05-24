@@ -2468,7 +2468,7 @@ en:
       play: "Great! Use the skills that you've learned in this chapter to practice editing some more lines. **When you are ready to continue to the next chapter, press '{next}'.**"
     buildings:
       title: "Buildings"
-      add_building: "OpenStreetMap is the world's largest database of buildings.{br}You can help improve this database by tracing buildings that aren't already mapped. **Press the {area_icon} {area} button to add a new area.**"
+      add_building: "You can help improve OpenStreetMap by tracing buildings that aren't already mapped. **Press the {area_icon} {area} button to add a new area.**"
       start_building: "Let's add this house to the map by tracing its outline.{br}Buildings should be traced around their footprint as accurately as possible."
       building_corner_click: "**Click or press `{space}` to place a starting node on one of the corners of the building.**"
       building_corner_tap: "**{onefinger_tap_icon} Tap one of the corners of the building to place a starting node.**"
