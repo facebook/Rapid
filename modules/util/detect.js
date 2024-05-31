@@ -77,8 +77,8 @@ export function utilDetect(refresh) {
 
   _detected.isMobileWebKit = (/\b(iPad|iPhone|iPod)\b/.test(ua) ||
     // HACK: iPadOS 13+ requests desktop sites by default by using a Mac user agent,
-    // so assume any "mac" with multitouch is actually iOS
-    (navigator.platform === 'MacIntel' && 'maxTouchPoints' in navigator && navigator.maxTouchPoints > 1)) &&
+    // so assume any device with multitouch is actually iOS
+    ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 1)) &&
     /WebKit/.test(ua) &&
     !/Edge/.test(ua) &&
     !window.MSStream;
