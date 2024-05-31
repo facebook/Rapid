@@ -2,6 +2,7 @@ import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
+import throttle from 'lodash-es/throttle.js';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
@@ -32,6 +33,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
     this._lastPoint = null;
     this._lastAngle = null;
+    this.activeTouches = {};
+    this._initialPinchDistance = null;
+    this._initialScale = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
@@ -41,6 +45,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
     this._wheel = this._wheel.bind(this);
+    this._applyPinchZoom = throttle(this._applyPinchZoom.bind(this), 30);
   }
 
 
@@ -196,6 +201,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
+    this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y };
+    this._updatePinchState();
     if (this.lastDown) return;   // a pointer is already down
 
     const context = this.context;
@@ -231,6 +238,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
+    if (this.activeTouches[e.pointerId]) {
+        this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y };
+        this._updatePinchState();
+    }
     const context = this.context;
     const map = context.systems.map;
     const eventManager = map.renderer.events;
@@ -290,6 +301,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerup(e) {
+    delete this.activeTouches[e.pointerId];
+    this._updatePinchState();
     const down = this.lastDown;
     const up = this._getEventData(e);
     if (!down || down.id !== up.id) return;   // not down, or different pointer
@@ -321,6 +334,38 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.gesture = null;
     this._lastPoint = null;
     this._lastAngle = null;
+  }
+
+
+  _pinchStart(e) {
+    const dist = this._getDistanceBetweenTouches(e);
+    this._initialPinchDistance = dist;
+    this._initialScale = this.context.viewport.transform.scale; // Capture the scale at the start of the pinch
+    console.log('Pinch started, initial scale:', this._initialScale);
+  }
+
+  _pinchMove(e) {
+    const currentDist = this._getDistanceBetweenTouches(e);
+    if (this._initialPinchDistance) {
+        const scaleRatio = currentDist / this._initialPinchDistance;
+        const newScale = this._initialScale * scaleRatio;
+        this.context.viewport.setScale(newScale);
+    }
+  }
+
+  _pinchEnd(e) {
+    console.log('Pinch ended, last applied scale:', this.context.viewport.transform.scale);
+    this._initialPinchDistance = null;
+    this._initialScale = null;
+  }
+
+  _getDistanceBetweenTouches(e) {
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      return Math.hypot(
+          touch1.pageX - touch2.pageX,
+          touch1.pageY - touch2.pageY
+      );
   }
 
 
@@ -360,6 +405,34 @@ export class MapInteractionBehavior extends AbstractBehavior {
     } else {  // pan
       map.pan([-dx, -dy]);
     }
+  }
+
+  _updatePinchState() {
+    const touchPoints = Object.values(this.activeTouches);
+    if (touchPoints.length === 2) {
+        const [first, second] = touchPoints;
+        const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
+        console.log('Current Distance:', currentDistance);
+
+        if (this._initialPinchDistance !== null) {
+            const scaleChange = currentDistance / this._initialPinchDistance;
+            console.log('Scale Change:', scaleChange);
+            this._applyPinchZoom(scaleChange);
+        }
+        this._initialPinchDistance = currentDistance;
+    } else {
+        this._initialPinchDistance = null;
+    }
+  }
+
+   _applyPinchZoom(scaleChange) {
+    const mapSystem = this.context.systems.map; // Assuming 'map' is the key for the MapSystem instance
+    const viewport = this.context.viewport;
+    const currentZoom = viewport.transform.zoom;
+    const targetZoom = Math.log2(scaleChange) + currentZoom; // Calculate the target zoom level based on the scale change
+    console.log('Applying new zoom level:', targetZoom);
+    // Use the zoom method from MapSystem to adjust the zoom level
+    mapSystem.zoom(targetZoom);
   }
 
 }
