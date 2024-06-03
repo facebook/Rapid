@@ -45,7 +45,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
     this._wheel = this._wheel.bind(this);
-    this._applyPinchZoom = throttle(this._applyPinchZoom.bind(this), 30);
+    // this._applyPinchZoom = throttle(this._applyPinchZoom.bind(this), 50);
   }
 
 
@@ -425,14 +425,18 @@ export class MapInteractionBehavior extends AbstractBehavior {
     }
   }
 
-   _applyPinchZoom(scaleChange) {
-    const mapSystem = this.context.systems.map; // Assuming 'map' is the key for the MapSystem instance
-    const viewport = this.context.viewport;
-    const currentZoom = viewport.transform.zoom;
-    const targetZoom = Math.log2(scaleChange) + currentZoom; // Calculate the target zoom level based on the scale change
-    console.log('Applying new zoom level:', targetZoom);
-    // Use the zoom method from MapSystem to adjust the zoom level
-    mapSystem.zoom(targetZoom);
+  _applyPinchZoom(scaleChange) {
+    let lastZoomUpdate = 0;
+    const zoomUpdateThreshold = 1000; // milliseconds
+    const now = performance.now();
+    if (now - lastZoomUpdate < zoomUpdateThreshold) return;
+    requestAnimationFrame(() => {
+      const mapSystem = this.context.systems.map;
+      const viewport = this.context.viewport;
+      const currentZoom = viewport.transform.zoom;
+      const targetZoom = Math.log2(scaleChange) + currentZoom;
+      mapSystem.zoom(targetZoom);
+      lastZoomUpdate = now;
+    });
   }
-
 }
