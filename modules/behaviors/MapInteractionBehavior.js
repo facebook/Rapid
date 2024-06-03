@@ -6,6 +6,8 @@ import throttle from 'lodash-es/throttle.js';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
+const MIN_Z = 2;
+const MAX_Z = 24;
 
 
 /**
@@ -239,8 +241,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
    */
   _pointermove(e) {
     if (this.activeTouches[e.pointerId]) {
-        this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y };
-        this._updatePinchState();
+      this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y };
+      this._updatePinchState();
     }
     const context = this.context;
     const map = context.systems.map;
@@ -410,33 +412,36 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _updatePinchState() {
     const touchPoints = Object.values(this.activeTouches);
     if (touchPoints.length === 2) {
-        const [first, second] = touchPoints;
-        const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
-        console.log('Current Distance:', currentDistance);
+      const [first, second] = touchPoints;
+      const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
 
-        if (this._initialPinchDistance !== null) {
-            const scaleChange = currentDistance / this._initialPinchDistance;
-            console.log('Scale Change:', scaleChange);
-            this._applyPinchZoom(scaleChange);
-        }
-        this._initialPinchDistance = currentDistance;
+      if (this._initialPinchDistance !== null) {
+          const scaleChange = currentDistance / this._initialPinchDistance;
+          const adjustedScaleChange = 1 + (scaleChange - 1) * 0.5; // Reduce the effect of scale change
+          console.log('Adjusted Scale Change:', adjustedScaleChange); // Log to debug
+          this._applyPinchZoom(adjustedScaleChange);
+      }
+      this._initialPinchDistance = currentDistance;
     } else {
         this._initialPinchDistance = null;
     }
   }
 
   _applyPinchZoom(scaleChange) {
-    let lastZoomUpdate = 0;
-    const zoomUpdateThreshold = 1000; // milliseconds
     const now = performance.now();
-    if (now - lastZoomUpdate < zoomUpdateThreshold) return;
+    if (now - this.lastZoomUpdate < 100) return;
+    this.lastZoomUpdate = now;
+
+    const viewport = this.context.viewport;
+    const currentZoom = viewport.transform.zoom;
+    const targetZoom = currentZoom * scaleChange;
+
+    // Clamp the target zoom to prevent extreme zooming
+    const clampedZoom = Math.max(MIN_Z, Math.min(targetZoom, MAX_Z));
+    console.log('Current Zoom:', currentZoom, 'Target Zoom:', targetZoom, 'Clamped Zoom:', clampedZoom);
+
     requestAnimationFrame(() => {
-      const mapSystem = this.context.systems.map;
-      const viewport = this.context.viewport;
-      const currentZoom = viewport.transform.zoom;
-      const targetZoom = Math.log2(scaleChange) + currentZoom;
-      mapSystem.zoom(targetZoom);
-      lastZoomUpdate = now;
+        this.context.systems.map.zoom(clampedZoom); // Ensure this method smoothly transitions the zoom
     });
   }
 }
