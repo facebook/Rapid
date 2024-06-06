@@ -339,6 +339,11 @@ export class MapInteractionBehavior extends AbstractBehavior {
   }
 
 
+  /**
+   * _pinchStart
+   * Handler for the start of a pinch gesture. Initializes the pinch distance and scale.
+   * @param {Event} e - The event object containing touch points.
+   */
   _pinchStart(e) {
     const dist = this._getDistanceBetweenTouches(e);
     this._initialPinchDistance = dist;
@@ -346,6 +351,12 @@ export class MapInteractionBehavior extends AbstractBehavior {
     console.log('Pinch started, initial scale:', this._initialScale);
   }
 
+
+  /**
+   * _pinchMove
+   * Handler for the movement during a pinch gesture. Calculates and applies the new scale based on the change in distance between touches.
+   * @param {Event} e - The event object containing touch points.
+   */
   _pinchMove(e) {
     const currentDist = this._getDistanceBetweenTouches(e);
     if (this._initialPinchDistance) {
@@ -355,12 +366,24 @@ export class MapInteractionBehavior extends AbstractBehavior {
     }
   }
 
+
+  /**
+   * _pinchEnd
+   * Handler for the end of a pinch gesture. Logs the final scale and resets initial values.
+   * @param {Event} e - The event object that signifies the end of the touch.
+   */
   _pinchEnd(e) {
-    console.log('Pinch ended, last applied scale:', this.context.viewport.transform.scale);
     this._initialPinchDistance = null;
     this._initialScale = null;
   }
 
+
+  /**
+   * _getDistanceBetweenTouches
+   * Calculates the distance between two touch points.
+   * @param {Event} e - The event object containing touch points.
+   * @return {number} The distance between the two touch points.
+   */
   _getDistanceBetweenTouches(e) {
       const touch1 = e.touches[0];
       const touch2 = e.touches[1];
@@ -409,39 +432,55 @@ export class MapInteractionBehavior extends AbstractBehavior {
     }
   }
 
+  /**
+   * _updatePinchState
+   * Updates the pinch state by recalculating the scale change and applying damping if necessary.
+   * This method is called during touch movements to dynamically adjust the map's scale.
+   */
   _updatePinchState() {
     const touchPoints = Object.values(this.activeTouches);
     if (touchPoints.length === 2) {
-      const [first, second] = touchPoints;
-      const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
+        const [first, second] = touchPoints;
+        const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
 
-      if (this._initialPinchDistance !== null) {
-          const scaleChange = currentDistance / this._initialPinchDistance;
-          const adjustedScaleChange = 1 + (scaleChange - 1) * 0.5; // Reduce the effect of scale change
-          console.log('Adjusted Scale Change:', adjustedScaleChange); // Log to debug
-          this._applyPinchZoom(adjustedScaleChange);
-      }
-      this._initialPinchDistance = currentDistance;
+        if (this._initialPinchDistance !== null) {
+            const scaleChange = currentDistance / this._initialPinchDistance;
+            const currentZoom = this.context.viewport.transform.zoom;
+
+            // Only apply changes if the scale change is significant
+            if (Math.abs(scaleChange - 1) > 0.01) {  // Adjust this threshold as needed
+                const baseDamping = 0.65;
+                const dampingFactor = currentZoom > 16 ? 0.25 : (currentZoom / 16) * baseDamping + 0.25;
+                const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
+
+                this._applyPinchZoom(adjustedScaleChange);
+            }
+        }
+        this._initialPinchDistance = currentDistance;
     } else {
         this._initialPinchDistance = null;
     }
   }
 
+
+  /**
+   * _applyPinchZoom
+   * Applies the calculated scale change to the viewport. This method ensures that the zoom level updates are throttled to prevent excessive updates.
+   * @param {number} scaleChange - The calculated scale change to be applied.
+   */
   _applyPinchZoom(scaleChange) {
     const now = performance.now();
-    if (now - this.lastZoomUpdate < 100) return;
+    if (now - this.lastZoomUpdate < 50) return;
     this.lastZoomUpdate = now;
 
     const viewport = this.context.viewport;
     const currentZoom = viewport.transform.zoom;
-    const targetZoom = currentZoom * scaleChange;
+    const targetZoom = currentZoom * Math.log2(scaleChange + 1);
 
-    // Clamp the target zoom to prevent extreme zooming
     const clampedZoom = Math.max(MIN_Z, Math.min(targetZoom, MAX_Z));
-    console.log('Current Zoom:', currentZoom, 'Target Zoom:', targetZoom, 'Clamped Zoom:', clampedZoom);
 
     requestAnimationFrame(() => {
-        this.context.systems.map.zoom(clampedZoom); // Ensure this method smoothly transitions the zoom
+        this.context.systems.map.zoom(clampedZoom);
     });
   }
 }
