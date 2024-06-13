@@ -2,7 +2,6 @@ import { DEG2RAD, MIN_K, MAX_K, numClamp, vecLength, vecSubtract } from '@rapid-
 
 import { AbstractBehavior } from './AbstractBehavior.js';
 import { osmNode } from '../osm/node.js';
-import throttle from 'lodash-es/throttle.js';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
@@ -47,7 +46,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
     this._wheel = this._wheel.bind(this);
-    // this._applyPinchZoom = throttle(this._applyPinchZoom.bind(this), 50);
   }
 
 
@@ -203,9 +201,14 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
-    this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y };
+    console.log('Pointer Down:', { pointerId: e.pointerId, x: e.global.x, y: e.global.y });
+    this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
+    if (Object.keys(this.activeTouches).length === 2) {
+        this._initialPinchDistance = this._getDistanceBetweenTouches();
+        console.log('Initial Pinch Distance Set:', this._initialPinchDistance);
+    }
+    // Update the pinch state or any other gesture recognition logic
     this._updatePinchState();
-    if (this.lastDown) return;   // a pointer is already down
 
     const context = this.context;
     const map = context.systems.map;
@@ -240,9 +243,16 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
-    if (this.activeTouches[e.pointerId]) {
-      this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y };
-      this._updatePinchState();
+    this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
+    if (Object.keys(this.activeTouches).length === 2) {
+        const currentDistance = this._getDistanceBetweenTouches();
+        console.log('Current Distance:', currentDistance);
+        if (this._initialPinchDistance) {
+            const scaleChange = currentDistance / this._initialPinchDistance;
+            console.log('Calculated Scale Change:', scaleChange);
+            // Apply zoom based on scale change with damping
+            this._applyZoomWithDamping(scaleChange);
+        }
     }
     const context = this.context;
     const map = context.systems.map;
@@ -303,11 +313,14 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerup(e) {
+    // Remove the touch point from the activeTouches object
+    console.log('Pointer Up:', { pointerId: e.pointerId });
     delete this.activeTouches[e.pointerId];
+    if (Object.keys(this.activeTouches).length === 0) {
+        this._initialPinchDistance = null;  // Reset initial distance
+        this._initialScale = null;  // Reset initial scale
+    }
     this._updatePinchState();
-    const down = this.lastDown;
-    const up = this._getEventData(e);
-    if (!down || down.id !== up.id) return;   // not down, or different pointer
 
     this.lastDown = null;
     this.gesture = null;
@@ -329,13 +342,18 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * Handler for pointercancel events.
    * @param  `e`  A Pixi FederatedPointerEvent
    */
-  _pointercancel() {
-    // Here we can throw away the down data to prepare for another `pointerdown`.
-    // After pointercancel, there should be no more `pointermove` or `pointerup` events.
-    this.lastDown = null;
-    this.gesture = null;
-    this._lastPoint = null;
-    this._lastAngle = null;
+  _pointercancel(e) {
+    // Remove the specific touch point
+    console.log('Pointer Cancel:', { pointerId: e.pointerId });
+    delete this.activeTouches[e.pointerId];
+    this._updatePinchState();
+    // Reset interaction states if necessary
+    if (Object.keys(this.activeTouches).length === 0) {
+        this.lastDown = null;
+        this.gesture = null;
+        this._lastPoint = null;
+        this._lastAngle = null;
+    }
   }
 
 
@@ -348,7 +366,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const dist = this._getDistanceBetweenTouches(e);
     this._initialPinchDistance = dist;
     this._initialScale = this.context.viewport.transform.scale; // Capture the scale at the start of the pinch
-    console.log('Pinch started, initial scale:', this._initialScale);
   }
 
 
@@ -361,8 +378,11 @@ export class MapInteractionBehavior extends AbstractBehavior {
     const currentDist = this._getDistanceBetweenTouches(e);
     if (this._initialPinchDistance) {
         const scaleRatio = currentDist / this._initialPinchDistance;
-        const newScale = this._initialScale * scaleRatio;
-        this.context.viewport.setScale(newScale);
+        const currentZoom = this.context.viewport.transform.zoom;
+        const adjustedScaleRatio = this._applyDamping(scaleRatio, currentZoom);
+        const newZoom = currentZoom * adjustedScaleRatio;
+        const clampedZoom = Math.max(MIN_Z, Math.min(newZoom, MAX_Z));
+        this._smoothZoom(clampedZoom);
     }
   }
 
@@ -379,18 +399,63 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
 
   /**
+   * Applies zoom with damping based on the scale change.
+   * This method adjusts the zoom level of the map, applying a damping factor to the scale change to smooth out the zoom transition.
+   * @param {number} scaleChange - The scale change ratio calculated from pinch gestures.
+   */
+  _applyZoomWithDamping(scaleChange) {
+    const dampingFactor = 0.1; // Adjust this value to control sensitivity
+    const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
+    const targetZoom = this.context.viewport.transform.zoom * adjustedScaleChange;
+    const clampedZoom = Math.max(MIN_Z, Math.min(targetZoom, MAX_Z));
+    console.log('Adjusted Scale Change:', adjustedScaleChange, 'Applying Zoom:', clampedZoom);
+    this.context.systems.map.zoom(clampedZoom);
+  }
+
+
+  /**
+   * Applies damping to the scale ratio based on the current zoom level.
+   * This method calculates a damped scale ratio to ensure smoother zoom transitions, especially at higher zoom levels.
+   * @param {number} scaleRatio - The original scale ratio from pinch gestures.
+   * @param {number} currentZoom - The current zoom level of the viewport.
+   * @return {number} The adjusted scale ratio after applying damping.
+   */
+  _applyDamping(scaleRatio, currentZoom) {
+      const baseDamping = 0.1;
+      const dampingFactor = currentZoom > 16 ? 0.2 : (currentZoom / 16) * baseDamping + 0.2;
+      return 1 + (scaleRatio - 1) * dampingFactor;
+  }
+
+
+  /**
+   * Smoothly adjusts the zoom level of the map using a moving average of recent zoom levels.
+   * This method helps in achieving a smoother zoom effect by averaging several recent zoom calculations.
+   * @param {number} newZoom - The newly calculated zoom level to be added to the moving average.
+   */
+  _smoothZoom(newZoom) {
+      this.zoomLevels.push(newZoom);
+      if (this.zoomLevels.length > 5) this.zoomLevels.shift();  // Keep the last 5 zoom levels
+      const averageZoom = this.zoomLevels.reduce((a, b) => a + b, 0) / this.zoomLevels.length;
+      this.context.systems.map.zoom(averageZoom);
+  }
+
+
+  /**
    * _getDistanceBetweenTouches
    * Calculates the distance between two touch points.
    * @param {Event} e - The event object containing touch points.
    * @return {number} The distance between the two touch points.
    */
-  _getDistanceBetweenTouches(e) {
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      return Math.hypot(
-          touch1.pageX - touch2.pageX,
-          touch1.pageY - touch2.pageY
-      );
+  _getDistanceBetweenTouches() {
+    const touchPoints = Object.values(this.activeTouches);
+    if (touchPoints.length === 2) {
+      // Use clientX and clientY for calculating distance to avoid issues with element transformations
+      const [first, second] = touchPoints;
+      const distance = Math.hypot(first.clientX - second.clientX, first.clientY - second.clientY);
+      console.log('Distance between touches:', distance);
+      return distance;
+    }
+    return 0;  // Ensure a number is always returned
   }
 
 
@@ -432,6 +497,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     }
   }
 
+
   /**
    * _updatePinchState
    * Updates the pinch state by recalculating the scale change and applying damping if necessary.
@@ -439,48 +505,28 @@ export class MapInteractionBehavior extends AbstractBehavior {
    */
   _updatePinchState() {
     const touchPoints = Object.values(this.activeTouches);
+    console.log('Updating Pinch State:', touchPoints);
     if (touchPoints.length === 2) {
-        const [first, second] = touchPoints;
-        const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
-
-        if (this._initialPinchDistance !== null) {
-            const scaleChange = currentDistance / this._initialPinchDistance;
-            const currentZoom = this.context.viewport.transform.zoom;
-
-            // Only apply changes if the scale change is significant
-            if (Math.abs(scaleChange - 1) > 0.01) {  // Adjust this threshold as needed
-                const baseDamping = 0.65;
-                const dampingFactor = currentZoom > 16 ? 0.25 : (currentZoom / 16) * baseDamping + 0.25;
-                const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
-
-                this._applyPinchZoom(adjustedScaleChange);
-            }
+      const [first, second] = touchPoints;
+      const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
+      console.log('Current Distance:', currentDistance);
+      if (this._initialPinchDistance !== null) {
+        const scaleChange = currentDistance / this._initialPinchDistance;
+        console.log('Scale Change:', scaleChange);
+        const currentZoom = this.context.viewport.transform.zoom;
+        // Only apply changes if the scale change is significant
+        if (Math.abs(scaleChange - 1) > 0.02) {  // Adjust this threshold as needed
+          // Set damping factor based on current zoom level
+          const dampingFactor = currentZoom > 12 ? 0.20 : 0.65;
+          const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
+          const newZoom = currentZoom * adjustedScaleChange;
+          const clampedZoom = Math.max(MIN_Z, Math.min(newZoom, MAX_Z));
+          this.context.systems.map.zoom(clampedZoom);
         }
-        this._initialPinchDistance = currentDistance;
+      }
+      this._initialPinchDistance = currentDistance;
     } else {
-        this._initialPinchDistance = null;
+      this._initialPinchDistance = null;
     }
-  }
-
-
-  /**
-   * _applyPinchZoom
-   * Applies the calculated scale change to the viewport. This method ensures that the zoom level updates are throttled to prevent excessive updates.
-   * @param {number} scaleChange - The calculated scale change to be applied.
-   */
-  _applyPinchZoom(scaleChange) {
-    const now = performance.now();
-    if (now - this.lastZoomUpdate < 50) return;
-    this.lastZoomUpdate = now;
-
-    const viewport = this.context.viewport;
-    const currentZoom = viewport.transform.zoom;
-    const targetZoom = currentZoom * Math.log2(scaleChange + 1);
-
-    const clampedZoom = Math.max(MIN_Z, Math.min(targetZoom, MAX_Z));
-
-    requestAnimationFrame(() => {
-        this.context.systems.map.zoom(clampedZoom);
-    });
   }
 }
