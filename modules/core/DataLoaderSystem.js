@@ -31,9 +31,9 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('keepRight', 'data/keepRight.min.json');
     fileMap.set('languages', 'data/languages.min.json');
     fileMap.set('locales', 'locales/index.min.json');
-    fileMap.set('oci_defaults', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.6/dist/defaults.min.json');
-    fileMap.set('oci_features', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.6/dist/featureCollection.min.json');
-    fileMap.set('oci_resources', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.6/dist/resources.min.json');
+    fileMap.set('oci_defaults', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/defaults.min.json');
+    fileMap.set('oci_features', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/featureCollection.min.json');
+    fileMap.set('oci_resources', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/resources.min.json');
     fileMap.set('phone_formats', 'data/phone_formats.min.json');
     fileMap.set('preset_categories', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_categories.min.json');
     fileMap.set('preset_defaults', 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.6/dist/preset_defaults.min.json');
