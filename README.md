@@ -4,7 +4,7 @@
 
 <h1 align="center">Rapid</h1>
 
-Rapid is a web-based modern editor for [OpenStreetMap](https://www.openstreetmap.org/). Rapid integrates advanced mapping tools, authoritative geospatial open data, and cutting-edge technology to empower mappers at all levels to get started quickly, making accurate and fresh edits to maps.
+Rapid is a modern web-based editor for [OpenStreetMap](https://www.openstreetmap.org/). Rapid integrates advanced mapping tools, authoritative geospatial open data, and cutting-edge technology to empower mappers at all levels to get started quickly, making accurate and fresh edits to maps.
 
 Rapid is enhanced with authoritative open data sources and AI-generated roads from the Facebook Map With AI service + buildings from Microsoft open buildings dataset to make adding and editing roads, buildings, and more quick and simple.
 
