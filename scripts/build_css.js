@@ -1,22 +1,25 @@
 /* eslint-disable no-console */
+import autoprefixer from 'autoprefixer';
 import chalk from 'chalk';
 import concat from 'concat-files';
-import { glob } from 'glob';
 import fs from 'node:fs';
+import { glob } from 'glob';
 import postcss from 'postcss';
 import prepend from 'postcss-selector-prepend';
-import autoprefixer from 'autoprefixer';
 
+//
+// This script concats all of the `/css/*` files into a single `dist/rapid.css` file.
+//
 
-let _currBuild = null;
+let _buildPromise = null;
 
-// if called directly, do the thing.
+// If called directly, do the thing.
 if (process.argv[1].indexOf('build_css.js') > -1) {
-  buildCSS();
+  buildCSSAsync();
 }
 
-export function buildCSS() {
-  if (_currBuild) return _currBuild;
+export function buildCSSAsync() {
+  if (_buildPromise) return _buildPromise;
 
   const START = '🏗   ' + chalk.yellow('Building css...');
   const END = '👍  ' + chalk.green('css built');
@@ -25,8 +28,8 @@ export function buildCSS() {
   console.log(START);
   console.time(END);
 
-  return _currBuild = glob('css/**/*.css')
-    .then(files => doConcat(files.sort(), 'dist/rapid.css'))
+  return _buildPromise = glob('css/**/*.css')
+    .then(files => concatAsync(files.sort(), 'dist/rapid.css'))
     .then(() => {
       const css = fs.readFileSync('dist/rapid.css', 'utf8');
       return postcss([ autoprefixer, prepend({ selector: '.ideditor ' }) ])
@@ -36,18 +39,18 @@ export function buildCSS() {
     .then(() => {
       console.timeEnd(END);
       console.log('');
-      _currBuild = null;
+      _buildPromise = null;
     })
     .catch(err => {
       console.error(err);
       console.log('');
-      _currBuild = null;
+      _buildPromise = null;
       process.exit(1);
     });
 }
 
 
-function doConcat(files, output) {
+function concatAsync(files, output) {
   return new Promise((resolve, reject) => {
     concat(files, output, (err) => {
       if (err) return reject(err);

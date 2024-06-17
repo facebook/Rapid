@@ -20,20 +20,23 @@ import presetsJSON from '@openstreetmap/id-tagging-schema/dist/presets.min.json'
 import qaDataJSON from '../data/qa_data.json' assert { type: 'json' }
 import territoriesJSON from 'cldr-core/supplemental/territoryInfo.json' assert { type: 'json' };
 
+//
+// This script builds all the data files
+//
 
-let _currBuild = null;
+let _buildPromise = null;
 
 
-// if called directly, do the thing.
+// If called directly, do the thing.
 if (process.argv[1].indexOf('build_data.js') > -1) {
-  buildData();
+  buildDataAsync();
 } else {
-  module.exports = buildData;
+  module.exports = buildDataAsync;
 }
 
 
-function buildData() {
-  if (_currBuild) return _currBuild;
+function buildDataAsync() {
+  if (_buildPromise) return _buildPromise;
 
   const START = '🏗   ' + chalk.yellow('Building data...');
   const END = '👍  ' + chalk.green('data built');
@@ -100,16 +103,16 @@ function buildData() {
   minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json');
   minifySync('data/wayback.json', 'dist/data/wayback.min.json');
 
-  return _currBuild = Promise.resolve(true)
+  return _buildPromise = Promise.resolve(true)
     .then(() => {
       console.timeEnd(END);
       console.log('');
-      _currBuild = null;
+      _buildPromise = null;
     })
     .catch((err) => {
       console.error(err);
       console.log('');
-      _currBuild = null;
+      _buildPromise = null;
       process.exit(1);
     });
 }
@@ -236,4 +239,4 @@ function minifySync(inPath, outPath) {
 }
 
 
-export default buildData;
+export default buildDataAsync;

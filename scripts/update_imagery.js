@@ -5,8 +5,15 @@ import prettyStringify from 'json-stringify-pretty-compact';
 import imageryJSON from 'editor-layer-index/imagery.json' assert {type: 'json'};
 import manualJSON from '../data/manual_imagery.json' assert {type: 'json'};
 
+//
+// This script processes files used to know what background imagery is available
+//  data/manual_imagery.json   - our customizations
+//  data/imagery.json          - sourced from `editor-layer-index`
+//  data/wayback.json          - sourced from Esri's waybackconfig file in S3
+//
+
 // Merge imagery sources - `manualJSON` will override `imageryJSON`
-let sources = new Map();
+const sources = new Map();
 for (const source of imageryJSON) {
   if (!source.id) continue;
   if (sources.has(source.id)) {
@@ -20,8 +27,8 @@ for (const source of manualJSON) {
 }
 
 
-// ignore imagery more than 30 years old..
-let cutoffDate = new Date();
+// Ignore imagery more than 30 years old..
+const cutoffDate = new Date();
 cutoffDate.setFullYear(cutoffDate.getFullYear() - 30);
 
 
@@ -74,7 +81,7 @@ const supportedWMSProjections = [
 
 
 
-let imagery = [];
+const imagery = [];
 for (const [sourceID, source] of sources) {
   if (source.type !== 'tms' && source.type !== 'wms' && source.type !== 'bing') {
     // console.log(`discarding ${sourceID}  (type ${source.type})`);
@@ -85,7 +92,7 @@ for (const [sourceID, source] of sources) {
     continue;
   }
 
-  let item = {
+  const item = {
     id: sourceID,
     name: source.name,
     type: source.type,

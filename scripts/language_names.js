@@ -1,17 +1,25 @@
 /* eslint-disable no-console */
-/* Downloads the latest translations from Transifex */
 import fs from 'node:fs';
+
+//
+// This script gets all the supported language names from CLDR
+// - langNamesInNativeLang()
+// - languageNamesInLanguageOf(code)
+// - scriptNamesInLanguageOf(code)
+//
 
 const cldrMainDir = 'node_modules/cldr-localenames-full/main/';
 const rematchCodes = { 'ar-AA': 'ar', 'zh-CN': 'zh', 'zh-HK': 'zh-Hant-HK', 'zh-TW': 'zh-Hant', 'pt-BR': 'pt', 'pt': 'pt-PT' };
 
 const codesToSkip = ['ase', 'mis', 'mul', 'und', 'zxx'];
+const referencedScripts = [];
 
-let referencedScripts = [];
-
+//
+//
+//
 export function langNamesInNativeLang() {
   // manually add languages we want that aren't in CLDR
-  let unordered = {
+  const unordered = {
     'oc': {
       nativeName: 'Occitan'
     },
@@ -34,18 +42,18 @@ export function langNamesInNativeLang() {
   };
 
   // Get nativeName if possible
-  let langDirectoryPaths = fs.readdirSync(cldrMainDir);
+  const langDirectoryPaths = fs.readdirSync(cldrMainDir);
   langDirectoryPaths.forEach(code => {
-    let languagesPath = `${cldrMainDir}${code}/languages.json`;
+    const languagesPath = `${cldrMainDir}${code}/languages.json`;
     if (!fs.existsSync(languagesPath)) return;
 
-    let languageObj = JSON.parse(fs.readFileSync(languagesPath, 'utf8')).main[code];
-    let identity = languageObj.identity;
+    const languageObj = JSON.parse(fs.readFileSync(languagesPath, 'utf8')).main[code];
+    const identity = languageObj.identity;
 
     // skip locale-specific languages
     if (identity.letiant || identity.territory) return;
 
-    let info = {};
+    const info = {};
     const script = identity.script;
     if (script) {
       referencedScripts.push(script);
@@ -63,7 +71,7 @@ export function langNamesInNativeLang() {
 
   // CLDR locales don't cover all the languages people might want to use for OSM tags,
   // so also add the language names that we have English translations for
-  let englishNamesByCode = JSON.parse(fs.readFileSync(`${cldrMainDir}en/languages.json`, 'utf8')).main.en.localeDisplayNames.languages;
+  const englishNamesByCode = JSON.parse(fs.readFileSync(`${cldrMainDir}en/languages.json`, 'utf8')).main.en.localeDisplayNames.languages;
   Object.keys(englishNamesByCode).forEach(code => {
     if (code in unordered) return;
     if (code.indexOf('-') !== -1) return;
@@ -71,19 +79,22 @@ export function langNamesInNativeLang() {
     unordered[code] = {};
   });
 
-  let ordered = {};
+  const ordered = {};
   Object.keys(unordered).sort().forEach(key => ordered[key] = unordered[key]);
   return ordered;
 }
 
 
-export function languageNamesInLanguageOf (code) {
+//
+//
+//
+export function languageNamesInLanguageOf(code) {
   if (rematchCodes[code]) code = rematchCodes[code];
 
-  let languageFilePath = `${cldrMainDir}${code}/languages.json`;
+  const languageFilePath = `${cldrMainDir}${code}/languages.json`;
   if (!fs.existsSync(languageFilePath)) return null;
 
-  let translatedLangsByCode = JSON.parse(fs.readFileSync(languageFilePath, 'utf8')).main[code].localeDisplayNames.languages;
+  const translatedLangsByCode = JSON.parse(fs.readFileSync(languageFilePath, 'utf8')).main[code].localeDisplayNames.languages;
 
   // ignore codes for non-languages
   codesToSkip.forEach(skipCode => {
@@ -91,9 +102,9 @@ export function languageNamesInLanguageOf (code) {
   });
 
   for (let langCode in translatedLangsByCode) {
-    let altLongIndex = langCode.indexOf('-alt-long');
+    const altLongIndex = langCode.indexOf('-alt-long');
     if (altLongIndex !== -1) {    // prefer long names (e.g. Chinese -> Mandarin Chinese)
-      let base = langCode.substring(0, altLongIndex);
+      const base = langCode.substring(0, altLongIndex);
       translatedLangsByCode[base] = translatedLangsByCode[langCode];
     }
 
@@ -113,15 +124,18 @@ export function languageNamesInLanguageOf (code) {
 }
 
 
+//
+//
+//
 export function scriptNamesInLanguageOf(code) {
   if (rematchCodes[code]) code = rematchCodes[code];
 
-  let languageFilePath = `${cldrMainDir}${code}/scripts.json`;
+  const languageFilePath = `${cldrMainDir}${code}/scripts.json`;
   if (!fs.existsSync(languageFilePath)) return null;
 
-  let allTranslatedScriptsByCode = JSON.parse(fs.readFileSync(languageFilePath, 'utf8')).main[code].localeDisplayNames.scripts;
+  const allTranslatedScriptsByCode = JSON.parse(fs.readFileSync(languageFilePath, 'utf8')).main[code].localeDisplayNames.scripts;
 
-  let translatedScripts = {};
+  const translatedScripts = {};
   referencedScripts.forEach(script => {
     if (!allTranslatedScriptsByCode[script] || script === allTranslatedScriptsByCode[script]) return;
     translatedScripts[script] = allTranslatedScriptsByCode[script];

@@ -1,11 +1,14 @@
 /* eslint-disable no-console */
-/* Downloads the latest translations from Transifex */
 import btoa from 'btoa';
 import chalk from 'chalk';
 import fs from 'node:fs';
 import YAML from 'js-yaml';
 
 import * as languageNames from './language_names.js';
+
+//
+// This script fetches the various language and translation files from Transifex
+//
 
 const resourceIds = ['core', 'imagery', 'community'];
 const reviewedOnlyLangs = ['vi'];
