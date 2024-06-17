@@ -7,7 +7,7 @@ const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
 const MIN_Z = 2;
 const MAX_Z = 24;
-
+const ROTATION_THRESHOLD = 0.01;
 
 /**
  * `MapInteractionBehavior` listens to pointer events and converts those into zoom/pan map interactions
@@ -203,7 +203,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _pointerdown(e) {
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
     if (Object.keys(this.activeTouches).length === 2) {
-        this._initialPinchDistance = this._getDistanceBetweenTouches();
+      this._initialPinchDistance = this._getDistanceBetweenTouches();
+      const touchPoints = Object.values(this.activeTouches);
+      this._initialAngle = Math.atan2(touchPoints[1].clientY - touchPoints[0].clientY, touchPoints[1].clientX - touchPoints[0].clientX);
     }
     // Update the pinch state or any other gesture recognition logic
     this._updatePinchState();
@@ -243,14 +245,20 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _pointermove(e) {
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
     if (Object.keys(this.activeTouches).length === 2) {
-        const currentDistance = this._getDistanceBetweenTouches();
-        if (!this._initialPinchDistance) {
-            this._initialPinchDistance = currentDistance;
-        }
-        const scaleChange = currentDistance / this._initialPinchDistance;
-        this._applyZoomWithDamping(scaleChange);
-        // Update the initial distance after applying zoom
-        this._initialPinchDistance = currentDistance;
+      const touchPoints = Object.values(this.activeTouches);
+      const currentDistance = this._getDistanceBetweenTouches();
+      const currentAngle = Math.atan2(touchPoints[1].clientY - touchPoints[0].clientY, touchPoints[1].clientX - touchPoints[0].clientX);
+      const angleDelta = currentAngle - this._initialAngle;
+      this._applyZoomWithDamping(currentDistance / this._initialPinchDistance);
+      this._initialPinchDistance = currentDistance;
+      this._initialAngle = currentAngle;
+      if (Math.abs(angleDelta) > ROTATION_THRESHOLD) {
+        const context = this.context;
+        const map = context.systems.map;
+        const viewport = context.viewport;
+        const t = viewport.transform.props;
+        map.transform({ x: t.x, y: t.y, k: t.k, r: t.r + angleDelta });
+      }
     }
 
     const context = this.context;
@@ -315,7 +323,8 @@ export class MapInteractionBehavior extends AbstractBehavior {
     // Remove the touch point from the activeTouches object
     delete this.activeTouches[e.pointerId];
     if (Object.keys(this.activeTouches).length === 0) {
-        this._initialPinchDistance = null;  // Reset initial distance when all fingers are lifted
+      this._initialPinchDistance = null;
+      this._initialAngle = null;
     }
     this._updatePinchState();
 
@@ -342,6 +351,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _pointercancel(e) {
     // Remove the specific touch point
     delete this.activeTouches[e.pointerId];
+    if (Object.keys(this.activeTouches).length === 0) {
+      this._initialPinchDistance = null;
+      this._initialAngle = null;
+    }
     this._updatePinchState();
     // Reset interaction states if necessary
     if (Object.keys(this.activeTouches).length === 0) {
