@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable no-process-env */
 import btoa from 'btoa';
 import chalk from 'chalk';
 import fs from 'node:fs';
@@ -11,7 +12,6 @@ import * as languageNames from './language_names.js';
 //
 
 const resourceIds = ['core', 'imagery', 'community'];
-const reviewedOnlyLangs = ['vi'];
 const outdir = 'dist/locales/';
 const apiroot = 'https://www.transifex.com/api/2';
 const projectURL = `${apiroot}/project/id-editor`;
@@ -19,7 +19,6 @@ const projectURL = `${apiroot}/project/id-editor`;
 
 // Transifex doesn't allow anonymous downloading
 let auth;
-/* eslint-disable no-process-env */
 if (process.env.transifex_password) {
   // Deployment scripts may prefer environment variables
   auth = {
@@ -36,7 +35,6 @@ if (process.env.transifex_password) {
   // }
   auth = JSON.parse(fs.readFileSync('./transifex.auth', 'utf8'));
 }
-/* eslint-enable no-process-env */
 
 const fetchOpts = {
   headers: {
@@ -44,6 +42,7 @@ const fetchOpts = {
   }
 };
 
+// load shortcuts
 const dataShortcuts = JSON.parse(fs.readFileSync('data/shortcuts.json', 'utf8'));
 
 let shortcuts = [];
@@ -71,6 +70,10 @@ let coverageByLocaleCode = {};
 asyncMap(resourceIds, getResourceInfo, gotResourceInfo);
 asyncMap(resourceIds, getResource, gotResource);
 
+
+//
+//
+//
 function getResourceInfo(resourceId, callback) {
   let url = 'https://api.transifex.com/organizations/openstreetmap/projects/id-editor/resources/' + resourceId;
   fetch(url, fetchOpts)
@@ -83,15 +86,16 @@ function getResourceInfo(resourceId, callback) {
     })
     .catch(err => callback(err));
 }
+
+
+//
+//
+//
 function gotResourceInfo(err, results) {
   if (err) return console.log(err);
   results.forEach(function(info) {
     for (let code in info.stats) {
       let type = 'translated';
-      if (reviewedOnlyLangs.indexOf(code) !== -1) {
-        // reviewed_1 = reviewed, reviewed_2 = proofread
-        type = 'reviewed_1';
-      }
       let coveragePart = info.stats[code][type].percentage / results.length;
 
       code = code.replace(/_/g, '-');
@@ -101,6 +105,10 @@ function gotResourceInfo(err, results) {
   });
 }
 
+
+//
+//
+//
 function gotResource(err, results) {
   if (err) return console.log(err);
 
@@ -178,6 +186,9 @@ function gotResource(err, results) {
 }
 
 
+//
+//
+//
 function getResource(resourceId, callback) {
   let resourceURL = `${projectURL}/resource/${resourceId}`;
   getLanguages(resourceURL, (err, codes) => {
@@ -234,14 +245,13 @@ function getResource(resourceId, callback) {
 }
 
 
+//
+//
+//
 function getLanguage(resourceURL) {
   return (code, callback) => {
     code = code.replace(/-/g, '_');
     let url = `${resourceURL}/translation/${code}`;
-    // fetch only reviewed strings for some languages
-    if (reviewedOnlyLangs.indexOf(code) !== -1) {
-      url += '?mode=reviewed';
-    }
     fetch(url, fetchOpts)
       .then(res => {
         console.log(`${res.status}: ${url}`);
@@ -255,6 +265,9 @@ function getLanguage(resourceURL) {
 }
 
 
+//
+//
+//
 function getLanguageInfo(code, callback) {
   code = code.replace(/-/g, '_');
   let url = `${apiroot}/language/${code}`;
@@ -270,6 +283,9 @@ function getLanguageInfo(code, callback) {
 }
 
 
+//
+//
+//
 function getLanguages(resourceURL, callback) {
   let url = `${resourceURL}?details`;
   fetch(url, fetchOpts)
@@ -287,6 +303,9 @@ function getLanguages(resourceURL, callback) {
 }
 
 
+//
+//
+//
 function asyncMap(inputs, func, callback) {
   let index = 0;
   let remaining = inputs.length;
@@ -314,6 +333,9 @@ function asyncMap(inputs, func, callback) {
 }
 
 
+//
+//
+//
 function checkForDuplicateShortcuts(code, coreStrings) {
   let usedShortcuts = {};
 
