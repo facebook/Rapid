@@ -37,6 +37,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this.activeTouches = {};
     this._initialPinchDistance = null;
     this._initialScale = null;
+    this.previousMode = this.context.mode?.id;
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
@@ -201,9 +202,16 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
+    const currentMode = this.context.mode.id;
+    if (this.previousMode !== currentMode) {
+        this._resetTouchStates();
+        this.previousMode = currentMode;  // Update the previous mode
+    }
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
     if (Object.keys(this.activeTouches).length === 2) {
-      this._initialPinchDistance = this._getDistanceBetweenTouches();
+      if (!this._initialPinchDistance) {
+        this._initialPinchDistance = this._getDistanceBetweenTouches();
+      }
       const touchPoints = Object.values(this.activeTouches);
       this._initialAngle = Math.atan2(touchPoints[1].clientY - touchPoints[0].clientY, touchPoints[1].clientX - touchPoints[0].clientX);
     }
@@ -519,7 +527,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
         const scaleChange = currentDistance / this._initialPinchDistance;
         const currentZoom = this.context.viewport.transform.zoom;
         // Only apply changes if the scale change is significant
-        if (Math.abs(scaleChange - 1) > 0.02) {  // Adjust this threshold as needed
+        if (Math.abs(scaleChange - 1) > 0.02) {
           // Set damping factor based on current zoom level
           const dampingFactor = currentZoom > 12 ? 0.20 : 0.65;
           const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
@@ -528,9 +536,24 @@ export class MapInteractionBehavior extends AbstractBehavior {
           this.context.systems.map.zoom(clampedZoom);
         }
       }
-      this._initialPinchDistance = currentDistance;
+        this._initialPinchDistance = currentDistance; // Update the initial distance for the next move event
     } else {
-      this._initialPinchDistance = null;
+        // Reset the initial pinch distance if not exactly two touch points
+        this._initialPinchDistance = null;
     }
+  }
+
+
+  /**
+   * _resetTouchStates
+   * Resets the touch-related states to their initial values.
+   * This method is called when there is a change in the application mode or other conditions that require reinitializing touch states.
+   * It ensures that the touch interactions start in a clean state, preventing issues from lingering touch data.
+   */
+  _resetTouchStates() {
+      this.activeTouches = {}; // Clears all active touch points
+      this._initialPinchDistance = null; // Resets the initial distance between pinch points
+      this._initialAngle = null; // Resets the initial angle for rotation calculations
+      this.gesture = null; // Clears the current gesture to prevent unwanted interactions
   }
 }
