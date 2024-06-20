@@ -398,13 +398,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param {Event} e - The event object containing touch points.
    */
   _pinchMove(e) {
-    const currentDist = this._getDistanceBetweenTouches(e);
     if (this._initialPinchDistance) {
-        const scaleRatio = currentDist / this._initialPinchDistance;
         const currentZoom = this.context.viewport.transform.zoom;
-        const adjustedScaleRatio = this._applyDamping(scaleRatio, currentZoom);
-        const newZoom = currentZoom * adjustedScaleRatio;
-        const clampedZoom = Math.max(MIN_Z, Math.min(newZoom, MAX_Z));
+        const clampedZoom = Math.max(MIN_Z, Math.min(currentZoom, MAX_Z));
         this._smoothZoom(clampedZoom);
     }
   }
@@ -418,20 +414,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _pinchEnd(e) {
     this._initialPinchDistance = null;
     this._initialScale = null;
-  }
-
-
-  /**
-   * Applies damping to the scale ratio based on the current zoom level.
-   * This method calculates a damped scale ratio to ensure smoother zoom transitions, especially at higher zoom levels.
-   * @param {number} scaleRatio - The original scale ratio from pinch gestures.
-   * @param {number} currentZoom - The current zoom level of the viewport.
-   * @return {number} The adjusted scale ratio after applying damping.
-   */
-  _applyDamping(scaleRatio, currentZoom) {
-      const baseDamping = 0.1;
-      const dampingFactor = currentZoom > 16 ? 0.2 : (currentZoom / 16) * baseDamping + 0.2;
-      return 1 + (scaleRatio - 1) * dampingFactor;
   }
 
 
