@@ -257,7 +257,13 @@ export class MapInteractionBehavior extends AbstractBehavior {
       const currentDistance = this._getDistanceBetweenTouches();
       const currentAngle = Math.atan2(touchPoints[1].clientY - touchPoints[0].clientY, touchPoints[1].clientX - touchPoints[0].clientX);
       const angleDelta = currentAngle - this._initialAngle;
-      this._applyZoomWithDamping(currentDistance / this._initialPinchDistance);
+      const scaleChange = currentDistance / this._initialPinchDistance;
+      const currentZoom = this.context.viewport.transform.zoom;
+      const dampingFactor = currentZoom > 16 ? 0.25 : (currentZoom / 16) * 0.1 + 0.25;
+      const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
+      const newZoom = currentZoom * adjustedScaleChange;
+      const clampedZoom = Math.max(MIN_Z, Math.min(newZoom, MAX_Z));
+      this.context.systems.map.zoom(clampedZoom);  // Directly call map.zoom with the new zoom level
       this._initialPinchDistance = currentDistance;
       this._initialAngle = currentAngle;
       if (Math.abs(angleDelta) > ROTATION_THRESHOLD) {
@@ -412,20 +418,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _pinchEnd(e) {
     this._initialPinchDistance = null;
     this._initialScale = null;
-  }
-
-
-  /**
-   * Applies zoom with damping based on the scale change.
-   * This method adjusts the zoom level of the map, applying a damping factor to the scale change to smooth out the zoom transition.
-   * @param {number} scaleChange - The scale change ratio calculated from pinch gestures.
-   */
-  _applyZoomWithDamping(scaleChange) {
-    const dampingFactor = 0.1; // Adjust this value to control sensitivity
-    const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
-    const targetZoom = this.context.viewport.transform.zoom * adjustedScaleChange;
-    const clampedZoom = Math.max(MIN_Z, Math.min(targetZoom, MAX_Z));
-    this.context.systems.map.zoom(clampedZoom);
   }
 
 
