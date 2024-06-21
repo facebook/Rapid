@@ -202,10 +202,13 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
+    if (this._isMapPaneOpen()) {
+      return; // Ignore move events if any pane is open
+    }
     const currentMode = this.context.mode.id;
     if (this.previousMode !== currentMode) {
-        this._resetTouchStates();
-        this.previousMode = currentMode;  // Update the previous mode
+      this._resetTouchStates();
+      this.previousMode = currentMode;
     }
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
     if (Object.keys(this.activeTouches).length === 2) {
@@ -251,6 +254,9 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
+    if (this._isMapPaneOpen()) {
+      return; // Ignore move events if any pane is open
+    }
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
     if (Object.keys(this.activeTouches).length === 2) {
       const touchPoints = Object.values(this.activeTouches);
@@ -334,7 +340,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerup(e) {
-    // Remove the touch point from the activeTouches object
     delete this.activeTouches[e.pointerId];
     if (Object.keys(this.activeTouches).length === 0) {
       this._initialPinchDistance = null;
@@ -363,7 +368,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointercancel(e) {
-    // Remove the specific touch point
     delete this.activeTouches[e.pointerId];
     if (Object.keys(this.activeTouches).length === 0) {
       this._initialPinchDistance = null;
@@ -477,7 +481,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
   /**
    * _updatePinchState
    * Updates the pinch state by recalculating the scale change and applying damping if necessary.
-   * This method is called during touch movements to dynamically adjust the map's scale.
    */
   _updatePinchState() {
     const touchPoints = Object.values(this.activeTouches);
@@ -508,13 +511,23 @@ export class MapInteractionBehavior extends AbstractBehavior {
   /**
    * _resetTouchStates
    * Resets the touch-related states to their initial values.
-   * This method is called when there is a change in the application mode or other conditions that require reinitializing touch states.
-   * It ensures that the touch interactions start in a clean state, preventing issues from lingering touch data.
    */
   _resetTouchStates() {
       this.activeTouches = {}; // Clears all active touch points
       this._initialPinchDistance = null; // Resets the initial distance between pinch points
       this._initialAngle = null; // Resets the initial angle for rotation calculations
       this.gesture = null; // Clears the current gesture to prevent unwanted interactions
+  }
+
+
+  /**
+   * _isMapPaneOpen
+   * Checks if any of the specified panes within the '.map-panes' container are open.
+   * @returns {boolean} True if any of the specified panes are open, otherwise false.
+   */
+  _isMapPaneOpen() {
+      const isOpen = this.context.container().select('.map-panes')
+          .selectAll('.issues-pane.shown, .map-data-pane.shown, .preferences-pane.shown, .background-pane.shown, .help-pane.shown').size() > 0;
+      return isOpen;
   }
 }
