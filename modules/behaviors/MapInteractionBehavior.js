@@ -401,7 +401,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
     if (this._initialPinchDistance) {
         const currentZoom = this.context.viewport.transform.zoom;
         const clampedZoom = Math.max(MIN_Z, Math.min(currentZoom, MAX_Z));
-        this._smoothZoom(clampedZoom);
+        this.context.systems.map.zoom(clampedZoom);
     }
   }
 
@@ -414,19 +414,6 @@ export class MapInteractionBehavior extends AbstractBehavior {
   _pinchEnd(e) {
     this._initialPinchDistance = null;
     this._initialScale = null;
-  }
-
-
-  /**
-   * Smoothly adjusts the zoom level of the map using a moving average of recent zoom levels.
-   * This method helps in achieving a smoother zoom effect by averaging several recent zoom calculations.
-   * @param {number} newZoom - The newly calculated zoom level to be added to the moving average.
-   */
-  _smoothZoom(newZoom) {
-      this.zoomLevels.push(newZoom);
-      if (this.zoomLevels.length > 5) this.zoomLevels.shift();  // Keep the last 5 zoom levels
-      const averageZoom = this.zoomLevels.reduce((a, b) => a + b, 0) / this.zoomLevels.length;
-      this.context.systems.map.zoom(averageZoom);
   }
 
 
