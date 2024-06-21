@@ -376,10 +376,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
     this._updatePinchState();
     // Reset interaction states if necessary
     if (Object.keys(this.activeTouches).length === 0) {
-        this.lastDown = null;
-        this.gesture = null;
-        this._lastPoint = null;
-        this._lastAngle = null;
+      this.lastDown = null;
+      this.gesture = null;
+      this._lastPoint = null;
+      this._lastAngle = null;
     }
   }
 
@@ -480,30 +480,17 @@ export class MapInteractionBehavior extends AbstractBehavior {
 
   /**
    * _updatePinchState
-   * Updates the pinch state by recalculating the scale change and applying damping if necessary.
+   * Updates the pinch state by recalculating the scale change.
    */
   _updatePinchState() {
     const touchPoints = Object.values(this.activeTouches);
     if (touchPoints.length === 2) {
       const [first, second] = touchPoints;
       const currentDistance = Math.hypot(first.x - second.x, first.y - second.y);
-      if (this._initialPinchDistance !== null) {
-        const scaleChange = currentDistance / this._initialPinchDistance;
-        const currentZoom = this.context.viewport.transform.zoom;
-        // Only apply changes if the scale change is significant
-        if (Math.abs(scaleChange - 1) > 0.02) {
-          // Set damping factor based on current zoom level
-          const dampingFactor = currentZoom > 12 ? 0.20 : 0.65;
-          const adjustedScaleChange = 1 + (scaleChange - 1) * dampingFactor;
-          const newZoom = currentZoom * adjustedScaleChange;
-          const clampedZoom = Math.max(MIN_Z, Math.min(newZoom, MAX_Z));
-          this.context.systems.map.zoom(clampedZoom);
-        }
-      }
-        this._initialPinchDistance = currentDistance; // Update the initial distance for the next move event
-    } else {
-        // Reset the initial pinch distance if not exactly two touch points
-        this._initialPinchDistance = null;
+      const currentZoom = this.context.viewport.transform.zoom;
+      const clampedZoom = Math.max(MIN_Z, Math.min(currentZoom, MAX_Z));
+      this.context.systems.map.zoom(clampedZoom);
+      this._initialPinchDistance = currentDistance; // Update the initial distance for the next move event
     }
   }
 
@@ -513,10 +500,10 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * Resets the touch-related states to their initial values.
    */
   _resetTouchStates() {
-      this.activeTouches = {}; // Clears all active touch points
-      this._initialPinchDistance = null; // Resets the initial distance between pinch points
-      this._initialAngle = null; // Resets the initial angle for rotation calculations
-      this.gesture = null; // Clears the current gesture to prevent unwanted interactions
+      this.activeTouches = {};
+      this._initialPinchDistance = null;
+      this._initialAngle = null;
+      this.gesture = null;
   }
 
 
