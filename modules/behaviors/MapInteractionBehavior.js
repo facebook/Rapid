@@ -202,7 +202,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
-    if (this._isMapPaneOpen()) {
+    if (this._isPaneOpen()) {
       return; // Ignore move events if any pane is open
     }
     const currentMode = this.context.mode.id;
@@ -254,7 +254,7 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
-    if (this._isMapPaneOpen()) {
+    if (this._isPaneOpen()) {
       return; // Ignore move events if any pane is open
     }
     this.activeTouches[e.pointerId] = { x: e.global.x, y: e.global.y, clientX: e.clientX, clientY: e.clientY };
@@ -500,21 +500,27 @@ export class MapInteractionBehavior extends AbstractBehavior {
    * Resets the touch-related states to their initial values.
    */
   _resetTouchStates() {
-      this.activeTouches = {};
-      this._initialPinchDistance = null;
-      this._initialAngle = null;
-      this.gesture = null;
+    this.activeTouches = {};
+    this._initialPinchDistance = null;
+    this._initialAngle = null;
+    this.gesture = null;
   }
 
 
   /**
-   * _isMapPaneOpen
+   * _isPaneOpen
    * Checks if any of the specified panes within the '.map-panes' container are open.
    * @returns {boolean} True if any of the specified panes are open, otherwise false.
    */
-  _isMapPaneOpen() {
-      const isOpen = this.context.container().select('.map-panes')
-          .selectAll('.issues-pane.shown, .map-data-pane.shown, .preferences-pane.shown, .background-pane.shown, .help-pane.shown').size() > 0;
-      return isOpen;
+  _isPaneOpen() {
+    // Check if the user is on a mobile device
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    if (!isMobile) {
+      return false;
+    }
+    const isOpen = this.context.container().select('.map-panes')
+    .selectAll('.issues-pane.shown, .map-data-pane.shown, .preferences-pane.shown, .background-pane.shown, .help-pane.shown').size() > 0;
+
+    return isOpen;
   }
 }
