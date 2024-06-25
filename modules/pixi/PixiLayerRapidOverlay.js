@@ -59,6 +59,10 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
 
     const vtService = this.context.services.vectortile;
     const datasets = this.context.systems.rapid.datasets;
+    const parentContainer = this.overlaysContainer;
+
+    //Extremely inefficient but we're not drawing anything else at this zoom
+    parentContainer.removeChildren();
 
     for (const [key, dataset] of datasets.entries()) {
       console.log(key);
@@ -100,10 +104,6 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    */
   renderPoints(frame, viewport, zoom, points, color) {
     const parentContainer = this.overlaysContainer;
-
-    //Extremely inefficient but we're not drawing anything else at this zoom
-    parentContainer.removeChildren();
-
     for (const d of points) {
       const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
