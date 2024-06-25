@@ -31,6 +31,15 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     overlays.sortableChildren = false;
     overlays.interactiveChildren = true;
     this.overlaysContainer = overlays;
+    this.overlaysDefined = false;
+
+    const datasets = this.context.systems.rapid.datasets;
+    for (const [key, dataset] of datasets.entries()) {
+      console.log(key);
+      if (dataset.overlay) {
+        this.overlaysDefined = true;
+      }
+    }
 
 
     const basemapContainer = this.scene.groups.get('basemap');
@@ -51,25 +60,33 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     const vtService = this.context.services.vectortile;
     const datasets = this.context.systems.rapid.datasets;
 
-    // for (const [key, dataset] in datasets) {
-
-    // }
-
-    const customColor = new PIXI.Color(datasets.get('metaFootways').color);
-    const overlay = datasets.get('metaFootways').overlay;
-    let overlayData = [];
-    if (overlay && vtService) {   // fetch data from vector tile service
-      if ((zoom >= overlay.minZoom ) && (zoom <= overlay.maxZoom)) {  // avoid firing off too many API requests 
-        vtService.loadTiles(overlay.url);
+    for (const [key, dataset] of datasets.entries()) {
+      console.log(key);
+      if (dataset.overlay && dataset.enabled) {
+        const customColor = new PIXI.Color(dataset.color);
+        const overlay = dataset.overlay;
+        if (vtService) {
+          if ((zoom >= overlay.minZoom ) && (zoom <= overlay.maxZoom)) {  // avoid firing off too many API requests
+              vtService.loadTiles(overlay.url);
+            }
+          const overlayData = vtService.getData(overlay.url).map(d => d.geojson);
+          const points = overlayData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
+          this.renderPoints(frame, viewport, zoom, points, customColor);
+        }
       }
-      overlayData = vtService.getData(overlay.url).map(d => d.geojson);
     }
 
-    // const polygons = overlayData.filter(d => d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon');
-    // const lines = overlayData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');
-    const points = overlayData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
-    this.renderPoints(frame, viewport, zoom, points, customColor);
+    // const customColor = new PIXI.Color(datasets.get('metaFootways').color);
+    // const overlay = datasets.get('metaFootways').overlay;
+    // let overlayData = [];
+    // if (overlay && vtService) {   // fetch data from vector tile service
+    //   if ((zoom >= overlay.minZoom ) && (zoom <= overlay.maxZoom)) {  // avoid firing off too many API requests
+    //     vtService.loadTiles(overlay.url);
+    //   }
+    //   overlayData = vtService.getData(overlay.url).map(d => d.geojson);
+    // }
+
   }
 
 
@@ -114,7 +131,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    * @return {boolean}  `true` if there is a vector tile template or geojson to display
    */
   hasData() {
-      return !!this.context.systems.rapid.datasets.get('metaFootways').overlay;
+    return this.overlaysDefined;
   }
 
   /**
