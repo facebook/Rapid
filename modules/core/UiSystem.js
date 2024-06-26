@@ -398,7 +398,7 @@ this.didRender = true;
     issueLinks
       .append('a')
       .attr('target', '_blank')
-      .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating')
+      .attr('href', 'https://github.com/facebook/Rapid/blob/main/CONTRIBUTING.md#translations')
       .call(uiIcon('#rapid-icon-translate', 'light'))
       .call(uiTooltip(context).title(l10n.t('help_translate')).placement('top'));
 

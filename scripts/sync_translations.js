@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable no-process-env */
-import btoa from 'btoa';
 import chalk from 'chalk';
 import fs from 'node:fs';
 import { transifexApi as api } from '@transifex/api';

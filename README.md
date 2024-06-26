@@ -19,7 +19,7 @@ Rapid also includes data integrity checks to ensure that new map edits are consi
 
 * Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guide](CONTRIBUTING.md) to learn about how to contribute.
 * See [open issues in the issue tracker](https://github.com/facebook/Rapid/issues?state=open) if you're looking to help on issues.
-* To help with translating, see the [Translations](CONTRIBUTING.md#Translations) section of the Contributing Guide.
+* To help with translating, see the [Translations](CONTRIBUTING.md#translations) section of the Contributing Guide.
 * Test a prerelease version of Rapid:
   * The current build of the `main` branch is available here: https://rapideditor.org/canary
   * Note that this [canary build](https://www.pcmag.com/encyclopedia/term/canary-build) of Rapid may be unstable and buggy!
