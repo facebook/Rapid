@@ -8,8 +8,19 @@ import { transifexApi as api } from '@transifex/api';
 //
 // This script will sync up the translations from `id-editor` -> `rapid-editor`
 // The resource is named 'core' in both projects, and the source language is `l:en`
+// Summary:
+//  - Load "source" strings from both iD and Rapid
+//  - Compare strings to find strings that are unchanged (these keys are stored in the `same` Set)
+//  - Loop through each language from iD (that actually has >0 translations)
+//    - Create that language on Rapid, if needed
+//    - Get the "translated" strings for both iD and Rapid
+//    - For all the string keys in the `same` set, copy the translation from iD -> Rapid, if needed.
 //
-
+// This is likely a one-time sync, and this script takes about a day to run to completion.
+// At the time I wrote this, there are 171 languages, and 1675 strings.
+// If this script stops because of a server issue, you can restart it.
+// It will again iterate through each language, but will run quickly through the ones already done.
+//
 
 // Create a file 'transifex.auth' that contains your API bearer token, for example:
 // { "token": "1/f306870b35f5182b5c2ef80aa4fd797196819cb132409" }
@@ -228,6 +239,7 @@ function findSameSourceStrings() {
 // Loop through all languages and get all their translated strings.
 async function processLanguages() {
   for (const languageID of languages_id) {
+    if (languageID === 'l:en') continue;   // skip `l:en`, it's the source language
     await getiDTranslationsForLanguage(languageID);
     await getRapidTranslationsForLanguage(languageID);
     await updateRapidTranslationsForLanguage(languageID);
@@ -307,10 +319,9 @@ async function updateRapidTranslationsForLanguage(languageID, showCount = true) 
   const from_id = translations_id.get(languageID);        //  Map<stringID, Object>
   const to_rapid = translations_rapid.get(languageID);    //  Map<stringID, Object>
 
-  console.log(chalk.yellow(`🖍️  Syncing ${languageID} translations iD -> Rapid`));
+  console.log(chalk.yellow(`✏️   Syncing translations iD -> Rapid for ${languageID}`));
   let count = 0;
   if (!process.stdout.isTTY) showCount = false;
-
 
   // At this point in the script execution things shouldn't be missing
   if (!from_id)  throw new Error(`iD missing language ${languageID}`);
@@ -363,7 +374,7 @@ async function updateRapidTranslationsForLanguage(languageID, showCount = true) 
       // weird: it will crash in postSave looking for the `id` if we don't supply a translator.
       translation_rapid.set('translator', user);
       translation_rapid.set('strings', translation_id.attributes.strings);
-      await translation_rapid.save(['strings']);
+      await saveWithRetry(translation_rapid, ['strings']);
     }
   }
 
@@ -396,4 +407,21 @@ async function getCollection(iterable, showCount = true) {
     process.stdout.write('\n');
   }
   return results;
+}
+
+
+// saveWithRetry
+// This retries a `save` call if we get an error like:
+//  500 - Something went wrong, please try again
+function saveWithRetry(resource, arg1, arg2) {
+  return resource.save(arg1, arg2)
+    .catch(err => {
+      console.error(err);
+      if (err.statusCode === 500 || err.statusCode === 429) {  // server error or rate limit
+        return new Promise(r => setTimeout(r, 10000))          // wait 10 sec
+          .then(() => saveWithRetry(resource, arg1, arg2));    // try again
+      } else {
+        throw err;
+      }
+    });
 }
