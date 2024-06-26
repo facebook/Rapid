@@ -20,9 +20,6 @@ const referencedScripts = [];
 export function langNamesInNativeLang() {
   // manually add languages we want that aren't in CLDR
   const unordered = {
-    'oc': {
-      nativeName: 'Occitan'
-    },
     'ja-Hira': {
       base: 'ja',
       script: 'Hira'
