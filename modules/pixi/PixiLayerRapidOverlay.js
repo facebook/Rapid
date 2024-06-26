@@ -2,9 +2,6 @@ import * as PIXI from 'pixi.js';
 
 import { geojsonFeatures } from '../util/util.js';
 import { AbstractLayer } from './AbstractLayer.js';
-import { PixiFeatureLine } from './PixiFeatureLine.js';
-import { PixiFeaturePoint } from './PixiFeaturePoint.js';
-import { PixiFeaturePolygon } from './PixiFeaturePolygon.js';
 
 
 
@@ -31,13 +28,13 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
     overlays.sortableChildren = false;
     overlays.interactiveChildren = true;
     this.overlaysContainer = overlays;
-    this.overlaysDefined = false;
+    this._overlaysDefined = false;
 
     const datasets = this.context.systems.rapid.datasets;
     for (const [key, dataset] of datasets.entries()) {
       console.log(key);
       if (dataset.overlay) {
-        this.overlaysDefined = true;
+        this._overlaysDefined = true;
       }
     }
 
@@ -79,18 +76,6 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
         }
       }
     }
-
-
-    // const customColor = new PIXI.Color(datasets.get('metaFootways').color);
-    // const overlay = datasets.get('metaFootways').overlay;
-    // let overlayData = [];
-    // if (overlay && vtService) {   // fetch data from vector tile service
-    //   if ((zoom >= overlay.minZoom ) && (zoom <= overlay.maxZoom)) {  // avoid firing off too many API requests
-    //     vtService.loadTiles(overlay.url);
-    //   }
-    //   overlayData = vtService.getData(overlay.url).map(d => d.geojson);
-    // }
-
   }
 
 
@@ -131,7 +116,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    * @return {boolean}  `true` if there is a vector tile template or geojson to display
    */
   hasData() {
-    return this.overlaysDefined;
+    return this._overlaysDefined;
   }
 
   /**
@@ -173,11 +158,7 @@ export class PixiLayerRapidOverlay extends AbstractLayer {
    * Clear state to prepare for new custom data
    */
   _clear() {
-    this._dataUsed = null;
-    this._wkt = null;
-    this._urls = null;
-    this._geojson = null;
-    this._geojsonExtent = null;
+    this._overlaysDefined = false;
   }
 
 }
