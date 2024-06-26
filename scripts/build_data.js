@@ -165,12 +165,12 @@ function writeIcons(icons) {
 
 
 function gatherTerritoryLanguages() {
-  let allRawInfo = territoriesJSON.supplemental;
+  let allRawInfo = territoriesJSON.supplemental.territoryInfo;
   let territoryLanguages = {};
 
-  Object.keys(allRawInfo).forEach(territoryCode => {
-    let territoryLangInfo = allRawInfo[territoryCode].languagePopulation;
-    if (!territoryLangInfo) return;
+  for (const [territoryCode, territoryData] of Object.entries(allRawInfo)) {
+    let territoryLangInfo = territoryData.languagePopulation;
+    if (!territoryLangInfo) continue;
     let langCodes = Object.keys(territoryLangInfo);
 
     territoryLanguages[territoryCode.toLowerCase()] = langCodes.sort((langCode1, langCode2) => {
@@ -181,7 +181,7 @@ function gatherTerritoryLanguages() {
       }
       return popPercent2 - popPercent1;
     }).map(langCode => langCode.replace('_', '-'));
-  });
+  }
 
   return territoryLanguages;
 }
