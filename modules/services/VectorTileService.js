@@ -123,7 +123,7 @@ export class VectorTileService extends AbstractSystem {
     // Note that because vector tiles are 512px, they are offset by -1 zoom level
     // from the main map zoom, which follows 256px and OSM convention.
     const scale = viewport.transform.scale;
-    const zoom = Math.round(geoScaleToZoom(scale, 512));
+     const zoom = Math.round(geoScaleToZoom(scale, 512));
 
     // Because vector tiled data can be different at different zooms,
     // the caches and indexes need to be setup "per-zoom".
@@ -380,10 +380,10 @@ export class VectorTileService extends AbstractSystem {
           geojson.id = featureID;
           geojson.__featurehash__ = featureID;  // legacy
 
-//// add a few extra props for debugging
-//geojson.properties['__featureID'] = featureID;
-//geojson.properties['__tileID'] = tile.id;
-//geojson.properties['__prophash'] = prophash;
+// add a few extra props for debugging
+// geojson.properties['__featureID'] = featureID;
+// geojson.properties['__tileID'] = tile.id;
+// geojson.properties['__prophash'] = prophash;
 
           // For Polygons only, determine if this feature clips to a tile edge.
           // If so, we'll try to merge it with similar features on the neighboring tile

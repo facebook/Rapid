@@ -37,6 +37,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
 
       context.scene().dirtyLayers('rapid');
+      context.scene().dirtyLayers('rapid-overlay');
       context.enter('browse');   // return to browse mode (in case something was selected)
     }
   }
@@ -47,6 +48,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.color = color;
 
       context.scene().dirtyLayers('rapid');
+      context.scene().dirtyLayers('rapid-overlay');
       context.systems.map.immediateRedraw();
       _content.call(renderModalContent);
 
