@@ -2,11 +2,12 @@
 
 ### To update translations
 
-**Not Working, TODO.**
-You'll need a `transifex.auth` file in the root of your Rapid project like:
+Create a file `transifex.auth` in the root folder of the Rapid project.
+This file should contain your API bearer token, for example:
 ```js
-{ "user": "yourusername", "password": "*******" }
+ { "token": "1/f306870b35f5182b5c2ef80aa4fd797196819cb132409" }
 ```
+See: https://developers.transifex.com/reference/api-authentication for information on generating an API bearer token.
 (This file is `.gitignore`d)
 
 

@@ -8,6 +8,8 @@ import { transifexApi as api } from '@transifex/api';
 //
 // This script will sync up the translations from `id-editor` -> `rapid-editor`
 // The resource is named 'core' in both projects, and the source language is `l:en`
+// see also: https://developers.transifex.com/reference/api-introduction
+//
 // Summary:
 //  - Load "source" strings from both iD and Rapid
 //  - Compare strings to find strings that are unchanged (these keys are stored in the `same` Set)
@@ -22,10 +24,12 @@ import { transifexApi as api } from '@transifex/api';
 // It will again iterate through each language, but will run quickly through the ones already done.
 //
 
-// Create a file 'transifex.auth' that contains your API bearer token, for example:
-// { "token": "1/f306870b35f5182b5c2ef80aa4fd797196819cb132409" }
-// This file will be `.gitignore`d
 
+// Create a file `transifex.auth` in the root folder of the Rapid project.
+// This file should contain your API bearer token, for example:
+// { "token": "1/f306870b35f5182b5c2ef80aa4fd797196819cb132409" }
+// See: https://developers.transifex.com/reference/api-authentication for information on generating an API bearer token.
+// (This file is `.gitignore`d)
 if (process.env.transifex_token) {
   api.setup({ auth: process.env.transifex_token });
 } else {
@@ -33,12 +37,12 @@ if (process.env.transifex_token) {
   api.setup({ auth: auth.token });
 }
 
+
 const USER = 'u:RapidEditor';
 const ID_PROJECT = 'o:openstreetmap:p:id-editor';
 const RAPID_PROJECT = 'o:rapid-editor:p:rapid-editor';
 const ID_RESOURCE = 'o:openstreetmap:p:id-editor:r:core';
 const RAPID_RESOURCE = 'o:rapid-editor:p:rapid-editor:r:core';
-
 
 let user;             // user: RapidEditor
 let project_id;       // project: id
@@ -70,7 +74,6 @@ Promise.resolve()
   .then(() => {
     console.log(chalk.yellow(`✅  Done!`));
   });
-
 
 
 //

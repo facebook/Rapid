@@ -6,8 +6,6 @@
 
 Rapid is a modern web-based editor for [OpenStreetMap](https://www.openstreetmap.org/). Rapid integrates advanced mapping tools, authoritative geospatial open data, and cutting-edge technology to empower mappers at all levels to get started quickly, making accurate and fresh edits to maps.
 
-Rapid is enhanced with authoritative open data sources and AI-generated roads from the Facebook Map With AI service + buildings from Microsoft open buildings dataset to make adding and editing roads, buildings, and more quick and simple.
-
 Rapid also includes data integrity checks to ensure that new map edits are consistent and accurate. To learn about all the enhanced features Rapid provides, please check out our [Changelog](CHANGELOG.md) and [training document](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki#editing-in-rapid).
 
 
@@ -21,7 +19,7 @@ Rapid also includes data integrity checks to ensure that new map edits are consi
 
 * Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guide](CONTRIBUTING.md) to learn about how to contribute.
 * See [open issues in the issue tracker](https://github.com/facebook/Rapid/issues?state=open) if you're looking to help on issues.
-* To help with internationalization, please follow the [general translating page in iD repo](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating).
+* To help with translating, see the [Translations](CONTRIBUTING.md#Translations) section of the Contributing Guide.
 * Test a prerelease version of Rapid:
   * The current build of the `main` branch is available here: https://rapideditor.org/canary
   * Note that this [canary build](https://www.pcmag.com/encyclopedia/term/canary-build) of Rapid may be unstable and buggy!
