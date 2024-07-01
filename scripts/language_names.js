@@ -8,7 +8,7 @@ import fs from 'node:fs';
 // - scriptNamesInLanguageOf(code)
 //
 
-const cldrMainDir = 'node_modules/cldr-localenames-full/main/';
+const CLDR_ROOT = 'node_modules/cldr-localenames-full/main/';
 const rematchCodes = { 'ar-AA': 'ar', 'zh-CN': 'zh', 'zh-HK': 'zh-Hant-HK', 'zh-TW': 'zh-Hant', 'pt-BR': 'pt', 'pt': 'pt-PT' };
 
 const codesToSkip = ['ase', 'mis', 'mul', 'und', 'zxx'];
@@ -38,17 +38,16 @@ export function langNamesInNativeLang() {
     }
   };
 
-  // Get nativeName if possible
-  const langDirectoryPaths = fs.readdirSync(cldrMainDir);
-  langDirectoryPaths.forEach(code => {
-    const languagesPath = `${cldrMainDir}${code}/languages.json`;
-    if (!fs.existsSync(languagesPath)) return;
+  // The directory names are the codes
+  for (const code of fs.readdirSync(CLDR_ROOT)) {
+    const languageFile = `${CLDR_ROOT}${code}/languages.json`;
+    if (!fs.existsSync(languageFile)) continue;
 
-    const languageObj = JSON.parse(fs.readFileSync(languagesPath, 'utf8')).main[code];
-    const identity = languageObj.identity;
+    const languageData = JSON.parse(fs.readFileSync(languageFile, 'utf8')).main[code];
+    const identity = languageData.identity;
 
     // skip locale-specific languages
-    if (identity.letiant || identity.territory) return;
+    if (identity.letiant || identity.territory) continue;
 
     const info = {};
     const script = identity.script;
@@ -58,17 +57,17 @@ export function langNamesInNativeLang() {
       info.script = script;
     }
 
-    const nativeName = languageObj.localeDisplayNames.languages[code];
+    const nativeName = languageData.localeDisplayNames.languages[code];
     if (nativeName) {
       info.nativeName = nativeName;
     }
 
     unordered[code] = info;
-  });
+  }
 
   // CLDR locales don't cover all the languages people might want to use for OSM tags,
   // so also add the language names that we have English translations for
-  const englishNamesByCode = JSON.parse(fs.readFileSync(`${cldrMainDir}en/languages.json`, 'utf8')).main.en.localeDisplayNames.languages;
+  const englishNamesByCode = JSON.parse(fs.readFileSync(`${CLDR_ROOT}en/languages.json`, 'utf8')).main.en.localeDisplayNames.languages;
   Object.keys(englishNamesByCode).forEach(code => {
     if (code in unordered) return;
     if (code.indexOf('-') !== -1) return;
@@ -88,7 +87,7 @@ export function langNamesInNativeLang() {
 export function languageNamesInLanguageOf(code) {
   if (rematchCodes[code]) code = rematchCodes[code];
 
-  const languageFilePath = `${cldrMainDir}${code}/languages.json`;
+  const languageFilePath = `${CLDR_ROOT}${code}/languages.json`;
   if (!fs.existsSync(languageFilePath)) return null;
 
   const translatedLangsByCode = JSON.parse(fs.readFileSync(languageFilePath, 'utf8')).main[code].localeDisplayNames.languages;
@@ -127,7 +126,7 @@ export function languageNamesInLanguageOf(code) {
 export function scriptNamesInLanguageOf(code) {
   if (rematchCodes[code]) code = rematchCodes[code];
 
-  const languageFilePath = `${cldrMainDir}${code}/scripts.json`;
+  const languageFilePath = `${CLDR_ROOT}${code}/scripts.json`;
   if (!fs.existsSync(languageFilePath)) return null;
 
   const allTranslatedScriptsByCode = JSON.parse(fs.readFileSync(languageFilePath, 'utf8')).main[code].localeDisplayNames.scripts;
