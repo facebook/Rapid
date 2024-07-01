@@ -201,6 +201,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       sprite.name = tileName;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
+      sprite.alpha = source.alpha;
       sourceContainer.addChild(sprite);
       tile.sprite = sprite;
       tileMap.set(tileID, tile);

@@ -26,6 +26,7 @@ export class ImagerySource {
     this._description = src.description;
     this._template = src.encrypted ? utilAesDecrypt(src.template) : src.template;
 
+    this.alpha = src.alpha || 1;
     this.best = !!src.best;
     this.endDate = src.endDate;       // dates are stored as strings
     this.icon = src.icon;
