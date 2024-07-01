@@ -45,65 +45,66 @@ function buildDataAsync() {
   console.log(START);
   console.time(END);
 
-  // Create symlinks if necessary..  { 'target': 'source' }
-  const symlinks = {
-    img: 'dist/img'
-  };
-
-  for (const [target, source] of Object.entries(symlinks)) {
-    if (!shell.test('-L', target)) {
-      console.log(`Creating symlink:  ${target} -> ${source}`);
-      shell.ln('-sf', source, target);
-    }
-  }
-
-  // Start clean
-  shell.rm('-f', [
-    'data/territory_languages.json',
-    'dist/locales/en.json',
-    'dist/data/*',
-    'svg/fontawesome/*.svg',
-  ]);
-
-  // Gather icons from various places that we need assembled into a spritesheet.
-  // Start with icons we want to use in the UI that aren't tied to other data.
-  const icons = new Set([
-    'far-star',
-    'fas-filter',
-    'fas-i-cursor',
-    'fas-lock',
-    'fas-palette',
-    'fas-star',
-    'fas-th-list',
-    'fas-user-cog'
-  ]);
-  gatherQAIssueIcons(icons);
-  gatherPresetIcons(icons);
-  writeIcons(icons)
-
-  const territoryLanguages = gatherTerritoryLanguages();
-  fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) );
-
-  const languageInfo = languageNames.langNamesInNativeLang();
-  fs.writeFileSync('data/languages.json', stringify(languageInfo, { maxLength: 200 }));
-  fs.writeFileSync('dist/data/languages.min.json', JSON.stringify(languageInfo));
-
-  writeEnJson();
-
-  minifySync('data/address_formats.json', 'dist/data/address_formats.min.json');
-  minifySync('data/imagery.json', 'dist/data/imagery.min.json');
-  minifySync('data/intro_graph.json', 'dist/data/intro_graph.min.json');
-  minifySync('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json');
-  minifySync('data/keepRight.json', 'dist/data/keepRight.min.json');
-  minifySync('data/languages.json', 'dist/data/languages.min.json');
-  minifySync('data/phone_formats.json', 'dist/data/phone_formats.min.json');
-  minifySync('data/preset_overrides.json', 'dist/data/preset_overrides.min.json');
-  minifySync('data/qa_data.json', 'dist/data/qa_data.min.json');
-  minifySync('data/shortcuts.json', 'dist/data/shortcuts.min.json');
-  minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json');
-  minifySync('data/wayback.json', 'dist/data/wayback.min.json');
-
   return _buildPromise = Promise.resolve(true)
+    .then(() => {
+      // Create symlinks if necessary..  { 'target': 'source' }
+      const symlinks = {
+        img: 'dist/img'
+      };
+
+      for (const [target, source] of Object.entries(symlinks)) {
+        if (!shell.test('-L', target)) {
+          console.log(`Creating symlink:  ${target} -> ${source}`);
+          shell.ln('-sf', source, target);
+        }
+      }
+
+      // Start clean
+      shell.rm('-f', [
+        'data/territory_languages.json',
+        'dist/locales/en.json',
+        'dist/data/*',
+        'svg/fontawesome/*.svg',
+      ]);
+
+      // Gather icons from various places that we need assembled into a spritesheet.
+      // Start with icons we want to use in the UI that aren't tied to other data.
+      const icons = new Set([
+        'far-star',
+        'fas-filter',
+        'fas-i-cursor',
+        'fas-lock',
+        'fas-palette',
+        'fas-star',
+        'fas-th-list',
+        'fas-user-cog'
+      ]);
+      gatherQAIssueIcons(icons);
+      gatherPresetIcons(icons);
+      writeIcons(icons)
+
+      const territoryLanguages = gatherTerritoryLanguages();
+      fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) );
+
+      const languageInfo = languageNames.langNamesInNativeLang();
+      fs.writeFileSync('data/languages.json', stringify(languageInfo, { maxLength: 200 }));
+      fs.writeFileSync('dist/data/languages.min.json', JSON.stringify(languageInfo));
+
+      writeEnJson();
+
+      minifySync('data/address_formats.json', 'dist/data/address_formats.min.json');
+      minifySync('data/imagery.json', 'dist/data/imagery.min.json');
+      minifySync('data/intro_graph.json', 'dist/data/intro_graph.min.json');
+      minifySync('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json');
+      minifySync('data/keepRight.json', 'dist/data/keepRight.min.json');
+      minifySync('data/languages.json', 'dist/data/languages.min.json');
+      minifySync('data/phone_formats.json', 'dist/data/phone_formats.min.json');
+      minifySync('data/preset_overrides.json', 'dist/data/preset_overrides.min.json');
+      minifySync('data/qa_data.json', 'dist/data/qa_data.min.json');
+      minifySync('data/shortcuts.json', 'dist/data/shortcuts.min.json');
+      minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json');
+      minifySync('data/wayback.json', 'dist/data/wayback.min.json');
+    })
     .then(() => {
       console.timeEnd(END);
       console.log('');
@@ -190,8 +191,8 @@ function gatherTerritoryLanguages() {
 function writeEnJson() {
   try {
     // Start with contents of core.yaml and merge in the other stuff.
-    let enjson = YAML.load(fs.readFileSync('data/core.yaml', 'utf8'));
-    let imagery = YAML.load(fs.readFileSync('node_modules/editor-layer-index/i18n/en.yaml', 'utf8'));
+    const enjson = YAML.load(fs.readFileSync('data/core.yaml', 'utf8'));
+    const imagery = YAML.load(fs.readFileSync('node_modules/editor-layer-index/i18n/en.yaml', 'utf8'));
     const community = YAML.load(fs.readFileSync('node_modules/osm-community-index/i18n/en.yaml', 'utf8'));
     const manualImagery = JSON.parse(fs.readFileSync('data/manual_imagery.json', 'utf8'));
 
