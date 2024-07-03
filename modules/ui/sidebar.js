@@ -8,7 +8,6 @@ import { osmEntity, osmNote, QAItem } from '../osm/index.js';
 import { uiDataEditor } from './data_editor.js';
 import { uiFeatureList } from './feature_list.js';
 import { uiInspector } from './inspector.js';
-import { uiImproveOsmEditor } from './improveOSM_editor.js';
 import { uiKeepRightEditor } from './keepRight_editor.js';
 import { uiMapRouletteEditor } from './maproulette_editor.js';
 import { uiOsmoseEditor } from './osmose_editor.js';
@@ -26,7 +25,6 @@ export function uiSidebar(context) {
   const rapidInspector = uiRapidFeatureInspector(context);
   const dataEditor = uiDataEditor(context);
   const noteEditor = uiNoteEditor(context);
-  const improveOsmEditor = uiImproveOsmEditor(context);
   const keepRightEditor = uiKeepRightEditor(context);
   const osmoseEditor = uiOsmoseEditor(context);
   const mapRouletteEditor = uiMapRouletteEditor(context);
@@ -223,8 +221,6 @@ export function uiSidebar(context) {
                   sidebarComponent = keepRightEditor;
                 } else if (service.id === 'osmose') {
                   sidebarComponent = osmoseEditor;
-                } else if (service.id === 'improveOSM') {
-                  sidebarComponent = improveOsmEditor;
                 } else if (service.id === 'maproulette') {
                   sidebarComponent = mapRouletteEditor;
                 }

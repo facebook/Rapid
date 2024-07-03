@@ -279,13 +279,6 @@ export function uiCommit(context) {
         tags['closed:keepright'] = context.cleanTagValue(krClosed.join(';'));
       }
     }
-    const improveosm = context.services.improveOSM;
-    if (improveosm) {
-      const iOsmClosed = improveosm.getClosedCounts();
-      for (let itemType in iOsmClosed) {
-        tags[`closed:improveosm:${itemType}`] = context.cleanTagValue(iOsmClosed[itemType].toString());
-      }
-    }
     const osmose = context.services.osmose;
     if (osmose) {
       const osmoseClosed = osmose.getClosedCounts();

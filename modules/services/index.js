@@ -1,5 +1,4 @@
 import { EsriService } from './EsriService.js';
-import { ImproveOsmService } from './ImproveOsmService.js';
 import { KartaviewService } from './KartaviewService.js';
 import { KeepRightService } from './KeepRightService.js';
 import { MapillaryService } from './MapillaryService.js';
@@ -19,7 +18,6 @@ import { GeoScribbleService } from './GeoScribbleService.js';
 
 export {
   EsriService,
-  ImproveOsmService,
   KartaviewService,
   KeepRightService,
   MapillaryService,
@@ -44,7 +42,6 @@ export const services = {
 
 services.available.set('esri', EsriService);
 services.available.set('geoScribble', GeoScribbleService);
-services.available.set('improveOSM', ImproveOsmService);
 services.available.set('kartaview', KartaviewService);
 services.available.set('keepRight', KeepRightService);
 services.available.set('mapillary', MapillaryService);

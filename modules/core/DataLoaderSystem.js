@@ -71,7 +71,7 @@ export class DataLoaderSystem extends AbstractSystem {
       c.preset_fields = {};
       c.preset_presets = {};
       c.preset_overrides = {};
-      c.qa_data = { improveOSM: {}, osmose: {} };
+      c.qa_data = { osmose: {} };
       c.shortcuts = [];
       c.territory_languages = {};
       c.wmf_sitematrix = [ ['English','English','en'], ['German', 'Deutsch', 'de'] ];
