@@ -5,33 +5,37 @@ export function uiMapRouletteDetails(context) {
   let _qaItem;
 
   function parseShortCodes(text) {
-    console.log('Original Text:', text); // Debug: log original text
-    // working
-    // <p>Instructions: [select &quot; &quot; name=&quot;Instructions&quot;
-
-    // not working
-    //<p>Matching: [select &quot; &quot; name=&quot;Matching&quot;
-    const selectRegex = /\[select\s+&quot;\s*&quot;\s+name=&quot;([^&]+)&quot;\s+values=&quot;([^&]+)&quot;\]/g;
-    text = text.replace(selectRegex, (match, name, values) => {
-      const options = values.split(',').map(value => `<option value="${value.trim()}">${value.trim()}</option>`).join('');
-      return `<select name="${name}"><option value=""></option>${options}</select>`;
+    const segments = text.split(/\[select\s+&quot;\s*[^"]*?\s*&quot;\s+name=&quot;/);
+    let transformedText = segments[0];
+    segments.slice(1).forEach(segment => {
+      const endIndex = segment.indexOf('&quot;');
+      const dropdownName = segment.substring(0, endIndex);
+      const valuesStart = segment.indexOf('values=&quot;') + 'values=&quot;'.length;
+      const valuesEnd = segment.indexOf('&quot;', valuesStart);
+      const options = segment.substring(valuesStart, valuesEnd).split(',');
+      const dropdownHtml = `<select name="${dropdownName}"><option value=""></option>${options.map(option => `<option value="${option.trim()}">${option.trim()}</option>`).join('')}</select>`;
+      const remainder = segment.substring(valuesEnd + '&quot;'.length).trim().replace(/^\]/, ''); // Remove the first closing bracket if it exists
+      transformedText += dropdownHtml + remainder;
     });
-    console.log('Transformed Text:', text); // Debug: log transformed text
-    return text;
+    return transformedText;
   }
 
 
-  function replaceMustacheTags(text, properties) {
-    // Regex to find mustache tags in the text
-    const tagRegex = /\{\{(\w+)\}\}/g;
-
-    // Replace each tag with the corresponding property value
-    return text.replace(tagRegex, (propertyName) => {
-      // Check if the property exists in the provided properties object
-      if (properties && properties.hasOwnProperty(propertyName)) {
-        return properties[propertyName];
+  function replaceMustacheTags(text, task) {
+    const tagRegex = /\{\{([\w:]+)\}\}/g;
+    return text.replace(tagRegex, (match, propertyName) => {
+      // Special handling for 'osmIdentifier' which uses the 'title' field
+      if (propertyName === 'osmIdentifier') {
+        if (task.title) {
+          return task.title;
+        } else {
+          return '';
+        }
       }
-      // If the property doesn't exist, replace with empty text
+      // Handle other properties expected in 'properties' object
+      if (task.properties && task.properties.hasOwnProperty(propertyName)) {
+        return task.properties[propertyName];
+      }
       return '';
     });
   }
@@ -40,49 +44,34 @@ export function uiMapRouletteDetails(context) {
   function render(selection) {
     let details = selection.selectAll('.error-details')
       .data(_qaItem ? [_qaItem] : [], d => d.key);
-    details.exit()
-      .remove();
+    details.exit().remove();
     const detailsEnter = details.enter()
       .append('div')
       .attr('class', 'error-details qa-details-container');
-    detailsEnter
-      .append('div')
+
+    detailsEnter.append('div')
       .attr('class', 'qa-details-subsection')
       .text(l10n.t('map_data.layers.maproulette.loading_task_details'));
-    details = details.merge(detailsEnter);
-    maproulette.loadTaskDetailAsync(_qaItem)
-      .then(task => {
-        // Do nothing if _qaItem has changed by the time Promise resolves
-        if (_qaItem.id !== task.id) return;
-        const selection = details.selectAll('.qa-details-subsection');
-        selection.html('');   // replace contents
-        // First replace mustache tags, then parse short codes
-        const description = parseShortCodes(replaceMustacheTags(task.description, task.properties));
-        const instruction = parseShortCodes(replaceMustacheTags(task.instruction, task.properties));
-        if (task.description && !task.description.includes('Lorem')) {
-          selection
-            .append('h4')
-            .text(l10n.t('map_data.layers.maproulette.detail_title'));
 
-          selection
-            .append('p')
-            .html(description)  // parsed markdown
-            .selectAll('a').attr('rel', 'noopener')
-            .attr('target', '_blank');
-        }
-        if (task.instruction && !task.instruction.includes('Lorem') && task.instruction !== task.description) {
-          selection
-            .append('h4')
-            .text(l10n.t('map_data.layers.maproulette.instruction_title'));
-          selection
-            .append('p')
-            .html( instruction) // parsed markdown
-            .selectAll('a')
-            .attr('rel', 'noopener')
-            .attr('target', '_blank');
-        }
-      })
-      .catch(e => console.error(e));  // eslint-disable-line
+    details = details.merge(detailsEnter);
+
+    maproulette.loadTaskDetailAsync(_qaItem).then(task => {
+      if (!task) {
+        return;
+      }
+      if (_qaItem.id !== task.id) {
+        return;
+      }
+
+      const description = parseShortCodes(replaceMustacheTags(task.description, task));
+      const instruction = parseShortCodes(replaceMustacheTags(task.instruction, task));
+      const selection = details.selectAll('.qa-details-subsection');
+      selection.html(''); // Clear previous contents
+      selection.append('div').html(description);
+      selection.append('div').html(instruction);
+    }).catch(e => {
+        details.selectAll('.qa-details-subsection').text(l10n.t('map_data.layers.maproulette.error_loading_task_details'));
+    });
   }
 
 
