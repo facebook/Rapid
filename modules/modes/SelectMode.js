@@ -6,7 +6,6 @@ import { AbstractMode } from './AbstractMode.js';
 import { osmNote, QAItem } from '../osm/index.js';
 import { uiOsmoseEditor } from '../ui/osmose_editor.js';
 import { uiDataEditor } from '../ui/data_editor.js';
-import { uiImproveOsmEditor } from '../ui/improveOSM_editor.js';
 import { uiKeepRightEditor } from '../ui/keepRight_editor.js';
 import { uiNoteEditor } from '../ui/note_editor.js';
 import { uiMapRouletteEditor } from '../ui/maproulette_editor.js';
@@ -102,18 +101,6 @@ export class SelectMode extends AbstractMode {
           if (!(note instanceof osmNote)) return;   // or - go to browse mode
           context.systems.ui.sidebar.show(sidebarContent.note(note));
           this._selectedData.set(datumID, note);  // update selectedData after a change happens?
-        });
-
-    } else if (datum instanceof QAItem && datum.service === 'improveOSM') {
-      sidebarContent = uiImproveOsmEditor(context).error(datum);
-      sidebarContent
-        .on('change', () => {
-          context.systems.map.immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
-          const improveosm = context.services.improveOSM;
-          const error = improveosm?.getError(datumID);
-          if (!(error instanceof QAItem)) return;  // or - go to browse mode?
-          context.systems.ui.sidebar.show(sidebarContent.error(error));
-          this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
     } else if (datum instanceof QAItem && datum.service === 'keepRight') {

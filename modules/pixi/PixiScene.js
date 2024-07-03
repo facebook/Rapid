@@ -4,7 +4,6 @@ import { EventEmitter } from '@pixi/utils';
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles.js';
 import { PixiLayerCustomData } from './PixiLayerCustomData.js';
 import { PixiLayerEditBlocks } from './PixiLayerEditBlocks.js';
-import { PixiLayerImproveOsm } from './PixiLayerImproveOsm.js';
 import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos.js';
 import { PixiLayerKeepRight } from './PixiLayerKeepRight.js';
 import { PixiLayerLabels } from './PixiLayerLabels.js';
@@ -101,7 +100,6 @@ export class PixiScene extends EventEmitter {
       new PixiLayerCustomData(this, 'custom-data'),
       new PixiLayerMapRoulette(this, 'maproulette'),
       new PixiLayerOsmNotes(this, 'notes'),
-      new PixiLayerImproveOsm(this, 'improveOSM'),
       new PixiLayerKeepRight(this, 'keepRight'),
       new PixiLayerOsmose(this, 'osmose'),
 

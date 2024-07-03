@@ -19,7 +19,6 @@ import { uiSettingsCustomData } from '../settings/custom_data.js';
  *    ◻ Rapid Data
  *
  *    ◻ KeepRight Issues
- *    ◻ ImproveOSM Issues
  *    …
  *
  *    ◻ Custom Map Data      …
@@ -185,7 +184,7 @@ export function uiSectionDataLayers(context) {
 
 
   function drawQAItems(selection) {
-    const qaKeys = ['maproulette', 'keepRight', 'improveOSM', 'osmose', 'geoScribble'];
+    const qaKeys = ['maproulette', 'keepRight', 'osmose', 'geoScribble'];
     const qaLayers = qaKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
     const maproulette = context.services.maproulette;
 

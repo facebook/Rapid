@@ -455,13 +455,6 @@ export class PixiTextures {
       .endFill()
       .closePath();
 
-    // ImproveOsm
-    const improveosm = new Graphics()
-      .lineStyle(1, 0x333333)
-      .beginFill(0xffffff)
-      .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
-      .endFill()
-      .closePath();
 
     // OSM note
     const osmnote = new Graphics()
@@ -491,7 +484,6 @@ export class PixiTextures {
       .closePath();
 
     this.graphicToTexture('keepright', keepright, options);
-    this.graphicToTexture('improveosm', improveosm, options);
     this.graphicToTexture('osmnote', osmnote, options);
     this.graphicToTexture('osmose', osmose, options);
 
