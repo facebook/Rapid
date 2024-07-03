@@ -16,10 +16,6 @@ cached.locales_index_general = { en: { rtl: false, pct: 1 } };
 cached.locales_index_tagging = { en: { rtl: false, pct: 1 } };
 
 
-// Load the actual data from `dist/locales/` for the 'general' scope
-Rapid.localizer.loadLocaleAsync('en', 'general', 'locales');
-
-
 // Initializing `coreContext` initializes `_background`, which tries loading:
 cached.imagery = [];
 // Initializing `coreContext` initializes `_presets`, which tries loading:

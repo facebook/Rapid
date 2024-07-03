@@ -11,8 +11,8 @@ describe('LocalizationSystem', () => {
   beforeEach(() => {
     _l10n = new Rapid.LocalizationSystem(context);
     _l10n._cache = {
-      general: {
-        en: {
+      en: {
+        core: {
           inspector: {
             display_name: {
               network_ref_name: '{network} {ref}: {name}',

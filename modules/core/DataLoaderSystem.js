@@ -29,7 +29,7 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('intro_graph', 'data/intro_graph.min.json');
     fileMap.set('intro_rapid_graph', 'data/intro_rapid_graph.min.json');
     fileMap.set('languages', 'data/languages.min.json');
-    fileMap.set('locales', 'locales/index.min.json');
+    fileMap.set('locales', 'data/locales.min.json');
     fileMap.set('oci_defaults', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/defaults.min.json');
     fileMap.set('oci_features', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/featureCollection.min.json');
     fileMap.set('oci_resources', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/resources.min.json');
@@ -59,10 +59,6 @@ export class DataLoaderSystem extends AbstractSystem {
       c.imagery = { imagery: [] };
       c.languages = { languages: { de: { nativeName: 'Deutsch' }, en: { nativeName: 'English' } } };
       c.locales = { en: { rtl: false, pct: 1 } };
-      c.locale_general_en = { en: {} };
-      c.locale_tagging_en = { en: {} };
-      c.locales_index_general = { en: { rtl: false, pct: 1 } };
-      c.locales_index_tagging = { en: { rtl: false, pct: 1 } };
       c.phone_formats = { phoneFormats: {}};
       c.preset_categories = {};
       c.preset_defaults = {};
