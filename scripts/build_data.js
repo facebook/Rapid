@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
 import chalk from 'chalk';
+import { globSync } from 'glob';
 import fs from 'node:fs';
 import stringify from 'json-stringify-pretty-compact';
 import shell from 'shelljs';
+import JSON5 from 'json5';
 import YAML from 'js-yaml';
 
+import { writeFileWithMeta } from './write_file_with_meta.js';
 import * as languageNames from './language_names.js';
 
 // FontAwesome icons
@@ -14,14 +17,24 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 fontawesome.library.add(fas, far, fab);
 
-import categoriesJSON from '@openstreetmap/id-tagging-schema/dist/preset_categories.min.json' assert { type: 'json' }
-import fieldsJSON from '@openstreetmap/id-tagging-schema/dist/fields.min.json' assert { type: 'json' }
-import presetsJSON from '@openstreetmap/id-tagging-schema/dist/presets.min.json' assert { type: 'json' }
-import qaDataJSON from '../data/qa_data.json' assert { type: 'json' }
-import territoriesJSON from 'cldr-core/supplemental/territoryInfo.json' assert { type: 'json' };
+// Load source data
+const categoriesFile = 'node_modules/@openstreetmap/id-tagging-schema/dist/preset_categories.min.json';
+const fieldsFile = 'node_modules/@openstreetmap/id-tagging-schema/dist/fields.min.json';
+const presetsFile = 'node_modules/@openstreetmap/id-tagging-schema/dist/presets.min.json';
+const qaDataFile = 'data/qa_data.json';
+const territoriesFile = 'node_modules/cldr-core/supplemental/territoryInfo.json';
+
+const categoriesJSON = JSON5.parse(fs.readFileSync(categoriesFile, 'utf8'));
+const fieldsJSON = JSON5.parse(fs.readFileSync(fieldsFile, 'utf8'));
+const presetsJSON = JSON5.parse(fs.readFileSync(presetsFile, 'utf8'));
+const qaDataJSON = JSON5.parse(fs.readFileSync(qaDataFile, 'utf8'));
+const territoriesJSON = JSON5.parse(fs.readFileSync(territoriesFile, 'utf8'));
+
 
 //
 // This script builds all the data files
+// Files under `/data` are part of the project and checked in
+// Files under `/dist` are build artifacts and not checked in
 //
 
 let _buildPromise = null;
@@ -47,6 +60,11 @@ function buildDataAsync() {
 
   return _buildPromise = Promise.resolve(true)
     .then(() => {
+
+      // create target folders if necessary
+      if (!fs.existsSync('dist/data'))   fs.mkdirSync('dist/data', { recursive: true });
+      if (!fs.existsSync('dist/l10n'))   fs.mkdirSync('dist/l10n', { recursive: true });
+
       // Create symlinks if necessary..  { 'target': 'source' }
       const symlinks = {
         img: 'dist/img'
@@ -61,10 +79,11 @@ function buildDataAsync() {
 
       // Start clean
       shell.rm('-f', [
+        'data/languages.json',
         'data/territory_languages.json',
-        'dist/locales/en.json',
+        'dist/l10n/*',
         'dist/data/*',
-        'svg/fontawesome/*.svg',
+        'svg/fontawesome/*.svg'
       ]);
 
       // Gather icons from various places that we need assembled into a spritesheet.
@@ -83,27 +102,21 @@ function buildDataAsync() {
       gatherPresetIcons(icons);
       writeIcons(icons)
 
-      const territoryLanguages = gatherTerritoryLanguages();
-      fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) );
+      const territoryLanguages = { territoryLanguages: gatherTerritoryLanguages() };
+      fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) + '\n');
 
-      const languageInfo = languageNames.langNamesInNativeLang();
-      fs.writeFileSync('data/languages.json', stringify(languageInfo, { maxLength: 200 }));
-      fs.writeFileSync('dist/data/languages.min.json', JSON.stringify(languageInfo));
+      const languages = { languages: languageNames.langNamesInNativeLang() };
+      fs.writeFileSync('data/languages.json', stringify(languages, { maxLength: 200 }) + '\n');
 
       writeEnJson();
 
-      minifySync('data/address_formats.json', 'dist/data/address_formats.min.json');
-      minifySync('data/imagery.json', 'dist/data/imagery.min.json');
-      minifySync('data/intro_graph.json', 'dist/data/intro_graph.min.json');
-      minifySync('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json');
-      minifySync('data/keepRight.json', 'dist/data/keepRight.min.json');
-      minifySync('data/languages.json', 'dist/data/languages.min.json');
-      minifySync('data/phone_formats.json', 'dist/data/phone_formats.min.json');
-      minifySync('data/preset_overrides.json', 'dist/data/preset_overrides.min.json');
-      minifySync('data/qa_data.json', 'dist/data/qa_data.min.json');
-      minifySync('data/shortcuts.json', 'dist/data/shortcuts.min.json');
-      minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json');
-      minifySync('data/wayback.json', 'dist/data/wayback.min.json');
+      for (const sourceFile of globSync('data/*.json')) {
+        const destinationFile = sourceFile.replace('data/', 'dist/data/');
+        copyToDistSync(sourceFile, destinationFile);
+      }
+      for (const file of globSync('dist/{data,l10n}/*.json')) {
+        minifySync(file);
+      }
     })
     .then(() => {
       console.timeEnd(END);
@@ -120,8 +133,9 @@ function buildDataAsync() {
 
 
 function gatherQAIssueIcons(icons) {
-  for (const data of Object.values(qaDataJSON)) {
-    for (const icon of Object.values(data.icons)) {
+  for (const service of Object.values(qaDataJSON)) {
+    if (!service.icons) continue;
+    for (const icon of Object.values(service.icons)) {
       if (icon) {
         icons.add(icon);
       }
@@ -188,37 +202,90 @@ function gatherTerritoryLanguages() {
 }
 
 
+// writeEnJson
+// This generates the English language localication files
 function writeEnJson() {
   try {
-    // Start with contents of core.yaml and merge in the other stuff.
-    const enjson = YAML.load(fs.readFileSync('data/core.yaml', 'utf8'));
-    const imagery = YAML.load(fs.readFileSync('node_modules/editor-layer-index/i18n/en.yaml', 'utf8'));
-    const community = YAML.load(fs.readFileSync('node_modules/osm-community-index/i18n/en.yaml', 'utf8'));
-    const manualImagery = JSON.parse(fs.readFileSync('data/manual_imagery.json', 'utf8'));
+    //
+    // core.yaml
+    //
+    const core = YAML.load(fs.readFileSync('data/core.yaml', 'utf8'));
+    core.en.languageNames = languageNames.languageNamesInLanguageOf('en');
+    core.en.scriptNames = languageNames.scriptNamesInLanguageOf('en');
+    writeFileWithMeta('dist/l10n/core.en.json', JSON.stringify(core, null, 2) + '\n');
 
-    // Gather strings for additional imagery not included in the imagery index
+    //
+    // community index
+    //
+    const community = YAML.load(fs.readFileSync('node_modules/osm-community-index/i18n/en.yaml', 'utf8'));
+    writeFileWithMeta('dist/l10n/community.en.json', JSON.stringify(community, null, 2) + '\n');
+
+    //
+    // imagery
+    //
+    const imagery = YAML.load(fs.readFileSync('node_modules/editor-layer-index/i18n/en.yaml', 'utf8'));
+
+    // Gather strings for imagery overrides not included in the imagery index
+    const manualImagery = JSON5.parse(fs.readFileSync('data/manual_imagery.json', 'utf8')).manualImagery;
+
     for (const source of manualImagery) {
-      let target = {};
+      if (!source) continue;
+      const target = {};
       if (source.attribution?.text)  target.attribution = { text: source.attribution.text };
       if (source.name)               target.name = source.name;
       if (source.description)        target.description = source.description;
 
-      imagery.en.imagery[source.id] = target;
+      if (Object.keys(target).length) {
+        imagery.en.imagery[source.id] = target;
+      }
     }
 
-    // Check for these properties before overwriting
-    ['imagery', 'community', 'languageNames', 'scriptNames'].forEach(prop => {
-      if (enjson.en[prop]) {
-        throw(`Reserved property '${prop}' already exists in core strings`);
+    writeFileWithMeta('dist/l10n/imagery.en.json', stringify(imagery, { maxLength: 9999 }) + '\n');
+
+    //
+    // tagging
+    //
+    const taggingFile = 'node_modules/@openstreetmap/id-tagging-schema/dist/translations/en.json';
+    const tagging = JSON5.parse(fs.readFileSync(taggingFile, 'utf8'));
+
+    // Gather strings for tagging overrides not included in the tagging index
+    const taggingOverrides = JSON5.parse(fs.readFileSync('data/preset_overrides.json', 'utf8'));
+
+    // categories, presets
+    for (const group of ['categories', 'presets']) {
+      for (const [key, source] of Object.entries(taggingOverrides[group])) {
+        if (!source) continue;
+        const target = {};
+        if (source.name)                    target.name = source.name;
+        if (Array.isArray(source.terms))    target.terms = source.terms.join(',');
+        if (Array.isArray(source.aliases))  target.aliases = source.aliases.join('\n');
+
+        if (Object.keys(target).length) {
+          tagging.en.presets[group][key] = target;
+        }
       }
-    });
+    }
 
-    enjson.en.imagery = imagery.en.imagery;
-    enjson.en.community = community.en;
-    enjson.en.languageNames = languageNames.languageNamesInLanguageOf('en');
-    enjson.en.scriptNames = languageNames.scriptNamesInLanguageOf('en');
+    // fields
+    for (const [key, source] of Object.entries(taggingOverrides.fields)) {
+      if (!source) continue;
+      const target = {};
+      if (source.label && !source.label.startsWith('{')) {
+        target.label = source.label;
+      }
+      if (source.placeholder && !source.placeholder.startsWith('{')) {
+        target.placeholder = source.placeholder;
+      }
+      if (source.strings?.options) {
+        target.options = source.strings.options;
+      }
 
-    fs.writeFileSync('dist/locales/en.min.json', JSON.stringify(enjson));
+      if (Object.keys(target).length) {
+        tagging.en.presets.fields[key] = target;
+      }
+    }
+
+    writeFileWithMeta('dist/l10n/tagging.en.json', JSON.stringify(tagging, null, 2) + '\n');
 
   } catch (err) {
     console.error(chalk.red(`Error - ${err.message}`));
@@ -227,14 +294,30 @@ function writeEnJson() {
 }
 
 
-function minifySync(inPath, outPath) {
+// copyToDistSync
+// Copies a file to the /dist folder, but includes a block of metadata when saving it
+function copyToDistSync(inFile, outFile) {
   try {
-    const contents = fs.readFileSync(inPath, 'utf8');
-    const minified = JSON.stringify(JSON.parse(contents));
-    fs.writeFileSync(outPath, minified);
+    const contents = fs.readFileSync(inFile, 'utf8');
+    writeFileWithMeta(outFile, contents);
+  } catch (err) {
+    console.error(chalk.red(`Error - ${err.message} copying:`));
+    console.error('  ' + chalk.yellow(inFile));
+    process.exit(1);
+  }
+}
+
+
+// minifySync
+// Minifies a JSON file, saving the `.min.json` file alongside the source file
+function minifySync(inFile) {
+  try {
+    const contents = fs.readFileSync(inFile, 'utf8');
+    const outFile = inFile.replace('.json', '.min.json');
+    fs.writeFileSync(outFile, JSON.stringify(JSON5.parse(contents)));
   } catch (err) {
     console.error(chalk.red(`Error - ${err.message} minifying:`));
-    console.error('  ' + chalk.yellow(inPath));
+    console.error('  ' + chalk.yellow(inFile));
     process.exit(1);
   }
 }

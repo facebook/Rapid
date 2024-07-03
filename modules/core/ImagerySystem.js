@@ -100,10 +100,11 @@ export class ImagerySystem extends AbstractSystem {
    *     sources:   Map(id -> ImagerySource)
    *     query:     A which-polygon index to perform spatial queries against
    *   }
-   *  @param  data  {Array}  imagery index data
+   *  @param  data  {Object}  imagery index data
    */
   _initImageryIndex(data) {
     const context = this.context;
+    const arr = data.imagery || [];
 
     this._imageryIndex = {
       features: new Map(),   // Map(id -> GeoJSON feature)
@@ -112,7 +113,7 @@ export class ImagerySystem extends AbstractSystem {
     };
 
     // Extract a GeoJSON feature for each imagery item.
-    const features = data.map(d => {
+    const features = arr.map(d => {
       if (!d.polygon) return null;
 
       // workaround for editor-layer-index weirdness..
@@ -136,7 +137,7 @@ export class ImagerySystem extends AbstractSystem {
     this._imageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
 
     // Instantiate `ImagerySource` objects for each imagery item.
-    for (const d of data) {
+    for (const d of arr) {
       let source;
       if (d.type === 'bing') {
         source = new ImagerySourceBing(context, d);

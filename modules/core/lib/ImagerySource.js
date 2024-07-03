@@ -643,7 +643,7 @@ export class ImagerySourceEsriWayback extends ImagerySourceEsri {
       const context = this.context;
       const dataloader = context.systems.dataloader;
       dataloader.getDataAsync('wayback')
-        .then(config => Wayback.setWaybackConfigData(config))
+        .then(data => Wayback.setWaybackConfigData(data.wayback))
         .then(() => {
           // `getWaybackItems` returns a `Promise` that resolves to a list of `WaybackItem` for all
           // World Imagery Wayback releases from the Wayback archive. The output list is sorted by

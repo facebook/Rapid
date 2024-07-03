@@ -280,7 +280,7 @@ export function uiShortcuts(context) {
 
     dataloader.getDataAsync('shortcuts')
       .then(data => {
-        _dataShortcuts = data;
+        _dataShortcuts = data.shortcuts;
         render();
       })
       .catch(e => console.error(e));  // eslint-disable-line

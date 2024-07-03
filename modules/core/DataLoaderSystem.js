@@ -28,7 +28,6 @@ export class DataLoaderSystem extends AbstractSystem {
     fileMap.set('imagery', 'data/imagery.min.json');
     fileMap.set('intro_graph', 'data/intro_graph.min.json');
     fileMap.set('intro_rapid_graph', 'data/intro_rapid_graph.min.json');
-    fileMap.set('keepRight', 'data/keepRight.min.json');
     fileMap.set('languages', 'data/languages.min.json');
     fileMap.set('locales', 'locales/index.min.json');
     fileMap.set('oci_defaults', 'https://cdn.jsdelivr.net/npm/osm-community-index@5.7/dist/defaults.min.json');
@@ -54,28 +53,26 @@ export class DataLoaderSystem extends AbstractSystem {
     // Not sure how I feel about this :-/
     if (window.mocha) {
       const c = this._cachedData;
-      c.address_formats = [{ format: [['housenumber', 'street'], ['city', 'postcode']] }];
+      c.address_formats = { addressFormats: [{ format: [['housenumber', 'street'], ['city', 'postcode']] }]};
       c.deprecated = [{ old: { highway: 'no' } }, { old: { highway: 'ford' }, replace: { ford: '*' } } ];
       c.discarded = {};
-      c.imagery = [];
-      c.keepRight = {};
-      c.languages = { de: { nativeName: 'Deutsch' }, en: { nativeName: 'English' } };
+      c.imagery = { imagery: [] };
+      c.languages = { languages: { de: { nativeName: 'Deutsch' }, en: { nativeName: 'English' } } };
       c.locales = { en: { rtl: false, pct: 1 } };
       c.locale_general_en = { en: {} };
       c.locale_tagging_en = { en: {} };
       c.locales_index_general = { en: { rtl: false, pct: 1 } };
       c.locales_index_tagging = { en: { rtl: false, pct: 1 } };
-      c.phone_formats = {};
+      c.phone_formats = { phoneFormats: {}};
       c.preset_categories = {};
       c.preset_defaults = {};
       c.preset_fields = {};
       c.preset_presets = {};
       c.preset_overrides = {};
-      c.qa_data = { improveOSM: {}, osmose: {} };
-      c.shortcuts = [];
-      c.territory_languages = {};
+      c.qa_data = { improveOSM: {}, keepRight: {}, osmose: {} };
+      c.shortcuts = { shortcuts: [] };
+      c.territory_languages = { territoryLanguages: {} };
       c.wmf_sitematrix = [ ['English','English','en'], ['German', 'Deutsch', 'de'] ];
-      c.colors = {};
     }
   }
 

@@ -74,8 +74,8 @@ export function uiIntro(context, skipToRapid) {
       dataloader.getDataAsync('intro_graph')
     ])
     .then(values => {
-      const rapidData = values[0];
-      const introData = values[1];
+      const rapidData = values[0].introRapidGraph;
+      const introData = values[1].introGraph;
 
       for (const [id, data] of Object.entries(rapidData)) {
         if (!_rapidGraph[id]) {

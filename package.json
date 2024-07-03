@@ -116,6 +116,7 @@
     "globals": "^15.4.0",
     "happen": "^0.3.2",
     "js-yaml": "^4.1.0",
+    "json5": "^2.2.3",
     "json-stringify-pretty-compact": "^4.0.0",
     "karma": "^6.4.3",
     "karma-chrome-launcher": "^3.2.0",

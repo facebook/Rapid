@@ -1,4 +1,5 @@
 {
+  "introRapidGraph": {
     "n-2852": {
       "__fbid__": "-2852",
       "__service__": "mapwithai",
@@ -45,4 +46,5 @@
         "name": "Tulip Lane"
       }
     }
+  }
 }

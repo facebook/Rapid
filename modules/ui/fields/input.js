@@ -30,7 +30,7 @@ export function uiFieldText(context, uifield) {
   if (uifield.type === 'tel') {
     dataloader.getDataAsync('phone_formats')
       .then(d => {
-        _phoneFormats = d;
+        _phoneFormats = d.phoneFormats;
         updatePhonePlaceholder();
       })
       .catch(e => console.error(e));  // eslint-disable-line

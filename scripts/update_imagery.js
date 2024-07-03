@@ -1,9 +1,14 @@
 /* eslint-disable no-console */
 import fs from 'node:fs';
+import JSON5 from 'json5';
 import prettyStringify from 'json-stringify-pretty-compact';
 
-import imageryJSON from 'editor-layer-index/imagery.json' assert {type: 'json'};
-import manualJSON from '../data/manual_imagery.json' assert {type: 'json'};
+// Load source data
+const imageryFile = 'node_modules/editor-layer-index/imagery.json';
+const manualFile = 'data/manual_imagery.json';
+const imageryJSON = JSON5.parse(fs.readFileSync(imageryFile, 'utf8'));
+const manualJSON = JSON5.parse(fs.readFileSync(manualFile, 'utf8')).manualImagery;
+
 
 //
 // This script processes files used to know what background imagery is available
@@ -187,9 +192,7 @@ for (const [sourceID, source] of sources) {
 
 
 imagery.sort((a, b) => a.name.localeCompare(b.name));
-
-fs.writeFileSync('data/imagery.json', prettyStringify(imagery));
-fs.writeFileSync('dist/data/imagery.min.json', JSON.stringify(imagery));
+fs.writeFileSync('data/imagery.json', prettyStringify({ imagery: imagery }) + '\n');
 
 
 // We'll mirror the wayback config file, it's not available everywhere - see Rapid#1445
@@ -200,6 +203,5 @@ fetch('https://s3-us-west-2.amazonaws.com/config.maptiles.arcgis.com/waybackconf
     return response.json();
   })
   .then(data => {
-    fs.writeFileSync('data/wayback.json', prettyStringify(data));
-    fs.writeFileSync('dist/data/wayback.min.json', JSON.stringify(data));
+    fs.writeFileSync('data/wayback.json', prettyStringify({ wayback: data }) + '\n');
   });

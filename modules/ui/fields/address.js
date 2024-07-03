@@ -30,7 +30,7 @@ export function uiFieldAddress(context, uifield) {
 
   dataloader.getDataAsync('address_formats')
     .then(d => {
-      _addressFormats = d;
+      _addressFormats = d.addressFormats;
       if (!_selection.empty()) {
         _selection.call(address);  // rerender
       }

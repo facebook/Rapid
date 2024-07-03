@@ -3,6 +3,7 @@
 import btoa from 'btoa';
 import chalk from 'chalk';
 import fs from 'node:fs';
+import JSON5 from 'json5';
 import YAML from 'js-yaml';
 
 import * as languageNames from './language_names.js';

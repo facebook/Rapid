@@ -25,7 +25,7 @@ export function uiFieldLocalized(context, uifield) {
     var _tags;
 
 
-    // A concern here in switching to async data means that _languagesArray will not
+    // A concern here in switching to async data means that languages will not
     // be available the first time through, so things like the fetchers and
     // the language() function will not work immediately.
 
@@ -35,7 +35,7 @@ export function uiFieldLocalized(context, uifield) {
 
     var _territoryLanguages = {};
     dataloader.getDataAsync('territory_languages')
-        .then(function(d) { _territoryLanguages = d; })
+        .then(data => _territoryLanguages = data.territoryLanguages)
         .catch(e => console.error(e));  // eslint-disable-line
 
     // reuse these combos
@@ -52,27 +52,28 @@ export function uiFieldLocalized(context, uifield) {
     var _entityIDs = [];
 
 
-    function loadLanguagesArray(dataLanguages) {
-        if (_languagesArray.length !== 0) return;
+    function loadLanguagesArray(data) {
+      if (_languagesArray.length) return;  // done already
 
-        // some conversion is needed to ensure correct OSM tags are used
-        var replacements = {
-            sr: 'sr-Cyrl',      // in OSM, `sr` implies Cyrillic
-            'sr-Cyrl': false    // `sr-Cyrl` isn't used in OSM
-        };
+      // some conversion is needed to ensure correct OSM tags are used
+      var replacements = {
+        sr: 'sr-Cyrl',      // in OSM, `sr` implies Cyrillic
+        'sr-Cyrl': false    // `sr-Cyrl` isn't used in OSM
+      };
 
-        for (var code in dataLanguages) {
-            if (replacements[code] === false) continue;
-            var metaCode = code;
-            if (replacements[code]) metaCode = replacements[code];
+      const languages = data.languages;
+      for (var code in languages) {
+        if (replacements[code] === false) continue;
+        var metaCode = code;
+        if (replacements[code]) metaCode = replacements[code];
 
-            _languagesArray.push({
-                localName: l10n.languageName(metaCode, { localOnly: true }),
-                nativeName: dataLanguages[metaCode].nativeName,
-                code: code,
-                label: l10n.languageName(metaCode)
-            });
-        }
+        _languagesArray.push({
+          localName: l10n.languageName(metaCode, { localOnly: true }),
+          nativeName: languages[metaCode].nativeName,
+          code: code,
+          label: l10n.languageName(metaCode)
+        });
+      }
     }
 
 
