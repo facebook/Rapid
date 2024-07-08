@@ -49,7 +49,7 @@
     "test:unit": "c8 node --test test/unit",
     "test:unzip-benchmark-data": "tar -xvf test/benchmark/tokyo_canned_data.zip -C test/benchmark",
     "test:cleanup-benchmark-data": "rm test/benchmark/tokyo_*_canned_osm_data.js",
-    "translations": "node scripts/update_locales.js"
+    "translations": "node scripts/update_translations.js"
   },
   "dependencies": {
     "@mapbox/geojson-area": "^0.2.2",

@@ -680,9 +680,9 @@
     "zen": {},
     "zgh": {"nativeName": "ⵜⴰⵎⴰⵣⵉⵖⵜ"},
     "zh": {"nativeName": "中文"},
+    "zh_pinyin": {"base": "zh", "script": "Latn"},
     "zh-Hans": {"base": "zh", "script": "Hans", "nativeName": "简体中文"},
     "zh-Hant": {"base": "zh", "script": "Hant", "nativeName": "繁體中文"},
-    "zh_pinyin": {"base": "zh", "script": "Latn"},
     "zu": {"nativeName": "isiZulu"},
     "zun": {},
     "zza": {}

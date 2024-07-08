@@ -9,6 +9,7 @@ import YAML from 'js-yaml';
 
 import { writeFileWithMeta } from './write_file_with_meta.js';
 import * as languageNames from './language_names.js';
+const localeCompare = new Intl.Collator('en').compare;
 
 // FontAwesome icons
 import * as fontawesome from '@fortawesome/fontawesome-svg-core';
@@ -81,7 +82,8 @@ function buildDataAsync() {
       shell.rm('-f', [
         'data/languages.json',
         'data/territory_languages.json',
-        'dist/l10n/*',
+        'dist/l10n/*.en.json',
+        'dist/l10n/*.min.json',
         'dist/data/*',
         'svg/fontawesome/*.svg'
       ]);
@@ -102,10 +104,10 @@ function buildDataAsync() {
       gatherPresetIcons(icons);
       writeIcons(icons)
 
-      const territoryLanguages = { territoryLanguages: gatherTerritoryLanguages() };
+      const territoryLanguages = { territoryLanguages: sortObject(gatherTerritoryLanguages()) };
       fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) + '\n');
 
-      const languages = { languages: languageNames.langNamesInNativeLang() };
+      const languages = { languages: sortObject(languageNames.langNamesInNativeLang()) };
       fs.writeFileSync('data/languages.json', stringify(languages, { maxLength: 200 }) + '\n');
 
       writeEnJson();
@@ -320,6 +322,17 @@ function minifySync(inFile) {
     console.error('  ' + chalk.yellow(inFile));
     process.exit(1);
   }
+}
+
+
+// Returns an object with sorted keys
+function sortObject(obj) {
+  if (!obj) return null;
+
+  const sorted = {};
+  Object.keys(obj).sort(localeCompare).forEach(k => sorted[k] = obj[k]);
+
+  return sorted;
 }
 
 

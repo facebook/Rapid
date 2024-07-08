@@ -224,8 +224,8 @@ export function localize(context, obj) {
       const str = l10n.t(key, { default: val });
 
       if (str) {
-        if (str.match(/^<.*>$/) !== null) {
-          delete obj.tags[tag];
+        if (str.match(/^<.*>$/) !== null) {   // A placeholder string like "<value for addr:state>"
+          delete obj.tags[tag];               // In this situation we don't actually want the tag.
         } else {
           obj.tags[tag] = str;
         }

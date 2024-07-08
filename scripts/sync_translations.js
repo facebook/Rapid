@@ -50,14 +50,14 @@ let project_rapid;    // project: rapid
 let core_id;          // resource: id core
 let core_rapid;       // resource: rapid core
 
-const languages = new Map();        // all transifex languages
-const languages_id = new Set();       // Set<languageIDs>
-const languages_rapid = new Set();    // Set<languageIDs>
-const keys_id = new Map();            // Index By Key     Map<key, stringID>
-const keys_rapid = new Map();         // Index By Key     Map<key, stringID>
-const sources_id = new Map();         // Source strings   Map<stringID, attributes object>
-const sources_rapid = new Map();      // Source strings   Map<stringID, attributes object>
-const same = new Set();               // Set<key>   // where source strings are the same in both iD and Rapid
+const languages = new Map();           // All Transifex languages  Map<languageID, language>
+const languages_id = new Set();        // Set<languageIDs>
+const languages_rapid = new Set();     // Set<languageIDs>
+const keys_id = new Map();             // Index By Key     Map<key, stringID>
+const keys_rapid = new Map();          // Index By Key     Map<key, stringID>
+const sources_id = new Map();          // Source strings   Map<stringID, attributes object>
+const sources_rapid = new Map();       // Source strings   Map<stringID, attributes object>
+const same = new Set();                // Set<key>   // where source strings are the same in both iD and Rapid
 const translations_id = new Map();     // Translated strings  Map<languageID, Map<stringID, attributes object>>
 const translations_rapid = new Map();  // Translated_strings  Map<languageID, Map<stringID, attributes object>>
 
@@ -398,6 +398,12 @@ async function getCollection(iterable, showCount = true) {
 
   if (!process.stdout.isTTY) showCount = false;
 
+  if (showCount) {
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+    process.stdout.write('0');
+  }
+
   for await (const val of iterable.all()) {
     results.push(val);
     if (showCount) {
@@ -406,9 +412,11 @@ async function getCollection(iterable, showCount = true) {
       process.stdout.write(results.length.toString());
     }
   }
+
   if (showCount) {
     process.stdout.write('\n');
   }
+
   return results;
 }
 
