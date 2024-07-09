@@ -46,7 +46,7 @@ let resource_imagery;    // resource: id imagery
 let resource_tagging;    // resource: id tagging
 
 const languages = new Map();               // All Transifex languages  Map<languageID, language>
-const languages_rapid = new Set();         // Set<languageIDs>
+let languages_rapid;                       // Array<languageID>  (we want to run through them sorted so fallback works)
 const sources_core = new Map();            // Source strings   Map<stringID, attributes object>
 const sources_community = new Map();       // Source strings   Map<stringID, attributes object>
 const sources_imagery = new Map();         // Source strings   Map<stringID, attributes object>
@@ -146,9 +146,9 @@ async function getRapidLanguageStats() {
 
   return getCollection(iter)
     .then(vals => {
-      for (const val of vals) {
-        languages_rapid.add(val.related.language.id);
-      }
+      // We want this list sorted, so that as we iterate through it, we can fallback.
+      // If this code includes a country like `zh-CN`, we will allow a fallback to `zh`.
+      languages_rapid = vals.map(val => val.related.language.id).sort(localeCompare);
     });
 }
 
@@ -161,9 +161,10 @@ function writeLocalesFile() {
   const locales = {}
   for (const languageID of languages_rapid) {
     const language = languages.get(languageID);
-    if (!language) continue;
+    if (!language)  throw new Error(`Missing language '${languageID}'`);
 
-    const code = language.attributes.code;
+    // Note: replace CLDR-style underscores with BCP47-style hypens to make things easier.
+    const code = language.attributes.code.replace(/_/g, '-');
     let rtl = language.attributes.rtl;
     if (code === 'ku') {  // exception: Kurdish written in Latin script, see iD#4783
       rtl = false;
@@ -182,7 +183,7 @@ async function getCore() {
   for (const languageID of languages_rapid) {
     if (languageID === 'l:en') continue;   // skip `l:en`, it's the source language
     await getTranslationStrings('core', CORE_RESOURCE, languageID, translations_core);
-    await writeTranslationFile('core', languageID, sources_core, translations_core);
+    await processTranslations('core', languageID, sources_core, translations_core);
   }
 }
 
@@ -192,7 +193,7 @@ async function getCommunity() {
   for (const languageID of languages_rapid) {
     if (languageID === 'l:en') continue;   // skip `l:en`, it's the source language
     await getTranslationStrings('community', COMMUNITY_RESOURCE, languageID, translations_community);
-    await writeTranslationFile('community', languageID, sources_community, translations_community);
+    await processTranslations('community', languageID, sources_community, translations_community);
   }
 }
 
@@ -202,7 +203,7 @@ async function getImagery() {
   for (const languageID of languages_rapid) {
     if (languageID === 'l:en') continue;   // skip `l:en`, it's the source language
     await getTranslationStrings('imagery', IMAGERY_RESOURCE, languageID, translations_imagery);
-    await writeTranslationFile('imagery', languageID, sources_imagery, translations_imagery);
+    await processTranslations('imagery', languageID, sources_imagery, translations_imagery);
   }
 }
 
@@ -212,7 +213,7 @@ async function getTagging() {
   for (const languageID of languages_rapid) {
     if (languageID === 'l:en') continue;   // skip `l:en`, it's the source language
     await getTranslationStrings('tagging', TAGGING_RESOURCE, languageID, translations_tagging);
-    await writeTranslationFile('tagging', languageID, sources_tagging, translations_tagging);
+    await processTranslations('tagging', languageID, sources_tagging, translations_tagging);
   }
 }
 
@@ -280,7 +281,7 @@ async function getSourceStrings(resourceName, resourceID, collection) {
 
 //
 async function getTranslationStrings(resourceName, resourceID, languageID, collection) {
-  const translations = new Map();   //  Map<stringID, Object>
+  const translations = new Map();   //  Map<stringID, ResourceTranslation>
   collection.set(languageID, translations);
 
   console.log(chalk.yellow(`📥  Fetching '${resourceName}' translations for '${languageID}'`));
@@ -297,25 +298,34 @@ async function getTranslationStrings(resourceName, resourceID, languageID, colle
 }
 
 
-// writeTranslationFile
+// processTranslations
 // Here we collect all of the translated strings and write them into JSON format.
 // We compare each translated string against the source English string and only write strings that are actually changed.
-async function writeTranslationFile(resourceName, languageID, sourceCollection, translationCollection) {
+async function processTranslations(resourceName, languageID, sourceCollection, translationCollection) {
   // At this point in the script execution things shouldn't be missing
-  const translations = translationCollection.get(languageID);
+  const translations = translationCollection.get(languageID);  //  Map<stringID, ResourceTranslation>
   if (!translations)  throw new Error(`Missing translations for '${languageID}'`);
 
   const language = languages.get(languageID);
   if (!language)  throw new Error(`Missing language '${languageID}'`);
 
-  const code = language.attributes.code;
-  if (!code)  throw new Error(`Missing language code for '${languageID}'`);
+  // Note: Replace CLDR-style underscores with BCP47-style hypens to make things easier.
+  const code = language.attributes.code.replace(/_/g, '-');
+
+  // If this code includes a country like `zh-CN`, we will allow a fallback to `zh`.
+  const [langCode, countryCode] = code.split('-', 2);
+  let fallbacks;
+  if (countryCode) {
+    fallbacks = translationCollection.get(`l:${langCode}`);  //  Map<stringID, ResourceTranslation>
+  }
+
 
   const trunk = {};
   let count = 0;
 
   for (const [stringID, translation] of translations) {
     const tstrings = translation.attributes.strings;
+
     // Translated strings arrive with all their plural forms. (e.g. 'one', 'many', etc.)
     // If a string doesn't have plural forms, it will have a single default value 'other'
     const pluralForms = Object.keys(tstrings ?? {});
@@ -324,11 +334,16 @@ async function writeTranslationFile(resourceName, languageID, sourceCollection, 
 
     const source = sourceCollection.get(stringID);
     if (!source)  throw new Error(`Missing source for '${stringID}'`);
+    const sstrings = source.attributes.strings;
 
     const key = source.attributes.key;
     if (!key)  throw new Error(`Missing key for '${stringID}'`);
 
+    const fallback = fallbacks?.get(stringID);  // fallback is optional
+    const fstrings = fallback?.attributes?.strings || {};
+
     const path = key.split('.');
+    let isRedundant = false;   // We'll remove redundant translations below
 
     if (hasPlurals) {
       //
@@ -342,22 +357,25 @@ async function writeTranslationFile(resourceName, languageID, sourceCollection, 
       //   }
       // }
       //
-      for (const [pluralRule, tstring] of Object.entries(translation.attributes.strings)) {
+      for (const [pluralRule, tstring] of Object.entries(tstrings)) {
         if (!tstring)  throw new Error(`Missing plural string for '${stringID}' - '${pluralRule}'`);
 
-        // Skip this string if it's identical to the source English string..
-        const sstring = source.attributes.strings[pluralRule];
-        if (tstring === sstring) continue;
+        // Skip this translated string if it's identical to the source or fallback string..
+        if (tstring === fstrings[pluralRule] || tstring === sstrings[pluralRule]) {
+          isRedundant = true;
+          break;
 
-        // Walk to the leaf, extending the tree if necessary..
-        let branch = trunk;
-        for (const p of path) {
-          if (!branch[p])  branch[p] = {};
-          branch = branch[p];
+        } else {  // Keep this translated string..
+          // Walk to the leaf, extending the tree if necessary..
+          let branch = trunk;
+          for (const p of path) {
+            if (!branch[p])  branch[p] = {};
+            branch = branch[p];
+          }
+
+          branch[pluralRule] = tstring;
+          count++;
         }
-
-        branch[pluralRule] = tstring;
-        count++;
       }
 
     } else {
@@ -372,22 +390,29 @@ async function writeTranslationFile(resourceName, languageID, sourceCollection, 
       //
       const leaf = path.pop();
       const pluralRule = 'other';
-      const tstring = translation.attributes.strings[pluralRule];
-      if (!tstring)  throw new Error(`Missing plural string for '${stringID}' - '${pluralRule}'`);
+      const tstring = tstrings[pluralRule];
+      if (!tstring)  throw new Error(`Missing singular string for '${stringID}' - '${pluralRule}'`);
 
-      // Skip this string if it's identical to the source English string..
-      const sstring = source.attributes.strings[pluralRule];
-      if (tstring === sstring) continue;
+      // Skip this translated string if it's identical to the source or fallback string..
+      if (tstring === fstrings[pluralRule] || tstring === sstrings[pluralRule]) {
+        isRedundant = true;
 
-      // Walk to the leaf, extending the tree if necessary..
-      let branch = trunk;
-      for (const p of path) {
-        if (!branch[p])  branch[p] = {};
-        branch = branch[p];
+      } else {  // Keep this translated string..
+        let branch = trunk;
+        for (const p of path) {
+          if (!branch[p])  branch[p] = {};
+          branch = branch[p];
+        }
+
+        branch[leaf] = tstring;
+        count++;
       }
+    }
 
-      branch[leaf] = tstring;
-      count++;
+    // Only remove the redundant translations from the Rapid 'core' resource, not the iD projects
+    if (resourceName === 'core' && isRedundant) {
+      console.log(chalk.yellow(`🔪   Removing redundant '${languageID}' translation…`));
+      await saveWithRetry(translation, { strings: null });
     }
   }
 
@@ -434,6 +459,23 @@ async function getCollection(iterable, showCount = true) {
   }
 
   return results;
+}
+
+
+// saveWithRetry
+// This retries a `save` call if we get an error like:
+//  500 - Something went wrong, please try again
+function saveWithRetry(resource, arg1, arg2) {
+  return resource.save(arg1, arg2)
+    .catch(err => {
+      console.error(err);
+      if (err.statusCode === 500 || err.statusCode === 429 || err.code === 'ETIMEDOUT') {  // server error or rate limit
+        return new Promise(r => setTimeout(r, 10000))          // wait 10 sec
+          .then(() => saveWithRetry(resource, arg1, arg2));    // try again
+      } else {
+        throw err;
+      }
+    });
 }
 
 

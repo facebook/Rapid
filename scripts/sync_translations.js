@@ -428,7 +428,7 @@ function saveWithRetry(resource, arg1, arg2) {
   return resource.save(arg1, arg2)
     .catch(err => {
       console.error(err);
-      if (err.statusCode === 500 || err.statusCode === 429) {  // server error or rate limit
+      if (err.statusCode === 500 || err.statusCode === 429 || err.code === 'ETIMEDOUT') {  // server error or rate limit
         return new Promise(r => setTimeout(r, 10000))          // wait 10 sec
           .then(() => saveWithRetry(resource, arg1, arg2));    // try again
       } else {
