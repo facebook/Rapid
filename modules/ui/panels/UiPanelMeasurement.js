@@ -51,7 +51,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this.key = l10n.t('info_panels.measurement.key');
 
     this._selection = d3_select(null);
-    this._isImperial = !l10n.usesMetric();
+    this._isImperial = !l10n.isMetric();
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)

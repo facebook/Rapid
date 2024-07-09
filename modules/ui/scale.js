@@ -7,7 +7,7 @@ export function uiScale(context) {
   const l10n = context.systems.l10n;
   const viewport = context.viewport;
 
-  let _isImperial = !l10n.usesMetric();
+  let _isImperial = !l10n.isMetric();
 
 
   function scaleDefs(loc1, loc2) {

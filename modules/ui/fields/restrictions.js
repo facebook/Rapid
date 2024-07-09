@@ -579,7 +579,7 @@
 //
 //
 //    function displayMaxDistance(maxDist) {
-//        var isImperial = !context.systems.l10n.usesMetric();
+//        var isImperial = !context.systems.l10n.isMetric();
 //        var opts;
 //
 //        if (isImperial) {
